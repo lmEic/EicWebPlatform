@@ -8,5 +8,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 {
     class AstService
     {
+          //123456
     }
 }
