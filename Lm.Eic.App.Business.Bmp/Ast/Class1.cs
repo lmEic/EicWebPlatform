@@ -8,6 +8,5 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 {
     class Class1
     {
-        //张明的修改 时间 2016-04-26 11:40
     }
 }
