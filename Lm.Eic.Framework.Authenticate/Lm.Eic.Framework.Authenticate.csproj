@@ -32,13 +32,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
-      <HintPath>..\..\WebApp\EicWorkPlatfromApp\EicWorkPlatfrom\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.dll</HintPath>
+      <HintPath>..\libs\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.Extended">
-      <HintPath>..\..\WebApp\EicWorkPlatfromApp\EicWorkPlatfrom\packages\EntityFramework.Extended.6.1.0.168\lib\net40\EntityFramework.Extended.dll</HintPath>
+      <HintPath>..\libs\EntityFramework.Extended.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\WebApp\EicWorkPlatfromApp\EicWorkPlatfrom\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\libs\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
