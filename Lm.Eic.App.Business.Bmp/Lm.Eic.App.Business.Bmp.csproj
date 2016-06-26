@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quantity\Bussiness\" />
-    <Folder Include="Quantity\Repository\" />
+    <Folder Include="Quantity\Repository\Map\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.App.Business.Mes\Lm.Eic.App.Business.Mes.csproj">
