@@ -1,0 +1,143 @@
+﻿<div class="panel panel-primary" ng-controller="attendExceptionHandleCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>异常考勤管理</h6>
+    </div>
+    <div class="panel-body" cg-busy="{promise:promise}">
+        <div bs-tabs bs-active-pane="vmManager.activeTab">
+            <div bs-pane data-title="异常数据检测" data-name="autoCheckExceptionTab">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-1">
+                            @*<span yl-month-button data-yearmonth="vmManager.yearMonth"></span>*@
+                            <button type="button" class="btn btn-primary" ng-click="vmManager.autoCheckExceptionData()">
+                                <i class="fa fa-comments-o"></i>
+                                自动检测
+                            </button>
+                        </div>
+                        <div class="col-md-7">
+                           
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <label>筛选条件</label>
+                                </div>
+                                <input class="form-control" ng-model="qryField"/>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-success pull-right">
+                                <i class="fa fa-file-excel-o"></i>
+                                导出
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="well" cg-busy="{promise:handlePromise}">
+                    <div class="table-responsive" style="max-height:450px;overflow-y:auto;">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr class="info">
+                                    <th>工号</th>
+                                    <th>姓名</th>
+                                    <th>部门</th>
+                                    <th>刷卡日期</th>
+                                    <th>刷卡时间</th>
+                                    <th>请假时数</th>
+                                    <th>请假时段</th>
+                                    <th>异常类型</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vmManager.dataItems|filter:qryField track by $index">
+                                    <td>{{item.WorkerId}}</td>
+                                    <td>{{item.WorkerName}}</td>
+                                    <td class="text-info">{{item.DepartmentText}}</td>
+                                    <td>{{item.AttendanceDate}}</td>
+                                    <td>{{item.SlotCardTime}}</td>
+                                    <td>{{item.LeaveHours}}</td>
+                                    <td>{{item.LeaveTimeRegion}}</td>
+
+                                    <td class="text-danger">{{item.SlotExceptionType}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div bs-pane data-title="异常数据处理" data-name="handleExceptionTab">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-primary" ng-click="vmManager.loadExceptionData()">
+                                <i class="fa fa-cloud-download"></i>
+                                载入异常数据
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <label>筛选条件</label>
+                                </div>
+                                <input class="form-control" ng-model="qryField" />
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-info" ng-click="operate.save()"><i class="fa fa-save"></i>保存</button>
+                        </div>
+                    </div>
+                </div>
+                <span ng-class="operate.result==true ? 'alert alert-success':'alert alert-danger'" ng-show="operate.msgDisplay">
+                    <i class="fa fa-info-circle"></i>
+                    {{operate.message}}
+                </span>
+                <div class="well" cg-busy="{promise:loadPromise}">
+                    <div class="table-responsive" style="max-height:450px;overflow-y:auto;">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr class="info">
+                                    <th>工号</th>
+                                    <th>姓名</th>
+                                    <th>部门</th>
+                                    <th>刷卡日期</th>
+                                    <th>刷卡时间</th>
+                                    <th>请假时数</th>
+                                    <th>请假时段</th>
+                                    <th>异常类型</th>
+                                    <th>异常备注</th>
+                                    <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vmManager.dbDataSet|filter:qryField track by $index">
+                                    <td>{{item.WorkerId}}</td>
+                                    <td>{{item.WorkerName}}</td>
+                                    <td class="text-info">{{item.DepartmentText}}</td>
+                                    <td>{{item.AttendanceDate}}</td>
+                                    <td>{{item.SlotCardTime}}</td>
+                                    <td>{{item.LeaveHours}}</td>
+                                    <td>{{item.LeaveTimeRegion}}</td>
+                                    <td>{{item.SlotExceptionType}}</td>
+                                    <td class="well well-sm"><h4>{{item.SlotExceptionMemo}}</h4></td>
+                                    <td class="well well-sm">
+                                        <a href="#" ng-click="operate.handleExceptionSlotData(item,'handleAskLeave')"><span class="text-info">请假</span> </a>|
+                                        <a href="#" ng-click="operate.handleExceptionSlotData(item,'handleLate')"><span class="text-primary">迟到</span> </a>
+                                        <br />
+                                        <a href="#" ng-click="operate.handleExceptionSlotData(item,'handleAbsent')"><span class="text-success">旷工</span> </a>|
+                                        <a href="#" ng-click="operate.handleExceptionSlotData(item,'handleForgetSlot')"><span class="text-danger">漏刷</span> </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+     
+    </div>
+</div>

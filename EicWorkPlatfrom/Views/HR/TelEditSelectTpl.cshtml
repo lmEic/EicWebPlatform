@@ -1,0 +1,53 @@
+﻿<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4>
+                    <i class="fa fa-bell-o"></i>
+                    {{title}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel">
+                    <form name="modalForm" role="form" class="form-horizontal" novalidate>
+                        <fieldset>
+                            <legend>
+                                工号：{{vm.WorkerId}}
+                                姓名：{{vm.WorkerName}}
+                            </legend>
+                        </fieldset>
+                        <div class="form-group">
+                            <label for="personPhone" class="col-md-2 control-label">手机号码</label>
+                            <div class="col-md-4">
+                                <input name="personPhone" class="form-control" ng-model="vm.PersonPhone" placeholder="输入格式：xxxx-xxxxxxxx" required />
+                                <div class="error-messages" ng-messages="modalForm.personPhone.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">手机号码不能为空</small>
+                                </div>
+                            </div>
+                            <label for="telPhone" class="col-md-2 control-label">联系电话</label>
+                            <div class="col-md-4">
+                                <input name="telPhone" class="form-control" ng-model="vm.TelPhone" placeholder="输入格式：xxx xxxx xxxx" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="familyPhone" class="col-md-2 control-label">家庭电话</label>
+                            <div class="col-md-4">
+                                <input name="familyPhone" class="form-control" ng-model="vm.FamilyPhone" placeholder="输入格式：xxxx-xxxxxxxx" />
+                            </div>
+
+                            <label for="memo" class="col-md-2 control-label">备注</label>
+                            <div class="col-md-4">
+                                <input name="memo" class="form-control" ng-model="vm.Memo" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
+                <button type="button" class="btn btn-primary" ng-click="save(modalForm.$valid)"><i class="fa fa-save"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>

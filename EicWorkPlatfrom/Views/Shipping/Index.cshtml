@@ -1,0 +1,303 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html ng-app="mesOptical.ShippingApp">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>出货排程管理</title>
+    <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap-theme.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/angular-busy/dist/angular-busy.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/angular-motion/dist/angular-motion.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap-additions/dist/bootstrap-additions.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/main.css")" type="text/css" rel="stylesheet" />
+    
+
+
+    <script src="@Url.Content("~/Scripts/jquery-2.1.4.js")"></script>
+    <script src="@Url.Content("~/Content/underscore/underscore-min.js")"></script>
+    <script src="@Url.Content("~/Scripts/angular.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/angular-route.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/angular-animate.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/angular-sanitize.min.js")"></script>
+    <script src="@Url.Content("~/Content/bootstrap/dist/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Content/angular-busy/dist/angular-busy.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/angular-strap/dist/angular-strap.min.js")"></script>
+    <script src="@Url.Content("~/Content/angular-strap/dist/angular-strap.tpl.min.js")"></script>
+
+
+    <script src="@Url.Content("~/Scripts/controller/shippingApp.js")"></script>
+
+    <style type="text/css">
+       
+    </style>
+</head>
+<body>
+    <div class="container-fluid" ng-controller="shippingCtrl">
+        <header class="row">
+            <div class="col-md-4">
+                <div class="bs-callout bs-callout-info">
+                    <h4><span class="glyphicon glyphicon-bishop">出货排程看板</span>
+                        <span ng-click="shippingBoard.changeShippingBoardSwitch()" ng-class="{true:'btn btn-xs btn-default pull-right',false:'btn btn-xs btn-warning pull-right'}[shippingBoard.shippingBoardSwitch=='on']">出货日期</span>
+                        <span ng-click="shippingBoard.changeShippingBoardSwitch()" ng-class="{true:'btn btn-xs btn-default pull-right',false:'btn btn-xs btn-warning pull-right'}[shippingBoard.shippingBoardSwitch=='off']">产品类别</span>
+                    </h4>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="bs-callout bs-callout-warning">
+                    <h4>明细看板</h4>
+                </div>
+            </div>
+        </header>
+        <main class="row" ng-switch="shippingBoard.shippingBoardSwitch">
+            <div ng-switch-when="on">
+                <div class="col-md-4 panel-group">
+                    <div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>产品类别：</span>
+                                <span class="label label-info" ng-cloak>{{shippingBoard.productCategories.length}}</span>
+                            </div>
+                            <div cg-busy="{promise:shippingDataPromise}">
+                                <ul class="nav nav-pills info">
+                                    <li ng-repeat="item in shippingBoard.productCategories" ng-class="{true:'label label-info',false:''}[item.category==shippingBoard.selectedProductCategory]"
+                                        ng-click="shippingBoard.showDataByCategory(item.category)">
+                                        <a><h5>{{item.category}}</h5><span class="text-danger">[{{item.count}}]</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default" ng-show="shippingBoard.productTypeDatas.length>0" ng-cloak>
+                            <div class="panel-heading">
+                                <span>产品型号：</span>
+                                <strong class="label label-info">{{shippingBoard.productTypeDatas.length}}</strong>
+                                <div class="input-group" style="margin-top:5px;">
+                                    <input type="search" class="form-control" ng-model="productTypeQry" placeholder="输入产品型号进行快速查询" />
+                                    <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+                                </div>
+
+                            </div>
+                            <div class="panel-body">
+                                <ul class="nav nav-pills info">
+                                    <li ng-repeat="item in shippingBoard.productTypeDatas|filter:productTypeQry" ng-class="{true:'label label-success',false:''}[item.productType==shippingBoard.selectedProductType]"
+                                        ng-click="shippingBoard.showShippingDataBy(item.productType)">
+                                        <a>
+                                            <h5 class="text-left">{{item.productType}}</h5><span class="text-danger">[{{item.count}}]</span>
+                                            |<span class="btn btn-xs btn-default" ng-click="wipDataBoard.showWipDetailsDataBy(item.productType)">wip</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 panel-group">
+                    <div ng-show="shippingBoard.productTypeDetailDatas.length>0" ng-cloak>
+                        <div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <span>出货年份：</span>
+                                            <strong class="label label-info">{{shippingBoard.sumerizeDataByYear.length}}</strong>
+                                        </div>
+                                        <div class="panel-body">
+                                            <ul class="nav nav-pills info">
+                                                <li ng-repeat="item in shippingBoard.sumerizeDataByYear" ng-class="{true:'label label-success',false:''}[item.shippingYear==shippingBoard.selectedYear]"
+                                                    ng-click="shippingBoard.showShippingDataByYear(item.shippingYear)">
+                                                    <a><h5>{{item.shippingYear}}年</h5><span class="text-danger">[{{item.count}}]</span></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel panel-default" ng-show="shippingBoard.sumerizeDataByMonth.length>0">
+                                        <div class="panel-heading">
+                                            <span>出货月份：</span>
+                                            <strong class="label label-info" ng-cloak>{{shippingBoard.sumerizeDataByMonth.length}}</strong>
+                                        </div>
+                                        <div class="panel-body">
+                                            <ul class="nav nav-pills info">
+                                                <li ng-repeat="item in shippingBoard.sumerizeDataByMonth" ng-class="{true:'label label-success',false:''}[item.shippingMonth==shippingBoard.selectedMonth]"
+                                                    ng-click="shippingBoard.showShippingDataByMonth(item.year,item.month)">
+                                                    <a><h5>{{item.shippingMonth}}月</h5><span class="text-danger">[{{item.count}}]</span></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="shippingDataBoard">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span>出货排程明细</span>
+                                    <strong class="label label-info" ng-cloak>{{shippingBoard.productTypeDetailDatas.length}}</strong>
+                                </div>
+                                <div class="panel-body table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr class="info">
+                                                <td>产品型号</td>
+                                                <td>产品类别</td>
+                                                <td>出货日期</td>
+                                                <td>出货数量</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="row in shippingBoard.productTypeDetailDatas">
+                                                <td>{{row.ProductType}}</td>
+                                                <td>{{row.ProductCatalog}}</td>
+                                                <td>{{row.ShippingDate}}</td>
+                                                <td>{{row.ShippingCount}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-switch-when="off">
+                <div class="col-md-4 panel-group">
+                    <div ng-cloak>
+                        <div class="panel panel-default">
+                            <div class="panel-heading panel-title">
+                                <span>选择出货日期</span>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-addon"><span class="text-danger glyphicon glyphicon-calendar"></span></div>
+                                <input class="form-control" ng-model="ShippingDate" type="date" ng-change="shippingDateBoard.showShippingDataByDate(ShippingDate)" />
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading panel-title">
+                                <span>智能出货日期列表</span>
+                                <span class="label label-info">{{shippingDateBoard.ShippingDatasGroupByMonth.length}}</span>
+                            </div>
+                            <div class="panel-body">
+                                <ul class="nav nav-pills info">
+                                    <li ng-repeat="item in shippingDateBoard.ShippingDatasGroupByMonth" ng-class="{true:'label label-success',false:''}[item.key==shippingDateBoard.selectedYearMonth]"
+                                        ng-click="shippingDateBoard.showShippingDetailsByYearMonth(item.key)">
+                                        <a><h4>{{item.key}}</h4><span class="text-danger">[{{item.count}}]</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 panel-group">
+                    <div ng-show="shippingDateBoard.productTypeDetailDatas.length>0" ng-cloak>
+                        <div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span>产品类别：</span>
+                                    <span class="label label-info" ng-cloak>{{shippingDateBoard.productCategories.length}}</span>
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="nav nav-pills info">
+                                        <li ng-repeat="item in shippingDateBoard.productCategories" ng-class="{true:'label label-success',false:''}[item.category==shippingDateBoard.selectedProductCategory]"
+                                            ng-click="shippingDateBoard.showShippingDetailsByCategory(item.category)">
+                                            <a><h4>{{item.category}}</h4><span class="text-danger">[{{item.count}}]</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span>出货排程明细</span>
+                                    <span class="label label-info">{{shippingDateBoard.productTypeDetailDatas.length}}</span>
+                                </div>
+                                <div class="panel-body table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr class="info">
+                                                <td>产品型号</td>
+                                                <td>产品类别</td>
+                                                <td>出货日期</td>
+                                                <td>出货数量</td>
+                                                <td class="text-center"><span class="glyphicon glyphicon-eye-open"></span></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="row in shippingDateBoard.productTypeDetailDatas">
+                                                <td>{{row.ProductType}}</td>
+                                                <td>{{row.ProductCatalog}}</td>
+                                                <td>{{row.ShippingDate}} </td>
+                                                <td>{{row.ShippingCount}}</td>
+                                                <td class="text-center">
+                                                    <a>
+                                                        <span class="btn btn-xs btn-default"
+                                                              ng-click="wipDataBoard.showWipDetailsDataBy(row.ProductType,'right')">WIP</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="shippingDateBoard.shippingDataDetails.length>0" ng-cloak>
+                        <div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span>出货排程明细</span>
+                                    <span class="label label-info">{{shippingDateBoard.shippingDataDetails.length}}</span>
+                                </div>
+                                <div class="panel-body table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <colgroup>
+                                            <col style="width:20%"/>
+                                            <col style="width:78%" />
+                                        </colgroup>
+                                        <thead>
+                                            <tr class="info">
+                                                <td class="text-center">出货日期</td>
+                                                <td class="text-center">出货型号</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="row in shippingDateBoard.shippingDataDetails">
+                                                <td>
+                                                    <div class="well well-sm">
+                                                        日期：
+                                                        <strong>
+                                                            <span>{{row.shippingDate}}</span>
+                                                        </strong>
+                                                        <hr />
+                                                        总量：<span class="label label-info">{{row.totalCount}}</span>
+                                                        <hr />
+                                                        个数：<span class="label label-default">{{row.productTypeList.length}}</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <ul class="nav nav-pills info">
+                                                        <li ng-repeat="item in row.productTypeList">
+                                                            <a><h5>{{item.productType}}</h5><span class="text-danger">[{{item.shippingCount}}]</span></a>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+﻿<div class="panel panel-default" ng-controller="registUserCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>用户注册</h6>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <form name="formRegister" class="form-horizontal" ng-submit="operate.addUser(formRegister.$valid)" novalidate role="form">
+                    <div class="form-group">
+                        <label for="userId" class="col-md-3 control-label">用户账号</label>
+                        <div class="col-md-5">
+                            <input type="text" ng-model="vm.userId" name="userId" placeholder="输入工号"
+                                   class="form-control" required data-ensure-user-unique />
+                            <div class="error-messages" ng-messages="formRegister.userId.$error" ng-if="formRegister.userId.$touched" ng-message-multiple>
+
+                                <small ng-message="checkingAvailability">检测该用户信息...</small>
+                                <small ng-message="usernameAvailability">该用户已经注册过了</small>
+                            </div>
+                            <div class="error-messages" ng-messages="formRegister.userId.$error" ng-if="operate.showValidation">
+                                <small ng-message="required">账号不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="col-md-3 control-label">用户密码</label>
+                        <div class="col-md-5">
+                            <input type="password" name="password" ng-model="vm.password" placeholder="输入密码"
+                                   class="form-control" required />
+                            <div class="error-messages" ng-messages="formRegister.password.$error" ng-if="operate.showValidation">
+                                <small ng-message="required">密码不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-5 col-md-offset-3">
+                            <div yl-operatemsg-board></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-5 col-md-offset-3">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                            <button type="button" class="btn btn-default" ng-click="operate.cancel()">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

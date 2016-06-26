@@ -1,0 +1,27 @@
+﻿<div class="popover" tabindex="-1" style="min-width:300px;max-width:310px;min-height:420px;max-height:430px">
+    <div class="arrow"></div>
+    <h3 class="popover-title">
+        <i class="fa fa-sitemap"></i>{{title}}
+    </h3>
+    <div class="popover-content">
+        <h5 class="page-header">
+            <span>岗位性质</span>
+            <button type="button" class="btn btn-sm btn-default" ng-model="vmManager.postNature"
+                    data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择岗位性质"
+                    data-bs-options="pn.name as pn.text for pn in vmManager.postNatures" data-bs-select>
+                选择岗位性质 <span class="caret"></span>
+            </button>
+        </h5>
+        <div>
+            <h5 class="page-header">
+                <span>岗位信息</span>
+            </h5>  
+            <ul data-yl-tree cg-busy="{promise:treeLoadPromise}"
+                data-tree-dataset="ztree.configDataNodes"
+                data-start-load="ztree.startLoad"
+                ng-model="ztree.treeNode"
+                data-binding-nodevm="ztree.bindNodeToVm()"
+                id="{{ztree.treeId}}" class="ztree"></ul>
+        </div>
+    </div>
+</div>

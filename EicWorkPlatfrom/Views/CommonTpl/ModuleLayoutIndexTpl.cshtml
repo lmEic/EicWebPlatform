@@ -1,0 +1,55 @@
+﻿<header role="banner">
+    <nav role="navigation" class="navbar navbar-static-top navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="@Url.Action("Index","Home")">
+                    <span>
+                        <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司"
+                             src="@Url.Content("~/Content/login/lmlogo.png")" />企业信息化平台(V1.0)
+                    </span>
+                </a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li ng-repeat="navMenu in navLayout.navList track by $index" ng-click="navLayout.navTo(navMenu)">
+                        <a href="#">{{navMenu.Item.ModuleText}}(<span class="{{navMenu.Item.Icon}}"></span>)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<main class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="list-group">
+                <li class="list-group-item active">
+                    <span class="fa fa-list-ul">导航菜单</span>
+                </li>
+                <li class="list-group-item" ng-if="navLayout.navItems.length>0">
+                    <ol class="rounded-list">
+                        <li ng-repeat="navItem in navLayout.navItems track by $index">
+                            <a><span class="text-primary">{{navItem.Item.ModuleText}}</span> </a>
+                            <ol>
+                                <li ng-repeat="subItem in navItem.Childrens track by $index" ng-click="navLayout.stateTo(subItem)">
+                                    <a data-ui-sref-active="active" style="cursor:pointer">
+                                    <span>{{subItem.ModuleText}}</span>
+                                    <i class="{{subItem.Icon}}"></i></a>
+                                </li>
+                            </ol>
+                        </li>
+
+                    </ol>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-10" data-ui-view>
+            
+        </div>
+    </div>
+</main>

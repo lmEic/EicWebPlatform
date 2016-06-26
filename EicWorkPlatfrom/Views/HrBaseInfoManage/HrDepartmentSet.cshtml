@@ -1,0 +1,105 @@
+﻿<div class="row" ng-controller="DepartmentSetCtrl">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h6 class="panel-title"><i class="glyphicon glyphicon-apple"></i>部门设置</h6>
+            </div>
+            <div class="panel-body" style="max-height:515px;overflow:auto">
+                <ul data-yl-tree cg-busy="{promise:promise}"
+                    data-tree-dataset="ztree.configDataNodes"
+                    data-start-load="ztree.startLoad"
+                    ng-model="ztree.treeNode"
+                    data-binding-nodevm="ztree.bindNodeToVm()"
+                    id="{{ztree.treeId}}" class="ztree"></ul>
+            </div>
+            <div class="panel-footer">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h6 class="panel-title"><i class="glyphicon glyphicon-pencil">部门编辑</i></h6>
+            </div>
+            <div class="panel-body">
+                <form role="form" name="departmentSetForm" novalidate class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="parentDataNodeText" class="col-md-2 control-label">上级部门</label>
+                            <div class="col-md-4">
+                                <input name="parentDataNodeText" class="form-control" ng-model="vm.ParentDataNodeText" required />
+                                <div class="error-messages" ng-messages="departmentSetForm.parentDataNodeText.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">上级部门不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dataNodeName" class="col-md-2 control-label">部门编码</label>
+                            <div class="col-md-4">
+                                <input name="dataNodeName" ng-model="vm.DataNodeName" class="form-control" required />
+                                <div class="error-messages" ng-messages="departmentSetForm.dataNodeName.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">部门编码不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="dataNodeText" class="col-md-2 control-label">部门名称</label>
+                            <div class="col-md-4">
+                                <input name="dataNodeText" ng-model="vm.DataNodeText" class="form-control" required />
+                                <div class="error-messages" ng-messages="departmentSetForm.dataNodeText.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">部门名称不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="displayOrder" class="col-md-2 control-label">显示顺序</label>
+                            <div class="col-md-4">
+                                <input name="displayOrder" type="number" ng-model="vm.DisplayOrder" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="memo" class="col-md-2 control-label">备注</label>
+                            <div class="col-md-4">
+                                <textarea rows="3" name="memo" ng-model="vm.Memo" class="form-control" />
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group" ng-show="operate.msgDisplay">
+                            <div class="col-md-10 col-md-offset-2">
+                                <div ng-class="operate.result==true ? 'alert alert-success':'alert alert-danger'">
+                                    <span><i class="fa fa-info-circle"></i> {{operate.message}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10 col-md-offset-2">
+                                <div class="btn-group" style="margin-top:30px;">
+                                    <button type="button" class="btn btn-sm btn-default" ng-click="operate.addChildNode(departmentSetForm.$valid)">
+                                        <i class="glyphicon glyphicon-plus-sign"></i> 新增子部门
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-info" ng-click="operate.addNode(departmentSetForm.$valid)">
+                                        <i class="glyphicon glyphicon-plus-sign"></i>新增同级部门
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="operate.updateNode(departmentSetForm.$valid)">
+                                        <i class="glyphicon glyphicon-edit"></i>修改部门
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger" ng-click="operate.delNode()">
+                                        <i class="glyphicon glyphicon-remove-circle"></i>删除部门
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-default" ng-click="operate.refresh()"><span class="fa fa-repeat">取消</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </form>
+            </div>
+            <div class="panel-footer">
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,321 @@
+﻿<div class="row" ng-controller="purchaseQueryCtrl">
+    <div ng-include="'@Url.Action("MenuNavTpl", "Account")'"></div>
+
+    <script type="text/ng-template" id="RequisitionQueryTemplate">
+        <div class="panel panel-info" ng-controller="reqQueryCtrl">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4><span><i class="glyphicon glyphicon-search"></i>请购单信息查询</span></h4>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="pull-right">
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="bs-callout bs-callout-info">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <span>部门：</span><a href="#"><span class="text-primary">EIC</span></a>
+                        </div>
+                        <span style="margin-right:25px;"></span>
+                        <div class="form-group">
+                            <span>日期区间：</span>
+                            <span class="text-danger">起</span>
+                            <input type="date" placeholder="起始日期" ng-model="vm.dateFrom" class="form-control" data-format-date/>
+                            <span class="text-danger">止</span>
+                            <input type="date" placeholder="截止日期" ng-model="vm.dateTo" class="form-control" data-format-date/>
+                        </div>
+                        <button type="button" class="btn btn-primary" 
+                                ng-click="operate.getReqHeaderDatas()">
+                        <span class="fa fa-search">查询</span></button>
+                    </form>
+                </div>
+                <div>
+                    <table class="table table-striped table-hover table-responsive">
+                        <thead>
+                            <tr class="info">
+                                <th>请购单号</th>
+                                <th>请购日期</th>
+                                <th>请购部门</th>
+                                <th>数量合计</th>
+                                <th>单据日期</th>
+                                <th>审核人</th>
+                                <th>请购人员</th>
+                                <th>备注</th>
+                            </tr>
+                        </thead>
+                        <tbody cg-busy="{promise:promise}">
+                            <tr ng-repeat="item in req.reqHeaders" ng-click="operate.viewBodyDatas(item)"
+                                ng-class="{success:item==operate.selectedRow}">
+                                <td>{{item.BuyingID}}</td>
+                                <td>{{item.BuyingDate}}</td>
+                                <td>{{item.BuyFromDepartment}}</td>
+                                <td>{{item.TotalCount}}</td>
+
+                                <td>{{item.RequisitionDate}}</td>
+                                <td>{{item.Auditor}}</td>
+                                <td>{{item.BuyingPerson}}</td>
+                                <td>{{item.Memo}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div data-yl-pagination data-datasource="req.datasource" data-dataset="req.reqHeaders">
+
+                    </div>
+                </div>
+               
+                <div ng-show="req.reqBodys.length>0">
+                    <table class="table table-striped table-hover table-responsive">
+                        <thead>
+                            <tr class="info">
+                                <th>请购单号</th>
+                                <th>品号</th>
+                                <th>品名</th>
+                                <th>规格</th>
+                                <th>数量</th>
+                                <th>单价</th>
+                                <th>金额</th>
+                                <th>供应商</th>
+                                <th>仓库</th>
+                                <th>备注</th>
+                            </tr>
+                        </thead>
+                        <tbody cg-busy="{promise:reqBodyPromise}">
+                            <tr ng-repeat="item in req.reqBodys">
+                                <td>{{item.BuyingID}}</td>
+                                <td>{{item.ProductID}}</td>
+                                <td>{{item.ProductName}}</td>
+                                <td>{{item.ProductSpecify}}</td>
+
+                                <td>{{item.RequisitionCount}}</td>
+                                <td>{{item.PurchaseUnit}}</td>
+                                <td>{{item.PurchaseAmmount}}</td>
+
+                                <td>{{item.Warehouse}}</td>
+
+                                <td>{{item.Memo}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button type="button" class="btn btn-info" ng-click="operate.showReqBodyDatasBoard()">
+                    <span class="fa fa-eye-slash">数据明细</span>
+                </button>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="PurchaseQueryTemplate">
+        <div class="panel panel-info" ng-controller="purQueryCtrl">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4><span><i class="glyphicon glyphicon-search"></i>采购单信息查询</span></h4>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="pull-right">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="bs-callout bs-callout-info">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <span>部门：</span><a href="#"><span class="text-primary">EIC</span></a>
+                        </div>
+                        <span style="margin-right:25px;"></span>
+                        <div class="form-group">
+                            <span>日期区间：</span>
+                            <span class="text-danger">起</span>
+                            <input type="date" placeholder="起始日期" ng-model="vm.dateFrom" class="form-control" data-format-date />
+                            <span class="text-danger">止</span>
+                            <input type="date" placeholder="截止日期" ng-model="vm.dateTo" class="form-control" data-format-date />
+                        </div>
+                        <button type="button" class="btn btn-primary"
+                                ng-click="operate.getPurHeaderDatas()">
+                            <span class="fa fa-search">查询</span>
+                        </button>
+                    </form>
+                </div>
+                <div>
+                    <table class="table table-striped table-hover table-responsive">
+                        <thead>
+                            <tr class="info">
+                                <th>采购单号</th>
+                                <th>采购日期</th>
+                                <th>采购金额</th>
+                                <th>采购人员</th>
+                                <th>供应商</th>
+                            </tr>
+                        </thead>
+                        <tbody cg-busy="{promise:promise}">
+                            <tr ng-repeat="item in pur.purHeaders" ng-click="operate.viewBodyDatas(item)"
+                                ng-class="{success:item==operate.selectedRow}">
+                                <td>{{item.PurchaseID}}</td>
+                                <td>{{item.PurchaseDate}}</td>
+                                <td>{{item.PurchaseAmount}}</td>
+                                <td>{{item.PurchasePerson}}</td>
+                                <td>{{item.SupplierID}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div data-yl-pagination data-datasource="pur.datasource" data-dataset="pur.purHeaders">
+
+                    </div>
+                </div>
+
+                <div ng-show="pur.purBodys.length>0">
+                    <table class="table table-striped table-hover table-responsive">
+                        <thead>
+                            <tr class="info">
+                                <th>采购单号</th>
+                                <th>品号</th>
+                                <th>品名</th>
+                                <th>规格</th>
+                                <th>数量</th>
+                                <th>单价</th>
+                                <th>金额</th>
+                                @*<th>供应商</th>*@
+                                <th>仓库</th>
+                                @*<th>交货信息</th>*@
+                            </tr>
+                        </thead>
+                        <tbody cg-busy="{promise:purBodyPromise}">
+                            <tr ng-repeat="item in pur.purBodys">
+                                <td>{{item.PurchaseID}}</td>
+                                <td>{{item.ProductID}}</td>
+                                <td>{{item.ProductName}}</td>
+                                <td>{{item.ProductSpecify}}</td>
+
+                                <td>{{item.PurchaseCount}}</td>
+                                <td>{{item.PurchaseUnit}}</td>
+                                <td>{{item.PurchaseAmmount}}</td>
+
+                                @*<td>{{item.Warehouse}}</td>*@
+
+                                @*<td></td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button type="button" class="btn btn-info" ng-click="operate.showPurBodyDatasBoard()">
+                    <span class="fa fa-eye-slash">数据明细</span>
+                </button>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="StockQueryTemplate">
+        <div class="panel panel-info" ng-controller="stoQueryCtrl">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4><span><i class="glyphicon glyphicon-search"></i>进货单信息查询</span></h4>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="pull-right">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="bs-callout bs-callout-info">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <span>部门：</span><a href="#"><span class="text-primary">EIC</span></a>
+                        </div>
+                        <span style="margin-right:25px;"></span>
+                        <div class="form-group">
+                            <span>日期区间：</span>
+                            <span class="text-danger">起</span>
+                            <input type="date" placeholder="起始日期" ng-model="vm.dateFrom" class="form-control" data-format-date />
+                            <span class="text-danger">止</span>
+                            <input type="date" placeholder="截止日期" ng-model="vm.dateTo" class="form-control" data-format-date />
+                        </div>
+                        <button type="button" class="btn btn-primary"
+                                ng-click="operate.getStoHeaderDatas()">
+                            <span class="fa fa-search">查询</span>
+                        </button>
+                    </form>
+                </div>
+                <div>
+                    <table class="table table-striped table-hover table-responsive">
+                        <thead>
+                            <tr class="info">
+                                <th>进货单号</th>
+                                <th>进货日期</th>
+                                <th>进货金额</th>
+                                <th>数量合计</th>
+                                <th>进货费用</th>
+                                <th>供应商</th>
+                            </tr>
+                        </thead>
+                        <tbody cg-busy="{promise:promise}">
+                            <tr ng-repeat="item in sto.stoHeaders" ng-click="operate.viewBodyDatas(item)"
+                                ng-class="{success:item==operate.selectedRow}">
+                                <td>{{item.StockID}}</td>
+                                <td>{{item.StockDate}}</td>
+                                <td>{{item.StockAmount}}</td>
+                                <td>{{item.TotalCount}}</td>
+                                <td>{{item.StockCost}}</td>
+                                <td>{{item.SupplierFullName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div data-yl-pagination data-datasource="sto.datasource" data-dataset="sto.stoHeaders">
+
+                    </div>
+                </div>
+                <div ng-show="sto.stoBodys.length>0">
+                    <table class="table table-striped table-hover table-responsive">
+                        <thead>
+                            <tr class="info">
+                                <th>进货单号</th>
+                                <th>验收日期</th>
+                                <th>品号</th>
+                                <th>品名</th>
+                                <th>规格</th>
+                                <th>验收数量</th>
+                                <th>进货单价</th>
+                                <th>进货金额</th>
+                                <th>仓库</th>
+                                <th>库存数量</th>
+                            </tr>
+                        </thead>
+                        <tbody cg-busy="{promise:stoBodyPromise}">
+                            <tr ng-repeat="item in sto.stoBodys">
+                                <td>{{item.StockID}}</td>
+                                <td>{{item.CheckDate}}</td>
+                                <td>{{item.ProductID}}</td>
+                                <td>{{item.ProductName}}</td>
+                                <td>{{item.ProductSpecify}}</td>
+
+                                <td>{{item.CheckCount}}</td>
+                                <td>{{item.StockUnit}}</td>
+                                <td>{{item.StockAmount}}</td>
+                                <td>{{item.Warehouse}}</td>
+                                <td>{{InventoryCount}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button type="button" class="btn btn-info" ng-click="operate.showStoBodyDatasBoard()">
+                    <span class="fa fa-eye-slash">数据明细</span>
+                </button>
+            </div>
+        </div>
+    </script>
+</div>

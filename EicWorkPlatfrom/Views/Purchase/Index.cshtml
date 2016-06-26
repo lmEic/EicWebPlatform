@@ -1,0 +1,71 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html ng-app="Erp.purchaseApp">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>采购管理</title>
+    <link rel="shortcut icon" href="@Url.Content("~/Content/login/lmlogo.png")" />
+
+    <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/angular-motion/dist/angular-motion.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap-additions/dist/bootstrap-additions.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/font-awesome/css/font-awesome.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/angular-busy/dist/angular-busy.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/main.css")" type="text/css" rel="stylesheet" />
+</head>
+<body>
+    <header role="banner">
+        <nav role="navigation" class="navbar navbar-static-top navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="@Url.Action("Index","Home")">
+                        <span>
+                            <img alt="lightmaster" src="@Url.Content("~/Content/login/lmlogo.png")" />光圣科技企业信息化平台
+                        </span>
+                    </a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a data-ui-sref-active="active" data-ui-sref="purchaseQuery">采购信息查询</a></li>
+                        @*<li><a data-ui-sref-active="active" data-ui-sref="roleManage">角色管理</a></li>
+                        <li><a data-ui-sref-active="active" data-ui-sref="moduleManage">模块管理</a></li>
+                        <li><a data-ui-sref-active="active" data-ui-sref="assemblyManage">程序集管理</a></li>
+                        <li><a data-ui-sref-active="active" data-ui-sref="assignPower">权限分配</a></li>*@
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container" data-ui-view>
+
+    </div>
+
+    <script src="@Url.Content("~/Scripts/jquery-2.1.4.js")"></script>
+    <script src="@Url.Content("~/Content/underscore/underscore-min.js")"></script>
+    <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
+    <script src="@Url.Content("~/Content/bootstrap/dist/js/bootstrap.min.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/angular.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/angular-animate.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/angular-messages.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/angular-sanitize.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/angular-ui-router.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/angular-busy/dist/angular-busy.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/angular-strap/dist/angular-strap.min.js")"></script>
+    <script src="@Url.Content("~/Content/angular-strap/dist/angular-strap.tpl.min.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
+    <script src="@Url.Content("~/Scripts/controller/purchaseApp.js")"></script>
+</body>
+</html>

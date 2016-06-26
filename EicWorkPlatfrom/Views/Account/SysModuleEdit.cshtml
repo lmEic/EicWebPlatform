@@ -1,0 +1,165 @@
+﻿<div class="row" ng-controller="moduleNavManageCtrl">
+    <div class="col-md-3">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h6 class="panel-title"><i class="glyphicon glyphicon-apple"></i>模块导航</h6>
+            </div>
+            <div class="panel-body" style="max-height:515px;overflow:auto">
+                <ul data-yl-tree cg-busy="{promise:promise}"
+                    data-tree-dataset="ztree.navMenus"
+                    data-start-load="ztree.startLoad"
+                    ng-model="ztree.treeNode"
+                    data-binding-nodevm="ztree.bindNodeToVm()"
+                    id="{{ztree.treeId}}" class="ztree"></ul>
+            </div>
+            <div class="panel-footer">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h6 class="panel-title"><i class="glyphicon glyphicon-pencil">模块导航编辑</i></h6>
+            </div>
+            <div class="panel-body">
+                <form role="form" name="moduleNavForm" novalidate class="form-horizontal">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="moduleName" class="col-md-2 control-label">节点编码</label>
+                            <div class="col-md-3">
+                                <input name="moduleName" ng-model="vm.ModuleName" class="form-control" required />
+                                <div class="error-messages" ng-messages="moduleNavForm.moduleName.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">节点编码不能为空</small>
+                                </div>
+                            </div>
+                            <label for="moduleText" class="col-md-2 control-label">节点名称</label>
+                            <div class="col-md-3">
+                                <input name="moduleText" ng-model="vm.ModuleText" class="form-control" required />
+                                <div class="error-messages" ng-messages="moduleNavForm.moduleText.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">节点名称不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="parentModuleName" class="col-md-2 control-label">父节点</label>
+                            <div class="col-md-3">
+                                <input name="parentModuleName" class="form-control" ng-model="vm.ParentModuleName" required />
+                                <div class="error-messages" ng-messages="moduleNavForm.parentModuleName.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">父节点不能为空</small>
+                                </div>
+                            </div>
+                            <label for="atLevel" class="col-md-2 control-label">所属层级</label>
+                            <div class="col-md-3">
+                                <input name="atLevel" ng-model="vm.AtLevel" class="form-control" type="number" required />
+                                <div class="error-messages" ng-messages="moduleNavForm.atLevel.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">所属层级不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ctrlName" class="col-md-2 control-label">控制器编码</label>
+                            <div class="col-md-3">
+                                <input name="ctrlName" ng-model="vm.CtrlName" class="form-control" required />
+                                <div class="error-messages" ng-messages="moduleNavForm.ctrlName.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">控制器编码不能为空</small>
+                                </div>
+                            </div>
+                            <label for="moduleType" class="col-md-2 control-label">节点类型</label>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-info" ng-model="vm.ModuleType"
+                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择节点类型"
+                                        data-bs-options="ntype.name as ntype.text for ntype in operate.nodeTypes" data-bs-select>
+                                    选择节点类型 <span class="caret"></span>
+                                </button>
+                                <input name="moduleType" ng-model="vm.ModuleType" class="form-control" ng-show="false" required />
+                                <div class="error-messages" ng-messages="moduleNavForm.moduleType.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">节点类型不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ctrlName" class="col-md-2 control-label">操作编码</label>
+                            <div class="col-md-3">
+                                <input name="actionName" ng-model="vm.ActionName" class="form-control" />
+                                <div class="error-messages" ng-messages="moduleNavForm.action.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">操作编码不能为空</small>
+                                </div>
+                            </div>
+
+                            <label for="clientMode" class="col-md-2 control-label">UI类型</label>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-info" ng-model="vm.ClientMode"
+                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择UI类型"
+                                        data-bs-options="uitype.name as uitype.text for uitype in operate.UiTypes" data-bs-select>
+                                    选择UI类型 <span class="caret"></span>
+                                </button>
+                                <input name="clientMode" ng-model="vm.ClientMode" class="form-control" ng-show="false" required />
+                                <div class="error-messages" ng-messages="moduleNavForm.clientMode.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">UI类型不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="uiSerf" class="col-md-2 control-label">超链接键值</label>
+                            <div class="col-md-3">
+                                <input name="uiSerf" ng-model="vm.UiSerf" class="form-control" />
+                            </div>
+                            <label for="templateID" class="col-md-2 control-label">模板键值</label>
+                            <div class="col-md-3">
+                                <input name="templateID" ng-model="vm.TemplateID" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="icon" class="col-md-2 control-label">导航图标</label>
+                            <div class="col-md-3">
+                                <input name="icon" ng-model="vm.Icon" class="form-control" />
+                            </div>
+                            <label for="displayOrder" class="col-md-2 control-label">显示顺序</label>
+                            <div class="col-md-3">
+                                <input name="displayOrder" type="number" ng-model="vm.DisplayOrder" class="form-control" />
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-md-10 col-md-offset-2" ng-show="operate.msgDisplay">
+                                <div ng-class="operate.result==true ? 'alert alert-success':'alert alert-danger'">
+                                    <span>{{operate.message}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10 col-md-offset-2">
+                                <div class="btn-group" style="margin-top:30px;">
+                                    <button type="button" class="btn btn-sm btn-default" ng-click="operate.addChildNode(moduleNavForm.$valid)">
+                                        <i class="glyphicon glyphicon-plus-sign"></i> 新增子节点
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-info" ng-click="operate.addNode(moduleNavForm.$valid)">
+                                        <i class="glyphicon glyphicon-plus-sign"></i>新增兄弟节点
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-primary" ng-click="operate.updateNode(moduleNavForm.$valid)">
+                                        <i class="glyphicon glyphicon-edit"></i>修改节点
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger" ng-click="operate.delNode()">
+                                        <i class="glyphicon glyphicon-remove-circle"></i>删除节点
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-default" ng-click="operate.cancel()"><span class="fa fa-repeat">取消</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                 
+                </form>
+            </div>
+            <div class="panel-footer">
+               
+            </div>
+        </div>
+    </div>
+</div>

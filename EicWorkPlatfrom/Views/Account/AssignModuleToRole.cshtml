@@ -1,0 +1,82 @@
+﻿<div class="row" ng-controller="assignUserPowerCtrl">
+    <div class="col-md-3">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h6 class="panel-title"><i class="glyphicon glyphicon-apple"></i>模块导航</h6>
+            </div>
+            <div class="panel-body" style="max-height:515px;overflow:auto">
+                <ul data-yl-tree cg-busy="{promise:promise}"
+                    data-tree-dataset="ztree.navMenus"
+                    data-start-load="ztree.startLoad"
+                    ng-model="ztree.treeNode"
+                    data-binding-nodevm="ztree.bindNodeToVm()"
+                    id="{{ztree.treeId}}" class="ztree"></ul>
+            </div>
+            <div class="panel-footer">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h6 class="panel-title"><i class="glyphicon glyphicon-pencil"></i>分配权限</h6>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <table class="table table-hover table-condensed table-bordered table-responsive" cg-busy="{promise:rolePromise}">
+                            <thead>
+                                <tr class="warning">
+                                    <th>角色名称</th>
+                                    <th>选择</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="role in roleInfo.roles" ng-hide="roleInfo.roles.length==0">
+                                    <td>{{role.roleName}}</td>
+                                    <td align="center">
+                                        <input type="checkbox" ng-model="role.isSelect" ng-change="roleInfo.checkChange(role)" class="checkbox" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-8">
+                        <table class="table table-hover table-condensed table-bordered table-responsive">
+                            <thead>
+                                <tr class="info">
+                                    <th>
+                                        <span class="pull-left">{{vm.ModuleText}}</span>
+                                        <span class="btn btn-xs btn-primary pull-right" ng-click="operate.saveDatas()">
+                                            <i class="fa fa-save"></i>保存数据
+                                        </span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="rm in roleInfo.assignRoles" ng-hide="roleInfo.assignRoles.length==0">
+                                    <td>
+                                        <ul class="nav nav-pills info">
+                                            <li ng-repeat="role in rm.roles">
+                                                <span class="label label-info">
+                                                    {{role.roleName}}
+                                                    <span class="btn btn-xs btn-danger" ng-click="roleInfo.removeRoleFromDataList(role)">
+                                                        <i class="fa fa-remove"></i>
+                                                    </span>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+
+            </div>
+        </div>
+    </div>
+</div>

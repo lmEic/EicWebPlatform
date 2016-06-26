@@ -1,0 +1,89 @@
+﻿<div class="panel panel-primary" ng-controller="arTelChangeCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>联系方式管理</h6>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <label>作业工号</label>
+                                </div>
+                                <input type="text" class="form-control" ng-model="WorkerId" ng-keypress="vmManager.addWorkerId($event)" placeholder="输入作业工号后请按下回车键" />
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-info" ng-click="operate.search()">
+                                        <i class="fa fa-search"></i>
+                                        载入数据
+                                        <span data-title="点击查询数据 从服务器端查询 录入所有工号人员部门信息" data-bs-tooltip>
+                                            <i class="fa fa-info-circle"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="well">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr class="info">
+                                    <th>工号</th>
+                                    <th>姓名</th>
+                                    <th>联系方式</th>
+                                    <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                    <th class="text-center text-warning">
+                                        <div data-filter-field="filterField" data-yl-operatesign-filterbutton></div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody cy-busy="{promise:workerPromise}">
+                                <tr ng-repeat="item in vmManager.changeDatas|filter:filterField track by $index">
+                                    <td>{{item.WorkerId}}</td>
+                                    <td>{{item.WorkerName}}</td>
+                                    <td ng-hide="item.TelPhone===null">
+                                        手机号码：<span class="text-info"> {{item.TelPhone}}</span>
+                                        <br />
+                                        个人电话：<span class="text-info"> {{item.PersonPhone}}</span>
+                                        <br />
+                                        家庭电话：<span class="text-info"> {{item.FamilyPhone}}</span>
+                                    </td>
+                                    <td ng-show="item.OpCmdVisible">
+                                        <button class="btn btn-xs btn-primary" style="margin-bottom:6px;" ng-click="operate.add(item)"
+                                                title="新增联系方式">
+                                            新增
+                                        </button>
+                                        <br />
+                                        <button class="btn btn-xs btn-warning" ng-click="operate.edit(item)"
+                                                title="编辑联系方式">
+                                            修改
+                                        </button>
+                                    </td>
+                                    <td class="text-center text-warning">
+                                        <i ng-show="item.OpSign==='init'" class="fa fa-star"></i>
+                                        <i ng-show="item.OpSign==='add'" class="fa fa-plus-square"></i>
+                                        <i ng-show="item.OpSign==='edit'" class="fa fa-edit"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-info" ng-click="operate.save()"><i class="fa fa-save"></i>批量保存</button>
+                <span ng-class="operate.result==true ? 'alert alert-success':'alert alert-danger'" ng-show="operate.msgDisplay">
+                    <i class="fa fa-info-circle"></i>
+                    {{operate.message}}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

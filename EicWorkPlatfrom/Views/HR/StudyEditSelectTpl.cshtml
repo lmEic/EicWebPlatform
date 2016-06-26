@@ -1,0 +1,84 @@
+﻿<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4>
+                    <i class="fa fa-bell-o"></i>
+                    {{title}}
+                </h4>
+            </div>
+            <div class="modal-body">
+               <div class="panel">
+                   <form name="modalForm" role="form" class="form-horizontal" novalidate>
+                       <fieldset>
+                           <legend>
+                               工号：{{vm.WorkerId}}
+                               姓名：{{vm.WorkerName}}
+                           </legend>
+                       </fieldset>
+                       <div class="form-group">
+                           <div class="col-md-6">
+                               <div class="input-group">
+                                   <div class="input-group-addon">
+                                       起始日期
+                                   </div>
+                                   <input name="studyDateFrom" class="form-control" ng-model="vm.StudyDateFrom" type="date" required data-format-date />
+                                   <div class="error-messages" ng-messages="modalForm.studyDateFrom.$error" ng-show="operate.showValidation">
+                                       <small ng-message="required">起始日期不能为空</small>
+                                   </div>
+                                   <div class="input-group-addon">
+                                       -
+                                   </div>
+                                   <input name="studyDateTo" class="form-control" ng-model="vm.StudyDateTo" type="date" required data-format-date />
+                                   <div class="error-messages" ng-messages="modalForm.studyDateTo.$error" ng-show="operate.showValidation">
+                                       <small ng-message="required">结束日期不能为空</small>
+                                   </div>
+                                   <div class="input-group-addon">
+                                       <i class="fa fa-calendar"></i>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="form-group">
+                           <label for="schoolName" class="col-md-2 control-label">学校名称</label>
+                           <div class="col-md-6">
+                               <input name="schoolName" class="form-control" ng-model="vm.SchoolName" required />
+                               <div class="error-messages" ng-messages="modalForm.schoolName.$error" ng-show="operate.showValidation">
+                                   <small ng-message="required">学校名称不能为空</small>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="form-group">
+                           <label for="majorName" class="col-md-2 control-label">专业名称</label>
+                           <div class="col-md-6">
+                               <input name="majorName" class="form-control" ng-model="vm.MajorName" required />
+                               <div class="error-messages" ng-messages="modalForm.majorName.$error" ng-show="operate.showValidation">
+                                   <small ng-message="required">专业名称不能为空</small>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="form-group">
+                           <label for="education" class="col-md-2 control-label">获得学历</label>
+                           <div class="col-md-4">
+                               <button type="button" class="btn btn-default" ng-model="vm.Qulification"
+                                       data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择获得学历"
+                                       data-bs-options="qu.name as qu.text for qu in qulifacations" data-bs-select>
+                                   选择获得学历<span class="caret"></span>
+                               </button>
+                               <input name="qulification" class="form-control" ng-model="vm.Qulification" ng-show="false" required />
+                               <div class="error-messages" ng-messages="modalForm.qulification.$error" ng-show="operate.showValidation">
+                                   <small ng-message="required">学历不能为空</small>
+                               </div>
+                           </div>
+                       </div>
+                   </form>
+               </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
+                <button type="button" class="btn btn-primary" ng-click="save(modalForm.$valid)"><i class="fa fa-save"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,113 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html ng-app="bpm.homeApp">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>光圣科技企业信息化平台</title>
+    <link rel="shortcut icon" href="@Url.Content("~/Content/login/lmlogo.png")" />
+    <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootwatch/cerulean.bootstrap.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/font-awesome/css/font-awesome.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/main.css")" type="text/css" rel="stylesheet" />
+
+    <link href="@Url.Content("~/Content/angular-motion/dist/angular-motion.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap-additions/dist/bootstrap-additions.min.css")" type="text/css" rel="stylesheet" />
+  
+    <link href="@Url.Content("~/Content/angular-busy/dist/angular-busy.min.css")" type="text/css" rel="stylesheet" />
+   
+</head>
+<body>
+    <header role="banner">
+        <nav role="navigation" class="navbar navbar-static-top navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="@Url.Action("Index","Home")">
+                        <span>
+                            <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司" 
+                                 src="@Url.Content("~/Content/login/lmlogo.png")" />企业信息化平台(V1.0)
+                        </span>
+                    </a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse" ng-controller="moduleNavCtrl">
+                    <ul class="nav navbar-nav" cg-busy="{promise:promise}" ng-cloak>
+                        <li class="active"><a href="@Url.Action("Index","Home")">Home</a></li>
+                        <li ng-repeat="item in nav.navList track by $index">
+                            <a href="/{{item.CtrlName}}" target="_blank">{{item.ModuleText}}</a>
+                        </li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tasks"></i>任务<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a ng-click="logout()" style="cursor:pointer"><i class="fa fa-street-view"></i>注销</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 bs-docs-sidebar">
+               
+            </div>
+            <div class="col-md-10 col-lg-offset-2">
+             
+            </div>
+        </div>
+    </div>
+    <footer role="banner">
+        <nav role="navigation" class="navbar navbar-fixed-bottom navbar-default">
+            <div class="row">
+                <div class="col-md-4">
+                  
+                </div>
+                <div class="col-md-4">
+                    <span class="footer-links">All copyright reserved by EZconn Corporation 2016</span>
+                </div>
+                <div class="col-md-4">
+
+                </div>
+            </div>
+        </nav>
+    </footer>
+
+    <script src="@Url.Content("~/Scripts/jquery-2.1.4.js")"></script>
+    <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
+    <script src="@Url.Content("~/Content/bootstrap/dist/js/bootstrap.min.js")"></script>
+
+
+    <script src="@Url.Content("~/Content/underscore/underscore-min.js")"></script>
+    <script src="@Url.Content("~/Scripts/angular.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/angular-animate.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/angular-messages.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/angular-sanitize.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/angular-ui-router.min.js")"></script>
+   
+
+    <script src="@Url.Content("~/Content/angular-busy/dist/angular-busy.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/angular-strap/dist/angular-strap.min.js")"></script>
+    <script src="@Url.Content("~/Content/angular-strap/dist/angular-strap.tpl.min.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
+    <script src="@Url.Content("~/Scripts/controller/home/homeApp.js")"></script>
+</body>
+</html>

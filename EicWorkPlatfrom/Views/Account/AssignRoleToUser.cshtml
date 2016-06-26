@@ -1,0 +1,92 @@
+﻿<div class="panel panel-default" ng-controller="addUserMatchRoleCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>分配角色予用户</h6>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive" cg-busy="{promise:promise}">
+            <div class="well">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input type="search" class="form-control" ng-model="vm.UserId" ng-keypress="vmManager.findUserByUserId($event)" placeholder="请输入用户姓名并按下回车键进行查找" />
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="well">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-info">
+                                <i class="fa fa-user"></i>
+                                <span>角色列表</span>
+                                <span class="pull-right">
+                                    <button type="button" ng-class="vmManager.isSelectAll===false?'btn btn-xs btn-info':'btn btn-xs btn-success'"
+                                            ng-model="vmManager.isSelectAll" ng-click="vmManager.selectAll()" bs-checkbox>
+                                        <i ng-class="vmManager.isSelectAll===false?'fa fa-toggle-off':'fa fa-toggle-on'"></i>
+                                        <span ng-show="vmManager.isSelectAll===false">全选</span>
+                                        <span ng-show="vmManager.isSelectAll">全不选</span>
+                                    </button>
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                <ul class="nav nav-pills">
+                                    <li ng-repeat="role in vmManager.roles track by $index">
+                                        <div class="well well-sm">
+                                            <input type="checkbox" ng-model="role.isSelect" ng-change="vmManager.selectRole(role)" />
+                                            <span class="label label-primary">{{role.RoleId}}</span>
+                                            <br />
+                                            <span data-title="角色等级{{role.RoleLevel}}" data-bs-tooltip>
+                                                <i class="fa fa-user"></i>
+                                                {{role.RoleName}}
+                                            </span>
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-info">
+                                <i class="fa fa-user"></i>
+                                <span>{{vm.UserId}}</span>
+                                <span>{{vm.UserName}}</span>
+                                <span class="pull-right">
+                                    <span class="btn btn-xs btn-info" ng-click="operate.saveMatchRoles()">
+                                        <i class="fa fa-save"></i> 批量保存
+                                    </span>
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                <ul class="nav nav-pills info">
+                                    <li ng-repeat="role in vmManager.matchRoles track by $index">
+                                        <div class="well well-sm">
+                                            <span class="label label-primary">
+                                                {{role.RoleId}}
+                                                <span class="btn btn-xs btn-danger" ng-click="vmManager.removeRole(role)">
+                                                    <i class="fa fa-remove"></i>
+                                                </span>
+                                            </span>
+                                            <br />
+                                            <span>
+                                                <i class="fa fa-user"></i>
+                                                {{role.RoleName}}
+                                            </span>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div yl-operatemsg-board></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

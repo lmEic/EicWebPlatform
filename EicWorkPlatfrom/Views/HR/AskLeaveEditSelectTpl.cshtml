@@ -1,0 +1,99 @@
+﻿<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4>
+                    <i class="fa fa-bell-o"></i>
+                    {{title}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel">
+                    <form name="modalForm" role="form" class="form-horizontal" novalidate>
+                        <fieldset>
+                            <legend>
+                                工号：{{vm.WorkerId}}
+                                姓名：{{vm.WorkerName}}
+                            </legend>
+                        </fieldset>
+
+                        <div class="form-group">
+                            <label for="startLeaveDate" class="col-md-2 control-label">请假日期</label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input name="startLeaveDate" type="date" class="form-control" ng-model="vm.StartLeaveDate" required data-format-date/>
+                                    <div class="error-messages" ng-messages="modalForm.startLeaveDate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">请假日期不能为空</small>
+                                    </div>
+                                    <div class="input-group-addon">
+                                        <label>-</label>
+                                    </div>
+                                    <input name="endLeaveDate" type="date" class="form-control" ng-model="vm.EndLeaveDate" required  data-format-date/>
+                                    <div class="error-messages" ng-messages="modalForm.endLeaveDate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">结束日期不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="leaveType" class="col-md-2 control-label">假别名称</label>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-default" ng-model="vm.LeaveType"
+                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择假别"
+                                        data-bs-options="item.name as item.text for item in leaveTypes" data-bs-select>
+                                    选择假别名称<span class="caret"></span>
+                                </button>
+                                <input name="leaveType" class="form-control" ng-model="vm.LeaveType" ng-show="false" required />
+                                <div class="error-messages" ng-messages="modalForm.leaveType.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">假别名称不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="leaveHours" class="col-md-2 control-label">请假时数</label>
+                            <div class="col-md-4">
+                                <input type="number" name="leaveHours" class="form-control" ng-model="vm.LeaveHours" required />
+                                <div class="error-messages" ng-messages="modalForm.leaveHours.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">学请假时数不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="leaveTimeRegionStart" class="col-md-2 control-label">请假时段</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input name="leaveTimeRegionStart" type="text" class="form-control" bs-timepicker data-time-format="HH:mm"
+                                           ng-model="vm.LeaveTimeRegionStart" required data-arrow-behavior="picker" data-format-time/>
+                                    <div class="error-messages" ng-messages="modalForm.leaveTimeRegionStart.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">请假时段不能为空</small>
+                                    </div>
+                                    <div class="input-group-addon">
+                                        <label>-</label>
+                                    </div>
+                                    <input name="leaveTimeRegionEnd" type="text" class="form-control" bs-timepicker data-time-format="HH:mm"
+                                           ng-model="vm.LeaveTimeRegionEnd" required data-arrow-behavior="picker" data-format-time/>
+                                    <div class="error-messages" ng-messages="modalForm.leaveTimeRegionEnd.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">请假时段不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="leaveMemo" class="col-md-2 control-label">备注</label>
+                            <div class="col-md-4">
+                                <textarea rows="2" name="leaveMemo" class="form-control" ng-model="vm.LeaveMemo"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
+                <button type="button" class="btn btn-primary" ng-click="save(modalForm.$valid)"><i class="fa fa-save"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>

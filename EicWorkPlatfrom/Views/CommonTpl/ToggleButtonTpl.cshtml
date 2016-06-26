@@ -1,0 +1,6 @@
+﻿<button type="button" ng-class="{{toggleButtonCls}}"
+        ng-model="vmManager.isSelectAll" ng-click="vmManager.selectAll()" bs-checkbox>
+    <i ng-class="vmManager.isSelectAll===false?'fa fa-toggle-off':'fa fa-toggle-on'"></i>
+    <span ng-show="vmManager.isSelectAll===false">全选</span>
+    <span ng-show="vmManager.isSelectAll">全不选</span>
+</button>

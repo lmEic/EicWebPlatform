@@ -1,0 +1,144 @@
+﻿<div class="panel panel-default" ng-controller="supTelManageCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title">
+            厂商联系信息管理
+        </h6>
+    </div>
+    <div class="panel-body" cg-busy="{promise:promise}">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="well">
+                    <form name="formRole" class="form-horizontal" ng-submit="operate.addRole(formRole.$valid)" novalidate role="form">
+                        <div class="form-group">
+                            <label for="roleId" class="col-md-3 control-label">角色ID</label>
+                            <div class="col-md-5">
+                                <input type="text" ng-model="vm.RoleId" name="roleId" placeholder="输入角色ID" ng-readonly="vmManager.canEdit"
+                                       class="form-control" required />
+                                <div class="error-messages" ng-messages="formRole.roleId.$error" ng-if="operate.showValidation">
+                                    <small ng-message="required">角色ID不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="roleName" class="col-md-3 control-label">角色名称</label>
+                            <div class="col-md-5">
+                                <input type="text" name="roleName" ng-model="vm.RoleName" placeholder="输入角色名称"
+                                       class="form-control" required />
+                                <div class="error-messages" ng-messages="formRole.roleName.$error" ng-if="operate.showValidation">
+                                    <small ng-message="required">角色名称不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="roleLevel" class="col-md-3 control-label">角色等级</label>
+                            <div class="col-md-5">
+                                <input type="number" name="roleLevel" ng-model="vm.RoleLevel" placeholder="输入角色等级"
+                                       class="form-control" required />
+                                <div class="error-messages" ng-messages="formRole.roleLevel.$error" ng-if="operate.showValidation">
+                                    <small ng-message="required">角色等级不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="roleGroupName" class="col-md-3 control-label">角色群组名称</label>
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <input name="roleGroupName" class="form-control" ng-model="vm.RoleGroupName"
+                                           placeholder="输入或选择" required />
+                                    <div class="error-messages" ng-messages="formRole.roleGroupName.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">角色群组名称不能为空</small>
+                                    </div>
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-primary"
+                                                data-animation="am-flip-x"
+                                                bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                            <span class="fa fa-chevron-circle-down"></span>
+                                        </button>
+                                        <div class="dropdown-menu" role="menu">
+                                            <ul class="nav nav-pills">
+                                                <li ng-repeat="item in vmManager.roleGroups track by $index" ng-click="vmManager.selectRoleGroup(item)">
+                                                    <a href="#">{{item.RoleGroupName}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="parentName" class="col-md-3 control-label">父对象</label>
+                            <div class="col-md-5">
+                                <input name="parentName" class="form-control" ng-model="vm.ParentName" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="memo" class="col-md-3 control-label">备注信息</label>
+                            <div class="col-md-5">
+                                <textarea rows="3" name="memo" ng-model="vm.Memo"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-5 col-md-offset-3">
+                                <button type="submit" class="btn btn-primary">保存</button>
+                                <button type="button" class="btn btn-default" ng-click="operate.cancel()">取消</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-5 col-md-offset-3">
+                                <div yl-operatemsg-board></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="well" cg-busy="{promise:promise}">
+                    <ul class="list-group">
+                        <li class="list-group-item active">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h4 class="list-title">
+                                        <i class="fa fa-user"></i>
+                                        <span>厂商列表</span>
+                                    </h4>
+                                </div>
+                                <div class="col-md-3">
+
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <input class="form-control" type="text"/>
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-search"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <ul class="nav nav-pills">
+                                <li ng-repeat="role in vmManager.roles track by $index">
+                                    <div class="well well-sm">
+                                        <span class="label label-primary" style="cursor:pointer"
+                                              ng-click="vmManager.selectRole(role)">{{role.RoleId}}</span>
+                                        <br />
+                                        <span data-title="角色等级{{role.RoleLevel}}" data-bs-tooltip>
+                                            <i class="fa fa-user"></i>
+                                            {{role.RoleName}}
+                                        </span>
+                                    </div>
+
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>

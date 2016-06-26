@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+
+namespace EicWorkPlatfrom
+{
+    public static class AuthenCheckManager
+    {
+
+        static AuthenCheckManager()
+        {
+            IsCheck = false;
+        }
+
+        /// <summary>
+        /// 是否进行权限检测
+        /// 在开发测试中，可将此属性设置为false
+        /// 正式发布时，设置为true
+        /// </summary>
+        public static bool IsCheck { get; set; }
+    }
+
+    public class RouteConfig
+    {
+        public static void RegisterRoutes(RouteCollection routes)
+        {
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            if (AuthenCheckManager.IsCheck)
+            {
+                routes.MapRoute(
+                             name: "Default",
+                             url: "{controller}/{action}/{id}",
+                             defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                          );
+            }
+            else
+            {
+                //Product
+                routes.MapRoute(
+                             name: "Default",
+                             url: "{controller}/{action}/{id}",
+                             defaults: new { controller = "ITIL", action = "Index", id = UrlParameter.Optional }
+                         );
+            }
+          
+        }
+    }
+}

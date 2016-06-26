@@ -1,0 +1,161 @@
+﻿<div class="row" ng-controller="attendClassTypeSetCtrl">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h6 class="panel-title"><i class="glyphicon glyphicon-apple"></i>部门信息</h6>
+            </div>
+            <div class="panel-body" style="max-height:515px;overflow:auto">
+                <ul data-yl-tree cg-busy="{promise:promise}"
+                    data-tree-dataset="ztree.configDataNodes"
+                    data-start-load="ztree.startLoad"
+                    ng-model="ztree.treeNode"
+                    data-binding-nodevm="ztree.bindNodeToVm()"
+                    id="{{ztree.treeId}}" class="ztree"></ul>
+            </div>
+            <div class="panel-footer">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h6 class="panel-title"><i class="fa fa-retweet">班别管理</i></h6>
+            </div>
+            <div class="panel-body">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" readonly placeholder="部门" ng-model="vm.DepartmentText" class="form-control"/>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-info" ng-click="operate.loadData()"><i class="fa fa-search"></i>载入</button>
+                                </div>
+                               
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                           
+                        </div>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    过滤条件
+                                </div>
+                                <input type="text" placeholder="输入工号查询个人" ng-model="vmManager.filterWorkerId" ng-change="vmManager.filterByWorkerId()" class="form-control" />
+                                <div class="input-group-addon">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </div>
+                                <div class="input-group-addon">
+                                     选择班别
+                                </div>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-model="vmManager.filterClassType" ng-change="vmManager.filterByClassType()"
+                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="班别"
+                                            data-bs-options="s.name as s.text for s in vmManager.classTypes" data-bs-select>
+                                        班别 <span class="caret"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="well" cg-busy="{promise:classTypePromise}" ng-if="vmManager.dataSets.length>0" ng-cloak>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <button type="button" ng-class="vmManager.isSelectAll===false?'btn btn-xs btn-primary':'btn btn-xs btn-success'"
+                                    ng-model="vmManager.isSelectAll" ng-click="vmManager.selectAll()" bs-checkbox>
+                                <i ng-class="vmManager.isSelectAll===false?'fa fa-toggle-off':'fa fa-toggle-on'"></i>
+                                <span ng-show="vmManager.isSelectAll===false">全选</span>
+                                <span ng-show="vmManager.isSelectAll">全不选</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-split"></div>
+                    <ul class="nav nav-pills">
+                        <li ng-repeat="item in vmManager.dataSets">
+                            <div style="width:100px;">
+                                <input type="checkbox" ng-model="item.isSelect" ng-click="operate.addWorkerToList(item)" />
+                                {{item.WorkerId}}
+                                <br />
+                                <span ng-class="item.selectedCls">
+                                    <i class="fa fa-user"></i>
+                                    {{item.WorkerName}}
+                                    <br />
+                                    <i class="fa fa-adjust"></i>
+                                    <span data-title="从{{item.DateFrom}}至{{item.DateTo}}" data-bs-tooltip>
+                                        {{item.ClassType}}
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-10">
+                        <form role="form" name="classTypeForm" novalidate class="form-inline">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    从
+                                </div>
+                                <input name="dateFrom" type="date" class="form-control" ng-model="vm.DateFrom" required />
+                                <div class="error-messages" ng-messages="classTypeForm.dateFrom.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">开始日期不能为空</small>
+                                </div>
+                                <div class="input-group-addon">
+                                    至
+                                </div>
+                                <input name="dateTo" type="date" class="form-control" ng-model="vm.DateTo" required />
+                                <div class="error-messages" ng-messages="classTypeForm.dateTo.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">截至日期不能为空</small>
+                                </div>
+                                <div class="input-group-addon">
+                                    转成
+                                </div>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-model="vm.ClassType"
+                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="班别"
+                                            data-bs-options="s.name as s.text for s in vmManager.classTypes" data-bs-select>
+                                        班别 <span class="caret"></span>
+                                    </button>
+                                    <input name="classType" class="form-control" ng-model="vm.ClassType" ng-show="false" required />
+                                    <div class="error-messages" ng-messages="classTypeForm.classType.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">班别不能为空</small>
+                                    </div>
+                                </div>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-info" ng-click="operate.changeClass(classTypeForm.$valid)"><i class="fa fa-retweet"></i>转班</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="pull-right">
+                            <button class="btn btn-primary" ng-click="operate.preview()"><i class="fa fa-binoculars"></i>预览</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-info" ng-if="vmManager.detailsDisplay">
+                            <ul class="nav nav-pills">
+                                <li ng-repeat="item in vmManager.selectedWorkers track by $index">
+                                    <div style="width:100px;">
+                                        {{item.WorkerId}}
+                                        <br />
+                                        <span class="text-success">
+                                            <i class="fa fa-user"></i>
+                                            {{item.WorkerName}}
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

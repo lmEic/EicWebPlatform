@@ -1,0 +1,24 @@
+﻿选择年月份
+<div class="btn-group">
+    <div class="btn btn-primary">
+        <i class=" fa fa-arrow-circle-o-up" ng-click="upYear()">
+        </i>
+    </div>
+    <button type="button" class="btn btn-primary"
+            data-animation="am-flip-x"
+            bs-dropdown aria-haspopup="true" aria-expanded="false">
+        <span style="border-bottom:1px dotted white;">
+            {{currentYear}}-{{currentMonth}}
+        </span>
+    </button>
+    <div class="dropdown-menu" role="menu">
+        <ul class="nav nav-pills">
+            <li ng-repeat="m in months" ng-click="selectMonth(m)">
+                <a href="#">{{m}}月</a>
+            </li>
+        </ul>
+    </div>
+    <div class="btn btn-primary">
+        <i class="fa fa-arrow-circle-o-down" ng-click="downYear()"></i>
+    </div>
+</div>

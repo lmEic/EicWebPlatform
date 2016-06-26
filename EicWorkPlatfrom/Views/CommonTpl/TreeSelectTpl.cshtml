@@ -1,0 +1,18 @@
+﻿<div class="popover" tabindex="-1" style="min-width:360px;max-width:380px;min-height:450px;max-height:460px">
+    <div class="arrow"></div>
+    <h3 class="popover-title">
+        <i class="fa fa-sitemap"></i>{{title}}
+    </h3>
+    <div class="popover-content" >
+        <div class="panel panel-info">
+            <div class="panel-body">
+                <ul data-yl-tree cg-busy="{promise:treeLoadPromise}"
+                    data-tree-dataset="ztree.configDataNodes"
+                    data-start-load="ztree.startLoad"
+                    ng-model="ztree.treeNode"
+                    data-binding-nodevm="ztree.bindNodeToVm()"
+                    id="{{ztree.treeId}}" class="ztree"></ul>
+            </div>
+        </div>
+    </div>
+</div>

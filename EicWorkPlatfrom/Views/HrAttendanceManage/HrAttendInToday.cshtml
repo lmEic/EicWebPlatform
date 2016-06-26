@@ -1,0 +1,93 @@
+﻿<div class="row" ng-controller="attendInTodayCtrl">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h6 class="panel-title"><i class="fa fa-desktop">今日考勤</i></h6>
+            </div>
+            <div class="panel-body" cg-busy="{promise:promise}">
+                <div class="well">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-primary" ng-click="operate.change(dep)"
+                                            title="选择部门信息"
+                                            data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
+                                            data-animation="am-flip-x" data-auto-close="1"
+                                            data-bs-popover>
+                                        选择部门
+                                    </button>
+                                </div>
+                                <input type="text" readonly placeholder="部门" ng-model="vm.DepartmentText" class="form-control" />
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-info" ng-click="operate.loadData()"><i class="fa fa-search"></i>查看</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+
+                        </div>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    过滤条件
+                                </div>
+                                <input type="text" placeholder="输入工号查询个人" ng-model="vmManager.filterWorkerId" ng-change="vmManager.filterByWorkerId()" class="form-control" />
+                                <div class="input-group-addon">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </div>
+                                <div class="input-group-addon">
+                                    选择班别
+                                </div>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-model="vmManager.filterClassType" ng-change="vmManager.filterByClassType()"
+                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="班别"
+                                            data-bs-options="s.name as s.text for s in vmManager.classTypes" data-bs-select>
+                                        班别 <span class="caret"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="well" ng-cloak>
+                    <div class="table-responsive" ng-if="vmManager.dataSets.length>0">
+                        <table class="table table-striped table-hover">
+                            <caption></caption>
+                            <thead>
+                                <tr class="info">
+                                    <th>Id</th>
+                                    <th>工号</th>
+                                    <th>姓名</th>
+                                    <th>部门</th>
+                                    <th>班别</th>
+                                    <th>刷卡日期</th>
+                                    <th>刷卡时间1</th>
+                                    <th>刷卡时间2</th>
+                                    <th>刷卡时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vmManager.dataSets">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{item.WorkerId}}</td>
+                                    <td>{{item.WorkerName}}</td>
+                                    <td>{{vm.DepartmentText}}</td>
+                                    <td>{{item.ClassType}}</td>
+                                    <td>{{item.AttendanceDate}}</td>
+                                    <td>{{item.SlotCardTime1}}</td>
+                                    <td>{{item.SlotCardTime2}}</td>
+                                    <td>{{item.SlotCardTime}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h4 class="text-info" ng-if="vmManager.dataSets.length===0"><i class=" fa fa-info-circle"></i>没有考勤数据！</h4>
+                </div>
+            </div>
+            <div class="panel-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
