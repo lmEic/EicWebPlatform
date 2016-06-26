@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ast\Class1.cs" />
     <Compile Include="Hrm\Archives\ArchiveBase.cs" />
     <Compile Include="Hrm\Archives\ArchiveService.cs" />
     <Compile Include="Hrm\Archives\ArchivesManager.cs" />
@@ -57,9 +58,7 @@
     <Compile Include="Purchase\RequisitionManager.cs" />
     <Compile Include="Purchase\StockManager.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Ast\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.App.Business.Mes\Lm.Eic.App.Business.Mes.csproj">
       <Project>{25616437-5761-4fe5-8dcc-d76b4641b6a7}</Project>
