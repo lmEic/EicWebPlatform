@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ast\Class1.cs" />
     <Compile Include="Hrm\Archives\ArchiveBase.cs" />
     <Compile Include="Hrm\Archives\ArchiveService.cs" />
     <Compile Include="Hrm\Archives\ArchivesManager.cs" />
