@@ -58,12 +58,8 @@
     <Compile Include="Purchase\RequisitionManager.cs" />
     <Compile Include="Purchase\StockManager.cs" />
     <Compile Include="Quantity\Class1.cs" />
-    <Compile Include="Quantity\Model\QuantityProductNgRecordModel.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Quantity\Bussiness\" />
-    <Folder Include="Quantity\Repository\Map\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.App.Business.Mes\Lm.Eic.App.Business.Mes.csproj">
       <Project>{25616437-5761-4fe5-8dcc-d76b4641b6a7}</Project>
