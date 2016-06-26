@@ -8,5 +8,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
 {
     class Class1
     {
+        //1234466
     }
 }
