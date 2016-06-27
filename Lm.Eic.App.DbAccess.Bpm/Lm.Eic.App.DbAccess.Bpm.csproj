@@ -54,9 +54,11 @@
     <Compile Include="Mapping\HrmMapping\ArchivesMapping.cs" />
     <Compile Include="Mapping\HrmMapping\AttendanceMapping.cs" />
     <Compile Include="Mapping\HrmMapping\HrmDbContext.cs" />
+    <Compile Include="Mapping\QuantityMapping\QuantityDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\HrmRep\Archives\ArchivesIdentityRepository.cs" />
     <Compile Include="Repository\HrmRep\Attendance\AttendClassTypeRepository.cs" />
+    <Compile Include="Repository\QuantityRep\QICSampleReposity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
