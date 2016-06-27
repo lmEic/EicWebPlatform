@@ -52,6 +52,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\libs\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.Excel, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>bin\Debug\Interop.Excel.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\libs\Microsoft.QualityTools.Testing.Fakes.dll</HintPath>
     </Reference>
