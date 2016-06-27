@@ -57,7 +57,8 @@
     <Compile Include="Purchase\PurchaseService.cs" />
     <Compile Include="Purchase\RequisitionManager.cs" />
     <Compile Include="Purchase\StockManager.cs" />
-    <Compile Include="Quantity\Class1.cs" />
+    <Compile Include="Quantity\SampleManager.cs" />
+    <Compile Include="Quantity\QuantityBase.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
