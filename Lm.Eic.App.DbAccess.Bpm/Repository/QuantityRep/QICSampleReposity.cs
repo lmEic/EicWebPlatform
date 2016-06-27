@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lm.Eic.App.Business.Bmp.Quantity
+namespace Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep
 {
-    class Class1
+  public   class QICSampleReposity
     {
-        //1234466
     }
 }
