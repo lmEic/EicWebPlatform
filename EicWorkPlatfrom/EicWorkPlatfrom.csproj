@@ -138,7 +138,7 @@
     <Compile Include="Controllers\BusinessController.cs" />
     <Compile Include="Controllers\DevelopmentController.cs" />
     <Compile Include="Controllers\BaseController\EicBaseController.cs" />
-    <Compile Include="Controllers\EquipmentController.cs" />
+    <Compile Include="Controllers\Equipment\EquipmentController.cs" />
     <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\Account\HomeController.cs" />
     <Compile Include="Controllers\Hr\HrArchivesManageController.cs" />
@@ -360,6 +360,7 @@
     <Content Include="Scripts\common\angulee.js" />
     <Content Include="Scripts\common\commDirective.js" />
     <Content Include="Scripts\controller\account\accountApp.js" />
+    <Content Include="Scripts\controller\ast\equipmentApp.js" />
     <Content Include="Scripts\controller\home\homeApp.js" />
     <Content Include="Scripts\controller\account\loginApp.js" />
     <Content Include="Scripts\controller\hr\hrApp.js" />
