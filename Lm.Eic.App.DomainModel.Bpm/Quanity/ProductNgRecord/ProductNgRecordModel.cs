@@ -9,7 +9,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity.ProductNgRecord
  public   class ProductNgRecordModel
     {
      public ProductNgRecordModel()
-     { }
+     {}
      #region Model
      private string _orderid;
      private string _samplematerial;
