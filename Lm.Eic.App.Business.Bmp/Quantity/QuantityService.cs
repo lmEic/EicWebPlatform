@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lm.Eic.App.Business.Bmp.Quantity
 {
-    class Class1
+  public static  class QuantityService
     {
         //wanxiaoqiaoAddQuantity
     }
