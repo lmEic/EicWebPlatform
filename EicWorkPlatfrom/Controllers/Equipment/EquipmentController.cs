@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace EicWorkPlatfrom.Controllers
 {
-    public class EquipmentController : Controller
+    public class EquipmentController : EicBaseController
     {
         //
         // GET: /Equipment/
