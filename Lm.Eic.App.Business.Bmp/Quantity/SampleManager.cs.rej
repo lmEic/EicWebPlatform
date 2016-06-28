@@ -1,0 +1,126 @@
+diff a/Lm.Eic.App.Business.Bmp/Quantity/SampleManager.cs b/Lm.Eic.App.Business.Bmp/Quantity/SampleManager.cs	(rejected hunks)
+@@ -1,62 +0,62 @@
+-ï»¿using System;
+-using System.Collections.Generic;
+-using System.Linq;
+-using System.Text;
+-using System.Threading.Tasks;
+-
+-namespace Lm.Eic.App.Business.Bmp.Quantity
+-{
+-   
+-   public  class SampleManager
+-   {
+-      
+-   }
+-   /// <summary>
+-   ///æŠ½éªŒå¯¹åƒ
+-   /// </summary>
+-    public class SampleProduct
+-    {
+-        #region
+-        /// <summary>
+-        /// æ ·å“è®¢å•å·
+-        /// </summary>
+-        public string OrderId
+-        { set; get; }
+-        /// <summary>
+-        /// æ ·å“æ–™å·
+-        /// </summary>
+-        public string Material
+-        { set; get; }
+-        /// <summary>
+-        /// æ ·å“åç§°
+-        /// </summary>
+-        public string MaterialName
+-        { set; get; }
+-        /// <summary>
+-        /// æ ·å“è§„æ ¼
+-        /// </summary>
+-        public string MaterialSpec
+-        { set; get; }
+-        /// <summary>
+-        /// æ ·å“çš„ä¾›åº”å•†
+-        /// </summary>
+-        public string MaterialSupplier
+-        { set; get; }
+-        /// <summary>
+-        /// æ ·å“è´­å…¥æ—¥æœŸ
+-        /// </summary>
+-        public string MaterialInDate
+-        { set; get; }
+-        /// <summary>
+-        /// æ ·å“æä¾›ERPä¸­å›¾å·
+-        /// </summary>
+-        public string MaterialDrawID
+-        { set; get; }
+-        /// <summary>
+-        /// æŠ½æ ·æ•°é‡
+-        /// </summary>
+-        public string MaterialNumber
+-        { set; get; }
+-        #endregion
+-    }
+-}
++ï»¿using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Text;
++using System.Threading.Tasks;
++
++namespace Lm.Eic.App.Business.Bmp.Quantity
++{
++   
++   public  class SampleManager
++   {
++      
++   }
++   /// <summary>
++   ///æŠ½éªŒå¯¹åƒ
++   /// </summary>
++    public class SampleProduct
++    {
++        #region
++        /// <summary>
++        /// æ ·å“è®¢å•å·
++        /// </summary>
++        public string OrderId
++        { set; get; }
++        /// <summary>
++        /// æ ·å“æ–™å·
++        /// </summary>
++        public string Material
++        { set; get; }
++        /// <summary>
++        /// æ ·å“åç§°
++        /// </summary>
++        public string MaterialName
++        { set; get; }
++        /// <summary>
++        /// æ ·å“è§„æ ¼
++        /// </summary>
++        public string MaterialSpec
++        { set; get; }
++        /// <summary>
++        /// æ ·å“çš„ä¾›åº”å•†
++        /// </summary>
++        public string MaterialSupplier
++        { set; get; }
++        /// <summary>
++        /// æ ·å“è´­å…¥æ—¥æœŸ
++        /// </summary>
++        public string MaterialInDate
++        { set; get; }
++        /// <summary>
++        /// æ ·å“æä¾›ERPä¸­å›¾å·
++        /// </summary>
++        public string MaterialDrawID
++        { set; get; }
++        /// <summary>
++        /// æŠ½æ ·æ•°é‡
++        /// </summary>
++        public string MaterialNumber
++        { set; get; }
++        #endregion
++    }
++}
