@@ -1245,6 +1245,7 @@
     <Content Include="Views\HrArchivesManage\HrPrintWorkerCard.cshtml" />
     <Content Include="Views\ITIL\Index.cshtml" />
     <Content Include="Views\ITIL\ItilSupTelManage.cshtml" />
+    <Content Include="Views\Equipment\AstArchiveInput.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
