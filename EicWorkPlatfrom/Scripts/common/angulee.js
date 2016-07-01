@@ -97,7 +97,15 @@ var leeHelper = (function () {
     var commonTplUrl={
         treeSelectTplUrl: '/CommonTpl/TreeSelectTpl',
     };
+    var controllerNames = {
+        equipment: 'Equipment',
+        systemManage: 'EicSystemManage',
+        configManage: 'SysConfig',
+        itilManage:'SysITIL'
+    };
     return {
+        ///控制器名称
+        controllers:controllerNames,
         ///清空视图对象的每个属性值
         //vm:视图对象
         //notKeys:不包含的要清楚值的键值

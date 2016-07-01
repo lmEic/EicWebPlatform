@@ -40,10 +40,11 @@ namespace EicWorkPlatfrom
             else
             {
                 //Product
+                //ITIL
                 routes.MapRoute(
                              name: "Default",
                              url: "{controller}/{action}/{id}",
-                             defaults: new { controller = "ITIL", action = "Index", id = UrlParameter.Optional }
+                             defaults: new { controller = "Equipment", action = "Index", id = UrlParameter.Optional }
                          );
             }
           

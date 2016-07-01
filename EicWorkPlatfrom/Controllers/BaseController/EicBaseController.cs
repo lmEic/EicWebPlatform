@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Framework.Authenticate.Business;
 using Lm.Eic.Framework.Authenticate.Model;
 
@@ -181,6 +182,24 @@ namespace EicWorkPlatfrom.Controllers
                 }
             }
         }
+
+
+        #region file operate method
+        /// <summary>
+        /// 导出数据到Excel文件中
+        /// </summary>
+        /// <typeparam name="T">泛型类型</typeparam>
+        /// <param name="dataSource">数据源</param>
+        /// <param name="xlsSheetName">Sheet表名称</param>
+        /// <param name="xlsFileName">Excel文件名称,包括扩展名</param>
+        /// <returns></returns>
+        protected FileResult ExportToExcel<T>(List<T> dataSource, string xlsSheetName, string xlsFileName) where T : class
+        {
+            MemoryStream ms = dataSource.ExportToExcel<T>(xlsSheetName);
+            ms.Seek(0, SeekOrigin.Begin);
+            return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
+        }
+        #endregion
     }
 
     public class LoginUser

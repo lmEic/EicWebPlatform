@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace EicWorkPlatfrom.Controllers
 {
-    public class ITILController:EicBaseController
+    public class SysITILController:EicBaseController
     {
         //
         // GET: /ITIL/

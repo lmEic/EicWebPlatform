@@ -6,10 +6,10 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
 
-    var urlPrefix = 'ITIL/';
+    var urlPrefix = leeHelper.controllers.equipment + "/";
 
-    $stateProvider.state('itilSupTelManage', {
-        templateUrl: urlPrefix + 'ItilSupTelManage',
+    $stateProvider.state('astArchiveInput', {
+        templateUrl: urlPrefix + 'AstArchiveInput',
 
     }).state('proStationConfig', {
         templateUrl: 'DailyReport/ProStationConfig',
@@ -264,6 +264,44 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
 })
-.controller('supTelManageCtrl', function ($scope) {
+.controller('astArchiveInputCtrl', function ($scope) {
+    ///设备档案模型
+    var uiVM = {
+        AssetNumber: null,
+        EquipmentName: null,
+        EquipmentSpec: null,
+        FunctionDescription: null,
+        ServiceLife: null,
+        EquipmentPhoto: null,
+        EquipmentType: null,
+        Unit: null,
+        Manufacturer: null,
+        ManufacturingNumber: null,
+        ManufacturerWebsite: null,
+        ManufacturerTel: null,
+        AfterSalesTel: null,
+        AddMode: null,
+        DeliveryDate: null,
+        DeliveryUser: null,
+        DeliveryCheckUser: null,
+        SafekeepUser: null,
+        SafekeepDepartment: null,
+        Installationlocation: null,
+        IsMaintenance: null,
+        MaintenanceDate: null,
+        MaintenanceInterval: 0,
+        PlannedMaintenanceDate: null,
+        MaintenanceState: null,
+        State: null,
+        IsCheck: null,
+        CheckDate: null,
+        CheckInterval: 0,
+        PlannedCheckDate: null,
+        ChechState: null,
+        OpPerson: null,
+        OpSign: null,
+        Id_Key: null,
+    }
+    $scope.vm = uiVM;
 
 })
