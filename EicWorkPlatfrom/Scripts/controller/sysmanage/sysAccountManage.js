@@ -1,37 +1,7 @@
-﻿
-/// <reference path="../../common/angulee.js" />
-/// <reference path="../../../Content/underscore/underscore.js" />
-/// <reference path="../common/angulee.js" />
-/// <reference path="../jquery-2.1.4.js" />
-angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
-
-.config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
-
-    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
-
-    $stateProvider.state('accRegistUser', {
-        templateUrl:'Account/RegistUser'
-    })
-    .state('accAssignRoleToUser', {
-        templateUrl: 'Account/AssignRoleToUser'
-     })
-     .state('sysModuleEdit', {
-         templateUrl: 'Account/SysModuleEdit'
-     })
-    .state('sysRoleManage', {
-        templateUrl: 'Account/SysRoleManage'
-    })
-     .state('sysAssemblyEdit', {
-         templateUrl: 'Account/SysAssemblyEdit'
-     })
-     .state('assignPowerToRole', {
-         templateUrl: 'Account/AssignPowerToRole'
-     })
-     .state('assignModuleToRole', {
-         templateUrl: 'Account/AssignModuleToRole'
-     })
-})
-.factory('accountService', function ($http,$q) {
+﻿/// <reference path="../../common/angulee.js" />
+/// <reference path="../../angular.min.js" />
+var smModule = angular.module('bpm.sysmanageApp');
+smModule.factory('accountService', function ($http,$q) {
     var account = {};
     var urlPrefix = '/Account/';
 
@@ -130,7 +100,7 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
 
     return account;
 })
-.factory('treeSetService', function () {
+smModule.factory('treeSetService', function () {
     var createTreeDataset = function (datas, root) {
         var treeNodes = [];
         var childrenNodes = _.where(datas, { ParentModuleName: root });
@@ -158,7 +128,7 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
     };
     return zTreeSet;
 })
-.factory('vmService', function () {
+smModule.factory('vmService', function () {
     var viewModel = {
         moduleNavVm: {
             AssemblyName: null,
@@ -179,7 +149,7 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
     return viewModel;
 })
 
-.directive('ngBlur', function ($parse) {
+smModule.directive('ngBlur', function ($parse) {
     return function (scope, element, attr) {
         var fn = $parse(attr['ngBlur']);
 
@@ -188,7 +158,7 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
         });
     }
 })
-.directive('ngFocus',function () {
+smModule.directive('ngFocus',function () {
     return {
         restrict: "AE",
         require: "ngModel",
@@ -210,7 +180,7 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
         },
     };
 })
-.directive('ensureUserUnique', function (accountService) {
+smModule.directive('ensureUserUnique', function (accountService) {
     return {
         require: '^ngModel',
         link: function (scope, element, attrs, ngModel)
@@ -245,33 +215,9 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
         }
     };
 })
-.controller('moduleNavCtrl', function ($scope, navDataService, $state) {
-    ///模块导航布局视图对象
-    var moduleNavLayoutVm = {
-        menus: [],
-        navList: [],
-        navItems: [],
-        navTo: function (navMenu) {
-            moduleNavLayoutVm.navItems = [];
-            angular.forEach(navMenu.Childrens, function (childNav) {
-                var navItem = _.findWhere(moduleNavLayoutVm.menus, { Name: childNav.ModuleName, AtLevel: 3 });
-                if (!angular.isUndefined(navItem)) {
-                    moduleNavLayoutVm.navItems.push(navItem);
-                }
-            })
-        },
-        stateTo: function (navItem) {
-            $state.go(navItem.UiSerf);
-        },
-    };
-    $scope.navLayout = moduleNavLayoutVm;
-    $scope.promise = navDataService.getSubModuleNavs('帐户管理', 'AccountManage').then(function (datas) {
-        moduleNavLayoutVm.menus = datas;
-        moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
-    });
-})
+
 //-----------------用户管理---------------------
-.controller('registUserCtrl', function ($scope, accountService) {
+smModule.controller('registUserCtrl', function ($scope, accountService) {
     var registvm = {
         userId: null,
         password: null
@@ -300,7 +246,7 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
         }
     };
 })
-.controller('addUserMatchRoleCtrl', function ($scope, accountService) {
+smModule.controller('addUserMatchRoleCtrl', function ($scope, accountService) {
     var userVm = {
         UserId: null,
         UserName: null,
@@ -429,7 +375,7 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
     });
 })
 //------------------模块管理---------------------
-.controller('moduleNavManageCtrl', function ($scope,$modal,vmService,accountService,treeSetService) {
+smModule.controller('moduleNavManageCtrl', function ($scope,$modal,vmService,accountService,treeSetService) {
     var moduleNavVm = vmService.moduleNavVm;
     var oldModuleNavVm = _.clone(moduleNavVm);
     $scope.vm = moduleNavVm;
@@ -542,7 +488,7 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
     });
 })
 //------------------角色管理---------------------
-.controller('addRoleCtrl', function ($scope, accountService) {
+smModule.controller('addRoleCtrl', function ($scope, accountService) {
     ///
     var uiVM = {
         RoleId: null,
@@ -613,7 +559,7 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
     };
 
 })
-.controller('assemblyManageCtrl', function ($scope, accountService) {
+smModule.controller('assemblyManageCtrl', function ($scope, accountService) {
     $scope.navmenu = {
         getMenuItems: function () {
             var menuItems = [
@@ -624,7 +570,7 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
         templateId: "AddAssemblyTemplate"
     };
 })
-.controller("addAssemblyCtrl", function ($scope, accountService) {
+smModule.controller("addAssemblyCtrl", function ($scope, accountService) {
     var assemblyVm = {
         assemblyName: null,
         assemblyText: null
@@ -652,7 +598,7 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
     $scope.operate = operate;
 })
 //------------------权限分配---------------------
-.controller("assignUserPowerCtrl", function ($scope,vmService,accountService, treeSetService) {
+smModule.controller("assignUserPowerCtrl", function ($scope,vmService,accountService, treeSetService) {
     var Vm = vmService.moduleNavVm;
     $scope.vm = Vm;
     var operate = {
@@ -714,7 +660,7 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
                 roleInfo.assignRoles.push({ moduleText: Vm.ModuleText, roles: roles });//否则添加到显示队列中
                 roleInfo.changeDataList(role, 'add');//并添加到上传数据库的新增队列中
             }
-            //如果存在于数据库中
+                //如果存在于数据库中
             else {
                 if (role.isSelect) {//如果选定
                     arole.roles.push(role);//添加到显示队列中
@@ -769,7 +715,7 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
     };
     $scope.roleInfo = roleInfo;
 })
-.controller("assignUserPowerLotCtrl", function ($scope, vmService, accountService, treeSetService) {
+smModule.controller("assignUserPowerLotCtrl", function ($scope, vmService, accountService, treeSetService) {
     var uiVm = {
         RoleId: null,
         RoleName:null,
@@ -904,4 +850,3 @@ angular.module('mesOptical.accountApp', ['eicomm.directive','ngAnimate', 'ui.rou
         });
     });
 })
-

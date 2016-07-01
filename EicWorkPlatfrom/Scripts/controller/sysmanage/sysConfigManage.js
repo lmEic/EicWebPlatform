@@ -1,18 +1,18 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
-var hrModule = angular.module('bpm.hrApp');
-hrModule.factory('hrBaseInfoService', function ($http, $q) {
-    var baseInfo = {};
-    var urlPrefix = "/HrBaseInfoManage/";
+var smModule = angular.module('bpm.sysmanageApp');
+smModule.factory('sysConfigService', function ($http, $q) {
+    var config = {};
+    var urlPrefix = '/' + leeHelper.controllers.configManage + '/';
 
-    baseInfo.getConfigDicData = function (treeModuleKey) {
+    config.getConfigDicData = function (treeModuleKey) {
         var defer = $q.defer();
         var url = urlPrefix + "GetConfigDicData";
         $http.get(url, {
             params: {
                 treeModuleKey: treeModuleKey,
             }
-        }).success(function (datas){
+        }).success(function (datas) {
             defer.resolve(datas);
         }).error(function (errdata) {
             defer.reject(errdata);
@@ -20,7 +20,7 @@ hrModule.factory('hrBaseInfoService', function ($http, $q) {
         return defer.promise;
     };
     ///根据模块名称与所属类别载入配置数据
-    baseInfo.loadConfigDicData = function (moduleName, aboutCategory) {
+    config.loadConfigDicData = function (moduleName, aboutCategory) {
         var defer = $q.defer();
         var url = urlPrefix + "LoadConfigDicData";
         $http.get(url, {
@@ -36,13 +36,13 @@ hrModule.factory('hrBaseInfoService', function ($http, $q) {
         return defer.promise;
     };
     ///根据树的键值载入配置数据
-    baseInfo.saveConfigDicData = function (vm,oldVm, opType) {
+    config.saveConfigDicData = function (vm, oldVm, opType) {
         var defer = $q.defer();
         var url = urlPrefix + "SaveConfigDicData";
         $http.post(url, {
             opType: opType,
             model: vm,
-            oldModel:oldVm
+            oldModel: oldVm
         }).success(function (data) {
             defer.resolve(data);
         }).error(function (errdata) {
@@ -51,18 +51,18 @@ hrModule.factory('hrBaseInfoService', function ($http, $q) {
         return defer.promise;
     };
 
-    return baseInfo;
+    return config;
 });
-hrModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfigTreeSet, hrBaseInfoService) {
+smModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfigTreeSet, sysConfigService) {
     var departmentDto = {
         TreeModuleKey: 'Organization',
-        ModuleName: 'HrBaseInfoManage',
+        ModuleName: 'smconfigManage',
         DataNodeName: null,
         DataNodeText: null,
         ParentDataNodeText: null,
         IsHasChildren: 0,
         AtLevel: 0,
-        AboutCategory: 'HrDepartmentSet',
+        AboutCategory: 'smDepartmentSet',
         Icon: null,
         DisplayOrder: 0,
         Memo: null,
@@ -75,7 +75,7 @@ hrModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfig
     operate.vm = departmentDto;
     $scope.operate = operate;
 
-    operate.delNode=function(){
+    operate.delNode = function () {
         if (angular.isUndefined(departmentTreeSet.treeNode) || departmentTreeSet.treeNode == null) {
             alert("请先选择要删除的节点!")
         }
@@ -93,9 +93,9 @@ hrModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfig
         saveDataDicNode(isValid, 'edit', 'updateNode');
     };
 
-    var saveDataDicNode = function (isValid,opType,opNodeType) {
+    var saveDataDicNode = function (isValid, opType, opNodeType) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            hrBaseInfoService.saveConfigDicData(departmentDto,oldDepartmentDto,opType).then(function (opresult) {
+            sysConfigService.saveConfigDicData(departmentDto, oldDepartmentDto, opType).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
                         var vm = _.clone($scope.vm);
@@ -130,7 +130,7 @@ hrModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfig
         });
     };
     //刷新操作
-    operate.refresh= function () {
+    operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
             pHelper.clearVM();
         });
@@ -139,12 +139,11 @@ hrModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfig
     operate.deleteModal = $modal({
         title: "删除提示",
         content: "你确定要删除此节点数据吗?",
-        templateUrl:leeHelper.modalTplUrl.deleteModalUrl,
+        templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
         controller: function ($scope) {
             $scope.confirmDelete = function () {
-                hrBaseInfoService.saveConfigDicData(departmentDto,oldDepartmentDto, 'delete').then(function (opresult) {
-                    if (opresult.Result)
-                    {
+                sysConfigService.saveConfigDicData(departmentDto, oldDepartmentDto, 'delete').then(function (opresult) {
+                    if (opresult.Result) {
                         operate.deleteModal.$promise.then(operate.deleteModal.hide);
                         leeTreeHelper.removeNode(departmentTreeSet.treeId, departmentTreeSet.treeNode);
                         operate.refresh();
@@ -156,37 +155,37 @@ hrModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfig
     });
     var pHelper = {
         clearVM: function () {
-            leeHelper.clearVM(departmentDto,['ModuleName', 'AboutCategory', 'TreeModuleKey']);
+            leeHelper.clearVM(departmentDto, ['ModuleName', 'AboutCategory', 'TreeModuleKey']);
         },
     };
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
         departmentDto = _.clone(departmentTreeSet.treeNode.vm);
-        departmentDto.ModuleName = "HrBaseInfoManage";
-        departmentDto.AboutCategory = "HrDepartmentSet";
+        departmentDto.ModuleName = "smconfigManage";
+        departmentDto.AboutCategory = "smDepartmentSet";
         oldDepartmentDto = _.clone(departmentDto);
         $scope.vm = departmentDto;
     };
     $scope.ztree = departmentTreeSet;
 
-    $scope.promise = hrBaseInfoService.getConfigDicData(departmentDto.TreeModuleKey).then(function (datas) {
+    $scope.promise = sysConfigService.getConfigDicData(departmentDto.TreeModuleKey).then(function (datas) {
         departmentTreeSet.setTreeDataset(datas);
     });
 })
-hrModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConfigTreeSet, hrBaseInfoService) {
+smModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConfigTreeSet, sysConfigService) {
     var configDto = {
         TreeModuleKey: 'CommonConfigDataSet',
-        ModuleName:null,
+        ModuleName: null,
         DataNodeName: null,
         DataNodeText: null,
         ParentDataNodeText: null,
         IsHasChildren: 0,
         AtLevel: 0,
-        AboutCategory:null,
+        AboutCategory: null,
         Icon: null,
         DisplayOrder: 0,
         Memo: null,
-        HasChildren:false
+        HasChildren: false
     };
     var oldConfigDto = _.clone(configDto);
 
@@ -220,7 +219,7 @@ hrModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConf
 
     var saveDataDicNode = function (isValid, opType, opNodeType) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            hrBaseInfoService.saveConfigDicData(configDto, oldConfigDto, opType).then(function (opresult) {
+            sysConfigService.saveConfigDicData(configDto, oldConfigDto, opType).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
                         var vm = _.clone($scope.vm);
@@ -271,12 +270,11 @@ hrModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConf
     operate.deleteModal = $modal({
         title: "删除提示",
         content: "你确定要删除此节点数据吗?",
-        templateUrl:leeHelper.modalTplUrl.deleteModalUrl,
+        templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
         controller: function ($scope) {
             $scope.confirmDelete = function () {
-                hrBaseInfoService.saveConfigDicData(configDto, oldConfigDto, 'delete').then(function (opresult) {
-                    if (opresult.Result)
-                    {
+                sysConfigService.saveConfigDicData(configDto, oldConfigDto, 'delete').then(function (opresult) {
+                    if (opresult.Result) {
                         operate.deleteModal.$promise.then(operate.deleteModal.hide);
                         leeTreeHelper.removeNode(commonConfigTreeSet.treeId, commonConfigTreeSet.treeNode);
                         operate.refresh();
@@ -287,7 +285,7 @@ hrModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConf
         show: false,
     });
 
-    var commonConfigTreeSet =dataDicConfigTreeSet.getTreeSet('commonConfigTree', '数据配置字典');
+    var commonConfigTreeSet = dataDicConfigTreeSet.getTreeSet('commonConfigTree', '数据配置字典');
     commonConfigTreeSet.bindNodeToVm = function () {
         configDto = _.clone(commonConfigTreeSet.treeNode.vm);
         oldConfigDto = _.clone(configDto);
@@ -295,7 +293,7 @@ hrModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConf
     };
     $scope.ztree = commonConfigTreeSet;
 
-    $scope.promise = hrBaseInfoService.getConfigDicData(configDto.TreeModuleKey).then(function (datas) {
+    $scope.promise = sysConfigService.getConfigDicData(configDto.TreeModuleKey).then(function (datas) {
         commonConfigTreeSet.setTreeDataset(datas);
     });
 })

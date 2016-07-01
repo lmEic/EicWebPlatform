@@ -6,7 +6,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
 
-    var urlPrefix = leeHelper.controllers.Equipment + "/";
+    var urlPrefix = leeHelper.controllers.equipment + "/";
 
     $stateProvider.state('astArchiveInput', {
         templateUrl: urlPrefix + 'AstArchiveInput',
