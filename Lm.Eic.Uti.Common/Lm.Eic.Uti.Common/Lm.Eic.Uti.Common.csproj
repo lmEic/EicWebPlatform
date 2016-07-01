@@ -37,7 +37,7 @@
     <Reference Include="Interop.Excel, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\libs\Interop.Excel.dll</HintPath>
+      <HintPath>bin\Debug\Interop.Excel.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>..\..\libs\NPOI.dll</HintPath>
