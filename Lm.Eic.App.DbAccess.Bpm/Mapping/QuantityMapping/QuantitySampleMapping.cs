@@ -13,19 +13,30 @@ using Lm.Eic.App.DomainModel.Bpm.Quanity;
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
 {
     /// <summary>
-    /// 实体应射到Model上
+    /// 抽样记录
     /// </summary>
-    public class IQCSampleMapping : EntityTypeConfiguration<IQCSampleRecordModel>
+    public class IQCSampleRecordMapping : EntityTypeConfiguration<IQCSampleRecordModel>
     {
-       public  IQCSampleMapping()
+       public  IQCSampleRecordMapping()
        {
            this.HasKey(t => t.Id_key );
            this.Property(t => t.Id_key ).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-           this.ToTable("IQCSampleRecordTable");
+           this.ToTable("QCMS_IQCSampleRecordTable");
        }
     }
 
-
+    /// <summary>
+    /// 抽样项次打印
+    /// </summary>
+    public class IQCSamplePrintItemsRecordMapping : EntityTypeConfiguration<IQCSampleItemRecordModel>
+    {
+        public IQCSamplePrintItemsRecordMapping()
+        {
+            this.HasKey(t => t.Id_key);
+            this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("QCMS_IQCPrintSampleTable");
+        }
+    }
 
   
 }
