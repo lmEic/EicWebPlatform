@@ -98,8 +98,10 @@ var leeHelper = (function () {
         treeSelectTplUrl: '/CommonTpl/TreeSelectTpl',
     };
     var controllerNames = {
-        Equipment: 'Equipment',
-
+        equipment: 'Equipment',
+        systemManage: 'EicSystemManage',
+        configManage: 'SysConfig',
+        itilManage:'SysITIL'
     };
     return {
         ///控制器名称

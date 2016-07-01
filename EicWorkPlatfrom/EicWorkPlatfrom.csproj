@@ -138,12 +138,12 @@
     <Compile Include="Controllers\BusinessController.cs" />
     <Compile Include="Controllers\DevelopmentController.cs" />
     <Compile Include="Controllers\BaseController\EicBaseController.cs" />
+    <Compile Include="Controllers\SystemManage\EicSystemManageController.cs" />
     <Compile Include="Controllers\Equipment\EquipmentController.cs" />
     <Compile Include="Controllers\FinanceController.cs" />
     <Compile Include="Controllers\Account\HomeController.cs" />
     <Compile Include="Controllers\Hr\HrArchivesManageController.cs" />
     <Compile Include="Controllers\Hr\HrAttendanceManageController.cs" />
-    <Compile Include="Controllers\Hr\HrBaseInfoManageController.cs" />
     <Compile Include="Controllers\Hr\HRController.cs" />
     <Compile Include="Controllers\CommonTplController.cs" />
     <Compile Include="Controllers\Product\DailyReportController.cs" />
@@ -151,11 +151,12 @@
     <Compile Include="Controllers\Product\ProEmployeeController.cs" />
     <Compile Include="Controllers\PurchaseController.cs" />
     <Compile Include="Controllers\Product\ShippingController.cs" />
+    <Compile Include="Controllers\SystemManage\SysConfigController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\ITILController.cs" />
+    <Compile Include="Controllers\SystemManage\SysITILController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -359,17 +360,18 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\common\angulee.js" />
     <Content Include="Scripts\common\commDirective.js" />
-    <Content Include="Scripts\controller\account\accountApp.js" />
     <Content Include="Scripts\controller\ast\equipmentApp.js" />
     <Content Include="Scripts\controller\home\homeApp.js" />
     <Content Include="Scripts\controller\account\loginApp.js" />
     <Content Include="Scripts\controller\hr\hrApp.js" />
-    <Content Include="Scripts\controller\hr\hrBaseInfoManage.js" />
-    <Content Include="Scripts\controller\itil\itilApp.js" />
+    <Content Include="Scripts\controller\sysmanage\sysAccountManage.js" />
+    <Content Include="Scripts\controller\sysmanage\sysItilManage.js" />
     <Content Include="Scripts\controller\masterProduct\mpconfigApp.js" />
     <Content Include="Scripts\controller\product\productApp.js" />
     <Content Include="Scripts\controller\purchaseApp.js" />
     <Content Include="Scripts\controller\shippingApp.js" />
+    <Content Include="Scripts\controller\sysmanage\sysConfigManage.js" />
+    <Content Include="Scripts\controller\sysmanage\sysmanageApp.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
@@ -1216,8 +1218,6 @@
     <Content Include="Views\ProEmployee\ProStationManage.cshtml" />
     <Content Include="Views\ProEmployee\ProClassManage.cshtml" />
     <Content Include="Views\ProEmployee\WorkHoursManage.cshtml" />
-    <Content Include="Views\HrBaseInfoManage\HrDepartmentSet.cshtml" />
-    <Content Include="Views\HrBaseInfoManage\HrCommonDataSet.cshtml" />
     <Content Include="Views\HrArchivesManage\HrEmployeeDataInput.cshtml" />
     <Content Include="Views\CommonTpl\InfoMsgModalTpl.cshtml" />
     <Content Include="Views\CommonTpl\DeleteModalTpl.cshtml" />
@@ -1243,9 +1243,11 @@
     <Content Include="Views\Account\AssignModuleToRole.cshtml" />
     <Content Include="Views\Account\AssignRoleToUser.cshtml" />
     <Content Include="Views\HrArchivesManage\HrPrintWorkerCard.cshtml" />
-    <Content Include="Views\ITIL\Index.cshtml" />
-    <Content Include="Views\ITIL\ItilSupTelManage.cshtml" />
+    <Content Include="Views\SysITIL\ItilSupTelManage.cshtml" />
     <Content Include="Views\Equipment\AstArchiveInput.cshtml" />
+    <Content Include="Views\EicSystemManage\Index.cshtml" />
+    <Content Include="Views\SysConfig\HrDepartmentSet.cshtml" />
+    <Content Include="Views\SysConfig\HrCommonDataSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

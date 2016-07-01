@@ -5,16 +5,8 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
-
-    $stateProvider.state('standardHoursConfig', {
-        templateUrl: 'DailyReport/StandardHoursConfig',
-
-    }).state('proStationConfig', {
-        templateUrl: 'DailyReport/ProStationConfig',
-
-    })
     //--------------人员管理--------------------------
-    .state('workerInfoManage', {
+    $stateProvider.state('workerInfoManage', {
         templateUrl: 'ProEmployee/WorkerInfoManage'
 
     }).state('proStationManage', {
@@ -25,15 +17,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
 
     }).state('workHoursManage', {
         templateUrl: 'ProEmployee/WorkHoursManage'
-    })
-    //--------------基本配置管理--------------------------
-    .state('hrDepartmentSet', {
-        templateUrl: 'HrBaseInfoManage/HrDepartmentSet',
-
-    })
-    .state('hrCommonDataSet', {
-        templateUrl: 'HrBaseInfoManage/HrCommonDataSet',
-
     })
     //--------------员工档案管理--------------------------
      .state('hrEmployeeDataInput', {
