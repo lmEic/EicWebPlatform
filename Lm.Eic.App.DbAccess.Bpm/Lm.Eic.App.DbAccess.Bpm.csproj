@@ -42,6 +42,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libs\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -60,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Fakes Include="Fakes\EntityFramework.fakes" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.App.DomainModel.Bpm\Lm.Eic.App.DomainModel.Bpm.csproj">
