@@ -32,28 +32,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
-      <HintPath>..\..\libs\Autofac.dll</HintPath>
+      <HintPath>\\192.168.0.65\svn\周转文件夹\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\libs\AutoMapper.dll</HintPath>
+      <HintPath>\\192.168.0.65\svn\周转文件夹\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper.Net4">
-      <HintPath>..\..\libs\AutoMapper.Net4.dll</HintPath>
+      <HintPath>\\192.168.0.65\svn\周转文件夹\AutoMapper.Net4.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\libs\EntityFramework.dll</HintPath>
+      <HintPath>\\192.168.0.65\svn\周转文件夹\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\libs\EntityFramework.Extended.dll</HintPath>
+      <HintPath>\\192.168.0.65\svn\周转文件夹\EntityFramework.Extended.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\libs\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>\\192.168.0.65\svn\周转文件夹\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\..\libs\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>\\192.168.0.65\svn\周转文件夹\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\libs\Microsoft.QualityTools.Testing.Fakes.dll</HintPath>
@@ -63,15 +63,15 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.97.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\libs\System.Data.SQLite.dll</HintPath>
+      <HintPath>\\192.168.0.65\svn\周转文件夹\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.SQLite.EF6, Version=1.0.97.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\libs\System.Data.SQLite.EF6.dll</HintPath>
+      <HintPath>\\192.168.0.65\svn\周转文件夹\System.Data.SQLite.EF6.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.97.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <Private>True</Private>
-      <HintPath>..\..\libs\System.Data.SQLite.Linq.dll</HintPath>
+      <HintPath>\\192.168.0.65\svn\周转文件夹\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
