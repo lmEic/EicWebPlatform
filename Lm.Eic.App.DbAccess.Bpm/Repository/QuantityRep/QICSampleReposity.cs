@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
+namespace Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep
 {
-  public static  class QuantityService
+  public   class QICSampleReposity
     {
     }
 }
