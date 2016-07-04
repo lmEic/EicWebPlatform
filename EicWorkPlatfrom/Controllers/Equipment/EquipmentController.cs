@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
+using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -22,7 +23,15 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        [NoAuthenCheck]
+        public JsonResult GetAstInputConfigDatas()
+        {
+            var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
+            var configData = new { departments = departments };
+            return Json(configData, JsonRequestBehavior.AllowGet);
+        }
 
+        [NoAuthenCheck]
         public FileResult ExportToExcel()
         {
             List<DDD> datas = new List<DDD>() { 
