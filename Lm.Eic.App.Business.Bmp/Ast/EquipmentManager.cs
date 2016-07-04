@@ -52,7 +52,12 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             irep = new EquipmentRepository();
         }
 
-        public int ChangeStorage(EquipmentModel model, int OpSign)
+        public int ChangeStorage(List<EquipmentModel> listModel, int operationMode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int ChangeStorage(EquipmentModel model, int operationMode)
         {
             throw new NotImplementedException();
         }
