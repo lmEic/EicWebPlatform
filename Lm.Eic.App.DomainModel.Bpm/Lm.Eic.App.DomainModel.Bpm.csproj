@@ -43,6 +43,7 @@
     <Compile Include="Hrm\Archives\ArchivesIdentityModel.cs" />
     <Compile Include="Hrm\Attendance\AttendClassTypeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quanity\QuantitySampleRecordModel.cs" />
     <Compile Include="Quanity\ProductNgRecord\ProductNgRecordModel.cs" />
   </ItemGroup>
   <ItemGroup />
