@@ -32,9 +32,9 @@ smModule.factory('accountService', function ($http,$q) {
             role: vm
         });
     };
-    account.addUser = function (uservm) {
+    account.addUser = function (user) {
         return postData(urlPrefix + 'AddUser', {
-            user: uservm
+            user: user
         });
     };
     account.findUserById = function (userId) {
@@ -222,6 +222,8 @@ smModule.controller('registUserCtrl', function ($scope, accountService) {
         userId: null,
         password: null
     };
+    $scope.vm = registvm;
+
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.Business.Mes.Optical.Authen;
-using Lm.Eic.Framework.ProductMaster.Business.Config;
 using Lm.Eic.Framework.Authenticate.Business;
 using Lm.Eic.Framework.Authenticate.Model;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
@@ -37,7 +36,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             var currentWorker = workers.FirstOrDefault(e => e.WorkerId == currentUser.UserId);
             if (currentWorker != null)
                 currentUser.Department = currentWorker.Department;
-            var departments = PmConfigService.DataDicManager.FindConfigDatasBy("Organization");
+            var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
             var roles = AuthenService.RoleManager.Roles.Where(e => e.RoleLevel > currentUser.Role.RoleLevel);
             var datas = new {user=currentUser, workers = workers, departments = departments, roles = roles };
             return Json(datas, JsonRequestBehavior.AllowGet);
