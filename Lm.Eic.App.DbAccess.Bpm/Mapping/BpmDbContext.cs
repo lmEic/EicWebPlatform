@@ -20,8 +20,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             Database.SetInitializer<BpmDbContext>(null);
         }
 
-
-
         public DbSet<EquipmentModel> Equipment { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

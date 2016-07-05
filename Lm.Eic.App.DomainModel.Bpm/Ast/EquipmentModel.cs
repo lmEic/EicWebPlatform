@@ -69,6 +69,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _equipmentphoto = value; }
             get { return _equipmentphoto; }
         }
+        private string _assettype;
+        /// <summary>
+        ///资产类别
+        /// </summary>
+        public string AssetType
+        {
+            set { _assettype = value; }
+            get { return _assettype; }
+        }
         private string _equipmenttype;
         /// <summary>
         ///设备类别
@@ -77,6 +86,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         {
             set { _equipmenttype = value; }
             get { return _equipmenttype; }
+        }
+        private string _taxtype;
+        /// <summary>
+        ///税务类别
+        /// </summary>
+        public string TaxType
+        {
+            set { _taxtype = value; }
+            get { return _taxtype; }
         }
         private string _unit;
         /// <summary>
@@ -141,11 +159,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _addmode = value; }
             get { return _addmode; }
         }
-        private DateTime _deliverydate;
+        private DateTime? _deliverydate;
         /// <summary>
         ///购入日期
         /// </summary>
-        public DateTime DeliveryDate
+        public DateTime? DeliveryDate
         {
             set { _deliverydate = value; }
             get { return _deliverydate; }
@@ -168,6 +186,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _deliverycheckuser = value; }
             get { return _deliverycheckuser; }
         }
+        private string _safekeepworkerid;
+        /// <summary>
+        ///保管人工号
+        /// </summary>
+        public string SafekeepWorkerID
+        {
+            set { _safekeepworkerid = value; }
+            get { return _safekeepworkerid; }
+        }
         private string _safekeepuser;
         /// <summary>
         ///保管人
@@ -179,7 +206,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         }
         private string _safekeepdepartment;
         /// <summary>
-        ///保管部门
+        ///保管单位
         /// </summary>
         public string SafekeepDepartment
         {
@@ -204,11 +231,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _ismaintenance = value; }
             get { return _ismaintenance; }
         }
-        private DateTime _maintenancedate;
+        private DateTime? _maintenancedate;
         /// <summary>
         ///保养日期
         /// </summary>
-        public DateTime MaintenanceDate
+        public DateTime? MaintenanceDate
         {
             set { _maintenancedate = value; }
             get { return _maintenancedate; }
@@ -222,11 +249,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _maintenanceinterval = value; }
             get { return _maintenanceinterval; }
         }
-        private DateTime _plannedmaintenancedate;
+        private DateTime? _plannedmaintenancedate;
         /// <summary>
         ///计划保养日期
         /// </summary>
-        public DateTime PlannedMaintenanceDate
+        public DateTime? PlannedMaintenanceDate
         {
             set { _plannedmaintenancedate = value; }
             get { return _plannedmaintenancedate; }
@@ -258,11 +285,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _ischeck = value; }
             get { return _ischeck; }
         }
-        private DateTime _checkdate;
+        private DateTime? _checkdate;
         /// <summary>
         ///校验日期
         /// </summary>
-        public DateTime CheckDate
+        public DateTime? CheckDate
         {
             set { _checkdate = value; }
             get { return _checkdate; }
@@ -276,11 +303,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _checkinterval = value; }
             get { return _checkinterval; }
         }
-        private DateTime _plannedcheckdate;
+        private DateTime? _plannedcheckdate;
         /// <summary>
         ///计划校验日期
         /// </summary>
-        public DateTime PlannedCheckDate
+        public DateTime? PlannedCheckDate
         {
             set { _plannedcheckdate = value; }
             get { return _plannedcheckdate; }
@@ -305,7 +332,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         }
         private string _opsign;
         /// <summary>
-        ///操作
+        ///操作标志
         /// </summary>
         public string OpSign
         {
@@ -323,6 +350,4 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         }
         #endregion Model
     }
-
 }
-

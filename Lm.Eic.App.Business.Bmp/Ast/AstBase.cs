@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
- public   class AstBase
+    public class AstBase
     {
+
     }
 }

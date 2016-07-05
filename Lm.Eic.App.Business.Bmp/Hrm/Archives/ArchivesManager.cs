@@ -9,6 +9,7 @@ using Lm.Eic.Framework.ProductMaster.DbAccess.Repository;
 using Lm.Eic.Framework.ProductMaster.Business.Config;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Framework.ProductMaster.Model;
 using Lm.Eic.App.Business.Bmp.Hrm.Attendance;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
@@ -367,7 +368,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             else if (searchMode == 2)
             {
-                sqlWhere = string.Format("WorkerId='{0}' And WorkingStatus='在职'", qryDto.WorkerId);
+                if (qryDto.WorkerId.IsNumber()) //如果为数字按工号查询 否则按姓名查询
+                    sqlWhere = string.Format("WorkerId='{0}' And WorkingStatus='在职'", qryDto.WorkerId);
+                else
+                    sqlWhere = string.Format("Name='{0}' And WorkingStatus='在职'", qryDto.WorkerId);
             }
             else if (searchMode == 3)
             {

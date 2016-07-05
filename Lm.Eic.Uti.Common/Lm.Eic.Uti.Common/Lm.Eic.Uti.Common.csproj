@@ -66,6 +66,7 @@
     <Compile Include="YleeExcelHanlder\NPOIHelper.cs" />
     <Compile Include="YleeExtension\Conversion\BaseTypeExtension.cs" />
     <Compile Include="YleeExtension\FileOperation\FileOperationExtension.cs" />
+    <Compile Include="YleeExtension\Validation\BaseValidationExtension.cs" />
     <Compile Include="YleeFtp\FtpConnectPassport.cs" />
     <Compile Include="YleeFtp\FtpOperator.cs" />
     <Compile Include="YleeFtp\FtpOpreateDirectoryPath.cs" />
