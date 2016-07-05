@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
-    class AstService
+    public class AstService
     {
-          //123456
+        /// <summary>
+        /// 设备管理器
+        /// </summary>
+        public static EquipmentManager EquipmentManager
+        {
+            get { return OBulider.BuildInstance<EquipmentManager>(); }
+        }
     }
 }

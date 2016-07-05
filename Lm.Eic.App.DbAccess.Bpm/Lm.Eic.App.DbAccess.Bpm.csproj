@@ -30,17 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\libs\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework">
+      <HintPath>\\192.168.0.65\svn\周转文件夹\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\libs\EntityFramework.Extended.dll</HintPath>
+    <Reference Include="EntityFramework.Extended">
+      <HintPath>\\192.168.0.65\svn\周转文件夹\EntityFramework.Extended.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\libs\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>\\192.168.0.65\svn\周转文件夹\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,12 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mapping\BpmDbContext.cs" />
+    <Compile Include="Mapping\AstMapping\EquipmentMapping.cs" />
     <Compile Include="Mapping\HrmMapping\ArchivesMapping.cs" />
     <Compile Include="Mapping\HrmMapping\AttendanceMapping.cs" />
     <Compile Include="Mapping\HrmMapping\HrmDbContext.cs" />
+    <Compile Include="Mapping\QuantityMapping\QuantityDbContext.cs" />
+    <Compile Include="Mapping\QuantityMapping\QuantitySampleMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AstRep\IEquipmentRepository.cs" />
     <Compile Include="Repository\HrmRep\Archives\ArchivesIdentityRepository.cs" />
     <Compile Include="Repository\HrmRep\Attendance\AttendClassTypeRepository.cs" />
+    <Compile Include="Repository\QuantityRep\QICSampleReposity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -74,10 +77,6 @@
       <Project>{35fa689a-9ef7-4944-8a6e-0cf9f2cacdde}</Project>
       <Name>Lm.Eic.Uti.Common</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mapping\QuantityMapping\" />
-    <Folder Include="Repository\QuantityRep\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
