@@ -62,7 +62,10 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
         /// <summary>
         /// 是否为奇数
         /// </summary>
-        public static bool IsEven(this int value) => (value % 2 == 0) ? true : false;
+        public static bool IsEven(this int value)
+        {
+            return (value % 2 == 0) ? true : false;
+        }
         #endregion
 
 
