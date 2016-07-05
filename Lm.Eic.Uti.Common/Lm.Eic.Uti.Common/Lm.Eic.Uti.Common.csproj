@@ -32,24 +32,24 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>\\192.168.0.65\svn\周转文件夹\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>..\..\libs\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Interop.Excel, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>\\192.168.0.65\svn\周转文件夹\Interop.Excel.dll</HintPath>
+      <HintPath>bin\Debug\Interop.Excel.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
-      <HintPath>\\192.168.0.65\svn\周转文件夹\NPOI.dll</HintPath>
+      <HintPath>..\..\libs\NPOI.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.OOXML">
-      <HintPath>\\192.168.0.65\svn\周转文件夹\NPOI.OOXML.dll</HintPath>
+      <HintPath>..\..\libs\NPOI.OOXML.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.OpenXml4Net">
-      <HintPath>\\192.168.0.65\svn\周转文件夹\NPOI.OpenXml4Net.dll</HintPath>
+      <HintPath>..\..\libs\NPOI.OpenXml4Net.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.OpenXmlFormats">
-      <HintPath>\\192.168.0.65\svn\周转文件夹\NPOI.OpenXmlFormats.dll</HintPath>
+      <HintPath>..\..\libs\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
