@@ -174,6 +174,10 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         equUnits: [{ id: 0, text: '台' }, { id: 1, text: '个' }],
         departments: [],
         workerId: '',
+        getEquipmentID: function () {
+            uiVM.AssetNumber = uiVM.TaxType;
+            //alert("1230");
+        },
         getWorkerName: function () { },
 
     };

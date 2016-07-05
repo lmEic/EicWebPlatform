@@ -41,7 +41,7 @@
                             <div class="form-group">
                                 <label for="taxType" class="col-md-2 control-label">税务类别</label>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-default" ng-model="vm.TaxType" data-html="1" data-multiple="0"
+                                    <button type="button" class="btn btn-default" ng-model="vm.TaxType"  ng-change="vmManager.getEquipmentID()" data-html="1" data-multiple="0"
                                             data-animation="am-flip-x" data-placeholder="请选择税务类别"
                                             bs-options="item.text as item.text for item in vmManager.taxTypes" bs-select>
                                         <span class="caret"></span>

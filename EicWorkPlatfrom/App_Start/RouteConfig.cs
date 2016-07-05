@@ -12,7 +12,7 @@ namespace EicWorkPlatfrom
 
         static AuthenCheckManager()
         {
-            IsCheck = true;
+            IsCheck = false;
         }
 
         /// <summary>
