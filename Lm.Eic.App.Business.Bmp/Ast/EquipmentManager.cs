@@ -50,9 +50,11 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                     assetNumber_1 = taxType == "保税" ? "I" : "E";
                 }
                 assetNumber_4 = equipmentType == "生产设备" ? "9" : "0";
-                var temEntitylist = irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith($"{assetNumber_1}{assetNumber_2_3}{assetNumber_4}"));
+                string temAssetNumber = string.Format("{0}{1}{2}", assetNumber_1, assetNumber_2_3, assetNumber_4);
+                var temEntitylist = irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(temAssetNumber));
                 assetNumber_5_7 = (temEntitylist?.Count + 1)?.ToString("000");
-                return assetNumber_5_7.IsNullOrEmpty() ? "" : $"{ assetNumber_1}{ assetNumber_2_3}{ assetNumber_4}{ assetNumber_5_7} ";
+                return assetNumber_5_7.IsNullOrEmpty() ? "" : string.Format("{0}{1}{2}{3}", assetNumber_1, assetNumber_2_3, assetNumber_4, assetNumber_5_7);
+            
             }
             catch (Exception ex)
             {
