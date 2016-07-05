@@ -33,7 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             /*设备编码共七码
               第一位：     类别码，保税设备为I、非保税设备为E、低质易耗品为Z ' PS如果冲突以设备类别为主。
               第二、三位： 年度码，例2016年记为16。
-              第四位：     设备代码，生产设备为9，显示其它数字为量测设备。
+              第四位：     设备代码，生产设备为9，显示其它数字为量测设备。  
               后三位：     编号码。   */
             string assetNumber_1 = string.Empty,
                 assetNumber_2_3 = DateTime.Now.Date.ToString("yy"),
