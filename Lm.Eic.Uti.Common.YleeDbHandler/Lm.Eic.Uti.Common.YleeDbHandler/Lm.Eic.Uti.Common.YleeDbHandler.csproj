@@ -31,26 +31,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>\\192.168.0.65\svn\周转文件夹\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EicWorkPlatfrom\bin\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper">
-      <HintPath>\\192.168.0.65\svn\周转文件夹\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=3.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EicWorkPlatfrom\bin\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper.Net4">
-      <HintPath>\\192.168.0.65\svn\周转文件夹\AutoMapper.Net4.dll</HintPath>
+    <Reference Include="AutoMapper.Net4, Version=3.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EicWorkPlatfrom\bin\AutoMapper.Net4.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\192.168.0.65\svn\周转文件夹\EntityFramework.dll</HintPath>
+      <HintPath>..\..\EicWorkPlatfrom\bin\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\192.168.0.65\svn\周转文件夹\EntityFramework.Extended.dll</HintPath>
+      <HintPath>..\..\EicWorkPlatfrom\bin\EntityFramework.Extended.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\192.168.0.65\svn\周转文件夹\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\..\EicWorkPlatfrom\bin\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
