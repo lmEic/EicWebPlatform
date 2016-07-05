@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Lm.Eic.Uti.Common.YleeExtension.Validation
 {
+    //
     public static class BaseValidationExtension
     {
 
