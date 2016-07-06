@@ -21,7 +21,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             model.EquipmentName = "Test1";
            // model.Id_Key = 4;
 
-
+             //修改
             //var ttt = tem.ChangeStorage(model, 1);
 
             string i = tem.BuildAssetNumber("生产设备", "固定资产", "保税");

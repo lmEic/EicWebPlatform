@@ -66,6 +66,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Ast\Class1.cs" />
     <Compile Include="Ast\EquipmentManagerTests.cs" />
     <Compile Include="Hrm\Archives\ArchivesManagerTests.cs" />
     <Compile Include="Hrm\Attendance\AttendSlodFingerDataCurrentMonthHandlerTests.cs" />
