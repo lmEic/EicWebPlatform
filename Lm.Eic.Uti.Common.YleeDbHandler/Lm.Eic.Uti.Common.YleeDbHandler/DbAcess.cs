@@ -11,7 +11,7 @@ using System.Reflection;
 namespace Lm.Eic.Uti.Common.YleeDbHandler
 {
     /// <summary>
-    /// Db访问助手
+    /// Db访问助手 
     /// </summary>
     public class DbAcess
     {
