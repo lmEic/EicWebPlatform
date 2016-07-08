@@ -9,6 +9,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 {
     public class EquipmentCheckManager
     {
+      
         private IEquipmentCheckRepository irep = null;
         private EquipmentManager equipmentManager = null;
 
@@ -49,7 +50,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="listModel">模型</param>
         /// <param name="operationMode">操作模式 1.新增 2.修改 3.删除</param>
         /// <returns></returns>
-        public OpResult ChangeRecord(EquipmentCheckModel model, int operationMode)
+        public OpResult Store(EquipmentCheckModel model, string opSign)
         {
             try
             {
@@ -61,32 +62,32 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 if (equipment == null)
                     return OpResult.SetResult("未找到校验单上的设备\r\n请确定财产编号是否正确！", false);
 
-                switch (operationMode)
+                switch (opSign)
                 {
-                    case 1: //新增
+                    case OpMode.Add: //新增
                         {
                             equipment.CheckDate = model.CheckData;
                             equipment.PlannedCheckDate = model.CheckData.AddDays(equipment.CheckInterval);
-                            if (!equipmentManager.ChangeRecord(equipment, 2).Result)
+                            if (!equipmentManager.Store(equipment, OpMode.Edit).Result)
                                 return OpResult.SetResult("更新设备校验日期时错误！", false);
-                            return OpResult.SetResult("增加校验记录成功", irep.Insert(model) > 0);
+                            return OpResult.SetResult("增加校验记录成功", irep.Insert(model) > 0,model.Id_Key);
                         }
-                    case 2: //修改
+                    case OpMode.Edit: //修改
                         {
                             equipment.CheckDate = model.CheckData;
                             equipment.PlannedCheckDate = model.CheckData.AddDays(equipment.CheckInterval);
-                            if (!equipmentManager.ChangeRecord(equipment, 2).Result)
+                            if (!equipmentManager.Store(equipment, OpMode.Edit).Result)
                                 return OpResult.SetResult("更新设备校验日期时错误！", false);
-                            return OpResult.SetResult("更新校验记录成功", irep.Update(u => u.Id_Key == model.Id_Key, model) > 0);
+                            return OpResult.SetResult("更新校验记录成功", irep.Update(u => u.Id_Key == model.Id_Key, model) > 0,model.Id_Key);
                         }
 
-                    case 3: //删除
+                    case OpMode.Delete: //删除
                         {
                             equipment.CheckDate = model.CheckData;
                             equipment.PlannedCheckDate = model.CheckData.AddDays(equipment.CheckInterval);
-                            if (!equipmentManager.ChangeRecord(equipment, 2).Result)
+                            if (!equipmentManager.Store(equipment, OpMode.Edit).Result)
                                 return OpResult.SetResult("更新设备校验日期时错误！", false);
-                            return OpResult.SetResult("校验记录删除成功", irep.Delete(model.Id_Key) > 0);
+                            return OpResult.SetResult("校验记录删除成功", irep.Delete(model.Id_Key) > 0,model.Id_Key);
                         }
                     default: return OpResult.SetResult("操作模式溢出", false);
                 }

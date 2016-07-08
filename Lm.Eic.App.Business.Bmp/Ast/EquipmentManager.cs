@@ -66,33 +66,33 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="listModel">模型</param>
         /// <param name="operationMode">操作模式 1.新增 2.修改 3.删除</param>
         /// <returns></returns>
-        public OpResult ChangeRecord(List<EquipmentModel> listModel, int operationMode)
+        public OpResult Store(List<EquipmentModel> listModel, string opSign)
         {
             try
             {
-                int i = 0;
-                switch (operationMode)
+                int record = 0;
+                switch (opSign)
                 {
-                    case 1: //新增
+                    case OpMode.Add: //新增
                         return OpResult.SetResult("添加成功！", "添加失败！", irep.Insert(listModel));
 
-                    case 2: //修改
-                        i = 0;
+                    case OpMode.Edit: //修改
+                        record = 0;
                         listModel.ForEach(model =>
                         {
                             if (irep.Update(u => u.Id_Key == model.Id_Key, model) > 0)
-                                i++;
+                                record++;
                         });
-                        return OpResult.SetResult("更新成功！", "更新失败！", i);
+                        return OpResult.SetResult("更新成功！", "更新失败！", record);
 
-                    case 3: //删除
-                        i = 0;
+                    case OpMode.Delete: //删除
+                        record = 0;
                         listModel.ForEach(model =>
                         {
                             if (irep.Delete(model.Id_Key) > 0)
-                                i++;
+                                record++;
                         });
-                        return OpResult.SetResult("删除成功！", "删除失败！", i);
+                        return OpResult.SetResult("删除成功！", "删除失败！", record);
 
                     default: return OpResult.SetResult("操作模式溢出！", false);
                 }
@@ -109,19 +109,19 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="listModel">模型</param>
         /// <param name="operationMode">操作模式 1.新增 2.修改 3.删除</param>
         /// <returns></returns>
-        public OpResult ChangeRecord(EquipmentModel model, int operationMode)
+        public OpResult Store(EquipmentModel model, string opSign)
         {
             try
             {
-                switch (operationMode)
+                switch (opSign)
                 {
-                    case 1: //新增
-                        return OpResult.SetResult("增加设备成功", irep.Insert(model) > 0);
+                    case OpMode.Add: //新增
+                        return OpResult.SetResult("增加设备成功", irep.Insert(model) > 0,model.Id_Key);
 
-                    case 2: //修改
+                    case OpMode.Edit: //修改
                         return OpResult.SetResult("修改设备成功", irep.Update(u => u.Id_Key == model.Id_Key, model) > 0);
 
-                    case 3: //删除
+                    case OpMode.Delete: //删除
                         return OpResult.SetResult("删除设备成功", irep.Delete(model.Id_Key) > 0);
 
                     default: return OpResult.SetResult("操作模式溢出", false);
