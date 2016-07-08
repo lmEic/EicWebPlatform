@@ -2,43 +2,46 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
 using System.Reflection;
+using System.Text;
 
 namespace Lm.Eic.Uti.Common.YleeDbHandler
 {
     /// <summary>
-    /// Db访问助手 
+    /// Db访问助手
     /// </summary>
     public class DbAcess
     {
         #region property
+
         /// <summary>
         /// 服务器IP
         /// </summary>
         public string ServerIP
         { get; set; }
+
         /// <summary>
         /// 数据库名称
         /// </summary>
         public string Database
         { get; set; }
+
         /// <summary>
         /// 访问密码
         /// </summary>
         public string Password
         { get; set; }
+
         /// <summary>
         /// 用户名称
         /// </summary>
         public string UserName
         { get; set; }
-        #endregion
+
+        #endregion property
 
         #region new
+
         public DbAcess(string serverIp, string database, string userName, string pwd)
         {
             this.ServerIP = serverIp;
@@ -52,9 +55,11 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             string MyConnStr = "Server='" + this.ServerIP + "';Database='" + this.Database + "';User ID='" + this.UserName + "';Password='" + this.Password + "';";
             return MyConnStr;
         }
-        #endregion
+
+        #endregion new
 
         #region LoadTable
+
         public DataTable LoadTable(string SqlText, SqlParameter[] sqlParameters)
         {
             DataTable Table = new DataTable();
@@ -88,9 +93,9 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             finally
             {
-               
             }
         }
+
         public DataTable LoadTable(string SqlText)
         {
             return LoadTable(SqlText, null);
@@ -108,11 +113,11 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="sqlText"></param>
         /// <returns></returns>
-        public List<TEntity> LoadEntities<TEntity>(string sqlText, SqlParameter[] sqlParameters) where TEntity : class ,new()
+        public List<TEntity> LoadEntities<TEntity>(string sqlText, SqlParameter[] sqlParameters) where TEntity : class, new()
         {
             List<TEntity> entities = new List<TEntity>();
             Type entityType = typeof(TEntity);
-      
+
             Dictionary<string, PropertyInfo> dic = new Dictionary<string, PropertyInfo>();
             foreach (PropertyInfo info in entityType.GetProperties())
             {
@@ -144,6 +149,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return entities;
         }
+
         private static TEntity ConvertReadToTEntity<TEntity>(Dictionary<string, PropertyInfo> dic, ref string columnName, IDataReader sreader) where TEntity : class, new()
         {
             TEntity t = new TEntity();
@@ -157,7 +163,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                     {
                         if (sreader.GetName(filedIndex).ToUpper() == columnName)
                         {
-                            attribute.Value.SetValue(t, CheckType(sreader[filedIndex],attribute.Value.PropertyType), null);
+                            attribute.Value.SetValue(t, CheckType(sreader[filedIndex], attribute.Value.PropertyType), null);
                             break;
                         }
                     }
@@ -166,6 +172,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return t;
         }
+
         /// <summary>
         /// 对可空类型进行判断转换(*要不然会报错)
         /// </summary>
@@ -183,6 +190,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return Convert.ChangeType(value, conversionType);
         }
+
         /// <summary>
         /// 判断指定对象是否是有效值
         /// </summary>
@@ -192,16 +200,18 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             return (obj == null || (obj is DBNull)) ? true : false;
         }
+
         /// <summary>
         /// 载入数据到泛型模型集合中,Sql语句中的字段名称必须与实体中的属性名称一致，才可转换
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="sqlText"></param>
         /// <returns></returns>
-        public List<TEntity> LoadEntities<TEntity>(string sqlText) where TEntity : class ,new()
+        public List<TEntity> LoadEntities<TEntity>(string sqlText) where TEntity : class, new()
         {
             return LoadEntities<TEntity>(sqlText, null);
         }
+
         /// <summary>
         /// SQL语句原生态查询，并转化为对应的实体，要求，查询字段与实体字段一一对应，不区分大小写
         /// </summary>
@@ -210,19 +220,20 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="appendSelectFiedls">选择字段</param>
         /// <param name="appendWhere">Where过滤条件,AppendWhere为null,则返回null;若为all，则选择所有，不进行过滤</param>
         /// <returns></returns>
-        public List<TEntity> FindAll<TEntity>(string tableName, string appendSelectFiedls, string appendWhere) where TEntity : class ,new()
+        public List<TEntity> FindAll<TEntity>(string tableName, string appendSelectFiedls, string appendWhere) where TEntity : class, new()
         {
             if (appendWhere == null) return new List<TEntity>();
             StringBuilder sql = new StringBuilder();
             sql.Append("Select ");
             sql.Append(appendSelectFiedls);
             sql.Append(" from ").Append(tableName).Append(" ");
-            if (appendWhere != null && appendWhere.ToLower ()!="all")
+            if (appendWhere != null && appendWhere.ToLower() != "all")
             {
                 sql.Append(appendWhere);
             }
             return LoadEntities<TEntity>(sql.ToString());
         }
+
         /// <summary>
         /// 载入某列数据集合列表
         /// </summary>
@@ -247,6 +258,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return dataList;
         }
+
         /// <summary>
         /// 载入指定表中的所有字段列信息
         /// </summary>
@@ -257,6 +269,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             string sqlText = string.Format("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS where Table_Name='{0}'", tableName);
             return LoadList(sqlText, "COLUMN_NAME");
         }
+
         public List<string> LoadTables(string databaseName)
         {
             string sqlText = string.Format("Select Table_Name from INFORMATION_SCHEMA.Tables Where Table_Catalog='{0}' Order By Table_Name", databaseName);
@@ -268,9 +281,11 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             string sqlText = string.Format("Select '" + tableName + "' as TableName, COLUMN_NAME as ColumnName,Data_Type as ColumnType  from INFORMATION_SCHEMA.Columns Where Table_Name='{0}'", tableName);
             return LoadEntities<TableColumnInfo>(sqlText);
         }
-        #endregion
+
+        #endregion LoadTable
 
         #region Fast Upload Data
+
         /// <summary>
         /// 返回数据库连接
         /// </summary>
@@ -288,6 +303,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 throw new Exception(ex.ToString());
             }
         }
+
         /// <summary>
         /// 根据查询Sql语句返回数据填充适配器
         /// </summary>
@@ -308,6 +324,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 throw new Exception(ex.ToString());
             }
         }
+
         private void BulkUpdataToServer(SqlConnection Conn, DataSet Ds, string DesTableName, int UpRowsCount)
         {
             Conn.Open();
@@ -321,13 +338,14 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             Conn.Close();
             Conn.Dispose();
         }
+
         /// <summary>
         /// 快速批量上传数据
         /// </summary>
         /// <param name="sqlDestination">目标表的Sql语句</param>
         /// <param name="entities">实体的属性要与目标表的字段名称及类型一致</param>
         /// <returns></returns>
-        public int FastUpdataTo<T>(string sqlDestination, List<T> entities) where T : class ,new()
+        public int FastUpdataTo<T>(string sqlDestination, List<T> entities) where T : class, new()
         {
             SqlDataAdapter myDataAdapter = this.GetSqlDataAdapter(sqlDestination);
             SqlConnection myConnection = myDataAdapter.SelectCommand.Connection;
@@ -362,7 +380,8 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return RecordCount;
         }
-        public int FastUpdataTo<T>(string sqlDestination, List<T> entities,out Exception exception) where T : class ,new()
+
+        public int FastUpdataTo<T>(string sqlDestination, List<T> entities, out Exception exception) where T : class, new()
         {
             exception = null;
             SqlDataAdapter myDataAdapter = this.GetSqlDataAdapter(sqlDestination);
@@ -398,6 +417,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return RecordCount;
         }
+
         /// <summary>
         /// 快速批量上传数据
         /// </summary>
@@ -405,7 +425,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="entities">实体的属性要与目标表的字段名称及类型一致</param>
         /// <param name="checkIsExist">检测记录是否存在的处理程序</param>
         /// <returns></returns>
-        public int FastUpdataTo<T>(string sqlDestination, List<T> entities,Func<T,bool> checkIsExist) where T : class ,new()
+        public int FastUpdataTo<T>(string sqlDestination, List<T> entities, Func<T, bool> checkIsExist) where T : class, new()
         {
             SqlDataAdapter myDataAdapter = this.GetSqlDataAdapter(sqlDestination);
             SqlConnection myConnection = myDataAdapter.SelectCommand.Connection;
@@ -443,6 +463,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return RecordCount;
         }
+
         /// <summary>
         /// 快速上批量传数据
         /// </summary>
@@ -450,7 +471,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="data">要上传的数据，字段名称要与Sql查询出来表的字段名称一样，但不要求类型一样</param>
         /// <param name="MapSRowToDRow">处理字段类型不一样的情况</param>
         /// <returns></returns>
-        public int FastUpdataTo(string sqlDestination,DataTable data,Action<DataRow,DataRow>MapSRowToDRow)
+        public int FastUpdataTo(string sqlDestination, DataTable data, Action<DataRow, DataRow> MapSRowToDRow)
         {
             SqlDataAdapter myDataAdapter = this.GetSqlDataAdapter(sqlDestination);
             SqlConnection myConnection = myDataAdapter.SelectCommand.Connection;
@@ -485,6 +506,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return RecordCount;
         }
+
         /// <summary>
         /// 快速批量上传数据
         /// </summary>
@@ -517,6 +539,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return RecordCount;
         }
+
         private void SetTentityToDataRow<T>(T entity, DataRow dr)
         {
             try
@@ -543,6 +566,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 throw new Exception(ex.ToString());
             }
         }
+
         private string GetTableNameFromSql(string sql)
         {
             int start = sql.ToUpper().IndexOf("FROM") + 4;
@@ -558,9 +582,11 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 return subsql;
             }
         }
-        #endregion
+
+        #endregion Fast Upload Data
 
         #region ExcuteNonQuery
+
         public int ExecuteNonQueryWithTransaction(string Sql1, string Sql2)
         {
             int Count = 0;
@@ -594,12 +620,12 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return Count;
         }
+
         public int ExecuteNonQuery(string Sql, SqlParameter[] sqlParas)
         {
             int count = 0;
             using (SqlConnection SqlConn = new SqlConnection(this.ConnStr()))
             {
-
                 try
                 {
                     using (SqlCommand cmd = new SqlCommand())
@@ -621,7 +647,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                             count = cmd.ExecuteNonQuery();
                         }
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -630,13 +655,13 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return count;
         }
-        public int ExecuteNonQuery(string Sql, SqlParameter[] sqlParas,out Exception exception)
+
+        public int ExecuteNonQuery(string Sql, SqlParameter[] sqlParas, out Exception exception)
         {
             int count = 0;
             exception = null;
             using (SqlConnection SqlConn = new SqlConnection(this.ConnStr()))
             {
-
                 try
                 {
                     using (SqlCommand cmd = new SqlCommand())
@@ -658,7 +683,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                             count = cmd.ExecuteNonQuery();
                         }
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -667,16 +691,20 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return count;
         }
+
         public int ExecuteNonQuery(string Sql)
         {
             return ExecuteNonQuery(Sql, null);
         }
-        public int ExecuteNonQuery(string Sql,out Exception exception)
+
+        public int ExecuteNonQuery(string Sql, out Exception exception)
         {
-            return ExecuteNonQuery(Sql, null,out exception);
+            return ExecuteNonQuery(Sql, null, out exception);
         }
-        #endregion
+
+        #endregion ExcuteNonQuery
     }
+
     /// <summary>
     /// 表的字段信息
     /// </summary>
@@ -688,6 +716,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// 字段名称
         /// </summary>
         public string ColumnName { get; set; }
+
         /// <summary>
         /// 字段类型
         /// </summary>

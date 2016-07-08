@@ -1,12 +1,8 @@
 ﻿using Lm.Eic.Uti.Common.YleeObjectBuilder;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Lm.Eic.Framework.ProductMaster.Business.Config
 {
-   public static class PmConfigService
+    public static class PmConfigService
     {
         /// <summary>
         /// 数据字典管理器
@@ -18,6 +14,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
                 return OBulider.BuildInstance<DataDictionaryManager>();
             }
         }
+
         /// <summary>
         /// 文件路径管理器
         /// </summary>

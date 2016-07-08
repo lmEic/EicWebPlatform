@@ -22,14 +22,14 @@
                             <label for="startLeaveDate" class="col-md-2 control-label">请假日期</label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                    <input name="startLeaveDate" type="date" class="form-control" ng-model="vm.StartLeaveDate" required data-format-date/>
+                                    <input name="startLeaveDate" type="date" class="form-control" ng-model="vm.StartLeaveDate" required data-format-date />
                                     <div class="error-messages" ng-messages="modalForm.startLeaveDate.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">请假日期不能为空</small>
                                     </div>
                                     <div class="input-group-addon">
                                         <label>-</label>
                                     </div>
-                                    <input name="endLeaveDate" type="date" class="form-control" ng-model="vm.EndLeaveDate" required  data-format-date/>
+                                    <input name="endLeaveDate" type="date" class="form-control" ng-model="vm.EndLeaveDate" required  data-format-date />
                                     <div class="error-messages" ng-messages="modalForm.endLeaveDate.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">结束日期不能为空</small>
                                     </div>
@@ -64,7 +64,7 @@
                             <div class="col-md-4">
                                 <div class="input-group">
                                     <input name="leaveTimeRegionStart" type="text" class="form-control" bs-timepicker data-time-format="HH:mm"
-                                           ng-model="vm.LeaveTimeRegionStart" required data-arrow-behavior="picker" data-format-time/>
+                                           ng-model="vm.LeaveTimeRegionStart" required data-arrow-behavior="picker" data-format-time />
                                     <div class="error-messages" ng-messages="modalForm.leaveTimeRegionStart.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">请假时段不能为空</small>
                                     </div>
@@ -72,7 +72,7 @@
                                         <label>-</label>
                                     </div>
                                     <input name="leaveTimeRegionEnd" type="text" class="form-control" bs-timepicker data-time-format="HH:mm"
-                                           ng-model="vm.LeaveTimeRegionEnd" required data-arrow-behavior="picker" data-format-time/>
+                                           ng-model="vm.LeaveTimeRegionEnd" required data-arrow-behavior="picker" data-format-time />
                                     <div class="error-messages" ng-messages="modalForm.leaveTimeRegionEnd.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">请假时段不能为空</small>
                                     </div>
@@ -83,7 +83,7 @@
                         <div class="form-group">
                             <label for="leaveMemo" class="col-md-2 control-label">备注</label>
                             <div class="col-md-4">
-                                <textarea rows="2" name="leaveMemo" class="form-control" ng-model="vm.LeaveMemo"/>
+                                <textarea rows="2" name="leaveMemo" class="form-control" ng-model="vm.LeaveMemo" />
                             </div>
                         </div>
                     </form>

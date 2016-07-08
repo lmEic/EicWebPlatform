@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Lm.Eic.Framework.Authenticate.Model;
 using Lm.Eic.Framework.Authenticate.Repository.Mapping;
 using Lm.Eic.Uti.Common.YleeDbHandler;
-using Lm.Eic.Framework.Authenticate.Model;
+using System.Linq;
 
 namespace Lm.Eic.Framework.Authenticate.Repository
 {
@@ -13,6 +9,7 @@ namespace Lm.Eic.Framework.Authenticate.Repository
     {
         UserOrganizeModel GetUserOrganiseInfo(string workerId);
     }
+
     public class RegistUserRepository : AuthenRepositoryBase<RegistUserModel>, IRegistUserRepository
     {
         public UserOrganizeModel GetUserOrganiseInfo(string workerId)
@@ -31,7 +28,4 @@ namespace Lm.Eic.Framework.Authenticate.Repository
             return userOrganize;
         }
     }
-
-   
-
 }

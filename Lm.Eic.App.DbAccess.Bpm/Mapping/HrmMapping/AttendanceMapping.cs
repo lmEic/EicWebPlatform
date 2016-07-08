@@ -1,11 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
 {
@@ -34,6 +29,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             this.ToTable("Attendance_FingerPrintDataInTime");
         }
     }
+
     /// <summary>
     ///AttendSlodFingerDataCurrentMonthModel
     /// </summary>

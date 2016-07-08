@@ -3,18 +3,14 @@
 angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
 
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
-
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
     //--------------人员管理--------------------------
     $stateProvider.state('workerInfoManage', {
         templateUrl: 'ProEmployee/WorkerInfoManage'
-
     }).state('proStationManage', {
         templateUrl: 'ProEmployee/ProStationManage'
-
     }).state('proClassManage', {
         templateUrl: 'ProEmployee/ProClassManage'
-
     }).state('workHoursManage', {
         templateUrl: 'ProEmployee/WorkHoursManage'
     })
@@ -88,7 +84,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         return ajaxService.getData(url, {});
     };
 
-    
     ///获取请假配置信息
     hr.getLeaveTypesConfigs = function () {
         var url = attendUrl + "GetLeaveTypesConfigs";
@@ -306,7 +301,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         //{ name: 'certificate', text: '证书信息', defaultCls: defualtCls, iconCls: iconCls, isEdit: false },
     ];
 
-
     var archiveInput = {
         opSign:'add',
         //输入成功的员工档案数据信息
@@ -457,7 +451,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         },
     }
     $scope.configPromise = hrDataOpService.getArchiveConfigDatas().then(function (datas) {
-        
         archiveInput.configDatas = datas;
         archiveInput.workerIdCategories = createDataSource(datas, 'WorkerIdCategory', '工号类别');
         archiveInput.politicalStatus = createDataSource(datas, 'PoliticalStatus', "政治面貌");
@@ -480,7 +473,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         }
         return datasetRtn;
     };
-    
 
     var getDepartmentOrganization = function (department) {
         var organizations = [];
@@ -494,7 +486,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             else {
                 depItem = _.find(archiveInput.departments, { DataNodeText: depItem.ParentDataNodeText });
             }
-           
         }
         return organizations.join(',');
     };
@@ -603,7 +594,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
                     vmManager.workerIdList.push($scope.WorkerId);
                     $scope.WorkerId = null;
                 }
-              
             }
         }
     };
@@ -655,7 +645,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         vmManager.current.NowDepartment = treeNodeVm.DataNodeName;
         vmManager.current.opDescription = _.clone(vmManager.opDescription);
         vmManager.current.OpSign = _.clone(vmManager.opSign);
-       
     };
 
     $scope.ztree = departmentTreeSet;
@@ -675,7 +664,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     };
 })
 .controller('arPostChangeCtrl', function ($scope,hrDataOpService, dataDicConfigTreeSet, hrBaseInfoService) {
-
     //视图管理器
     var vmManager = {
         postNatures: [{ name: '直接', text: '直接' }, { name: '间接', text: '间接' }],
@@ -705,7 +693,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
                     vmManager.workerIdList.push($scope.WorkerId);
                     $scope.WorkerId = null;
                 }
-
             }
         }
     };
@@ -819,7 +806,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
                     vmManager.workerIdList.push($scope.WorkerId);
                     $scope.WorkerId = null;
                 }
-
             }
         }
     };
@@ -966,7 +952,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
                     vmManager.workerIdList.push($scope.WorkerId);
                     $scope.WorkerId = null;
                 }
-
             }
         }
     };
@@ -1107,7 +1092,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             var url = (item.PostNature === "直接") ? "../../Content/image/DirectCardTemplate.jpg" : "../../Content/image/IndirectCardTemplate.jpg";
             return url;
         }
-
     };
     $scope.vmManager = vmManager;
 })
@@ -1139,7 +1123,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         isSelect: false,
         selectedCls:''
     }
-
 
     var vmManager = {
         classTypes: [{ name: '白班', text: '白班' }, { name: '晚班', text: '晚班' }, { name: '', text: 'All' }, ],
@@ -1188,7 +1171,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             });
         },
     };
-   
+
     $scope.vmManager = vmManager;
 
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -1202,7 +1185,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             })
             vmManager.dataSets = _.clone(vmManager.dataSource);
         });
-
     };
 
     operate.preview = function () {
@@ -1225,7 +1207,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
                 item.selectedCls = "";
                 leeHelper.remove(vmManager.selectedWorkers, item);
             }
-
         }
     };
     operate.changeClass = function (isvalid) {
@@ -1269,7 +1250,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         ClassType: '白班'
     };
     $scope.vm = qryDto;
-
 
     var vmManager = {
         classTypes: [{ name: '白班', text: '白班' }, { name: '晚班', text: '晚班' }, { name: '', text: 'All' }, ],
@@ -1318,7 +1298,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             vmManager.dataSource = datas;
             vmManager.dataSets = _.clone(vmManager.dataSource);
         });
-
     };
 
     operate.preview = function () {
@@ -1446,8 +1425,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     var operate = Object.create(leeDataHandler.operateStatus);
     operate.vm = uiVM;
     $scope.operate = operate;
-    
- 
+
     operate.search = function () {
         $scope.workerPromise = hrDataOpService.getEmployeeByWorkerIds(vmManager.workerIdList, 0).then(function (data) {
             angular.forEach(data, function (item) {
@@ -1547,7 +1525,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             {
                 leeHelper.remove(rowItem.LeaveDataSet, item);
                 leeHelper.remove(vmManager.dbDataSet, item);
-               
             }
         }
         else if (opSign == 'handleEdit')

@@ -5,21 +5,16 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
 .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider.state('standardHoursConfig', {
         templateUrl: 'DailyReport/StandardHoursConfig',
-      
     }).state('proStationConfig', {
         templateUrl: 'DailyReport/ProStationConfig',
-
     })
     //--------------人员管理--------------------------
     .state('registWorkerInfo', {
         templateUrl: 'ProEmployee/RegistWorkerInfo'
-
     }).state('proStationManage', {
         templateUrl: 'ProEmployee/ProStationManage'
-
     }).state('proClassManage', {
         templateUrl: 'ProEmployee/ProClassManage'
-
     }).state('workHoursManage', {
         templateUrl: 'ProEmployee/WorkHoursManage'
     })
@@ -43,7 +38,6 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
             worker: worker
         });
     };
-       
 
     return dataAccess;
 })
@@ -129,8 +123,6 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     }
 
     $scope.vm = uiVM;
-
-   
 
     $scope.promise = proEmployeeDataService.getWorkers().then(function (data) {
         vmManager.departments = data.departments;

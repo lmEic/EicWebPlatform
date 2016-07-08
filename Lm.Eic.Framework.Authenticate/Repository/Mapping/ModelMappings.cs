@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity.ModelConfiguration;
-using Lm.Eic.Framework.Authenticate.Model;
+﻿using Lm.Eic.Framework.Authenticate.Model;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
 
 namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
 {
-    public class RegistUserModelMapping:EntityTypeConfiguration<RegistUserModel>
+    public class RegistUserModelMapping : EntityTypeConfiguration<RegistUserModel>
     {
         public RegistUserModelMapping()
         {
@@ -59,7 +54,7 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-          
+
             this.ToTable("Authen_RoleMatchModules");
         }
     }
@@ -74,4 +69,3 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
         }
     }
 }
-

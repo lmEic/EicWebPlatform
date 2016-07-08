@@ -208,7 +208,7 @@ angular.module('Erp.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
             })
         }
     };
-   
+
     $scope.operate = operate;
 })
 .controller("purQueryCtrl", function ($scope, $aside, purchaseService) {

@@ -18,7 +18,6 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
                 window.location = "/Account/Login";
             }
         }).error(function (errdata) {
-           
         });
     }
 })

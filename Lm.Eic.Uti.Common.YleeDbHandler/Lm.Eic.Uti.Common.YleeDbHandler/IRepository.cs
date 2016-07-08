@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Linq.Dynamic;
+using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using EntityFramework.Extensions;
 
 namespace Lm.Eic.Uti.Common.YleeDbHandler
 {
@@ -13,16 +11,19 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
     ///  定义仓储模型中的数据标准操作
     /// </summary>
     /// <typeparam name="TEntity">动态实体类型</typeparam>
-    public interface IRepository<TEntity> where TEntity : class,new()
+    public interface IRepository<TEntity> where TEntity : class, new()
     {
         #region 属性
+
         /// <summary>
         /// 获取 当前实体的查询数据集
         /// </summary>
         IQueryable<TEntity> Entities { get; }
-        #endregion
+
+        #endregion 属性
 
         #region 公共方法
+
         /// <summary>
         /// 插入实体记录
         /// </summary>
@@ -37,7 +38,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <typeparam name="TDto"></typeparam>
         /// <param name="dto"></param>
         /// <returns></returns>
-        int InsertDto<TDto>(TDto dto) where TDto : class ,new();
+        int InsertDto<TDto>(TDto dto) where TDto : class, new();
 
         /// <summary>
         /// 批量插入实体记录集合
@@ -46,13 +47,14 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="isSave"> 是否执行保存,默认执行单个实体保存</param>
         /// <returns> 操作影响的行数 </returns>
         int Insert(IEnumerable<TEntity> entities, bool isSave = true);
+
         /// <summary>
         /// 批量插入领域模型记录
         /// </summary>
         /// <typeparam name="TDto"></typeparam>
         /// <param name="dtos"></param>
         /// <returns></returns>
-        int InsertDto<TDto>(IEnumerable<TDto> dtos) where TDto : class,new();
+        int InsertDto<TDto>(IEnumerable<TDto> dtos) where TDto : class, new();
 
         /// <summary>
         /// 删除指定编号的记录
@@ -61,6 +63,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="isSave">是否执行保存,默认执行单个实体保存</param>
         /// <returns> 操作影响的行数 </returns>
         int Delete(object id, bool isSave = true);
+
         /// <summary>
         ///  删除实体记录
         /// </summary>
@@ -68,6 +71,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="isSave">是否执行保存,默认执行单个实体保存</param>
         /// <returns> 操作影响的行数 </returns>
         int Delete(TEntity entity, bool isSave = true);
+
         /// <summary>
         ///  删除实体记录集合
         /// </summary>
@@ -75,6 +79,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="isSave">是否执行保存,默认执行单个实体保存</param>
         /// <returns> 操作影响的行数 </returns>
         int Delete(IEnumerable<TEntity> entities, bool isSave = true);
+
         /// <summary>
         ///  删除所有符合特定表达式的数据
         /// </summary>
@@ -82,12 +87,14 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="isSave"> 是否执行保存</param>
         /// <returns> 操作影响的行数 </returns>
         int Delete(Expression<Func<TEntity, bool>> predicate, bool isSave = true);
+
         /// <summary>
         ///  删除所有符合特定表达式的数据
         /// </summary>
         /// <param name="predicate"> 查询条件谓语表达式 </param>
         /// <returns> 操作影响的行数 </returns>
         int Delete(Expression<Func<TEntity, bool>> predicate);
+
         /// <summary>
         /// 根据条件去更新实体
         /// </summary>
@@ -95,14 +102,16 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="predicate">查询条件</param>
         /// <param name="dto">领域模型对象</param>
         /// <returns></returns>
-        int UpdateDto<TDto>(Expression<Func<TEntity, bool>> predicate, TDto dto, bool isSave = true) where TDto : class,new();
+        int UpdateDto<TDto>(Expression<Func<TEntity, bool>> predicate, TDto dto, bool isSave = true) where TDto : class, new();
+
         /// <summary>
         /// 根据条件去更新实体
         /// </summary>
         /// <param name="predicate">查询条件</param>
         /// <param name="isSave">是否立即保存</param>
         /// <returns></returns>
-        int Update(Expression<Func<TEntity, bool>> predicate,TEntity entity, bool isSave = true);
+        int Update(Expression<Func<TEntity, bool>> predicate, TEntity entity, bool isSave = true);
+
         /// <summary>
         /// 根据条件按需更新实体
         /// </summary>
@@ -110,28 +119,34 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="updateExpression">按需更新实体值</param>
         /// <returns></returns>
         int Update(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression);
+
         /// <summary>
         /// 查找指定主键的实体记录
         /// </summary>
         /// <param name="key"> 指定主键 </param>
         /// <returns> 符合编号的记录，不存在返回null </returns>
         TEntity GetByKey(object key);
+
         /// <summary>
         /// 全部提交
         /// </summary>
         /// <returns></returns>
         int Commit();
-        #endregion
+
+        #endregion 公共方法
 
         #region 查询方法
-        IList<TDto> FindAll<TDto>() where TDto : class,new();
+
+        IList<TDto> FindAll<TDto>() where TDto : class, new();
+
         /// <summary>
         /// 按指定条件查询，直接返回领域模型集合,如果过滤条件为null，则直接返回所有数据
         /// </summary>
         /// <typeparam name="TDto">泛型领域模型类型</typeparam>
         /// <param name="predicate">查询条件</param>
         /// <returns></returns>
-        IList<TDto> FindAll<TDto>(Expression<Func<TEntity, bool>> predicate) where TDto : class,new();
+        IList<TDto> FindAll<TDto>(Expression<Func<TEntity, bool>> predicate) where TDto : class, new();
+
         /// <summary>
         /// 按指定条件查询，直接返回领域模型集合,如果过滤条件为null，则直接返回所有数据
         /// </summary>
@@ -139,42 +154,50 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="predicate"></param>
         /// <param name="values"></param>
         /// <returns></returns>
-        IList<TDto> FindAll<TDto>(string predicate, params object[] values) where TDto : class,new();
+        IList<TDto> FindAll<TDto>(string predicate, params object[] values) where TDto : class, new();
+
         /// <summary>
         /// 查询第一条记录，直接返回领域模型
         /// </summary>
         /// <typeparam name="TDto">泛型领域模型类型</typeparam>
         /// <param name="predicate">查询条件</param>
         /// <returns></returns>
-        TDto FirstOfDefault<TDto>(Expression<Func<TEntity, bool>> predicate) where TDto : class,new();
+        TDto FirstOfDefault<TDto>(Expression<Func<TEntity, bool>> predicate) where TDto : class, new();
+
         /// <summary>
         /// 返回第一个实体数据
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
         TEntity FirstOfDefault(Expression<Func<TEntity, bool>> predicate);
+
         /// <summary>
         /// 是否存在,存在返回True,否则返回False
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
         bool IsExist(Expression<Func<TEntity, bool>> predicate);
-        #endregion
+
+        #endregion 查询方法
     }
+
     /// <summary>
     ///     EntityFramework仓储操作基类
     /// </summary>
     /// <typeparam name="TEntity">动态实体类型</typeparam>
-    public abstract class EFRepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class,new()
+    public abstract class EFRepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class, new()
     {
         #region 构造器
+
         public EFRepositoryBase()
         {
             SetUnitOfWorkContext();
         }
-        #endregion
+
+        #endregion 构造器
 
         #region 属性
+
         /// <summary>
         ///     获取或设置 EntityFramework的数据仓储上下文
         /// </summary>
@@ -188,9 +211,10 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             get { return EFContext.Set<TEntity>(); }
         }
 
-        #endregion
+        #endregion 属性
 
         #region 公共方法
+
         /// <summary>
         ///     插入实体记录
         /// </summary>
@@ -222,7 +246,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             {
                 return 0;
             }
-
         }
 
         /// <summary>
@@ -237,6 +260,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             TEntity entity = EFContext.Set<TEntity>().Find(id);
             return entity != null ? Delete(entity, isSave) : 0;
         }
+
         /// <summary>
         ///     删除实体记录
         /// </summary>
@@ -249,6 +273,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             EFContext.RegisterDeleted(entity);
             return isSave ? EFContext.Commit() : 0;
         }
+
         /// <summary>
         ///     删除实体记录集合
         /// </summary>
@@ -268,6 +293,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 return 0;
             }
         }
+
         /// <summary>
         ///  删除所有符合特定表达式的数据
         /// </summary>
@@ -280,6 +306,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             List<TEntity> entities = EFContext.Set<TEntity>().Where(predicate).ToList();
             return entities.Count > 0 ? Delete(entities, isSave) : 0;
         }
+
         /// <summary>
         /// 直接删除所有符合特定表达式的数据
         /// </summary>
@@ -289,29 +316,32 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             return Delete(predicate, true);
         }
-        public int UpdateDto<TDto>(Expression<Func<TEntity, bool>> predicate, TDto dto, bool isSave = true) where TDto : class,new()
+
+        public int UpdateDto<TDto>(Expression<Func<TEntity, bool>> predicate, TDto dto, bool isSave = true) where TDto : class, new()
         {
             TEntity entity = new TEntity();
             ObjectMapper.OOMapper<TDto, TEntity>(dto, entity);
             EFContext.RegisterModified<TEntity>(predicate, entity);
             return isSave ? EFContext.Commit() : 0;
         }
-        public int Update(Expression<Func<TEntity, bool>> predicate,TEntity entity, bool isSave = true)
+
+        public int Update(Expression<Func<TEntity, bool>> predicate, TEntity entity, bool isSave = true)
         {
             EFContext.RegisterModified<TEntity>(predicate, entity);
             return isSave ? EFContext.Commit() : 0;
         }
+
         public int Update(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression)
         {
             return EFContext.RegisterModified<TEntity>(predicate, updateExpression);
         }
+
         /// <summary>
         /// 按需更新实体
         /// </summary>
         /// <param name="predicate">更新条件</param>
         /// <param name="updateExpression">按需给实体赋值</param>
         /// <returns></returns>
-
 
         /// <summary>
         ///     查找指定主键的实体记录
@@ -328,27 +358,33 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             return this.EFContext.Commit();
         }
-        #endregion
+
+        #endregion 公共方法
 
         #region 抽象保护方法，必须由子类进行重写
+
         /// <summary>
         /// 设置具体数据操作单元实例，在子类中进行具体化
         /// </summary>
         protected abstract void SetUnitOfWorkContext();
-        #endregion
+
+        #endregion 抽象保护方法，必须由子类进行重写
 
         #region 直接更新,查询领域模型数据方法
+
         public int InsertDto<TDto>(TDto dto) where TDto : class, new()
         {
             TEntity entity = new TEntity();
             ObjectMapper.OOMapper<TDto, TEntity>(dto, entity);
             return Insert(entity);
         }
+
         public int InsertDto<TDto>(IEnumerable<TDto> dtos) where TDto : class, new()
         {
             IEnumerable<TEntity> entities = ObjectMapper.OOMapper<TDto, TEntity>(dtos);
             return Insert(entities);
         }
+
         public IList<TDto> FindAll<TDto>() where TDto : class, new()
         {
             IEnumerable<TEntity> entities = null;
@@ -359,8 +395,8 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 dtos = ObjectMapper.OOMapper<TEntity, TDto>(entities);
             }
             return dtos.ToList();
-
         }
+
         public IList<TDto> FindAll<TDto>(Expression<Func<TEntity, bool>> predicate) where TDto : class, new()
         {
             IEnumerable<TEntity> entities = this.Entities.Where(predicate).ToList();
@@ -371,6 +407,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return dtos.ToList();
         }
+
         public IList<TDto> FindAll<TDto>(string predicate, params object[] values) where TDto : class, new()
         {
             IEnumerable<TEntity> entities = null;
@@ -389,6 +426,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return dtos.ToList();
         }
+
         public TDto FirstOfDefault<TDto>(Expression<Func<TEntity, bool>> predicate) where TDto : class, new()
         {
             TDto dto = null;
@@ -407,25 +445,28 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return dto;
         }
+
         public bool IsExist(Expression<Func<TEntity, bool>> predicate)
         {
             return this.Entities.FirstOrDefault(predicate) != null;
         }
-        
+
         public TEntity FirstOfDefault(Expression<Func<TEntity, bool>> predicate)
         {
             return this.Entities.FirstOrDefault(predicate);
         }
-        #endregion
+
+        #endregion 直接更新,查询领域模型数据方法
     }
+
     /// <summary>
     /// 对象映射器
     /// </summary>
     internal static class ObjectMapper
     {
         internal static void OOMapper<TObjectSource, TObjectDestination>(TObjectSource source, TObjectDestination destination)
-            where TObjectSource : class,new()
-            where TObjectDestination : class,new()
+            where TObjectSource : class, new()
+            where TObjectDestination : class, new()
         {
             try
             {
@@ -457,8 +498,8 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         }
 
         internal static IEnumerable<TObjectDestination> OOMapper<TObjectSource, TObjectDestination>(IEnumerable<TObjectSource> sources)
-            where TObjectSource : class,new()
-            where TObjectDestination : class,new()
+            where TObjectSource : class, new()
+            where TObjectDestination : class, new()
         {
             List<TObjectDestination> destinations = new List<TObjectDestination>();
             try

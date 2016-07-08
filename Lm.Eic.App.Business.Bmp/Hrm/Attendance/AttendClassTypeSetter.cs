@@ -1,34 +1,35 @@
-﻿using System;
+﻿using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
+using Lm.Eic.Uti.Common.YleeOOMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
-using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
-using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance;
-using Lm.Eic.App.Business.Bmp.Hrm.Archives;
-using Lm.Eic.Uti.Common.YleeOOMapper;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
 {
     public class AttendClassTypeSetter
     {
         #region member
+
         private IAttendClassTypeRepository irep = null;
-        #endregion
+
+        #endregion member
 
         #region constructure
+
         public AttendClassTypeSetter()
         {
             this.irep = new AttendClassTypeRepository();
         }
-        #endregion
 
-        #region property
+        #endregion constructure
 
-        #endregion
+
 
         #region method
+
         /// <summary>
         /// 初始化班别信息
         /// </summary>
@@ -98,15 +99,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             {
                 throw new Exception(ex.Message);
             }
-          
+
             return getDatas;
         }
+
         /// <summary>
         /// 设置班别数据
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        public OpResult SetClassType(List<AttendClassTypeModel> entities,string opPerson)
+        public OpResult SetClassType(List<AttendClassTypeModel> entities, string opPerson)
         {
             int record = 0;
             try
@@ -137,13 +139,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             {
                 throw new Exception(ex.Message);
             }
-            
+
             return OpResult.SetResult("设置班别成功!", record > 0);
         }
-        #endregion
 
-        #region command
-
-        #endregion
+        #endregion method
     }
 }

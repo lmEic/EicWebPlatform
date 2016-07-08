@@ -81,7 +81,6 @@ function minErr(module, ErrorConstructor) {
  */
 
 function setupModuleLoader(window) {
-
   var $injectorMinErr = minErr('$injector');
   var ngMinErr = minErr('ng');
 
@@ -205,7 +204,6 @@ function setupModuleLoader(window) {
            * Name of the module.
            */
           name: name,
-
 
           /**
            * @ngdoc method
@@ -417,7 +415,6 @@ function setupModuleLoader(window) {
       });
     };
   });
-
 }
 
 setupModuleLoader(window);
@@ -440,4 +437,3 @@ setupModuleLoader(window);
  * } }
  */
 angular.Module;
-

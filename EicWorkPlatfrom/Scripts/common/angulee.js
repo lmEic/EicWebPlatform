@@ -42,7 +42,7 @@ var leeDataHandler = (function () {
             opstatus.result = opresult.Result;
             opstatus.message = opresult.Message;
             opstatus.msgDisplay = true;
-   
+
             (function () {
                 setTimeout(function () {
                     opstatus.msgDisplay = false;
@@ -79,7 +79,6 @@ var leeDataHandler = (function () {
         }
     };
 
-
     return {
         ///操作状态
         operateStatus: leeOperateStatus,
@@ -92,7 +91,6 @@ var leeHelper = (function () {
     var modalTpl = {
         msgModalUrl: '/CommonTpl/InfoMsgModalTpl',
         deleteModalUrl: '/CommonTpl/DeleteModalTpl'
-        
     };
     var commonTplUrl={
         treeSelectTplUrl: '/CommonTpl/TreeSelectTpl',
@@ -149,7 +147,6 @@ var leeHelper = (function () {
                     ary.splice(i, 1);
                     break;
                 }
-                  
             };
         },
         ///在数组指定位置插入项
@@ -246,5 +243,3 @@ var leeTreeHelper = (function () {
     };
     return ztree;
 })();
-
-

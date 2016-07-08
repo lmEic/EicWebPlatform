@@ -1,46 +1,46 @@
-﻿using System;
+﻿using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
+using Lm.Eic.Framework.ProductMaster.Business.Config;
+using Lm.Eic.Framework.ProductMaster.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
-using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives;
-using Lm.Eic.Framework.ProductMaster.DbAccess.Repository;
-using Lm.Eic.Framework.ProductMaster.Business.Config;
-using Lm.Eic.Uti.Common.YleeOOMapper;
-using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using Lm.Eic.Framework.ProductMaster.Model;
-
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
-    public class ArDepartmentManager:ArchiveBase
+    public class ArDepartmentManager : ArchiveBase
     {
         #region member
+
         private IArDepartmentChangeLibRepository irep = null;
-        #endregion
+
+        #endregion member
 
         #region constructure
+
         public ArDepartmentManager()
         {
             this.irep = new ArDepartmentChangeLibRepository();
         }
-        #endregion
+
+        #endregion constructure
 
         #region property
-        public List<ConfigDataDictionaryModel> Departments 
+
+        public List<ConfigDataDictionaryModel> Departments
         {
             get { return PmConfigService.DataDicManager.FindConfigDatasBy("Organization"); }
         }
-        #endregion
+
+        #endregion property
 
         #region method
+
         /// <summary>
         /// 变动部门信息
         /// </summary>
         /// <param name="changeEntity"></param>
         /// <returns></returns>
-        public int ChangeRecord(ArDepartmentChangeLibModel changeEntity,out int changeRecord)
+        public int ChangeRecord(ArDepartmentChangeLibModel changeEntity, out int changeRecord)
         {
             changeRecord = 0;
             int record = 0;
@@ -60,7 +60,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             if (changeEntity.OpSign == "change")
             {
-
                 if (departments != null && departments.Count > 0)
                 {
                     changeRecord = departments.Count;
@@ -78,6 +77,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             return record;
         }
+
         /// <summary>
         /// 根据部门编码获取部门名称
         /// </summary>
@@ -89,6 +89,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             string text = dep == null ? "" : dep.DataNodeText;
             return text;
         }
+
         /// <summary>
         /// 根据部门名称或者部门编码
         /// </summary>
@@ -100,10 +101,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             string code = dep == null ? "" : dep.DataNodeName;
             return code;
         }
-        #endregion
 
-        #region command
-
-        #endregion
+        #endregion method
     }
 }

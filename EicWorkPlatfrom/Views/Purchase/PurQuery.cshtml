@@ -10,7 +10,6 @@
                     </div>
                     <div class="col-md-8">
                         <div class="pull-right">
-                           
                         </div>
                     </div>
                 </div>
@@ -25,11 +24,11 @@
                         <div class="form-group">
                             <span>日期区间：</span>
                             <span class="text-danger">起</span>
-                            <input type="date" placeholder="起始日期" ng-model="vm.dateFrom" class="form-control" data-format-date/>
+                            <input type="date" placeholder="起始日期" ng-model="vm.dateFrom" class="form-control" data-format-date />
                             <span class="text-danger">止</span>
-                            <input type="date" placeholder="截止日期" ng-model="vm.dateTo" class="form-control" data-format-date/>
+                            <input type="date" placeholder="截止日期" ng-model="vm.dateTo" class="form-control" data-format-date />
                         </div>
-                        <button type="button" class="btn btn-primary" 
+                        <button type="button" class="btn btn-primary"
                                 ng-click="operate.getReqHeaderDatas()">
                         <span class="fa fa-search">查询</span></button>
                     </form>
@@ -64,10 +63,9 @@
                         </tbody>
                     </table>
                     <div data-yl-pagination data-datasource="req.datasource" data-dataset="req.reqHeaders">
-
                     </div>
                 </div>
-               
+
                 <div ng-show="req.reqBodys.length>0">
                     <table class="table table-striped table-hover table-responsive">
                         <thead>
@@ -120,7 +118,6 @@
                     </div>
                     <div class="col-md-8">
                         <div class="pull-right">
-
                         </div>
                     </div>
                 </div>
@@ -168,7 +165,6 @@
                         </tbody>
                     </table>
                     <div data-yl-pagination data-datasource="pur.datasource" data-dataset="pur.purHeaders">
-
                     </div>
                 </div>
 
@@ -224,7 +220,6 @@
                     </div>
                     <div class="col-md-8">
                         <div class="pull-right">
-
                         </div>
                     </div>
                 </div>
@@ -274,7 +269,6 @@
                         </tbody>
                     </table>
                     <div data-yl-pagination data-datasource="sto.datasource" data-dataset="sto.stoHeaders">
-
                     </div>
                 </div>
                 <div ng-show="sto.stoBodys.length>0">

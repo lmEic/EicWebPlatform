@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
+﻿using Lm.Eic.App.Business.Bmp.Hrm.Attendance;
+using Lm.Eic.App.Business.Mes.Optical.Authen;
 using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives;
-using Lm.Eic.Framework.ProductMaster.DbAccess.Repository;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
+using Lm.Eic.App.DomainModel.Mes.Optical.Authen;
 using Lm.Eic.Framework.ProductMaster.Business.Config;
-using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Framework.ProductMaster.Model;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
-using Lm.Eic.Framework.ProductMaster.Model;
-using Lm.Eic.App.Business.Bmp.Hrm.Attendance;
-using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
-using Lm.Eic.App.Business.Mes.Optical.Authen;
-using Lm.Eic.App.DomainModel.Mes.Optical.Authen;
+using Lm.Eic.Uti.Common.YleeOOMapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
-
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
-
     /// <summary>
     /// 档案管理者
     /// </summary>
@@ -28,9 +23,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     {
         private IArchivesEmployeeIdentityRepository irep = null;
 
-
         #region property
+
         private ArIdentityInfoManager identityManager = null;
+
         /// <summary>
         /// 身份证管理器
         /// </summary>
@@ -39,7 +35,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             get { return identityManager; }
         }
 
-        ArStudyManager _StudyManager;
+        private ArStudyManager _StudyManager;
+
         /// <summary>
         /// 学习信息管理器
         /// </summary>
@@ -51,7 +48,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
         }
 
-        ArTelManager _TelManager;
+        private ArTelManager _TelManager;
+
         /// <summary>
         /// 联系方式管理器
         /// </summary>
@@ -63,7 +61,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
         }
 
-        ArDepartmentManager _DepartmentMananger;
+        private ArDepartmentManager _DepartmentMananger;
+
         /// <summary>
         /// 部门管理器
         /// </summary>
@@ -75,7 +74,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
         }
 
-        ArPostManager _PostManager;
+        private ArPostManager _PostManager;
+
         public ArPostManager PostManager
         {
             get
@@ -83,9 +83,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 return _PostManager;
             }
         }
-        #endregion
+
+        #endregion property
 
         #region constructure
+
         public ArchivesManager()
         {
             this.irep = new ArchivesEmployeeIdentityRepository();
@@ -95,9 +97,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             this._DepartmentMananger = new ArDepartmentManager();
             this._PostManager = new ArPostManager();
         }
-        #endregion
+
+        #endregion constructure
 
         #region change data method
+
         /// <summary>
         /// 存储员工档案信息
         /// </summary>
@@ -131,17 +135,15 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 else if (opSign == "edit")
                 {
                     record = EditEmployee(dto, record, empIdentityMdl, studyMdl, telMdl);
-
                 }
                 return OpResult.SetResult("保存档案数据成功！", record > 0, empIdentityMdl.Id_Key);
-
             }
             catch (Exception)
             {
                 return OpResult.SetResult("保存档案数据失败！", false);
             }
-
         }
+
         private int AddEmployee(int record, ArchivesEmployeeIdentityModel empIdentityMdl, ArStudyModel studyMdl, ArTelModel telMdl)
         {
             if (!this.irep.IsExist(e => e.IdentityID == empIdentityMdl.IdentityID))
@@ -155,6 +157,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             record += AttendanceService.ClassTypeSetter.InitClassType(CreateClassTypeModel(empIdentityMdl));
             return record;
         }
+
         private AttendClassTypeModel CreateClassTypeModel(ArchivesEmployeeIdentityModel empIdentityMdl)
         {
             return new AttendClassTypeModel
@@ -171,6 +174,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 OpSign = "init"
             };
         }
+
         private int EditEmployee(ArchivesEmployeeIdentityDto dto, int record, ArchivesEmployeeIdentityModel empIdentityMdl, ArStudyModel studyMdl, ArTelModel telMdl)
         {
             ArStudyModel oldStudyMdl = null;
@@ -189,6 +193,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             //record += TelManager.Edit(telMdl, oldTelMdl);
             return record;
         }
+
         /// <summary>
         /// 档案管理配置数据
         /// </summary>
@@ -201,10 +206,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 return departments;
             }
         }
+
         public string CreateWorkerId(string workerIdNumType)
         {
             return this.irep.CreateWorkerId(workerIdNumType);
         }
+
         /// <summary>
         /// 根据作业工号列表查询员工信息
         /// </summary>
@@ -236,7 +243,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                         Department = entity.NowDepartment,
                         DepartmentChangeRecord = changeRecord
                     });
-
                 }
             });
             return OpResult.SetResult("变更部门信息成功!", record > 0);
@@ -264,7 +270,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                         PostType = entity.PostType,
                         PostChangeRecord = changeRecord
                     });
-
                 }
             });
             return OpResult.SetResult("变更岗位信息成功!", record > 0);
@@ -330,11 +335,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                         FamilyPhone = changeEntity.FamilyPhone,
                         TelPhone = changeEntity.TelPhone
                     });
-
                 }
             });
             return OpResult.SetResult("变更学习信息成功!", record > 0);
         }
+
         /// <summary>
         /// 修改班别数据
         /// </summary>
@@ -345,9 +350,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             return this.irep.Update(e => e.WorkerId == workerId, u => new ArchivesEmployeeIdentityModel { ClassType = classType });
         }
-        #endregion
+
+        #endregion change data method
 
         #region find data method
+
         /// <summary>
         /// 查询部门信息
         /// </summary>
@@ -379,28 +386,33 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             return this.irep.GetWorkerInfos(sqlWhere);
         }
-        #endregion
+
+        #endregion find data method
     }
+
     public class ProWorkerManager
     {
         #region member
+
         private IProWorkerInfoRepository irep = null;
         private MesUserManager mesUser = null;
-        #endregion
+
+        #endregion member
 
         #region constructure
+
         public ProWorkerManager()
         {
             this.irep = new ProWorkerInfoRepository();
             this.mesUser = new MesUserManager();
         }
-        #endregion
 
-        #region property
+        #endregion constructure
 
-        #endregion
+
 
         #region method
+
         public OpResult RegistUser(ProWorkerInfo worker)
         {
             int record = 0;
@@ -435,12 +447,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             return this.irep.Entities.FirstOrDefault(e => e.WorkerId == workerId);
         }
-        #endregion
 
-        #region command
-
-        #endregion
+        #endregion method
     }
+
     internal class ArchiveEntityMapper
     {
         internal static void GetEmployeeDataFrom(ArchivesEmployeeIdentityDto dto, ArchivesEmployeeIdentityModel entity)
@@ -459,6 +469,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             entity.ClassType = "白班";
             entity.Id_Key = dto.Id_Key;
         }
+
         /// <summary>
         /// 获取身份证信息
         /// </summary>
@@ -503,6 +514,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             return identityExpirationDate;
         }
+
         private static string GetAreaName(XmlNode root, string areaCode)
         {
             string result = null;
@@ -536,6 +548,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
             return result;
         }
+
         /// <summary>
         /// 获取籍贯信息
         /// </summary>
@@ -570,6 +583,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             return nativePlace;
         }
+
         /// <summary>
         /// 获取部门信息
         /// </summary>
@@ -581,6 +595,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             entity.Department = dto.Department;
             entity.DepartmentChangeRecord = 0;
         }
+
         /// <summary>
         /// 获取岗位信息
         /// </summary>
@@ -592,6 +607,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             entity.PostChangeRecord = 0;
             entity.Post = dto.Post;
         }
+
         /// <summary>
         /// 获取学习信息
         /// </summary>
@@ -617,6 +633,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 OpPerson = dto.OpPerson
             };
         }
+
         /// <summary>
         /// 获取联系方式信息
         /// </summary>
@@ -639,13 +656,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             };
         }
     }
+
     /// <summary>
     /// 员工查询数据传输对象
     /// </summary>
     public class QueryWorkersDto
     {
+        private string _Department;
 
-        string _Department;
         /// <summary>
         /// 部门名称
         /// </summary>
@@ -664,7 +682,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
         }
 
-        List<string> _WorkerIdList;
+        private List<string> _WorkerIdList;
+
         /// <summary>
         /// 作业工号列表
         /// </summary>
@@ -683,7 +702,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
         }
 
-        string _WorkerId;
+        private string _WorkerId;
+
         /// <summary>
         /// 作业工号
         /// </summary>
@@ -701,10 +721,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 }
             }
         }
+
         /// <summary>
         /// 报到日期起始日期
         /// </summary>
-        DateTime _RegistedDateStart;
+        private DateTime _RegistedDateStart;
 
         public DateTime RegistedDateStart
         {
@@ -721,7 +742,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
         }
 
-        DateTime _RegistedDateEnd;
+        private DateTime _RegistedDateEnd;
+
         /// <summary>
         /// 报到日期截至日期
         /// </summary>

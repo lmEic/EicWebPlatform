@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
 {
@@ -14,8 +10,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     {
         public ArchivesIdentityModel()
         { }
+
         #region Model
+
         private string _identityid;
+
         /// <summary>
         ///身份证号
         /// </summary>
@@ -24,7 +23,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _identityid = value; }
             get { return _identityid; }
         }
+
         private string _name;
+
         /// <summary>
         ///姓名
         /// </summary>
@@ -33,7 +34,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _name = value; }
             get { return _name; }
         }
+
         private string _sex;
+
         /// <summary>
         ///性别
         /// </summary>
@@ -42,7 +45,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _sex = value; }
             get { return _sex; }
         }
+
         private string _birthday;
+
         /// <summary>
         ///出生日期
         /// </summary>
@@ -51,7 +56,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _birthday = value; }
             get { return _birthday; }
         }
+
         private string _address;
+
         /// <summary>
         ///地址
         /// </summary>
@@ -60,7 +67,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _address = value; }
             get { return _address; }
         }
+
         private string _nation;
+
         /// <summary>
         ///籍贯
         /// </summary>
@@ -69,7 +78,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _nation = value; }
             get { return _nation; }
         }
+
         private string _signgovernment;
+
         /// <summary>
         ///签证机构
         /// </summary>
@@ -78,7 +89,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _signgovernment = value; }
             get { return _signgovernment; }
         }
+
         private string _limiteddate;
+
         /// <summary>
         ///有效期
         /// </summary>
@@ -87,7 +100,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _limiteddate = value; }
             get { return _limiteddate; }
         }
+
         private string _newaddress;
+
         /// <summary>
         ///新住址
         /// </summary>
@@ -96,7 +111,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _newaddress = value; }
             get { return _newaddress; }
         }
+
         private string _nativeplace;
+
         /// <summary>
         ///籍贯
         /// </summary>
@@ -105,7 +122,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _nativeplace = value; }
             get { return _nativeplace; }
         }
+
         private byte[] _personalpicture;
+
         /// <summary>
         ///照片
         /// </summary>
@@ -114,7 +133,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _personalpicture = value; }
             get { return _personalpicture; }
         }
+
         private string _ishaspicture;
+
         /// <summary>
         ///是否有照片
         /// </summary>
@@ -123,7 +144,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _ishaspicture = value; }
             get { return _ishaspicture; }
         }
+
         private DateTime _scandate;
+
         /// <summary>
         ///扫描日期
         /// </summary>
@@ -132,7 +155,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _scandate = value; }
             get { return _scandate; }
         }
+
         private string _scanoper;
+
         /// <summary>
         ///操作人
         /// </summary>
@@ -141,7 +166,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _scanoper = value; }
             get { return _scanoper; }
         }
+
         private decimal _id_key;
+
         /// <summary>
         ///自增键
         /// </summary>
@@ -150,9 +177,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _id_key = value; }
             get { return _id_key; }
         }
+
         #endregion Model
     }
-
 
     /// <summary>
     ///员工基础信息模型
@@ -162,8 +189,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     {
         public ArchivesEmployeeIdentityModel()
         { }
+
         #region Model
+
         private string _identityid;
+
         /// <summary>
         ///身份证号码
         /// </summary>
@@ -172,7 +202,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _identityid = value; }
             get { return _identityid; }
         }
+
         private string _workerid;
+
         /// <summary>
         ///作业工号
         /// </summary>
@@ -181,7 +213,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workerid = value; }
             get { return _workerid; }
         }
+
         private string _workeridnumtype;
+
         /// <summary>
         ///工号数字类别
         /// </summary>
@@ -190,7 +224,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workeridnumtype = value; }
             get { return _workeridnumtype; }
         }
+
         private string _workeridtype;
+
         /// <summary>
         ///工号类型
         /// </summary>
@@ -199,7 +235,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workeridtype = value; }
             get { return _workeridtype; }
         }
+
         private string _name;
+
         /// <summary>
         ///姓名
         /// </summary>
@@ -208,7 +246,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _name = value; }
             get { return _name; }
         }
+
         private string _cardid;
+
         /// <summary>
         ///考勤卡号
         /// </summary>
@@ -217,7 +257,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _cardid = value; }
             get { return _cardid; }
         }
+
         private string _organizetion;
+
         /// <summary>
         ///部门组织
         /// </summary>
@@ -226,7 +268,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _organizetion = value; }
             get { return _organizetion; }
         }
+
         private string _department;
+
         /// <summary>
         ///部门
         /// </summary>
@@ -235,7 +279,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _department = value; }
             get { return _department; }
         }
+
         private int _departmentchangerecord;
+
         /// <summary>
         ///部门变更记录
         /// </summary>
@@ -244,7 +290,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _departmentchangerecord = value; }
             get { return _departmentchangerecord; }
         }
+
         private string _post;
+
         /// <summary>
         ///岗位
         /// </summary>
@@ -253,7 +301,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _post = value; }
             get { return _post; }
         }
+
         private string _postnature;
+
         /// <summary>
         ///岗位性质
         /// </summary>
@@ -262,7 +312,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _postnature = value; }
             get { return _postnature; }
         }
+
         private string _posttype;
+
         /// <summary>
         ///岗位类型
         /// </summary>
@@ -271,7 +323,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _posttype = value; }
             get { return _posttype; }
         }
+
         private int _postchangerecord;
+
         /// <summary>
         ///岗位变更记录
         /// </summary>
@@ -280,7 +334,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _postchangerecord = value; }
             get { return _postchangerecord; }
         }
+
         private string _sex;
+
         /// <summary>
         ///性别
         /// </summary>
@@ -289,7 +345,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _sex = value; }
             get { return _sex; }
         }
+
         private string _birthday;
+
         /// <summary>
         ///出生日期
         /// </summary>
@@ -298,7 +356,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _birthday = value; }
             get { return _birthday; }
         }
+
         private string _address;
+
         /// <summary>
         ///家庭住址
         /// </summary>
@@ -307,7 +367,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _address = value; }
             get { return _address; }
         }
+
         private string _nation;
+
         /// <summary>
         ///民族
         /// </summary>
@@ -316,7 +378,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _nation = value; }
             get { return _nation; }
         }
+
         private string _signgovernment;
+
         /// <summary>
         ///签证机构
         /// </summary>
@@ -325,7 +389,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _signgovernment = value; }
             get { return _signgovernment; }
         }
+
         private string _limiteddate;
+
         /// <summary>
         ///有效期
         /// </summary>
@@ -334,7 +400,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _limiteddate = value; }
             get { return _limiteddate; }
         }
+
         private string _newaddress;
+
         /// <summary>
         ///新住址
         /// </summary>
@@ -343,7 +411,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _newaddress = value; }
             get { return _newaddress; }
         }
+
         private string _politicalstatus;
+
         /// <summary>
         ///政治面貌
         /// </summary>
@@ -352,7 +422,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _politicalstatus = value; }
             get { return _politicalstatus; }
         }
+
         private string _nativeplace;
+
         /// <summary>
         ///居住地
         /// </summary>
@@ -361,7 +433,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _nativeplace = value; }
             get { return _nativeplace; }
         }
+
         private string _registeredpermanent;
+
         /// <summary>
         ///籍贯
         /// </summary>
@@ -370,7 +444,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _registeredpermanent = value; }
             get { return _registeredpermanent; }
         }
+
         private string _marrystatus;
+
         /// <summary>
         ///婚否
         /// </summary>
@@ -379,7 +455,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _marrystatus = value; }
             get { return _marrystatus; }
         }
+
         private string _birthmonth;
+
         /// <summary>
         ///出生年月
         /// </summary>
@@ -388,7 +466,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _birthmonth = value; }
             get { return _birthmonth; }
         }
+
         private DateTime _identityexpirationdate;
+
         /// <summary>
         ///身份证过期时间
         /// </summary>
@@ -397,7 +477,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _identityexpirationdate = value; }
             get { return _identityexpirationdate; }
         }
+
         private byte[] _personalpicture;
+
         /// <summary>
         ///照片
         /// </summary>
@@ -406,7 +488,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _personalpicture = value; }
             get { return _personalpicture; }
         }
+
         private string _schoolname;
+
         /// <summary>
         ///学校名称
         /// </summary>
@@ -415,7 +499,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _schoolname = value; }
             get { return _schoolname; }
         }
+
         private string _majorname;
+
         /// <summary>
         ///专业名称
         /// </summary>
@@ -424,7 +510,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _majorname = value; }
             get { return _majorname; }
         }
+
         private string _education;
+
         /// <summary>
         ///学历
         /// </summary>
@@ -433,7 +521,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _education = value; }
             get { return _education; }
         }
+
         private string _familyphone;
+
         /// <summary>
         ///家庭电话
         /// </summary>
@@ -442,7 +532,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _familyphone = value; }
             get { return _familyphone; }
         }
+
         private string _telphone;
+
         /// <summary>
         ///手机号码
         /// </summary>
@@ -451,7 +543,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _telphone = value; }
             get { return _telphone; }
         }
+
         private string _certificatename;
+
         /// <summary>
         ///证书
         /// </summary>
@@ -460,7 +554,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _certificatename = value; }
             get { return _certificatename; }
         }
+
         private string _workingstatus;
+
         /// <summary>
         ///工作状态
         /// </summary>
@@ -469,7 +565,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workingstatus = value; }
             get { return _workingstatus; }
         }
+
         private DateTime _registeddate;
+
         /// <summary>
         ///报到日期
         /// </summary>
@@ -478,7 +576,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _registeddate = value; }
             get { return _registeddate; }
         }
+
         private string _registedsegment;
+
         /// <summary>
         ///时间段
         /// </summary>
@@ -487,7 +587,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _registedsegment = value; }
             get { return _registedsegment; }
         }
+
         private string _classtype;
+
         /// <summary>
         ///班别
         /// </summary>
@@ -496,7 +598,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _classtype = value; }
             get { return _classtype; }
         }
+
         private string _opperson;
+
         /// <summary>
         ///操作人
         /// </summary>
@@ -505,7 +609,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opperson = value; }
             get { return _opperson; }
         }
+
         private decimal _id_key;
+
         /// <summary>
         ///自增键
         /// </summary>
@@ -514,6 +620,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _id_key = value; }
             get { return _id_key; }
         }
+
         #endregion Model
     }
 
@@ -525,8 +632,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     {
         public ArchivesEmployeeIdentityDto()
         { }
+
         #region Model
+
         private string _identityid;
+
         /// <summary>
         ///身份证号码
         /// </summary>
@@ -535,7 +645,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _identityid = value; }
             get { return _identityid; }
         }
+
         private string _workerid;
+
         /// <summary>
         ///作业工号
         /// </summary>
@@ -544,7 +656,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workerid = value; }
             get { return _workerid; }
         }
+
         private string _workeridnumtype;
+
         /// <summary>
         ///作业工号数字类型
         /// </summary>
@@ -553,7 +667,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workeridnumtype = value; }
             get { return _workeridnumtype; }
         }
+
         private string _workeridtype;
+
         /// <summary>
         ///作业工号类型
         /// </summary>
@@ -562,7 +678,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workeridtype = value; }
             get { return _workeridtype; }
         }
+
         private string _name;
+
         /// <summary>
         ///姓名
         /// </summary>
@@ -571,7 +689,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _name = value; }
             get { return _name; }
         }
+
         private string _cardid;
+
         /// <summary>
         ///登记号码
         /// </summary>
@@ -580,7 +700,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _cardid = value; }
             get { return _cardid; }
         }
+
         private string _organizetion;
+
         /// <summary>
         ///所在组织
         /// </summary>
@@ -589,7 +711,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _organizetion = value; }
             get { return _organizetion; }
         }
+
         private string _department;
+
         /// <summary>
         ///部门
         /// </summary>
@@ -598,7 +722,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _department = value; }
             get { return _department; }
         }
+
         private int _departmentchangerecord;
+
         /// <summary>
         ///部门变更记录
         /// </summary>
@@ -607,7 +733,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _departmentchangerecord = value; }
             get { return _departmentchangerecord; }
         }
+
         private string _post;
+
         /// <summary>
         ///岗位
         /// </summary>
@@ -616,7 +744,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _post = value; }
             get { return _post; }
         }
+
         private string _postnature;
+
         /// <summary>
         ///岗位性质
         /// </summary>
@@ -625,7 +755,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _postnature = value; }
             get { return _postnature; }
         }
+
         private int _postchangerecord;
+
         /// <summary>
         ///岗位变更记录
         /// </summary>
@@ -634,7 +766,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _postchangerecord = value; }
             get { return _postchangerecord; }
         }
+
         private string _sex;
+
         /// <summary>
         ///性别
         /// </summary>
@@ -643,7 +777,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _sex = value; }
             get { return _sex; }
         }
+
         private string _birthday;
+
         /// <summary>
         ///出生日期
         /// </summary>
@@ -652,7 +788,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _birthday = value; }
             get { return _birthday; }
         }
+
         private string _address;
+
         /// <summary>
         ///家庭住址
         /// </summary>
@@ -661,7 +799,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _address = value; }
             get { return _address; }
         }
+
         private string _nation;
+
         /// <summary>
         ///籍贯
         /// </summary>
@@ -670,7 +810,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _nation = value; }
             get { return _nation; }
         }
+
         private string _signgovernment;
+
         /// <summary>
         ///签证机构
         /// </summary>
@@ -679,7 +821,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _signgovernment = value; }
             get { return _signgovernment; }
         }
+
         private string _limiteddate;
+
         /// <summary>
         ///有效期
         /// </summary>
@@ -688,7 +832,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _limiteddate = value; }
             get { return _limiteddate; }
         }
+
         private string _newaddress;
+
         /// <summary>
         ///新住址
         /// </summary>
@@ -697,7 +843,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _newaddress = value; }
             get { return _newaddress; }
         }
+
         private string _politicalstatus;
+
         /// <summary>
         ///政治面貌
         /// </summary>
@@ -706,7 +854,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _politicalstatus = value; }
             get { return _politicalstatus; }
         }
+
         private string _nativeplace;
+
         /// <summary>
         ///居住地
         /// </summary>
@@ -715,7 +865,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _nativeplace = value; }
             get { return _nativeplace; }
         }
+
         private string _registeredpermanent;
+
         /// <summary>
         ///永久居住地
         /// </summary>
@@ -724,7 +876,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _registeredpermanent = value; }
             get { return _registeredpermanent; }
         }
+
         private string _marrystatus;
+
         /// <summary>
         ///婚姻状态
         /// </summary>
@@ -733,7 +887,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _marrystatus = value; }
             get { return _marrystatus; }
         }
+
         private int _birthmonth;
+
         /// <summary>
         ///出生月份
         /// </summary>
@@ -742,7 +898,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _birthmonth = value; }
             get { return _birthmonth; }
         }
+
         private string _identityexpirationdate;
+
         /// <summary>
         ///身份证有效期
         /// </summary>
@@ -751,7 +909,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _identityexpirationdate = value; }
             get { return _identityexpirationdate; }
         }
+
         private byte[] _personalpicture;
+
         /// <summary>
         ///照片
         /// </summary>
@@ -760,7 +920,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _personalpicture = value; }
             get { return _personalpicture; }
         }
+
         private string _schoolname;
+
         /// <summary>
         ///学校名称
         /// </summary>
@@ -769,7 +931,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _schoolname = value; }
             get { return _schoolname; }
         }
+
         private DateTime _studydatefrom;
+
         /// <summary>
         ///起始日期
         /// </summary>
@@ -778,7 +942,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _studydatefrom = value; }
             get { return _studydatefrom; }
         }
+
         private DateTime _studydateto;
+
         /// <summary>
         ///结束日期
         /// </summary>
@@ -787,7 +953,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _studydateto = value; }
             get { return _studydateto; }
         }
+
         private string _majorname;
+
         /// <summary>
         ///专业名称
         /// </summary>
@@ -796,7 +964,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _majorname = value; }
             get { return _majorname; }
         }
+
         private string _education;
+
         /// <summary>
         ///学历
         /// </summary>
@@ -805,7 +975,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _education = value; }
             get { return _education; }
         }
+
         private string _familyphone;
+
         /// <summary>
         ///家庭电话
         /// </summary>
@@ -814,7 +986,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _familyphone = value; }
             get { return _familyphone; }
         }
+
         private string _personphone;
+
         /// <summary>
         ///个人电话
         /// </summary>
@@ -823,7 +997,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _personphone = value; }
             get { return _personphone; }
         }
+
         private string _telphone;
+
         /// <summary>
         ///联系电话
         /// </summary>
@@ -832,7 +1008,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _telphone = value; }
             get { return _telphone; }
         }
+
         private string _certificatename;
+
         /// <summary>
         ///证书名称
         /// </summary>
@@ -841,7 +1019,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _certificatename = value; }
             get { return _certificatename; }
         }
+
         private string _workingstatus;
+
         /// <summary>
         ///工作状态
         /// </summary>
@@ -850,7 +1030,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workingstatus = value; }
             get { return _workingstatus; }
         }
+
         private DateTime _registeddate;
+
         /// <summary>
         ///报到日期
         /// </summary>
@@ -859,7 +1041,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _registeddate = value; }
             get { return _registeddate; }
         }
+
         private string _registedsegment;
+
         /// <summary>
         ///报到时间段
         /// </summary>
@@ -868,7 +1052,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _registedsegment = value; }
             get { return _registedsegment; }
         }
+
         private string _classtype;
+
         /// <summary>
         ///班别
         /// </summary>
@@ -877,7 +1063,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _classtype = value; }
             get { return _classtype; }
         }
+
         private string _opperson;
+
         /// <summary>
         ///操作人
         /// </summary>
@@ -886,7 +1074,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opperson = value; }
             get { return _opperson; }
         }
+
         private decimal _id_key;
+
         /// <summary>
         ///自增键
         /// </summary>
@@ -895,6 +1085,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _id_key = value; }
             get { return _id_key; }
         }
+
         #endregion Model
     }
 
@@ -906,8 +1097,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     {
         public ArPostChangeLibModel()
         { }
+
         #region Model
+
         private string _workerid;
+
         /// <summary>
         ///作业工号
         /// </summary>
@@ -916,7 +1110,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workerid = value; }
             get { return _workerid; }
         }
+
         private string _workername;
+
         /// <summary>
         ///作业姓名
         /// </summary>
@@ -925,7 +1121,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workername = value; }
             get { return _workername; }
         }
+
         private decimal _id_key;
+
         /// <summary>
         ///自增键
         /// </summary>
@@ -934,7 +1132,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _id_key = value; }
             get { return _id_key; }
         }
+
         private DateTime _assigndate;
+
         /// <summary>
         ///分配日期
         /// </summary>
@@ -943,7 +1143,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _assigndate = value; }
             get { return _assigndate; }
         }
+
         private string _postnature;
+
         /// <summary>
         ///岗位性质
         /// </summary>
@@ -952,7 +1154,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _postnature = value; }
             get { return _postnature; }
         }
+
         private string _posttype;
+
         /// <summary>
         ///岗位类型
         /// </summary>
@@ -961,7 +1165,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _posttype = value; }
             get { return _posttype; }
         }
+
         private string _oldpost;
+
         /// <summary>
         ///原岗位
         /// </summary>
@@ -970,7 +1176,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _oldpost = value; }
             get { return _oldpost; }
         }
+
         private string _nowpost;
+
         /// <summary>
         ///新岗位
         /// </summary>
@@ -979,7 +1187,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _nowpost = value; }
             get { return _nowpost; }
         }
+
         private string _instatus;
+
         /// <summary>
         ///状态
         /// </summary>
@@ -988,7 +1198,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _instatus = value; }
             get { return _instatus; }
         }
+
         private string _opperson;
+
         /// <summary>
         ///操作人
         /// </summary>
@@ -997,7 +1209,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opperson = value; }
             get { return _opperson; }
         }
+
         private string _opsign;
+
         /// <summary>
         ///操作标志
         /// </summary>
@@ -1006,10 +1220,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opsign = value; }
             get { return _opsign; }
         }
+
         #endregion Model
     }
-
-
 
     /// <summary>
     ///部门变更实体模型
@@ -1019,8 +1232,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     {
         public ArDepartmentChangeLibModel()
         { }
+
         #region Model
+
         private string _workerid;
+
         /// <summary>
         ///作业工号
         /// </summary>
@@ -1029,7 +1245,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workerid = value; }
             get { return _workerid; }
         }
+
         private string _workername;
+
         /// <summary>
         ///作业姓名
         /// </summary>
@@ -1038,7 +1256,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workername = value; }
             get { return _workername; }
         }
+
         private DateTime _assigndate;
+
         /// <summary>
         ///分配日期
         /// </summary>
@@ -1047,7 +1267,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _assigndate = value; }
             get { return _assigndate; }
         }
+
         private string _instatus;
+
         /// <summary>
         ///状态
         /// </summary>
@@ -1056,7 +1278,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _instatus = value; }
             get { return _instatus; }
         }
+
         private string _olddepartment;
+
         /// <summary>
         ///原部门
         /// </summary>
@@ -1065,7 +1289,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _olddepartment = value; }
             get { return _olddepartment; }
         }
+
         private string _nowdepartment;
+
         /// <summary>
         ///新部门
         /// </summary>
@@ -1074,7 +1300,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _nowdepartment = value; }
             get { return _nowdepartment; }
         }
+
         private string _opperson;
+
         /// <summary>
         ///操作人
         /// </summary>
@@ -1083,7 +1311,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opperson = value; }
             get { return _opperson; }
         }
+
         private string _opsign;
+
         /// <summary>
         ///操作标志
         /// </summary>
@@ -1092,7 +1322,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opsign = value; }
             get { return _opsign; }
         }
+
         private decimal _id_key;
+
         /// <summary>
         ///自增键
         /// </summary>
@@ -1101,9 +1333,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _id_key = value; }
             get { return _id_key; }
         }
+
         #endregion Model
     }
-
 
     /// <summary>
     ///证书实体模型
@@ -1113,8 +1345,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     {
         public ArCertificateModel()
         { }
+
         #region Model
+
         private string _workerid;
+
         /// <summary>
         ///作业工号
         /// </summary>
@@ -1123,7 +1358,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workerid = value; }
             get { return _workerid; }
         }
+
         private string _workername;
+
         /// <summary>
         ///作业姓名
         /// </summary>
@@ -1132,7 +1369,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workername = value; }
             get { return _workername; }
         }
+
         private string _certificatetype;
+
         /// <summary>
         ///证书类型
         /// </summary>
@@ -1141,7 +1380,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _certificatetype = value; }
             get { return _certificatetype; }
         }
+
         private string _certificatename;
+
         /// <summary>
         ///证书名称
         /// </summary>
@@ -1150,7 +1391,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _certificatename = value; }
             get { return _certificatename; }
         }
+
         private string _getdate;
+
         /// <summary>
         ///获得日期
         /// </summary>
@@ -1159,7 +1402,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _getdate = value; }
             get { return _getdate; }
         }
+
         private string _workingstatus;
+
         /// <summary>
         ///状态
         /// </summary>
@@ -1168,7 +1413,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workingstatus = value; }
             get { return _workingstatus; }
         }
+
         private string _opperson;
+
         /// <summary>
         ///操作人
         /// </summary>
@@ -1177,7 +1424,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opperson = value; }
             get { return _opperson; }
         }
+
         private string _opdate;
+
         /// <summary>
         ///操作日期
         /// </summary>
@@ -1186,7 +1435,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opdate = value; }
             get { return _opdate; }
         }
+
         private decimal _id_key;
+
         /// <summary>
         ///自增键
         /// </summary>
@@ -1195,8 +1446,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _id_key = value; }
             get { return _id_key; }
         }
+
         #endregion Model
     }
+
     /// <summary>
     ///联系方式实体模型
     /// </summary>
@@ -1205,8 +1458,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     {
         public ArTelModel()
         { }
+
         #region Model
+
         private string _opsign;
+
         /// <summary>
         ///操作标志
         /// </summary>
@@ -1215,7 +1471,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opsign = value; }
             get { return _opsign; }
         }
+
         private string _workerid;
+
         /// <summary>
         ///作业工号
         /// </summary>
@@ -1224,7 +1482,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workerid = value; }
             get { return _workerid; }
         }
+
         private string _workername;
+
         /// <summary>
         ///作业姓名
         /// </summary>
@@ -1233,7 +1493,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workername = value; }
             get { return _workername; }
         }
+
         private string _familyphone;
+
         /// <summary>
         ///家庭电话
         /// </summary>
@@ -1242,7 +1504,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _familyphone = value; }
             get { return _familyphone; }
         }
+
         private string _personphone;
+
         /// <summary>
         ///个人电话
         /// </summary>
@@ -1251,7 +1515,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _personphone = value; }
             get { return _personphone; }
         }
+
         private string _telphone;
+
         /// <summary>
         ///联系电话
         /// </summary>
@@ -1260,7 +1526,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _telphone = value; }
             get { return _telphone; }
         }
+
         private string _workingstatus;
+
         /// <summary>
         ///状态
         /// </summary>
@@ -1269,7 +1537,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workingstatus = value; }
             get { return _workingstatus; }
         }
+
         private string _opperson;
+
         /// <summary>
         ///操作人
         /// </summary>
@@ -1278,7 +1548,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opperson = value; }
             get { return _opperson; }
         }
+
         private DateTime _opdate;
+
         /// <summary>
         ///操作日期
         /// </summary>
@@ -1287,7 +1559,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opdate = value; }
             get { return _opdate; }
         }
+
         private string _memo;
+
         /// <summary>
         ///备注
         /// </summary>
@@ -1296,7 +1570,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _memo = value; }
             get { return _memo; }
         }
+
         private decimal _id_key;
+
         /// <summary>
         ///自增键
         /// </summary>
@@ -1305,8 +1581,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _id_key = value; }
             get { return _id_key; }
         }
+
         #endregion Model
     }
+
     /// <summary>
     ///学习信息模型
     /// </summary>
@@ -1315,8 +1593,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     {
         public ArStudyModel()
         { }
+
         #region Model
+
         private string _workerid;
+
         /// <summary>
         ///作业工号
         /// </summary>
@@ -1325,7 +1606,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workerid = value; }
             get { return _workerid; }
         }
+
         private string _workername;
+
         /// <summary>
         ///作业姓名
         /// </summary>
@@ -1334,7 +1617,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workername = value; }
             get { return _workername; }
         }
+
         private DateTime _studydatefrom;
+
         /// <summary>
         ///起始日期
         /// </summary>
@@ -1343,7 +1628,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _studydatefrom = value; }
             get { return _studydatefrom; }
         }
+
         private DateTime _studydateto;
+
         /// <summary>
         ///结束日期
         /// </summary>
@@ -1352,7 +1639,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _studydateto = value; }
             get { return _studydateto; }
         }
+
         private string _schoolname;
+
         /// <summary>
         ///学校名称
         /// </summary>
@@ -1361,7 +1650,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _schoolname = value; }
             get { return _schoolname; }
         }
+
         private string _majorname;
+
         /// <summary>
         ///专业名称
         /// </summary>
@@ -1370,7 +1661,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _majorname = value; }
             get { return _majorname; }
         }
+
         private string _qulification;
+
         /// <summary>
         ///学历
         /// </summary>
@@ -1379,7 +1672,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _qulification = value; }
             get { return _qulification; }
         }
+
         private string _workingstatus;
+
         /// <summary>
         ///状态
         /// </summary>
@@ -1388,7 +1683,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workingstatus = value; }
             get { return _workingstatus; }
         }
+
         private string _opperson;
+
         /// <summary>
         ///操作人
         /// </summary>
@@ -1397,7 +1694,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opperson = value; }
             get { return _opperson; }
         }
+
         private DateTime _opdate;
+
         /// <summary>
         ///操作日期
         /// </summary>
@@ -1406,7 +1705,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opdate = value; }
             get { return _opdate; }
         }
+
         private string _opsign;
+
         /// <summary>
         ///操作标志
         /// </summary>
@@ -1415,7 +1716,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opsign = value; }
             get { return _opsign; }
         }
+
         private decimal _id_key;
+
         /// <summary>
         ///自增键
         /// </summary>
@@ -1424,6 +1727,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _id_key = value; }
             get { return _id_key; }
         }
+
         #endregion Model
     }
 
@@ -1433,6 +1737,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     public partial class ArWorkerInfo
     {
         private string _workerid;
+
         /// <summary>
         ///作业工号
         /// </summary>
@@ -1443,6 +1748,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         }
 
         private string _name;
+
         /// <summary>
         ///姓名
         /// </summary>
@@ -1453,6 +1759,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         }
 
         private string _department;
+
         /// <summary>
         ///部门
         /// </summary>
@@ -1461,7 +1768,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _department = value; }
             get { return _department; }
         }
+
         private string _organizetion;
+
         /// <summary>
         ///部门组织
         /// </summary>
@@ -1470,7 +1779,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _organizetion = value; }
             get { return _organizetion; }
         }
+
         private string _post;
+
         /// <summary>
         ///岗位
         /// </summary>
@@ -1479,7 +1790,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _post = value; }
             get { return _post; }
         }
+
         private string _postnature;
+
         /// <summary>
         ///岗位性质
         /// </summary>
@@ -1490,6 +1803,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         }
 
         private string _classtype;
+
         /// <summary>
         ///班别
         /// </summary>
@@ -1508,8 +1822,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     {
         public ProWorkerInfo()
         { }
+
         #region Model
+
         private string _workerid;
+
         /// <summary>
         ///作业工号
         /// </summary>
@@ -1518,7 +1835,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workerid = value; }
             get { return _workerid; }
         }
+
         private string _workername;
+
         /// <summary>
         ///作业姓名
         /// </summary>
@@ -1527,7 +1846,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _workername = value; }
             get { return _workername; }
         }
+
         private string _organizetion;
+
         /// <summary>
         ///组织
         /// </summary>
@@ -1536,7 +1857,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _organizetion = value; }
             get { return _organizetion; }
         }
+
         private string _department;
+
         /// <summary>
         ///部门
         /// </summary>
@@ -1545,7 +1868,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _department = value; }
             get { return _department; }
         }
+
         private string _post;
+
         /// <summary>
         ///岗位
         /// </summary>
@@ -1554,7 +1879,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _post = value; }
             get { return _post; }
         }
+
         private string _ispostkey;
+
         /// <summary>
         ///是否关键岗位
         /// </summary>
@@ -1563,7 +1890,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _ispostkey = value; }
             get { return _ispostkey; }
         }
+
         private string _posttype;
+
         /// <summary>
         ///直间接
         /// </summary>
@@ -1572,7 +1901,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _posttype = value; }
             get { return _posttype; }
         }
+
         private string _classtype;
+
         /// <summary>
         ///班别
         /// </summary>
@@ -1581,7 +1912,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _classtype = value; }
             get { return _classtype; }
         }
+
         private string _leadworkerid;
+
         /// <summary>
         ///组长工号
         /// </summary>
@@ -1590,7 +1923,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _leadworkerid = value; }
             get { return _leadworkerid; }
         }
+
         private string _leadworkername;
+
         /// <summary>
         ///组长姓名
         /// </summary>
@@ -1599,7 +1934,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _leadworkername = value; }
             get { return _leadworkername; }
         }
+
         private string _opperson;
+
         /// <summary>
         ///操作人
         /// </summary>
@@ -1608,7 +1945,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opperson = value; }
             get { return _opperson; }
         }
+
         private string _opsign;
+
         /// <summary>
         ///操作标志
         /// </summary>
@@ -1617,7 +1956,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _opsign = value; }
             get { return _opsign; }
         }
+
         private decimal _id_key;
+
         /// <summary>
         ///自增键
         /// </summary>
@@ -1626,6 +1967,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _id_key = value; }
             get { return _id_key; }
         }
+
         #endregion Model
     }
 }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
 {
@@ -21,6 +17,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         {
             return DateTime.Parse(dt.ToString("yyyy-MM-dd"));
         }
+
         /// <summary>
         /// 将字符串日期转换为短日期格式
         /// </summary>
@@ -35,6 +32,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
             }
             return d;
         }
+
         /// <summary>
         /// 转换为yyyy-MM-dd 字符串
         /// </summary>
@@ -44,6 +42,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         {
             return dt.ToString("yyyy-MM-dd");
         }
+
         /// <summary>
         /// 转换为yyyy-MM-dd HH:mm:ss 日期型时间
         /// </summary>
@@ -53,6 +52,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         {
             return DateTime.Parse(dt.ToString("yyyy-MM-dd HH:mm:ss"));
         }
+
         /// <summary>
         /// 转换为yyyy-MM-dd HH:mm:ss字符串
         /// </summary>
@@ -62,6 +62,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         {
             return dt.ToString("yyyy-MM-dd HH:mm:ss");
         }
+
         /// <summary>
         /// 将字符串转换为int类型
         /// </summary>
@@ -91,6 +92,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
             }
             return r;
         }
+
         /// <summary>
         /// 将字符串转换为数字类型
         /// </summary>
@@ -134,24 +136,31 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
                 case "Monday":
                     day = "星期一";
                     break;
+
                 case "Tuesday":
                     day = "星期二";
                     break;
+
                 case "Wednesday":
                     day = "星期三";
                     break;
+
                 case "Thursday":
                     day = "星期四";
                     break;
+
                 case "Friday":
                     day = "星期五";
                     break;
+
                 case "Saturday":
                     day = "星期六";
                     break;
+
                 case "Sunday":
                     day = "星期日";
                     break;
+
                 default:
                     break;
             }

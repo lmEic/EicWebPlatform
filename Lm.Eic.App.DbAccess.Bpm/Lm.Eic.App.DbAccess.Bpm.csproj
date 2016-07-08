@@ -56,7 +56,7 @@
     <Compile Include="Mapping\QuantityMapping\QuantityDbContext.cs" />
     <Compile Include="Mapping\QuantityMapping\QuantitySampleMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\AstRep\IEquipmentRepository.cs" />
+    <Compile Include="Repository\AstRep\EquipmentRepository.cs" />
     <Compile Include="Repository\HrmRep\Archives\ArchivesIdentityRepository.cs" />
     <Compile Include="Repository\HrmRep\Attendance\AttendClassTypeRepository.cs" />
     <Compile Include="Repository\QuantityRep\QICSampleReposity.cs" />

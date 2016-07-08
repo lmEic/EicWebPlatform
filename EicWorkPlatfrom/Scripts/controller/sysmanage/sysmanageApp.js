@@ -3,7 +3,6 @@
 angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
 
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
-
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
 
     var configUrlPrefix = leeHelper.controllers.configManage + "/";
@@ -42,13 +41,10 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
     //--------------ITIL管理--------------------------
     .state('itilSupTelManage', {
         templateUrl: itilUrlPrefix + 'ItilSupTelManage',
-
     }).state('proStationManage', {
         templateUrl: 'ProEmployee/ProStationManage'
-
     }).state('proClassManage', {
         templateUrl: 'ProEmployee/ProClassManage'
-
     }).state('workHoursManage', {
         templateUrl: 'ProEmployee/WorkHoursManage'
     })
@@ -131,7 +127,6 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
         return ajaxService.getData(url, {});
     };
 
-
     ///获取请假配置信息
     hr.getLeaveTypesConfigs = function () {
         var url = attendUrl + "GetLeaveTypesConfigs";
@@ -175,7 +170,6 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
         });
     };
 
-  
     return hr;
 })
 
@@ -243,5 +237,4 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
         Id_Key: null,
     }
     $scope.vm = uiVM;
-
 })

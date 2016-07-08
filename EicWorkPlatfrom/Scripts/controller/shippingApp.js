@@ -38,11 +38,11 @@ angular.module('mesOptical.ShippingApp', ['ngAnimate', 'cgBusy', 'ngSanitize', '
     var shippingDateBoard = Object.create(shippingBoard);
 
     shippingDateBoard.selectedYearMonth= null,//选择的年月份
-    shippingDateBoard.shippingDatasource= [],//出货排程数据源,分组汇总整理之后 
+    shippingDateBoard.shippingDatasource= [],//出货排程数据源,分组汇总整理之后
     shippingDateBoard.shippingDataDetails= [],//出货排程数据源,分组汇总整理之后
     shippingDateBoard.shippingDataDetails= [],//按年月选择过滤出的出货排程数据源
     shippingDateBoard.ShippingDatasGroupByMonth= [],//对出货排程按年月进行分组汇总
-    
+
     $scope.shippingBoard = shippingBoard;
     $scope.shippingDateBoard = shippingDateBoard;
 
@@ -103,7 +103,6 @@ angular.module('mesOptical.ShippingApp', ['ngAnimate', 'cgBusy', 'ngSanitize', '
         _.sortBy(shippingBoard.productTypeDetailDatas, 'ShippingDate');
     };
 
-
     //面板开关切换
     shippingBoard.changeShippingBoardSwitch = function () {
         if (shippingBoard.shippingBoardSwitch === "on") {
@@ -122,7 +121,7 @@ angular.module('mesOptical.ShippingApp', ['ngAnimate', 'cgBusy', 'ngSanitize', '
         shippingDateBoard.productTypeDetailDatas = [];
         //选择的年月份
         shippingDateBoard.selectedYearMonth = null;
-        //出货排程数据源,分组汇总整理之后 
+        //出货排程数据源,分组汇总整理之后
         shippingDateBoard.shippingDatasource = [];
         //按年月选择过滤出的出货排程数据源
         shippingDateBoard.shippingDataDetails = [];
@@ -255,11 +254,9 @@ angular.module('mesOptical.ShippingApp', ['ngAnimate', 'cgBusy', 'ngSanitize', '
         wipDataBoard.perStationWipDatas = [];
         wipDataBoard.perStationWipDatas = _.where(wipDataBoard.wipDatas, { ProductStation: station });
         wipDataBoard.perStationWipDatas = _.sortBy(wipDataBoard.perStationWipDatas, "ProductDate");
-       
     }
     ///载入出货排程数据
     $scope.loadShippingDateData = function () {
-
         shippingBoard.datasource = [];
         shippingBoard.productCategories = [];
 

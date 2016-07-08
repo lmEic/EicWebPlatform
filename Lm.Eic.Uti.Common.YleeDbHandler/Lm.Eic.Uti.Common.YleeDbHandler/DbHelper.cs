@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Lm.Eic.Uti.Common.YleeDbHandler
 {
@@ -12,7 +8,9 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
     public class DbHelper
     {
         #region constracture
+
         private static readonly Dictionary<string, DbAcess> cache = new Dictionary<string, DbAcess>();
+
         private static DbAcess CreateInstance(string key, string serverIp, string database, string userName, string pwd)
         {
             DbAcess insatance = null;
@@ -26,9 +24,11 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return insatance;
         }
-        #endregion
+
+        #endregion constracture
 
         #region property
+
         /// <summary>
         /// ERP数据访问入口
         /// </summary>
@@ -44,10 +44,12 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             get { return CreateInstance("Mes", "MS5", "LightMasterMes", "sa", "lm2011"); }
         }
+
         public static DbAcess MesAttach
         {
             get { return CreateInstance("MesAttach", "MS589", "MesAttach", "sa", "lm2011"); }
         }
+
         /// <summary>
         /// NBOSA数据访问入口
         /// </summary>
@@ -55,6 +57,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             get { return CreateInstance("NBOSA", "MS5", "NBOSA", "sa", "lm2011"); }
         }
+
         /// <summary>
         /// Hrm数据访问入口
         /// </summary>
@@ -62,6 +65,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             get { return CreateInstance("Hrm", "MS5", "LightMasterHRM", "sa", "lm2011"); }
         }
+
         /// <summary>
         /// 权限数据访问接口
         /// </summary>
@@ -69,6 +73,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             get { return CreateInstance("Authen", "MS5", "LmAuthenticatCenter", "sa", "lm2011"); }
         }
+
         /// <summary>
         /// 考勤系统数据访问入口
         /// </summary>
@@ -76,6 +81,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             get { return CreateInstance("Sxt", "192.168.0.244", "SXT", "sa", "gsadminsxt"); }
         }
+
         /// <summary>
         /// 生产日报
         /// </summary>
@@ -83,6 +89,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             get { return CreateInstance("ProReport", "192.168.0.165", "ProduceReportSystemMES", "sa", "lm2011"); }
         }
+
         /// <summary>
         /// 创建数据访问实例
         /// </summary>
@@ -91,10 +98,11 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static DbAcess CreateDbAccessInstance(string serverName,string databaseName,string userName,string password)
+        public static DbAcess CreateDbAccessInstance(string serverName, string databaseName, string userName, string password)
         {
             return new DbAcess(serverName, databaseName, userName, password);
         }
-        #endregion
+
+        #endregion property
     }
 }

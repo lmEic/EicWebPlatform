@@ -32,7 +32,6 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
     };
     $scope.focus = focus;
 
-
     $scope.moveFocusToPassword = function ($event,name) {
         if ($event.keyCode === 13)
         {
@@ -57,7 +56,6 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
                     }
                 }
             }).error(function (data,status) {
-                
             });
         }
     };
