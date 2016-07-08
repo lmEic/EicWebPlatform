@@ -12,9 +12,25 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         { }
 
         #region Model
-
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标志
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
         private string _assetnumber;
-
         /// <summary>
         ///财产编号
         /// </summary>
@@ -23,20 +39,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _assetnumber = value; }
             get { return _assetnumber; }
         }
-
-        private DateTime _checkdata;
-
+        private DateTime _checkdate;
         /// <summary>
         ///校验日期
         /// </summary>
-        public DateTime CheckData
+        public DateTime CheckDate
         {
-            set { _checkdata = value; }
-            get { return _checkdata; }
+            set { _checkdate = value; }
+            get { return _checkdate; }
         }
-
         private string _checkworkerid;
-
         /// <summary>
         ///校验人工号
         /// </summary>
@@ -45,20 +57,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _checkworkerid = value; }
             get { return _checkworkerid; }
         }
-
         private string _checkuser;
-
         /// <summary>
-        ///校验人
+        ///校验人姓名
         /// </summary>
         public string CheckUser
         {
             set { _checkuser = value; }
             get { return _checkuser; }
         }
-
         private string _checkresult;
-
         /// <summary>
         ///校验结果
         /// </summary>
@@ -67,9 +75,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _checkresult = value; }
             get { return _checkresult; }
         }
-
         private string _verifyuser;
-
         /// <summary>
         ///确认人
         /// </summary>
@@ -78,9 +84,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _verifyuser = value; }
             get { return _verifyuser; }
         }
-
+        private string _documentpath;
+        /// <summary>
+        ///文档路径
+        /// </summary>
+        public string DocumentPath
+        {
+            set { _documentpath = value; }
+            get { return _documentpath; }
+        }
         private decimal _id_key;
-
         /// <summary>
         ///自增键
         /// </summary>
@@ -89,7 +102,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _id_key = value; }
             get { return _id_key; }
         }
-
-        #endregion Model
     }
+    #endregion Model
 }

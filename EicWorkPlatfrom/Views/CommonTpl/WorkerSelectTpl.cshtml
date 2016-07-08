@@ -1,0 +1,31 @@
+﻿<div class="popover" tabindex="-1">
+    <div class="arrow"></div>
+    <h3 class="popover-title">
+        <i class="fa fa-user"></i>{{title}}
+    </h3>
+    <div class="popover-content" style="min-width:250px;max-width:260px;min-height:200px;max-height:220px">
+        <ul class="list-group" cg-busy="{promise:searchedWorkersPrommise}">
+            <li class="list-group-item list-group-item-info">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="输入工号或者姓名"
+                                   ng-model="vmManager.workerId" type="text" />
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" ng-click="vmManager.getWorkerInfo()">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker)"
+                ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}} 部门：{{worker.Department}}" data-bs-tooltip>
+                <i class="fa fa-user"></i>
+                <span class="label label-primary">{{worker.WorkerId}}</span>
+                <span>{{worker.Name}}</span>
+            </li>
+        </ul>
+    </div>
+</div>
