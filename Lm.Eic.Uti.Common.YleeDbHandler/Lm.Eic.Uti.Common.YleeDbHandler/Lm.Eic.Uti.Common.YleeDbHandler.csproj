@@ -50,7 +50,7 @@
       <HintPath>..\..\libs\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Interop.Excel">
-      <HintPath>..\..\EicWorkPlatfrom\bin\Interop.Excel.dll</HintPath>
+      <HintPath>..\..\libs\Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
