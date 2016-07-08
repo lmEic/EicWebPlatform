@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Lm.Eic.Uti.Common.YleeObjectBuilder;
+﻿using Lm.Eic.Uti.Common.YleeObjectBuilder;
+
 namespace Lm.Eic.App.Business.Mes.Optical.Authen
 {
     /// <summary>
@@ -18,6 +15,4 @@ namespace Lm.Eic.App.Business.Mes.Optical.Authen
             get { return OBulider.BuildInstance<MesUserManager>(); }
         }
     }
-
-
 }

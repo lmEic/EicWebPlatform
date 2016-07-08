@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Ast
 {
@@ -14,8 +10,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
     {
         public EquipmentModel()
         { }
+
         #region Model
+
         private string _assetnumber;
+
         /// <summary>
         ///财产编号
         /// </summary>
@@ -24,7 +23,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _assetnumber = value; }
             get { return _assetnumber; }
         }
+
         private string _equipmentname;
+
         /// <summary>
         ///设备名称
         /// </summary>
@@ -33,7 +34,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _equipmentname = value; }
             get { return _equipmentname; }
         }
+
         private string _equipmentspec;
+
         /// <summary>
         ///设备型号
         /// </summary>
@@ -42,7 +45,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _equipmentspec = value; }
             get { return _equipmentspec; }
         }
+
         private string _functiondescription;
+
         /// <summary>
         ///功能描述
         /// </summary>
@@ -51,7 +56,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _functiondescription = value; }
             get { return _functiondescription; }
         }
+
         private string _servicelife;
+
         /// <summary>
         ///使用寿命
         /// </summary>
@@ -60,7 +67,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _servicelife = value; }
             get { return _servicelife; }
         }
+
         private string _equipmentphoto;
+
         /// <summary>
         ///设备照片
         /// </summary>
@@ -69,7 +78,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _equipmentphoto = value; }
             get { return _equipmentphoto; }
         }
+
         private string _assettype;
+
         /// <summary>
         ///资产类别
         /// </summary>
@@ -78,7 +89,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _assettype = value; }
             get { return _assettype; }
         }
+
         private string _equipmenttype;
+
         /// <summary>
         ///设备类别
         /// </summary>
@@ -87,7 +100,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _equipmenttype = value; }
             get { return _equipmenttype; }
         }
+
         private string _taxtype;
+
         /// <summary>
         ///税务类别
         /// </summary>
@@ -96,7 +111,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _taxtype = value; }
             get { return _taxtype; }
         }
+
         private string _unit;
+
         /// <summary>
         ///单位
         /// </summary>
@@ -105,7 +122,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _unit = value; }
             get { return _unit; }
         }
+
         private string _manufacturer;
+
         /// <summary>
         ///生产厂家
         /// </summary>
@@ -114,7 +133,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _manufacturer = value; }
             get { return _manufacturer; }
         }
+
         private string _manufacturingnumber;
+
         /// <summary>
         ///制造编号
         /// </summary>
@@ -123,7 +144,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _manufacturingnumber = value; }
             get { return _manufacturingnumber; }
         }
+
         private string _manufacturerwebsite;
+
         /// <summary>
         ///产品官网
         /// </summary>
@@ -132,7 +155,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _manufacturerwebsite = value; }
             get { return _manufacturerwebsite; }
         }
+
         private string _manufacturertel;
+
         /// <summary>
         ///供应商电话
         /// </summary>
@@ -141,7 +166,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _manufacturertel = value; }
             get { return _manufacturertel; }
         }
+
         private string _aftersalestel;
+
         /// <summary>
         ///售后电话
         /// </summary>
@@ -150,7 +177,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _aftersalestel = value; }
             get { return _aftersalestel; }
         }
+
         private string _addmode;
+
         /// <summary>
         ///增加方式
         /// </summary>
@@ -159,7 +188,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _addmode = value; }
             get { return _addmode; }
         }
+
         private DateTime? _deliverydate;
+
         /// <summary>
         ///购入日期
         /// </summary>
@@ -168,7 +199,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _deliverydate = value; }
             get { return _deliverydate; }
         }
+
         private string _deliveryuser;
+
         /// <summary>
         ///交付人
         /// </summary>
@@ -177,7 +210,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _deliveryuser = value; }
             get { return _deliveryuser; }
         }
+
         private string _deliverycheckuser;
+
         /// <summary>
         ///验收人
         /// </summary>
@@ -186,7 +221,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _deliverycheckuser = value; }
             get { return _deliverycheckuser; }
         }
+
         private string _safekeepworkerid;
+
         /// <summary>
         ///保管人工号
         /// </summary>
@@ -195,7 +232,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _safekeepworkerid = value; }
             get { return _safekeepworkerid; }
         }
+
         private string _safekeepuser;
+
         /// <summary>
         ///保管人
         /// </summary>
@@ -204,7 +243,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _safekeepuser = value; }
             get { return _safekeepuser; }
         }
+
         private string _safekeepdepartment;
+
         /// <summary>
         ///保管单位
         /// </summary>
@@ -213,7 +254,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _safekeepdepartment = value; }
             get { return _safekeepdepartment; }
         }
+
         private string _installationlocation;
+
         /// <summary>
         ///安装位置
         /// </summary>
@@ -222,7 +265,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _installationlocation = value; }
             get { return _installationlocation; }
         }
+
         private string _ismaintenance;
+
         /// <summary>
         ///是否保养
         /// </summary>
@@ -231,7 +276,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _ismaintenance = value; }
             get { return _ismaintenance; }
         }
+
         private DateTime? _maintenancedate;
+
         /// <summary>
         ///保养日期
         /// </summary>
@@ -240,7 +287,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _maintenancedate = value; }
             get { return _maintenancedate; }
         }
+
         private int _maintenanceinterval;
+
         /// <summary>
         ///保养间隔
         /// </summary>
@@ -249,7 +298,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _maintenanceinterval = value; }
             get { return _maintenanceinterval; }
         }
+
         private DateTime? _plannedmaintenancedate;
+
         /// <summary>
         ///计划保养日期
         /// </summary>
@@ -258,7 +309,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _plannedmaintenancedate = value; }
             get { return _plannedmaintenancedate; }
         }
+
         private string _maintenancestate;
+
         /// <summary>
         ///保养状态
         /// </summary>
@@ -267,7 +320,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _maintenancestate = value; }
             get { return _maintenancestate; }
         }
+
         private string _state;
+
         /// <summary>
         ///设备状态
         /// </summary>
@@ -276,7 +331,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _state = value; }
             get { return _state; }
         }
+
         private string _ischeck;
+
         /// <summary>
         ///是否校验
         /// </summary>
@@ -285,7 +342,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _ischeck = value; }
             get { return _ischeck; }
         }
+
         private DateTime? _checkdate;
+
         /// <summary>
         ///校验日期
         /// </summary>
@@ -294,7 +353,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _checkdate = value; }
             get { return _checkdate; }
         }
+
         private int _checkinterval;
+
         /// <summary>
         ///校验间隔
         /// </summary>
@@ -303,7 +364,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _checkinterval = value; }
             get { return _checkinterval; }
         }
+
         private DateTime? _plannedcheckdate;
+
         /// <summary>
         ///计划校验日期
         /// </summary>
@@ -312,7 +375,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _plannedcheckdate = value; }
             get { return _plannedcheckdate; }
         }
+
         private string _chechstate;
+
         /// <summary>
         ///校验状态
         /// </summary>
@@ -321,7 +386,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _chechstate = value; }
             get { return _chechstate; }
         }
+
         private string _opperson;
+
         /// <summary>
         ///操作人
         /// </summary>
@@ -330,7 +397,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _opperson = value; }
             get { return _opperson; }
         }
+
         private string _opsign;
+
         /// <summary>
         ///操作标志
         /// </summary>
@@ -339,7 +408,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _opsign = value; }
             get { return _opsign; }
         }
+
         private decimal _id_key;
+
         /// <summary>
         ///自增键
         /// </summary>
@@ -348,6 +419,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _id_key = value; }
             get { return _id_key; }
         }
+
         #endregion Model
     }
 }

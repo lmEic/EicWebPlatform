@@ -1,12 +1,7 @@
-﻿using Lm.Eic.Uti.Common.YleeDbHandler;
+﻿using Lm.Eic.Framework.Authenticate.Model;
+using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Entity;
-using Lm.Eic.Framework.Authenticate.Model;
-
 
 namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
 {
@@ -19,22 +14,27 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
         {
             Database.SetInitializer<AuthenDbContext>(null);
         }
+
         /// <summary>
         /// 注册的用户信息
         /// </summary>
         public DbSet<RegistUserModel> RegistUsers { get; set; }
+
         /// <summary>
         /// 角色信息
         /// </summary>
         public DbSet<RoleModel> Roles { get; set; }
+
         /// <summary>
         /// 程序集信息
         /// </summary>
         public DbSet<AssemblyModel> Assemblys { get; set; }
+
         /// <summary>
         /// 匹配的角色信息
         /// </summary>
         public DbSet<UserMatchRoleModel> MatchRoles { get; set; }
+
         /// <summary>
         /// 模块导航数据
         /// </summary>
@@ -53,12 +53,10 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
 
             modelBuilder.Configurations.Add(new ModuleNavigationModelMapping());
         }
-        #region dbset
-
-        #endregion
     }
 
     #region Repository Framework
+
     /// <summary>
     /// 用户验证中心数据库工作单元
     /// </summary>
@@ -76,12 +74,13 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
             }
         }
     }
+
     /// <summary>
     /// 光主动数据库持久化基类/父类/超类
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     public class AuthenRepositoryBase<TEntity> : EFRepositoryBase<TEntity>, IRepository<TEntity>
-         where TEntity : class,new()
+         where TEntity : class, new()
     {
         protected override void SetUnitOfWorkContext()
         {
@@ -95,5 +94,6 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
             }
         }
     }
-    #endregion
+
+    #endregion Repository Framework
 }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace EicWorkPlatfrom.Controllers.hr
 {
-    public class HRController :EicBaseController
+    public class HRController : EicBaseController
     {
         //
         // GET: /HR/
@@ -15,6 +11,7 @@ namespace EicWorkPlatfrom.Controllers.hr
         {
             return View();
         }
+
         /// <summary>
         /// 岗位选择视图模板
         /// </summary>
@@ -24,6 +21,7 @@ namespace EicWorkPlatfrom.Controllers.hr
         {
             return View();
         }
+
         /// <summary>
         /// 学习信息编辑模板
         /// </summary>
@@ -33,6 +31,7 @@ namespace EicWorkPlatfrom.Controllers.hr
         {
             return View();
         }
+
         /// <summary>
         /// 联系方式编辑模板
         /// </summary>
@@ -62,6 +61,7 @@ namespace EicWorkPlatfrom.Controllers.hr
         {
             return View();
         }
+
         /// <summary>
         /// 迟到旷工确认窗口模板
         /// </summary>

@@ -2,11 +2,7 @@
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 {
@@ -21,19 +17,21 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         }
 
         public DbSet<EquipmentModel> Equipment { get; set; }
+        public DbSet<EquipmentCheckModel> EquipmentCheck { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Configurations.Add(new EquipmentModelMapping());
+            modelBuilder.Configurations.Add(new EquipmentCheckModelMapping());
         }
     }
 
     /// <summary>
     /// 设备管理中心数据库工作单元
     /// </summary>
-    public class EquipmentUnitOfWorkContext : UnitOfWorkContextBase, IUnitOfWorkContext
+    public class BpmUnitOfWorkContext : UnitOfWorkContextBase, IUnitOfWorkContext
     {
         protected override void SetDbContext()
         {
@@ -52,21 +50,19 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
     /// 数据库持久化基类/父类/超类
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class EquipmentRepositoryBase<TEntity> : EFRepositoryBase<TEntity>, IRepository<TEntity>
+    public class BpmRepositoryBase<TEntity> : EFRepositoryBase<TEntity>, IRepository<TEntity>
          where TEntity : class, new()
     {
         protected override void SetUnitOfWorkContext()
         {
             try
             {
-                this.EFContext = new EquipmentUnitOfWorkContext();
+                this.EFContext = new BpmUnitOfWorkContext();
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.ToString());
             }
         }
-
-
     }
 }

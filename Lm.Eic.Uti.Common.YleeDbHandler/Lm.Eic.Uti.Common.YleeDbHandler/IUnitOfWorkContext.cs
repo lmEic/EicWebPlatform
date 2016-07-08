@@ -1,13 +1,12 @@
-﻿using System;
+﻿using EntityFramework.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Linq.Dynamic;
-using System.Text;
-using EntityFramework.Extensions;
+using System.Linq.Expressions;
 
 namespace Lm.Eic.Uti.Common.YleeDbHandler
 {
@@ -23,7 +22,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// </summary>
         bool IsCommitted { get; }
 
-        #endregion
+        #endregion 属性
 
         #region 方法
 
@@ -32,6 +31,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// </summary>
         /// <returns></returns>
         int Commit();
+
         /// <summary>
         ///     把当前单元操作回滚成未提交状态
         /// </summary>
@@ -50,21 +50,24 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <typeparam name="TEntity"> 要注册的类型 </typeparam>
         /// <param name="entity"> 要注册的对象 </param>
         void RegisterNew<TEntity>(TEntity entity) where TEntity : class;
+
         /// <summary>
         ///   批量注册多个新的对象到仓储上下文中
         /// </summary>
         /// <typeparam name="TEntity"> 要注册的类型 </typeparam>
         /// <param name="entities"> 要注册的对象集合 </param>
         void RegisterNew<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
+
         /// <summary>
         /// 注册修改的对象到数据库中
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="predicate"></param>
         /// <param name="entity"></param>
-        void RegisterModified<TEntity>(Expression<Func<TEntity, bool>> predicate, TEntity entity) where TEntity : class,new();
+        void RegisterModified<TEntity>(Expression<Func<TEntity, bool>> predicate, TEntity entity) where TEntity : class, new();
 
         int RegisterModified<TEntity>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression) where TEntity : class;
+
         /// <summary>
         ///   注册一个删除的对象到仓储上下文中
         /// </summary>
@@ -79,21 +82,25 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="entities"> 要注册的对象集合 </param>
         void RegisterDeleted<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
 
-        #endregion
+        #endregion 方法
     }
+
     /// <summary>
     /// 单元操作实现
     /// </summary>
     public abstract class UnitOfWorkContextBase : IUnitOfWorkContext
     {
         #region constructure
+
         public UnitOfWorkContextBase()
         {
             this.SetDbContext();
         }
-        #endregion
+
+        #endregion constructure
 
         #region Property
+
         /// <summary>
         /// 获取 当前使用的数据访问上下文对象
         /// </summary>
@@ -103,9 +110,11 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         ///     获取 当前单元操作是否已被提交
         /// </summary>
         public bool IsCommitted { get; private set; }
-        #endregion
+
+        #endregion Property
 
         #region method
+
         /// <summary>
         /// 提交当前单元操作的结果
         /// </summary>
@@ -136,7 +145,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 {
                     throw new Exception(e.ToString());
                 }
-
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException dbvaliException)
             {
@@ -148,9 +156,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             finally
             {
-
             }
-
         }
 
         /// <summary>
@@ -179,6 +185,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             return Context.Set<TEntity>();
         }
+
         /// <summary>
         ///     注册一个新的对象到仓储上下文中
         /// </summary>
@@ -193,6 +200,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             IsCommitted = false;
         }
+
         /// <summary>
         ///     批量注册多个新的对象到仓储上下文中
         /// </summary>
@@ -218,13 +226,14 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             IsCommitted = false;
         }
+
         /// <summary>
         /// 根据条件去修改实体对象
         /// </summary>
         /// <typeparam name="TEntity">泛型对象类型</typeparam>
         /// <param name="predicate">过滤条件</param>
         /// <param name="entity">实体对象</param>
-        public void RegisterModified<TEntity>(Expression<Func<TEntity, bool>> predicate, TEntity entity) where TEntity : class,new()
+        public void RegisterModified<TEntity>(Expression<Func<TEntity, bool>> predicate, TEntity entity) where TEntity : class, new()
         {
             TEntity oldentity = Context.Set<TEntity>().FirstOrDefault(predicate);
             if (oldentity != null)
@@ -233,6 +242,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             IsCommitted = false;
         }
+
         /// <summary>
         /// 根据条件按需更新
         /// </summary>
@@ -243,6 +253,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             return Context.Set<TEntity>().Where(predicate).Update(updateExpression);
         }
+
         /// <summary>
         ///   注册一个删除的对象到仓储上下文中
         /// </summary>
@@ -275,14 +286,16 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 Context.Configuration.AutoDetectChangesEnabled = true;
             }
         }
-        #endregion
 
-        #region  Abstract method
+        #endregion method
+
+        #region Abstract method
+
         /// <summary>
         /// 制定具体的DbContext,由子类来实现
         /// </summary>
         protected abstract void SetDbContext();
 
-        #endregion
+        #endregion Abstract method
     }
 }

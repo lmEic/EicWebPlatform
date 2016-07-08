@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Lm.Eic.Uti.LogMessageNet.LeeLog4Net;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.IO;
-using System.Text.RegularExpressions;
 using System.Globalization;
-using Lm.Eic.Uti.LogMessageNet.LeeLog4Net;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Lm.Eic.Uti.Common.YleeFtp
 {
@@ -16,12 +15,16 @@ namespace Lm.Eic.Uti.Common.YleeFtp
     public class FtpOperator
     {
         #region Member
+
         private FtpWebRequest request;
         private FtpWebResponse response;
-        #endregion
+
+        #endregion Member
 
         #region Property
+
         private FtpConnectPassport passport = null;
+
         /// <summary>
         /// Ftp连接凭证
         /// </summary>
@@ -31,6 +34,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         }
 
         private FtpOpreateDirectoryPath operateDirectoryPath = null;
+
         /// <summary>
         /// Ftp操作文件路径信息
         /// </summary>
@@ -38,17 +42,21 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         {
             get { return operateDirectoryPath; }
         }
+
         /// <summary>
         /// 是否需要删除临时文件
         /// </summary>
         private bool _isDeleteTempFile = false;
+
         /// <summary>
         /// 异步上传所临时生成的文件
         /// </summary>
         private string _UploadTempFile = "";
-        #endregion
+
+        #endregion Property
 
         #region try
+
         private void Trydo(Action dohanlder)
         {
             try
@@ -60,6 +68,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                 Log4NetHelper.ErrorLogger.LogError(ex);
             }
         }
+
         private void Trydo(string operationname, Action dohandler)
         {
             try
@@ -71,6 +80,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                 Log4NetHelper.ErrorLogger.LogError(operationname, ex);
             }
         }
+
         private bool Trydo(string operationname, Func<bool> dohandler)
         {
             bool isopsuccess = false;
@@ -89,12 +99,15 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         {
             Logmsg(msg);
         }
-        #endregion
+
+        #endregion try
 
         #region Constructor
+
         public FtpOperator(FtpConnectPassport passport)
         {
-            Trydo(() => {
+            Trydo(() =>
+            {
                 this.passport = passport;
                 this.operateDirectoryPath = new FtpOpreateDirectoryPath();
                 string _DirectoryPath = passport.FtpUri.AbsolutePath;
@@ -109,6 +122,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                 }
             });
         }
+
         public FtpOperator()
         {
             this.passport = new FtpConnectPassport()
@@ -119,6 +133,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                 Password = "@anonymous"
             };
         }
+
         ~FtpOperator()
         {
             if (response != null)
@@ -132,9 +147,11 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                 request = null;
             }
         }
-        #endregion
+
+        #endregion Constructor
 
         #region 建立连接
+
         /// <summary>
         /// 建立FTP链接,返回响应对象
         /// </summary>
@@ -142,8 +159,9 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         /// <returns></returns>
         private FtpWebResponse GetFtpReponse(Uri uri, string ftpMethod)
         {
-            FtpWebResponse rep=null;
-            Trydo("GetFtpReponse", () => {
+            FtpWebResponse rep = null;
+            Trydo("GetFtpReponse", () =>
+            {
                 request = (FtpWebRequest)WebRequest.Create(uri);
                 request.Method = ftpMethod;
                 request.UseBinary = true;
@@ -152,10 +170,11 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                 {
                     request.Proxy = passport.Proxy;
                 }
-                rep= (FtpWebResponse)request.GetResponse();
+                rep = (FtpWebResponse)request.GetResponse();
             });
             return rep;
         }
+
         /// <summary>
         /// 建立FTP链接,返回请求对象
         /// </summary>
@@ -176,45 +195,57 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return request;
         }
-        #endregion
+
+        #endregion 建立连接
 
         #region 事件
+
         public delegate void De_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e);
+
         public delegate void De_DownloadDataCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
+
         public delegate void De_UploadProgressChanged(object sender, UploadProgressChangedEventArgs e);
+
         public delegate void De_UploadFileCompleted(object sender, UploadFileCompletedEventArgs e);
 
         /// <summary>
         /// 异步下载进度发生改变触发的事件
         /// </summary>
         public event De_DownloadProgressChanged DownloadProgressChanged;
+
         /// <summary>
         /// 异步下载文件完成之后触发的事件
         /// </summary>
         public event De_DownloadDataCompleted DownloadDataCompleted;
+
         /// <summary>
         /// 异步上传进度发生改变触发的事件
         /// </summary>
         public event De_UploadProgressChanged UploadProgressChanged;
+
         /// <summary>
         /// 异步上传文件完成之后触发的事件
         /// </summary>
         public event De_UploadFileCompleted UploadFileCompleted;
-        #endregion
+
+        #endregion 事件
 
         #region common method
+
         private string CreateDownOrUpFileUri(string downOrUpPath, string filename)
         {
             string uri = downOrUpPath != null ? this.passport.FtpUri.ToString() + downOrUpPath + "\\" + filename : this.passport.FtpUri.ToString() + operateDirectoryPath.CurrentDirectoryPath + "\\" + filename;
             return uri;
         }
-        #endregion
+
+        #endregion common method
 
         #region 异步下载文件
+
         /// <summary>
         /// 从FTP服务器异步下载文件，指定本地路径和本地文件名
         /// </summary>
-        /// <param name="RemoteFileName">远程文件名</param>        
+        /// <param name="RemoteFileName">远程文件名</param>
         /// <param name="LocalPath">保存文件的本地路径,后面带有"\"</param>
         /// <param name="LocalFileName">保存本地的文件名</param>
         public void DownloadFileAsync(string RemoteFileName, string LocalPath, string LocalFileName)
@@ -239,7 +270,6 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                 }
                 DownloadFileAsync(RemoteFileName, LocalFullPath);
             });
-          
         }
 
         /// <summary>
@@ -279,7 +309,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         /// </summary>
         /// <param name="sender">下载对象</param>
         /// <param name="e">数据信息对象</param>
-        void client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        private void client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
             if (DownloadDataCompleted != null)
             {
@@ -292,16 +322,18 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         /// </summary>
         /// <param name="sender">下载对象</param>
         /// <param name="e">进度信息对象</param>
-        void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             if (DownloadProgressChanged != null)
             {
                 DownloadProgressChanged(sender, e);
             }
         }
-        #endregion
+
+        #endregion 异步下载文件
 
         #region 下载文件
+
         /// <summary>
         /// 从FTP服务器下载文件，指定本地路径和本地文件名
         /// </summary>
@@ -313,7 +345,8 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         {
             bool issuccess = false;
             byte[] bt = null;
-            Trydo("DownloadFile", () => {
+            Trydo("DownloadFile", () =>
+            {
                 if (!IsValidFileChars(remoteFileName) || !IsValidFileChars(localFileName) || !IsValidPathChars(localPath))
                 {
                     Logmsg("非法文件名或目录名!");
@@ -362,7 +395,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                     Logmsg("非法文件名或目录名!");
                     return;
                 }
-                string uri = CreateDownOrUpFileUri(this.OperateDirectoryPath.DownLoadDirectoryPath,remoteFileName);
+                string uri = CreateDownOrUpFileUri(this.OperateDirectoryPath.DownLoadDirectoryPath, remoteFileName);
                 response = GetFtpReponse(new Uri(uri), WebRequestMethods.Ftp.DownloadFile);
                 Stream Reader = response.GetResponseStream();
 
@@ -385,9 +418,11 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return filebytes;
         }
-        #endregion
+
+        #endregion 下载文件
 
         #region 异步上传文件
+
         /// <summary>
         /// 异步上传文件到FTP服务器
         /// </summary>
@@ -396,6 +431,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         {
             UploadFileAsync(LocalFullPath, Path.GetFileName(LocalFullPath), false);
         }
+
         /// <summary>
         /// 异步上传文件到FTP服务器
         /// </summary>
@@ -405,6 +441,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         {
             UploadFileAsync(LocalFullPath, Path.GetFileName(LocalFullPath), OverWriteRemoteFile);
         }
+
         /// <summary>
         /// 异步上传文件到FTP服务器
         /// </summary>
@@ -414,6 +451,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         {
             UploadFileAsync(LocalFullPath, RemoteFileName, false);
         }
+
         /// <summary>
         /// 异步上传文件到FTP服务器
         /// </summary>
@@ -422,7 +460,8 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         /// <param name="OverWriteRemoteFile">是否覆盖远程服务器上面同名的文件</param>
         public void UploadFileAsync(string LocalFullPath, string RemoteFileName, bool OverWriteRemoteFile)
         {
-            Trydo("UploadFileAsync", () => {
+            Trydo("UploadFileAsync", () =>
+            {
                 if (!IsValidFileChars(RemoteFileName) || !IsValidFileChars(Path.GetFileName(LocalFullPath)) || !IsValidPathChars(Path.GetDirectoryName(LocalFullPath)))
                 {
                     Logmsg("非法文件名或目录名!");
@@ -453,6 +492,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                 }
             });
         }
+
         /// <summary>
         /// 异步上传文件到FTP服务器
         /// </summary>
@@ -467,6 +507,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             }
             UploadFileAsync(FileBytes, RemoteFileName, false);
         }
+
         /// <summary>
         /// 异步上传文件到FTP服务器
         /// </summary>
@@ -475,7 +516,8 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         /// <param name="OverWriteRemoteFile">是否覆盖远程服务器上面同名的文件</param>
         public void UploadFileAsync(byte[] FileBytes, string RemoteFileName, bool OverWriteRemoteFile)
         {
-            Trydo("UploadFileAsync", () => {
+            Trydo("UploadFileAsync", () =>
+            {
                 if (!IsValidFileChars(RemoteFileName))
                 {
                     Logmsg("非法文件名！");
@@ -509,7 +551,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         /// </summary>
         /// <param name="sender">下载对象</param>
         /// <param name="e">数据信息对象</param>
-        void client_UploadFileCompleted(object sender, UploadFileCompletedEventArgs e)
+        private void client_UploadFileCompleted(object sender, UploadFileCompletedEventArgs e)
         {
             if (_isDeleteTempFile)
             {
@@ -531,16 +573,18 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         /// </summary>
         /// <param name="sender">下载对象</param>
         /// <param name="e">进度信息对象</param>
-        void client_UploadProgressChanged(object sender, UploadProgressChangedEventArgs e)
+        private void client_UploadProgressChanged(object sender, UploadProgressChangedEventArgs e)
         {
             if (UploadProgressChanged != null)
             {
                 UploadProgressChanged(sender, e);
             }
         }
-        #endregion
+
+        #endregion 异步上传文件
 
         #region 上传文件
+
         /// <summary>
         /// 上传文件到FTP服务器
         /// </summary>
@@ -564,7 +608,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                     isopsuccess = false;
                     return;
                 }
-                string uri = CreateDownOrUpFileUri(this.OperateDirectoryPath.UploadDirectoryPath,remoteFileName);
+                string uri = CreateDownOrUpFileUri(this.OperateDirectoryPath.UploadDirectoryPath, remoteFileName);
                 response = GetFtpReponse(new Uri(uri), WebRequestMethods.Ftp.UploadFile);
                 Stream requestStream = request.GetRequestStream();
                 MemoryStream mem = new MemoryStream(fileBytes);
@@ -589,6 +633,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return isopsuccess;
         }
+
         /// <summary>
         /// 上传文件到FTP服务器,上传前需要先设置上传至指定的文件夹路径信息
         /// 如果没有指定，则上传至根目录中
@@ -599,7 +644,8 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         public bool UploadFile(string localFileName, string remoteFileName, bool overWriteRemoteFile)
         {
             bool isopsuccess = false;
-            Trydo("UploadFile", () => {
+            Trydo("UploadFile", () =>
+            {
                 if (!IsValidFileChars(remoteFileName) || !IsValidFileChars(Path.GetFileName(localFileName)) || !IsValidPathChars(Path.GetDirectoryName(localFileName)))
                 {
                     Logmsg("非法文件名或目录名!");
@@ -621,9 +667,11 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return isopsuccess;
         }
-        #endregion
+
+        #endregion 上传文件
 
         #region 删除文件
+
         /// <summary>
         /// 从FTP服务器上面删除一个文件
         /// </summary>
@@ -631,7 +679,8 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         public bool DeleteFile(string RemoteFileName)
         {
             bool isopsuccess = false;
-            Trydo("DeleteFile", () => {
+            Trydo("DeleteFile", () =>
+            {
                 if (!IsValidFileChars(RemoteFileName))
                 {
                     Logmsg("文件名非法！");
@@ -642,9 +691,11 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return isopsuccess;
         }
-        #endregion
+
+        #endregion 删除文件
 
         #region 重命名文件
+
         /// <summary>
         /// 更改一个文件的名称或一个目录的名称
         /// </summary>
@@ -653,7 +704,8 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         public bool ReName(string RemoteFileName, string NewFileName)
         {
             bool isopsuccess = false;
-            Trydo("ReName", () => {
+            Trydo("ReName", () =>
+            {
                 if (!IsValidFileChars(RemoteFileName) || !IsValidFileChars(NewFileName))
                 {
                     Logmsg("文件名非法");
@@ -669,7 +721,6 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                     request = CreateFtpRequest(new Uri(this.passport.FtpUri.ToString() + RemoteFileName), WebRequestMethods.Ftp.Rename);
                     request.RenameTo = NewFileName;
                     response = (FtpWebResponse)request.GetResponse();
-
                 }
                 else
                 {
@@ -680,9 +731,11 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return isopsuccess;
         }
-        #endregion
+
+        #endregion 重命名文件
 
         #region 拷贝、移动文件
+
         /// <summary>
         /// 把当前目录下面的一个文件拷贝到服务器上面另外的目录中，注意，拷贝文件之后，当前工作目录还是文件原来所在的目录
         /// </summary>
@@ -705,6 +758,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return Success;
         }
+
         /// <summary>
         /// 把当前目录下面的一个文件移动到服务器上面另外的目录中，注意，移动文件之后，当前工作目录还是文件原来所在的目录
         /// </summary>
@@ -729,14 +783,16 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                     DirectoryName = "/" + DirectoryName;
                 if (!DirectoryName.EndsWith("/"))
                     DirectoryName += "/";
-                 Success = ReName(RemoteFile, DirectoryName + RemoteFile);
-                 this.OperateDirectoryPath.CurrentDirectoryPath = CurrentWorkDir;
+                Success = ReName(RemoteFile, DirectoryName + RemoteFile);
+                this.OperateDirectoryPath.CurrentDirectoryPath = CurrentWorkDir;
             });
             return Success;
         }
-        #endregion
+
+        #endregion 拷贝、移动文件
 
         #region 建立、删除子目录
+
         /// <summary>
         /// 在FTP服务器上当前工作目录建立一个子目录
         /// </summary>
@@ -761,6 +817,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return issuccess;
         }
+
         /// <summary>
         /// 从当前工作目录中删除一个子目录
         /// </summary>
@@ -785,9 +842,11 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return issucess;
         }
-        #endregion
+
+        #endregion 建立、删除子目录
 
         #region 目录或文件存在的判断
+
         /// <summary>
         /// 判断一个远程文件是否存在服务器当前目录下面
         /// </summary>
@@ -795,7 +854,8 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         public bool FileExist(string RemoteFileName)
         {
             bool issuccess = false;
-            Trydo("FileExist", () => {
+            Trydo("FileExist", () =>
+            {
                 if (!IsValidFileChars(RemoteFileName))
                 {
                     Logmsg("文件名非法");
@@ -806,13 +866,14 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                 {
                     if (file.Name == RemoteFileName)
                     {
-                        issuccess= true;
+                        issuccess = true;
                     }
                 }
                 issuccess = false;
             });
             return issuccess;
         }
+
         /// <summary>
         /// 判断当前目录下指定的子目录是否存在
         /// </summary>
@@ -839,9 +900,11 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return issucess;
         }
-        #endregion
+
+        #endregion 目录或文件存在的判断
 
         #region 列出目录文件信息
+
         /// <summary>
         /// 列出FTP服务器上面当前目录的所有文件和目录
         /// </summary>
@@ -857,13 +920,15 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return list;
         }
+
         /// <summary>
         /// 列出FTP服务器上面当前目录的所有文件
         /// </summary>
         public FileStruct[] ListFiles()
         {
             List<FileStruct> listFile = new List<FileStruct>();
-            Trydo("ListFiles", () => {
+            Trydo("ListFiles", () =>
+            {
                 FileStruct[] listAll = ListFilesAndDirectories();
 
                 foreach (FileStruct file in listAll)
@@ -876,6 +941,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return listFile.ToArray();
         }
+
         /// <summary>
         /// 列出FTP服务器上面当前目录的所有的目录
         /// </summary>
@@ -895,6 +961,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return listDirectory.ToArray();
         }
+
         /// <summary>
         /// 获得文件和目录列表
         /// </summary>
@@ -917,6 +984,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                             case FileListStyle.UnixStyle:
                                 f = ParseFileStructFromUnixStyleRecord(s);
                                 break;
+
                             case FileListStyle.WindowsStyle:
                                 f = ParseFileStructFromWindowsStyleRecord(s);
                                 break;
@@ -930,6 +998,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return myListArray.ToArray();
         }
+
         /// <summary>
         /// 从Windows格式中返回文件信息
         /// </summary>
@@ -962,6 +1031,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return f;
         }
+
         /// <summary>
         /// 从Unix格式中返回文件信息
         /// </summary>
@@ -994,6 +1064,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return f;
         }
+
         /// <summary>
         /// 按照一定的规则进行字符串截取
         /// </summary>
@@ -1007,6 +1078,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             s = (s.Substring(pos1)).Trim();
             return retString;
         }
+
         /// <summary>
         /// 判断文件列表的方式Window方式还是Unix方式
         /// </summary>
@@ -1028,9 +1100,11 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             }
             return FileListStyle.Unknown;
         }
-        #endregion
+
+        #endregion 列出目录文件信息
 
         #region 文件、目录名称有效性判断
+
         /// <summary>
         /// 判断文件名中字符是否合法
         /// </summary>
@@ -1048,6 +1122,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             }
             return true;
         }
+
         /// <summary>
         /// 判断目录名中字符是否合法
         /// </summary>
@@ -1065,22 +1140,25 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             }
             return true;
         }
-        #endregion
+
+        #endregion 文件、目录名称有效性判断
 
         #region 目录切换操作
+
         /// <summary>
         /// 进入一个目录
         /// </summary>
         /// <param name="DirectoryName">
-        /// 新目录的名字。 
-        /// 说明：如果新目录是当前目录的子目录，则直接指定子目录。如: SubDirectory1/SubDirectory2 ； 
+        /// 新目录的名字。
+        /// 说明：如果新目录是当前目录的子目录，则直接指定子目录。如: SubDirectory1/SubDirectory2 ；
         /// 如果新目录不是当前目录的子目录，则必须从根目录一级一级的指定。如： ./NewDirectory/SubDirectory1/SubDirectory2
         /// </param>
         public bool GotoDirectory(string DirectoryName)
         {
             string CurrentWorkPath = this.OperateDirectoryPath.CurrentDirectoryPath;
             bool issuccess = false;
-            Trydo("", () => {
+            Trydo("", () =>
+            {
                 DirectoryName = DirectoryName.Replace("\\", "/");
                 string[] DirectoryNames = DirectoryName.Split(new char[] { '/' });
                 if (DirectoryNames[0] == ".")
@@ -1110,6 +1188,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return issuccess;
         }
+
         /// <summary>
         /// 从当前工作目录进入一个子目录
         /// </summary>
@@ -1142,35 +1221,38 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             });
             return issuccess;
         }
+
         /// <summary>
         /// 从当前工作目录往上一级目录
         /// </summary>
         public bool ComeoutDirectory()
         {
-           return Trydo("ComeoutDirectory", () =>
-            {
-                if (OperateDirectoryPath.CurrentDirectoryPath == "/")
-                {
+            return Trydo("ComeoutDirectory", () =>
+             {
+                 if (OperateDirectoryPath.CurrentDirectoryPath == "/")
+                 {
                     //ErrorMsg = "当前目录已经是根目录！";
                     Logmsg("当前目录已经是根目录！");
-                    return false;
-                }
-                char[] sp = new char[1] { '/' };
-                string[] strDir = OperateDirectoryPath.CurrentDirectoryPath.Split(sp, StringSplitOptions.RemoveEmptyEntries);
-                if (strDir.Length == 1)
-                {
-                    OperateDirectoryPath.CurrentDirectoryPath = "/";
-                }
-                else
-                {
-                    OperateDirectoryPath.CurrentDirectoryPath = String.Join("/", strDir, 0, strDir.Length - 1);
-                }
-                return true;
-            });
+                     return false;
+                 }
+                 char[] sp = new char[1] { '/' };
+                 string[] strDir = OperateDirectoryPath.CurrentDirectoryPath.Split(sp, StringSplitOptions.RemoveEmptyEntries);
+                 if (strDir.Length == 1)
+                 {
+                     OperateDirectoryPath.CurrentDirectoryPath = "/";
+                 }
+                 else
+                 {
+                     OperateDirectoryPath.CurrentDirectoryPath = String.Join("/", strDir, 0, strDir.Length - 1);
+                 }
+                 return true;
+             });
         }
-        #endregion
+
+        #endregion 目录切换操作
 
         #region 重载WebClient，支持FTP进度
+
         internal class MyWebClient : WebClient
         {
             protected override WebRequest GetWebRequest(Uri address)
@@ -1180,10 +1262,12 @@ namespace Lm.Eic.Uti.Common.YleeFtp
                 return req;
             }
         }
-        #endregion
+
+        #endregion 重载WebClient，支持FTP进度
     }
 
     #region 文件信息结构
+
     /// <summary>
     /// 文件信息结构
     /// </summary>
@@ -1196,6 +1280,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         public DateTime CreateTime;
         public string Name;
     }
+
     /// <summary>
     /// 文件列表类型
     /// </summary>
@@ -1205,5 +1290,6 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         WindowsStyle,
         Unknown
     }
-    #endregion
+
+    #endregion 文件信息结构
 }

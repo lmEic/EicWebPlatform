@@ -1,15 +1,12 @@
-﻿using System;
+﻿using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeOOMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
-using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
-using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance;
-using Lm.Eic.App.Business.Bmp.Hrm.Archives;
-using Lm.Eic.Uti.Common.YleeOOMapper;
-using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using Lm.Eic.Framework.Authenticate.Business;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
 {
@@ -19,21 +16,24 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
     public class AttendSlodPrintManager
     {
         #region member
+
         private AttendSlodFingerDataCurrentMonthHandler currentMonthAttendDataHandler = null;
-        #endregion
+
+        #endregion member
 
         #region constructure
+
         public AttendSlodPrintManager()
         {
             this.currentMonthAttendDataHandler = new AttendSlodFingerDataCurrentMonthHandler();
         }
-        #endregion
 
-        #region property
+        #endregion constructure
 
-        #endregion
+
 
         #region method
+
         /// <summary>
         /// 载入某部门的当天的数据
         /// </summary>
@@ -43,13 +43,15 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         {
             return this.currentMonthAttendDataHandler.LoadAttendDataInToday(department);
         }
+
         /// <summary>
         /// 自动处理异常数据
         /// </summary>
         public List<AttendSlodFingerDataCurrentMonthModel> AutoCheckExceptionSlotData()
         {
-           return  this.currentMonthAttendDataHandler.AutoHandleExceptionSlotData();
+            return this.currentMonthAttendDataHandler.AutoHandleExceptionSlotData();
         }
+
         /// <summary>
         /// 载入异常考勤数据
         /// </summary>
@@ -58,6 +60,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         {
             return this.currentMonthAttendDataHandler.LoadExceptionSlotData();
         }
+
         /// <summary>
         /// 处理异常刷卡数据
         /// </summary>
@@ -67,36 +70,38 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         {
             return OpResult.SetResult("处理异常刷卡数据成功！", this.currentMonthAttendDataHandler.HandleExceptionSlotCardData(entities) > 0);
         }
-        #endregion
 
-        #region command
-
-        #endregion
+        #endregion method
     }
+
     /// <summary>
     /// 当月考勤时间数据处理器
     /// </summary>
     public class AttendSlodFingerDataCurrentMonthHandler
     {
         #region member
+
         private IAttendSlodFingerDataCurrentMonthRepository irep = null;
         private AttendFingerPrintDataInTimeHandler fingerPrintDataInTime = null;
-        #endregion
+
+        #endregion member
 
         #region constructure
+
         public AttendSlodFingerDataCurrentMonthHandler()
         {
             this.irep = new AttendSlodFingerDataCurrentMonthRepository();
             this.fingerPrintDataInTime = new AttendFingerPrintDataInTimeHandler();
         }
-        #endregion
 
-        #region property
+        #endregion constructure
 
-        #endregion
+
 
         #region method
+
         #region handle attend method
+
         /// <summary>
         /// 载入今天的考勤数据
         /// </summary>
@@ -110,6 +115,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             }
             return this.irep.LoadAttendDataOfToday(department);
         }
+
         /// <summary>
         /// 将实时考勤数据转移至本月数据表中
         /// </summary>
@@ -133,11 +139,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                         DateTime dayMiddleTime = new DateTime(attendTime.SlodCardDate.Year, attendTime.SlodCardDate.Month, attendTime.SlodCardDate.Day, 12, 0, 0);
                         if (currentAttendData == null)
                         {
-                            record = InitAttendData(record, attendTime, worker,dayMiddleTime,attendTime.SlodCardTime);
+                            record = InitAttendData(record, attendTime, worker, dayMiddleTime, attendTime.SlodCardTime);
                         }
                         else
                         {
-                            record = MergeAttendTime(record, currentAttendData,dayMiddleTime,attendTime.SlodCardTime);
+                            record = MergeAttendTime(record, currentAttendData, dayMiddleTime, attendTime.SlodCardTime);
                         }
                     }
                     if (record == 1)
@@ -149,6 +155,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             }
             return OpResult.SetResult("搬运数据成功！", record > 0);
         }
+
         /// <summary>
         /// 合并考勤时间
         /// </summary>
@@ -156,20 +163,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <param name="currentAttendData"></param>
         /// <param name="slodCardTime"></param>
         /// <returns></returns>
-        private int MergeAttendTime(int record, AttendSlodFingerDataCurrentMonthModel currentAttendData,DateTime dayMiddelTime,DateTime slodCardTime)
+        private int MergeAttendTime(int record, AttendSlodFingerDataCurrentMonthModel currentAttendData, DateTime dayMiddelTime, DateTime slodCardTime)
         {
             //若请假流程在前，则会先有考勤数据记录，但没有考勤时间，所以从刷卡时间1开始填写
             string cardtime = currentAttendData.SlotCardTime + "," + slodCardTime.ToString("HH:mm");
             if (slodCardTime <= dayMiddelTime)
             {
-                record = UpdateSlotCardTime1(record, currentAttendData, slodCardTime,cardtime);
+                record = UpdateSlotCardTime1(record, currentAttendData, slodCardTime, cardtime);
             }
             else
             {
-                record = UpdateSlotCardTime2(record, currentAttendData, slodCardTime,cardtime);
+                record = UpdateSlotCardTime2(record, currentAttendData, slodCardTime, cardtime);
             }
             return record;
         }
+
         private int UpdateSlotCardTime2(int record, AttendSlodFingerDataCurrentMonthModel currentAttendData, DateTime slodCardTime, string cardtime)
         {
             record += irep.Update(f => f.Id_Key == currentAttendData.Id_Key, u => new AttendSlodFingerDataCurrentMonthModel
@@ -179,6 +187,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             });
             return record;
         }
+
         private int UpdateSlotCardTime1(int record, AttendSlodFingerDataCurrentMonthModel currentAttendData, DateTime slodCardTime, string cardtime)
         {
             if (currentAttendData.SlotCardTime != null)
@@ -192,9 +201,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             {
                 record = 1;
             }
-           
+
             return record;
         }
+
         /// <summary>
         /// 初次插入数据
         /// </summary>
@@ -203,7 +213,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <param name="worker"></param>
         /// <param name="slodCardTime"></param>
         /// <returns></returns>
-        private int InitAttendData(int record, AttendFingerPrintDataInTimeModel attendTimeMdl, ArWorkerInfo worker,DateTime dayMiddelTime,DateTime slodCardTime)
+        private int InitAttendData(int record, AttendFingerPrintDataInTimeModel attendTimeMdl, ArWorkerInfo worker, DateTime dayMiddelTime, DateTime slodCardTime)
         {
             var mdl = new AttendSlodFingerDataCurrentMonthModel()
             {
@@ -219,8 +229,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 LeaveMark = 0,
                 YearMonth = slodCardTime.ToString("yyyyMM"),
                 SlotCardTime = slodCardTime.ToString("HH:mm"),
-                HandleSlotExceptionStatus =0,
-                SlotExceptionMark=0,
+                HandleSlotExceptionStatus = 0,
+                SlotExceptionMark = 0,
                 OpSign = "init",
                 OpPerson = "system",
             };
@@ -235,9 +245,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             record += irep.Insert(mdl);
             return record;
         }
-        #endregion
+
+        #endregion handle attend method
 
         #region ask for leave method
+
         //----------------------------------请假数据处理-----------------------------------------
         /// <summary>
         /// 同步请假数据信息
@@ -260,24 +272,24 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                         if (!this.irep.IsExist(w => w.WorkerId == e.WorkerId && w.AttendanceDate == dnow))
                         {
                             record += this.irep.Insert(new AttendSlodFingerDataCurrentMonthModel()
-                             {
-                                 AttendanceDate = dnow,
-                                 Department = e.Department,
-                                 WorkerId = e.WorkerId,
-                                 WorkerName = e.WorkerName,
-                                 ClassType = e.ClassType,
-                                 YearMonth = dnow.ToString("yyyyMM"),
-                                 WeekDay = dnow.DayOfWeek.ToString().ToChineseWeekDay(),
-                                 LeaveHours = e.LeaveHours,
-                                 LeaveMark = 1,
-                                 LeaveType = e.LeaveType,
-                                 LeaveTimeRegion = e.LeaveTimeRegionStart + "--" + e.LeaveTimeRegionEnd,
-                                 LeaveDescription = "请假处理,假别：" + e.LeaveType,
-                                 LeaveMemo = e.LeaveMemo,
-                                 HandleSlotExceptionStatus = 0,
-                                 SlotExceptionMark = 0,
-                                 OpSign = "init",
-                             });
+                            {
+                                AttendanceDate = dnow,
+                                Department = e.Department,
+                                WorkerId = e.WorkerId,
+                                WorkerName = e.WorkerName,
+                                ClassType = e.ClassType,
+                                YearMonth = dnow.ToString("yyyyMM"),
+                                WeekDay = dnow.DayOfWeek.ToString().ToChineseWeekDay(),
+                                LeaveHours = e.LeaveHours,
+                                LeaveMark = 1,
+                                LeaveType = e.LeaveType,
+                                LeaveTimeRegion = e.LeaveTimeRegionStart + "--" + e.LeaveTimeRegionEnd,
+                                LeaveDescription = "请假处理,假别：" + e.LeaveType,
+                                LeaveMemo = e.LeaveMemo,
+                                HandleSlotExceptionStatus = 0,
+                                SlotExceptionMark = 0,
+                                OpSign = "init",
+                            });
                         }
                         else
                         {
@@ -298,6 +310,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             });
             return record;
         }
+
         /// <summary>
         /// 更改请假信息
         /// </summary>
@@ -332,18 +345,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             }
             return record;
         }
+
         /// <summary>
         /// 获取某作业人员的请假信息
         /// </summary>
         /// <param name="workerId"></param>
         /// <returns></returns>
-        internal List<AttendSlodFingerDataCurrentMonthModel> GetAskLeaveDataAbout(string workerId,string qryMonth)
+        internal List<AttendSlodFingerDataCurrentMonthModel> GetAskLeaveDataAbout(string workerId, string qryMonth)
         {
             return this.irep.Entities.Where(e => e.WorkerId == workerId && e.YearMonth == qryMonth && e.LeaveMark == 1).ToList();
         }
-        #endregion
+
+        #endregion ask for leave method
 
         #region handle attend exception method
+
         //---------------------------------------异常处理--------------------------------------------
 
         /// <summary>
@@ -353,8 +369,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         public List<AttendSlodFingerDataCurrentMonthModel> LoadExceptionSlotData()
         {
             DateTime qryDate = DateTime.Now.AddDays(-1);
-            return this.irep.Entities.Where(e => e.HandleSlotExceptionStatus == 1 && e.AttendanceDate <= qryDate).OrderBy(o=>o.AttendanceDate).ToList();
+            return this.irep.Entities.Where(e => e.HandleSlotExceptionStatus == 1 && e.AttendanceDate <= qryDate).OrderBy(o => o.AttendanceDate).ToList();
         }
+
         /// <summary>
         /// 自动处理异常数据
         /// 返回有异常的数据
@@ -367,23 +384,24 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             DateTime qryDate = DateTime.Now.AddDays(-1);
             Dictionary<string, string> dicClassTypes = new Dictionary<string, string>();
             //考勤数据中没有处理过异常的数据集
-            List<AttendSlodFingerDataCurrentMonthModel> attendSlotDatas = this.irep.Entities.Where(e => e.HandleSlotExceptionStatus == 0 && e.AttendanceDate<=qryDate).ToList();
+            List<AttendSlodFingerDataCurrentMonthModel> attendSlotDatas = this.irep.Entities.Where(e => e.HandleSlotExceptionStatus == 0 && e.AttendanceDate <= qryDate).ToList();
             if (attendSlotDatas != null && attendSlotDatas.Count > 0)
             {
                 string workerId;//工号
                 string classType;//班别
-                string slotExceptionType=string.Empty;//刷卡异常类别
-                attendSlotDatas.ForEach(attendSd => {
+                string slotExceptionType = string.Empty;//刷卡异常类别
+                attendSlotDatas.ForEach(attendSd =>
+                {
                     workerId = attendSd.WorkerId;
                     slotExceptionType = string.Empty;
-                    classType = GetClassTypeOf(workers,ref dicClassTypes, workerId);
+                    classType = GetClassTypeOf(workers, ref dicClassTypes, workerId);
                     //时间点
                     int hour = classType == "白班" ? 12 : 24;
-                    int day=attendSd.AttendanceDate.Day;
-                    int year=attendSd.AttendanceDate.Year;
-                    int month=attendSd.AttendanceDate.Month;
+                    int day = attendSd.AttendanceDate.Day;
+                    int year = attendSd.AttendanceDate.Year;
+                    int month = attendSd.AttendanceDate.Month;
 
-                    dayMiddleTime = new DateTime(year,month,day, hour, 0, 0);
+                    dayMiddleTime = new DateTime(year, month, day, hour, 0, 0);
                     string slotCardTime = attendSd.SlotCardTime;//刷卡时间
                     if (slotCardTime == null || slotCardTime.Length < 5)
                     {
@@ -416,13 +434,15 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                     });
                 });
             }
-            return attendSlotDatas.Where(e => e.HandleSlotExceptionStatus == 1).OrderBy(o=>o.AttendanceDate).ToList();
+            return attendSlotDatas.Where(e => e.HandleSlotExceptionStatus == 1).OrderBy(o => o.AttendanceDate).ToList();
         }
-        private void MergeSlotExceptionType(ref string slotExceptionType,string exceptionType)
+
+        private void MergeSlotExceptionType(ref string slotExceptionType, string exceptionType)
         {
-            if(!slotExceptionType.Contains(exceptionType))
-            slotExceptionType = slotExceptionType.Length == 0 ? exceptionType : slotExceptionType + "," + exceptionType;
+            if (!slotExceptionType.Contains(exceptionType))
+                slotExceptionType = slotExceptionType.Length == 0 ? exceptionType : slotExceptionType + "," + exceptionType;
         }
+
         private void AnalogSlotCardTime(ref string slotExceptionType, DateTime dayMiddleTime, string classType, int day, int year, int month, string slotCardTime)
         {
             string exceptionType = slotExceptionType;
@@ -454,17 +474,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
 
                         if (classType == "白班")
                         {
-                            AnalogDayAttendData(ref exceptionType,dayMiddleTime, currentTime, dayAmstart, dayAmend);
+                            AnalogDayAttendData(ref exceptionType, dayMiddleTime, currentTime, dayAmstart, dayAmend);
                         }
                         else if (classType == "晚班")
                         {
-                            AnalogNightAttendData(ref exceptionType,dayMiddleTime, currentTime, dayPmstart, dayPmend);
+                            AnalogNightAttendData(ref exceptionType, dayMiddleTime, currentTime, dayPmstart, dayPmend);
                         }
                     }
                 });
             }
             slotExceptionType = exceptionType;
         }
+
         private void AnalogNightAttendData(ref string slotExceptionType, DateTime dayMiddleTime, DateTime currentTime, DateTime dayPmstart, DateTime dayPmend)
         {
             if (currentTime > dayPmstart && currentTime < dayPmend)
@@ -476,7 +497,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 MergeSlotExceptionType(ref slotExceptionType, "旷工");
             }
         }
-        private void AnalogDayAttendData(ref string slotExceptionType, DateTime dayMiddleTime,DateTime currentTime, DateTime dayAmstart, DateTime dayAmend)
+
+        private void AnalogDayAttendData(ref string slotExceptionType, DateTime dayMiddleTime, DateTime currentTime, DateTime dayAmstart, DateTime dayAmend)
         {
             if (currentTime > dayAmstart && currentTime < dayAmend)
             {
@@ -487,6 +509,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 MergeSlotExceptionType(ref slotExceptionType, "旷工");
             }
         }
+
         /// <summary>
         /// 获取某个作业人员的班别信息
         /// </summary>
@@ -494,9 +517,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <param name="dicClassTypes"></param>
         /// <param name="workerId"></param>
         /// <returns></returns>
-        private string GetClassTypeOf(List<ArWorkerInfo> workers,ref Dictionary<string, string> dicClassTypes, string workerId)
+        private string GetClassTypeOf(List<ArWorkerInfo> workers, ref Dictionary<string, string> dicClassTypes, string workerId)
         {
-            string classType="白班";
+            string classType = "白班";
             if (dicClassTypes.ContainsKey(workerId))
             {
                 classType = dicClassTypes[workerId];
@@ -512,6 +535,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             }
             return classType;
         }
+
         /// <summary>
         /// 处理异常数据
         /// </summary>
@@ -522,7 +546,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             int record = 0;
             if (entities == null || entities.Count == 0) return record;
             entities = entities.FindAll(e => e.HandleSlotExceptionStatus == 2);
-            entities.ForEach(e=>{
+            entities.ForEach(e =>
+            {
                 if (e.OpSign == "handleAskLeave")//处理请假
                 {
                     record = HandleAskLeaveAboutException(record, e);
@@ -538,6 +563,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             });
             return record;
         }
+
         /// <summary>
         /// 关于异常的请假处理
         /// </summary>
@@ -557,10 +583,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                                    LeaveMemo = e.LeaveMemo,
                                    SlotExceptionMark = 1,
                                    SlotExceptionMemo = e.SlotExceptionMemo,
-                                   HandleSlotExceptionStatus = e.HandleSlotExceptionStatus 
+                                   HandleSlotExceptionStatus = e.HandleSlotExceptionStatus
                                });
             return record;
         }
+
         /// <summary>
         /// 关于异常的漏刷卡处理
         /// </summary>
@@ -582,6 +609,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                                });
             return record;
         }
+
         /// <summary>
         /// 关于异常的旷工或者迟到处理
         /// </summary>
@@ -599,30 +627,34 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                                });
             return record;
         }
-        #endregion
-        #endregion
 
-        #region command
+        #endregion handle attend exception method
 
-        #endregion
+        #endregion method
     }
+
     /// <summary>
     /// 实时数据处理器
     /// </summary>
     public class AttendFingerPrintDataInTimeHandler
     {
         #region member
+
         private IAttendFingerPrintDataInTimeRepository irep = null;
-        #endregion
+
+        #endregion member
 
         #region constructure
+
         public AttendFingerPrintDataInTimeHandler()
         {
             this.irep = new AttendFingerPrintDataInTimeRepository();
         }
-        #endregion
+
+        #endregion constructure
 
         #region property
+
         /// <summary>
         /// 实时的刷卡数据
         /// </summary>
@@ -633,13 +665,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 return this.irep.Entities.ToList();
             }
         }
-        #endregion
+
+        #endregion property
 
         #region method
+
         public int Delete(AttendFingerPrintDataInTimeModel entity)
         {
             return this.irep.Delete(e => e.WorkerId == entity.WorkerId);
         }
+
         /// <summary>
         /// 实时考勤数据表中是否有考勤数据
         /// </summary>
@@ -651,31 +686,31 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 return datas != null && datas.Count() > 0;
             }
         }
-        #endregion
 
-        #region command
-
-        #endregion
+        #endregion method
     }
 
     public class AttendAskLeaveManager
     {
         #region member
+
         private AttendSlodFingerDataCurrentMonthHandler currentMonthAttendDataHandler = null;
-        #endregion
+
+        #endregion member
 
         #region constructure
+
         public AttendAskLeaveManager()
         {
             this.currentMonthAttendDataHandler = new AttendSlodFingerDataCurrentMonthHandler();
         }
-        #endregion
 
-        #region property
+        #endregion constructure
 
-        #endregion
+
 
         #region method
+
         /// <summary>
         /// 处理请假信息
         /// </summary>
@@ -686,11 +721,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             int record = currentMonthAttendDataHandler.SyncAskLeaveData(entities);
             return OpResult.SetResult("请假操作成功！", record > 0);
         }
+
         public OpResult HandleAskForLeave(List<AttendSlodFingerDataCurrentMonthModel> entities)
         {
             int record = currentMonthAttendDataHandler.UpdateAskLeaveData(entities);
             return OpResult.SetResult("修改请假数据成功！", record > 0);
         }
+
         /// <summary>
         /// 获取该作业人员的请假信息
         /// </summary>
@@ -698,12 +735,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <returns></returns>
         public List<AttendSlodFingerDataCurrentMonthModel> GetAskLeaveDataAbout(string workerId, string qryMonth)
         {
-            return this.currentMonthAttendDataHandler.GetAskLeaveDataAbout(workerId,qryMonth);
+            return this.currentMonthAttendDataHandler.GetAskLeaveDataAbout(workerId, qryMonth);
         }
-        #endregion
 
-        #region command
-
-        #endregion
+        #endregion method
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Lm.Eic.Uti.Common.YleeExcelHanlder
+﻿namespace Lm.Eic.Uti.Common.YleeExcelHanlder
 {
     /// <summary>
     /// Excel操作助手
@@ -20,12 +15,12 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
         /// <param name="templateFilePath">模板文件路径</param>
         /// <param name="sheetIndex">Sheet索引</param>
         /// <param name="setDataToSheetHandler">赋值数据给Excel</param>
-        public static Excel.Worksheet CreateXlsSheet(string templateFilePath, int sheetIndex,ref Excel.Application xlsApp,ref Excel.Workbook xlsWorkbook,bool isvisible=false)
+        public static Excel.Worksheet CreateXlsSheet(string templateFilePath, int sheetIndex, ref Excel.Application xlsApp, ref Excel.Workbook xlsWorkbook, bool isvisible = false)
         {
             xlsApp = new Excel.Application();
             Excel.Workbooks workbook = xlsApp.Workbooks;
             xlsWorkbook = workbook.Add(templateFilePath);
-            Excel.Worksheet xst= xlsWorkbook.Worksheets[sheetIndex] as Excel.Worksheet;
+            Excel.Worksheet xst = xlsWorkbook.Worksheets[sheetIndex] as Excel.Worksheet;
             xlsApp.Visible = isvisible;
             xlsApp.DisplayAlerts = false;
             return xst;

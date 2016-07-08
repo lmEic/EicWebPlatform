@@ -1,36 +1,31 @@
-﻿using System;
+﻿using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
-using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives;
-using Lm.Eic.Framework.ProductMaster.DbAccess.Repository;
-using Lm.Eic.Framework.ProductMaster.Business.Config;
-using Lm.Eic.Uti.Common.YleeOOMapper;
-using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using Lm.Eic.Framework.ProductMaster.Model;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
     public class ArTelManager
     {
         #region member
+
         private IArTelRepository irep = null;
-        #endregion
+
+        #endregion member
 
         #region constructure
+
         public ArTelManager()
         {
             this.irep = new ArTelRepository();
         }
-        #endregion
 
-        #region property
+        #endregion constructure
 
-        #endregion
+
 
         #region method
+
         /// <summary>
         ///  插入数据
         /// </summary>
@@ -39,10 +34,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         internal int Insert(ArTelModel entity)
         {
             int record = 0;
-            if (!irep.IsExist(e => e.WorkerId == entity.WorkerId ))
+            if (!irep.IsExist(e => e.WorkerId == entity.WorkerId))
                 record = irep.Insert(entity);
             return record;
         }
+
         internal int Edit(ArTelModel oldEntity, ArTelModel entity)
         {
             var mdl = this.irep.Entities.FirstOrDefault(e => e.WorkerId == oldEntity.WorkerId);
@@ -69,7 +65,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             else if (entity.OpSign.Trim().ToLower() == "edit") //2.若是修改，则先查询是否存在，
             {
-                var mdl = this.irep.Entities.FirstOrDefault(e => e.Id_Key==entity.Id_Key);
+                var mdl = this.irep.Entities.FirstOrDefault(e => e.Id_Key == entity.Id_Key);
                 if (mdl != null)
                 {
                     //若存在，则直接修改
@@ -97,10 +93,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             if (workerIdList == null || workerIdList.Count == 0) return null;
             return this.irep.Entities.Where(e => workerIdList.Contains(e.WorkerId)).ToList();
         }
-        #endregion
 
-        #region command
-
-        #endregion
+        #endregion method
     }
 }

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
-using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace EicWorkPlatfrom.Controllers.Hr
 {
-   
     public class HrArchivesManageController : EicBaseController
     {
         //
@@ -18,6 +15,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
+
         public ActionResult HrEmployeeDataInput()
         {
             return View();
@@ -27,6 +25,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
+
         public ActionResult HrDepartmentChange()
         {
             return View();
@@ -36,6 +35,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
+
         public ActionResult HrTelManage()
         {
             return View();
@@ -44,7 +44,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public JsonResult GetIdentityInfoBy(string lastSixIdWord)
         {
-            List<IdentityViewModel> datas=null;
+            List<IdentityViewModel> datas = null;
             var identityDatas = ArchiveService.ArchivesManager.IdentityManager.LoadBy(lastSixIdWord);
             if (identityDatas != null && identityDatas.Count > 0)
             {
@@ -61,13 +61,15 @@ namespace EicWorkPlatfrom.Controllers.Hr
             }
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-         [NoAuthenCheck]
+
+        [NoAuthenCheck]
         public JsonResult GetArchiveConfigDatas()
         {
             var archiveConfigDatas = ArchiveService.ArchivesManager.ArchiveConfigDatas;
-           
+
             return Json(archiveConfigDatas, JsonRequestBehavior.AllowGet);
         }
+
         [NoAuthenCheck]
         public JsonResult GetWorkerIdBy(string workerIdNumType)
         {
@@ -85,14 +87,14 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="mode"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult FindEmployeeByWorkerIds(List<string> workerIdList,int mode)
+        public ContentResult FindEmployeeByWorkerIds(List<string> workerIdList, int mode)
         {
             object datas = null;
             if (mode == 0)
             {
                 datas = ArchiveService.ArchivesManager.FindEmployeeBy(workerIdList);
             }
-            else if(mode==1)
+            else if (mode == 1)
             {
                 datas = ArchiveService.ArchivesManager.StudyManager.FindBy(workerIdList);
             }
@@ -112,9 +114,10 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public JsonResult InputWorkerArchive(ArchivesEmployeeIdentityDto employee, ArchivesEmployeeIdentityDto oldEmployeeIdentity, string opSign)
         {
             employee.OpPerson = OnLineUser.UserName;
-            var result = ArchiveService.ArchivesManager.Store(employee,oldEmployeeIdentity,opSign);
+            var result = ArchiveService.ArchivesManager.Store(employee, oldEmployeeIdentity, opSign);
             return Json(result);
         }
+
         /// <summary>
         /// 变更部门信息
         /// </summary>
@@ -125,7 +128,8 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             if (changeDepartments != null && changeDepartments.Count > 0)
             {
-                changeDepartments.ForEach(d => { 
+                changeDepartments.ForEach(d =>
+                {
                     d.AssignDate = DateTime.Now.ToDate();
                     d.OpPerson = this.OnLineUser.UserName;
                 });
@@ -173,6 +177,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var result = ArchiveService.ArchivesManager.ChangeStudy(studyInfos);
             return Json(result);
         }
+
         /// <summary>
         /// 变更联系方式信息
         /// </summary>
@@ -207,12 +212,15 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
+
         [NoAuthenCheck]
         public JsonResult GetWorkersInfo(QueryWorkersDto dto, int searchMode)
         {
             var datas = ArchiveService.ArchivesManager.FindWorkers(dto, searchMode);
-            if (datas != null && datas.Count > 0) {
-                datas.ForEach(e => {
+            if (datas != null && datas.Count > 0)
+            {
+                datas.ForEach(e =>
+                {
                     e.Department = ArchiveService.ArchivesManager.DepartmentMananger.GetDepartmentText(e.Department);
                 });
             }
@@ -220,10 +228,10 @@ namespace EicWorkPlatfrom.Controllers.Hr
         }
     }
 
-
     public class IdentityViewModel
     {
         public ArchivesIdentityModel Identity { get; set; }
+
         /// <summary>
         /// 身份证是否过期
         /// </summary>

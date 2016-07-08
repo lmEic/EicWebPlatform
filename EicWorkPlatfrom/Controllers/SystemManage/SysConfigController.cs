@@ -1,9 +1,5 @@
 ﻿using Lm.Eic.Framework.ProductMaster.Business.Config;
 using Lm.Eic.Framework.ProductMaster.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EicWorkPlatfrom.Controllers
@@ -22,10 +18,12 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
         public ActionResult HrCommonDataSet()
         {
             return View();
         }
+
         public JsonResult SaveConfigDicData(ConfigDataDictionaryModel model, ConfigDataDictionaryModel oldModel, string opType)
         {
             var result = PmConfigService.DataDicManager.Store(model, oldModel, opType);
@@ -38,6 +36,7 @@ namespace EicWorkPlatfrom.Controllers
             var modules = PmConfigService.DataDicManager.FindConfigDatasBy(treeModuleKey);
             return Json(modules, JsonRequestBehavior.AllowGet);
         }
+
         [NoAuthenCheck]
         public JsonResult LoadConfigDicData(string moduleName, string aboutCategory)
         {
