@@ -226,6 +226,20 @@ namespace EicWorkPlatfrom.Controllers.Hr
             }
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+
+        [NoAuthenCheck]
+        public JsonResult GetDepartments()
+        {
+            var datas = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+
+        [NoAuthenCheck]
+        public JsonResult GetWorkersBy(string workerIdOrName)
+        {
+            var datas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { WorkerId = workerIdOrName }, 2);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
     }
 
     public class IdentityViewModel

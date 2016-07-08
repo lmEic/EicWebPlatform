@@ -7,6 +7,7 @@ namespace EicWorkPlatfrom
     {
         static AuthenCheckManager()
         {
+            //IsCheck = true;
             IsCheck = false;
         }
 
@@ -36,6 +37,8 @@ namespace EicWorkPlatfrom
             {
                 //Product
                 //ITIL
+                //Equipment
+                //HR
                 routes.MapRoute(
                              name: "Default",
                              url: "{controller}/{action}/{id}",
