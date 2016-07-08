@@ -80,8 +80,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                         record = 0;
                         listModel.ForEach(model =>
                         {
-                            if (irep.Update(u => u.Id_Key == model.Id_Key, model) > 0)
-                                record++;
+                            record += irep.Update(u => u.Id_Key == model.Id_Key, model);
+                                
                         });
                         return OpResult.SetResult("更新成功！", "更新失败！", record);
 

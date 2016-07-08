@@ -47,12 +47,12 @@ namespace EicWorkPlatfrom.Controllers
             string id = AstService.EquipmentManager.BuildAssetNumber(equipmentType, assetType, taxType);
             return Json(id, JsonRequestBehavior.AllowGet);
         }
-        [NoAuthenCheck]
-        public JsonResult SaveEquipmentRecord(EquipmentModel equipment)
-        {
-            var d = 0;
-            return Json(d);
-        }
+        //[NoAuthenCheck]
+        //public JsonResult SaveEquipmentRecord(EquipmentModel equipment)
+        //{
+        //    var result=AstService.EquipmentManager.Store()
+        //    return Json(d);
+        //}
 
         [NoAuthenCheck]
         public FileResult ExportToExcel()

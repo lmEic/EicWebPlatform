@@ -164,7 +164,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         PlannedCheckDate: null,
         ChechState: null,
         OpPerson: null,
-        OpSign: null,
+        OpSign: 'add',
         Id_Key: null,
     }
 
