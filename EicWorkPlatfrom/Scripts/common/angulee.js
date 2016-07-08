@@ -191,6 +191,17 @@ var leeHelper = (function () {
                 return departmentItem.DataNodeText;
             }
         },
+        ///获取转变后的部门人员信息
+        getWorkersAboutChangedDepartment: function (workerDatas, departments)
+        {
+            angular.forEach(workerDatas, function (item) {
+                var dep = _.find(departments, { DataNodeName: item.Department });
+                if (dep !== undefined) {
+                    item.Department = dep.DataNodeText;
+                }
+            })
+            return workerDatas;
+        }
     };
 })();
 ///zTree 助手

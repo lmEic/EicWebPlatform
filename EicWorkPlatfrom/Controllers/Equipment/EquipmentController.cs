@@ -1,6 +1,13 @@
-﻿using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
+using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+using Lm.Eic.App.Business.Bmp.Ast;
+using Lm.Eic.App.DomainModel.Bpm.Ast;
+
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -28,9 +35,29 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         [NoAuthenCheck]
+        /// <summary>
+        /// 获取设备编号
+        /// </summary>
+        /// <param name="equipmentType"></param>
+        /// <param name="assetType"></param>
+        /// <param name="taxType"></param>
+        /// <returns></returns>
+        public JsonResult GetEquipmentID(string equipmentType, string assetType, string taxType)
+        {
+            string id = AstService.EquipmentManager.BuildAssetNumber(equipmentType, assetType, taxType);
+            return Json(id, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult SaveEquipmentRecord(EquipmentModel equipment)
+        {
+            var d = 0;
+            return Json(d);
+        }
+
+        [NoAuthenCheck]
         public FileResult ExportToExcel()
         {
-            List<DDD> datas = new List<DDD>() {
+            List<DDD> datas = new List<DDD>() { 
                new DDD(){ Name="aaa", Age =20},
                new DDD(){ Name="bbb", Age =25},
             };
