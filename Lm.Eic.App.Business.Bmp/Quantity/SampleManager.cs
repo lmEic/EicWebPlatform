@@ -17,8 +17,10 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             irep = new IQCSampleItemRecordReposity();
         }
-       /// <summary>
-       /// 得到IQC抽样项次
+      
+        
+        /// <summary>
+       /// 
        /// </summary>
        /// <param name="orderid"></param>
        /// <returns></returns>
@@ -26,8 +28,24 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             return irep .Entities .Where (e=>e.OrderID ==orderid ).ToList ();
         }
+
+
+
         /// <summary>
-        /// 得到抽样物料信息
+        /// 得到IQC抽样项次 （单身）
+        /// </summary>
+        /// <param name="Orderid"></param>
+        /// <param name="SampleMaterial"></param>
+        /// <returns></returns>
+        public  List<IQCSampleItemRecordModel> GetPringSampleItemBy(string Orderid,string SampleMaterial)
+        {
+            return irep.Entities.Where(e => e.OrderID == Orderid & e.SampleMaterial == SampleMaterial).ToList();
+        }
+      
+        
+        
+        /// <summary>
+        /// 得到抽样物料信息 （单头）
         /// </summary>
         /// <param name="orderid"></param>
         /// <returns></returns>
@@ -35,6 +53,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             return   QuantityDBManager.QuantityPurchseDb.FindMaterialBy(orderid);
         }
+   
     }
   
 
