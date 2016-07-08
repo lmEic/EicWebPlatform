@@ -23,6 +23,15 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
       ///  IQC抽样项次打印记录信息
       /// </summary>
       public DbSet<IQCSampleItemRecordModel> IQCSamplePrintItemRecord { set; get; }
+      protected override void OnModelCreating(DbModelBuilder modelBuilder)
+      {
+          base.OnModelCreating(modelBuilder);
+          modelBuilder.Configurations.Add(new IQCSampleRecordMapping());
+          modelBuilder.Configurations.Add(new IQCSamplePrintItemsRecordMapping());
+          modelBuilder.Configurations.Add(new SampleProductNgRecordMapping());
+          modelBuilder.Configurations.Add(new SetMaterialSampleItemMapping());
+
+      }
         #endregion
     }
   /// <summary>
