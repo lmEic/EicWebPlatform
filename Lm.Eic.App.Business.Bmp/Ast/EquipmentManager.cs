@@ -66,33 +66,33 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="listModel">模型</param>
         /// <param name="operationMode">操作模式 1.新增 2.修改 3.删除</param>
         /// <returns></returns>
-        public OpResult ChangeStorage(List<EquipmentModel> listModel, int operationMode)
+        public OpResult Store(List<EquipmentModel> listModel)
         {
             try
             {
-                int i = 0;
-                switch (operationMode)
+                if (listModel == null || listModel.Count <= 0)
+                    return OpResult.SetResult("集合不能为空！", false);
+
+                int record = 0;
+                string opSign = string.Empty;
+                opSign = listModel[0].OpSign;
+
+                switch (opSign)
                 {
-                    case 1: //新增
-                        return OpResult.SetResult("添加成功！", "添加失败！", irep.Insert(listModel));
+                    case OpMode.Add: //新增
+                        record = 0;
+                        listModel.ForEach(model =>{ record += irep.Insert(model); });
+                        return OpResult.SetResult("添加成功！", "添加失败！", record);
 
-                    case 2: //修改
-                        i = 0;
-                        listModel.ForEach(model =>
-                        {
-                            if (irep.Update(u => u.Id_Key == model.Id_Key, model) > 0)
-                                i++;
-                        });
-                        return OpResult.SetResult("更新成功！", "更新失败！", i);
+                    case OpMode.Edit: //修改
+                        record = 0;
+                        listModel.ForEach(model =>{ record += irep.Update(u => u.Id_Key == model.Id_Key, model); });
+                        return OpResult.SetResult("更新成功！", "更新失败！", record);
 
-                    case 3: //删除
-                        i = 0;
-                        listModel.ForEach(model =>
-                        {
-                            if (irep.Delete(model.Id_Key) > 0)
-                                i++;
-                        });
-                        return OpResult.SetResult("删除成功！", "删除失败！", i);
+                    case OpMode.Delete: //删除
+                        record = 0;
+                        listModel.ForEach(model => {record += irep.Delete(model.Id_Key); });
+                        return OpResult.SetResult("删除成功！", "删除失败！", record);
 
                     default: return OpResult.SetResult("操作模式溢出！", false);
                 }
@@ -109,19 +109,19 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="listModel">模型</param>
         /// <param name="operationMode">操作模式 1.新增 2.修改 3.删除</param>
         /// <returns></returns>
-        public OpResult ChangeStorage(EquipmentModel model, int operationMode)
+        public OpResult Store(EquipmentModel model)
         {
             try
             {
-                switch (operationMode)
+                switch (model.OpSign)
                 {
-                    case 1: //新增
-                        return OpResult.SetResult("增加设备成功", irep.Insert(model) > 0);
+                    case OpMode.Add: //新增
+                        return OpResult.SetResult("增加设备成功", irep.Insert(model) > 0,model.Id_Key);
 
-                    case 2: //修改
+                    case OpMode.Edit: //修改
                         return OpResult.SetResult("修改设备成功", irep.Update(u => u.Id_Key == model.Id_Key, model) > 0);
 
-                    case 3: //删除
+                    case OpMode.Delete: //删除
                         return OpResult.SetResult("删除设备成功", irep.Delete(model.Id_Key) > 0);
 
                     default: return OpResult.SetResult("操作模式溢出", false);

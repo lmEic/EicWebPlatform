@@ -11,5 +11,10 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             get { return OBulider.BuildInstance<EquipmentManager>(); }
         }
+
+        public static EquipmentCheckManager EquipmentCheckManager
+        {
+            get { return OBulider.BuildInstance<EquipmentCheckManager>(); }
+        }
     }
 }

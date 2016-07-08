@@ -56,5 +56,10 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+         [NoAuthenCheck]
+        public ActionResult WorkerSelectTpl()
+        {
+            return View();
+        }
     }
 }
