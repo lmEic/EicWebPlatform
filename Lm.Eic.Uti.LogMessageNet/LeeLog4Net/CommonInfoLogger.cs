@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using log4net;
+﻿using log4net;
+using System;
 
 namespace Lm.Eic.Uti.LogMessageNet.LeeLog4Net
 {
@@ -15,10 +12,12 @@ namespace Lm.Eic.Uti.LogMessageNet.LeeLog4Net
     public class CommonInfoLogger
     {
         private ILog infoLogger;
+
         public CommonInfoLogger()
         {
             this.infoLogger = LogManager.GetLogger("commonInfoLogger");
         }
+
         /// <summary>
         /// 记录信息
         /// </summary>
@@ -46,6 +45,7 @@ namespace Lm.Eic.Uti.LogMessageNet.LeeLog4Net
         {
             this.errorLogger = LogManager.GetLogger("commonErrorLogger");
         }
+
         /// <summary>
         /// 记录错误信息
         /// </summary>
@@ -58,6 +58,7 @@ namespace Lm.Eic.Uti.LogMessageNet.LeeLog4Net
                 errorLogger.Error(operationName, ex);
             }
         }
+
         /// <summary>
         /// 记录错误信息
         /// </summary>

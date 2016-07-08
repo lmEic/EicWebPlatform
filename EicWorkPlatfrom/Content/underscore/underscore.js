@@ -4,7 +4,6 @@
 //     Underscore may be freely distributed under the MIT license.
 
 (function() {
-
   // Baseline setup
   // --------------
 
@@ -1148,7 +1147,6 @@
     }
     return true;
   };
-
 
   // Internal recursive comparison function for `isEqual`.
   var eq, deepEq;

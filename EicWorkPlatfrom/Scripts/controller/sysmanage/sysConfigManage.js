@@ -260,7 +260,6 @@ smModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConf
         });
     };
 
-
     var pHelper = {
         clearVM: function () {
             leeHelper.clearVM(configDto, ['TreeModuleKey']);

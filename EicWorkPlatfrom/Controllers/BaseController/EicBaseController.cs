@@ -1,18 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using Lm.Eic.Framework.Authenticate.Model;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
-using System.Reflection;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
-using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
-using Lm.Eic.Framework.Authenticate.Business;
-using Lm.Eic.Framework.Authenticate.Model;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -22,6 +17,7 @@ namespace EicWorkPlatfrom.Controllers
     public class EicBaseController : Controller
     {
         #region json date converter
+
         /// <summary>
         /// 返回日期经过格式化后的Json数据
         /// </summary>
@@ -33,9 +29,13 @@ namespace EicWorkPlatfrom.Controllers
             var dateConverter = new IsoDateTimeConverter() { DateTimeFormat = dateFormat };
             return Content(JsonConvert.SerializeObject(data, Formatting.Indented, dateConverter));
         }
-        #endregion 
+
+        #endregion json date converter
+
+
 
         #region my define
+
         /// <summary>
         /// 登录在线用户
         /// </summary>
@@ -55,15 +55,16 @@ namespace EicWorkPlatfrom.Controllers
                     user.UserId = "003095";
                     user.UserName = "开发调试者";
                     user.Role = new RoleModel()
-                       {
-                           RoleLevel = 0,
-                           RoleId = "admin_001",
-                           RoleName = "SuperAdmin"
-                       };
+                    {
+                        RoleLevel = 0,
+                        RoleId = "admin_001",
+                        RoleName = "SuperAdmin"
+                    };
                 }
                 return user;
             }
         }
+
         /// <summary>
         /// 用户的登录身份信息
         /// </summary>
@@ -71,6 +72,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             get { return Session[EicConstKeys.UserAccount] as IdentityInfo; }
         }
+
         /// <summary>
         /// 获取子模块导航列表
         /// </summary>
@@ -78,7 +80,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="cacheKey">缓存键值</param>
         /// <param name="atLevel">所在层级</param>
         /// <returns></returns>
-        protected List<ModuleNavigationModel> GetChildrenNavModules(string moduleText,string cacheKey,int atLevel)
+        protected List<ModuleNavigationModel> GetChildrenNavModules(string moduleText, string cacheKey, int atLevel)
         {
             List<ModuleNavigationModel> datas = null;
             if (Session[cacheKey] != null)
@@ -98,6 +100,7 @@ namespace EicWorkPlatfrom.Controllers
             }
             return datas;
         }
+
         /// <summary>
         /// 获取该模块导航菜单
         /// </summary>
@@ -112,13 +115,15 @@ namespace EicWorkPlatfrom.Controllers
             {
                 NavMenuModel mdl = null;
                 NavMenuModel subMdl = null;
-                mdlNavs.ForEach(nav => {
+                mdlNavs.ForEach(nav =>
+                {
                     var navMdls = GetChildrenNavModules(nav.ModuleText, nav.ModuleName, 3);
                     mdl = CreateNavMenuModel(mdl, nav, navMdls);
                     navMenus.Add(mdl);
                     if (navMdls != null && navMdls.Count > 0)
                     {
-                        navMdls.ForEach(subNav => {
+                        navMdls.ForEach(subNav =>
+                        {
                             var subNavMdls = GetChildrenNavModules(subNav.ModuleText, subNav.ModuleName, 4);
                             subMdl = CreateNavMenuModel(subMdl, subNav, subNavMdls);
                             navMenus.Add(subMdl);
@@ -141,7 +146,8 @@ namespace EicWorkPlatfrom.Controllers
             };
             return mdl;
         }
-        #endregion
+
+        #endregion my define
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -151,6 +157,7 @@ namespace EicWorkPlatfrom.Controllers
 
             AuthenCheck(filterContext);
         }
+
         /// <summary>
         /// 权限检测
         /// </summary>
@@ -161,7 +168,6 @@ namespace EicWorkPlatfrom.Controllers
             object[] attrs = filterContext.ActionDescriptor.GetCustomAttributes(typeof(NoAuthenCheckAttribute), false);
             if (attrs != null && attrs.Length > 0)
             {
-
             }
             else
             {
@@ -171,7 +177,6 @@ namespace EicWorkPlatfrom.Controllers
                 }
                 else
                 {
-
                     IdentityInfo identity = this.LoginIdentity;
                     string actionName = filterContext.ActionDescriptor.ActionName.Trim();
                     string ctrlName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.Trim();
@@ -183,8 +188,8 @@ namespace EicWorkPlatfrom.Controllers
             }
         }
 
-
         #region file operate method
+
         /// <summary>
         /// 导出数据到Excel文件中
         /// </summary>
@@ -199,7 +204,8 @@ namespace EicWorkPlatfrom.Controllers
             ms.Seek(0, SeekOrigin.Begin);
             return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
         }
-        #endregion
+
+        #endregion file operate method
     }
 
     public class LoginUser
@@ -208,6 +214,7 @@ namespace EicWorkPlatfrom.Controllers
         /// 用户账号
         /// </summary>
         public string UserId { get; set; }
+
         /// <summary>
         /// 用户姓名
         /// </summary>
@@ -217,6 +224,7 @@ namespace EicWorkPlatfrom.Controllers
 
         public string Department { get; set; }
     }
+
     /// <summary>
     /// 图片行为结果
     /// </summary>
@@ -248,17 +256,14 @@ namespace EicWorkPlatfrom.Controllers
         }
     }
 
-
     /// <summary>
     /// 不需要权限验证特性标注
     /// 标注有此标记的将不会对其进行权限验证
     /// </summary>
-    [System.AttributeUsage(AttributeTargets.Class|AttributeTargets.Method)]
+    [System.AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class NoAuthenCheckAttribute : Attribute
     {
         public NoAuthenCheckAttribute()
         { }
     }
 }
-
-

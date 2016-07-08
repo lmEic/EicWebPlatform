@@ -3,28 +3,22 @@
 angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
 
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
-
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
 
     var urlPrefix = leeHelper.controllers.equipment + "/";
 
     $stateProvider.state('astArchiveInput', {
         templateUrl: urlPrefix + 'AstArchiveInput',
-
     }).state('proStationConfig', {
         templateUrl: 'DailyReport/ProStationConfig',
-
     })
     //--------------人员管理--------------------------
     .state('workerInfoManage', {
         templateUrl: 'ProEmployee/WorkerInfoManage'
-
     }).state('proStationManage', {
         templateUrl: 'ProEmployee/ProStationManage'
-
     }).state('proClassManage', {
         templateUrl: 'ProEmployee/ProClassManage'
-
     }).state('workHoursManage', {
         templateUrl: 'ProEmployee/WorkHoursManage'
     })
@@ -79,7 +73,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         var url = astUrlPrefix + "GetAstInputConfigDatas";
         return ajaxService.getData(url, {});
     };
-  
 
     //获取作业人员信息
     ast.getWorkersInfo = function (vm, searchMode) {
@@ -92,7 +85,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         });
     };
 
-  
     return ast;
 })
 
@@ -164,7 +156,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         Id_Key: null,
     }
 
-
     $scope.vm = uiVM;
 
     var vmManager = {
@@ -175,7 +166,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         departments: [],
         workerId: '',
         getWorkerName: function () { },
-
     };
     $scope.vmManager = vmManager;
 

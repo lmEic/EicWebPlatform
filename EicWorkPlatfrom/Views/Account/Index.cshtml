@@ -18,7 +18,6 @@
     <link href="@Url.Content("~/Content/zTree/dist/css/zTreeStyle/zTreeStyle.css")" type="text/css" rel="stylesheet" />
 
     @Styles.Render("~/css/anstrap")
-
 </head>
 <body ng-controller="moduleNavCtrl">
     @if (ViewBag.IsLoginMode)
@@ -72,21 +71,19 @@
                                     <a data-ui-sref-active="active" data-ui-sref="assignPowerToRole" style="cursor:pointer">分配权限</a>
                                     <a data-ui-sref-active="active" data-ui-sref="assignModuleToRole" style="cursor:pointer">分配菜单</a>
                                 </li>
-
                             </ol>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-10">
                     <div data-ui-view>
-
                     </div>
                 </div>
             </div>
         </main>
     </div>
 	}
-  
+
     @Scripts.Render("~/bundles/bootstrap")
 
     @Scripts.Render("~/bundles/angularJs")

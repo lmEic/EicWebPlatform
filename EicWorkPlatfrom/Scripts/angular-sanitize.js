@@ -49,7 +49,6 @@ var $sanitizeMinErr = angular.$$minErr('$sanitize');
  *
  */
 
-
 /**
  * @ngdoc service
  * @name $sanitize
@@ -167,7 +166,6 @@ function sanitizeText(chars) {
   return buf.join('');
 }
 
-
 // Regular Expressions for parsing tags and attributes
 var START_TAG_REGEXP =
        /^<((?:[a-zA-Z])[\w:-]*)((?:\s+[\w:-]+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)\s*(>?)/,
@@ -181,7 +179,6 @@ var START_TAG_REGEXP =
   SURROGATE_PAIR_REGEXP = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g,
   // Match everything outside of normal chars and " (quote character)
   NON_ALPHANUMERIC_REGEXP = /([^\#-~| |!])/g;
-
 
 // Good source of info about elements and attributes
 // http://dev.w3.org/html5/spec/Overview.html#semantics
@@ -267,7 +264,6 @@ function makeMap(str, lowercaseKeys) {
   return obj;
 }
 
-
 /**
  * @example
  * htmlParser(htmlString, {
@@ -297,7 +293,6 @@ function htmlParser(html, handler) {
 
     // Make sure we're not in a script or style element
     if (!stack.last() || !specialElements[stack.last()]) {
-
       // Comment
       if (html.indexOf("<!--") === 0) {
         // comments containing -- are not allowed unless they terminate the comment
@@ -352,7 +347,6 @@ function htmlParser(html, handler) {
 
         if (handler.chars) handler.chars(decodeEntities(text));
       }
-
     } else {
       // IE versions 9 and 10 do not understand the regex '[^]', so using a workaround with [\W\w].
       html = html.replace(new RegExp("([\\W\\w]*)<\\s*\\/\\s*" + stack.last() + "[^>]*>", 'i'),
@@ -523,7 +517,6 @@ function htmlSanitizeWriter(buf, uriValidator) {
   };
 }
 
-
 // define ngSanitize module and register $sanitize service
 angular.module('ngSanitize', []).provider('$sanitize', $SanitizeProvider);
 
@@ -678,6 +671,4 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
     }
   };
 }]);
-
-
 })(window, window.angular);

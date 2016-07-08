@@ -21,7 +21,6 @@ angular.module('mp.configApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'n
         return treeNodes;
     };
     return {
-
         getTreeSet: function (treeId, treeNodeRoot) {
             var ztreeSetItem = _.find(ztreeSets, { treeId: treeId });
             if (ztreeSetItem === undefined) {

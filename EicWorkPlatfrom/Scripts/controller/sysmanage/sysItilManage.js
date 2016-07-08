@@ -54,5 +54,4 @@ smModule.factory('sysitilService', function ($http, $q) {
     return itil;
 });
 smModule.controller('supTelManageCtrl', function ($scope, $modal,sysitilService) {
-  
 })

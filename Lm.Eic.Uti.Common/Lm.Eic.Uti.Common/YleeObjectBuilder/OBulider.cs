@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Lm.Eic.Uti.Common.YleeObjectBuilder
 {
-  /// <summary>
-  /// 对象建造器
-  /// </summary>
-  public static class OBulider
+    /// <summary>
+    /// 对象建造器
+    /// </summary>
+    public static class OBulider
     {
         private static Dictionary<string, object> cache = new Dictionary<string, object>();
         private static object _lock = new object();
+
         /// <summary>
         /// 利用反射根据命名空间与类名称创建对象,适用于不在同一个程序集内时
         /// </summary>
@@ -45,6 +44,7 @@ namespace Lm.Eic.Uti.Common.YleeObjectBuilder
 
             return Tvalue;
         }
+
         /// <summary>
         /// 利用反射根据命名空间与类名称创建对象,适用于不在同一个程序集内时
         /// </summary>
@@ -67,13 +67,14 @@ namespace Lm.Eic.Uti.Common.YleeObjectBuilder
             }
             return Tvalue;
         }
+
         /// <summary>
         /// 创建对象并加入缓存中
         /// </summary>
         /// <typeparam name="T">泛型对象</typeparam>
         /// <returns></returns>
         public static T BuildInstance<T>()
-        where T : class ,new()
+        where T : class, new()
         {
             T Tvalue = null;
             try
@@ -97,6 +98,7 @@ namespace Lm.Eic.Uti.Common.YleeObjectBuilder
             }
             return Tvalue;
         }
+
         /// <summary>
         /// 创建对象并加入缓存中
         /// </summary>
@@ -104,7 +106,7 @@ namespace Lm.Eic.Uti.Common.YleeObjectBuilder
         /// <param name="args">类实例化所需参数集合</param>
         /// <returns></returns>
         public static T BuildInstance<T>(params object[] args)
-        where T : class ,new()
+        where T : class, new()
         {
             T Tvalue = null;
             try

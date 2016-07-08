@@ -250,7 +250,6 @@
 	},
 	//method of event proxy
 	_event = {
-
 	},
 	//method of event handler
 	_handler = {
@@ -708,7 +707,6 @@
 					} else {
 						dropCallback();
 					}
-
 				} else {
 					view.selectNodes(sourceSetting, nodes);
 					setting.treeObj.trigger(consts.event.DROP, [event, setting.treeId, nodes, null, null, null]);
@@ -1015,7 +1013,6 @@
 				node.parentTId = targetNode.parentTId;
 				node.isFirstNode = true;
 				node.isLastNode = false;
-
 			} else if (targetNode.isLastNode && moveType == consts.move.TYPE_NEXT) {
 				targetParentNode[childKey].splice(tmpTargetIndex + 1, 0, node);
 				newNeighbor = targetNode;
@@ -1023,7 +1020,6 @@
 				node.parentTId = targetNode.parentTId;
 				node.isFirstNode = false;
 				node.isLastNode = true;
-
 			} else {
 				if (moveType == consts.move.TYPE_PREV) {
 					targetParentNode[childKey].splice(tmpTargetIndex, 0, node);
@@ -1052,7 +1048,6 @@
 				view.replaceSwitchClass(oldParentNode, tmp_switchObj, consts.folder.DOCU);
 				view.replaceIcoClass(oldParentNode, tmp_icoObj, consts.folder.DOCU);
 				tmp_ulObj.css("display", "none");
-
 			} else if (oldNeighbor) {
 				//old neigbor node
 				view.setNodeLineIcos(setting, oldNeighbor);

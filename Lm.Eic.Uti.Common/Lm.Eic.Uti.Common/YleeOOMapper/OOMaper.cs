@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lm.Eic.Uti.Common.YleeOOMapper
 {
-  /// <summary>
-  /// 对象映射器
-  /// </summary>
-  public static class OOMaper
+    /// <summary>
+    /// 对象映射器
+    /// </summary>
+    public static class OOMaper
     {
         public static void Mapper<TObjectSource, TObjectDestination>(TObjectSource source, TObjectDestination destination)
-            where TObjectSource : class,new()
-            where TObjectDestination : class,new()
+            where TObjectSource : class, new()
+            where TObjectDestination : class, new()
         {
             try
             {
@@ -46,8 +44,8 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         }
 
         public static IList<TObjectDestination> Mapper<TObjectSource, TObjectDestination>(IList<TObjectSource> sources)
-            where TObjectSource : class,new()
-            where TObjectDestination : class,new()
+            where TObjectSource : class, new()
+            where TObjectDestination : class, new()
         {
             List<TObjectDestination> destinations = new List<TObjectDestination>();
             try
@@ -64,6 +62,6 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
                 throw new Exception(ex.ToString());
             }
             return destinations;
-        }                                                                    
+        }
     }
 }

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lm.Eic.App.Erp.Bussiness.PurchaseManage;
+﻿using Lm.Eic.App.Erp.Bussiness.PurchaseManage;
 using Lm.Eic.App.Erp.Domain.PurchaseManage;
+using System;
+using System.Collections.Generic;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase
 {
-  public class StockManager
+    public class StockManager
     {
         /// <summary>
         /// 获取某个部门某段时间内的进货单单头数据信息
@@ -21,10 +18,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase
         {
             return PurchaseDbManager.StockDb.FindStoHeaderByDepartment(department, dateFrom, dateTo);
         }
+
         public List<StockBodyModel> FindStoBodyDatasByID(string id)
         {
             return PurchaseDbManager.StockDb.FindStoBodyByID(id);
         }
+
         public List<StockBodyModel> FindStoBodyDatasBy(string department, DateTime dateFrom, DateTime dateTo)
         {
             return PurchaseDbManager.StockDb.FindStoBodyByDepartment(department, dateFrom, dateTo);

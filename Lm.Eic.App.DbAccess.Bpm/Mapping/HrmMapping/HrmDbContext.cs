@@ -1,12 +1,8 @@
-﻿using Lm.Eic.Uti.Common.YleeDbHandler;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
+﻿using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
+using Lm.Eic.Uti.Common.YleeDbHandler;
+using System;
+using System.Data.Entity;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
 {
@@ -21,10 +17,12 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         }
 
         #region dbset
+
         /// <summary>
         /// 身份证数据集
         /// </summary>
         public DbSet<ArchivesIdentityModel> ArchiveIdentity { get; set; }
+
         /// <summary>
         /// 生产作业人员信息
         /// </summary>
@@ -39,6 +37,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         /// 联系方式信息
         /// </summary>
         public DbSet<ArTelModel> ArchiveTel { get; set; }
+
         /// <summary>
         /// 部门信息
         /// </summary>
@@ -48,6 +47,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         /// 岗位方式信息
         /// </summary>
         public DbSet<ArPostChangeLibModel> ArchivePost { get; set; }
+
         /// <summary>
         /// 班别设置信息
         /// </summary>
@@ -62,7 +62,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         /// 当月刷卡数据模型
         /// </summary>
         public DbSet<AttendSlodFingerDataCurrentMonthModel> AttendSlodFingerDataCurrentMonth { get; set; }
-        #endregion
+
+        #endregion dbset
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -83,8 +85,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         }
     }
 
-
     #region Repository Framework
+
     /// <summary>
     ///
     /// </summary>
@@ -103,13 +105,12 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         }
     }
 
-
     /// <summary>
     ///
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     public class HrmRepositoryBase<TEntity> : EFRepositoryBase<TEntity>, IRepository<TEntity>
-    where TEntity : class,new()
+    where TEntity : class, new()
     {
         protected override void SetUnitOfWorkContext()
         {
@@ -123,8 +124,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             }
         }
     }
-    #endregion
 
-
-
+    #endregion Repository Framework
 }

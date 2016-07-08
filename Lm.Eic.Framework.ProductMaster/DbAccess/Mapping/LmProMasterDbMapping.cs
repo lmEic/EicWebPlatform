@@ -1,11 +1,6 @@
 ﻿using Lm.Eic.Framework.ProductMaster.Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
 {
@@ -32,5 +27,4 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             this.ToTable("Config_FilePathInfo");
         }
     }
-
 }

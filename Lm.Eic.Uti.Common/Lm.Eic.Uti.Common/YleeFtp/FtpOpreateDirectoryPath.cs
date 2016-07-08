@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Lm.Eic.Uti.Common.YleeFtp
+﻿namespace Lm.Eic.Uti.Common.YleeFtp
 {
     /// <summary>
     /// Ftp操作文件夹路径信息
@@ -16,6 +11,7 @@ namespace Lm.Eic.Uti.Common.YleeFtp
         public string CurrentDirectoryPath { get; set; }
 
         private string _UploadDirectoryPath;
+
         /// <summary>
         /// 上传至指定的文件夹路径
         /// </summary>
@@ -24,7 +20,9 @@ namespace Lm.Eic.Uti.Common.YleeFtp
             get { return CurrentDirectoryPath + _UploadDirectoryPath; }
             set { _UploadDirectoryPath = value; }
         }
+
         private string _DownLoadDirectoryPath;
+
         /// <summary>
         /// 从远程指定的文件夹路径中下载文件
         /// </summary>

@@ -9,28 +9,32 @@
 .thumbnail a > img,
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
-  display: block;
-  max-width: 100%;
-  height: auto;
+    display: block;
+    max-width: 100%;
+    height: auto;
 }
+
 .btn-group-lg > .btn {
-  padding: 10px 16px;
-  font-size: 18px;
-  line-height: 1.3333333;
-  border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
 }
+
 .btn-group-sm > .btn {
-  padding: 5px 10px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
 }
+
 .btn-group-xs > .btn {
-  padding: 1px 5px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
 }
+
 .dl-horizontal dd:before,
 .dl-horizontal dd:after,
 .container:before,
@@ -59,9 +63,10 @@
 .panel-body:after,
 .modal-footer:before,
 .modal-footer:after {
-  content: " ";
-  display: table;
+    content: " ";
+    display: table;
 }
+
 .dl-horizontal dd:after,
 .container:after,
 .container-fluid:after,
@@ -76,16 +81,17 @@
 .pager:after,
 .panel-body:after,
 .modal-footer:after {
-  clear: both;
+    clear: both;
 }
+
 .modal.center .modal-dialog {
-  position: fixed;
-  top: 40%;
-  left: 50%;
-  min-width: 320px;
-  max-width: 630px;
-  width: 50%;
-  -webkit-transform: translateX(-50%) translateY(-50%);
-      -ms-transform: translateX(-50%) translateY(-50%);
-          transform: translateX(-50%) translateY(-50%);
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    min-width: 320px;
+    max-width: 630px;
+    width: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
 }

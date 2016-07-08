@@ -4,13 +4,13 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Lm.Eic.Framework.ProductMaster.Business.Config
 {
     public class DataDictionaryManager
     {
         private IConfigDataDictionaryRepository irep = null;
+
         public DataDictionaryManager()
         {
             this.irep = new ConfigDataDictionaryRepository();
@@ -38,6 +38,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
         {
             mdl.PrimaryKey = string.Format("{0}&{1}&{2}&{3}", mdl.TreeModuleKey, mdl.ModuleName, mdl.DataNodeName, mdl.AboutCategory);
         }
+
         public List<ConfigDataDictionaryModel> LoadConfigDatasBy(string moduleName, string aboutCategory)
         {
             try
@@ -51,6 +52,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
                 throw new Exception(ex.InnerException.Message);
             }
         }
+
         public List<ConfigDataDictionaryModel> FindConfigDatasBy(string treeModuleKey)
         {
             try
@@ -64,6 +66,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
                 throw new Exception(ex.InnerException.Message);
             }
         }
+
         public List<ConfigDataDictionaryModel> FindConfigDatasBy(string treeModuleKey, string moduleName)
         {
             try
@@ -77,6 +80,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
                 throw new Exception(ex.InnerException.Message);
             }
         }
+
         private OpResult Add(ConfigDataDictionaryModel entity)
         {
             int record = 0;
@@ -88,6 +92,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
             }
             return OpResult.SetResult("新增配置数据成功", record > 0, entity.Id_Key);
         }
+
         private OpResult Delete(ConfigDataDictionaryModel entity)
         {
             if (entity == null) return OpResult.SetResult("ConfigDataDictionaryModel entity can't be null", false);
@@ -95,6 +100,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
             int record = irep.Delete(r => r.PrimaryKey == entity.PrimaryKey);
             return OpResult.SetResult("删除配置数据成功", record > 0);
         }
+
         public OpResult Update(ConfigDataDictionaryModel mdl, ConfigDataDictionaryModel oldMdl)
         {
             if (mdl == null) return OpResult.SetResult("mdl can't be null", false);

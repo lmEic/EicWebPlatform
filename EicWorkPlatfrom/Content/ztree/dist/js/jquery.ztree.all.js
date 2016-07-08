@@ -1,4 +1,3 @@
-
 /*
  * JQuery zTree core v3.5.22
  * http://zTree.me/
@@ -925,7 +924,6 @@
 					childHtml = view.appendNodes(setting, level + 1, node[childKey], node, -1, initFlag, openFlag && node.open);
 				}
 				if (openFlag) {
-
 					view.makeDOMNodeMainBefore(html, setting, node);
 					view.makeDOMNodeLine(html, setting, node);
 					data.getBeforeA(setting, node, html);
@@ -1400,7 +1398,6 @@
 				view.replaceSwitchClass(parentNode, tmp_switchObj, consts.folder.DOCU);
 				view.replaceIcoClass(parentNode, tmp_icoObj, consts.folder.DOCU);
 				tmp_ulObj.css("display", "none");
-
 			} else if (setting.view.showLine && childLength > 0) {
 				//old parentNode has child nodes
 				var newLast = parentNode[childKey][childLength - 1];
@@ -1602,7 +1599,6 @@
 						index = i;
 					}
 					if (!newNodes) return null;
-
 
 					var xNewNodes = tools.clone(tools.isArray(newNodes)? newNodes: [newNodes]);
 					function addCallback() {
@@ -2141,7 +2137,6 @@
 	},
 	//method of event proxy
 	_event = {
-
 	},
 	//method of event handler
 	_handler = {
@@ -2177,7 +2172,6 @@
 	},
 	//method of tools for zTree
 	_tools = {
-
 	},
 	//method of operate ztree dom
 	_view = {
@@ -2221,7 +2215,6 @@
 						}
 					}
 				}
-
 			} else {
 				if (node[checkedKey] && (!node[childKey] || node[childKey].length==0 || setting.check.chkboxType.Y.indexOf("s") > -1)) {
 					view.setSonNodeCheckBox(setting, node, true);
@@ -2383,7 +2376,6 @@
 					setting.treeObj.trigger(consts.event.CHECK, [null, setting.treeId, node]);
 				}
 			}
-
 		}
 	},
 
@@ -2693,7 +2685,6 @@
 	},
 	//method of event proxy
 	_event = {
-
 	},
 	//method of event handler
 	_handler = {
@@ -3151,7 +3142,6 @@
 					} else {
 						dropCallback();
 					}
-
 				} else {
 					view.selectNodes(sourceSetting, nodes);
 					setting.treeObj.trigger(consts.event.DROP, [event, setting.treeId, nodes, null, null, null]);
@@ -3458,7 +3448,6 @@
 				node.parentTId = targetNode.parentTId;
 				node.isFirstNode = true;
 				node.isLastNode = false;
-
 			} else if (targetNode.isLastNode && moveType == consts.move.TYPE_NEXT) {
 				targetParentNode[childKey].splice(tmpTargetIndex + 1, 0, node);
 				newNeighbor = targetNode;
@@ -3466,7 +3455,6 @@
 				node.parentTId = targetNode.parentTId;
 				node.isFirstNode = false;
 				node.isLastNode = true;
-
 			} else {
 				if (moveType == consts.move.TYPE_PREV) {
 					targetParentNode[childKey].splice(tmpTargetIndex, 0, node);
@@ -3495,7 +3483,6 @@
 				view.replaceSwitchClass(oldParentNode, tmp_switchObj, consts.folder.DOCU);
 				view.replaceIcoClass(oldParentNode, tmp_icoObj, consts.folder.DOCU);
 				tmp_ulObj.css("display", "none");
-
 			} else if (oldNeighbor) {
 				//old neigbor node
 				view.setNodeLineIcos(setting, oldNeighbor);

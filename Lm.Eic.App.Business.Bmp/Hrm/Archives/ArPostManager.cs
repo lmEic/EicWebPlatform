@@ -1,43 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
-using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives;
-using Lm.Eic.Framework.ProductMaster.DbAccess.Repository;
-using Lm.Eic.Framework.ProductMaster.Business.Config;
-using Lm.Eic.Uti.Common.YleeOOMapper;
-using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using Lm.Eic.Framework.ProductMaster.Model;
-
+using System.Linq;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
     public class ArPostManager : ArchiveBase
     {
         #region member
+
         private IArPostChangeLibRepository irep = null;
-        #endregion
+
+        #endregion member
 
         #region constructure
+
         public ArPostManager()
         {
             this.irep = new ArPostChangeLibRepository();
         }
-        #endregion
 
-        #region property
+        #endregion constructure
 
-        #endregion
+
 
         #region method
+
         /// <summary>
         /// 变动岗位信息
         /// </summary>
         /// <param name="changeEntity"></param>
         /// <returns></returns>
-        public int ChangeRecord(ArPostChangeLibModel changeEntity,out int changeRecord)
+        public int ChangeRecord(ArPostChangeLibModel changeEntity, out int changeRecord)
         {
             changeRecord = 0;
             int record = 0;
@@ -74,11 +67,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             return record;
         }
-        #endregion
 
-        #region command
-
-        #endregion
+        #endregion method
     }
 }
-
