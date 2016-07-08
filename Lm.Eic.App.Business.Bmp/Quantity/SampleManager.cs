@@ -17,15 +17,23 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             irep = new IQCSampleItemRecordReposity();
         }
+       /// <summary>
+       /// 得到IQC抽样项次
+       /// </summary>
+       /// <param name="orderid"></param>
+       /// <returns></returns>
         public  List<IQCSampleItemRecordModel> GetSamplePrintItemBy(string orderid)
         {
-            //return irep .Entities .Where (e=>e.OrderID ==orderid ).ToList ();
-            return irep.FindAll<IQCSampleItemRecordModel>(e => e.OrderID == orderid).ToList();
+            return irep .Entities .Where (e=>e.OrderID ==orderid ).ToList ();
         }
-
+        /// <summary>
+        /// 得到抽样物料信息
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <returns></returns>
         public List<MaterialModel> GetPuroductSupplierInfo(string orderid)
         {
-            return   QuantityDBManager.QuantityPurchseDb.FindMaterialBy("591-1607032");
+            return   QuantityDBManager.QuantityPurchseDb.FindMaterialBy(orderid);
         }
     }
   

@@ -15,7 +15,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
 
         private string GetPorductSqlFields()
         {
-            return "Select MB001,MB002,MB003,MB004,MB015,MB029,MB068  from  INVMB";
+            return "Select MB001,MB002,MB003,MB004,MB015,MB029,MB068,MB028  from  INVMB ";
         }
         private void MapProductRowAndModel(DataRow dr, ProductModel m)
         {
@@ -31,7 +31,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
 
         public List<ProductModel> FindProductInfoBy(string Marteial)
         {
-            string sqlWhere = string.Format("where MB001='{0}'", Marteial);
+            string sqlWhere = string.Format(" where MB001='{0}'", Marteial.Trim() );
             return ErpDbAccessHelper.FindDataBy<ProductModel>(GetPorductSqlFields(), sqlWhere, (dr, m) =>
             {
                 this.MapProductRowAndModel(dr, m);
