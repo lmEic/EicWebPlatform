@@ -66,7 +66,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="listModel">模型</param>
         /// <param name="operationMode">操作模式 1.新增 2.修改 3.删除</param>
         /// <returns></returns>
-        public OpResult ChangeStorage(List<EquipmentModel> listModel, int operationMode)
+        public OpResult ChangeRecord(List<EquipmentModel> listModel, int operationMode)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="listModel">模型</param>
         /// <param name="operationMode">操作模式 1.新增 2.修改 3.删除</param>
         /// <returns></returns>
-        public OpResult ChangeStorage(EquipmentModel model, int operationMode)
+        public OpResult ChangeRecord(EquipmentModel model, int operationMode)
         {
             try
             {

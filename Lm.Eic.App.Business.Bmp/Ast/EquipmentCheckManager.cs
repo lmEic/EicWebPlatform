@@ -18,6 +18,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             equipmentManager = new EquipmentManager();
         }
 
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="qryModel">设备查询数据传输对象</param>
+        /// <param name="searchMode"> 1.依据财产编号查询  </param>
+        /// <returns></returns>
         public List<EquipmentCheckModel> FindBy(QueryEquipmentDto qryDto, int searchMode)
         {
             try
@@ -42,7 +49,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="listModel">模型</param>
         /// <param name="operationMode">操作模式 1.新增 2.修改 3.删除</param>
         /// <returns></returns>
-        public OpResult ChangeStorage(EquipmentCheckModel model, int operationMode)
+        public OpResult ChangeRecord(EquipmentCheckModel model, int operationMode)
         {
             try
             {
@@ -60,7 +67,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                         {
                             equipment.CheckDate = model.CheckData;
                             equipment.PlannedCheckDate = model.CheckData.AddDays(equipment.CheckInterval);
-                            if (!equipmentManager.ChangeStorage(equipment, 2).Result)
+                            if (!equipmentManager.ChangeRecord(equipment, 2).Result)
                                 return OpResult.SetResult("更新设备校验日期时错误！", false);
                             return OpResult.SetResult("增加校验记录成功", irep.Insert(model) > 0);
                         }
@@ -68,7 +75,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                         {
                             equipment.CheckDate = model.CheckData;
                             equipment.PlannedCheckDate = model.CheckData.AddDays(equipment.CheckInterval);
-                            if (!equipmentManager.ChangeStorage(equipment, 2).Result)
+                            if (!equipmentManager.ChangeRecord(equipment, 2).Result)
                                 return OpResult.SetResult("更新设备校验日期时错误！", false);
                             return OpResult.SetResult("更新校验记录成功", irep.Update(u => u.Id_Key == model.Id_Key, model) > 0);
                         }
@@ -77,54 +84,11 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                         {
                             equipment.CheckDate = model.CheckData;
                             equipment.PlannedCheckDate = model.CheckData.AddDays(equipment.CheckInterval);
-                            if (!equipmentManager.ChangeStorage(equipment, 2).Result)
+                            if (!equipmentManager.ChangeRecord(equipment, 2).Result)
                                 return OpResult.SetResult("更新设备校验日期时错误！", false);
                             return OpResult.SetResult("校验记录删除成功", irep.Delete(model.Id_Key) > 0);
                         }
                     default: return OpResult.SetResult("操作模式溢出", false);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
-
-        /// <summary>
-        /// 修改数据仓库
-        /// </summary>
-        /// <param name="listModel">模型</param>
-        /// <param name="operationMode">操作模式 1.新增 2.修改 3.删除</param>
-        /// <returns></returns>
-        public OpResult ChangeStorage(List<EquipmentCheckModel> listModel, int operationMode)
-        {
-            try
-            {
-                int i = 0;
-                switch (operationMode)
-                {
-                    case 1: //新增
-                        return OpResult.SetResult("添加成功！", "添加失败！", irep.Insert(listModel));
-
-                    case 2: //修改
-                        i = 0;
-                        listModel.ForEach(model =>
-                        {
-                            if (irep.Update(u => u.Id_Key == model.Id_Key, model) > 0)
-                                i++;
-                        });
-                        return OpResult.SetResult("更新成功！", "更新失败！", i);
-
-                    case 3: //删除
-                        i = 0;
-                        listModel.ForEach(model =>
-                        {
-                            if (irep.Delete(model.Id_Key) > 0)
-                                i++;
-                        });
-                        return OpResult.SetResult("删除成功！", "删除失败！", i);
-
-                    default: return OpResult.SetResult("操作模式溢出！", "操作模式溢出", 0);
                 }
             }
             catch (Exception ex)
