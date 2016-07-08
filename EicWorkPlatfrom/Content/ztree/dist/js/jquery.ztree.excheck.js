@@ -326,7 +326,6 @@
 	},
 	//method of event proxy
 	_event = {
-
 	},
 	//method of event handler
 	_handler = {
@@ -362,7 +361,6 @@
 	},
 	//method of tools for zTree
 	_tools = {
-
 	},
 	//method of operate ztree dom
 	_view = {
@@ -406,7 +404,6 @@
 						}
 					}
 				}
-
 			} else {
 				if (node[checkedKey] && (!node[childKey] || node[childKey].length==0 || setting.check.chkboxType.Y.indexOf("s") > -1)) {
 					view.setSonNodeCheckBox(setting, node, true);
@@ -568,7 +565,6 @@
 					setting.treeObj.trigger(consts.event.CHECK, [null, setting.treeId, node]);
 				}
 			}
-
 		}
 	},
 

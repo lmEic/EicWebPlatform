@@ -1,10 +1,7 @@
-﻿using System;
+﻿using Lm.Eic.Framework.Authenticate.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Lm.Eic.Framework.Authenticate.Model;
-using Lm.Eic.Framework.Authenticate.Business;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -16,6 +13,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
         /// <summary>
         /// 获取模块导航列表
         /// </summary>
@@ -32,6 +30,7 @@ namespace EicWorkPlatfrom.Controllers
             }
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+
         /// <summary>
         /// 获取模块导航列表
         /// </summary>

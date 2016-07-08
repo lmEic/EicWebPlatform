@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
 {
@@ -13,8 +10,11 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
     {
         public ItilSupplierTelModel()
         { }
+
         #region Model
+
         private string _suppliername;
+
         /// <summary>
         ///厂商名称
         /// </summary>
@@ -23,7 +23,9 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _suppliername = value; }
             get { return _suppliername; }
         }
+
         private string _bussinesscontent;
+
         /// <summary>
         ///往来业务
         /// </summary>
@@ -32,7 +34,9 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _bussinesscontent = value; }
             get { return _bussinesscontent; }
         }
+
         private string _bussinesstype;
+
         /// <summary>
         ///业务类别
         /// </summary>
@@ -41,7 +45,9 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _bussinesstype = value; }
             get { return _bussinesstype; }
         }
+
         private string _address;
+
         /// <summary>
         ///地址
         /// </summary>
@@ -50,7 +56,9 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _address = value; }
             get { return _address; }
         }
+
         private string _tel;
+
         /// <summary>
         ///联系电话
         /// </summary>
@@ -59,7 +67,9 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _tel = value; }
             get { return _tel; }
         }
+
         private string _qq;
+
         /// <summary>
         ///QQ
         /// </summary>
@@ -68,7 +78,9 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _qq = value; }
             get { return _qq; }
         }
+
         private string _order;
+
         /// <summary>
         ///联系人
         /// </summary>
@@ -77,7 +89,9 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _order = value; }
             get { return _order; }
         }
+
         private string _memo;
+
         /// <summary>
         ///备注
         /// </summary>
@@ -86,7 +100,9 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _memo = value; }
             get { return _memo; }
         }
+
         private decimal _id_key;
+
         /// <summary>
         ///自增键
         /// </summary>
@@ -95,6 +111,7 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _id_key = value; }
             get { return _id_key; }
         }
+
         #endregion Model
     }
 }

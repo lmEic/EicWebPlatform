@@ -1,11 +1,7 @@
 ﻿using Lm.Eic.Framework.ProductMaster.Model;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
 {
@@ -29,6 +25,7 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
     }
 
     #region Repository Framework
+
     /// <summary>
     /// 产品主数据库工作单元
     /// </summary>
@@ -46,12 +43,13 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             }
         }
     }
+
     /// <summary>
     /// 产品主数据库持久化基类/父类/超类
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     public class LmProMasterRepositoryBase<TEntity> : EFRepositoryBase<TEntity>, IRepository<TEntity>
-         where TEntity : class,new()
+         where TEntity : class, new()
     {
         protected override void SetUnitOfWorkContext()
         {
@@ -65,5 +63,6 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             }
         }
     }
-    #endregion
+
+    #endregion Repository Framework
 }

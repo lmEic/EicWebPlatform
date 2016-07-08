@@ -256,7 +256,6 @@ ngTouch.directive('ngClick', ['$parse', '$timeout', '$rootElement',
   var touchCoordinates;
   var lastLabelClickCoordinates;
 
-
   // TAP EVENTS AND GHOST CLICKS
   //
   // Why tap events?
@@ -358,7 +357,6 @@ ngTouch.directive('ngClick', ['$parse', '$timeout', '$rootElement',
     // Blur focused form elements
     event.target && event.target.blur && event.target.blur();
   }
-
 
   // Global touchstart handler that creates an allowable region for a click event.
   // This allowable region can be removed by preventGhostClick if we want to bust it.
@@ -486,7 +484,6 @@ ngTouch.directive('ngClick', ['$parse', '$timeout', '$rootElement',
     element.on('mousemove mouseup', function(event) {
       element.removeClass(ACTIVE_CLASS_NAME);
     });
-
   };
 }]);
 
@@ -622,7 +619,4 @@ function makeSwipeDirective(directiveName, direction, eventName) {
 // Left is negative X-coordinate, right is positive.
 makeSwipeDirective('ngSwipeLeft', -1, 'swipeleft');
 makeSwipeDirective('ngSwipeRight', 1, 'swiperight');
-
-
-
 })(window, window.angular);

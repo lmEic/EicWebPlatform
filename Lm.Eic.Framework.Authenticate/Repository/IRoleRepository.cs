@@ -1,15 +1,13 @@
 ﻿using Lm.Eic.Framework.Authenticate.Model;
-using Lm.Eic.Uti.Common.YleeDbHandler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Lm.Eic.Framework.Authenticate.Repository.Mapping;
+using Lm.Eic.Uti.Common.YleeDbHandler;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Lm.Eic.Framework.Authenticate.Repository
 {
-    public interface IRoleRepository : IRepository<RoleModel> {
+    public interface IRoleRepository : IRepository<RoleModel>
+    {
         /// <summary>
         /// 获取用户匹配的角色模型列表
         /// </summary>
@@ -32,7 +30,6 @@ namespace Lm.Eic.Framework.Authenticate.Repository
             return DbHelper.Authen.LoadEntities<RoleModel>(sqltext);
         }
 
-
         public List<ModuleNavigationModel> GetRoleMatchModuleNavs(string userId)
         {
             StringBuilder sb = new StringBuilder();
@@ -48,17 +45,15 @@ namespace Lm.Eic.Framework.Authenticate.Repository
     }
 
     public interface IUserMatchRoleRepository : IRepository<UserMatchRoleModel> { }
+
     public class UserMatchRoleRepository : AuthenRepositoryBase<UserMatchRoleModel>, IUserMatchRoleRepository
     { }
 
-    public interface IRoleMatchModuleRepository : IRepository<RoleMatchModuleModel> 
+    public interface IRoleMatchModuleRepository : IRepository<RoleMatchModuleModel>
     {
-      
     }
+
     public class RoleMatchModuleRepository : AuthenRepositoryBase<RoleMatchModuleModel>, IRoleMatchModuleRepository
     {
-       
     }
 }
-
-

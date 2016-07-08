@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using Lm.Eic.App.Business.Mes.Optical.Authen;
-using Lm.Eic.Framework.Authenticate.Business;
-using Lm.Eic.Framework.Authenticate.Model;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
-using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+using Lm.Eic.Framework.Authenticate.Business;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace EicWorkPlatfrom.Controllers.Product
 {
@@ -20,6 +16,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
+
         /// <summary>
         /// 人员信息管理
         /// </summary>
@@ -28,6 +25,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
+
         [NoAuthenCheck]
         public JsonResult GetWorkers()
         {
@@ -38,9 +36,10 @@ namespace EicWorkPlatfrom.Controllers.Product
                 currentUser.Department = currentWorker.Department;
             var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
             var roles = AuthenService.RoleManager.Roles.Where(e => e.RoleLevel > currentUser.Role.RoleLevel);
-            var datas = new {user=currentUser, workers = workers, departments = departments, roles = roles };
+            var datas = new { user = currentUser, workers = workers, departments = departments, roles = roles };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+
         [NoAuthenCheck]
         public JsonResult GetWorkerBy(string workerId)
         {
@@ -54,6 +53,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             var result = ArchiveService.ProWorkerManager.RegistUser(worker);
             return Json(result);
         }
+
         /// <summary>
         /// 所在站别管理
         /// </summary>
@@ -62,6 +62,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
+
         /// <summary>
         /// 生产班别管理
         /// </summary>
@@ -70,6 +71,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
+
         /// <summary>
         /// 出勤管理
         /// </summary>

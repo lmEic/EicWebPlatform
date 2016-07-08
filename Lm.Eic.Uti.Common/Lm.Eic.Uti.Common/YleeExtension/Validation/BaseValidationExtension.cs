@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Lm.Eic.Uti.Common.YleeExtension.Validation
 {
+    //
     public static class BaseValidationExtension
     {
-
         #region string
+
         /// <summary>
         /// 字符串是否为Null
         /// </summary>
@@ -31,7 +29,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
             Regex rx = new Regex(pattern);
             return rx.IsMatch(s);
         }
-
 
         /// <summary>
         /// 是否为Int类型
@@ -55,10 +52,10 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
             return double.TryParse(s, out i);
         }
 
-        #endregion
-
+        #endregion string
 
         #region Int
+
         /// <summary>
         /// 是否为奇数
         /// </summary>
@@ -66,10 +63,11 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
         {
             return (value % 2 == 0) ? true : false;
         }
-        #endregion
 
+        #endregion Int
 
         #region List
+
         /// <summary>
         /// 判断此集合是否为空 集合是否大于1
         /// </summary>
@@ -80,6 +78,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
         {
             return dt != null && dt.Count >= 1;
         }
-        #endregion
+
+        #endregion List
     }
 }

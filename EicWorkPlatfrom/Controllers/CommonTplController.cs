@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -11,17 +7,18 @@ namespace EicWorkPlatfrom.Controllers
     /// </summary>
     public class CommonTplController : Controller
     {
-
         // GET: /CommonTpl/
         public ActionResult Index()
         {
             return View();
         }
+
         [NoAuthenCheck]
         public ActionResult ModuleLayoutIndexTpl()
         {
             return View();
         }
+
         /// <summary>
         /// 消息提示模板
         /// </summary>
@@ -31,6 +28,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
         /// <summary>
         /// 删除确认模态窗口模板
         /// </summary>
@@ -40,16 +38,19 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
         [NoAuthenCheck]
         public ActionResult TreeSelectTpl()
         {
             return View();
         }
+
         [NoAuthenCheck]
         public ActionResult MonthButtonTpl()
         {
             return View();
         }
+
         [NoAuthenCheck]
         public ActionResult OperateMsgBoardTpl()
         {

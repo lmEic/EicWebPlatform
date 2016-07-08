@@ -3,7 +3,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
 .directive('ylMonthButton', function () {
     return {
         restrict: 'EA',
-        templateUrl:'/CommonTpl/MonthButtonTpl', 
+        templateUrl:'/CommonTpl/MonthButtonTpl',
         replace: false,
         scope: {
            yearmonth:'='//年月属性
@@ -78,7 +78,6 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         replace: false,
         scope:true,
         link: function (scope, element, attrs) {
-          
         }
     };
 })
@@ -353,7 +352,6 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                 // 对选项进行sort
                 scope.config.perPageOptions.sort(function (a, b) { return a - b });
 
-
                 config.pageList = [];
 
                 if (config.numberOfPages <= config.pagesLength) {
@@ -419,7 +417,6 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                     newValue += scope.config.itemsPerPage;
                 }
                 return newValue;
-
             }, getPagination);
 
             scope.$watch('datasource', function () {
@@ -427,7 +424,6 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                     config.totalItems = scope.datasource.length;
                     config.changeCurrentPage(1);
                 }
-
             });
         }
     };
@@ -518,7 +514,6 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                     callback: {
                         onClick: zTreeOnClick,
                         onCheck: zTreeOnCheck,
-
                     },
                     data: {
                         simpleData: {
@@ -633,7 +628,6 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
     nav.getModuleNavs = function () {
         return ajaxService.getData('/Home/GetModuleNavList', {});
     };
-        
 
     nav.getSubModuleNavs = function (moduleText, cacheKey) {
         return ajaxService.getData('/Home/GetSubModuleNavList', {
@@ -641,7 +635,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             cacheKey: cacheKey,
         });
     }
-       
+
     return nav;
 })
 
@@ -650,4 +644,3 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
 
     return account;
 })
-

@@ -1,36 +1,31 @@
-﻿using System;
+﻿using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
-using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives;
-using Lm.Eic.Framework.ProductMaster.DbAccess.Repository;
-using Lm.Eic.Framework.ProductMaster.Business.Config;
-using Lm.Eic.Uti.Common.YleeOOMapper;
-using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using Lm.Eic.Framework.ProductMaster.Model;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
-{ 
+{
     public class ArStudyManager
-    { 
+    {
         #region member
+
         private IArStudyRepository irep = null;
-        #endregion
+
+        #endregion member
 
         #region constructure
+
         public ArStudyManager()
         {
             this.irep = new ArStudyRepository();
         }
-        #endregion
 
-        #region property
+        #endregion constructure
 
-        #endregion
+
 
         #region method
+
         /// <summary>
         ///  插入数据
         /// </summary>
@@ -43,6 +38,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 record = irep.Insert(entity);
             return record;
         }
+
         /// <summary>
         /// 修改信息
         /// </summary>
@@ -55,6 +51,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             if (mdl != null) entity.Id_Key = mdl.Id_Key;
             return irep.Update(u => u.WorkerId == oldEntity.WorkerId && u.SchoolName == oldEntity.SchoolName, mdl);
         }
+
         /// <summary>
         /// 修改学习信息
         /// </summary>
@@ -73,11 +70,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             else if (entity.OpSign.Trim().ToLower() == "edit") //2.若是修改，则先查询是否存在，
             {
-                var mdl = this.irep.Entities.FirstOrDefault(e => e.Id_Key==entity.Id_Key);
+                var mdl = this.irep.Entities.FirstOrDefault(e => e.Id_Key == entity.Id_Key);
                 if (mdl != null)
                 {
                     //若存在，则直接修改
-                    record = irep.Update(u => u.Id_Key==entity.Id_Key, entity);
+                    record = irep.Update(u => u.Id_Key == entity.Id_Key, entity);
                 }
                 else
                 {
@@ -99,10 +96,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             if (workerIdList == null || workerIdList.Count == 0) return null;
             return this.irep.Entities.Where(e => workerIdList.Contains(e.WorkerId)).ToList();
         }
-        #endregion
 
-        #region command
-
-        #endregion
+        #endregion method
     }
 }

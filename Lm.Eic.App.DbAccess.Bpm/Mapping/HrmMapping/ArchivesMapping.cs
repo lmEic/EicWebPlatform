@@ -1,11 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
 {
@@ -21,6 +16,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             this.ToTable("Archives_IdentityInfo");
         }
     }
+
     /// <summary>
     ///ArchivesEmployeeIdentityModel
     /// </summary>
@@ -33,6 +29,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             this.ToTable("Archives_EmployeeIdentityInfo");
         }
     }
+
     /// <summary>
     ///ArPostChangeLibModel
     /// </summary>
@@ -58,6 +55,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             this.ToTable("Archives_DepartmentChangeLib");
         }
     }
+
     /// <summary>
     ///ArCertificateModel
     /// </summary>
@@ -70,6 +68,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             this.ToTable("Archives_Certificate");
         }
     }
+
     /// <summary>
     ///ArTelModel
     /// </summary>
@@ -82,6 +81,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             this.ToTable("Archives_TelInfo");
         }
     }
+
     /// <summary>
     ///ArStudyModel
     /// </summary>
@@ -94,7 +94,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             this.ToTable("Archives_Study");
         }
     }
-
 
     /// <summary>
     ///ProWorkerInfo

@@ -1,20 +1,17 @@
 ﻿using Lm.Eic.App.DomainModel.Mes.Optical.Authen;
 using Lm.Eic.Uti.Common.YleeDbHandler;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Lm.Eic.App.DbAccess.Mes.Optical.AuthenDb
 {
     /// <summary>
     ///
     /// </summary>
-    public interface IUserRepository : IRepository<UserInfo> 
+    public interface IUserRepository : IRepository<UserInfo>
     {
-        
         List<WorkerCell> GetWorkers(string whereAppend = "");
     }
+
     /// <summary>
     ///
     /// </summary>
@@ -33,7 +30,8 @@ namespace Lm.Eic.App.DbAccess.Mes.Optical.AuthenDb
             var datas = DbHelper.Hrm.LoadEntities<WorkerCell>(sql);
             if (datas != null && datas.Count > 0)
             {
-                datas.ForEach(worker => {
+                datas.ForEach(worker =>
+                {
                     string[] d = worker.Department.Split(',');
                     if (d.Length > 0)
                         worker.Department = d[d.Length - 1].Trim();

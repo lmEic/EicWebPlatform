@@ -196,7 +196,6 @@ function $AriaProvider() {
   };
 }
 
-
 ngAriaModule.directive('ngShow', ['$aria', function($aria) {
   return $aria.$$watchExpr('ngShow', 'aria-hidden', [], true);
 }])
@@ -204,7 +203,6 @@ ngAriaModule.directive('ngShow', ['$aria', function($aria) {
   return $aria.$$watchExpr('ngHide', 'aria-hidden', [], false);
 }])
 .directive('ngModel', ['$aria', function($aria) {
-
   function shouldAttachAttr(attr, normalizedAttr, elem) {
     return $aria.config(normalizedAttr) && !elem.attr(attr);
   }
@@ -358,9 +356,7 @@ ngAriaModule.directive('ngShow', ['$aria', function($aria) {
     compile: function(elem, attr) {
       var fn = $parse(attr.ngClick, /* interceptorFn */ null, /* expensiveChecks */ true);
       return function(scope, elem, attr) {
-
         if (!isNodeOneOf(elem, nodeBlackList)) {
-
           if ($aria.config('bindRoleForClick') && !elem.attr('role')) {
             elem.attr('role', 'button');
           }
@@ -393,6 +389,4 @@ ngAriaModule.directive('ngShow', ['$aria', function($aria) {
     }
   };
 }]);
-
-
 })(window, window.angular);

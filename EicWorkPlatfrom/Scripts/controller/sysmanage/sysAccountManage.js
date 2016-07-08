@@ -60,7 +60,6 @@ smModule.factory('accountService', function ($http,$q) {
     };
     account.getNavMenusAndRoles = function () {
         return getData(urlPrefix + 'GetNavsAndRoles', {});
-     
     };
     account.saveModuleNavData = function (vm, oldVm, opType) {
         return postData(urlPrefix + 'SaveModuleNavData', {
@@ -300,7 +299,7 @@ smModule.controller('addUserMatchRoleCtrl', function ($scope, accountService) {
         selectRole:function(role){
             var item = _.find(vmManager.matchRoles, { RoleId: role.RoleId });
             var dataitem = _.find(vmManager.dataset, { RoleId: role.RoleId });
-            
+
             if (role.isSelect) {
                 if (item === undefined) {
                     vmManager.matchRoles.push(role);
@@ -443,7 +442,6 @@ smModule.controller('moduleNavManageCtrl', function ($scope,$modal,vmService,acc
                         leeHelper.clearVM(moduleNavVm);
                     }
                 });
-                
             }, function (errResult) {
                 alert(errResult);
             });
@@ -559,7 +557,6 @@ smModule.controller('addRoleCtrl', function ($scope, accountService) {
             vmManager.inti();
         });
     };
-
 })
 smModule.controller('assemblyManageCtrl', function ($scope, accountService) {
     $scope.navmenu = {
@@ -797,7 +794,6 @@ smModule.controller("assignUserPowerLotCtrl", function ($scope, vmService, accou
     //树的配置
     var zTreeSet = treeSetService;
     zTreeSet.bindNodeToVm = function () {
-       
     };
     zTreeSet.checkNode = function () {
         var isChecked = zTreeSet.treeNode.isChecked;

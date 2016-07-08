@@ -1,35 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Lm.Eic.App.DbAccess.Mes.Optical.AuthenDb;
 using Lm.Eic.App.DomainModel.Mes.Optical.Authen;
-using Lm.Eic.App.DbAccess.Mes.Optical.AuthenDb;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using System;
+using System.Collections.Generic;
 
 namespace Lm.Eic.App.Business.Mes.Optical.Authen
 {
     public class MesUserManager
     {
         #region member
+
         private IUserRepository irep = null;
-        #endregion
+
+        #endregion member
 
         #region constructure
+
         public MesUserManager()
         {
             this.irep = new UserRepository();
         }
-        #endregion
 
-        #region property
+        #endregion constructure
 
-        #endregion
+
 
         #region method
+
         public List<WorkerCell> GetWorkers()
         {
             return this.irep.GetWorkers();
         }
+
         public OpResult RegistUser(UserInfo user)
         {
             int record = 0;
@@ -49,17 +51,14 @@ namespace Lm.Eic.App.Business.Mes.Optical.Authen
         {
             get
             {
-                return new Dictionary<string, string>() { 
+                return new Dictionary<string, string>() {
                    {"部门经理","0002"},{"主管","0003"},{"副主管","0004"},
                    {"工程师","0005"},{"技术员","0006"},{"助理","0007"},
                    {"组长","0008"},{"作业员","0009"},{"检验员","0010"}
-                };           
+                };
             }
         }
-        #endregion
 
-        #region command
-
-        #endregion
+        #endregion method
     }
 }

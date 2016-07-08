@@ -9,28 +9,32 @@
 .thumbnail a > img,
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
-  display: block;
-  max-width: 100%;
-  height: auto;
+    display: block;
+    max-width: 100%;
+    height: auto;
 }
+
 .btn-group-lg > .btn {
-  padding: 10px 16px;
-  font-size: 18px;
-  line-height: 1.3333333;
-  border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
 }
+
 .btn-group-sm > .btn {
-  padding: 5px 10px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
 }
+
 .btn-group-xs > .btn {
-  padding: 1px 5px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
 }
+
 .dl-horizontal dd:before,
 .dl-horizontal dd:after,
 .container:before,
@@ -59,9 +63,10 @@
 .panel-body:after,
 .modal-footer:before,
 .modal-footer:after {
-  content: " ";
-  display: table;
+    content: " ";
+    display: table;
 }
+
 .dl-horizontal dd:after,
 .container:after,
 .container-fluid:after,
@@ -76,26 +81,30 @@
 .pager:after,
 .panel-body:after,
 .modal-footer:after {
-  clear: both;
+    clear: both;
 }
 /*
  * Datepicker element
  */
 .datepicker.dropdown-menu {
-  width: 250px;
-  height: 270px;
+    width: 250px;
+    height: 270px;
 }
-.datepicker.dropdown-menu button {
-  outline: none;
-  border: 0px;
-}
-.datepicker.dropdown-menu tbody {
-  height: 180px;
-}
-.datepicker.dropdown-menu tbody button {
-  padding: 6px;
-}
-.datepicker.dropdown-menu.datepicker-mode-1 tbody button,
-.datepicker.dropdown-menu.datepicker-mode-2 tbody button {
-  height: 65px;
-}
+
+    .datepicker.dropdown-menu button {
+        outline: none;
+        border: 0px;
+    }
+
+    .datepicker.dropdown-menu tbody {
+        height: 180px;
+    }
+
+        .datepicker.dropdown-menu tbody button {
+            padding: 6px;
+        }
+
+    .datepicker.dropdown-menu.datepicker-mode-1 tbody button,
+    .datepicker.dropdown-menu.datepicker-mode-2 tbody button {
+        height: 65px;
+    }

@@ -1,14 +1,11 @@
 ﻿using Lm.Eic.Framework.Authenticate.Business;
 using Lm.Eic.Framework.Authenticate.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EicWorkPlatfrom.Controllers
 {
-    public class AccountController :EicBaseController
+    public class AccountController : EicBaseController
     {
         //
         // GET: /Account/
@@ -18,11 +15,13 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         #region login
+
         [NoAuthenCheck]
         public ActionResult Login()
         {
             return View();
         }
+
         /// <summary>
         /// 登录验证
         /// </summary>
@@ -36,20 +35,23 @@ namespace EicWorkPlatfrom.Controllers
             {
                 Session[EicConstKeys.UserAccount] = loginUser;
             }
-            
+
             return Json(loginUser, JsonRequestBehavior.AllowGet);
         }
+
         [NoAuthenCheck]
         public JsonResult Logout()
         {
             Session.RemoveAll();
-            
+
             var opResult = "ok";
             return Json(opResult, JsonRequestBehavior.AllowGet);
         }
-        #endregion
+
+        #endregion login
 
         #region user manage
+
         public ActionResult RegistUser()
         {
             return View();
@@ -62,6 +64,7 @@ namespace EicWorkPlatfrom.Controllers
 
             return Json(userIdentity, JsonRequestBehavior.AllowGet);
         }
+
         [NoAuthenCheck]
         public JsonResult GetUserById(string userId)
         {
@@ -75,7 +78,7 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-         [NoAuthenCheck]
+        [NoAuthenCheck]
         public JsonResult FindUserMatchRolesByUserId(string userId)
         {
             RegistUserModel user = AuthenService.UserManager.UserRegister.FindUserBy(userId);
@@ -84,6 +87,7 @@ namespace EicWorkPlatfrom.Controllers
             var matchRoles = new { user = user, userRoles = userRoles };
             return Json(matchRoles, JsonRequestBehavior.AllowGet);
         }
+
         [NoAuthenCheck]
         [HttpPost]
         public JsonResult AddUser(RegistUserModel user)
@@ -91,20 +95,23 @@ namespace EicWorkPlatfrom.Controllers
             var result = AuthenService.UserManager.UserRegister.RegistUser(user);
             return Json(result);
         }
+
         [NoAuthenCheck]
         public JsonResult GetRoles()
         {
             var roles = AuthenService.RoleManager.Roles;
             return Json(roles, JsonRequestBehavior.AllowGet);
         }
-     
+
         public ActionResult AssignRoleToUser()
         {
             return View();
         }
-        #endregion
+
+        #endregion user manage
 
         #region role manage
+
         /// <summary>
         /// 添加角色
         /// </summary>
@@ -116,6 +123,7 @@ namespace EicWorkPlatfrom.Controllers
             var result = AuthenService.RoleManager.AddRole(role);
             return Json(result);
         }
+
         /// <summary>
         /// 角色管理
         /// </summary>
@@ -124,9 +132,11 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-        #endregion
+
+        #endregion role manage
 
         #region assembly
+
         /// <summary>
         /// 程序集管理
         /// </summary>
@@ -135,6 +145,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
         [NoAuthenCheck]
         public JsonResult GetAssemblies()
         {
@@ -148,9 +159,11 @@ namespace EicWorkPlatfrom.Controllers
             var result = AuthenService.AssemblyManager.AddAssembly(assembly);
             return Json(result);
         }
-        #endregion
+
+        #endregion assembly
 
         #region module nav
+
         /// <summary>
         /// 模块管理
         /// </summary>
@@ -159,21 +172,25 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
         [NoAuthenCheck]
         public JsonResult SaveModuleNavData(ModuleNavigationModel moduleNav, ModuleNavigationModel oldModuleNav, string opType)
         {
-            var result = AuthenService.ModuleManager.Store(moduleNav,oldModuleNav,opType);
+            var result = AuthenService.ModuleManager.Store(moduleNav, oldModuleNav, opType);
             return Json(result);
         }
+
         [NoAuthenCheck]
         public JsonResult GetNavMenus()
         {
             var modules = AuthenService.ModuleManager.NavMneus;
             return Json(modules, JsonRequestBehavior.AllowGet);
         }
-        #endregion
+
+        #endregion module nav
 
         #region user match roles
+
         [HttpPost]
         [NoAuthenCheck]
         public JsonResult AddMatchRoles(List<UserMatchRoleModel> matchRoles)
@@ -181,9 +198,11 @@ namespace EicWorkPlatfrom.Controllers
             var result = AuthenService.RoleManager.MatchRolesHandler.StoreMatchRoles(matchRoles);
             return Json(result);
         }
-        #endregion
+
+        #endregion user match roles
 
         #region assign power
+
         /// <summary>
         /// 分配角色
         /// </summary>
@@ -192,6 +211,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
         /// <summary>
         /// 分配角色
         /// </summary>
@@ -208,26 +228,30 @@ namespace EicWorkPlatfrom.Controllers
             var result = AuthenService.RoleManager.MatchModuleHandler.Store(mdls);
             return Json(result);
         }
+
         [NoAuthenCheck]
-        public JsonResult FindRoleMatchModules(string assemblyName,string moduleName,string ctrlName)
+        public JsonResult FindRoleMatchModules(string assemblyName, string moduleName, string ctrlName)
         {
-            List<RoleMatchModuleModel> matchModuleRoles = AuthenService.RoleManager.MatchModuleHandler.FindBy(assemblyName, moduleName,ctrlName);
+            List<RoleMatchModuleModel> matchModuleRoles = AuthenService.RoleManager.MatchModuleHandler.FindBy(assemblyName, moduleName, ctrlName);
             return Json(matchModuleRoles, JsonRequestBehavior.AllowGet);
         }
+
         [NoAuthenCheck]
         public JsonResult FindRoleMatchModulesBy(string roleId)
         {
             List<RoleMatchModuleModel> matchModuleRoles = AuthenService.RoleManager.MatchModuleHandler.FindBy(roleId);
             return Json(matchModuleRoles, JsonRequestBehavior.AllowGet);
         }
+
         [NoAuthenCheck]
         public JsonResult GetNavsAndRoles()
         {
             var modules = AuthenService.ModuleManager.NavMneus;
             var roles = AuthenService.RoleManager.Roles;
-            var datas =new { modules=modules,roles=roles };
+            var datas = new { modules = modules, roles = roles };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-        #endregion
+
+        #endregion assign power
     }
 }

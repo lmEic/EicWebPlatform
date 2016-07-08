@@ -272,7 +272,6 @@ InterpolationParts.prototype.getResult = function getResult(expressionValues) {
   return this.textParts.join('');
 };
 
-
 InterpolationParts.prototype.toParsedFn = function toParsedFn(mustHaveExpression, originalText) {
   var self = this;
   this.flushPartialText();
@@ -435,7 +434,6 @@ MessageFormatParser.prototype.matchRe = function matchRe(re, search) {
 MessageFormatParser.prototype.searchRe = function searchRe(re) {
   return this.matchRe(re, true);
 };
-
 
 MessageFormatParser.prototype.consumeRe = function consumeRe(re) {
   // Without the sticky flag, we can't use the .test() method to consume a
@@ -724,8 +722,6 @@ MessageFormatParser.prototype.ruleEndMustacheInInterpolationOrMessage = function
   this.rule = this.ruleInInterpolationOrMessageText;
 };
 
-
-
 var INTERP_END_RE = /\s*}}/g;
 MessageFormatParser.prototype.ruleEndMustache = function ruleEndMustache() {
   var match = this.matchRe(INTERP_END_RE);
@@ -928,7 +924,6 @@ MessageFormatParser.prototype.ruleInAngularExpression = function ruleInAngularEx
  */
 var $$MessageFormatFactory = ['$parse', '$locale', '$sce', '$exceptionHandler', function $$messageFormat(
                    $parse,   $locale,   $sce,   $exceptionHandler) {
-
   function getStringifier(trustedContext, allOrNothing, text) {
     return function stringifier(value) {
       try {
@@ -963,7 +958,6 @@ var $$interpolateDecorator = ['$$messageFormat', '$delegate', function $$interpo
   return interpolate;
 }];
 
-
 /**
  * @ngdoc module
  * @name ngMessageFormat
@@ -975,6 +969,4 @@ module['factory']('$$messageFormat', $$MessageFormatFactory);
 module['config'](['$provide', function($provide) {
   $provide['decorator']('$interpolate', $$interpolateDecorator);
 }]);
-
-
 })(window, window.angular);

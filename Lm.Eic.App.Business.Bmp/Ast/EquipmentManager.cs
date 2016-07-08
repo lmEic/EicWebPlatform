@@ -1,20 +1,19 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Repository.AstRep;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
+using Lm.Eic.Uti.Common.YleeExtension.Validation;
+using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lm.Eic.Uti.Common.YleeExtension.Validation;
-using System.Threading;
-using Lm.Eic.Uti.Common.YleeOOMapper;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
     /// <summary>
     /// 设备管理具体实现
     /// </summary>
-    public class EquipmentManager  
+    public class EquipmentManager
     {
-        IEquipmentRepository irep = null;
+        private IEquipmentRepository irep = null;
 
         public EquipmentManager()
         {
@@ -33,7 +32,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             /*设备编码共七码
               第一位：     类别码，保税设备为I、非保税设备为E、低质易耗品为Z ' PS如果冲突以设备类别为主。
               第二、三位： 年度码，例2016年记为16。
-              第四位：     设备代码，生产设备为9，显示其它数字为量测设备。  
+              第四位：     设备代码，生产设备为9，显示其它数字为量测设备。
               后三位：     编号码。   */
             string assetNumber_1 = string.Empty,
                 assetNumber_2_3 = DateTime.Now.Date.ToString("yy"),
@@ -54,7 +53,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 var temEntitylist = irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(temAssetNumber));
                 assetNumber_5_7 = (temEntitylist.Count + 1).ToString("000");
                 return assetNumber_5_7.IsNullOrEmpty() ? "" : string.Format("{0}{1}{2}{3}", assetNumber_1, assetNumber_2_3, assetNumber_4, assetNumber_5_7);
-            
             }
             catch (Exception ex)
             {
@@ -68,32 +66,35 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="listModel">模型</param>
         /// <param name="operationMode">操作模式 1.新增 2.修改 3.删除</param>
         /// <returns></returns>
-        public OpResult ChangeStorage(List<EquipmentModel> listModel, int operationMode)
+        public OpResult Store(List<EquipmentModel> listModel, string opSign)
         {
             try
             {
-                int i = 0;
-                switch (operationMode)
+                int record = 0;
+                switch (opSign)
                 {
-                    case 1: //新增
+                    case OpMode.Add: //新增
                         return OpResult.SetResult("添加成功！", "添加失败！", irep.Insert(listModel));
-                    case 2: //修改
-                        i = 0;
+
+                    case OpMode.Edit: //修改
+                        record = 0;
                         listModel.ForEach(model =>
                         {
                             if (irep.Update(u => u.Id_Key == model.Id_Key, model) > 0)
-                                i++;
+                                record++;
                         });
-                        return OpResult.SetResult("更新成功！", "更新失败！",i);
-                    case 3: //删除
-                        i = 0;
+                        return OpResult.SetResult("更新成功！", "更新失败！", record);
+
+                    case OpMode.Delete: //删除
+                        record = 0;
                         listModel.ForEach(model =>
                         {
                             if (irep.Delete(model.Id_Key) > 0)
-                                i++;
+                                record++;
                         });
-                        return OpResult.SetResult("删除成功！", "删除失败！", i);
-                    default: return OpResult.SetResult("操作模式溢出！", "操作模式溢出",0);
+                        return OpResult.SetResult("删除成功！", "删除失败！", record);
+
+                    default: return OpResult.SetResult("操作模式溢出！", false);
                 }
             }
             catch (Exception ex)
@@ -108,19 +109,22 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="listModel">模型</param>
         /// <param name="operationMode">操作模式 1.新增 2.修改 3.删除</param>
         /// <returns></returns>
-        public OpResult ChangeStorage(EquipmentModel model, int operationMode)
+        public OpResult Store(EquipmentModel model, string opSign)
         {
             try
             {
-                switch (operationMode)
+                switch (opSign)
                 {
-                    case 1: //新增
-                        return OpResult.SetResult("增加设备成功",irep.Insert(model) > 0);
-                    case 2: //修改
-                        return OpResult.SetResult("增加设备成功", irep.Update(u => u.Id_Key == model.Id_Key, model) > 0);
-                    case 3: //删除
-                        return OpResult.SetResult("增加设备成功", irep.Delete(model.Id_Key) > 0);
-                    default: return OpResult.SetResult("操作模式溢出",false );
+                    case OpMode.Add: //新增
+                        return OpResult.SetResult("增加设备成功", irep.Insert(model) > 0,model.Id_Key);
+
+                    case OpMode.Edit: //修改
+                        return OpResult.SetResult("修改设备成功", irep.Update(u => u.Id_Key == model.Id_Key, model) > 0);
+
+                    case OpMode.Delete: //删除
+                        return OpResult.SetResult("删除设备成功", irep.Delete(model.Id_Key) > 0);
+
+                    default: return OpResult.SetResult("操作模式溢出", false);
                 }
             }
             catch (Exception ex)
@@ -143,10 +147,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 {
                     case 1: //依据财产编号查询
                         return irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(qryDto.SearchValue)).ToList();
+
                     case 2: //依据保管部门查询
                         return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.SearchValue)).ToList();
-                    case 3: //依据规格查询 
+
+                    case 3: //依据规格查询
                         return irep.FindAll<EquipmentModel>(m => m.EquipmentSpec.StartsWith(qryDto.SearchValue)).ToList();
+
                     default: return null;
                 }
             }
@@ -155,21 +162,19 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 throw new Exception(ex.InnerException.Message);
             }
         }
-    }
 
-
-    public class QueryEquipmentDto
-    {
-        string searchValue = string.Empty;
-        /// <summary>
-        /// 单条件搜索参数
-        /// </summary>
-        public string SearchValue
+        public class QueryEquipmentDto
         {
-            get { return searchValue; }
-            set { if (searchValue != value) { searchValue = value; } }
+            private string searchValue = string.Empty;
+
+            /// <summary>
+            /// 单条件搜索参数
+            /// </summary>
+            public string SearchValue
+            {
+                get { return searchValue; }
+                set { if (searchValue != value) { searchValue = value; } }
+            }
         }
-
-
     }
 }

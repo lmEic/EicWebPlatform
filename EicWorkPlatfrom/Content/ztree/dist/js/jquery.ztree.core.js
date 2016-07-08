@@ -924,7 +924,6 @@
 					childHtml = view.appendNodes(setting, level + 1, node[childKey], node, -1, initFlag, openFlag && node.open);
 				}
 				if (openFlag) {
-
 					view.makeDOMNodeMainBefore(html, setting, node);
 					view.makeDOMNodeLine(html, setting, node);
 					data.getBeforeA(setting, node, html);
@@ -1399,7 +1398,6 @@
 				view.replaceSwitchClass(parentNode, tmp_switchObj, consts.folder.DOCU);
 				view.replaceIcoClass(parentNode, tmp_icoObj, consts.folder.DOCU);
 				tmp_ulObj.css("display", "none");
-
 			} else if (setting.view.showLine && childLength > 0) {
 				//old parentNode has child nodes
 				var newLast = parentNode[childKey][childLength - 1];
@@ -1601,7 +1599,6 @@
 						index = i;
 					}
 					if (!newNodes) return null;
-
 
 					var xNewNodes = tools.clone(tools.isArray(newNodes)? newNodes: [newNodes]);
 					function addCallback() {
