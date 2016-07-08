@@ -559,7 +559,6 @@ smModule.controller('addRoleCtrl', function ($scope, accountService) {
             vmManager.inti();
         });
     };
-
 })
 smModule.controller('assemblyManageCtrl', function ($scope, accountService) {
     $scope.navmenu = {

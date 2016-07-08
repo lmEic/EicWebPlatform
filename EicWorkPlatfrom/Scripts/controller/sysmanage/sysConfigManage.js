@@ -5,55 +5,9 @@ smModule.factory('sysConfigService', function ($http, $q) {
     var config = {};
     var urlPrefix = '/' + leeHelper.controllers.configManage + '/';
 
-    config.getConfigDicData = function (treeModuleKey) {
-        var defer = $q.defer();
-        var url = urlPrefix + "GetConfigDicData";
-        $http.get(url, {
-            params: {
-                treeModuleKey: treeModuleKey,
-            }
-        }).success(function (datas) {
-            defer.resolve(datas);
-        }).error(function (errdata) {
-            defer.reject(errdata);
-        });
-        return defer.promise;
-    };
-    ///根据模块名称与所属类别载入配置数据
-    config.loadConfigDicData = function (moduleName, aboutCategory) {
-        var defer = $q.defer();
-        var url = urlPrefix + "LoadConfigDicData";
-        $http.get(url, {
-            params: {
-                moduleName: moduleName,
-                aboutCategory: aboutCategory,
-            }
-        }).success(function (datas) {
-            defer.resolve(datas);
-        }).error(function (errdata) {
-            defer.reject(errdata);
-        });
-        return defer.promise;
-    };
-    ///根据树的键值载入配置数据
-    config.saveConfigDicData = function (vm, oldVm, opType) {
-        var defer = $q.defer();
-        var url = urlPrefix + "SaveConfigDicData";
-        $http.post(url, {
-            opType: opType,
-            model: vm,
-            oldModel: oldVm
-        }).success(function (data) {
-            defer.resolve(data);
-        }).error(function (errdata) {
-            defer.reject(errdata);
-        });
-        return defer.promise;
-    };
-
     return config;
 });
-smModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfigTreeSet, sysConfigService) {
+smModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfigTreeSet, connDataOpService) {
     var departmentDto = {
         TreeModuleKey: 'Organization',
         ModuleName: 'smconfigManage',
@@ -95,7 +49,7 @@ smModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfig
 
     var saveDataDicNode = function (isValid, opType, opNodeType) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            sysConfigService.saveConfigDicData(departmentDto, oldDepartmentDto, opType).then(function (opresult) {
+            connDataOpService.saveConfigDicData(departmentDto, oldDepartmentDto, opType).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
                         var vm = _.clone($scope.vm);
@@ -142,7 +96,7 @@ smModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfig
         templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
         controller: function ($scope) {
             $scope.confirmDelete = function () {
-                sysConfigService.saveConfigDicData(departmentDto, oldDepartmentDto, 'delete').then(function (opresult) {
+                connDataOpService.saveConfigDicData(departmentDto, oldDepartmentDto, 'delete').then(function (opresult) {
                     if (opresult.Result) {
                         operate.deleteModal.$promise.then(operate.deleteModal.hide);
                         leeTreeHelper.removeNode(departmentTreeSet.treeId, departmentTreeSet.treeNode);
@@ -168,11 +122,11 @@ smModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfig
     };
     $scope.ztree = departmentTreeSet;
 
-    $scope.promise = sysConfigService.getConfigDicData(departmentDto.TreeModuleKey).then(function (datas) {
+    $scope.promise = connDataOpService.getConfigDicData(departmentDto.TreeModuleKey).then(function (datas) {
         departmentTreeSet.setTreeDataset(datas);
     });
 })
-smModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConfigTreeSet, sysConfigService) {
+smModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConfigTreeSet, connDataOpService) {
     var configDto = {
         TreeModuleKey: 'CommonConfigDataSet',
         ModuleName: null,
@@ -219,7 +173,7 @@ smModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConf
 
     var saveDataDicNode = function (isValid, opType, opNodeType) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            sysConfigService.saveConfigDicData(configDto, oldConfigDto, opType).then(function (opresult) {
+            connDataOpService.saveConfigDicData(configDto, oldConfigDto, opType).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
                         var vm = _.clone($scope.vm);
@@ -273,7 +227,7 @@ smModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConf
         templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
         controller: function ($scope) {
             $scope.confirmDelete = function () {
-                sysConfigService.saveConfigDicData(configDto, oldConfigDto, 'delete').then(function (opresult) {
+                connDataOpService.saveConfigDicData(configDto, oldConfigDto, 'delete').then(function (opresult) {
                     if (opresult.Result) {
                         operate.deleteModal.$promise.then(operate.deleteModal.hide);
                         leeTreeHelper.removeNode(commonConfigTreeSet.treeId, commonConfigTreeSet.treeNode);
@@ -293,7 +247,7 @@ smModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConf
     };
     $scope.ztree = commonConfigTreeSet;
 
-    $scope.promise = sysConfigService.getConfigDicData(configDto.TreeModuleKey).then(function (datas) {
+    $scope.promise = connDataOpService.getConfigDicData(configDto.TreeModuleKey).then(function (datas) {
         commonConfigTreeSet.setTreeDataset(datas);
     });
 })

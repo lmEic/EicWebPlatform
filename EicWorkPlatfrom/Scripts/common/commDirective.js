@@ -208,7 +208,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                 });
             }
         };
-    })
+})
 //------------------pagination directive--------------------------
 .directive('ylPagination', [function () {
     return {
@@ -633,21 +633,81 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
     nav.getModuleNavs = function () {
         return ajaxService.getData('/Home/GetModuleNavList', {});
     };
-        
-
     nav.getSubModuleNavs = function (moduleText, cacheKey) {
         return ajaxService.getData('/Home/GetSubModuleNavList', {
             moduleText: moduleText,
             cacheKey: cacheKey,
         });
     }
-       
     return nav;
 })
+.factory('connDataOpService', function (ajaxService) {
+    var conn = {};
 
-.factory('accountDataService', function (ajaxService) {
-    var account = {};
-
-    return account;
+    var urlPrefix = {
+        hrArchivesManage: '/HrArchivesManage/',
+        configManage: '/SysConfig/',
+    };
+    //获取部门数据
+    conn.getDepartments = function () {
+        var url = urlPrefix.hrArchivesManage + "GetDepartments";
+        return ajaxService.getData(url, {});
+    };
+    //获取作业人员信息
+    conn.getWorkersBy = function (workerIdOrName)
+    {
+        var url = urlPrefix.hrArchivesManage + 'GetWorkersBy';
+        return ajaxService.getData(url, {
+            workerIdOrName: workerIdOrName,
+        });
+    };
+    ///根据树模块键值获取配置数据
+    conn.getConfigDicData = function (treeModuleKey) {
+        var defer = $q.defer();
+        var url = urlPrefix.configManage + "GetConfigDicData";
+        $http.get(url, {
+            params: {
+                treeModuleKey: treeModuleKey,
+            }
+        }).success(function (datas) {
+            defer.resolve(datas);
+        }).error(function (errdata) {
+            defer.reject(errdata);
+        });
+        return defer.promise;
+    };
+    ///根据模块名称与所属类别载入配置数据
+    conn.loadConfigDicData = function (moduleName, aboutCategory) {
+        var defer = $q.defer();
+        var url = urlPrefix.configManage + "LoadConfigDicData";
+        $http.get(url, {
+            params: {
+                moduleName: moduleName,
+                aboutCategory: aboutCategory,
+            }
+        }).success(function (datas) {
+            defer.resolve(datas);
+        }).error(function (errdata) {
+            defer.reject(errdata);
+        });
+        return defer.promise;
+    };
+    ///根据树的键值载入配置数据
+    conn.saveConfigDicData = function (vm, oldVm, opType) {
+        var defer = $q.defer();
+        var url = urlPrefix.configManage + "SaveConfigDicData";
+        $http.post(url, {
+            opType: opType,
+            model: vm,
+            oldModel: oldVm
+        }).success(function (data) {
+            defer.resolve(data);
+        }).error(function (errdata) {
+            defer.reject(errdata);
+        });
+        return defer.promise;
+    };
+    return conn;
 })
+
 

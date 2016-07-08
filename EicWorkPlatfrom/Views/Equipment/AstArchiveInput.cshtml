@@ -41,7 +41,7 @@
                             <div class="form-group">
                                 <label for="taxType" class="col-md-2 control-label">税务类别</label>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-default" ng-model="vm.TaxType"  ng-change="vmManager.getEquipmentID()" data-html="1" data-multiple="0"
+                                    <button type="button" class="btn btn-default" ng-model="vm.TaxType" ng-change="vmManager.getAstId()" data-html="1" data-multiple="0"
                                             data-animation="am-flip-x" data-placeholder="请选择税务类别"
                                             bs-options="item.text as item.text for item in vmManager.taxTypes" bs-select>
                                         <span class="caret"></span>
@@ -120,15 +120,16 @@
                                 <label for="safekeepDepartment" class="col-md-2 control-label">保管单位</label>
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <input name="safekeepDepartment" class="form-control" ng-model="vm.SafekeepDepartment" required />
+                                        <input name="safekeepDepartment" class="form-control" ng-model="vm.SafekeepDepartment" readonly required />
                                         <div class="error-messages" ng-messages="formEquipment.safekeepDepartment.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">保管单位不能为空</small>
                                         </div>
                                         <div class="input-group-btn">
-                                            <button class="btn btn-primary" style="margin-bottom:6px;" ng-click="archive.selectDepartment()"
+                                            <button class="btn btn-primary" style="margin-bottom:6px;" id="departmentPopover"
                                                     data-title="选择部门名称"
                                                     data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
                                                     data-animation="am-flip-x" data-auto-close="1"
+                                                    data-keyboard="false"
                                                     data-bs-popover>
                                                 <i class="fa fa-sitemap"></i>
                                             </button>
@@ -138,16 +139,18 @@
                                 <label for="safekeepUser" class="col-md-2 control-label">保管人</label>
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <input name="workerId" class="form-control" ng-model="vmManager.workerId" placeholder="填写作业工号" ng-change="vmManager.getWorkerName()" required />
-                                        <div class="error-messages" ng-messages="formRegist.workerId.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">作业工号不能为空</small>
+                                        <input name="safekeepUser" class="form-control" readonly ng-model="vm.SafekeepUser" required />
+                                        <div class="error-messages" ng-messages="formEquipment.safekeepUser.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">保管人不能为空</small>
                                         </div>
-                                        <div class="input-group-addon">
-                                            <label>{{vm.SafekeepUser}}</label>
-                                            <input name="safekeepUser" class="form-control" ng-model="vm.SafekeepUser" ng-show="false" required />
-                                            <div class="error-messages" ng-messages="formEquipment.safekeepUser.$error" ng-show="operate.showValidation">
-                                                <small ng-message="required">保管人不能为空</small>
-                                            </div>
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-primary" style="margin-bottom:6px;"
+                                                    data-title="选择人员信息"
+                                                    data-template-url="@Url.Action("WorkerSelectTpl", "CommonTpl")"
+                                                    data-animation="am-flip-x" data-auto-close="1"
+                                                    data-bs-popover>
+                                                <i class="fa fa-users"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

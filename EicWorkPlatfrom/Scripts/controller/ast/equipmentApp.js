@@ -79,20 +79,24 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         var url = astUrlPrefix + "GetAstInputConfigDatas";
         return ajaxService.getData(url, {});
     };
-  
-
-    //获取作业人员信息
-    ast.getWorkersInfo = function (vm, searchMode) {
-        var url = archiveCtrl + "GetWorkersInfo";
+    //获取设备编号
+    ast.getEquipmentID = function (equipmentType, assetType, taxType)
+    {
+        var url = astUrlPrefix + 'GetEquipmentID';
         return ajaxService.getData(url, {
-            workerId: vm.workerId,
-            registedDateStart: vm.registedDateStart,
-            registedDateEnd: vm.registedDateEnd,
-            searchMode: searchMode
+            equipmentType: equipmentType,
+            assetType: assetType,
+            taxType: taxType,
         });
     };
-
-  
+    //保存设备档案记录
+    ast.saveEquipmentRecord = function (equipment)
+    {
+        var url = astUrlPrefix + 'SaveEquipmentRecord';
+        return ajaxService.postData(url, {
+            equipment: equipment,
+        });
+    };
     return ast;
 })
 
@@ -122,7 +126,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     });
 })
 
-.controller('astArchiveInputCtrl', function ($scope, dataDicConfigTreeSet,astDataopService) {
+.controller('astArchiveInputCtrl', function ($scope, dataDicConfigTreeSet,connDataOpService, astDataopService,$popover) {
     ///设备档案模型
     var uiVM = {
         AssetNumber: null,
@@ -168,21 +172,69 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.vm = uiVM;
 
     var vmManager = {
+        inti: function () {
+            leeHelper.clearVM(uiVM);
+            uiVM.OpSign = 'add';
+            vmManager.canEdit = false;
+        },
+        canEdit: false,
         equTypes: [{ id: 0, text: '量测设备' }, { id: 1, text: '生产设备' }],
         taxTypes: [{ id: 0, text: '保税' }, { id: 1, text: '非保税' }],
         assetTypes: [{ id: 0, text: '固定资产' }, { id: 1, text: '低质易耗品' }],
         equUnits: [{ id: 0, text: '台' }, { id: 1, text: '个' }],
         departments: [],
+        equipments:[],
         workerId: '',
-        getEquipmentID: function () {
-            uiVM.AssetNumber = uiVM.TaxType;
-            //alert("1230");
+        searchedWorkers:[],
+        getAstId: function () {
+            astDataopService.getEquipmentID(uiVM.EquipmentType, uiVM.AssetType, uiVM.TaxType).then(function (data) {
+                uiVM.AssetNumber = data;
+            });
         },
-        getWorkerName: function () { },
-
+        showDepartmentPopover: function () {
+           
+        },
+        getWorkerInfo: function () {
+            $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(vmManager.workerId).then(function (datas) {
+                vmManager.searchedWorkers = leeHelper.getWorkersAboutChangedDepartment(datas, vmManager.departments);
+            });
+        },
+        selectWorker: function (worker)
+        {
+            uiVM.SafekeepUser = worker.Name;
+        }
     };
     $scope.vmManager = vmManager;
 
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    //存储
+    operate.saveAll = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            astDataopService.saveEquipmentRecord(uiVM).then(function (opresult) {
+                    leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                        var equipment = _.clone(uiVM);
+                        equipment.Id_Key = opresult.Id_Key;
+                        if (equipment.OpSign === 'add') {
+                            vmManager.equipments.push(equipment)
+                        }
+                        else if (equipment.OpSign == 'edit') {
+                            var current = _.find(vmManager.equipments, { AssetNumber: equipment.AssetNumber });
+                            if (current !== undefined)
+                                leeHelper.copyVm(equipment, current);
+                        }
+                        vmManager.inti();
+                    });
+            });
+        })
+    }
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.inti();
+        });
+    }
+
+    
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);
