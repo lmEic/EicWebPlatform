@@ -38,5 +38,6 @@ namespace Lm.Eic.App.Erp.Bussiness.PurchaseManage
               return OBulider.BuildInstance<StockDb>();
           }
       }
+
     }
 }

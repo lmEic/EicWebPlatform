@@ -38,5 +38,31 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
         }
     }
 
+
+    /// <summary>
+    /// 抽样不合格产品记录
+    /// </summary>
+    public class SampleProductNgRecordMapping : EntityTypeConfiguration<ProductNgRecordModel>
+    {
+        public SampleProductNgRecordMapping()
+        {
+            this.HasKey(t => t.Id_key);
+            this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("QCMS_IQCSampleRecordNGTable");
+        }
+    }
+
+    /// <summary>
+    /// 设置物料抽测项次
+    /// </summary>
+    public class SetMaterialSampleItemMapping : EntityTypeConfiguration<MaterialSampleSet>
+    {
+        public SetMaterialSampleItemMapping()
+        {
+            this.HasKey(t => t.Id_key );
+            this.Property(t => t.Id_key ).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("QCMS_MaterialSampleSet");
+        }
+    }
   
 }

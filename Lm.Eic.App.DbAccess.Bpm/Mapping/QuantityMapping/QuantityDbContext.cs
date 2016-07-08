@@ -10,7 +10,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
 {
   public  class QuantityDbContext:DbContext 
     {
-      public QuantityDbContext(string connectionstring= "QuantityConnecting")
+      public QuantityDbContext(string connectionstring = "QuantityDbContext")
       {
           Database.SetInitializer<QuantityDbContext>(null);
       }

@@ -3,18 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep;
+using Lm.Eic.App.Erp.Bussiness.QuantityManage;
+using Lm.Eic.App.Erp.Domain .QuantityModel;
 
 namespace Lm.Eic.App.Business.Bmp.Quantity
 {
-   
-   public  class SampleManager
-   {
-      
-   }
+    public class IQCSampleItemsRecordManager
+    {
+        IIQCSampleItemRecordReposity irep = null;
+        public IQCSampleItemsRecordManager ()
+        {
+            irep = new IQCSampleItemRecordReposity();
+        }
+        public  List<IQCSampleItemRecordModel> GetSamplePrintItemBy(string orderid)
+        {
+            //return irep .Entities .Where (e=>e.OrderID ==orderid ).ToList ();
+            return irep.FindAll<IQCSampleItemRecordModel>(e => e.OrderID == orderid).ToList();
+        }
+
+        public List<MaterialModel> GetPuroductSupplierInfo(string orderid)
+        {
+            return   QuantityDBManager.QuantityPurchseDb.FindMaterialBy("591-1607032");
+        }
+    }
+  
+
+
+
    /// <summary>
-   ///抽验对像
+   ///抽验查询对像
    /// </summary>
-    public class SampleProduct
+   public class SampleQueries
     {
         #region
         /// <summary>
