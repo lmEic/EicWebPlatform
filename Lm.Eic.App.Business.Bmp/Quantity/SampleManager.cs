@@ -56,7 +56,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             return   QuantityDBManager.QuantityPurchseDb.FindMaterialBy(orderid);
         }
 
-     
+        
         /// <summary>
         ///  IQC 导出Excel 数据流
         /// </summary>
@@ -123,7 +123,10 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 throw new Exception(ex.ToString());
             }
         }
-          /// <summary>
+
+
+        #region    ExportToExcelPrintOP
+        /// <summary>
           /// 处理每个类型的格式
           /// </summary>
           /// <param name="cellSytleDate"></param>
@@ -444,9 +447,23 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             fCellStyle.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Right;//水平对齐 靠左
             cell.CellStyle = fCellStyle;
         }
+
+        #endregion
+
     }
   
-
+    public class MaterialSampleItemManager
+    {
+        IMaterialSampleSetReposity irep = null;
+        public MaterialSampleItemManager ()
+        {
+            irep = new MaterialSampleSetReposity();
+        }
+        public List<MaterialSampleSet> GetMaterilalSample()
+        {
+            return null;
+        }
+    }
 
 
    /// <summary>
