@@ -134,6 +134,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             switch (type.ToString())
             {
+
                 case "System.String"://字符串类型
                     cellContent.SetCellValue(value.ToString());
                     break;
