@@ -208,20 +208,17 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="list-group-item">
-                            <ul class="nav nav-pills">
-                                <li ng-repeat="role in vmManager.roles track by $index">
-                                    <div class="well well-sm">
-                                        <span class="label label-primary" style="cursor:pointer"
-                                              ng-click="vmManager.selectRole(role)">{{role.RoleId}}</span>
-                                        <br />
-                                        <span data-title="角色等级{{role.RoleLevel}}" data-bs-tooltip>
-                                            <i class="fa fa-user"></i>
-                                            {{role.RoleName}}
-                                        </span>
-                                    </div>
-                                </li>
-                            </ul>
+                        <li class="list-group-item" ng-click="vmManager.selectEquipment(item)" 
+                            data-title="设备型号:{{item.EquipmentSpec}}" data-bs-tooltip
+                            ng-repeat="item in vmManager.equipments track by $index">
+                            编号：
+                            <span class="label label-success" style="cursor:pointer">{{item.AssetNumber}}</span>
+                            -----
+                            名称：
+                            <span> 
+                                <i class="fa fa-envelope-o"></i>
+                                {{item.EquipmentName}}
+                            </span>
                         </li>
                     </ul>
                 </div>

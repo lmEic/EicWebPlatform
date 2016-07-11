@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 
 namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
 {
@@ -107,7 +110,46 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
             }
             return r;
         }
-
+        /// <summary>
+        /// 扩展方法：把字符串转换为字节类型
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static byte toByte(this string text)
+        {
+            if (text.Length == 0) text = "";
+            return Convert.ToByte(text);
+        }
+        /// <summary>
+        /// 将图片转换为字节数组
+        /// </summary>
+        /// <param name="img">图片</param>
+        /// <returns></returns>
+        public static byte[] toByte(this Image img)
+        {
+            if (img == null) return null;
+            Bitmap map = new Bitmap(img);
+            MemoryStream ms = new MemoryStream();
+            map.Save(ms, ImageFormat.Jpeg);
+            ms.Position = 0;
+            byte[] mybite = new byte[int.Parse(ms.Length.ToString())];
+            ms.Read(mybite, 0, int.Parse(ms.Length.ToString()));
+            ms.Close();
+            ms.Dispose();
+            return mybite;
+        }
+        /// <summary>
+        /// 将字节数组转换为图像
+        /// </summary>
+        /// <param name="mybite">字节数组</param>
+        /// <returns></returns>
+        public static Image toImage(this byte[] mybite)
+        {
+            if (mybite == null) return null;
+            MemoryStream ms = new MemoryStream(mybite);
+            Image img = Image.FromStream(ms);
+            return img;
+        }
         /// <summary>
         /// 获取给定日期所在当年的周数
         /// </summary>

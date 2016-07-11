@@ -1,5 +1,6 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
+/// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
 angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
 
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
@@ -56,6 +57,14 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     var hr={};
     var archiveCtrl = "/HrArchivesManage/";
     var attendUrl = "/HrAttendanceManage/";
+
+    hr.getWorkerCardImages = function ()
+    {
+        var url = archiveCtrl + 'GetWorkerCardImages';
+        return ajaxService.getData(url, {
+        });
+    };
+
     ///获取身份证信息
     hr.getIdentityInfoBy = function (lastSixIdWord) {
         var url = archiveCtrl + "GetIdentityInfoBy";
@@ -1069,18 +1078,25 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     };
     $scope.vm = uiVM;
 
-    //{ WorkerId: '001359', Name: '万晓桥', Department: '企业讯息中心',PostNature:'直接' },
-    //    { WorkerId: '001359', Name: '杨垒', Department: '企业讯息中心', PostNature: '直接' },
-    //    { WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '间接' },
-    //    { WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
-    //    { WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
-    //    { WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '间接' },
-    //    { WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
-    //    { WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
-    //    { WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
-    //    { WorkerId: '002295', Name: '孙晓华', Department: '企业讯息中心', PostNature: '直接' }
+    
     var vmManager = {
-        dataSet: [],
+        dataSet: [
+        //    { WorkerId: '001359', Name: '万晓桥', Department: '企业讯息中心', PostNature: '直接' },
+        //{ WorkerId: '001359', Name: '杨垒', Department: '企业讯息中心', PostNature: '直接' },
+        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '间接' },
+        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
+        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
+        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '间接' },
+        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
+        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
+        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
+        //{ WorkerId: '002295', Name: '孙晓华', Department: '企业讯息中心', PostNature: '直接' },
+        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '间接' },
+        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
+        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
+        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
+        //{ WorkerId: '002295', Name: '孙晓华', Department: '企业讯息中心', PostNature: '直接' }
+        ],
         workerId:null,
         searchDatasBy: function (mode) {
             uiVM.workerId = vmManager.workerId;
@@ -1106,10 +1122,26 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         getCardImgBg: function (item) {
             var url = (item.PostNature === "直接") ? "../../Content/image/DirectCardTemplate.jpg" : "../../Content/image/IndirectCardTemplate.jpg";
             return url;
-        }
-
+        },
     };
     $scope.vmManager = vmManager;
+
+
+    $scope.printCard = function () {
+        hrDataOpService.getWorkerCardImages().then(function (data) {
+            var dd = {
+                content: [
+
+                    	{
+                            image:data,
+                    	    width: 200
+                    	},
+                    'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines'
+                ]
+            }
+            pdfMake.createPdf(dd).open();
+        })
+    }
 })
 //-----------考勤业务管理-----------------------
 //班别设置管理

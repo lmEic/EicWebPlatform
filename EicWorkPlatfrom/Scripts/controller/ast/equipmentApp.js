@@ -191,9 +191,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                 uiVM.AssetNumber = data;
             });
         },
-        showDepartmentPopover: function () {
-           
-        },
         getWorkerInfo: function () {
             $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(vmManager.workerId).then(function (datas) {
                 vmManager.searchedWorkers = leeHelper.getWorkersAboutChangedDepartment(datas, vmManager.departments);
@@ -202,7 +199,13 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         selectWorker: function (worker)
         {
             uiVM.SafekeepUser = worker.Name;
-        }
+        },
+        selectEquipment: function (item) {
+            vmManager.canEdit = true;
+            uiVM = _.clone(item);
+            uiVM.OpSign = 'edit';
+            $scope.vm = uiVM;
+        },
     };
     $scope.vmManager = vmManager;
 

@@ -300,6 +300,11 @@
     <Content Include="Content\login\login.css" />
     <Content Include="Content\login\profilepicture.jpg" />
     <Content Include="Content\main.css" />
+    <Content Include="Content\pdfmaker\pdfmake.js" />
+    <Content Include="Content\pdfmaker\pdfmake.min.js" />
+    <Content Include="Content\pdfmaker\vfs_fonts.js" />
+    <Content Include="Content\print\print.min.css" />
+    <Content Include="Content\print\print.min.js" />
     <Content Include="Content\underscore\underscore-min.js" />
     <Content Include="Content\underscore\underscore.js" />
     <Content Include="Content\ztree\dist\css\zTreeStyle\img\diy\1_close.png" />
@@ -434,6 +439,7 @@
     <Content Include="Content\bootwatch\variables.less" />
     <Content Include="Content\bootwatch\_bootswatch.scss" />
     <Content Include="Content\bootwatch\_variables.scss" />
+    <Content Include="Content\pdfmaker\pdfmake.min.js.map" />
     <None Include="Properties\PublishProfiles\eicApp.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
