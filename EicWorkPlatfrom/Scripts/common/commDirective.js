@@ -6,7 +6,8 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         templateUrl:'/CommonTpl/MonthButtonTpl', 
         replace: false,
         scope: {
-           yearmonth:'='//年月属性
+            yearmonth: '=',//年月属性
+            titleVisible:'='//是否显示标题
         },
         link: function (scope, element, attrs) {
             scope.months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
@@ -663,49 +664,27 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
     };
     ///根据树模块键值获取配置数据
     conn.getConfigDicData = function (treeModuleKey) {
-        var defer = $q.defer();
         var url = urlPrefix.configManage + "GetConfigDicData";
-        $http.get(url, {
-            params: {
-                treeModuleKey: treeModuleKey,
-            }
-        }).success(function (datas) {
-            defer.resolve(datas);
-        }).error(function (errdata) {
-            defer.reject(errdata);
+        return ajaxService.getData(url, {
+            treeModuleKey: treeModuleKey,
         });
-        return defer.promise;
     };
     ///根据模块名称与所属类别载入配置数据
     conn.loadConfigDicData = function (moduleName, aboutCategory) {
-        var defer = $q.defer();
         var url = urlPrefix.configManage + "LoadConfigDicData";
-        $http.get(url, {
-            params: {
-                moduleName: moduleName,
-                aboutCategory: aboutCategory,
-            }
-        }).success(function (datas) {
-            defer.resolve(datas);
-        }).error(function (errdata) {
-            defer.reject(errdata);
+        return ajaxService.getData(url, {
+            moduleName: moduleName,
+            aboutCategory: aboutCategory,
         });
-        return defer.promise;
     };
     ///根据树的键值载入配置数据
     conn.saveConfigDicData = function (vm, oldVm, opType) {
-        var defer = $q.defer();
         var url = urlPrefix.configManage + "SaveConfigDicData";
-        $http.post(url, {
+        return ajaxService.postData(url, {
             opType: opType,
             model: vm,
             oldModel: oldVm
-        }).success(function (data) {
-            defer.resolve(data);
-        }).error(function (errdata) {
-            defer.reject(errdata);
         });
-        return defer.promise;
     };
     return conn;
 })

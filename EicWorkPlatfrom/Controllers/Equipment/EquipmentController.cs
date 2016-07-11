@@ -9,6 +9,11 @@ using Lm.Eic.App.Business.Bmp.Ast;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 
 
+using Lm.Eic.App.Business.Bmp.Quantity;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
+
+
+
 namespace EicWorkPlatfrom.Controllers
 {
     public class EquipmentController : EicBaseController
@@ -47,29 +52,21 @@ namespace EicWorkPlatfrom.Controllers
             string id = AstService.EquipmentManager.BuildAssetNumber(equipmentType, assetType, taxType);
             return Json(id, JsonRequestBehavior.AllowGet);
         }
-        //[NoAuthenCheck]
-        //public JsonResult SaveEquipmentRecord(EquipmentModel equipment)
-        //{
-        //    var result=AstService.EquipmentManager.Store()
-        //    return Json(d);
-        //}
+        [NoAuthenCheck]
+        public JsonResult SaveEquipmentRecord(EquipmentModel equipment)
+        {
+            var result = AstService.EquipmentManager.Store(equipment);
+            return Json(result);
+        }
 
         [NoAuthenCheck]
         public FileResult ExportToExcel()
         {
-            List<DDD> datas = new List<DDD>() { 
-               new DDD(){ Name="aaa", Age =20},
-               new DDD(){ Name="bbb", Age =25},
-            };
+            var ds=QuantityService.IQCSampleItemsRecordManager.GetSamplePrintItemBy("591-1607032");
 
-            return this.ExportToExcel<DDD>(datas, "aaa", "AAA");
+            var ms= QuantityService.IQCSampleItemsRecordManager.ExportPrintToExcel(ds, "SmapleDatas");
+
+            return this.ExportToExcel(ms, "aaa", "AAA");
         }
-    }
-
-    public class DDD
-    {
-        public string Name { get; set; }
-
-        public int Age { get; set; }
     }
 }

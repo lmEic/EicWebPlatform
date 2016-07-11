@@ -40,7 +40,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 assetNumber_5_7 = string.Empty;
             try
             {
-                if (assetType == "低值易耗")
+                if (assetType == "低值易耗品")
                 {
                     assetNumber_1 = "Z";
                 }
@@ -81,17 +81,17 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 {
                     case OpMode.Add: //新增
                         record = 0;
-                        listModel.ForEach(model =>{ record += irep.Insert(model); });
+                        listModel.ForEach(model => { record += irep.Insert(model); });
                         return OpResult.SetResult("添加成功！", "添加失败！", record);
 
                     case OpMode.Edit: //修改
                         record = 0;
-                        listModel.ForEach(model =>{ record += irep.Update(u => u.Id_Key == model.Id_Key, model); });
+                        listModel.ForEach(model => { record += irep.Update(u => u.Id_Key == model.Id_Key, model); });
                         return OpResult.SetResult("更新成功！", "更新失败！", record);
 
                     case OpMode.Delete: //删除
                         record = 0;
-                        listModel.ForEach(model => {record += irep.Delete(model.Id_Key); });
+                        listModel.ForEach(model => { record += irep.Delete(model.Id_Key); });
                         return OpResult.SetResult("删除成功！", "删除失败！", record);
 
                     default: return OpResult.SetResult("操作模式溢出！", false);
@@ -116,7 +116,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 switch (model.OpSign)
                 {
                     case OpMode.Add: //新增
-                        return OpResult.SetResult("增加设备成功", irep.Insert(model) > 0,model.Id_Key);
+                        return OpResult.SetResult("增加设备成功", irep.Insert(model) > 0, model.Id_Key);
 
                     case OpMode.Edit: //修改
                         return OpResult.SetResult("修改设备成功", irep.Update(u => u.Id_Key == model.Id_Key, model) > 0);
@@ -132,7 +132,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 throw new Exception(ex.InnerException.Message);
             }
         }
-
         /// <summary>
         /// 查询
         /// </summary>

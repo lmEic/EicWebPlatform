@@ -23,8 +23,6 @@ namespace Lm.Eic.App.Business.Mes.Optical.Authen
 
         #endregion constructure
 
-
-
         #region method
 
         public List<WorkerCell> GetWorkers()

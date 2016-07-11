@@ -9,7 +9,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 {
     public class EquipmentCheckManager
     {
-      
+
         private IEquipmentCheckRepository irep = null;
         private EquipmentManager equipmentManager = null;
 
@@ -65,13 +65,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 switch (model.OpSign)
                 {
                     case OpMode.Add: //新增
-                            return AddEquipmentCheckRecord(model, equipment);
+                        return AddEquipmentCheckRecord(model, equipment);
 
                     case OpMode.Edit: //修改
-                            return EditEquipmentCheckRecord(model, equipment);
+                        return EditEquipmentCheckRecord(model, equipment);
 
                     case OpMode.Delete: //删除
-                            return DeleteEquipmentCheckRecord(model, equipment);
+                        return DeleteEquipmentCheckRecord(model, equipment);
 
                     default: return OpResult.SetResult("操作模式溢出", false);
                 }
