@@ -12,24 +12,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         { }
 
         #region Model
-        private string _opperson;
-        /// <summary>
-        ///操作人
-        /// </summary>
-        public string OpPerson
-        {
-            set { _opperson = value; }
-            get { return _opperson; }
-        }
-        private string _opsign;
-        /// <summary>
-        ///操作标志
-        /// </summary>
-        public string OpSign
-        {
-            set { _opsign = value; }
-            get { return _opsign; }
-        }
         private string _assetnumber;
         /// <summary>
         ///财产编号
@@ -102,6 +84,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _id_key = value; }
             get { return _id_key; }
         }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标志
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        #endregion Model
     }
-    #endregion Model
 }
