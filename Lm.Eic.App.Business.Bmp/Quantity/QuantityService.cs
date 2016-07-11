@@ -11,7 +11,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
     {
       public static  IQCSampleItemsRecordManager IQCSampleItemsRecordManager
       {
-           //怎么没有签入
           get { return OBulider.BuildInstance<IQCSampleItemsRecordManager>(); }
       }
 
