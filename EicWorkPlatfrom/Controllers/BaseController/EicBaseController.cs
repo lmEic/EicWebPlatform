@@ -204,6 +204,18 @@ namespace EicWorkPlatfrom.Controllers
             ms.Seek(0, SeekOrigin.Begin);
             return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
         }
+        /// <summary>
+        /// 导出数据到Excel文件中
+        /// </summary>
+        /// <param name="ms">文件流</param>
+        /// <param name="xlsSheetName">Sheet表名称</param>
+        /// <param name="xlsFileName">Excel文件名称,包括扩展名</param>
+        /// <returns></returns>
+        protected FileResult ExportToExcel(MemoryStream ms, string xlsSheetName, string xlsFileName)
+        {
+            ms.Seek(0, SeekOrigin.Begin);
+            return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
+        }
 
         #endregion file operate method
     }

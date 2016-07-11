@@ -249,4 +249,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         vmManager.departments = data.departments;
         departmentTreeSet.setTreeDataset(vmManager.departments);
     });
+
+    $scope.exportToExcel = function () {
+
+    }
 })
