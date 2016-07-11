@@ -71,11 +71,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
 
             NPOI.HSSF.UserModel.HSSFWorkbook workbook = new NPOI.HSSF.UserModel.HSSFWorkbook();
             NPOI.SS.UserModel.ISheet sheet = workbook.CreateSheet(xlsSheetName);
-            /////取日期格式
-            NPOI.SS.UserModel.ICellStyle cellSytleDate = workbook.CreateCellStyle();
-            NPOI.SS.UserModel.IDataFormat format = workbook.CreateDataFormat();
-            cellSytleDate.DataFormat = format.GetFormat("yyyy年mm月dd日");
-
             try
             {
                 #region 填充列头区域
@@ -93,13 +88,19 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 {
                     NPOI.SS.UserModel.IRow rowContent = sheet.CreateRow(rowIndex + 1);
                     IQCSampleItemRecordModel entity = dataSource[rowIndex];
+                    // ROHS打印测试项除掉
+                    if (entity.SampleItem.Contains("ROHS"))
+                    { continue; }
+                  
                     Type tentity = entity.GetType();
                     System.Reflection.PropertyInfo[] tpis = tentity.GetProperties();
               
                     ///每一项每一列赋值 
                     for (int colIndex = 0; colIndex < tpis.Length - ValueStartIndex; colIndex++)
                     {
+                        /// 单元格的行
                         NPOI.SS.UserModel.IRow Row = sheet.CreateRow(colIndex);
+                        //  单元格的列
                         NPOI.SS.UserModel.ICell cellContent = Row.CreateCell(StartColumnIndex);
                         // 从第ValueStartIndex 起始列开始取值 
                         object value = tpis[colIndex + ValueStartIndex].GetValue(entity, null);
