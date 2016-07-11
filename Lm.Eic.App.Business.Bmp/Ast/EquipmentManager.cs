@@ -132,7 +132,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 throw new Exception(ex.InnerException.Message);
             }
         }
-
         /// <summary>
         /// 查询
         /// </summary>

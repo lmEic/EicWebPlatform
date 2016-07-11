@@ -10,6 +10,7 @@
                 <div class="well">
                     <form role="form" name="formEquipment" novalidate class="form-horizontal">
                         <fieldset>
+                            <legend>基本信息</legend>
                             <div class="form-group">
                                 <label for="equipmentType" class="col-md-2 control-label">设备类别</label>
                                 <div class="col-md-4">
@@ -88,7 +89,7 @@
                                 <label for="unit" class="col-md-2 control-label">单位</label>
                                 <div class="col-md-4">
                                     <button type="button" class="btn btn-default" ng-model="vm.Unit" data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="请选择单位"
+                                            data-animation="am-flip-x" data-placeholder="台"
                                             bs-options="item.text as item.text for item in vmManager.equUnits" bs-select>
                                         <span class="caret"></span>
                                     </button>
@@ -106,6 +107,34 @@
                                     <div class="error-messages" ng-messages="formEquipment.deliveryDate.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">购入日期不能为空</small>
                                     </div>
+                                </div>
+                                <label for="addMode" class="col-md-2 control-label">增加方式</label>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-default" ng-model="vm.AddMode" data-html="1" data-multiple="0"
+                                            data-animation="am-flip-x" data-placeholder="外购"
+                                            bs-options="item.text as item.text for item in vmManager.addModes" bs-select>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <input name="addMode" class="form-control" ng-model="vm.AddMode" ng-show="false" required />
+                                    <div class="error-messages" ng-messages="formEquipment.addMode.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">增加方式不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="serviceLife" class="col-md-2 control-label">使用寿命</label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input name="serviceLife" type="number" class="form-control" ng-model="vm.ServiceLife" required />
+                                        <div class="error-messages" ng-messages="formEquipment.serviceLife.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">使用寿命不能为空</small>
+                                        </div>
+                                        <div class="input-group-addon">
+                                            <label class="label label-primary">年</label>
+                                        </div>
+                                    </div>
+                                   
                                 </div>
                                 <label for="manufacturer" class="col-md-2 control-label">生产厂家</label>
                                 <div class="col-md-4">
@@ -170,20 +199,85 @@
                                     <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.FunctionDescription" />
                                 </div>
                             </div>
-
+                        </fieldset>
+                        <fieldset>
+                            <legend>校验信息</legend>
                             <div class="form-group">
-                                <div class="col-md-10 col-lg-offset-2">
-                                    <div class="alert alert-info">
-                                        <button class="btn btn-primary" ng-click="operate.saveAll(formEquipment.$valid)"><i class="fa fa-save"></i>保存</button>
-                                        <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
-                                        <span ng-class="operate.result==true ? 'alert alert-success':'alert alert-danger'" ng-show="operate.msgDisplay">
-                                            <i class="fa fa-info-circle"></i>
-                                            {{operate.message}}
-                                        </span>
+                                <label for="checkDate" class="col-md-2 control-label">校验日期</label>
+                                <div class="col-md-4">
+                                    <input name="CheckDate" class="form-control"  type="date" ng-model="vm.CheckDate" required />
+                                    <div class="error-messages" ng-messages="formEquipment.checkDate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">校验日期不能为空</small>
+                                    </div>
+                                </div>
+
+                                <label for="checkInterval" class="col-md-2 control-label">校验周期</label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input name="checkInterval" type="number" class="form-control" ng-model="vm.CheckInterval" required />
+                                        <div class="error-messages" ng-messages="formEquipment.checkInterval.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">校验间隔不能为空</small>
+                                        </div>
+                                        <div class="input-group-addon">
+                                            <label class="label label-primary">月</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="addMode" class="col-md-2 control-label">校验类别</label>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-default" ng-model="vm.CheckType" data-html="1" data-multiple="0"
+                                            data-animation="am-flip-x" data-placeholder="选择校验类别"
+                                            bs-options="item.text as item.text for item in vmManager.checkTypes" bs-select>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <input name="checkType" class="form-control" ng-model="vm.CheckType" ng-show="false" required />
+                                    <div class="error-messages" ng-messages="formEquipment.checkType.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">校验类别不能为空</small>
                                     </div>
                                 </div>
                             </div>
                         </fieldset>
+                        <fieldset>
+                            <legend>保养信息</legend>
+                            <div class="form-group">
+                                <label for="maintenanceDate" class="col-md-2 control-label">保养日期</label>
+                                <div class="col-md-4">
+                                    <input name="maintenanceDate" type="date" class="form-control" ng-model="vm.MaintenanceDate" required />
+                                    <div class="error-messages" ng-messages="formEquipment.maintenanceDate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">保养日期不能为空</small>
+                                    </div>
+                                </div>
+
+                                <label for="maintenanceInterval" class="col-md-2 control-label">保养周期</label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input name="maintenanceInterval" type="number" class="form-control" ng-model="vm.MaintenanceInterval" required />
+                                        <div class="error-messages" ng-messages="formEquipment.maintenanceInterval.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">保养周期不能为空</small>
+                                        </div>
+                                        <div class="input-group-addon">
+                                            <label class="label label-primary">月</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="alert alert-info">
+                                    <button class="btn btn-primary pull-right" ng-click="operate.saveAll(formEquipment.$valid)"><i class="fa fa-save"></i>保存</button>
+                                    <button class="btn btn-default pull-right" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                    <span class="pull-right" ng-class="operate.result==true ? 'alert alert-success':'alert alert-danger'" ng-show="operate.msgDisplay">
+                                        <i class="fa fa-info-circle"></i>
+                                        {{operate.message}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

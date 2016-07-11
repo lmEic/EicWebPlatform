@@ -6,7 +6,8 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         templateUrl:'/CommonTpl/MonthButtonTpl', 
         replace: false,
         scope: {
-           yearmonth:'='//年月属性
+            yearmonth: '=',//年月属性
+            titleVisible:'='//是否显示标题
         },
         link: function (scope, element, attrs) {
             scope.months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];

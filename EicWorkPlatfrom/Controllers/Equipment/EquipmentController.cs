@@ -69,11 +69,4 @@ namespace EicWorkPlatfrom.Controllers
             return this.ExportToExcel(ms, "aaa", "AAA");
         }
     }
-
-    public class DDD
-    {
-        public string Name { get; set; }
-
-        public int Age { get; set; }
-    }
 }
