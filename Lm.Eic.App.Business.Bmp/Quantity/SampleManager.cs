@@ -45,32 +45,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             return irep.Entities.Where(e => e.OrderID == Orderid & e.SampleMaterial == SampleMaterial).ToList();
         }
-
-
-        public OpResult PrintToExcel(List<IQCSampleItemRecordModel> listModel)
-        {
-            try
-            {
-                   if (listModel == null || listModel.Count <= 0)
-                    return OpResult.SetResult("集合不能为空！", false);
-
-                System.IO.MemoryStream  ms=   NPOIHelper.ExportToExcel<IQCSampleItemRecordModel>(listModel, "test_Sheet");
-
-
-
-                                                 
-
-
-                   return OpResult.SetResult("", true);
-
-              
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
-        
+     
         /// <summary>
         /// 得到抽样物料信息 （单头）
         /// </summary>
@@ -88,7 +63,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <param name="dataSource"></param>
         /// <param name="xlsSheetName"></param>
         /// <returns></returns>
-        public  System.IO.MemoryStream   ExportToExcel(List<IQCSampleItemRecordModel> dataSource, string xlsSheetName) 
+        public  System.IO.MemoryStream   ExportPrintToExcel(List<IQCSampleItemRecordModel> dataSource, string xlsSheetName) 
         {
             //数据为Null时返回数值
             System.IO.MemoryStream stream = new System.IO.MemoryStream();
@@ -111,7 +86,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 #region 填充内容区域
 
                 int StartColumnIndex = 7;
-                int GetValueStartIndex = 7;
+                int ValueStartIndex = 7;
                 
                 //数据源第一项赋值 
                 for (int rowIndex = 0; rowIndex < dataSource.Count; rowIndex++)
@@ -121,69 +96,18 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                     Type tentity = entity.GetType();
                     System.Reflection.PropertyInfo[] tpis = tentity.GetProperties();
               
-                    ///每一行赋值 
-                    for (int colIndex = 0; colIndex < tpis.Length - GetValueStartIndex; colIndex++)
+                    ///每一项每一列赋值 
+                    for (int colIndex = 0; colIndex < tpis.Length - ValueStartIndex; colIndex++)
                     {
                         NPOI.SS.UserModel.IRow Row = sheet.CreateRow(colIndex);
                         NPOI.SS.UserModel.ICell cellContent = Row.CreateCell(StartColumnIndex);
-
-
-                         // 从第行开始取值 
-                        object value = tpis[colIndex + GetValueStartIndex].GetValue(entity, null);
-
-
+                        // 从第ValueStartIndex 起始列开始取值 
+                        object value = tpis[colIndex + ValueStartIndex].GetValue(entity, null);
                         if (value == null) value = "";
                         //对不同类型的值做调整
                         Type type = value.GetType();
-                        switch (type.ToString())
-                        {
-                            case "System.String"://字符串类型
-                                cellContent.SetCellValue(value.ToString());
-                                break;
-
-                            case "System.DateTime"://日期类型
-                                DateTime dateV;
-                                DateTime.TryParse(((DateTime)value).ToString("yyyy-MM-dd HH:mm"), out dateV); 
-                                cellContent.SetCellValue(dateV);
-                                cellContent.CellStyle = cellSytleDate;//格式化显示数据
-                                break;
-
-                            case "System.Boolean"://布尔型
-                                bool boolV = false;
-                                if (bool.TryParse(value.ToString(), out boolV))
-                                    cellContent.SetCellValue(boolV);
-                                else
-                                    cellContent.SetCellValue("解析布尔型数据错误");
-                                break;
-
-                            case "System.Int16"://整型
-                            case "System.Int32":
-                            case "System.Int64":
-                            case "System.Byte":
-                                int intV = 0;
-                                if (int.TryParse(value.ToString(), out intV))
-                                    cellContent.SetCellValue(intV);
-                                else
-                                    cellContent.SetCellValue("解析整型数据错误");
-                                break;
-
-                            case "System.Decimal"://浮点型
-                            case "System.Double":
-                                double doubV = 0;
-                                if (double.TryParse(value.ToString(), out doubV))
-                                    cellContent.SetCellValue(doubV);
-                                else
-                                    cellContent.SetCellValue("解析浮点型或双精度型数据错误");
-                                break;
-
-                            case "System.DBNull"://空值处理
-                                cellContent.SetCellValue("");
-                                break;
-
-                            default:
-                                cellContent.SetCellValue("");
-                                break;
-                        }
+                        //对不同类型的值处理赋值
+                        OperationSetCellvalue(cellContent, value, type);
                     }
                 }
 
@@ -198,8 +122,103 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 throw new Exception(ex.ToString());
             }
         }
+          /// <summary>
+          /// 处理每个类型的格式
+          /// </summary>
+          /// <param name="cellSytleDate"></param>
+          /// <param name="cellContent"></param>
+          /// <param name="value"></param>
+          /// <param name="type"></param>
+        private  void OperationSetCellvalue( NPOI.SS.UserModel.ICell cellContent, object value, Type type)
+        {
+            switch (type.ToString())
+            {
+                case "System.String"://字符串类型
+                    cellContent.SetCellValue(value.ToString());
+                    break;
+
+                case "System.DateTime"://日期类型
+                    DateTime dateV;
+                    DateTime.TryParse(((DateTime)value).ToString("yyyy-MM-dd HH:mm"), out dateV);
+                    cellContent.SetCellValue(dateV);
+                    break;
+
+                case "System.Boolean"://布尔型
+                    bool boolV = false;
+                    if (bool.TryParse(value.ToString(), out boolV))
+                        cellContent.SetCellValue(boolV);
+                    else
+                        cellContent.SetCellValue("解析布尔型数据错误");
+                    break;
+
+                case "System.Int16"://整型
+                    Int16 Int16V = 0;
+                    if (Int16.TryParse(value.ToString(), out Int16V))
+                        cellContent.SetCellValue(Int16V);
+                    else
+                        cellContent.SetCellValue("解析16位数据型错误");
+                    break;
+                case "System.Int32":
+                    Int32 Int32V = 0;
+                    if (Int32.TryParse(value.ToString(), out Int32V))
+                        cellContent.SetCellValue(Int32V);
+                    else
+                        cellContent.SetCellValue("解析32位数据型错误");
+                    break;
+                case "System.Int64":
+                    Int64 Int64V = 0;
+                    if (Int64.TryParse(value.ToString(), out Int64V))
+                        cellContent.SetCellValue(Int64V);
+                    else
+                        cellContent.SetCellValue("解析64位数据型错误");
+                    break;
+                case "System.Byte":
+                    int intV = 0;
+                    if (int.TryParse(value.ToString(), out intV))
+                        cellContent.SetCellValue(intV);
+                    else
+                        cellContent.SetCellValue("解析整型数据错误");
+                    break;
+
+                case "System.Decimal"://浮点型
+                    double DecimalV = 0;
+                    if (double.TryParse(value.ToString(), out DecimalV))
+                    {
+                        Math.Round(DecimalV, 2);
+                        cellContent.SetCellValue(DecimalV);
+                    }
+                    else
+                        cellContent.SetCellValue("解析浮点型数据错误");
+                    break;
+                case "System.Double":
+                    double doubV = 0;
+                    if (double.TryParse(value.ToString(), out doubV))
+                    {
+                        Math.Round(doubV, 2);
+                        cellContent.SetCellValue(doubV);
+                    }
+                    else
+                        cellContent.SetCellValue("解析浮点型或双精度型数据错误");
+                    break;
+
+                case "System.DBNull"://空值处理
+                    cellContent.SetCellValue("");
+                    break;
+
+                default:
+                    cellContent.SetCellValue("");
+                    break;
+            }
+        }
 
 
+        private NPOI.SS.UserModel.ICellStyle OpDateSytle(NPOI.HSSF.UserModel.HSSFWorkbook workbook)
+        {  
+            NPOI.SS.UserModel.ICellStyle cellSytleDate = workbook.CreateCellStyle();
+            NPOI.SS.UserModel.IDataFormat format = workbook.CreateDataFormat();
+            cellSytleDate.DataFormat = format.GetFormat("yyyy年mm月dd日");
+            return cellSytleDate;
+        }
 
 
 
@@ -369,33 +388,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         }
        
         
-        public void testEXcelNPOI()
-        {
-            NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
-            NPOI.SS.UserModel.ISheet sheet = book.CreateSheet("test_01");
-
-            // 第一列
-            NPOI.SS.UserModel.IRow row = sheet.CreateRow(0);
-            row.CreateCell(0).SetCellValue("第一列第一行");
-
-            // 第二列
-            NPOI.SS.UserModel.IRow row2 = sheet.CreateRow(1);
-            row2.CreateCell(0).SetCellValue("第二列第一行");
-           
-           
-
-
-        
-
-            // 写入到客户端  
-            System.IO.MemoryStream ms = new System.IO.MemoryStream();
-            book.Write(ms);
-            //System.Web.HttpContext.Current.Response.AddHeader("Content-Disposition", string.Format("attachment; filename={0}.xls", DateTime.Now.ToString("yyyyMMddHHmmssfff")));
-            //System.Web.HttpContext.Current.Response.BinaryWrite(ms.ToArray());
-            book = null;
-            ms.Close();
-            ms.Dispose();
-        }
+       
 
 
         /// <summary>
