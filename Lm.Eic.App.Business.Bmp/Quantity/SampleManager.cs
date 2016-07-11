@@ -82,7 +82,12 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         }
 
      
-      
+        /// <summary>
+        ///  IQC 导出Excel 数据流
+        /// </summary>
+        /// <param name="dataSource"></param>
+        /// <param name="xlsSheetName"></param>
+        /// <returns></returns>
         public  System.IO.MemoryStream   ExportToExcel(List<IQCSampleItemRecordModel> dataSource, string xlsSheetName) 
         {
             //数据为Null时返回数值
@@ -128,6 +133,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
 
 
                         if (value == null) value = "";
+                        //对不同类型的值做调整
                         Type type = value.GetType();
                         switch (type.ToString())
                         {

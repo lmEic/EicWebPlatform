@@ -196,7 +196,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 		private string _samplematerialspec;
 		private string _samplematerialsupplier;
 		private string _samplematerialdrawid;
-		private decimal? _samplematerialnumber;
+		private double ? _samplematerialnumber;
 		private DateTime? _samplematerialindate;
 		private string _sampleitem;
 		private string _equipmentid;
@@ -207,9 +207,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 		private string _sizespec;
 		private string _sizespecup;
 		private string _sizespecdown;
-		private decimal? _acceptgradenumber;
-		private decimal? _checknumber;
-		private decimal? _refusegradenumber;
+		private double ? _acceptgradenumber;
+		private double ? _checknumber;
+		private double ? _refusegradenumber;
 		private int? _printcount;
 		private decimal _id_key;
 		/// <summary>
@@ -263,7 +263,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 		/// <summary>
 		/// 
 		/// </summary>
-		public decimal? SampleMaterialNumber
+		public double ? SampleMaterialNumber
 		{
 			set{ _samplematerialnumber=value;}
 			get{return _samplematerialnumber;}
@@ -351,7 +351,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 		/// <summary>
 		/// 
 		/// </summary>
-		public decimal? AcceptGradeNumber
+		public double ? AcceptGradeNumber
 		{
 			set{ _acceptgradenumber=value;}
 			get{return _acceptgradenumber;}
@@ -359,7 +359,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 		/// <summary>
 		/// 
 		/// </summary>
-		public decimal? CheckNumber
+		public double ? CheckNumber
 		{
 			set{ _checknumber=value;}
 			get{return _checknumber;}
@@ -367,7 +367,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 		/// <summary>
 		/// 
 		/// </summary>
-		public decimal? RefuseGradeNumber
+		public double ? RefuseGradeNumber
 		{
 			set{ _refusegradenumber=value;}
 			get{return _refusegradenumber;}
@@ -405,11 +405,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         private string _samplematerialsupplier;
         private DateTime? _samplematerialindate;
         private string _samplematerialdrawid;
-        private decimal? _samplematerialnumber;
+        private double? _samplematerialnumber;
         private string _checkway;
         private int? _samplenumber;
         private int? _samplebadnumber;
-        private decimal? _sampleratio;
+        private double ? _sampleratio;
         private string _sampleresult;
         private string _badreanson;
         private string _samplepersons;
@@ -479,7 +479,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         /// 
         /// </summary>
-        public decimal? SampleMaterialNumber
+        public double ? SampleMaterialNumber
         {
             set { _samplematerialnumber = value; }
             get { return _samplematerialnumber; }
@@ -511,7 +511,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         /// 
         /// </summary>
-        public decimal? SampleRatio
+        public double? SampleRatio
         {
             set { _sampleratio = value; }
             get { return _sampleratio; }
