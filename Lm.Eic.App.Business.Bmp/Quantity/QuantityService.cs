@@ -15,5 +15,9 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
           get { return OBulider.BuildInstance<IQCSampleItemsRecordManager>(); }
       }
 
+        public  static MaterialSampleItemManager MaterialSampleItemManager
+      {
+          get { return OBulider.BuildInstance<MaterialSampleItemManager>(); }
+      }
     }
 }

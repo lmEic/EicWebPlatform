@@ -69,8 +69,14 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             //数据为Null时返回数值
             System.IO.MemoryStream stream = new System.IO.MemoryStream();
             if (dataSource == null || dataSource.Count == 0) return stream;
-            NPOI.HSSF.UserModel.HSSFWorkbook workbook = new NPOI.HSSF.UserModel.HSSFWorkbook();
-            NPOI.SS.UserModel.ISheet sheet = workbook.CreateSheet(xlsSheetName);
+            NPOI.HSSF.UserModel.HSSFWorkbook workbook = null ;
+            string fielname =  @"C:\\lmSpc\\System\\ProductSizeSpecPicture\\品保课\\IQC.xls";
+           workbook= InitializeWorkbook(fielname);
+            if (null ==workbook )
+            {
+                workbook = new NPOI.HSSF.UserModel.HSSFWorkbook();
+            }
+            NPOI.SS.UserModel.ISheet sheet = workbook.GetSheet(xlsSheetName);
             try
             {
                 #region 填充列头区域
@@ -85,15 +91,19 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                
                 int ValueStartIndex = 8;
                 int StartRowIndex =6;
+                int rowindex = 0;
                 //数据源第一项赋值 
                 for (int rowIndex = 0; rowIndex < dataSource.Count; rowIndex++)
                 {
+                    rowindex = rowIndex;
                     IQCSampleItemRecordModel entity = dataSource[rowIndex];
-                    // ROHS打印测试项除掉
-                    //if (entity.SampleItem.Contains("ROHS"))
-                    //{ continue; }
+                     //ROHS打印测试项除掉
+                    if (entity.SampleItem.Contains("ROHS"))
+                    {
+                        continue;
+                    }
 
-
+                     //确定行数
                     NPOI.SS.UserModel.IRow rowContent = sheet.CreateRow(rowIndex + StartRowIndex + 1); ; 
                   
                  
@@ -103,7 +113,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                     ///每一项每一列赋值 
                     for (int colColumnIndex = 0; colColumnIndex < tpis.Length - ValueStartIndex-1; colColumnIndex++)
                     {
-                        /// 单元格的行
+                        /// 单元格每行的列值
                         NPOI.SS.UserModel.ICell cellContent = rowContent.CreateCell(colColumnIndex);
                         // 从第ValueStartIndex 起始列开始取值 
                         object value = tpis[colColumnIndex + ValueStartIndex].GetValue(entity, null);
@@ -126,6 +136,30 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 throw new Exception(ex.ToString());
             }
         }
+
+        /// <summary>
+        /// 初始化工作簿
+        /// </summary>
+        private NPOI.HSSF.UserModel.HSSFWorkbook InitializeWorkbook(string FileName)
+        {
+            System.IO.FileStream file = new System.IO.FileStream(FileName, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+            if (null == file)
+            { return null ; }
+            NPOI.HSSF.UserModel.HSSFWorkbook hssfworkbook = new NPOI.HSSF.UserModel.HSSFWorkbook(file);
+            if (null == hssfworkbook)
+            { return hssfworkbook; }
+            //create a entry of DocumentSummaryInformation
+            NPOI.HPSF.DocumentSummaryInformation dsi = NPOI.HPSF.PropertySetFactory.CreateDocumentSummaryInformation();
+            dsi.Company = "IQCPrint";
+            hssfworkbook.DocumentSummaryInformation = dsi;
+
+            //create a entry of SummaryInformation
+            NPOI.HPSF.SummaryInformation si = NPOI.HPSF.PropertySetFactory.CreateSummaryInformation();
+            si.Subject = "IQCPrint";
+            hssfworkbook.SummaryInformation = si;
+            return hssfworkbook;
+        }
+
 
         private static Dictionary<int, NPOI.SS.UserModel.IRow> thisMyRow = new Dictionary<int, NPOI.SS.UserModel.IRow>();
         private static Dictionary<int, NPOI.SS.UserModel.ICell> thisMyCell = new Dictionary<int, NPOI.SS.UserModel.ICell>();
@@ -388,13 +422,13 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <param name="models"></param>
         private void SetISheetTitle(NPOI.SS.UserModel.ISheet ISheet, IQCSampleItemRecordModel models)
         {
-              
-            cellVaule(ISheet, 0, 0, "进料检验记录表");
-            cellVaule(ISheet, 1, 15, "打印日期：" + DateTime.Now.ToString("yyyy-MM-dd"));
+           
+            
+            cellVaule(ISheet, 1, 16, "打印日期：" + DateTime.Now.ToString("yyyy-MM-dd"));
             cellVaule(ISheet, 1, 0, "日期：");
             cellVaule(ISheet, 1, 1, DateTime .Now .Date .ToString ("yyyy-MM-dd"));
-            cellVaule(ISheet, 1, 8, "品号：" + models.SampleMaterial);
-            cellVaule(ISheet, 2, 17, "NO:" + models.OrderID);
+            cellVaule(ISheet, 1, 7, "品号：" + models.SampleMaterial);
+            cellVaule(ISheet, 2, 18, "NO:" + models.OrderID);
             cellVaule(ISheet, 3, 0, "品名：" + models.SampleMaterialName);
             cellVaule(ISheet, 3, 4, "规格：" + models.SampleMaterialSpec);
             cellVaule(ISheet, 3, 10, "数量：" + models.SampleMaterialNumber.ToString());
@@ -404,8 +438,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             cellVaule(ISheet, 4, 0, "供应商:" + models.SampleMaterialSupplier);
             cellVaule(ISheet, 4, 4, "图号/检验规范：" + models.SampleMaterialDrawID);
             cellVaule(ISheet, 4, 10, "检验方式：" + models.CheckWay);
-
-
         }
         /// <summary>
         ///  给单元格赋值

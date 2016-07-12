@@ -762,5 +762,96 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+
+
+
+    public class SamplePlanTableModel
+    {
+        public SamplePlanTableModel ()
+        {  }
+        #region Model
+        private string _checkway;
+        private string _checklevel;
+        private string _grade;
+        private string _startnumber;
+        private string _endnumber;
+        private string _checknumber;
+        private string _acceptgradenumber;
+        private string _refusegradenumber;
+        private decimal _id_key;
+        /// <summary>
+        /// 
+        /// </summary>
+        public string CheckWay
+        {
+            set { _checkway = value; }
+            get { return _checkway; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string CheckLevel
+        {
+            set { _checklevel = value; }
+            get { return _checklevel; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Grade
+        {
+            set { _grade = value; }
+            get { return _grade; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string StartNumber
+        {
+            set { _startnumber = value; }
+            get { return _startnumber; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string EndNumber
+        {
+            set { _endnumber = value; }
+            get { return _endnumber; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string CheckNumber
+        {
+            set { _checknumber = value; }
+            get { return _checknumber; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string AcceptGradeNumber
+        {
+            set { _acceptgradenumber = value; }
+            get { return _acceptgradenumber; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string RefuseGradeNumber
+        {
+            set { _refusegradenumber = value; }
+            get { return _refusegradenumber; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public decimal Id_key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
      
 }

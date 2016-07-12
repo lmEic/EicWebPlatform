@@ -13,8 +13,9 @@ namespace Lm.Eic.App.Business.BmpTests.Quantity
         {
             //var n = QuantityService.IQCSampleItemsRecordManager.GetSamplePrintItemBy("32AAP00001200RM");
             //  /// 测工单从ERP中得到物料信息
-            //int m = QuantityService .IQCSampleItemsRecordManager.GetPuroductSupplierInfo("591-1607032").Count;
+            var m= QuantityService .IQCSampleItemsRecordManager.GetPuroductSupplierInfo("591-1607032");
             var mm = QuantityService.IQCSampleItemsRecordManager.GetPringSampleItemBy("591-1607032", "32AAP00001200RM");
+            var ms = QuantityService.MaterialSampleItemManager.GetMaterilalSampleItem("32AAP00001200RM");
            System.IO.MemoryStream stream=  QuantityService.IQCSampleItemsRecordManager.ExportPrintToExcel(mm, "IQCPrint");
             #region 输出到Excel
            string path = @"C:\\lmSpc\\System\\ProductSizeSpecPicture\\品保课\\IQC.xls";
