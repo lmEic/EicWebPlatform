@@ -156,11 +156,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _addmode = value; }
             get { return _addmode; }
         }
-        private DateTime _deliverydate;
+        private DateTime? _deliverydate;
         /// <summary>
         ///购入日期
         /// </summary>
-        public DateTime DeliveryDate
+        public DateTime? DeliveryDate
         {
             set { _deliverydate = value; }
             get { return _deliverydate; }
@@ -228,11 +228,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _ismaintenance = value; }
             get { return _ismaintenance; }
         }
-        private DateTime _maintenancedate;
+        private DateTime? _maintenancedate;
         /// <summary>
         ///保养日期
         /// </summary>
-        public DateTime MaintenanceDate
+        public DateTime? MaintenanceDate
         {
             set { _maintenancedate = value; }
             get { return _maintenancedate; }
@@ -246,11 +246,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _maintenanceinterval = value; }
             get { return _maintenanceinterval; }
         }
-        private DateTime _plannedmaintenancedate;
+        private DateTime? _plannedmaintenancedate;
         /// <summary>
         ///计划保养日期
         /// </summary>
-        public DateTime PlannedMaintenanceDate
+        public DateTime? PlannedMaintenanceDate
         {
             set { _plannedmaintenancedate = value; }
             get { return _plannedmaintenancedate; }
@@ -282,11 +282,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _checktype = value; }
             get { return _checktype; }
         }
-        private DateTime _checkdate;
+        private DateTime? _checkdate;
         /// <summary>
         ///校验日期
         /// </summary>
-        public DateTime CheckDate
+        public DateTime? CheckDate
         {
             set { _checkdate = value; }
             get { return _checkdate; }
@@ -300,11 +300,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _checkinterval = value; }
             get { return _checkinterval; }
         }
-        private DateTime _plannedcheckdate;
+        private DateTime? _plannedcheckdate;
         /// <summary>
         ///计划校验日期
         /// </summary>
-        public DateTime PlannedCheckDate
+        public DateTime? PlannedCheckDate
         {
             set { _plannedcheckdate = value; }
             get { return _plannedcheckdate; }

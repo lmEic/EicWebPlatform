@@ -40,18 +40,12 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 assetNumber_5_7 = string.Empty;
             try
             {
-                if (assetType == "低值易耗品")
-                {
-                    assetNumber_1 = "Z";
-                }
-                else
-                {
-                    assetNumber_1 = taxType == "保税" ? "I" : "E";
-                }
+                assetNumber_1 = assetType == "低值易耗品" ? "Z" : taxType == "保税" ? "I" : "E";
                 assetNumber_4 = equipmentType == "生产设备" ? "9" : "0";
-                string temAssetNumber = string.Format("{0}{1}{2}", assetNumber_1, assetNumber_2_3, assetNumber_4);
-                var temEntitylist = irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(temAssetNumber));
+
+                var temEntitylist = irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(string.Format("{0}{1}{2}", assetNumber_1, assetNumber_2_3, assetNumber_4)));
                 assetNumber_5_7 = (temEntitylist.Count + 1).ToString("000");
+
                 return assetNumber_5_7.IsNullOrEmpty() ? "" : string.Format("{0}{1}{2}{3}", assetNumber_1, assetNumber_2_3, assetNumber_4, assetNumber_5_7);
             }
             catch (Exception ex)
@@ -103,6 +97,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             }
         }
 
+
         /// <summary>
         /// 修改数据仓库
         /// </summary>
@@ -113,16 +108,19 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             try
             {
+                if (model == null || model.AssetNumber.IsNullOrEmpty())
+                    return OpResult.SetResult("财产编号不能为空！", false);
+
                 switch (model.OpSign)
                 {
                     case OpMode.Add: //新增
-                        return OpResult.SetResult("增加设备成功", irep.Insert(model) > 0, model.Id_Key);
+                        return AddEquipmentRecord(model);
 
                     case OpMode.Edit: //修改
-                        return OpResult.SetResult("修改设备成功", irep.Update(u => u.Id_Key == model.Id_Key, model) > 0);
+                        return EditEquipmentRecord(model);
 
                     case OpMode.Delete: //删除
-                        return OpResult.SetResult("删除设备成功", irep.Delete(model.Id_Key) > 0);
+                        return DeleteEquipmentRecord(model);
 
                     default: return OpResult.SetResult("操作模式溢出", false);
                 }
@@ -132,6 +130,24 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 throw new Exception(ex.InnerException.Message);
             }
         }
+
+
+        private OpResult AddEquipmentRecord(EquipmentModel model)
+        {
+            model.IsMaintenance = (model.MaintenanceDate == null && model.MaintenanceInterval == 0) ? "不保养" : "保养";
+            model.IsCheck = (model.CheckDate == null && model.CheckInterval == 0) ? "不校验" : "校验";
+
+            return OpResult.SetResult("增加设备成功", irep.Insert(model) > 0, model.Id_Key);
+        }
+        private OpResult EditEquipmentRecord(EquipmentModel model)
+        {
+            return OpResult.SetResult("修改设备成功", irep.Update(u => u.Id_Key == model.Id_Key, model) > 0);
+        }
+        private OpResult DeleteEquipmentRecord(EquipmentModel model)
+        {
+            return OpResult.SetResult("删除设备成功", irep.Delete(model.Id_Key) > 0);
+        }
+
         /// <summary>
         /// 查询
         /// </summary>

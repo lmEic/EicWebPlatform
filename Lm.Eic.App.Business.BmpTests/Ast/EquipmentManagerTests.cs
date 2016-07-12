@@ -14,7 +14,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         [TestMethod()]
         public void BuildAssetNumberTest()
         {
-            EquipmentManager tem = new EquipmentManager();
+            EquipmentManager tem2 = new EquipmentManager();
            
             Lm.Eic.App.DomainModel.Bpm.Ast.EquipmentModel model = new DomainModel.Bpm.Ast.EquipmentModel();
             model.AssetNumber = "I169001";
@@ -24,8 +24,11 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
              //修改
             //var ttt = tem.ChangeStorage(model, 1);
 
-            string i = tem.BuildAssetNumber("生产设备", "固定资产", "保税");
-            Assert.Fail();
+            string i = tem2.BuildAssetNumber("生产设备", "低值易耗品", "保税");
+            string i2 = tem2.BuildAssetNumber("生产设备", "低值易耗品", "非保税");
+            string i3 = tem2.BuildAssetNumber("生产设备", "固定资产", "保税");
+          
+           // Assert.Fail();
         }
     }
 }
