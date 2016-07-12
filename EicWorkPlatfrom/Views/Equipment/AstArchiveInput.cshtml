@@ -266,12 +266,16 @@
                                 </div>
                             </div>
                         </fieldset>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <div class="alert alert-info">
-                                    <button class="btn btn-primary pull-right" ng-click="operate.saveAll(formEquipment.$valid)"><i class="fa fa-save"></i>保存</button>
-                                    <button class="btn btn-default pull-right" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
-                                    <span class="pull-right" ng-class="operate.result==true ? 'alert alert-success':'alert alert-danger'" ng-show="operate.msgDisplay">
+
+                        <div class="alert alert-info">
+                            <div class="row">
+                                <div class="col-md-2">
+
+                                </div>
+                                <div class="col-md-10">
+                                    <button class="btn btn-primary " ng-click="operate.saveAll(formEquipment.$valid)"><i class="fa fa-save"></i>保存</button>
+                                    <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                    <span ng-class="operate.result==true ? 'alert alert-success':'alert alert-danger'" ng-show="operate.msgDisplay">
                                         <i class="fa fa-info-circle"></i>
                                         {{operate.message}}
                                     </span>
