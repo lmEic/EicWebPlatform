@@ -82,27 +82,31 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
 
                 #region 填充内容区域
 
-                int StartColumnIndex = 7;
-                int ValueStartIndex = 7;
-
+               
+                int ValueStartIndex = 8;
+                int StartRowIndex =6;
                 //数据源第一项赋值 
                 for (int rowIndex = 0; rowIndex < dataSource.Count; rowIndex++)
                 {
                     IQCSampleItemRecordModel entity = dataSource[rowIndex];
                     // ROHS打印测试项除掉
-                    if (entity.SampleItem.Contains("ROHS"))
-                    { continue; }
+                    //if (entity.SampleItem.Contains("ROHS"))
+                    //{ continue; }
 
+
+                    NPOI.SS.UserModel.IRow rowContent = sheet.CreateRow(rowIndex + StartRowIndex + 1); ; 
+                  
+                 
                     Type tentity = entity.GetType();
                     System.Reflection.PropertyInfo[] tpis = tentity.GetProperties();
-
+                 
                     ///每一项每一列赋值 
-                    for (int colIndex = 0; colIndex < tpis.Length - ValueStartIndex; colIndex++)
+                    for (int colColumnIndex = 0; colColumnIndex < tpis.Length - ValueStartIndex-1; colColumnIndex++)
                     {
                         /// 单元格的行
-                        NPOI.SS.UserModel.ICell cellContent = ReturnIcell(sheet, colIndex, rowIndex + ValueStartIndex);
+                        NPOI.SS.UserModel.ICell cellContent = rowContent.CreateCell(colColumnIndex);
                         // 从第ValueStartIndex 起始列开始取值 
-                        object value = tpis[colIndex + ValueStartIndex].GetValue(entity, null);
+                        object value = tpis[colColumnIndex + ValueStartIndex].GetValue(entity, null);
                         if (value == null) value = "";
                         //对不同类型的值做调整
                         Type type = value.GetType();
@@ -125,18 +129,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
 
         private static Dictionary<int, NPOI.SS.UserModel.IRow> thisMyRow = new Dictionary<int, NPOI.SS.UserModel.IRow>();
         private static Dictionary<int, NPOI.SS.UserModel.ICell> thisMyCell = new Dictionary<int, NPOI.SS.UserModel.ICell>();
-        private  NPOI.SS.UserModel.ICell ReturnIcell(NPOI.SS.UserModel.ISheet sheet, int StartColumnIndex, int colIndex)
+        private  NPOI.SS.UserModel.ICell ReturnIcell(NPOI.SS.UserModel.ISheet sheet,  NPOI.SS.UserModel.IRow row, int StartColumnIndex)
         {
-            NPOI.SS.UserModel.IRow Row = null;
-            if (thisMyRow.Keys.Contains(colIndex))
-            {
-                Row = thisMyRow[colIndex];
-            }
-            else
-            {
-                Row = sheet.CreateRow(colIndex);
-                thisMyRow.Add(colIndex, Row);
-            }
             //  单元格的列
             NPOI.SS.UserModel.ICell cellContent = null ;
 
@@ -146,7 +140,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             }
             else
             {
-                cellContent = Row.CreateCell(StartColumnIndex); ;
+                cellContent = row.CreateCell(StartColumnIndex); ;
                 thisMyCell.Add(StartColumnIndex, cellContent);
             }
 
@@ -174,7 +168,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
 
                 case "System.DateTime"://日期类型
                     DateTime dateV;
-                    DateTime.TryParse(((DateTime)value).ToString("yyyy-MM-dd HH:mm"), out dateV);
+                    DateTime.TryParse(((DateTime)value).ToString("yyyy-MM-dd"), out dateV);
                     cellContent.SetCellValue(dateV);
                     break;
 
@@ -436,6 +430,20 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             Row.CreateCell(column, NPOI.SS.UserModel.CellType.String).SetCellValue(value);//创建第row行第cell列string类型表格，并赋值  value
         }
 
+        private NPOI.SS.UserModel.IRow ReturnRow(NPOI.SS.UserModel.ISheet sheet, int row)
+        {
+            NPOI.SS.UserModel.IRow Row = null;
+            if (thisMyRow.Keys.Contains(row))
+            {
+                Row = thisMyRow[row];
+            }
+            else
+            {
+                Row = sheet.CreateRow(row);
+                thisMyRow.Add(row, Row);
+            }
+            return Row;
+        }
 
         /// <summary>
         /// 设置单元格为下拉框并限制输入值
