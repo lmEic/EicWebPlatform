@@ -28,7 +28,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             string i2 = tem2.BuildAssetNumber("生产设备", "低值易耗品", "非保税");
             string i3 = tem2.BuildAssetNumber("生产设备", "固定资产", "保税");
           
-           // Assert.Fail();
+         //  Assert.Fail();
         }
     }
 }
