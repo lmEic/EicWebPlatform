@@ -9,6 +9,7 @@ using Lm.Eic.App.Erp.Bussiness.QuantityManage;
 using Lm.Eic.App.Erp.Domain .QuantityModel;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
+using NPOI.HSSF.UserModel;
 
 
 
@@ -67,11 +68,13 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             //return NPOIHelper.ExportToExcel<IQCSampleItemRecordModel>(dataSource, xlsSheetName);
             //数据为Null时返回数值
+
+         
             System.IO.MemoryStream stream = new System.IO.MemoryStream();
             if (dataSource == null || dataSource.Count == 0) return stream;
             NPOI.HSSF.UserModel.HSSFWorkbook workbook = null ;
             string fielname =  @"C:\\lmSpc\\System\\ProductSizeSpecPicture\\品保课\\IQC.xls";
-           workbook= InitializeWorkbook(fielname);
+            workbook= InitializeWorkbook(fielname);
             if (null ==workbook )
             {
                 workbook = new NPOI.HSSF.UserModel.HSSFWorkbook();
@@ -90,33 +93,106 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
 
                
                 int ValueStartIndex = 8;
-                int StartRowIndex =6;
+                int DataGetStartNumber =6;
                 int rowindex = 0;
+                
                 //数据源第一项赋值 
-                for (int rowIndex = 0; rowIndex < dataSource.Count; rowIndex++)
+                for (int Datarow = 0; Datarow < dataSource.Count; Datarow++)
                 {
-                    rowindex = rowIndex;
-                    IQCSampleItemRecordModel entity = dataSource[rowIndex];
+                    rowindex++; 
+                   //得到数据源
+                    IQCSampleItemRecordModel entity = dataSource[Datarow];
+              
                      //ROHS打印测试项除掉
                     if (entity.SampleItem.Contains("ROHS"))
                     {
+                        rowindex--;
                         continue;
                     }
+                    //插入的行数
+                    int InsertRowNumber = 0;
+                    
+                    //初始化行
+                    NPOI.SS.UserModel.IRow rowContent = sheet.GetRow( DataGetStartNumber);
 
-                     //确定行数
-                    NPOI.SS.UserModel.IRow rowContent = sheet.CreateRow(rowIndex + StartRowIndex + 1); ; 
-                  
+                    Int64 Number =Convert.ToInt64( entity.CheckNumber);
+                    InsertRowNumber = Convert.ToInt16(Number / 13); Int64 Remainder = Number % 13;
+                    if (!(Remainder == 0))
+                    {
+                        InsertRowNumber = InsertRowNumber + 1;
+                    }
+                    if (JudgeNoEqual(entity.SizeSpecUP, entity.SizeSpecDown))
+                    {
+                        Int64 remainder = InsertRowNumber % 2;
+                        if (!(remainder == 0))
+                        {
+                            InsertRowNumber = InsertRowNumber + 1;
+                        }
+                    }
+                    if (entity.SampleItem.Contains("外观") || entity.CheckNumber == 0 || entity.SampleItem.Contains("Liv") || entity.SampleItem.Contains("3D"))
+                    {
+                        InsertRowNumber = 2;
+                    }
+                    if (DataGetStartNumber < sheet.LastRowNum)
+                    {
+                        MyInsertRow(sheet, rowindex + DataGetStartNumber, InsertRowNumber, rowContent);
+                    }
+                    //确定行数
+                    //插入行数
                  
+
+                    DataGetStartNumber = +DataGetStartNumber + InsertRowNumber;
+                   
                     Type tentity = entity.GetType();
                     System.Reflection.PropertyInfo[] tpis = tentity.GetProperties();
+                   
+                    //// 检验项目
+                    //object value1 = tpis[8].GetValue(entity, null);
+                    
+                    
+              
+                  
+
+                    
+
+                  
+                    ////规格值
+                    //object value2 = tpis[14].GetValue(entity, null);
+                    //object value3 = tpis[15].GetValue(entity, null);
+                    //object value4 = tpis[16].GetValue(entity, null);
+
+                    //JudgeUpDown(sheet, 1, 2, value2.ToString(), value3.ToString(), value4.ToString());
+                    
+                    ////检验水平
+                    //object value5 = tpis[11].GetValue(entity, null);
+                    //object value6 = tpis[12].GetValue(entity, null);
+                    // //抽样方式
+                    //object value7 = tpis[18].GetValue(entity, null);
+                    //object value8 = tpis[17].GetValue(entity, null);
+                    //object value9 = tpis[19].GetValue(entity, null);
+                    //  // 检验方法
+                    //object value10 = tpis[10].GetValue(entity, null);
+
+                    ////量具编号 
+                    //object value11 = tpis[9].GetValue(entity, null);
+                   
                  
-                    ///每一项每一列赋值 
+                  
+                    ////每一项每一列赋值 
                     for (int colColumnIndex = 0; colColumnIndex < tpis.Length - ValueStartIndex-1; colColumnIndex++)
                     {
-                        /// 单元格每行的列值
-                        NPOI.SS.UserModel.ICell cellContent = rowContent.CreateCell(colColumnIndex);
+
                         // 从第ValueStartIndex 起始列开始取值 
                         object value = tpis[colColumnIndex + ValueStartIndex].GetValue(entity, null);
+                        
+                        
+                        /// 单元格每行的列值
+                        NPOI.SS.UserModel.ICell cellContent = rowContent.GetCell(colColumnIndex);
+                        if (cellContent==null)
+                        {
+                            cellContent = rowContent.CreateCell(colColumnIndex);
+                        }
+                       
                         if (value == null) value = "";
                         //对不同类型的值做调整
                         Type type = value.GetType();
@@ -137,6 +213,66 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             }
         }
 
+     
+
+        private void MyInsertRow(NPOI.SS.UserModel.ISheet sheet, int InsertStartRowNumber, int InsertRowNumberSum, NPOI.SS.UserModel.IRow InsertStartRow)
+        {
+            #region 批量移动行
+            sheet.ShiftRows
+             (
+                      InsertStartRowNumber,                                 //--开始行
+                      sheet.LastRowNum,                            //--结束行
+                      InsertRowNumberSum,                             //--移动大小(行数)--往下移动
+                      true,                                   //是否复制行高
+                      false                                  //是否移动批注
+              );
+            #endregion
+
+            #region 对批量移动后空出的空行插，创建相应的行，并以InsertRowNumber的上一行为格式源(即：InsertRowNumber-1的那一行)
+            for (int i = InsertStartRowNumber; i < InsertStartRowNumber + InsertRowNumberSum - 1; i++)
+            {
+                NPOI.SS.UserModel.IRow targetRow = null;
+                NPOI.SS.UserModel.ICell sourceCell = null;
+                NPOI.SS.UserModel.ICell targetCell = null;
+
+                targetRow = sheet.CreateRow(i + 1);
+
+                for (int m = InsertStartRow.FirstCellNum; m < InsertStartRow.LastCellNum; m++)
+                {
+                    sourceCell = InsertStartRow.GetCell(m);
+                    if (sourceCell == null)
+                        continue;
+                    targetCell = targetRow.CreateCell(m);
+
+                    //targetCell.Encoding = sourceCell.Encoding;
+                    targetCell.CellStyle = sourceCell.CellStyle;
+                    targetCell.SetCellType(sourceCell.CellType);
+                }
+                //CopyRow(sourceRow, targetRow);
+
+                //Util.CopyRow(sheet, sourceRow, targetRow);
+            }
+
+            NPOI.SS.UserModel.IRow firstTargetRow = sheet.GetRow(InsertStartRowNumber);
+            NPOI.SS.UserModel.ICell firstSourceCell = null;
+            NPOI.SS.UserModel.ICell firstTargetCell = null;
+
+            for (int m = InsertStartRow.FirstCellNum; m < InsertStartRow.LastCellNum; m++)
+            {
+                firstSourceCell = InsertStartRow.GetCell(m);
+                if (firstSourceCell == null)
+                    continue;
+                firstTargetCell = firstTargetRow.CreateCell(m);
+
+                //firstTargetCell.Encoding = firstSourceCell.Encoding;
+                firstTargetCell.CellStyle = firstSourceCell.CellStyle;
+                firstTargetCell.SetCellType(firstSourceCell.CellType);
+            }
+            #endregion
+        }
+
+
+     
         /// <summary>
         /// 初始化工作簿
         /// </summary>
@@ -422,22 +558,26 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <param name="models"></param>
         private void SetISheetTitle(NPOI.SS.UserModel.ISheet ISheet, IQCSampleItemRecordModel models)
         {
-           
-            
-            cellVaule(ISheet, 1, 16, "打印日期：" + DateTime.Now.ToString("yyyy-MM-dd"));
+
+            //ISheet.AddMergedRegion(new NPOI.SS.Util.CellRangeAddress(0, 0, 0,13));
+         
+
             cellVaule(ISheet, 1, 0, "日期：");
-            cellVaule(ISheet, 1, 1, DateTime .Now .Date .ToString ("yyyy-MM-dd"));
+            cellVaule(ISheet, 1, 1, DateTime.Now.Date.ToString("yyyy-MM-dd"));
             cellVaule(ISheet, 1, 7, "品号：" + models.SampleMaterial);
-            cellVaule(ISheet, 2, 18, "NO:" + models.OrderID);
-            cellVaule(ISheet, 3, 0, "品名：" + models.SampleMaterialName);
-            cellVaule(ISheet, 3, 4, "规格：" + models.SampleMaterialSpec);
-            cellVaule(ISheet, 3, 10, "数量：" + models.SampleMaterialNumber.ToString());
-            cellVaule(ISheet, 3, 12, "ROHS结果：□OK □NG  □NA");
-            cellVaule(ISheet, 3, 13, "膜厚");
-            cellVaule(ISheet, 3, 14, "□ OK   □NG  □NA");
-            cellVaule(ISheet, 4, 0, "供应商:" + models.SampleMaterialSupplier);
-            cellVaule(ISheet, 4, 4, "图号/检验规范：" + models.SampleMaterialDrawID);
-            cellVaule(ISheet, 4, 10, "检验方式：" + models.CheckWay);
+         
+            cellVaule(ISheet, 1, 16, "NO:" + models.OrderID);
+
+            cellVaule(ISheet, 2, 0, "品名：" + models.SampleMaterialName);
+            cellVaule(ISheet, 2, 4, "规格：" + models.SampleMaterialSpec);
+            cellVaule(ISheet, 2, 10, "数量：" + models.SampleMaterialNumber.ToString());
+            //cellVaule(ISheet, 2, 13, "ROHS结果：□OK □NG  □NA");
+            cellVaule(ISheet, 2, 13, "不用测ROSA");
+            cellVaule(ISheet, 2, 14, "□ OK   □NG  □NA");
+
+            cellVaule(ISheet, 3, 0, "供应商:" + models.SampleMaterialSupplier);
+            cellVaule(ISheet, 3, 4, "图号/检验规范：" + models.SampleMaterialDrawID);
+            cellVaule(ISheet, 3, 10, "检验方式：" + models.CheckWay);
         }
         /// <summary>
         ///  给单元格赋值
@@ -455,7 +595,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 }
                  else 
                  {
-                     Row = sheet.CreateRow(row);
+                     Row = sheet.GetRow(row);
                      thisMyRow.Add(row, Row);
                  }
             
