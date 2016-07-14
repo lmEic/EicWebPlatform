@@ -10,6 +10,8 @@ using Lm.Eic.App.Erp.Domain .QuantityModel;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.HSSF.Util;
 
 
 
@@ -22,10 +24,29 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             irep = new IQCSampleItemRecordReposity();
         }
-      
+        #region        UID
+        public void  InsertModel(IQCSampleItemRecordModel model)
+        {
+            irep.Insert(model); 
+        }
         
+        public void UpdateModel (IQCSampleItemRecordModel model)
+        {
+            irep.Update(e => e.Id_key == model.Id_key, model);
+        }
+
+        public void DeleteModel(IQCSampleItemRecordModel model)
+        {
+            irep.Delete(e => e.Id_key == model.Id_key);
+        }
+
+        public object  Get_Id_Key_By(IQCSampleItemRecordModel model)
+        {
+            return irep.Entities.Where(e => e.OrderID == model.OrderID & e.SampleMaterial == model.SampleMaterial & e.SampleItem == model.SampleItem).Select(e => e.Id_key).FirstOrDefault().ToString();
+        }
+        #endregion
         /// <summary>
-       /// 
+        /// 
        /// </summary>
        /// <param name="orderid"></param>
        /// <returns></returns>
@@ -33,9 +54,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             return irep.Entities.Where (e=>e.OrderID ==orderid ).ToList ();
         }
-
-
-
         /// <summary>
         /// 得到IQC抽样项次 （单身）
         /// </summary>
@@ -75,6 +93,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             NPOI.HSSF.UserModel.HSSFWorkbook workbook = null ;
             string fielname =  @"C:\\lmSpc\\System\\ProductSizeSpecPicture\\品保课\\IQC.xls";
             workbook= InitializeWorkbook(fielname);
+            
             if (null ==workbook )
             {
                 workbook = new NPOI.HSSF.UserModel.HSSFWorkbook();
@@ -92,8 +111,9 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 #region 填充内容区域
 
                
-                int ValueStartIndex = 8;
+               
                 int DataGetStartNumber =6;
+                
                 int rowindex = 0;
                 
                 //数据源第一项赋值 
@@ -102,7 +122,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                     rowindex++; 
                    //得到数据源
                     IQCSampleItemRecordModel entity = dataSource[Datarow];
-              
                      //ROHS打印测试项除掉
                     if (entity.SampleItem.Contains("ROHS"))
                     {
@@ -117,9 +136,9 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
 
                     Int64 Number =Convert.ToInt64( entity.CheckNumber);
                     InsertRowNumber = Convert.ToInt16(Number / 13); Int64 Remainder = Number % 13;
-                    if (!(Remainder == 0))
+                    if ((Remainder != 0) | (Number==0))
                     {
-                        InsertRowNumber = InsertRowNumber + 1;
+                        InsertRowNumber = InsertRowNumber+1;
                     }
                     if (JudgeNoEqual(entity.SizeSpecUP, entity.SizeSpecDown))
                     {
@@ -135,75 +154,102 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                     }
                     if (DataGetStartNumber < sheet.LastRowNum)
                     {
-                        MyInsertRow(sheet, rowindex + DataGetStartNumber, InsertRowNumber, rowContent);
+                        MyInsertRow(sheet, DataGetStartNumber, InsertRowNumber, rowContent);
                     }
+                 
                     //确定行数
                     //插入行数
-                 
-
-                    DataGetStartNumber = +DataGetStartNumber + InsertRowNumber;
-                   
+          
                     Type tentity = entity.GetType();
                     System.Reflection.PropertyInfo[] tpis = tentity.GetProperties();
-                   
-                    //// 检验项目
-                    //object value1 = tpis[8].GetValue(entity, null);
-                    
-                    
-              
-                  
+                    List<object> values = new List<object>();
+                    // 检验项目
+                    object value1 = tpis[8].GetValue(entity, null);
+                    values.Add(value1);
 
-                    
+                    //规格值
+                    object value2 = tpis[14].GetValue(entity, null);
+                    object value3 = tpis[15].GetValue(entity, null);
+                    object value4 = tpis[16].GetValue(entity, null);
 
-                  
-                    ////规格值
-                    //object value2 = tpis[14].GetValue(entity, null);
-                    //object value3 = tpis[15].GetValue(entity, null);
-                    //object value4 = tpis[16].GetValue(entity, null);
+                    values.Add(value2);
+                    List<string> mm= JudgeUpDown(value3.ToString(), value4.ToString());
+                    if (mm.Count ==2)
+                    {
+                        values.Add(value3.ToString());
+                    }
+                    else 
+                    {
+                        values.Add(mm.FirstOrDefault()); 
+                    }
 
-                    //JudgeUpDown(sheet, 1, 2, value2.ToString(), value3.ToString(), value4.ToString());
-                    
-                    ////检验水平
-                    //object value5 = tpis[11].GetValue(entity, null);
-                    //object value6 = tpis[12].GetValue(entity, null);
-                    // //抽样方式
-                    //object value7 = tpis[18].GetValue(entity, null);
-                    //object value8 = tpis[17].GetValue(entity, null);
-                    //object value9 = tpis[19].GetValue(entity, null);
-                    //  // 检验方法
-                    //object value10 = tpis[10].GetValue(entity, null);
+                    //检验水平
+                    object value5 = tpis[11].GetValue(entity, null);
+                    object value6 = tpis[12].GetValue(entity, null);
+                    values.Add(value5);
+                    values.Add(value6);
 
-                    ////量具编号 
-                    //object value11 = tpis[9].GetValue(entity, null);
-                   
-                 
-                  
-                    ////每一项每一列赋值 
-                    for (int colColumnIndex = 0; colColumnIndex < tpis.Length - ValueStartIndex-1; colColumnIndex++)
+                    //抽样方式
+                    object value7 = tpis[18].GetValue(entity, null);
+                    object value8 = tpis[17].GetValue(entity, null);
+                    object value9 = tpis[19].GetValue(entity, null);
+                    values.Add(value7 + "/" + value8 + "/" + value9);
+                    // 检验方法
+                    object value10 = tpis[10].GetValue(entity, null);
+                    values.Add(value10);
+
+                    //量具编号 
+                    object value11 = tpis[9].GetValue(entity, null);
+                    values.Add(value11);
+                    for (int i = 0; i < values.LongCount();i++ )
                     {
 
-                        // 从第ValueStartIndex 起始列开始取值 
-                        object value = tpis[colColumnIndex + ValueStartIndex].GetValue(entity, null);
+                         NPOI.SS.UserModel.ICell cellContent = rowContent.GetCell(i);
+                            if (cellContent == null)
+                            {
+                                cellContent = rowContent.CreateCell(i);
+                            }
+                            
+                            Type type = values[i].GetType();
+                            OperationSetCellvalue(cellContent, values[i], type);
+                            setCellStyle(workbook, cellContent);
+                            setCellStyleLine(workbook, cellContent);
+                           
+                            if (i == 2)
+                            {
+                                if (values[2].ToString().Trim() == string.Empty)
+                                {
+                           
+                                    sheet.AddMergedRegion(new NPOI.SS.Util.CellRangeAddress(DataGetStartNumber, DataGetStartNumber + InsertRowNumber - 1, i-(InsertRowNumber-1), i ));
+                                }
+                                else
+                                {
+                                    NPOI.SS.UserModel.IRow rowContent11 = sheet.GetRow(DataGetStartNumber + InsertRowNumber - 1);
+                                    NPOI.SS.UserModel.ICell cellContent11 = rowContent11.GetCell(i);
+                                    if (cellContent11 == null)
+                                    {
+                                        cellContent11 = rowContent11.CreateCell(i);
+                                    }
+                                   
+                                    OperationSetCellvalue(cellContent11, mm.LastOrDefault(), type);
+                                    setCellStyle(workbook, cellContent11);
+                                    setCellStyleLine(workbook, cellContent11);
+                                   
+                                }
+                               
+                            }
+                            else
+                            { sheet.AddMergedRegion(new NPOI.SS.Util.CellRangeAddress(DataGetStartNumber, DataGetStartNumber + InsertRowNumber - 1, i, i)); }
                         
-                        
-                        /// 单元格每行的列值
-                        NPOI.SS.UserModel.ICell cellContent = rowContent.GetCell(colColumnIndex);
-                        if (cellContent==null)
-                        {
-                            cellContent = rowContent.CreateCell(colColumnIndex);
-                        }
-                       
-                        if (value == null) value = "";
-                        //对不同类型的值做调整
-                        Type type = value.GetType();
-                        //对不同类型的值处理赋值
-                        OperationSetCellvalue(cellContent, value, type);
                     }
+                    DataGetStartNumber = DataGetStartNumber + InsertRowNumber;
+
                 }
 
                 #endregion 填充内容区域
 
                 sheet.ForceFormulaRecalculation = true;
+              
                 workbook.Write(stream);
                 return stream;
             }
@@ -215,6 +261,40 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
 
      
 
+
+
+         private void setCellStyle(HSSFWorkbook workbook, ICell cell)
+        {
+            HSSFCellStyle fCellStyle = (HSSFCellStyle)workbook.CreateCellStyle();
+            HSSFFont ffont = (HSSFFont)workbook.CreateFont();
+            ffont.FontHeight = 10 * 10;
+            ffont.FontName = "宋体";
+            ffont.Color = HSSFColor.Black.Index;
+            fCellStyle.SetFont(ffont);
+
+            fCellStyle.VerticalAlignment = NPOI.SS.UserModel.VerticalAlignment.Bottom;//垂直对齐
+            fCellStyle.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Left;//水平对齐
+            cell.CellStyle = fCellStyle;
+        }
+
+        private void setCellStyleLine(HSSFWorkbook workbook, ICell cell)
+         {
+             ICellStyle style = workbook.CreateCellStyle();
+             style.BorderBottom = BorderStyle.Thin;
+             style.BorderLeft = BorderStyle.Thin;
+             style.BorderRight = BorderStyle.Thin;
+             style.BorderTop = BorderStyle.Thin;
+             style.BottomBorderColor = HSSFColor.Black.Index;
+             style.LeftBorderColor = HSSFColor.Black.Index;
+             style.RightBorderColor = HSSFColor.Black.Index;
+             style.TopBorderColor = HSSFColor.Black.Index;
+
+             cell.CellStyle = style;
+         }
+
+
+
+        
         private void MyInsertRow(NPOI.SS.UserModel.ISheet sheet, int InsertStartRowNumber, int InsertRowNumberSum, NPOI.SS.UserModel.IRow InsertStartRow)
         {
             #region 批量移动行
@@ -319,6 +399,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         }
 
 
+       
         #region    ExportToExcelPrintOP
         /// <summary>
           /// 处理每个类型的格式
@@ -465,42 +546,41 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         }
 
 
-        private void JudgeUpDown(NPOI.SS.UserModel.ISheet ISheet, int IdNumStartRowIndex, int RowIndex, string SizeSpec, string SizeSpecUP, string SizeSpecDown)
+        private List<string>  JudgeUpDown ( string SizeSpecUP, string SizeSpecDown)
         {
             try
             {
-                int IdNumStopRowIndex = IdNumStartRowIndex + RowIndex - 1;
                 string UpValue = SizeSpecUP;
                 string DownValue = SizeSpecDown;
+                List<string> returnValue = new List<string>();
                 if (JudgeNoNull(UpValue, DownValue) & JudgeMach(UpValue, DownValue))
                 {
                     double upValue = Convert.ToDouble(UpValue);
                     double downValue = Convert.ToDouble(DownValue);
                     if (JudgeAbs(upValue, downValue))
                     {
-                        string Value = SizeSpec + "±" + Math.Abs(upValue).ToString();
-                        setMergeValueToXlsCell(ISheet, 2, 3, IdNumStartRowIndex, IdNumStopRowIndex, Value);
+                        string Value =  "±" + Math.Abs(upValue).ToString();
+                        returnValue.Add(Value);
                     }
                     else
                     {
-                        for (int i = 0; i < RowIndex / 2; i++)
-                        {
-                            int StartRowIndex = IdNumStartRowIndex + i * 2;
-                            setBCValueToXlsCell(ISheet, StartRowIndex, SizeSpecUP, SizeSpecDown, SizeSpec);
-                        }
+                        returnValue.Add(SizeSpecUP);
+                        returnValue.Add(SizeSpecDown);
                     }
                 }
                 else
                 {
-                    string Value = SizeSpec + UpValue + DownValue;
-                    setMergeValueToXlsCell(ISheet,2,3, IdNumStartRowIndex, IdNumStopRowIndex, Value);
-                    
+                    string Value =  UpValue + DownValue;
+                    returnValue.Add(Value);  
                 }
+                return returnValue;
             }
-
+                 
             catch (Exception ex)
             {
+                
                 OpResult.SetResult(ex.ToString(), true);
+                return null;
             }
 
         }
@@ -518,7 +598,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
               //合并行，列
              mergeCell(xlsSheet, firstRow, lastRow, StartMergeRowIndex, EndMergeRowIndex);
              //填充值
-             cellVaule(xlsSheet, firstRow, StartMergeRowIndex, StandardValue);
+             SetcellVaule(xlsSheet, firstRow, StartMergeRowIndex, StandardValue);
         }
 
         private void setBCValueToXlsCell(NPOI.SS.UserModel.ISheet xlsSheet, int StartRowIndex, string ValueUp, string ValueDown, string StandardValue)
@@ -544,8 +624,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         private void InserUpDownValue(NPOI.SS.UserModel.ISheet xlsSheet, string ValueUp, string ValueDown, int StartRowIndex, int Column)
         {
             int StopRowIndex = StartRowIndex + 1;
-            cellVaule(xlsSheet, StartRowIndex, Column, ValueUp);
-            cellVaule(xlsSheet, StopRowIndex, Column, ValueDown);
+            SetcellVaule(xlsSheet, StartRowIndex, Column, ValueUp);
+            SetcellVaule(xlsSheet, StopRowIndex, Column, ValueDown);
        
         }
 
@@ -562,22 +642,22 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             //ISheet.AddMergedRegion(new NPOI.SS.Util.CellRangeAddress(0, 0, 0,13));
          
 
-            cellVaule(ISheet, 1, 0, "日期：");
-            cellVaule(ISheet, 1, 1, DateTime.Now.Date.ToString("yyyy-MM-dd"));
-            cellVaule(ISheet, 1, 7, "品号：" + models.SampleMaterial);
+            SetcellVaule(ISheet, 1, 0, "日期：");
+            SetcellVaule(ISheet, 1, 1, DateTime.Now.Date.ToString("yyyy-MM-dd"));
+            SetcellVaule(ISheet, 1, 7, "品号：" + models.SampleMaterial);
          
-            cellVaule(ISheet, 1, 16, "NO:" + models.OrderID);
+            SetcellVaule(ISheet, 1, 16, "NO:" + models.OrderID);
 
-            cellVaule(ISheet, 2, 0, "品名：" + models.SampleMaterialName);
-            cellVaule(ISheet, 2, 4, "规格：" + models.SampleMaterialSpec);
-            cellVaule(ISheet, 2, 10, "数量：" + models.SampleMaterialNumber.ToString());
+            SetcellVaule(ISheet, 2, 0, "品名：" + models.SampleMaterialName);
+            SetcellVaule(ISheet, 2, 4, "规格：" + models.SampleMaterialSpec);
+            SetcellVaule(ISheet, 2, 10, "数量：" + models.SampleMaterialNumber.ToString());
             //cellVaule(ISheet, 2, 13, "ROHS结果：□OK □NG  □NA");
-            cellVaule(ISheet, 2, 13, "不用测ROSA");
-            cellVaule(ISheet, 2, 14, "□ OK   □NG  □NA");
+            SetcellVaule(ISheet, 2, 13, "不用测ROSA");
+            SetcellVaule(ISheet, 2, 14, "□ OK   □NG  □NA");
 
-            cellVaule(ISheet, 3, 0, "供应商:" + models.SampleMaterialSupplier);
-            cellVaule(ISheet, 3, 4, "图号/检验规范：" + models.SampleMaterialDrawID);
-            cellVaule(ISheet, 3, 10, "检验方式：" + models.CheckWay);
+            SetcellVaule(ISheet, 3, 0, "供应商:" + models.SampleMaterialSupplier);
+            SetcellVaule(ISheet, 3, 4, "图号/检验规范：" + models.SampleMaterialDrawID);
+            SetcellVaule(ISheet, 3, 10, "检验方式：" + models.CheckWay);
         }
         /// <summary>
         ///  给单元格赋值
@@ -586,7 +666,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <param name="row">row</param>
         /// <param name="column">cell</param>
         /// <param name="value"></param>
-        public void cellVaule(NPOI.SS.UserModel.ISheet sheet, int row, int column, string value)
+        public void SetcellVaule(NPOI.SS.UserModel.ISheet sheet, int row, int column, string value)
         {
                NPOI.SS.UserModel.IRow Row = null;
                  if ( thisMyRow .Keys .Contains (row) )
@@ -649,7 +729,15 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <param name="lastCell">结束行</param>
         private void mergeCell(NPOI.SS.UserModel.ISheet sheet, int firstRow, int lastRow, int firstCell, int lastCell)
         {
+           
             sheet.AddMergedRegion(new NPOI.SS.Util.CellRangeAddress(firstRow, lastRow, firstCell, lastCell));//2.0使用 2.0以下为Region
+        }
+
+        private void SetMergeCell(NPOI.SS.UserModel.ISheet sheet, int StartRow, int MergeRowNumber, int StartCell, int MergeCellNumber)
+        {
+            int lastRow = StartRow + MergeRowNumber;
+            int lastCell =StartCell+ MergeCellNumber;
+            sheet.AddMergedRegion(new NPOI.SS.Util.CellRangeAddress(StartRow, lastRow, StartCell, lastCell));//2.0使用 2.0以下为Region
         }
         /// <summary>
         /// 设置单元格样式
