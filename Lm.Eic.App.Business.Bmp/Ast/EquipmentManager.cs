@@ -134,8 +134,26 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
         private OpResult AddEquipmentRecord(EquipmentModel model)
         {
+            //保养处理
             model.IsMaintenance = (model.MaintenanceDate == null && model.MaintenanceInterval == 0) ? "不保养" : "保养";
+            if (model.IsMaintenance == "保养")
+            {
+                model.PlannedMaintenanceDate = model.MaintenanceDate.Value.AddMonths(model.MaintenanceInterval);
+                model.MaintenanceState = model.PlannedMaintenanceDate > DateTime.Now ? "在期" : "超期";
+            }
+            //校验处理
             model.IsCheck = (model.CheckDate == null && model.CheckInterval == 0) ? "不校验" : "校验";
+            if (model.IsCheck == "校验")
+            {
+                model.PlannedCheckDate = model.CheckDate.Value.AddMonths(model.CheckInterval);
+                model.CheckState = model.PlannedCheckDate > DateTime.Now ? "在期" : "超期";
+            }
+                
+            //设备状态初始化
+            if (model.State == null)
+                model.State = "运行正常";
+            if (model.IsScrapped == null)
+                model.IsScrapped = "未报废";
 
             return OpResult.SetResult("增加设备成功", irep.Insert(model) > 0, model.Id_Key);
         }
@@ -154,20 +172,20 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="qryModel">设备查询数据传输对象</param>
         /// <param name="searchMode"> 1.依据财产编号查询 2.依据保管部门查询 3.依据规格查询 </param>
         /// <returns></returns>
-        public List<EquipmentModel> FindBy(QueryEquipmentDto qryDto, int searchMode)
+        public List<EquipmentModel> FindBy(QueryEquipmentDto qryDto)
         {
             try
             {
-                switch (searchMode)
+                switch (qryDto.SearchMode)
                 {
                     case 1: //依据财产编号查询
-                        return irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(qryDto.SearchValue)).ToList();
+                        return irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
 
                     case 2: //依据保管部门查询
-                        return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.SearchValue)).ToList();
+                        return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.AssetNumber)).ToList();
 
                     case 3: //依据规格查询
-                        return irep.FindAll<EquipmentModel>(m => m.EquipmentSpec.StartsWith(qryDto.SearchValue)).ToList();
+                        return irep.FindAll<EquipmentModel>(m => m.EquipmentSpec.StartsWith(qryDto.AssetNumber)).ToList();
 
                     default: return null;
                 }
@@ -175,20 +193,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
-            }
-        }
-
-        public class QueryEquipmentDto
-        {
-            private string searchValue = string.Empty;
-
-            /// <summary>
-            /// 单条件搜索参数
-            /// </summary>
-            public string SearchValue
-            {
-                get { return searchValue; }
-                set { if (searchValue != value) { searchValue = value; } }
             }
         }
     }
