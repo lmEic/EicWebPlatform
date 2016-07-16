@@ -91,7 +91,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             try
             {
-            //数据为Null时返回数值
+              //数据为Null时返回数值
                  System.IO.MemoryStream stream = new System.IO.MemoryStream();
                  if (dataSource == null || dataSource.Count == 0) return stream;
                  string filePath = System.IO.Path.GetFullPath(PrintSampleModel(dataSource));
@@ -100,7 +100,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                  NPOI.SS.UserModel.ISheet sheet = workbook.GetSheetAt(0);
                  sheet.ForceFormulaRecalculation = true;
                  workbook.Write(stream);
-            return stream;
+                return stream;
             }
             catch (Exception ex)
             {
