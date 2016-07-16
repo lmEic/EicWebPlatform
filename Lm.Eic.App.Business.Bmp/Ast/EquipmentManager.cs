@@ -1,11 +1,11 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Repository.AstRep;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
@@ -62,42 +62,44 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public OpResult Store(List<EquipmentModel> listModel)
         {
+            int record = 0;
+            string opContext = "设备档案", opSign = string.Empty;
+            OpResult opResult = OpResult.SetResult("未执行任何操作！", false);
+
+            if (listModel == null || listModel.Count <= 0)
+                return OpResult.SetResult("集合不能为空！", false);
+
+            opSign = listModel[0].OpSign;
+            if(opSign.IsNullOrEmpty())
+                return OpResult.SetResult("操作模式不能为空！", false); 
+
             try
             {
-                if (listModel == null || listModel.Count <= 0)
-                    return OpResult.SetResult("集合不能为空！", false);
-
-                int record = 0;
-                string opSign = string.Empty;
-                opSign = listModel[0].OpSign;
-
-                string opContext = "设备档案";
                 switch (opSign)
                 {
                     case OpMode.Add: //新增
-                        record = 0;
                         listModel.ForEach(model => { record += irep.Insert(model); });
-                        return record.ToAddResult(opContext);
+                        opResult = record.ToAddOpResult(opContext);
+                        break;
 
                     case OpMode.Edit: //修改
-                        record = 0;
                         listModel.ForEach(model => { record += irep.Update(u => u.Id_Key == model.Id_Key, model); });
-                        return OpResult.SetResult("更新成功！", "更新失败！", record);
+                        opResult = record.ToUpdateOpResult(opContext);
+                        break;
 
                     case OpMode.Delete: //删除
-                        record = 0;
                         listModel.ForEach(model => { record += irep.Delete(model.Id_Key); });
-                        return OpResult.SetResult("删除成功！", "删除失败！", record);
+                        opResult = record.ToDeleteOpResult(opContext);
+                        break;
 
-                    default: return OpResult.SetResult("操作模式溢出！", false);
+                    default:
+                        opResult = OpResult.SetResult("操作模式溢出！", false);
+                        break;
                 }
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
+            catch (Exception ex){throw new Exception(ex.InnerException.Message);}
+            return opResult;
         }
-
 
         /// <summary>
         /// 修改数据仓库
@@ -117,65 +119,77 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                     case OpMode.Add: //新增
                         result = AddEquipmentRecord(model);
                         break;
+
                     case OpMode.Edit: //修改
                         result = EditEquipmentRecord(model);
                         break;
+
                     case OpMode.Delete: //删除
                         result = DeleteEquipmentRecord(model);
                         break;
-                    default: 
+
+                    default:
                         result = OpResult.SetResult("操作模式溢出", false);
                         break;
                 }
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
+            catch (Exception ex){throw new Exception(ex.InnerException.Message); }
             return result;
         }
-
 
         private OpResult AddEquipmentRecord(EquipmentModel model)
         {
             //基础设置
             model.InputDate = DateTime.Now;
-
-            //保养处理
-            //  model.IsMaintenance = (model.MaintenanceDate == null && model.MaintenanceInterval == 0) ? "不保养" : "保养";
-            model.IsMaintenance = model.AssetType == "低质易耗品" ? "不保养" : "保养";
-            if (model.IsMaintenance == "保养")
-            {
-                model.PlannedMaintenanceDate = model.MaintenanceDate.Value.AddMonths(model.MaintenanceInterval);
-                model.MaintenanceState = model.PlannedMaintenanceDate > DateTime.Now ? "在期" : "超期";
-            }
-            else
-            {
-                model.MaintenanceDate = null;
-                model.MaintenanceInterval = 0;
-            }
-            //校验处理
-            model.IsCheck = (model.CheckDate == null && model.CheckInterval == 0) ? "不校验" : "校验";
-            if (model.IsCheck == "校验")
-            {
-                model.PlannedCheckDate = model.CheckDate.Value.AddMonths(model.CheckInterval);
-                model.CheckState = model.PlannedCheckDate > DateTime.Now ? "在期" : "超期";
-            }
-            else
-            {
-                model.CheckDate = null;
-                model.CheckInterval = 0;
-            }
-
+            SetEquipmentMaintenance(model);
+            SetEquipmentCheck(model);
             //设备状态初始化
             if (model.State == null)
                 model.State = "运行正常";
             if (model.IsScrapped == null)
                 model.IsScrapped = "未报废";
             //仓储操作
-            return irep.Insert(model).ToOpResult("增加设备成功", model.Id_Key);
+            return irep.Insert(model).ToOpResult(string.Format("添加财产编号:{0} 的设备档案成功！", model.AssetNumber), model.Id_Key);
         }
+
         private OpResult EditEquipmentRecord(EquipmentModel model)
+        {
+            SetEquipmentMaintenance(model);
+            SetEquipmentCheck(model);
+
+            return  irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult(string.Format("更新财产编号:{0} 的设备档案成功！", model.AssetNumber), model.Id_Key);
+        }
+
+        private OpResult DeleteEquipmentRecord(EquipmentModel model)
+        {
+            return  irep.Delete(model.Id_Key).ToOpResult(string.Format("删除财产编号:{0} 的设备档案成功！", model.AssetNumber));
+        }
+
+        /// <summary>
+        /// 设置设备校验
+        /// </summary>
+        /// <param name="model"></param>
+        private void SetEquipmentCheck(EquipmentModel model)
+        {
+            //校验处理
+            model.IsCheck = (model.CheckDate == null && model.CheckInterval == 0) ? "不校验" : "校验";
+            if (model.IsCheck == "校验")
+            {
+                model.PlannedCheckDate = model.CheckDate.Value.AddMonths(model.CheckInterval);
+                model.CheckState = model.PlannedCheckDate > DateTime.Now ? "在期" : "超期";
+            }
+            else
+            {
+                model.CheckDate = null;
+                model.CheckInterval = 0;
+            }
+        }
+
+        /// <summary>
+        /// 设置设备保养
+        /// </summary>
+        /// <param name="model"></param>
+        private void SetEquipmentMaintenance(EquipmentModel model)
         {
             //保养处理
             //  model.IsMaintenance = (model.MaintenanceDate == null && model.MaintenanceInterval == 0) ? "不保养" : "保养";
@@ -190,24 +204,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 model.MaintenanceDate = null;
                 model.MaintenanceInterval = 0;
             }
-            //校验处理
-            model.IsCheck = (model.CheckDate == null && model.CheckInterval == 0) ? "不校验" : "校验";
-            if (model.IsCheck == "校验")
-            {
-                model.PlannedCheckDate = model.CheckDate.Value.AddMonths(model.CheckInterval);
-                model.CheckState = model.PlannedCheckDate > DateTime.Now ? "在期" : "超期";
-            }
-            else
-            {
-                model.CheckDate = null;
-                model.CheckInterval = 0;
-            }
-
-            return OpResult.SetResult("修改设备成功", irep.Update(u => u.Id_Key == model.Id_Key, model) > 0);
-        }
-        private OpResult DeleteEquipmentRecord(EquipmentModel model)
-        {
-            return OpResult.SetResult("删除设备成功", irep.Delete(model.Id_Key) > 0);
         }
 
         /// <summary>
@@ -239,5 +235,12 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 throw new Exception(ex.InnerException.Message);
             }
         }
+
+
+        
+
+      
+
+       
     }
 }
