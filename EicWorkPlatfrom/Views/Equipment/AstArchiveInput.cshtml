@@ -7,7 +7,7 @@
             <div class="col-md-9">
             </div>
             <div class="col-md-1">
-                <span class="btn btn-sm btn-success pull-right" ng-model="searchBoardDisplay" bs-checkbox>查询面板</span>
+                <span class="btn btn-sm btn-danger pull-right" ng-model="searchBoardDisplay" bs-checkbox>查询面板</span>
             </div>
         </div>
     </div>
@@ -302,40 +302,38 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="well">
-                    <ul class="list-group">
-                        <li class="list-group-item active">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <h4 class="list-title">
-                                        <i class="fa fa-list"></i>
-                                        <span>列表</span>
-                                    </h4>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="input-group">
-                                        <input class="form-control" type="text" />
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-search"></i>
-                                        </div>
+                <ul class="list-group">
+                    <li class="list-group-item active">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h4 class="list-title">
+                                    <i class="fa fa-list"></i>
+                                    <span>列表</span>
+                                </h4>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" />
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-search"></i>
                                     </div>
                                 </div>
                             </div>
-                        </li>
-                        <li class="list-group-item" ng-click="vmManager.selectEquipment(item)" 
-                            data-title="设备型号:{{item.EquipmentSpec}}" data-bs-tooltip
-                            ng-repeat="item in vmManager.equipments track by $index">
-                            编号：
-                            <span class="label label-success" style="cursor:pointer">{{item.AssetNumber}}</span>
-                            -----
-                            名称：
-                            <span> 
-                                <i class="fa fa-envelope-o"></i>
-                                {{item.EquipmentName}}
-                            </span>
-                        </li>
-                    </ul>
-                </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item" ng-click="vmManager.selectEquipment(item)"
+                        data-title="设备型号:{{item.EquipmentSpec}}" data-bs-tooltip
+                        ng-repeat="item in vmManager.equipments track by $index">
+                        编号：
+                        <span class="label label-success" style="cursor:pointer">{{item.AssetNumber}}</span>
+                        -----
+                        名称：
+                        <span>
+                            <i class="fa fa-envelope-o"></i>
+                            {{item.EquipmentName}}
+                        </span>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
