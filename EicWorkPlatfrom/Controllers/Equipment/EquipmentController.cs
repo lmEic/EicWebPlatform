@@ -41,7 +41,7 @@ namespace EicWorkPlatfrom.Controllers
 
         [NoAuthenCheck]
         /// <summary>
-        /// 获取设备编号
+        /// 获取设备编号             
         /// </summary>
         /// <param name="equipmentType"></param>
         /// <param name="assetType"></param>
