@@ -75,15 +75,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _documentpath = value; }
             get { return _documentpath; }
         }
-        private decimal _id_key;
-        /// <summary>
-        ///自增键
-        /// </summary>
-        public decimal Id_Key
-        {
-            set { _id_key = value; }
-            get { return _id_key; }
-        }
+      
         private string _opperson;
         /// <summary>
         ///操作人
@@ -101,6 +93,25 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         {
             set { _opsign = value; }
             get { return _opsign; }
+        }
+        DateTime? opDate = DateTime.Now;
+        /// <summary>
+        /// 操作日期
+        /// </summary>
+        public DateTime? OpDate
+        {
+            get { return opDate; }
+            set { opDate = value; }
+        }
+
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
         }
         #endregion Model
     }
