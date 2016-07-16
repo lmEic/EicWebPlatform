@@ -5,6 +5,8 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
@@ -135,7 +137,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         private OpResult AddEquipmentRecord(EquipmentModel model)
         {
             //基础设置
-            model.InputDate = DateTime.Now;
+            model.InputDate = DateTime.Now.ToDate();
 
             //保养处理
             //  model.IsMaintenance = (model.MaintenanceDate == null && model.MaintenanceInterval == 0) ? "不保养" : "保养";
