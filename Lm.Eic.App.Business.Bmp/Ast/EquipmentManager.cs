@@ -5,6 +5,7 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
@@ -45,7 +46,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 string temAssetNumber = string.Format("{0}{1}{2}", assetNumber_1, assetNumber_2_3, assetNumber_4);
                 var temEntitylist = irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(temAssetNumber));
                 assetNumber_5_7 = (temEntitylist.Count + 1).ToString("000");
-
                 return assetNumber_5_7.IsNullOrEmpty() ? "" : string.Format("{0}{1}{2}{3}", assetNumber_1, assetNumber_2_3, assetNumber_4, assetNumber_5_7);
             }
             catch (Exception ex)
