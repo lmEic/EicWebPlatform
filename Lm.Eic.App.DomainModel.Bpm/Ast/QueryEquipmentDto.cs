@@ -8,7 +8,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
 {
     public class QueryEquipmentDto
     {
-        private string assetNumber = string.Empty;
+        string assetNumber = string.Empty;
 
         /// <summary>
         /// 财产编号
@@ -17,6 +17,26 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         {
             get { return assetNumber; }
             set { if (assetNumber != value) { assetNumber = value; } }
+        }
+
+        string department;
+        /// <summary>
+        /// 部门
+        /// </summary>
+        public string Department
+        {
+            get { return department; }
+            set { if (department != value) { department = value; } }
+        }
+
+        DateTime inputDate;
+        /// <summary>
+        /// 录入日期
+        /// </summary>
+        public DateTime InputDate
+        {
+            get { return inputDate; }
+            set { if (inputDate != value) { inputDate = value; } }
         }
 
         private int searchMode = 0;

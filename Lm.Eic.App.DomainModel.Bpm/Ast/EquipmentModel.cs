@@ -336,6 +336,17 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _isscrapped = value; }
             get { return _isscrapped; }
         }
+
+        DateTime? inputDate;
+        /// <summary>
+        /// 录入日期
+        /// </summary>
+        public DateTime? InputDate
+        {
+            get { return inputDate; }
+            set { inputDate = value; }
+        }
+
         private string _opperson;
         /// <summary>
         ///操作人
@@ -354,6 +365,17 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _opsign = value; }
             get { return _opsign; }
         }
+
+        DateTime? opDate = DateTime.Now;
+        /// <summary>
+        /// 操作日期
+        /// </summary>
+        public DateTime? OpDate
+        {
+            get { return opDate; }
+            set { opDate = value; }
+        }
+
         private decimal _id_key;
         /// <summary>
         ///自增键
