@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
+using Lm.Eic.Uti.Common.YleeOOMapper;
 
 namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
 {
@@ -165,6 +166,22 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
             return week;
         }
 
+
+        public static OpResult ToOpResult(this int record, string sucessMsg, string failMsg)
+        {
+            return OpResult.SetResult(sucessMsg, failMsg, record);
+        }
+        public static OpResult ToAddResult(this int record, string context)
+        {
+            string sucessMsg = string.Format("添加{0}数据成功", context);
+            string failMsg = string.Format("添加{0}数据失败", context);
+            return OpResult.SetResult(sucessMsg, failMsg, record);
+        }
+
+        public static OpResult ToOpResult(this int record, string sucessMsg, decimal idKey)
+        {
+            return OpResult.SetResult(sucessMsg,record>0,idKey);
+        }
         /// <summary>
         /// 将英文的星期天数转换为中文
         /// </summary>

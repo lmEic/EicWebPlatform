@@ -71,12 +71,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 string opSign = string.Empty;
                 opSign = listModel[0].OpSign;
 
+                string opContext = "设备档案";
                 switch (opSign)
                 {
                     case OpMode.Add: //新增
                         record = 0;
                         listModel.ForEach(model => { record += irep.Insert(model); });
-                        return OpResult.SetResult("添加成功！", "添加失败！", record);
+                        return record.ToAddResult(opContext);
 
                     case OpMode.Edit: //修改
                         record = 0;
@@ -106,29 +107,32 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public OpResult Store(EquipmentModel model)
         {
+            OpResult result = OpResult.SetResult("财产编号不能为空！", false);
+            if (model == null || model.AssetNumber.IsNullOrEmpty())
+                return result;
             try
             {
-                if (model == null || model.AssetNumber.IsNullOrEmpty())
-                    return OpResult.SetResult("财产编号不能为空！", false);
-
                 switch (model.OpSign)
                 {
                     case OpMode.Add: //新增
-                        return AddEquipmentRecord(model);
-
+                        result = AddEquipmentRecord(model);
+                        break;
                     case OpMode.Edit: //修改
-                        return EditEquipmentRecord(model);
-
+                        result = EditEquipmentRecord(model);
+                        break;
                     case OpMode.Delete: //删除
-                        return DeleteEquipmentRecord(model);
-
-                    default: return OpResult.SetResult("操作模式溢出", false);
+                        result = DeleteEquipmentRecord(model);
+                        break;
+                    default: 
+                        result = OpResult.SetResult("操作模式溢出", false);
+                        break;
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
             }
+            return result;
         }
 
 
@@ -168,9 +172,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 model.State = "运行正常";
             if (model.IsScrapped == null)
                 model.IsScrapped = "未报废";
-
             //仓储操作
-            return OpResult.SetResult("增加设备成功", irep.Insert(model) > 0, model.Id_Key);
+            return irep.Insert(model).ToOpResult("增加设备成功", model.Id_Key);
         }
         private OpResult EditEquipmentRecord(EquipmentModel model)
         {
