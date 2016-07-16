@@ -1,12 +1,31 @@
 ﻿<div class="panel panel-default" ng-controller="astArchiveInputCtrl">
     <div class="panel-heading">
-        <h6 class="panel-title">
-            设备档案登记
-        </h6>
+        <div class="row">
+            <div class="col-md-2">
+                <h5 class="panel-title">设备档案登记</h5>
+            </div>
+            <div class="col-md-9">
+            </div>
+            <div class="col-md-1">
+                <span class="btn btn-sm btn-success pull-right" ng-model="searchBoardDisplay" bs-checkbox>查询面板</span>
+            </div>
+        </div>
     </div>
     <div class="panel-body" cg-busy="{promise:promise}">
         <div class="row">
             <div class="col-md-8">
+                <div class="well" ng-if="searchBoardDisplay">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="inputDate">录入日期</label>
+                            <input name="inputDate" type="date" class="form-control" ng-model="vmManager.inputDate" required />
+                            <div class="error-messages" ng-messages="formEquipment.inputDate.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">录入日期不能为空</small>
+                            </div>
+                        </div>
+                        <span class="btn btn-sm btn-success"><i class="fa fa-search"></i>查询</span>
+                    </form>
+                </div>
                 <div class="well">
                     <form role="form" name="formEquipment" novalidate class="form-horizontal">
                         <fieldset>
@@ -15,9 +34,9 @@
                                 <label for="equipmentType" class="col-md-2 control-label">设备类别</label>
                                 <div class="col-md-4">
                                     <button type="button" class="btn btn-default" ng-model="vm.EquipmentType" data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="请选择设备类别"
+                                            data-animation="am-flip-x" data-placeholder="量测设备" ng-change="vmManager.getAstId()"
                                             bs-options="item.text as item.text for item in vmManager.equTypes" bs-select>
-                                            <span class="caret"></span>
+                                        <span class="caret"></span>
                                     </button>
                                     <input name="equipmentType" class="form-control" ng-model="vm.EquipmentType" ng-show="false" required />
                                     <div class="error-messages" ng-messages="formEquipment.equipmentType.$error" ng-show="operate.showValidation">
@@ -28,7 +47,7 @@
                                 <label for="assetType" class="col-md-2 control-label">资产类别</label>
                                 <div class="col-md-4">
                                     <button type="button" class="btn btn-default" ng-model="vm.AssetType" data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="请选择资产类别"
+                                            data-animation="am-flip-x" data-placeholder="低质易耗品" ng-change="vmManager.getAstId()"
                                             bs-options="item.text as item.text for item in vmManager.assetTypes" bs-select>
                                         <span class="caret"></span>
                                     </button>
@@ -43,7 +62,7 @@
                                 <label for="taxType" class="col-md-2 control-label">税务类别</label>
                                 <div class="col-md-4">
                                     <button type="button" class="btn btn-default" ng-model="vm.TaxType" ng-change="vmManager.getAstId()" data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="请选择税务类别"
+                                            data-animation="am-flip-x" data-placeholder="选择税务类别"
                                             bs-options="item.text as item.text for item in vmManager.taxTypes" bs-select>
                                         <span class="caret"></span>
                                     </button>
@@ -188,10 +207,7 @@
                             <div class="form-group">
                                 <label for="installationlocation" class="col-md-2 control-label">安装位置</label>
                                 <div class="col-md-4">
-                                    <input name="installationlocation" class="form-control" ng-model="vm.Installationlocation" required />
-                                    <div class="error-messages" ng-messages="formEquipment.installationlocation.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">安装位置不能为空</small>
-                                    </div>
+                                    <input name="installationlocation" class="form-control" ng-model="vm.Installationlocation"/>
                                 </div>
 
                                 <label for="functionDescription" class="col-md-2 control-label">功能描述</label>
@@ -229,7 +245,7 @@
                                 <label for="addMode" class="col-md-2 control-label">校验类别</label>
                                 <div class="col-md-4">
                                     <button type="button" class="btn btn-default" ng-model="vm.CheckType" data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="选择校验类别"
+                                            data-animation="am-flip-x" data-placeholder="内校"
                                             bs-options="item.text as item.text for item in vmManager.checkTypes" bs-select>
                                         <span class="caret"></span>
                                     </button>

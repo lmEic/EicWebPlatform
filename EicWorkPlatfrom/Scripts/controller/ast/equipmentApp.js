@@ -135,9 +135,9 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         FunctionDescription: null,
         ServiceLife: 10,
         EquipmentPhoto: null,
-        AssetType: null,
-        EquipmentType: null,
-        TaxType: null,
+        AssetType: '低质易耗品',
+        EquipmentType: '量测设备',
+        TaxType:null,
         Unit: '台',
         Manufacturer: null,
         ManufacturingNumber: null,
@@ -153,16 +153,19 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         SafekeepDepartment: null,
         Installationlocation: null,
         IsMaintenance: null,
-        MaintenanceDate: null,
+        MaintenanceDate: new Date(),
         MaintenanceInterval: 1,
         PlannedMaintenanceDate: null,
         MaintenanceState: null,
         State: null,
         IsCheck: null,
-        CheckDate: null,
+        CheckType: '内校',
+        CheckDate: new Date(),
         CheckInterval: 6,
         PlannedCheckDate: null,
         ChechState: null,
+        InputDate: null,
+        OpDate: null,
         OpPerson: null,
         OpSign: 'add',
         Id_Key: null,
@@ -173,7 +176,12 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     var vmManager = {
         inti: function () {
-            leeHelper.clearVM(uiVM);
+            if (uiVM.OpSign === 'add') {
+                uiVM.ManufacturingNumber = null;
+            }
+            else {
+                leeHelper.clearVM(uiVM);
+            }
             uiVM.OpSign = 'add';
             vmManager.canEdit = false;
         },
@@ -222,6 +230,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                         equipment.Id_Key = opresult.Id_Key;
                         if (equipment.OpSign === 'add') {
                             vmManager.equipments.push(equipment)
+                            vmManager.getAstId();
                         }
                         else if (equipment.OpSign == 'edit') {
                             var current = _.find(vmManager.equipments, { AssetNumber: equipment.AssetNumber });

@@ -26,14 +26,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="qryModel">设备查询数据传输对象</param>
         /// <param name="searchMode"> 1.依据财产编号查询  </param>
         /// <returns></returns>
-        public List<EquipmentCheckModel> FindBy(QueryEquipmentDto qryDto, int searchMode)
+        public List<EquipmentCheckModel> FindBy(QueryEquipmentDto qryDto)
         {
             try
             {
-                switch (searchMode)
+                switch (qryDto.SearchMode)
                 {
                     case 1: //依据财产编号查询
-                        return irep.FindAll<EquipmentCheckModel>(m => m.AssetNumber.StartsWith(qryDto.SearchValue)).ToList();
+                        return irep.FindAll<EquipmentCheckModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
 
                     default: return null;
                 }
@@ -57,7 +57,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 if (model == null)
                     return OpResult.SetResult("校验记录不能为空！", false);
 
-                var equipmentList = equipmentManager.FindBy(new EquipmentManager.QueryEquipmentDto() { SearchValue = model.AssetNumber }, 1);
+                var equipmentList = equipmentManager.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber ,SearchMode=1 });
                 var equipment = equipmentList.Count > 0 ? equipmentList[0] : null;
                 if (equipment == null)
                     return OpResult.SetResult("未找到校验单上的设备\r\n请确定财产编号是否正确！", false);
@@ -111,25 +111,5 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 return OpResult.SetResult("更新设备校验日期时错误！", false);
             return OpResult.SetResult("校验记录删除成功", irep.Delete(model.Id_Key) > 0, model.Id_Key);
         }
-
-
-
-        #region 查询参数类
-
-        public class QueryEquipmentDto
-        {
-            private string searchValue = string.Empty;
-
-            /// <summary>
-            /// 单条件搜索参数
-            /// </summary>
-            public string SearchValue
-            {
-                get { return searchValue; }
-                set { if (searchValue != value) { searchValue = value; } }
-            }
-        }
-
-        #endregion 查询参数类
     }
 }

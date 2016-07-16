@@ -5,6 +5,7 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
@@ -45,7 +46,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 string temAssetNumber = string.Format("{0}{1}{2}", assetNumber_1, assetNumber_2_3, assetNumber_4);
                 var temEntitylist = irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(temAssetNumber));
                 assetNumber_5_7 = (temEntitylist.Count + 1).ToString("000");
-
                 return assetNumber_5_7.IsNullOrEmpty() ? "" : string.Format("{0}{1}{2}{3}", assetNumber_1, assetNumber_2_3, assetNumber_4, assetNumber_5_7);
             }
             catch (Exception ex)
@@ -71,12 +71,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 string opSign = string.Empty;
                 opSign = listModel[0].OpSign;
 
+                string opContext = "设备档案";
                 switch (opSign)
                 {
                     case OpMode.Add: //新增
                         record = 0;
                         listModel.ForEach(model => { record += irep.Insert(model); });
-                        return OpResult.SetResult("添加成功！", "添加失败！", record);
+                        return record.ToAddResult(opContext);
 
                     case OpMode.Edit: //修改
                         record = 0;
@@ -106,41 +107,102 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public OpResult Store(EquipmentModel model)
         {
+            OpResult result = OpResult.SetResult("财产编号不能为空！", false);
+            if (model == null || model.AssetNumber.IsNullOrEmpty())
+                return result;
             try
             {
-                if (model == null || model.AssetNumber.IsNullOrEmpty())
-                    return OpResult.SetResult("财产编号不能为空！", false);
-
                 switch (model.OpSign)
                 {
                     case OpMode.Add: //新增
-                        return AddEquipmentRecord(model);
-
+                        result = AddEquipmentRecord(model);
+                        break;
                     case OpMode.Edit: //修改
-                        return EditEquipmentRecord(model);
-
+                        result = EditEquipmentRecord(model);
+                        break;
                     case OpMode.Delete: //删除
-                        return DeleteEquipmentRecord(model);
-
-                    default: return OpResult.SetResult("操作模式溢出", false);
+                        result = DeleteEquipmentRecord(model);
+                        break;
+                    default: 
+                        result = OpResult.SetResult("操作模式溢出", false);
+                        break;
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
             }
+            return result;
         }
 
 
         private OpResult AddEquipmentRecord(EquipmentModel model)
         {
-            model.IsMaintenance = (model.MaintenanceDate == null && model.MaintenanceInterval == 0) ? "不保养" : "保养";
-            model.IsCheck = (model.CheckDate == null && model.CheckInterval == 0) ? "不校验" : "校验";
+            //基础设置
+            model.InputDate = DateTime.Now;
 
-            return OpResult.SetResult("增加设备成功", irep.Insert(model) > 0, model.Id_Key);
+            //保养处理
+            //  model.IsMaintenance = (model.MaintenanceDate == null && model.MaintenanceInterval == 0) ? "不保养" : "保养";
+            model.IsMaintenance = model.AssetType == "低质易耗品" ? "不保养" : "保养";
+            if (model.IsMaintenance == "保养")
+            {
+                model.PlannedMaintenanceDate = model.MaintenanceDate.Value.AddMonths(model.MaintenanceInterval);
+                model.MaintenanceState = model.PlannedMaintenanceDate > DateTime.Now ? "在期" : "超期";
+            }
+            else
+            {
+                model.MaintenanceDate = null;
+                model.MaintenanceInterval = 0;
+            }
+            //校验处理
+            model.IsCheck = (model.CheckDate == null && model.CheckInterval == 0) ? "不校验" : "校验";
+            if (model.IsCheck == "校验")
+            {
+                model.PlannedCheckDate = model.CheckDate.Value.AddMonths(model.CheckInterval);
+                model.CheckState = model.PlannedCheckDate > DateTime.Now ? "在期" : "超期";
+            }
+            else
+            {
+                model.CheckDate = null;
+                model.CheckInterval = 0;
+            }
+
+            //设备状态初始化
+            if (model.State == null)
+                model.State = "运行正常";
+            if (model.IsScrapped == null)
+                model.IsScrapped = "未报废";
+            //仓储操作
+            return irep.Insert(model).ToOpResult("增加设备成功", model.Id_Key);
         }
         private OpResult EditEquipmentRecord(EquipmentModel model)
         {
+            //保养处理
+            //  model.IsMaintenance = (model.MaintenanceDate == null && model.MaintenanceInterval == 0) ? "不保养" : "保养";
+            model.IsMaintenance = model.AssetType == "低质易耗品" ? "不保养" : "保养";
+            if (model.IsMaintenance == "保养")
+            {
+                model.PlannedMaintenanceDate = model.MaintenanceDate.Value.AddMonths(model.MaintenanceInterval);
+                model.MaintenanceState = model.PlannedMaintenanceDate > DateTime.Now ? "在期" : "超期";
+            }
+            else
+            {
+                model.MaintenanceDate = null;
+                model.MaintenanceInterval = 0;
+            }
+            //校验处理
+            model.IsCheck = (model.CheckDate == null && model.CheckInterval == 0) ? "不校验" : "校验";
+            if (model.IsCheck == "校验")
+            {
+                model.PlannedCheckDate = model.CheckDate.Value.AddMonths(model.CheckInterval);
+                model.CheckState = model.PlannedCheckDate > DateTime.Now ? "在期" : "超期";
+            }
+            else
+            {
+                model.CheckDate = null;
+                model.CheckInterval = 0;
+            }
+
             return OpResult.SetResult("修改设备成功", irep.Update(u => u.Id_Key == model.Id_Key, model) > 0);
         }
         private OpResult DeleteEquipmentRecord(EquipmentModel model)
@@ -152,22 +214,22 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// 查询
         /// </summary>
         /// <param name="qryModel">设备查询数据传输对象</param>
-        /// <param name="searchMode"> 1.依据财产编号查询 2.依据保管部门查询 3.依据规格查询 </param>
+        /// <param name="searchMode"> 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询 </param>
         /// <returns></returns>
-        public List<EquipmentModel> FindBy(QueryEquipmentDto qryDto, int searchMode)
+        public List<EquipmentModel> FindBy(QueryEquipmentDto qryDto)
         {
             try
             {
-                switch (searchMode)
+                switch (qryDto.SearchMode)
                 {
                     case 1: //依据财产编号查询
-                        return irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(qryDto.SearchValue)).ToList();
+                        return irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
 
                     case 2: //依据保管部门查询
-                        return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.SearchValue)).ToList();
+                        return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();
 
-                    case 3: //依据规格查询
-                        return irep.FindAll<EquipmentModel>(m => m.EquipmentSpec.StartsWith(qryDto.SearchValue)).ToList();
+                    case 3: //依据录入日期
+                        return irep.FindAll<EquipmentModel>(m => m.InputDate == qryDto.InputDate).ToList();
 
                     default: return null;
                 }
@@ -175,20 +237,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
-            }
-        }
-
-        public class QueryEquipmentDto
-        {
-            private string searchValue = string.Empty;
-
-            /// <summary>
-            /// 单条件搜索参数
-            /// </summary>
-            public string SearchValue
-            {
-                get { return searchValue; }
-                set { if (searchValue != value) { searchValue = value; } }
             }
         }
     }

@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Ast\EquipmentCheckModel.cs" />
     <Compile Include="Ast\EquipmentModel.cs" />
+    <Compile Include="Ast\QueryEquipmentDto.cs" />
     <Compile Include="Hrm\Archives\ArchivesIdentityModel.cs" />
     <Compile Include="Hrm\Attendance\AttendClassTypeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
