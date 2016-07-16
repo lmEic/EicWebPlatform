@@ -601,7 +601,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// 设置物料抽测项次
     /// </summary>
-  
     public class  MaterialSampleSet
     {
         public MaterialSampleSet ()
@@ -762,9 +761,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
-
-
-
+    /// <summary>
+    /// 物料抽样计划表
+    /// </summary>
     public class SamplePlanTableModel
     {
         public SamplePlanTableModel ()

@@ -510,7 +510,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <returns></returns>
         private static Excel.Workbook OpenTheExcel(string PrintIQCDataXlsPath)
         {
-            string fileName = @"C:\lmSpc\System\ProductSizeSpecPicture\品保课\IQC.xls";
+            string fileName = @"\\192.168.0.237\LightMasterSpc\lmSpc\System\ProductSizeSpecPicture\品保课\IQC.xls";
             Excel.Application xlsApp = new Excel.Application();
             Excel.Workbook xlsBook = xlsApp.Workbooks.Add(fileName);
             xlsApp.DisplayAlerts = false;
