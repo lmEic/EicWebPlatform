@@ -41,7 +41,7 @@ namespace EicWorkPlatfrom.Controllers
 
         [NoAuthenCheck]
         /// <summary>
-        /// 获取设备编号
+        /// 获取设备编号             
         /// </summary>
         /// <param name="equipmentType"></param>
         /// <param name="assetType"></param>
@@ -64,7 +64,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             var ds=QuantityService.IQCSampleItemsRecordManager.GetSamplePrintItemBy("591-1607032");
 
-            var ms= QuantityService.IQCSampleItemsRecordManager.ExportPrintToExcel(ds, "SmapleDatas");
+            var ms= QuantityService.IQCSampleItemsRecordManager.ExportPrintToExcel(ds);
 
             return this.ExportToExcel(ms, "aaa", "AAA");
         }

@@ -55,13 +55,22 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
     /// <summary>
     /// 设置物料抽测项次
     /// </summary>
-    public class SetMaterialSampleItemMapping : EntityTypeConfiguration<MaterialSampleSet>
+    public class MaterialSampleItemMapping : EntityTypeConfiguration<MaterialSampleSet>
     {
-        public SetMaterialSampleItemMapping()
+        public MaterialSampleItemMapping()
         {
             this.HasKey(t => t.Id_key );
             this.Property(t => t.Id_key ).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("QCMS_MaterialSampleSet");
+        }
+    }
+    public class SamplePlanMapping : EntityTypeConfiguration<SamplePlanTableModel>
+    {
+        public SamplePlanMapping()
+        {
+            this.HasKey(t => t.Id_key);
+            this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("QCMS_SamplePlanTable");
         }
     }
   
