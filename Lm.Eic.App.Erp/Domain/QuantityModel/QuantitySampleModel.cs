@@ -129,7 +129,7 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
         /// <summary>
         /// 进料日期 
         /// </summary>
-        public string ProduceInDate { get; set; }
+        public DateTime  ProduceInDate { get; set; }
         /// <summary>
         ///  产品品号 
         /// </summary>

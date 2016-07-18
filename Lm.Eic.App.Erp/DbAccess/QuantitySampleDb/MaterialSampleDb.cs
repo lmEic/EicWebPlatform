@@ -87,9 +87,6 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                         DTSQLsum = string.Format("SELECT  Sum(TB007) AS 数量  FROM  INVTB  WHERE   (TB001= '{0}') AND (TB002 = '{1}')AND (TB004='", category, code);
                         break;
                     default:
-                        
-                   
-                       
                         SQL = string.Format("SELECT  TG014 AS 进货日期,TG005 AS 供应商代码 FROM  PURTG  WHERE   (TG001= '{0}') AND (TG002 = '{1}')", category, code);
 
                         DTSQLMaterialID = string.Format("SELECT  DISTINCT TH004 AS 料号 FROM  PURTH   WHERE   (TH001= '{0}') AND (TH002 = '{1}')", category, code);
@@ -127,7 +124,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                     ProductStandard = PorductInfo.ProductSpecify,
                     ProductID = PorductInfo.ProductID,
                     ProductSupplier = SupplierID,
-                    ProduceInDate = InMaterialDate,
+                    ProduceInDate = DateTime.ParseExact( InMaterialDate, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture),
                     Category = category,
                     Code = code
                 };
@@ -190,7 +187,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                          ProductStandard = PorductInfo.ProductSpecify,
                          ProductID = PorductInfo.ProductID,
                          ProductSupplier = SupplierID,
-                         ProduceInDate = InMaterialDate,
+                         ProduceInDate =  DateTime.ParseExact(InMaterialDate , "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture),
                          Category = category,
                          Code = code
                         };
@@ -213,7 +210,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             string TA002 = code;
             MaterialModel Material = null;
             List<MaterialModel> Materials = new List<MaterialModel>(); ;
-            string SQL = "SELECT  TA006 AS 料号,TA015 AS 数量,TA026 AS 单别,TA027 AS 单号 FROM  MOCTA  WHERE   (TA001= '" + TA001 + "') AND (TA002 = '" + TA002 + "')";
+            string SQL = "SELECT  TA006 AS 料号,TA015 AS 数量,TA026 AS 单别,TA027 AS 单号,TA003 AS 开单日期  FROM  MOCTA  WHERE   (TA001= '" + TA001 + "') AND (TA002 = '" + TA002 + "')";
             DataTable DTds = DbHelper.Erp.LoadTable(SQL);
             if (DTds.Rows.Count > 0)
             {
@@ -235,7 +232,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 Material.Code = code;
                 Material.ProductID = DTds.Rows[0]["料号"].ToString().Trim();
                 Material.ProduceNumber = DTds.Rows[0]["数量"].ToString().Trim().ToDouble ();
-                Material.ProduceInDate = DateTime.Today.ToString("yyyy-MM-dd");
+                Material.ProduceInDate = DateTime.ParseExact(DTds.Rows[0]["开单日期"].ToString().Trim(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
                 Materials.Add(Material);
             }
             return Materials;

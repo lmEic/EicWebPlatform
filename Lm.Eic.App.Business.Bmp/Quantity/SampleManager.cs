@@ -9,38 +9,62 @@ using Lm.Eic.App.Erp.Bussiness.QuantityManage;
 using Lm.Eic.App.Erp.Domain .QuantityModel;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw;
+
 using Excel;
 namespace Lm.Eic.App.Business.Bmp.Quantity
 {
     public class IQCSampleItemsRecordManager
     {
         IIQCSampleItemRecordReposity irep = null;
+       MaterialSampleItemManager MaterialSampleItem = null;
         public IQCSampleItemsRecordManager ()
         {
             irep = new IQCSampleItemRecordReposity();
+            MaterialSampleItem = new MaterialSampleItemManager();
         }
-      
-         #region        UID
-       public void  InsertModel(IQCSampleItemRecordModel model)
-         {
-             irep.Insert(model); 
-         }
-          
-         public void UpdateModel (IQCSampleItemRecordModel model)
-         {
-             irep.Update(e => e.Id_key == model.Id_key, model);
-         }
- 
-         public void DeleteModel(IQCSampleItemRecordModel model)
-         {
-             irep.Delete(e => e.Id_key == model.Id_key);
-         }
- 
-         public object  Get_Id_Key_By(IQCSampleItemRecordModel model)
+        private bool IsExist(IQCSampleItemRecordModel model)
         {
-             return irep.Entities.Where(e => e.OrderID == model.OrderID & e.SampleMaterial == model.SampleMaterial & e.SampleItem == model.SampleItem).Select(e => e.Id_key).FirstOrDefault().ToString();
-         }
-         #endregion
+            return irep.Entities.Where(e =>
+                e.OrderID ==model .OrderID 
+                &e.SampleMaterial ==model.SampleMaterial
+                &e.SampleItem ==model.SampleItem 
+                ).ToList ().Count >0;
+        }
+       
+        /// <summary>
+        ///存储
+        /// </summary>
+        /// <param name="listModel"></param>
+        /// <returns></returns>
+        public OpResult Store(List<IQCSampleItemRecordModel> listModel)
+        {
+
+            OpResult opResult = OpResult.SetResult("未执行任何操作！", false);
+             
+            try
+            {
+                int record = 0;
+                string opContext = "IQC打印存储";
+                if (listModel == null||listModel .Count <=0) return OpResult.SetResult("集合不能为空！", false);
+                     //新增 修改
+                        listModel.ForEach(model => {
+
+                            if (IsExist(model))
+                            {
+                                model.PrintCount += 1;
+                                record += irep.Update(u => u.Id_key == model.Id_key, model);
+                            }
+                            else
+                            { record += irep.Insert(model); }
+                        });
+                        opResult = record.ToOpResult_Add(opContext);
+                
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+            return opResult;
+        }
         /// <summary>
        /// 
        /// </summary>
@@ -58,7 +82,47 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <returns></returns>
         public  List<IQCSampleItemRecordModel> GetPringSampleItemBy(string Orderid,string SampleMaterial)
         {
-            return irep.Entities.Where(e => e.OrderID == Orderid & e.SampleMaterial == SampleMaterial).ToList();
+
+            List<IQCSampleItemRecordModel> models = irep.Entities.Where(e => e.OrderID == Orderid & e.SampleMaterial == SampleMaterial).ToList();
+            if (models ==null ||models .Count <=0)
+            {
+                IQCSampleItemRecordModel model=null; 
+                 var productInfo = GetPuroductSupplierInfo(Orderid);
+                  productInfo.ForEach(e => {
+                     if (e.ProductID == SampleMaterial)
+                     {
+                         var SampleItem = MaterialSampleItem.GetMaterilalSampleItem(e.ProductID);
+                         SampleItem.ForEach(f =>
+                         {
+                             model = new IQCSampleItemRecordModel()
+                             {
+                                 OrderID = e.OrderID,
+                                 SampleMaterial = e.ProductID,
+                                 SampleMaterialDrawID = e.ProductDrawID,
+                                 SampleMaterialName = e.ProductName,
+                                 SampleMaterialInDate = e.ProduceInDate,
+                                 SampleMaterialSpec = e.ProductStandard,
+                                 SampleMaterialNumber=e.ProduceNumber,
+                                 SampleMaterialSupplier=e.ProductSupplier,
+                                 CheckLevel=f.CheckLevel,
+                                 CheckMethod=f.CheckMethod,
+                                 CheckWay=f.CheckWay,
+                                 EquipmentID=f.EquipmetnID,
+                                 Grade=f.Grade,
+                                 SampleItem=f.SampleItem,
+                                 SizeSpec=f.SizeSpec,
+                                 SizeSpecDown=f.SizeSpecDown,
+                                 SizeSpecUP=f.SizeSpecUP,
+                                 PrintCount=1,
+                             };
+                             models.Add(model);
+                         });
+                     }
+                    
+                 });
+                
+            }
+            return models;
         }
      
         /// <summary>
@@ -99,7 +163,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                  if (workbook == null) return null;
                  NPOI.SS.UserModel.ISheet sheet = workbook.GetSheetAt(0);
                  sheet.ForceFormulaRecalculation = true;
-                 workbook.Write(stream);
+                //保存
+                 Store(dataSource);
                 return stream;
             }
             catch (Exception ex)
@@ -746,18 +811,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
 
 
 
-    public class MaterialSampleItemManager
-    {
-        IMaterialSampleSetReposity irep = null;
-        public MaterialSampleItemManager()
-        {
-            irep = new MaterialSampleSetReposity();
-        }
-        public List<MaterialSampleSet> GetMaterilalSampleItem(string Materi)
-        {
-            return irep.Entities.Where(e => e.SampleItem == Materi).ToList();
-        }
-
-    }
+  
 
 }
