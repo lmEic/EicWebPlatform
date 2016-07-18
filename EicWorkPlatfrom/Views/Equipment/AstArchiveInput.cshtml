@@ -1,20 +1,321 @@
 ﻿<div class="panel panel-default" ng-controller="astArchiveInputCtrl">
-    <div class="panel-heading">
-        <div class="row">
-            <div class="col-md-2">
-                <h5 class="panel-title">设备档案登记</h5>
+    <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
+            <div bs-pane data-title="设备档案登记" data-name="initTab">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="well">
+                            <form role="form" name="formEquipment" novalidate class="form-horizontal">
+                                <fieldset>
+                                    <legend>基本信息</legend>
+                                    <div class="form-group">
+                                        <label for="equipmentType" class="col-md-2 control-label">设备类别</label>
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn btn-default" ng-model="vm.EquipmentType" data-html="1" data-multiple="0"
+                                                    data-animation="am-flip-x" data-placeholder="量测设备" ng-change="vmManager.getAstId()"
+                                                    bs-options="item.text as item.text for item in vmManager.equTypes" bs-select>
+                                                <span class="caret"></span>
+                                            </button>
+                                            <input name="equipmentType" class="form-control" ng-model="vm.EquipmentType" ng-show="false" required />
+                                            <div class="error-messages" ng-messages="formEquipment.equipmentType.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">设备类别不能为空</small>
+                                            </div>
+                                        </div>
+
+                                        <label for="assetType" class="col-md-2 control-label">资产类别</label>
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn btn-default" ng-model="vm.AssetType" data-html="1" data-multiple="0"
+                                                    data-animation="am-flip-x" data-placeholder="低质易耗品" ng-change="vmManager.getAstId()"
+                                                    bs-options="item.text as item.text for item in vmManager.assetTypes" bs-select>
+                                                <span class="caret"></span>
+                                            </button>
+                                            <input name="assetType" class="form-control" ng-model="vm.AssetType" ng-show="false" required />
+                                            <div class="error-messages" ng-messages="formEquipment.assetType.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">资产类别不能为空</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="taxType" class="col-md-2 control-label">税务类别</label>
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn btn-default" ng-model="vm.TaxType" ng-change="vmManager.getAstId()" data-html="1" data-multiple="0"
+                                                    data-animation="am-flip-x" data-placeholder="选择税务类别"
+                                                    bs-options="item.text as item.text for item in vmManager.taxTypes" bs-select>
+                                                <span class="caret"></span>
+                                            </button>
+                                            <input name="taxType" class="form-control" ng-model="vm.TaxType" ng-show="false" required />
+                                            <div class="error-messages" ng-messages="formEquipment.taxType.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">税务类别不能为空</small>
+                                            </div>
+                                        </div>
+                                        <label for="assetNumber" class="col-md-2 control-label">设备编号</label>
+                                        <div class="col-md-4">
+                                            <input name="assetNumber" class="form-control" ng-model="vm.AssetNumber" readonly required />
+                                            <div class="error-messages" ng-messages="formEquipment.assetNumber.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">设备编号不能为空</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="equipmentName" class="col-md-2 control-label">设备名称</label>
+                                        <div class="col-md-4">
+                                            <input name="equipmentName" class="form-control" ng-model="vm.EquipmentName" required />
+                                            <div class="error-messages" ng-messages="formEquipment.equipmentName.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">设备名称不能为空</small>
+                                            </div>
+                                        </div>
+                                        <label for="equipmentSpec" class="col-md-2 control-label">规格型号</label>
+                                        <div class="col-md-4">
+                                            <input name="equipmentSpec" class="form-control" ng-model="vm.EquipmentSpec" required />
+                                            <div class="error-messages" ng-messages="formEquipment.equipmentSpec.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">规格型号不能为空</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="manufacturingNumber" class="col-md-2 control-label">制造编号</label>
+                                        <div class="col-md-4">
+                                            <input name="manufacturingNumber" class="form-control" ng-model="vm.ManufacturingNumber" required />
+                                            <div class="error-messages" ng-messages="formEquipment.manufacturingNumber.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">制造编号不能为空</small>
+                                            </div>
+                                        </div>
+                                        <label for="unit" class="col-md-2 control-label">单位</label>
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn btn-default" ng-model="vm.Unit" data-html="1" data-multiple="0"
+                                                    data-animation="am-flip-x" data-placeholder="台"
+                                                    bs-options="item.text as item.text for item in vmManager.equUnits" bs-select>
+                                                <span class="caret"></span>
+                                            </button>
+                                            <input name="unit" class="form-control" ng-model="vm.Unit" ng-show="false" readonly required />
+                                            <div class="error-messages" ng-messages="formEquipment.unit.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">单位不能为空</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="deliveryDate" class="col-md-2 control-label">购入日期</label>
+                                        <div class="col-md-4">
+                                            <input name="deliveryDate" type="date" class="form-control" ng-model="vm.DeliveryDate" required />
+                                            <div class="error-messages" ng-messages="formEquipment.deliveryDate.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">购入日期不能为空</small>
+                                            </div>
+                                        </div>
+                                        <label for="addMode" class="col-md-2 control-label">增加方式</label>
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn btn-default" ng-model="vm.AddMode" data-html="1" data-multiple="0"
+                                                    data-animation="am-flip-x" data-placeholder="外购"
+                                                    bs-options="item.text as item.text for item in vmManager.addModes" bs-select>
+                                                <span class="caret"></span>
+                                            </button>
+                                            <input name="addMode" class="form-control" ng-model="vm.AddMode" ng-show="false" required />
+                                            <div class="error-messages" ng-messages="formEquipment.addMode.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">增加方式不能为空</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="serviceLife" class="col-md-2 control-label">使用寿命</label>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <input name="serviceLife" type="number" class="form-control" ng-model="vm.ServiceLife" required />
+                                                <div class="error-messages" ng-messages="formEquipment.serviceLife.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">使用寿命不能为空</small>
+                                                </div>
+                                                <div class="input-group-addon">
+                                                    <label class="label label-primary">年</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <label for="manufacturer" class="col-md-2 control-label">生产厂家</label>
+                                        <div class="col-md-4">
+                                            <input name="manufacturer" class="form-control" ng-model="vm.Manufacturer" required />
+                                            <div class="error-messages" ng-messages="formEquipment.manufacturer.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">生产厂家不能为空</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="safekeepDepartment" class="col-md-2 control-label">保管单位</label>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <input name="safekeepDepartment" class="form-control" ng-model="vm.SafekeepDepartment" readonly required />
+                                                <div class="error-messages" ng-messages="formEquipment.safekeepDepartment.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">保管单位不能为空</small>
+                                                </div>
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-primary" style="margin-bottom:6px;" id="departmentPopover"
+                                                            data-title="选择部门名称"
+                                                            data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
+                                                            data-animation="am-flip-x" data-auto-close="1"
+                                                            data-keyboard="false"
+                                                            data-bs-popover>
+                                                        <i class="fa fa-sitemap"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <label for="safekeepUser" class="col-md-2 control-label">保管人</label>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <input name="safekeepUser" class="form-control" readonly ng-model="vm.SafekeepUser" required />
+                                                <div class="error-messages" ng-messages="formEquipment.safekeepUser.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">保管人不能为空</small>
+                                                </div>
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-primary" style="margin-bottom:6px;"
+                                                            data-title="选择人员信息"
+                                                            data-template-url="@Url.Action("WorkerSelectTpl", "CommonTpl")"
+                                                            data-animation="am-flip-x" data-auto-close="1"
+                                                            data-bs-popover>
+                                                        <i class="fa fa-users"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="installationlocation" class="col-md-2 control-label">安装位置</label>
+                                        <div class="col-md-4">
+                                            <input name="installationlocation" class="form-control" ng-model="vm.Installationlocation" />
+                                        </div>
+
+                                        <label for="functionDescription" class="col-md-2 control-label">功能描述</label>
+                                        <div class="col-md-4">
+                                            <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.FunctionDescription" />
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>校验信息</legend>
+                                    <div class="form-group">
+                                        <label for="checkDate" class="col-md-2 control-label">校验日期</label>
+                                        <div class="col-md-4">
+                                            <input name="CheckDate" class="form-control" type="date" ng-model="vm.CheckDate" required />
+                                            <div class="error-messages" ng-messages="formEquipment.checkDate.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">校验日期不能为空</small>
+                                            </div>
+                                        </div>
+
+                                        <label for="checkInterval" class="col-md-2 control-label">校验周期</label>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <input name="checkInterval" type="number" class="form-control" ng-model="vm.CheckInterval" required />
+                                                <div class="error-messages" ng-messages="formEquipment.checkInterval.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">校验间隔不能为空</small>
+                                                </div>
+                                                <div class="input-group-addon">
+                                                    <label class="label label-primary">月</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addMode" class="col-md-2 control-label">校验类别</label>
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn btn-default" ng-model="vm.CheckType" data-html="1" data-multiple="0"
+                                                    data-animation="am-flip-x" data-placeholder="内校"
+                                                    bs-options="item.text as item.text for item in vmManager.checkTypes" bs-select>
+                                                <span class="caret"></span>
+                                            </button>
+                                            <input name="checkType" class="form-control" ng-model="vm.CheckType" ng-show="false" required />
+                                            <div class="error-messages" ng-messages="formEquipment.checkType.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">校验类别不能为空</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>保养信息</legend>
+                                    <div class="form-group">
+                                        <label for="maintenanceDate" class="col-md-2 control-label">保养日期</label>
+                                        <div class="col-md-4">
+                                            <input name="maintenanceDate" type="date" class="form-control" ng-model="vm.MaintenanceDate" required />
+                                            <div class="error-messages" ng-messages="formEquipment.maintenanceDate.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">保养日期不能为空</small>
+                                            </div>
+                                        </div>
+
+                                        <label for="maintenanceInterval" class="col-md-2 control-label">保养周期</label>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <input name="maintenanceInterval" type="number" class="form-control" ng-model="vm.MaintenanceInterval" required />
+                                                <div class="error-messages" ng-messages="formEquipment.maintenanceInterval.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">保养周期不能为空</small>
+                                                </div>
+                                                <div class="input-group-addon">
+                                                    <label class="label label-primary">月</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <div class="alert alert-info">
+                                    <div class="row">
+                                        <div class="col-md-2">
+
+                                        </div>
+                                        <div class="col-md-10">
+                                            <button class="btn btn-primary " ng-click="operate.saveAll(formEquipment.$valid)"><i class="fa fa-save"></i>保存</button>
+                                            <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                            <span ng-class="operate.result==true ? 'alert alert-success':'alert alert-danger'" ng-show="operate.msgDisplay">
+                                                <i class="fa fa-info-circle"></i>
+                                                {{operate.message}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="list-group">
+                            <li class="list-group-item active">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h4 class="list-title">
+                                            <i class="fa fa-list"></i>
+                                            <span>列表</span>
+                                        </h4>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" />
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-search"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item" ng-click="vmManager.selectEquipment(item)"
+                                data-title="设备型号:{{item.EquipmentSpec}}" data-bs-tooltip
+                                ng-repeat="item in vmManager.equipments track by $index">
+                                编号：
+                                <span class="label label-success" style="cursor:pointer">{{item.AssetNumber}}</span>
+                                -----
+                                名称：
+                                <span>
+                                    <i class="fa fa-envelope-o"></i>
+                                    {{item.EquipmentName}}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-9">
-            </div>
-            <div class="col-md-1">
-                <span class="btn btn-sm btn-warning" ng-model="searchBoardDisplay" bs-checkbox>查询面板</span>
-            </div>
-        </div>
-    </div>
-    <div class="panel-body" cg-busy="{promise:promise}">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="well" ng-if="searchBoardDisplay">
+            <div bs-pane data-title="设备档案编辑" data-name="editTab">
+                <div class="well">
                     <form class="form-inline">
                         <div class="form-group">
                             <label for="inputDate">录入日期</label>
@@ -23,321 +324,56 @@
                                 <small ng-message="required">录入日期不能为空</small>
                             </div>
                         </div>
-                        <span class="btn btn-sm btn-success"><i class="fa fa-search"></i>查询</span>
+                        <span class="btn btn-primary"><i class="fa fa-search"></i>查询</span>
                     </form>
                 </div>
-                <div class="well">
-                    <form role="form" name="formEquipment" novalidate class="form-horizontal">
-                        <fieldset>
-                            <legend>基本信息</legend>
-                            <div class="form-group">
-                                <label for="equipmentType" class="col-md-2 control-label">设备类别</label>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-default" ng-model="vm.EquipmentType" data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="量测设备" ng-change="vmManager.getAstId()"
-                                            bs-options="item.text as item.text for item in vmManager.equTypes" bs-select>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <input name="equipmentType" class="form-control" ng-model="vm.EquipmentType" ng-show="false" required />
-                                    <div class="error-messages" ng-messages="formEquipment.equipmentType.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">设备类别不能为空</small>
-                                    </div>
-                                </div>
-
-                                <label for="assetType" class="col-md-2 control-label">资产类别</label>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-default" ng-model="vm.AssetType" data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="低质易耗品" ng-change="vmManager.getAstId()"
-                                            bs-options="item.text as item.text for item in vmManager.assetTypes" bs-select>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <input name="assetType" class="form-control" ng-model="vm.AssetType" ng-show="false" required />
-                                    <div class="error-messages" ng-messages="formEquipment.assetType.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">资产类别不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="taxType" class="col-md-2 control-label">税务类别</label>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-default" ng-model="vm.TaxType" ng-change="vmManager.getAstId()" data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="选择税务类别"
-                                            bs-options="item.text as item.text for item in vmManager.taxTypes" bs-select>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <input name="taxType" class="form-control" ng-model="vm.TaxType" ng-show="false" required />
-                                    <div class="error-messages" ng-messages="formEquipment.taxType.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">税务类别不能为空</small>
-                                    </div>
-                                </div>
-                                <label for="assetNumber" class="col-md-2 control-label">设备编号</label>
-                                <div class="col-md-4">
-                                    <input name="assetNumber" class="form-control" ng-model="vm.AssetNumber" readonly required />
-                                    <div class="error-messages" ng-messages="formEquipment.assetNumber.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">设备编号不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="equipmentName" class="col-md-2 control-label">设备名称</label>
-                                <div class="col-md-4">
-                                    <input name="equipmentName" class="form-control" ng-model="vm.EquipmentName" required />
-                                    <div class="error-messages" ng-messages="formEquipment.equipmentName.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">设备名称不能为空</small>
-                                    </div>
-                                </div>
-                                <label for="equipmentSpec" class="col-md-2 control-label">规格型号</label>
-                                <div class="col-md-4">
-                                    <input name="equipmentSpec" class="form-control" ng-model="vm.EquipmentSpec" required />
-                                    <div class="error-messages" ng-messages="formEquipment.equipmentSpec.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">规格型号不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="manufacturingNumber" class="col-md-2 control-label">制造编号</label>
-                                <div class="col-md-4">
-                                    <input name="manufacturingNumber" class="form-control" ng-model="vm.ManufacturingNumber" required />
-                                    <div class="error-messages" ng-messages="formEquipment.manufacturingNumber.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">制造编号不能为空</small>
-                                    </div>
-                                </div>
-                                <label for="unit" class="col-md-2 control-label">单位</label>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-default" ng-model="vm.Unit" data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="台"
-                                            bs-options="item.text as item.text for item in vmManager.equUnits" bs-select>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <input name="unit" class="form-control" ng-model="vm.Unit" ng-show="false" readonly required />
-                                    <div class="error-messages" ng-messages="formEquipment.unit.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">单位不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="deliveryDate" class="col-md-2 control-label">购入日期</label>
-                                <div class="col-md-4">
-                                    <input name="deliveryDate" type="date" class="form-control" ng-model="vm.DeliveryDate" required />
-                                    <div class="error-messages" ng-messages="formEquipment.deliveryDate.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">购入日期不能为空</small>
-                                    </div>
-                                </div>
-                                <label for="addMode" class="col-md-2 control-label">增加方式</label>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-default" ng-model="vm.AddMode" data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="外购"
-                                            bs-options="item.text as item.text for item in vmManager.addModes" bs-select>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <input name="addMode" class="form-control" ng-model="vm.AddMode" ng-show="false" required />
-                                    <div class="error-messages" ng-messages="formEquipment.addMode.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">增加方式不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="serviceLife" class="col-md-2 control-label">使用寿命</label>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <input name="serviceLife" type="number" class="form-control" ng-model="vm.ServiceLife" required />
-                                        <div class="error-messages" ng-messages="formEquipment.serviceLife.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">使用寿命不能为空</small>
-                                        </div>
-                                        <div class="input-group-addon">
-                                            <label class="label label-primary">年</label>
-                                        </div>
-                                    </div>
-                                   
-                                </div>
-                                <label for="manufacturer" class="col-md-2 control-label">生产厂家</label>
-                                <div class="col-md-4">
-                                    <input name="manufacturer" class="form-control" ng-model="vm.Manufacturer" required />
-                                    <div class="error-messages" ng-messages="formEquipment.manufacturer.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">生产厂家不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="safekeepDepartment" class="col-md-2 control-label">保管单位</label>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <input name="safekeepDepartment" class="form-control" ng-model="vm.SafekeepDepartment" readonly required />
-                                        <div class="error-messages" ng-messages="formEquipment.safekeepDepartment.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">保管单位不能为空</small>
-                                        </div>
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-primary" style="margin-bottom:6px;" id="departmentPopover"
-                                                    data-title="选择部门名称"
-                                                    data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
-                                                    data-animation="am-flip-x" data-auto-close="1"
-                                                    data-keyboard="false"
-                                                    data-bs-popover>
-                                                <i class="fa fa-sitemap"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <label for="safekeepUser" class="col-md-2 control-label">保管人</label>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <input name="safekeepUser" class="form-control" readonly ng-model="vm.SafekeepUser" required />
-                                        <div class="error-messages" ng-messages="formEquipment.safekeepUser.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">保管人不能为空</small>
-                                        </div>
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-primary" style="margin-bottom:6px;"
-                                                    data-title="选择人员信息"
-                                                    data-template-url="@Url.Action("WorkerSelectTpl", "CommonTpl")"
-                                                    data-animation="am-flip-x" data-auto-close="1"
-                                                    data-bs-popover>
-                                                <i class="fa fa-users"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="installationlocation" class="col-md-2 control-label">安装位置</label>
-                                <div class="col-md-4">
-                                    <input name="installationlocation" class="form-control" ng-model="vm.Installationlocation"/>
-                                </div>
-
-                                <label for="functionDescription" class="col-md-2 control-label">功能描述</label>
-                                <div class="col-md-4">
-                                    <textarea name="functionDescription" rows="1" class="form-control" ng-model="vm.FunctionDescription" />
-                                </div>
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <legend>校验信息</legend>
-                            <div class="form-group">
-                                <label for="checkDate" class="col-md-2 control-label">校验日期</label>
-                                <div class="col-md-4">
-                                    <input name="CheckDate" class="form-control"  type="date" ng-model="vm.CheckDate" required />
-                                    <div class="error-messages" ng-messages="formEquipment.checkDate.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">校验日期不能为空</small>
-                                    </div>
-                                </div>
-
-                                <label for="checkInterval" class="col-md-2 control-label">校验周期</label>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <input name="checkInterval" type="number" class="form-control" ng-model="vm.CheckInterval" required />
-                                        <div class="error-messages" ng-messages="formEquipment.checkInterval.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">校验间隔不能为空</small>
-                                        </div>
-                                        <div class="input-group-addon">
-                                            <label class="label label-primary">月</label>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="addMode" class="col-md-2 control-label">校验类别</label>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-default" ng-model="vm.CheckType" data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="内校"
-                                            bs-options="item.text as item.text for item in vmManager.checkTypes" bs-select>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <input name="checkType" class="form-control" ng-model="vm.CheckType" ng-show="false" required />
-                                    <div class="error-messages" ng-messages="formEquipment.checkType.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">校验类别不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <legend>保养信息</legend>
-                            <div class="form-group">
-                                <label for="maintenanceDate" class="col-md-2 control-label">保养日期</label>
-                                <div class="col-md-4">
-                                    <input name="maintenanceDate" type="date" class="form-control" ng-model="vm.MaintenanceDate" required />
-                                    <div class="error-messages" ng-messages="formEquipment.maintenanceDate.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">保养日期不能为空</small>
-                                    </div>
-                                </div>
-
-                                <label for="maintenanceInterval" class="col-md-2 control-label">保养周期</label>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <input name="maintenanceInterval" type="number" class="form-control" ng-model="vm.MaintenanceInterval" required />
-                                        <div class="error-messages" ng-messages="formEquipment.maintenanceInterval.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">保养周期不能为空</small>
-                                        </div>
-                                        <div class="input-group-addon">
-                                            <label class="label label-primary">月</label>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </fieldset>
-
-                        <div class="alert alert-info">
-                            <div class="row">
-                                <div class="col-md-2">
-
-                                </div>
-                                <div class="col-md-10">
-                                    <button class="btn btn-primary " ng-click="operate.saveAll(formEquipment.$valid)"><i class="fa fa-save"></i>保存</button>
-                                    <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
-                                    <span ng-class="operate.result==true ? 'alert alert-success':'alert alert-danger'" ng-show="operate.msgDisplay">
-                                        <i class="fa fa-info-circle"></i>
-                                        {{operate.message}}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                <div class="well" cg-busy="{promise:searchPromise}">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr class="info">
+                                    <th></th>
+                                    <th></th>
+                                    <th>财产编号</th>
+                                    <th>设备名称</th>
+                                    <th>设备型号</th>
+                                    <th>制造编号</th>
+                                    <th>资产类别</th>
+                                    <th>设备类别</th>
+                                    <th>税务类别</th>
+                                    <th>单位</th>
+                                    <th>生产厂家</th>
+                                    <th>购入日期</th>
+                                    <th>保管人工号</th>
+                                    <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vmManager.editDatas track by $index">
+                                    <td>{{item.AssetNumber}}</td>
+                                    <td>{{item.EquipmentName}}</td>
+                                    <td>{{item.EquipmentSpec}}</td>
+                                    <td>{{item.ManufacturingNumber}}</td>
+                                    <td>{{item.AssetType}}</td>
+                                    <td>{{item.EquipmentType}}</td>
+                                    <td>{{item.TaxType}}</td>
+                                    <td>{{item.Unit}}</td>
+                                    <td>{{item.Manufacturer}}</td>
+                                    <td>{{item.SafekeepWorkerID}}</td>
+                                    <td>
+                                        <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
+                                            修改
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <ul class="list-group">
-                    <li class="list-group-item active">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h4 class="list-title">
-                                    <i class="fa fa-list"></i>
-                                    <span>列表</span>
-                                </h4>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input class="form-control" type="text" />
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-search"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item" ng-click="vmManager.selectEquipment(item)"
-                        data-title="设备型号:{{item.EquipmentSpec}}" data-bs-tooltip
-                        ng-repeat="item in vmManager.equipments track by $index">
-                        编号：
-                        <span class="label label-success" style="cursor:pointer">{{item.AssetNumber}}</span>
-                        -----
-                        名称：
-                        <span>
-                            <i class="fa fa-envelope-o"></i>
-                            {{item.EquipmentName}}
-                        </span>
-                    </li>
-                </ul>
+
             </div>
         </div>
-    </div>
     <div class="panel-footer">
-        <a class="btn btn-primary" href="@Url.Action("ExportToExcel", "Equipment")"><i class="fa fa-file-excel-o"></i>导出到Excel</a>
+        @*<a class="btn btn-primary" href="@Url.Action("ExportToExcel", "Equipment")"><i class="fa fa-file-excel-o"></i>导出到Excel</a>*@
     </div>
 </div>

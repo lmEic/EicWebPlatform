@@ -175,6 +175,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.vm = uiVM;
 
     var vmManager = {
+        activeTab: 'initTab',
         inti: function () {
             if (uiVM.OpSign === 'add') {
                 uiVM.ManufacturingNumber = null;

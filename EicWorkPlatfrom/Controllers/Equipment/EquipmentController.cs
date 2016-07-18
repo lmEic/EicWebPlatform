@@ -52,6 +52,14 @@ namespace EicWorkPlatfrom.Controllers
             string id = AstService.EquipmentManager.BuildAssetNumber(equipmentType, assetType, taxType);
             return Json(id, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetEquipmentID(DateTime inputDate)
+        {
+            var datas = AstService.EquipmentManager.FindBy(new QueryEquipmentDto() { });
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+
+
         [NoAuthenCheck]
         public JsonResult SaveEquipmentRecord(EquipmentModel equipment)
         {
