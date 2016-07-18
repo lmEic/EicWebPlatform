@@ -70,8 +70,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 return OpResult.SetResult("集合不能为空！", false);
 
             opSign = listModel[0].OpSign;
-            if(opSign.IsNullOrEmpty())
-                return OpResult.SetResult("操作模式不能为空！", false); 
+            if (opSign.IsNullOrEmpty())
+                return OpResult.SetResult("操作模式不能为空！", false);
 
             try
             {
@@ -79,17 +79,17 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 {
                     case OpMode.Add: //新增
                         listModel.ForEach(model => { record += irep.Insert(model); });
-                        opResult = record.ToAddOpResult(opContext);
+                        opResult = record.ToOpResult_Add(opContext);
                         break;
 
                     case OpMode.Edit: //修改
                         listModel.ForEach(model => { record += irep.Update(u => u.Id_Key == model.Id_Key, model); });
-                        opResult = record.ToUpdateOpResult(opContext);
+                        opResult = record.ToOpResult_Eidt(opContext);
                         break;
 
                     case OpMode.Delete: //删除
                         listModel.ForEach(model => { record += irep.Delete(model.Id_Key); });
-                        opResult = record.ToDeleteOpResult(opContext);
+                        opResult = record.ToOpResult_Delete(opContext);
                         break;
 
                     default:
@@ -97,9 +97,39 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                         break;
                 }
             }
-            catch (Exception ex){throw new Exception(ex.InnerException.Message);}
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
             return opResult;
         }
+
+        /// <summary>
+        /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询
+        /// </summary>
+        /// <param name="qryDto">设备查询数据传输对象 </param>
+        /// <returns></returns>
+        public List<EquipmentModel> FindBy(QueryEquipmentDto qryDto)
+        {
+            try
+            {
+                switch (qryDto.SearchMode)
+                {
+                    case 1: //依据财产编号查询
+                        return irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
+
+                    case 2: //依据保管部门查询
+                        return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();
+
+                    case 3: //依据录入日期
+                        return irep.FindAll<EquipmentModel>(m => m.InputDate == qryDto.InputDate).ToList();
+
+                    default: return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+
 
         /// <summary>
         /// 修改数据仓库
@@ -133,7 +163,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                         break;
                 }
             }
-            catch (Exception ex){throw new Exception(ex.InnerException.Message); }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
             return result;
         }
 
@@ -149,7 +179,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             if (model.IsScrapped == null)
                 model.IsScrapped = "未报废";
             //仓储操作
-            return irep.Insert(model).ToOpResult(string.Format("添加财产编号:{0} 的设备档案成功！", model.AssetNumber), model.Id_Key);
+            return irep.Insert(model).ToOpResult_Add("设备档案", model.Id_Key);
         }
 
         private OpResult EditEquipmentRecord(EquipmentModel model)
@@ -157,12 +187,12 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             SetEquipmentMaintenance(model);
             SetEquipmentCheck(model);
 
-            return  irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult(string.Format("更新财产编号:{0} 的设备档案成功！", model.AssetNumber), model.Id_Key);
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("设备档案");
         }
 
         private OpResult DeleteEquipmentRecord(EquipmentModel model)
         {
-            return  irep.Delete(model.Id_Key).ToOpResult(string.Format("删除财产编号:{0} 的设备档案成功！", model.AssetNumber));
+            return irep.Delete(model.Id_Key).ToOpResult_Delete("设备档案");
         }
 
         /// <summary>
@@ -206,41 +236,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             }
         }
 
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <param name="qryModel">设备查询数据传输对象</param>
-        /// <param name="searchMode"> 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询 </param>
-        /// <returns></returns>
-        public List<EquipmentModel> FindBy(QueryEquipmentDto qryDto)
-        {
-            try
-            {
-                switch (qryDto.SearchMode)
-                {
-                    case 1: //依据财产编号查询
-                        return irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
-
-                    case 2: //依据保管部门查询
-                        return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();
-
-                    case 3: //依据录入日期
-                        return irep.FindAll<EquipmentModel>(m => m.InputDate == qryDto.InputDate).ToList();
-
-                    default: return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
-
-
         
-
-      
-
-       
     }
 }

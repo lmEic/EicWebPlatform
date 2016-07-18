@@ -7,7 +7,25 @@ using System.Linq;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
-    public class EquipmentCheckManager
+    public interface IEquipmentChekcManager
+    {
+        /// <summary>
+        /// 获取待校验设备列表
+        /// </summary>
+        /// <returns></returns>
+        List<EquipmentModel> GetEquipmentNotCheck();
+
+        /// <summary>
+        /// 导出待校验设备到Excel
+        /// </summary>
+        /// <returns></returns>
+        OpResult ExportEquipmentNotCheckToExcle();
+
+        OpResult InputEquipmentCheckRecord(EquipmentCheckModel model);
+    }
+
+
+    public class EquipmentCheckManager:IEquipmentChekcManager
     {
 
         private IEquipmentCheckRepository irep = null;
@@ -17,6 +35,22 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             irep = new EquipmentCheckRepository();
             equipmentManager = new EquipmentManager();
+        }
+
+
+        public List<EquipmentModel> GetEquipmentNotCheck()
+        {
+            throw new NotImplementedException();
+        }
+
+        public OpResult ExportEquipmentNotCheckToExcle()
+        {
+            throw new NotImplementedException();
+        }
+
+        public OpResult InputEquipmentCheckRecord(EquipmentCheckModel model)
+        {
+            throw new NotImplementedException();
         }
 
 
@@ -111,5 +145,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 return OpResult.SetResult("更新设备校验日期时错误！", false);
             return OpResult.SetResult("校验记录删除成功", irep.Delete(model.Id_Key) > 0, model.Id_Key);
         }
+
+     
     }
 }

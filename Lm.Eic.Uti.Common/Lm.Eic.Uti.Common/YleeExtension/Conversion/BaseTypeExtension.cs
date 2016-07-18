@@ -237,7 +237,19 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         /// </summary>
         /// <param name="context">操作的对象</param>
         /// <returns></returns>
-        public static OpResult ToAddOpResult(this int record, string context)
+        public static OpResult ToOpResult_Add(this int record, string context,decimal id_Key)
+        {
+            string sucessMsg = string.Format("添加{0}数据成功", context);
+            string failMsg = string.Format("添加{0}数据失败", context);
+            return OpResult.SetResult(sucessMsg, failMsg, record,id_Key);
+        }
+
+        /// <summary>
+        /// 转换为操作结果 添加
+        /// </summary>
+        /// <param name="context">操作的对象</param>
+        /// <returns></returns>
+        public static OpResult ToOpResult_Add(this int record, string context)
         {
             string sucessMsg = string.Format("添加{0}数据成功", context);
             string failMsg = string.Format("添加{0}数据失败", context);
@@ -249,7 +261,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         /// </summary>
         /// <param name="context">操作的对象</param>
         /// <returns></returns>
-        public static OpResult ToUpdateOpResult(this int record, string context)
+        public static OpResult ToOpResult_Eidt(this int record, string context)
         {
             string sucessMsg = string.Format("更新{0}数据成功", context);
             string failMsg = string.Format("更新{0}数据失败", context);
@@ -261,7 +273,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         /// </summary>
         /// <param name="context">操作的对象</param>
         /// <returns></returns>
-        public static OpResult ToDeleteOpResult(this int record, string context)
+        public static OpResult ToOpResult_Delete(this int record, string context)
         {
             string sucessMsg = string.Format("删除{0}数据成功", context);
             string failMsg = string.Format("删除{0}数据失败", context);
