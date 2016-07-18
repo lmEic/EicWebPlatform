@@ -39,7 +39,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep
     { }
 
     /// <summary>
-    /// 
+    /// 物料抽检项次
     /// </summary>
     public interface IMaterialSampleSetReposity : IRepository<MaterialSampleSet> { }
     /// <summary>

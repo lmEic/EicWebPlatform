@@ -29,7 +29,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
           modelBuilder.Configurations.Add(new IQCSampleRecordMapping());
           modelBuilder.Configurations.Add(new IQCSamplePrintItemsRecordMapping());
           modelBuilder.Configurations.Add(new SampleProductNgRecordMapping());
-          modelBuilder.Configurations.Add(new SetMaterialSampleItemMapping());
+          modelBuilder.Configurations.Add(new MaterialSampleItemMapping());
+          modelBuilder.Configurations.Add(new SamplePlanMapping());
 
       }
         #endregion
