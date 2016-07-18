@@ -77,7 +77,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
         }
     }
 
-
+     /// <summary>
+     /// 放宽加严规则
+     /// </summary>
     public class SampleContorlLimitMapping : EntityTypeConfiguration<SampleContorlLimitModel>
    {
        public SampleContorlLimitMapping ()
