@@ -75,7 +75,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _documentpath = value; }
             get { return _documentpath; }
         }
-      
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
         private string _opperson;
         /// <summary>
         ///操作人
@@ -94,16 +111,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _opsign = value; }
             get { return _opsign; }
         }
-        DateTime? opDate = DateTime.Now;
-        /// <summary>
-        /// 操作日期
-        /// </summary>
-        public DateTime? OpDate
-        {
-            get { return opDate; }
-            set { opDate = value; }
-        }
-
         private decimal _id_key;
         /// <summary>
         ///自增键
