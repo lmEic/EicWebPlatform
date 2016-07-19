@@ -170,8 +170,12 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
         private OpResult AddEquipmentRecord(EquipmentModel model)
         {
+            DateTime defaultDate = DateTime.Now.ToDate();
             //基础设置
-            model.InputDate = DateTime.Now.ToDate();
+            model.InputDate = defaultDate;
+            model.OpDate = defaultDate;
+            model.PlannedCheckDate = defaultDate;
+            model.PlannedMaintenanceDate = defaultDate;
             SetEquipmentMaintenanceRule(model);
             SetEquipmentCheckRule(model);
             //设备状态初始化
@@ -203,7 +207,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         private void SetEquipmentCheckRule(EquipmentModel model)
         {
             //校验处理
-            model.IsCheck = (model.CheckDate == null && model.CheckInterval == 0) ? "不校验" : "校验";
+            model.IsCheck = (model.CheckInterval == 0) ? "不校验" : "校验";
             if (model.IsCheck == "校验")
             {
                 model.PlannedCheckDate = model.CheckDate.AddMonths(model.CheckInterval);
@@ -236,7 +240,5 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 model.MaintenanceInterval = 0;
             }
         }
-
-        
     }
 }
