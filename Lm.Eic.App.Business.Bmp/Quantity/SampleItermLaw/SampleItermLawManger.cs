@@ -118,9 +118,9 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
         {
             irep = new MaterialSampleSetReposity();
         }
-        public List<MaterialSampleSetModel> GetMaterilalSampleItem(string Materi)
+        public List<MaterialSampleSetModel> GetMaterilalSampleItem(string sampleMaterial)
         {
-            return irep.Entities.Where(e => e.SampleItem == Materi).ToList();
+            return irep.Entities.Where(e => e.SampleMaterial == sampleMaterial).ToList();
         }
 
     }
