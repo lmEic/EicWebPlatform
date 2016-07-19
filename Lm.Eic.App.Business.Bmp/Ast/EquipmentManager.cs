@@ -55,6 +55,36 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
 
         /// <summary>
+        /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询
+        /// </summary>
+        /// <param name="qryDto">设备查询数据传输对象 </param>
+        /// <returns></returns>
+        public List<EquipmentModel> FindBy(QueryEquipmentDto qryDto)
+        {
+            try
+            {
+                switch (qryDto.SearchMode)
+                {
+                    case 1: //依据财产编号查询
+                        return irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
+
+                    case 2: //依据保管部门查询
+                        return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();
+
+                    case 3: //依据录入日期
+                        return irep.FindAll<EquipmentModel>(m => m.InputDate == qryDto.InputDate).ToList();
+
+                    default: return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+
+
+        /// <summary>
         /// 修改数据仓库
         /// </summary>
         /// <param name="listModel">模型</param>
@@ -102,36 +132,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
 
         /// <summary>
-        /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询
-        /// </summary>
-        /// <param name="qryDto">设备查询数据传输对象 </param>
-        /// <returns></returns>
-        public List<EquipmentModel> FindBy(QueryEquipmentDto qryDto)
-        {
-            try
-            {
-                switch (qryDto.SearchMode)
-                {
-                    case 1: //依据财产编号查询
-                        return irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
-
-                    case 2: //依据保管部门查询
-                        return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();
-
-                    case 3: //依据录入日期
-                        return irep.FindAll<EquipmentModel>(m => m.InputDate == qryDto.InputDate).ToList();
-
-                    default: return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
-
-
-        /// <summary>
         /// 修改数据仓库
         /// </summary>
         /// <param name="listModel">模型</param>
@@ -170,7 +170,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         private OpResult AddEquipmentRecord(EquipmentModel model)
         {
             //基础设置
-            model.InputDate = DateTime.Now;
+            model.InputDate = DateTime.Now.ToDate();
             SetEquipmentMaintenance(model);
             SetEquipmentCheck(model);
             //设备状态初始化
