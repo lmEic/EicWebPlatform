@@ -92,11 +92,11 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             if (models ==null ||models .Count <=0)
             {
                 IQCSampleItemRecordModel model=null; 
-                 var productInfo = GetPuroductSupplierInfo(Orderid);
+                 var productInfo = GetPuroductSupplierInfo(orderId);
                   productInfo.ForEach(e => {
                      if (e.ProductID == sampleMaterial)
                      {
-                         var SampleItem = MaterialSampleItem.GetMaterilalSampleItem(e.ProductID);
+                         var SampleItem = MaterialSampleItem.GetMaterilalSampleItemBy(e.ProductID);
                          SampleItem.ForEach(f =>
                          {
                              model = new IQCSampleItemRecordModel()

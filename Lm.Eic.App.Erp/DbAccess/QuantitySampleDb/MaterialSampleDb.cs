@@ -125,7 +125,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             var PurchaseHeader = StockDb.FindStoHeaderByID(category + "-" + code).FirstOrDefault();
             var PurchaseBody = StockDb.FindStoBodyByID(category + "-" + code);
             List<MaterialModel> Materials = new List<MaterialModel>(); 
-            string SupplierID = GetSupplierNameBy((PurchaseHeader.Supplier); 
+            string SupplierID = GetSupplierNameBy(PurchaseHeader.Supplier); 
             string InMaterialDate = PurchaseHeader.StockDate;
             foreach  (var s in PurchaseBody)
             {
@@ -193,7 +193,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                     {
                         double ProduceNumber = 0;
                         //  SELECT  Sum(TH007) AS 数量 FROM  PURTH   WHERE   (TH001= '" + category + "') AND (TH002 = '" + code + "') AND (TH004='"; ;
-                        DataTable dtSum = DbHelper.Erp.LoadTable(dtSQLsum + dr["料号"].ToString() + "')");
+                        DataTable dtSum = DbHelper.Erp.LoadTable(dtSqlSum + dr["料号"].ToString() + "')");
                         if (dtSum.Rows.Count > 0)
                         {
                             ProduceNumber = dtSum.Rows[0]["数量"].ToString().Trim().ToDouble();
