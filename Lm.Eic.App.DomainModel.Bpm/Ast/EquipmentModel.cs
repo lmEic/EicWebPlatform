@@ -1,5 +1,4 @@
-﻿using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using System;
+﻿using System;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Ast
 {
@@ -345,7 +344,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _inputdate = value; }
             get { return _inputdate; }
         }
-        private DateTime _opdate = DateTime.Now.ToDate();
+        private DateTime _opdate;
         /// <summary>
         ///操作日期
         /// </summary>
@@ -354,7 +353,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _opdate = value; }
             get { return _opdate; }
         }
-        private DateTime _optime = DateTime.Now;
+        private DateTime _optime;
         /// <summary>
         ///操作时间
         /// </summary>

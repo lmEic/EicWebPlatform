@@ -55,6 +55,36 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
 
         /// <summary>
+        /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询
+        /// </summary>
+        /// <param name="qryDto">设备查询数据传输对象 </param>
+        /// <returns></returns>
+        public List<EquipmentModel> FindBy(QueryEquipmentDto qryDto)
+        {
+            try
+            {
+                switch (qryDto.SearchMode)
+                {
+                    case 1: //依据财产编号查询
+                        return irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
+
+                    case 2: //依据保管部门查询
+                        return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();
+
+                    case 3: //依据录入日期
+                        DateTime qryDate = qryDto.InputDate.ToDate();
+                        return irep.FindAll<EquipmentModel>(m => m.InputDate == qryDate).ToList();
+
+                    default: return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+
+        /// <summary>
         /// 修改数据仓库
         /// </summary>
         /// <param name="listModel">模型</param>
@@ -101,35 +131,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             return opResult;
         }
 
-        /// <summary>
-        /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询
-        /// </summary>
-        /// <param name="qryDto">设备查询数据传输对象 </param>
-        /// <returns></returns>
-        public List<EquipmentModel> FindBy(QueryEquipmentDto qryDto)
-        {
-            try
-            {
-                switch (qryDto.SearchMode)
-                {
-                    case 1: //依据财产编号查询
-                        return irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
-
-                    case 2: //依据保管部门查询
-                        return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();
-
-                    case 3: //依据录入日期
-                        DateTime qryDate = qryDto.InputDate.ToDate();
-                        return irep.FindAll<EquipmentModel>(m => m.InputDate == qryDate).ToList();
-
-                    default: return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
 
 
         /// <summary>
@@ -172,10 +173,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             DateTime defaultDate = DateTime.Now.ToDate();
             //基础设置
+            model.DeliveryDate = defaultDate;
             model.InputDate = defaultDate;
             model.OpDate = defaultDate;
+            model.OpTime = DateTime.Now;
             model.PlannedCheckDate = defaultDate;
             model.PlannedMaintenanceDate = defaultDate;
+
             SetEquipmentMaintenanceRule(model);
             SetEquipmentCheckRule(model);
             //设备状态初始化
@@ -207,7 +211,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         private void SetEquipmentCheckRule(EquipmentModel model)
         {
             //校验处理
-            model.IsCheck = (model.CheckInterval == 0) ? "不校验" : "校验";
+            model.IsCheck = (model.CheckDate == null && model.CheckInterval == 0) ? "不校验" : "校验";
             if (model.IsCheck == "校验")
             {
                 model.PlannedCheckDate = model.CheckDate.AddMonths(model.CheckInterval);
@@ -215,7 +219,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             }
             else
             {
-                model.CheckDate = DateTime.Now.ToDate();
+                model.CheckDate = DateTime.Now.ToDate();//设置为默认日期
                 model.CheckInterval = 0;
             }
         }
@@ -231,6 +235,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             model.IsMaintenance = model.AssetType == "低质易耗品" ? "不保养" : "保养";
             if (model.IsMaintenance == "保养")
             {
+                if(model.MaintenanceDate == null) { model.MaintenanceDate = DateTime.Now.ToDate(); }
                 model.PlannedMaintenanceDate = model.MaintenanceDate.AddMonths(model.MaintenanceInterval);
                 model.MaintenanceState = model.PlannedMaintenanceDate > DateTime.Now ? "在期" : "超期";
             }
