@@ -14,7 +14,10 @@ using Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw;
 
 using Excel;
 namespace Lm.Eic.App.Business.Bmp.Quantity
-{
+{   
+    /// <summary>
+    /// IQC抽样项目登记表
+    /// </summary>
     public class IQCSampleItemsRecordManager
     {
         IIQCSampleItemRecordReposity irep = null;
@@ -777,6 +780,22 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
     }
 
    
+
+    /// <summary>
+    /// 抽样物料记录管理
+    /// </summary>
+    public class SampleRecordManager
+    {
+        IIQCSampleRecordReposity irep = null;
+        public SampleRecordManager()
+        { irep = new IQCSampleRecordReposity (); }
+
+        public List<IQCSampleRecordModel> GetIQCSampleRecordModelsBy(string sampleMaterial)
+        {
+            return irep.Entities.Where(e => e.SampleMaterial == sampleMaterial).ToList();
+        }
+       
+    }
    /// <summary>
    ///抽验查询对像
    /// </summary>
