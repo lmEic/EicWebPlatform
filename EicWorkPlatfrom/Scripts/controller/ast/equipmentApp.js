@@ -190,7 +190,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                 uiVM.ManufacturingNumber = null;
             }
             else {
-                leeHelper.clearVM(uiVM);
+                leeHelper.clearVM(uiVM, ['AssetType', 'EquipmentType']);
             }
             uiVM.OpSign = 'add';
             vmManager.canEdit = false;
