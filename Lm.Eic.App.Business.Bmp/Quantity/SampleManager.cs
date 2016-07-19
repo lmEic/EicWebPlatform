@@ -19,10 +19,12 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
     {
         IIQCSampleItemRecordReposity irep = null;
        MaterialSampleItemManager MaterialSampleItem = null;
+       SamplePlanTableManger SamplePlanTable = null;
         public IQCSampleItemsRecordManager ()
         {
             irep = new IQCSampleItemRecordReposity();
             MaterialSampleItem = new MaterialSampleItemManager();
+            SamplePlanTable = new SamplePlanTableManger();
         }
         /// <summary>
         /// 判断是否存在
@@ -97,8 +99,10 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                      if (e.ProductID == sampleMaterial)
                      {
                          var SampleItem = MaterialSampleItem.GetMaterilalSampleItemBy(e.ProductID);
+                         
                          SampleItem.ForEach(f =>
                          {
+                             var SampleNumber = SamplePlanTable.getSampleNumber(f.CheckWay, f.CheckLevel, f.Grade, e.ProduceNumber);
                              model = new IQCSampleItemRecordModel()
                              {
                                  OrderID = e.OrderID,
@@ -118,6 +122,9 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                                  SizeSpec=f.SizeSpec,
                                  SizeSpecDown=f.SizeSpecDown,
                                  SizeSpecUP=f.SizeSpecUP,
+                                 AcceptGradeNumber=SampleNumber .AcceptGradeNumber.ToDouble (),
+                                 CheckNumber=SampleNumber .CheckNumber .ToDouble (),
+                                 RefuseGradeNumber =SampleNumber .RefuseGradeNumber .ToDouble (),
                                  PrintCount=1,
                              };
                              models.Add(model);
@@ -125,7 +132,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                      }
                     
                  });
-                
             }
             return models;
         }
@@ -516,8 +522,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             try
             {
-                double upValue = Convert.ToDouble(up);
-                double downValue = Convert.ToDouble(down);
+                double upValue = up.ToDouble ();
+                double downValue = down.ToDouble();
                 return true;
             }
             catch { return false; }
@@ -535,8 +541,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             {
                 if (JudgeMach(upValue, downValue))
                 {
-                    double upValueNumber = Convert.ToDouble(upValue);
-                    double downValueNumber = Convert.ToDouble(downValue);
+                    double upValueNumber = upValue.ToDouble ();
+                    double downValueNumber =downValue.ToDouble ();
                     if (!JudgeAbs(upValueNumber, downValueNumber))
                     { return true; }
                     return false;
@@ -549,17 +555,17 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             try
             {
-                int IdNumStopRowIndex = idNumStartRowIndex + rowIndex - 1;
+                int idNumStopRowIndex = idNumStartRowIndex + rowIndex - 1;
                 string UpValue = sizeSpecUP;
                 string DownValue = sizeSpecDown;
                 if (JudgeNoNull(UpValue, DownValue) & JudgeMach(UpValue, DownValue))
                 {
-                    double upValue = Convert.ToDouble(UpValue);
-                    double downValue = Convert.ToDouble(DownValue);
+                    double upValue = UpValue.ToDouble ();
+                    double downValue =DownValue.ToDouble ();
                     if (JudgeAbs(upValue, downValue))
                     {
                         string Value = sizeSpec + "±" + Math.Abs(upValue).ToString();
-                        setBCValueToXlsCell(xlsSheet, idNumStartRowIndex, IdNumStopRowIndex, Value);
+                        setBCValueToXlsCell(xlsSheet, idNumStartRowIndex, idNumStopRowIndex, Value);
                     }
                     else
                     {
@@ -573,13 +579,13 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 else
                 {
                     string Value = sizeSpec + UpValue + DownValue;
-                    setBCValueToXlsCell(xlsSheet, idNumStartRowIndex, IdNumStopRowIndex, Value);
+                    setBCValueToXlsCell(xlsSheet, idNumStartRowIndex, idNumStopRowIndex, Value);
                 }
             }
 
             catch (Exception ex)
             {
-
+                OpResult.SetResult(ex.ToString(), false);
             }
 
         }
@@ -652,7 +658,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             xlsSheet.Cells[4, 1] = "供应商:" + models[0].SampleMaterialSupplier;
             xlsSheet.Cells[4, 5] = "图号/检验规范：" + models[0].SampleMaterialDrawID;
             xlsSheet.Cells[4, 11] = "检验方式：" + models[0].CheckWay;
-
         }
 
         private static void SetExcelTitleTestROHS(List<IQCSampleItemRecordModel> models, Excel.Worksheet xlsSheet)

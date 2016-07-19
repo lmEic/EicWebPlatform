@@ -138,7 +138,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                     ProductStandard = PorductInfo.ProductSpecify,
                     ProductID = PorductInfo.ProductID,
                     ProductSupplier = SupplierID,
-                    ProduceInDate = DateTime.ParseExact( InMaterialDate, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture),
+                    ProduceInDate = DateTime.ParseExact(InMaterialDate, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture),
                     Category = category,
                     Code = code
                 };

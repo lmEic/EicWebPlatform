@@ -17,7 +17,7 @@ namespace Lm.Eic.App.Business.BmpTests.Quantity
             var mm = QuantityService.IQCSampleItemsRecordManager.GetPringSampleItemBy("591-1607032", "32AAP00001200RM");
             var ms = QuantityService.MaterialSampleItemManager.GetMaterilalSampleItemBy("32AAP00001200RM");
             System.IO.MemoryStream stream=  QuantityService.IQCSampleItemsRecordManager.ExportPrintToExcel(mm);
-            #region 输出到Excel
+           #region 输出到Excel
            string path = @"E:\\IQC.xls";
             using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
             {
