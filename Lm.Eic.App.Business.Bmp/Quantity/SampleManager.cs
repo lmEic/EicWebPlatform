@@ -494,7 +494,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
 
             catch (Exception ex)
             {
-
+                throw new Exception(ex.ToString());
             }
 
         }
