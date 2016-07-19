@@ -19,10 +19,12 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
     {
         IIQCSampleItemRecordReposity irep = null;
        MaterialSampleItemManager MaterialSampleItem = null;
+       SamplePlanTableManger SamplePlanTable = null;
         public IQCSampleItemsRecordManager ()
         {
             irep = new IQCSampleItemRecordReposity();
             MaterialSampleItem = new MaterialSampleItemManager();
+            SamplePlanTable = new SamplePlanTableManger();
         }
         /// <summary>
         /// 判断是否存在
@@ -92,13 +94,17 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             if (models ==null ||models .Count <=0)
             {
                 IQCSampleItemRecordModel model=null; 
-                 var productInfo = GetPuroductSupplierInfo(Orderid);
-                  productInfo.ForEach(e => {
+                  //由单号得到物料信息
+                var productInfos = GetPuroductSupplierInfo(orderId);
+                  productInfos.ForEach(e => {
                      if (e.ProductID == sampleMaterial)
                      {
-                         var SampleItem = MaterialSampleItem.GetMaterilalSampleItem(e.ProductID);
+                         //由物料得到打印测试项次
+                         var SampleItem = MaterialSampleItem.GetMaterilalSampleItemBy(e.ProductID);
                          SampleItem.ForEach(f =>
                          {
+                             var m = SamplePlanTable.getSampleNumber(f.CheckWay, f.CheckLevel, f.Grade, e.ProduceNumber);
+
                              model = new IQCSampleItemRecordModel()
                              {
                                  OrderID = e.OrderID,
@@ -119,6 +125,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                                  SizeSpecDown=f.SizeSpecDown,
                                  SizeSpecUP=f.SizeSpecUP,
                                  PrintCount=1,
+                                 
                              };
                              models.Add(model);
                          });
