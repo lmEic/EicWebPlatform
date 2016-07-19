@@ -219,6 +219,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         selectWorker: function (worker)
         {
             uiVM.SafekeepUser = worker.Name;
+            uiVM.SafekeepWorkerID = worker.WorkerId;
         },
         selectEquipment: function (item) {
             vmManager.canEdit = true;
@@ -272,60 +273,17 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         controller: function ($scope) {
             $scope.vm = uiVM;
             $scope.vmManager = vmManager;
-
+            $scope.ztree = departmentTreeSet;
             var op = Object.create(leeDataHandler.operateStatus);
-            op.vm = uiVM;
             $scope.operate = op;
 
-            $scope.save = function (isvalidate) {
-                //leeDataHandler.dataOperate.add(op, isvalidate, function () {
-                //    var leaveItem = {
-                //        WorkerId: null,
-                //        WorkerName: null,
-                //        Department: null,
-                //        LeaveType: null,
-                //        LeaveHours: null,
-                //        LeaveTimeRegion: null,
-                //        LeaveDescription: null,
-                //        LeaveMark: 0,
-                //        LeaveMemo: null,
-                //        StartLeaveDate: null,
-                //        EndLeaveDate: null,
-                //        LeaveTimeRegionStart: null,
-                //        LeaveTimeRegionEnd: null,
-                //        DepartmentText: null,
-                //        ClassType: null,
-                //        id: 0
-                //    };
-                //    var item = _.clone(uiVM);
-                //    if (vmManager.opSign === "handle" || vmManager.opSign === "add") {
-                //        item.LeaveMark = 1;
-                //        item.OpCmdVisible = 0;
-                //        var rowItem = _.find(vmManager.changeDatas, { WorkerId: item.WorkerId });
-                //        leeHelper.copyVm(item, rowItem);
-                //        leeHelper.copyVm(item, leaveItem);
-                //        rowItem.LeaveDataSet.push(leaveItem);
-                //        leaveItem.id = rowItem.LeaveDataSet.length;
-
-                //        var litem = _.findWhere(vmManager.dbDataSet, { WorkerId: item.WorkerId, LeaveType: item.LeaveType, StartLeaveDate: item.StartLeaveDate, EndLeaveDate: item.EndLeaveDate });
-                //        if (litem === undefined)
-                //            litem = _.clone(leaveItem);
-                //        vmManager.dbDataSet.push(litem);
-                //    }
-                //    else if (vmManager.opSign === 'edit') {
-                //        var rowItem = _.find(vmManager.changeDatas, { WorkerId: item.WorkerId });
-                //        leaveItem = _.find(rowItem.LeaveDataSet, { id: item.id });
-                //        leeHelper.copyVm(item, leaveItem);
-                //    }
-                //    else if (vmManager.opSign === 'handleEdit') {
-                //        var rowItem = _.find(vmManager.askLeaveDatas, { WorkerId: item.WorkerId, AttendanceDate: item.StartLeaveDate });
-                //        if (rowItem !== undefined) {
-                //            leeHelper.copyVm(item, rowItem);
-                //            rowItem.LeaveTimeRegion = item.LeaveTimeRegionStart + '--' + item.LeaveTimeRegionEnd;
-                //        }
-                //    }
-                //    operate.editModal.$promise.then(operate.editModal.hide);
-                //});
+            $scope.save = function (isValid) {
+                uiVM.OpSign = 'edit';
+                leeDataHandler.dataOperate.add(op, isValid, function () {
+                    astDataopService.saveEquipmentRecord($scope.vm).then(function (opresult) {
+                        operate.editModal.$promise.then(operate.editModal.hide);
+                    })
+                });
             };
         },
         show: false,

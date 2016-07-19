@@ -31,6 +31,7 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        [NoAuthenCheck]
         public ActionResult EditEquipmentTpl()
         {
             return View();
@@ -67,6 +68,7 @@ namespace EicWorkPlatfrom.Controllers
             var datas = AstService.EquipmentManager.FindBy(new QueryEquipmentDto() { InputDate=inputDate,SearchMode =3 });
             return DateJsonResult(datas);
         }
+
         [NoAuthenCheck]
         public JsonResult SaveEquipmentRecord(EquipmentModel equipment)
         {
