@@ -191,12 +191,12 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 {
                     foreach (DataRow dr in DT.Rows)
                     {
-                        double ProduceNumber = 0;
+                        long ProduceNumber = 0;
                         //  SELECT  Sum(TH007) AS 数量 FROM  PURTH   WHERE   (TH001= '" + category + "') AND (TH002 = '" + code + "') AND (TH004='"; ;
                         DataTable dtSum = DbHelper.Erp.LoadTable(dtSqlSum + dr["料号"].ToString() + "')");
                         if (dtSum.Rows.Count > 0)
                         {
-                            ProduceNumber = dtSum.Rows[0]["数量"].ToString().Trim().ToDouble();
+                            ProduceNumber =Convert .ToInt64( dtSum.Rows[0]["数量"].ToString().Trim());
                         }
                        
                        var PorductInfo= PorductInfoS.GetProductInfoBy(dr["料号"].ToString()).FirstOrDefault ();
@@ -252,7 +252,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 Material.Category = category;
                 Material.Code = code;
                 Material.ProductID = DTds.Rows[0]["料号"].ToString().Trim();
-                Material.ProduceNumber = DTds.Rows[0]["数量"].ToString().Trim().ToDouble ();
+                Material.ProduceNumber =Convert.ToInt64 ( DTds.Rows[0]["数量"].ToString().Trim().ToDouble ());
                 Material.ProduceInDate = DateTime.ParseExact(DTds.Rows[0]["开单日期"].ToString().Trim(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
                 Materials.Add(Material);
             }

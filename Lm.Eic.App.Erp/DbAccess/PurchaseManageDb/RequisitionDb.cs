@@ -405,7 +405,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             m.Memo = dr["TH033"].ToString();
             m.PurchaseID = ErpDbAccessHelper.ComposeID(dr["TH011"].ToString().Trim(), dr["TH012"].ToString().Trim());
             m.StockAmount = dr["TH019"].ToString().ToDouble();
-            m.StockCount = dr["TH007"].ToString().ToDouble();
+            m.StockCount =Convert .ToInt64 ( dr["TH007"].ToString().ToDouble());
             m.StockUnit = dr["TH018"].ToString().ToDouble();
         }
 

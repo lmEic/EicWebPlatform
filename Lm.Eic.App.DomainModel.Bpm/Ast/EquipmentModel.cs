@@ -353,6 +353,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _opdate = value; }
             get { return _opdate; }
         }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
         private string _opperson;
         /// <summary>
         ///操作人
@@ -382,5 +391,4 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         }
         #endregion Model
     }
-
 }

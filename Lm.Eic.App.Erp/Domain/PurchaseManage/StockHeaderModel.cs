@@ -67,7 +67,7 @@
         /// <summary>
         /// 进货数量 TH007
         /// </summary>
-        public double StockCount { get; set; }
+        public long StockCount { get; set; }
 
         /// <summary>
         /// 品号 TH004
