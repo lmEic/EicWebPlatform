@@ -31,6 +31,11 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        public ActionResult EditEquipmentTpl()
+        {
+            return View();
+        }
+
         [NoAuthenCheck]
         public JsonResult GetAstInputConfigDatas()
         {
@@ -38,8 +43,6 @@ namespace EicWorkPlatfrom.Controllers
             var configData = new { departments = departments };
             return Json(configData, JsonRequestBehavior.AllowGet);
         }
-
-        [NoAuthenCheck]
         /// <summary>
         /// 获取设备编号             
         /// </summary>
@@ -47,10 +50,22 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="assetType"></param>
         /// <param name="taxType"></param>
         /// <returns></returns>
+         [NoAuthenCheck]
         public JsonResult GetEquipmentID(string equipmentType, string assetType, string taxType)
         {
             string id = AstService.EquipmentManager.BuildAssetNumber(equipmentType, assetType, taxType);
             return Json(id, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 根据录入日期查询设备档案资料
+        /// </summary>
+        /// <param name="inputDate"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetEquipmentArchivesByInputDate(DateTime inputDate)
+        {
+            var datas = AstService.EquipmentManager.FindBy(new QueryEquipmentDto() { InputDate=inputDate,SearchMode =3 });
+            return DateJsonResult(datas);
         }
         [NoAuthenCheck]
         public JsonResult SaveEquipmentRecord(EquipmentModel equipment)

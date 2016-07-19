@@ -119,7 +119,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                         return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();
 
                     case 3: //依据录入日期
-                        return irep.FindAll<EquipmentModel>(m => m.InputDate == qryDto.InputDate).ToList();
+                        DateTime qryDate = qryDto.InputDate.ToDate();
+                        return irep.FindAll<EquipmentModel>(m => m.InputDate == qryDate).ToList();
 
                     default: return null;
                 }
@@ -170,9 +171,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         private OpResult AddEquipmentRecord(EquipmentModel model)
         {
             //基础设置
-            model.InputDate = DateTime.Now;
-            SetEquipmentMaintenance(model);
-            SetEquipmentCheck(model);
+            model.InputDate = DateTime.Now.ToDate();
+            SetEquipmentMaintenanceRule(model);
+            SetEquipmentCheckRule(model);
             //设备状态初始化
             if (model.State == null)
                 model.State = "运行正常";
@@ -184,8 +185,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
         private OpResult EditEquipmentRecord(EquipmentModel model)
         {
-            SetEquipmentMaintenance(model);
-            SetEquipmentCheck(model);
+            SetEquipmentMaintenanceRule(model);
+            SetEquipmentCheckRule(model);
 
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("设备档案");
         }
@@ -196,42 +197,42 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
 
         /// <summary>
-        /// 设置设备校验
+        /// 设置设备校验规则
         /// </summary>
         /// <param name="model"></param>
-        private void SetEquipmentCheck(EquipmentModel model)
+        private void SetEquipmentCheckRule(EquipmentModel model)
         {
             //校验处理
             model.IsCheck = (model.CheckDate == null && model.CheckInterval == 0) ? "不校验" : "校验";
             if (model.IsCheck == "校验")
             {
-                model.PlannedCheckDate = model.CheckDate.Value.AddMonths(model.CheckInterval);
+                model.PlannedCheckDate = model.CheckDate.AddMonths(model.CheckInterval);
                 model.CheckState = model.PlannedCheckDate > DateTime.Now ? "在期" : "超期";
             }
             else
             {
-                model.CheckDate = null;
+                model.CheckDate = DateTime.Now.ToDate();
                 model.CheckInterval = 0;
             }
         }
 
         /// <summary>
-        /// 设置设备保养
+        /// 设置设备保养规则
         /// </summary>
         /// <param name="model"></param>
-        private void SetEquipmentMaintenance(EquipmentModel model)
+        private void SetEquipmentMaintenanceRule(EquipmentModel model)
         {
             //保养处理
             //  model.IsMaintenance = (model.MaintenanceDate == null && model.MaintenanceInterval == 0) ? "不保养" : "保养";
             model.IsMaintenance = model.AssetType == "低质易耗品" ? "不保养" : "保养";
             if (model.IsMaintenance == "保养")
             {
-                model.PlannedMaintenanceDate = model.MaintenanceDate.Value.AddMonths(model.MaintenanceInterval);
+                model.PlannedMaintenanceDate = model.MaintenanceDate.AddMonths(model.MaintenanceInterval);
                 model.MaintenanceState = model.PlannedMaintenanceDate > DateTime.Now ? "在期" : "超期";
             }
             else
             {
-                model.MaintenanceDate = null;
+                model.MaintenanceDate = DateTime.Now.ToDate();//设置为默认日期
                 model.MaintenanceInterval = 0;
             }
         }
