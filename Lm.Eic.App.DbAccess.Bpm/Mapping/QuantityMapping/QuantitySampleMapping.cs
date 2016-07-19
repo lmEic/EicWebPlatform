@@ -12,6 +12,7 @@ using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
 {
+   
     /// <summary>
     /// 抽样记录
     /// </summary>
@@ -25,6 +26,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
        }
     }
 
+    
     /// <summary>
     /// 抽样项次打印
     /// </summary>
@@ -52,6 +54,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
         }
     }
 
+
     /// <summary>
     /// 设置物料抽测项次
     /// </summary>
@@ -64,6 +67,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
             this.ToTable("QCMS_MaterialSampleSet");
         }
     }
+    
+    
     /// <summary>
     ///抽样数量规则
     /// </summary>
@@ -77,7 +82,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
         }
     }
 
-     /// <summary>
+     
+    /// <summary>
      /// 放宽加严规则
      /// </summary>
     public class SampleContorlLimitMapping : EntityTypeConfiguration<SampleContorlLimitModel>

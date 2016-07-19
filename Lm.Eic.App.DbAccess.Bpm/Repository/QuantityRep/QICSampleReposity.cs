@@ -16,6 +16,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep
     public class IQCSampleRecordReposity : QuantityRepositoryBase<IQCSampleRecordModel>, IIQCSampleRecordReposity
     { }
 
+
     public interface IIQCSampleItemRecordReposity : IRepository<IQCSampleItemRecordModel> { }
     /// <summary>
     ///  IQC物料抽项目存储 
@@ -23,9 +24,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep
     public class IQCSampleItemRecordReposity : QuantityRepositoryBase<IQCSampleItemRecordModel>, IIQCSampleItemRecordReposity
     { }
 
-    /// <summary>
-    /// 抽样不合格记录存储
-    /// </summary>
+
     public interface IProductNgRecordReposity : IRepository<ProductNgRecordModel> { }
     /// <summary>
     ///  抽样不合格模块存储 
@@ -42,9 +41,13 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep
     { }
 
     public interface ISamplePlanTableReposity : IRepository<SamplePlanTableModel> { }
+    /// <summary>
+    /// 物料抽样规则
+    /// </summary>
     public class  SamplePlanTableReposity:QuantityRepositoryBase <SamplePlanTableModel>,ISamplePlanTableReposity
     { }
 
+    
     public interface ISampleContorlLimitReosity : IRepository<SampleContorlLimitModel> { };
      /// <summary>
      /// 抽样放宽加严控制存储

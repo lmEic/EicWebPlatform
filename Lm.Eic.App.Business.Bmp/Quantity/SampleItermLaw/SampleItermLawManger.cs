@@ -45,10 +45,10 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
         /// <summary>
         /// 获取取样数量/拒受数量 /接受数量
         /// </summary>
-        /// <param name="checkWay"></param>
-        /// <param name="checkLevel"></param>
-        /// <param name="grade"></param>
-        /// <param name="number"></param>
+        /// <param name="checkWay">放宽/加严/正常</param>
+        /// <param name="checkLevel">水平</param>
+        /// <param name="grade">档次</param>
+        /// <param name="number">来料数量</param>
         /// <returns></returns>
         public SamplePlanTableModel getSampleNumber(string  checkWay ,string  checkLevel,string grade,Int64 number)
         {
@@ -70,15 +70,15 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
       
         }
 
-        private string GetMaxNumber(List<string> MaxNumbers, Int64 Number)
+        private string GetMaxNumber(List<string> maxNumbers, Int64 number)
         {
             List<Double> IntMaxNumbers = new List<Double>();
-            foreach (string max in MaxNumbers)
+            foreach (string max in maxNumbers)
             {
                 if (max != "*")
                 {
                     Double MaxNumber = Convert.ToDouble(max);
-                    if (MaxNumber >= Number)
+                    if (MaxNumber >= number)
                     {
                         IntMaxNumbers.Add(MaxNumber);
                     }
@@ -89,15 +89,15 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
             { return IntMaxNumbers.Min().ToString(); }
             else  return "*";
         }
-        private string GetMinNumber(List<string> MinNumbers, Int64 Number)
+        private string GetMinNumber(List<string> minNumbers, Int64 mumber)
         {
             List<Double> IntMinNumbers = new List<Double>();
-            foreach (string min in MinNumbers)
+            foreach (string min in minNumbers)
             {
                 if (min != "")
                 {
                     Double MinNumber = Convert.ToDouble(min);
-                    if (MinNumber <= Number)
+                    if (MinNumber <= mumber)
                     {
                         IntMinNumbers.Add(MinNumber);
                     }
@@ -106,6 +106,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
             }
             return IntMinNumbers.Max().ToString();
         }
+      
     }
 
    /// <summary>
@@ -118,7 +119,12 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
         {
             irep = new MaterialSampleSetReposity();
         }
-        public List<MaterialSampleSetModel> GetMaterilalSampleItem(string sampleMaterial)
+        /// <summary>
+        ///   由料号得到抽样项次
+        /// </summary>
+        /// <param name="sampleMaterial">料号</param>
+        /// <returns></returns>
+        public List<MaterialSampleSetModel> GetMaterilalSampleItemBy(string sampleMaterial)
         {
             return irep.Entities.Where(e => e.SampleMaterial == sampleMaterial).ToList();
         }

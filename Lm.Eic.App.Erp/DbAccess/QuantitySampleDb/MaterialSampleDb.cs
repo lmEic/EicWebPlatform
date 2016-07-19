@@ -17,21 +17,31 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         {
             return "Select MB001,MB002,MB003,MB004,MB015,MB029,MB068,MB028  from  INVMB ";
         }
-        private void MapProductRowAndModel(DataRow dr, ProductModel m)
+        /// <summary>
+        ///  由数据给Model赋值
+        /// </summary>
+        /// <param name="dr">DataTable的一行</param>
+        /// <param name="model"></param>
+        private void MapProductRowAndModel(DataRow dr, ProductModel model)
         {
-            m.ProductID = dr["MB001"].ToString();
-            m.ProductName = dr["MB002"].ToString();
-            m.ProductSpecify = dr["MB003"].ToString();
-            m.UnitedName = dr["MB004"].ToString();
-            m.UniteCount = dr["MB015"].ToString();
-            m.ProductDrawID = dr["MB029"].ToString();
-            m.ProductBelongDepartment = dr["MB068"].ToString();
-            m.Memo = dr["MB028"].ToString();
+            model.ProductID = dr["MB001"].ToString();
+            model.ProductName = dr["MB002"].ToString();
+            model.ProductSpecify = dr["MB003"].ToString();
+            model.UnitedName = dr["MB004"].ToString();
+            model.UniteCount = dr["MB015"].ToString();
+            model.ProductDrawID = dr["MB029"].ToString();
+            model.ProductBelongDepartment = dr["MB068"].ToString();
+            model.Memo = dr["MB028"].ToString();
         }
 
-        public List<ProductModel> FindProductInfoBy(string Marteial)
+       /// <summary>
+       /// 由物料料号得到物料所有相关信息
+       /// </summary>
+       /// <param name="marteial">料号</param>
+       /// <returns></returns>
+        public List<ProductModel> GetProductInfoBy(string marteial)
         {
-            string sqlWhere = string.Format(" where MB001='{0}'", Marteial.Trim() );
+            string sqlWhere = string.Format(" where MB001='{0}'", marteial.Trim() );
             return ErpDbAccessHelper.FindDataBy<ProductModel>(GetPorductSqlFields(), sqlWhere, (dr, m) =>
             {
                 this.MapProductRowAndModel(dr, m);
@@ -49,23 +59,27 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             PorductInfoS = new PorductInfoDb();
             StockDb = new PurchaseManageDb.StockDb();
         }
-       /// <summary>
-       /// 
-       /// </summary>
-       /// <param name="category"></param>
-       /// <param name="code"></param>
+       /// <summary>  
+        ///  由单子 得到单别 单号
+        /// <param name="id">单号XXX-XXXXXXX</param>
        /// <returns></returns>
         public List<MaterialModel> FindMaterialBy(string id)
         {
             var idm = ErpDbAccessHelper.DecomposeID(id);
-            return GetMaterialID(idm.Category, idm.Code);
+            return GetMaterialIdBy(idm.Category, idm.Code);
         }
-        private List<MaterialModel> GetMaterialID(string category, string code)
+        /// <summary>
+        /// 所有进货单
+        /// </summary>
+        /// <param name="category"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        private List<MaterialModel> GetMaterialIdBy(string category, string code)
         {
 
-            string SQL = "";
-            string DTSQLMaterialID = "";
-            string DTSQLsum = "";
+            string sql = "";
+            string dtSqlMaterialId = "";
+            string dtSqlSum = "";
             if (category.Contains("5") & category != "591")
             {
                 return GetMaterials(category, code);
@@ -75,35 +89,35 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 switch (category)
                 {
                     case "591":
-                        SQL = string.Format("SELECT  TH029 AS 进货日期,TH005 AS 供应商代码 FROM  MOCTH  WHERE   (TH001= '{0}') AND (TH002 = '{1}')", category, code);
+                        sql = string.Format("SELECT  TH029 AS 进货日期,TH005 AS 供应商代码 FROM  MOCTH  WHERE   (TH001= '{0}') AND (TH002 = '{1}')", category, code);
 
-                        DTSQLMaterialID = string.Format("SELECT  DISTINCT TI004 AS 料号 FROM  MOCTI  WHERE   (TI001= '{0}') AND (TI002 = '{1}')", category, code);
-                        DTSQLsum = string.Format("SELECT  Sum(TI007) AS 数量  FROM  MOCTI  WHERE   (TI001= '{0}') AND (TI002 = '{1}')AND (TI004='", category, code);
+                        dtSqlMaterialId = string.Format("SELECT  DISTINCT TI004 AS 料号 FROM  MOCTI  WHERE   (TI001= '{0}') AND (TI002 = '{1}')", category, code);
+                        dtSqlSum = string.Format("SELECT  Sum(TI007) AS 数量  FROM  MOCTI  WHERE   (TI001= '{0}') AND (TI002 = '{1}')AND (TI004='", category, code);
                         break;
                     case "110":
-                        SQL = string.Format("SELECT  TA014 AS 进货日期,TA004 AS 供应商代码 FROM  INVTA  WHERE   (TA001= '{0}') AND (TA002 = '{1}')", category, code);
+                        sql = string.Format("SELECT  TA014 AS 进货日期,TA004 AS 供应商代码 FROM  INVTA  WHERE   (TA001= '{0}') AND (TA002 = '{1}')", category, code);
 
-                        DTSQLMaterialID = string.Format("SELECT  DISTINCT TB004 AS 料号 FROM INVTB  WHERE   (TB001= '{0}') AND (TB002 = '{1}')", category, code);
-                        DTSQLsum = string.Format("SELECT  Sum(TB007) AS 数量  FROM  INVTB  WHERE   (TB001= '{0}') AND (TB002 = '{1}')AND (TB004='", category, code);
+                        dtSqlMaterialId = string.Format("SELECT  DISTINCT TB004 AS 料号 FROM INVTB  WHERE   (TB001= '{0}') AND (TB002 = '{1}')", category, code);
+                        dtSqlSum = string.Format("SELECT  Sum(TB007) AS 数量  FROM  INVTB  WHERE   (TB001= '{0}') AND (TB002 = '{1}')AND (TB004='", category, code);
                         break;
                     default:
-                        SQL = string.Format("SELECT  TG014 AS 进货日期,TG005 AS 供应商代码 FROM  PURTG  WHERE   (TG001= '{0}') AND (TG002 = '{1}')", category, code);
+                        sql = string.Format("SELECT  TG014 AS 进货日期,TG005 AS 供应商代码 FROM  PURTG  WHERE   (TG001= '{0}') AND (TG002 = '{1}')", category, code);
 
-                        DTSQLMaterialID = string.Format("SELECT  DISTINCT TH004 AS 料号 FROM  PURTH   WHERE   (TH001= '{0}') AND (TH002 = '{1}')", category, code);
-                        DTSQLsum = string.Format("SELECT  Sum(TH007) AS 数量 FROM  PURTH   WHERE   (TH001= '{0}') AND (TH002 = '{1}') AND (TH004='", category, code);
+                        dtSqlMaterialId = string.Format("SELECT  DISTINCT TH004 AS 料号 FROM  PURTH   WHERE   (TH001= '{0}') AND (TH002 = '{1}')", category, code);
+                        dtSqlSum = string.Format("SELECT  Sum(TH007) AS 数量 FROM  PURTH   WHERE   (TH001= '{0}') AND (TH002 = '{1}') AND (TH004='", category, code);
                         break;
 
 
                 }
-                return GetMaterials(category, code, SQL, DTSQLMaterialID, DTSQLsum);
+                return GetMaterialsBy(category, code, sql, dtSqlMaterialId, dtSqlSum);
             }
 
         }
        /// <summary>
        /// 得到进货物料  341 342 343 344
        /// </summary>
-       /// <param name="category"></param>
-       /// <param name="code"></param>
+       /// <param name="category">单别</param>
+       /// <param name="code">单号</param>
        /// <returns></returns>
        public  List<MaterialModel> GetPurchaseMaterialBy(string category, string code)
         {
@@ -111,11 +125,11 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             var PurchaseHeader = StockDb.FindStoHeaderByID(category + "-" + code).FirstOrDefault();
             var PurchaseBody = StockDb.FindStoBodyByID(category + "-" + code);
             List<MaterialModel> Materials = new List<MaterialModel>(); 
-            string SupplierID = NewMethod(PurchaseHeader.Supplier); 
+            string SupplierID = GetSupplierNameBy((PurchaseHeader.Supplier); 
             string InMaterialDate = PurchaseHeader.StockDate;
             foreach  (var s in PurchaseBody)
             {
-                var PorductInfo = PorductInfoS.FindProductInfoBy(s.ProductID).FirstOrDefault();
+                var PorductInfo = PorductInfoS.GetProductInfoBy(s.ProductID).FirstOrDefault();
                 Material = new MaterialModel()
                 {
                     ProduceNumber =s.StockCount,
@@ -132,8 +146,12 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             }
             return Materials;
         }
-
-        private  string NewMethod(string SupplierID)
+         /// <summary>
+         ///   得到供应商名称
+         /// </summary>
+         /// <param name="SupplierID">供应商ID</param>
+         /// <returns></returns>
+        private  string GetSupplierNameBy(string SupplierID)
         {
             DataTable dt2 = DbHelper.Erp.LoadTable("SELECT  MA002 AS 供应商  FROM PURMA  WHERE (MA001 = '" + SupplierID + "')");
             if (dt2.Rows.Count > 0)
@@ -143,19 +161,22 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             return SupplierID;
         }
 
-        /// <summary>
-        /// 进货单
-        /// </summary>
-        /// <param name="category"></param>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        private List<MaterialModel> GetMaterials(string category, string code, string SQL, string DTSQLMaterialID, string DTSQLsum)
+      /// <summary> 
+      /// 进货单
+      /// </summary>
+      /// <param name="category">单别</param>
+      /// <param name="code">单号</param>
+      /// <param name="sql"></param>
+      /// <param name="dtSqlMaterialId"></param>
+      /// <param name="dtSQLsum"></param>
+      /// <returns></returns>
+        private List<MaterialModel> GetMaterialsBy(string category, string code, string sql, string dtSqlMaterialId, string dtSqlSum)
         {
             MaterialModel Material = null;
             List<MaterialModel> Materials = new List<MaterialModel>(); ;
             string SupplierID = string.Empty ;
             string InMaterialDate =string .Empty ;
-            DataTable DTds = DbHelper.Erp.LoadTable(SQL);
+            DataTable DTds = DbHelper.Erp.LoadTable(sql);
             if (DTds.Rows.Count > 0)
             {
                 SupplierID = DTds.Rows[0]["供应商代码"].ToString().Trim();
@@ -165,20 +186,20 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 {
                     SupplierID = SupplierID + "/" + dt2.Rows[0]["供应商"].ToString().Trim();
                 }
-                DataTable DT = DbHelper.Erp.LoadTable(DTSQLMaterialID);
+                DataTable DT = DbHelper.Erp.LoadTable(dtSqlMaterialId);
                 if (DT.Rows.Count > 0)
                 {
                     foreach (DataRow dr in DT.Rows)
                     {
                         double ProduceNumber = 0;
                         //  SELECT  Sum(TH007) AS 数量 FROM  PURTH   WHERE   (TH001= '" + category + "') AND (TH002 = '" + code + "') AND (TH004='"; ;
-                        DataTable dtSum = DbHelper.Erp.LoadTable(DTSQLsum + dr["料号"].ToString() + "')");
+                        DataTable dtSum = DbHelper.Erp.LoadTable(dtSQLsum + dr["料号"].ToString() + "')");
                         if (dtSum.Rows.Count > 0)
                         {
                             ProduceNumber = dtSum.Rows[0]["数量"].ToString().Trim().ToDouble();
                         }
                        
-                       var PorductInfo= PorductInfoS.FindProductInfoBy(dr["料号"].ToString()).FirstOrDefault ();
+                       var PorductInfo= PorductInfoS.GetProductInfoBy(dr["料号"].ToString()).FirstOrDefault ();
                        Material = new MaterialModel()
                        {
                          ProduceNumber = ProduceNumber,
@@ -199,11 +220,11 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             return Materials;
         }
            /// <summary>
-               /// 制令单
-               /// </summary>
-               /// <param name="category"></param>
-               /// <param name="code"></param>
-               /// <returns></returns>
+           /// 制令单
+           /// </summary>
+           /// <param name="category">单别</param>
+           /// <param name="code">单号</param>
+           /// <returns></returns>
         private List<MaterialModel> GetMaterials(string category, string code)
         {
             string TA001 = category;
