@@ -57,7 +57,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 if (listModels == null||listModels .Count <=0) return OpResult.SetResult("集合不能为空！", false);
                      //新增 修改
                         listModels.ForEach(model => {
-
+                            
                             if (IsExist(model))
                             {
                                 model.PrintCount += 1;
@@ -93,11 +93,12 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             List<IQCSampleItemRecordModel> models = irep.Entities.Where(e => e.OrderID == orderId & e.SampleMaterial == sampleMaterial).ToList();
             if (models ==null ||models .Count <=0)
             {
-                IQCSampleItemRecordModel model=null; 
+                IQCSampleItemRecordModel model= null ; 
                  var productInfo = GetPuroductSupplierInfo(orderId);
                   productInfo.ForEach(e => {
                      if (e.ProductID == sampleMaterial)
                      {
+                        
                          var SampleItem = MaterialSampleItem.GetMaterilalSampleItemBy(e.ProductID);
                          
                          SampleItem.ForEach(f =>
@@ -105,14 +106,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                              var SampleNumber = SamplePlanTable.getSampleNumber(f.CheckWay, f.CheckLevel, f.Grade, e.ProduceNumber);
                              model = new IQCSampleItemRecordModel()
                              {
-                                 OrderID = e.OrderID,
-                                 SampleMaterial = e.ProductID,
-                                 SampleMaterialDrawID = e.ProductDrawID,
-                                 SampleMaterialName = e.ProductName,
-                                 SampleMaterialInDate = e.ProduceInDate,
-                                 SampleMaterialSpec = e.ProductStandard,
-                                 SampleMaterialNumber=e.ProduceNumber,
-                                 SampleMaterialSupplier=e.ProductSupplier,
                                  CheckLevel=f.CheckLevel,
                                  CheckMethod=f.CheckMethod,
                                  CheckWay=f.CheckWay,
@@ -127,6 +120,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                                  RefuseGradeNumber =SampleNumber .RefuseGradeNumber .ToDouble (),
                                  PrintCount=1,
                              };
+                             ErpMaterialToSampleModel(e, out model);
                              models.Add(model);
                          });
                      }
@@ -144,6 +138,27 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         public List<MaterialModel> GetPuroductSupplierInfo(string orderId)
         {
             return   QuantityDBManager.QuantityPurchseDb.FindMaterialBy(orderId);
+        }
+        /// <summary>
+        /// Erp物料信息转为抽样表头（单头结合单身）
+        /// </summary>
+        /// <param name="materialModel">Erp物料信息</param>
+        /// <param name="sampleModel">抽样单头</param>
+       public void ErpMaterialToSampleModel(MaterialModel materialModel,out IQCSampleItemRecordModel sampleModel )
+        {
+
+            sampleModel = new IQCSampleItemRecordModel()
+            {
+                OrderID = materialModel.OrderID,
+                SampleMaterial = materialModel.ProductID,
+                SampleMaterialInDate = materialModel.ProduceInDate,
+                SampleMaterialDrawID = materialModel.ProductDrawID,
+                SampleMaterialName = materialModel.ProductName,
+                SampleMaterialSpec = materialModel.ProductStandard,
+                SampleMaterialSupplier = materialModel.ProductSupplier,
+                SampleMaterialNumber = materialModel.ProduceNumber,
+            };
+
         }
         /// <summary>
         /// 得到当年年始到目前为止物料抽样批次
