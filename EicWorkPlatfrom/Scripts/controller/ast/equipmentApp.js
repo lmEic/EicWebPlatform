@@ -79,6 +79,14 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         var url = astUrlPrefix + "GetAstInputConfigDatas";
         return ajaxService.getData(url, {});
     };
+    ///根据录入日期查询设备档案资料
+    ast.getEquipmentArchivesByInputDate = function (inputDate)
+    {
+        var url = astUrlPrefix + 'GetEquipmentArchivesByInputDate';
+        return ajaxService.getData(url, {
+            inputDate: inputDate,
+        });
+    };
     //获取设备编号
     ast.getEquipmentID = function (equipmentType, assetType, taxType)
     {
@@ -97,6 +105,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             equipment: equipment,
         });
     };
+
     return ast;
 })
 
@@ -126,7 +135,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     });
 })
 
-.controller('astArchiveInputCtrl', function ($scope, dataDicConfigTreeSet,connDataOpService, astDataopService,$popover) {
+.controller('astArchiveInputCtrl', function ($scope, dataDicConfigTreeSet,connDataOpService, astDataopService,$modal) {
     ///设备档案模型
     var uiVM = {
         AssetNumber: null,
@@ -217,6 +226,15 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             uiVM.OpSign = 'edit';
             $scope.vm = uiVM;
         },
+        //-----------edit--------------
+        inputDate: new Date(),//输入日期
+        editDatas:[],
+        getAstDatas: function () {
+            vmManager.editDatas = [];
+            $scope.searchPromise = astDataopService.getEquipmentArchivesByInputDate(vmManager.inputDate).then(function (datas) {
+                vmManager.editDatas = datas;
+            });
+        }
     };
     $scope.vmManager = vmManager;
 
@@ -248,8 +266,76 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             vmManager.inti();
         });
     }
+    operate.editModal = $modal({
+        title: "操作窗口",
+        templateUrl: leeHelper.controllers.equipment + '/EditEquipmentTpl/',
+        controller: function ($scope) {
+            $scope.vm = uiVM;
+          
 
+            var op = Object.create(leeDataHandler.operateStatus);
+            op.vm = uiVM;
+            $scope.operate = op;
+
+            $scope.save = function (isvalidate) {
+                //leeDataHandler.dataOperate.add(op, isvalidate, function () {
+                //    var leaveItem = {
+                //        WorkerId: null,
+                //        WorkerName: null,
+                //        Department: null,
+                //        LeaveType: null,
+                //        LeaveHours: null,
+                //        LeaveTimeRegion: null,
+                //        LeaveDescription: null,
+                //        LeaveMark: 0,
+                //        LeaveMemo: null,
+                //        StartLeaveDate: null,
+                //        EndLeaveDate: null,
+                //        LeaveTimeRegionStart: null,
+                //        LeaveTimeRegionEnd: null,
+                //        DepartmentText: null,
+                //        ClassType: null,
+                //        id: 0
+                //    };
+                //    var item = _.clone(uiVM);
+                //    if (vmManager.opSign === "handle" || vmManager.opSign === "add") {
+                //        item.LeaveMark = 1;
+                //        item.OpCmdVisible = 0;
+                //        var rowItem = _.find(vmManager.changeDatas, { WorkerId: item.WorkerId });
+                //        leeHelper.copyVm(item, rowItem);
+                //        leeHelper.copyVm(item, leaveItem);
+                //        rowItem.LeaveDataSet.push(leaveItem);
+                //        leaveItem.id = rowItem.LeaveDataSet.length;
+
+                //        var litem = _.findWhere(vmManager.dbDataSet, { WorkerId: item.WorkerId, LeaveType: item.LeaveType, StartLeaveDate: item.StartLeaveDate, EndLeaveDate: item.EndLeaveDate });
+                //        if (litem === undefined)
+                //            litem = _.clone(leaveItem);
+                //        vmManager.dbDataSet.push(litem);
+                //    }
+                //    else if (vmManager.opSign === 'edit') {
+                //        var rowItem = _.find(vmManager.changeDatas, { WorkerId: item.WorkerId });
+                //        leaveItem = _.find(rowItem.LeaveDataSet, { id: item.id });
+                //        leeHelper.copyVm(item, leaveItem);
+                //    }
+                //    else if (vmManager.opSign === 'handleEdit') {
+                //        var rowItem = _.find(vmManager.askLeaveDatas, { WorkerId: item.WorkerId, AttendanceDate: item.StartLeaveDate });
+                //        if (rowItem !== undefined) {
+                //            leeHelper.copyVm(item, rowItem);
+                //            rowItem.LeaveTimeRegion = item.LeaveTimeRegionStart + '--' + item.LeaveTimeRegionEnd;
+                //        }
+                //    }
+                //    operate.editModal.$promise.then(operate.editModal.hide);
+                //});
+            };
+        },
+        show: false,
+    });
     
+    operate.editItem = function (item) {
+        uiVM = item;
+        operate.editModal.$promise.then(operate.editModal.show);
+    };
+
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);

@@ -3,14 +3,13 @@
 namespace Lm.Eic.App.DomainModel.Bpm.Ast
 {
     /// <summary>
-    ///设备
+    ///设备档案模型
     /// </summary>
     [Serializable]
     public partial class EquipmentModel
     {
         public EquipmentModel()
         { }
-
         #region Model
         private string _assetnumber;
         /// <summary>
@@ -48,11 +47,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _functiondescription = value; }
             get { return _functiondescription; }
         }
-        private string _servicelife;
+        private int _servicelife;
         /// <summary>
         ///使用寿命
         /// </summary>
-        public string ServiceLife
+        public int ServiceLife
         {
             set { _servicelife = value; }
             get { return _servicelife; }
@@ -156,11 +155,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _addmode = value; }
             get { return _addmode; }
         }
-        private DateTime? _deliverydate;
+        private DateTime _deliverydate;
         /// <summary>
         ///购入日期
         /// </summary>
-        public DateTime? DeliveryDate
+        public DateTime DeliveryDate
         {
             set { _deliverydate = value; }
             get { return _deliverydate; }
@@ -228,11 +227,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _ismaintenance = value; }
             get { return _ismaintenance; }
         }
-        private DateTime? _maintenancedate;
+        private DateTime _maintenancedate;
         /// <summary>
         ///保养日期
         /// </summary>
-        public DateTime? MaintenanceDate
+        public DateTime MaintenanceDate
         {
             set { _maintenancedate = value; }
             get { return _maintenancedate; }
@@ -246,11 +245,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _maintenanceinterval = value; }
             get { return _maintenanceinterval; }
         }
-        private DateTime? _plannedmaintenancedate;
+        private DateTime _plannedmaintenancedate;
         /// <summary>
         ///计划保养日期
         /// </summary>
-        public DateTime? PlannedMaintenanceDate
+        public DateTime PlannedMaintenanceDate
         {
             set { _plannedmaintenancedate = value; }
             get { return _plannedmaintenancedate; }
@@ -282,11 +281,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _checktype = value; }
             get { return _checktype; }
         }
-        private DateTime? _checkdate;
+        private DateTime _checkdate;
         /// <summary>
         ///校验日期
         /// </summary>
-        public DateTime? CheckDate
+        public DateTime CheckDate
         {
             set { _checkdate = value; }
             get { return _checkdate; }
@@ -300,11 +299,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _checkinterval = value; }
             get { return _checkinterval; }
         }
-        private DateTime? _plannedcheckdate;
+        private DateTime _plannedcheckdate;
         /// <summary>
         ///计划校验日期
         /// </summary>
-        public DateTime? PlannedCheckDate
+        public DateTime PlannedCheckDate
         {
             set { _plannedcheckdate = value; }
             get { return _plannedcheckdate; }
@@ -336,17 +335,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _isscrapped = value; }
             get { return _isscrapped; }
         }
-
-        DateTime? inputDate;
+        private DateTime _inputdate;
         /// <summary>
-        /// 录入日期
+        ///输入日期
         /// </summary>
-        public DateTime? InputDate
+        public DateTime InputDate
         {
-            get { return inputDate; }
-            set { inputDate = value; }
+            set { _inputdate = value; }
+            get { return _inputdate; }
         }
-
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
         private string _opperson;
         /// <summary>
         ///操作人
@@ -365,17 +371,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _opsign = value; }
             get { return _opsign; }
         }
-
-        DateTime? opDate = DateTime.Now;
-        /// <summary>
-        /// 操作日期
-        /// </summary>
-        public DateTime? OpDate
-        {
-            get { return opDate; }
-            set { opDate = value; }
-        }
-
         private decimal _id_key;
         /// <summary>
         ///自增键
@@ -385,6 +380,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _id_key = value; }
             get { return _id_key; }
         }
-        #endregion Model    }
+        #endregion Model
     }
+
 }

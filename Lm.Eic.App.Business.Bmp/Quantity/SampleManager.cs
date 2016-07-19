@@ -118,10 +118,14 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 NPOI.HSSF.UserModel.HSSFWorkbook hssfworkbook = null;
                 System.IO.FileStream file = new System.IO.FileStream(sNewFileName, System.IO.FileMode.Open, System.IO.FileAccess.Read);
                 if (null == file)
-                { return hssfworkbook; }
+                { 
+                    return hssfworkbook;
+                }
                 hssfworkbook = new NPOI.HSSF.UserModel.HSSFWorkbook(file);
                 if (null == hssfworkbook)
-                { return hssfworkbook; }
+                { 
+                    return hssfworkbook;
+                }
                 //create a entry of DocumentSummaryInformation
                 NPOI.HPSF.DocumentSummaryInformation dsi = NPOI.HPSF.PropertySetFactory.CreateDocumentSummaryInformation();
                 dsi.Company = "test";
