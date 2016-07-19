@@ -271,7 +271,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         templateUrl: leeHelper.controllers.equipment + '/EditEquipmentTpl/',
         controller: function ($scope) {
             $scope.vm = uiVM;
-          
+            $scope.vmManager = vmManager;
 
             var op = Object.create(leeDataHandler.operateStatus);
             op.vm = uiVM;

@@ -576,7 +576,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                     setBCValueToXlsCell(xlsSheet, idNumStartRowIndex, IdNumStopRowIndex, Value);
                 }
             }
-
             catch (Exception ex)
             {
 

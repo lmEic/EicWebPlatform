@@ -209,7 +209,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         private void SetEquipmentCheckRule(EquipmentModel model)
         {
             //校验处理
-            model.IsCheck = (model.CheckDate == null && model.CheckInterval == 0) ? "不校验" : "校验";
+            model.IsCheck = (model.CheckInterval == 0) ? "不校验" : "校验";
             if (model.IsCheck == "校验")
             {
                 model.PlannedCheckDate = model.CheckDate.AddMonths(model.CheckInterval);
