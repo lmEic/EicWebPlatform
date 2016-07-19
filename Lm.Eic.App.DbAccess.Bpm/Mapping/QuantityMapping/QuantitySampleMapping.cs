@@ -12,6 +12,7 @@ using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
 {
+   
     /// <summary>
     /// 抽样记录
     /// </summary>
@@ -25,6 +26,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
        }
     }
 
+    
     /// <summary>
     /// 抽样项次打印
     /// </summary>
@@ -52,10 +54,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
         }
     }
 
+
     /// <summary>
     /// 设置物料抽测项次
     /// </summary>
-    public class MaterialSampleItemMapping : EntityTypeConfiguration<MaterialSampleSet>
+    public class MaterialSampleItemMapping : EntityTypeConfiguration<MaterialSampleSetModel>
     {
         public MaterialSampleItemMapping()
         {
@@ -64,6 +67,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
             this.ToTable("QCMS_MaterialSampleSet");
         }
     }
+    
+    
+    /// <summary>
+    ///抽样数量规则
+    /// </summary>
     public class SamplePlanMapping : EntityTypeConfiguration<SamplePlanTableModel>
     {
         public SamplePlanMapping()
@@ -73,5 +81,19 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
             this.ToTable("QCMS_SamplePlanTable");
         }
     }
+
+     
+    /// <summary>
+     /// 放宽加严规则
+     /// </summary>
+    public class SampleContorlLimitMapping : EntityTypeConfiguration<SampleContorlLimitModel>
+   {
+       public SampleContorlLimitMapping ()
+        {
+            this.HasKey(e => e.Id_Key);
+            this.Property(e => e.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("QCMS_SampleControlParamter");
+        }                            
+   }
   
 }

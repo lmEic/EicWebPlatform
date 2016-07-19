@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw;
+
 
 
 namespace Lm.Eic.App.Business.Bmp.Quantity
@@ -11,8 +13,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
     public static class QuantityService
     {
       public static  IQCSampleItemsRecordManager IQCSampleItemsRecordManager
-      {
-           
+      { 
           get { return OBulider.BuildInstance<IQCSampleItemsRecordManager>(); }
       }
 

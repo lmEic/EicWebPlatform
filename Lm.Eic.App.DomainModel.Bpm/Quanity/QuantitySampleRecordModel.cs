@@ -391,8 +391,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 		#endregion Model
 
     }
-
-   
+    
+    /// <summary>
+    /// 不合格产品记录
+    ///对应表 QCMS_IQCSampleRecordNGTable
+     /// </summary>
     public class ProductNgRecordModel
     {
         public ProductNgRecordModel()
@@ -598,12 +601,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+   
     /// <summary>
     /// 设置物料抽测项次
+    /// 对应表 QCMS_MaterialSampleSet
     /// </summary>
-    public class  MaterialSampleSet
+    public class  MaterialSampleSetModel
     {
-        public MaterialSampleSet ()
+        public MaterialSampleSetModel ()
         { }
         #region Model
         private string _samplematerial;
@@ -761,8 +766,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+    
     /// <summary>
-    /// 物料抽样计划表
+    /// 物料抽样规则表
+    /// 对应表 QCMS_SamplePlanTable
     /// </summary>
     public class SamplePlanTableModel
     {
@@ -852,5 +859,115 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
-     
+    
+    /// <summary>
+     /// 抽样放宽加严限制控制
+    ///  对应表 QCMS_SampleControlParamter
+     /// </summary>
+    public class SampleContorlLimitModel
+    {
+        public SampleContorlLimitModel ()
+        { }
+		#region Model
+		private string _classification;
+		private string _judgeway;
+		private string _ab;
+		private string _ac;
+		private string _ba;
+		private string _ca;
+		private string _abi;
+		private string _aci;
+		private string _bai;
+		private string _cai;
+		private decimal _id_key;
+		/// <summary>
+		/// 
+		/// </summary>
+		public string Classification
+		{
+			set{ _classification=value;}
+			get{return _classification;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string JudgeWay
+		{
+			set{ _judgeway=value;}
+			get{return _judgeway;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string AB
+		{
+			set{ _ab=value;}
+			get{return _ab;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string AC
+		{
+			set{ _ac=value;}
+			get{return _ac;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string BA
+		{
+			set{ _ba=value;}
+			get{return _ba;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string CA
+		{
+			set{ _ca=value;}
+			get{return _ca;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string ABI
+		{
+			set{ _abi=value;}
+			get{return _abi;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string ACI
+		{
+			set{ _aci=value;}
+			get{return _aci;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string BAI
+		{
+			set{ _bai=value;}
+			get{return _bai;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string CAI
+		{
+			set{ _cai=value;}
+			get{return _cai;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public decimal Id_Key
+		{
+			set{ _id_key=value;}
+			get{return _id_key;}
+		}
+		#endregion Model
+    }
 }
