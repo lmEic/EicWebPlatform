@@ -316,13 +316,26 @@
             </div>
             <div bs-pane data-title="设备档案编辑" data-name="editTab">
                 <div class="well">
-                    <form class="form-inline" novalidate>
-                        <div class="form-group">
-                            <label for="inputDate">录入日期</label>
-                            <input name="inputDate" type="date" class="form-control" ng-model="vmManager.inputDate" format-date required />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form class="form-inline" novalidate>
+                                <div class="form-group">
+                                    <label for="inputDate">录入日期</label>
+                                    <input name="inputDate" type="date" class="form-control" ng-model="vmManager.inputDate" format-date required />
+                                </div>
+                                <span class="btn btn-primary" ng-click="vmManager.getAstDatas(3)"><i class="fa fa-search"></i>查询</span>
+                            </form>
                         </div>
-                        <span class="btn btn-primary" ng-click="vmManager.getAstDatas()"><i class="fa fa-search"></i>查询</span>
-                    </form>
+                        <div class="col-md-6">
+                            <form class="form-inline" novalidate>
+                                <div class="form-group">
+                                    <label for="assetNum">财产编号</label>
+                                    <input name="assetNum" type="text" class="form-control" ng-model="vmManager.assetNum" required />
+                                </div>
+                                <span class="btn btn-primary" ng-click="vmManager.getAstDatas(1)"><i class="fa fa-search"></i>查询</span>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="well" cg-busy="{promise:searchPromise}">
                     <div class="table-responsive">

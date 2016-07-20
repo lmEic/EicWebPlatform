@@ -63,9 +63,14 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="inputDate"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetEquipmentArchivesByInputDate(DateTime inputDate)
+        public ContentResult GetEquipmentArchivesBy(DateTime inputDate,string assetId,int searchMode)
         {
-            var datas = AstService.EquipmentManager.FindBy(new QueryEquipmentDto() { InputDate=inputDate,SearchMode =3 });
+            var datas = AstService.EquipmentManager.FindBy(new QueryEquipmentDto()
+            {
+                InputDate = inputDate,
+                AssetNumber = assetId,
+                SearchMode = searchMode
+            });
             return DateJsonResult(datas);
         }
 
