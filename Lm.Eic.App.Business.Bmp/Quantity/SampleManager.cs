@@ -226,9 +226,9 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <param name="xlsSheet">Excel表</param>
         /// <param name="startRowIndex">启始行</param>
         /// <param name="rowIndex">行数</param>
-        /// <param name="A"></param>
-        /// <param name="J"></param>
-        /// <param name="V"></param>
+        /// <param name="A">A列</param>
+        /// <param name="J">J列</param>
+        /// <param name="V">V列</param>
         private void ResetXlsCellStatus(Excel.Worksheet xlsSheet, int startRowIndex, int rowIndex, string A, string J, string V)
         {
             int m = startRowIndex + rowIndex + 1;
@@ -241,13 +241,13 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         ///  加实线  抵部不好加  顶部加1
         /// </summary>
         /// <param name="xlsSheet">excel表</param>
-        /// <param name="StartRowIndex">启始行</param>
-        /// <param name="RowIndex">行数</param>
-        /// <param name="A"></param>
-        /// <param name="V"></param>
-        private void ResetXlsCellStatus(Excel.Worksheet xlsSheet, int StartRowIndex, int RowIndex, string A, string V)
+        /// <param name="startRowIndex">启始行</param>
+        /// <param name="rowIndex">行数</param>
+        /// <param name="A">A列</param>
+        /// <param name="V">V列</param>
+        private void ResetXlsCellStatus(Excel.Worksheet xlsSheet, int startRowIndex, int rowIndex, string A, string V)
         {
-            int m = StartRowIndex + RowIndex + 1;
+            int m = startRowIndex + rowIndex + 1;
             xlsSheet.get_Range(A + m, V + m).Borders.get_Item(Excel.XlBordersIndex.xlEdgeTop).LineStyle = Excel.XlLineStyle.xlContinuous;    //加实线  抵部不好加  顶部加1
 
         }
@@ -255,20 +255,20 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// 合并B C 二列
         /// </summary>
         /// <param name="xlsSheet"></param>
-        /// <param name="MergeRowIndex">合并二列的行数</param>
-        private void MergeXlsCell(Excel.Worksheet xlsSheet, int MergeRowIndex)
+        /// <param name="mergeRowIndex">合并二列的行数</param>
+        private void MergeXlsCell(Excel.Worksheet xlsSheet, int mergeRowIndex)
         {
-            xlsSheet.get_Range("B" + MergeRowIndex, "C" + MergeRowIndex).Merge();
+            xlsSheet.get_Range("B" + mergeRowIndex, "C" + mergeRowIndex).Merge();
         }
 
         /// <summary>
         /// BC列不合并时处理数据 ，并处理一合并时清除的一些线
         /// </summary>
         /// <param name="xlsSheet"></param>
-        /// <param name="MergeRowIndex"></param>
-        /// <param name="valueUp"></param>
-        /// <param name="valueDown"></param>
-        /// <param name="standardValue"></param>
+        /// <param name="MergeRowIndex">合并的行数</param>
+        /// <param name="valueUp">值上限</param>
+        /// <param name="valueDown">值下限</param>
+        /// <param name="standardValue">规格值</param>
         private void SetBCValueToXlsCell(Excel.Worksheet xlsSheet, int startRowIndex, string valueUp, string valueDown, string standardValue)
         {
             InsertStandardValue(xlsSheet, startRowIndex, standardValue, "B");
@@ -286,7 +286,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// 插入上限，下限的值
         /// </summary>
         /// <param name="xlsSheet"></param>
-        /// <param name="startRowIndex"></param>
+        /// <param name="startRowIndex">起始行</param>
         /// <param name="valueUp">上限值</param>
         /// <param name="valueDown">下限值</param>
         /// <param name="column">列数</param>
@@ -314,10 +314,10 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// B列 插入标准值
         /// </summary>
         /// <param name="xlsSheet"></param>
-        /// <param name="startRowIndex"></param>
+        /// <param name="startRowIndex">起始行</param>
         /// <param name="standardValue"></param>
-        /// <param name="column"></param>
-        private static void InsertStandardValue(Excel.Worksheet xlsSheet, int startRowIndex, string standardValue, string column)
+        /// <param name="column">列数</param>
+        private  void InsertStandardValue(Excel.Worksheet xlsSheet, int startRowIndex, string standardValue, string column)
         {
             int StopRowIndex = startRowIndex + 1;
             xlsSheet.get_Range(column + startRowIndex, "B" + StopRowIndex).Merge();//合并单元格
@@ -349,7 +349,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             xlsSheet.get_Range("B" + startMergeRowIndex).Font.Size = "12"; //设置字体大小
             xlsSheet.get_Range("B" + startMergeRowIndex).Font.Name = "宋体";//设置字体
         }
-        private static void setDEmethod(Excel.Worksheet xlsSheet, int startMergeRowIndex, int endMergeRowIndex)
+        private  void setDEmethod(Excel.Worksheet xlsSheet, int startMergeRowIndex, int endMergeRowIndex)
         {
             xlsSheet.get_Range("D" + startMergeRowIndex, "E" + endMergeRowIndex).Borders.LineStyle = Excel.XlLineStyle.xlLineStyleNone;
 
@@ -360,7 +360,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             xlsSheet.get_Range("D" + startMergeRowIndex, "E" + endMergeRowIndex).Borders.get_Item(Excel.XlBordersIndex.xlEdgeTop).LineStyle = Excel.XlLineStyle.xlContinuous;
             xlsSheet.get_Range("A" + startMergeRowIndex, "H" + endMergeRowIndex).Borders.get_Item(Excel.XlBordersIndex.xlEdgeTop).LineStyle = Excel.XlLineStyle.xlContinuous;
         }
-        private static void setCPDEmethod(Excel.Worksheet xlsSheet, int startMergeRowIndex, int endMergeRowIndex)
+        private void setCPDEmethod(Excel.Worksheet xlsSheet, int startMergeRowIndex, int endMergeRowIndex)
         {
             xlsSheet.get_Range("H" + startMergeRowIndex, "I" + endMergeRowIndex).Borders.LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             xlsSheet.get_Range("H" + startMergeRowIndex).HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;//水平对齐靠左
@@ -397,18 +397,18 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <param name="startRowIndex"></param>
         /// <param name="stopRowIndex"></param>
         /// <param name="colName"></param>
-        /// <param name="Value"></param>
-        private void setValueToXlsCell(Excel.Worksheet xlsSheet, int startRowIndex, int stopRowIndex, string colName, string Value)
+        /// <param name="value"></param>
+        private void setValueToXlsCell(Excel.Worksheet xlsSheet, int startRowIndex, int stopRowIndex, string colName, string value)
         {
             if (startRowIndex == stopRowIndex)
             {
-                xlsSheet.get_Range(colName + startRowIndex, colName + stopRowIndex).Value = Value;
+                xlsSheet.get_Range(colName + startRowIndex, colName + stopRowIndex).Value = value;
 
             }
             else
             {
                 xlsSheet.get_Range(colName + startRowIndex, colName + stopRowIndex).Merge();
-                xlsSheet.get_Range(colName + startRowIndex, colName + stopRowIndex).Value = Value;
+                xlsSheet.get_Range(colName + startRowIndex, colName + stopRowIndex).Value = value;
 
             }
             xlsSheet.get_Range(colName + startRowIndex, colName + stopRowIndex).WrapText = true;
@@ -427,9 +427,9 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <param name="xlsSheet"></param>
         /// <param name="startRowIndex"></param>
         /// <param name="stopRowIndex"></param>
-        private static void xlEdgeLeftLine(Excel.Worksheet xlsSheet, int startRowIndex, int stopRowIndex, int Nunmber, char startNunmber)
+        private static void xlEdgeLeftLine(Excel.Worksheet xlsSheet, int startRowIndex, int stopRowIndex, int nunmber, char startNunmber)
         {
-            for (int i = 0; i < Nunmber; i++)
+            for (int i = 0; i < nunmber; i++)
             {
                 string ColName = Convert.ToChar(startNunmber + i).ToString();
                 xlsSheet.get_Range(ColName + startRowIndex, ColName + stopRowIndex).Borders.get_Item(Excel.XlBordersIndex.xlEdgeLeft).LineStyle = Excel.XlLineStyle.xlContinuous;
@@ -439,7 +439,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// 打印，超出打印范围提示不打印
         /// </summary>
         /// <param name="xlsSheet"></param>
-        private void PrinttheExcel(Excel.Worksheet xlsSheet, string desktopPath)
+        private void PrinttheExcel(Excel.Worksheet xlsSheet)
         {
             double mm = 0;
             foreach (Range col in xlsSheet.UsedRange.Columns)
@@ -557,8 +557,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 string DownValue = sizeSpecDown;
                 if (JudgeNoNull(UpValue, DownValue) & JudgeMach(UpValue, DownValue))
                 {
-                    double upValue = Convert.ToDouble(UpValue);
-                    double downValue = Convert.ToDouble(DownValue);
+                    double upValue = UpValue.ToDouble ();
+                    double downValue = DownValue.ToDouble ();
                     if (JudgeAbs(upValue, downValue))
                     {
                         string Value = sizeSpec + "±" + Math.Abs(upValue).ToString();
@@ -611,11 +611,11 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// </summary>
         /// <param name="xlsSheet"></param>
         /// <param name="IdNumStartRowIndex"></param>
-        /// <param name="RowIndeX"></param>
+        /// <param name="rowIndeX"></param>
         /// <param name="model"></param>
-        private void SetMaterialInfoToXlsCell(Excel.Worksheet xlsSheet, int IdNumStartRowIndex, int RowIndeX, IQCSampleItemRecordModel model)
+        private void SetMaterialInfoToXlsCell(Excel.Worksheet xlsSheet, int IdNumStartRowIndex, int rowIndeX, IQCSampleItemRecordModel model)
         {
-            int IdNumStopRowIndex = IdNumStartRowIndex + RowIndeX - 1;
+            int IdNumStopRowIndex = IdNumStartRowIndex + rowIndeX - 1;
             setValueToXlsCell(xlsSheet, IdNumStartRowIndex, IdNumStopRowIndex, "A", model.SampleItem);
             setValueToXlsCell(xlsSheet, IdNumStartRowIndex, IdNumStopRowIndex, "D", model.CheckLevel);
             if (model.Grade.Contains("=")) { setValueToXlsCell(xlsSheet, IdNumStartRowIndex, IdNumStopRowIndex, "E", model.Grade + ""); }
@@ -634,7 +634,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             if (model.EquipmentID != null) { EquipmetID = model.EquipmentID.ToString(); }
             setValueToXlsCell(xlsSheet, IdNumStartRowIndex, IdNumStopRowIndex, "H", EquipmetID);
             setValueToXlsCell(xlsSheet, IdNumStartRowIndex, IdNumStopRowIndex, "I", "");
-            ResetXlsCellStatus(xlsSheet, IdNumStartRowIndex, RowIndeX - 1, "A", "J", "V");
+            ResetXlsCellStatus(xlsSheet, IdNumStartRowIndex, rowIndeX - 1, "A", "J", "V");
             xlEdgeLeftLine(xlsSheet, IdNumStartRowIndex, IdNumStopRowIndex, 13, 'J');
 
         }
@@ -643,7 +643,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// </summary>
         /// <param name="models"></param>
         /// <param name="xlsSheet"></param>
-        private static void SetExcelTitle(List<IQCSampleItemRecordModel> models, Excel.Worksheet xlsSheet)
+        private  void SetExcelTitle(List<IQCSampleItemRecordModel> models, Excel.Worksheet xlsSheet)
         {
             xlsSheet.Cells[2, 2] = DateTime.Now.ToString("yyyy-MM-dd");
             xlsSheet.Cells[2, 8] = "品号：" + models[0].SampleMaterial;
@@ -657,7 +657,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
 
         }
 
-        private static void SetExcelTitleTestROHS(List<IQCSampleItemRecordModel> models, Excel.Worksheet xlsSheet)
+        private  void SetExcelTitleTestROHS(List<IQCSampleItemRecordModel> models, Excel.Worksheet xlsSheet)
         {
             foreach (var m in models)
             {
