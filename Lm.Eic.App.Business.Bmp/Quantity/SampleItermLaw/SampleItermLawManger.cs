@@ -10,15 +10,16 @@ using Lm.Eic.App.Erp.Domain.QuantityModel;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.App.Business.Bmp.Quantity;
 namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
 {
     /// <summary>
     /// 取样放宽加严规则
     /// </summary>
-    public  class SampleItermLawManger
+    public  class SampleWayLawManger
     {
         ISampleContorlLimitReosity irep = null;
-        public SampleItermLawManger ()
+        public SampleWayLawManger ()
         { irep = new SampleContorlLimitReosity(); }
         /// <summary>
         /// 
@@ -30,10 +31,104 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
             return irep.Entities.Where(e => e.Classification == classification).ToList().FirstOrDefault();
         }
 
+        public string GetCheckWay(string material, string theclass)
+        {
+           
+            Dictionary<string, string> Paramter = GetAllParamter(theclass);
+            string JudgeWay = Paramter["JudgeWay"].Trim();
+            //如果没有设置限制
+            if (JudgeWay == "False") return "正常";
+
+
+            int AB = Paramter["AB"].ToInt ();
+            int AC = Paramter["AC"].ToInt ();
+            int BA = Paramter["BA"].ToInt ();
+            int CA = Paramter["CA"].ToInt ();
+            int ABI = Paramter["ABI"].ToInt ();
+            int ACI = Paramter["ACI"].ToInt ();
+            int BAI = Paramter["BAI"].ToInt ();
+            int CAI = Paramter["CAI"].ToInt ();
+            string OldCheckWay = string.Empty ;
+          
+            var mmmmmm =  QuantityService.SampleRecordManager.GetIQCSampleRecordModelsBy (material);
+            var chekWay = from r in mmmmmm.Take(1)
+                          select r.CheckWay;
+            foreach (var r in chekWay)
+            {
+                OldCheckWay = (r != null ? r.ToString() : string .Empty );
+            }
+
+            if (OldCheckWay == string .Empty ) { return "正常"; }
+            if (OldCheckWay == "正常")
+            {
+                int A = (AB > AC) ? AB : AC; // 得到最大的检验批次
+                int B = (AB <= AC) ? AB : AC;// 得到最小的检验批次
+                int C = (ABI > ACI) ? ACI : ABI; // 按理说ABI必须小于ACI
+                int D = (ABI <= ACI) ? ACI : ABI; // 取最大值
+                var mm = mmmmmm.Take(A);
+                if (mm.Count() < B | mm == null) return "正常";//实得到实体数小于最小的抽样批次
+                //下面是 实得到实体数大于等于 最小的缺抽样批次
+                var n = from r in mm
+                        where r.SampleResult == "FAIL"
+                        orderby r.FinishDate descending
+                        select r;
+                if (n.Count() <= C | n == null) return "放宽";//实得到FAIL实体数小于最小的
+                //下面是 实体数FAIL数 大于等于 最小的
+                if (n.Count() >= D) return "加严";  // 排除 FAIL数 大于等于 最大数时
+                var mmm = mm.Take(B);
+                var nn = from r in mmm
+                         where r.SampleResult == "FAIL"
+                         orderby r.FinishDate descending
+                         select r;
+                if (nn.Count() <= C | n == null) return "放宽";
+                else return "正常";
+            }
+            if (OldCheckWay == "放宽")
+            {
+                var mm = mmmmmm.Take(BA);
+                var n = from r in mm
+                        where r.SampleResult == "FAIL"
+                        orderby r.FinishDate descending
+                        select r;
+                return (n.Count() <= BAI | mm == null) ? "放宽" : "正常";
+            }
+            if (OldCheckWay == "加严")
+            {
+                var mm = mmmmmm.Take(CA);
+                var n = from r in mm
+                        where r.SampleResult == "FAIL"
+                        orderby r.FinishDate descending
+                        select r;
+                return (n.Count() > CAI | mm == null) ? "加严" : "正常";
+            }
+            return "正常";
+
+        }
+
+
+        private  Dictionary<string, string> GetAllParamter(string theClass)
+        {
+            Dictionary<string, string> AllParamter = new Dictionary<string, string>();
+           var  mdl = irep.Entities.Where(e => e.Classification == theClass).ToList ().FirstOrDefault ();
+            if (mdl != null)
+            {
+                AllParamter.Add("JudgeWay", mdl.JudgeWay.Trim());
+                AllParamter.Add("AB", mdl.AB.Trim());
+                AllParamter.Add("AC", mdl.AC.Trim());
+                AllParamter.Add("BA", mdl.BA.Trim());
+                AllParamter.Add("CA", mdl.CA.Trim());
+                AllParamter.Add("ABI", mdl.ABI.Trim());
+                AllParamter.Add("ACI", mdl.ACI.Trim());
+                AllParamter.Add("BAI", mdl.BAI.Trim());
+                AllParamter.Add("CAI", mdl.CAI.Trim());
+
+            }
+            return AllParamter;
+        }
 
     }
     /// <summary>
-    ///  取样 数量/拒受数量 /接受数量 规则
+    ///  物料数量抽样规则     （抽样数量/拒受数量 /接受数量） 
     /// </summary>
     public  class SamplePlanTableManger
     {
@@ -69,6 +164,11 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
             return  Models.Find(e => e.StartNumber == MinNumber && e.EndNumber == MaxNumber);
       
         }
+
+
+     
+
+
 
         private string GetMaxNumber(List<string> maxNumbers, Int64 number)
         {
@@ -110,7 +210,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
     }
 
    /// <summary>
-   /// 物料抽样信息表
+   /// 物料抽样项目
    /// </summary>
     public class MaterialSampleItemManager
     {

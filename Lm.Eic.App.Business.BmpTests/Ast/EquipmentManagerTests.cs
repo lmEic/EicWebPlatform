@@ -46,7 +46,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             model.CheckDate = DateTime.Now.ToDate();
             model.CheckInterval = 6;
             model.OpSign = "add";
-          var tem =  AstService.EquipmentManager.Store(model);
+            var tem = AstService.EquipmentManager.Store(model);
             Assert.Fail();
         }
     }
