@@ -21,11 +21,10 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
     public class IQCSampleItemsRecordManager
     {
         IIQCSampleItemRecordReposity irep = null;
-       MaterialSampleItemManager MaterialSampleItem = null;
+      
         public IQCSampleItemsRecordManager ()
         {
             irep = new IQCSampleItemRecordReposity();
-            MaterialSampleItem = new MaterialSampleItemManager();
         }
         /// <summary>
         /// 判断是否存在
@@ -54,7 +53,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             try
             {
                 int record = 0;
-                string opContext = "IQC打印存储";
+                string opContext = "IQC打印记录存储";
                 if (listModels == null||listModels .Count <=0) return OpResult.SetResult("集合不能为空！", false);
                      //新增 修改
                         listModels.ForEach(model => {
@@ -94,41 +93,53 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             List<IQCSampleItemRecordModel> models = irep.Entities.Where(e => e.OrderID == orderId & e.SampleMaterial == sampleMaterial).ToList();
             if (models ==null ||models .Count <=0)
             {
-                IQCSampleItemRecordModel model=null; 
-                 var productInfo = GetPuroductSupplierInfo(orderId);
-                  productInfo.ForEach(e => {
-                     if (e.ProductID == sampleMaterial)
-                     {
-                         var SampleItem = MaterialSampleItem.GetMaterilalSampleItemBy(e.ProductID);
-                         SampleItem.ForEach(f =>
-                         {
-                             model = new IQCSampleItemRecordModel()
-                             {
-                                 OrderID = e.OrderID,
-                                 SampleMaterial = e.ProductID,
-                                 SampleMaterialDrawID = e.ProductDrawID,
-                                 SampleMaterialName = e.ProductName,
-                                 SampleMaterialInDate = e.ProduceInDate,
-                                 SampleMaterialSpec = e.ProductStandard,
-                                 SampleMaterialNumber=e.ProduceNumber,
-                                 SampleMaterialSupplier=e.ProductSupplier,
-                                 CheckLevel=f.CheckLevel,
-                                 CheckMethod=f.CheckMethod,
-                                 CheckWay=f.CheckWay,
-                                 EquipmentID=f.EquipmetnID,
-                                 Grade=f.Grade,
-                                 SampleItem=f.SampleItem,
-                                 SizeSpec=f.SizeSpec,
-                                 SizeSpecDown=f.SizeSpecDown,
-                                 SizeSpecUP=f.SizeSpecUP,
-                                 PrintCount=1,
-                             };
-                             models.Add(model);
-                         });
-                     }
-                    
-                 });
+                // 记录测试方法 正常 放宽 加严 
+                string  CheckWay = QuantityService.SampleItermLawManger.GetCheckWayBy(sampleMaterial, "IQC");
+                IQCSampleItemRecordModel model=null;
+                //单子的物料信息
+                 var productInfo = GetPuroductSupplierInfo(orderId).Where (e=>e.ProductID ==sampleMaterial).FirstOrDefault();
                 
+                 var SampleItem = QuantityService.MaterialSampleItemManager.GetMaterilalSampleItemBy(productInfo.ProductID);
+                 foreach (var f in SampleItem)
+                 {
+                     if (f.SampleItem.Contains("盐雾"))
+                     {
+                         if (!JudgeYwTest(productInfo.ProductID, productInfo.ProduceInDate))
+                         {
+                             if (JudgeMaterialTwoYearIsRecord(f.SampleMaterial))
+                             continue;
+                         }
+                     }
+                     if (f.SampleItem.Contains("全尺寸"))
+                     {
+                         if (JudgeMaterialTwoYearIsRecord(f.SampleMaterial))
+                         { continue; }
+                     }
+                     model = new IQCSampleItemRecordModel()
+                     {
+                         OrderID = productInfo.OrderID,
+                         SampleMaterial = productInfo.ProductID,
+                         SampleMaterialDrawID = productInfo.ProductDrawID,
+                         SampleMaterialName = productInfo.ProductName,
+                         SampleMaterialInDate = productInfo.ProduceInDate,
+                         SampleMaterialSpec = productInfo.ProductStandard,
+                         SampleMaterialNumber = productInfo.ProduceNumber,
+                         SampleMaterialSupplier = productInfo.ProductSupplier,
+                         CheckLevel = f.CheckLevel,
+                         CheckMethod = f.CheckMethod,
+                         CheckWay = CheckWay,
+                         EquipmentID = f.EquipmetnID,
+                         Grade = f.Grade,
+                         SampleItem = f.SampleItem,
+                         SizeSpec = f.SizeSpec,
+                         SizeSpecDown = f.SizeSpecDown,
+                         SizeSpecUP = f.SizeSpecUP,
+                         PrintCount = 1,
+                     };
+                     models.Add(model);
+
+                 }
+                        
             }
             return models;
         }
@@ -156,7 +167,51 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 return nn.Count;
             else return 0;
         }
-   
+
+
+        /// <summary>
+        ///  判定是否需要测试 盐雾测试
+        /// </summary>
+        /// <param name="sampleMaterial">物料料号</param>
+        /// <param name="sampleMaterialInDate">当前物料进料日期</param>
+        /// <returns></returns>
+        public bool JudgeYwTest(string sampleMaterial, DateTime sampleMaterialInDate)
+        {
+            bool ratuenValue = true ;
+            //调出此物料所有打印记录项
+            var SampleItemsRecords = irep.Entities.Where(e => e.SampleMaterial == sampleMaterial).Distinct();
+            //如果第一次打印 
+            if (SampleItemsRecords == null | SampleItemsRecords.Count() <= 0)  return true  ;
+
+             // 进料日期后退30天 抽测打印记录
+             var SampleItemsRecord = (from t in SampleItemsRecords
+                         where t.SampleMaterialInDate >= (sampleMaterialInDate.AddDays(-30))
+                               & t.SampleMaterialInDate <= sampleMaterialInDate
+                         select t.SampleItem).Distinct();
+             //没有 测
+              if (SampleItemsRecord == null | SampleItemsRecord.Count() <= 0) return true;
+              // 有  每项中是否有测过  盐雾测试
+                    foreach (var n in SampleItemsRecord)
+                    {
+                        if (n.Contains("盐雾")) { ratuenValue = false ; break; }
+                    }
+                return ratuenValue;
+            
+         
+        }
+
+        /// <summary>
+        ///  判定些物料在二年内是否有录入记录 
+        /// </summary>
+        /// <param name="sampleMaterial">物料料号</param>
+        /// <returns></returns>
+        public bool JudgeMaterialTwoYearIsRecord(string sampleMaterial)
+        {
+            var nn = QuantityService.SampleRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).Where(e => e.InPutDate >= DateTime.Now.AddYears(-2));
+            if (nn != null ||nn.Count ()>0)
+                return true;
+            else return false;
+        }
         /// <summary>
         ///  IQC 导出Excel 数据流
         /// </summary>
@@ -794,16 +849,20 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             return irep.Entities.Where(e => e.SampleMaterial == sampleMaterial).ToList();
         }
+
+      
        
     }
-   /// <summary>
+ 
+    
+    /// <summary>
    ///抽验查询对像
    /// </summary>
    public class SampleQueries
     {
         #region
         /// <summary>
-        /// 样品订单号
+        /// 样品单号
         /// </summary>
         public string OrderId
         { set; get; }
@@ -818,11 +877,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         public string MaterialName
         { set; get; }
         /// <summary>
-        /// 样品规格
-        /// </summary>
-        public string MaterialSpec
-        { set; get; }
-        /// <summary>
         /// 样品的供应商
         /// </summary>
         public string MaterialSupplier
@@ -832,16 +886,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// </summary>
         public string MaterialInDate
         { set; get; }
-        /// <summary>
-        /// 样品提供ERP中图号
-        /// </summary>
-        public string MaterialDrawID
-        { set; get; }
-        /// <summary>
-        /// 抽样数量
-        /// </summary>
-        public string MaterialNumber
-        { set; get; }
+      
+       
         #endregion
     }
 

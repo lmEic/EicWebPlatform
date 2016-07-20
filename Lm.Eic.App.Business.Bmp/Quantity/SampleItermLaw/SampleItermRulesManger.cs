@@ -55,8 +55,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger
             int CAI = Paramter["CAI"].ToInt ();
             string OldCheckWay = string.Empty ;
 
-            var mmmmmm = QuantityService.SampleRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial);
-            var chekWay = from r in mmmmmm.Take(1)
+            var SampleRecord = QuantityService.SampleRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).OrderByDescending (e=>e.Id_key);
+            var chekWay = from r in SampleRecord.Take(1)
                           select r.CheckWay;
             foreach (var r in chekWay)
             {
@@ -70,7 +70,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger
                 int B = (AB <= AC) ? AB : AC;// 得到最小的检验批次
                 int C = (ABI > ACI) ? ACI : ABI; // 按理说ABI必须小于ACI
                 int D = (ABI <= ACI) ? ACI : ABI; // 取最大值
-                var mm = mmmmmm.Take(A);
+                var mm = SampleRecord.Take(A);
                 if (mm.Count() < B | mm == null) return "正常";//实得到实体数小于最小的抽样批次
                 //下面是 实得到实体数大于等于 最小的缺抽样批次
                 var n = from r in mm
@@ -90,7 +90,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger
             }
             if (OldCheckWay == "放宽")
             {
-                var mm = mmmmmm.Take(BA);
+                var mm = SampleRecord.Take(BA);
                 var n = from r in mm
                         where r.SampleResult == "FAIL"
                         orderby r.FinishDate descending
@@ -99,7 +99,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger
             }
             if (OldCheckWay == "加严")
             {
-                var mm = mmmmmm.Take(CA);
+                var mm = SampleRecord.Take(CA);
                 var n = from r in mm
                         where r.SampleResult == "FAIL"
                         orderby r.FinishDate descending
@@ -173,11 +173,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger
       
         }
 
-
-     
-
-
-
         private string GetMaxNumber(List<string> maxNumbers, Int64 number)
         {
             List<Double> IntMaxNumbers = new List<Double>();
@@ -234,7 +229,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger
         /// <returns></returns>
         public List<MaterialSampleItemModel> GetMaterilalSampleItemBy(string sampleMaterial)
         {
-            return irep.Entities.Where(e => e.SampleMaterial == sampleMaterial).ToList();
+            return irep.Entities.Where(e => e.SampleMaterial == sampleMaterial || e.SampleMaterial == "ToAllMaterial").OrderByDescending(e => e.PriorityLevel).ToList();
         }
 
     }
