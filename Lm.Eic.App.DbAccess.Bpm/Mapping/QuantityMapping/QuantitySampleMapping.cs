@@ -28,11 +28,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
 
     
     /// <summary>
-    /// 抽样项次打印
+    /// IQC抽样项次记录
     /// </summary>
-    public class IQCSamplePrintItemsRecordMapping : EntityTypeConfiguration<IQCSampleItemRecordModel>
+    public class IQCSampleItemsRecordMapping : EntityTypeConfiguration<IQCSampleItemRecordModel>
     {
-        public IQCSamplePrintItemsRecordMapping()
+        public IQCSampleItemsRecordMapping()
         {
             this.HasKey(t => t.Id_key);
             this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
@@ -56,9 +56,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
 
 
     /// <summary>
-    /// 设置物料抽测项次
+    /// 物料抽测项次
     /// </summary>
-    public class MaterialSampleItemMapping : EntityTypeConfiguration<MaterialSampleSetModel>
+    public class MaterialSampleItemMapping : EntityTypeConfiguration<MaterialSampleItemModel>
     {
         public MaterialSampleItemMapping()
         {
@@ -72,9 +72,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
     /// <summary>
     ///抽样数量规则
     /// </summary>
-    public class SamplePlanMapping : EntityTypeConfiguration<SamplePlanTableModel>
+    public class SampleRuleTableMapping : EntityTypeConfiguration<SampleRuleTableModel>
     {
-        public SamplePlanMapping()
+        public SampleRuleTableMapping()
         {
             this.HasKey(t => t.Id_key);
             this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
@@ -83,12 +83,12 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
     }
 
      
-    /// <summary>
-     /// 放宽加严规则
+     /// <summary>
+     /// 放宽加严法则
      /// </summary>
-    public class SampleContorlLimitMapping : EntityTypeConfiguration<SampleContorlLimitModel>
+    public class SampleWayLawMapping : EntityTypeConfiguration<SampleWayLawModel>
    {
-       public SampleContorlLimitMapping ()
+       public SampleWayLawMapping ()
         {
             this.HasKey(e => e.Id_Key);
             this.Property(e => e.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);

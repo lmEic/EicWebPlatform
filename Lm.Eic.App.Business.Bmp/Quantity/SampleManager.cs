@@ -10,7 +10,7 @@ using Lm.Eic.App.Erp.Domain .QuantityModel;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw;
+using Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger;
 
 using Excel;
 namespace Lm.Eic.App.Business.Bmp.Quantity
@@ -581,7 +581,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             }
             catch (Exception ex)
             {
-
+                OpResult.SetResult(ex.ToString(), false);  
             }
 
         }

@@ -11,30 +11,35 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.App.Business.Bmp.Quantity;
-namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
+namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger
 {
     /// <summary>
     /// 取样放宽加严规则
     /// </summary>
     public  class SampleWayLawManger
     {
-        ISampleContorlLimitReosity irep = null;
+        ISampleWayLawReosity irep = null;
         public SampleWayLawManger ()
-        { irep = new SampleContorlLimitReosity(); }
+        { irep = new SampleWayLawReosity(); }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="classification">IQC/FQC/IPQC</param>
         /// <returns></returns>
-        public SampleContorlLimitModel GeLimitParameterBy(string classification)
+        public SampleWayLawModel GeLimitParameterBy(string classification)
         {
             return irep.Entities.Where(e => e.Classification == classification).ToList().FirstOrDefault();
         }
-
-        public string GetCheckWay(string material, string theclass)
+         /// <summary>
+         ///  得到放宽加严重规划
+         /// </summary>
+         /// <param name="sampleMaterial">抽检的料号</param>
+         /// <param name="theclass">类别</param>
+         /// <returns></returns>
+        public string GetCheckWayBy(string sampleMaterial, string theclass)
         {
-           
-            Dictionary<string, string> Paramter = GetAllParamter(theclass);
+
+            Dictionary<string, string> Paramter = GetAllParamterDictionaryBy(theclass);
             string JudgeWay = Paramter["JudgeWay"].Trim();
             //如果没有设置限制
             if (JudgeWay == "False") return "正常";
@@ -49,8 +54,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
             int BAI = Paramter["BAI"].ToInt ();
             int CAI = Paramter["CAI"].ToInt ();
             string OldCheckWay = string.Empty ;
-          
-            var mmmmmm =  QuantityService.SampleRecordManager.GetIQCSampleRecordModelsBy (material);
+
+            var mmmmmm = QuantityService.SampleRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial);
             var chekWay = from r in mmmmmm.Take(1)
                           select r.CheckWay;
             foreach (var r in chekWay)
@@ -105,23 +110,26 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
 
         }
 
-
-        private  Dictionary<string, string> GetAllParamter(string theClass)
+         /// <summary>
+         /// 
+         /// </summary>
+         /// <param name="theClass"> 类别IQC/IPQC/FQC</param>
+         /// <returns></returns>
+        private Dictionary<string, string> GetAllParamterDictionaryBy(string theClass)
         {
             Dictionary<string, string> AllParamter = new Dictionary<string, string>();
            var  mdl = irep.Entities.Where(e => e.Classification == theClass).ToList ().FirstOrDefault ();
             if (mdl != null)
             {
-                AllParamter.Add("JudgeWay", mdl.JudgeWay.Trim());
-                AllParamter.Add("AB", mdl.AB.Trim());
-                AllParamter.Add("AC", mdl.AC.Trim());
-                AllParamter.Add("BA", mdl.BA.Trim());
-                AllParamter.Add("CA", mdl.CA.Trim());
-                AllParamter.Add("ABI", mdl.ABI.Trim());
-                AllParamter.Add("ACI", mdl.ACI.Trim());
-                AllParamter.Add("BAI", mdl.BAI.Trim());
-                AllParamter.Add("CAI", mdl.CAI.Trim());
-
+                 AllParamter.Add("JudgeWay", mdl.JudgeWay.Trim());
+                 AllParamter.Add("AB", mdl.AB.Trim());
+                 AllParamter.Add("AC", mdl.AC.Trim());
+                 AllParamter.Add("BA", mdl.BA.Trim());
+                 AllParamter.Add("CA", mdl.CA.Trim());
+                 AllParamter.Add("ABI", mdl.ABI.Trim());
+                 AllParamter.Add("ACI", mdl.ACI.Trim());
+                 AllParamter.Add("BAI", mdl.BAI.Trim());
+                 AllParamter.Add("CAI", mdl.CAI.Trim());
             }
             return AllParamter;
         }
@@ -130,12 +138,12 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
     /// <summary>
     ///  物料数量抽样规则     （抽样数量/拒受数量 /接受数量） 
     /// </summary>
-    public  class SamplePlanTableManger
+    public  class SampleRuleTableManger
     {
-        ISamplePlanTableReposity  irep =null ;
-        public  SamplePlanTableManger()
+        ISampleRuleTableReposity  irep =null ;
+        public  SampleRuleTableManger()
         {
-            irep = new SamplePlanTableReposity();
+            irep = new SampleRuleTableReposity();
         }
         /// <summary>
         /// 获取取样数量/拒受数量 /接受数量
@@ -145,7 +153,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
         /// <param name="grade">档次</param>
         /// <param name="number">来料数量</param>
         /// <returns></returns>
-        public SamplePlanTableModel getSampleNumber(string  checkWay ,string  checkLevel,string grade,Int64 number)
+        public SampleRuleTableModel getSampleNumber(string  checkWay ,string  checkLevel,string grade,Int64 number)
         {
             List<string> Maxs = new List<string>();
             List<string> Mins = new List<string>();
@@ -214,17 +222,17 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw
    /// </summary>
     public class MaterialSampleItemManager
     {
-        IMaterialSampleSetReposity irep = null;
+        IMaterialSampleItemReposity irep = null;
         public MaterialSampleItemManager()
         {
-            irep = new MaterialSampleSetReposity();
+            irep = new MaterialSampleItemReposity();
         }
         /// <summary>
         ///   由料号得到抽样项次
         /// </summary>
         /// <param name="sampleMaterial">料号</param>
         /// <returns></returns>
-        public List<MaterialSampleSetModel> GetMaterilalSampleItemBy(string sampleMaterial)
+        public List<MaterialSampleItemModel> GetMaterilalSampleItemBy(string sampleMaterial)
         {
             return irep.Entities.Where(e => e.SampleMaterial == sampleMaterial).ToList();
         }

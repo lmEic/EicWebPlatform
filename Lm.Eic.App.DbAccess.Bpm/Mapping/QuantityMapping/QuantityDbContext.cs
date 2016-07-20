@@ -30,26 +30,26 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
       /// <summary>
       /// 抽样物料项目设置信息
       /// </summary>
-      public DbSet<MaterialSampleSetModel> MaterialSampleSet { set; get; }
+      public DbSet<MaterialSampleItemModel> MaterialSampleSet { set; get; }
       /// <summary>
       /// 物料抽样规则表
       /// </summary>
-      public DbSet<SamplePlanTableModel> SamplePlanTable { set; get; }
+      public DbSet<SampleRuleTableModel> SamplePlanTable { set; get; }
       /// <summary>
       /// / 抽样放宽加严限制控制
       /// </summary>
-      public DbSet<SampleContorlLimitModel> SampleContorlLimit { set; get; }
+      public DbSet<SampleWayLawModel> SampleContorlLimit { set; get; }
 
        #endregion
       protected override void OnModelCreating(DbModelBuilder modelBuilder)
       {
           base.OnModelCreating(modelBuilder);
           modelBuilder.Configurations.Add(new IQCSampleRecordMapping());
-          modelBuilder.Configurations.Add(new IQCSamplePrintItemsRecordMapping());
+          modelBuilder.Configurations.Add(new IQCSampleItemsRecordMapping());
           modelBuilder.Configurations.Add(new SampleProductNgRecordMapping());
           modelBuilder.Configurations.Add(new MaterialSampleItemMapping());
-          modelBuilder.Configurations.Add(new SamplePlanMapping());
-          modelBuilder.Configurations.Add(new SampleContorlLimitMapping());
+          modelBuilder.Configurations.Add(new SampleRuleTableMapping());
+          modelBuilder.Configurations.Add(new SampleWayLawMapping());
 
       }
    
