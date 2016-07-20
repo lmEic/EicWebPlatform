@@ -119,7 +119,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         }
 
         /// <summary>
-        /// 将字符串转换为数字类型
+        /// 将字符串转换为double数字类型
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -132,7 +132,18 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
             }
             return r;
         }
-
+        /// <summary>
+        /// 将字符串转换为long数字类型
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static long ToLong(this string value)
+        {
+            long r = 0;
+            if (long.TryParse (value ,out r ))
+            { return r; }
+            return r;
+        }
         /// <summary>
         /// 扩展方法：把字符串转换为字节类型
         /// </summary>

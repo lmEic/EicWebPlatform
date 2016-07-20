@@ -78,7 +78,7 @@
     <Compile Include="Purchase\RequisitionManager.cs" />
     <Compile Include="Purchase\StockManager.cs" />
     <Compile Include="Quantity\QuantityService.cs" />
-    <Compile Include="Quantity\SampleItermLaw\SampleItermLawManger.cs" />
+    <Compile Include="Quantity\SampleItermLaw\SampleItermRulesManger.cs" />
     <Compile Include="Quantity\SampleManager.cs" />
   </ItemGroup>
   <ItemGroup />

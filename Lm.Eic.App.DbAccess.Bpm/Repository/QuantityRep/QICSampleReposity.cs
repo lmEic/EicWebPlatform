@@ -33,25 +33,25 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep
     { }
 
 
-    public interface IMaterialSampleSetReposity : IRepository<MaterialSampleSetModel> { }
+    public interface IMaterialSampleItemReposity : IRepository<MaterialSampleItemModel> { }
     /// <summary>
     ///  物抽测项目模块存储 
     /// </summary>
-    public class MaterialSampleSetReposity : QuantityRepositoryBase<MaterialSampleSetModel>, IMaterialSampleSetReposity
+    public class MaterialSampleItemReposity : QuantityRepositoryBase<MaterialSampleItemModel>, IMaterialSampleItemReposity
     { }
 
-    public interface ISamplePlanTableReposity : IRepository<SamplePlanTableModel> { }
+    public interface ISampleRuleTableReposity : IRepository<SampleRuleTableModel> { }
     /// <summary>
-    /// 物料抽样规则
+    /// 物料抽样规则模块存储
     /// </summary>
-    public class  SamplePlanTableReposity:QuantityRepositoryBase <SamplePlanTableModel>,ISamplePlanTableReposity
+    public class  SampleRuleTableReposity:QuantityRepositoryBase <SampleRuleTableModel>,ISampleRuleTableReposity
     { }
 
-    
-    public interface ISampleContorlLimitReosity : IRepository<SampleContorlLimitModel> { };
+
+    public interface ISampleWayLawReosity : IRepository<SampleWayLawModel> { };
      /// <summary>
      /// 抽样放宽加严控制存储
      /// </summary>
-    public class  SampleContorlLimitReosity:QuantityRepositoryBase <SampleContorlLimitModel>,ISampleContorlLimitReosity
+    public class SampleWayLawReosity : QuantityRepositoryBase<SampleWayLawModel>, ISampleWayLawReosity
     { }
 }
