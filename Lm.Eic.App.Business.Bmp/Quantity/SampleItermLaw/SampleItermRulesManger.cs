@@ -153,7 +153,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger
         /// <param name="grade">档次</param>
         /// <param name="number">来料数量</param>
         /// <returns></returns>
-        public SampleRuleTableModel getSampleNumber(string  checkWay ,string  checkLevel,string grade,Int64 number)
+        public SampleRuleTableModel getSampleNumberBy(string  checkWay ,string  checkLevel,string grade,Int64 number)
         {
             List<string> Maxs = new List<string>();
             List<string> Mins = new List<string>();
@@ -185,7 +185,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger
             {
                 if (max != "*")
                 {
-                    Double MaxNumber = Convert.ToDouble(max);
+                    Double MaxNumber = max.ToDouble();
                     if (MaxNumber >= number)
                     {
                         IntMaxNumbers.Add(MaxNumber);
@@ -204,7 +204,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger
             {
                 if (min != "")
                 {
-                    Double MinNumber = Convert.ToDouble(min);
+                    Double MinNumber = min.ToDouble ();
                     if (MinNumber <= mumber)
                     {
                         IntMinNumbers.Add(MinNumber);
