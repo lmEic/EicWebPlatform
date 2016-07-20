@@ -59,7 +59,7 @@
     <Compile Include="Repository\AstRep\EquipmentRepository.cs" />
     <Compile Include="Repository\HrmRep\Archives\ArchivesIdentityRepository.cs" />
     <Compile Include="Repository\HrmRep\Attendance\AttendClassTypeRepository.cs" />
-    <Compile Include="Repository\QuantityRep\QICSampleReposity.cs" />
+    <Compile Include="Repository\QuantityRep\SampleReposity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

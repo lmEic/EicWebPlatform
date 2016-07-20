@@ -10,7 +10,7 @@ using Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger;
 
 namespace Lm.Eic.App.Business.Bmp.Quantity
 {
-    public static class QuantityService
+    public static class QuantitySampleService
     {
         /// <summary>
         /// 单号抽样项目打印记录管理

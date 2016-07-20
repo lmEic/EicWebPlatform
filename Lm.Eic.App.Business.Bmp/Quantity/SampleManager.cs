@@ -94,12 +94,12 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             if (models ==null ||models .Count <=0)
             {
                 // 记录测试方法 正常 放宽 加严 
-                string  CheckWay = QuantityService.SampleItermLawManger.GetCheckWayBy(sampleMaterial, "IQC");
+                string  CheckWay = QuantitySampleService.SampleItermLawManger.GetCheckWayBy(sampleMaterial, "IQC");
                 IQCSampleItemRecordModel model=null;
                 //单子的物料信息
                  var productInfo = GetPuroductSupplierInfo(orderId).Where (e=>e.ProductID ==sampleMaterial).FirstOrDefault();
                 
-                 var SampleItem = QuantityService.MaterialSampleItemManager.GetMaterilalSampleItemBy(productInfo.ProductID);
+                 var SampleItem = QuantitySampleService.MaterialSampleItemManager.GetMaterilalSampleItemBy(productInfo.ProductID);
                  foreach (var f in SampleItem)
                  {
                      if (f.SampleItem.Contains("盐雾"))
@@ -207,7 +207,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <returns></returns>
         public bool JudgeMaterialTwoYearIsRecord(string sampleMaterial)
         {
-            var nn = QuantityService.SampleRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).Where(e => e.InPutDate >= DateTime.Now.AddYears(-2));
+            var nn = QuantitySampleService.SampleRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).Where(e => e.InPutDate >= DateTime.Now.AddYears(-2));
             if (nn != null ||nn.Count ()>0)
                 return true;
             else return false;

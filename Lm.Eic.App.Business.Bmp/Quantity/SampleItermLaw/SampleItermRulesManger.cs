@@ -55,7 +55,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger
             int CAI = Paramter["CAI"].ToInt ();
             string OldCheckWay = string.Empty ;
 
-            var SampleRecord = QuantityService.SampleRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).OrderByDescending (e=>e.Id_key);
+            var SampleRecord = QuantitySampleService.SampleRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).OrderByDescending (e=>e.Id_key);
             var chekWay = from r in SampleRecord.Take(1)
                           select r.CheckWay;
             foreach (var r in chekWay)
