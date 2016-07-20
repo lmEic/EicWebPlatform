@@ -10,33 +10,15 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     $stateProvider.state('astArchiveInput', {
         templateUrl: urlPrefix + 'AstArchiveInput',
-
-    }).state('proStationConfig', {
-        templateUrl: 'DailyReport/ProStationConfig',
-
     })
-    //--------------人员管理--------------------------
-    .state('workerInfoManage', {
-        templateUrl: 'ProEmployee/WorkerInfoManage'
-
-    }).state('proStationManage', {
-        templateUrl: 'ProEmployee/ProStationManage'
-
-    }).state('proClassManage', {
-        templateUrl: 'ProEmployee/ProClassManage'
-
-    }).state('workHoursManage', {
-        templateUrl: 'ProEmployee/WorkHoursManage'
+    //--------------校验管理--------------------------
+    .state('astBuildCheckList', {
+        templateUrl: urlPrefix + 'AstBuildCheckList',
     })
-    ////--------------基本配置管理--------------------------
-    //.state('hrDepartmentSet', {
-    //    templateUrl: 'HrBaseInfoManage/HrDepartmentSet',
-
-    //})
-    //.state('hrCommonDataSet', {
-    //    templateUrl: 'HrBaseInfoManage/HrCommonDataSet',
-
-    //})
+    //--------------保养管理--------------------------
+    .state('astBuildMaintenanceList', {
+        templateUrl: urlPrefix + 'AstBuildMaintenanceList',
+    })
     ////--------------员工档案管理--------------------------
     // .state('hrEmployeeDataInput', {
     //     templateUrl: 'HrArchivesManage/HrEmployeeDataInput',
@@ -109,7 +91,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     return ast;
 })
-
 .controller('moduleNavCtrl', function ($scope, navDataService, $state) {
     ///模块导航布局视图对象
     var moduleNavLayoutVm = {
@@ -319,4 +300,23 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.exportToExcel = function () {
 
     }
+})
+
+.controller('astBuildCheckListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
+
+    //视图管理器
+    var vmManager = {
+        activeTab: 'initTab',
+    };
+    $scope.vmManager = vmManager;
+
+})
+.controller('astBuildMaintenanceListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
+    //视图管理器
+    var vmManager = {
+        activeTab: 'initTab',
+    };
+    $scope.vmManager = vmManager;
+
+   
 })

@@ -37,6 +37,7 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        #region equipment archives input module
         [NoAuthenCheck]
         public JsonResult GetAstInputConfigDatas()
         {
@@ -80,6 +81,30 @@ namespace EicWorkPlatfrom.Controllers
             var result = AstService.EquipmentManager.Store(equipment);
             return Json(result);
         }
+        #endregion
+
+        #region equipment check module method
+        /// <summary>
+        /// 生成校验清单
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AstBuildCheckList()
+        {
+            return View();
+        }
+        #endregion
+
+        #region equipment check module method
+        /// <summary>
+        /// 生成保养清单
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AstBuildMaintenanceList()
+        {
+            return View();
+        }
+        #endregion
+
 
         [NoAuthenCheck]
         public FileResult ExportToExcel()
