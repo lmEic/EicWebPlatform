@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
-using Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw;
+using Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger;
 
 
 
@@ -34,9 +34,9 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <summary>
         /// 物料数量抽样规则管理
         /// </summary>
-        public static  SamplePlanTableManger  SamplePlanTableManger
+        public static  SampleRuleTableManger  SamplePlanTableManger
        { 
-            get { return OBulider.BuildInstance<SamplePlanTableManger>(); } 
+            get { return OBulider.BuildInstance<SampleRuleTableManger>(); } 
         }
         /// <summary>
         ///  物料抽样项目管理
@@ -46,7 +46,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             get { return OBulider.BuildInstance<MaterialSampleItemManager>(); }
         }
         /// <summary>
-        /// 放宽加严重规规则管理
+        /// 抽样方法法规则管理
         /// </summary>
         public static SampleWayLawManger SampleItermLawManger
         {

@@ -10,21 +10,22 @@ using Lm.Eic.App.Erp.Domain .QuantityModel;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw;
+using Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger;
 
 using Excel;
 namespace Lm.Eic.App.Business.Bmp.Quantity
-{
+{   
+    /// <summary>
+    /// IQC抽样项目登记表
+    /// </summary>
     public class IQCSampleItemsRecordManager
     {
         IIQCSampleItemRecordReposity irep = null;
        MaterialSampleItemManager MaterialSampleItem = null;
-       SamplePlanTableManger SamplePlanTable = null;
         public IQCSampleItemsRecordManager ()
         {
             irep = new IQCSampleItemRecordReposity();
             MaterialSampleItem = new MaterialSampleItemManager();
-            SamplePlanTable = new SamplePlanTableManger();
         }
         /// <summary>
         /// 判断是否存在
@@ -57,7 +58,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 if (listModels == null||listModels .Count <=0) return OpResult.SetResult("集合不能为空！", false);
                      //新增 修改
                         listModels.ForEach(model => {
-                            
+
                             if (IsExist(model))
                             {
                                 model.PrintCount += 1;
@@ -93,19 +94,24 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             List<IQCSampleItemRecordModel> models = irep.Entities.Where(e => e.OrderID == orderId & e.SampleMaterial == sampleMaterial).ToList();
             if (models ==null ||models .Count <=0)
             {
-                IQCSampleItemRecordModel model= null ; 
+                IQCSampleItemRecordModel model=null; 
                  var productInfo = GetPuroductSupplierInfo(orderId);
                   productInfo.ForEach(e => {
                      if (e.ProductID == sampleMaterial)
                      {
-                        
                          var SampleItem = MaterialSampleItem.GetMaterilalSampleItemBy(e.ProductID);
-                         
                          SampleItem.ForEach(f =>
                          {
-                             var SampleNumber = SamplePlanTable.getSampleNumber(f.CheckWay, f.CheckLevel, f.Grade, e.ProduceNumber);
                              model = new IQCSampleItemRecordModel()
                              {
+                                 OrderID = e.OrderID,
+                                 SampleMaterial = e.ProductID,
+                                 SampleMaterialDrawID = e.ProductDrawID,
+                                 SampleMaterialName = e.ProductName,
+                                 SampleMaterialInDate = e.ProduceInDate,
+                                 SampleMaterialSpec = e.ProductStandard,
+                                 SampleMaterialNumber=e.ProduceNumber,
+                                 SampleMaterialSupplier=e.ProductSupplier,
                                  CheckLevel=f.CheckLevel,
                                  CheckMethod=f.CheckMethod,
                                  CheckWay=f.CheckWay,
@@ -115,17 +121,14 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                                  SizeSpec=f.SizeSpec,
                                  SizeSpecDown=f.SizeSpecDown,
                                  SizeSpecUP=f.SizeSpecUP,
-                                 AcceptGradeNumber=SampleNumber .AcceptGradeNumber.ToDouble (),
-                                 CheckNumber=SampleNumber .CheckNumber .ToDouble (),
-                                 RefuseGradeNumber =SampleNumber .RefuseGradeNumber .ToDouble (),
                                  PrintCount=1,
                              };
-                             ErpMaterialToSampleModel(e, out model);
                              models.Add(model);
                          });
                      }
                     
                  });
+                
             }
             return models;
         }
@@ -138,27 +141,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         public List<MaterialModel> GetPuroductSupplierInfo(string orderId)
         {
             return   QuantityDBManager.QuantityPurchseDb.FindMaterialBy(orderId);
-        }
-        /// <summary>
-        /// Erp物料信息转为抽样表头（单头结合单身）
-        /// </summary>
-        /// <param name="materialModel">Erp物料信息</param>
-        /// <param name="sampleModel">抽样单头</param>
-       public void ErpMaterialToSampleModel(MaterialModel materialModel,out IQCSampleItemRecordModel sampleModel )
-        {
-
-            sampleModel = new IQCSampleItemRecordModel()
-            {
-                OrderID = materialModel.OrderID,
-                SampleMaterial = materialModel.ProductID,
-                SampleMaterialInDate = materialModel.ProduceInDate,
-                SampleMaterialDrawID = materialModel.ProductDrawID,
-                SampleMaterialName = materialModel.ProductName,
-                SampleMaterialSpec = materialModel.ProductStandard,
-                SampleMaterialSupplier = materialModel.ProductSupplier,
-                SampleMaterialNumber = materialModel.ProduceNumber,
-            };
-
         }
         /// <summary>
         /// 得到当年年始到目前为止物料抽样批次
@@ -537,8 +519,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             try
             {
-                double upValue = up.ToDouble ();
-                double downValue = down.ToDouble();
+                double upValue = Convert.ToDouble(up);
+                double downValue = Convert.ToDouble(down);
                 return true;
             }
             catch { return false; }
@@ -556,8 +538,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             {
                 if (JudgeMach(upValue, downValue))
                 {
-                    double upValueNumber = upValue.ToDouble ();
-                    double downValueNumber =downValue.ToDouble ();
+                    double upValueNumber = Convert.ToDouble(upValue);
+                    double downValueNumber = Convert.ToDouble(downValue);
                     if (!JudgeAbs(upValueNumber, downValueNumber))
                     { return true; }
                     return false;
@@ -570,17 +552,17 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             try
             {
-                int idNumStopRowIndex = idNumStartRowIndex + rowIndex - 1;
+                int IdNumStopRowIndex = idNumStartRowIndex + rowIndex - 1;
                 string UpValue = sizeSpecUP;
                 string DownValue = sizeSpecDown;
                 if (JudgeNoNull(UpValue, DownValue) & JudgeMach(UpValue, DownValue))
                 {
-                    double upValue = UpValue.ToDouble ();
-                    double downValue =DownValue.ToDouble ();
+                    double upValue = Convert.ToDouble(UpValue);
+                    double downValue = Convert.ToDouble(DownValue);
                     if (JudgeAbs(upValue, downValue))
                     {
                         string Value = sizeSpec + "±" + Math.Abs(upValue).ToString();
-                        setBCValueToXlsCell(xlsSheet, idNumStartRowIndex, idNumStopRowIndex, Value);
+                        setBCValueToXlsCell(xlsSheet, idNumStartRowIndex, IdNumStopRowIndex, Value);
                     }
                     else
                     {
@@ -594,13 +576,12 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 else
                 {
                     string Value = sizeSpec + UpValue + DownValue;
-                    setBCValueToXlsCell(xlsSheet, idNumStartRowIndex, idNumStopRowIndex, Value);
+                    setBCValueToXlsCell(xlsSheet, idNumStartRowIndex, IdNumStopRowIndex, Value);
                 }
             }
-
             catch (Exception ex)
             {
-                OpResult.SetResult(ex.ToString(), false);
+                OpResult.SetResult(ex.ToString(), false);  
             }
 
         }
@@ -673,6 +654,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             xlsSheet.Cells[4, 1] = "供应商:" + models[0].SampleMaterialSupplier;
             xlsSheet.Cells[4, 5] = "图号/检验规范：" + models[0].SampleMaterialDrawID;
             xlsSheet.Cells[4, 11] = "检验方式：" + models[0].CheckWay;
+
         }
 
         private static void SetExcelTitleTestROHS(List<IQCSampleItemRecordModel> models, Excel.Worksheet xlsSheet)
@@ -798,6 +780,22 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
     }
 
    
+
+    /// <summary>
+    /// 抽样物料记录管理
+    /// </summary>
+    public class SampleRecordManager
+    {
+        IIQCSampleRecordReposity irep = null;
+        public SampleRecordManager()
+        { irep = new IQCSampleRecordReposity (); }
+
+        public List<IQCSampleRecordModel> GetIQCSampleRecordModelsBy(string sampleMaterial)
+        {
+            return irep.Entities.Where(e => e.SampleMaterial == sampleMaterial).ToList();
+        }
+       
+    }
    /// <summary>
    ///抽验查询对像
    /// </summary>
