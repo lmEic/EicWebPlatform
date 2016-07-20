@@ -31,11 +31,13 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        [NoAuthenCheck]
         public ActionResult EditEquipmentTpl()
         {
             return View();
         }
 
+        #region equipment archives input module
         [NoAuthenCheck]
         public JsonResult GetAstInputConfigDatas()
         {
@@ -62,17 +64,47 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="inputDate"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetEquipmentArchivesByInputDate(DateTime inputDate)
+        public ContentResult GetEquipmentArchivesBy(DateTime inputDate,string assetId,int searchMode)
         {
-            var datas = AstService.EquipmentManager.FindBy(new QueryEquipmentDto() { InputDate=inputDate,SearchMode =3 });
+            var datas = AstService.EquipmentManager.FindBy(new QueryEquipmentDto()
+            {
+                InputDate = inputDate,
+                AssetNumber = assetId,
+                SearchMode = searchMode
+            });
             return DateJsonResult(datas);
         }
+
         [NoAuthenCheck]
         public JsonResult SaveEquipmentRecord(EquipmentModel equipment)
         {
             var result = AstService.EquipmentManager.Store(equipment);
             return Json(result);
         }
+        #endregion
+
+        #region equipment check module method
+        /// <summary>
+        /// 生成校验清单
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AstBuildCheckList()
+        {
+            return View();
+        }
+        #endregion
+
+        #region equipment check module method
+        /// <summary>
+        /// 生成保养清单
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AstBuildMaintenanceList()
+        {
+            return View();
+        }
+        #endregion
+
 
         [NoAuthenCheck]
         public FileResult ExportToExcel()

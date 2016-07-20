@@ -1256,6 +1256,8 @@
     <Content Include="Views\SysConfig\HrCommonDataSet.cshtml" />
     <Content Include="Views\CommonTpl\WorkerSelectTpl.cshtml" />
     <Content Include="Views\Equipment\EditEquipmentTpl.cshtml" />
+    <Content Include="Views\Equipment\AstBuildCheckList.cshtml" />
+    <Content Include="Views\Equipment\AstBuildMaintenanceList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
