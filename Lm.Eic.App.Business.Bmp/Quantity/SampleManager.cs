@@ -100,8 +100,10 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                  var productInfo = GetPuroductSupplierInfo(orderId).Where (e=>e.ProductID ==sampleMaterial).FirstOrDefault();
                 
                  var SampleItem = QuantitySampleService.MaterialSampleItemManager.GetMaterilalSampleItemBy(productInfo.ProductID);
+               
                  foreach (var f in SampleItem)
                  {
+                     var mm = QuantitySampleService.SamplePlanTableManger.getSampleNumberBy(f.CheckWay, f.CheckLevel, f.Grade, productInfo.ProduceNumber);
                      if (f.SampleItem.Contains("盐雾"))
                      {
                          if (!JudgeYwTest(productInfo.ProductID, productInfo.ProduceInDate))
@@ -134,16 +136,90 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                          SizeSpec = f.SizeSpec,
                          SizeSpecDown = f.SizeSpecDown,
                          SizeSpecUP = f.SizeSpecUP,
+                         AcceptGradeNumber=mm.AcceptGradeNumber.ToDouble (),
+                         CheckNumber=mm.CheckNumber.ToDouble (),
+                         RefuseGradeNumber=mm.RefuseGradeNumber.ToDouble (),
                          PrintCount = 1,
                      };
                      models.Add(model);
-
-                 }
-                        
+                 }        
             }
             return models;
         }
-     
+
+
+
+        private List<IQCSampleItemRecordModel> GetFQCPritnItem(long Nunmber, string orderId, string oldorderId)
+        {
+            List<IQCSampleItemRecordModel> models = irep.Entities.Where(e => e.OrderID == orderId).ToList();
+            if (models == null || models.Count() <= 0)
+            {
+                if (oldorderId != "") { oldorderId = "上次检验文号:" + oldorderId; };
+                // 制令单对应一个物料料号
+                var productInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault();
+                var SampleMaterialParmaterS = QuantitySampleService.MaterialSampleItemManager.GetMaterilalSampleItemBy(productInfo.ProductID)
+                                             .Where(e => e.SampleClass.Contains("FQC") & e.MateriaAttribute == "成品");
+                if (SampleMaterialParmaterS == null || SampleMaterialParmaterS.Count() == 0) return null;
+                foreach (var Parmater in SampleMaterialParmaterS)
+                {
+                    var SampleNumber = QuantitySampleService.SamplePlanTableManger.getSampleNumberBy(Parmater.CheckWay, Parmater.CheckLevel, Parmater.Grade, productInfo.ProduceNumber);
+                    string ProductName = productInfo.ProductName;
+                    if (!(JudgeMaterialTwoYearIsRecord(Parmater.SampleMaterial)))
+                    {    //如果第一次检验抽样数理加大一倍
+                        double i = SampleNumber.CheckNumber.ToDouble();
+                        i = i * 2;
+                        ProductName += "/第一次检验";
+                        //抽样数量不能超过购入数量
+                        if (i > Nunmber)
+                        { i = Nunmber; }
+                    }
+
+                    IQCSampleItemRecordModel model = new IQCSampleItemRecordModel
+                    {
+                        OrderID = orderId,
+                        SampleMaterialName = ProductName,
+                        SampleMaterialSpec = productInfo.ProductStandard,
+                        SampleMaterialSupplier = Parmater.Department,
+                        SampleMaterialDrawID = productInfo.ProductDrawID + "/" + Parmater.CheckStandard,
+                        SampleMaterialNumber = Nunmber,
+                        SampleMaterialInDate = Convert.ToDateTime(productInfo.ProduceInDate),
+                        SampleMaterial = Parmater.SampleMaterial,
+                        SampleItem = Parmater.SampleItem,
+                        EquipmentID = Parmater.EquipmetnID,
+                        CheckMethod = Parmater.CheckMethod,
+                        CheckLevel = Parmater.CheckLevel,
+                        Grade = Parmater.Grade,
+                        CheckWay = Parmater.CheckWay,
+                        SizeSpec = "缺点类别:" + Parmater.SizeSpec,
+                        SizeSpecUP = oldorderId,
+                        SizeSpecDown = productInfo.ProductSupplier,
+                        CheckNumber = SampleNumber.CheckNumber.ToDouble(),
+                        AcceptGradeNumber = SampleNumber.AcceptGradeNumber.ToDouble(),
+                        RefuseGradeNumber = SampleNumber.RefuseGradeNumber.ToDouble(),
+                        PrintCount = 1
+                    };
+                    models.Add(model);
+                }
+            }
+            return models;
+            //QCMS_IQCSampleRecordTable addmodelssss = new QCMS_IQCSampleRecordTable
+            //{
+            //    OrderID = orderid,
+            //    SampleMaterial = qqq.ProductID,
+            //    SampleMaterialName = qqq.ProductName,
+            //    SampleMaterialSpec = qqq.ProductStandard,
+            //    SampleMaterialSupplier = Department[0],
+            //    SampleMaterialDrawID = qqq.ProductDrawID,
+            //    SampleMaterialNumber = Nunmber,
+            //    SampleMaterialInDate = Convert.ToDateTime(qqq.ProduceInDate),
+            //    CheckWay = CheckWays[0],
+            //    InPutDate = DateTime.Now,
+            //    SampleNumber = Convert.ToInt16(CheckNumbers.Max())
+            //};
+            //SpamleRecordDal mmmm = new SpamleRecordDal();
+            //mmmm.Addmodel(addmodelssss);
+            //return 0;
+        }
         /// <summary>
         /// 得到抽样物料信息 （单头）
         /// </summary>
@@ -158,7 +234,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// </summary>
         /// <param name="sampleMaterial">料号</param>
         /// <returns></returns>
-        public int GetMaiterialConuntBy(string sampleMaterial)
+        public int GetNowYearMaiterialConuntBy(string sampleMaterial)
         {
             string Myyear = DateTime.Now.Year.ToString() + "-01-01";
             DateTime n = Convert.ToDateTime(Myyear);
@@ -238,6 +314,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 throw new Exception(ex.ToString());
             }
         }
+
+
 
        /// <summary>
        ///   模板导入到NPOI Workbook中
