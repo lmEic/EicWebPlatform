@@ -212,6 +212,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             model.IsCheck = model.CheckInterval == 0 ? "不校验" : "校验";
             if (model.IsCheck == "校验")
             {
+                model.CheckDate = model.CheckDate.ToDate();
                 model.PlannedCheckDate = model.CheckDate.AddMonths(model.CheckInterval);
                 model.CheckState = model.PlannedCheckDate > DateTime.Now ? "在期" : "超期";
             }
@@ -233,6 +234,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             model.IsMaintenance = model.AssetType == "低质易耗品" ? "不保养" : "保养";
             if (model.IsMaintenance == "保养")
             {
+                model.MaintenanceDate = model.MaintenanceDate.ToDate();
                 model.PlannedMaintenanceDate = model.MaintenanceDate.AddMonths(model.MaintenanceInterval);
                 model.MaintenanceState = model.PlannedMaintenanceDate > DateTime.Now ? "在期" : "超期";
             }

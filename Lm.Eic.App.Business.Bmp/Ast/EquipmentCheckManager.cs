@@ -4,6 +4,7 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
@@ -15,13 +16,22 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         List<EquipmentModel> GetEquipmentNotCheck();
 
+        List<EquipmentCheckModel> GetEquipmentCheckRecord(QueryEquipmentDto qryDto);
+
         /// <summary>
         /// 导出待校验设备到Excel
         /// </summary>
         /// <returns></returns>
-        OpResult ExportEquipmentNotCheckToExcle();
+        MemoryStream ExportEquipmentNotCheckToExcle();
 
+        /// <summary>
+        /// 录入设备校验记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         OpResult InputEquipmentCheckRecord(EquipmentCheckModel model);
+
+
     }
 
 
@@ -30,24 +40,48 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
         private IEquipmentCheckRepository irep = null;
         private EquipmentManager equipmentManager = null;
+        private IEquipmentRepository irepEqui = null;
 
         public EquipmentCheckManager()
         {
             irep = new EquipmentCheckRepository();
+            irepEqui = new EquipmentRepository();
             equipmentManager = new EquipmentManager();
         }
 
-
+        /// <summary>
+        /// 获取待校验设备列表
+        /// </summary>
+        /// <returns></returns>
         public List<EquipmentModel> GetEquipmentNotCheck()
         {
-            throw new NotImplementedException();
+            var tem = irepEqui.FindAll<EquipmentModel>(m => m.CheckState == "");
+            return tem.ToList();
         }
 
-        public OpResult ExportEquipmentNotCheckToExcle()
+        /// <summary>
+        /// 获取校验记录
+        /// </summary>
+        /// <param name="qryDto"></param>
+        /// <returns></returns>
+        public List<EquipmentCheckModel> GetEquipmentCheckRecord(QueryEquipmentDto qryDto)
+        {
+            throw new NotImplementedException();
+        }
+        /// <summary>
+        /// 导出待校验设备列表到Excel中
+        /// </summary>
+        /// <returns></returns>
+        public MemoryStream ExportEquipmentNotCheckToExcle()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 录入设备校验记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public OpResult InputEquipmentCheckRecord(EquipmentCheckModel model)
         {
             throw new NotImplementedException();
@@ -60,7 +94,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="qryModel">设备查询数据传输对象</param>
         /// <param name="searchMode"> 1.依据财产编号查询  </param>
         /// <returns></returns>
-        public List<EquipmentCheckModel> FindBy(QueryEquipmentDto qryDto)
+        List<EquipmentCheckModel> FindBy(QueryEquipmentDto qryDto)
         {
             try
             {
@@ -146,6 +180,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             return OpResult.SetResult("校验记录删除成功", irep.Delete(model.Id_Key) > 0, model.Id_Key);
         }
 
-     
+       
     }
 }
