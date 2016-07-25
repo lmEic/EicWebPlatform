@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
-using Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger;
+using Lm.Eic.App.Business.Bmp.Quantity.SampleManger.SampleItermRulesManger;
 
 
 
-namespace Lm.Eic.App.Business.Bmp.Quantity
+namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
 {
     public static class QuantitySampleService
     {

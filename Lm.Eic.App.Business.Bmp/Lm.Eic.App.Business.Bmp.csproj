@@ -78,13 +78,12 @@
     <Compile Include="Purchase\PurchaseService.cs" />
     <Compile Include="Purchase\RequisitionManager.cs" />
     <Compile Include="Purchase\StockManager.cs" />
-    <Compile Include="Quantity\QuantitySampleService.cs" />
-    <Compile Include="Quantity\SampleItermLaw\SampleItermRulesManger.cs" />
-    <Compile Include="Quantity\SampleManager.cs" />
+    <Compile Include="Quantity\SampleManager\QuantitySampleService.cs" />
+    <Compile Include="Quantity\SampleManager\SampleItermLaw\SampleItermRulesManger.cs" />
+    <Compile Include="Quantity\SampleManager\SampleManager.cs" />
+    <Compile Include="Quantity\Supper8DManager\Supper8DManager.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Quantity\Supper8DManager\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.App.Business.Mes\Lm.Eic.App.Business.Mes.csproj">
       <Project>{25616437-5761-4fe5-8dcc-d76b4641b6a7}</Project>

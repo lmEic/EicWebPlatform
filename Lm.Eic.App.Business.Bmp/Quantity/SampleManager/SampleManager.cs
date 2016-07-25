@@ -10,10 +10,10 @@ using Lm.Eic.App.Erp.Domain .QuantityModel;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger;
+using Lm.Eic.App.Business.Bmp.Quantity.SampleManger.SampleItermRulesManger;
 
 using Excel;
-namespace Lm.Eic.App.Business.Bmp.Quantity
+namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
 {   
     /// <summary>
     /// IQC抽样项目登记表

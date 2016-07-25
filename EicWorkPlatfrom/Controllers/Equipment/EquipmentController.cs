@@ -9,7 +9,7 @@ using Lm.Eic.App.Business.Bmp.Ast;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 
 
-using Lm.Eic.App.Business.Bmp.Quantity;
+using Lm.Eic.App.Business.Bmp.Quantity.SampleManger;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 
