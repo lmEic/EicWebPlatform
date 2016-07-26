@@ -354,7 +354,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         #endregion change data method
 
         #region find data method
-
         /// <summary>
         /// 查询部门信息
         /// </summary>
