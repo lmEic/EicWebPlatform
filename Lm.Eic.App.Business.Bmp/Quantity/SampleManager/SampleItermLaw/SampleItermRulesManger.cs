@@ -43,8 +43,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger.SampleItermRulesManger
             string JudgeWay = Paramter["JudgeWay"].Trim();
             //如果没有设置限制
             if (JudgeWay == "False") return "正常";
-
-
             int AB = Paramter["AB"].ToInt ();
             int AC = Paramter["AC"].ToInt ();
             int BA = Paramter["BA"].ToInt ();
