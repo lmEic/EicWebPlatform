@@ -21,14 +21,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         {
             //
             DateTime tem = DateTime.Parse("2017-01-01");  
-            var equipmentNoetChekcList = AstService.EquipmentCheckManager.GetEquipmentNotCheck(tem);
+            var equipmentNoetChekcList = AstService.EquipmentManager.CheckManager.GetEquipmentNotCheck(tem);
             if (equipmentNoetChekcList.Count() > 0) { } else { Assert.Fail(); }
         }
 
         [TestMethod()]
         public void ExportEquipmentNotCheckToExcleTest()
         {
-            var tem = AstService.EquipmentCheckManager.ExportEquipmentNotCheckToExcle();
+            var tem = AstService.EquipmentManager.CheckManager.ExportEquipmentNotCheckToExcle();
             Assert.Fail();
         }
 
@@ -40,7 +40,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             model.CheckDate = DateTime.Now.ToDate();
             model.CheckResult = "";
             model.OpSign = "add";
-           var tem = AstService.EquipmentCheckManager.Store(model);
+           var tem = AstService.EquipmentManager.CheckManager.Store(model);
 
             Assert.Fail();
         }
