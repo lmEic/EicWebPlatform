@@ -7,10 +7,10 @@
                         <form class="form-inline" novalidate>
                             <div class="form-group">
                                 <label for="inputDate">计划校验日期</label>
-                                <input name="inputDate" type="date" class="form-control" ng-model="vmManager.inputDate" format-date required />
+                                <input name="inputDate" type="date" class="form-control" ng-model="vmManager.planDate" format-date required />
                             </div>
-                            <span class="btn btn-primary" ng-click="vmManager.getAstDatas(3)"><i class="fa fa-search"></i>查询</span>
-                            <span class="btn btn-success" ng-click="vmManager.getAstDatas(3)"><i class="fa fa-file-excel-o"></i>生成保养清单</span>
+                            <span class="btn btn-primary" ng-click="vmManager.getAstCheckList()"><i class="fa fa-search"></i>查询</span>
+                            <span class="btn btn-success" ng-click="vmManager.getAstDatas(3)"><i class="fa fa-file-excel-o"></i>生成校验清单</span>
                         </form>
                     </div>
                 </div>
@@ -32,11 +32,11 @@
                                 <th>校验间隔</th>
                                 <th>计划校验日期</th>
                                 <th>校验状态</th>
-                                <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in vmManager.editDatas track by $index">
+                            <tr ng-repeat="item in vmManager.datasets track by $index">
                                 <td>{{item.AssetNumber}}</td>
                                 <td>{{item.EquipmentName}}</td>
                                 <td>{{item.EquipmentSpec}}</td>
@@ -49,11 +49,11 @@
                                 <td>{{item.CheckInterval}}</td>
                                 <td>{{item.PlannedCheckDate}}</td>
                                 <td>{{item.CheckState}}</td>
-                                <td>
+                                @*<td>
                                     <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
                                         修改
                                     </button>
-                                </td>
+                                </td>*@
                             </tr>
                         </tbody>
                     </table>
