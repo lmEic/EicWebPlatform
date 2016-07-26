@@ -5,96 +5,51 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExcelHanlder;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
-    public interface IEquipmentChekcManager
-    {
-        /// <summary>
-        /// 获取待校验设备列表
-        /// </summary>
-        /// <returns></returns>
-        List<EquipmentModel> GetEquipmentNotCheck();
-
-        List<EquipmentCheckModel> GetEquipmentCheckRecord(QueryEquipmentDto qryDto);
-
-        /// <summary>
-        /// 导出待校验设备到Excel
-        /// </summary>
-        /// <returns></returns>
-        MemoryStream ExportEquipmentNotCheckToExcle();
-
-        /// <summary>
-        /// 录入设备校验记录
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        OpResult InputEquipmentCheckRecord(EquipmentCheckModel model);
-
-
-    }
-
-
-    public class EquipmentCheckManager:IEquipmentChekcManager
+    public class EquipmentCheckManager
     {
 
         private IEquipmentCheckRepository irep = null;
         private EquipmentManager equipmentManager = null;
-        private IEquipmentRepository irepEqui = null;
+        List<EquipmentModel> equipmentNotCheckList = new List<EquipmentModel>(); 
 
         public EquipmentCheckManager()
         {
             irep = new EquipmentCheckRepository();
-            irepEqui = new EquipmentRepository();
             equipmentManager = new EquipmentManager();
         }
 
+
         /// <summary>
-        /// 获取待校验设备列表
+        /// 获取带校验设备列表  
+        /// PS：输入日期为起始日期 结束日期为输入日期加一个月 
         /// </summary>
-        /// <returns></returns>
-        public List<EquipmentModel> GetEquipmentNotCheck()
+        /// <param name="dateTime">起始时间</param>
+        /// <returns>计划校验日期 （大于等于起始日期 && 小于等于结束日期）|| 小于今天日期</returns>
+        public List<EquipmentModel> GetEquipmentNotCheck(DateTime dateTime)
         {
-            var tem = irepEqui.FindAll<EquipmentModel>(m => m.CheckState == "");
-            return tem.ToList();
+            try
+            {
+                DateTime startDateTime = dateTime, endDateTime = dateTime.AddMonths(1);
+                equipmentNotCheckList = equipmentManager.FindBy(m => (m.PlannedCheckDate >= startDateTime && m.PlannedCheckDate <= endDateTime) || m.PlannedCheckDate <= DateTime.Now.ToDate());
+                return equipmentNotCheckList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
         }
 
         /// <summary>
-        /// 获取校验记录
+        /// 查询 1.依据财产编号查询 
         /// </summary>
-        /// <param name="qryDto"></param>
+        /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
-        public List<EquipmentCheckModel> GetEquipmentCheckRecord(QueryEquipmentDto qryDto)
-        {
-            throw new NotImplementedException();
-        }
-        /// <summary>
-        /// 导出待校验设备列表到Excel中
-        /// </summary>
-        /// <returns></returns>
-        public MemoryStream ExportEquipmentNotCheckToExcle()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 录入设备校验记录
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public OpResult InputEquipmentCheckRecord(EquipmentCheckModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <param name="qryModel">设备查询数据传输对象</param>
-        /// <param name="searchMode"> 1.依据财产编号查询  </param>
-        /// <returns></returns>
-        List<EquipmentCheckModel> FindBy(QueryEquipmentDto qryDto)
+        public List<EquipmentCheckModel> FindBy(QueryEquipmentDto qryDto)
         {
             try
             {
@@ -102,7 +57,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 {
                     case 1: //依据财产编号查询
                         return irep.FindAll<EquipmentCheckModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
-
                     default: return null;
                 }
             }
@@ -110,6 +64,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             {
                 throw new Exception(ex.InnerException.Message);
             }
+        }
+        /// <summary>
+        /// 导出待校验设备列表到Excel中
+        /// </summary>
+        /// <returns></returns>
+        public MemoryStream ExportEquipmentNotCheckToExcle()
+        {
+            return NPOIHelper.ExportToExcel(equipmentNotCheckList, "待校验设备列表");
         }
 
         /// <summary>
