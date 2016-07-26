@@ -17,6 +17,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
     {
         private IEquipmentRepository irep = null;
 
+
         public EquipmentManager()
         {
             irep = new EquipmentRepository();

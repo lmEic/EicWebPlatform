@@ -12,7 +12,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 {
     public class EquipmentCheckManager
     {
-
         private IEquipmentCheckRepository irep = null;
         private EquipmentManager equipmentManager = null;
         List<EquipmentModel> equipmentNotCheckList = new List<EquipmentModel>(); 
@@ -22,7 +21,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             irep = new EquipmentCheckRepository();
             equipmentManager = new EquipmentManager();
         }
-
 
         /// <summary>
         /// 获取带校验设备列表  
@@ -141,7 +139,5 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 return OpResult.SetResult("更新设备校验日期时错误！", false);
             return OpResult.SetResult("校验记录删除成功", irep.Delete(model.Id_Key) > 0, model.Id_Key);
         }
-
-       
     }
 }
