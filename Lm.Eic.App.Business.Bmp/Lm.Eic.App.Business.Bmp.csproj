@@ -78,6 +78,7 @@
     <Compile Include="Purchase\PurchaseService.cs" />
     <Compile Include="Purchase\RequisitionManager.cs" />
     <Compile Include="Purchase\StockManager.cs" />
+    <Compile Include="Quantity\SampleManager\IPQCSampleManager\IPQCSampleItems.cs" />
     <Compile Include="Quantity\SampleManager\QuantitySampleService.cs" />
     <Compile Include="Quantity\SampleManager\SampleItermLaw\SampleItermRulesManger.cs" />
     <Compile Include="Quantity\SampleManager\SampleManager.cs" />
