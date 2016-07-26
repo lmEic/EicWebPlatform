@@ -6,6 +6,7 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
@@ -77,6 +78,23 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
                     default: return null;
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+
+        /// <summary>
+        /// 查询 复杂查询 
+        /// </summary>
+        /// <param name="qryDto">设备查询数据传输对象 </param>
+        /// <returns></returns>
+        public List<EquipmentModel> FindBy(Expression<Func<EquipmentModel, bool>> predicate)
+        {
+            try
+            {
+                return irep.FindAll<EquipmentModel>(predicate).ToList();
             }
             catch (Exception ex)
             {
@@ -208,9 +226,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="model"></param>
         private void SetEquipmentCheckRule(EquipmentModel model)
         {
-            //校验处理
+            //校验处理 设备类别为量测设备才会校验
             model.IsCheck = model.CheckInterval == 0 ? "不校验" : "校验";
-            if (model.IsCheck == "校验")
+            if (model.IsCheck == "校验" && model.EquipmentType=="量测设备")
             {
                 model.CheckDate = model.CheckDate.ToDate();
                 model.PlannedCheckDate = model.CheckDate.AddMonths(model.CheckInterval);
