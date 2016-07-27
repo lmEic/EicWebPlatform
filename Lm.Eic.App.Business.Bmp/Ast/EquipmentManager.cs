@@ -18,6 +18,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
     {
         EquipmentCrud crud = null;
 
+
         public EquipmentManager()
         {
             crud = new EquipmentCrud();
