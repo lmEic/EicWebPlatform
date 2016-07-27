@@ -59,6 +59,8 @@
     <Compile Include="Ast\AstBase.cs" />
     <Compile Include="Ast\AstService.cs" />
     <Compile Include="Ast\EquipmentCheckManager.cs" />
+    <Compile Include="Ast\EquipmentCrud.cs" />
+    <Compile Include="Ast\EquipmentMaintenanceManager.cs" />
     <Compile Include="Ast\EquipmentManager.cs" />
     <Compile Include="Hrm\Archives\ArchiveBase.cs" />
     <Compile Include="Hrm\Archives\ArchiveService.cs" />

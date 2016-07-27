@@ -20,15 +20,15 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         public void GetEquipmentNotCheckTest()
         {
             //
-            DateTime tem = DateTime.Parse("2017-01-01");  
-            var equipmentNoetChekcList = AstService.EquipmentManager.CheckManager.GetEquipmentNotCheck(tem);
+            DateTime tem = DateTime.Parse("2017-01-01");
+            var equipmentNoetChekcList = AstService.EquipmentManager.CheckManager.GetWithoutCheckEquipment(tem);
             if (equipmentNoetChekcList.Count() > 0) { } else { Assert.Fail(); }
         }
 
         [TestMethod()]
         public void ExportEquipmentNotCheckToExcleTest()
         {
-            var tem = AstService.EquipmentManager.CheckManager.ExportEquipmentNotCheckToExcle();
+            var tem = AstService.EquipmentManager.CheckManager.ExportWithoutCheckEquipmentListToExcle();
             Assert.Fail();
         }
 
