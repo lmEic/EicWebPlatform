@@ -352,3 +352,20 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
    
 })
+
+.controller('astArchiveScreeningCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService) {
+
+    //视图管理器
+    var vmManager = {
+        activeTab: 'initTab',
+        planDate: new Date(),
+        datasets: [],
+        getAstCheckList: function () {
+            vmManager.datasets = [];
+            $scope.searchPromise = astDataopService.getAstCheckListByPlanDate(vmManager.planDate).then(function (datas) {
+                vmManager.datasets = datas;
+            });
+        }
+    };
+    $scope.vmManager = vmManager;
+})

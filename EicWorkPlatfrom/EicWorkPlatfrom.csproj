@@ -1264,6 +1264,7 @@
     <Content Include="Views\Equipment\EditEquipmentTpl.cshtml" />
     <Content Include="Views\Equipment\AstBuildCheckList.cshtml" />
     <Content Include="Views\Equipment\AstBuildMaintenanceList.cshtml" />
+    <Content Include="Views\Equipment\AstArchiveScreening.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -81,6 +81,15 @@ namespace EicWorkPlatfrom.Controllers
             var result = AstService.EquipmentManager.Store(equipment);
             return Json(result);
         }
+
+        /// <summary>
+        /// 设备档案总览
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AstArchiveScreening()
+        {
+            return View();
+        }
         #endregion
 
         #region equipment check module method
