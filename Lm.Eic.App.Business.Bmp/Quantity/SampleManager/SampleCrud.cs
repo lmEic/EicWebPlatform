@@ -30,9 +30,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
         {
             return irep.Entities.Where(e => e.SampleMaterial == sampleMaterial).ToList();
         }
-
-
-
     }
 }
 
