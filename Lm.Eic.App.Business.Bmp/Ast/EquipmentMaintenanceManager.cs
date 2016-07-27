@@ -4,21 +4,14 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using CrudFactory = Lm.Eic.App.Business.Bmp.Ast.EquipmentCrudFactory;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
    public class EquipmentMaintenanceManager
     {
         List<EquipmentModel> equipmentWithoutMaintenanceList = new List<EquipmentModel>();
-        EquipmentMaintenanceCrud crud = null;
-        EquipmentCrud equipmentCrud = null;
-
-        public EquipmentMaintenanceManager()
-        {
-            crud = new EquipmentMaintenanceCrud();
-            equipmentCrud = new EquipmentCrud();
-        }
-
+      
         /// <summary>
         /// 获取待保养设备列表
         /// </summary>
@@ -28,7 +21,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             try
             {
-                equipmentWithoutMaintenanceList = equipmentCrud.FindBy(new QueryEquipmentDto() { InputDate = dateTime, SearchMode = 5 });
+                equipmentWithoutMaintenanceList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { InputDate = dateTime, SearchMode = 5 });
                 return equipmentWithoutMaintenanceList;
             }
             catch (Exception ex)
@@ -51,14 +44,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
-        public List<EquipmentMaintenanceModel> FindBy(QueryEquipmentDto qryDto) { return crud.FindBy(qryDto); }
+        public List<EquipmentMaintenanceModel> FindBy(QueryEquipmentDto qryDto) { return CrudFactory.EquipmentMaintenanceCrud.FindBy(qryDto); }
 
         /// <summary>
         /// 修改数据仓库 PS：model.OpSign = add/edit/delete
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult Store(EquipmentMaintenanceModel model) { return crud.Store(model); }
+        public OpResult Store(EquipmentMaintenanceModel model) { return CrudFactory.EquipmentMaintenanceCrud.Store(model); }
 
     }
 }

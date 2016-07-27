@@ -6,12 +6,15 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
+
+    /***********************************************   设备管理CRUD工厂   *****************************
+    *                                        
+    *  2017-7-27  初版   张明                  
+    ***************************************************************************************************/
     /// <summary>
     /// 设备管理模块Crud工厂
     /// </summary>
@@ -20,21 +23,29 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <summary>
         /// 设备档案操作Crud
         /// </summary>
-        internal EquipmentCrud EquipmentCrud
+        public static EquipmentCrud EquipmentCrud
         {
             get { return OBulider.BuildInstance<EquipmentCrud>(); }
         }
         /// <summary>
         /// 设备校验操作Crud
         /// </summary>
-        internal EquipmentCheckCrud EquipmentCheckCrud
+        public static EquipmentCheckCrud EquipmentCheckCrud
         {
             get { return OBulider.BuildInstance<EquipmentCheckCrud>(); }
+        }
+
+        /// <summary>
+        /// 设备保养操作Crud
+        /// </summary>
+        public static EquipmentMaintenanceCrud EquipmentMaintenanceCrud
+        {
+            get { return OBulider.BuildInstance<EquipmentMaintenanceCrud>(); }
         }
     }
 
 
-   /***********************************************   设备档案CRUD   *********************************
+    /***********************************************   设备档案CRUD   *********************************
   *                                        
   *  2017-7-27  初版   张明                  
   ***************************************************************************************************/
@@ -272,6 +283,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
 
     }
+   
     /***********************************************   设备校验CRUD   *********************************
     *                                        
     *  2017-7-27  初版   张明                  
@@ -282,7 +294,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
     internal class EquipmentCheckCrud
     {
         private IEquipmentCheckRepository irep = null;
-        private EquipmentCrud equipmentCrud = new EquipmentCrud();
 
         public EquipmentCheckCrud()
         {
@@ -362,7 +373,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             if (model == null)
                return OpResult.SetResult("校验记录不能为空！", false);
             
-            var equipmentList = equipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber, SearchMode = 1 });
+            var equipmentList =EquipmentCrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber, SearchMode = 1 });
             var equipment = equipmentList.Count > 0 ? equipmentList[0] : null;
             if (equipment == null)
                 return OpResult.SetResult("未找到校验单上的设备\r\n请确定财产编号是否正确！", false);
@@ -370,7 +381,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             equipment.CheckDate = model.CheckDate;
             equipment.PlannedCheckDate = model.CheckDate.AddMonths(equipment.CheckInterval);
             equipment.OpSign = OpMode.Edit;
-            return OpResult.SetResult("更新设备校验日期成功！", "更新设备校验日期失败！", equipmentCrud.Store(equipment).Result);
+            return OpResult.SetResult("更新设备校验日期成功！", "更新设备校验日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
         }
         #endregion
 
@@ -387,8 +398,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
     internal class EquipmentMaintenanceCrud
     {
         private IEquipmentMaintenanceRepositor irep = null;
-        private EquipmentCrud equipmentCrud = new EquipmentCrud();
-
         public EquipmentMaintenanceCrud()
         {
             irep = new EquipmentMaintenanceRepository();
@@ -468,7 +477,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             if (model == null)
                 return OpResult.SetResult("保养记录不能为空！", false);
 
-            var equipmentList = equipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber, SearchMode = 1 });
+            var equipmentList = EquipmentCrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber, SearchMode = 1 });
             var equipment = equipmentList.Count > 0 ? equipmentList[0] : null;
             if (equipment == null)
                 return OpResult.SetResult("未找到保养单上的设备\r\n请确定财产编号是否正确！", false);
@@ -476,7 +485,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             equipment.MaintenanceDate = model.MaintenanceDate;
             equipment.PlannedMaintenanceDate = model.MaintenanceDate.AddMonths(equipment.CheckInterval);
             equipment.OpSign = OpMode.Edit;
-            return OpResult.SetResult("更新设备保养日期成功！", "更新设备保养日期失败！", equipmentCrud.Store(equipment).Result);
+            return OpResult.SetResult("更新设备保养日期成功！", "更新设备保养日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
         }
         #endregion
 
