@@ -55,14 +55,20 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
-        public List<EquipmentCheckModel> FindBy(QueryEquipmentDto qryDto) { return crud.FindBy(qryDto); }
+        public List<EquipmentCheckModel> FindBy(QueryEquipmentDto qryDto) 
+        { 
+            return crud.FindBy(qryDto);
+        }
 
         /// <summary>
         /// 修改数据仓库 PS：model.OpSign = add/edit/delete
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult Store(EquipmentCheckModel model){ return crud.Store(model); }
+        public OpResult Store(EquipmentCheckModel model)
+        { 
+            return crud.Store(model);
+        }
 
     }
 
