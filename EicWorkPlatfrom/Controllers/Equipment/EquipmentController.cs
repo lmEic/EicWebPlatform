@@ -9,7 +9,7 @@ using Lm.Eic.App.Business.Bmp.Ast;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 
 
-using Lm.Eic.App.Business.Bmp.Quantity;
+using Lm.Eic.App.Business.Bmp.Quantity.SampleManger;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 
@@ -109,9 +109,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public FileResult ExportToExcel()
         {
-            var ds = QuantityService.IQCSampleItemsRecordManager.GetPringSampleItemBy("591-1607032", "32AAP00001200RM");
+            var ds = QuantitySampleService.IQCSampleItemsRecordManager.GetPringSampleItemBy("591-1607032", "32AAP00001200RM");
 
-            var ms= QuantityService.IQCSampleItemsRecordManager.ExportPrintToExcel(ds);
+            var ms= QuantitySampleService.IQCSampleItemsRecordManager.ExportPrintToExcel(ds);
 
             return this.ExportToExcel(ms, "aaa", "AAA");
         }

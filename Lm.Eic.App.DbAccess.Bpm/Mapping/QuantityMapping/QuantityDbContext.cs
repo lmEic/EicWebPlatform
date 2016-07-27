@@ -15,6 +15,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
           Database.SetInitializer<QuantityDbContext>(null);
       }
       #region    baseSet
+      #region 进料检验 制程检验
       /// <summary>
       /// IQC抽样记录信息
       /// </summary>
@@ -30,17 +31,17 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
       /// <summary>
       /// 抽样物料项目设置信息
       /// </summary>
-      public DbSet<MaterialSampleItemModel> MaterialSampleSet { set; get; }
+      public DbSet<MaterialSampleItemModel> MaterialSampleItem { set; get; }
       /// <summary>
       /// 物料抽样规则表
       /// </summary>
-      public DbSet<SampleRuleTableModel> SamplePlanTable { set; get; }
+      public DbSet<SampleRuleTableModel> SampleRuleTable { set; get; }
       /// <summary>
       /// / 抽样放宽加严限制控制
       /// </summary>
-      public DbSet<SampleWayLawModel> SampleContorlLimit { set; get; }
-
-       #endregion
+      public DbSet<SampleWayLawModel> SampleWayLaw { set; get; }
+      #endregion
+      #endregion
       protected override void OnModelCreating(DbModelBuilder modelBuilder)
       {
           base.OnModelCreating(modelBuilder);

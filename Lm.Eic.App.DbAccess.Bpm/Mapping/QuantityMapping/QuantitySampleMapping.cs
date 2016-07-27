@@ -12,7 +12,7 @@ using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
 {
-   
+    #region  IQC 对应的SQL表
     /// <summary>
     /// 抽样记录
     /// </summary>
@@ -95,5 +95,5 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
             this.ToTable("QCMS_SampleControlParamter");
         }                            
    }
-  
+#endregion
 }

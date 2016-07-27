@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
-using Lm.Eic.App.Business.Bmp.Quantity.SampleItermRulesManger;
+using Lm.Eic.App.Business.Bmp.Quantity.SampleManger.SampleItermRulesManger;
 
 
 
-namespace Lm.Eic.App.Business.Bmp.Quantity
+namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
 {
-    public static class QuantityService
+    public static class QuantitySampleService
     {
         /// <summary>
         /// 单号抽样项目打印记录管理
