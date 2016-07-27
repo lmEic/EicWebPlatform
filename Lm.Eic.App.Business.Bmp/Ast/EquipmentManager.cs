@@ -1,13 +1,10 @@
-﻿using Lm.Eic.App.DbAccess.Bpm.Repository.AstRep;
-using Lm.Eic.App.DomainModel.Bpm.Ast;
-using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+﻿using Lm.Eic.App.DomainModel.Bpm.Ast;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+using CrudFactory = Lm.Eic.App.Business.Bmp.Ast.EquipmentCrudFactory;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
@@ -16,20 +13,12 @@ namespace Lm.Eic.App.Business.Bmp.Ast
     /// </summary>
     public class EquipmentManager
     {
-        EquipmentCrud crud = null;
-
-
-        public EquipmentManager()
-        {
-            crud = new EquipmentCrud();
-        }
-
         #region Equipment
         /// <summary>
         /// 生成财产编号
         /// </summary>
         /// <param name="equipmentType">设备类别 （生产设备，量测设备）</param>
-        /// <param name="assetType">资产类别 （固定资产，低值易耗品）</param>
+        /// <param name="assetType">资产类别 （固定资产，低质易耗品）</param>
         /// <param name="taxType">税务类别 （保税，非保税）</param>
         /// <returns></returns>
         public string BuildAssetNumber(string equipmentType, string assetType, string taxType)
@@ -47,9 +36,11 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             {
                 assetNumber_1 = assetType == "低质易耗品" ? "Z" : taxType == "保税" ? "I" : "E";
                 assetNumber_4 = equipmentType == "生产设备" ? "9" : "0";
+
                 string temAssetNumber = string.Format("{0}{1}{2}", assetNumber_1, assetNumber_2_3, assetNumber_4);
-                var temEntitylist = crud.FindBy(new QueryEquipmentDto() { AssetNumber = temAssetNumber, SearchMode = 1 });
+                var temEntitylist = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = temAssetNumber, SearchMode = 1 });
                 assetNumber_5_7 = (temEntitylist.Count + 1).ToString("000");
+
                 return assetNumber_5_7.IsNullOrEmpty() ? "" : string.Format("{0}{1}{2}{3}", assetNumber_1, assetNumber_2_3, assetNumber_4, assetNumber_5_7);
             }
             catch (Exception ex)
@@ -59,13 +50,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
 
         /// <summary>
-        /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询
+        /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询 
+        /// 4.依据录入日期查询待校验设备 5.依据录入日期查询待保养设备
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
         public List<EquipmentModel> FindBy(QueryEquipmentDto qryDto)
         {
-            return crud.FindBy(qryDto);
+            return CrudFactory.EquipmentCrud.FindBy(qryDto);
         }
 
         /// <summary>
@@ -75,7 +67,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public OpResult Store(EquipmentModel model)
         {
-            return crud.Store(model);
+            return CrudFactory.EquipmentCrud.Store(model);
         }
         #endregion
 
