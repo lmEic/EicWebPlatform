@@ -82,6 +82,7 @@
     <Compile Include="Purchase\StockManager.cs" />
     <Compile Include="Quantity\SampleManager\IPQCSample\IPQCSampleItems.cs" />
     <Compile Include="Quantity\SampleManager\QuantitySampleService.cs" />
+    <Compile Include="Quantity\SampleManager\SampleCrud.cs" />
     <Compile Include="Quantity\SampleManager\SampleItermRules\SampleItermRulesManger.cs" />
     <Compile Include="Quantity\SampleManager\SampleManager.cs" />
     <Compile Include="Quantity\SupperManager\SupperManager.cs" />
