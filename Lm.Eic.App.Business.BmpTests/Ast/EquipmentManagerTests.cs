@@ -38,7 +38,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             DomainModel.Bpm.Ast.EquipmentModel model = new DomainModel.Bpm.Ast.EquipmentModel();
             model.AssetNumber = AstService.EquipmentManager.BuildAssetNumber("生产设备", "低值易耗品", "保税");
             model.EquipmentType = "生产设备";
-            model.AssetNumber = "低值易耗品";
+            model.AssetType = "低值易耗品";
             model.TaxType = "保税";
             model.EquipmentName = "Test";
             model.MaintenanceDate = DateTime.Now.ToDate();

@@ -58,6 +58,14 @@
                 this.message = falseMessage;
         }
 
+        public OpResult(string successMessage, string falseMessage, bool result)
+        {
+            this.result = result;
+            this.message = successMessage;
+            if (!result)
+                this.message = falseMessage;
+        }
+
         public OpResult(string successMessage, string falseMessage, int record, decimal idKey)
         {
             this.result = record > 0;
@@ -96,6 +104,10 @@
         public static OpResult SetResult(string successMessage, string falseMessage, int record)
         {
             return new OpResult(successMessage, falseMessage, record);
+        }
+        public static OpResult SetResult(string successMessage, string falseMessage, bool result)
+        {
+            return new OpResult(successMessage, falseMessage, result);
         }
     }
 

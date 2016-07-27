@@ -19,12 +19,16 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         public DbSet<EquipmentModel> Equipment { get; set; }
         public DbSet<EquipmentCheckModel> EquipmentCheck { get; set; }
 
+        public DbSet<EquipmentMaintenanceModel> EquipmentMaintenance { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Configurations.Add(new EquipmentModelMapping());
             modelBuilder.Configurations.Add(new EquipmentCheckModelMapping());
+            modelBuilder.Configurations.Add(new EquipmentMaintenanceModelMapping());
+
         }
     }
 
@@ -50,8 +54,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
     /// 数据库持久化基类/父类/超类
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class BpmRepositoryBase<TEntity> : EFRepositoryBase<TEntity>, IRepository<TEntity>
-         where TEntity : class, new()
+    public class BpmRepositoryBase<TEntity> : EFRepositoryBase<TEntity>, IRepository<TEntity> where TEntity : class, new()
     {
         protected override void SetUnitOfWorkContext()
         {

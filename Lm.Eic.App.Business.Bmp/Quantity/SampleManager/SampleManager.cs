@@ -10,19 +10,21 @@ using Lm.Eic.App.Erp.Domain .QuantityModel;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using Lm.Eic.App.Business.Bmp.Quantity.SampleItermLaw;
+using Lm.Eic.App.Business.Bmp.Quantity.SampleManger.SampleItermRulesManger;
 
 using Excel;
-namespace Lm.Eic.App.Business.Bmp.Quantity
-{
+namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
+{   
+    /// <summary>
+    /// IQC抽样项目登记表
+    /// </summary>
     public class IQCSampleItemsRecordManager
     {
         IIQCSampleItemRecordReposity irep = null;
-       MaterialSampleItemManager MaterialSampleItem = null;
+      
         public IQCSampleItemsRecordManager ()
         {
             irep = new IQCSampleItemRecordReposity();
-            MaterialSampleItem = new MaterialSampleItemManager();
         }
         /// <summary>
         /// 判断是否存在
@@ -51,7 +53,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             try
             {
                 int record = 0;
-                string opContext = "IQC打印存储";
+                string opContext = "IQC打印记录存储";
                 if (listModels == null||listModels .Count <=0) return OpResult.SetResult("集合不能为空！", false);
                      //新增 修改
                         listModels.ForEach(model => {
@@ -91,45 +93,133 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             List<IQCSampleItemRecordModel> models = irep.Entities.Where(e => e.OrderID == orderId & e.SampleMaterial == sampleMaterial).ToList();
             if (models ==null ||models .Count <=0)
             {
-                IQCSampleItemRecordModel model=null; 
-                 var productInfo = GetPuroductSupplierInfo(orderId);
-                  productInfo.ForEach(e => {
-                     if (e.ProductID == sampleMaterial)
-                     {
-                         var SampleItem = MaterialSampleItem.GetMaterilalSampleItemBy(e.ProductID);
-                         SampleItem.ForEach(f =>
-                         {
-                             model = new IQCSampleItemRecordModel()
-                             {
-                                 OrderID = e.OrderID,
-                                 SampleMaterial = e.ProductID,
-                                 SampleMaterialDrawID = e.ProductDrawID,
-                                 SampleMaterialName = e.ProductName,
-                                 SampleMaterialInDate = e.ProduceInDate,
-                                 SampleMaterialSpec = e.ProductStandard,
-                                 SampleMaterialNumber=e.ProduceNumber,
-                                 SampleMaterialSupplier=e.ProductSupplier,
-                                 CheckLevel=f.CheckLevel,
-                                 CheckMethod=f.CheckMethod,
-                                 CheckWay=f.CheckWay,
-                                 EquipmentID=f.EquipmetnID,
-                                 Grade=f.Grade,
-                                 SampleItem=f.SampleItem,
-                                 SizeSpec=f.SizeSpec,
-                                 SizeSpecDown=f.SizeSpecDown,
-                                 SizeSpecUP=f.SizeSpecUP,
-                                 PrintCount=1,
-                             };
-                             models.Add(model);
-                         });
-                     }
-                    
-                 });
+                // 记录测试方法 正常 放宽 加严 
+                string  CheckWay = QuantitySampleService.SampleItermLawManger.GetCheckWayBy(sampleMaterial, "IQC");
+                IQCSampleItemRecordModel model=null;
+                //单子的物料信息
+                 var productInfo = GetPuroductSupplierInfo(orderId).Where (e=>e.ProductID ==sampleMaterial).FirstOrDefault();
                 
+                 var SampleItem = QuantitySampleService.MaterialSampleItemManager.GetMaterilalSampleItemBy(productInfo.ProductID);
+               
+                 foreach (var f in SampleItem)
+                 {
+                     var mm = QuantitySampleService.SamplePlanTableManger.getSampleNumberBy(f.CheckWay, f.CheckLevel, f.Grade, productInfo.ProduceNumber);
+                     if (f.SampleItem.Contains("盐雾"))
+                     {
+                         if (!JudgeYwTest(productInfo.ProductID, productInfo.ProduceInDate))
+                         {
+                             if (JudgeMaterialTwoYearIsRecord(f.SampleMaterial))
+                             continue;
+                         }
+                     }
+                     if (f.SampleItem.Contains("全尺寸"))
+                     {
+                         if (JudgeMaterialTwoYearIsRecord(f.SampleMaterial))
+                         { continue; }
+                     }
+                     model = new IQCSampleItemRecordModel()
+                     {
+                         OrderID = productInfo.OrderID,
+                         SampleMaterial = productInfo.ProductID,
+                         SampleMaterialDrawID = productInfo.ProductDrawID,
+                         SampleMaterialName = productInfo.ProductName,
+                         SampleMaterialInDate = productInfo.ProduceInDate,
+                         SampleMaterialSpec = productInfo.ProductStandard,
+                         SampleMaterialNumber = productInfo.ProduceNumber,
+                         SampleMaterialSupplier = productInfo.ProductSupplier,
+                         CheckLevel = f.CheckLevel,
+                         CheckMethod = f.CheckMethod,
+                         CheckWay = CheckWay,
+                         EquipmentID = f.EquipmetnID,
+                         Grade = f.Grade,
+                         SampleItem = f.SampleItem,
+                         SizeSpec = f.SizeSpec,
+                         SizeSpecDown = f.SizeSpecDown,
+                         SizeSpecUP = f.SizeSpecUP,
+                         AcceptGradeNumber=mm.AcceptGradeNumber.ToDouble (),
+                         CheckNumber=mm.CheckNumber.ToDouble (),
+                         RefuseGradeNumber=mm.RefuseGradeNumber.ToDouble (),
+                         PrintCount = 1,
+                     };
+                     models.Add(model);
+                 }        
             }
             return models;
         }
-     
+
+
+
+        private List<IQCSampleItemRecordModel> GetFQCPritnItem(long Nunmber, string orderId, string oldorderId)
+        {
+            List<IQCSampleItemRecordModel> models = irep.Entities.Where(e => e.OrderID == orderId).ToList();
+            if (models == null || models.Count() <= 0)
+            {
+                if (oldorderId != "") { oldorderId = "上次检验文号:" + oldorderId; };
+                // 制令单对应一个物料料号
+                var productInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault();
+                var SampleMaterialParmaterS = QuantitySampleService.MaterialSampleItemManager.GetMaterilalSampleItemBy(productInfo.ProductID)
+                                             .Where(e => e.SampleClass.Contains("FQC") & e.MateriaAttribute == "成品");
+                if (SampleMaterialParmaterS == null || SampleMaterialParmaterS.Count() == 0) return null;
+                foreach (var Parmater in SampleMaterialParmaterS)
+                {
+                    var SampleNumber = QuantitySampleService.SamplePlanTableManger.getSampleNumberBy(Parmater.CheckWay, Parmater.CheckLevel, Parmater.Grade, productInfo.ProduceNumber);
+                    string ProductName = productInfo.ProductName;
+                    if (!(JudgeMaterialTwoYearIsRecord(Parmater.SampleMaterial)))
+                    {    //如果第一次检验抽样数理加大一倍
+                        double i = SampleNumber.CheckNumber.ToDouble();
+                        i = i * 2;
+                        ProductName += "/第一次检验";
+                        //抽样数量不能超过购入数量
+                        if (i > Nunmber)
+                        { i = Nunmber; }
+                    }
+
+                    IQCSampleItemRecordModel model = new IQCSampleItemRecordModel
+                    {
+                        OrderID = orderId,
+                        SampleMaterialName = ProductName,
+                        SampleMaterialSpec = productInfo.ProductStandard,
+                        SampleMaterialSupplier = Parmater.Department,
+                        SampleMaterialDrawID = productInfo.ProductDrawID + "/" + Parmater.CheckStandard,
+                        SampleMaterialNumber = Nunmber,
+                        SampleMaterialInDate = Convert.ToDateTime(productInfo.ProduceInDate),
+                        SampleMaterial = Parmater.SampleMaterial,
+                        SampleItem = Parmater.SampleItem,
+                        EquipmentID = Parmater.EquipmetnID,
+                        CheckMethod = Parmater.CheckMethod,
+                        CheckLevel = Parmater.CheckLevel,
+                        Grade = Parmater.Grade,
+                        CheckWay = Parmater.CheckWay,
+                        SizeSpec = "缺点类别:" + Parmater.SizeSpec,
+                        SizeSpecUP = oldorderId,
+                        SizeSpecDown = productInfo.ProductSupplier,
+                        CheckNumber = SampleNumber.CheckNumber.ToDouble(),
+                        AcceptGradeNumber = SampleNumber.AcceptGradeNumber.ToDouble(),
+                        RefuseGradeNumber = SampleNumber.RefuseGradeNumber.ToDouble(),
+                        PrintCount = 1
+                    };
+                    models.Add(model);
+                }
+            }
+            return models;
+            //QCMS_IQCSampleRecordTable addmodelssss = new QCMS_IQCSampleRecordTable
+            //{
+            //    OrderID = orderid,
+            //    SampleMaterial = qqq.ProductID,
+            //    SampleMaterialName = qqq.ProductName,
+            //    SampleMaterialSpec = qqq.ProductStandard,
+            //    SampleMaterialSupplier = Department[0],
+            //    SampleMaterialDrawID = qqq.ProductDrawID,
+            //    SampleMaterialNumber = Nunmber,
+            //    SampleMaterialInDate = Convert.ToDateTime(qqq.ProduceInDate),
+            //    CheckWay = CheckWays[0],
+            //    InPutDate = DateTime.Now,
+            //    SampleNumber = Convert.ToInt16(CheckNumbers.Max())
+            //};
+            //SpamleRecordDal mmmm = new SpamleRecordDal();
+            //mmmm.Addmodel(addmodelssss);
+            //return 0;
+        }
         /// <summary>
         /// 得到抽样物料信息 （单头）
         /// </summary>
@@ -144,7 +234,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// </summary>
         /// <param name="sampleMaterial">料号</param>
         /// <returns></returns>
-        public int GetMaiterialConuntBy(string sampleMaterial)
+        public int GetNowYearMaiterialConuntBy(string sampleMaterial)
         {
             string Myyear = DateTime.Now.Year.ToString() + "-01-01";
             DateTime n = Convert.ToDateTime(Myyear);
@@ -153,7 +243,51 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 return nn.Count;
             else return 0;
         }
-   
+
+
+        /// <summary>
+        ///  判定是否需要测试 盐雾测试
+        /// </summary>
+        /// <param name="sampleMaterial">物料料号</param>
+        /// <param name="sampleMaterialInDate">当前物料进料日期</param>
+        /// <returns></returns>
+        public bool JudgeYwTest(string sampleMaterial, DateTime sampleMaterialInDate)
+        {
+            bool ratuenValue = true ;
+            //调出此物料所有打印记录项
+            var SampleItemsRecords = irep.Entities.Where(e => e.SampleMaterial == sampleMaterial).Distinct();
+            //如果第一次打印 
+            if (SampleItemsRecords == null | SampleItemsRecords.Count() <= 0)  return true  ;
+
+             // 进料日期后退30天 抽测打印记录
+             var SampleItemsRecord = (from t in SampleItemsRecords
+                         where t.SampleMaterialInDate >= (sampleMaterialInDate.AddDays(-30))
+                               & t.SampleMaterialInDate <= sampleMaterialInDate
+                         select t.SampleItem).Distinct();
+             //没有 测
+              if (SampleItemsRecord == null | SampleItemsRecord.Count() <= 0) return true;
+              // 有  每项中是否有测过  盐雾测试
+                    foreach (var n in SampleItemsRecord)
+                    {
+                        if (n.Contains("盐雾")) { ratuenValue = false ; break; }
+                    }
+                return ratuenValue;
+            
+         
+        }
+
+        /// <summary>
+        ///  判定些物料在二年内是否有录入记录 
+        /// </summary>
+        /// <param name="sampleMaterial">物料料号</param>
+        /// <returns></returns>
+        public bool JudgeMaterialTwoYearIsRecord(string sampleMaterial)
+        {
+            var nn = QuantitySampleService.SampleRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).Where(e => e.InPutDate >= DateTime.Now.AddYears(-2));
+            if (nn != null ||nn.Count ()>0)
+                return true;
+            else return false;
+        }
         /// <summary>
         ///  IQC 导出Excel 数据流
         /// </summary>
@@ -180,6 +314,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 throw new Exception(ex.ToString());
             }
         }
+
+
 
        /// <summary>
        ///   模板导入到NPOI Workbook中
@@ -223,9 +359,9 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <param name="xlsSheet">Excel表</param>
         /// <param name="startRowIndex">启始行</param>
         /// <param name="rowIndex">行数</param>
-        /// <param name="A"></param>
-        /// <param name="J"></param>
-        /// <param name="V"></param>
+        /// <param name="A">A列</param>
+        /// <param name="J">J列</param>
+        /// <param name="V">V列</param>
         private void ResetXlsCellStatus(Excel.Worksheet xlsSheet, int startRowIndex, int rowIndex, string A, string J, string V)
         {
             int m = startRowIndex + rowIndex + 1;
@@ -238,13 +374,13 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         ///  加实线  抵部不好加  顶部加1
         /// </summary>
         /// <param name="xlsSheet">excel表</param>
-        /// <param name="StartRowIndex">启始行</param>
-        /// <param name="RowIndex">行数</param>
-        /// <param name="A"></param>
-        /// <param name="V"></param>
-        private void ResetXlsCellStatus(Excel.Worksheet xlsSheet, int StartRowIndex, int RowIndex, string A, string V)
+        /// <param name="startRowIndex">启始行</param>
+        /// <param name="rowIndex">行数</param>
+        /// <param name="A">A列</param>
+        /// <param name="V">V列</param>
+        private void ResetXlsCellStatus(Excel.Worksheet xlsSheet, int startRowIndex, int rowIndex, string A, string V)
         {
-            int m = StartRowIndex + RowIndex + 1;
+            int m = startRowIndex + rowIndex + 1;
             xlsSheet.get_Range(A + m, V + m).Borders.get_Item(Excel.XlBordersIndex.xlEdgeTop).LineStyle = Excel.XlLineStyle.xlContinuous;    //加实线  抵部不好加  顶部加1
 
         }
@@ -252,20 +388,20 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// 合并B C 二列
         /// </summary>
         /// <param name="xlsSheet"></param>
-        /// <param name="MergeRowIndex">合并二列的行数</param>
-        private void MergeXlsCell(Excel.Worksheet xlsSheet, int MergeRowIndex)
+        /// <param name="mergeRowIndex">合并二列的行数</param>
+        private void MergeXlsCell(Excel.Worksheet xlsSheet, int mergeRowIndex)
         {
-            xlsSheet.get_Range("B" + MergeRowIndex, "C" + MergeRowIndex).Merge();
+            xlsSheet.get_Range("B" + mergeRowIndex, "C" + mergeRowIndex).Merge();
         }
 
         /// <summary>
         /// BC列不合并时处理数据 ，并处理一合并时清除的一些线
         /// </summary>
         /// <param name="xlsSheet"></param>
-        /// <param name="MergeRowIndex"></param>
-        /// <param name="valueUp"></param>
-        /// <param name="valueDown"></param>
-        /// <param name="standardValue"></param>
+        /// <param name="MergeRowIndex">合并的行数</param>
+        /// <param name="valueUp">值上限</param>
+        /// <param name="valueDown">值下限</param>
+        /// <param name="standardValue">规格值</param>
         private void SetBCValueToXlsCell(Excel.Worksheet xlsSheet, int startRowIndex, string valueUp, string valueDown, string standardValue)
         {
             InsertStandardValue(xlsSheet, startRowIndex, standardValue, "B");
@@ -283,7 +419,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// 插入上限，下限的值
         /// </summary>
         /// <param name="xlsSheet"></param>
-        /// <param name="startRowIndex"></param>
+        /// <param name="startRowIndex">起始行</param>
         /// <param name="valueUp">上限值</param>
         /// <param name="valueDown">下限值</param>
         /// <param name="column">列数</param>
@@ -311,10 +447,10 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// B列 插入标准值
         /// </summary>
         /// <param name="xlsSheet"></param>
-        /// <param name="startRowIndex"></param>
+        /// <param name="startRowIndex">起始行</param>
         /// <param name="standardValue"></param>
-        /// <param name="column"></param>
-        private static void InsertStandardValue(Excel.Worksheet xlsSheet, int startRowIndex, string standardValue, string column)
+        /// <param name="column">列数</param>
+        private  void InsertStandardValue(Excel.Worksheet xlsSheet, int startRowIndex, string standardValue, string column)
         {
             int StopRowIndex = startRowIndex + 1;
             xlsSheet.get_Range(column + startRowIndex, "B" + StopRowIndex).Merge();//合并单元格
@@ -346,7 +482,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             xlsSheet.get_Range("B" + startMergeRowIndex).Font.Size = "12"; //设置字体大小
             xlsSheet.get_Range("B" + startMergeRowIndex).Font.Name = "宋体";//设置字体
         }
-        private static void setDEmethod(Excel.Worksheet xlsSheet, int startMergeRowIndex, int endMergeRowIndex)
+        private  void setDEmethod(Excel.Worksheet xlsSheet, int startMergeRowIndex, int endMergeRowIndex)
         {
             xlsSheet.get_Range("D" + startMergeRowIndex, "E" + endMergeRowIndex).Borders.LineStyle = Excel.XlLineStyle.xlLineStyleNone;
 
@@ -357,7 +493,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             xlsSheet.get_Range("D" + startMergeRowIndex, "E" + endMergeRowIndex).Borders.get_Item(Excel.XlBordersIndex.xlEdgeTop).LineStyle = Excel.XlLineStyle.xlContinuous;
             xlsSheet.get_Range("A" + startMergeRowIndex, "H" + endMergeRowIndex).Borders.get_Item(Excel.XlBordersIndex.xlEdgeTop).LineStyle = Excel.XlLineStyle.xlContinuous;
         }
-        private static void setCPDEmethod(Excel.Worksheet xlsSheet, int startMergeRowIndex, int endMergeRowIndex)
+        private void setCPDEmethod(Excel.Worksheet xlsSheet, int startMergeRowIndex, int endMergeRowIndex)
         {
             xlsSheet.get_Range("H" + startMergeRowIndex, "I" + endMergeRowIndex).Borders.LineStyle = Excel.XlLineStyle.xlLineStyleNone;
             xlsSheet.get_Range("H" + startMergeRowIndex).HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;//水平对齐靠左
@@ -394,18 +530,18 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <param name="startRowIndex"></param>
         /// <param name="stopRowIndex"></param>
         /// <param name="colName"></param>
-        /// <param name="Value"></param>
-        private void setValueToXlsCell(Excel.Worksheet xlsSheet, int startRowIndex, int stopRowIndex, string colName, string Value)
+        /// <param name="value"></param>
+        private void setValueToXlsCell(Excel.Worksheet xlsSheet, int startRowIndex, int stopRowIndex, string colName, string value)
         {
             if (startRowIndex == stopRowIndex)
             {
-                xlsSheet.get_Range(colName + startRowIndex, colName + stopRowIndex).Value = Value;
+                xlsSheet.get_Range(colName + startRowIndex, colName + stopRowIndex).Value = value;
 
             }
             else
             {
                 xlsSheet.get_Range(colName + startRowIndex, colName + stopRowIndex).Merge();
-                xlsSheet.get_Range(colName + startRowIndex, colName + stopRowIndex).Value = Value;
+                xlsSheet.get_Range(colName + startRowIndex, colName + stopRowIndex).Value = value;
 
             }
             xlsSheet.get_Range(colName + startRowIndex, colName + stopRowIndex).WrapText = true;
@@ -424,9 +560,9 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// <param name="xlsSheet"></param>
         /// <param name="startRowIndex"></param>
         /// <param name="stopRowIndex"></param>
-        private static void xlEdgeLeftLine(Excel.Worksheet xlsSheet, int startRowIndex, int stopRowIndex, int Nunmber, char startNunmber)
+        private static void xlEdgeLeftLine(Excel.Worksheet xlsSheet, int startRowIndex, int stopRowIndex, int nunmber, char startNunmber)
         {
-            for (int i = 0; i < Nunmber; i++)
+            for (int i = 0; i < nunmber; i++)
             {
                 string ColName = Convert.ToChar(startNunmber + i).ToString();
                 xlsSheet.get_Range(ColName + startRowIndex, ColName + stopRowIndex).Borders.get_Item(Excel.XlBordersIndex.xlEdgeLeft).LineStyle = Excel.XlLineStyle.xlContinuous;
@@ -436,7 +572,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// 打印，超出打印范围提示不打印
         /// </summary>
         /// <param name="xlsSheet"></param>
-        private void PrinttheExcel(Excel.Worksheet xlsSheet, string desktopPath)
+        private void PrinttheExcel(Excel.Worksheet xlsSheet)
         {
             double mm = 0;
             foreach (Range col in xlsSheet.UsedRange.Columns)
@@ -554,8 +690,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                 string DownValue = sizeSpecDown;
                 if (JudgeNoNull(UpValue, DownValue) & JudgeMach(UpValue, DownValue))
                 {
-                    double upValue = Convert.ToDouble(UpValue);
-                    double downValue = Convert.ToDouble(DownValue);
+                    double upValue = UpValue.ToDouble ();
+                    double downValue = DownValue.ToDouble ();
                     if (JudgeAbs(upValue, downValue))
                     {
                         string Value = sizeSpec + "±" + Math.Abs(upValue).ToString();
@@ -578,7 +714,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             }
             catch (Exception ex)
             {
-
+                OpResult.SetResult(ex.ToString(), false);  
             }
 
         }
@@ -608,11 +744,11 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// </summary>
         /// <param name="xlsSheet"></param>
         /// <param name="IdNumStartRowIndex"></param>
-        /// <param name="RowIndeX"></param>
+        /// <param name="rowIndeX"></param>
         /// <param name="model"></param>
-        private void SetMaterialInfoToXlsCell(Excel.Worksheet xlsSheet, int IdNumStartRowIndex, int RowIndeX, IQCSampleItemRecordModel model)
+        private void SetMaterialInfoToXlsCell(Excel.Worksheet xlsSheet, int IdNumStartRowIndex, int rowIndeX, IQCSampleItemRecordModel model)
         {
-            int IdNumStopRowIndex = IdNumStartRowIndex + RowIndeX - 1;
+            int IdNumStopRowIndex = IdNumStartRowIndex + rowIndeX - 1;
             setValueToXlsCell(xlsSheet, IdNumStartRowIndex, IdNumStopRowIndex, "A", model.SampleItem);
             setValueToXlsCell(xlsSheet, IdNumStartRowIndex, IdNumStopRowIndex, "D", model.CheckLevel);
             if (model.Grade.Contains("=")) { setValueToXlsCell(xlsSheet, IdNumStartRowIndex, IdNumStopRowIndex, "E", model.Grade + ""); }
@@ -631,7 +767,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
             if (model.EquipmentID != null) { EquipmetID = model.EquipmentID.ToString(); }
             setValueToXlsCell(xlsSheet, IdNumStartRowIndex, IdNumStopRowIndex, "H", EquipmetID);
             setValueToXlsCell(xlsSheet, IdNumStartRowIndex, IdNumStopRowIndex, "I", "");
-            ResetXlsCellStatus(xlsSheet, IdNumStartRowIndex, RowIndeX - 1, "A", "J", "V");
+            ResetXlsCellStatus(xlsSheet, IdNumStartRowIndex, rowIndeX - 1, "A", "J", "V");
             xlEdgeLeftLine(xlsSheet, IdNumStartRowIndex, IdNumStopRowIndex, 13, 'J');
 
         }
@@ -640,7 +776,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// </summary>
         /// <param name="models"></param>
         /// <param name="xlsSheet"></param>
-        private static void SetExcelTitle(List<IQCSampleItemRecordModel> models, Excel.Worksheet xlsSheet)
+        private  void SetExcelTitle(List<IQCSampleItemRecordModel> models, Excel.Worksheet xlsSheet)
         {
             xlsSheet.Cells[2, 2] = DateTime.Now.ToString("yyyy-MM-dd");
             xlsSheet.Cells[2, 8] = "品号：" + models[0].SampleMaterial;
@@ -654,7 +790,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
 
         }
 
-        private static void SetExcelTitleTestROHS(List<IQCSampleItemRecordModel> models, Excel.Worksheet xlsSheet)
+        private  void SetExcelTitleTestROHS(List<IQCSampleItemRecordModel> models, Excel.Worksheet xlsSheet)
         {
             foreach (var m in models)
             {
@@ -777,14 +913,34 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
     }
 
    
-   /// <summary>
+
+    /// <summary>
+    /// 抽样物料记录管理
+    /// </summary>
+    public class SampleRecordManager
+    {
+        IIQCSampleRecordReposity irep = null;
+        public SampleRecordManager()
+        { irep = new IQCSampleRecordReposity (); }
+
+        public List<IQCSampleRecordModel> GetIQCSampleRecordModelsBy(string sampleMaterial)
+        {
+            return irep.Entities.Where(e => e.SampleMaterial == sampleMaterial).ToList();
+        }
+
+      
+       
+    }
+ 
+    
+    /// <summary>
    ///抽验查询对像
    /// </summary>
    public class SampleQueries
     {
         #region
         /// <summary>
-        /// 样品订单号
+        /// 样品单号
         /// </summary>
         public string OrderId
         { set; get; }
@@ -799,11 +955,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         public string MaterialName
         { set; get; }
         /// <summary>
-        /// 样品规格
-        /// </summary>
-        public string MaterialSpec
-        { set; get; }
-        /// <summary>
         /// 样品的供应商
         /// </summary>
         public string MaterialSupplier
@@ -813,16 +964,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         /// </summary>
         public string MaterialInDate
         { set; get; }
-        /// <summary>
-        /// 样品提供ERP中图号
-        /// </summary>
-        public string MaterialDrawID
-        { set; get; }
-        /// <summary>
-        /// 抽样数量
-        /// </summary>
-        public string MaterialNumber
-        { set; get; }
+      
+       
         #endregion
     }
 

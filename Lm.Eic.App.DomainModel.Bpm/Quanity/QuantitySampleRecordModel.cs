@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Quanity
-{   
+{  
+    #region  进料检验 IQC，制程检验FQC，出货检验IPQC  Model
     /// <summary>
     /// IQC物料抽样模块 
     /// 对应表 QCMS_IQCSampleRecordTable
@@ -181,7 +182,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     }
    
     /// <summary>
-    /// IQC物料抽样项目模块（用于打印内容）
+    /// IQC物料抽样项目模块（用于记录打印内容）
     /// 对应表 QCMS_IQCPrintSampleTable
     /// </summary>
     public class IQCSampleItemRecordModel
@@ -606,9 +607,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// 设置物料抽测项次
     /// 对应表 QCMS_MaterialSampleSet
     /// </summary>
-    public class  MaterialSampleSetModel
+    public class  MaterialSampleItemModel
     {
-        public MaterialSampleSetModel ()
+        public MaterialSampleItemModel ()
         { }
         #region Model
         private string _samplematerial;
@@ -771,9 +772,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// 物料抽样规则表
     /// 对应表 QCMS_SamplePlanTable
     /// </summary>
-    public class SamplePlanTableModel
+    public class SampleRuleTableModel
     {
-        public SamplePlanTableModel ()
+        public SampleRuleTableModel ()
         {  }
         #region Model
         private string _checkway;
@@ -864,9 +865,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
      /// 抽样放宽加严限制控制
     ///  对应表 QCMS_SampleControlParamter
      /// </summary>
-    public class SampleContorlLimitModel
+    public class SampleWayLawModel
     {
-        public SampleContorlLimitModel ()
+        public SampleWayLawModel ()
         { }
 		#region Model
 		private string _classification;
@@ -970,4 +971,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 		}
 		#endregion Model
     }
+#endregion 
+
+
+
 }
+

@@ -7,9 +7,13 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
 
     var urlPrefix = leeHelper.controllers.equipment + "/";
-
+    //设备档案登记
     $stateProvider.state('astArchiveInput', {
         templateUrl: urlPrefix + 'AstArchiveInput',
+    })
+    //设备档案总览
+    .state('astArchiveScreening', {
+        templateUrl: urlPrefix + 'AstArchiveScreening',
     })
     //--------------校验管理--------------------------
     .state('astBuildCheckList', {
