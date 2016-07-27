@@ -39,7 +39,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             return NPOIHelper.ExportToExcel(equipmentWithoutCheckList, "待校验设备列表");
         }
 
-
         /// <summary>
         /// 查询 1.依据财产编号查询 
         /// </summary>
