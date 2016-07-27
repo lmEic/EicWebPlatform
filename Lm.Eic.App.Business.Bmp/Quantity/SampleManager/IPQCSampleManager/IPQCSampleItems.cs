@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager.IPQCSampleManager
+﻿namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager.IPQCSampleManager
 {
-   public  class IPQCSampleItems
+    public  class IPQCSampleItems
     {
     }
 }

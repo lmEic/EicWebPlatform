@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lm.Eic.App.Business.Bmp.Quantity;
-
+using Lm.Eic.App.Business.Bmp.Quantity.SampleManger;
 
 namespace Lm.Eic.App.Business.BmpTests.Quantity
 {

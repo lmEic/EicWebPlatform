@@ -4,10 +4,7 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Repository.AstRep
 {
-    public interface IEquipmentRepository : IRepository<EquipmentModel>
-    {
-    }
-
+    public interface IEquipmentRepository : IRepository<EquipmentModel> { }
     /// <summary>
     /// 设备基础信息 仓储层
     /// </summary>
@@ -15,23 +12,20 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.AstRep
     {
     }
 
-    /// <summary>
-    ///
-    /// </summary>
+   
     public interface IEquipmentCheckRepository : IRepository<EquipmentCheckModel> { }
-
     /// <summary>
     ///设备校验 仓储层
     /// </summary>
     public class EquipmentCheckRepository : BpmRepositoryBase<EquipmentCheckModel>, IEquipmentCheckRepository
-    { }
+    {
+    }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public interface IEquipmentMaintenanceRepositor : IRepository<EquipmentMaintenanceModel> { }
     /// <summary>
     /// 设备保养  仓储层
     /// </summary>
-    public class EquipmentMaintenanceRepository : BpmRepositoryBase<EquipmentMaintenanceModel> ,IEquipmentMaintenanceRepositor{ }
+    public class EquipmentMaintenanceRepository : BpmRepositoryBase<EquipmentMaintenanceModel> ,IEquipmentMaintenanceRepositor
+    {
+    }
 }
