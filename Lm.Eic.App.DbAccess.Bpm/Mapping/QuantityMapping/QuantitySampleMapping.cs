@@ -96,4 +96,15 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
         }                            
    }
 #endregion
+
+    public class  IPQC_SampleItemDataMapping:EntityTypeConfiguration <IPQC_SampleItemDataModel>
+    {
+        public IPQC_SampleItemDataMapping ()
+        {
+            this.HasKey(e => e.Id_key);
+            this.Property(e => e.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("IPQC_SampleItemData");
+
+        }
+    }
 }

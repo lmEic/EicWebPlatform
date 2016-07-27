@@ -54,4 +54,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep
      /// </summary>
     public class SampleWayLawReosity : QuantityRepositoryBase<SampleWayLawModel>, ISampleWayLawReosity
     { }
+    /// <summary>
+    /// ipqc 抽测
+    /// </summary>
+    public interface IipqcSampleItemDataReosity:IRepository <IPQC_SampleItemDataModel>{};
+    public class  ipqcSampleItemDataReosity:  QuantityRepositoryBase<IPQC_SampleItemDataModel>,IipqcSampleItemDataReosity
+    { }
+                                        
 }

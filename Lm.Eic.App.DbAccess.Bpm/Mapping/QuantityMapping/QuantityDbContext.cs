@@ -40,6 +40,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
       /// / 抽样放宽加严限制控制
       /// </summary>
       public DbSet<SampleWayLawModel> SampleWayLaw { set; get; }
+      public DbSet<IPQC_SampleItemDataModel> IPQC_SampleItemData { set; get; }
       #endregion
       #endregion
       protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -51,6 +52,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
           modelBuilder.Configurations.Add(new MaterialSampleItemMapping());
           modelBuilder.Configurations.Add(new SampleRuleTableMapping());
           modelBuilder.Configurations.Add(new SampleWayLawMapping());
+          modelBuilder.Configurations.Add(new IPQC_SampleItemDataMapping());
 
       }
    

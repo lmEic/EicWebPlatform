@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager.IPQCSampleManager
+namespace Lm.Eic.App.Business.Bmp.Quantity.SupperManager
 {
-   public  class IPQCSampleItems
+ public  class SupperManager
     {
     }
 }
