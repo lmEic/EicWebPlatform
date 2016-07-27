@@ -8,9 +8,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
+    /// <summary>
+    /// 设备管理模块Crud工厂
+    /// </summary>
+    internal class EquipmentCrudFactory
+    {
+        /// <summary>
+        /// 设备档案操作Crud
+        /// </summary>
+        internal EquipmentCrud EquipmentCrud
+        {
+            get { return OBulider.BuildInstance<EquipmentCrud>(); }
+        }
+        /// <summary>
+        /// 设备校验操作Crud
+        /// </summary>
+        internal EquipmentCheckCrud EquipmentCheckCrud
+        {
+            get { return OBulider.BuildInstance<EquipmentCheckCrud>(); }
+        }
+    }
+
 
    /***********************************************   设备档案CRUD   *********************************
   *                                        
@@ -250,8 +272,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
 
     }
-
-
     /***********************************************   设备校验CRUD   *********************************
     *                                        
     *  2017-7-27  初版   张明                  
