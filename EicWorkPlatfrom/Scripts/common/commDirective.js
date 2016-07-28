@@ -72,6 +72,39 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             }
         };
 })
+smModule.directive('ensureUserExist', function (accountService) {
+    return {
+        require: '^ngModel',
+        link: function (scope, element, attrs, ngModel) {
+            var setAsChecking = function (bool) {
+                ngModel.$setValidity('checkingAvailability', !bool);
+            };
+            var setAsUserName = function (bool) {
+                ngModel.$setValidity('usernameAvailability', bool);
+            };
+            ngModel.$parsers.push(function (val) {
+                if (!val || val.length <= 5) {
+                    return;
+                }
+                setAsChecking(true);
+                setAsUserName(false);
+                accountService.findUserById(val).then(function (data) {
+                    if (angular.isObject(data)) {
+                        setAsChecking(false);
+                        setAsUserName(false);
+                    } else {
+                        setAsChecking(false);
+                        setAsUserName(true);
+                    }
+                }, function (errordata) {
+                    setAsChecking(false);
+                    setAsUserName(true);
+                });
+                return val;
+            });
+        }
+    };
+})
 .directive('ylOperatemsgBoard', function () {
     return {
         restrict: 'EA',

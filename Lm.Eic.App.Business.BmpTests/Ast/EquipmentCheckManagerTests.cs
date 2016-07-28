@@ -13,6 +13,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
     [TestClass()]
     public class EquipmentCheckManagerTests
     {
+
+        [TestMethod]
+        public void AutoTest()
+        {
+            GetEquipmentNotCheckTest();
+            ExportEquipmentNotCheckToExcleTest();
+        }
+
         /// <summary>
         /// 测试 获取待校验设备列表
         /// </summary>
@@ -28,6 +36,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         [TestMethod()]
         public void ExportEquipmentNotCheckToExcleTest()
         {
+           
             var tem = AstService.EquipmentManager.CheckManager.BuildWaitingCheckList();
 
 
@@ -52,8 +61,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             model.CheckResult = "";
             model.OpSign = "add";
            var tem = AstService.EquipmentManager.CheckManager.Store(model);
-
-            Assert.Fail();
+            if (!tem.Result) { Assert.Fail(); }
+           
         }
     }
 }
