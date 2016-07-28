@@ -42,6 +42,11 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             return NPOIHelper.ExportToExcel(_waitingCheckList, "待校验设备列表");
         }
 
+        public List<EquipmentModel> getWithoutCheckList(List<EquipmentModel> models)
+        {
+            DateTime NowDate= DateTime .Now .Date.ToDate() ;
+            return models.FindAll(e => e.PlannedCheckDate <= NowDate);
+        }
         /// <summary>
         /// 查询 1.依据财产编号查询 
         /// </summary>
