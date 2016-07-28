@@ -12,8 +12,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         templateUrl: urlPrefix + 'AstArchiveInput',
     })
     //设备档案总览
-    .state('astArchiveScreening', {
-        templateUrl: urlPrefix + 'AstArchiveScreening',
+    .state('astArchiveOverview', {
+        templateUrl: urlPrefix + 'AstArchiveOverview',
     })
     //--------------校验管理--------------------------
     .state('astBuildCheckList', {

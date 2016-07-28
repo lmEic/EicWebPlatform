@@ -13,10 +13,11 @@ namespace Lm.Eic.App.Business.Bmp.Ast
     public class EquipmentCheckManager
     {
         List<EquipmentModel> _waitingCheckList = new List<EquipmentModel>();
+
         /// <summary>
         /// 获取待校验设备列表
         /// </summary>
-        /// <param name="dateTime"></param>
+        /// <param name="plannedCheckDate">计划校验日期</param>
         /// <returns></returns>
         public List<EquipmentModel> GetWaitingCheckListBy(DateTime plannedCheckDate)
         {
@@ -33,7 +34,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
 
         /// <summary>
-        /// 导出待校验设备列表到Excel中
+        /// 生成校验清单
         /// </summary>
         /// <returns></returns>
         public MemoryStream BuildWaitingCheckList()

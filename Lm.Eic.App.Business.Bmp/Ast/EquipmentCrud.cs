@@ -65,7 +65,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
         /// <summary>
         /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询 
-        /// 4.依据录入日期查询待校验设备 5.依据录入日期查询待保养设备
+        /// 4.依据录入日期查询待校验设备 5.依据录入日期查询待保养设备 6.生成设备总览表
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
@@ -95,7 +95,10 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
                     case 5: //依据录入日期查询待保养设备  //按计划保养月查询待保养待设备列表
                         return irep.FindAll<EquipmentModel>(m => m.IsMaintenance == "保养" && m.PlannedMaintenanceMonth == qryDto.PlannedMaintenanceMonth).ToList();
-                        
+
+                    case 6: //查询所有在使用待设备 生成设备总览表
+                        return irep.FindAll<EquipmentModel>(m=>m.IsScrapped== "未报废").ToList();
+
                     default: return null;
                 }
             }

@@ -21,14 +21,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         {
             //
             DateTime tem = DateTime.Parse("2017-01-01");
-            var equipmentNoetChekcList = AstService.EquipmentManager.CheckManager.GetWithoutCheckEquipmentListBy(tem);
+            var equipmentNoetChekcList = AstService.EquipmentManager.CheckManager.GetWaitingCheckListBy(tem);
             if (equipmentNoetChekcList.Count() > 0) { } else { Assert.Fail(); }
         }
 
         [TestMethod()]
         public void ExportEquipmentNotCheckToExcleTest()
         {
-            var tem = AstService.EquipmentManager.CheckManager.ExportWithoutCheckEquipmentListToExcle();
+            var tem = AstService.EquipmentManager.CheckManager.BuildWaitingCheckList();
             Assert.Fail();
         }
 

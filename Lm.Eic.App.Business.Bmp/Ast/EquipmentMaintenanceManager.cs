@@ -10,20 +10,19 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 {
    public class EquipmentMaintenanceManager
     {
-        List<EquipmentModel> equipmentWithoutMaintenanceList = new List<EquipmentModel>();
+        List<EquipmentModel> _waitingMaintenanceList = new List<EquipmentModel>();
 
-      
         /// <summary>
-        /// 获取待保养设备列表
+        /// 获取待保养清单
         /// </summary>
-        /// <param name="plannedMaintenanceMonth">计划保养月份</param>
+        /// <param name="plannedMaintenanceMonth">计划保养月</param>
         /// <returns></returns>
-        public List<EquipmentModel> GetWithoutMaintenanceEquipmentListBy(string plannedMaintenanceMonth)
+        public List<EquipmentModel> GetWaitingMaintenanceListBy(string plannedMaintenanceMonth)
         {
             try
             {
-                equipmentWithoutMaintenanceList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { PlannedMaintenanceMonth = plannedMaintenanceMonth, SearchMode = 5 });
-                return equipmentWithoutMaintenanceList;
+                _waitingMaintenanceList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { PlannedMaintenanceMonth = plannedMaintenanceMonth, SearchMode = 5 });
+                return _waitingMaintenanceList;
             }
             catch (Exception ex)
             {
@@ -31,13 +30,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             }
         }
 
+
         /// <summary>
-        /// 导出待保养设备列表 到Excel中
+        /// 生成保养清单
         /// </summary>
         /// <returns></returns>
-        public MemoryStream ExportWithoutMaintenanceEquipmentListToExcle()
+        public MemoryStream BuildWaitingMaintenanceList()
         {
-            return NPOIHelper.ExportToExcel(equipmentWithoutMaintenanceList, "待校验设备列表");
+            return NPOIHelper.ExportToExcel(_waitingMaintenanceList, "待保养设备列表");
         }
 
         /// <summary>

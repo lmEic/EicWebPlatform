@@ -86,7 +86,7 @@ namespace EicWorkPlatfrom.Controllers
         /// 设备档案总览
         /// </summary>
         /// <returns></returns>
-        public ActionResult AstArchiveScreening()
+        public ActionResult AstArchiveOverview()
         {
             return View();
         }
@@ -108,7 +108,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         public ContentResult GetAstCheckListByPlanDate(DateTime planDate)
         {
-            var datas = AstService.EquipmentManager.CheckManager.GetWithoutCheckEquipment(planDate);
+            var datas = AstService.EquipmentManager.CheckManager.GetWaitingCheckListBy(planDate);
 
             return DateJsonResult(datas);
         }
