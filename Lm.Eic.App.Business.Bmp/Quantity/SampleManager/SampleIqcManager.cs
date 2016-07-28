@@ -12,18 +12,20 @@ using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 using Excel;
-namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
+namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
 {   
+   
     /// <summary>
-    /// IQC抽样项目登记表
+    ///   IQC抽样项目登记表
     /// </summary>
     public class SampleItemsIqcRecordManager
     {
         SampleItemsIpqcRecordReposity irep = null;
-      
+        SampleManger SampleManger = null;
         public SampleItemsIqcRecordManager ()
         {
             irep = new SampleItemsIpqcRecordReposity();
+            SampleManger = new SampleManger();
         }
         /// <summary>
         /// 判断是否存在
@@ -93,16 +95,16 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
             if (models ==null ||models .Count <=0)
             {
                 // 记录测试方法 正常 放宽 加严 
-                string  CheckWay = QuantitySampleService.SampleItermLawManger.GetCheckWayBy(sampleMaterial, "IQC");
+                string  CheckWay = SampleManger.SampleItermLawManger.GetCheckWayBy(sampleMaterial, "IQC");
                 SampleItemsIqcRecordModel model=null;
                 //单子的物料信息
                  var productInfo = GetPuroductSupplierInfo(orderId).Where (e=>e.ProductID ==sampleMaterial).FirstOrDefault();
                 
-                 var SampleItem = QuantitySampleService.MaterialSampleItemsManager.GetMaterilalSampleItemBy(productInfo.ProductID);
+                 var SampleItem = SampleManger.MaterialSampleItemsManager.GetMaterilalSampleItemBy(productInfo.ProductID);
                
                  foreach (var f in SampleItem)
                  {
-                     var mm = QuantitySampleService.SampleRuleTableManger.getSampleNumberBy(f.CheckWay, f.CheckLevel, f.Grade, productInfo.ProduceNumber);
+                     var mm = SampleManger.SampleRuleTableManger.getSampleNumberBy(f.CheckWay, f.CheckLevel, f.Grade, productInfo.ProduceNumber);
                      if (f.SampleItem.Contains("盐雾"))
                      {
                          if (!JudgeYwTest(productInfo.ProductID, productInfo.ProduceInDate))
@@ -156,12 +158,12 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
                 if (oldorderId != "") { oldorderId = "上次检验文号:" + oldorderId; };
                 // 制令单对应一个物料料号
                 var productInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault();
-                var SampleMaterialParmaterS = QuantitySampleService.MaterialSampleItemsManager.GetMaterilalSampleItemBy(productInfo.ProductID)
+                var SampleMaterialParmaterS = SampleManger.MaterialSampleItemsManager.GetMaterilalSampleItemBy(productInfo.ProductID)
                                              .Where(e => e.SampleClass.Contains("FQC") & e.MateriaAttribute == "成品");
                 if (SampleMaterialParmaterS == null || SampleMaterialParmaterS.Count() == 0) return null;
                 foreach (var Parmater in SampleMaterialParmaterS)
                 {
-                    var SampleNumber = QuantitySampleService.SampleRuleTableManger.getSampleNumberBy(Parmater.CheckWay, Parmater.CheckLevel, Parmater.Grade, productInfo.ProduceNumber);
+                    var SampleNumber = SampleManger.SampleRuleTableManger.getSampleNumberBy(Parmater.CheckWay, Parmater.CheckLevel, Parmater.Grade, productInfo.ProduceNumber);
                     string ProductName = productInfo.ProductName;
                     if (!(JudgeMaterialTwoYearIsRecord(Parmater.SampleMaterial)))
                     {    //如果第一次检验抽样数理加大一倍
@@ -282,7 +284,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
         /// <returns></returns>
         public bool JudgeMaterialTwoYearIsRecord(string sampleMaterial)
         {
-            var nn = QuantitySampleService.SampleIqcRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).Where(e => e.InPutDate >= DateTime.Now.AddYears(-2));
+            var nn = SampleManger.SampleIqcRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).Where(e => e.InPutDate >= DateTime.Now.AddYears(-2));
             if (nn != null ||nn.Count ()>0)
                 return true;
             else return false;

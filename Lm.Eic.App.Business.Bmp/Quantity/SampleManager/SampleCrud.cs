@@ -9,10 +9,7 @@ using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
 {
-    public class SampleCrudFactory
-    {
-    }
-
+  
     /// <summary>
     /// 抽样物料记录管理
     /// </summary>

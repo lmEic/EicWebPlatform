@@ -11,7 +11,7 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.App.Business.Bmp.Quantity;
-namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
+namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
 {
     /// <summary>
     /// 取样放宽加严规则
@@ -53,7 +53,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
             int CAI = Paramter["CAI"].ToInt ();
             string OldCheckWay = string.Empty ;
 
-            var SampleRecord = QuantitySampleService.SampleIqcRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).OrderByDescending (e=>e.Id_key);
+            var SampleRecord = new SampleManger().SampleIqcRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).OrderByDescending (e=>e.Id_key);
             var chekWay = from r in SampleRecord.Take(1)
                           select r.CheckWay;
             foreach (var r in chekWay)
