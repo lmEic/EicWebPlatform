@@ -13,6 +13,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
     [TestClass()]
     public class EquipmentCheckManagerTests
     {
+
+        [TestMethod]
+        public void AutoTest()
+        {
+            GetEquipmentNotCheckTest();
+            ExportEquipmentNotCheckToExcleTest();
+        }
+
         /// <summary>
         /// 测试 获取待校验设备列表
         /// </summary>
@@ -28,6 +36,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         [TestMethod()]
         public void ExportEquipmentNotCheckToExcleTest()
         {
+           
             var tem = AstService.EquipmentManager.CheckManager.BuildWaitingCheckList();
 
 
