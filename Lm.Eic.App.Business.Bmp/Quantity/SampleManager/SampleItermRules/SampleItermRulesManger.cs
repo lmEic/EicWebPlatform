@@ -116,7 +116,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
         private Dictionary<string, string> GetAllParamterDictionaryBy(string theClass)
         {
             Dictionary<string, string> AllParamter = new Dictionary<string, string>();
-           var  mdl = irep.Entities.Where(e => e.Classification == theClass).ToList ().FirstOrDefault ();
+            var  mdl = irep.Entities.Where(e => e.Classification == theClass).ToList ().FirstOrDefault ();
             if (mdl != null)
             {
                  AllParamter.Add("JudgeWay", mdl.JudgeWay.Trim());
@@ -221,7 +221,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
             irep = new MaterialSampleItemsReposity();
         }
         /// <summary>
-        ///   由料号得到抽样项次
+        ///  由料号得到抽样项次
         /// </summary>
         /// <param name="sampleMaterial">料号</param>
         /// <returns></returns>

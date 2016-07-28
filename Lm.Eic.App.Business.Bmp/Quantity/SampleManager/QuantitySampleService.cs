@@ -22,15 +22,12 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
        
         
         /// <summary>
-         /// 单号物料抽样记录管理
-         /// </summary>
+        /// 单号物料抽样记录管理
+        /// </summary>
        public static SampleIqcRecordManager SampleIqcRecordManager
        {
            get { return OBulider.BuildInstance<SampleIqcRecordManager>(); }
        }
-        
-        
-        
         /// <summary>
         /// 物料数量抽样规则管理
         /// </summary>
