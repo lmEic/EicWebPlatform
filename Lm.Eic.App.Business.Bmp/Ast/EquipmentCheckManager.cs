@@ -39,7 +39,37 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public MemoryStream BuildWaitingCheckList()
         {
-            return NPOIHelper.ExportToExcel(_waitingCheckList, "待校验设备列表");
+            
+            Dictionary<string, List<EquipmentModel>> DicDataSources = new Dictionary<string, List<EquipmentModel>>();
+            DicDataSources.Add("待校验设备列表", GetInLimitedDateWaitingCheckListRule(_waitingCheckList));
+            DicDataSources.Add("超期待校验列表", GetOutdatedWaitingCheckListRule(_waitingCheckList));
+
+
+            return NPOIHelper.ExportToExcelMultiSheets(DicDataSources);
+           
+            //return NPOIHelper.ExportToExcel(_waitingCheckList, "待校验设备列表");
+        }
+
+        /// <summary>
+        /// 得到已超期待校验设备列表
+        /// </summary>
+        /// <param name="waitingChecklist"></param>
+        /// <returns></returns>
+        private List<EquipmentModel> GetOutdatedWaitingCheckListRule(List<EquipmentModel> waitingChecklist)
+        {
+            DateTime NowDate = DateTime.Now.Date.ToDate();
+            return waitingChecklist.FindAll(e => e.PlannedCheckDate <= NowDate);
+        }
+
+        /// <summary>
+        /// 获取未超期待校验列表
+        /// </summary>
+        /// <param name="waitingChecklist"></param>
+        /// <returns></returns>
+        private List<EquipmentModel> GetInLimitedDateWaitingCheckListRule(List<EquipmentModel> waitingChecklist)
+        {
+            DateTime NowDate = DateTime.Now.Date.ToDate();
+            return waitingChecklist.FindAll(e => e.PlannedCheckDate > NowDate);
         }
 
         /// <summary>
@@ -61,5 +91,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return CrudFactory.EquipmentCheckCrud.Store(model);
         }
+
+      
     }
 }
