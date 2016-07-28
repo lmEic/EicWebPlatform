@@ -38,33 +38,46 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public MemoryStream BuildWaitingMaintenanceList()
         {
-            return NPOIHelper.ExportToExcelMultiSheets(GetDicGroupList(_waitingMaintenanceList));
+            try
+            {
+                return NPOIHelper.ExportToExcelMultiSheets(GetDicGroupListRule(_waitingMaintenanceList));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
             //return NPOIHelper.ExportToExcel(_waitingMaintenanceList, "待保养设备列表");
         }
 
-       /// <summary>
+        /// <summary>
         /// 依每个部门保养列表
-       /// </summary>
+        /// </summary>
         /// <param name="waitingMaintenanceList">需要保养列表</param>
-       /// <returns></returns>
- 
-       private Dictionary <string ,List<EquipmentModel>>GetDicGroupList(List<EquipmentModel>waitingMaintenanceList )
+        /// <returns></returns>
+
+        private Dictionary<string, List<EquipmentModel>> GetDicGroupListRule(List<EquipmentModel> waitingMaintenanceList)
         {
-            Dictionary<string, List<EquipmentModel>> dicTem = new Dictionary<string, List<EquipmentModel>>();
-            if (waitingMaintenanceList == null || waitingMaintenanceList.Count <= 0) return dicTem;
+            Dictionary<string, List<EquipmentModel>> dicWaitingMaintenaceSheets = new Dictionary<string, List<EquipmentModel>>();
             List<string> DepartmentList = new List<string>();
-           waitingMaintenanceList.ForEach(e =>
-           {
-               if (!DepartmentList.Contains(e.SafekeepDepartment))
-               { DepartmentList.Add(e.SafekeepDepartment); }
-           });
-           foreach (string Department in DepartmentList)
-           {
-               var trm= waitingMaintenanceList.FindAll (e=>e.SafekeepDepartment ==Department) ;
-               dicTem.Add(Department, trm);
-           }
-            return dicTem;
+
+            if (waitingMaintenanceList == null || waitingMaintenanceList.Count <= 0)
+                return dicWaitingMaintenaceSheets;
+
+            waitingMaintenanceList.ForEach(e =>
+            {
+                if (!DepartmentList.Contains(e.SafekeepDepartment))
+                { DepartmentList.Add(e.SafekeepDepartment); }
+            });
+
+            foreach (string Department in DepartmentList)
+            {
+                var trm = waitingMaintenanceList.FindAll(e => e.SafekeepDepartment == Department);
+                dicWaitingMaintenaceSheets.Add(Department, trm);
+            }
+
+            return dicWaitingMaintenaceSheets;
         }
+
         /// <summary>
         /// 查询 1.依据财产编号查询 
         /// </summary>
