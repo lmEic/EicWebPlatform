@@ -50,7 +50,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
 
         /// <summary>
-        /// 获取待校验设备列表
+        /// 获取待校验设备列表 
         /// </summary>
         /// <returns></returns>
         public List<EquipmentModel> GetEquipmentNotCheck()
