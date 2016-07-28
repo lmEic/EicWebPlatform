@@ -31,13 +31,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
-      <HintPath>\\192.168.0.65\svn\周转文件夹\EntityFramework.dll</HintPath>
+      <HintPath>..\libs\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.Extended">
-      <HintPath>\\192.168.0.65\svn\周转文件夹\EntityFramework.Extended.dll</HintPath>
+      <HintPath>..\libs\EntityFramework.Extended.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
-      <HintPath>\\192.168.0.65\svn\周转文件夹\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\libs\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
