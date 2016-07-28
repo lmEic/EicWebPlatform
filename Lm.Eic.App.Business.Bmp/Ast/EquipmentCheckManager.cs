@@ -12,20 +12,19 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 {
     public class EquipmentCheckManager
     {
-        List<EquipmentModel> equipmentWithoutCheckList = new List<EquipmentModel>();
-     
-       /// <summary>
-       /// 获取待校验设备列表
-       /// </summary>
-       /// <param name="dateTime"></param>
-       /// <returns></returns>
-        public List<EquipmentModel> GetWithoutCheckEquipmentListBy(DateTime plannedCheckDate)
+        List<EquipmentModel> _waitingCheckList = new List<EquipmentModel>();
+        /// <summary>
+        /// 获取待校验设备列表
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public List<EquipmentModel> GetWaitingCheckListBy(DateTime plannedCheckDate)
         {
             //todo:
             try
             {
-                equipmentWithoutCheckList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { PlannedCheckDate = plannedCheckDate, SearchMode = 4 });
-                return equipmentWithoutCheckList;
+                _waitingCheckList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { PlannedCheckDate = plannedCheckDate, SearchMode = 4 });
+                return _waitingCheckList;
             }
             catch (Exception ex)
             {
@@ -37,9 +36,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// 导出待校验设备列表到Excel中
         /// </summary>
         /// <returns></returns>
-        public MemoryStream ExportWithoutCheckEquipmentListToExcle()
+        public MemoryStream BuildWaitingCheckList()
         {
-            return NPOIHelper.ExportToExcel(equipmentWithoutCheckList, "待校验设备列表");
+            return NPOIHelper.ExportToExcel(_waitingCheckList, "待校验设备列表");
         }
 
         /// <summary>
