@@ -4,7 +4,7 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="well">
-                            <form role="form" name="formEquipment" novalidate class="form-horizontal">
+                            <form role="form" name="formEquipment" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                                 <fieldset>
                                     <legend>基本信息</legend>
                                     <div class="form-group">
@@ -144,7 +144,7 @@
                                         <label for="safekeepUser" class="col-md-2 control-label">保管人</label>
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <input name="safekeepUser" class="form-control" ng-keypress="vmManager.getWorkerInfo($event)" placeholder="输工号或姓名按回车键" ng-model="vm.SafekeepUser" required />
+                                                <input name="safekeepUser" class="form-control" ng-change="vmManager.getWorkerInfo()" placeholder="输工号或姓名按回车键" ng-model="vm.SafekeepUser" required />
                                                 <div class="error-messages" ng-messages="formEquipment.safekeepUser.$error" ng-show="operate.showValidation">
                                                     <small ng-message="required">保管人不能为空</small>
                                                 </div>
@@ -227,7 +227,6 @@
                                                     <label class="label label-primary">月</label>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                     <div class="form-group">

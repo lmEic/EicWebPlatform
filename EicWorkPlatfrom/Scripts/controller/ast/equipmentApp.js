@@ -213,26 +213,42 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             });
         },
         isSingle: true,//是否搜寻到的是单个人
-        getWorkerInfo: function ($event) {
-            if ($event.keyCode === 13)
+        getWorkerInfo: function () {
+            if (uiVM.SafekeepUser === undefined) return;
+
+            var strLen = leeHelper.checkIsChineseValue(uiVM.SafekeepUser) ? 2 : 6;
+            if (uiVM.SafekeepUser.length >= strLen)
             {
+                vmManager.searchedWorkers = [];
                 $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.SafekeepUser).then(function (datas) {
-                    vmManager.searchedWorkers = leeHelper.getWorkersAboutChangedDepartment(datas, vmManager.departments);
-                    if (vmManager.searchedWorkers.length ===1) {
-                        vmManager.isSingle = true;
-                        vmManager.selectWorker(vmManager.searchedWorkers[0]);
+                    if (datas.length > 0) {
+                        vmManager.searchedWorkers = leeHelper.getWorkersAboutChangedDepartment(datas, vmManager.departments);
+                        if (vmManager.searchedWorkers.length === 1) {
+                            vmManager.isSingle = true;
+                            vmManager.selectWorker(vmManager.searchedWorkers[0]);
+                        }
+                        else {
+                            vmManager.isSingle = false;
+                        }
                     }
                     else {
-                        vmManager.isSingle = false;
+                        vmManager.selectWorker(null);
                     }
                 });
             }
         },
         selectWorker: function (worker)
         {
-            uiVM.SafekeepUser = worker.Name;
-            uiVM.SafekeepWorkerID = worker.WorkerId;
-            uiVM.SafekeepDepartment = worker.Department;
+            if (worker !== null) {
+                uiVM.SafekeepUser = worker.Name;
+                uiVM.SafekeepWorkerID = worker.WorkerId;
+                uiVM.SafekeepDepartment = worker.Department;
+            }
+            else {
+                uiVM.SafekeepUser = null;
+                uiVM.SafekeepWorkerID = null;
+                uiVM.SafekeepDepartment = null;
+            }
         },
         selectEquipment: function (item) {
             vmManager.canEdit = true;
