@@ -11,17 +11,18 @@ namespace Lm.Eic.App.Business.Bmp.Ast
    public class EquipmentMaintenanceManager
     {
         List<EquipmentModel> equipmentWithoutMaintenanceList = new List<EquipmentModel>();
+
       
         /// <summary>
         /// 获取待保养设备列表
         /// </summary>
-        /// <param name="dateTime"></param>
+        /// <param name="plannedMaintenanceMonth">计划保养月份</param>
         /// <returns></returns>
-        public List<EquipmentModel> GetWithoutMaintenanceEquipment(DateTime dateTime)
+        public List<EquipmentModel> GetWithoutMaintenanceEquipmentListBy(string plannedMaintenanceMonth)
         {
             try
             {
-                equipmentWithoutMaintenanceList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { InputDate = dateTime, SearchMode = 5 });
+                equipmentWithoutMaintenanceList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { PlannedMaintenanceMonth = plannedMaintenanceMonth, SearchMode = 5 });
                 return equipmentWithoutMaintenanceList;
             }
             catch (Exception ex)
