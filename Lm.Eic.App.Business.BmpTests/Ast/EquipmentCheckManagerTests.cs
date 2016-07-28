@@ -61,8 +61,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             model.CheckResult = "";
             model.OpSign = "add";
            var tem = AstService.EquipmentManager.CheckManager.Store(model);
-
-            Assert.Fail();
+            if (!tem.Result) { Assert.Fail(); }
+           
         }
     }
 }
