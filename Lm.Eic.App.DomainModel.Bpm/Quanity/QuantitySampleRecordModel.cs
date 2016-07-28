@@ -5,14 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Quanity
-{   
+{  
+    #region  进料检验 IQC，制程检验FQC，出货检验IPQC  Model
     /// <summary>
     /// IQC物料抽样模块 
     /// 对应表 QCMS_IQCSampleRecordTable
     /// </summary>
-    public class IQCSampleRecordModel
+    public class SampleIqcRecordModel
     {
-      public IQCSampleRecordModel()
+      public SampleIqcRecordModel()
 		{}
 		#region Model
 		private string _orderid;
@@ -184,10 +185,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// IQC物料抽样项目模块（用于记录打印内容）
     /// 对应表 QCMS_IQCPrintSampleTable
     /// </summary>
-    public class IQCSampleItemRecordModel
+    public class SampleItemsIqcRecordModel
     {
 
-        public IQCSampleItemRecordModel()
+        public SampleItemsIqcRecordModel()
 		{}
 		#region Model
 		private string _orderid;
@@ -606,9 +607,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// 设置物料抽测项次
     /// 对应表 QCMS_MaterialSampleSet
     /// </summary>
-    public class  MaterialSampleItemModel
+    public class  MaterialSampleItemsModel
     {
-        public MaterialSampleItemModel ()
+        public MaterialSampleItemsModel ()
         { }
         #region Model
         private string _samplematerial;
@@ -970,4 +971,283 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 		}
 		#endregion Model
     }
+#endregion 
+   /// <summary>
+   /// IPQC 抽测SPC记录数值
+   /// </summary>
+   public class SampleItemsIpqcDataModel
+   {
+        public void  IPQC_SamPleItemDataModel()
+       {
+
+       }
+
+        #region Model
+        private string _orderid;
+        private string _materialid;
+        private string _materialname;
+        private string _materialspec;
+        private string _materialdrawid;
+        private string _materialproductiondepartment;
+        private decimal? _materialnumber;
+        private DateTime? _instoredate;
+        private string _classtype;
+        private string _machineid;
+        private string _sampleitem;
+        private string _sizespec;
+        private decimal? _sizemax;
+        private decimal? _sizemin;
+        private string _sampleequipmentid;
+        private string _samplemethod;
+        private string _data1;
+        private string _data2;
+        private string _data3;
+        private string _data4;
+        private string _data5;
+        private string _datacollection;
+        private string _datasign;
+        private string _datarecordname;
+        private string _datagroupid;
+        private string _sampleresult;
+        private DateTime? _inputdate;
+        private DateTime? _inputtime;
+        private decimal _id_key;
+        /// <summary>
+        /// 订单号
+        /// </summary>
+        public string OrderId
+        {
+            set { _orderid = value; }
+            get { return _orderid; }
+        }
+        /// <summary>
+        /// 抽测品号
+        /// </summary>
+        public string MaterialId
+        {
+            set { _materialid = value; }
+            get { return _materialid; }
+        }
+        /// <summary>
+        /// 品名
+        /// </summary>
+        public string MaterialName
+        {
+            set { _materialname = value; }
+            get { return _materialname; }
+        }
+        /// <summary>
+        /// 物料规格
+        /// </summary>
+        public string MaterialSpec
+        {
+            set { _materialspec = value; }
+            get { return _materialspec; }
+        }
+        /// <summary>
+        /// 物品图号
+        /// </summary>
+        public string MaterialDrawId
+        {
+            set { _materialdrawid = value; }
+            get { return _materialdrawid; }
+        }
+        /// <summary>
+        /// 物料生产部门
+        /// </summary>
+        public string MaterialProductionDepartment
+        {
+            set { _materialproductiondepartment = value; }
+            get { return _materialproductiondepartment; }
+        }
+        /// <summary>
+        /// 生产数量
+        /// </summary>
+        public decimal? MaterialNumber
+        {
+            set { _materialnumber = value; }
+            get { return _materialnumber; }
+        }
+        /// <summary>
+        /// 物料入库日期
+        /// </summary>
+        public DateTime? InStoreDate
+        {
+            set { _instoredate = value; }
+            get { return _instoredate; }
+        }
+        /// <summary>
+        /// 班别
+        /// </summary>
+        public string ClassType
+        {
+            set { _classtype = value; }
+            get { return _classtype; }
+        }
+        /// <summary>
+        /// 生产机器
+        /// </summary>
+        public string MachineID
+        {
+            set { _machineid = value; }
+            get { return _machineid; }
+        }
+        /// <summary>
+        /// 抽测项目
+        /// </summary>
+        public string SampleItem
+        {
+            set { _sampleitem = value; }
+            get { return _sampleitem; }
+        }
+        /// <summary>
+        /// 抽测规格
+        /// </summary>
+        public string SizeSpec
+        {
+            set { _sizespec = value; }
+            get { return _sizespec; }
+        }
+        /// <summary>
+        /// 规格最大值
+        /// </summary>
+        public decimal? SizeMax
+        {
+            set { _sizemax = value; }
+            get { return _sizemax; }
+        }
+        /// <summary>
+        /// 规格最小值
+        /// </summary>
+        public decimal? SizeMin
+        {
+            set { _sizemin = value; }
+            get { return _sizemin; }
+        }
+        /// <summary>
+        /// 抽测设备编号
+        /// </summary>
+        public string SampleEquipmentID
+        {
+            set { _sampleequipmentid = value; }
+            get { return _sampleequipmentid; }
+        }
+        /// <summary>
+        /// 抽测方法
+        /// </summary>
+        public string SampleMethod
+        {
+            set { _samplemethod = value; }
+            get { return _samplemethod; }
+        }
+        /// <summary>
+        /// 数据1
+        /// </summary>
+        public string Data1
+        {
+            set { _data1 = value; }
+            get { return _data1; }
+        }
+        /// <summary>
+        /// 数据2
+        /// </summary>
+        public string Data2
+        {
+            set { _data2 = value; }
+            get { return _data2; }
+        }
+        /// <summary>
+        /// 数据3
+        /// </summary>
+        public string Data3
+        {
+            set { _data3 = value; }
+            get { return _data3; }
+        }
+        /// <summary>
+        /// 数据4
+        /// </summary>
+        public string Data4
+        {
+            set { _data4 = value; }
+            get { return _data4; }
+        }
+        /// <summary>
+        /// 数据5
+        /// </summary>
+        public string Data5
+        {
+            set { _data5 = value; }
+            get { return _data5; }
+        }
+        /// <summary>
+        /// 数据集合
+        /// </summary>
+        public string DataCollection
+        {
+            set { _datacollection = value; }
+            get { return _datacollection; }
+        }
+        /// <summary>
+        /// 数据标识
+        /// </summary>
+        public string DataSign
+        {
+            set { _datasign = value; }
+            get { return _datasign; }
+        }
+        /// <summary>
+        /// 记录人
+        /// </summary>
+        public string DataRecordName
+        {
+            set { _datarecordname = value; }
+            get { return _datarecordname; }
+        }
+        /// <summary>
+        /// 数据分组编号
+        /// </summary>
+        public string DataGroupID
+        {
+            set { _datagroupid = value; }
+            get { return _datagroupid; }
+        }
+        /// <summary>
+        /// 抽测结果
+        /// </summary>
+        public string SampleResult
+        {
+            set { _sampleresult = value; }
+            get { return _sampleresult; }
+        }
+        /// <summary>
+        /// 输入日期
+        /// </summary>
+        public DateTime? InPutDate
+        {
+            set { _inputdate = value; }
+            get { return _inputdate; }
+        }
+        /// <summary>
+        /// 输入时间
+        /// </summary>
+        public DateTime? InputTime
+        {
+            set { _inputtime = value; }
+            get { return _inputtime; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public decimal Id_key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+
+   }
+
+
 }
+

@@ -9,7 +9,7 @@ using Lm.Eic.App.Business.Bmp.Ast;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 
 
-using Lm.Eic.App.Business.Bmp.Quantity;
+using Lm.Eic.App.Business.Bmp.Quantity.SampleManger;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 
@@ -81,6 +81,15 @@ namespace EicWorkPlatfrom.Controllers
             var result = AstService.EquipmentManager.Store(equipment);
             return Json(result);
         }
+
+        /// <summary>
+        /// 设备档案总览
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AstArchiveOverview()
+        {
+            return View();
+        }
         #endregion
 
         #region equipment check module method
@@ -92,9 +101,20 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 获取校验清单
+        /// </summary>
+        /// <param name="planDate"></param>
+        /// <returns></returns>
+        public ContentResult GetAstCheckListByPlanDate(DateTime planDate)
+        {
+            var datas = AstService.EquipmentManager.CheckManager.GetWaitingCheckListBy(planDate);
+
+            return DateJsonResult(datas);
+        }
         #endregion
 
-        #region equipment check module method
+        #region equipment maintenance module method
         /// <summary>
         /// 生成保养清单
         /// </summary>
@@ -103,15 +123,25 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-        #endregion
+        /// <summary>
+        /// 获取保养清单
+        /// </summary>
+        /// <param name="planMonth"></param>
+        /// <returns></returns>
+        public ContentResult GetAstMaintenanceListByPlanMonth(string planMonth)
+        {
+            var datas = 0;
 
+            return DateJsonResult(datas);
+        }
+        #endregion
 
         [NoAuthenCheck]
         public FileResult ExportToExcel()
         {
-            var ds = QuantityService.IQCSampleItemsRecordManager.GetPringSampleItemBy("591-1607032", "32AAP00001200RM");
+            var ds = QuantitySampleService.SampleItemsIqcRecordManager.GetPringSampleItemBy("591-1607032", "32AAP00001200RM");
 
-            var ms= QuantityService.IQCSampleItemsRecordManager.ExportPrintToExcel(ds);
+            var ms= QuantitySampleService.SampleItemsIqcRecordManager.ExportPrintToExcel(ds);
 
             return this.ExportToExcel(ms, "aaa", "AAA");
         }
