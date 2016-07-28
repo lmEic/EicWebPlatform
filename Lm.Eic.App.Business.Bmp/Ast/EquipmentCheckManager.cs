@@ -4,25 +4,28 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using CrudFactory = Lm.Eic.App.Business.Bmp.Ast.EquipmentCrudFactory;
+
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
     public class EquipmentCheckManager
     {
-        List<EquipmentModel> equipmentWithoutCheckList = new List<EquipmentModel>();
-     
-       /// <summary>
-       /// 获取待校验设备列表
-       /// </summary>
-       /// <param name="dateTime"></param>
-       /// <returns></returns>
-        public List<EquipmentModel> GetWithoutCheckEquipment(DateTime dateTime)
+        List<EquipmentModel> _waitingCheckList = new List<EquipmentModel>();
+
+        /// <summary>
+        /// 获取待校验设备列表
+        /// </summary>
+        /// <param name="plannedCheckDate">计划校验日期</param>
+        /// <returns></returns>
+        public List<EquipmentModel> GetWaitingCheckListBy(DateTime plannedCheckDate)
         {
+            //todo:
             try
             {
-                equipmentWithoutCheckList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { InputDate = dateTime, SearchMode = 4 });
-                return equipmentWithoutCheckList;
+                _waitingCheckList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { PlannedCheckDate = plannedCheckDate, SearchMode = 4 });
+                return _waitingCheckList;
             }
             catch (Exception ex)
             {
@@ -31,14 +34,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
 
         /// <summary>
-        /// 导出待校验设备列表到Excel中
+        /// 生成校验清单
         /// </summary>
         /// <returns></returns>
-        public MemoryStream ExportWithoutCheckEquipmentListToExcle()
+        public MemoryStream BuildWaitingCheckList()
         {
-            return NPOIHelper.ExportToExcel(equipmentWithoutCheckList, "待校验设备列表");
+            return NPOIHelper.ExportToExcel(_waitingCheckList, "待校验设备列表");
         }
-
 
         /// <summary>
         /// 查询 1.依据财产编号查询 
@@ -59,8 +61,5 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return CrudFactory.EquipmentCheckCrud.Store(model);
         }
-
     }
-
-
 }

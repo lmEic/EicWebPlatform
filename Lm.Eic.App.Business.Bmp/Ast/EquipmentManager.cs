@@ -14,6 +14,16 @@ namespace Lm.Eic.App.Business.Bmp.Ast
     public class EquipmentManager
     {
         #region Equipment
+
+        /// <summary>
+        /// 获取设备总览表
+        /// </summary>
+        /// <returns></returns>
+        public List<EquipmentModel> GetAstArchiveOverview()
+        {
+            return CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { SearchMode = 6 });
+        }
+
         /// <summary>
         /// 生成财产编号
         /// </summary>
@@ -51,7 +61,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
         /// <summary>
         /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询 
-        /// 4.依据录入日期查询待校验设备 5.依据录入日期查询待保养设备
+        /// 4.依据录入日期查询待校验设备 5.依据录入日期查询待保养设备 
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>

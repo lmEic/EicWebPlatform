@@ -12,8 +12,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         templateUrl: urlPrefix + 'AstArchiveInput',
     })
     //设备档案总览
-    .state('astArchiveScreening', {
-        templateUrl: urlPrefix + 'AstArchiveScreening',
+    .state('astArchiveOverview', {
+        templateUrl: urlPrefix + 'AstArchiveOverview',
     })
     //--------------校验管理--------------------------
     .state('astBuildCheckList', {
@@ -92,7 +92,20 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             equipment: equipment,
         });
     };
-
+    ///获取设备校验清单
+    ast.getAstCheckListByPlanDate = function (planDate) {
+        var url = astUrlPrefix + 'GetAstCheckListByPlanDate';
+        return ajaxService.getData(url, {
+            planDate: planDate,
+        });
+    };
+    //获取设备保养清单
+    ast.getAstMaintenanceListByPlanMonth = function (planMonth) {
+        var url = astUrlPrefix + 'GetAstMaintenanceListByPlanMonth';
+        return ajaxService.getData(url, {
+            planMonth: planMonth,
+        });
+    };
     return ast;
 })
 .controller('moduleNavCtrl', function ($scope, navDataService, $state) {
@@ -311,16 +324,48 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     //视图管理器
     var vmManager = {
         activeTab: 'initTab',
+        planDate: new Date(),
+        datasets: [],
+        getAstCheckList: function () {
+            vmManager.datasets = [];
+            $scope.searchPromise = astDataopService.getAstCheckListByPlanDate(vmManager.planDate).then(function (datas) {
+                vmManager.datasets = datas;
+            });
+        }
     };
     $scope.vmManager = vmManager;
-
 })
 .controller('astBuildMaintenanceListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
     //视图管理器
     var vmManager = {
         activeTab: 'initTab',
+        planMonth:'',
+        datasets:[],
+        getAstMaintenanceList: function () {
+            vmManager.datasets = [];
+            $scope.searchPromise = astDataopService.getAstMaintenanceListByPlanMonth(vmManager.planMonth).then(function (datas) {
+                vmManager.datasets = datas;
+            });
+        }
     };
     $scope.vmManager = vmManager;
 
    
+})
+
+.controller('astArchiveScreeningCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService) {
+
+    //视图管理器
+    var vmManager = {
+        activeTab: 'initTab',
+        planDate: new Date(),
+        datasets: [],
+        getAstCheckList: function () {
+            vmManager.datasets = [];
+            $scope.searchPromise = astDataopService.getAstCheckListByPlanDate(vmManager.planDate).then(function (datas) {
+                vmManager.datasets = datas;
+            });
+        }
+    };
+    $scope.vmManager = vmManager;
 })
