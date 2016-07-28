@@ -15,18 +15,18 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
         /// <summary>
         /// 单号抽样项目打印记录管理
         /// </summary>
-       public static  IQCSampleItemsRecordManager IQCSampleItemsRecordManager
+       public static  SampleItemsIqcRecordManager SampleItemsIqcRecordManager
        { 
-          get { return OBulider.BuildInstance<IQCSampleItemsRecordManager>(); }
+          get { return OBulider.BuildInstance<SampleItemsIqcRecordManager>(); }
        }
        
         
         /// <summary>
          /// 单号物料抽样记录管理
          /// </summary>
-       public static SampleRecordManager SampleRecordManager
+       public static SampleIqcRecordManager SampleIqcRecordManager
        {
-           get { return OBulider.BuildInstance<SampleRecordManager>(); }
+           get { return OBulider.BuildInstance<SampleIqcRecordManager>(); }
        }
         
         
@@ -34,16 +34,16 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
         /// <summary>
         /// 物料数量抽样规则管理
         /// </summary>
-        public static  SampleRuleTableManger  SamplePlanTableManger
+        public static  SampleRuleTableManger  SampleRuleTableManger
        { 
             get { return OBulider.BuildInstance<SampleRuleTableManger>(); } 
         }
         /// <summary>
         ///  物料抽样项目管理
         /// </summary>
-        public static MaterialSampleItemManager MaterialSampleItemManager
+        public static MaterialSampleItemsManager MaterialSampleItemsManager
         {
-            get { return OBulider.BuildInstance<MaterialSampleItemManager>(); }
+            get { return OBulider.BuildInstance<MaterialSampleItemsManager>(); }
         }
         /// <summary>
         /// 抽样方法法规则管理

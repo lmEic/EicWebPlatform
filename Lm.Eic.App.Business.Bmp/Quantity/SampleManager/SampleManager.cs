@@ -17,20 +17,20 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
     /// <summary>
     /// IQC抽样项目登记表
     /// </summary>
-    public class IQCSampleItemsRecordManager
+    public class SampleItemsIqcRecordManager
     {
-        IIQCSampleItemRecordReposity irep = null;
+        SampleItemsIpqcRecordReposity irep = null;
       
-        public IQCSampleItemsRecordManager ()
+        public SampleItemsIqcRecordManager ()
         {
-            irep = new IQCSampleItemRecordReposity();
+            irep = new SampleItemsIpqcRecordReposity();
         }
         /// <summary>
         /// 判断是否存在
         /// </summary>
         /// <param name="model">数据</param>
         /// <returns></returns>
-        private bool IsExist(IQCSampleItemRecordModel model)
+        private bool IsExist(SampleItemsIqcRecordModel model)
         {
             return irep.Entities.Where(e =>
                 e.OrderID ==model .OrderID 
@@ -44,7 +44,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
         /// </summary>
         /// <param name="listModels"></param>
         /// <returns></returns>
-        public OpResult Store(List<IQCSampleItemRecordModel> listModels)
+        public OpResult Store(List<SampleItemsIqcRecordModel> listModels)
         {
 
             OpResult opResult = OpResult.SetResult("未执行任何操作！", false);
@@ -76,7 +76,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
        /// </summary>
        /// <param name="orderId">订单</param>
        /// <returns></returns>
-        public  List<IQCSampleItemRecordModel> GetSamplePrintItemBy(string orderId)
+        public  List<SampleItemsIqcRecordModel> GetSamplePrintItemBy(string orderId)
         {
             return irep.Entities.Where (e=>e.OrderID ==orderId ).ToList ();
         }
@@ -86,23 +86,23 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
         /// <param name="orderId">ERP单号</param>
         /// <param name="sampleMaterial">物料料号</param>
         /// <returns></returns>
-        public  List<IQCSampleItemRecordModel> GetPringSampleItemBy(string orderId,string sampleMaterial)
+        public  List<SampleItemsIqcRecordModel> GetPringSampleItemBy(string orderId,string sampleMaterial)
         {
 
-            List<IQCSampleItemRecordModel> models = irep.Entities.Where(e => e.OrderID == orderId & e.SampleMaterial == sampleMaterial).ToList();
+            List<SampleItemsIqcRecordModel> models = irep.Entities.Where(e => e.OrderID == orderId & e.SampleMaterial == sampleMaterial).ToList();
             if (models ==null ||models .Count <=0)
             {
                 // 记录测试方法 正常 放宽 加严 
                 string  CheckWay = QuantitySampleService.SampleItermLawManger.GetCheckWayBy(sampleMaterial, "IQC");
-                IQCSampleItemRecordModel model=null;
+                SampleItemsIqcRecordModel model=null;
                 //单子的物料信息
                  var productInfo = GetPuroductSupplierInfo(orderId).Where (e=>e.ProductID ==sampleMaterial).FirstOrDefault();
                 
-                 var SampleItem = QuantitySampleService.MaterialSampleItemManager.GetMaterilalSampleItemBy(productInfo.ProductID);
+                 var SampleItem = QuantitySampleService.MaterialSampleItemsManager.GetMaterilalSampleItemBy(productInfo.ProductID);
                
                  foreach (var f in SampleItem)
                  {
-                     var mm = QuantitySampleService.SamplePlanTableManger.getSampleNumberBy(f.CheckWay, f.CheckLevel, f.Grade, productInfo.ProduceNumber);
+                     var mm = QuantitySampleService.SampleRuleTableManger.getSampleNumberBy(f.CheckWay, f.CheckLevel, f.Grade, productInfo.ProduceNumber);
                      if (f.SampleItem.Contains("盐雾"))
                      {
                          if (!JudgeYwTest(productInfo.ProductID, productInfo.ProduceInDate))
@@ -116,7 +116,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
                          if (JudgeMaterialTwoYearIsRecord(f.SampleMaterial))
                          { continue; }
                      }
-                     model = new IQCSampleItemRecordModel()
+                     model = new SampleItemsIqcRecordModel()
                      {
                          OrderID = productInfo.OrderID,
                          SampleMaterial = productInfo.ProductID,
@@ -148,20 +148,20 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
 
 
 
-        private List<IQCSampleItemRecordModel> GetFQCPritnItem(long Nunmber, string orderId, string oldorderId)
+        private List<SampleItemsIqcRecordModel> GetFQCPritnItem(long Nunmber, string orderId, string oldorderId)
         {
-            List<IQCSampleItemRecordModel> models = irep.Entities.Where(e => e.OrderID == orderId).ToList();
+            List<SampleItemsIqcRecordModel> models = irep.Entities.Where(e => e.OrderID == orderId).ToList();
             if (models == null || models.Count() <= 0)
             {
                 if (oldorderId != "") { oldorderId = "上次检验文号:" + oldorderId; };
                 // 制令单对应一个物料料号
                 var productInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault();
-                var SampleMaterialParmaterS = QuantitySampleService.MaterialSampleItemManager.GetMaterilalSampleItemBy(productInfo.ProductID)
+                var SampleMaterialParmaterS = QuantitySampleService.MaterialSampleItemsManager.GetMaterilalSampleItemBy(productInfo.ProductID)
                                              .Where(e => e.SampleClass.Contains("FQC") & e.MateriaAttribute == "成品");
                 if (SampleMaterialParmaterS == null || SampleMaterialParmaterS.Count() == 0) return null;
                 foreach (var Parmater in SampleMaterialParmaterS)
                 {
-                    var SampleNumber = QuantitySampleService.SamplePlanTableManger.getSampleNumberBy(Parmater.CheckWay, Parmater.CheckLevel, Parmater.Grade, productInfo.ProduceNumber);
+                    var SampleNumber = QuantitySampleService.SampleRuleTableManger.getSampleNumberBy(Parmater.CheckWay, Parmater.CheckLevel, Parmater.Grade, productInfo.ProduceNumber);
                     string ProductName = productInfo.ProductName;
                     if (!(JudgeMaterialTwoYearIsRecord(Parmater.SampleMaterial)))
                     {    //如果第一次检验抽样数理加大一倍
@@ -173,7 +173,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
                         { i = Nunmber; }
                     }
 
-                    IQCSampleItemRecordModel model = new IQCSampleItemRecordModel
+                    SampleItemsIqcRecordModel model = new SampleItemsIqcRecordModel
                     {
                         OrderID = orderId,
                         SampleMaterialName = ProductName,
@@ -237,7 +237,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
         {
             string Myyear = DateTime.Now.Year.ToString() + "-01-01";
             DateTime n = Convert.ToDateTime(Myyear);
-            List<IQCSampleItemRecordModel> nn = irep.Entities.Where(e => e.SampleMaterial == sampleMaterial && e.PrintCount  != 0 & e.SampleMaterialInDate >= n).ToList();
+            List<SampleItemsIqcRecordModel> nn = irep.Entities.Where(e => e.SampleMaterial == sampleMaterial && e.PrintCount  != 0 & e.SampleMaterialInDate >= n).ToList();
             if (nn != null)
                 return nn.Count;
             else return 0;
@@ -282,7 +282,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
         /// <returns></returns>
         public bool JudgeMaterialTwoYearIsRecord(string sampleMaterial)
         {
-            var nn = QuantitySampleService.SampleRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).Where(e => e.InPutDate >= DateTime.Now.AddYears(-2));
+            var nn = QuantitySampleService.SampleIqcRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).Where(e => e.InPutDate >= DateTime.Now.AddYears(-2));
             if (nn != null ||nn.Count ()>0)
                 return true;
             else return false;
@@ -292,7 +292,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
         /// </summary>
         /// <param name="dataSource">数据源</param>
         /// <returns></returns>
-        public  System.IO.MemoryStream   ExportPrintToExcel(List<IQCSampleItemRecordModel> dataSource) 
+        public  System.IO.MemoryStream   ExportPrintToExcel(List<SampleItemsIqcRecordModel> dataSource) 
         {
             try
             {
@@ -745,7 +745,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
         /// <param name="IdNumStartRowIndex"></param>
         /// <param name="rowIndeX"></param>
         /// <param name="model"></param>
-        private void SetMaterialInfoToXlsCell(Excel.Worksheet xlsSheet, int IdNumStartRowIndex, int rowIndeX, IQCSampleItemRecordModel model)
+        private void SetMaterialInfoToXlsCell(Excel.Worksheet xlsSheet, int IdNumStartRowIndex, int rowIndeX, SampleItemsIqcRecordModel model)
         {
             int IdNumStopRowIndex = IdNumStartRowIndex + rowIndeX - 1;
             setValueToXlsCell(xlsSheet, IdNumStartRowIndex, IdNumStopRowIndex, "A", model.SampleItem);
@@ -775,7 +775,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
         /// </summary>
         /// <param name="models"></param>
         /// <param name="xlsSheet"></param>
-        private  void SetExcelTitle(List<IQCSampleItemRecordModel> models, Excel.Worksheet xlsSheet)
+        private  void SetExcelTitle(List<SampleItemsIqcRecordModel> models, Excel.Worksheet xlsSheet)
         {
             xlsSheet.Cells[2, 2] = DateTime.Now.ToString("yyyy-MM-dd");
             xlsSheet.Cells[2, 8] = "品号：" + models[0].SampleMaterial;
@@ -789,7 +789,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
 
         }
 
-        private  void SetExcelTitleTestROHS(List<IQCSampleItemRecordModel> models, Excel.Worksheet xlsSheet)
+        private  void SetExcelTitleTestROHS(List<SampleItemsIqcRecordModel> models, Excel.Worksheet xlsSheet)
         {
             foreach (var m in models)
             {
@@ -819,7 +819,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
         /// 打印数据报表
         /// </summary>
         /// <param name="models">打印数据模块</param>
-        public string PrintSampleModel(List<IQCSampleItemRecordModel> models)
+        public string PrintSampleModel(List<SampleItemsIqcRecordModel> models)
         {
 
             if (models.Count > 0)
@@ -837,7 +837,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
                 int StartIndex = 7;
                 int RowIndex = 0;
                 //递归循环对 每个物料抽样项目 进行数据填充
-                foreach (IQCSampleItemRecordModel model in models)
+                foreach (SampleItemsIqcRecordModel model in models)
                 {
                     if (model.SampleItem.Contains("ROHS"))
                     { continue; }
@@ -916,13 +916,13 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
     /// <summary>
     /// 抽样物料记录管理
     /// </summary>
-    public class SampleRecordManager
+    public class SampleIqcRecordManager
     {
-        IIQCSampleRecordReposity irep = null;
-        public SampleRecordManager()
-        { irep = new IQCSampleRecordReposity (); }
+        ISampleIqcRecordReposity irep = null;
+        public SampleIqcRecordManager()
+        { irep = new SampleIqcRecordReposity (); }
 
-        public List<IQCSampleRecordModel> GetIQCSampleRecordModelsBy(string sampleMaterial)
+        public List<SampleIqcRecordModel> GetIQCSampleRecordModelsBy(string sampleMaterial)
         {
             return irep.Entities.Where(e => e.SampleMaterial == sampleMaterial).ToList();
         }

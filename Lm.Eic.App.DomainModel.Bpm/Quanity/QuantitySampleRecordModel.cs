@@ -11,9 +11,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// IQC物料抽样模块 
     /// 对应表 QCMS_IQCSampleRecordTable
     /// </summary>
-    public class IQCSampleRecordModel
+    public class SampleIqcRecordModel
     {
-      public IQCSampleRecordModel()
+      public SampleIqcRecordModel()
 		{}
 		#region Model
 		private string _orderid;
@@ -185,10 +185,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// IQC物料抽样项目模块（用于记录打印内容）
     /// 对应表 QCMS_IQCPrintSampleTable
     /// </summary>
-    public class IQCSampleItemRecordModel
+    public class SampleItemsIqcRecordModel
     {
 
-        public IQCSampleItemRecordModel()
+        public SampleItemsIqcRecordModel()
 		{}
 		#region Model
 		private string _orderid;
@@ -607,9 +607,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// 设置物料抽测项次
     /// 对应表 QCMS_MaterialSampleSet
     /// </summary>
-    public class  MaterialSampleItemModel
+    public class  MaterialSampleItemsModel
     {
-        public MaterialSampleItemModel ()
+        public MaterialSampleItemsModel ()
         { }
         #region Model
         private string _samplematerial;
@@ -975,7 +975,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
    /// <summary>
    /// IPQC 抽测SPC记录数值
    /// </summary>
-   public class IPQC_SampleItemDataModel
+   public class SampleItemsIpqcDataModel
    {
         public void  IPQC_SamPleItemDataModel()
        {

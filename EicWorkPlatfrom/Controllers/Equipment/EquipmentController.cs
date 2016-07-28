@@ -109,9 +109,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public FileResult ExportToExcel()
         {
-            var ds = QuantitySampleService.IQCSampleItemsRecordManager.GetPringSampleItemBy("591-1607032", "32AAP00001200RM");
+            var ds = QuantitySampleService.SampleItemsIqcRecordManager.GetPringSampleItemBy("591-1607032", "32AAP00001200RM");
 
-            var ms= QuantitySampleService.IQCSampleItemsRecordManager.ExportPrintToExcel(ds);
+            var ms= QuantitySampleService.SampleItemsIqcRecordManager.ExportPrintToExcel(ds);
 
             return this.ExportToExcel(ms, "aaa", "AAA");
         }

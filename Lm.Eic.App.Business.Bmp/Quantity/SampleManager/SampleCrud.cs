@@ -18,15 +18,15 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
     /// </summary>
     public class SampleRecordManager
     {
-        IIQCSampleRecordReposity irep = null;
+        ISampleIqcRecordReposity irep = null;
         public SampleRecordManager()
-        { irep = new IQCSampleRecordReposity(); }
+        { irep = new SampleIqcRecordReposity(); }
          /// <summary>
          /// 
          /// </summary>
          /// <param name="sampleMaterial">物料品号</param>
          /// <returns></returns>
-        public List<IQCSampleRecordModel> GetIQCSampleRecordModelsBy(string sampleMaterial)
+        public List<SampleIqcRecordModel> GetIQCSampleRecordModelsBy(string sampleMaterial)
         {
             return irep.Entities.Where(e => e.SampleMaterial == sampleMaterial).ToList();
         }

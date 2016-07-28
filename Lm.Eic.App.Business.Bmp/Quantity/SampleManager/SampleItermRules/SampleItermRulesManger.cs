@@ -53,7 +53,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
             int CAI = Paramter["CAI"].ToInt ();
             string OldCheckWay = string.Empty ;
 
-            var SampleRecord = QuantitySampleService.SampleRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).OrderByDescending (e=>e.Id_key);
+            var SampleRecord = QuantitySampleService.SampleIqcRecordManager.GetIQCSampleRecordModelsBy(sampleMaterial).OrderByDescending (e=>e.Id_key);
             var chekWay = from r in SampleRecord.Take(1)
                           select r.CheckWay;
             foreach (var r in chekWay)
@@ -213,19 +213,19 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManger
    /// <summary>
    /// 物料抽样项目
    /// </summary>
-    public class MaterialSampleItemManager
+    public class MaterialSampleItemsManager
     {
-        IMaterialSampleItemReposity irep = null;
-        public MaterialSampleItemManager()
+        IMaterialSampleItemsReposity irep = null;
+        public MaterialSampleItemsManager()
         {
-            irep = new MaterialSampleItemReposity();
+            irep = new MaterialSampleItemsReposity();
         }
         /// <summary>
         ///   由料号得到抽样项次
         /// </summary>
         /// <param name="sampleMaterial">料号</param>
         /// <returns></returns>
-        public List<MaterialSampleItemModel> GetMaterilalSampleItemBy(string sampleMaterial)
+        public List<MaterialSampleItemsModel> GetMaterilalSampleItemBy(string sampleMaterial)
         {
             return irep.Entities.Where(e => e.SampleMaterial == sampleMaterial || e.SampleMaterial == "ToAllMaterial").OrderByDescending(e => e.PriorityLevel).ToList();
         }

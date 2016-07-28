@@ -19,11 +19,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
       /// <summary>
       /// IQC抽样记录信息
       /// </summary>
-      public DbSet<IQCSampleRecordModel> IQCSampleRecord { set; get; }
+      public DbSet<SampleIqcRecordModel> IQCSampleRecord { set; get; }
       /// <summary>
       ///  IQC抽样项次打印记录信息
       /// </summary>
-      public DbSet<IQCSampleItemRecordModel> IQCSamplePrintItemRecord { set; get; }
+      public DbSet<SampleItemsIqcRecordModel> IQCSamplePrintItemRecord { set; get; }
       /// <summary>
       ///  抽样不合格记录信息
       /// </summary>
@@ -31,7 +31,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
       /// <summary>
       /// 抽样物料项目设置信息
       /// </summary>
-      public DbSet<MaterialSampleItemModel> MaterialSampleItem { set; get; }
+      public DbSet<MaterialSampleItemsModel> MaterialSampleItem { set; get; }
       /// <summary>
       /// 物料抽样规则表
       /// </summary>
@@ -40,7 +40,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
       /// / 抽样放宽加严限制控制
       /// </summary>
       public DbSet<SampleWayLawModel> SampleWayLaw { set; get; }
-      public DbSet<IPQC_SampleItemDataModel> IPQC_SampleItemData { set; get; }
+      /// <summary>
+      /// Ipqc
+      /// </summary>
+      public DbSet<SampleItemsIpqcDataModel> IPQC_SampleItemData { set; get; }
       #endregion
       #endregion
       protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -52,7 +55,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
           modelBuilder.Configurations.Add(new MaterialSampleItemMapping());
           modelBuilder.Configurations.Add(new SampleRuleTableMapping());
           modelBuilder.Configurations.Add(new SampleWayLawMapping());
-          modelBuilder.Configurations.Add(new IPQC_SampleItemDataMapping());
+          modelBuilder.Configurations.Add(new SampleItemsIpqcDataMapping());
 
       }
    
