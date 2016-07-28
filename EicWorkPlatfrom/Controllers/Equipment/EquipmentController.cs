@@ -108,7 +108,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         public ContentResult GetAstCheckListByPlanDate(DateTime planDate)
         {
-            var datas = 0;
+            var datas = AstService.EquipmentManager.CheckManager.GetWithoutCheckEquipment(planDate);
 
             return DateJsonResult(datas);
         }
@@ -134,9 +134,7 @@ namespace EicWorkPlatfrom.Controllers
 
             return DateJsonResult(datas);
         }
-        
         #endregion
-
 
         [NoAuthenCheck]
         public FileResult ExportToExcel()

@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using CrudFactory = Lm.Eic.App.Business.Bmp.Ast.EquipmentCrudFactory;
+
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
@@ -19,6 +21,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
        /// <returns></returns>
         public List<EquipmentModel> GetWithoutCheckEquipment(DateTime dateTime)
         {
+            //todo:
             try
             {
                 equipmentWithoutCheckList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { InputDate = dateTime, SearchMode = 4 });
@@ -58,8 +61,5 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return CrudFactory.EquipmentCheckCrud.Store(model);
         }
-
     }
-
-
 }
