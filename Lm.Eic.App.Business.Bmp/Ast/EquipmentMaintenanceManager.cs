@@ -43,15 +43,15 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
 
        /// <summary>
-        /// 依每个部门保养列表
+        /// 得到各部门保养列表
        /// </summary>
         /// <param name="waitingMaintenanceList">需要保养列表</param>
        /// <returns></returns>
  
        private Dictionary <string ,List<EquipmentModel>>GetDicGroupList(List<EquipmentModel>waitingMaintenanceList )
         {
-            Dictionary<string, List<EquipmentModel>> dicTem = new Dictionary<string, List<EquipmentModel>>();
-            if (waitingMaintenanceList == null || waitingMaintenanceList.Count <= 0) return dicTem;
+            Dictionary<string, List<EquipmentModel>> dicDepartmentList = new Dictionary<string, List<EquipmentModel>>();
+            if (waitingMaintenanceList == null || waitingMaintenanceList.Count <= 0) return dicDepartmentList;
             List<string> DepartmentList = new List<string>();
            waitingMaintenanceList.ForEach(e =>
            {
@@ -61,9 +61,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
            foreach (string Department in DepartmentList)
            {
                var trm= waitingMaintenanceList.FindAll (e=>e.SafekeepDepartment ==Department) ;
-               dicTem.Add(Department, trm);
+               dicDepartmentList.Add(Department, trm);
            }
-            return dicTem;
+            return dicDepartmentList;
         }
         /// <summary>
         /// 查询 1.依据财产编号查询 
