@@ -212,15 +212,27 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                 uiVM.AssetNumber = data;
             });
         },
-        getWorkerInfo: function () {
-            $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(vmManager.workerId).then(function (datas) {
-                vmManager.searchedWorkers = leeHelper.getWorkersAboutChangedDepartment(datas, vmManager.departments);
-            });
+        isSingle: true,//是否搜寻到的是单个人
+        getWorkerInfo: function ($event) {
+            if ($event.keyCode === 13)
+            {
+                $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.SafekeepUser).then(function (datas) {
+                    vmManager.searchedWorkers = leeHelper.getWorkersAboutChangedDepartment(datas, vmManager.departments);
+                    if (vmManager.searchedWorkers.length ===1) {
+                        vmManager.isSingle = true;
+                        vmManager.selectWorker(vmManager.searchedWorkers[0]);
+                    }
+                    else {
+                        vmManager.isSingle = false;
+                    }
+                });
+            }
         },
         selectWorker: function (worker)
         {
             uiVM.SafekeepUser = worker.Name;
             uiVM.SafekeepWorkerID = worker.WorkerId;
+            uiVM.SafekeepDepartment = worker.Department;
         },
         selectEquipment: function (item) {
             vmManager.canEdit = true;
