@@ -11,6 +11,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
     [TestClass()]
     public class EquipmentMaintenanceManagerTests
     {
+        [TestMethod]
+        public void AutoTest()
+        {
+            GetWaitingMaintenanceListByTest();
+            BuildWaitingMaintenanceListTest();
+        }
+
         [TestMethod()]
         public void GetWaitingMaintenanceListByTest()
         {
@@ -23,7 +30,20 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         [TestMethod()]
         public void BuildWaitingMaintenanceListTest()
         {
+            var tem = AstService.EquipmentManager.MaintenanceManager.BuildWaitingMaintenanceList();
+
+
+            #region 输出到Excel
+            string path = @"E:\\IQC.xls";
+            using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+            {
+                byte[] bArr = tem.ToArray();
+                fs.Write(bArr, 0, bArr.Length);
+                fs.Flush();
+            }
+            #endregion
             Assert.Fail();
+          
         }
 
         [TestMethod()]
