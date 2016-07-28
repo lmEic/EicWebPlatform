@@ -17,10 +17,11 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="plannedMaintenanceMonth">计划保养月</param>
         /// <returns></returns>
-        public List<EquipmentModel> GetWaitingMaintenanceListBy(string plannedMaintenanceMonth)
+        public List<EquipmentModel> GetWaitingMaintenanceListBy(string  plannedMaintenanceMonth)
         {
             try
             {
+                
                 _waitingMaintenanceList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { PlannedMaintenanceMonth = plannedMaintenanceMonth, SearchMode = 5 });
                 return _waitingMaintenanceList;
             }
@@ -37,9 +38,33 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public MemoryStream BuildWaitingMaintenanceList()
         {
-            return NPOIHelper.ExportToExcel(_waitingMaintenanceList, "待保养设备列表");
+            return NPOIHelper.ExportToExcelMultiSheets(GetDicGroupList(_waitingMaintenanceList));
+            //return NPOIHelper.ExportToExcel(_waitingMaintenanceList, "待保养设备列表");
         }
 
+       /// <summary>
+        /// 依每个部门保养列表
+       /// </summary>
+        /// <param name="waitingMaintenanceList">需要保养列表</param>
+       /// <returns></returns>
+ 
+       private Dictionary <string ,List<EquipmentModel>>GetDicGroupList(List<EquipmentModel>waitingMaintenanceList )
+        {
+            Dictionary<string, List<EquipmentModel>> dicTem = new Dictionary<string, List<EquipmentModel>>();
+            if (waitingMaintenanceList == null || waitingMaintenanceList.Count <= 0) return dicTem;
+            List<string> DepartmentList = new List<string>();
+           waitingMaintenanceList.ForEach(e =>
+           {
+               if (!DepartmentList.Contains(e.SafekeepDepartment))
+               { DepartmentList.Add(e.SafekeepDepartment); }
+           });
+           foreach (string Department in DepartmentList)
+           {
+               var trm= waitingMaintenanceList.FindAll (e=>e.SafekeepDepartment ==Department) ;
+               dicTem.Add(Department, trm);
+           }
+            return dicTem;
+        }
         /// <summary>
         /// 查询 1.依据财产编号查询 
         /// </summary>

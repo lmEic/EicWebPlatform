@@ -39,13 +39,36 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public MemoryStream BuildWaitingCheckList()
         {
-            return NPOIHelper.ExportToExcel(_waitingCheckList, "待校验设备列表");
+            
+            Dictionary<string, List<EquipmentModel>> DicDataSources = new Dictionary<string, List<EquipmentModel>>();
+            DicDataSources.Add("待校验设备列表", GetInLimitedDateWaitingCheckListRules(_waitingCheckList));
+            DicDataSources.Add("超期待校验列表", GetOutdatedWaitingCheckListRules(_waitingCheckList));
+            return NPOIHelper.ExportToExcelMultiSheets(DicDataSources);
+           
+            //return NPOIHelper.ExportToExcel(_waitingCheckList, "待校验设备列表");
         }
-
-        public List<EquipmentModel> getWithoutCheckList(List<EquipmentModel> models)
+        
+      
+        /// <summary>
+        /// 得到校验已超期列表
+        /// </summary>
+        /// <param name="models"></param>
+        /// <returns></returns>
+        private List<EquipmentModel> GetOutdatedWaitingCheckListRules(List<EquipmentModel> waitingChecklist)
         {
             DateTime NowDate= DateTime .Now .Date.ToDate() ;
-            return models.FindAll(e => e.PlannedCheckDate <= NowDate);
+            return waitingChecklist.FindAll(e => e.PlannedCheckDate <= NowDate);
+        }
+
+        /// <summary>
+        /// 得到需校验没超期列表
+        /// </summary>
+        /// <param name="models"></param>
+        /// <returns></returns>
+        private List<EquipmentModel> GetInLimitedDateWaitingCheckListRules(List<EquipmentModel> waitingChecklist)
+        {
+            DateTime NowDate = DateTime.Now.Date.ToDate();
+            return _waitingCheckList.FindAll(e => e.PlannedCheckDate > NowDate);
         }
         /// <summary>
         /// 查询 1.依据财产编号查询 
