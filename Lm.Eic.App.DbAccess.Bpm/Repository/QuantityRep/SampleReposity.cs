@@ -9,19 +9,19 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 namespace Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep
 {
-    public interface IIQCSampleRecordReposity : IRepository<IQCSampleRecordModel> { }
+    public interface ISampleIqcRecordReposity : IRepository<SampleIqcRecordModel> { }
     /// <summary>
     ///  IQC物料抽样模块存储 
     /// </summary>
-    public class IQCSampleRecordReposity : QuantityRepositoryBase<IQCSampleRecordModel>, IIQCSampleRecordReposity
+    public class SampleIqcRecordReposity : QuantityRepositoryBase<SampleIqcRecordModel>, ISampleIqcRecordReposity
     { }
 
 
-    public interface IIQCSampleItemRecordReposity : IRepository<IQCSampleItemRecordModel> { }
+    public interface ISampleItemsIpqcRecordReposity : IRepository<SampleItemsIqcRecordModel> { }
     /// <summary>
     ///  IQC物料抽项目存储 
     /// </summary>
-    public class IQCSampleItemRecordReposity : QuantityRepositoryBase<IQCSampleItemRecordModel>, IIQCSampleItemRecordReposity
+    public class SampleItemsIpqcRecordReposity : QuantityRepositoryBase<SampleItemsIqcRecordModel>, ISampleItemsIpqcRecordReposity
     { }
 
 
@@ -33,11 +33,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep
     { }
 
 
-    public interface IMaterialSampleItemReposity : IRepository<MaterialSampleItemModel> { }
+    public interface IMaterialSampleItemsReposity : IRepository<MaterialSampleItemsModel> { }
     /// <summary>
     ///  物抽测项目模块存储 
     /// </summary>
-    public class MaterialSampleItemReposity : QuantityRepositoryBase<MaterialSampleItemModel>, IMaterialSampleItemReposity
+    public class MaterialSampleItemsReposity : QuantityRepositoryBase<MaterialSampleItemsModel>, IMaterialSampleItemsReposity
     { }
 
     public interface ISampleRuleTableReposity : IRepository<SampleRuleTableModel> { }
@@ -54,4 +54,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep
      /// </summary>
     public class SampleWayLawReosity : QuantityRepositoryBase<SampleWayLawModel>, ISampleWayLawReosity
     { }
+    /// <summary>
+    /// ipqc 抽测
+    /// </summary>
+    public interface ISampleItemsIpqcDataReosity:IRepository <SampleItemsIpqcDataModel>{};
+    public class  SampleItemsIpqcDataReosity:  QuantityRepositoryBase<SampleItemsIpqcDataModel>,ISampleItemsIpqcDataReosity
+    { }
+                                        
 }

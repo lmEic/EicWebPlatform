@@ -16,7 +16,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
     /// <summary>
     /// 抽样记录
     /// </summary>
-    public class IQCSampleRecordMapping : EntityTypeConfiguration<IQCSampleRecordModel>
+    public class IQCSampleRecordMapping : EntityTypeConfiguration<SampleIqcRecordModel>
     {
        public  IQCSampleRecordMapping()
        {
@@ -30,7 +30,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
     /// <summary>
     /// IQC抽样项次记录
     /// </summary>
-    public class IQCSampleItemsRecordMapping : EntityTypeConfiguration<IQCSampleItemRecordModel>
+    public class IQCSampleItemsRecordMapping : EntityTypeConfiguration<SampleItemsIqcRecordModel>
     {
         public IQCSampleItemsRecordMapping()
         {
@@ -58,7 +58,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
     /// <summary>
     /// 物料抽测项次
     /// </summary>
-    public class MaterialSampleItemMapping : EntityTypeConfiguration<MaterialSampleItemModel>
+    public class MaterialSampleItemMapping : EntityTypeConfiguration<MaterialSampleItemsModel>
     {
         public MaterialSampleItemMapping()
         {
@@ -96,4 +96,15 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
         }                            
    }
 #endregion
+
+    public class  SampleItemsIpqcDataMapping:EntityTypeConfiguration <SampleItemsIpqcDataModel>
+    {
+        public SampleItemsIpqcDataMapping ()
+        {
+            this.HasKey(e => e.Id_key);
+            this.Property(e => e.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("IPQC_SampleItemData");
+
+        }
+    }
 }

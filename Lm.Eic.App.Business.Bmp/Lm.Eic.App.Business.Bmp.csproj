@@ -74,17 +74,18 @@
     <Compile Include="Hrm\Attendance\AttendanceService.cs" />
     <Compile Include="Hrm\Attendance\AttendClassTypeSetter.cs" />
     <Compile Include="Hrm\Attendance\AttendSlodPrintManager.cs" />
-    <Compile Include="ProduceReport\ReportInformationCollect.cs" />
+    <Compile Include="ProduceDailyReport\DailyReportCollectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchase\PurchaseManager.cs" />
     <Compile Include="Purchase\PurchaseService.cs" />
     <Compile Include="Purchase\RequisitionManager.cs" />
     <Compile Include="Purchase\StockManager.cs" />
-    <Compile Include="Quantity\SampleManager\IPQCSampleManager\IPQCSampleItems.cs" />
+    <Compile Include="Quantity\SampleManager\IPQCSample\IPQCSampleItems..cs" />
     <Compile Include="Quantity\SampleManager\QuantitySampleService.cs" />
-    <Compile Include="Quantity\SampleManager\SampleItermLaw\SampleItermRulesManger.cs" />
+    <Compile Include="Quantity\SampleManager\SampleCrud.cs" />
+    <Compile Include="Quantity\SampleManager\SampleItermRules\SampleItermRulesManger.cs" />
     <Compile Include="Quantity\SampleManager\SampleManager.cs" />
-    <Compile Include="Quantity\Supper8DManager\Supper8DManager.cs" />
+    <Compile Include="Quantity\SupperManager\SupperManager.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
