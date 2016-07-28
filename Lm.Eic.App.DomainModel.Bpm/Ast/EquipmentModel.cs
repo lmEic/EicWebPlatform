@@ -254,6 +254,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _plannedmaintenancedate = value; }
             get { return _plannedmaintenancedate; }
         }
+        private string _plannedMaintenanceMonth;
+        /// <summary>
+        ///计划保养月份
+        /// </summary>
+        public string PlannedMaintenanceMonth
+        {
+            set { _plannedMaintenanceMonth = value; }
+            get { return _plannedMaintenanceMonth; }
+        }
         private string _maintenancestate;
         /// <summary>
         ///保养状态

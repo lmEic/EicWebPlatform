@@ -17,11 +17,11 @@ namespace Lm.Eic.App.Business.Bmp.Ast
        /// </summary>
        /// <param name="dateTime"></param>
        /// <returns></returns>
-        public List<EquipmentModel> GetWithoutCheckEquipment(DateTime dateTime)
+        public List<EquipmentModel> GetWithoutCheckEquipmentListBy(DateTime plannedCheckDate)
         {
             try
             {
-                equipmentWithoutCheckList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { InputDate = dateTime, SearchMode = 4 });
+                equipmentWithoutCheckList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { PlannedCheckDate = plannedCheckDate, SearchMode = 4 });
                 return equipmentWithoutCheckList;
             }
             catch (Exception ex)

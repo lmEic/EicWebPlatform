@@ -82,22 +82,20 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                         return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();
 
                     case 3: //依据录入日期查询
-                        DateTime qryDate = qryDto.InputDate.ToDate();
-                        return irep.FindAll<EquipmentModel>(m => m.InputDate == qryDate).ToList();
+                        DateTime inputDate = qryDto.InputDate.ToDate();
+                        return irep.FindAll<EquipmentModel>(m => m.InputDate == inputDate).ToList();
 
                     case 4: //依据录入日期查询待校验设备  //结束日期=输入日期加一个月 超期设备等于 计划日期<=当天日期
-                        DateTime startDateTime = qryDto.InputDate.ToDate(),
-                                 endDateTime = startDateTime.AddMonths(1);
+                        DateTime startPlannedDate = qryDto.PlannedCheckDate.ToDate(),
+                                 endPlannedDate = startPlannedDate.AddMonths(1),
+                                 nowDate = DateTime.Now.ToDate();
 
-                        return irep.FindAll<EquipmentModel>(m => (m.IsCheck=="校验" && m.PlannedCheckDate >= startDateTime && m.PlannedCheckDate <= endDateTime) 
-                        ||(m.IsCheck=="校验"&& m.PlannedCheckDate <= DateTime.Now.ToDate())).ToList();
+                        return irep.FindAll<EquipmentModel>(m => (m.IsCheck=="校验" && m.PlannedCheckDate >= startPlannedDate && m.PlannedCheckDate <= endPlannedDate) 
+                        ||(m.IsCheck=="校验"&& m.PlannedCheckDate <= nowDate)).ToList();
 
-                    case 5: //依据录入日期查询待保养设备  //结束日期=输入日期加一个月 超期设备等于 计划日期<=当天日期
-                        DateTime MaintenanceStartDateTime = qryDto.InputDate.ToDate(),
-                                MaintenanceEndDateTime = MaintenanceStartDateTime.AddMonths(1);
-
-                        return irep.FindAll<EquipmentModel>(m => (m.IsMaintenance=="保养" && m.PlannedMaintenanceDate >= MaintenanceStartDateTime  && m.PlannedMaintenanceDate <= MaintenanceEndDateTime) 
-                        || (m.IsMaintenance == "校验" && m.PlannedMaintenanceDate <= DateTime.Now.ToDate())).ToList();
+                    case 5: //依据录入日期查询待保养设备  //按计划保养月查询待保养待设备列表
+                        return irep.FindAll<EquipmentModel>(m => m.IsMaintenance == "保养" && m.PlannedMaintenanceMonth == qryDto.PlannedMaintenanceMonth).ToList();
+                        
                     default: return null;
                 }
             }
@@ -269,6 +267,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             {
                 model.MaintenanceDate = model.MaintenanceDate.ToDate();
                 model.PlannedMaintenanceDate = model.MaintenanceDate.AddMonths(model.MaintenanceInterval);
+                model.PlannedMaintenanceMonth = model.PlannedMaintenanceDate.ToString("yyyy-MM");
                 model.MaintenanceState = model.PlannedMaintenanceDate > DateTime.Now ? "在期" : "超期";
             }
             else
@@ -484,6 +483,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
             equipment.MaintenanceDate = model.MaintenanceDate;
             equipment.PlannedMaintenanceDate = model.MaintenanceDate.AddMonths(equipment.CheckInterval);
+            equipment.PlannedMaintenanceMonth = equipment.PlannedMaintenanceDate.ToString("yyyy-MM");
             equipment.OpSign = OpMode.Edit;
             return OpResult.SetResult("更新设备保养日期成功！", "更新设备保养日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
         }
