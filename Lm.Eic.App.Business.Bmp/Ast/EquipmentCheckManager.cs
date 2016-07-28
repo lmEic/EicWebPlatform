@@ -17,11 +17,11 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <summary>
         /// 获取待校验设备列表
         /// </summary>
-        /// <param name="plannedCheckDate">计划校验日期</param>
+        /// <param name="plannedCheckDate">计划校验日期</param>  
         /// <returns></returns>
         public List<EquipmentModel> GetWaitingCheckListBy(DateTime plannedCheckDate)
         {
-            //todo:
+            //todo:  dd
             try
             {
                 _waitingCheckList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { PlannedCheckDate = plannedCheckDate, SearchMode = 4 });
