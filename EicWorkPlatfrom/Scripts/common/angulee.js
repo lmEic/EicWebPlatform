@@ -201,6 +201,11 @@ var leeHelper = (function () {
                 }
             })
             return workerDatas;
+        },
+        ///判断是否是中文
+        checkIsChineseValue: function (val) {
+            var reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
+            return reg.test(val)
         }
     };
 })();

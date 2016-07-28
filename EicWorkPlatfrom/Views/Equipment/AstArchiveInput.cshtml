@@ -4,7 +4,7 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="well">
-                            <form role="form" name="formEquipment" novalidate class="form-horizontal">
+                            <form role="form" name="formEquipment" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                                 <fieldset>
                                     <legend>基本信息</legend>
                                     <div class="form-group">
@@ -130,7 +130,6 @@
                                                     <label class="label label-primary">年</label>
                                                 </div>
                                             </div>
-
                                         </div>
                                         <label for="manufacturer" class="col-md-2 control-label">生产厂家</label>
                                         <div class="col-md-4">
@@ -142,6 +141,37 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="safekeepUser" class="col-md-2 control-label">保管人</label>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <input name="safekeepUser" class="form-control" ng-change="vmManager.getWorkerInfo()" placeholder="输工号或姓名按回车键" ng-model="vm.SafekeepUser" required />
+                                                <div class="error-messages" ng-messages="formEquipment.safekeepUser.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">保管人不能为空</small>
+                                                </div>
+                                                <div class="input-group-addon" ng-show="vmManager.isSingle">
+                                                    <label class="label label-primary"> <i class="fa fa-user"></i> {{vm.SafekeepUser}}</label>
+                                                </div>
+                                                <div class="input-group-btn" ng-hide="vmManager.isSingle">
+                                                    <button type="button" class="btn btn-primary"
+                                                            data-animation="am-flip-x"
+                                                            bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                                        <span class="fa fa-chevron-circle-down"></span>
+                                                    </button>
+                                                    <div class="dropdown-menu" role="menu">
+                                                        <ul class="list-group">
+                                                            <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker)"
+                                                                ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                                <i class="fa fa-user"></i>
+                                                                <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
+                                                                <span>姓名：{{worker.Name}}</span>|
+                                                                <span>部门：{{worker.Department}}</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <label for="safekeepDepartment" class="col-md-2 control-label">保管单位</label>
                                         <div class="col-md-4">
                                             <div class="input-group">
@@ -149,7 +179,7 @@
                                                 <div class="error-messages" ng-messages="formEquipment.safekeepDepartment.$error" ng-show="operate.showValidation">
                                                     <small ng-message="required">保管单位不能为空</small>
                                                 </div>
-                                                <div class="input-group-btn">
+                                                @*<div class="input-group-btn">
                                                     <button class="btn btn-primary" style="margin-bottom:6px;" id="departmentPopover"
                                                             data-title="选择部门名称"
                                                             data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
@@ -158,25 +188,7 @@
                                                             data-bs-popover>
                                                         <i class="fa fa-sitemap"></i>
                                                     </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <label for="safekeepUser" class="col-md-2 control-label">保管人</label>
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <input name="safekeepUser" class="form-control" readonly ng-model="vm.SafekeepUser" required />
-                                                <div class="error-messages" ng-messages="formEquipment.safekeepUser.$error" ng-show="operate.showValidation">
-                                                    <small ng-message="required">保管人不能为空</small>
-                                                </div>
-                                                <div class="input-group-btn">
-                                                    <button class="btn btn-primary" style="margin-bottom:6px;"
-                                                            data-title="选择人员信息"
-                                                            data-template-url="@Url.Action("WorkerSelectTpl", "CommonTpl")"
-                                                            data-animation="am-flip-x" data-auto-close="1"
-                                                            data-bs-popover>
-                                                        <i class="fa fa-users"></i>
-                                                    </button>
-                                                </div>
+                                                </div>*@
                                             </div>
                                         </div>
                                     </div>
@@ -215,7 +227,6 @@
                                                     <label class="label label-primary">月</label>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -258,23 +269,22 @@
 
                                         </div>
                                     </div>
-                                </fieldset>
+                                    <div class="alert alert-info">
+                                        <div class="row">
+                                            <div class="col-md-2">
 
-                                <div class="alert alert-info">
-                                    <div class="row">
-                                        <div class="col-md-2">
-
-                                        </div>
-                                        <div class="col-md-10">
-                                            <button class="btn btn-primary " ng-click="operate.saveAll(formEquipment.$valid)"><i class="fa fa-save"></i>保存</button>
-                                            <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
-                                            <span ng-class="operate.result==true ? 'alert alert-success':'alert alert-danger'" ng-show="operate.msgDisplay">
-                                                <i class="fa fa-info-circle"></i>
-                                                {{operate.message}}
-                                            </span>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <button class="btn btn-primary" ng-click="operate.saveAll(formEquipment.$valid)"><i class="fa fa-save"></i>保存</button>
+                                                <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                                <span ng-class="operate.result==true ? 'alert alert-success':'alert alert-danger'" ng-show="operate.msgDisplay">
+                                                    <i class="fa fa-info-circle"></i>
+                                                    {{operate.message}}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </fieldset>
                             </form>
                         </div>
                     </div>

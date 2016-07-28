@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.Framework.ProductMaster.Model;
+using Lm.Eic.Framework.ProductMaster.Model.ITIL;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Data.Entity;
@@ -16,11 +17,15 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
 
         public DbSet<ConfigFilePathModel> ConfigFilePathInfo { get; set; }
 
+        public DbSet<ItilDevelopModuleManageModel> ConfigFilePathInfo { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Configurations.Add(new ConfigDataDictionaryModelMapping());
             modelBuilder.Configurations.Add(new ConfigFilePathModelMapping());
+
+            modelBuilder.Configurations.Add(new ItilDevelopModuleManageModelMapping());
         }
     }
 
