@@ -61,5 +61,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return CrudFactory.EquipmentCheckCrud.Store(model);
         }
+
+      
     }
 }
