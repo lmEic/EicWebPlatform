@@ -39,6 +39,25 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { if (inputDate != value) { inputDate = value; } }
         }
 
+         DateTime _plannedcheckdate;
+        /// <summary>
+        ///计划校验日期
+        /// </summary>
+        public DateTime PlannedCheckDate
+        {
+            get { return _plannedcheckdate; }
+            set { if (_plannedcheckdate != value) { _plannedcheckdate = value; } }
+        }
+
+        private string _plannedMaintenanceMonth;
+        /// <summary>
+        ///计划保养月份
+        /// </summary>
+        public string PlannedMaintenanceMonth
+        {
+            get { return _plannedMaintenanceMonth; }
+            set { if (_plannedMaintenanceMonth != value) { _plannedMaintenanceMonth = value; } }
+        }
         private int searchMode = 0;
         /// <summary>
         /// 搜索模式
