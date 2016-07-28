@@ -38,7 +38,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
                 byte[] bArr = tem.ToArray();
                 fs.Write(bArr, 0, bArr.Length);
                 fs.Flush();
-
             }
             #endregion
             Assert.Fail();
