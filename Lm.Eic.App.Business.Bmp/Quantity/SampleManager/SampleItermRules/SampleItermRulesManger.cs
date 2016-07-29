@@ -109,7 +109,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
         }
 
          /// <summary>
-         /// 
+         ///  通类型 IQC IPQC  FQC  获取卡值
          /// </summary>
          /// <param name="theClass"> 类别IQC/IPQC/FQC</param>
          /// <returns></returns>

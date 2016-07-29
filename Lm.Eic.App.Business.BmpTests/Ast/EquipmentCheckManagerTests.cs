@@ -55,13 +55,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         [TestMethod()]
         public void StoreTest()
         {
-            EquipmentCheckModel model = new EquipmentCheckModel();
-            model.AssetNumber = "I169001";
-            model.CheckDate = DateTime.Now.ToDate();
-            model.CheckResult = "";
-            model.OpSign = "add";
-           var tem = AstService.EquipmentManager.CheckManager.Store(model);
-            if (!tem.Result) { Assert.Fail(); }
+           // EquipmentCheckModel model = new EquipmentCheckModel();
+           // model.AssetNumber = "I169001";
+           // model.CheckDate = DateTime.Now.ToDate();
+           // model.CheckResult = "";
+           // model.OpSign = "add";
+           //var tem = AstService.EquipmentManager.CheckManager.Store(model);
+           // if (!tem.Result) { Assert.Fail(); }
            
         }
     }

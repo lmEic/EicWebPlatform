@@ -2,6 +2,7 @@
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.IO;
 using CrudFactory = Lm.Eic.App.Business.Bmp.Ast.EquipmentCrudFactory;
@@ -77,6 +78,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
             return dicWaitingMaintenaceSheets;
         }
+
+
+
 
         /// <summary>
         /// 查询 1.依据财产编号查询 
