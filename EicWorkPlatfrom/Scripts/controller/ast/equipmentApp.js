@@ -215,7 +215,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         isSingle: true,//是否搜寻到的是单个人
         getWorkerInfo: function () {
             if (uiVM.SafekeepUser === undefined) return;
-
             var strLen = leeHelper.checkIsChineseValue(uiVM.SafekeepUser) ? 2 : 6;
             if (uiVM.SafekeepUser.length >= strLen)
             {
@@ -245,7 +244,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                 uiVM.SafekeepDepartment = worker.Department;
             }
             else {
-                uiVM.SafekeepUser = null;
                 uiVM.SafekeepWorkerID = null;
                 uiVM.SafekeepDepartment = null;
             }
