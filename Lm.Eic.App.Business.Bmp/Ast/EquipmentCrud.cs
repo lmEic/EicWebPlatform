@@ -337,6 +337,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public OpResult Store(EquipmentCheckModel model)
         {
+            model.OpDate = DateTime.Now.ToDate();
+            model.OpTime = DateTime.Now;
             string opContext = "设备校验";
             OpResult opResult = OpResult.SetResult("未执行任何操作！", false);
             try
@@ -381,7 +383,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 return OpResult.SetResult("未找到校验单上的设备\r\n请确定财产编号是否正确！", false);
 
             equipment.CheckDate = model.CheckDate;
-            equipment.PlannedCheckDate = model.CheckDate.AddMonths(equipment.CheckInterval);
             equipment.OpSign = OpMode.Edit;
             return OpResult.SetResult("更新设备校验日期成功！", "更新设备校验日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
         }
@@ -441,12 +442,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public OpResult Store(EquipmentMaintenanceModel model)
         {
+            model.OpDate = DateTime.Now.ToDate();
+            model.OpTime = DateTime.Now;
             string opContext = "设备保养";
             OpResult opResult = OpResult.SetResult("未执行任何操作！", false);
             try
             {
-                opResult = SetEquipmentMaintenanceDateRule(model);
-                if (!opResult.Result) { return opResult; }
+               // opResult = SetEquipmentMaintenanceDateRule(model);
+               // if (!opResult.Result) { return opResult; }
 
                 switch (model.OpSign)
                 {
