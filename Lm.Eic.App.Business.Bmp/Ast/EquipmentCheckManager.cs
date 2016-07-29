@@ -87,7 +87,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult EquipmentCheckStore(EquipmentCheckModel model)
+        public OpResult Store(EquipmentCheckModel model)
         {
             return CrudFactory.EquipmentCheckCrud.Store(model);
         }
