@@ -255,7 +255,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             '<div class="page-total" ng-show="config.totalItems > 0">' +
             //'第<input type="text" ng-model="jumpPageNum"  ng-keyup="jumpToPage($event)"/>页 ' +
             //'每页<select ng-model="config.itemsPerPage" ng-options="option for option in config.perPageOptions " ng-change="changeItemsPerPage()"></select>' +
-            '<button class="btn btn-info" type="button">总记录数：<span class="badge">{{ config.totalItems }}</span>' +
+            '<button class="btn btn-sm btn-info" type="button">总记录数：<span class="badge">{{ config.totalItems }}</span>' +
             '</button></div>' +
             '</div>',
         replace: true,
