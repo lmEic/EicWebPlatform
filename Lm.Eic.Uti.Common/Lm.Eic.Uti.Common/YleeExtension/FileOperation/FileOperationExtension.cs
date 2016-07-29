@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Data;
 
 namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
 {
@@ -306,6 +307,41 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             return dicGroupingEntity;
         }
 
+
+        /// <summary>
+        ///  数据按字典返回数据表
+        /// </summary>
+        /// <typeparam name="T">实体</typeparam>
+        /// <param name="dicChineseEnglish">中英对照字典</param>
+        /// <returns></returns>
+        public static DataTable GetDataTable<T>(List<T> EntityList, Dictionary<string, string> dicEnglishChinese) where T : class
+        {
+            DataTable myDateTable = new DataTable();
+            List<string> gorups = new List<string>();
+            foreach (string str in dicEnglishChinese.Keys )
+            {
+                gorups.Add(str);
+            }
+
+            EntityList.ForEach(e =>
+            {
+                PropertyInfo[] tpis = e.GetType().GetProperties();
+                for (int index = 0; index < tpis.Length; index++)
+                {  
+                    if(gorups.Contains (tpis[index].Name))
+                    {
+
+                    }
+               
+                
+                } 
+
+                entitystr = e.GetType().GetProperties()[i].GetValue(e, null).ToString();
+                if (!DepartmentList.Contains(entitystr))
+                { DepartmentList.Add(entitystr); }
+            });
+            return myDateTable;
+        }
         /// <summary>
         /// 扩展方法：导入到现有的Excel模板文件中
         /// </summary>
