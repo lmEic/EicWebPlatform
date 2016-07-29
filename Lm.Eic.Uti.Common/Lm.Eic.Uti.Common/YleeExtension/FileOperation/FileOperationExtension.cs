@@ -258,6 +258,53 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 throw new Exception(ex.ToString());
             }
         }
+        /// <summary>
+        ///  数据按字段分组
+        /// </summary>
+        /// <typeparam name="T">实体</typeparam>
+        /// <param name="waitingGroupingList">List数组</param>
+        /// <param name="GruopStr">要分组的字段</param>
+        /// <returns></returns>
+        public static Dictionary<string, List<T>> GetDicGroupListRuleT<T>(List<T> waitGroupingEntityList, string GruopStr) where T : class
+        {
+            Dictionary<string, List<T>> dicGroupingEntity = new Dictionary<string, List<T>>();
+            List<string> DepartmentList = new List<string>();
+            int i = 0;
+            bool isfind = false;
+            string entitystr = string.Empty;
+
+            if (waitGroupingEntityList == null || waitGroupingEntityList.Count <= 0)
+                return dicGroupingEntity;
+
+            T eee = waitGroupingEntityList[0];
+            Type tt = eee.GetType();
+            PropertyInfo[] tpis = eee.GetType().GetProperties();
+            for (int index = 0; index < tpis.Length; index++)
+            {
+                if (tpis[index].Name == GruopStr)
+                {
+                    i = index;
+                    isfind = true;
+                    break;
+                }
+            }
+            if (!isfind)
+                return dicGroupingEntity;
+            waitGroupingEntityList.ForEach(e =>
+            {
+                entitystr = e.GetType().GetProperties()[i].GetValue(e, null).ToString();
+                if (!DepartmentList.Contains(entitystr))
+                { DepartmentList.Add(entitystr); }
+            });
+
+            foreach (string Department in DepartmentList)
+            {
+                var trm = waitGroupingEntityList.FindAll(e => e.GetType().GetProperties()[i].GetValue(e, null).ToString() == Department);
+                dicGroupingEntity.Add(Department, trm);
+            }
+
+            return dicGroupingEntity;
+        }
 
         /// <summary>
         /// 扩展方法：导入到现有的Excel模板文件中

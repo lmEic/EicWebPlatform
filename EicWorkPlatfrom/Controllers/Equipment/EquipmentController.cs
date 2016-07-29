@@ -136,14 +136,14 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
-        //[NoAuthenCheck]
-        //public FileResult ExportToExcel()
-        //{
-        //    //var ds =QuantityServices. SampleManger.SampleItemsIqcRecordManager.GetPringSampleItemBy("591-1607032", "32AAP00001200RM");
+        [NoAuthenCheck]
+        public FileResult ExportToExcel()
+        {
+            var ds =QuantityServices. SampleManger.SampleItemsIqcRecordManager.GetPringSampleItemBy("591-1607032", "32AAP00001200RM");
 
-        //    //var ms = QuantityServices.SampleManger.SampleItemsIqcRecordManager.ExportPrintToExcel(ds);
+            var ms = QuantityServices.SampleManger.SampleItemsIqcRecordManager.ExportPrintToExcel(ds);
 
-        //    //return this.ExportToExcel(ms, "aaa", "AAA");
-        //}
+            return this.ExportToExcel(ms, "aaa", "AAA");
+        }
     }
 }

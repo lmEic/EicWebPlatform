@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using CrudFactory = Lm.Eic.App.Business.Bmp.Ast.EquipmentCrudFactory;
-
+using System.Reflection;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
@@ -40,12 +41,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         public MemoryStream BuildWaitingCheckList()
         {
             
-            Dictionary<string, List<EquipmentModel>> DicDataSources = new Dictionary<string, List<EquipmentModel>>();
-            DicDataSources.Add("待校验设备列表", GetInLimitedDateWaitingCheckListRule(_waitingCheckList));
-            DicDataSources.Add("超期待校验列表", GetOutdatedWaitingCheckListRule(_waitingCheckList));
-
-
-            return NPOIHelper.ExportToExcelMultiSheets(DicDataSources);
+            Dictionary<string, List<EquipmentModel>> dicDataSources = new Dictionary<string, List<EquipmentModel>>();
+            // 得到未超期的数据
+            var temEntityList = GetInLimitedDateWaitingCheckListRule(_waitingCheckList);
+            // 对未来超期的数据按部门分组的处理
+            dicDataSources =FileOperationExtension.GetDicGroupListRuleT<EquipmentModel>(temEntityList, "SafekeepDepartment");
+       
+            dicDataSources.Add("超期待校验列表", GetOutdatedWaitingCheckListRule(_waitingCheckList));
+            return NPOIHelper.ExportToExcelMultiSheets(dicDataSources);
            
             //return NPOIHelper.ExportToExcel(_waitingCheckList, "待校验设备列表");
         }
@@ -71,7 +74,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             DateTime NowDate = DateTime.Now.Date.ToDate();
             return waitingChecklist.FindAll(e => e.PlannedCheckDate > NowDate);
         }
-
         /// <summary>
         /// 查询 1.依据财产编号查询 
         /// </summary>
