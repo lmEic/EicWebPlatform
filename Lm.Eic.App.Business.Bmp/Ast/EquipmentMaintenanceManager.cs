@@ -42,7 +42,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             try
             {    //依”部门“字段对各个部门生成保养列表
-                var GetDicGroupListDataSources = FileOperationExtension.GetDicGroupListRuleT<EquipmentModel>(_waitingMaintenanceList, "SafekeepDepartment");
+                var GetDicGroupListDataSources = FileOperationExtension.GetGroupList<EquipmentModel>(_waitingMaintenanceList, "SafekeepDepartment");
                
                 return NPOIHelper.ExportToExcelMultiSheets(GetDicGroupListDataSources);
             }
