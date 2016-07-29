@@ -139,12 +139,16 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="form-group">
                                         <label for="safekeepUser" class="col-md-2 control-label">保管人</label>
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <input name="safekeepUser" class="form-control" ng-change="vmManager.getWorkerInfo()" placeholder="输工号或姓名按回车键" ng-model="vm.SafekeepUser" required />
+                                                <input name="safekeepUser" class="form-control" data-ensure-user-exist
+                                                       ng-change="vmManager.getWorkerInfo()"
+                                                       placeholder="输工号或姓名" ng-model="vm.SafekeepUser" required />
+                                                <div class="error-messages" ng-messages="formEquipment.safekeepUser.$error" ng-if="formEquipment.safekeepUser.$touched">
+                                                    <small ng-message="checkingUserExist">该用户名不存在...</small>
+                                                </div>
                                                 <div class="error-messages" ng-messages="formEquipment.safekeepUser.$error" ng-show="operate.showValidation">
                                                     <small ng-message="required">保管人不能为空</small>
                                                 </div>
@@ -179,16 +183,6 @@
                                                 <div class="error-messages" ng-messages="formEquipment.safekeepDepartment.$error" ng-show="operate.showValidation">
                                                     <small ng-message="required">保管单位不能为空</small>
                                                 </div>
-                                                @*<div class="input-group-btn">
-                                                    <button class="btn btn-primary" style="margin-bottom:6px;" id="departmentPopover"
-                                                            data-title="选择部门名称"
-                                                            data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
-                                                            data-animation="am-flip-x" data-auto-close="1"
-                                                            data-keyboard="false"
-                                                            data-bs-popover>
-                                                        <i class="fa fa-sitemap"></i>
-                                                    </button>
-                                                </div>*@
                                             </div>
                                         </div>
                                     </div>
