@@ -10,7 +10,7 @@
                                 <input name="inputDate" type="date" class="form-control" ng-model="vmManager.planDate" format-date required />
                             </div>
                             <span class="btn btn-primary" ng-click="vmManager.getAstCheckList()"><i class="fa fa-search"></i>查询</span>
-                            <span class="btn btn-success" ng-click="vmManager.getAstDatas(3)"><i class="fa fa-file-excel-o"></i>生成校验清单</span>
+                            <a href="@Url.Action("CreateWaitingCheckList", "Equipment")" class="btn btn-success"><i class="fa fa-file-excel-o"></i>生成校验清单</a>
                         </form>
                     </div>
                 </div>
@@ -20,49 +20,46 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr class="info">
-                                <th>财产编号</th>
-                                <th>设备名称</th>
-                                <th>设备型号</th>
-                                <th>制造编号</th>
-                                <th>设备类别</th>
+                                <th>Id</th>
+                                <th>设备信息</th>
+                                <th>校验信息</th>
                                 <th>保管单位</th>
-                                <th>是否校验</th>
-                                <th>校验类型</th>
-                                <th>校验日期</th>
-                                <th>校验间隔</th>
-                                <th>计划校验日期</th>
-                                <th>校验状态</th>
-                                @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in vmManager.datasets track by $index">
-                                <td>{{item.AssetNumber}}</td>
-                                <td>{{item.EquipmentName}}</td>
-                                <td>{{item.EquipmentSpec}}</td>
-                                <td>{{item.ManufacturingNumber}}</td>
-                                <td>{{item.EquipmentType}}</td>
+                                <td class="text-success">{{$index+1}}</td>
+                                <td>
+                                    财产编号:<span style="margin-right:30px;">{{item.AssetNumber}}</span>
+                                    设备名称:<span>{{item.EquipmentName}}</span>
+                                   
+                                    <hr />
+                                    制造编号:<span style="margin-right:30px;">{{item.ManufacturingNumber}}</span>
+                                    设备型号:<span>{{item.EquipmentSpec}}</span>
+                                    <hr />
+                                    设备类别:<span>{{item.EquipmentType}}</span>
+                                </td>
+                                <td>
+                                    是否校验:<span style="margin-right:30px;">{{item.IsCheck}}</span>
+                                    校验类型:<span>{{item.CheckType}}</span>
+                                    <hr />
+                                    校验日期:<span style="margin-right:30px;">{{item.CheckDate}}</span>
+                                    计划校验日期:<span>{{item.PlannedCheckDate}}</span>
+                                    <hr />
+                                    校验间隔:<span style="margin-right:30px;">{{item.CheckInterval}}</span>
+                                    校验状态:<span>{{item.CheckState}}</span>
+                                </td>
                                 <td>{{item.SafekeepDepartment}}</td>
-                                <td>{{item.IsCheck}}</td>
-                                <td>{{item.CheckType}}</td>
-                                <td>{{item.CheckDate}}</td>
-                                <td>{{item.CheckInterval}}</td>
-                                <td>{{item.PlannedCheckDate}}</td>
-                                <td>{{item.CheckState}}</td>
-                                @*<td>
-                                    <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
-                                        修改
-                                    </button>
-                                </td>*@
                             </tr>
                         </tbody>
                     </table>
+                    <div yl-pagination
+                         data-datasource="vmManager.datasource"
+                         data-dataset="vmManager.datasets">
+                    </div>
                 </div>
             </div>
         </div>
-        @*<div bs-pane data-title="设备档案编辑" data-name="editTab">
-
-            </div>*@
     </div>
     <div class="panel-footer">
         
