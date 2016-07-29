@@ -80,11 +80,12 @@
     <Compile Include="Purchase\PurchaseService.cs" />
     <Compile Include="Purchase\RequisitionManager.cs" />
     <Compile Include="Purchase\StockManager.cs" />
+    <Compile Include="Quantity\QuantityServices.cs" />
     <Compile Include="Quantity\SampleManager\IPQCSample\IPQCSampleItems..cs" />
-    <Compile Include="Quantity\SampleManager\QuantitySampleService.cs" />
+    <Compile Include="Quantity\SampleManager\SampleManger.cs" />
     <Compile Include="Quantity\SampleManager\SampleCrud.cs" />
     <Compile Include="Quantity\SampleManager\SampleItermRules\SampleItermRulesManger.cs" />
-    <Compile Include="Quantity\SampleManager\SampleManager.cs" />
+    <Compile Include="Quantity\SampleManager\SampleIqcManager.cs" />
     <Compile Include="Quantity\SupperManager\SupperManager.cs" />
   </ItemGroup>
   <ItemGroup />
