@@ -266,7 +266,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <param name="waitingGroupingList">List数组</param>
         /// <param name="gruopStr">要分组的字段</param>
         /// <returns></returns>
-        public static Dictionary<string, List<T>> GetDicGroupListRuleT<T>(List<T> waitGroupingEntityList, string gruopStr) where T : class
+        public static Dictionary<string, List<T>> GetGroupList<T>(List<T> waitGroupingEntityList, string gruopStr) where T : class
         {
             Dictionary<string, List<T>> dicGroupingEntity = new Dictionary<string, List<T>>();
             List<string> DepartmentList = new List<string>();

@@ -40,13 +40,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public MemoryStream BuildWaitingCheckList()
         {
-            
+
             Dictionary<string, List<EquipmentModel>> sheetList = new Dictionary<string, List<EquipmentModel>>();
             // 得到未超期的数据
             var inDateList = GetPeriodWaitingCheckListRule(_waitingCheckList);
             // 对未来超期的数据按部门分组的处理
-            sheetList = FileOperationExtension.GetDicGroupListRuleT(inDateList, "SafekeepDepartment");
-       
+            sheetList = FileOperationExtension.GetGroupList(inDateList, "SafekeepDepartment");
+
             sheetList.Add("超期待校验列表", GetOverdueWaitingCheckListRule(_waitingCheckList));
             return NPOIHelper.ExportToExcelMultiSheets(sheetList);
            

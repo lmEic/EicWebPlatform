@@ -43,7 +43,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             try
             {    //依”部门“字段对各个部门生成保养列表
-                var GetDicGroupListDataSources = FileOperationExtension.GetDicGroupListRuleT<EquipmentModel>(_waitingMaintenanceList, "SafekeepDepartment");
+                var GetDicGroupListDataSources = FileOperationExtension.GetGroupList<EquipmentModel>(_waitingMaintenanceList, "SafekeepDepartment");
                
                 Dictionary <string ,string > dic=new Dictionary<string,string> ();
                 dic.Add("AssetNumber", "财产编号");
