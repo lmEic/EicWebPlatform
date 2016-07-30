@@ -37,13 +37,13 @@ namespace EicWorkPlatfrom
             else
             {
                 //Product
-                //ITIL
+                //EicSystemManage
                 //Equipment
                 //HR
                 routes.MapRoute(
                              name: "Default",
                              url: "{controller}/{action}/{id}",
-                             defaults: new { controller = "Equipment", action = "Index", id = UrlParameter.Optional }
+                             defaults: new { controller = "EicSystemManage", action = "Index", id = UrlParameter.Optional }
                          );
             }
         }
