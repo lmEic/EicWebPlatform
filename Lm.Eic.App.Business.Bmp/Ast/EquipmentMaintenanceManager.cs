@@ -43,25 +43,22 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             try
             {    //依”部门“字段对各个部门生成保养列表
-                var GetDicGroupListDataSources = FileOperationExtension.GetGroupList<EquipmentModel>(_waitingMaintenanceList, "SafekeepDepartment");
-               
-                Dictionary <string ,string > dic=new Dictionary<string,string> ();
-                dic.Add("AssetNumber", "财产编号");
-                dic.Add("EquipmentName", "名称");
-                dic.Add("EquipmentSpec", "规格型号");
-                dic.Add("FunctionDescription", "功能描述");
-                dic.Add("PlannedCheckDate", "计划校验日期");
-                dic.Add("SafekeepDepartment", "保管部门");
-                dic.Add("ManufacturingNumber", "制造编号");
+                //字段对应的中文
+                Dictionary<string, string> dicEnglishChinese = new Dictionary<string, string>();
+                dicEnglishChinese.Add("AssetNumber", "财产编号");
+                dicEnglishChinese.Add("EquipmentName", "名称");
+                dicEnglishChinese.Add("EquipmentSpec", "规格型号");
+                dicEnglishChinese.Add("FunctionDescription", "功能描述");
+                dicEnglishChinese.Add("PlannedCheckDate", "计划校验日期");
+                dicEnglishChinese.Add("SafekeepDepartment", "保管部门");
+                dicEnglishChinese.Add("ManufacturingNumber", "制造编号");
 
-                DataTable newDataTable = FileOperationExtension.GetDataTable<EquipmentModel>(_waitingMaintenanceList, dic);
+                DataTable newDataTable = FileOperationExtension.GetDataTable<EquipmentModel>(_waitingMaintenanceList, dicEnglishChinese);
+                ///按部门对其分组
+                Dictionary<string, DataTable> dataTableGrouping = FileOperationExtension.GetGroupDataTables(newDataTable, "保管部门");
 
-                Dictionary<string, DataTable> dest = FileOperationExtension.GetGroupDataTables(newDataTable, "保管部门");
+                return NPOIHelper.ExportDataTableToExcelMultiSheets(dataTableGrouping);
 
-                return NPOIHelper.ExportDataTableToExcelMultiSheets(dest);
-              
-
-                //return NPOIHelper.ExportToExcelMultiSheets(GetDicGroupListDataSources);
             }
             catch (Exception ex)
             {

@@ -8,6 +8,7 @@ using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using CrudFactory = Lm.Eic.App.Business.Bmp.Ast.EquipmentCrudFactory;
 using System.Reflection;
+using System.Data;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
@@ -40,15 +41,27 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public MemoryStream BuildWaitingCheckList()
         {
+            Dictionary<string, string> dicEnglishChinese = new Dictionary<string, string>();
+            dicEnglishChinese.Add("AssetNumber", " 编号");
+            dicEnglishChinese.Add("EquipmentName", "名称");
+            dicEnglishChinese.Add("EquipmentSpec", "规格型号");
+            dicEnglishChinese.Add("ManufacturingNumber", "制造编号");
+            dicEnglishChinese.Add("DeliveryDate", "购入日期");
+            dicEnglishChinese.Add("EquipmentType", "分类");
 
-            Dictionary<string, List<EquipmentModel>> sheetList = new Dictionary<string, List<EquipmentModel>>();
-            // 得到未超期的数据
-            var inDateList = GetPeriodWaitingCheckListRule(_waitingCheckList);
+              //对未超期的数据按部门分组的处理
+                var inDateList = GetPeriodWaitingCheckListRule(_waitingCheckList);
+                DataTable newDataTable = FileOperationExtension.GetDataTable<EquipmentModel>(inDateList, dicEnglishChinese);
+                Dictionary<string, DataTable> dataTableGrouping = FileOperationExtension.GetGroupDataTables(newDataTable, "分类");
+
+                //对超期的数据加入到数据字典中
+                var overdueDateList = GetOverdueWaitingCheckListRule(_waitingCheckList);
+                DataTable overdueNewDataTable = FileOperationExtension.GetDataTable<EquipmentModel>(overdueDateList, dicEnglishChinese);
+                dataTableGrouping.Add("超期待校验列表", overdueNewDataTable);
+                return NPOIHelper.ExportDataTableToExcelMultiSheets(dataTableGrouping);
+
             // 对未来超期的数据按部门分组的处理
-            sheetList = FileOperationExtension.GetGroupList(inDateList, "SafekeepDepartment");
-
-            sheetList.Add("超期待校验列表", GetOverdueWaitingCheckListRule(_waitingCheckList));
-            return NPOIHelper.ExportToExcelMultiSheets(sheetList);
+          
            
             //return NPOIHelper.ExportToExcel(_waitingCheckList, "待校验设备列表");
         }

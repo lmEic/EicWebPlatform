@@ -394,56 +394,62 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <returns></returns>
         public static DataTable GetDataTable<T>(List<T> EntityList, Dictionary<string, string> dicEnglishChinese) where T : class
         {
-            DataTable myDateTable = new DataTable();
-            List<string> groups = new List<string>();
-            List<int> indexNumber = new List<int>();
-            #region 查找字典中对应的实体字段
-            T entity = EntityList[0];
-            Type type = entity.GetType();
-            PropertyInfo[] tpi= type.GetProperties();
-            foreach (string str in dicEnglishChinese.Keys)
+            try 
             {
-                for (int index = 0; index < tpi.Length; index++)
+                DataTable myDateTable = new DataTable();
+                List<string> groups = new List<string>();
+                List<int> indexNumber = new List<int>();
+                #region 查找字典中对应的实体字段
+                T entity = EntityList[0];
+                Type type = entity.GetType();
+                PropertyInfo[] tpi = type.GetProperties();
+                foreach (string str in dicEnglishChinese.Keys)
                 {
-                    if (tpi[index].Name == str)
+                    for (int index = 0; index < tpi.Length; index++)
                     {
-                        groups.Add(str);
-                        indexNumber.Add(index);
-                        break;
+                        if (tpi[index].Name == str)
+                        {
+                            groups.Add(str);
+                            indexNumber.Add(index);
+                            break;
+                        }
                     }
+
                 }
-            
-            }
-#endregion
-            #region  把添加DataTable 列中文名称
-            DataColumn  d = new DataColumn("项次");
-            myDateTable.Columns.Add(d);
-            foreach (string g in groups)
-            {
-                DataColumn dc = new DataColumn(dicEnglishChinese[g].ToString());
-                myDateTable.Columns.Add(dc);
-            }
-            #endregion
-            #region 把添加DataTable 行分别赋值
-            int jj = 1;
-            EntityList.ForEach(e =>
-            {
-                DataRow dr = myDateTable.NewRow();
-                dr[0] = jj.ToString();
-                PropertyInfo[] tpis = e.GetType().GetProperties();
-                int j=1;
-                foreach  (int i in  indexNumber)
+                #endregion
+                #region  把添加DataTable 列中文名称
+                DataColumn d = new DataColumn("项次");
+                myDateTable.Columns.Add(d);
+                foreach (string g in groups)
                 {
-                   string  entitystr = e.GetType().GetProperties()[i].GetValue(e, null).ToString();
-                   dr[j] = entitystr;
-                   j++;
+                    DataColumn dc = new DataColumn(dicEnglishChinese[g].ToString());
+                    myDateTable.Columns.Add(dc);
                 }
-                myDateTable.Rows.Add(dr);
-                jj++;
-              
-            });
-            #endregion
-            return myDateTable;
+                #endregion
+                #region 把添加DataTable 行分别赋值
+                int jj = 1;
+                EntityList.ForEach(e =>
+                {
+                    DataRow dr = myDateTable.NewRow();
+                    dr[0] = jj.ToString();
+                    PropertyInfo[] tpis = e.GetType().GetProperties();
+                    int j = 1;
+                    foreach (int i in indexNumber)
+                    {
+                        string entitystr = e.GetType().GetProperties()[i].GetValue(e, null).ToString();
+                        dr[j] = entitystr;
+                        j++;
+                    }
+                    myDateTable.Rows.Add(dr);
+                    jj++;
+
+                });
+                #endregion
+                return myDateTable;
+            }
+            catch (Exception ex)
+            { throw new Exception(ex.ToString()); }
+           
         }
         /// <summary>
         /// 扩展方法：导入到现有的Excel模板文件中
