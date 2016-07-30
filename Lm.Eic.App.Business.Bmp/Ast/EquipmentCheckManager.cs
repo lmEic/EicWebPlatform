@@ -45,7 +45,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             // 得到未超期的数据
             var inDateList = GetPeriodWaitingCheckListRule(_waitingCheckList);
             // 对未来超期的数据按部门分组的处理
-            sheetList =FileOperationExtension.GetGroupList(inDateList, "SafekeepDepartment");
+            sheetList = FileOperationExtension.GetDicGroupListRuleT(inDateList, "SafekeepDepartment");
        
             sheetList.Add("超期待校验列表", GetOverdueWaitingCheckListRule(_waitingCheckList));
             return NPOIHelper.ExportToExcelMultiSheets(sheetList);
