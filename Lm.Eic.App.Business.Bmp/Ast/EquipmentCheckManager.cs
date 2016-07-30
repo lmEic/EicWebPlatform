@@ -41,14 +41,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         public MemoryStream BuildWaitingCheckList()
         {
             
-            Dictionary<string, List<EquipmentModel>> dicDataSources = new Dictionary<string, List<EquipmentModel>>();
+            Dictionary<string, List<EquipmentModel>> sheetList = new Dictionary<string, List<EquipmentModel>>();
             // 得到未超期的数据
-            var temEntityList = GetInLimitedDateWaitingCheckListRule(_waitingCheckList);
+            var inDateList = GetPeriodWaitingCheckListRule(_waitingCheckList);
             // 对未来超期的数据按部门分组的处理
-            dicDataSources =FileOperationExtension.GetGroupList(temEntityList, "SafekeepDepartment");
+            sheetList =FileOperationExtension.GetGroupList(inDateList, "SafekeepDepartment");
        
-            dicDataSources.Add("超期待校验列表", GetOutdatedWaitingCheckListRule(_waitingCheckList));
-            return NPOIHelper.ExportToExcelMultiSheets(dicDataSources);
+            sheetList.Add("超期待校验列表", GetOverdueWaitingCheckListRule(_waitingCheckList));
+            return NPOIHelper.ExportToExcelMultiSheets(sheetList);
            
             //return NPOIHelper.ExportToExcel(_waitingCheckList, "待校验设备列表");
         }
@@ -58,7 +58,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="waitingChecklist"></param>
         /// <returns></returns>
-        private List<EquipmentModel> GetOutdatedWaitingCheckListRule(List<EquipmentModel> waitingChecklist)
+        private List<EquipmentModel> GetOverdueWaitingCheckListRule(List<EquipmentModel> waitingChecklist)
         {
             DateTime NowDate = DateTime.Now.Date.ToDate();
             return waitingChecklist.FindAll(e => e.PlannedCheckDate <= NowDate);
@@ -69,7 +69,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="waitingChecklist"></param>
         /// <returns></returns>
-        private List<EquipmentModel> GetInLimitedDateWaitingCheckListRule(List<EquipmentModel> waitingChecklist)
+        private List<EquipmentModel> GetPeriodWaitingCheckListRule(List<EquipmentModel> waitingChecklist)
         {
             DateTime NowDate = DateTime.Now.Date.ToDate();
             return waitingChecklist.FindAll(e => e.PlannedCheckDate > NowDate);
