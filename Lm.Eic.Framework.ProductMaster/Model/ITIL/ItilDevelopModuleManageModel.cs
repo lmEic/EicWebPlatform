@@ -14,6 +14,24 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
         public ItilDevelopModuleManageModel()
         { }
         #region Model
+        private string _mclassname;
+        /// <summary>
+        ///类名称
+        /// </summary>
+        public string MClassName
+        {
+            set { _mclassname = value; }
+            get { return _mclassname; }
+        }
+        private string _mfunctionname;
+        /// <summary>
+        ///函数名称
+        /// </summary>
+        public string MFunctionName
+        {
+            set { _mfunctionname = value; }
+            get { return _mfunctionname; }
+        }
         private string _devid;
         /// <summary>
         ///开发编号
@@ -31,24 +49,6 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
         {
             set { _modulename = value; }
             get { return _modulename; }
-        }
-        private string _classname;
-        /// <summary>
-        ///类名称
-        /// </summary>
-        public string ClassName
-        {
-            set { _classname = value; }
-            get { return _classname; }
-        }
-        private string _functionname;
-        /// <summary>
-        ///函数名称
-        /// </summary>
-        public string FunctionName
-        {
-            set { _functionname = value; }
-            get { return _functionname; }
         }
         private string _functiondescription;
         /// <summary>
@@ -190,5 +190,6 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
         }
         #endregion Model
     }
+
 
 }

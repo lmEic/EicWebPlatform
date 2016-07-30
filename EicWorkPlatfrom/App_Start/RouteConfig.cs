@@ -8,8 +8,8 @@ namespace EicWorkPlatfrom
         static AuthenCheckManager()
         {
 
-            //IsCheck = true;
-            IsCheck = false;
+            IsCheck = true;
+            //IsCheck = false;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace EicWorkPlatfrom
             else
             {
                 //Product
-                //ITIL
+                //EicSystemManage
                 //Equipment
                 //HR
                 routes.MapRoute(

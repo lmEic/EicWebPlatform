@@ -277,7 +277,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                         var equipment = _.clone(uiVM);
                         equipment.Id_Key = opresult.Id_Key;
                         if (equipment.OpSign === 'add') {
-                            vmManager.equipments.push(equipment)
+                            vmManager.equipments.push(equipment);
                             vmManager.getAstId();
                         }
                         else if (equipment.OpSign == 'edit') {
@@ -339,10 +339,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         vmManager.departments = data.departments;
         departmentTreeSet.setTreeDataset(vmManager.departments);
     });
-
-    $scope.exportToExcel = function () {
-
-    }
 })
 
 .controller('astBuildCheckListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
