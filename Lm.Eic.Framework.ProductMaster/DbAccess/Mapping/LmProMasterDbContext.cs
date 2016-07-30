@@ -17,7 +17,7 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
 
         public DbSet<ConfigFilePathModel> ConfigFilePathInfo { get; set; }
 
-        public DbSet<ItilDevelopModuleManageModel> ItilDevelopModule { get; set; }
+        public DbSet<ItilDevelopModuleManageModel> ItilDevelopModuleManage { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -12,7 +12,6 @@
                             <input type="text" ng-model="vm.userId" name="userId" placeholder="输入工号"
                                    class="form-control" required data-ensure-user-unique />
                             <div class="error-messages" ng-messages="formRegister.userId.$error" ng-if="formRegister.userId.$touched" ng-message-multiple>
-
                                 <small ng-message="checkingAvailability">检测该用户信息...</small>
                                 <small ng-message="usernameAvailability">该用户已经注册过了</small>
                             </div>

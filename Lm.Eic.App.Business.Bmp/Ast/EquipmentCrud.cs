@@ -91,14 +91,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                                  endPlannedDate = startPlannedDate.AddMonths(1),
                                  nowDate = DateTime.Now.ToDate();
 
-                        return irep.FindAll<EquipmentModel>(m => (m.IsCheck=="校验" && m.PlannedCheckDate >= startPlannedDate && m.PlannedCheckDate <= endPlannedDate) 
-                        ||(m.IsCheck=="校验"&& m.PlannedCheckDate <= nowDate)).ToList();
+                        return irep.FindAll<EquipmentModel>(m => (m.IsCheck=="是" && m.PlannedCheckDate >= startPlannedDate && m.PlannedCheckDate <= endPlannedDate) 
+                        ||(m.IsCheck=="是"&& m.PlannedCheckDate <= nowDate)).ToList();
 
                     case 5: //依据录入日期查询待保养设备  //按计划保养月查询待保养待设备列表
-                        return irep.FindAll<EquipmentModel>(m => m.IsMaintenance == "保养" && m.PlannedMaintenanceMonth == qryDto.PlannedMaintenanceMonth).ToList();
+                        return irep.FindAll<EquipmentModel>(m => m.IsMaintenance == "是" && m.PlannedMaintenanceMonth == qryDto.PlannedMaintenanceMonth).ToList();
 
                     case 6: //查询所有在使用待设备 生成设备总览表
-                        return irep.FindAll<EquipmentModel>(m=>m.IsScrapped== "未报废").ToList();
+                        return irep.FindAll<EquipmentModel>(m=>m.IsScrapped== "正常").ToList();
 
                     default: return null;
                 }
@@ -214,7 +214,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             if (model.State == null)
                 model.State = "运行正常";
             if (model.IsScrapped == null)
-                model.IsScrapped = "未报废";
+                model.IsScrapped = "正常";
             //仓储操作
             return irep.Insert(model).ToOpResult_Add("设备档案", model.Id_Key);
         }
@@ -246,8 +246,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         private void SetEquipmentCheckRule(EquipmentModel model)
         {
             //校验处理 设备类别为量测设备才会校验
-            model.IsCheck = model.CheckInterval == 0 ? "不校验" : "校验";
-            if (model.IsCheck == "校验" && model.EquipmentType == "量测设备")
+            model.IsCheck = model.CheckInterval == 0 ? "否" : "是";
+            if (model.IsCheck == "是" && model.EquipmentType == "量测设备")
             {
                 model.CheckDate = model.CheckDate.ToDate();
                 model.PlannedCheckDate = model.CheckDate.AddMonths(model.CheckInterval);
@@ -268,12 +268,12 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             //保养处理
             //  model.IsMaintenance = (model.MaintenanceDate == null && model.MaintenanceInterval == 0) ? "不保养" : "保养";
-            model.IsMaintenance = model.AssetType == "低质易耗品" ? "不保养" : "保养";
-            if (model.IsMaintenance == "保养")
+            model.IsMaintenance = model.AssetType == "低质易耗品" ? "否" : "是";
+            if (model.IsMaintenance == "是")
             {
                 model.MaintenanceDate = model.MaintenanceDate.ToDate();
                 model.PlannedMaintenanceDate = model.MaintenanceDate.AddMonths(model.MaintenanceInterval);
-                model.PlannedMaintenanceMonth = model.PlannedMaintenanceDate.ToString("yyyy-MM");
+                model.PlannedMaintenanceMonth = model.PlannedMaintenanceDate.ToString("yyyyMM");
                 model.MaintenanceState = model.PlannedMaintenanceDate > DateTime.Now ? "在期" : "超期";
             }
             else
@@ -340,6 +340,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public OpResult Store(EquipmentCheckModel model)
         {
+            model.OpDate = DateTime.Now.ToDate();
+            model.OpTime = DateTime.Now;
             string opContext = "设备校验";
             OpResult opResult = OpResult.SetResult("未执行任何操作！", false);
             try
@@ -384,7 +386,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 return OpResult.SetResult("未找到校验单上的设备\r\n请确定财产编号是否正确！", false);
 
             equipment.CheckDate = model.CheckDate;
-            equipment.PlannedCheckDate = model.CheckDate.AddMonths(equipment.CheckInterval);
             equipment.OpSign = OpMode.Edit;
             return OpResult.SetResult("更新设备校验日期成功！", "更新设备校验日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
         }
@@ -444,6 +445,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public OpResult Store(EquipmentMaintenanceModel model)
         {
+            model.OpDate = DateTime.Now.ToDate();
+            model.OpTime = DateTime.Now;
             string opContext = "设备保养";
             OpResult opResult = OpResult.SetResult("未执行任何操作！", false);
             try
@@ -488,8 +491,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 return OpResult.SetResult("未找到保养单上的设备\r\n请确定财产编号是否正确！", false);
 
             equipment.MaintenanceDate = model.MaintenanceDate;
-            equipment.PlannedMaintenanceDate = model.MaintenanceDate.AddMonths(equipment.CheckInterval);
-            equipment.PlannedMaintenanceMonth = equipment.PlannedMaintenanceDate.ToString("yyyy-MM");
             equipment.OpSign = OpMode.Edit;
             return OpResult.SetResult("更新设备保养日期成功！", "更新设备保养日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
         }

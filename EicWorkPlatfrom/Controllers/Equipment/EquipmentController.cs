@@ -112,6 +112,12 @@ namespace EicWorkPlatfrom.Controllers
 
             return DateJsonResult(datas);
         }
+        [NoAuthenCheck]
+        public FileResult CreateWaitingCheckList()
+        {
+            var ds = AstService.EquipmentManager.CheckManager.BuildWaitingCheckList();
+            return this.ExportToExcel(ds, "设备校验清单", "设备校验清单");
+        }
         #endregion
 
         #region equipment maintenance module method
@@ -130,20 +136,17 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         public ContentResult GetAstMaintenanceListByPlanMonth(string planMonth)
         {
-            var datas = 0;
-
+            var datas = AstService.EquipmentManager.MaintenanceManager.GetWaitingMaintenanceListBy(planMonth);
             return DateJsonResult(datas);
+        }
+        [NoAuthenCheck]
+        public FileResult CreateWaitingMaintenanceList()
+        {
+            var ds = AstService.EquipmentManager.MaintenanceManager.BuildWaitingMaintenanceList();
+            return this.ExportToExcel(ds, "设备保养清单", "设备保养清单");
         }
         #endregion
 
-        [NoAuthenCheck]
-        public FileResult ExportToExcel()
-        {
-            var ds =QuantityServices. SampleManger.SampleItemsIqcRecordManager.GetPringSampleItemBy("591-1607032", "32AAP00001200RM");
-
-            var ms = QuantityServices.SampleManger.SampleItemsIqcRecordManager.ExportPrintToExcel(ds);
-
-            return this.ExportToExcel(ms, "aaa", "AAA");
-        }
+       
     }
 }

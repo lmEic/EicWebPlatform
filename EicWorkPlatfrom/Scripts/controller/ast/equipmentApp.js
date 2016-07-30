@@ -215,7 +215,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         isSingle: true,//是否搜寻到的是单个人
         getWorkerInfo: function () {
             if (uiVM.SafekeepUser === undefined) return;
-
             var strLen = leeHelper.checkIsChineseValue(uiVM.SafekeepUser) ? 2 : 6;
             if (uiVM.SafekeepUser.length >= strLen)
             {
@@ -245,7 +244,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                 uiVM.SafekeepDepartment = worker.Department;
             }
             else {
-                uiVM.SafekeepUser = null;
                 uiVM.SafekeepWorkerID = null;
                 uiVM.SafekeepDepartment = null;
             }
@@ -348,16 +346,16 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 })
 
 .controller('astBuildCheckListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
-
     //视图管理器
     var vmManager = {
         activeTab: 'initTab',
-        planDate: new Date(),
+        planDate: new Date('2017-01-19'),
+        datasource:[],
         datasets: [],
         getAstCheckList: function () {
-            vmManager.datasets = [];
+            vmManager.datasource = [];
             $scope.searchPromise = astDataopService.getAstCheckListByPlanDate(vmManager.planDate).then(function (datas) {
-                vmManager.datasets = datas;
+                vmManager.datasource = datas;
             });
         }
     };
@@ -368,11 +366,12 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     var vmManager = {
         activeTab: 'initTab',
         planMonth:'',
-        datasets:[],
+        datasource: [],
+        datasets: [],
         getAstMaintenanceList: function () {
-            vmManager.datasets = [];
+            vmManager.datasource = [];
             $scope.searchPromise = astDataopService.getAstMaintenanceListByPlanMonth(vmManager.planMonth).then(function (datas) {
-                vmManager.datasets = datas;
+                vmManager.datasource = datas;
             });
         }
     };

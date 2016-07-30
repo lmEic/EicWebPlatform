@@ -72,34 +72,30 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             }
         };
 })
-smModule.directive('ensureUserExist', function (accountService) {
+.directive('ensureUserExist', function (connDataOpService) {
     return {
         require: '^ngModel',
         link: function (scope, element, attrs, ngModel) {
-            var setAsChecking = function (bool) {
-                ngModel.$setValidity('checkingAvailability', !bool);
-            };
-            var setAsUserName = function (bool) {
-                ngModel.$setValidity('usernameAvailability', bool);
+            var checkUserIsExist = function (bool) {
+                ngModel.$setValidity('checkingUserExist', bool);
             };
             ngModel.$parsers.push(function (val) {
-                if (!val || val.length <= 5) {
+                if (val === undefined) return;
+                var strLen = leeHelper.checkIsChineseValue(val) ? 2 : 6;
+                if (val.length < strLen) {
                     return;
                 }
-                setAsChecking(true);
-                setAsUserName(false);
-                accountService.findUserById(val).then(function (data) {
-                    if (angular.isObject(data)) {
-                        setAsChecking(false);
-                        setAsUserName(false);
-                    } else {
-                        setAsChecking(false);
-                        setAsUserName(true);
+                checkUserIsExist(false);
+                connDataOpService.getWorkersBy(val).then(function (datas) {
+                    if (datas.length > 0) {
+                        checkUserIsExist(true);
+                    }
+                    else {
+                        checkUserIsExist(false);
                     }
                 }, function (errordata) {
-                    setAsChecking(false);
-                    setAsUserName(true);
-                });
+                    checkUserIsExist(false);
+                })
                 return val;
             });
         }
@@ -259,7 +255,7 @@ smModule.directive('ensureUserExist', function (accountService) {
             '<div class="page-total" ng-show="config.totalItems > 0">' +
             //'第<input type="text" ng-model="jumpPageNum"  ng-keyup="jumpToPage($event)"/>页 ' +
             //'每页<select ng-model="config.itemsPerPage" ng-options="option for option in config.perPageOptions " ng-change="changeItemsPerPage()"></select>' +
-            '<button class="btn btn-info" type="button">总记录数：<span class="badge">{{ config.totalItems }}</span>' +
+            '<button class="btn btn-sm btn-info" type="button">总记录数：<span class="badge">{{ config.totalItems }}</span>' +
             '</button></div>' +
             '</div>',
         replace: true,

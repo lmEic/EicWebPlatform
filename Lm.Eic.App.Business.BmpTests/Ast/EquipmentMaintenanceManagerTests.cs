@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lm.Eic.App.DomainModel.Bpm.Ast;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.Bmp.Ast.Tests
 {
@@ -47,9 +49,16 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         }
 
         [TestMethod()]
-        public void StoreTest()
+        public void MaintenanceStoreTest()
         {
-            Assert.Fail();
+            //ceshi 
+            EquipmentMaintenanceModel model = new EquipmentMaintenanceModel();
+            model.AssetNumber = "Z160002";
+            model.MaintenanceDate = DateTime.Now.ToDate();
+            model.MaintenanceResult = "";
+            model.OpSign = "add";
+            var tem = AstService.EquipmentManager.MaintenanceManager.Store(model);
+            if (!tem.Result) { Assert.Fail(); }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<div class="panel panel-default" ng-controller="astBuildCheckListCtrl">
+﻿<div class="panel panel-default" ng-controller="astBuildMaintenanceListCtrl">
     <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
         <div bs-pane data-title="生成保养清单" data-name="initTab">
             <div class="well">
@@ -6,10 +6,10 @@
                     <div class="col-md-6">
                         <form class="form-inline" novalidate>
                             <div class="form-group">
-                               <div yl-month-button data-title-visible="true" data-year-month="vmManger.planMonth"></div>
+                                <div yl-month-button data-title-visible="true" data-yearmonth="vmManager.planMonth"></div>
                             </div>
                             <span class="btn btn-info" ng-click="vmManager.getAstMaintenanceList()"><i class="fa fa-search"></i>查询</span>
-                            <span class="btn btn-success" ng-click="vmManager.getAstDatas(3)"><i class="fa fa-file-excel-o"></i>生成保养清单</span>
+                            <a href="@Url.Action("CreateWaitingMaintenanceList", "Equipment")" class="btn btn-success"><i class="fa fa-file-excel-o"></i>生成保养清单</a>
                         </form>
                     </div>
                 </div>
@@ -30,7 +30,6 @@
                                 <th>保养间隔</th>
                                 <th>计划保养日期</th>
                                 <th>保养状态</th>
-                                @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
                             </tr>
                         </thead>
                         <tbody>
@@ -46,20 +45,16 @@
                                 <td>{{item.MaintenanceInterval}}</td>
                                 <td>{{item.PlannedMaintenanceDate}}</td>
                                 <td>{{item.MaintenanceState}}</td>
-                                @*<td>
-                                    <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
-                                        修改
-                                    </button>
-                                </td>*@
                             </tr>
                         </tbody>
                     </table>
+                    <div yl-pagination
+                         data-datasource="vmManager.datasource"
+                         data-dataset="vmManager.datasets">
+                    </div>
                 </div>
             </div>
         </div>
-        @*<div bs-pane data-title="设备档案编辑" data-name="editTab">
-
-            </div>*@
     </div>
     <div class="panel-footer">
 

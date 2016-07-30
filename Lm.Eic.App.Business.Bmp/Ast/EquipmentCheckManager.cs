@@ -45,7 +45,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             // 得到未超期的数据
             var temEntityList = GetInLimitedDateWaitingCheckListRule(_waitingCheckList);
             // 对未来超期的数据按部门分组的处理
-            dicDataSources =FileOperationExtension.GetDicGroupListRuleT<EquipmentModel>(temEntityList, "SafekeepDepartment");
+            dicDataSources =FileOperationExtension.GetGroupList(temEntityList, "SafekeepDepartment");
        
             dicDataSources.Add("超期待校验列表", GetOutdatedWaitingCheckListRule(_waitingCheckList));
             return NPOIHelper.ExportToExcelMultiSheets(dicDataSources);
@@ -89,7 +89,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult EquipmentCheckStore(EquipmentCheckModel model)
+        public OpResult Store(EquipmentCheckModel model)
         {
             return CrudFactory.EquipmentCheckCrud.Store(model);
         }
