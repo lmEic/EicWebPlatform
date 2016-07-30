@@ -264,9 +264,9 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// </summary>
         /// <typeparam name="T">实体</typeparam>
         /// <param name="waitingGroupingList">List数组</param>
-        /// <param name="GruopStr">要分组的字段</param>
+        /// <param name="gruopStr">要分组的字段</param>
         /// <returns></returns>
-        public static Dictionary<string, List<T>> GetDicGroupListRuleT<T>(List<T> waitGroupingEntityList, string GruopStr) where T : class
+        public static Dictionary<string, List<T>> GetDicGroupListRuleT<T>(List<T> waitGroupingEntityList, string gruopStr) where T : class
         {
             Dictionary<string, List<T>> dicGroupingEntity = new Dictionary<string, List<T>>();
             List<string> DepartmentList = new List<string>();
@@ -282,7 +282,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             PropertyInfo[] tpis = eee.GetType().GetProperties();
             for (int index = 0; index < tpis.Length; index++)
             {
-                if (tpis[index].Name == GruopStr)
+                if (tpis[index].Name == gruopStr)
                 {
                     i = index;
                     isfind = true;
