@@ -44,4 +44,17 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             this.ToTable("ITIL_DevelopModuleManage");
         }
     }
+
+    /// <summary>
+    ///ItilDevelopModuleManageChangeRecordModel
+    /// </summary>
+    public class ItilDevelopModuleManageChangeRecordModelMapping : EntityTypeConfiguration<ItilDevelopModuleManageChangeRecordModel>
+    {
+        public ItilDevelopModuleManageChangeRecordModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("ITIL_DevelopModuleManageChangeRecord");
+        }
+    }
 }

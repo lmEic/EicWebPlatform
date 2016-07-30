@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{46EE4727-9D40-44C8-961B-C832CD21DB4F}"
 EndProject
@@ -50,6 +50,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lm.Eic.Uti.Common.YleeDbHandler", "Lm.Eic.Uti.Common.YleeDbHandler\Lm.Eic.Uti.Common.YleeDbHandler\Lm.Eic.Uti.Common.YleeDbHandler.csproj", "{8301C71A-AFDE-4853-8C05-39FF96B207C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lm.Eic.Uti.SystemInit", "Lm.Eic.Uti.SystemInit\Lm.Eic.Uti.SystemInit.csproj", "{983ED587-3CA1-415B-9023-19135D817855}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lm.Eic.Framework.ProductMasterTests", "Lm.Eic.Framework.ProductMasterTests\Lm.Eic.Framework.ProductMasterTests.csproj", "{ABCF4026-5837-4B4A-B7B6-DFA5C9194EBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +119,10 @@ Global
 		{983ED587-3CA1-415B-9023-19135D817855}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{983ED587-3CA1-415B-9023-19135D817855}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{983ED587-3CA1-415B-9023-19135D817855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABCF4026-5837-4B4A-B7B6-DFA5C9194EBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABCF4026-5837-4B4A-B7B6-DFA5C9194EBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABCF4026-5837-4B4A-B7B6-DFA5C9194EBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABCF4026-5837-4B4A-B7B6-DFA5C9194EBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

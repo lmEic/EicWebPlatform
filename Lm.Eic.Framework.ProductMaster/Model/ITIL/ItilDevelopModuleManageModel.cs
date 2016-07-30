@@ -131,6 +131,18 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _memo = value; }
             get { return _memo; }
         }
+
+       
+        private string _parameterKey;
+        /// <summary>
+        ///模块名+类名+方法名
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterKey = value; }
+            get { return _parameterKey; }
+        }
+
         private DateTime _opdate;
         /// <summary>
         ///操作日期

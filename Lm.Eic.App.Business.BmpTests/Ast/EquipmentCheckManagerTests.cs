@@ -60,8 +60,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             model.CheckDate = DateTime.Now.ToDate();
             model.CheckResult = "";
             model.OpSign = "add";
-           var tem = AstService.EquipmentManager.CheckManager.Store(model);
-            if (!tem.Result) { Assert.Fail(); }
+           var result = AstService.EquipmentManager.CheckManager.Store(model);
+            if (!result.Result) { Assert.Fail(); }
            
         }
     }

@@ -24,7 +24,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -55,6 +55,7 @@
     <Compile Include="Business\Config\DataDictionaryManager.cs" />
     <Compile Include="Business\Config\FilePathManager.cs" />
     <Compile Include="Business\Config\PmConfigService.cs" />
+    <Compile Include="Business\Itil\ItilDevelopModuleCrud.cs" />
     <Compile Include="Business\Itil\ItilDevelopModuleManager.cs" />
     <Compile Include="Business\Itil\ItilService.cs" />
     <Compile Include="DbAccess\Mapping\LmProMasterDbContext.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="DbAccess\Repository\ItilDevelopModuleManageRepository.cs" />
     <Compile Include="Model\ConfigDataDictionaryModel.cs" />
     <Compile Include="Model\ITIL\ItilDevelopModuleManageModel.cs" />
+    <Compile Include="Model\ITIL\ItilDevelopModuleManageChangeRecordModel.cs" />
     <Compile Include="Model\ITIL\ItilSupplierTelModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
