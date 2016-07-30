@@ -330,7 +330,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <param name="dataSource">DataTable</param>
        /// <param name="columnsStr"></param>
        /// <returns></returns>
-        public static Dictionary<string, DataTable> GetGroupDataTableList(DataTable dataSource, string columnsStr) 
+        public static Dictionary<string, DataTable> GetGroupDataTables(DataTable dataSource, string columnsStr) 
         {
             try
             {
@@ -344,7 +344,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 
                 for (int count = 0; count < dataSource.Columns.Count; count++)
                 {
-                    if (dataSource.Columns[count].ColumnName.ToString() != columnsStr)
+                    if (dataSource.Columns[count].ColumnName.ToString() == columnsStr)
                     {
                         getIndex = count;
                         isFind = true;
@@ -358,18 +358,22 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 for (int count = 0; count < dataSource.Rows.Count; count++)
                 {
                     string tablevalue=dataSource.Rows[count][getIndex].ToString ();
-                    if (groupList.Contains(tablevalue))
+                    if (!groupList.Contains(tablevalue))
                     { groupList.Add(tablevalue); }
                 }
                 #endregion
                 #region 依据分列表 进行分组
                 foreach (string g in groupList)
                 {
-                    DataTable dt = new DataTable();
+                    DataTable dt = dataSource.Clone();
                       foreach(DataRow dr in dataSource.Rows)
-                      {   
-                          if(dr[getIndex].ToString()==g)
-                                   dt.Rows.Add(dr);  
+                      {
+                          if (dr[getIndex].ToString() == g)
+                          {
+                              DataRow dtRow = dt.NewRow();
+                              dtRow.ItemArray = dr.ItemArray;
+                             dt.Rows.Add(dtRow);
+                          } 
                       }
                     dicGroupingTable.Add(g, dt);
                 }

@@ -54,9 +54,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 dic.Add("SafekeepDepartment", "保管部门");
                 dic.Add("ManufacturingNumber", "制造编号");
 
-                DataTable dd = FileOperationExtension.GetDataTable<EquipmentModel>(_waitingMaintenanceList, dic);
+                DataTable newDataTable = FileOperationExtension.GetDataTable<EquipmentModel>(_waitingMaintenanceList, dic);
 
-                Dictionary<string, DataTable> dest = FileOperationExtension.GetGroupDataTableList(dd, "保管部门");
+                Dictionary<string, DataTable> dest = FileOperationExtension.GetGroupDataTables(newDataTable, "保管部门");
 
                 return NPOIHelper.ExportDataTableToExcelMultiSheets(dest);
               
