@@ -266,45 +266,63 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <param name="waitingGroupingList">List数组</param>
         /// <param name="gruopStr">要分组的字段</param>
         /// <returns></returns>
-        public static Dictionary<string, List<T>> GetGroupList<T>(List<T> waitGroupingEntityList, string gruopStr) where T : class
+        public static Dictionary<string, List<T>> GetGroupList<T>(List<T> dataSource, string propertyStr) where T : class
         {
-            Dictionary<string, List<T>> dicGroupingEntity = new Dictionary<string, List<T>>();
-            List<string> DepartmentList = new List<string>();
-            int i = 0;
-            bool isfind = false;
-            string entitystr = string.Empty;
-
-            if (waitGroupingEntityList == null || waitGroupingEntityList.Count <= 0)
-                return dicGroupingEntity;
-
-            T eee = waitGroupingEntityList[0];
-            Type tt = eee.GetType();
-            PropertyInfo[] tpis = eee.GetType().GetProperties();
-            for (int index = 0; index < tpis.Length; index++)
+            try
             {
-                if (tpis[index].Name == gruopStr)
+                if (dataSource == null || dataSource.Count <= 0)
+                    return null;
+
+                Dictionary<string, List<T>> dicGroupingEntity = new Dictionary<string, List<T>>();
+                List<string> groupList = new List<string>();
+
+                T model = dataSource[0];
+                PropertyInfo[] tpis = model.GetType().GetProperties();
+
+                #region 获取属性待Index
+                bool isFind = false;
+                int propertyInext = 0;
+                for (int index = 0; index < tpis.Length; index++)
                 {
-                    i = index;
-                    isfind = true;
-                    break;
+                    if (tpis[index].Name == propertyStr)
+                    {
+                        propertyInext = index;
+                        isFind = true;
+                        break;
+                    }
                 }
-            }
-            if (!isfind)
+                #endregion
+
+                #region 如果未找到指定待属性，返回
+                if (!isFind)
+                    return dicGroupingEntity;
+
+                string groupName = string.Empty;
+                //获取分组列表
+                dataSource.ForEach(e =>
+                {
+                    groupName = e.GetType().GetProperties()[propertyInext].GetValue(e, null).ToString();
+                    if (!groupList.Contains(groupName))
+                    {
+                        groupList.Add(groupName);
+                    }
+                });
+                #endregion
+
+                #region 依据分列表 进行分组
+                foreach (string group in groupList)
+                {
+                    var trm = dataSource.FindAll(e => e.GetType().GetProperties()[propertyInext].GetValue(e, null).ToString() == group);
+                    dicGroupingEntity.Add(group, trm);
+                }
+                #endregion
+
                 return dicGroupingEntity;
-            waitGroupingEntityList.ForEach(e =>
-            {
-                entitystr = e.GetType().GetProperties()[i].GetValue(e, null).ToString();
-                if (!DepartmentList.Contains(entitystr))
-                { DepartmentList.Add(entitystr); }
-            });
-
-            foreach (string Department in DepartmentList)
-            {
-                var trm = waitGroupingEntityList.FindAll(e => e.GetType().GetProperties()[i].GetValue(e, null).ToString() == Department);
-                dicGroupingEntity.Add(Department, trm);
             }
-
-            return dicGroupingEntity;
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
         }
 
         /// <summary>
