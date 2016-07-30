@@ -324,7 +324,64 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 throw new Exception(ex.ToString());
             }
         }
+        /// <summary> 
+        ///  DataTable按字段分组
+       /// </summary>
+        /// <param name="dataSource">DataTable</param>
+       /// <param name="columnsStr"></param>
+       /// <returns></returns>
+        public static Dictionary<string, DataTable> GetGroupDataTableList(DataTable dataSource, string columnsStr) 
+        {
+            try
+            {
+                if (dataSource == null || dataSource.Rows .Count  <= 0)
+                    return null;
+                Dictionary<string, DataTable> dicGroupingTable = new Dictionary<string, DataTable>();
+                List<string> groupList = new List<string>();
+                bool isFind = false;
+                int getIndex = 0;
+                #region 获取属性待Index
+                
+                for (int count = 0; count < dataSource.Columns.Count; count++)
+                {
+                    if (dataSource.Columns[count].ColumnName.ToString() != columnsStr)
+                    {
+                        getIndex = count;
+                        isFind = true;
+                        break;
+                    }
+                }
+                #endregion
+                if (!isFind) return dicGroupingTable;
 
+                #region  获取分组列表数组
+                for (int count = 0; count < dataSource.Rows.Count; count++)
+                {
+                    string tablevalue=dataSource.Rows[count][getIndex].ToString ();
+                    if (groupList.Contains(tablevalue))
+                    { groupList.Add(tablevalue); }
+                }
+                #endregion
+                #region 依据分列表 进行分组
+                foreach (string g in groupList)
+                {
+                    DataTable dt = new DataTable();
+                      foreach(DataRow dr in dataSource.Rows)
+                      {   
+                          if(dr[getIndex].ToString()==g)
+                                   dt.Rows.Add(dr);  
+                      }
+                    dicGroupingTable.Add(g, dt);
+                }
+                #endregion
+
+                return dicGroupingTable;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
         /// <summary>
         ///  把实体安需字典转化为DataTable
         /// </summary>

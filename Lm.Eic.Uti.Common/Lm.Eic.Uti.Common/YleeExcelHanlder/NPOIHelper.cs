@@ -12,6 +12,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
     /// </summary>
     public static class NPOIHelper
     {
+        #region <T> 实体转化为数据流
         /// <summary>
         /// 将数据导入到Excel内存流
         /// </summary>
@@ -132,13 +133,12 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
             }
         }
 
-        /// <summary>
-        /// 将数据导入到Excel内存流
-        /// </summary>
-        /// <typeparam name="T">数据类型</typeparam>
-        /// <param name="dataSource">数据集合</param>
-        /// <param name="xlsSheetName">Sheet名称</param>
-        /// <returns></returns>
+            /// <summary>
+            /// 一组实体数据 到Excel内存流
+            /// </summary>
+            /// <typeparam name="T">实体</typeparam>
+            /// <param name="DicDataSources">数据字典</param>
+            /// <returns></returns>
         public static MemoryStream ExportToExcelMultiSheets<T>(Dictionary<string, List<T>> DicDataSources) where T : class
         {
             try
@@ -259,7 +259,8 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
             #endregion 填充内容区域
             return sheet;
         }
-
+        
+    
         /// <summary>
         /// 导入到现有的Excel模板文件中
         /// </summary>
@@ -277,14 +278,16 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
             workbook.Write(localFile);
             localFile.Close();
         }
+        #endregion
 
+        #region   DataTable 转化为Excel内存流
         /// <summary>
-        ///   将DataTable数据导入到Excel内存流
+        ///  将DataTable数据导入到Excel内存流
         /// </summary>
         /// <param name="dt"></param>
-        /// <param name="xlsSheetName"></param>
+        /// <param name="xlsSheetName">SheetName</param>
         /// <returns></returns>
-        public static MemoryStream ExportToExcel(DataTable dt, string xlsSheetName)
+        public static MemoryStream ExportDataTableToExcel(DataTable dt, string xlsSheetName)
         {
             MemoryStream stream = new MemoryStream();
             NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
@@ -297,12 +300,57 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                  IRow row2 = sheet.CreateRow(i + 1);
+                IRow row2 = sheet.CreateRow(i + 1);
                 for (int j = 0; j < dt.Columns.Count; j++)
                     row2.CreateCell(j).SetCellValue(dt.Rows[i][j].ToString());
             }
             book.Write(stream);
             return stream;
-        }  
+        }
+
+       
+       /// <summary>
+       ///  一组DataTable导入到Excel内存流
+       /// </summary>
+       /// <param name="dicDataSources">DataTable组</param>
+       /// <returns></returns>
+        public static MemoryStream ExportDataTableToExcelMultiSheets(Dictionary<string, DataTable> dicDataSources) 
+        {
+            try
+            {
+                MemoryStream stream = new MemoryStream();
+                HSSFWorkbook workbook = new HSSFWorkbook();
+                foreach (string i in dicDataSources.Keys)
+                {
+                    if (dicDataSources[i] == null || dicDataSources[i].Rows.Count == 0) continue;
+                    ISheet sheet = DataTableCreatesheets(dicDataSources[i], i, workbook);
+                    sheet.ForceFormulaRecalculation = true;
+                }
+
+                workbook.Write(stream);
+                return stream;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+        private static ISheet DataTableCreatesheets(DataTable dt, string xlsSheetName, HSSFWorkbook book)
+        {
+            ISheet sheet = book.CreateSheet(xlsSheetName);
+            IRow row = sheet.CreateRow(0);
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                row.CreateCell(i).SetCellValue(dt.Columns[i].ColumnName);
+            }
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                IRow row2 = sheet.CreateRow(i + 1);
+                for (int j = 0; j < dt.Columns.Count; j++)
+                    row2.CreateCell(j).SetCellValue(dt.Rows[i][j].ToString());
+            }
+            return sheet;
+        }
+        #endregion
     }
 }

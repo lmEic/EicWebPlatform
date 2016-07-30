@@ -56,8 +56,12 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
                 DataTable dd = FileOperationExtension.GetDataTable<EquipmentModel>(_waitingMaintenanceList, dic);
 
+                Dictionary<string, DataTable> dest = FileOperationExtension.GetGroupDataTableList(dd, "保管部门");
 
-                return NPOIHelper.ExportToExcelMultiSheets(GetDicGroupListDataSources);
+                return NPOIHelper.ExportDataTableToExcelMultiSheets(dest);
+              
+
+                //return NPOIHelper.ExportToExcelMultiSheets(GetDicGroupListDataSources);
             }
             catch (Exception ex)
             {
