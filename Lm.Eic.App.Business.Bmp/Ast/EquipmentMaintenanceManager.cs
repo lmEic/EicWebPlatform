@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using CrudFactory = Lm.Eic.App.Business.Bmp.Ast.EquipmentCrudFactory;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using System.Data;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
@@ -44,6 +45,18 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             {    //依”部门“字段对各个部门生成保养列表
                 var GetDicGroupListDataSources = FileOperationExtension.GetDicGroupListRuleT<EquipmentModel>(_waitingMaintenanceList, "SafekeepDepartment");
                
+                Dictionary <string ,string > dic=new Dictionary<string,string> ();
+                dic.Add("AssetNumber", "财产编号");
+                dic.Add("EquipmentName", "名称");
+                dic.Add("EquipmentSpec", "规格型号");
+                dic.Add("FunctionDescription", "功能描述");
+                dic.Add("PlannedCheckDate", "计划校验日期");
+                dic.Add("SafekeepDepartment", "保管部门");
+                dic.Add("ManufacturingNumber", "制造编号");
+
+                DataTable dd = FileOperationExtension.GetDataTable<EquipmentModel>(_waitingMaintenanceList, dic);
+
+
                 return NPOIHelper.ExportToExcelMultiSheets(GetDicGroupListDataSources);
             }
             catch (Exception ex)

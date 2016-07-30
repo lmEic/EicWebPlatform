@@ -307,9 +307,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             return dicGroupingEntity;
         }
 
-
         /// <summary>
-        ///  数据按字典返回数据表
+        ///  把实体安需字典转化为DataTable
         /// </summary>
         /// <typeparam name="T">实体</typeparam>
         /// <param name="dicChineseEnglish">中英对照字典</param>
@@ -317,29 +316,54 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         public static DataTable GetDataTable<T>(List<T> EntityList, Dictionary<string, string> dicEnglishChinese) where T : class
         {
             DataTable myDateTable = new DataTable();
-            List<string> gorups = new List<string>();
-            foreach (string str in dicEnglishChinese.Keys )
+            List<string> groups = new List<string>();
+            List<int> indexNumber = new List<int>();
+            #region 查找字典中对应的实体字段
+            T entity = EntityList[0];
+            Type type = entity.GetType();
+            PropertyInfo[] tpi= type.GetProperties();
+            foreach (string str in dicEnglishChinese.Keys)
             {
-                gorups.Add(str);
+                for (int index = 0; index < tpi.Length; index++)
+                {
+                    if (tpi[index].Name == str)
+                    {
+                        groups.Add(str);
+                        indexNumber.Add(index);
+                        break;
+                    }
+                }
+            
             }
-
+#endregion
+            #region  把添加DataTable 列中文名称
+            DataColumn  d = new DataColumn("项次");
+            myDateTable.Columns.Add(d);
+            foreach (string g in groups)
+            {
+                DataColumn dc = new DataColumn(dicEnglishChinese[g].ToString());
+                myDateTable.Columns.Add(dc);
+            }
+            #endregion
+            #region 把添加DataTable 行分别赋值
+            int jj = 1;
             EntityList.ForEach(e =>
             {
+                DataRow dr = myDateTable.NewRow();
+                dr[0] = jj.ToString();
                 PropertyInfo[] tpis = e.GetType().GetProperties();
-                for (int index = 0; index < tpis.Length; index++)
-                {  
-                    if(gorups.Contains (tpis[index].Name))
-                    {
-
-                    }
-               
-                
-                } 
-
-                entitystr = e.GetType().GetProperties()[i].GetValue(e, null).ToString();
-                if (!DepartmentList.Contains(entitystr))
-                { DepartmentList.Add(entitystr); }
+                int j=1;
+                foreach  (int i in  indexNumber)
+                {
+                   string  entitystr = e.GetType().GetProperties()[i].GetValue(e, null).ToString();
+                   dr[j] = entitystr;
+                   j++;
+                }
+                myDateTable.Rows.Add(dr);
+                jj++;
+              
             });
+            #endregion
             return myDateTable;
         }
         /// <summary>

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-
+using System.Data;
 namespace Lm.Eic.Uti.Common.YleeExcelHanlder
 {
     /// <summary>
@@ -277,5 +277,32 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
             workbook.Write(localFile);
             localFile.Close();
         }
+
+        /// <summary>
+        ///   将DataTable数据导入到Excel内存流
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="xlsSheetName"></param>
+        /// <returns></returns>
+        public static MemoryStream ExportToExcel(DataTable dt, string xlsSheetName)
+        {
+            MemoryStream stream = new MemoryStream();
+            NPOI.HSSF.UserModel.HSSFWorkbook book = new NPOI.HSSF.UserModel.HSSFWorkbook();
+            ISheet sheet = book.CreateSheet(xlsSheetName);
+            IRow row = sheet.CreateRow(0);
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                row.CreateCell(i).SetCellValue(dt.Columns[i].ColumnName);
+            }
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                  IRow row2 = sheet.CreateRow(i + 1);
+                for (int j = 0; j < dt.Columns.Count; j++)
+                    row2.CreateCell(j).SetCellValue(dt.Rows[i][j].ToString());
+            }
+            book.Write(stream);
+            return stream;
+        }  
     }
 }
