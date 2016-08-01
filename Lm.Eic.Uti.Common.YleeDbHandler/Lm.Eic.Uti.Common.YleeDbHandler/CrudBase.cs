@@ -13,7 +13,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        abstract public OpResult Store(TEntity model);
+         public abstract OpResult Store(TEntity model);
 
         
     }
