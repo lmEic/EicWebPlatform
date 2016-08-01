@@ -130,7 +130,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreInputCheckRecord(EquipmentCheckRecordModel model)
         {
-            var result = 0;
+            var result = AstService.EquipmentManager.CheckManager.Store(model);
 
             return Json(result);
         }
@@ -176,10 +176,9 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         [HttpPost]
         [NoAuthenCheck]
-        public JsonResult StoreInputMaintenanceRecord()
+        public JsonResult StoreInputMaintenanceRecord(EquipmentMaintenanceRecordModel model)
         {
-            var result = 0;
-
+            var result = AstService.EquipmentManager.MaintenanceManager.Store(model);
             return Json(result);
         }
         #endregion
