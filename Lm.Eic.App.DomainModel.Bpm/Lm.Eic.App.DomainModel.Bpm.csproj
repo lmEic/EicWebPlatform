@@ -39,8 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ast\EquipmentCheckModel.cs" />
-    <Compile Include="Ast\EquipmentMaintenanceModel.cs" />
+    <Compile Include="Ast\EquipmentCheckRecordModel.cs" />
+    <Compile Include="Ast\EquipmentMaintenanceRecordModel.cs" />
     <Compile Include="Ast\EquipmentModel.cs" />
     <Compile Include="Ast\QueryEquipmentDto.cs" />
     <Compile Include="Hrm\Archives\ArchivesIdentityModel.cs" />

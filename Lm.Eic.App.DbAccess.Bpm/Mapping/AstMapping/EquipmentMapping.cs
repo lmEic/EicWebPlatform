@@ -20,26 +20,26 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.AstMapping
     /// <summary>
     ///设备校验EquipmentCheckModel
     /// </summary>
-    public class EquipmentCheckModelMapping : EntityTypeConfiguration<EquipmentCheckModel>
+    public class EquipmentCheckModelMapping : EntityTypeConfiguration<EquipmentCheckRecordModel>
     {
         public EquipmentCheckModelMapping()
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Ast_EquipmentCheck");
+            this.ToTable("Ast_EquipmentCheckRecord");
         }
     }
 
     /// <summary>
     ///设备保养EquipmentMaintenanceModel
     /// </summary>
-    public class EquipmentMaintenanceModelMapping : EntityTypeConfiguration<EquipmentMaintenanceModel>
+    public class EquipmentMaintenanceModelMapping : EntityTypeConfiguration<EquipmentMaintenanceRecordModel>
     {
         public EquipmentMaintenanceModelMapping()
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Ast_EquipmentMaintenance");
+            this.ToTable("Ast_EquipmentMaintenanceRecord");
         }
     }
 
