@@ -42,22 +42,20 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         public MemoryStream BuildWaitingMaintenanceList()
         {
             try
-            {    //依”部门“字段对各个部门生成保养列表
-                //字段对应的中文
-                Dictionary<string, string> dicEnglishChinese = new Dictionary<string, string>();
-                dicEnglishChinese.Add("AssetNumber", "财产编号");
-                dicEnglishChinese.Add("EquipmentName", "名称");
-                dicEnglishChinese.Add("EquipmentSpec", "规格型号");
-                dicEnglishChinese.Add("FunctionDescription", "功能描述");
-                dicEnglishChinese.Add("PlannedCheckDate", "计划校验日期");
-                dicEnglishChinese.Add("SafekeepDepartment", "保管部门");
-                dicEnglishChinese.Add("ManufacturingNumber", "制造编号");
+            {  
+                List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){ 
+                  new FileFieldMapping {FieldName ="AssetNumber",FieldDiscretion="财产编号",}  ,
+                  new FileFieldMapping {FieldName ="EquipmentName",FieldDiscretion="名称",} ,  
+                  new FileFieldMapping {FieldName ="EquipmentSpec",FieldDiscretion="规格型号",} ,
+                  new FileFieldMapping {FieldName ="FunctionDescription",FieldDiscretion="功能描述",}  ,
+                  new FileFieldMapping {FieldName ="PlannedCheckDate",FieldDiscretion="计划校验日期",} , 
+                  new FileFieldMapping {FieldName ="SafekeepDepartment",FieldDiscretion="保管部门",},
+                  new FileFieldMapping {FieldName ="ManufacturingNumber",FieldDiscretion="制造编号",} 
+                };
+               
 
-                DataTable newDataTable = FileOperationExtension.GetDataTable<EquipmentModel>(_waitingMaintenanceList, dicEnglishChinese);
-                ///按部门对其分组
-                Dictionary<string, DataTable> dataTableGrouping = FileOperationExtension.GetGroupDataTables(newDataTable, "保管部门");
-
-                return NPOIHelper.ExportDataTableToExcelMultiSheets(dataTableGrouping);
+                var dataGroupping = _waitingMaintenanceList.GetGroupList<EquipmentModel>("SafekeepDepartment");
+                return dataGroupping.ExportToExcelMultiSheets<EquipmentModel>(fieldmappping);
 
             }
             catch (Exception ex)
