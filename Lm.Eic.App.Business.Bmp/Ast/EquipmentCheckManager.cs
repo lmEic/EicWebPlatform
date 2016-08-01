@@ -86,7 +86,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
-        public List<EquipmentCheckModel> FindBy(QueryEquipmentDto qryDto)
+        public List<EquipmentCheckRecordModel> FindBy(QueryEquipmentDto qryDto)
         {
             return CrudFactory.EquipmentCheckCrud.FindBy(qryDto);
         }
@@ -96,7 +96,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult Store(EquipmentCheckModel model)
+        public OpResult Store(EquipmentCheckRecordModel model)
         {
             return CrudFactory.EquipmentCheckCrud.Store(model);
         }
