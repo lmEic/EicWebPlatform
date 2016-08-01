@@ -27,8 +27,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreProjectDevelopRecord(ItilDevelopModuleManageModel entity)
         {
-            var result = 0;
-
+            var result = ItilService.ItilDevelopModuleManager.Store(entity);
             return Json(result);
         }
         /// <summary>
@@ -39,8 +38,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetProjectDevelopModuleBy(List<string> progressStatuses)
         {
-            var result = 0;
-
+            var result = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(progressStatuses);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
     }

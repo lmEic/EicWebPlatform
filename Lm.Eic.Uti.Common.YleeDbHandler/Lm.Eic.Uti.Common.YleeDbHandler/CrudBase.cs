@@ -101,7 +101,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             var optimePi = IsHasProperty(entity, "OpTime");
             if (optimePi != null) optimePi.SetValue(entity, DateTime.Now.ToDateTime(),null);
             var opDatePi = IsHasProperty(entity, "OpDate");
-            if (opDatePi != null) optimePi.SetValue(entity, DateTime.Now.ToDate(), null);
+            if (opDatePi != null) opDatePi.SetValue(entity, DateTime.Now.ToDate(), null);
             try
             {
                 result=storeHandler(entity);
