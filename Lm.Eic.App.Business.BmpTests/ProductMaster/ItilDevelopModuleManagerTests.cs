@@ -27,7 +27,7 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
             ItilDevelopModuleManageModel model = new ItilDevelopModuleManageModel();
             model.ModuleName = "ModultName";
             model.MClassName = "ClassName";
-            model.MFunctionName = "FunctionName3";
+            model.MFunctionName = "FunctionName5115";
             model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
             model.FunctionDescription = "功能描述";
             model.DifficultyCoefficient = 5;

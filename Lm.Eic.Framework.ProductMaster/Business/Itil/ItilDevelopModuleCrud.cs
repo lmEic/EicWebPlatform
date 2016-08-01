@@ -48,7 +48,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     /// <summary>
     /// 模块开发管理CRUD
     /// </summary>
-    internal class ItilDevelopModuleManageCrud:CrudBase<ItilDevelopModuleManageModel,IItilDevelopModuleManageRepository>
+   public class ItilDevelopModuleManageCrud:CrudBase<ItilDevelopModuleManageModel,IItilDevelopModuleManageRepository>
     {
        
 
@@ -58,7 +58,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
            
         }
-
+      
         /// <summary>
         /// 获取开发任务列表
         /// </summary>
@@ -153,7 +153,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             });
         }
 
-        protected override void InitIrep()
+       protected override void InitIrep()
         {
             this.irep = new ItilDevelopModuleManageRepository();
         }
