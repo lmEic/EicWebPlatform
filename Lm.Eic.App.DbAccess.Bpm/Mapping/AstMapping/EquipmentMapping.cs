@@ -26,7 +26,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.AstMapping
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Ast_EquipmentCheck");
+            this.ToTable("Ast_EquipmentCheckRecord");
         }
     }
 
@@ -39,7 +39,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.AstMapping
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Ast_EquipmentMaintenance");
+            this.ToTable("Ast_EquipmentMaintenanceRecord");
         }
     }
 

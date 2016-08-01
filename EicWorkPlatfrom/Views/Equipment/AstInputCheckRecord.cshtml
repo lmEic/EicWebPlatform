@@ -1,16 +1,25 @@
-﻿<div class="panel panel-default" ng-controller="astInputCheckRecordCtrl">
+﻿<div class="panel panel-primary" ng-controller="astInputCheckRecordCtrl">
     <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
         <div bs-pane data-title="登记校验记录" data-name="initTab">
             <div class="well">
                 <div class="row">
-                    <div class="col-md-6">
-                        <form class="form-inline" novalidate>
+                    <div class="col-md-12">
+                        <form role="form" name="formCheckRecord" novalidate class="form-inline" onkeypress="if (event.keyCode === 13) return false;">
                             <div class="form-group">
-                                <label for="inputDate">校验日期</label>
-                                <input name="inputDate" type="date" class="form-control" ng-model="vmManager.planDate" format-date required />
+                                <label for="checkDate" class="control-label">校验日期</label>
+                                <input name="checkDate" type="date" class="form-control" ng-model="vm.CheckDate" format-date required />
+                                <div class="error-messages" ng-messages="formCheckRecord.checkDate.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">校验日期不能为空</small>
+                                </div>
                             </div>
-                            <span class="btn btn-primary" ng-click="vmManager.getAstCheckList()"><i class="fa fa-search"></i>查询</span>
-                            <a href="@Url.Action("CreateWaitingCheckList", "Equipment")" class="btn btn-success"><i class="fa fa-file-excel-o"></i>生成校验清单</a>
+                            <div class="form-group">
+                                <label for="assetNumber" class="control-label">财产编号</label>
+                                <input name="assetNumber" class="form-control" ng-model="vm.AssetNumber" required />
+                                <div class="error-messages" ng-messages="formCheckRecord.assetNumber.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">财产编号不能为空</small>
+                                </div>
+                                <span class="btn btn-primary" ng-click="vmManager.getAstCheckList()"><i class="fa fa-save"></i>保存</span>
+                            </div>
                         </form>
                     </div>
                 </div>
