@@ -55,7 +55,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         [TestMethod()]
         public void EquipmentCheckStoreTest()
         {
-            EquipmentCheckModel model = new EquipmentCheckModel();
+            EquipmentCheckRecordModel model = new EquipmentCheckRecordModel();
             model.AssetNumber = "Z169001";
             model.CheckDate = DateTime.Now.ToDate();
             model.CheckResult = "";

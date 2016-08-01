@@ -20,7 +20,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.AstMapping
     /// <summary>
     ///设备校验EquipmentCheckModel
     /// </summary>
-    public class EquipmentCheckModelMapping : EntityTypeConfiguration<EquipmentCheckModel>
+    public class EquipmentCheckModelMapping : EntityTypeConfiguration<EquipmentCheckRecordModel>
     {
         public EquipmentCheckModelMapping()
         {
@@ -33,7 +33,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.AstMapping
     /// <summary>
     ///设备保养EquipmentMaintenanceModel
     /// </summary>
-    public class EquipmentMaintenanceModelMapping : EntityTypeConfiguration<EquipmentMaintenanceModel>
+    public class EquipmentMaintenanceModelMapping : EntityTypeConfiguration<EquipmentMaintenanceRecordModel>
     {
         public EquipmentMaintenanceModelMapping()
         {

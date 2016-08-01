@@ -395,20 +395,28 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.vmManager = vmManager;
 })
 .controller('astBuildMaintenanceListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
-    //视图管理器
+    ///登记校验记录
+    var uiVM = {
+        AssetNumber: null,
+        CheckDate: null,
+        OpPerson: null,
+        OpSign: 'add',
+    }
+    $scope.vm = uiVM;
     var vmManager = {
         activeTab: 'initTab',
-        planMonth:'',
-        datasource: [],
         datasets: [],
-        getAstMaintenanceList: function () {
-            vmManager.datasource = [];
-            $scope.searchPromise = astDataopService.getAstMaintenanceListByPlanMonth(vmManager.planMonth).then(function (datas) {
-                vmManager.datasource = datas;
-            });
-        }
     };
     $scope.vmManager = vmManager;
+
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+
+    operate.saveAll = function (isValid) {
+
+    };
+   
+
 
    
 })

@@ -52,7 +52,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         public void MaintenanceStoreTest()
         {
             //ceshi 
-            EquipmentMaintenanceModel model = new EquipmentMaintenanceModel();
+            EquipmentMaintenanceRecordModel model = new EquipmentMaintenanceRecordModel();
             model.AssetNumber = "Z160002";
             model.MaintenanceDate = DateTime.Now.ToDate();
             model.MaintenanceResult = "";

@@ -3,14 +3,13 @@
 namespace Lm.Eic.App.DomainModel.Bpm.Ast
 {
     /// <summary>
-    ///设备校验
+    ///设备校验记录模型
     /// </summary>
     [Serializable]
-    public partial class EquipmentCheckModel
+    public partial class EquipmentCheckRecordModel
     {
-        public EquipmentCheckModel()
+        public EquipmentCheckRecordModel()
         { }
-
         #region Model
         private string _assetnumber;
         /// <summary>
@@ -20,6 +19,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         {
             set { _assetnumber = value; }
             get { return _assetnumber; }
+        }
+        private string _equipmentname;
+        /// <summary>
+        ///设备名称
+        /// </summary>
+        public string EquipmentName
+        {
+            set { _equipmentname = value; }
+            get { return _equipmentname; }
         }
         private DateTime _checkdate;
         /// <summary>
@@ -75,6 +83,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _documentpath = value; }
             get { return _documentpath; }
         }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
         private DateTime _opdate;
         /// <summary>
         ///操作日期
@@ -93,24 +119,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _optime = value; }
             get { return _optime; }
         }
-        private string _opperson;
-        /// <summary>
-        ///操作人
-        /// </summary>
-        public string OpPerson
-        {
-            set { _opperson = value; }
-            get { return _opperson; }
-        }
-        private string _opsign;
-        /// <summary>
-        ///操作标志
-        /// </summary>
-        public string OpSign
-        {
-            set { _opsign = value; }
-            get { return _opsign; }
-        }
         private decimal _id_key;
         /// <summary>
         ///自增键
@@ -122,4 +130,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         }
         #endregion Model
     }
+
+
 }

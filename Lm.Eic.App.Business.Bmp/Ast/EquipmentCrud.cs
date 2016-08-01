@@ -312,14 +312,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
-        public List<EquipmentCheckModel> FindBy(QueryEquipmentDto qryDto)
+        public List<EquipmentCheckRecordModel> FindBy(QueryEquipmentDto qryDto)
         {
             try
             {
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依据财产编号查询
-                        return irep.FindAll<EquipmentCheckModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
+                        return irep.FindAll<EquipmentCheckRecordModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
                     default: return null;
                 }
             }
@@ -338,7 +338,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult Store(EquipmentCheckModel model)
+        public OpResult Store(EquipmentCheckRecordModel model)
         {
             model.OpDate = DateTime.Now.ToDate();
             model.OpTime = DateTime.Now;
@@ -375,7 +375,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult SetEquipmentCheckDateRule(EquipmentCheckModel model)
+        private OpResult SetEquipmentCheckDateRule(EquipmentCheckRecordModel model)
         {
             if (model == null)
                return OpResult.SetResult("校验记录不能为空！", false);
@@ -416,14 +416,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
-        public List<EquipmentMaintenanceModel> FindBy(QueryEquipmentDto qryDto)
+        public List<EquipmentMaintenanceRecordModel> FindBy(QueryEquipmentDto qryDto)
         {
             try
             {
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依据财产编号查询
-                        return irep.FindAll<EquipmentMaintenanceModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
+                        return irep.FindAll<EquipmentMaintenanceRecordModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
                     default: return null;
                 }
             }
@@ -443,7 +443,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult Store(EquipmentMaintenanceModel model)
+        public OpResult Store(EquipmentMaintenanceRecordModel model)
         {
             model.OpDate = DateTime.Now.ToDate();
             model.OpTime = DateTime.Now;
@@ -480,7 +480,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="model"></param>
         /// <returns></保养returns>
-        private OpResult SetEquipmentMaintenanceDateRule(EquipmentMaintenanceModel model)
+        private OpResult SetEquipmentMaintenanceDateRule(EquipmentMaintenanceRecordModel model)
         {
             if (model == null)
                 return OpResult.SetResult("保养记录不能为空！", false);

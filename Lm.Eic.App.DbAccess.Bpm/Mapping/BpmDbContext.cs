@@ -17,9 +17,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         }
 
         public DbSet<EquipmentModel> Equipment { get; set; }
-        public DbSet<EquipmentCheckModel> EquipmentCheck { get; set; }
+        public DbSet<EquipmentCheckRecordModel> EquipmentCheck { get; set; }
 
-        public DbSet<EquipmentMaintenanceModel> EquipmentMaintenance { get; set; }
+        public DbSet<EquipmentMaintenanceRecordModel> EquipmentMaintenance { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

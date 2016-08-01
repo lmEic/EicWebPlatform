@@ -126,6 +126,14 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StoreInputCheckRecord(EquipmentCheckRecordModel model)
+        {
+            var result = 0;
+
+            return Json(result);
+        }
         #endregion
 
         #region equipment maintenance module method
@@ -161,6 +169,18 @@ namespace EicWorkPlatfrom.Controllers
         public ActionResult AstInputMaintenanceRecord()
         {
             return View();
+        }
+        /// <summary>
+        /// 保存保养记录
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StoreInputMaintenanceRecord()
+        {
+            var result = 0;
+
+            return Json(result);
         }
         #endregion
     }

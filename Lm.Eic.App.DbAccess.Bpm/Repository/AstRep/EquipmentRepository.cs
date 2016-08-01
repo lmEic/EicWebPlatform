@@ -13,19 +13,19 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.AstRep
     }
 
    
-    public interface IEquipmentCheckRepository : IRepository<EquipmentCheckModel> { }
+    public interface IEquipmentCheckRepository : IRepository<EquipmentCheckRecordModel> { }
     /// <summary>
     ///设备校验 仓储层
     /// </summary>
-    public class EquipmentCheckRepository : BpmRepositoryBase<EquipmentCheckModel>, IEquipmentCheckRepository
+    public class EquipmentCheckRepository : BpmRepositoryBase<EquipmentCheckRecordModel>, IEquipmentCheckRepository
     {
     }
 
-    public interface IEquipmentMaintenanceRepositor : IRepository<EquipmentMaintenanceModel> { }
+    public interface IEquipmentMaintenanceRepositor : IRepository<EquipmentMaintenanceRecordModel> { }
     /// <summary>
     /// 设备保养  仓储层
     /// </summary>
-    public class EquipmentMaintenanceRepository : BpmRepositoryBase<EquipmentMaintenanceModel> ,IEquipmentMaintenanceRepositor
+    public class EquipmentMaintenanceRepository : BpmRepositoryBase<EquipmentMaintenanceRecordModel> ,IEquipmentMaintenanceRepositor
     {
     }
 }
