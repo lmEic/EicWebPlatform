@@ -150,7 +150,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             {
                 ParameterKey = model.ParameterKey,
                 ChangeProgress = model.CurrentProgress,
-                 OpSign="add"
+                OpSign = "add"
             });
         }
 
