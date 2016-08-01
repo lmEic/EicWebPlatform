@@ -48,10 +48,11 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     /// <summary>
     /// 模块开发管理CRUD
     /// </summary>
-    internal class ItilDevelopModuleManageCrud : CrudBase<ItilDevelopModuleManageModel>
+    internal class ItilDevelopModuleManageCrud 
     {
         private IItilDevelopModuleManageRepository irep = null;
 
+        private List<ItilDevelopModuleManageModel> _waitingSendMailList = new List<ItilDevelopModuleManageModel>();
 
         public ItilDevelopModuleManageCrud()
         {
@@ -59,15 +60,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         }
 
         /// <summary>
-        /// 根据状态查询出任务列表
+        /// 获取开发任务列表
         /// </summary>
-        /// <param name="states"></param>
+        /// <param name="progressSignList">状态列表</param>
         /// <returns></returns>
-        public List<ItilDevelopModuleManageModel> FindBy(List<string> pregressSignList)
+        public List<ItilDevelopModuleManageModel> GetDevelopModuleManageListBy(List<string> progressSignList)
         {
-            var itilList = irep.FindAll<ItilDevelopModuleManageModel>(m => m.CheckPerson != "结案").ToList();
-            var resultList = from model in itilList where pregressSignList.Contains(model.CurrentPregress) select model;
-            return resultList.ToList();
+            return irep.Entities.Where(m => m.CurrentProgress != "结案" && progressSignList.Contains(m.CurrentProgress)).ToList();
         }
 
         /// <summary>
@@ -75,29 +74,20 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public override OpResult Store(ItilDevelopModuleManageModel model)
+        public  OpResult Store(ItilDevelopModuleManageModel model)
         {
             OpResult result = OpResult.SetResult("未执行任何操作！", false);
             if (model == null) return result;
             DateTime dateTime = DateTime.Now;
             model.OpTime = dateTime;
             model.OpDate = dateTime.ToDate();
-
-            if (model.ParameterKey.IsNullOrEmpty())
-            {
-                model.ParameterKey = model.ModuleName + model.MClassName + model.MFunctionName;
-            }
-            //添加操作纪录
-            OpResult changeRecordResult = AddChangeRecord(model);
-            if (!changeRecordResult.Result)
-                return changeRecordResult;
-
+            model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
             try
             {
                 switch (model.OpSign)
                 {
                     case OpMode.Add: //新增
-                        model.CurrentPregress = "待开发";
+                        model.CurrentProgress = "待开发";
                         result = irep.Insert(model).ToOpResult_Add("开发任务", model.Id_Key);
                         break;
 
@@ -105,13 +95,21 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                         result = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
                         break;
 
-                    case OpMode.Delete: //删除
-                        result = irep.Delete(model.Id_Key).ToOpResult_Delete("开发任务");
-                        break;
-
                     default:
                         result = OpResult.SetResult("操作模式溢出", false);
                         break;
+                }
+
+                //保存操作纪录
+                if (result.Result)
+                {
+                    OpResult changeRecordResult = SavaChangeRecord(model);
+                    if (!changeRecordResult.Result)
+                    {
+                        return changeRecordResult;
+                    }
+                    else {  _waitingSendMailList.Add(model); }//添加至待发送邮件列表
+                       
                 }
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
@@ -120,13 +118,17 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 
 
 
-
-        private static OpResult AddChangeRecord(ItilDevelopModuleManageModel model)
+        /// <summary>
+        /// 保存操作记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private static OpResult SavaChangeRecord(ItilDevelopModuleManageModel model)
         {
             return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleChangeRecordCrud.Store(new ItilDevelopModuleManageChangeRecordModel()
             {
                 ParameterKey = model.ParameterKey,
-                ChangePregress = model.CurrentPregress,
+                ChangeProgress = model.CurrentProgress,
                  OpSign="add"
             });
         }
@@ -140,7 +142,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     /// <summary>
     /// 模块开发管理操作记录CRUD
     /// </summary>
-    internal class ItilDevelopModuleChangeRecordCrud : CrudBase<ItilDevelopModuleManageChangeRecordModel>
+    internal class ItilDevelopModuleChangeRecordCrud 
     {
         private IItilDevelopModuleManageChangeRecordRepository irep = null;
 
@@ -154,7 +156,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public override OpResult Store(ItilDevelopModuleManageChangeRecordModel model)
+        public OpResult Store(ItilDevelopModuleManageChangeRecordModel model)
         {
             OpResult result = OpResult.SetResult("未执行任何操作！", false);
             if (model == null) return result;

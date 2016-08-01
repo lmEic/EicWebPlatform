@@ -95,14 +95,14 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _finishdate = value; }
             get { return _finishdate; }
         }
-        private string _currentpregress;
+        private string _currentprogress;
         /// <summary>
         ///当前进度
         /// </summary>
-        public string CurrentPregress
+        public string CurrentProgress
         {
-            set { _currentpregress = value; }
-            get { return _currentpregress; }
+            set { _currentprogress = value; }
+            get { return _currentprogress; }
         }
         private string _codingperson;
         /// <summary>

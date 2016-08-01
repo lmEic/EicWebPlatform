@@ -13,7 +13,7 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
        
         private string _parameterKey;
         /// <summary>
-        ///模块名+类名+方法名
+        ///模块名&类名&方法名
         /// </summary>
         public string ParameterKey
         {
@@ -21,14 +21,14 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             get { return _parameterKey; }
         }
 
-        private string _changePregress;
+        private string _changeProgress;
         /// <summary>
         ///修改进度
         /// </summary>
-        public string ChangePregress
+        public string ChangeProgress
         {
-            set { _changePregress = value; }
-            get { return _changePregress; }
+            set { _changeProgress = value; }
+            get { return _changeProgress; }
         }
 
         private DateTime _opdate;

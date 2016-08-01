@@ -16,11 +16,11 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <summary>
         /// 获取开发任务列表 
         /// </summary>
-        /// <param name="pregressSignList">进度标识列表</param>
+        /// <param name="progressSignList">进度标识列表</param>
         /// <returns></returns>
-        public List<ItilDevelopModuleManageModel> FindBy(List<string> pregressSignList)
+        public List<ItilDevelopModuleManageModel> FindBy(List<string> progressSignList)
         {
-            return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleManageCrud.FindBy(pregressSignList);
+            return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleManageCrud.GetDevelopModuleManageListBy(progressSignList);
         }
 
         /// <summary>
