@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Data;
 
 namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
 {
@@ -262,8 +263,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         ///  数据按字段分组
         /// </summary>
         /// <typeparam name="T">实体</typeparam>
-        /// <param name="dataSource">List数组</param>
-        /// <param name="propertyStr">要分组的字段</param>
+        /// <param name="waitingGroupingList">List数组</param>
+        /// <param name="gruopStr">要分组的字段</param>
         /// <returns></returns>
         public static Dictionary<string, List<T>> GetGroupList<T>(List<T> dataSource, string propertyStr) where T : class
         {
@@ -323,7 +324,133 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 throw new Exception(ex.ToString());
             }
         }
+        /// <summary> 
+        ///  DataTable按字段分组
+       /// </summary>
+        /// <param name="dataSource">DataTable</param>
+       /// <param name="columnsStr"></param>
+       /// <returns></returns>
+        public static Dictionary<string, DataTable> GetGroupDataTables(DataTable dataSource, string columnsStr) 
+        {
+            try
+            {
+                if (dataSource == null || dataSource.Rows .Count  <= 0)
+                    return null;
+                Dictionary<string, DataTable> dicGroupingTable = new Dictionary<string, DataTable>();
+                List<string> groupList = new List<string>();
+                bool isFind = false;
+                int getIndex = 0;
+                #region 获取属性待Index
+                
+                for (int count = 0; count < dataSource.Columns.Count; count++)
+                {
+                    if (dataSource.Columns[count].ColumnName.ToString() == columnsStr)
+                    {
+                        getIndex = count;
+                        isFind = true;
+                        break;
+                    }
+                }
+                #endregion
+                if (!isFind) return dicGroupingTable;
 
+                #region  获取分组列表数组
+                for (int count = 0; count < dataSource.Rows.Count; count++)
+                {
+                    string tablevalue=dataSource.Rows[count][getIndex].ToString ();
+                    if (!groupList.Contains(tablevalue))
+                    { groupList.Add(tablevalue); }
+                }
+                #endregion
+                #region 依据分列表 进行分组
+                foreach (string g in groupList)
+                {
+                    DataTable dt = dataSource.Clone();
+                      foreach(DataRow dr in dataSource.Rows)
+                      {
+                          if (dr[getIndex].ToString() == g)
+                          {
+                              DataRow dtRow = dt.NewRow();
+                              dtRow.ItemArray = dr.ItemArray;
+                             dt.Rows.Add(dtRow);
+                          } 
+                      }
+                    dicGroupingTable.Add(g, dt);
+                }
+                #endregion
+
+                return dicGroupingTable;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+        /// <summary>
+        ///  把实体安需字典转化为DataTable
+        /// </summary>
+        /// <typeparam name="T">实体</typeparam>
+        /// <param name="dicChineseEnglish">中英对照字典</param>
+        /// <returns></returns>
+        public static DataTable GetDataTable<T>(List<T> EntityList, Dictionary<string, string> dicEnglishChinese) where T : class
+        {
+            try 
+            {
+                DataTable myDateTable = new DataTable();
+                List<string> groups = new List<string>();
+                List<int> indexNumber = new List<int>();
+                #region 查找字典中对应的实体字段
+                T entity = EntityList[0];
+                Type type = entity.GetType();
+                PropertyInfo[] tpi = type.GetProperties();
+                foreach (string str in dicEnglishChinese.Keys)
+                {
+                    for (int index = 0; index < tpi.Length; index++)
+                    {
+                        if (tpi[index].Name == str)
+                        {
+                            groups.Add(str);
+                            indexNumber.Add(index);
+                            break;
+                        }
+                    }
+
+                }
+                #endregion
+                #region  把添加DataTable 列中文名称
+                DataColumn d = new DataColumn("项次");
+                myDateTable.Columns.Add(d);
+                foreach (string g in groups)
+                {
+                    DataColumn dc = new DataColumn(dicEnglishChinese[g].ToString());
+                    myDateTable.Columns.Add(dc);
+                }
+                #endregion
+                #region 把添加DataTable 行分别赋值
+                int jj = 1;
+                EntityList.ForEach(e =>
+                {
+                    DataRow dr = myDateTable.NewRow();
+                    dr[0] = jj.ToString();
+                    PropertyInfo[] tpis = e.GetType().GetProperties();
+                    int j = 1;
+                    foreach (int i in indexNumber)
+                    {
+                        string entitystr = e.GetType().GetProperties()[i].GetValue(e, null).ToString();
+                        dr[j] = entitystr;
+                        j++;
+                    }
+                    myDateTable.Rows.Add(dr);
+                    jj++;
+
+                });
+                #endregion
+                return myDateTable;
+            }
+            catch (Exception ex)
+            { throw new Exception(ex.ToString()); }
+           
+        }
         /// <summary>
         /// 扩展方法：导入到现有的Excel模板文件中
         /// </summary>
