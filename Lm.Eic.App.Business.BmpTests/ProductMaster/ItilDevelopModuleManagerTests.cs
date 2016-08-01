@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lm.Eic.Uti.Common.YleeExtension.Validation;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.BmpTests.ProductMaster
 {
@@ -13,12 +15,25 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
     public class ItilDevelopModuleManagerTests
     {
         [TestMethod()]
+        public void AutoTest()
+        {
+
+        }
+
+
+        [TestMethod()]
         public void ItilDevelopModuleManageStoreTest()
         {
             ItilDevelopModuleManageModel model = new ItilDevelopModuleManageModel();
             model.ModuleName = "ModultName";
             model.MClassName = "ClassName";
-            model.MFunctionName = "FunctionName";
+            model.MFunctionName = "FunctionName3";
+            model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
+            model.FunctionDescription = "功能描述";
+            model.DifficultyCoefficient = 5;
+            model.DevPriority = 5;
+            model.CodingPerson = "张明";
+            model.StartDate = DateTime.Now.ToDate();
             model.OpSign = "add";
             var result = ItilService.ItilDevelopModuleManager.Store(model);
             if (!result.Result) { Assert.Fail(); }
@@ -27,7 +42,11 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
         [TestMethod()]
         public void ItilDevelopModuleManageFindByTest()
         {
-            Assert.Fail();
+            List<string> stateList = new List<string>() { "待开发", "待审核" };
+            var devList = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(stateList);
+            if (devList.Count <= 0) { Assert.Fail(); }
+
+
         }
     }
 }

@@ -87,12 +87,11 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 switch (model.OpSign)
                 {
                     case OpMode.Add: //新增
-                        model.CurrentProgress = "待开发";
-                        result = irep.Insert(model).ToOpResult_Add("开发任务", model.Id_Key);
+                        result = AddDevelopModuleManageRecord(model);
                         break;
 
                     case OpMode.Edit: //修改
-                        result = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
+                        result = EditDevelopModuleManageRecord(model);
                         break;
 
                     default:
@@ -109,12 +108,40 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                         return changeRecordResult;
                     }
                     else {  _waitingSendMailList.Add(model); }//添加至待发送邮件列表
-                       
                 }
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
             return result;
         }
+
+        /// <summary>
+        /// 添加一条开发任务到数据库
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult AddDevelopModuleManageRecord(ItilDevelopModuleManageModel model)
+        {
+            if (irep.Entities.FirstOrDefault(m => m.ParameterKey == model.ParameterKey) != null)
+            {
+                return OpResult.SetResult("此任务已存在！", false);
+            }
+            OpResult result;
+            model.CurrentProgress = "待开发";
+            result = irep.Insert(model).ToOpResult_Add("开发任务", model.Id_Key);
+            return result;
+        }
+
+        /// <summary>
+        /// 更新一条开发任务
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult EditDevelopModuleManageRecord(ItilDevelopModuleManageModel model)
+        {
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
+        }
+
+       
 
 
 
@@ -123,7 +150,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private static OpResult SavaChangeRecord(ItilDevelopModuleManageModel model)
+        private OpResult SavaChangeRecord(ItilDevelopModuleManageModel model)
         {
             return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleChangeRecordCrud.Store(new ItilDevelopModuleManageChangeRecordModel()
             {
@@ -179,7 +206,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
             return result;
         }
-
 
         /// <summary>
         /// 根据约束键值查找操作记录
