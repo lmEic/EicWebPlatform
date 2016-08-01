@@ -63,11 +63,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// </summary>
         /// <param name="states"></param>
         /// <returns></returns>
-        public List<ItilDevelopModuleManageModel> FindBy(List<string> pregressSignList)
+        public List<ItilDevelopModuleManageModel> FindBy(List<string> progressSignList)
         {
-            var itilList = irep.FindAll<ItilDevelopModuleManageModel>(m => m.CheckPerson != "结案").ToList();
-            var resultList = from model in itilList where pregressSignList.Contains(model.CurrentPregress) select model;
-            return resultList.ToList();
+            return this.irep.Entities.Where(e => e.CurrentPregress != "结案" && progressSignList.Contains(e.CurrentPregress)).ToList();
         }
 
         /// <summary>
