@@ -39,7 +39,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, sysitilSer
         CodingPerson: null,
         CheckPerson: null,
         Memo: null,
-        OpSign: null,
+        OpSign: 'add',
     }
 
     $scope.vm = uiVM;
