@@ -52,8 +52,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         public void MaintenanceStoreTest()
         {
             //ceshi 
-            EquipmentMaintenanceRecordModel model = new EquipmentMaintenanceRecordModel();
-            model.AssetNumber = "Z160002";
+            EquipmentMaintenanceModel model = new EquipmentMaintenanceModel();
+            model.AssetNumber = "Z160001";
             model.MaintenanceDate = DateTime.Now.ToDate();
             model.MaintenanceResult = "";
             model.OpSign = "add";

@@ -14,15 +14,15 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
 
         protected IRep irep = default(IRep);
 
-        public CrudBase()
-        {
-            InitIrep();
-        }
-
         /// <summary>
-        /// 初始化数据访问接口
+        /// 初始化
         /// </summary>
-        protected abstract void InitIrep();
+        /// <param name="repository">数据访问接口</param>
+        public CrudBase(IRep repository)
+        {
+            irep = repository;
+        }
+       
 
         /// <summary>
         /// 持久化数据
