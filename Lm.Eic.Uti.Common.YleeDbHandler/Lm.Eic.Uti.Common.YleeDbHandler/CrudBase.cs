@@ -10,14 +10,13 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
 {
     public abstract class CrudBase<TEntity,IRep> 
         where TEntity : class, new()
-        where IRep:IRepository<TEntity>
     {
 
         protected IRep irep = default(IRep);
 
         public CrudBase()
         {
-           
+            InitIrep();
         }
 
         /// <summary>
@@ -28,6 +27,10 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <summary>
         /// 持久化数据
         /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="addfn"></param>
+        /// <param name="updatefn"></param>
+        /// <param name="delfn"></param>
         /// <returns></returns>
         protected OpResult PersistentDatas(TEntity entity, Func<TEntity, OpResult> addfn, Func<TEntity, OpResult> updatefn, Func<TEntity, OpResult> delfn)
         {
@@ -52,6 +55,32 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             return result;
         }
         /// <summary>
+        /// 持久化数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="addfn"></param>
+        /// <param name="updatefn"></param>
+        /// <returns></returns>
+        protected OpResult PersistentDatas(TEntity entity, Func<TEntity, OpResult> addfn, Func<TEntity, OpResult> updatefn)
+        {
+            OpResult result = OpResult.SetResult("持久化数据操作失败!", false);
+            string opSign = "default";
+            PropertyInfo pi = IsHasProperty(entity, "OpSign");
+            if (pi != null) opSign = pi.GetValue(entity, null) as string;
+            switch (opSign)
+            {
+                case OpMode.Add:
+                    result = addfn(entity);
+                    break;
+                case OpMode.Edit:
+                    result = updatefn(entity);
+                    break;
+                default:
+                    break;
+            }
+            return result;
+        }
+        /// <summary>
         /// 模型是否含有该属性
         /// </summary>
         /// <param name="entity"></param>
@@ -65,7 +94,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         }
 
     
-        protected OpResult Store(TEntity entity,Func<TEntity,OpResult> storeHandler)
+        protected OpResult StoreEntity(TEntity entity,Func<TEntity,OpResult> storeHandler)
         {
             OpResult result = null;
             if (entity == null) return OpResult.SetResult("entity can't set null!", false);
