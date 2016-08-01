@@ -23,7 +23,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         [TestMethod()]
         public void GetWaitingMaintenanceListByTest()
         {
-            string planMaintenanceDate = "2016-07";
+            string planMaintenanceDate = "201607";
             var waitingMainteanceList = AstService.EquipmentManager.MaintenanceManager.GetWaitingMaintenanceListBy(planMaintenanceDate);
             if (waitingMainteanceList.Count() > 0) { } else { Assert.Fail(); }
          
