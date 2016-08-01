@@ -48,15 +48,15 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     /// <summary>
     /// 模块开发管理CRUD
     /// </summary>
-    internal class ItilDevelopModuleManageCrud 
+    internal class ItilDevelopModuleManageCrud:CrudBase<ItilDevelopModuleManageModel,IItilDevelopModuleManageRepository>
     {
-        private IItilDevelopModuleManageRepository irep = null;
+       
 
         private List<ItilDevelopModuleManageModel> _waitingSendMailList = new List<ItilDevelopModuleManageModel>();
 
         public ItilDevelopModuleManageCrud()
         {
-            irep = new ItilDevelopModuleManageRepository();
+           
         }
 
         /// <summary>
@@ -76,28 +76,17 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public  OpResult Store(ItilDevelopModuleManageModel model)
         {
-            OpResult result = OpResult.SetResult("未执行任何操作！", false);
-            if (model == null) return result;
-            DateTime dateTime = DateTime.Now;
-            model.OpTime = dateTime;
-            model.OpDate = dateTime.ToDate();
-            model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
-            try
-            {
-                switch (model.OpSign)
+           return this.StoreEntity(model, mdl => {
+                model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
+                var result = this.PersistentDatas(model,
+                madd =>
                 {
-                    case OpMode.Add: //新增
-                        result = AddDevelopModuleManageRecord(model);
-                        break;
-
-                    case OpMode.Edit: //修改
-                        result = EditDevelopModuleManageRecord(model);
-                        break;
-
-                    default:
-                        result = OpResult.SetResult("操作模式溢出", false);
-                        break;
-                }
+                    return AddDevelopModuleManageRecord(model);
+                }, 
+                mupdate =>
+                {
+                    return EditDevelopModuleManageRecord(model);
+                });
 
                 //保存操作纪录
                 if (result.Result)
@@ -107,11 +96,10 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                     {
                         return changeRecordResult;
                     }
-                    else {  _waitingSendMailList.Add(model); }//添加至待发送邮件列表
+                    else { _waitingSendMailList.Add(model); }//添加至待发送邮件列表
                 }
-            }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -130,7 +118,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         private OpResult AddDevelopModuleManageRecord(ItilDevelopModuleManageModel model)
         {
-            if (irep.Entities.FirstOrDefault(m => m.ParameterKey == model.ParameterKey) != null)
+            if (irep.IsExist(m => m.ParameterKey == model.ParameterKey))
             {
                 return OpResult.SetResult("此任务已存在！", false);
             }
@@ -163,6 +151,11 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 ChangeProgress = model.CurrentProgress,
                  OpSign="add"
             });
+        }
+
+        protected override void InitIrep()
+        {
+            this.irep = new ItilDevelopModuleManageRepository();
         }
     }
 
