@@ -9,28 +9,26 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
     {
         public ItilDevelopModuleManageChangeRecordModel()
         { }
+
         #region Model
-       
-        private string _parameterKey;
+        private string _parameterkey;
         /// <summary>
         ///模块名&类名&方法名
         /// </summary>
         public string ParameterKey
         {
-            set { _parameterKey = value; }
-            get { return _parameterKey; }
+            set { _parameterkey = value; }
+            get { return _parameterkey; }
         }
-
-        private string _changeProgress;
+        private string _changeprogress;
         /// <summary>
-        ///修改进度
+        ///开发进度
         /// </summary>
         public string ChangeProgress
         {
-            set { _changeProgress = value; }
-            get { return _changeProgress; }
+            set { _changeprogress = value; }
+            get { return _changeprogress; }
         }
-
         private DateTime _opdate;
         /// <summary>
         ///操作日期
@@ -69,7 +67,7 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
         }
         private decimal _id_key;
         /// <summary>
-        ///自增键
+        ///自增减
         /// </summary>
         public decimal Id_Key
         {
@@ -77,6 +75,5 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             get { return _id_key; }
         }
         #endregion Model
-
     }
 }
