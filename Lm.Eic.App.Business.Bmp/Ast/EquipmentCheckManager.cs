@@ -23,7 +23,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public List<EquipmentModel> GetWaitingCheckListBy(DateTime plannedCheckDate)
         {
-            //todo:  dd
             try
             {
                 _waitingCheckList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { PlannedCheckDate = plannedCheckDate, SearchMode = 4 });

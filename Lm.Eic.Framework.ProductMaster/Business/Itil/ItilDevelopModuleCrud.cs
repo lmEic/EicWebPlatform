@@ -54,9 +54,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 
         private List<ItilDevelopModuleManageModel> _waitingSendMailList = new List<ItilDevelopModuleManageModel>();
 
-        public ItilDevelopModuleManageCrud()
+        public ItilDevelopModuleManageCrud() : base(new ItilDevelopModuleManageRepository())
         {
-           
+
         }
 
         /// <summary>
@@ -153,10 +153,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             });
         }
 
-        protected override void InitIrep()
-        {
-            this.irep = new ItilDevelopModuleManageRepository();
-        }
     }
 
 

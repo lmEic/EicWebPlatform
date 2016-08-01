@@ -231,9 +231,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return irep.Delete(model.Id_Key).ToOpResult_Delete("设备档案");
         }
-
-
-
         #endregion
 
 
@@ -247,17 +244,15 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             //校验处理 设备类别为量测设备才会校验
             model.IsCheck = model.CheckInterval == 0 ? "否" : "是";
-            if (model.IsCheck == "是" && model.EquipmentType == "量测设备")
-            {
-                model.CheckDate = model.CheckDate.ToDate();
-                model.PlannedCheckDate = model.CheckDate.AddMonths(model.CheckInterval);
-                model.CheckState = model.PlannedCheckDate > DateTime.Now ? "在期" : "超期";
-            }
-            else
+
+            if (model.IsCheck != "是" && model.EquipmentType != "量测设备")
             {
                 model.CheckDate = DateTime.Now.ToDate();//设置为默认日期
                 model.CheckInterval = 0;
             }
+            model.CheckDate = model.CheckDate.ToDate();
+            model.PlannedCheckDate = model.CheckDate.AddMonths(model.CheckInterval);
+          //  model.CheckState = model.PlannedCheckDate > DateTime.Now ? "在期" : "超期";
         }
 
         /// <summary>
@@ -267,20 +262,17 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         private void SetEquipmentMaintenanceRule(EquipmentModel model)
         {
             //保养处理
-            //  model.IsMaintenance = (model.MaintenanceDate == null && model.MaintenanceInterval == 0) ? "不保养" : "保养";
             model.IsMaintenance = model.AssetType == "低质易耗品" ? "否" : "是";
-            if (model.IsMaintenance == "是")
-            {
-                model.MaintenanceDate = model.MaintenanceDate.ToDate();
-                model.PlannedMaintenanceDate = model.MaintenanceDate.AddMonths(model.MaintenanceInterval);
-                model.PlannedMaintenanceMonth = model.PlannedMaintenanceDate.ToString("yyyyMM");
-                model.MaintenanceState = model.PlannedMaintenanceDate > DateTime.Now ? "在期" : "超期";
-            }
-            else
+            
+            if (model.IsMaintenance != "是")
             {
                 model.MaintenanceDate = DateTime.Now.ToDate();//设置为默认日期
                 model.MaintenanceInterval = 0;
             }
+            model.MaintenanceDate = model.MaintenanceDate.ToDate();
+            model.PlannedMaintenanceDate = model.MaintenanceDate.AddMonths(model.MaintenanceInterval);
+            model.PlannedMaintenanceMonth = model.PlannedMaintenanceDate.ToString("yyyyMM");
+          //  model.MaintenanceState = model.PlannedMaintenanceDate > DateTime.Now ? "在期" : "超期";
         }
 
 
