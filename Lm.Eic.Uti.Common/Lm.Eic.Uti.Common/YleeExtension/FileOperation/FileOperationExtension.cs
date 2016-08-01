@@ -226,9 +226,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             workbook.Write(localFile);
             localFile.Close();
         }
-
         /// <summary>
-        ///  扩展方法：导入到现有的Excel模板文件中
+        ///  扩展方法：按所需字段导入到现有的Excel模板文件中
         /// </summary>
         /// <typeparam name="T">实体</typeparam>
         /// <param name="dataSource">实体数据源</param>
@@ -254,7 +253,9 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 throw new Exception(ex.ToString());
             }
         }
-
+        /// <summary>
+        /// 创建Sheet表
+        /// </summary>
         private static ISheet WorkbookCreateSheet<T>(List<T> dataSource, string xlsSheetName, List<FileFieldMapping> FieldMapList, HSSFWorkbook workbook) where T : class, new()
         {
             ISheet sheet = workbook.CreateSheet(xlsSheetName);
@@ -306,7 +307,9 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             #endregion 填充内容区域
             return sheet;
         }
-
+        /// <summary>
+        /// 填充表格值
+        /// </summary>
         private static void FillIcell<T>(ICellStyle cellSytleDate, IRow rowContent, T entity, PropertyInfo[] tpis, int tipsIndex, int colIndex)
         {
             ICell cellContent = rowContent.CreateCell(colIndex);
@@ -364,15 +367,12 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             }
         }
 
-
-
-
         /// <summary>
-        ///  数据按字段分组
+        ///  扩展方法：数据按字段分组
         /// </summary>
         /// <typeparam name="T">实体</typeparam>
-        /// <param name="waitingGroupingList">List数组</param>
-        /// <param name="gruopStr">要分组的字段</param>
+        /// <param name="dataSource">List数组</param>
+        /// <param name="propertyStr">要分组的字段</param>
         /// <returns></returns>
         public static Dictionary<string, List<T>> GetGroupList<T>(this List<T> dataSource, string propertyStr) where T : class ,new ()
         {
@@ -433,14 +433,13 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             }
         }
 
-
-
-        /// <summary>
-        /// 一组实体数据 到Excel内存流
-        /// </summary>
-        /// <typeparam name="T">实体</typeparam>
-        /// <param name="DicDataSources">数据字典</param>
-        /// <returns></returns>
+       /// <summary>
+       /// 扩展方法：把一组实体数据 安所需字段 导入到现有的Excel模板文件中
+       /// </summary>
+       /// <typeparam name="T">实体</typeparam>
+       /// <param name="DicDataSources">一组实体数据</param>
+       /// <param name="FieldMapList">所需字段</param>
+       /// <returns></returns>
         public static MemoryStream ExportToExcelMultiSheets<T>(this Dictionary<string, List<T>> DicDataSources, List<FileFieldMapping> FieldMapList) where T : class ,new ()
         {
             try
