@@ -13,6 +13,7 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
     {
         public ItilDevelopModuleManageModel()
         { }
+
         #region Model
         private string _devid;
         /// <summary>
@@ -32,23 +33,23 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _modulename = value; }
             get { return _modulename; }
         }
-        private string _classname;
+        private string _mclassname;
         /// <summary>
         ///类名称
         /// </summary>
-        public string ClassName
+        public string MClassName
         {
-            set { _classname = value; }
-            get { return _classname; }
+            set { _mclassname = value; }
+            get { return _mclassname; }
         }
-        private string _functionname;
+        private string _mfunctionname;
         /// <summary>
         ///函数名称
         /// </summary>
-        public string FunctionName
+        public string MFunctionName
         {
-            set { _functionname = value; }
-            get { return _functionname; }
+            set { _mfunctionname = value; }
+            get { return _mfunctionname; }
         }
         private string _functiondescription;
         /// <summary>
@@ -86,23 +87,23 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _startdate = value; }
             get { return _startdate; }
         }
-        private DateTime _finishdate;
+        private DateTime? _finishdate;
         /// <summary>
         ///完成日期
         /// </summary>
-        public DateTime FinishDate
+        public DateTime? FinishDate
         {
             set { _finishdate = value; }
             get { return _finishdate; }
         }
-        private string _currentpregress;
+        private string _currentprogress;
         /// <summary>
-        ///当前进度
+        ///开发进度
         /// </summary>
-        public string CurrentPregress
+        public string CurrentProgress
         {
-            set { _currentpregress = value; }
-            get { return _currentpregress; }
+            set { _currentprogress = value; }
+            get { return _currentprogress; }
         }
         private string _codingperson;
         /// <summary>
@@ -130,6 +131,15 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
         {
             set { _memo = value; }
             get { return _memo; }
+        }
+        private string _parameterkey;
+        /// <summary>
+        ///模块名&类名&方法名
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterkey = value; }
+            get { return _parameterkey; }
         }
         private DateTime _opdate;
         /// <summary>
@@ -178,5 +188,6 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
         }
         #endregion Model
     }
+
 
 }
