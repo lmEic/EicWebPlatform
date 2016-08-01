@@ -41,29 +41,24 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public MemoryStream BuildWaitingCheckList()
         {
-            Dictionary<string, string> dicEnglishChinese = new Dictionary<string, string>();
-            dicEnglishChinese.Add("AssetNumber", " 编号");
-            dicEnglishChinese.Add("EquipmentName", "名称");
-            dicEnglishChinese.Add("EquipmentSpec", "规格型号");
-            dicEnglishChinese.Add("ManufacturingNumber", "制造编号");
-            dicEnglishChinese.Add("DeliveryDate", "购入日期");
-            dicEnglishChinese.Add("EquipmentType", "分类");
-
-              //对未超期的数据按部门分组的处理
-                var inDateList = GetPeriodWaitingCheckListRule(_waitingCheckList);
-                DataTable newDataTable = FileOperationExtension.GetDataTable<EquipmentModel>(inDateList, dicEnglishChinese);
-                Dictionary<string, DataTable> dataTableGrouping = FileOperationExtension.GetGroupDataTables(newDataTable, "分类");
-
-                //对超期的数据加入到数据字典中
-                var overdueDateList = GetOverdueWaitingCheckListRule(_waitingCheckList);
-                DataTable overdueNewDataTable = FileOperationExtension.GetDataTable<EquipmentModel>(overdueDateList, dicEnglishChinese);
-                dataTableGrouping.Add("超期待校验列表", overdueNewDataTable);
-                return NPOIHelper.ExportDataTableToExcelMultiSheets(dataTableGrouping);
-
-            // 对未来超期的数据按部门分组的处理
           
-           
-            //return NPOIHelper.ExportToExcel(_waitingCheckList, "待校验设备列表");
+            List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                  new FileFieldMapping {FieldName ="AssetNumber",FieldDiscretion="编号",}  ,
+                  new FileFieldMapping {FieldName ="EquipmentName",FieldDiscretion="名称",} ,  
+                  new FileFieldMapping {FieldName ="EquipmentSpec",FieldDiscretion="规格型号",} ,
+                  new FileFieldMapping {FieldName ="ManufacturingNumber",FieldDiscretion="制造编号",}  ,
+                  new FileFieldMapping {FieldName ="DeliveryDate",FieldDiscretion="购入日期",} , 
+                  new FileFieldMapping {FieldName ="EquipmentType",FieldDiscretion="分类",} 
+                };
+            //对未超期的数据按部门分组的处理
+                var inDateList = GetPeriodWaitingCheckListRule(_waitingCheckList);
+                var dataTableGrouping = inDateList.GetGroupList<EquipmentModel>("EquipmentType");
+            //对超期的数据加入到数据字典中
+            var overdueDateList = GetOverdueWaitingCheckListRule(_waitingCheckList);
+            
+            // 加入到数据字典中
+            dataTableGrouping.Add("超期待校验列表", overdueDateList);
+            return dataTableGrouping.ExportToExcelMultiSheets<EquipmentModel>(fieldmappping);
         }
 
         /// <summary>
