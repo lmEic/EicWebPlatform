@@ -115,6 +115,15 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         }
 
         /// <summary>
+        /// 发送邮件通知
+        /// </summary>
+        /// <returns></returns>
+        public OpResult SendMail()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// 添加一条开发任务到数据库
         /// </summary>
         /// <param name="model"></param>
@@ -140,10 +149,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
         }
-
-       
-
-
 
         /// <summary>
         /// 保存操作记录
