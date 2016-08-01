@@ -1266,6 +1266,7 @@
     <Content Include="Views\Equipment\AstBuildMaintenanceList.cshtml" />
     <Content Include="Views\Equipment\AstArchiveOverview.cshtml" />
     <Content Include="Views\SysITIL\ItilProjectDevelopManage.cshtml" />
+    <Content Include="Views\Equipment\AstInputCheckRecord.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

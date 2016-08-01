@@ -118,6 +118,14 @@ namespace EicWorkPlatfrom.Controllers
             var ds = AstService.EquipmentManager.CheckManager.BuildWaitingCheckList();
             return this.ExportToExcel(ds, "设备校验清单", "设备校验清单");
         }
+        /// <summary>
+        /// 输入校验记录
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AstInputCheckRecord()
+        {
+            return View();
+        }
         #endregion
 
         #region equipment maintenance module method
@@ -145,8 +153,15 @@ namespace EicWorkPlatfrom.Controllers
             var ds = AstService.EquipmentManager.MaintenanceManager.BuildWaitingMaintenanceList();
             return this.ExportToExcel(ds, "设备保养清单", "设备保养清单");
         }
-        #endregion
 
-       
+        /// <summary>
+        /// 输入保养记录
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AstInputMaintenanceRecord()
+        {
+            return View();
+        }
+        #endregion
     }
 }
