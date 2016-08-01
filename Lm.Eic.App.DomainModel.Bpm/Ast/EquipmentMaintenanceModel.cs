@@ -21,6 +21,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _assetnumber = value; }
             get { return _assetnumber; }
         }
+        private string _equipmentname;
+        /// <summary>
+        ///设备名称
+        /// </summary>
+        public string EquipmentName
+        {
+            set { _equipmentname = value; }
+            get { return _equipmentname; }
+        }
         private DateTime _maintenancedate;
         /// <summary>
         ///保养日期

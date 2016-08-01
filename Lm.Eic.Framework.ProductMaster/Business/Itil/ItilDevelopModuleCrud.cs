@@ -50,10 +50,11 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     /// </summary>
     internal class ItilDevelopModuleManageCrud:CrudBase<ItilDevelopModuleManageModel,IItilDevelopModuleManageRepository>
     {
-       
-
         private List<ItilDevelopModuleManageModel> _waitingSendMailList = new List<ItilDevelopModuleManageModel>();
 
+        /// <summary>
+        /// 构造函数 初始化数据访问接口
+        /// </summary>
         public ItilDevelopModuleManageCrud() : base(new ItilDevelopModuleManageRepository())
         {
 

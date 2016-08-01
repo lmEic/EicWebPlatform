@@ -377,6 +377,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             if (equipment == null)
                 return OpResult.SetResult("未找到校验单上的设备\r\n请确定财产编号是否正确！", false);
 
+            //设置校验记录 设备名称
+            model.EquipmentName = equipment.EquipmentName;
+
             equipment.CheckDate = model.CheckDate;
             equipment.OpSign = OpMode.Edit;
             return OpResult.SetResult("更新设备校验日期成功！", "更新设备校验日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
@@ -481,6 +484,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             var equipment = equipmentList.Count > 0 ? equipmentList[0] : null;
             if (equipment == null)
                 return OpResult.SetResult("未找到保养单上的设备\r\n请确定财产编号是否正确！", false);
+
+            //设置保养记录 设备名称
+            model.EquipmentName = equipment.EquipmentName;
 
             equipment.MaintenanceDate = model.MaintenanceDate;
             equipment.OpSign = OpMode.Edit;
