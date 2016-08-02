@@ -124,7 +124,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             if (irep.IsExist(m => m.ParameterKey == model.ParameterKey))
             {
-                return OpResult.SetResult("此任务已存在！", false);
+                return OpResult.SetResult("此任务已存在！");
             }
             OpResult result;
             model.CurrentProgress = "待开发";
@@ -168,7 +168,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult Store(ItilDevelopModuleManageChangeRecordModel model)
         {
-            OpResult result = OpResult.SetResult("未执行任何操作！", false);
+            OpResult result = OpResult.SetResult("未执行任何操作！");
             if (model == null) return result;
             DateTime dateTime = DateTime.Now;
             model.OpTime = dateTime;
@@ -182,7 +182,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                         break;
 
                     default:
-                        result = OpResult.SetResult("操作模式溢出", false);
+                        result = OpResult.SetResult("操作模式溢出");
                         break;
                 }
             }
