@@ -8,7 +8,6 @@ namespace EicWorkPlatfrom.Controllers
     {
         //
         // GET: /ITIL/
-
         public ActionResult Index()
         {
             return View();

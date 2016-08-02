@@ -21,7 +21,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     /// <summary>
     /// 模块开发管理Crud工厂
     /// </summary>
-    internal class ItilDevelopModuleManageCrudFactory
+    internal class ItilCrudFactory
     {
         /// <summary>
         /// 模块开发管理Crud
@@ -50,7 +50,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     /// </summary>
     internal class ItilDevelopModuleManageCrud : CrudBase<ItilDevelopModuleManageModel, IItilDevelopModuleManageRepository>
     {
-        private List<ItilDevelopModuleManageModel> _waitingSendMailList = new List<ItilDevelopModuleManageModel>();
+        private List<ItilDevelopModuleManageModel> _waittingSendMailList = new List<ItilDevelopModuleManageModel>();
 
         /// <summary>
         /// 构造函数 初始化数据访问接口
@@ -95,12 +95,12 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 //保存操作纪录
                 if (result.Result)
                 {
-                    OpResult changeRecordResult = ItilDevelopModuleManageCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
+                    OpResult changeRecordResult = ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
                     if (!changeRecordResult.Result)
                     {
                         return changeRecordResult;
                     }
-                    else { _waitingSendMailList.Add(model); }//添加至待发送邮件列表
+                    else { _waittingSendMailList.Add(model); }//添加至待发送邮件列表
                 }
                 return result;
             });
@@ -112,7 +112,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// </summary>
         /// <param name="model">实体</param>
         /// <returns></returns>
-        public OpResult ChangeProgress(ItilDevelopModuleManageModel model)
+        public OpResult ChangeProgressStatus(ItilDevelopModuleManageModel model)
         {
             var datetime = DateTime.Now;
             var date = datetime.ToDate();
@@ -129,12 +129,12 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             //保存操作纪录
             if (result.Result)
             {
-                OpResult changeRecordResult = ItilDevelopModuleManageCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
+                OpResult changeRecordResult = ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
                 if (!changeRecordResult.Result)
                 {
                     return changeRecordResult;
                 }
-                else { _waitingSendMailList.Add(model); }//添加至待发送邮件列表
+                else { _waittingSendMailList.Add(model); }//添加至待发送邮件列表
             }
             return result;
         }
@@ -231,7 +231,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult SavaChangeRecord(ItilDevelopModuleManageModel model)
         {
-            return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleChangeRecordCrud.Store(new ItilDevelopModuleManageChangeRecordModel()
+            return ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.Store(new ItilDevelopModuleManageChangeRecordModel()
             {
                 ModuleName = model.ModuleName,
                 MClassName = model.MClassName,
@@ -250,7 +250,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public List<ItilDevelopModuleManageChangeRecordModel> FindBy(string parameterKey)
         {
-            return irep.FindAll<ItilDevelopModuleManageChangeRecordModel>(m => m.ParameterKey == parameterKey).ToList();
+            return irep.Entities.Where(m => m.ParameterKey == parameterKey).ToList();
         }
     }
 }
