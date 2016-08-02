@@ -153,7 +153,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                  OpSign="add"
             });
         }
-
     }
 
 
@@ -164,6 +163,8 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     /// <summary>
     /// 模块开发管理操作记录CRUD
     /// </summary>
+    /// 
+  
     internal class ItilDevelopModuleChangeRecordCrud 
     {
         private IItilDevelopModuleManageChangeRecordRepository irep = null;
