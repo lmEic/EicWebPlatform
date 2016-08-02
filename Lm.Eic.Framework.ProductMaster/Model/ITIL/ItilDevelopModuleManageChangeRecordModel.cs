@@ -5,20 +5,47 @@ using System.Text;
 
 namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
 {
-   public class ItilDevelopModuleManageChangeRecordModel
+    public class ItilDevelopModuleManageChangeRecordModel
     {
         public ItilDevelopModuleManageChangeRecordModel()
         { }
 
         #region Model
-        private string _parameterkey;
+        private string _modulename;
         /// <summary>
-        ///模块名&类名&方法名
+        ///模块名称
         /// </summary>
-        public string ParameterKey
+        public string ModuleName
         {
-            set { _parameterkey = value; }
-            get { return _parameterkey; }
+            set { _modulename = value; }
+            get { return _modulename; }
+        }
+        private string _mclassname;
+        /// <summary>
+        ///类名称
+        /// </summary>
+        public string MClassName
+        {
+            set { _mclassname = value; }
+            get { return _mclassname; }
+        }
+        private string _mfunctionname;
+        /// <summary>
+        ///函数名称
+        /// </summary>
+        public string MFunctionName
+        {
+            set { _mfunctionname = value; }
+            get { return _mfunctionname; }
+        }
+        private string _functiondescription;
+        /// <summary>
+        ///功能描述
+        /// </summary>
+        public string FunctionDescription
+        {
+            set { _functiondescription = value; }
+            get { return _functiondescription; }
         }
         private string _changeprogress;
         /// <summary>
@@ -28,6 +55,15 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
         {
             set { _changeprogress = value; }
             get { return _changeprogress; }
+        }
+        private string _parameterkey;
+        /// <summary>
+        ///模块名&类名&方法名
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterkey = value; }
+            get { return _parameterkey; }
         }
         private DateTime _opdate;
         /// <summary>

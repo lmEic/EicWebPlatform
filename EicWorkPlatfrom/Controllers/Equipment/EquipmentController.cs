@@ -7,8 +7,7 @@ using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using Lm.Eic.App.Business.Bmp.Ast;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
-
-
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.App.Business.Bmp.Quantity;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
@@ -130,8 +129,8 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreInputCheckRecord(EquipmentCheckRecordModel model)
         {
+            model.CheckDate = model.CheckDate.ToDate();
             var result = AstService.EquipmentManager.CheckManager.Store(model);
-
             return Json(result);
         }
         #endregion
@@ -178,6 +177,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreInputMaintenanceRecord(EquipmentMaintenanceRecordModel model)
         {
+            model.MaintenanceDate = model.MaintenanceDate.ToDate();
             var result = AstService.EquipmentManager.MaintenanceManager.Store(model);
             return Json(result);
         }
