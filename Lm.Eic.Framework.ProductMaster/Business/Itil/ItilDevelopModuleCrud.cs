@@ -92,7 +92,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 //保存操作纪录
                 if (result.Result)
                 {
-                    OpResult changeRecordResult = SavaChangeRecord(model);
+                    OpResult changeRecordResult = ItilDevelopModuleManageCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
                     if (!changeRecordResult.Result)
                     {
                         return changeRecordResult;
@@ -139,20 +139,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
         }
 
-        /// <summary>
-        /// 保存操作记录
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        private OpResult SavaChangeRecord(ItilDevelopModuleManageModel model)
-        {
-            return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleChangeRecordCrud.Store(new ItilDevelopModuleManageChangeRecordModel()
-            {
-                ParameterKey = model.ParameterKey,
-                ChangeProgress = model.CurrentProgress,
-                 OpSign="add"
-            });
-        }
+       
 
     }
 
@@ -200,6 +187,25 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
             return result;
+        }
+
+        /// <summary>
+        /// 保存操作记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult SavaChangeRecord(ItilDevelopModuleManageModel model)
+        {
+            return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleChangeRecordCrud.Store(new ItilDevelopModuleManageChangeRecordModel()
+            {
+                ModuleName = model.ModuleName,
+                MClassName = model.MClassName,
+                MFunctionName = model.MFunctionName,
+                FunctionDescription = model.MFunctionName,
+                ParameterKey = model.ParameterKey,
+                ChangeProgress = model.CurrentProgress,
+                OpSign = "add"
+            });
         }
 
         /// <summary>

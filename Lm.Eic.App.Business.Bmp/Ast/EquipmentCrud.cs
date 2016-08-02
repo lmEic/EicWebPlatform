@@ -62,7 +62,17 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             irep = new EquipmentRepository();
         }
 
-        #region FindBy
+        #region Find
+
+        /// <summary>
+        /// 获取一台设备
+        /// </summary>
+        /// <param name="assetNumber">财产编号</param>
+        /// <returns></returns>
+        public EquipmentModel GetEquipment(string assetNumber)
+        {
+          return  irep.Entities.FirstOrDefault(m => m.AssetNumber == assetNumber);
+        }
 
         /// <summary>
         /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询 
@@ -440,19 +450,31 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public OpResult Store(EquipmentMaintenanceRecordModel model)
         {
+            //先查找查找设备 找到后判断校验日期要不要写入 然后写入校验记录 再修改设备信息 如果失败 删除校验记录
             model.OpDate = DateTime.Now.ToDate();
             model.OpTime = DateTime.Now;
             string opContext = "设备保养";
             OpResult opResult = OpResult.SetResult("未执行任何操作！", false);
+
+            if (model == null)
+                return OpResult.SetResult("保养记录不能为空！", false);
+
+            //设备是否存在
+            var equipment = EquipmentCrudFactory.EquipmentCrud.GetEquipment(model.AssetNumber);
+            if (equipment == null)
+                return OpResult.SetResult("未找到保养单上的设备\r\n请确定财产编号是否正确！", false);
+
+            //设置保养记录 设备名称
+            model.EquipmentName = equipment.EquipmentName;
+
+            //保存操作记录
             try
             {
-                opResult = SetEquipmentMaintenanceDateRule(model);
-                if (!opResult.Result) { return opResult; }
-
                 switch (model.OpSign)
                 {
                     case OpMode.Add: //新增
                         opResult = irep.Insert(model).ToOpResult_Add(opContext, model.Id_Key);
+                        opResult.Attach = model;
                         break;
                     case OpMode.Edit: //修改
                         opResult = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(opContext);
@@ -460,8 +482,23 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                     case OpMode.Delete: //删除
                         opResult = irep.Delete(model.Id_Key).ToOpResult_Delete(opContext);
                         break;
-                    default: return OpResult.SetResult("操作模式溢出", false);
+                    default:
+                        opResult = OpResult.SetResult("操作模式溢出", false);
+                        break;
                 }
+
+                //如果保存记录成功
+                if (opResult.Result)
+                {
+                    opResult = SetEquipmentMaintenanceDateRule(model, equipment);
+                    if (!opResult.Result) //如果设备更新设备
+                    {
+                        irep.Delete(model.Id_Key).ToOpResult_Delete(opContext);
+                        return opResult;
+                    }
+                }
+              
+
                 return opResult;
             }
             catch (Exception ex)
@@ -475,19 +512,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="model"></param>
         /// <returns></保养returns>
-        private OpResult SetEquipmentMaintenanceDateRule(EquipmentMaintenanceRecordModel model)
+        private OpResult SetEquipmentMaintenanceDateRule(EquipmentMaintenanceRecordModel model,EquipmentModel equipment)
         {
-            if (model == null)
-                return OpResult.SetResult("保养记录不能为空！", false);
-
-            var equipmentList = EquipmentCrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber, SearchMode = 1 });
-            var equipment = equipmentList.Count > 0 ? equipmentList[0] : null;
-            if (equipment == null)
-                return OpResult.SetResult("未找到保养单上的设备\r\n请确定财产编号是否正确！", false);
-
-            //设置保养记录 设备名称
-            model.EquipmentName = equipment.EquipmentName;
-
             equipment.MaintenanceDate = model.MaintenanceDate;
             equipment.OpSign = OpMode.Edit;
             return OpResult.SetResult("更新设备保养日期成功！", "更新设备保养日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
