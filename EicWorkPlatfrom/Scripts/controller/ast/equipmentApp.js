@@ -405,16 +405,34 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.vm = uiVM;
     var vmManager = {
         activeTab: 'initTab',
+        init: function () {
+            leeHelper.clearVM(uiVM, ['CheckDate']);
+        },
+        datasets:[],
     };
     $scope.vmManager = vmManager;
+
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.saveAll = function (isValid) {
-
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            astDataopService.storeInputCheckRecord(uiVM).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    var checkRecord = opresult.Attach;
+                    if (checkRecord !== null)
+                    {
+                        if (checkRecord.OpSign === 'add') {
+                            vmManager.datasets.push(checkRecord);
+                        }
+                        vmManager.init();
+                    }
+                    
+                });
+            });
+        })
     };
-    operate.refresh = function () { };
-
 })
+
 .controller('astBuildMaintenanceListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
     //视图管理器
     var vmManager = {
@@ -435,26 +453,41 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 })
 
 .controller('astInputMaintenanceRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
-    ///登记校验记录
+    ///设备保养记录模型
     var uiVM = {
-        AssetNumber: null,
-        CheckDate: null,
-        OpPerson: null,
-        OpSign: 'add',
+        AssetNumber:null,
+        EquipmentName:null,
+        MaintenanceDate:null,
+        DocumentPath:null,
+        OpPerson:null,
+        OpSign:null,
     }
     $scope.vm = uiVM;
     var vmManager = {
         activeTab: 'initTab',
+        init: function () {
+            leeHelper.clearVM(uiVM, ['MaintenanceDate']);
+        },
         datasets: [],
     };
     $scope.vmManager = vmManager;
-
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-
     operate.saveAll = function (isValid) {
-
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            astDataopService.storeInputMaintenanceRecord(uiVM).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    var MaintenanceRecord = opresult.Attach;
+                    if (MaintenanceRecord !== null)
+                    {
+                        if (MaintenanceRecord.OpSign === 'add') {
+                            vmManager.datasets.push(MaintenanceRecord);
+                        }
+                    }
+                    vmManager.init();
+                });
+            });
+        })
     };
-
 })
 
