@@ -259,6 +259,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         private static ISheet WorkbookCreateSheet<T>(List<T> dataSource, string xlsSheetName, List<FileFieldMapping> FieldMapList, HSSFWorkbook workbook) where T : class, new()
         {
             ISheet sheet = workbook.CreateSheet(xlsSheetName);
+       
             ICellStyle cellSytleDate = workbook.CreateCellStyle();
             IDataFormat format = workbook.CreateDataFormat();
             cellSytleDate.DataFormat = format.GetFormat("yyyy年mm月dd日");
@@ -268,7 +269,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             //设置表头样式
             ICellStyle headStyle = workbook.CreateCellStyle();
             headStyle.Alignment = HorizontalAlignment.Center;
-            IFont cellFontHeader = workbook.CreateFont();
+            IFont cellFontHeader = workbook.CreateFont(); 
             cellFontHeader.Boldweight = 700;
             cellFontHeader.FontHeightInPoints = 12;
             headStyle.SetFont(cellFontHeader);
@@ -293,13 +294,24 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 int colIndex = 0;
                 FieldMapList.ForEach(e =>
                 {
-                    for (int tipsIndex = 0; tipsIndex < tpis.Length; tipsIndex++)
+                    //添加项次序号
+                    if (e.FieldDiscretion == "项次")
                     {
+                        ICell cellContent = rowContent.CreateCell(colIndex);
+                        cellContent.SetCellValue((rowIndex+1).ToString());
+                        colIndex++; 
+                    }
+                    else 
+                    {
+                      for (int tipsIndex = 0; tipsIndex < tpis.Length; tipsIndex++)
+                      {
                         //如不是所需字段 跳过
                         if (e.FieldName != tpis[tipsIndex].Name) continue;
                         FillIcell<T>(cellSytleDate, rowContent, entity, tpis, tipsIndex, colIndex);
-                        colIndex++;
+                        colIndex++; 
+                       }
                     }
+                
                 });
             }
 

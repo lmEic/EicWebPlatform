@@ -42,6 +42,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
           
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                 new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次",} ,
                   new FileFieldMapping {FieldName ="AssetNumber",FieldDiscretion="编号",}  ,
                   new FileFieldMapping {FieldName ="EquipmentName",FieldDiscretion="名称",} ,  
                   new FileFieldMapping {FieldName ="EquipmentSpec",FieldDiscretion="规格型号",} ,

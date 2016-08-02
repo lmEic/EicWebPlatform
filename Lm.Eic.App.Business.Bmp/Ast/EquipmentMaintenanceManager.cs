@@ -44,13 +44,15 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             try
             {  
                 List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){ 
-                  new FileFieldMapping {FieldName ="AssetNumber",FieldDiscretion="财产编号",}  ,
+                  new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次",},
+                  new FileFieldMapping {FieldName ="AssetNumber",FieldDiscretion="财产编号",} ,
                   new FileFieldMapping {FieldName ="EquipmentName",FieldDiscretion="名称",} ,  
                   new FileFieldMapping {FieldName ="EquipmentSpec",FieldDiscretion="规格型号",} ,
-                  new FileFieldMapping {FieldName ="FunctionDescription",FieldDiscretion="功能描述",}  ,
-                  new FileFieldMapping {FieldName ="PlannedCheckDate",FieldDiscretion="计划校验日期",} , 
+                  new FileFieldMapping {FieldName ="FunctionDescription",FieldDiscretion="使用范围",},
+                  new FileFieldMapping {FieldName ="PlannedCheckDate",FieldDiscretion="计划校验日期",}, 
                   new FileFieldMapping {FieldName ="SafekeepDepartment",FieldDiscretion="保管部门",},
-                  new FileFieldMapping {FieldName ="ManufacturingNumber",FieldDiscretion="制造编号",} 
+                  new FileFieldMapping {FieldName ="ManufacturingNumber",FieldDiscretion="制造编号",} ,
+                  new FileFieldMapping {FieldName ="More",FieldDiscretion="备注",} 
                 };
                
 
