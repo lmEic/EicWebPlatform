@@ -75,15 +75,16 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public  OpResult Store(ItilDevelopModuleManageModel model)
+        public OpResult Store(ItilDevelopModuleManageModel model)
         {
-           return this.StoreEntity(model, mdl => {
+            return this.StoreEntity(model, mdl =>
+            {
                 model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
                 var result = this.PersistentDatas(model,
                 madd =>
                 {
                     return AddDevelopModuleManageRecord(model);
-                }, 
+                },
                 mupdate =>
                 {
                     return EditDevelopModuleManageRecord(model);
