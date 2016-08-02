@@ -9,7 +9,7 @@ namespace EicWorkPlatfrom
         {
 
             //IsCheck = true;
-            IsCheck = false;
+           IsCheck = false;
         }
 
         /// <summary>
