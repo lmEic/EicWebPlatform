@@ -20,7 +20,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public List<ItilDevelopModuleManageModel> GetDevelopModuleManageListBy(List<string> progressSignList)
         {
-            return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleManageCrud.GetDevelopModuleManageListBy(progressSignList);
+            return ItilCrudFactory.ItilDevelopModuleManageCrud.GetDevelopModuleManageListBy(progressSignList);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult Store(ItilDevelopModuleManageModel model)
         {
-            return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleManageCrud.Store(model);
+            return ItilCrudFactory.ItilDevelopModuleManageCrud.Store(model);
         }
 
         /// <summary>
@@ -38,9 +38,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// </summary>
         /// <param name="model">实体</param>
         /// <returns></returns>
-        public OpResult ChangeProgress(ItilDevelopModuleManageModel model)
+        public OpResult ChangeProgressStatus(ItilDevelopModuleManageModel model)
         {
-            return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleManageCrud.ChangeProgress(model);
+            return ItilCrudFactory.ItilDevelopModuleManageCrud.ChangeProgressStatus(model);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult SendMail()
         {
-            return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleManageCrud.SendMail();
+            return ItilCrudFactory.ItilDevelopModuleManageCrud.SendMail();
         }
     }
 
