@@ -457,7 +457,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     var uiVM = {
         AssetNumber:null,
         EquipmentName:null,
-        MaintenanceDate:null,
+        MaintenanceDate:new Date(),
         DocumentPath:null,
         OpPerson:null,
         OpSign:null,

@@ -105,6 +105,7 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         /// <param name="planDate"></param>
         /// <returns></returns>
+        [NoAuthenCheck]
         public ContentResult GetAstCheckListByPlanDate(DateTime planDate)
         {
             var datas = AstService.EquipmentManager.CheckManager.GetWaitingCheckListBy(planDate);
@@ -149,6 +150,7 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         /// <param name="planMonth"></param>
         /// <returns></returns>
+        [NoAuthenCheck]
         public ContentResult GetAstMaintenanceListByPlanMonth(string planMonth)
         {
             var datas = AstService.EquipmentManager.MaintenanceManager.GetWaitingMaintenanceListBy(planMonth);
