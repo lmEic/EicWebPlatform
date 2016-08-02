@@ -65,16 +65,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         #region Find
 
         /// <summary>
-        /// 获取一台设备
-        /// </summary>
-        /// <param name="assetNumber">财产编号</param>
-        /// <returns></returns>
-        public EquipmentModel GetEquipment(string assetNumber)
-        {
-          return  irep.Entities.FirstOrDefault(m => m.AssetNumber == assetNumber);
-        }
-
-        /// <summary>
         /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询 
         /// 4.依据录入日期查询待校验设备 5.依据录入日期查询待保养设备 6.生成设备总览表
         /// </summary>
@@ -346,15 +336,15 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             model.OpDate = DateTime.Now.ToDate();
             model.OpTime = DateTime.Now;
             string opContext = "设备校验";
-            OpResult opResult = OpResult.SetResult("未执行任何操作！", false);
+            OpResult opResult = OpResult.SetResult("未执行任何操作！");
 
             if (model == null)
-                return OpResult.SetResult("校验记录不能为空！", false);
+                return OpResult.SetResult("校验记录不能为空！");
 
             //设备是否存在
-            var equipment = EquipmentCrudFactory.EquipmentCrud.GetEquipment(model.AssetNumber);
+            var equipment = EquipmentCrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber, SearchMode = 1 }).FirstOrDefault();
             if (equipment == null)
-                return OpResult.SetResult("未找到保养单上的设备\r\n请确定财产编号是否正确！", false);
+                return OpResult.SetResult("未找到保养单上的设备\r\n请确定财产编号是否正确！");
 
             //设置保养记录 设备名称
             model.EquipmentName = equipment.EquipmentName;
@@ -376,7 +366,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                             opResult = irep.Delete(model.Id_Key).ToOpResult_Delete(opContext);
                             break;
                         default:
-                            opResult = OpResult.SetResult("操作模式溢出", false);
+                            opResult = OpResult.SetResult("操作模式溢出");
                             break;
                     }
 
@@ -390,9 +380,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                             return opResult;
                         }
                     }
+                    opResult.Attach = model;
                     return opResult;
                 }
-                else { return OpResult.SetResult("设备校验日期与录入日期相等", false);}
+                else 
+                { 
+                    return OpResult.SetResult("设备校验日期与录入日期相等");
+                }
             }
             catch (Exception ex)
             {
@@ -412,8 +406,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             return OpResult.SetResult("更新设备校验日期成功！", "更新设备校验日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
         }
         #endregion
-
-
     }
 
     /***********************************************   设备保养CRUD   *********************************
@@ -477,7 +469,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 return OpResult.SetResult("保养记录不能为空！", false);
 
             //设备是否存在
-            var equipment = EquipmentCrudFactory.EquipmentCrud.GetEquipment(model.AssetNumber);
+            var equipment = EquipmentCrudFactory.EquipmentCrud.FindBy (new QueryEquipmentDto (){ SearchMode =1, AssetNumber=model.AssetNumber}).FirstOrDefault();
             if (equipment == null)
                 return OpResult.SetResult("未找到保养单上的设备\r\n请确定财产编号是否正确！", false);
 
@@ -493,7 +485,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                     {
                         case OpMode.Add: //新增
                             opResult = irep.Insert(model).ToOpResult_Add(opContext, model.Id_Key);
-                            opResult.Attach = model;
                             break;
                         case OpMode.Edit: //修改
                             opResult = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(opContext);
@@ -516,6 +507,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                             return opResult;
                         }
                     }
+                    opResult.Attach = model;
                     return opResult;
                 }
                 else { return OpResult.SetResult("设备保养日期与录入日期相等", false); }

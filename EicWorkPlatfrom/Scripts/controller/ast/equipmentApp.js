@@ -408,7 +408,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         init: function () {
             leeHelper.clearVM(uiVM, ['CheckDate']);
         },
-        datasource:[],
         datasets:[],
     };
     $scope.vmManager = vmManager;
@@ -420,10 +419,14 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             astDataopService.storeInputCheckRecord(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     var checkRecord = opresult.Attach;
-                    if (checkRecord.OpSign === 'add') {
-                        vmManager.datasource.push(checkRecord);
+                    if (checkRecord !== null)
+                    {
+                        if (checkRecord.OpSign === 'add') {
+                            vmManager.datasets.push(checkRecord);
+                        }
+                        vmManager.init();
                     }
-                    vmManager.init();
+                    
                 });
             });
         })

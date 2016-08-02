@@ -40,7 +40,11 @@
             if (!result)
                 this.message = "您的操作失败！";
         }
-
+        public OpResult(string errorMsg)
+        {
+            this.result = false;
+            this.message = errorMsg;
+        }
         public OpResult(string successMessage, bool result, decimal idKey)
         {
             this.result = result;
@@ -86,11 +90,20 @@
         /// <param name="message"></param>
         /// <param name="result"></param>
         /// <returns></returns>
+        public static OpResult SetResult(string errorMsg)
+        {
+            return new OpResult(errorMsg);
+        }
+        /// <summary>
+        /// 设定操作结果
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public static OpResult SetResult(string successMessage, bool result)
         {
             return new OpResult(successMessage, result);
         }
-
         public static OpResult SetResult(string successMessage, bool result, decimal idKey = 0)
         {
             return new OpResult(successMessage, result, idKey);
