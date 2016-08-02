@@ -971,6 +971,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 		}
 		#endregion Model
     }
+
+
+
+    public class SampleIpqcPrintModel
+    {
+        public  SampleIpqcPrintModel()
+        { }
+
+    }
 #endregion 
    /// <summary>
    /// IPQC 抽测SPC记录数值
