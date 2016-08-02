@@ -24,20 +24,20 @@
                     </div>
                 </div>
             </div>
-            <div class="well" cg-busy="{promise:searchPromise}">
+            <div class="well">
                 <div class="row">
                     <div class="col-md-9">
 
                     </div>
-                    <div class="col-md-3">
-                        <div class="table-responsive">
+                    <div class="col-md-3" cg-busy="{promise:searchPromise}">
+                        <div class="table-responsive" ng-show="vmManager.datasets.length>0">
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr class="info">
                                         <th>财产编号</th>
                                         <th>设备名称</th>
                                         <th>校验日期</th>
-                                      
+
                                     </tr>
                                 </thead>
                                 <tbody>
