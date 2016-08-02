@@ -139,11 +139,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         private OpResult EditDevelopModuleManageRecord(ItilDevelopModuleManageModel model)
         {
+            model.CurrentProgress = "待开发";
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
         }
-
-       
-
     }
 
 
