@@ -77,6 +77,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult Store(ItilDevelopModuleManageModel model)
         {
+            //TODO: 修改一下  修改为 先存储开发管理记录 然后存储开发任务，如果开发任务存储失败 Delete 开发管理记录
             return this.StoreEntity(model, mdl =>
             {
                 model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
@@ -110,6 +111,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult SendMail()
         {
+            //TODO：根据 _waitingSendMailList 发送邮件进行通知
             return null;
         }
 

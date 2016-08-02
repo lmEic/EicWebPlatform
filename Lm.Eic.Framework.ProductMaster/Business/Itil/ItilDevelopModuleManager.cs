@@ -32,6 +32,15 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleManageCrud.Store(model);
         }
+
+        /// <summary>
+        /// 发送邮件通知
+        /// </summary>
+        /// <returns></returns>
+        public OpResult SendMail()
+        {
+            return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleManageCrud.SendMail();
+        }
     }
 
 
