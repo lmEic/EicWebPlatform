@@ -4,21 +4,23 @@
             <div class="well">
                 <div class="row">
                     <div class="col-md-12">
-                        <form role="form" name="formCheckRecord" novalidate class="form-inline" onkeypress="if (event.keyCode === 13) return false;">
+                        <form role="form" name="formMaintenanceRecord" novalidate class="form-inline" onkeypress="if (event.keyCode === 13) return false;">
                             <div class="form-group">
                                 <label for="maintenanceDate" class="control-label">保养日期</label>
                                 <input name="maintenanceDate" class="form-control" ng-model="vm.MaintenanceDate" type="date" format-date required />
-                                <div class="error-messages" ng-messages="formMaintenance.maintenanceDate.$error" ng-show="operate.showValidation">
+                                <div class="error-messages" ng-messages="formMaintenanceRecord.maintenanceDate.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">保养日期不能为空</small>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="assetNumber" class="control-label">财产编号</label>
                                 <input name="assetNumber" class="form-control" ng-model="vm.AssetNumber" required />
-                                <div class="error-messages" ng-messages="formCheckRecord.assetNumber.$error" ng-show="operate.showValidation">
+                                <div class="error-messages" ng-messages="formMaintenanceRecord.assetNumber.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">财产编号不能为空</small>
                                 </div>
-                                <span class="btn btn-primary" ng-click="vmManager.getAstCheckList()"><i class="fa fa-save"></i>保存</span>
+                                <button class="btn btn-primary" ng-click="operate.saveAll(formMaintenanceRecord.$valid)"><i class="fa fa-save"></i>保存</button>
+    
+                                <span yl-operatemsg-board></span>
                             </div>
                         </form>
                     </div>
@@ -48,10 +50,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div yl-pagination
-                                 data-datasource="vmManager.datasource"
-                                 data-dataset="vmManager.datasets">
-                            </div>
                         </div>
                     </div>
                 </div>
