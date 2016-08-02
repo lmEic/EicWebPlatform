@@ -105,11 +105,25 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             planDate: planDate,
         });
     };
+    ///保存设备校验记录
+    ast.storeInputCheckRecord = function (model) {
+        var url = astUrlPrefix + 'StoreInputCheckRecord';
+        return ajaxService.postData(url, {
+            model: model,
+        });
+    };
     //获取设备保养清单
     ast.getAstMaintenanceListByPlanMonth = function (planMonth) {
         var url = astUrlPrefix + 'GetAstMaintenanceListByPlanMonth';
         return ajaxService.getData(url, {
             planMonth: planMonth,
+        });
+    };
+    ///保存设备保养记录
+    ast.storeInputMaintenanceRecord = function (model) {
+        var url = astUrlPrefix + 'StoreInputMaintenanceRecord';
+        return ajaxService.postData(url, {
+            model: model,
         });
     };
     return ast;
@@ -379,22 +393,48 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.vmManager = vmManager;
 })
 .controller('astInputCheckRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
+    ///登记校验记录
+    var uiVM = {
+        AssetNumber: null,
+        EquipmentName: null,
+        CheckDate: new Date(),
+        DocumentPath: null,
+        OpPerson: null,
+        OpSign: 'add',
+    }
+    $scope.vm = uiVM;
+    var vmManager = {
+        activeTab: 'initTab',
+    };
+    $scope.vmManager = vmManager;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveAll = function (isValid) {
+
+    };
+    operate.refresh = function () { };
+
+})
+.controller('astBuildMaintenanceListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
     //视图管理器
     var vmManager = {
         activeTab: 'initTab',
-        planDate: new Date('2017-01-19'),
+        planMonth: '',
         datasource: [],
         datasets: [],
-        getAstCheckList: function () {
+        getAstMaintenanceList: function () {
             vmManager.datasource = [];
-            $scope.searchPromise = astDataopService.getAstCheckListByPlanDate(vmManager.planDate).then(function (datas) {
+            $scope.searchPromise = astDataopService.getAstMaintenanceListByPlanMonth(vmManager.planMonth).then(function (datas) {
                 vmManager.datasource = datas;
             });
         }
     };
     $scope.vmManager = vmManager;
+
+   
 })
-.controller('astBuildMaintenanceListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
+
+.controller('astInputMaintenanceRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
     ///登记校验记录
     var uiVM = {
         AssetNumber: null,
@@ -415,27 +455,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     operate.saveAll = function (isValid) {
 
     };
-   
-
-
-   
-})
-.controller('astInputMaintenanceRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
-    //视图管理器
-    var vmManager = {
-        activeTab: 'initTab',
-        planMonth: '',
-        datasource: [],
-        datasets: [],
-        getAstMaintenanceList: function () {
-            vmManager.datasource = [];
-            $scope.searchPromise = astDataopService.getAstMaintenanceListByPlanMonth(vmManager.planMonth).then(function (datas) {
-                vmManager.datasource = datas;
-            });
-        }
-    };
-    $scope.vmManager = vmManager;
-
 
 })
 
