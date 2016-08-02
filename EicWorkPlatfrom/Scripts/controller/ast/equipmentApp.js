@@ -478,8 +478,11 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             astDataopService.storeInputMaintenanceRecord(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     var MaintenanceRecord = opresult.Attach;
-                    if (MaintenanceRecord.OpSign === 'add') {
-                        vmManager.datasets.push(MaintenanceRecord);
+                    if (MaintenanceRecord !== null)
+                    {
+                        if (MaintenanceRecord.OpSign === 'add') {
+                            vmManager.datasets.push(MaintenanceRecord);
+                        }
                     }
                     vmManager.init();
                 });
