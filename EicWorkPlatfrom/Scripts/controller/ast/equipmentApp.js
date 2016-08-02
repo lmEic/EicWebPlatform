@@ -408,9 +408,11 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         init: function () {
             leeHelper.clearVM(uiVM, ['CheckDate']);
         },
+        datasource:[],
         datasets:[],
     };
     $scope.vmManager = vmManager;
+
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.saveAll = function (isValid) {
@@ -419,7 +421,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     var checkRecord = opresult.Attach;
                     if (checkRecord.OpSign === 'add') {
-                        vmManager.datasets.push(checkRecord);
+                        vmManager.datasource.push(checkRecord);
                     }
                     vmManager.init();
                 });
@@ -427,6 +429,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         })
     };
 })
+
 .controller('astBuildMaintenanceListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
     //视图管理器
     var vmManager = {
