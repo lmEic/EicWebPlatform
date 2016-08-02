@@ -18,7 +18,7 @@
                                 <div class="error-messages" ng-messages="formCheckRecord.assetNumber.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">财产编号不能为空</small>
                                 </div>
-                                <span class="btn btn-primary" ng-click="vmManager.getAstCheckList()"><i class="fa fa-save"></i>保存</span>
+                                <button class="btn btn-primary" ng-click="operate.saveAll(formCheckRecord.$valid)"><i class="fa fa-save"></i>保存</button>
                             </div>
                         </form>
                     </div>
