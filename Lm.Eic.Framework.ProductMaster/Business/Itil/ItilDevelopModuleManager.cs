@@ -34,6 +34,16 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         }
 
         /// <summary>
+        /// 修改开发进度
+        /// </summary>
+        /// <param name="model">实体</param>
+        /// <returns></returns>
+        public OpResult ChangeProgress(ItilDevelopModuleManageModel model)
+        {
+            return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleManageCrud.ChangeProgress(model);
+        }
+
+        /// <summary>
         /// 发送邮件通知
         /// </summary>
         /// <returns></returns>
