@@ -21,7 +21,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     /// <summary>
     /// 模块开发管理Crud工厂
     /// </summary>
-    internal class ItilDevelopModuleManageCrudFactory
+    internal class ItilCrudFactory
     {
         /// <summary>
         /// 模块开发管理Crud
@@ -30,7 +30,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             get { return OBulider.BuildInstance<ItilDevelopModuleManageCrud>(); }
         }
-       
+
         /// <summary>
         /// 模块开发管理进度履历Crud
         /// </summary>
@@ -48,9 +48,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     /// <summary>
     /// 模块开发管理CRUD
     /// </summary>
-    internal class ItilDevelopModuleManageCrud:CrudBase<ItilDevelopModuleManageModel,IItilDevelopModuleManageRepository>
+    internal class ItilDevelopModuleManageCrud : CrudBase<ItilDevelopModuleManageModel, IItilDevelopModuleManageRepository>
     {
-        private List<ItilDevelopModuleManageModel> _waitingSendMailList = new List<ItilDevelopModuleManageModel>();
+        private List<ItilDevelopModuleManageModel> _waittingSendMailList = new List<ItilDevelopModuleManageModel>();
 
         /// <summary>
         /// 构造函数 初始化数据访问接口
@@ -77,6 +77,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult Store(ItilDevelopModuleManageModel model)
         {
+
             //TODO: 修改一下  修改为 先存储开发管理记录 然后存储开发任务，如果开发任务存储失败 Delete 开发管理记录
             return this.StoreEntity(model, mdl =>
             {
@@ -94,15 +95,48 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 //保存操作纪录
                 if (result.Result)
                 {
-                    OpResult changeRecordResult = ItilDevelopModuleManageCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
+                    OpResult changeRecordResult = ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
                     if (!changeRecordResult.Result)
                     {
                         return changeRecordResult;
                     }
-                    else { _waitingSendMailList.Add(model); }//添加至待发送邮件列表
+                    else { _waittingSendMailList.Add(model); }//添加至待发送邮件列表
                 }
                 return result;
             });
+        }
+
+
+        /// <summary>
+        /// 修改开发进度
+        /// </summary>
+        /// <param name="model">实体</param>
+        /// <returns></returns>
+        public OpResult ChangeProgressStatus(ItilDevelopModuleManageModel model)
+        {
+            var datetime = DateTime.Now;
+            var date = datetime.ToDate();
+            var result = this.irep.Update(u => u.Id_Key == model.Id_Key, m => new ItilDevelopModuleManageModel()
+            {
+                CurrentProgress = model.CurrentProgress,
+                FinishDate = model.FinishDate,
+                CheckPerson = model.CheckPerson,
+                OpDate = date,
+                OpTime = datetime,
+                OpSign = "edit"
+            }).ToOpResult_Eidt("开发任务");
+
+            //保存操作纪录
+            if (result.Result)
+            {
+                OpResult changeRecordResult = ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
+                if (!changeRecordResult.Result)
+                {
+                    return changeRecordResult;
+                }
+                else { _waittingSendMailList.Add(model); }//添加至待发送邮件列表
+            }
+            return result;
         }
 
         /// <summary>
@@ -152,7 +186,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     /// <summary>
     /// 模块开发管理操作记录CRUD
     /// </summary>
-    internal class ItilDevelopModuleChangeRecordCrud 
+    internal class ItilDevelopModuleChangeRecordCrud
     {
         private IItilDevelopModuleManageChangeRecordRepository irep = null;
 
@@ -197,7 +231,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult SavaChangeRecord(ItilDevelopModuleManageModel model)
         {
-            return ItilDevelopModuleManageCrudFactory.ItilDevelopModuleChangeRecordCrud.Store(new ItilDevelopModuleManageChangeRecordModel()
+            return ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.Store(new ItilDevelopModuleManageChangeRecordModel()
             {
                 ModuleName = model.ModuleName,
                 MClassName = model.MClassName,
@@ -216,7 +250,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public List<ItilDevelopModuleManageChangeRecordModel> FindBy(string parameterKey)
         {
-            return irep.FindAll<ItilDevelopModuleManageChangeRecordModel>(m => m.ParameterKey == parameterKey).ToList();
+            return irep.Entities.Where(m => m.ParameterKey == parameterKey).ToList();
         }
     }
 }
