@@ -22,6 +22,16 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 变更开发模块进度状态模板
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ActionResult ChangeDevelopModuleProgressStatusTpl()
+        {
+            return View();
+        }
+
 
         [NoAuthenCheck]
         public JsonResult StoreProjectDevelopRecord(ItilDevelopModuleManageModel entity)
@@ -39,6 +49,17 @@ namespace EicWorkPlatfrom.Controllers
         {
             var result = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(progressStatuses);
             return DateJsonResult(result);
+        }
+        /// <summary>
+        /// 改变模块开发进度状态
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult ChangeDevelopModuleProgressStatus(ItilDevelopModuleManageModel entity)
+        {
+            var result = ItilService.ItilDevelopModuleManager.ChangeProgressStatus(entity);
+            return Json(result);
         }
     }
 }

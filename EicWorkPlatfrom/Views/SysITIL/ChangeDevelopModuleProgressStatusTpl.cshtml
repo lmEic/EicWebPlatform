@@ -1,0 +1,57 @@
+﻿<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4>
+                    <i class="fa fa-bell-o"></i>
+                    {{title}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel">
+                    <form name="modalForm" role="form" class="form-horizontal" novalidate>
+                        <div class="form-group">
+                            <label for="finishDate" class="col-md-2 control-label">变更日期</label>
+                            <div class="col-md-4">
+                                <input name="finishDate" type="date" class="form-control" ng-model="vm.FinishDate" format-date required />
+                                <div class="error-messages" ng-messages="modalForm.finishDate.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">变更日期不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkPerson" class="col-md-2 control-label">执行人</label>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-primary" ng-model="vm.CheckPerson"
+                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择执行人"
+                                        data-bs-options="cp.name as cp.text for cp in vmManager.codePersons track by $index" data-bs-select>
+                                    <span class="caret"></span>
+                                </button>
+                                <input name="CheckPerson" class="form-control" ng-model="vm.CheckPerson" ng-show="false" required />
+                                <div class="error-messages" ng-messages="modalForm.checkPerson.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">执行人不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDate" class="col-md-2 control-label">开发进度:</label>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-default" ng-model="vm.CurrentProgress"
+                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择当前进度..."
+                                        data-bs-options="proStatus.value as proStatus.label for proStatus in vmManager.progressStatuses track by $index" data-bs-select>
+                                    <span class="caret"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
+                <button type="button" class="btn btn-primary" ng-click="save(modalForm.$valid)"><i class="fa fa-save"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -29,39 +29,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     .state('astInputMaintenanceRecord', {
         templateUrl: urlPrefix + 'AstInputMaintenanceRecord',
     })
-    ////--------------员工档案管理--------------------------
-    // .state('hrEmployeeDataInput', {
-    //     templateUrl: 'HrArchivesManage/HrEmployeeDataInput',
-    // })
-    //.state('hrDepartmentChange', {
-    //    templateUrl: 'HrArchivesManage/HrDepartmentChange',
-    //})
-    //.state('hrPostChange', {
-    //    templateUrl: 'HrArchivesManage/HrPostChange',
-    //})
-    // .state('hrStudyManage', {
-    //     templateUrl: 'HrArchivesManage/HrStudyManage',
-    // })
-    // .state('hrTelManage', {
-    //     templateUrl: 'HrArchivesManage/HrTelManage',
-    // })
-    ////--------------档案业务管理--------------------------
-    // .state('hrPrintCard', {
-    //     templateUrl: 'HrArchivesManage/HrPrintCard',
-    // })
-    ////--------------考勤业务管理--------------------------
-    // .state('hrClassTypeManage', {
-    //     templateUrl: 'HrAttendanceManage/HrClassTypeManage',
-    // })
-    // .state('hrAttendInToday', {
-    //     templateUrl: 'HrAttendanceManage/HrAttendInToday',
-    // })
-    // .state('hrAskLeaveManage', {
-    //     templateUrl: 'HrAttendanceManage/HrAskLeaveManage',
-    // })
-    // .state('hrHandleException', {
-    //     templateUrl: 'HrAttendanceManage/HrHandleException',
-    // })
 })
 .factory('astDataopService', function (ajaxService) {
     var ast = {};
