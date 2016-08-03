@@ -96,6 +96,15 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _finishdate = value; }
             get { return _finishdate; }
         }
+        private string _finishmonth;
+        /// <summary>
+        ///完成月份
+        /// </summary>
+        public string FinishMonth
+        {
+            set { _finishmonth = value; }
+            get { return _finishmonth; }
+        }
         private string _currentprogress;
         /// <summary>
         ///开发进度
