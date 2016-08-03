@@ -8,7 +8,6 @@ namespace EicWorkPlatfrom.Controllers
     {
         //
         // GET: /ITIL/
-
         public ActionResult Index()
         {
             return View();
@@ -36,10 +35,10 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="progressStatuses"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetProjectDevelopModuleBy(List<string> progressStatuses)
+        public ContentResult GetProjectDevelopModuleBy(List<string> progressStatuses)
         {
             var result = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(progressStatuses);
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return DateJsonResult(result);
         }
     }
 }

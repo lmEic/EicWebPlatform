@@ -47,9 +47,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
 
     /***********************************************   设备档案CRUD   *********************************
-  *                                        
-  *  2017-7-27  初版   张明                  
-  ***************************************************************************************************/
+   *                                        
+   *  2017-7-27  初版   张明                  
+   ***************************************************************************************************/
     /// <summary>
     /// 设备档案CRUD
     /// </summary>
@@ -358,6 +358,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                     {
                         case OpMode.Add: //新增
                             opResult = irep.Insert(model).ToOpResult_Add(opContext, model.Id_Key);
+                            opResult.Attach = model;
                             break;
                         case OpMode.Edit: //修改
                             opResult = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(opContext);

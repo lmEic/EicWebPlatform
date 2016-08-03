@@ -35,7 +35,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, sysitilSer
         DevPriority: 1,
         StartDate: new Date(),
         FinishDate: null,
-        CurrentPregress: null,
+        CurrentProgress: null,
         CodingPerson: null,
         CheckPerson: null,
         Memo: null,
