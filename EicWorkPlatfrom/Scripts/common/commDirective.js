@@ -265,7 +265,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             dataset: '='
         },
         link: function (scope, element, attrs) {
-            var defaultItemsPerPage = 5;
+            var defaultItemsPerPage = 8;
             var defaultPagesLength = 9;
 
             var config = {

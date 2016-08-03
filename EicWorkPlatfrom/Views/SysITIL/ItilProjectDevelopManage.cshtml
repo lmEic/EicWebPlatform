@@ -176,32 +176,41 @@
                                 <th>函数名称</th>
                                 <th>功能描述</th>
                                 <th>难度系数</th>
-                                <th>优先级</th>
                                 <th>开始日期</th>
                                 <th>当前进度</th>
                                 <th>执行人</th>
+                                <th>状态变更</th>
                                 <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in vmManager.editDatas track by $index">
+                            <tr ng-repeat="item in vmManager.datasets track by $index">
                                 <td>{{item.ModuleName}}</td>
                                 <td>{{item.MClassName}}</td>
                                 <td>{{item.MFunctionName}}</td>
                                 <td>{{item.FunctionDescription}}</td>
                                 <td>{{item.DifficultyCoefficient}}</td>
-                                <td>{{item.DevPriority}}</td>
                                 <td>{{item.StartDate}}</td>
                                 <td>{{item.CurrentProgress}}</td>
                                 <td>{{item.CodingPerson}}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
-                                        修改
+                                    <div class="alert alert-success" ng-show="item.EditPerson!==null">
+                                        审核人:<span>{{item.EditPerson}}</span>
+                                        审核日期:<span>{{item.EditDate}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-xs btn-success" ng-click="vmManager.changeProgressStatus(item)" title="变更进度">
+                                        变更进度
                                     </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                    <div yl-pagination
+                         data-datasource="vmManager.datasource"
+                         data-dataset="vmManager.datasets">
+                    </div>
                 </div>
             </div>
         </div>

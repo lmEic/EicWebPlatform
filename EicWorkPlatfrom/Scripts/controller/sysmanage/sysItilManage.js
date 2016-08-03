@@ -19,11 +19,18 @@ smModule.factory('sysitilService', function (ajaxService) {
             progressStatuses: progressStatuses,
         });
     };
+    ///改变模块开发进度状态
+    itil.changeDevelopModuleProgressStatus = function (entity) {
+        var url = urlPrefix + 'ChangeDevelopModuleProgressStatus';
+        return ajaxService.postData(url, {
+            entity: entity,
+        });
+    };
     return itil;
 });
 smModule.controller('supTelManageCtrl', function ($scope, $modal, sysitilService) {
 });
-smModule.controller('itilProjectDevelopManageCtrl', function ($scope, sysitilService) {
+smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysitilService) {
     ///视图模型
     var uiVM = {
         MClassName: null,
@@ -34,12 +41,15 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, sysitilSer
         DifficultyCoefficient: 1,
         DevPriority: 1,
         StartDate: new Date(),
-        FinishDate: null,
+        FinishDate:null,
         CurrentProgress: null,
         CodingPerson: null,
         CheckPerson: null,
         Memo: null,
+        EditPerson: null,
+        EditDate:new Date(),
         OpSign: 'add',
+        Id_Key:0,
     }
 
     $scope.vm = uiVM;
@@ -75,12 +85,25 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, sysitilSer
             uiVM.OpSign = 'edit';
             $scope.vm = uiVM;
         },
-        editDatas: [],
+        datasource: [],
+        datasets:[],
         getDevelopModules: function () {
+            vmManager.datasource = [];
             $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(vmManager.selectedProgressStatuses).then(function (datas) {
-                vmManager.editDatas = datas;
+                var rows = [];
+                angular.forEach(datas, function (item) {
+                    var rowItem = _.clone(uiVM);
+                    leeHelper.copyVm(item, rowItem);
+                    rows.push(rowItem);
+                });
+                vmManager.datasource = rows;
             });
         },
+        changeProgressStatus: function (item) {
+            uiVM = _.clone(item);
+            uiVM.OpSign = 'eidt';
+            operate.editModal.$promise.then(operate.editModal.show);
+        }
     };
 
     $scope.vmManager = vmManager;
@@ -88,6 +111,31 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, sysitilSer
 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
+    operate.editModal = $modal({
+        title: "状态变更窗口",
+        templateUrl: 'SysITIL/ChangeDevelopModuleProgressStatusTpl/',
+        controller: function ($scope) {
+            $scope.vm = uiVM;
+            var op = Object.create(leeDataHandler.operateStatus);
+            $scope.operate = op;
+            $scope.vmManager = vmManager;
+
+
+            $scope.save = function (isvalidate) {
+                leeDataHandler.dataOperate.add(op, isvalidate, function () {
+                    sysitilService.changeDevelopModuleProgressStatus($scope.vm).then(function (opresult) {
+                        var item = _.find(vmManager.datasource, { Id_Key: uiVM.Id_Key });
+                        if (angular.isDefined(item)) {
+                            leeHelper.copyVm(uiVM, item);
+                            vmManager.init();
+                            operate.editModal.$promise.then(operate.editModal.hide);
+                        }
+                    });
+                });
+            };
+        },
+        show: false,
+    });
     operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             sysitilService.storeProjectDevelopRecord(uiVM).then(function (opresult) {
