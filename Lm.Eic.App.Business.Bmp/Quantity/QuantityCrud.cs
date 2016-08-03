@@ -54,7 +54,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             return irep.Update(e => e.Id_key == model.Id_key, model).ToOpResult("编辑数据");
         }
-        private   List<SampleItemsIpqcDataModel> FindBy()
+        //private List<SampleItemsIpqcDataModel> FindBy();
 
     }
 
