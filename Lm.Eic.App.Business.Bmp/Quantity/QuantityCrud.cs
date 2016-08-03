@@ -30,6 +30,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         {
             return this.StoreEntity(model, mdl =>
             {
+              
                 var result = this.PersistentDatas(model,
                     add =>
                     {
@@ -37,7 +38,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                     },
                     updata =>
                     {
-                       return AddSampleIpqcItemsData(model);
+                        return UpdataSampleIpqcItemsData(model);
                     }
                   );
                 return result;
@@ -47,11 +48,15 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
         private OpResult AddSampleIpqcItemsData(SampleItemsIpqcDataModel model)
         {
 
-            return irep.Insert(model).ToOpResult_Add("搞定");
+            return irep.Insert(model).ToOpResult_Add("数据增加完成");
         }
+        private OpResult UpdataSampleIpqcItemsData(SampleItemsIpqcDataModel model)
+        {
+            return irep.Update(e => e.Id_key == model.Id_key, model).ToOpResult("编辑数据");
+        }
+        private   List<SampleItemsIpqcDataModel> FindBy()
 
     }
 
-    
 }
                                                                
