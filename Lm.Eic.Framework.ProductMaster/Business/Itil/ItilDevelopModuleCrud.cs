@@ -127,7 +127,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 CurrentProgress = model.CurrentProgress,
                 FinishDate = model.FinishDate,
                 FinishMonth = model.FinishMonth,
-                CheckPerson = model.CheckPerson,
+               Executor = model.Executor,
                 OpDate = date,
                 OpTime = datetime,
                 OpSign = "edit"

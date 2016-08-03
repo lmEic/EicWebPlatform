@@ -11,6 +11,15 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
         { }
 
         #region Model
+        private string _executor;
+        /// <summary>
+        ///执行人
+        /// </summary>
+        public string Executor
+        {
+            set { _executor = value; }
+            get { return _executor; }
+        }
         private string _modulename;
         /// <summary>
         ///模块名称
