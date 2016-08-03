@@ -13,6 +13,7 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
     {
         public ItilDevelopModuleManageModel()
         { }
+
         #region Model
         private string _devid;
         /// <summary>
@@ -86,11 +87,11 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _startdate = value; }
             get { return _startdate; }
         }
-        private DateTime _finishdate;
+        private DateTime? _finishdate;
         /// <summary>
         ///完成日期
         /// </summary>
-        public DateTime FinishDate
+        public DateTime? FinishDate
         {
             set { _finishdate = value; }
             get { return _finishdate; }
@@ -187,7 +188,4 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
         }
         #endregion Model
     }
-
-
-
 }

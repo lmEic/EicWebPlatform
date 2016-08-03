@@ -32,7 +32,7 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
             model.FunctionDescription = "功能描述";
             model.DifficultyCoefficient = 5;
             model.DevPriority = 5;
-            model.CodingPerson = "张明";
+            model.Executor = "张明";
             model.StartDate = DateTime.Now.ToDate();
             model.OpSign = "add";
             var result = ItilService.ItilDevelopModuleManager.Store(model);

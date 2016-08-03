@@ -92,6 +92,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
             set { _taxtype = value; }
             get { return _taxtype; }
         }
+        private string _freeordernumber;
+        /// <summary>
+        ///免单号
+        /// </summary>
+        public string FreeOrderNumber
+        {
+            set { _freeordernumber = value; }
+            get { return _freeordernumber; }
+        }
+        private string _declarationnumber;
+        /// <summary>
+        ///报关单号
+        /// </summary>
+        public string DeclarationNumber
+        {
+            set { _declarationnumber = value; }
+            get { return _declarationnumber; }
+        }
         private string _unit;
         /// <summary>
         ///单位
