@@ -1268,6 +1268,7 @@
     <Content Include="Views\SysITIL\ItilProjectDevelopManage.cshtml" />
     <Content Include="Views\Equipment\AstInputCheckRecord.cshtml" />
     <Content Include="Views\Equipment\AstInputMaintenanceRecord.cshtml" />
+    <Content Include="Views\SysITIL\ChangeDevelopModuleProgressStatusTpl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -34,7 +34,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <returns></returns>
         protected OpResult PersistentDatas(TEntity entity, Func<TEntity, OpResult> addfn, Func<TEntity, OpResult> updatefn, Func<TEntity, OpResult> delfn)
         {
-            OpResult result = OpResult.SetResult("持久化数据操作失败!", false);
+            OpResult result = OpResult.SetResult("持久化数据操作失败!");
             string opSign="default";
             PropertyInfo pi=IsHasProperty(entity,"OpSign");
             if (pi != null) opSign = pi.GetValue(entity, null) as string;
@@ -63,7 +63,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <returns></returns>
         protected OpResult PersistentDatas(TEntity entity, Func<TEntity, OpResult> addfn, Func<TEntity, OpResult> updatefn)
         {
-            OpResult result = OpResult.SetResult("持久化数据操作失败!", false);
+            OpResult result = OpResult.SetResult("持久化数据操作失败!");
             string opSign = "default";
             PropertyInfo pi = IsHasProperty(entity, "OpSign");
             if (pi != null) opSign = pi.GetValue(entity, null) as string;
@@ -97,7 +97,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         protected OpResult StoreEntity(TEntity entity,Func<TEntity,OpResult> storeHandler)
         {
             OpResult result = null;
-            if (entity == null) return OpResult.SetResult("entity can't set null!", false);
+            if (entity == null) return OpResult.SetResult("entity can't set null!");
             var optimePi = IsHasProperty(entity, "OpTime");
             if (optimePi != null) optimePi.SetValue(entity, DateTime.Now.ToDateTime(),null);
             var opDatePi = IsHasProperty(entity, "OpDate");
