@@ -67,7 +67,10 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public List<ItilDevelopModuleManageModel> GetDevelopModuleManageListBy(List<string> progressSignList)
         {
-            return irep.Entities.Where(m => m.CurrentProgress != "结案" && progressSignList.Contains(m.CurrentProgress)).ToList();
+            if (progressSignList != null)
+                return irep.Entities.Where(m => m.CurrentProgress != "结案" && progressSignList.Contains(m.CurrentProgress)).ToList();
+            else
+                return new List<ItilDevelopModuleManageModel>();
         }
 
         /// <summary>
@@ -114,28 +117,32 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult ChangeProgressStatus(ItilDevelopModuleManageModel model)
         {
+            model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
+            if (model.FinishDate != null) { model.FinishMonth = model.FinishDate.Value.ToString("yyyyMM"); }
             var datetime = DateTime.Now;
             var date = datetime.ToDate();
+
             var result = this.irep.Update(u => u.Id_Key == model.Id_Key, m => new ItilDevelopModuleManageModel()
             {
                 CurrentProgress = model.CurrentProgress,
                 FinishDate = model.FinishDate,
-                CheckPerson = model.CheckPerson,
+                FinishMonth = model.FinishMonth,
+               Executor = model.Executor,
                 OpDate = date,
                 OpTime = datetime,
                 OpSign = "edit"
             }).ToOpResult_Eidt("开发任务");
 
+            if (!result.Result)
+                return result;
+
             //保存操作纪录
-            if (result.Result)
+            OpResult changeRecordResult = ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
+            if (!changeRecordResult.Result)
             {
-                OpResult changeRecordResult = ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
-                if (!changeRecordResult.Result)
-                {
-                    return changeRecordResult;
-                }
-                else { _waittingSendMailList.Add(model); }//添加至待发送邮件列表
+                return changeRecordResult;
             }
+            else { _waittingSendMailList.Add(model); }//添加至待发送邮件列表
             return result;
         }
 

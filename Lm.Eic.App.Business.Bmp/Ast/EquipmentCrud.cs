@@ -77,28 +77,28 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依据财产编号查询
-                        return irep.FindAll<EquipmentModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
+                        return irep.Entities.Where(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
 
                     case 2: //依据保管部门查询
-                        return irep.FindAll<EquipmentModel>(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();
+                        return irep.Entities.Where(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();
 
                     case 3: //依据录入日期查询
                         DateTime inputDate = qryDto.InputDate.ToDate();
-                        return irep.FindAll<EquipmentModel>(m => m.InputDate == inputDate).ToList();
+                        return irep.Entities.Where(m => m.InputDate == inputDate).ToList();
 
                     case 4: //依据录入日期查询待校验设备  //结束日期=输入日期加一个月 超期设备等于 计划日期<=当天日期
                         DateTime startPlannedDate = qryDto.PlannedCheckDate.ToDate(),
                                  endPlannedDate = startPlannedDate.AddMonths(1),
                                  nowDate = DateTime.Now.ToDate();
 
-                        return irep.FindAll<EquipmentModel>(m => (m.IsCheck=="是" && m.PlannedCheckDate >= startPlannedDate && m.PlannedCheckDate <= endPlannedDate) 
+                        return irep.Entities.Where(m => (m.IsCheck=="是" && m.PlannedCheckDate >= startPlannedDate && m.PlannedCheckDate <= endPlannedDate) 
                         ||(m.IsCheck=="是"&& m.PlannedCheckDate <= nowDate)).ToList();
 
                     case 5: //依据录入日期查询待保养设备  //按计划保养月查询待保养待设备列表
-                        return irep.FindAll<EquipmentModel>(m => m.IsMaintenance == "是" && m.PlannedMaintenanceMonth == qryDto.PlannedMaintenanceMonth).ToList();
+                        return irep.Entities.Where(m => m.IsMaintenance == "是" && m.PlannedMaintenanceMonth == qryDto.PlannedMaintenanceMonth).ToList();
 
                     case 6: //查询所有在使用待设备 生成设备总览表
-                        return irep.FindAll<EquipmentModel>(m=>m.IsScrapped== "正常").ToList();
+                        return irep.Entities.Where(m=>m.IsScrapped== "正常").ToList();
 
                     default: return null;
                 }
@@ -311,7 +311,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依据财产编号查询
-                        return irep.FindAll<EquipmentCheckRecordModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
+                        return irep.Entities.Where(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
                     default: return null;
                 }
             }
@@ -438,7 +438,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依据财产编号查询
-                        return irep.FindAll<EquipmentMaintenanceRecordModel>(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
+                        return irep.Entities.Where(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
                     default: return null;
                 }
             }

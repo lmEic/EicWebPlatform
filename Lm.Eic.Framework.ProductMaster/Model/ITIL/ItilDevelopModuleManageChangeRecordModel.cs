@@ -5,12 +5,24 @@ using System.Text;
 
 namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
 {
-    public class ItilDevelopModuleManageChangeRecordModel
+    /// <summary>
+    ///开发模块管理变更记录模型
+    /// </summary>
+    [Serializable]
+    public partial class ItilDevelopModuleManageChangeRecordModel
     {
         public ItilDevelopModuleManageChangeRecordModel()
         { }
-
         #region Model
+        private string _executor;
+        /// <summary>
+        ///执行人
+        /// </summary>
+        public string Executor
+        {
+            set { _executor = value; }
+            get { return _executor; }
+        }
         private string _modulename;
         /// <summary>
         ///模块名称
@@ -55,6 +67,15 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
         {
             set { _changeprogress = value; }
             get { return _changeprogress; }
+        }
+        private string _executor;
+        /// <summary>
+        ///执行人
+        /// </summary>
+        public string Executor
+        {
+            set { _executor = value; }
+            get { return _executor; }
         }
         private string _parameterkey;
         /// <summary>
@@ -112,4 +133,5 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
         }
         #endregion Model
     }
+
 }
