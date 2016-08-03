@@ -12,7 +12,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 {
    public class ItilDevelopModuleManager
     {
-
         /// <summary>
         /// 获取开发任务列表 
         /// </summary>
