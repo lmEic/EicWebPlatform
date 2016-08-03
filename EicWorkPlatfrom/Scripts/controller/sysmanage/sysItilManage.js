@@ -43,11 +43,8 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
         StartDate: new Date(),
         FinishDate:null,
         CurrentProgress: null,
-        CodingPerson: null,
-        CheckPerson: null,
+        Executor: null,
         Memo: null,
-        EditPerson: null,
-        EditDate:new Date(),
         OpSign: 'add',
         Id_Key:0,
     }
@@ -68,7 +65,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
             $scope.vm = uiVM;
             vmManager.canEdit = false;
         },
-        codePersons: [{ name: '万晓桥', text: '万晓桥' }, { name: '张文明', text: '张文明' }, { name: '杨垒', text: '杨垒' }],
+        executors: [{ name: '万晓桥', text: '万晓桥' }, { name: '张文明', text: '张文明' }, { name: '杨垒', text: '杨垒' }],
         selectedProgressStatuses: [],
         progressStatuses: [
                 { value: '待开发', label: '<i class="fa fa-calendar-o"></i>  待开发' },
@@ -81,22 +78,17 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
         developModules: [],
         selectDevelopModule: function (item) {
             vmManager.canEdit = true;
-            uiVM = _.clone(item);
+            uiVM = item;
             uiVM.OpSign = 'edit';
             $scope.vm = uiVM;
         },
         datasource: [],
         datasets:[],
         getDevelopModules: function () {
+            vmManager.datasets = [];
             vmManager.datasource = [];
             $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(vmManager.selectedProgressStatuses).then(function (datas) {
-                var rows = [];
-                angular.forEach(datas, function (item) {
-                    var rowItem = _.clone(uiVM);
-                    leeHelper.copyVm(item, rowItem);
-                    rows.push(rowItem);
-                });
-                vmManager.datasource = rows;
+                vmManager.datasource = datas;
             });
         },
         changeProgressStatus: function (item) {
@@ -144,11 +136,6 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
                     mdl.Id_Key = opresult.Id_Key;
                     if (mdl.OpSign === 'add') {
                         vmManager.developModules.push(mdl);
-                    }
-                    else if (mdl.OpSign == 'edit') {
-                        var current = _.find(vmManager.developModules, { Id_Key: mdl.Id_Key });
-                        if (current !== undefined)
-                            leeHelper.copyVm(mdl, current);
                     }
                     vmManager.init();
                 });

@@ -31,8 +31,6 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
-
         [NoAuthenCheck]
         public JsonResult StoreProjectDevelopRecord(ItilDevelopModuleManageModel entity)
         {

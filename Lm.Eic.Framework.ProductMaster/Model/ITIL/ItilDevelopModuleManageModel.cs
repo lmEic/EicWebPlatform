@@ -13,7 +13,6 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
     {
         public ItilDevelopModuleManageModel()
         { }
-
         #region Model
         private string _devid;
         /// <summary>
@@ -87,14 +86,23 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _startdate = value; }
             get { return _startdate; }
         }
-        private DateTime? _finishdate;
+        private DateTime _finishdate;
         /// <summary>
         ///完成日期
         /// </summary>
-        public DateTime? FinishDate
+        public DateTime FinishDate
         {
             set { _finishdate = value; }
             get { return _finishdate; }
+        }
+        private string _finishmonth;
+        /// <summary>
+        ///完成月份
+        /// </summary>
+        public string FinishMonth
+        {
+            set { _finishmonth = value; }
+            get { return _finishmonth; }
         }
         private string _currentprogress;
         /// <summary>
@@ -105,23 +113,14 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _currentprogress = value; }
             get { return _currentprogress; }
         }
-        private string _codingperson;
+        private string _executor;
         /// <summary>
         ///执行人
         /// </summary>
-        public string CodingPerson
+        public string Executor
         {
-            set { _codingperson = value; }
-            get { return _codingperson; }
-        }
-        private string _checkperson;
-        /// <summary>
-        ///审核人
-        /// </summary>
-        public string CheckPerson
-        {
-            set { _checkperson = value; }
-            get { return _checkperson; }
+            set { _executor = value; }
+            get { return _executor; }
         }
         private string _memo;
         /// <summary>
@@ -188,6 +187,7 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
         }
         #endregion Model
     }
+
 
 
 }
