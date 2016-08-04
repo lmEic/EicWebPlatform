@@ -104,9 +104,15 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
         showModalWindow: function (item, isShowDetailsBoard) {
             vmManager.showDetailsBoard = isShowDetailsBoard;
             editModalOption.title = isShowDetailsBoard ? "进度状态明细窗口" : "状态变更窗口";
-            vmManager.editModal = $modal(editModalOption);
             uiVM = _.clone(item);
-            uiVM.OpSign = 'eidt';
+            if (!isShowDetailsBoard)
+            {
+                uiVM.OpSign = 'eidt';
+                uiVM.CurrentProgress = null;
+                uiVM.Executor = null;
+            }
+           
+            vmManager.editModal = $modal(editModalOption);
             vmManager.editModal.$promise.then(vmManager.editModal.show);
         },
         changeProgressStatus: function (item) {
