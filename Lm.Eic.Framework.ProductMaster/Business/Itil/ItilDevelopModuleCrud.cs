@@ -270,6 +270,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 MClassName = model.MClassName,
                 MFunctionName = model.MFunctionName,
                 FunctionDescription = model.MFunctionName,
+                Executor = model.Executor,
                 ParameterKey = model.ParameterKey,
                 ChangeProgress = model.CurrentProgress,
                 OpSign = "add"
