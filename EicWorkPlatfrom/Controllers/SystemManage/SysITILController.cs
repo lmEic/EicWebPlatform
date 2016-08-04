@@ -59,5 +59,15 @@ namespace EicWorkPlatfrom.Controllers
             var result = ItilService.ItilDevelopModuleManager.ChangeProgressStatus(entity);
             return Json(result);
         }
+        /// <summary>
+        /// 查看模块开发明细
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public ContentResult ViewDevelopModuleDetails(ItilDevelopModuleManageModel entity)
+        {
+            var datas = 0;
+            return DateJsonResult(datas);            
+        }
     }
 }

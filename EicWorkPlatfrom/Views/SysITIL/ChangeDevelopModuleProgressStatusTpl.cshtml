@@ -10,45 +10,79 @@
             </div>
             <div class="modal-body">
                 <div class="panel">
-                    <form name="modalForm" role="form" class="form-horizontal" novalidate>
-                        <div class="form-group">
-                            <label for="finishDate" class="col-md-2 control-label">变更日期</label>
-                            <div class="col-md-4">
-                                <input name="finishDate" type="date" class="form-control" ng-model="vm.FinishDate" format-date required />
-                                <div class="error-messages" ng-messages="modalForm.finishDate.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">变更日期不能为空</small>
+                    <div ng-if="!vmManager.showDetailsBoard">
+                        <form name="modalForm" role="form" class="form-horizontal" novalidate>
+                            <div class="form-group">
+                                <label for="finishDate" class="col-md-2 control-label">变更日期</label>
+                                <div class="col-md-4">
+                                    <input name="finishDate" type="date" class="form-control" ng-model="vm.FinishDate" format-date required />
+                                    <div class="error-messages" ng-messages="modalForm.finishDate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">变更日期不能为空</small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="mExecutor" class="col-md-2 control-label">执行人</label>
-                            <div class="col-md-4">
-                                <button type="button" class="btn btn-primary" ng-model="vm.Executor"
-                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择执行人"
-                                        data-bs-options="cp.name as cp.text for cp in vmManager.executors track by $index" data-bs-select>
-                                    <span class="caret"></span>
-                                </button>
-                                <input name="executor" class="form-control" ng-model="vm.Executor" ng-show="false" required />
-                                <div class="error-messages" ng-messages="modalForm.executor.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">执行人不能为空</small>
+                            <div class="form-group">
+                                <label for="mExecutor" class="col-md-2 control-label">执行人</label>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-primary" ng-model="vm.Executor"
+                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择执行人"
+                                            data-bs-options="cp.name as cp.text for cp in vmManager.executors track by $index" data-bs-select>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <input name="executor" class="form-control" ng-model="vm.Executor" ng-show="false" required />
+                                    <div class="error-messages" ng-messages="modalForm.executor.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">执行人不能为空</small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputDate" class="col-md-2 control-label">开发进度:</label>
-                            <div class="col-md-4">
-                                <button type="button" class="btn btn-default" ng-model="vm.CurrentProgress"
-                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择当前进度..."
-                                        data-bs-options="proStatus.value as proStatus.label for proStatus in vmManager.progressStatuses track by $index" data-bs-select>
-                                    <span class="caret"></span>
-                                </button>
+                            <div class="form-group">
+                                <label for="inputDate" class="col-md-2 control-label">开发进度:</label>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-default" ng-model="vm.CurrentProgress"
+                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择当前进度..."
+                                            data-bs-options="proStatus.value as proStatus.label for proStatus in vmManager.progressStatuses track by $index" data-bs-select>
+                                        <span class="caret"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div ng-if="vmManager.showDetailsBoard">
+                        <div class="well" cg-busy="{promise:searchPromise}">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr class="info">
+                                            <th>模块名称</th>
+                                            <th>类名称</th>
+                                            <th>函数名称</th>
+                                            <th>功能描述</th>
+                                            <th>开发进度</th>
+                                            <th>执行人</th>
+                                            <th>完成日期</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vmManager.editDatas track by $index">
+                                            <td>{{item.ModuleName}}</td>
+                                            <td>{{item.MClassName}}</td>
+                                            <td>{{item.MFunctionName}}</td>
+                                            <td>{{item.FunctionDescription}}</td>
+                                            <td>{{item.ChangeProgress}}</td>
+                                            <td>{{item.Executor}}</td>
+                                            <td>{{item.OpDate}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </form>
+
+                    </div>
                 </div>
             </div>
 
-            <div class="modal-footer">
+            <div class="modal-footer" !vmmanager.showdetailsboard>
                 <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
                 <button type="button" class="btn btn-primary" ng-click="save(modalForm.$valid)"><i class="fa fa-save"></i>确定</button>
             </div>
