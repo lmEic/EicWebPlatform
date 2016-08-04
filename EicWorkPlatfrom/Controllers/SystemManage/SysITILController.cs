@@ -64,9 +64,10 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
+        [NoAuthenCheck]
         public ContentResult ViewDevelopModuleDetails(ItilDevelopModuleManageModel entity)
         {
-            var datas = 0;
+            var datas = ItilService.ItilDevelopModuleManager.GetChangeRecordListBy(entity);
             return DateJsonResult(datas);            
         }
     }

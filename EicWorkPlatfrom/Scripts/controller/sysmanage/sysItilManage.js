@@ -113,12 +113,6 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
             vmManager.showModalWindow(item, false);
         },
         developChangeDetails:[],
-        viewDetails: function (item) {
-            sysitilService.viewDevelopModuleDetails(item).then(function (datas) {
-                vmManager.developChangeDetails = datas;
-                vmManager.showModalWindow(item, true);
-            });
-        },
         showDetailsBoard: false,//显示明细面板
         editModal:null,
     };
@@ -147,7 +141,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
                         if (angular.isDefined(item)) {
                             leeHelper.copyVm(uiVM, item);
                             vmManager.init();
-                            operate.editModal.$promise.then(operate.editModal.hide);
+                            vmManager.editModal.$promise.then(vmManager.editModal.hide);
                         }
                     });
                 });
@@ -180,6 +174,9 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
         });
     };
     operate.viewDetails = function (item) {
-
+        vmManager.showModalWindow(item, true);
+        $scope.searchPromise=sysitilService.viewDevelopModuleDetails(item).then(function (datas) {
+            vmManager.developChangeDetails = datas;
+        });
     }
 })
