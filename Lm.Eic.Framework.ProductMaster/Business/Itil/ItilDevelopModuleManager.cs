@@ -49,12 +49,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             return ItilCrudFactory.ItilDevelopModuleManageCrud.GetChangeRecordListBy(model);
         }
         /// <summary>
-        /// 发送邮件通知
+        /// 发送邮件通知 
         /// </summary>
+        /// <param name="receiveUserList">接收人列表</param>
         /// <returns></returns>
-        public OpResult SendMail()
+        public OpResult SendMail(List<string> receiveUserList)
         {
-            return ItilCrudFactory.ItilDevelopModuleManageCrud.SendMail();
+            return ItilCrudFactory.ItilDevelopModuleManageCrud.SendMail(receiveUserList);
         }
     }
 
