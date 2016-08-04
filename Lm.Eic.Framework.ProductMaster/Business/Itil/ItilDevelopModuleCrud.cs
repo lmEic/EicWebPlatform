@@ -60,6 +60,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 
         }
 
+        #region Find
+
+        #endregion
         /// <summary>
         /// 获取开发任务列表
         /// </summary>
@@ -73,6 +76,21 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 return new List<ItilDevelopModuleManageModel>();
         }
 
+        /// <summary>
+        /// 获取开发任务进度变更明细
+        /// </summary>
+        /// <param name="model">开发任务</param>
+        /// <returns></returns>
+        public List<ItilDevelopModuleManageChangeRecordModel> GetChangeRecordListBy(ItilDevelopModuleManageModel model)
+        {
+            if (model != null && !model.ParameterKey.IsNullOrEmpty())
+            {
+                return ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.GetChangeRecordBy(model.ParameterKey);
+            }
+            else return new List<ItilDevelopModuleManageChangeRecordModel>();
+        }
+
+        #region Store
         /// <summary>
         /// 修改数据仓库
         /// </summary>
@@ -109,53 +127,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             });
         }
 
-
-        /// <summary>
-        /// 修改开发进度
-        /// </summary>
-        /// <param name="model">实体</param>
-        /// <returns></returns>
-        public OpResult ChangeProgressStatus(ItilDevelopModuleManageModel model)
-        {
-            model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
-            if (model.FinishDate != null) { model.FinishMonth = model.FinishDate.Value.ToString("yyyyMM"); }
-            var datetime = DateTime.Now;
-            var date = datetime.ToDate();
-
-            var result = this.irep.Update(u => u.Id_Key == model.Id_Key, m => new ItilDevelopModuleManageModel()
-            {
-                CurrentProgress = model.CurrentProgress,
-                FinishDate = model.FinishDate,
-                FinishMonth = model.FinishMonth,
-               Executor = model.Executor,
-                OpDate = date,
-                OpTime = datetime,
-                OpSign = "edit"
-            }).ToOpResult_Eidt("开发任务");
-
-            if (!result.Result)
-                return result;
-
-            //保存操作纪录
-            OpResult changeRecordResult = ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
-            if (!changeRecordResult.Result)
-            {
-                return changeRecordResult;
-            }
-            else { _waittingSendMailList.Add(model); }//添加至待发送邮件列表
-            return result;
-        }
-
-        /// <summary>
-        /// 发送邮件通知
-        /// </summary>
-        /// <returns></returns>
-        public OpResult SendMail()
-        {
-            //TODO：根据 _waitingSendMailList 发送邮件进行通知
-            return null;
-        }
-
         /// <summary>
         /// 添加一条开发任务到数据库
         /// </summary>
@@ -183,6 +154,61 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             model.CurrentProgress = "待开发";
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
         }
+
+
+        /// <summary>
+        /// 修改开发进度
+        /// </summary>
+        /// <param name="model">实体</param>
+        /// <returns></returns>
+        public OpResult ChangeProgressStatus(ItilDevelopModuleManageModel model)
+        {
+            model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
+            if (model.FinishDate != null) { model.FinishMonth = model.FinishDate.Value.ToString("yyyyMM"); }
+            var datetime = DateTime.Now;
+            var date = datetime.ToDate();
+
+            var result = this.irep.Update(u => u.Id_Key == model.Id_Key, m => new ItilDevelopModuleManageModel()
+            {
+                CurrentProgress = model.CurrentProgress,
+                FinishDate = model.FinishDate,
+                FinishMonth = model.FinishMonth,
+                Executor = model.Executor,
+                OpDate = date,
+                OpTime = datetime,
+                OpSign = "edit"
+            }).ToOpResult_Eidt("开发任务");
+
+            if (!result.Result)
+                return result;
+
+            //保存操作纪录
+            OpResult changeRecordResult = ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
+            if (!changeRecordResult.Result)
+            {
+                return changeRecordResult;
+            }
+            else { _waittingSendMailList.Add(model); }//添加至待发送邮件列表
+            return result;
+        }
+        #endregion
+
+
+
+        #region SendMail
+
+        /// <summary>
+        /// 发送邮件通知
+        /// </summary>
+        /// <returns></returns>
+        public OpResult SendMail()
+        {
+            //TODO：根据 _waitingSendMailList 发送邮件进行通知
+            return null;
+        }
+
+        #endregion
+
     }
 
 
@@ -255,9 +281,10 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// </summary>
         /// <param name="parameterKey"></param>
         /// <returns></returns>
-        public List<ItilDevelopModuleManageChangeRecordModel> FindBy(string parameterKey)
+        public List<ItilDevelopModuleManageChangeRecordModel> GetChangeRecordBy(string parameterKey)
         {
             return irep.Entities.Where(m => m.ParameterKey == parameterKey).ToList();
         }
+
     }
 }

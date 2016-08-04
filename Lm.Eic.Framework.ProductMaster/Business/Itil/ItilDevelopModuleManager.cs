@@ -21,7 +21,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             return ItilCrudFactory.ItilDevelopModuleManageCrud.GetDevelopModuleManageListBy(progressSignList);
         }
-
         /// <summary>
         /// 仓储操作 model.OpSign = add/edit/delete
         /// </summary>
@@ -31,7 +30,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             return ItilCrudFactory.ItilDevelopModuleManageCrud.Store(model);
         }
-
         /// <summary>
         /// 修改开发进度
         /// </summary>
@@ -41,7 +39,15 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             return ItilCrudFactory.ItilDevelopModuleManageCrud.ChangeProgressStatus(model);
         }
-
+        /// <summary>
+        /// 获取开发任务进度变更明细
+        /// </summary>
+        /// <param name="model">开发任务</param>
+        /// <returns></returns>
+        public List<ItilDevelopModuleManageChangeRecordModel> GetChangeRecordListBy(ItilDevelopModuleManageModel model)
+        {
+            return ItilCrudFactory.ItilDevelopModuleManageCrud.GetChangeRecordListBy(model);
+        }
         /// <summary>
         /// 发送邮件通知
         /// </summary>
