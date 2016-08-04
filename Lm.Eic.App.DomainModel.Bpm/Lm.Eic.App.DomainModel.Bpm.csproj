@@ -39,15 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ast\EquipmentCheckRecordModel.cs" />
-    <Compile Include="Ast\EquipmentMaintenanceRecordModel.cs" />
     <Compile Include="Ast\EquipmentModel.cs" />
     <Compile Include="Ast\QueryEquipmentDto.cs" />
     <Compile Include="Hrm\Archives\ArchivesIdentityModel.cs" />
     <Compile Include="Hrm\Attendance\AttendClassTypeModel.cs" />
+    <Compile Include="Hrm\GeneralAffairs\QueryGeneralAffairsDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quanity\QuantitySampleRecordModel.cs" />
+    <Compile Include="Hrm\GeneralAffairs\WorkClothesManageModel.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
