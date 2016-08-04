@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Data.Entity;
@@ -63,6 +64,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         /// </summary>
         public DbSet<AttendSlodFingerDataCurrentMonthModel> AttendSlodFingerDataCurrentMonth { get; set; }
 
+        public DbSet<WorkClothesManageModel> WorkClothesManage { get; set; }
+
         #endregion dbset
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -82,6 +85,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             modelBuilder.Configurations.Add(new AttendClassTypeModelMapping());
             modelBuilder.Configurations.Add(new AttendSlodFingerDataCurrentMonthModelMapping());
             modelBuilder.Configurations.Add(new AttendFingerPrintDataInTimeModelMapping());
+
+            //总务
+            modelBuilder.Configurations.Add(new WorkClothesManageModelMapping());
         }
     }
 

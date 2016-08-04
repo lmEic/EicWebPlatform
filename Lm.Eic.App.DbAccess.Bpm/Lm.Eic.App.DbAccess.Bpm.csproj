@@ -52,6 +52,7 @@
     <Compile Include="Mapping\AstMapping\EquipmentMapping.cs" />
     <Compile Include="Mapping\HrmMapping\ArchivesMapping.cs" />
     <Compile Include="Mapping\HrmMapping\AttendanceMapping.cs" />
+    <Compile Include="Mapping\HrmMapping\GeneralAffairsMapping.cs" />
     <Compile Include="Mapping\HrmMapping\HrmDbContext.cs" />
     <Compile Include="Mapping\QuantityMapping\QuantityDbContext.cs" />
     <Compile Include="Mapping\QuantityMapping\QuantitySampleMapping.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Repository\AstRep\EquipmentRepository.cs" />
     <Compile Include="Repository\HrmRep\Archives\ArchivesIdentityRepository.cs" />
     <Compile Include="Repository\HrmRep\Attendance\AttendClassTypeRepository.cs" />
+    <Compile Include="Repository\HrmRep\GeneralAffairs\GeneralAffairsRepository.cs" />
     <Compile Include="Repository\QuantityRep\SampleReposity.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +80,7 @@
       <Name>Lm.Eic.Uti.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
