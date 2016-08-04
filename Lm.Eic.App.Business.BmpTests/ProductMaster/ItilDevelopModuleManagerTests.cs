@@ -58,5 +58,15 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
             if (!result.Result) { Assert.Fail(); }
         }
 
+        [TestMethod()]
+        public void GetChangeRecordListByTest()
+        {
+            List<string> stateList = new List<string>() { "待开发", "待审核" };
+            var devList = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(stateList);
+            var model = devList[0];
+            model.CurrentProgress = "待审核";
+            var result = ItilService.ItilDevelopModuleManager.GetChangeRecordListBy(model);
+            if (result.Count<0) { Assert.Fail(); }
+        }
     }
 }
