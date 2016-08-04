@@ -8,8 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
-using  Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using CrudFactory = Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs.WorkerClothesFactory;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using CrudFactory = Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs.GeneralAffairsFactory;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
 {
@@ -19,16 +19,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
     public class WorkerClothesManager
     {
         /// <summary>
-        /// 获取领用记录
+        /// 获取领用记录  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按录入日期查找 
         /// </summary>
         /// <param name="dto">总务数据查询数据传输对象</param>
         /// <returns></returns>
         public List<WorkClothesManageModel> GetReceiveRecord(QueryGeneralAffairsDto dto)
         {
-            //TODO:  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按录入日期查找 
-          
-                return CrudFactory .EquipmentCrud.FindBy(dto) ;
-        
+            return CrudFactory.WorkerClothesCrud.FindBy(dto);
         }
 
         /// <summary>
@@ -37,28 +34,30 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <param name="workerId">工号</param>
         /// <param name="productCategory">厂服类别</param>
         /// <returns></returns>
-        public bool IsOldForNew(string workerId,string productCategory)
+        public bool CanOldForNew(string workerId, string productCategory)
         {
             //冬季厂服满三年允许更换一次  夏季厂服满两年允许更换一次
             try
             {
-                var workerWorkClothes = CrudFactory.EquipmentCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = workerId, SearchMode = 1 });
-                if (workerWorkClothes == null | workerWorkClothes.Count() <= 0) return true;
-                    DateTime yearDate   =new DateTime ()  ;
-                    if (productCategory == "夏季厂服")
-                        yearDate = DateTime.Now.Date.AddYears(-2).Year.ToString().ToDate();
-                    else
-                    { yearDate = DateTime.Now.Date.AddYears(-3).Year.ToString().ToDate(); }
-                    var returnWorkClothes = workerWorkClothes.Where(e => e.ProductCategory == productCategory & e.InputDate >= yearDate);
+                var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = workerId, SearchMode = 1 });
+                if (workClothesList == null || workClothesList.Count() <= 0) return true;
+                DateTime yearDate = DateTime.Now;
+                if (productCategory == "夏季厂服")
+                    yearDate = DateTime.Now.Date.AddYears(-2).Year.ToString().ToDate();
+                else
+                {
+                    yearDate = DateTime.Now.Date.AddYears(-3).Year.ToString().ToDate();
+                }
+                var returnWorkClothes = workClothesList.Where(e => e.ProductCategory == productCategory & e.InputDate >= yearDate);
                 if (returnWorkClothes == null | returnWorkClothes.Count() <= 0) return true;
-                return false ;
+                return false;
             }
             catch (Exception ex)
             {
 
                 throw new Exception(ex.InnerException.Message);
             }
-            
+
         }
 
         /// <summary>
@@ -69,22 +68,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         public OpResult ReceiveWorkClothes(WorkClothesManageModel model)
         {
             //处理类型 判断是以旧换新 还是新领取 然后判断是否有资格
-            return null;
+            return  CrudFactory.WorkerClothesCrud.Store (model);
         }
 
     }
 
 
-      internal class WorkerClothesFactory
-      {
-          /// <summary>
-          /// 设备档案操作Crud
-          /// </summary>
-          public static WorkerClothesCrud EquipmentCrud
-          {
-              get { return OBulider.BuildInstance <WorkerClothesCrud>(); }
-          }
-      }
+    
+
+
+
     /// <summary>
     /// 厂服管理CRUD
     /// </summary>
@@ -102,19 +95,19 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         public List<WorkClothesManageModel> FindBy(QueryGeneralAffairsDto qryDto)
         {
-
-            //TODO:  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按录入日期查找 
+            if (qryDto == null) return new List<WorkClothesManageModel>();
             try
             {
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依据按工号查找
-                        return irep.Entities.Where(m => m.WorkerId==(qryDto.WorkerId)).ToList();
+                        return irep.Entities.Where(m => m.WorkerId == (qryDto.WorkerId)).ToList();
                     case 2: //依据按部门查找
-                        return irep.Entities.Where(m => m.Department==(qryDto.Department )).ToList();
+                        return irep.Entities.Where(m => m.Department == (qryDto.Department)).ToList();
                     case 3: //依据录入日期查找 
-                        return irep.Entities.Where(m => m.InputDate==(qryDto.InputDate)).ToList();
-                    default: return null;
+                        return irep.Entities.Where(m => m.InputDate == (qryDto.InputDate)).ToList();
+                    default:
+                        return new List<WorkClothesManageModel>();
                 }
             }
             catch (Exception ex)
@@ -125,15 +118,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
 
         public OpResult Store(WorkClothesManageModel model)
         {
+            model.ReceiveMonth = DateTime.Now.ToString("yyyyMM");
             return this.StoreEntity(model,
                 mdl =>
                 {
                     var result = this.PersistentDatas(model,
-                    madd =>
-                        { return AddWorkClothesManageRecord(model); },
-                    mupdata =>
-                    { return EditWorkClothesManageRecord(model); }
-                    );
+                                     madd =>
+                                         { return AddWorkClothesManageRecord(model); },
+                                     mupdata =>
+                                        { return EditWorkClothesManageRecord(model); }
+                                   );
                     return result;
                 });
         }
@@ -150,9 +144,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 return OpResult.SetResult("此数据已存在！");
             }
             OpResult result;
-            model.OpSign = "add";
-            model.InputDate = DateTime.Now.Date;
-            
             result = irep.Insert(model).ToOpResult_Add("添加完成", model.Id_Key);
             return result;
         }
@@ -164,7 +155,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private OpResult EditWorkClothesManageRecord(WorkClothesManageModel model)
         {
-            
+
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("添加信息");
         }
     }
