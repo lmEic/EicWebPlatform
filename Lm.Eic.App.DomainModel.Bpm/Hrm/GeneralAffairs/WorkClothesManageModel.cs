@@ -110,6 +110,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs
             set { _receiveuser = value; }
             get { return _receiveuser; }
         }
+        private string _receivemonth;
+        /// <summary>
+        ///领取月份
+        /// </summary>
+        public string ReceiveMonth
+        {
+            set { _receivemonth = value; }
+            get { return _receivemonth; }
+        }
         private string _opdate;
         /// <summary>
         ///操作日期
