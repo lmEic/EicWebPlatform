@@ -74,15 +74,15 @@
                                         <small ng-message="required">开始日期不能为空</small>
                                     </div>
                                 </div>
-                                <label for="codingPerson" class="col-md-2 control-label">执行人</label>
+                                <label for="mExecutor" class="col-md-2 control-label">执行人</label>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-primary" ng-model="vm.CodingPerson"
+                                    <button type="button" class="btn btn-primary" ng-model="vm.Executor"
                                             data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择执行人"
-                                            data-bs-options="cp.name as cp.text for cp in vmManager.codePersons track by $index" data-bs-select>
+                                            data-bs-options="cp.name as cp.text for cp in vmManager.executors track by $index" data-bs-select>
                                         <span class="caret"></span>
                                     </button>
-                                    <input name="codingPerson" class="form-control" ng-model="vm.CodingPerson" ng-show="false" required />
-                                    <div class="error-messages" ng-messages="formDevelopModuleManage.codingPerson.$error" ng-show="operate.showValidation">
+                                    <input name="executor" class="form-control" ng-model="vm.Executor" ng-show="false" required />
+                                    <div class="error-messages" ng-messages="formDevelopModuleManage.executor.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">执行人不能为空</small>
                                     </div>
                                 </div>
@@ -179,7 +179,7 @@
                                 <th>开始日期</th>
                                 <th>当前进度</th>
                                 <th>执行人</th>
-                                <th>状态变更</th>
+                                <th>变更日期</th>
                                 <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                             </tr>
                         </thead>
@@ -192,16 +192,16 @@
                                 <td>{{item.DifficultyCoefficient}}</td>
                                 <td>{{item.StartDate}}</td>
                                 <td>{{item.CurrentProgress}}</td>
-                                <td>{{item.CodingPerson}}</td>
+                                <td>{{item.ModuleExecutor}}</td>
                                 <td>
-                                    <div class="alert alert-success" ng-show="item.EditPerson!==null">
-                                        审核人:<span>{{item.EditPerson}}</span>
-                                        审核日期:<span>{{item.EditDate}}</span>
-                                    </div>
+                                    <span class="label label-primary">{{item.FinishDate}}</span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-xs btn-success" ng-click="vmManager.changeProgressStatus(item)" title="变更进度">
-                                        变更进度
+                                    <button class="btn btn-xs btn-primary" ng-click="vmManager.changeProgressStatus(item)" title="变更进度">
+                                        <i class="fa fa-edit"></i>进度
+                                    </button>
+                                    <button class="btn btn-xs btn-success" ng-click="vmManager.changeProgressStatus(item)" title="查看明细">
+                                        <i class="fa fa-eye"></i>明细
                                     </button>
                                 </td>
                             </tr>
