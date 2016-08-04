@@ -72,6 +72,7 @@
     <Compile Include="Hrm\Attendance\AttendanceService.cs" />
     <Compile Include="Hrm\Attendance\AttendClassTypeSetter.cs" />
     <Compile Include="Hrm\Attendance\AttendSlodPrintManager.cs" />
+    <Compile Include="Hrm\GeneralAffairs\GeneralAffairsFactory.cs" />
     <Compile Include="Hrm\GeneralAffairs\GeneralAffairsService.cs" />
     <Compile Include="Hrm\GeneralAffairs\WorkerClothesManager.cs" />
     <Compile Include="ProduceDailyReport\DailyReportCollectManager.cs" />
