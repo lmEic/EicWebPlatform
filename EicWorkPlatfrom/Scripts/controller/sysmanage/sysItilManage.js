@@ -26,6 +26,14 @@ smModule.factory('sysitilService', function (ajaxService) {
             entity: entity,
         });
     };
+
+    itil.viewDevelopModuleDetails = function (entity) {
+        var url = urlPrefix + 'ViewDevelopModuleDetails';
+        return ajaxService.postData(url, {
+            entity: entity,
+        });
+    };
+
     return itil;
 });
 smModule.controller('supTelManageCtrl', function ($scope, $modal, sysitilService) {
@@ -51,6 +59,8 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
 
     $scope.vm = uiVM;
 
+    var originalVM = _.clone(uiVM);
+
     var vmManager = {
         activeTab: 'initTab',
         init: function () {
@@ -59,7 +69,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
                 uiVM.FunctionDescription = null;
             }
             else {
-                leeHelper.clearVM(uiVM, ['StartDate']);
+                uiVM = _.clone(originalVM);
             }
             uiVM.OpSign = 'add';
             $scope.vm = uiVM;
@@ -78,7 +88,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
         developModules: [],
         selectDevelopModule: function (item) {
             vmManager.canEdit = true;
-            uiVM = item;
+            uiVM = _.clone(item);
             uiVM.OpSign = 'edit';
             $scope.vm = uiVM;
         },
@@ -91,11 +101,20 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
                 vmManager.datasource = datas;
             });
         },
-        changeProgressStatus: function (item) {
+        showModalWindow: function (item, isShowDetailsBoard) {
+            vmManager.showDetailsBoard = isShowDetailsBoard;
+            editModalOption.title = isShowDetailsBoard ? "进度状态明细窗口" : "状态变更窗口";
+            vmManager.editModal = $modal(editModalOption);
             uiVM = _.clone(item);
             uiVM.OpSign = 'eidt';
-            operate.editModal.$promise.then(operate.editModal.show);
-        }
+            vmManager.editModal.$promise.then(vmManager.editModal.show);
+        },
+        changeProgressStatus: function (item) {
+            vmManager.showModalWindow(item, false);
+        },
+        developChangeDetails:[],
+        showDetailsBoard: false,//显示明细面板
+        editModal:null,
     };
 
     $scope.vmManager = vmManager;
@@ -103,7 +122,9 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    operate.editModal = $modal({
+
+    //模态窗口选项
+    var editModalOption = {
         title: "状态变更窗口",
         templateUrl: 'SysITIL/ChangeDevelopModuleProgressStatusTpl/',
         controller: function ($scope) {
@@ -120,14 +141,14 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
                         if (angular.isDefined(item)) {
                             leeHelper.copyVm(uiVM, item);
                             vmManager.init();
-                            operate.editModal.$promise.then(operate.editModal.hide);
+                            vmManager.editModal.$promise.then(vmManager.editModal.hide);
                         }
                     });
                 });
             };
         },
         show: false,
-    });
+    };
     operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             sysitilService.storeProjectDevelopRecord(uiVM).then(function (opresult) {
@@ -136,6 +157,11 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
                     mdl.Id_Key = opresult.Id_Key;
                     if (mdl.OpSign === 'add') {
                         vmManager.developModules.push(mdl);
+                    }
+                    else (mdl.OpSign == 'edit')
+                    {
+                        var item = _.find(vmManager.developModules, { Id_Key: uiVM.Id_Key });
+                        leeHelper.copyVm(uiVM, item);
                     }
                     vmManager.init();
                 });
@@ -147,4 +173,10 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
             vmManager.inti();
         });
     };
+    operate.viewDetails = function (item) {
+        vmManager.showModalWindow(item, true);
+        $scope.searchPromise=sysitilService.viewDevelopModuleDetails(item).then(function (datas) {
+            vmManager.developChangeDetails = datas;
+        });
+    }
 })

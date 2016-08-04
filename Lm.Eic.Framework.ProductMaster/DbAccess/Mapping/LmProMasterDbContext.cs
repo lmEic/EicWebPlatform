@@ -68,7 +68,7 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                throw new Exception(ex.InnerException.ToString());
             }
         }
     }
