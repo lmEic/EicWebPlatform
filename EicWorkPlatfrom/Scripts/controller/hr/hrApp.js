@@ -52,6 +52,11 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
      .state('hrHandleException', {
          templateUrl: 'HrAttendanceManage/HrHandleException',
      })
+    //--------------总务管理--------------------------
+    //厂服管理
+     .state('gaWorkerClothesManage', {
+         templateUrl: 'HrGeneralAffairsManage/GaWorkerClothesManage',
+     })
 })
 .factory('hrDataOpService', function (ajaxService) {
     var hr={};
@@ -1835,4 +1840,105 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             vmManager.departments = departments;
         }
     });
+})
+
+//厂服管理
+.controller('workClothesManageCtrl', function ($scope, $modal, connDataOpService) {
+    ///厂服管理模型
+    var uiVM = {
+        WorkerId: null,
+        WorkerName: null,
+        Department: null,
+        ProductName: null,
+        ProductSpecify: null,
+        ProductCategory: null,
+        PerCount: 0,
+        Unit: "件",
+        InputDate: null,
+        DealwithType: null,
+        OpSign: 'add',
+        Id_Key: null,
+    }
+    $scope.vm = uiVM;
+    var originalVM = _.clone(uiVM);
+
+    var vmManager = {
+        activeTab: 'initTab',
+        init: function () {
+            if (uiVM.OpSign === 'add') {
+
+            }
+            else {
+                uiVM = _.clone(originalVM);
+            }
+            uiVM.OpSign = 'add';
+            $scope.vm = uiVM;
+            vmManager.canEdit = false;
+        },
+        searchedWorkers: [],
+        isSingle: true,//是否搜寻到的是单个人
+        closeSpecifies:[],
+        productNames: [
+            {
+                id: "夏季厂服", text: "夏季厂服", specifyList: [ { id: "38", text: "38" }, { id: "39", text: "39" },{ id: "40", text: "40" },{ id: "41", text: "41" },]
+            },
+            {
+                id: "冬季厂服", text: "冬季厂服", specifyList: [{ id: "M", text: "M" }, { id: "L", text: "L" }, { id: "XL", text: "XL" }, { id: "XXL", text: "XXL" }, ] 
+            },
+        ],
+        selectProductName: function () {
+            var product = _.find(vmManager.productNames, { id: uiVM.ProductName });
+            if (!angular.isUndefined(product))
+            {
+                vmManager.closeSpecifies = product.specifyList;
+            }
+        },
+        dealwithTypes: [
+             { id: "领取新衣", text: "领取新衣" },
+            { id: "以旧换新", text: "以旧换新" },
+        ],
+        getWorkerInfo: function () {
+            if (uiVM.WorkerId === undefined) return;
+            var strLen = leeHelper.checkIsChineseValue(uiVM.WorkerId) ? 2 : 6;
+            if (uiVM.WorkerId.length >= strLen) {
+                vmManager.searchedWorkers = [];
+                $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.WorkerId).then(function (datas) {
+                    if (datas.length > 0) {
+                        vmManager.searchedWorkers = datas;
+                        if (vmManager.searchedWorkers.length === 1) {
+                            vmManager.isSingle = true;
+                            vmManager.selectWorker(vmManager.searchedWorkers[0]);
+                        }
+                        else {
+                            vmManager.isSingle = false;
+                        }
+                    }
+                    else {
+                        vmManager.selectWorker(null);
+                    }
+                });
+            }
+        },
+        selectWorker: function (worker) {
+            if (worker !== null) {
+                uiVM.WorkerName = worker.Name;
+                uiVM.WorkerId = worker.WorkerId;
+                uiVM.Department = worker.Department;
+            }
+            else {
+                uiVM.Department = null;
+            }
+        },
+    };
+    $scope.vmManager = vmManager;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveAll = function (isValid) {
+    };
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.inti();
+        });
+    };
+
 })

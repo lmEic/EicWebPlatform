@@ -145,6 +145,7 @@
     <Compile Include="Controllers\BusinessController.cs" />
     <Compile Include="Controllers\DevelopmentController.cs" />
     <Compile Include="Controllers\BaseController\EicBaseController.cs" />
+    <Compile Include="Controllers\Hr\HrGeneralAffairsManageController.cs" />
     <Compile Include="Controllers\SystemManage\EicSystemManageController.cs" />
     <Compile Include="Controllers\Equipment\EquipmentController.cs" />
     <Compile Include="Controllers\FinanceController.cs" />
@@ -1269,6 +1270,7 @@
     <Content Include="Views\Equipment\AstInputCheckRecord.cshtml" />
     <Content Include="Views\Equipment\AstInputMaintenanceRecord.cshtml" />
     <Content Include="Views\SysITIL\ChangeDevelopModuleProgressStatusTpl.cshtml" />
+    <Content Include="Views\HrGeneralAffairsManage\GaWorkerClothesManage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
