@@ -66,7 +66,7 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
             var model = devList[0];
             model.CurrentProgress = "待审核";
             var result = ItilService.ItilDevelopModuleManager.GetChangeRecordListBy(model);
-            if (result.Count>0) { Assert.Fail(); }
+            if (result.Count<0) { Assert.Fail(); }
         }
     }
 }

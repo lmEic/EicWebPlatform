@@ -132,17 +132,12 @@
                         </li>
                         <li class="list-group-item" ng-click="vmManager.selectDevelopModule(item)"
                             ng-repeat="item in vmManager.developModules track by $index">
-                            类名称：
-                            <span class="label label-success" style="cursor:pointer">{{item.MClassName}}</span>
-                            -----
-                            函数名称：
-                            <span>
-                                <i class="fa fa-envelope-o"></i>
-                                {{item.MFunctionName}}
-                            </span>
+                            {{$index+1}}.
+                            类名：<span class="label label-default" style="cursor:pointer">{{item.MClassName}}</span>
+                            函数<span class="label label-info">{{item.MFunctionName}}</span>
                         </li>
-                        <li ng-if="vmManager.equipments.length>0">
-                            <span class="btn btn-sm btn-success pull-right"><i class="fa fa-mail-forward"></i>发送通知</span>
+                        <li ng-if="vmManager.developModules.length>0">
+                            <span class="btn btn-sm btn-success pull-right"><i class="fa fa-envelope-o"></i>发送通知</span>
                         </li>
                     </ul>
                 </div>
@@ -192,7 +187,7 @@
                                 <td>{{item.DifficultyCoefficient}}</td>
                                 <td>{{item.StartDate}}</td>
                                 <td>{{item.CurrentProgress}}</td>
-                                <td>{{item.ModuleExecutor}}</td>
+                                <td>{{item.Executor}}</td>
                                 <td>
                                     <span class="label label-primary">{{item.FinishDate}}</span>
                                 </td>
@@ -200,7 +195,7 @@
                                     <button class="btn btn-xs btn-primary" ng-click="vmManager.changeProgressStatus(item)" title="变更进度">
                                         <i class="fa fa-edit"></i>进度
                                     </button>
-                                    <button class="btn btn-xs btn-success" ng-click="vmManager.changeProgressStatus(item)" title="查看明细">
+                                    <button class="btn btn-xs btn-success" ng-click="operate.viewDetails(item)" title="查看明细">
                                         <i class="fa fa-eye"></i>明细
                                     </button>
                                 </td>
