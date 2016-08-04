@@ -22,7 +22,7 @@ namespace Lm.Eic.Uti.SystemInit.Commom
         /// <summary>
         /// 从Excel取数据并记录到List集合里
         /// </summary>
-        /// <param name="cellHeard">单元头的值和名称：{ { "UserName", "姓名" }, { "Age", "年龄" } };</param>
+        /// <param name="cellHeard">单元头的值和名称：{ { "English", "中文" }, };</param>
         /// <param name="filePath">保存文件绝对路径</param>
         /// <param name="errorMsg">错误信息</param>
         /// <returns>转换后的List对象集合</returns>
@@ -51,7 +51,7 @@ namespace Lm.Eic.Uti.SystemInit.Commom
         /// <summary>
         /// 从Excel2003取数据并记录到List集合里
         /// </summary>
-        /// <param name="cellHeard">单元头的Key和Value：{ { "UserName", "姓名" }, { "Age", "年龄" } };</param>
+        /// <param name="cellHeard">单元头的Key和Value：</param>
         /// <param name="filePath">保存文件绝对路径</param>
         /// <param name="errorMsg">错误信息</param>
         /// <returns>转换好的List对象集合</returns>
@@ -156,7 +156,7 @@ namespace Lm.Eic.Uti.SystemInit.Commom
         /// <summary>
         /// 实体类集合导出到EXCLE2003
         /// </summary>
-        /// <param name="cellHeard">单元头的Key和Value：{ { "UserName", "姓名" }, { "Age", "年龄" } };</param>
+        /// <param name="cellHeard">单元头的Key和Value： { "English", "中文" }</param>
         /// <param name="enList">数据源</param>
         /// <param name="sheetName">工作表名称</param>
         /// <returns>文件的下载地址</returns>
