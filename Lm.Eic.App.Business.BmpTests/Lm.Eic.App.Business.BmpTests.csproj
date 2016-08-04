@@ -48,7 +48,7 @@
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\VS_Project\EicWorkPlatform\Libs\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\libs\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -101,6 +101,10 @@
     <ProjectReference Include="..\Lm.Eic.Uti.Common\Lm.Eic.Uti.Common\Lm.Eic.Uti.Common.csproj">
       <Project>{35fa689a-9ef7-4944-8a6e-0cf9f2cacdde}</Project>
       <Name>Lm.Eic.Uti.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lm.Eic.Uti.SystemInit\Lm.Eic.Uti.SystemInit.csproj">
+      <Project>{983ed587-3ca1-415b-9023-19135d817855}</Project>
+      <Name>Lm.Eic.Uti.SystemInit</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
