@@ -212,6 +212,7 @@ namespace Lm.Eic.Framework.Authenticate.Model
         #endregion Model
     }
 
+
     public class NavMenuModel
     {
         /// <summary>
