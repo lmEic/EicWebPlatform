@@ -116,23 +116,31 @@
                             <form class="form-inline" novalidate>
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <label for="inputDate">函数名称:</label>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="输入函数名称查询"/>
                                         <div class="input-group-btn">
-                                            <button class="btn btn-success" ng-click="vmManager.getDevelopModules(2)"><i class="fa fa-search"></i>查询</button>
+                                            <button type="button" ng-class="vmManager.isLocal===false?'btn btn-warning':'btn btn-success'"
+                                                    ng-model="vmManager.isLocal" bs-checkbox>
+                                                <i ng-class="vmManager.isLocal===false?'fa fa-toggle-off':'fa fa-toggle-on'"></i>
+                                                <span ng-show="vmManager.isLocal===false">远程</span>
+                                                <span ng-show="vmManager.isLocal">本地</span>
+                                            </button>
+                                        </div>
+                                        <div class="input-group-addon">
+                                            <label>函数名称:</label>
+                                        </div>
+                                        <input type="text" class="form-control" ng-model="query.functionName" placeholder="函数名称" />
+                                        <div class="input-group-btn" ng-show="!vmManager.isLocal">
+                                            <button class="btn btn-success" ng-click="vmManager.searchBy()"><i class="fa fa-search"></i>查询</button>
                                         </div>
                                     </div>
                                 </div>
-                                
                             </form>
                         </li>
-                        <li class="list-group-item" ng-click="vmManager.selectDevelopModule(item)"
-                            ng-repeat="item in vmManager.developModules track by $index">
-                            {{$index+1}}.
-                            类名：<span class="label label-default" style="cursor:pointer">{{item.MClassName}}</span>
-                            函数<span class="label label-info">{{item.MFunctionName}}</span>
+                        <li class="list-group-item" ng-click="vmManager.selectDevelopModule(item)" cg-busy="{promise:searchPromise}"
+                            ng-repeat="item in vmManager.developModules|filter:query.functionName track by $index">
+                            <h5>
+                                <span class="label label-default" style="cursor:pointer">{{item.MClassName}}</span>
+                                <span class="label label-primary">{{item.MFunctionName}}</span>
+                            </h5>
                         </li>
                         <li ng-if="vmManager.developModules.length>0">
                             <span class="btn btn-sm btn-success pull-right"><i class="fa fa-envelope-o"></i>发送通知</span>
@@ -148,7 +156,7 @@
                         <form class="form-inline" novalidate>
                             <div class="form-group">
                                 <label for="inputDate">开发进度:</label>
-                                <button type="button" class="btn btn-default" ng-model="vmManager.selectedProgressStatuses"
+                                <button type="button" class="btn btn-default" ng-model="query.selectedProgressStatuses"
                                         data-html="1" data-multiple="1" data-animation="am-flip-x" data-placeholder="选择当前进度..."
                                         data-bs-options="proStatus.value as proStatus.label for proStatus in vmManager.progressStatuses track by $index" data-bs-select>
                                        <span class="caret"></span>

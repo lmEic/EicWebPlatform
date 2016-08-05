@@ -41,6 +41,8 @@ namespace EicWorkPlatfrom.Controllers
         /// 根据开发进度状态查找开发模块
         /// </summary>
         /// <param name="progressStatuses"></param>
+        /// <param name="functionName"></param>
+        /// <param name="mode"></param>
         /// <returns></returns>
         [NoAuthenCheck]
         public ContentResult GetProjectDevelopModuleBy(List<string> progressStatuses,string functionName,int mode)
