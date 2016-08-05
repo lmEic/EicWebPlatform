@@ -136,11 +136,11 @@
                                             </button>
                                         </div>
                                         <div class="input-group-addon">
-                                            <label for="inputDate">工号:</label>
+                                            <label>工号:</label>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="输入工号或姓名" />
+                                        <input type="text" class="form-control" ng-model="vm.WorkerId" placeholder="输入工号" />
                                         <div class="input-group-btn" ng-show="!vmManager.isLocal">
-                                            <button class="btn btn-success" ng-click="vmManager.getDevelopModules(2)"><i class="fa fa-search"></i>查询</button>
+                                            <button class="btn btn-success" ng-click="vmManager.getWorkerInfo()"><i class="fa fa-search"></i>查询</button>
                                         </div>
                                     </div>
                                 </div>
@@ -148,12 +148,14 @@
                         </li>
                         <li class="list-group-item" ng-click="vmManager.selectReceiveClothesRecord(item)"
                             ng-repeat="item in vmManager.storeDataset track by $index">
-                            {{$index+1}}.
-                            类名：<span class="label label-default" style="cursor:pointer">{{item.MClassName}}</span>
-                            函数<span class="label label-info">{{item.MFunctionName}}</span>
-                        </li>
-                        <li ng-if="vmManager.developModules.length>0">
-                            <span class="btn btn-sm btn-success pull-right"><i class="fa fa-envelope-o"></i>发送通知</span>
+                            <span class="pull-left">
+                                <span class="label label-default" style="cursor:pointer">{{item.WorkerId}}</span>
+                                <span class="label label-default">{{item.WorkerName}}</span>
+                            </span>
+                            <span class="pull-right">
+                                <span class="label label-default">{{item.ProductName}}</span>
+                                <span class="label label-info">{{item.ProductSpecify}}</span>
+                            </span>
                         </li>
                     </ul>
                 </div>

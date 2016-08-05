@@ -240,6 +240,16 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             model: model,
         });
     };
+    ///查询厂服记录
+    hr.getWorkerClothesReceiveRecords = function (workerId, department, receiveMonth, mode) {
+        var url = generalAffairsUrl + 'GetWorkerClothesReceiveRecords';
+        return ajaxService.getData(url, {
+            workerId: workerId,
+            department: department,
+            receiveMonth: receiveMonth,
+            mode: mode,
+        });
+    };
     return hr;
 })
 

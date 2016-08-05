@@ -35,5 +35,14 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var result = GeneralAffairsService.WorkerClothesManager.ReceiveWorkClothes(model);
             return Json(result);
         }
+        
+        [HttpGet]
+        [NoAuthenCheck]
+        public ContentResult GetWorkerClothesReceiveRecords(string workerId, string department, string receiveMonth,int mode)
+        {
+            var datas = 0;
+
+            return DateJsonResult(datas);
+        }
     }
 }
