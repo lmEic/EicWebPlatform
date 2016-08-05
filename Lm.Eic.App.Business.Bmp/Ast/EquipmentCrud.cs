@@ -96,7 +96,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
                     case 5: //依据录入日期查询待保养设备  //按计划保养月查询待保养待设备列表
                         return irep.Entities.Where(m => m.IsMaintenance == "是" && m.PlannedMaintenanceMonth == qryDto.PlannedMaintenanceMonth).ToList();
-
+                        
                     case 6: //查询所有在使用待设备 生成设备总览表
                         return irep.Entities.Where(m=>m.IsScrapped== "正常").ToList();
 
