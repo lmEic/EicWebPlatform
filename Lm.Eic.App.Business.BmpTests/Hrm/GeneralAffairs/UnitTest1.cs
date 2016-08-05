@@ -25,7 +25,7 @@ namespace Lm.Eic.App.Business.BmpTests.Hrm.GeneralAffairs
                        WorkerId="001359" ,
                        WorkerName ="万晓桥"
             };
-            var relust = GeneralAffairsService.WorkerClothesManager.ReceiveWorkClothes(model);
+            var relust = GeneralAffairsService.WorkerClothesManager.StoreReceiveWorkClothes(model);
         }
     }
 }
