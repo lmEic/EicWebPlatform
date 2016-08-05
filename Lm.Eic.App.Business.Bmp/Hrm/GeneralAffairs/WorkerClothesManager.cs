@@ -32,24 +32,24 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// 是否可以以旧换新
         /// </summary>
         /// <param name="workerId">工号</param>
-        /// <param name="productCategory">厂服类别</param>
+        /// <param name="productName">厂服名称</param>
         /// <returns></returns>
-        public bool CanOldForNew(string workerId, string productCategory)
+        public bool CanOldForNew(string workerId, string productName)
         {
             //冬季厂服满三年允许更换一次  夏季厂服满两年允许更换一次
             try
             {
                 var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = workerId, SearchMode = 1 });
                 if (workClothesList == null || workClothesList.Count() <= 0) return true;
-                DateTime yearDate = DateTime.Now;
-                if (productCategory == "夏季厂服")
-                    yearDate = DateTime.Now.Date.AddYears(-2).Year.ToString().ToDate();
+                DateTime yearDate = new DateTime ();
+                if (productName == "夏季厂服")
+                    yearDate = DateTime.Now.Date.AddYears(-2);
                 else
                 {
-                    yearDate = DateTime.Now.Date.AddYears(-3).Year.ToString().ToDate();
+                    yearDate = DateTime.Now.Date.AddYears(-3);
                 }
-                var returnWorkClothes = workClothesList.Where(e => e.ProductCategory == productCategory & e.InputDate >= yearDate);
-                if (returnWorkClothes == null | returnWorkClothes.Count() <= 0) return true;
+                var returnWorkClothes = workClothesList.Where(e => e.ProductName == productName & e.InputDate >= yearDate);
+                if (returnWorkClothes == null || returnWorkClothes.Count() <= 0) return true;
                 return false;
             }
             catch (Exception ex)
@@ -84,10 +84,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
     internal class WorkerClothesCrud : CrudBase<WorkClothesManageModel, IWorkClothesManageModelRepository>
     {
         public WorkerClothesCrud() : base(new WorkClothesManageModelRepository())
-        {
-        }
+        { }
 
-
+        #region FindBy
         /// <summary>
         /// 查询  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按录入日期查找 
         /// </summary>
@@ -115,7 +114,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 throw new Exception(ex.InnerException.Message);
             }
         }
+        #endregion
 
+
+        #region     store
         public OpResult Store(WorkClothesManageModel model)
         {
             model.ReceiveMonth = DateTime.Now.ToString("yyyyMM");
@@ -123,9 +125,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 mdl =>
                 {
                     var result = this.PersistentDatas(model,
-                                     madd =>
+                                     mAdd =>
                                          { return AddWorkClothesManageRecord(model); },
-                                     mupdata =>
+                                      mUpdate =>
                                         { return EditWorkClothesManageRecord(model); }
                                    );
                     return result;
@@ -133,7 +135,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         }
 
         /// <summary>
-        /// 添加一条数据到数据库
+        /// 添加一条新增的信息
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -144,6 +146,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 return OpResult.SetResult("此数据已存在！");
             }
             OpResult result;
+            model.InputDate = DateTime.Now.Date; 
             result = irep.Insert(model).ToOpResult_Add("添加完成", model.Id_Key);
             return result;
         }
@@ -156,8 +159,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         private OpResult EditWorkClothesManageRecord(WorkClothesManageModel model)
         {
 
-            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("添加信息");
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("更新信息");
         }
+        #endregion
     }
 
 

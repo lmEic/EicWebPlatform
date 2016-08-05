@@ -92,11 +92,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs
             set { _inputdate = value; }
             get { return _inputdate; }
         }
-        private DateTime _dealwithtype;
+        private string  _dealwithtype;
         /// <summary>
         ///处理类型
         /// </summary>
-        public DateTime DealwithType
+        public string  DealwithType
         {
             set { _dealwithtype = value; }
             get { return _dealwithtype; }
@@ -119,20 +119,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs
             set { _receivemonth = value; }
             get { return _receivemonth; }
         }
-        private string _opdate;
+        private DateTime  _opdate;
         /// <summary>
         ///操作日期
         /// </summary>
-        public string OpDate
+        public DateTime  OpDate
         {
             set { _opdate = value; }
             get { return _opdate; }
         }
-        private string _optime;
+        private DateTime  _optime;
         /// <summary>
         ///操作时间
         /// </summary>
-        public string OpTime
+        public DateTime  OpTime
         {
             set { _optime = value; }
             get { return _optime; }
