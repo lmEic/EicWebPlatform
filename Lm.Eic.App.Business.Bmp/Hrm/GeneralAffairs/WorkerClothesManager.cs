@@ -82,11 +82,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
 
     }
 
-
-    
-
-
-
     /// <summary>
     /// 厂服管理CRUD
     /// </summary>
@@ -112,7 +107,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                         return irep.Entities.Where(m => m.WorkerId == (qryDto.WorkerId)).ToList();
                     case 2: //依据按部门查找
                         return irep.Entities.Where(m => m.Department == (qryDto.Department)).ToList();
-                    case 3: //依据录入日期查找 
+                    case 3: //按领取月查找 
                         return irep.Entities.Where(m => m.ReceiveMonth == qryDto.ReceiveMonth).ToList();
                     default:
                         return new List<WorkClothesManageModel>();
