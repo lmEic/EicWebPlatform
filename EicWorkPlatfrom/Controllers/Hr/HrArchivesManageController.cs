@@ -221,6 +221,12 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public JsonResult GetWorkersInfo(QueryWorkersDto dto, int searchMode)
         {
             var datas = ArchiveService.ArchivesManager.FindWorkers(dto, searchMode);
+            RebuildDepartmentContent(datas);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+
+        private void RebuildDepartmentContent(List<ArWorkerInfo> datas)
+        {
             if (datas != null && datas.Count > 0)
             {
                 datas.ForEach(e =>
@@ -228,7 +234,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
                     e.Department = ArchiveService.ArchivesManager.DepartmentMananger.GetDepartmentText(e.Department);
                 });
             }
-            return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
         [NoAuthenCheck]
@@ -242,6 +247,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public JsonResult GetWorkersBy(string workerIdOrName)
         {
             var datas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { WorkerId = workerIdOrName }, 2);
+            RebuildDepartmentContent(datas);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 

@@ -453,11 +453,13 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             }, getPagination);
 
             scope.$watch('datasource', function () {
-                if (scope.datasource.length > 0) {
-                    config.totalItems = scope.datasource.length;
-                    config.changeCurrentPage(1);
+                if (!angular.isUndefined(scope.datasource))
+                {
+                    if (scope.datasource.length > 0) {
+                        config.totalItems = scope.datasource.length;
+                        config.changeCurrentPage(1);
+                    }
                 }
-
             });
         }
     };
