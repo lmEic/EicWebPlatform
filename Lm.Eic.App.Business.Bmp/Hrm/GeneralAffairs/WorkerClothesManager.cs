@@ -41,20 +41,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             {
                 var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = workerId, SearchMode = 1 });
                 if (workClothesList == null || workClothesList.Count() <= 0) return true;
-                DateTime yearDate = new DateTime ();
-                if (productName == "夏季厂服")
-                    yearDate = DateTime.Now.Date.AddYears(-2);
-                else
-                {
-                    yearDate = DateTime.Now.Date.AddYears(-3);
-                }
+
+                DateTime yearDate = DateTime.Now.Date.AddYears(-2);
+                if (productName == "冬季厂服")
+                    yearDate = yearDate.AddYears(-1);
+                
                 var returnWorkClothes = workClothesList.Where(e => e.ProductName == productName & e.InputDate >= yearDate);
-                if (returnWorkClothes == null || returnWorkClothes.Count() <= 0) return true;
-                return false;
+                return returnWorkClothes == null || returnWorkClothes.Count() <= 0;
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.InnerException.Message);
             }
 
@@ -141,14 +137,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private OpResult AddWorkClothesManageRecord(WorkClothesManageModel model)
         {
+            model.InputDate = DateTime.Now.Date;
             if (irep.IsExist(m => m.Id_Key == model.Id_Key))
             {
                 return OpResult.SetResult("此数据已存在！");
             }
-            OpResult result;
-            model.InputDate = DateTime.Now.Date; 
-            result = irep.Insert(model).ToOpResult_Add("添加完成", model.Id_Key);
-            return result;
+            return irep.Insert(model).ToOpResult_Add("添加完成", model.Id_Key);
         }
 
         /// <summary>
@@ -158,7 +152,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private OpResult EditWorkClothesManageRecord(WorkClothesManageModel model)
         {
-
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("更新信息");
         }
         #endregion
