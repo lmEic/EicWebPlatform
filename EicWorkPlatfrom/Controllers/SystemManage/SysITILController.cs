@@ -43,9 +43,14 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="progressStatuses"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetProjectDevelopModuleBy(List<string> progressStatuses)
+        public ContentResult GetProjectDevelopModuleBy(List<string> progressStatuses,string functionName,int mode)
         {
-            var result = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(progressStatuses);
+            var result = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(new ItilDto()
+            {
+                ProgressSignList = progressStatuses,
+                FunctionName = functionName,
+                SearchMode = mode
+            });
             return DateJsonResult(result);
         }
         /// <summary>

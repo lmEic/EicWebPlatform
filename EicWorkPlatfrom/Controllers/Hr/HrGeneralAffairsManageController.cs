@@ -44,7 +44,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
             {
                 Department = department,
                 WorkerId = workerId,
-               
+                ReceiveMonth = receiveMonth,
                 SearchMode = mode
             });
             return DateJsonResult(datas);

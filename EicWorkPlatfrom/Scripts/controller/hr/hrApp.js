@@ -1862,7 +1862,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
 })
 
 //厂服管理
-.controller('workClothesManageCtrl', function ($scope, $modal, hrDataOpService, connDataOpService) {
+.controller('workClothesManageCtrl', function ($scope, $modal, hrDataOpService,dataDicConfigTreeSet,connDataOpService) {
     ///厂服管理模型
     var uiVM = {
         WorkerId: null,
@@ -1871,7 +1871,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         ProductName: null,
         ProductSpecify: null,
         ProductCategory: null,
-        PerCount: 0,
+        PerCount: 1,
         Unit: "件",
         InputDate: null,
         DealwithType: null,
@@ -1880,6 +1880,15 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     }
     $scope.vm = uiVM;
     var originalVM = _.clone(uiVM);
+
+    //查询字段
+    var queryFields = {
+        workerId: null,
+        department: null,
+        receiveMonth: null,
+    };
+
+    $scope.query = queryFields;
 
     var vmManager = {
         activeTab: 'initTab',
@@ -1951,13 +1960,24 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             }
         },
         storeDataset: [],
+        searchDataset:[],
         //选择领取衣服记录
         selectReceiveClothesRecord: function (item) {
             vmManager.canEdit = true;
             uiVM = _.clone(item);
             uiVM.OpSign = 'edit';
             $scope.vm = uiVM;
-        }
+        },
+        searchBy: function () {
+           $scope.searchPromise=hrDataOpService.getWorkerClothesReceiveRecords(queryFields.workerId, queryFields.department, queryFields.receiveMonth, 1).then(function (datas) {
+                vmManager.storeDataset = datas;
+            });
+        },
+        getReceiveClothesRecords: function (mode) {
+            hrDataOpService.getWorkerClothesReceiveRecords(queryFields.workerId, queryFields.department, queryFields.receiveMonth, mode).then(function (datas) {
+                vmManager.searchDataset = datas;
+            });
+        },
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -1984,5 +2004,16 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             vmManager.inti();
         });
     };
+
+
+    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
+        departmentTreeSet.setTreeDataset(datas);
+    });
+    var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
+    departmentTreeSet.bindNodeToVm = function () {
+        var dto = _.clone(departmentTreeSet.treeNode.vm);
+        queryFields.department = dto.DataNodeText;
+    };
+    $scope.ztree = departmentTreeSet;
 
 })
