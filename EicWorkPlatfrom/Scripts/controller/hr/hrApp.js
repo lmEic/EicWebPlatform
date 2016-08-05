@@ -62,6 +62,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     var hr={};
     var archiveCtrl = "/HrArchivesManage/";
     var attendUrl = "/HrAttendanceManage/";
+    var generalAffairsUrl = "/HrGeneralAffairsManage/";
 
     hr.getWorkerCardImages = function ()
     {
@@ -229,6 +230,14 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         var url = attendUrl + "HandleExceptionSlotData";
         return ajaxService.postData(url, {
             exceptionDatas: exceptionDatas
+        });
+    };
+
+    //保存领取厂服记录
+    hr.storeWorkerClothesReceiveRecord = function (model) {
+        var url = generalAffairsUrl + 'StoreWorkerClothesReceiveRecord';
+        return ajaxService.postData(url, {
+            model: model,
         });
     };
     return hr;
@@ -1843,7 +1852,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
 })
 
 //厂服管理
-.controller('workClothesManageCtrl', function ($scope, $modal, connDataOpService) {
+.controller('workClothesManageCtrl', function ($scope, $modal, hrDataOpService, connDataOpService) {
     ///厂服管理模型
     var uiVM = {
         WorkerId: null,
@@ -1894,8 +1903,9 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             }
         },
         dealwithTypes: [
-             { id: "领取新衣", text: "领取新衣" },
+            { id: "领取新衣", text: "领取新衣" },
             { id: "以旧换新", text: "以旧换新" },
+            { id: "以旧换旧", text: "以旧换旧" },
         ],
         getWorkerInfo: function () {
             if (uiVM.WorkerId === undefined) return;
@@ -1929,11 +1939,34 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
                 uiVM.Department = null;
             }
         },
+        storeDataset: [],
+        //选择领取衣服记录
+        selectReceiveClothesRecord: function (item) {
+            vmManager.canEdit = true;
+            uiVM = _.clone(item);
+            uiVM.OpSign = 'edit';
+            $scope.vm = uiVM;
+        }
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.saveAll = function (isValid) {
+        hrDataOpService.storeWorkerClothesReceiveRecord(uiVM).then(function (opresult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                var mdl = _.clone(uiVM);
+                mdl.Id_Key = opresult.Id_Key;
+                if (mdl.OpSign === 'add') {
+                    vmManager.storeDataset.push(mdl);
+                }
+                else (mdl.OpSign == 'edit')
+                {
+                    var item = _.find(vmManager.storeDataset, { Id_Key: uiVM.Id_Key });
+                    leeHelper.copyVm(uiVM, item);
+                }
+                vmManager.init();
+            });
+        });
     };
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {

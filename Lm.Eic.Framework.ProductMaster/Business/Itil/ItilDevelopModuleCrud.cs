@@ -200,10 +200,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <summary>
         /// 发送邮件通知
         /// </summary>
+        /// <param name="receiveUserList">接收用户列表</param>
         /// <returns></returns>
-        public OpResult SendMail()
+        public OpResult SendMail(List<string> receiveUserList)
         {
             //TODO：根据 _waitingSendMailList 发送邮件进行通知
+            //将邮件发送给执行人
+
             return null;
         }
 
@@ -269,7 +272,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 ModuleName = model.ModuleName,
                 MClassName = model.MClassName,
                 MFunctionName = model.MFunctionName,
-                FunctionDescription = model.MFunctionName,
+                FunctionDescription = model.FunctionDescription,
                 Executor = model.Executor,
                 ParameterKey = model.ParameterKey,
                 ChangeProgress = model.CurrentProgress,

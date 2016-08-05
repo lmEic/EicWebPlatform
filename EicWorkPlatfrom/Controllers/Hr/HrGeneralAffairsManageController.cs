@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs;
 
 
 namespace EicWorkPlatfrom.Controllers.Hr
@@ -23,10 +24,15 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult StoreWorkerClothesReceiveRecord()
+        public JsonResult StoreWorkerClothesReceiveRecord(WorkClothesManageModel model)
         {
-            var result = 0;
+            var result = GeneralAffairsService.WorkerClothesManager.ReceiveWorkClothes(model);
             return Json(result);
         }
     }

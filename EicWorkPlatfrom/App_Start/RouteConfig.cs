@@ -42,7 +42,7 @@ namespace EicWorkPlatfrom
                 routes.MapRoute(
                              name: "Default",
                              url: "{controller}/{action}/{id}",
-                             defaults: new { controller = "Hr", action = "Index", id = UrlParameter.Optional }
+                             defaults: new { controller = "EicSystemManage", action = "Index", id = UrlParameter.Optional }
                          );
             }
         }
