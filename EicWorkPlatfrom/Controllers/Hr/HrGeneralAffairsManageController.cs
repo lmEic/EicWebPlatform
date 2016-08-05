@@ -40,8 +40,13 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public ContentResult GetWorkerClothesReceiveRecords(string workerId, string department, string receiveMonth,int mode)
         {
-            var datas = 0;
-
+            var datas = GeneralAffairsService.WorkerClothesManager.FindReceiveRecordBy(new QueryGeneralAffairsDto()
+            {
+                Department = department,
+                WorkerId = workerId,
+               
+                SearchMode = mode
+            });
             return DateJsonResult(datas);
         }
     }
