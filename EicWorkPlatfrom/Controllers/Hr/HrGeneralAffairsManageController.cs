@@ -32,7 +32,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public JsonResult StoreWorkerClothesReceiveRecord(WorkClothesManageModel model)
         {
-            var result = GeneralAffairsService.WorkerClothesManager.ReceiveWorkClothes(model);
+            var result = GeneralAffairsService.WorkerClothesManager.StoreReceiveWorkClothes(model);
             return Json(result);
         }
         

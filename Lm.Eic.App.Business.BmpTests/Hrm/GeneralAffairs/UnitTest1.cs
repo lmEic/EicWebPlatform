@@ -26,7 +26,7 @@ namespace Lm.Eic.App.Business.BmpTests.Hrm.GeneralAffairs
                        WorkerName ="万晓桥",
                        InputDate =DateTime.Now .Date 
             };
-            var relust = GeneralAffairsService.WorkerClothesManager.CanOldForNew("001359", "夏季厂服");
+            var relust = GeneralAffairsService.WorkerClothesManager.CanOldChangeNew("001359", "夏季厂服");
         }
     }
 }
