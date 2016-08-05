@@ -105,6 +105,7 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         /// <param name="planDate"></param>
         /// <returns></returns>
+        [HttpGet]
         [NoAuthenCheck]
         public ContentResult GetAstCheckListByPlanDate(DateTime planDate)
         {

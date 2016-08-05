@@ -94,9 +94,10 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
         },
         datasource: [],
         datasets:[],
-        getDevelopModules: function () {
+        getDevelopModules: function (mode) {
             vmManager.datasets = [];
             vmManager.datasource = [];
+
             $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(vmManager.selectedProgressStatuses).then(function (datas) {
                 vmManager.datasource = datas;
             });
@@ -120,7 +121,9 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
         },
         developChangeDetails:[],
         showDetailsBoard: false,//显示明细面板
-        editModal:null,
+        editModal: null,
+        functionName: null,
+        
     };
 
     $scope.vmManager = vmManager;

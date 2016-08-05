@@ -65,10 +65,10 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="item in vmManager.developChangeDetails track by $index">
-                                            <td>{{item.ModuleName}}</td>
+                                            <td style="max-width:100px;">{{item.ModuleName}}</td>
                                             <td>{{item.MClassName}}</td>
                                             <td>{{item.MFunctionName}}</td>
-                                            <td>{{item.FunctionDescription}}</td>
+                                            <td style="max-width:120px;">{{item.FunctionDescription}}</td>
                                             <td>{{item.ChangeProgress}}</td>
                                             <td>{{item.Executor}}</td>
                                             <td>{{item.OpDate}}</td>
