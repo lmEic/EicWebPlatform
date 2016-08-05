@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
 {
-    public class GeneralAffairsFactory
+    /// <summary>
+    /// 总务管理工厂
+    /// </summary>
+    public static class GeneralAffairsFactory
     {
         /// <summary>
         /// 厂服管理CRUD

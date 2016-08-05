@@ -45,7 +45,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 DateTime yearDate = DateTime.Now.Date.AddYears(-2);
                 if (productName == "冬季厂服")
                     yearDate = yearDate.AddYears(-1);
-                var returnWorkClothes = workClothesList.Where(e => e.ProductName == productName & e.InputDate >= yearDate);
+                var returnWorkClothes = workClothesList.Where(e => e.ProductName == productName && e.DealwithType != "以旧换旧" && e.InputDate >= yearDate);
                 return returnWorkClothes == null || returnWorkClothes.Count() <= 0;
             }
             catch (Exception ex)
@@ -65,10 +65,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             //处理类型 判断是以旧换新 还是新领取 然后判断是否有资格
             try
             {
-                //  处理类型只有“以旧换新”，“新领取”
+                //  处理类型只有“以旧换新”，“领取新衣”,"以旧换旧"
                 //  是  “新领取” 不用判断是否有资格
                 if (model == null) return OpResult.SetResult("数据不能这空"); 
-                if((model.DealwithType =="以旧换新") &(!CanOldForNew(model.WorkerId ,model.ProductName)))
+                if((model.DealwithType =="以旧换新") &&(!CanOldForNew(model.WorkerId ,model.ProductName)))
                 {
                     return OpResult.SetResult("不能以旧换新"); 
                 }
@@ -76,6 +76,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             }
             catch (Exception ex)
             {
+                return OpResult.SetResult("Throw Error");
                 throw new Exception(ex.InnerException.Message);
             }
            
