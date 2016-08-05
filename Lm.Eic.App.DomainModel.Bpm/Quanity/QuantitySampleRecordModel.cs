@@ -971,6 +971,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 		}
 		#endregion Model
     }
+
+
+
+    public class SampleIpqcPrintModel
+    {
+        public  SampleIpqcPrintModel()
+        { }
+
+    }
 #endregion 
    /// <summary>
    /// IPQC 抽测SPC记录数值
@@ -999,6 +1008,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         private decimal? _sizemin;
         private string _sampleequipmentid;
         private string _samplemethod;
+        private int? _datarecordnumber;
         private string _data1;
         private string _data2;
         private string _data3;
@@ -1006,11 +1016,13 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         private string _data5;
         private string _datacollection;
         private string _datasign;
-        private string _datarecordname;
+        private string _datarecordperson;
         private string _datagroupid;
         private string _sampleresult;
-        private DateTime? _inputdate;
-        private DateTime? _inputtime;
+        private DateTime _inputdate;
+        private DateTime _optime;
+        private string _opsign;
+        private DateTime _opdate;
         private decimal _id_key;
         /// <summary>
         /// 订单号
@@ -1141,6 +1153,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             get { return _samplemethod; }
         }
         /// <summary>
+        /// 
+        /// </summary>
+        public int? DataRecordNumber
+        {
+            set { _datarecordnumber = value; }
+            get { return _datarecordnumber; }
+        }
+        /// <summary>
         /// 数据1
         /// </summary>
         public string Data1
@@ -1199,10 +1219,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         /// 记录人
         /// </summary>
-        public string DataRecordName
+        public string DataRecordPerson
         {
-            set { _datarecordname = value; }
-            get { return _datarecordname; }
+            set { _datarecordperson = value; }
+            get { return _datarecordperson; }
         }
         /// <summary>
         /// 数据分组编号
@@ -1223,21 +1243,37 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         /// 输入日期
         /// </summary>
-        public DateTime? InPutDate
+        public DateTime InPutDate
         {
             set { _inputdate = value; }
             get { return _inputdate; }
         }
         /// <summary>
-        /// 输入时间
+        /// 操作时间
         /// </summary>
-        public DateTime? InputTime
+        public DateTime OpTime
         {
-            set { _inputtime = value; }
-            get { return _inputtime; }
+            set { _optime = value; }
+            get { return _optime; }
         }
         /// <summary>
-        /// 
+        /// 操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        /// <summary>
+        /// 操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        /// <summary>
+        ///  自增键
         /// </summary>
         public decimal Id_key
         {

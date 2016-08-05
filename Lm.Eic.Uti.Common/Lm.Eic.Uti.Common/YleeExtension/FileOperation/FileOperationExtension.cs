@@ -157,7 +157,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             ICellStyle cellSytleDate = workbook.CreateCellStyle();
             IDataFormat format = workbook.CreateDataFormat();
             cellSytleDate.DataFormat = format.GetFormat("yyyy年mm月dd日");
-
             try
             {
                 #region 填充列头区域
