@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
+using System.Threading;
 
 namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 {
@@ -64,16 +65,27 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 
         #endregion
         /// <summary>
-        /// 获取开发任务列表
+        /// 获取开发任务列表  1.依据状态列表查询 2.依据函数名称查询 
         /// </summary>
-        /// <param name="progressSignList">状态列表</param>
+        /// <param name="dto">状态列表</param>
         /// <returns></returns>
-        public List<ItilDevelopModuleManageModel> GetDevelopModuleManageListBy(List<string> progressSignList)
+        public List<ItilDevelopModuleManageModel> GetDevelopModuleManageListBy(ItilDto dto)
         {
-            if (progressSignList != null)
-                return irep.Entities.Where(m => m.CurrentProgress != "结案" && progressSignList.Contains(m.CurrentProgress)).ToList();
-            else
-                return new List<ItilDevelopModuleManageModel>();
+            List<ItilDevelopModuleManageModel> itilList = new List<ItilDevelopModuleManageModel>();
+            if (dto == null) return itilList;
+            switch (dto.SearchMode)
+            {
+                case 1:
+                    if (dto.ProgressSignList != null)
+                        itilList = irep.Entities.Where(m => m.CurrentProgress != "结案" && dto.ProgressSignList.Contains(m.CurrentProgress)).ToList();
+                    break;
+                case 2:
+                    if (!dto.FunctionName.IsNullOrEmpty())
+                        itilList = irep.Entities.Where(m => m.CurrentProgress != "结案" && m.MFunctionName == dto.FunctionName).ToList();
+                    break;
+            }
+            return itilList;
+            
         }
 
         /// <summary>
@@ -125,6 +137,29 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 }
                 return result;
             });
+        }
+
+        /// <summary>
+        /// 更新开发任务内容
+        /// </summary>
+        /// <param name="model">开发任务</param>
+        /// <returns></returns>
+        public OpResult UpDate(ItilDevelopModuleManageModel model)
+        {
+            OpResult result = OpResult.SetResult("未执行任何修改");
+            if (model == null) return result;
+
+            var changeRecordList = GetChangeRecordListBy(model);
+
+            model.OpSign = OpMode.Edit;
+            result = Store(model);
+            //修改记录
+            changeRecordList.ForEach(m =>
+            {
+                m.OpSign = OpMode.Edit;
+                ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.Store(m);
+            });
+            return result;
         }
 
         /// <summary>
@@ -251,6 +286,10 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                         result = irep.Insert(model).ToOpResult_Add("开发管控修改记录", model.Id_Key);
                         break;
 
+                    case OpMode.Edit: //新增
+                        result = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发管控修改记录")
+;                        break;
+
                     default:
                         result = OpResult.SetResult("操作模式溢出");
                         break;
@@ -279,6 +318,8 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 OpSign = "add"
             });
         }
+
+      
 
         /// <summary>
         /// 根据约束键值查找操作记录
