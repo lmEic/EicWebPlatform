@@ -17,15 +17,12 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs
             get { return _department; }
             set { if (_department != value) { _department = value; } }
         }
-        DateTime _inputDate;
+
         /// <summary>
-        /// 录入日期
+        /// 领取月
         /// </summary>
-        public DateTime InputDate
-        {
-            get { return _inputDate; }
-            set { if (_inputDate != value) { _inputDate = value; } }
-        }
+        public string ReceiveMonth { get; set; }
+
         private string _workerId;
         /// <summary>
         /// 员工工号
