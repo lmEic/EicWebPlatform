@@ -1873,6 +1873,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
 
     var vmManager = {
         activeTab: 'initTab',
+        isLocal:true,
         init: function () {
             if (uiVM.OpSign === 'add') {
 

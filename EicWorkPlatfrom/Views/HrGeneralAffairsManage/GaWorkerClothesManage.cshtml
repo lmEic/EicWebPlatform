@@ -119,28 +119,32 @@
                                 </div>
                             </div>
                         </form>
-
                     </div>
                 </div>
                 <div class="col-md-5">
                     <ul class="list-group">
                         <li class="list-group-item active">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <h4 class="list-title">
-                                        <i class="fa fa-list"></i>
-                                        <span>列表</span>
-                                    </h4>
-                                </div>
-                                <div class="col-md-8">
+                            <form class="form-inline" novalidate>
+                                <div class="form-group">
                                     <div class="input-group">
-                                        <input class="form-control" type="text" />
+                                        <div class="input-group-btn">
+                                            <button type="button" ng-class="vmManager.isLocal===false?'btn btn-warning':'btn btn-success'"
+                                                    ng-model="vmManager.isLocal" bs-checkbox>
+                                                <i ng-class="vmManager.isLocal===false?'fa fa-toggle-off':'fa fa-toggle-on'"></i>
+                                                <span ng-show="vmManager.isLocal===false">远程</span>
+                                                <span ng-show="vmManager.isLocal">本地</span>
+                                            </button>
+                                        </div>
                                         <div class="input-group-addon">
-                                            <i class="fa fa-search"></i>
+                                            <label for="inputDate">工号:</label>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="输入工号或姓名" />
+                                        <div class="input-group-btn" ng-show="!vmManager.isLocal">
+                                            <button class="btn btn-success" ng-click="vmManager.getDevelopModules(2)"><i class="fa fa-search"></i>查询</button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </li>
                         <li class="list-group-item" ng-click="vmManager.selectReceiveClothesRecord(item)"
                             ng-repeat="item in vmManager.storeDataset track by $index">
@@ -157,22 +161,50 @@
         </div>
         <div bs-pane data-title="厂服领用查询" data-name="editTab">
             <div class="well">
-                <div class="row">
-                    <div class="col-md-6">
-                        @*<form class="form-inline" novalidate>
-                            <div class="form-group">
-                                <label for="inputDate">部门:</label>
-                                <button type="button" class="btn btn-default" ng-model="vmManager.selectedProgressStatuses"
-                                        data-html="1" data-multiple="1" data-animation="am-flip-x" data-placeholder="选择当前进度..."
-                                        data-bs-options="proStatus.value as proStatus.label for proStatus in vmManager.progressStatuses track by $index" data-bs-select>
-                                    <span class="caret"></span>
-                                </button>
-                            </div>
-                            <span class="btn btn-primary" ng-click="vmManager.getDevelopModules()"><i class="fa fa-search"></i>查询</span>
-                            <span class="btn btn-warning" ng-click="vmManager.sendMail()"><i class="fa fa-mail-reply"></i>发送邮件</span>
-                        </form>*@
-                    </div>
-                </div>
+               <div bs-tabs>
+                   <div bs-pane data-title="工号">
+                       <form class="form-inline" novalidate>
+                           <div class="form-group">
+                               <div class="input-group">
+                                   <div class="input-group-addon">
+                                       <label for="inputDate">员工工号:</label>
+                                   </div>
+                                   <input type="text" class="form-control" placeholder="输入员工工号" />
+                                   <div class="input-group-btn">
+                                       <button class="btn btn-success" ng-click="vmManager.getDevelopModules(2)"><i class="fa fa-search"></i>查询</button>
+                                   </div>
+                               </div>
+                           </div>
+
+                       </form>
+                   </div>
+                   <div bs-pane data-title="部门">
+                       <div class="form-group">
+                           <div class="input-group">
+                               <div class="input-group-addon">
+                                   <label for="inputDate">员工工号:</label>
+                               </div>
+                               <input type="text" class="form-control" placeholder="输入员工工号" />
+                               <div class="input-group-btn">
+                                   <button class="btn btn-success" ng-click="vmManager.getDevelopModules(2)"><i class="fa fa-search"></i>查询</button>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div bs-pane data-title="月份">
+                       <div class="form-group">
+                           <div class="input-group">
+                               <div class="input-group-addon">
+                                   <label for="inputDate">员工工号:</label>
+                               </div>
+                               <input type="text" class="form-control" placeholder="输入员工工号" />
+                               <div class="input-group-btn">
+                                   <button class="btn btn-success" ng-click="vmManager.getDevelopModules(2)"><i class="fa fa-search"></i>查询</button>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
             </div>
             <div class="well" cg-busy="{promise:searchPromise}">
                 <div class="table-responsive">
