@@ -65,6 +65,7 @@
     <Compile Include="Model\ConfigDataDictionaryModel.cs" />
     <Compile Include="Model\ITIL\ItilDevelopModuleManageModel.cs" />
     <Compile Include="Model\ITIL\ItilDevelopModuleManageChangeRecordModel.cs" />
+    <Compile Include="Model\ITIL\ItilDto.cs" />
     <Compile Include="Model\ITIL\ItilSupplierTelModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -13,13 +13,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
    public class ItilDevelopModuleManager
     {
         /// <summary>
-        /// 获取开发任务列表 
+        /// 获取开发任务列表  1.依据状态列表查询 2.依据函数名称查询 
         /// </summary>
         /// <param name="progressSignList">进度标识列表</param>
         /// <returns></returns>
-        public List<ItilDevelopModuleManageModel> GetDevelopModuleManageListBy(List<string> progressSignList)
+        public List<ItilDevelopModuleManageModel> GetDevelopModuleManageListBy(ItilDto dto)
         {
-            return ItilCrudFactory.ItilDevelopModuleManageCrud.GetDevelopModuleManageListBy(progressSignList);
+            return ItilCrudFactory.ItilDevelopModuleManageCrud.GetDevelopModuleManageListBy(dto);
         }
         /// <summary>
         /// 仓储操作 model.OpSign = add/edit/delete
@@ -29,6 +29,15 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         public OpResult Store(ItilDevelopModuleManageModel model)
         {
             return ItilCrudFactory.ItilDevelopModuleManageCrud.Store(model);
+        }
+        /// <summary>
+        /// 更新开发任务内容
+        /// </summary>
+        /// <param name="model">开发任务</param>
+        /// <returns></returns>
+        public OpResult UpDate(ItilDevelopModuleManageModel model)
+        {
+            return ItilCrudFactory.ItilDevelopModuleManageCrud.UpDate(model);
         }
         /// <summary>
         /// 修改开发进度
