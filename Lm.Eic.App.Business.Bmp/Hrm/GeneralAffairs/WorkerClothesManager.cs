@@ -68,9 +68,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 //  处理类型只有“以旧换新”，“新领取”
                 //  是  “新领取” 不用判断是否有资格
                 if (model == null) return OpResult.SetResult("数据不能这空"); 
-                if((model.DealwithType =="以旧换新") &(!CanOldForNew(model.WorkerId ,model.ProductName)))
+                if((model.DealwithType =="以旧换新") && (!CanOldForNew(model.WorkerId ,model.ProductName)))
                 {
-                    return OpResult.SetResult("不能以旧换新"); 
+                    return OpResult.SetResult("该用户暂无资格以旧换新！"); 
                 }
                 return CrudFactory.WorkerClothesCrud.Store(model);
             }
