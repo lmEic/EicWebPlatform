@@ -64,7 +64,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             //处理类型 判断是以旧换新 还是新领取 然后判断是否有资格
             try
             {
-                //  处理类型只有“以旧换新”，“新领取”
+                //  处理类型只有“以旧换新”，“领取新衣”
                 //  是  “新领取” 不用判断是否有资格
                 if (model == null) return OpResult.SetResult("数据不能这空"); 
                 if((model.DealwithType =="以旧换新") && (!CanOldChangeNew(model.WorkerId ,model.ProductName)))
@@ -160,7 +160,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private OpResult EditWorkClothesManageRecord(WorkClothesManageModel model)
         {
-            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("更新信息");
+            model.InputDate = DateTime.Now.Date;
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(model.WorkerName .ToString ());
         }
         #endregion
     }
