@@ -19,7 +19,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
     public class WorkerClothesManager
     {
         /// <summary>
-        /// 获取领用记录  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按录入日期查找 
+        /// 获取领用记录  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按领取月查找 
         /// </summary>
         /// <param name="dto">总务数据查询数据传输对象</param>
         /// <returns></returns>
@@ -82,11 +82,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
 
     }
 
-
-    
-
-
-
     /// <summary>
     /// 厂服管理CRUD
     /// </summary>
@@ -97,7 +92,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
 
         #region FindBy
         /// <summary>
-        /// 查询  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按录入日期查找 
+        /// 查询  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按领取月查找 
         /// </summary>
         /// <param name="qryDto">数据传输对象 </param>
         /// <returns></returns>
@@ -112,8 +107,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                         return irep.Entities.Where(m => m.WorkerId == (qryDto.WorkerId)).ToList();
                     case 2: //依据按部门查找
                         return irep.Entities.Where(m => m.Department == (qryDto.Department)).ToList();
-                    case 3: //依据录入日期查找 
-                        return irep.Entities.Where(m => m.InputDate == (qryDto.InputDate)).ToList();
+                    case 3: //按领取月查找 
+                        return irep.Entities.Where(m => m.ReceiveMonth == qryDto.ReceiveMonth).ToList();
                     default:
                         return new List<WorkClothesManageModel>();
                 }
