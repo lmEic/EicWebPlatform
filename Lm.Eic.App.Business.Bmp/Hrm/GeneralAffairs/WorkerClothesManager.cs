@@ -87,7 +87,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
     /// </summary>
     internal class WorkerClothesCrud : CrudBase<WorkClothesManageModel, IWorkClothesManageModelRepository>
     {
-        public WorkerClothesCrud() : base(new WorkClothesManageModelRepository())
+        public WorkerClothesCrud() : base(new WorkClothesManageModelRepository(),"领取记录")
         { }
 
         #region FindBy
@@ -138,6 +138,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 });
         }
 
+        protected override void AddCrudOpItems()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 添加一条新增的信息
         /// </summary>
@@ -150,7 +155,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             {
                 return OpResult.SetResult("此数据已存在！");
             }
-            return irep.Insert(model).ToOpResult_Add("添加完成", model.Id_Key);
+            return irep.Insert(model).ToOpResult_Add(this.OpContext, model.Id_Key);
         }
 
         /// <summary>
@@ -160,7 +165,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private OpResult EditWorkClothesManageRecord(WorkClothesManageModel model)
         {
-            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("更新信息");
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(this.OpContext);
         }
         #endregion
     }

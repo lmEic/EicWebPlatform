@@ -143,7 +143,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 }
                 else
                 {
-                    throw new Exception(e.ToString());
+                    throw new Exception(e.InnerException.Message);
                 }
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException dbvaliException)
