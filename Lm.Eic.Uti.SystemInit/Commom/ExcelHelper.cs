@@ -21,12 +21,13 @@ namespace Lm.Eic.Uti.SystemInit.Commom
         #region Excel导入
 
         /// <summary>
-        /// 从Excel取数据并记录到List集合里
+        /// 从Excel取数据并记录到List集合 ：从三行开始，前二行是英与中文映射
         /// </summary>
-        /// <param name="cellHeard">单元头的值和名称：{ { "English", "中文" }, };</param>
+        /// <typeparam name="T"></typeparam>
         /// <param name="filePath">保存文件绝对路径</param>
+        /// <param name="sheetColumn">列</param>
         /// <param name="errorMsg">错误信息</param>
-        /// <returns>转换后的List对象集合</returns>
+        /// <returns>转换后的List对象集合<</returns>
         public static List<T> ExcelToEntityList<T>( string filePath,int sheetColumn, out StringBuilder errorMsg) where T : new()
         {
             List<T> enlist = new List<T>();
@@ -40,6 +41,7 @@ namespace Lm.Eic.Uti.SystemInit.Commom
                 else if (Regex.IsMatch(filePath, ".xlsx$")) // 2007
                 {
                     //return FailureResultMsg("请选择Excel文件"); // 未设计
+                  // enlist = Excel2007ToEntityList<T>(filePath, sheetColumn, out errorMsg);
                 }
                 return enlist;
             }
@@ -60,19 +62,21 @@ namespace Lm.Eic.Uti.SystemInit.Commom
         {
             errorMsg = new StringBuilder(); // 错误信息,Excel转换到实体对象时，会有格式的错误信息
             List<T> enlist = new List<T>(); // 转换后的集合
-
             Dictionary<string, string> cellHeard = new Dictionary<string, string>();
+            IWorkbook wk = null;
             //List<string> keys = cellHeard.Keys.ToList(); // 要赋值的实体对象属性名称
             try
             {
                 using (FileStream fs = File.OpenRead(filePath))
                 {
+                    wk = new HSSFWorkbook(fs);
                     HSSFWorkbook workbook = new HSSFWorkbook(fs);
                     HSSFSheet sheet = (HSSFSheet)workbook.GetSheetAt(0); // 获取此文件第一个Sheet页
+                    #region    导出头二行 做为对应的字典
                     try
                     {
                         List<string> EnglishCellHeardGGroup = new List<string>();
-                        for (int jj = 0; jj <= sheetColumn; jj++)
+                        for (int jj = 0; jj < sheetColumn; jj++)
                         {
                             if (sheet.LastRowNum >= 2)
                             {
@@ -89,7 +93,8 @@ namespace Lm.Eic.Uti.SystemInit.Commom
                     {
                         throw new Exception(e.ToString());
                     }
-                  
+                    #endregion   导出头二行 做为对应的字典
+                   
                     List<string> keys = cellHeard.Keys.ToList(); // 要赋值的实体对象属性名称
                         for (int i = 2; i <= sheet.LastRowNum; i++) // 从2开始，第0，1行为单元头 英中文对应
                         {

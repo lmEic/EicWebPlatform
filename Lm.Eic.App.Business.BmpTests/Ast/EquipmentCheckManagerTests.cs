@@ -55,7 +55,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         public void  TestExcelToSql()
         {
             StringBuilder str = new StringBuilder();
-            string path = @"E:\\Ast.xls";
+            string path = @"E:\\Ast.xlsx";
             var m = ExcelHelper.ExcelToEntityList<EquipmentModel>(path, 44,out str);
             if (m.Count < 0) { Assert.Fail(); }
 
