@@ -1902,7 +1902,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         isLocal:true,
         init: function () {
             if (uiVM.OpSign === 'add') {
-
+                leeHelper.clearVM(uiVM, ['ProductName', 'PerCount', 'Unit']);
             }
             else {
                 uiVM = _.clone(originalVM);
@@ -1928,7 +1928,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             {
                 vmManager.closeSpecifies = product.specifyList;
             }
-            vmManager.checkCanChange();
         },
         dealwithTypes: [
             { id: "领取新衣", text: "领取新衣" },

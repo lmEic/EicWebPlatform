@@ -71,6 +71,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
 
     var vmManager = {
         activeTab: 'initTab',
+        isLocal:true,
         init: function () {
             if (uiVM.OpSign === 'add') {
                 uiVM.MFunctionName = null;
@@ -105,14 +106,14 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
         isUpdate:false,
         searchBy: function () {
             vmManager.isUpdate = true;
-            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses,queryFields.functionName,1).then(function (datas) {
+            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses,queryFields.functionName,2).then(function (datas) {
                 vmManager.developModules = datas;
             });
         },
-        getDevelopModules: function (mode) {
+        getDevelopModules: function () {
             vmManager.datasets = [];
             vmManager.datasource = [];
-            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses, queryFields.functionName, 2).then(function (datas) {
+            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses, queryFields.functionName, 1).then(function (datas) {
                 vmManager.datasource = datas;
             });
         },

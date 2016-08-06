@@ -99,7 +99,7 @@
                                         <div class="error-messages" ng-messages="formWorkClothes.dealwithType.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">办理类型不能为空</small>
                                         </div>
-                                        <button type="button" class="btn btn-default" ng-model="vm.DealwithType"
+                                        <button type="button" class="btn btn-default" ng-model="vm.DealwithType" ng-change="vmManager.checkCanChange()"
                                                 data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择办理类型"
                                                 data-bs-options="item.id as item.text for item in vmManager.dealwithTypes" data-bs-select>
                                             <span class="caret"></span>

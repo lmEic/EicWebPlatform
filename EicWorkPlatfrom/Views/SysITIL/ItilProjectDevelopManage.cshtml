@@ -124,10 +124,7 @@
                                                 <span ng-show="vmManager.isLocal">本地</span>
                                             </button>
                                         </div>
-                                        <div class="input-group-addon">
-                                            <label>函数名称:</label>
-                                        </div>
-                                        <input type="text" class="form-control" ng-model="query.functionName" placeholder="函数名称" />
+                                        <input type="text" class="form-control" ng-model="query.functionName" placeholder="输入函数名称" />
                                         <div class="input-group-btn" ng-show="!vmManager.isLocal">
                                             <button class="btn btn-success" ng-click="vmManager.searchBy()"><i class="fa fa-search"></i>查询</button>
                                         </div>
@@ -162,7 +159,7 @@
                                        <span class="caret"></span>
                                 </button>
                             </div>
-                            <span class="btn btn-primary" ng-click="vmManager.getDevelopModules(1)"><i class="fa fa-search"></i>查询</span>
+                            <span class="btn btn-primary" ng-click="vmManager.getDevelopModules()"><i class="fa fa-search"></i>查询</span>
                             <span class="btn btn-warning" ng-click="vmManager.sendMail()"><i class="fa fa-mail-reply"></i>发送邮件</span>
                         </form>
                     </div>
