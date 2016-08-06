@@ -21,11 +21,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <summary>
         /// 获取领用记录  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按领取月查找 
         /// </summary>
-        /// <param name="qryDto">总务数据查询数据传输对象</param>
+        /// <param name="dto">总务数据查询数据传输对象</param>
         /// <returns></returns>
-        public List<WorkClothesManageModel> FindReceiveRecordBy(QueryGeneralAffairsDto qryDto)
+        public List<WorkClothesManageModel> FindReceiveRecordBy(QueryGeneralAffairsDto dto)
         {
-            return CrudFactory.WorkerClothesCrud.FindBy(qryDto);
+            return CrudFactory.WorkerClothesCrud.FindBy(dto);
         }
 
         /// <summary>
@@ -45,15 +45,45 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 DateTime yearDate = DateTime.Now.Date.AddYears(-2);
                 if (productName == "冬季厂服")
                     yearDate = yearDate.AddYears(-1);
-                var returnWorkClothes = workClothesList.Where(e => e.ProductName == productName & e.InputDate >= yearDate);
-                return returnWorkClothes == null || returnWorkClothes.Count() <= 0;
+                //排除“以旧换旧” 的时间  还判断
+                var returnWorkClothes = workClothesList.Where(e => e.ProductName == productName&&e.DealwithType!="以旧换旧" && e.InputDate >= yearDate);
+                bool result = (returnWorkClothes == null || returnWorkClothes.Count() <= 0);
+                return result;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
             }
         }
-
+        /// <summary>
+        /// 是否可以以旧换新
+        /// </summary>
+        /// <param name="workerId">工号</param>
+        /// <param name="productName">厂服名称</param>
+        /// <param name="dealwithType">处理方式</param>
+        /// <returns></returns>
+        public bool CanOldChangeNew(string workerId, string productName, string dealwithType)
+        {
+            // "以旧换旧"不用判定
+            //冬季厂服满三年允许更换一次  夏季厂服满两年允许更换一次
+            try
+            {
+                if (dealwithType == "以旧换旧") return true;
+                var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = workerId, SearchMode = 1 });
+                if (workClothesList == null || workClothesList.Count() <= 0) return true;
+                DateTime yearDate = DateTime.Now.Date.AddYears(-2);
+                if (productName == "冬季厂服")
+                    yearDate = yearDate.AddYears(-1);
+                //排除“以旧换旧” 的时间  还判断
+                var returnWorkClothes = workClothesList.Where(e => e.ProductName == productName && e.DealwithType != "以旧换旧" && e.InputDate >= yearDate);
+                bool result = (returnWorkClothes == null || returnWorkClothes.Count() <= 0);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
         /// <summary>
         /// 领取厂服
         /// </summary>
@@ -64,10 +94,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             //处理类型 判断是以旧换新 还是新领取 然后判断是否有资格
             try
             {
-                //  处理类型只有“以旧换新”，“新衣领取” ，“以旧换旧”
-                //  是  “新衣领取” 不用判断是否有资格
+                //  处理类型只有“以旧换新”，“领取新衣”
+                //  是  “新领取” 不用判断是否有资格
                 if (model == null) return OpResult.SetResult("数据不能这空"); 
-
                 if((model.DealwithType =="以旧换新") && (!CanOldChangeNew(model.WorkerId ,model.ProductName)))
                 {
                     return OpResult.SetResult("该用户暂无资格以旧换新！"); 
@@ -82,11 +111,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         }
 
     }
-
-
-    
-
-
 
     /// <summary>
     /// 厂服管理CRUD
@@ -113,7 +137,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                         return irep.Entities.Where(m => m.WorkerId == (qryDto.WorkerId)).ToList();
                     case 2: //依据按部门查找
                         return irep.Entities.Where(m => m.Department == (qryDto.Department)).ToList();
-                    case 3: //按领取月查找
+                    case 3: //按领取月查找 
                         return irep.Entities.Where(m => m.ReceiveMonth == qryDto.ReceiveMonth).ToList();
                     default:
                         return new List<WorkClothesManageModel>();
@@ -136,20 +160,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 {
                     var result = this.PersistentDatas(model,
                                      mAdd =>
-                                         { return AddWorkClothesManage(model); },
+                                         { return AddWorkClothesManageRecord(model); },
                                       mUpdate =>
-                                        { return EditWorkClothesManage(model); }
+                                        { return EditWorkClothesManageRecord(model); }
                                    );
                     return result;
                 });
         }
 
         /// <summary>
-        /// 新增的信息
+        /// 添加一条新增的信息
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult AddWorkClothesManage(WorkClothesManageModel model)
+        private OpResult AddWorkClothesManageRecord(WorkClothesManageModel model)
         {
             model.InputDate = DateTime.Now.Date;
             if (irep.IsExist(m => m.Id_Key == model.Id_Key))
@@ -164,9 +188,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult EditWorkClothesManage(WorkClothesManageModel model)
+        private OpResult EditWorkClothesManageRecord(WorkClothesManageModel model)
         {
-            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("更新信息");
+            model.InputDate = DateTime.Now.Date;
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(model.WorkerName .ToString ());
         }
         #endregion
     }

@@ -240,9 +240,26 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             model: model,
         });
     };
+    ///查询厂服记录
+    hr.getWorkerClothesReceiveRecords = function (workerId, department, receiveMonth, mode) {
+        var url = generalAffairsUrl + 'GetWorkerClothesReceiveRecords';
+        return ajaxService.getData(url, {
+            workerId: workerId,
+            department: department,
+            receiveMonth: receiveMonth,
+            mode: mode,
+        });
+    };
+    //是否可以以旧换新
+    hr.canChangeOldForNew = function (workerId, productName) {
+        var url = generalAffairsUrl + 'CanChangeOldForNew';
+        return ajaxService.getData(url, {
+            workerId: workerId,
+            productName: productName,
+        });
+    };
     return hr;
 })
-
 .controller('moduleNavCtrl', function ($scope, navDataService, $state) {
     ///模块导航布局视图对象
     var moduleNavLayoutVm = {
@@ -1852,7 +1869,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
 })
 
 //厂服管理
-.controller('workClothesManageCtrl', function ($scope, $modal, hrDataOpService, connDataOpService) {
+.controller('workClothesManageCtrl', function ($scope, $modal, hrDataOpService,dataDicConfigTreeSet,connDataOpService) {
     ///厂服管理模型
     var uiVM = {
         WorkerId: null,
@@ -1861,7 +1878,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         ProductName: null,
         ProductSpecify: null,
         ProductCategory: null,
-        PerCount: 0,
+        PerCount: 1,
         Unit: "件",
         InputDate: null,
         DealwithType: null,
@@ -1871,12 +1888,21 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     $scope.vm = uiVM;
     var originalVM = _.clone(uiVM);
 
+    //查询字段
+    var queryFields = {
+        workerId: null,
+        department: null,
+        receiveMonth: null,
+    };
+
+    $scope.query = queryFields;
+
     var vmManager = {
         activeTab: 'initTab',
         isLocal:true,
         init: function () {
             if (uiVM.OpSign === 'add') {
-
+                leeHelper.clearVM(uiVM, ['ProductName', 'PerCount', 'Unit']);
             }
             else {
                 uiVM = _.clone(originalVM);
@@ -1941,18 +1967,53 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             }
         },
         storeDataset: [],
+        searchDataset:[],
         //选择领取衣服记录
         selectReceiveClothesRecord: function (item) {
             vmManager.canEdit = true;
             uiVM = _.clone(item);
             uiVM.OpSign = 'edit';
             $scope.vm = uiVM;
+        },
+        searchBy: function () {
+           $scope.searchPromise=hrDataOpService.getWorkerClothesReceiveRecords(queryFields.workerId, queryFields.department, queryFields.receiveMonth, 1).then(function (datas) {
+                vmManager.storeDataset = datas;
+            });
+        },
+        getReceiveClothesRecords: function (mode) {
+            hrDataOpService.getWorkerClothesReceiveRecords(queryFields.workerId, queryFields.department, queryFields.receiveMonth, mode).then(function (datas) {
+                vmManager.searchDataset = datas;
+            });
+        },
+        isCanChange:false,
+        checkCanChange: function () {
+            hrDataOpService.canChangeOldForNew(uiVM.WorkerId, uiVM.ProductName).then(function (data) {
+                vmManager.isCanChange = data;
+                if (!vmManager.isCanChange)
+                {
+                    vmManager.showErrorMsg();
+                }
+            });
+        },
+        showErrorMsg: function () {
+            var modalTip = $modal({
+                title: "信息提示",
+                content: "对不起，距离上次换领厂服时间，您还不能进行此操作！",
+                templateUrl: leeHelper.modalTplUrl.msgModalUrl,
+                show: false,
+            });
+            modalTip.$promise.then(modalTip.show);
         }
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.saveAll = function (isValid) {
+        if (!vmManager.isCanChange)
+        {
+            vmManager.showErrorMsg();
+            return;
+        }
         hrDataOpService.storeWorkerClothesReceiveRecord(uiVM).then(function (opresult) {
             leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                 var mdl = _.clone(uiVM);
@@ -1974,5 +2035,16 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             vmManager.inti();
         });
     };
+
+
+    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
+        departmentTreeSet.setTreeDataset(datas);
+    });
+    var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
+    departmentTreeSet.bindNodeToVm = function () {
+        var dto = _.clone(departmentTreeSet.treeNode.vm);
+        queryFields.department = dto.DataNodeText;
+    };
+    $scope.ztree = departmentTreeSet;
 
 })

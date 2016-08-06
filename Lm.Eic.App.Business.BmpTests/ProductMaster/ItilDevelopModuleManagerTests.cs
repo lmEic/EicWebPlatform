@@ -43,7 +43,7 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
         public void ItilDevelopModuleManageFindByTest()
         {
             List<string> stateList = new List<string>() { "待开发", "待审核" };
-            var devList = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(new ItilDto() { ProgressSignList=stateList ,SearchMode =1 });
+            var devList = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(new ItilDto() {  ProgressSignList = stateList,SearchMode=1});
             if (devList.Count <= 0) { Assert.Fail(); }
         }
 
