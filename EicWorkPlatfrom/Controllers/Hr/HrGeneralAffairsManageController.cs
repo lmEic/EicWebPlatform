@@ -35,6 +35,14 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var result = GeneralAffairsService.WorkerClothesManager.StoreReceiveWorkClothes(model);
             return Json(result);
         }
+        
+        [HttpGet]
+        [NoAuthenCheck]
+        public JsonResult CanChangeOldForNew(string workerId, string productName)
+        {
+            bool canChange = GeneralAffairsService.WorkerClothesManager.CanOldChangeNew(workerId, productName);
+            return Json(canChange, JsonRequestBehavior.AllowGet);
+        }
         /// <summary>
         /// 获取领取厂服记录
         /// </summary>

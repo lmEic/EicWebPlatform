@@ -250,9 +250,16 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             mode: mode,
         });
     };
+    //是否可以以旧换新
+    hr.canChangeOldForNew = function (workerId, productName) {
+        var url = generalAffairsUrl + 'CanChangeOldForNew';
+        return ajaxService.getData(url, {
+            workerId: workerId,
+            productName: productName,
+        });
+    };
     return hr;
 })
-
 .controller('moduleNavCtrl', function ($scope, navDataService, $state) {
     ///模块导航布局视图对象
     var moduleNavLayoutVm = {
@@ -1921,6 +1928,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             {
                 vmManager.closeSpecifies = product.specifyList;
             }
+            vmManager.checkCanChange();
         },
         dealwithTypes: [
             { id: "领取新衣", text: "领取新衣" },
@@ -1978,11 +1986,35 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
                 vmManager.searchDataset = datas;
             });
         },
+        isCanChange:false,
+        checkCanChange: function () {
+            hrDataOpService.canChangeOldForNew(uiVM.WorkerId, uiVM.ProductName).then(function (data) {
+                vmManager.isCanChange = data;
+                if (!vmManager.isCanChange)
+                {
+                    vmManager.showErrorMsg();
+                }
+            });
+        },
+        showErrorMsg: function () {
+            var modalTip = $modal({
+                title: "信息提示",
+                content: "对不起，距离上次换领厂服时间，您还不能进行此操作！",
+                templateUrl: leeHelper.modalTplUrl.msgModalUrl,
+                show: false,
+            });
+            modalTip.$promise.then(modalTip.show);
+        }
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.saveAll = function (isValid) {
+        if (!vmManager.isCanChange)
+        {
+            vmManager.showErrorMsg();
+            return;
+        }
         hrDataOpService.storeWorkerClothesReceiveRecord(uiVM).then(function (opresult) {
             leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                 var mdl = _.clone(uiVM);
