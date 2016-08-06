@@ -21,11 +21,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <summary>
         /// 获取领用记录  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按领取月查找 
         /// </summary>
-        /// <param name="dto">总务数据查询数据传输对象</param>
+        /// <param name="qryDto">总务数据查询数据传输对象</param>
         /// <returns></returns>
-        public List<WorkClothesManageModel> FindReceiveRecordBy(QueryGeneralAffairsDto dto)
+        public List<WorkClothesManageModel> FindReceiveRecordBy(QueryGeneralAffairsDto qryDto)
         {
-            return CrudFactory.WorkerClothesCrud.FindBy(dto);
+            return CrudFactory.WorkerClothesCrud.FindBy(qryDto);
         }
 
         /// <summary>
@@ -64,9 +64,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             //处理类型 判断是以旧换新 还是新领取 然后判断是否有资格
             try
             {
-                //  处理类型只有“以旧换新”，“新领取”
-                //  是  “新领取” 不用判断是否有资格
+                //  处理类型只有“以旧换新”，“新衣领取” ，“以旧换旧”
+                //  是  “新衣领取” 不用判断是否有资格
                 if (model == null) return OpResult.SetResult("数据不能这空"); 
+
                 if((model.DealwithType =="以旧换新") && (!CanOldChangeNew(model.WorkerId ,model.ProductName)))
                 {
                     return OpResult.SetResult("该用户暂无资格以旧换新！"); 
@@ -135,20 +136,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 {
                     var result = this.PersistentDatas(model,
                                      mAdd =>
-                                         { return AddWorkClothesManageRecord(model); },
+                                         { return AddWorkClothesManage(model); },
                                       mUpdate =>
-                                        { return EditWorkClothesManageRecord(model); }
+                                        { return EditWorkClothesManage(model); }
                                    );
                     return result;
                 });
         }
 
         /// <summary>
-        /// 添加一条新增的信息
+        /// 新增的信息
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult AddWorkClothesManageRecord(WorkClothesManageModel model)
+        private OpResult AddWorkClothesManage(WorkClothesManageModel model)
         {
             model.InputDate = DateTime.Now.Date;
             if (irep.IsExist(m => m.Id_Key == model.Id_Key))
@@ -163,7 +164,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult EditWorkClothesManageRecord(WorkClothesManageModel model)
+        private OpResult EditWorkClothesManage(WorkClothesManageModel model)
         {
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("更新信息");
         }
