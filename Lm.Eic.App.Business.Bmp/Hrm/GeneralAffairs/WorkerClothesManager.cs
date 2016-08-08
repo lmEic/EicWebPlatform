@@ -9,7 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using CrudFactory = Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs.GeneralAffairsFactory;
+using System.IO;
+
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
 {
@@ -18,6 +21,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
     /// </summary>
     public class WorkerClothesManager
     {
+        List<WorkClothesManageModel> _workClothesmangeModelList = new List<WorkClothesManageModel>();
         /// <summary>
         /// 获取领用记录  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按领取月查找 
         /// </summary>
@@ -29,6 +33,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         }
 
       
+        public  MemoryStream  GetWorkClothesListToExcel()
+        {
+            return NPOIHelper.ExportToExcel<WorkClothesManageModel>(_workClothesmangeModelList, "厂服管理");
+
+        }
         /// <summary>
         /// 是否可以以旧换新
         /// </summary>
@@ -96,10 +105,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
 
 
         protected override void AddCrudOpItems()
-        {
+        {    //增加
             this.AddOpItem(OpMode.Add, AddWorkClothesManageRecord);
+            //编辑
             this.AddOpItem(OpMode.Edit, EditWorkClothesManageRecord);
-            //this.AddOpItem(OpMode.UpDate, UpDateWorkClothesManageRecord);
+            //修改
+            this.AddOpItem(OpMode.UpDate, UpDateWorkClothesManageRecord);
         }
         #region FindBy
         /// <summary>
