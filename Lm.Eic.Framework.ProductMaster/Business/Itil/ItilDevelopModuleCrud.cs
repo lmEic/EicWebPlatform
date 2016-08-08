@@ -56,14 +56,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <summary>
         /// 构造函数 初始化数据访问接口
         /// </summary>
-        public ItilDevelopModuleManageCrud() : base(new ItilDevelopModuleManageRepository())
+        public ItilDevelopModuleManageCrud() : base(new ItilDevelopModuleManageRepository(), "开发任务")
         {
-
         }
 
         #region Find
 
-        #endregion
+    
         /// <summary>
         /// 获取开发任务列表  1.依据状态列表查询 2.依据函数名称查询 
         /// </summary>
@@ -102,7 +101,18 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             else return new List<ItilDevelopModuleManageChangeRecordModel>();
         }
 
+        #endregion
+
         #region Store
+        /// <summary>
+        /// 添加CRUD方法到方法组
+        /// </summary>
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddDevelopModuleManageRecord);
+            this.AddOpItem(OpMode.Edit, EditDevelopModuleManageRecord);
+            this.AddOpItem(OpMode.UpDate, DevelopModuleManageRecord);
+        }
         /// <summary>
         /// 修改数据仓库
         /// </summary>
@@ -110,41 +120,30 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult Store(ItilDevelopModuleManageModel model)
         {
+            // return PersistentDatas(model);
+            //TODO: 修改一下 修改为 先存储开发管理记录 然后存储开发任务，如果开发任务存储失败 Delete 开发管理记录
 
-            //TODO: 修改一下  修改为 先存储开发管理记录 然后存储开发任务，如果开发任务存储失败 Delete 开发管理记录
-            return this.StoreEntity(model, mdl =>
+            model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
+            var result = this.PersistentDatas(model);
+
+            //保存操作纪录
+            if (result.Result)
             {
-                model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
-                var result = this.PersistentDatas(model,
-                madd =>
+                OpResult changeRecordResult = ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
+                if (!changeRecordResult.Result)
                 {
-                    return AddDevelopModuleManageRecord(model);
-                },
-                mupdate =>
-                {
-                    return EditDevelopModuleManageRecord(model);
-                });
-
-                //保存操作纪录
-                if (result.Result)
-                {
-                    OpResult changeRecordResult = ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
-                    if (!changeRecordResult.Result)
-                    {
-                        return changeRecordResult;
-                    }
-                    else { _waittingSendMailList.Add(model); }//添加至待发送邮件列表
+                    return changeRecordResult;
                 }
-                return result;
-            });
+                else { _waittingSendMailList.Add(model); }//添加至待发送邮件列表
+            }
+            return result;
         }
-
         /// <summary>
         /// 更新开发任务内容
         /// </summary>
         /// <param name="model">开发任务</param>
         /// <returns></returns>
-        public OpResult UpDate(ItilDevelopModuleManageModel model)
+        public OpResult DevelopModuleManageRecord(ItilDevelopModuleManageModel model)
         {
             OpResult result = OpResult.SetResult("未执行任何修改");
             if (model == null) return result;
@@ -161,7 +160,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             });
             return result;
         }
-
         /// <summary>
         /// 添加一条开发任务到数据库
         /// </summary>
@@ -169,16 +167,15 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         private OpResult AddDevelopModuleManageRecord(ItilDevelopModuleManageModel model)
         {
-            if (irep.IsExist(m => m.ParameterKey == model.ParameterKey))
-            {
-                return OpResult.SetResult("此任务已存在！");
-            }
-            OpResult result;
-            model.CurrentProgress = "待开发";
-            result = irep.Insert(model).ToOpResult_Add("开发任务", model.Id_Key);
-            return result;
+                if (irep.IsExist(m => m.ParameterKey == model.ParameterKey))
+                {
+                    return OpResult.SetResult("此任务已存在！");
+                }
+                OpResult result;
+                model.CurrentProgress = "待开发";
+                result = irep.Insert(model).ToOpResult_Add("开发任务", model.Id_Key);
+                return result;
         }
-
         /// <summary>
         /// 更新一条开发任务
         /// </summary>
@@ -189,8 +186,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             model.CurrentProgress = "待开发";
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
         }
-
-
         /// <summary>
         /// 修改开发进度
         /// </summary>
@@ -228,8 +223,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         }
         #endregion
 
-
-
         #region SendMail
 
         /// <summary>
@@ -244,6 +237,8 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 
             return null;
         }
+
+    
 
         #endregion
 

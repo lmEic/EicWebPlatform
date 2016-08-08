@@ -124,11 +124,11 @@
         }
     }
 
-    public  class OpMode
+    public class OpMode
     {
         public const string Add = "add";
         public const string Edit = "edit";
+        public const string UpDate = "update";
         public const string Delete = "delete";
     }
-
 }
