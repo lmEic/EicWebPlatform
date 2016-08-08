@@ -8,8 +8,6 @@ using System.Text.RegularExpressions;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using System.Web;
-using NPOI.HPSF;
-using System.Reflection;
 
 namespace Lm.Eic.Uti.SystemInit.Commom
 {

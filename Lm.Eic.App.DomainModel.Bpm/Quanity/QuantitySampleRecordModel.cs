@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Quanity
-{  
+{
     #region  进料检验 IQC，制程检验FQC，出货检验IPQC  Model
     /// <summary>
     /// IQC物料抽样模块 
