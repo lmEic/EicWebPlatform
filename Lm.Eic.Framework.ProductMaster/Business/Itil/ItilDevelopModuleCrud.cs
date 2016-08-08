@@ -94,7 +94,8 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             if (model != null && !model.ParameterKey.IsNullOrEmpty())
             {
-                return ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.GetChangeRecordBy(model.ParameterKey);
+                string parameterKey = model.ParameterKey;
+                return ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.GetChangeRecordBy(parameterKey);
             }
             else return new List<ItilDevelopModuleManageChangeRecordModel>();
         }
@@ -122,19 +123,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             //TODO: 修改一下 修改为 先存储开发管理记录 然后存储开发任务，如果开发任务存储失败 Delete 开发管理记录
 
 
-            var result = this.PersistentDatas(model);
+           return this.PersistentDatas(model);
 
-            //保存操作纪录
-            if (result.Result)
-            {
-                OpResult changeRecordResult = ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
-                if (!changeRecordResult.Result)
-                {
-                    return changeRecordResult;
-                }
-                else { _waittingSendMailList.Add(model); }//添加至待发送邮件列表
-            }
-            return result;
+           
         }
         /// <summary>
         /// 添加一条开发任务到数据库
@@ -151,7 +142,19 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             OpResult result;
             model.CurrentProgress = "待开发";
             result = irep.Insert(model).ToOpResult_Add("开发任务", model.Id_Key);
+
+            //保存操作纪录
+            if (result.Result)
+            {
+                OpResult changeRecordResult = ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.SavaChangeRecord(model);
+                if (!changeRecordResult.Result)
+                {
+                    return changeRecordResult;
+                }
+                else { _waittingSendMailList.Add(model); }//添加至待发送邮件列表
+            }
             return result;
+           
         }
         /// <summary>
         /// 编辑一条开发任务
@@ -160,9 +163,21 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         private OpResult EditDevelopModuleManageRecord(ItilDevelopModuleManageModel model)
         {
+            var dbModel = irep.Entities.Where(m => m.Id_Key == model.Id_Key).FirstOrDefault();
+            var changeRecordList = GetChangeRecordListBy(dbModel);  //获取待修改的开发任务操作记录
+
+            //修改开发任务
             model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
             model.CurrentProgress = "待开发";
-            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
+            model.OpSign = OpMode.Edit;
+            OpResult  result = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
+           
+            //修改开发任务变更记录
+            changeRecordList.ForEach(m =>
+            {
+                ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.UpdateChangeRecord(model, m.Id_Key);
+            });
+            return result;
         }
         /// <summary>
         /// 更新开发任务内容
@@ -171,11 +186,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         private OpResult UpdateDevelopModuleManageRecord(ItilDevelopModuleManageModel model)
         {
-            var changeRecordList = GetChangeRecordListBy(model);  //获取待修改的开发任务操作记录
+
+            //获取待修改的开发任务操作记录
+            var changeRecordList = GetChangeRecordListBy(model);  
 
             //修改开发任务
             model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
-            model.OpSign = OpMode.Edit;
+            model.OpSign = OpMode.UpDate;
             OpResult result = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
 
             //修改开发任务变更记录
