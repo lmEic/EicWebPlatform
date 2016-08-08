@@ -5,9 +5,6 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using CrudFactory = Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs.GeneralAffairsFactory;
@@ -144,12 +141,17 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
 
 
         #region     store
+        /// <summary>
+        /// 数据持久化
+        /// </summary>
+        /// <param name="model">实体</param>
+        /// <returns></returns>
         public OpResult Store(WorkClothesManageModel model)
         {
+            model.InputDate = DateTime.Now.Date;
             model.ReceiveMonth = DateTime.Now.ToString("yyyyMM");
             return  this.PersistentDatas(model);
         }
-
         /// <summary>
         /// 添加一条新增的信息
         /// </summary>
@@ -157,7 +159,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private OpResult AddWorkClothesManageRecord(WorkClothesManageModel model)
         {
-            model.InputDate = DateTime.Now.Date;
             if (irep.IsExist(m => m.Id_Key == model.Id_Key))
             {
                 return OpResult.SetResult("此数据已存在！");
@@ -172,9 +173,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private OpResult EditWorkClothesManageRecord(WorkClothesManageModel model)
         {
-            model.InputDate = DateTime.Now.Date;
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(model.WorkerName .ToString ());
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private  OpResult  UpDateWorkClothesManageRecord(WorkClothesManageModel model)
         {
             OpResult result = OpResult.SetResult("未执行任何修改");

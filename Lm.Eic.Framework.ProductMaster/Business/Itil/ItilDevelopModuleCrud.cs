@@ -60,7 +60,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 
         #region Find
 
-    
+
         /// <summary>
         /// 获取开发任务列表  1.依据状态列表查询 2.依据函数名称查询 
         /// </summary>
@@ -82,7 +82,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                     break;
             }
             return itilList;
-            
+
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             // return PersistentDatas(model);
             //TODO: 修改一下 修改为 先存储开发管理记录 然后存储开发任务，如果开发任务存储失败 Delete 开发管理记录
 
-            model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
+
             var result = this.PersistentDatas(model);
 
             //保存操作纪录
@@ -143,14 +143,15 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         private OpResult AddDevelopModuleManageRecord(ItilDevelopModuleManageModel model)
         {
-                if (irep.IsExist(m => m.ParameterKey == model.ParameterKey))
-                {
-                    return OpResult.SetResult("此任务已存在！");
-                }
-                OpResult result;
-                model.CurrentProgress = "待开发";
-                result = irep.Insert(model).ToOpResult_Add("开发任务", model.Id_Key);
-                return result;
+            model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
+            if (irep.IsExist(m => m.ParameterKey == model.ParameterKey))
+            {
+                return OpResult.SetResult("此任务已存在！");
+            }
+            OpResult result;
+            model.CurrentProgress = "待开发";
+            result = irep.Insert(model).ToOpResult_Add("开发任务", model.Id_Key);
+            return result;
         }
         /// <summary>
         /// 编辑一条开发任务
@@ -159,6 +160,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         private OpResult EditDevelopModuleManageRecord(ItilDevelopModuleManageModel model)
         {
+            model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
             model.CurrentProgress = "待开发";
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
         }
@@ -169,18 +171,17 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         private OpResult UpdateDevelopModuleManageRecord(ItilDevelopModuleManageModel model)
         {
-            OpResult result = OpResult.SetResult("未执行任何修改");
-            if (model == null) return result;
+            var changeRecordList = GetChangeRecordListBy(model);  //获取待修改的开发任务操作记录
 
-            var changeRecordList = GetChangeRecordListBy(model);
-
+            //修改开发任务
+            model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
             model.OpSign = OpMode.Edit;
-            result = Store(model);
-            //修改记录
+            OpResult result = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
+
+            //修改开发任务变更记录
             changeRecordList.ForEach(m =>
             {
-                m.OpSign = OpMode.Edit;
-                ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.Store(m);
+                ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.UpdateChangeRecord(model,m.Id_Key);
             });
             return result;
         }
@@ -236,7 +237,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             return null;
         }
 
-    
+
 
         #endregion
 
@@ -250,66 +251,19 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     /// <summary>
     /// 模块开发管理操作记录CRUD
     /// </summary>
-    internal class ItilDevelopModuleChangeRecordCrud
+    internal class ItilDevelopModuleChangeRecordCrud : CrudBase<ItilDevelopModuleManageChangeRecordModel, IItilDevelopModuleManageChangeRecordRepository>
     {
-        private IItilDevelopModuleManageChangeRecordRepository irep = null;
-
-        public ItilDevelopModuleChangeRecordCrud()
+        public ItilDevelopModuleChangeRecordCrud() : base(new ItilDevelopModuleManageChangeRecordRepository(), "开发任务变更记录")
         {
-            irep = new ItilDevelopModuleManageChangeRecordRepository();
         }
 
         /// <summary>
-        /// 修改数据仓库
+        /// 添加操作方法
         /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public OpResult Store(ItilDevelopModuleManageChangeRecordModel model)
+        protected override void AddCrudOpItems()
         {
-            OpResult result = OpResult.SetResult("未执行任何操作！");
-            if (model == null) return result;
-            DateTime dateTime = DateTime.Now;
-            model.OpTime = dateTime;
-            model.OpDate = dateTime.ToDate();
-            try
-            {
-                switch (model.OpSign)
-                {
-                    case OpMode.Add: //新增
-                        result = irep.Insert(model).ToOpResult_Add("开发管控修改记录", model.Id_Key);
-                        break;
-
-                    case OpMode.Edit: //新增
-                        result = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发管控修改记录")
-;                        break;
-
-                    default:
-                        result = OpResult.SetResult("操作模式溢出");
-                        break;
-                }
-            }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
-            return result;
-        }
-
-        /// <summary>
-        /// 保存操作记录
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public OpResult SavaChangeRecord(ItilDevelopModuleManageModel model)
-        {
-            return Store(new ItilDevelopModuleManageChangeRecordModel()
-            {
-                ModuleName = model.ModuleName,
-                MClassName = model.MClassName,
-                MFunctionName = model.MFunctionName,
-                FunctionDescription = model.FunctionDescription,
-                Executor = model.Executor,
-                ParameterKey = model.ParameterKey,
-                ChangeProgress = model.CurrentProgress,
-                OpSign = "add"
-            });
+            AddOpItem(OpMode.Add, AddChangeRecord);
+            AddOpItem(OpMode.Edit, EditChangeRecord);
         }
 
         /// <summary>
@@ -321,6 +275,81 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             return irep.Entities.Where(m => m.ParameterKey == parameterKey).ToList();
         }
+        /// <summary>
+        /// 修改数据仓库
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Store(ItilDevelopModuleManageChangeRecordModel model)
+        {
+            return this.PersistentDatas(model);
+        }
+        /// <summary>
+        /// 添加一条记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult AddChangeRecord(ItilDevelopModuleManageChangeRecordModel model)
+        {
+            return irep.Insert(model).ToOpResult_Add(this.OpContext, model.Id_Key);
+        }
+        /// <summary>
+        /// 修改一条记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult EditChangeRecord(ItilDevelopModuleManageChangeRecordModel model)
+        {
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(this.OpContext);
+        }
+        /// <summary>
+        /// 保存操作记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult SavaChangeRecord(ItilDevelopModuleManageModel model)
+        {
+            var changeRecordModel = BuildChangeRecordBy(model);
+            if (changeRecordModel == null) { return OpResult.SetResult("开发任务不能为空！"); }
+            changeRecordModel.OpSign = OpMode.Add;
+            return Store(changeRecordModel);
+        }
+        /// <summary>
+        /// 更新开发任务变更记录
+        /// </summary>
+        /// <param name="ililModel">开发任务</param>
+        /// <param name="changeRecordModel_Id_Key">开发任务记录Id_Key</param>
+        /// <returns></returns>
+        public OpResult UpdateChangeRecord(ItilDevelopModuleManageModel ililModel, decimal changeRecordModel_Id_Key)
+        {
+            var changeRecordModel = BuildChangeRecordBy(ililModel);
+            if (changeRecordModel == null) { return OpResult.SetResult("开发任务不能为空！"); }
+            changeRecordModel.OpSign = OpMode.Edit;
+            changeRecordModel.Id_Key = changeRecordModel_Id_Key;
+            return Store(changeRecordModel);
+        }
+        /// <summary>
+        /// 生成一条记录
+        /// </summary>
+        /// <param name="developModuleManageModel">开发任务</param>
+        /// <returns></returns>
+        private ItilDevelopModuleManageChangeRecordModel BuildChangeRecordBy(ItilDevelopModuleManageModel developModuleManageModel)
+        {
+            if (developModuleManageModel == null) return null;
+            return new ItilDevelopModuleManageChangeRecordModel()
+            {
+                ModuleName = developModuleManageModel.ModuleName,
+                MClassName = developModuleManageModel.MClassName,
+                MFunctionName = developModuleManageModel.MFunctionName,
+                FunctionDescription = developModuleManageModel.FunctionDescription,
+                Executor = developModuleManageModel.Executor,
+                ParameterKey = developModuleManageModel.ParameterKey,
+                ChangeProgress = developModuleManageModel.CurrentProgress,
+            };
+        }
 
+       
+
+     
     }
 }
