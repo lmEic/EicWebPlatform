@@ -121,6 +121,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         { }
 
 
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddWorkClothesManageRecord);
+            this.AddOpItem(OpMode.Edit, EditWorkClothesManageRecord);
+            //this.AddOpItem(OpMode.UpDate, DevelopModuleManageRecord);
+        }
         #region FindBy
         /// <summary>
         /// 查询  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按领取月查找 
@@ -156,17 +162,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         public OpResult Store(WorkClothesManageModel model)
         {
             model.ReceiveMonth = DateTime.Now.ToString("yyyyMM");
-            return this.StoreEntity(model,
-                mdl =>
-                {
-                    var result = this.PersistentDatas(model,
-                                     mAdd =>
-                                         { return AddWorkClothesManageRecord(model); },
-                                      mUpdate =>
-                                        { return EditWorkClothesManageRecord(model); }
-                                   );
-                    return result;
-                });
+            return  this.PersistentDatas(model);
         }
 
         /// <summary>
