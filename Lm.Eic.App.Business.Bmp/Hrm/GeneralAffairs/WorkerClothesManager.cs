@@ -28,13 +28,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         {
             return CrudFactory.WorkerClothesCrud.FindBy(dto);
         }
-
-      
-        public  MemoryStream  GetWorkClothesListToExcel()
-        {
-            return NPOIHelper.ExportToExcel<WorkClothesManageModel>(_workClothesmangeModelList, "厂服管理");
-
-        }
         /// <summary>
         /// 是否可以以旧换新
         /// </summary>
@@ -97,7 +90,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         public MemoryStream BuildReceiveWorkClothesList()
         {
             //TODO:生成厂服领取清单
-            return null;
+          return NPOIHelper.ExportToExcel<WorkClothesManageModel>(_workClothesmangeModelList, "厂服管理");;
         }
 
     }
