@@ -13,11 +13,11 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
     {
 
         protected IRep irep = default(IRep);
-
         /// <summary>
         /// 初始化
         /// </summary>
         /// <param name="repository">数据访问接口</param>
+        /// <param name="opContext">操作的数据对象</param>
         public CrudBase(IRep repository,string opContext)
         {
             irep = repository;
@@ -31,12 +31,11 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         public string OpContext
         {
             get { return _opContext; }
-            set
+            private set
             {
                 _opContext = value;
             }
         }
-
 
         private Dictionary<string, Func<TEntity, OpResult>> crudOpDics = new Dictionary<string, Func<TEntity, OpResult>>();
         /// <summary>
