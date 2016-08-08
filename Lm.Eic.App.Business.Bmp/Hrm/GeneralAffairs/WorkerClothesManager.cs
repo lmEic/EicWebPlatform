@@ -90,6 +90,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
            
         }
 
+        /// <summary>
+        /// 生成厂服领取清单
+        /// </summary>
+        /// <returns></returns>
+        public MemoryStream BuildReceiveWorkClothesList()
+        {
+            //TODO:生成厂服领取清单
+            return null;
+        }
+
     }
 
     /// <summary>
@@ -152,6 +162,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             model.ReceiveMonth = DateTime.Now.ToString("yyyyMM");
             return  this.PersistentDatas(model);
         }
+
+
         /// <summary>
         /// 添加一条新增的信息
         /// </summary>
