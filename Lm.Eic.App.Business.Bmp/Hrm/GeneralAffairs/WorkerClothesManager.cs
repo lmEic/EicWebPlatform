@@ -65,21 +65,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         public OpResult StoreReceiveWorkClothes(WorkClothesManageModel model)
         {
             //处理类型 判断是以旧换新 还是新领取 然后判断是否有资格
-            try
-            {
-                //  处理类型只有“以旧换新”，“领取新衣”
-                //  是  “新领取” 不用判断是否有资格
-                if (model == null) return OpResult.SetResult("数据不能这空"); 
-                if((model.DealwithType =="以旧换新") && (!CanOldChangeNew(model.WorkerId ,model.ProductName,model.DealwithType)))
-                {
-                    return OpResult.SetResult("该用户暂无资格以旧换新！"); 
-                }
+            //try
+            //{
+            //    //  处理类型只有“以旧换新”，“领取新衣”
+            //    //  是  “新领取” 不用判断是否有资格
+            //    if (model == null) return OpResult.SetResult("数据不能这空"); 
+            //    if((model.DealwithType =="以旧换新") && (!CanOldChangeNew(model.WorkerId ,model.ProductName,model.DealwithType)))
+            //    {
+            //        return OpResult.SetResult("该用户暂无资格以旧换新！"); 
+            //    }
                 return CrudFactory.WorkerClothesCrud.Store(model);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new Exception(ex.InnerException.Message);
+            //}
            
         }
 
@@ -142,6 +142,28 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         }
         #endregion
 
+        private  bool CanOldChangeNew(WorkClothesManageModel model)
+        {
+            // "以旧换旧"不用判定
+            //冬季厂服满三年允许更换一次  夏季厂服满两年允许更换一次
+            try
+            {
+                if (model.DealwithType == "以旧换旧") return true;
+                var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = model.WorkerId , SearchMode = 1 });
+                if (workClothesList == null || workClothesList.Count() <= 0) return true;
+                DateTime yearDate = DateTime.Now.Date.AddYears(-2);
+                if (model.ProductName == "冬季厂服")
+                    yearDate = yearDate.AddYears(-1);
+                //排除“以旧换旧” 的时间  还判断
+                var returnWorkClothes = workClothesList.Where(e => e.ProductName == model.ProductName  && e.DealwithType != "以旧换旧" && e.InputDate >= yearDate);
+                bool result = (returnWorkClothes == null || returnWorkClothes.Count() <= 0);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
 
         #region     store
         /// <summary>
@@ -164,9 +186,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private OpResult AddWorkClothesManageRecord(WorkClothesManageModel model)
         {
+           
             if (irep.IsExist(m => m.Id_Key == model.Id_Key))
             {
                 return OpResult.SetResult("此数据已存在！");
+            }
+            if ((model.DealwithType == "以旧换新") && (!CanOldChangeNew(model)))
+            {
+                return OpResult.SetResult("该用户暂无资格以旧换新！");
             }
             return irep.Insert(model).ToOpResult_Add("添加完成", model.Id_Key);
         }
