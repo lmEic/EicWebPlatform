@@ -125,7 +125,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         {
             this.AddOpItem(OpMode.Add, AddWorkClothesManageRecord);
             this.AddOpItem(OpMode.Edit, EditWorkClothesManageRecord);
-            //this.AddOpItem(OpMode.UpDate, DevelopModuleManageRecord);
+            //this.AddOpItem(OpMode.UpDate, UpDateWorkClothesManageRecord);
         }
         #region FindBy
         /// <summary>
@@ -189,6 +189,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         {
             model.InputDate = DateTime.Now.Date;
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(model.WorkerName .ToString ());
+        }
+        private  OpResult  UpDateWorkClothesManageRecord(WorkClothesManageModel model)
+        {
+            OpResult result = OpResult.SetResult("未执行任何修改");
+            if (model == null) return result;
+            return result;
+         
         }
         #endregion
     }
