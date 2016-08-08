@@ -129,13 +129,14 @@ namespace Lm.Eic.Uti.SystemInit.Commom
                                                 // Excel单元格的值转换为对象属性的值，若类型不对，记录出错信息
                                                 properotyInfo.SetValue(subClassEn, GetExcelCellToProperty(properotyInfo.PropertyType, sheet.GetRow(i).GetCell(j)), null);
                                             }
-                                            catch (Exception e)
+                                            catch (Exception ex)
                                             {
                                                 if (errStr.Length == 0)
                                                 {
                                                     errStr = "第" + i + "行数据转换异常：";
                                                 }
                                                 errStr += cellHeard[keys[j]] + "列；";
+                                                throw new Exception(ex.InnerException.Message);
                                             }
 
                                         }
@@ -152,13 +153,14 @@ namespace Lm.Eic.Uti.SystemInit.Commom
                                             // Excel单元格的值转换为对象属性的值，若类型不对，记录出错信息
                                             properotyInfo.SetValue(en, GetExcelCellToProperty(properotyInfo.PropertyType, sheet.GetRow(i).GetCell(j)), null);
                                         }
-                                        catch (Exception e)
+                                        catch (Exception ex)
                                         {
                                             if (errStr.Length == 0)
                                             {
                                                 errStr = "第" + i + "行数据转换异常：";
                                             }
                                             errStr += cellHeard[keys[j]] + "列；";
+                                            throw new Exception(ex.InnerException.Message);
                                         }
                                     }
                                 }

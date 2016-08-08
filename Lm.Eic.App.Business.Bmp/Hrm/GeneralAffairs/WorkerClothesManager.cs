@@ -108,9 +108,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         {    //增加
             this.AddOpItem(OpMode.Add, AddWorkClothesManageRecord);
             //编辑
-            this.AddOpItem(OpMode.Edit, EditWorkClothesManageRecord);
-            //修改
-            this.AddOpItem(OpMode.UpDate, UpDateWorkClothesManageRecord);
+            this.AddOpItem(OpMode.Edit, EditWorkClothesManageRecord); 
         }
         #region FindBy
         /// <summary>
@@ -147,6 +145,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         public OpResult Store(WorkClothesManageModel model)
         {
             model.ReceiveMonth = DateTime.Now.ToString("yyyyMM");
+            model.InputDate = DateTime.Now.Date;
             return  this.PersistentDatas(model);
         }
 
@@ -157,12 +156,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private OpResult AddWorkClothesManageRecord(WorkClothesManageModel model)
         {
-            model.InputDate = DateTime.Now.Date;
+            
             if (irep.IsExist(m => m.Id_Key == model.Id_Key))
             {
                 return OpResult.SetResult("此数据已存在！");
             }
-            return irep.Insert(model).ToOpResult_Add("添加完成", model.Id_Key);
+            return irep.Insert(model).ToOpResult_Add(this.OpContext, model.Id_Key);
         }
 
         /// <summary>
@@ -171,17 +170,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <param name="model"></param>
         /// <returns></returns>
         private OpResult EditWorkClothesManageRecord(WorkClothesManageModel model)
-        {
-            model.InputDate = DateTime.Now.Date;
+        { 
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(model.WorkerName .ToString ());
         }
-        private  OpResult  UpDateWorkClothesManageRecord(WorkClothesManageModel model)
-        {
-            OpResult result = OpResult.SetResult("未执行任何修改");
-            if (model == null) return result;
-            return result;
-         
-        }
+       
         #endregion
     }
 
