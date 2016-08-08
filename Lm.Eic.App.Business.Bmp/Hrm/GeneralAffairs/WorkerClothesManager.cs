@@ -28,33 +28,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             return CrudFactory.WorkerClothesCrud.FindBy(dto);
         }
 
-        /// <summary>
-        /// 是否可以以旧换新
-        /// </summary>
-        /// <param name="workerId">工号</param>
-        /// <param name="productName">厂服名称</param>
-        /// <returns></returns>
-        public bool CanOldChangeNew(string workerId, string productName)
-        {
-            //冬季厂服满三年允许更换一次  夏季厂服满两年允许更换一次
-            try
-            {
-                var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = workerId, SearchMode = 1 });
-                if (workClothesList == null || workClothesList.Count() <= 0) return true;
-
-                DateTime yearDate = DateTime.Now.Date.AddYears(-2);
-                if (productName == "冬季厂服")
-                    yearDate = yearDate.AddYears(-1);
-                //排除“以旧换旧” 的时间  还判断
-                var returnWorkClothes = workClothesList.Where(e => e.ProductName == productName&&e.DealwithType!="以旧换旧" && e.InputDate >= yearDate);
-                bool result = (returnWorkClothes == null || returnWorkClothes.Count() <= 0);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
+      
         /// <summary>
         /// 是否可以以旧换新
         /// </summary>
@@ -97,7 +71,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 //  处理类型只有“以旧换新”，“领取新衣”
                 //  是  “新领取” 不用判断是否有资格
                 if (model == null) return OpResult.SetResult("数据不能这空"); 
-                if((model.DealwithType =="以旧换新") && (!CanOldChangeNew(model.WorkerId ,model.ProductName)))
+                if((model.DealwithType =="以旧换新") && (!CanOldChangeNew(model.WorkerId ,model.ProductName,model.DealwithType)))
                 {
                     return OpResult.SetResult("该用户暂无资格以旧换新！"); 
                 }
