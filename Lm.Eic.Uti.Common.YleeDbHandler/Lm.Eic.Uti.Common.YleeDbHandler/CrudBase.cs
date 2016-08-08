@@ -18,40 +18,120 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// 初始化
         /// </summary>
         /// <param name="repository">数据访问接口</param>
-        public CrudBase(IRep repository)
+        public CrudBase(IRep repository,string opContext)
         {
             irep = repository;
+            OpContext = opContext;
         }
-       
+
+        private string _opContext = string.Empty;
+        /// <summary>
+        /// 操作的数据对象
+        /// </summary>
+        public string OpContext
+        {
+            get { return _opContext; }
+            set
+            {
+                _opContext = value;
+            }
+        }
+
+
+        private Dictionary<string, Func<TEntity, OpResult>> crudOpDics = new Dictionary<string, Func<TEntity, OpResult>>();
+        /// <summary>
+        /// 添加Crud操作项目集合
+        /// </summary>
+        protected abstract void AddCrudOpItems();
+        /// <summary>
+        /// 添加具体的操作项目
+        /// </summary>
+        /// <param name="opKey"></param>
+        /// <param name="opItem"></param>
+        protected virtual void AddOpItem(string opKey,Func<TEntity, OpResult> opItem)
+        {
+            if (!crudOpDics.ContainsKey(opKey))
+            {
+                crudOpDics.Add(opKey,opItem);
+            }
+        }
+
+        /// <summary>
+        /// 持久化数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public OpResult PersistentDatas(TEntity entity)
+        {
+            OpResult result = OpResult.SetResult("持久化数据操作失败!");
+            string opSign = "default";
+            try
+            {
+                //基本属性赋值
+                if (entity == null) return OpResult.SetResult("entity can't set null!");
+                var optimePi = IsHasProperty(entity, "OpTime");
+                if (optimePi != null) optimePi.SetValue(entity, DateTime.Now.ToDateTime(), null);
+                var opDatePi = IsHasProperty(entity, "OpDate");
+                if (opDatePi != null) opDatePi.SetValue(entity, DateTime.Now.ToDate(), null);
+
+                //取得操作方法
+                PropertyInfo pi = IsHasProperty(entity, "OpSign");
+                if (pi == null)
+                    return OpResult.SetResult("操作方法不能为空！");
+                opSign = pi.GetValue(entity, null) as string;
+
+                //是否包含指定的方法
+                if (!crudOpDics.ContainsKey(opSign))
+                    AddCrudOpItems();
+                //是否包含指定的方法
+                if (!crudOpDics.ContainsKey(opSign))
+                    return OpResult.SetResult(string.Format("未找到{0}函数", opSign));
+                result = (crudOpDics[opSign])(entity);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+            return result;
+        }
 
         /// <summary>
         /// 持久化数据
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="addfn"></param>
-        /// <param name="updatefn"></param>
+        /// <param name="editfn"></param>
         /// <param name="delfn"></param>
         /// <returns></returns>
-        protected OpResult PersistentDatas(TEntity entity, Func<TEntity, OpResult> addfn, Func<TEntity, OpResult> updatefn, Func<TEntity, OpResult> delfn)
+        protected OpResult PersistentDatas(TEntity entity, Func<TEntity, OpResult> addfn, Func<TEntity, OpResult> editfn, Func<TEntity, OpResult> delfn)
         {
+           
             OpResult result = OpResult.SetResult("持久化数据操作失败!");
-            string opSign="default";
-            PropertyInfo pi=IsHasProperty(entity,"OpSign");
-            if (pi != null) opSign = pi.GetValue(entity, null) as string;
-            switch (opSign)
+            string opSign = "default";
+            try
             {
-                case OpMode.Add:
-                    result = addfn(entity);
-                    break;
-                case OpMode.Edit:
-                    result = updatefn(entity);
-                    break;
-                case OpMode.Delete:
-                    result = delfn(entity);
-                    break;
-                default:
-                    break;
+                if (entity == null) return OpResult.SetResult("entity can't set null!");
+                var optimePi = IsHasProperty(entity, "OpTime");
+                if (optimePi != null) optimePi.SetValue(entity, DateTime.Now.ToDateTime(), null);
+                var opDatePi = IsHasProperty(entity, "OpDate");
+                if (opDatePi != null) opDatePi.SetValue(entity, DateTime.Now.ToDate(), null);
+
+                PropertyInfo pi = IsHasProperty(entity, "OpSign");
+                if (pi != null) opSign = pi.GetValue(entity, null) as string;
+                switch (opSign)
+                {
+                    case OpMode.Add:
+                        result = addfn(entity);
+                        break;
+                    case OpMode.Edit:
+                        result = editfn(entity);
+                        break;
+                    case OpMode.Delete:
+                        result = delfn(entity);
+                        break;
+                    default:
+                        break;
+                }
+
             }
+            catch (Exception ex) {throw new Exception(ex.InnerException.Message);}
             return result;
         }
         /// <summary>
@@ -59,9 +139,9 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="addfn"></param>
-        /// <param name="updatefn"></param>
+        /// <param name="editfn"></param>
         /// <returns></returns>
-        protected OpResult PersistentDatas(TEntity entity, Func<TEntity, OpResult> addfn, Func<TEntity, OpResult> updatefn)
+        protected OpResult PersistentDatas(TEntity entity, Func<TEntity, OpResult> addfn, Func<TEntity, OpResult> editfn)
         {
             OpResult result = OpResult.SetResult("持久化数据操作失败!");
             string opSign = "default";
@@ -73,7 +153,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                     result = addfn(entity);
                     break;
                 case OpMode.Edit:
-                    result = updatefn(entity);
+                    result = editfn(entity);
                     break;
                 default:
                     break;

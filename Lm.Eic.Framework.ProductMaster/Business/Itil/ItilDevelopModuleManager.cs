@@ -37,7 +37,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult UpDate(ItilDevelopModuleManageModel model)
         {
-            return ItilCrudFactory.ItilDevelopModuleManageCrud.UpDate(model);
+            return ItilCrudFactory.ItilDevelopModuleManageCrud.DevelopModuleManageRecord(model);
         }
         /// <summary>
         /// 修改开发进度

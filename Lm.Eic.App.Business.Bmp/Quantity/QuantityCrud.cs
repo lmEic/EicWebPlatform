@@ -23,7 +23,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
   }
     internal class  SampleIpqcItemsCrud:CrudBase <SampleItemsIpqcDataModel,ISampleItemsIpqcDataReosity>
     {
-        public  SampleIpqcItemsCrud() :base (new SampleItemsIpqcDataReosity())
+        public  SampleIpqcItemsCrud() :base (new SampleItemsIpqcDataReosity(),"")
         { }
 
         public OpResult  store(SampleItemsIpqcDataModel model)
@@ -43,6 +43,11 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
                   );
                 return result;
             });
+        }
+
+        protected override void AddCrudOpItems()
+        {
+            throw new NotImplementedException();
         }
 
         private OpResult AddSampleIpqcItemsData(SampleItemsIpqcDataModel model)
