@@ -111,7 +111,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             this.AddOpItem(OpMode.Add, AddDevelopModuleManageRecord);
             this.AddOpItem(OpMode.Edit, EditDevelopModuleManageRecord);
-            this.AddOpItem(OpMode.UpDate, DevelopModuleManageRecord);
+            this.AddOpItem(OpMode.UpDate, UpdateDevelopModuleManageRecord);
         }
         /// <summary>
         /// 修改数据仓库
@@ -139,28 +139,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             return result;
         }
         /// <summary>
-        /// 更新开发任务内容
-        /// </summary>
-        /// <param name="model">开发任务</param>
-        /// <returns></returns>
-        public OpResult DevelopModuleManageRecord(ItilDevelopModuleManageModel model)
-        {
-            OpResult result = OpResult.SetResult("未执行任何修改");
-            if (model == null) return result;
-
-            var changeRecordList = GetChangeRecordListBy(model);
-
-            model.OpSign = OpMode.Edit;
-            result = Store(model);
-            //修改记录
-            changeRecordList.ForEach(m =>
-            {
-                m.OpSign = OpMode.Edit;
-                ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.Store(m);
-            });
-            return result;
-        }
-        /// <summary>
         /// 添加一条开发任务到数据库
         /// </summary>
         /// <param name="model"></param>
@@ -177,7 +155,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 return result;
         }
         /// <summary>
-        /// 更新一条开发任务
+        /// 编辑一条开发任务
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -185,6 +163,28 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             model.CurrentProgress = "待开发";
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
+        }
+        /// <summary>
+        /// 更新开发任务内容
+        /// </summary>
+        /// <param name="model">开发任务</param>
+        /// <returns></returns>
+        private OpResult UpdateDevelopModuleManageRecord(ItilDevelopModuleManageModel model)
+        {
+            OpResult result = OpResult.SetResult("未执行任何修改");
+            if (model == null) return result;
+
+            var changeRecordList = GetChangeRecordListBy(model);
+
+            model.OpSign = OpMode.Edit;
+            result = Store(model);
+            //修改记录
+            changeRecordList.ForEach(m =>
+            {
+                m.OpSign = OpMode.Edit;
+                ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.Store(m);
+            });
+            return result;
         }
         /// <summary>
         /// 修改开发进度
@@ -301,7 +301,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult SavaChangeRecord(ItilDevelopModuleManageModel model)
         {
-            return ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.Store(new ItilDevelopModuleManageChangeRecordModel()
+            return Store(new ItilDevelopModuleManageChangeRecordModel()
             {
                 ModuleName = model.ModuleName,
                 MClassName = model.MClassName,
@@ -313,8 +313,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 OpSign = "add"
             });
         }
-
-      
 
         /// <summary>
         /// 根据约束键值查找操作记录

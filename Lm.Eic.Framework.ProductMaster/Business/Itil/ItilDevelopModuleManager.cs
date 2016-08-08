@@ -31,15 +31,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             return ItilCrudFactory.ItilDevelopModuleManageCrud.Store(model);
         }
         /// <summary>
-        /// 更新开发任务内容
-        /// </summary>
-        /// <param name="model">开发任务</param>
-        /// <returns></returns>
-        public OpResult UpDate(ItilDevelopModuleManageModel model)
-        {
-            return ItilCrudFactory.ItilDevelopModuleManageCrud.DevelopModuleManageRecord(model);
-        }
-        /// <summary>
         /// 修改开发进度
         /// </summary>
         /// <param name="model">实体</param>

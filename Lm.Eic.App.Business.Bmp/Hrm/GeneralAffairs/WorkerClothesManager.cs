@@ -117,7 +117,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
     /// </summary>
     internal class WorkerClothesCrud : CrudBase<WorkClothesManageModel, IWorkClothesManageModelRepository>
     {
-        public WorkerClothesCrud() : base(new WorkClothesManageModelRepository())
+        public WorkerClothesCrud() : base(new WorkClothesManageModelRepository(),"厂服管理")
         { }
 
         #region FindBy
@@ -166,6 +166,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                                    );
                     return result;
                 });
+        }
+
+        protected override void AddCrudOpItems()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
