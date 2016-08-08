@@ -23,10 +23,9 @@ namespace Lm.Eic.App.Business.BmpTests.Hrm.GeneralAffairs
                        ProductSpecify="L",
                        ReceiveUser="张文明",
                        WorkerId="001359" ,
-                       WorkerName ="万晓桥",
-                       InputDate =DateTime.Now .Date 
+                       WorkerName ="万晓桥"
             };
-            var relust = GeneralAffairsService.WorkerClothesManager.CanOldChangeNew("001359", "夏季厂服");
+            var relust = GeneralAffairsService.WorkerClothesManager.StoreReceiveWorkClothes(model);
         }
     }
 }

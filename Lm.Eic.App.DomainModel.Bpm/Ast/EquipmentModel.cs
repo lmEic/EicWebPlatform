@@ -319,7 +319,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         }
         private int _checkinterval;
         /// <summary>
-        ///校验间隔
+        ///校验间隔 
         /// </summary>
         public int CheckInterval
         {

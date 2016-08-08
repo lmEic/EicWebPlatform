@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using System.Web;
+using NPOI.HPSF;
+using System.Reflection;
 
 namespace Lm.Eic.Uti.SystemInit.Commom
 {
@@ -19,13 +21,14 @@ namespace Lm.Eic.Uti.SystemInit.Commom
         #region Excel导入
 
         /// <summary>
-        /// 从Excel取数据并记录到List集合里
+        /// 从Excel取数据并记录到List集合 ：从三行开始，前二行是英与中文映射
         /// </summary>
-        /// <param name="cellHeard">单元头的值和名称：{ { "English", "中文" }, };</param>
+        /// <typeparam name="T"></typeparam>
         /// <param name="filePath">保存文件绝对路径</param>
+        /// <param name="sheetColumn">列</param>
         /// <param name="errorMsg">错误信息</param>
-        /// <returns>转换后的List对象集合</returns>
-        public static List<T> ExcelToEntityList<T>(Dictionary<string, string> cellHeard, string filePath, out StringBuilder errorMsg) where T : new()
+        /// <returns>转换后的List对象集合<</returns>
+        public static List<T> ExcelToEntityList<T>( string filePath,int sheetColumn, out StringBuilder errorMsg) where T : new()
         {
             List<T> enlist = new List<T>();
             errorMsg = new StringBuilder();
@@ -33,11 +36,12 @@ namespace Lm.Eic.Uti.SystemInit.Commom
             {
                 if (Regex.IsMatch(filePath, ".xls$")) // 2003
                 {
-                    enlist = Excel2003ToEntityList<T>(cellHeard, filePath, out errorMsg);
+                    enlist = Excel2003ToEntityList<T>(filePath, sheetColumn, out errorMsg);
                 }
                 else if (Regex.IsMatch(filePath, ".xlsx$")) // 2007
                 {
                     //return FailureResultMsg("请选择Excel文件"); // 未设计
+                  // enlist = Excel2007ToEntityList<T>(filePath, sheetColumn, out errorMsg);
                 }
                 return enlist;
             }
@@ -54,49 +58,99 @@ namespace Lm.Eic.Uti.SystemInit.Commom
         /// <param name="filePath">保存文件绝对路径</param>
         /// <param name="errorMsg">错误信息</param>
         /// <returns>转换好的List对象集合</returns>
-        private static List<T> Excel2003ToEntityList<T>(Dictionary<string, string> cellHeard, string filePath, out StringBuilder errorMsg) where T : new()
+        private static List<T> Excel2003ToEntityList<T>(string filePath, int sheetColumn, out StringBuilder errorMsg) where T : new()
         {
             errorMsg = new StringBuilder(); // 错误信息,Excel转换到实体对象时，会有格式的错误信息
             List<T> enlist = new List<T>(); // 转换后的集合
-            List<string> keys = cellHeard.Keys.ToList(); // 要赋值的实体对象属性名称
+            Dictionary<string, string> cellHeard = new Dictionary<string, string>();
+            IWorkbook wk = null;
+            //List<string> keys = cellHeard.Keys.ToList(); // 要赋值的实体对象属性名称
             try
             {
                 using (FileStream fs = File.OpenRead(filePath))
                 {
+                    wk = new HSSFWorkbook(fs);
                     HSSFWorkbook workbook = new HSSFWorkbook(fs);
                     HSSFSheet sheet = (HSSFSheet)workbook.GetSheetAt(0); // 获取此文件第一个Sheet页
-                    for (int i = 1; i <= sheet.LastRowNum; i++) // 从1开始，第0行为单元头
+                    #region    导出头二行 做为对应的字典
+                    try
                     {
-                        // 1.判断当前行是否空行，若空行就不在进行读取下一行操作，结束Excel读取操作
-                        if (sheet.GetRow(i) == null)
+                        List<string> EnglishCellHeardGGroup = new List<string>();
+                        for (int jj = 0; jj < sheetColumn; jj++)
                         {
-                            break;
-                        }
-
-                        T en = new T();
-                        string errStr = ""; // 当前行转换时，是否有错误信息，格式为：第1行数据转换异常：XXX列；
-                        for (int j = 0; j < keys.Count; j++)
-                        {
-                            // 2.若属性头的名称包含'.',就表示是子类里的属性，那么就要遍历子类，eg：UserEn.TrueName
-                            if (keys[j].IndexOf(".") >= 0)
+                            if (sheet.LastRowNum >= 2)
                             {
-                                // 2.1解析子类属性
-                                string[] properotyArray = keys[j].Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
-                                string subClassName = properotyArray[0]; // '.'前面的为子类的名称
-                                string subClassProperotyName = properotyArray[1]; // '.'后面的为子类的属性名称
-                                System.Reflection.PropertyInfo subClassInfo = en.GetType().GetProperty(subClassName); // 获取子类的类型
-                                if (subClassInfo != null)
+                                string englishCellHeard = sheet.GetRow(0).GetCell(jj).StringCellValue.ToString();
+                                string chineCellHeard = sheet.GetRow(1).GetCell(jj).StringCellValue.ToString();
+                                if (!EnglishCellHeardGGroup.Contains(englishCellHeard))
+                                    cellHeard.Add(englishCellHeard, chineCellHeard);
+                                else
+                                  errorMsg.Append ( "第" + jj+ "列有重复");
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception(e.ToString());
+                    }
+                    #endregion   导出头二行 做为对应的字典
+                   
+                    List<string> keys = cellHeard.Keys.ToList(); // 要赋值的实体对象属性名称
+                        for (int i = 2; i <= sheet.LastRowNum; i++) // 从2开始，第0，1行为单元头 英中文对应
+                        {
+                            // 1.判断当前行是否空行，若空行就不在进行读取下一行操作，结束Excel读取操作
+                            if (sheet.GetRow(i) == null)
+                            {
+                                break;
+                            }
+
+                            T en = new T();
+                            string errStr = ""; // 当前行转换时，是否有错误信息，格式为：第1行数据转换异常：XXX列；
+                            for (int j = 0; j < keys.Count; j++)
+                            {
+                                // 2.若属性头的名称包含'.',就表示是子类里的属性，那么就要遍历子类，eg：UserEn.TrueName
+                                if (keys[j].IndexOf(".") >= 0)
                                 {
-                                    // 2.1.1 获取子类的实例
-                                    var subClassEn = en.GetType().GetProperty(subClassName).GetValue(en, null);
-                                    // 2.1.2 根据属性名称获取子类里的属性信息
-                                    System.Reflection.PropertyInfo properotyInfo = subClassInfo.PropertyType.GetProperty(subClassProperotyName);
+                                    // 2.1解析子类属性
+                                    string[] properotyArray = keys[j].Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+                                    string subClassName = properotyArray[0]; // '.'前面的为子类的名称
+                                    string subClassProperotyName = properotyArray[1]; // '.'后面的为子类的属性名称
+                                    System.Reflection.PropertyInfo subClassInfo = en.GetType().GetProperty(subClassName); // 获取子类的类型
+                                    if (subClassInfo != null)
+                                    {
+                                        // 2.1.1 获取子类的实例
+                                        var subClassEn = en.GetType().GetProperty(subClassName).GetValue(en, null);
+                                        // 2.1.2 根据属性名称获取子类里的属性信息
+                                        System.Reflection.PropertyInfo properotyInfo = subClassInfo.PropertyType.GetProperty(subClassProperotyName);
+                                        if (properotyInfo != null)
+                                        {
+                                            try
+                                            {
+                                                // Excel单元格的值转换为对象属性的值，若类型不对，记录出错信息
+                                                properotyInfo.SetValue(subClassEn, GetExcelCellToProperty(properotyInfo.PropertyType, sheet.GetRow(i).GetCell(j)), null);
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                if (errStr.Length == 0)
+                                                {
+                                                    errStr = "第" + i + "行数据转换异常：";
+                                                }
+                                                errStr += cellHeard[keys[j]] + "列；";
+                                            }
+
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    // 3.给指定的属性赋值
+                                    System.Reflection.PropertyInfo properotyInfo = en.GetType().GetProperty(keys[j]);
                                     if (properotyInfo != null)
                                     {
                                         try
                                         {
                                             // Excel单元格的值转换为对象属性的值，若类型不对，记录出错信息
-                                            properotyInfo.SetValue(subClassEn, GetExcelCellToProperty(properotyInfo.PropertyType, sheet.GetRow(i).GetCell(j)), null);
+                                            properotyInfo.SetValue(en, GetExcelCellToProperty(properotyInfo.PropertyType, sheet.GetRow(i).GetCell(j)), null);
                                         }
                                         catch (Exception e)
                                         {
@@ -106,39 +160,16 @@ namespace Lm.Eic.Uti.SystemInit.Commom
                                             }
                                             errStr += cellHeard[keys[j]] + "列；";
                                         }
-
                                     }
                                 }
                             }
-                            else
+                            // 若有错误信息，就添加到错误信息里
+                            if (errStr.Length > 0)
                             {
-                                // 3.给指定的属性赋值
-                                System.Reflection.PropertyInfo properotyInfo = en.GetType().GetProperty(keys[j]);
-                                if (properotyInfo != null)
-                                {
-                                    try
-                                    {
-                                        // Excel单元格的值转换为对象属性的值，若类型不对，记录出错信息
-                                        properotyInfo.SetValue(en, GetExcelCellToProperty(properotyInfo.PropertyType, sheet.GetRow(i).GetCell(j)), null);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        if (errStr.Length == 0)
-                                        {
-                                            errStr = "第" + i + "行数据转换异常：";
-                                        }
-                                        errStr += cellHeard[keys[j]] + "列；";
-                                    }
-                                }
+                                errorMsg.AppendLine(errStr);
                             }
+                            enlist.Add(en);
                         }
-                        // 若有错误信息，就添加到错误信息里
-                        if (errStr.Length > 0)
-                        {
-                            errorMsg.AppendLine(errStr);
-                        }
-                        enlist.Add(en);
-                    }
                 }
                 return enlist;
             }
@@ -313,17 +344,26 @@ namespace Lm.Eic.Uti.SystemInit.Commom
                 case "int":
                 case "int16":
                 case "int32":
-                    rs = (int)Convert.ChangeType(sourceCell.NumericCellValue.ToString(), distanceType);
+                    if (sourceCell.CellType == CellType.Numeric)
+                    { rs = (int)Convert.ChangeType(sourceCell.NumericCellValue.ToString(), distanceType); }
+                    else { rs = (int)Convert.ChangeType(sourceCell.StringCellValue.ToString(), distanceType); }
                     break;
                 case "float":
                 case "single":
-                    rs = (float)Convert.ChangeType(sourceCell.NumericCellValue.ToString(), distanceType);
+                    if (sourceCell.CellType == CellType.Numeric)
+                    { rs = (float)Convert.ChangeType(sourceCell.NumericCellValue.ToString(), distanceType); }
+                    else { rs = (float)Convert.ChangeType(sourceCell.StringCellValue.ToString(), distanceType); }
                     break;
                 case "datetime":
-                    rs = sourceCell.DateCellValue;
+                    if (sourceCell.CellType == CellType.Numeric)
+                    { rs = sourceCell.DateCellValue; }
+                    else { rs = (DateTime)Convert.ChangeType(sourceCell.StringCellValue.ToString(), distanceType); }
                     break;
                 case "guid":
-                    rs = (Guid)Convert.ChangeType(sourceCell.NumericCellValue.ToString(), distanceType);
+                    if (sourceCell.CellType == CellType.Numeric)
+                    { rs = (Guid)Convert.ChangeType(sourceCell.NumericCellValue.ToString(), distanceType); ; }
+                    else { rs = (Guid)Convert.ChangeType(sourceCell.StringCellValue.ToString(), distanceType); }
+                  
                     return rs;
             }
             return rs;
