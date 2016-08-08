@@ -84,7 +84,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                     AddCrudOpItems();
                 //是否包含指定的方法
                 if (!crudOpDics.ContainsKey(opSign))
-                    return OpResult.SetResult(string.Format("未找到{0}函数", opSign));
+                    return OpResult.SetResult(string.Format("未找到{0}的实现函数", opSign));
                 result = (crudOpDics[opSign])(entity);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
