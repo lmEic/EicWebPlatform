@@ -45,15 +45,45 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 DateTime yearDate = DateTime.Now.Date.AddYears(-2);
                 if (productName == "冬季厂服")
                     yearDate = yearDate.AddYears(-1);
-                var returnWorkClothes = workClothesList.Where(e => e.ProductName == productName & e.InputDate >= yearDate);
-                return returnWorkClothes == null || returnWorkClothes.Count() <= 0;
+                //排除“以旧换旧” 的时间  还判断
+                var returnWorkClothes = workClothesList.Where(e => e.ProductName == productName&&e.DealwithType!="以旧换旧" && e.InputDate >= yearDate);
+                bool result = (returnWorkClothes == null || returnWorkClothes.Count() <= 0);
+                return result;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
             }
         }
-
+        /// <summary>
+        /// 是否可以以旧换新
+        /// </summary>
+        /// <param name="workerId">工号</param>
+        /// <param name="productName">厂服名称</param>
+        /// <param name="dealwithType">处理方式</param>
+        /// <returns></returns>
+        public bool CanOldChangeNew(string workerId, string productName, string dealwithType)
+        {
+            // "以旧换旧"不用判定
+            //冬季厂服满三年允许更换一次  夏季厂服满两年允许更换一次
+            try
+            {
+                if (dealwithType == "以旧换旧") return true;
+                var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = workerId, SearchMode = 1 });
+                if (workClothesList == null || workClothesList.Count() <= 0) return true;
+                DateTime yearDate = DateTime.Now.Date.AddYears(-2);
+                if (productName == "冬季厂服")
+                    yearDate = yearDate.AddYears(-1);
+                //排除“以旧换旧” 的时间  还判断
+                var returnWorkClothes = workClothesList.Where(e => e.ProductName == productName && e.DealwithType != "以旧换旧" && e.InputDate >= yearDate);
+                bool result = (returnWorkClothes == null || returnWorkClothes.Count() <= 0);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
         /// <summary>
         /// 领取厂服
         /// </summary>
@@ -64,7 +94,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             //处理类型 判断是以旧换新 还是新领取 然后判断是否有资格
             try
             {
-                //  处理类型只有“以旧换新”，“新领取”
+                //  处理类型只有“以旧换新”，“领取新衣”
                 //  是  “新领取” 不用判断是否有资格
                 if (model == null) return OpResult.SetResult("数据不能这空"); 
                 if((model.DealwithType =="以旧换新") && (!CanOldChangeNew(model.WorkerId ,model.ProductName)))
@@ -87,7 +117,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
     /// </summary>
     internal class WorkerClothesCrud : CrudBase<WorkClothesManageModel, IWorkClothesManageModelRepository>
     {
-        public WorkerClothesCrud() : base(new WorkClothesManageModelRepository(),"领取记录")
+        public WorkerClothesCrud() : base(new WorkClothesManageModelRepository())
         { }
 
         #region FindBy
@@ -138,11 +168,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 });
         }
 
-        protected override void AddCrudOpItems()
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// 添加一条新增的信息
         /// </summary>
@@ -155,7 +180,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             {
                 return OpResult.SetResult("此数据已存在！");
             }
-            return irep.Insert(model).ToOpResult_Add(this.OpContext, model.Id_Key);
+            return irep.Insert(model).ToOpResult_Add("添加完成", model.Id_Key);
         }
 
         /// <summary>
@@ -165,7 +190,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private OpResult EditWorkClothesManageRecord(WorkClothesManageModel model)
         {
-            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(this.OpContext);
+            model.InputDate = DateTime.Now.Date;
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(model.WorkerName .ToString ());
         }
         #endregion
     }
