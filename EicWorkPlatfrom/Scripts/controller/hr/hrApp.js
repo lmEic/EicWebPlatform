@@ -1991,7 +1991,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
                 vmManager.isCanChange = data;
                 if (!vmManager.isCanChange)
                 {
-                    vmManager.showErrorMsg();
+                   vmManager.showErrorMsg();
                 }
             });
         },

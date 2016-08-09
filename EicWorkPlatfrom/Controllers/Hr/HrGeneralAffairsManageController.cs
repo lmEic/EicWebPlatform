@@ -39,6 +39,11 @@ namespace EicWorkPlatfrom.Controllers.Hr
             bool canChange = GeneralAffairsService.WorkerClothesManager.CanOldChangeNew(workerId, productName, dealwithType);
             return Json(canChange, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult CanChangeOldForNew(WorkClothesManageModel model)
+        {
+            bool canChange = GeneralAffairsService.WorkerClothesManager.CanOldChangeNew(model.WorkerId, model.ProductName, model.DealwithType);
+            return Json(canChange, JsonRequestBehavior.AllowGet);
+        }
         /// <summary>
         /// 获取领取厂服记录
         /// </summary>
