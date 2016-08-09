@@ -251,11 +251,12 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         });
     };
     //是否可以以旧换新
-    hr.canChangeOldForNew = function (workerId, productName) {
+    hr.canChangeOldForNew = function (workerId, productName, dealwithType) {
         var url = generalAffairsUrl + 'CanChangeOldForNew';
         return ajaxService.getData(url, {
             workerId: workerId,
             productName: productName,
+            dealwithType: dealwithType
         });
     };
     return hr;
@@ -1987,7 +1988,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         },
         isCanChange:false,
         checkCanChange: function () {
-            hrDataOpService.canChangeOldForNew(uiVM.WorkerId, uiVM.ProductName).then(function (data) {
+            hrDataOpService.canChangeOldForNew(uiVM.WorkerId, uiVM.ProductName,uiVM.DealwithType).then(function (data) {
                 vmManager.isCanChange = data;
                 if (!vmManager.isCanChange)
                 {

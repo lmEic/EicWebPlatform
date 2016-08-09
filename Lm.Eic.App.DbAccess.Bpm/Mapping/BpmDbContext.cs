@@ -1,5 +1,7 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Mapping.AstMapping;
+using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.BoardManager;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
+using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManager;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Data.Entity;
@@ -21,6 +23,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         public DbSet<EquipmentMaintenanceRecordModel> EquipmentMaintenance { get; set; }
 
+        public DbSet<MaterialSpecBoardModel> MaterialSpecBoard { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -28,7 +32,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new EquipmentModelMapping());
             modelBuilder.Configurations.Add(new EquipmentCheckModelMapping());
             modelBuilder.Configurations.Add(new EquipmentMaintenanceModelMapping());
-
+            modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
         }
     }
 

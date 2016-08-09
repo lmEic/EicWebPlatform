@@ -79,11 +79,52 @@ var leeDataHandler = (function () {
         }
     };
 
+   
+
+    ///数据存储
+    var leeDataStorage = {
+        ///存储登录用户信息
+        setLoginedUser: function (userDatas) {
+            if (_.isObject(userDatas))
+            {
+                localStorage.setItem("loginUser", JSON.stringify(userDatas));
+            }
+        },
+        //获取登录用户信息,本地有存储，则返回用户对象，
+        //没有，这返回null
+        getLoginedUser: function () {
+            var loginedUser = {
+                //账号
+                userId: null,
+                //姓名
+                userName: null,
+                //头像
+                headPortrait:null
+            };
+
+            var userJson = localStorage.getItem("loginUser");
+            if (!_.isUndefined(userJson) && !_.isNull(userJson))
+            {
+                var user = JSON.parse(userJson);
+                if (_.isObject(user))
+                {
+                    loginedUser.userId = user.LoginedUser.UserId;
+                    loginedUser.userName = user.LoginedUser.UserName;
+                    loginedUser.headPortrait = user.LoginedUser.HeadPortrait;
+                    return loginedUser;
+                }
+            }
+            return null;
+        },
+    };
+
     return {
         ///操作状态
         operateStatus: leeOperateStatus,
         ///数据操作行为
-        dataOperate:leeDataOperate,
+        dataOperate: leeDataOperate,
+        ///本地数据存储
+        dataStorage:leeDataStorage,
     };
 })();
 ///常用操作助手
