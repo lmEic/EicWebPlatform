@@ -61,6 +61,10 @@
     <Compile Include="Ast\AstService.cs" />
     <Compile Include="Ast\EquipmentCrud.cs" />
     <Compile Include="Ast\EquipmentManager.cs" />
+    <Compile Include="Board\BoardBase.cs" />
+    <Compile Include="Board\BoardService.cs" />
+    <Compile Include="Board\MaterialSpecBoardCrud.cs" />
+    <Compile Include="Board\MaterialSpecBoardManager.cs" />
     <Compile Include="Hrm\Archives\ArchiveBase.cs" />
     <Compile Include="Hrm\Archives\ArchiveService.cs" />
     <Compile Include="Hrm\Archives\ArchivesManager.cs" />

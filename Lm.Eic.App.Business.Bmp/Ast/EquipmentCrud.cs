@@ -241,7 +241,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             model.IsCheck = model.CheckInterval == 0 ? "否" : "是";
             model.CheckDate = model.CheckDate.ToDate();
             model.PlannedCheckDate = model.CheckDate.AddMonths(model.CheckInterval);
-            model.CheckState = "正常";
+            model.CheckState = "在期";
         }
 
         /// <summary>
@@ -260,7 +260,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             model.MaintenanceDate = model.MaintenanceDate.ToDate();
             model.PlannedMaintenanceDate = model.MaintenanceDate.AddMonths(model.MaintenanceInterval);
             model.PlannedMaintenanceMonth = model.PlannedMaintenanceDate.ToString("yyyyMM");
-            model.MaintenanceState = "正常";
+            model.MaintenanceState = "在期";
         }
 
 
