@@ -61,10 +61,10 @@
     <Compile Include="Ast\AstService.cs" />
     <Compile Include="Ast\EquipmentCrud.cs" />
     <Compile Include="Ast\EquipmentManager.cs" />
-    <Compile Include="Board\BoardBase.cs" />
-    <Compile Include="Board\BoardService.cs" />
-    <Compile Include="Board\MaterialSpecBoardCrud.cs" />
-    <Compile Include="Board\MaterialSpecBoardManager.cs" />
+    <Compile Include="Pms\BoardManagment\BoardBase.cs" />
+    <Compile Include="Pms\BoardManagment\BoardService.cs" />
+    <Compile Include="Pms\BoardManagment\BoardCrud.cs" />
+    <Compile Include="Pms\BoardManagment\MaterialBoardManager.cs" />
     <Compile Include="Hrm\Archives\ArchiveBase.cs" />
     <Compile Include="Hrm\Archives\ArchiveService.cs" />
     <Compile Include="Hrm\Archives\ArchivesManager.cs" />
@@ -95,7 +95,6 @@
     <Compile Include="Quantity\SupperManager\SupperManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Pms\BoardManagment\" />
     <Folder Include="Pms\DailyReport\" />
   </ItemGroup>
   <ItemGroup>

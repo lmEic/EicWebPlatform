@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="Ast\EquipmentModel.cs" />
     <Compile Include="Ast\QueryEquipmentDto.cs" />
-    <Compile Include="Board\MaterialSpecBoardModel.cs" />
+    <Compile Include="Pms\BoardManager\MaterialSpecBoardModel.cs" />
     <Compile Include="Hrm\Archives\ArchivesIdentityModel.cs" />
     <Compile Include="Hrm\Attendance\AttendClassTypeModel.cs" />
     <Compile Include="Hrm\GeneralAffairs\QueryGeneralAffairsDto.cs" />
@@ -56,7 +56,9 @@
       <Name>Lm.Eic.Uti.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Pms\DailyReport\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

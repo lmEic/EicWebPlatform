@@ -1,7 +1,7 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Mapping.AstMapping;
-using Lm.Eic.App.DbAccess.Bpm.Mapping.BoardMapping;
+using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.BoardManager;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
-using Lm.Eic.App.DomainModel.Bpm.Board;
+using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManager;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Data.Entity;
