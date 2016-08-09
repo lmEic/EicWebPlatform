@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs;
 
@@ -40,7 +36,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public JsonResult CanChangeOldForNew(string workerId, string productName, string dealwithType)
         {
-            bool canChange = GeneralAffairsService.WorkerClothesManager.CanOldChangeNew(workerId, productName,dealwithType);
+            bool canChange = GeneralAffairsService.WorkerClothesManager.CanOldChangeNew(workerId, productName, dealwithType);
             return Json(canChange, JsonRequestBehavior.AllowGet);
         }
         /// <summary>

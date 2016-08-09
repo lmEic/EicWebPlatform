@@ -1,14 +1,10 @@
 ﻿using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping
 {
-  public  class QuantityDbContext:DbContext 
+    public  class QuantityDbContext:DbContext 
     {
       public QuantityDbContext(string connectionstring = "QuantityDbContext")
       {

@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Lm.Eic.App.Business.Bmp.Ast;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 

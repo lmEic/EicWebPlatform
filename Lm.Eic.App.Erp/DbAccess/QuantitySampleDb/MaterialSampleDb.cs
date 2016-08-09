@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Lm.Eic.App.Erp.Domain.QuantityModel;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using System.Data;
-using Lm.Eic.App.Erp.DbAccess;
 
 namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
-{   
+{
 
 
     /// <summary>

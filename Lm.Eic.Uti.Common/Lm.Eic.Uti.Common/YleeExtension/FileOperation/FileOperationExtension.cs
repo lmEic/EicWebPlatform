@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using System.Data;
 
 namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
 {

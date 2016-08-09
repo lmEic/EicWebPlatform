@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping;
+﻿using Lm.Eic.App.DbAccess.Bpm.Mapping.QuantityMapping;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeDbHandler;
-using Lm.Eic.Uti.Common.YleeExcelHanlder;
 namespace Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep
 {
     public interface ISampleIqcRecordReposity : IRepository<SampleIqcRecordModel> { }
