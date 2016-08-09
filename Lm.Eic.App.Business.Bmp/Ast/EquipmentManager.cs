@@ -62,8 +62,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             }
         }
 
-      
-
         /// <summary>
         /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询 
         /// 4.依据录入日期查询待校验设备 5.依据录入日期查询待保养设备 
@@ -101,7 +99,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             get { return OBulider.BuildInstance<EquipmentMaintenanceManager>(); }
         }
-     
     }
 
 

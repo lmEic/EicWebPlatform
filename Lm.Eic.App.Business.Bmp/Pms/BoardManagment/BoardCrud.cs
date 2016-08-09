@@ -13,6 +13,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
     {
         public BoardCrud() : base(new MaterialSpecBoardRepository(), "物料规格看板")
         {
+
         }
 
         protected override void AddCrudOpItems()

@@ -57,6 +57,13 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             taxType: taxType,
         });
     };
+    ///获取设备档案总览
+    ast.getAstArchiveOverview = function () {
+        var url =
+            astUrlPrefix + 'GetAstArchiveOverview';
+        return ajaxService.getData(url, {
+        });
+    };
     //保存设备档案记录
     ast.saveEquipmentRecord = function (equipment)
     {
@@ -120,22 +127,27 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
 })
-.controller('astArchiveScreeningCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService) {
+.controller('astArchiveOverviewCtrl', function ($scope,astDataopService) {
 
     //视图管理器
     var vmManager = {
         activeTab: 'initTab',
         planDate: new Date(),
         datasets: [],
-        getAstCheckList: function () {
+        datasource:[],
+        getAstArchiveOverview: function () {
             vmManager.datasets = [];
-            $scope.searchPromise = astDataopService.getAstCheckListByPlanDate(vmManager.planDate).then(function (datas) {
-                vmManager.datasets = datas;
+            vmManager.datasource = [];
+            $scope.promise = astDataopService.getAstArchiveOverview().then(function (datas) {
+                vmManager.datasource = datas;
             });
         }
     };
     $scope.vmManager = vmManager;
+
+    vmManager.getAstArchiveOverview();
 })
+
 .controller('astArchiveInputCtrl', function ($scope, dataDicConfigTreeSet,connDataOpService, astDataopService,$modal) {
     ///设备档案模型
     var uiVM = {
