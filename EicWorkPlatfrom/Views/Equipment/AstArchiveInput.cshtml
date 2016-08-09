@@ -209,7 +209,7 @@
                                         </div>
                                     </div>
                                 </fieldset>
-                                <fieldset>
+                                <fieldset ng-hide="vm.EquipmentType!=='量测设备'">
                                     <legend>校验信息</legend>
                                     <div class="form-group">
                                         <label for="checkDate" class="col-md-2 control-label">校验日期</label>
@@ -248,7 +248,7 @@
                                         </div>
                                     </div>
                                 </fieldset>
-                                <fieldset>
+                                <fieldset ng-hide="vm.AssetType==='低质易耗品'">
                                     <legend>保养信息</legend>
                                     <div class="form-group">
                                         <label for="maintenanceDate" class="col-md-2 control-label">保养日期</label>

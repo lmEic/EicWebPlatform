@@ -199,7 +199,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             vmManager.canEdit = false;
         },
         canEdit: false,
-        equTypes: [{ id: 0, text: '量测设备' }, { id: 1, text: '生产设备' }],
+        equTypes: [{ id: 0, text: '量测设备' }, { id: 1, text: '生产设备' }, {id:2,text:"辅助设备"}],
         taxTypes: [{ id: 0, text: '保税' }, { id: 1, text: '非保税' }],
         assetTypes: [{ id: 0, text: '固定资产' }, { id: 1, text: '低质易耗品' }],
         equUnits: [{ id: 0, text: '台' }, { id: 1, text: '个' }],
@@ -347,7 +347,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     //视图管理器
     var vmManager = {
         activeTab: 'initTab',
-        planDate: new Date('2017-01-19'),
+        planDate: new Date(),
         datasource:[],
         datasets: [],
         getAstCheckList: function () {
