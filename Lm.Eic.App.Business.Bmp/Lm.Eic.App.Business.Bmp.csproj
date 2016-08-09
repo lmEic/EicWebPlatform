@@ -80,7 +80,6 @@
     <Compile Include="Hrm\GeneralAffairs\GeneralAffairsFactory.cs" />
     <Compile Include="Hrm\GeneralAffairs\GeneralAffairsService.cs" />
     <Compile Include="Hrm\GeneralAffairs\WorkerClothesManager.cs" />
-    <Compile Include="ProduceDailyReport\DailyReportCollectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchase\PurchaseManager.cs" />
     <Compile Include="Purchase\PurchaseService.cs" />
