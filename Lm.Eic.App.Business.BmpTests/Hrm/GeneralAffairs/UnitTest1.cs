@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs;
 using Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs;
 

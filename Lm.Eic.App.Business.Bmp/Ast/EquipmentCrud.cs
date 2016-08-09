@@ -3,7 +3,6 @@ using Lm.Eic.App.DomainModel.Bpm.Ast;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
-using System.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,7 +84,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                         return irep.Entities.Where(m => m.InputDate == inputDate).ToList();
                     case 4: //依据录入日期查询待校验设备  //结束日期=输入日期加一个月 超期设备等于 计划日期<=当天日期
                         DateTime startPlannedDate = qryDto.PlannedCheckDate.ToDate(), endPlannedDate = startPlannedDate.AddMonths(1), nowDate = DateTime.Now.ToDate();
-                        return irep.Entities.Where(m => (m.IsCheck=="是" && m.PlannedCheckDate >= startPlannedDate && m.PlannedCheckDate <= endPlannedDate)  ||(m.IsCheck=="是"&& m.PlannedCheckDate <= nowDate)).ToList();
+                        return irep.Entities.Where(m => (  m.IsScrapped == "正常" && m.IsCheck=="是" && m.PlannedCheckDate >= startPlannedDate && m.PlannedCheckDate <= endPlannedDate )  || (m.IsScrapped == "正常" && m.IsCheck=="是"&& m.PlannedCheckDate <= nowDate)).ToList();
                     case 5: //依据录入日期查询待保养设备  //按计划保养月查询待保养待设备列表
                         return irep.Entities.Where(m => m.IsMaintenance == "是" && m.PlannedMaintenanceMonth == qryDto.PlannedMaintenanceMonth).ToList();
                     case 6: //查询所有在使用待设备 生成设备总览表
@@ -233,17 +232,16 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="model"></param>
         private void SetEquipmentCheckRule(EquipmentModel model)
         {
-            //校验处理 设备类别为量测设备才会校验
-            model.IsCheck = model.CheckInterval == 0 ? "否" : "是";
-
-            if (model.IsCheck != "是" && model.EquipmentType != "量测设备")
+            if(model.EquipmentType != "量测设备")  //如果不等于量测设备 不校验
             {
                 model.CheckDate = DateTime.Now.ToDate();//设置为默认日期
                 model.CheckInterval = 0;
             }
+            //校验处理 设备类别为量测设备才会校验
+            model.IsCheck = model.CheckInterval == 0 ? "否" : "是";
             model.CheckDate = model.CheckDate.ToDate();
             model.PlannedCheckDate = model.CheckDate.AddMonths(model.CheckInterval);
-          //  model.CheckState = model.PlannedCheckDate > DateTime.Now ? "在期" : "超期";
+            model.CheckState = "正常";
         }
 
         /// <summary>
@@ -252,18 +250,17 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="model"></param>
         private void SetEquipmentMaintenanceRule(EquipmentModel model)
         {
-            //保养处理
-            model.IsMaintenance = model.AssetType == "低质易耗品" ? "否" : "是";
-            
-            if (model.IsMaintenance != "是")
+            if(model.AssetType == "低质易耗品")  //如果等于低值易耗品 不保养
             {
-                model.MaintenanceDate = DateTime.Now.ToDate();//设置为默认日期
+                model.MaintenanceDate = DateTime.Now.ToDate(); 
                 model.MaintenanceInterval = 0;
             }
+            //保养处理
+            model.IsMaintenance = model.MaintenanceInterval == 0 ? "否" : "是";
             model.MaintenanceDate = model.MaintenanceDate.ToDate();
             model.PlannedMaintenanceDate = model.MaintenanceDate.AddMonths(model.MaintenanceInterval);
             model.PlannedMaintenanceMonth = model.PlannedMaintenanceDate.ToString("yyyyMM");
-          //  model.MaintenanceState = model.PlannedMaintenanceDate > DateTime.Now ? "在期" : "超期";
+            model.MaintenanceState = "正常";
         }
 
 

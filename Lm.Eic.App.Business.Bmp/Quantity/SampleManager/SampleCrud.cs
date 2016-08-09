@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Lm.Eic.App.DbAccess.Bpm.Repository.QuantityRep;
-using Lm.Eic.App.Erp.Domain.QuantityModel;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
 {
-  
+
     /// <summary>
     /// 抽样物料记录管理
     /// </summary>

@@ -1,14 +1,9 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
-{ 
+{
 
     /// <summary>
     ///WorkClothesManageModel

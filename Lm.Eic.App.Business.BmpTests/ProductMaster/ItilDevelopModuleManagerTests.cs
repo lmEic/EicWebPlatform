@@ -3,10 +3,6 @@ using Lm.Eic.Framework.ProductMaster.Model.ITIL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.BmpTests.ProductMaster

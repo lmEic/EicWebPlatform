@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Lm.Eic.App.Erp.Domain.QuantityModel
 {
@@ -16,7 +13,7 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
     ///5.备注 (TH010)
     ///7.数量合计 (TH022)
     /// </summary>
-       
+
     public class OutsourcingMaterialHeaderModel : QuantitySampleMaodelBase
     {   
         /// <summary>
