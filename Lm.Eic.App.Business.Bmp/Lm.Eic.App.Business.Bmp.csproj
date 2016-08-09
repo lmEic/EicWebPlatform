@@ -80,7 +80,6 @@
     <Compile Include="Hrm\GeneralAffairs\GeneralAffairsFactory.cs" />
     <Compile Include="Hrm\GeneralAffairs\GeneralAffairsService.cs" />
     <Compile Include="Hrm\GeneralAffairs\WorkerClothesManager.cs" />
-    <Compile Include="ProduceDailyReport\DailyReportCollectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchase\PurchaseManager.cs" />
     <Compile Include="Purchase\PurchaseService.cs" />
@@ -95,7 +94,10 @@
     <Compile Include="Quantity\SampleManager\SampleIqcManager.cs" />
     <Compile Include="Quantity\SupperManager\SupperManager.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Pms\BoardManagment\" />
+    <Folder Include="Pms\DailyReport\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.App.Business.Mes\Lm.Eic.App.Business.Mes.csproj">
       <Project>{25616437-5761-4fe5-8dcc-d76b4641b6a7}</Project>
