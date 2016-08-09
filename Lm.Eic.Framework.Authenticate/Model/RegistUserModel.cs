@@ -166,9 +166,9 @@ namespace Lm.Eic.Framework.Authenticate.Model
     public class IdentityInfo
     {
         /// <summary>
-        /// 注册的用户信息
+        /// 登录用户的用户信息
         /// </summary>
-        public RegistUserModel RegistUser { get; set; }
+        public LoginedUserInfo LoginedUser { get; set; }
 
         /// <summary>
         /// 登录状态
@@ -229,6 +229,100 @@ namespace Lm.Eic.Framework.Authenticate.Model
                 }
                 return message;
             }
+        }
+    }
+
+    /// <summary>
+    /// 登录用户信息模型
+    /// </summary>
+    public class LoginedUserInfo
+    {
+        private string _userid;
+
+        /// <summary>
+        ///用户账号
+        /// </summary>
+        public string UserId
+        {
+            set { _userid = value; }
+            get { return _userid; }
+        }
+
+        private string _username;
+
+        /// <summary>
+        ///姓名
+        /// </summary>
+        public string UserName
+        {
+            set { _username = value; }
+            get { return _username; }
+        }
+
+        private string _department;
+
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+
+        private string _organizetion;
+
+        /// <summary>
+        ///部门组织
+        /// </summary>
+        public string Organizetion
+        {
+            set { _organizetion = value; }
+            get { return _organizetion; }
+        }
+
+        private string _post;
+
+        /// <summary>
+        ///岗位
+        /// </summary>
+        public string Post
+        {
+            set { _post = value; }
+            get { return _post; }
+        }
+
+        private string _postnature;
+
+        /// <summary>
+        ///岗位性质
+        /// </summary>
+        public string PostNature
+        {
+            set { _postnature = value; }
+            get { return _postnature; }
+        }
+
+
+
+        private string _headportrait;
+        /// <summary>
+        ///用户头像
+        /// </summary>
+        public string HeadPortrait
+        {
+            set { _headportrait = value; }
+            get { return _headportrait; }
+        }
+
+        private byte[] _personalpicture;
+        /// <summary>
+        ///身份证照片
+        /// </summary>
+        public byte[] PersonalPicture
+        {
+            set { _personalpicture = value; }
+            get { return _personalpicture; }
         }
     }
 }

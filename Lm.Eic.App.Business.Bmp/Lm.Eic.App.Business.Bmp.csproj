@@ -61,10 +61,10 @@
     <Compile Include="Ast\AstService.cs" />
     <Compile Include="Ast\EquipmentCrud.cs" />
     <Compile Include="Ast\EquipmentManager.cs" />
-    <Compile Include="Board\BoardBase.cs" />
-    <Compile Include="Board\BoardService.cs" />
-    <Compile Include="Board\MaterialSpecBoardCrud.cs" />
-    <Compile Include="Board\MaterialSpecBoardManager.cs" />
+    <Compile Include="Pms\BoardManagment\BoardBase.cs" />
+    <Compile Include="Pms\BoardManagment\BoardService.cs" />
+    <Compile Include="Pms\BoardManagment\BoardCrud.cs" />
+    <Compile Include="Pms\BoardManagment\MaterialBoardManager.cs" />
     <Compile Include="Hrm\Archives\ArchiveBase.cs" />
     <Compile Include="Hrm\Archives\ArchiveService.cs" />
     <Compile Include="Hrm\Archives\ArchivesManager.cs" />
@@ -94,7 +94,9 @@
     <Compile Include="Quantity\SampleManager\SampleIqcManager.cs" />
     <Compile Include="Quantity\SupperManager\SupperManager.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Pms\DailyReport\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.App.Business.Mes\Lm.Eic.App.Business.Mes.csproj">
       <Project>{25616437-5761-4fe5-8dcc-d76b4641b6a7}</Project>

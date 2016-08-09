@@ -1,4 +1,5 @@
-﻿/// <reference path="../angular.js" />
+﻿/// <reference path="../../common/angulee.js" />
+/// <reference path="../../angular.js" />
 angular.module('eicPlatform.loginApp', ['ngMessages'])
 .directive('focusSetter', function ($timeout) {
         return {
@@ -27,10 +28,23 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
     };
     $scope.vm = vm;
 
+    $scope.headPortrait = "../Content/login/profilepicture.jpg";
+    $scope.loadHeadPortrait = function () {
+        var loginUser = leeDataHandler.dataStorage.getLoginedUser();
+        $scope.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
+    };
+
     var focus = {
         passwordFocus: false,
+        loginFocus:false,
     };
     $scope.focus = focus;
+
+    var loginResult = {
+        isSuccess: true,
+        message:null,
+    };
+    $scope.loginResult = loginResult;
 
     $scope.moveFocusToPassword = function ($event,name) {
         if ($event.keyCode === 13)
@@ -47,16 +61,32 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
                     password: vm.password
                 }
             }).success(function (data) {
+                leeDataHandler.dataStorage.setLoginedUser(data);
                 if (data.LoginStatus !== null) {
                     if (data.LoginStatus.StatusCode === 0) {
+                        loginResult.isSuccess = true;
                         window.location = "/Home/Index";
                     }
                     else {
-                        vm.start = false;
+                        showErrorMsg(data);
                     }
                 }
-            }).error(function (data,status) {
+            }).error(function (data, status) {
+                showErrorMsg(data);
             });
         }
     };
+
+    var showErrorMsg = function (data) {
+        vm.start = false;
+        loginResult.isSuccess = false;
+        loginResult.message = data.LoginStatus.StatusMessage;
+        (function () {
+            setTimeout(function () {
+                loginResult.isSuccess = true;
+            }, 100);
+        })();
+    };
+
+    $scope.loadHeadPortrait();
 })

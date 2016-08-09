@@ -1812,6 +1812,17 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _classtype = value; }
             get { return _classtype; }
         }
+
+        private byte[] _personalpicture;
+
+        /// <summary>
+        ///照片
+        /// </summary>
+        public byte[] PersonalPicture
+        {
+            set { _personalpicture = value; }
+            get { return _personalpicture; }
+        }
     }
 
     /// <summary>
