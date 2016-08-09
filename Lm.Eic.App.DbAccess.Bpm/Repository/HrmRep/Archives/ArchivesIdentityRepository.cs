@@ -37,7 +37,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
 
         public List<ArWorkerInfo> GetWorkerInfos(string whereAppend = "")
         {
-            string sql = "Select WorkerId,Name,Post, PostNature,Organizetion, Department,ClassType from Archives_EmployeeIdentityInfo ";
+            string sql = "Select WorkerId,Name,Post, PostNature,Organizetion, Department,ClassType,PersonalPicture from Archives_EmployeeIdentityInfo ";
             if (whereAppend != "")
                 sql = sql + " where " + whereAppend;
             return DbHelper.Hrm.LoadEntities<ArWorkerInfo>(sql);

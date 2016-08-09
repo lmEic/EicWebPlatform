@@ -46,8 +46,8 @@ namespace EicWorkPlatfrom.Controllers
                 LoginUser user = new LoginUser();
                 if (this.LoginIdentity != null)
                 {
-                    user.UserId = this.LoginIdentity.RegistUser.UserId;
-                    user.UserName = this.LoginIdentity.RegistUser.UserName;
+                    user.UserId = this.LoginIdentity.LoginedUser.UserId;
+                    user.UserName = this.LoginIdentity.LoginedUser.UserName;
                     user.Role = this.LoginIdentity.MatchRoleList.OrderBy(o => o.RoleLevel).ToList()[0];
                 }
                 else
