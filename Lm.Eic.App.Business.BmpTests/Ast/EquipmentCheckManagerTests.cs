@@ -52,8 +52,12 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         public void  TestExcelToSql()
         {
             StringBuilder str = new StringBuilder();
-            string path = @"E:\\Ast.xlsx";
+            string path = @"E:\\设备系统设备总览表.xls";
             var m = ExcelHelper.ExcelToEntityList<EquipmentModel>(path, 44,out str);
+            
+            m.ForEach(e => {
+                AstService.EquipmentManager.Store(e);
+            });
             if (m.Count < 0) { Assert.Fail(); }
 
         }

@@ -61,13 +61,11 @@ namespace Lm.Eic.Uti.SystemInit.Commom
             errorMsg = new StringBuilder(); // 错误信息,Excel转换到实体对象时，会有格式的错误信息
             List<T> enlist = new List<T>(); // 转换后的集合
             Dictionary<string, string> cellHeard = new Dictionary<string, string>();
-            IWorkbook wk = null;
             //List<string> keys = cellHeard.Keys.ToList(); // 要赋值的实体对象属性名称
             try
             {
                 using (FileStream fs = File.OpenRead(filePath))
                 {
-                    wk = new HSSFWorkbook(fs);
                     HSSFWorkbook workbook = new HSSFWorkbook(fs);
                     HSSFSheet sheet = (HSSFSheet)workbook.GetSheetAt(0); // 获取此文件第一个Sheet页
                     #region    导出头二行 做为对应的字典
@@ -78,8 +76,8 @@ namespace Lm.Eic.Uti.SystemInit.Commom
                         {
                             if (sheet.LastRowNum >= 2)
                             {
-                                string englishCellHeard = sheet.GetRow(0).GetCell(jj).StringCellValue.ToString();
-                                string chineCellHeard = sheet.GetRow(1).GetCell(jj).StringCellValue.ToString();
+                                string englishCellHeard =sheet.GetRow(0).GetCell(jj).StringCellValue.ToString().Trim ();
+                                string chineCellHeard = sheet.GetRow(1).GetCell(jj).StringCellValue.ToString().Trim ();
                                 if (!EnglishCellHeardGGroup.Contains(englishCellHeard))
                                     cellHeard.Add(englishCellHeard, chineCellHeard);
                                 else
