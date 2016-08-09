@@ -29,7 +29,20 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        #region Ast Archive Overview
+        /// <summary>
+        /// 获取设备总览数据
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetAstArchiveOverview()
+        {
+            var datas = AstService.EquipmentManager.GetAstArchiveOverview();
+            return DateJsonResult(datas);
+        }
+        #endregion
 
+        
         #region equipment archives input module
         [NoAuthenCheck]
         public JsonResult GetAstInputConfigDatas()

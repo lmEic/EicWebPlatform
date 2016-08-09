@@ -28,7 +28,9 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
     };
     $scope.vm = vm;
 
+    ///个人头像
     $scope.headPortrait = "../Content/login/profilepicture.jpg";
+    ///载入个人头像
     $scope.loadHeadPortrait = function () {
         var loginUser = leeDataHandler.dataStorage.getLoginedUser();
         $scope.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
@@ -52,6 +54,7 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
             focus[name] = true;
         }
     };
+    ///登录验证
     $scope.loginCheck = function (isValid) {
         if (isValid) {
             vm.start = true;

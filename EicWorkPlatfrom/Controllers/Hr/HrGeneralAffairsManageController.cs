@@ -65,5 +65,11 @@ namespace EicWorkPlatfrom.Controllers.Hr
             });
             return DateJsonResult(datas);
         }
+
+        public FileResult BuildReceiveWorkClothesList()
+        {
+            var ms = GeneralAffairsService.WorkerClothesManager.BuildReceiveWorkClothesList();
+            return this.ExportToExcel(ms, "厂服领取清单", "厂服领取清单");
+        }
     }
 }

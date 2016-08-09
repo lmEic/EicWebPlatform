@@ -26,7 +26,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         public void GetEquipmentNotCheckTest()
         {
             //
-            DateTime tem = DateTime.Parse("2017-01-19");
+            DateTime tem = DateTime.Parse("2017-06-15");
             var equipmentNoetChekcList = AstService.EquipmentManager.CheckManager.GetWaitingCheckListBy(tem);
             if (equipmentNoetChekcList.Count() > 0) { } else { Assert.Fail(); }
         }
