@@ -84,11 +84,11 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                         return irep.Entities.Where(m => m.InputDate == inputDate).ToList();
                     case 4: //依据录入日期查询待校验设备  //结束日期=输入日期加一个月 超期设备等于 计划日期<=当天日期
                         DateTime startPlannedDate = qryDto.PlannedCheckDate.ToDate(), endPlannedDate = startPlannedDate.AddMonths(1), nowDate = DateTime.Now.ToDate();
-                        return irep.Entities.Where(m => (  m.IsScrapped == "正常" && m.IsCheck=="是" && m.PlannedCheckDate >= startPlannedDate && m.PlannedCheckDate <= endPlannedDate )  || (m.IsScrapped == "正常" && m.IsCheck=="是"&& m.PlannedCheckDate <= nowDate)).ToList();
+                        return irep.Entities.Where(m => (  m.IsScrapped == "否" && m.IsCheck=="是" && m.PlannedCheckDate >= startPlannedDate && m.PlannedCheckDate <= endPlannedDate )  || (m.IsScrapped == "正常" && m.IsCheck=="是"&& m.PlannedCheckDate <= nowDate)).ToList();
                     case 5: //依据录入日期查询待保养设备  //按计划保养月查询待保养待设备列表
                         return irep.Entities.Where(m => m.IsMaintenance == "是" && m.PlannedMaintenanceMonth == qryDto.PlannedMaintenanceMonth).ToList();
                     case 6: //查询所有在使用待设备 生成设备总览表
-                        return irep.Entities.Where(m=>m.IsScrapped== "正常").ToList();
+                        return irep.Entities.Where(m=>m.IsScrapped== "否").ToList();
                     default:
                         return new List<EquipmentModel>();
                 }
