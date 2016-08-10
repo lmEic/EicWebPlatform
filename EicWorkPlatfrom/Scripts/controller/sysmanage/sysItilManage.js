@@ -145,7 +145,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
         editModal: null,
         functionName: null,
         sendMail: function () {
-            $s.searchPromise = sysitilService.sendMail().then(function (opresult) {
+            $scope.searchPromise = sysitilService.sendMail().then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
 
                 })
