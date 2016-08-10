@@ -47,9 +47,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// </summary>
         /// <param name="receiveUserList">接收人列表</param>
         /// <returns></returns>
-        public OpResult SendMail(List<string> receiveUserList)
+        public OpResult SendMail()
         {
-            return ItilCrudFactory.ItilDevelopModuleManageCrud.SendMail(receiveUserList);
+            return ItilCrudFactory.ItilDevelopModuleManageCrud.SendMail();
         }
     }
 
