@@ -71,13 +71,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-6 col-sm-offset-4">
+                            <div class="col-sm-6 col-sm-offset-4" ng-cloak>
                                 <button type="submit" class="btn btn-primary btn-block login-button" focus-if="focus.loginFocus" focus-setter
                                         ng-keypress="loginCheck(loginForm.$valid)" ng-click="loginCheck(loginForm.$valid)"
                                         id="btnlogin">
                                     登录
                                     <span class="glyphicon glyphicon-log-in"></span>
-                                    <img src="~/Content/login/input-spinner.gif" class="pull-right" ng-if="vm.start" ng-cloak />
+                                    <img src="~/Content/login/input-spinner.gif" class="pull-right" ng-if="vm.start"/>
                                 </button>
                                 <div class="alert alert-danger" ng-hide="loginResult.isSuccess">
                                     <span class="text-danger">{{loginResult.message}}</span>
