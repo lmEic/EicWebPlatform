@@ -8,9 +8,19 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Email
 {
     public class EmailMessageHelper
     {
-        public EmailMessageHelper()
+        /// <summary>
+        /// 创建一个邮件消息
+        /// </summary>
+        /// <param name="mailFrom">发件人邮件地址</param>
+        /// <param name="mailPwd">发件人邮件密码</param>
+        /// <param name="isbodyHtml">正文是否为HTML</param>
+        public EmailMessageHelper(string mailFrom,string mailPwd,bool isbodyHtml)
         {
             host = "smtp.exmail.qq.com";
+            mailPriority = MailPriority.Normal; //普通优先级
+            this.mailFrom = mailFrom;
+            this.mailPwd = mailPwd;
+            this.isbodyHtml = isbodyHtml;
         }
 
         /// <summary>
@@ -54,6 +64,11 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Email
         public bool isbodyHtml { get; set; }
 
         /// <summary>
+        /// 指定邮件的优先级
+        /// </summary>
+        public MailPriority mailPriority { get; set; }
+
+        /// <summary>
         /// 附件
         /// </summary>
         public string[] attachmentsPath { get; set; }
@@ -95,10 +110,13 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Email
             //电子邮件正文
             myMail.Body = mailBody;
 
+            myMail.Priority = MailPriority.Normal;
+
             //电子邮件正文的编码
             myMail.BodyEncoding = Encoding.Default;
 
-            myMail.Priority = MailPriority.High;
+            //电子邮件优先级
+            myMail.Priority = mailPriority;
 
             myMail.IsBodyHtml = isbodyHtml;
 
