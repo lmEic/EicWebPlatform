@@ -39,6 +39,11 @@ namespace EicWorkPlatfrom.Controllers.Hr
             bool canChange = GeneralAffairsService.WorkerClothesManager.CanOldChangeNew(workerId, productName, dealwithType);
             return Json(canChange, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult CanChangeOldForNew(WorkClothesManageModel model)
+        {
+            bool canChange = GeneralAffairsService.WorkerClothesManager.CanOldChangeNew(model.WorkerId, model.ProductName, model.DealwithType);
+            return Json(canChange, JsonRequestBehavior.AllowGet);
+        }
         /// <summary>
         /// 获取领取厂服记录
         /// </summary>
@@ -59,6 +64,12 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 SearchMode = mode
             });
             return DateJsonResult(datas);
+        }
+        [NoAuthenCheck]
+        public FileResult BuildReceiveWorkClothesList()
+        {
+            var ms = GeneralAffairsService.WorkerClothesManager.BuildReceiveWorkClothesList();
+            return this.ExportToExcel(ms, "厂服领取清单", "厂服领取清单");
         }
     }
 }

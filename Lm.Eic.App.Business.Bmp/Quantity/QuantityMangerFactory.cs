@@ -16,26 +16,27 @@ namespace Lm.Eic.App.Business.Bmp.Quantity
   }
     internal class  SampleIpqcItemsCrud:CrudBase <SampleItemsIpqcDataModel,ISampleItemsIpqcDataReosity>
     {
-        public  SampleIpqcItemsCrud() :base (new SampleItemsIpqcDataReosity(),"")
+        public  SampleIpqcItemsCrud() :base (new SampleItemsIpqcDataReosity(),"Ipqc抽样管理")
         { }
 
         public OpResult  store(SampleItemsIpqcDataModel model)
         {
-            return this.StoreEntity(model, mdl =>
-            {
+            return this.PersistentDatas(model); 
+            //return this.StoreEntity(model, mdl =>
+            //{
               
-                var result = this.PersistentDatas(model,
-                    add =>
-                    {
-                        return AddSampleIpqcItemsData(model);
-                    },
-                    updata =>
-                    {
-                        return UpdataSampleIpqcItemsData(model);
-                    }
-                  );
-                return result;
-            });
+            //    var result = this.PersistentDatas(model,
+            //        add =>
+            //        {
+            //            return AddSampleIpqcItemsData(model);
+            //        },
+            //        updata =>
+            //        {
+            //            return UpdataSampleIpqcItemsData(model);
+            //        }
+            //      );
+            //    return result;
+            //});
         }
 
         protected override void AddCrudOpItems()

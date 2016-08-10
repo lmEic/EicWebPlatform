@@ -7,5 +7,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 {
     class MaterialBoardManager
     {
+
     }
 }
