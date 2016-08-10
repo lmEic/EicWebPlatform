@@ -35,6 +35,12 @@ smModule.factory('sysitilService', function (ajaxService) {
             entity: entity,
         });
     };
+    ///发送邮件通知
+    itil.sendMail = function () {
+        var url = urlPrefix + 'SendMail';
+        return ajaxService.getData(url, {
+        });
+    };
 
     return itil;
 });
@@ -138,7 +144,13 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
         showDetailsBoard: false,//显示明细面板
         editModal: null,
         functionName: null,
-        
+        sendMail: function () {
+            $s.searchPromise = sysitilService.sendMail().then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+
+                })
+            });
+        }
     };
 
     $scope.vmManager = vmManager;
