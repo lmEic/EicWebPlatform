@@ -65,7 +65,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
             });
             return DateJsonResult(datas);
         }
-
+        [NoAuthenCheck]
         public FileResult BuildReceiveWorkClothesList()
         {
             var ms = GeneralAffairsService.WorkerClothesManager.BuildReceiveWorkClothesList();
