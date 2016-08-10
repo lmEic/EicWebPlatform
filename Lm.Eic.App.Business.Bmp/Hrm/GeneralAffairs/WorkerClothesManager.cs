@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using CrudFactory = Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs.GeneralAffairsFactory;
 using System.IO;
@@ -22,6 +23,17 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
     public class WorkerClothesManager
     {
         List<WorkClothesManageModel> _workClothesmangeModelList = new List<WorkClothesManageModel>();
+        List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                  new FileFieldMapping {FieldName ="WorkerId",FieldDiscretion="工号",},
+                  new FileFieldMapping {FieldName ="WorkerName",FieldDiscretion="姓名",} ,
+                  new FileFieldMapping {FieldName ="Department",FieldDiscretion="部门",} ,
+                  new FileFieldMapping {FieldName ="ProductName",FieldDiscretion="厂服内类型",} ,
+                  new FileFieldMapping {FieldName ="ProductSpecify",FieldDiscretion="规格",},
+                  new FileFieldMapping {FieldName ="PerCount",FieldDiscretion="领取数量",},
+                  new FileFieldMapping {FieldName ="InputDate",FieldDiscretion="录入日期",},
+                  new FileFieldMapping {FieldName ="DealwithType",FieldDiscretion="处理类型",} ,
+                  new FileFieldMapping {FieldName ="ReceiveMonth",FieldDiscretion="领用月份",}
+                };
         /// <summary>
         /// 获取领用记录  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按领取月查找 
         /// </summary>
@@ -29,7 +41,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         public List<WorkClothesManageModel> FindReceiveRecordBy(QueryGeneralAffairsDto dto)
         {
-            return CrudFactory.WorkerClothesCrud.FindBy(dto);
+            _workClothesmangeModelList = CrudFactory.WorkerClothesCrud.FindBy(dto);
+            return _workClothesmangeModelList;
         }
         /// <summary>
         /// 是否可以以旧换新
@@ -75,8 +88,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         public MemoryStream BuildReceiveWorkClothesList()
         {
+            var dataGroupping = _workClothesmangeModelList.GetGroupList<WorkClothesManageModel>("ReceiveMonth");
             //TODO:生成厂服领取清单
-            return NPOIHelper.ExportToExcel<WorkClothesManageModel>(_workClothesmangeModelList, "厂服管理"); ;
+          return   dataGroupping.ExportToExcelMultiSheets<WorkClothesManageModel>(fieldmappping);
         }
 
     }
