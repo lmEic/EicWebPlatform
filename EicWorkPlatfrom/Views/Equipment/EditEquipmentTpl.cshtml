@@ -148,6 +148,42 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="safekeepUser" class="col-md-2 control-label">保管人</label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input name="safekeepUser" class="form-control" data-ensure-user-exist
+                                               ng-change="vmManager.getWorkerInfo()"
+                                               placeholder="输工号或姓名" ng-model="vm.SafekeepUser" required />
+                                        <div class="error-messages" ng-messages="formEquipment.safekeepUser.$error" ng-if="formEquipment.safekeepUser.$touched">
+                                            <small ng-message="checkingUserExist">该用户名不存在...</small>
+                                        </div>
+                                        <div class="error-messages" ng-messages="formEquipment.safekeepUser.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">保管人不能为空</small>
+                                        </div>
+                                        <div class="input-group-addon" ng-show="vmManager.isSingle">
+                                            <label class="label label-primary"> <i class="fa fa-user"></i> {{vm.SafekeepUser}}</label>
+                                        </div>
+                                        <div class="input-group-btn" ng-hide="vmManager.isSingle">
+                                            <button type="button" class="btn btn-primary"
+                                                    data-animation="am-flip-x"
+                                                    bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                                <span class="fa fa-chevron-circle-down"></span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker)"
+                                                        ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                        <i class="fa fa-user"></i>
+                                                        <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
+                                                        <span>姓名：{{worker.Name}}</span>|
+                                                        <span>部门：{{worker.Department}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <label for="safekeepDepartment" class="col-md-2 control-label">保管单位</label>
                                 <div class="col-md-4">
                                     <div class="input-group">
@@ -163,24 +199,6 @@
                                                     data-keyboard="false"
                                                     data-bs-popover>
                                                 <i class="fa fa-sitemap"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <label for="safekeepUser" class="col-md-2 control-label">保管人</label>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <input name="safekeepUser" class="form-control" readonly ng-model="vm.SafekeepUser" required />
-                                        <div class="error-messages" ng-messages="formEquipment.safekeepUser.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">保管人不能为空</small>
-                                        </div>
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-primary" style="margin-bottom:6px;"
-                                                    data-title="选择人员信息"
-                                                    data-template-url="@Url.Action("WorkerSelectTpl", "CommonTpl")"
-                                                    data-animation="am-flip-x" data-auto-close="1"
-                                                    data-bs-popover>
-                                                <i class="fa fa-users"></i>
                                             </button>
                                         </div>
                                     </div>
