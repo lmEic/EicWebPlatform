@@ -42,12 +42,18 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div yl-pagination
+                         data-datasource="vmManager.datasource"
+                         data-dataset="vmManager.datasets">
+                    </div>
                 </div>
+
+               
             </div>
         </div>
         <div bs-pane data-title="校验信息" data-name="checkInfoTab">
             <div class="well" cg-busy="{promise:searchPromise}">
-                <div class="table-responsive">
+                @*<div class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr class="info">
@@ -116,11 +122,12 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
+                    <div yl-pagination data-dataset="vmManager.datasets" data-datasource="vmManager.datasource"></div>
+                </div>*@
             </div>
         </div>
         <div bs-pane data-title="保养信息" data-name="maintenanceInfoTab">
-            <div class="well">
+            @*<div class="well">
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead>
@@ -156,8 +163,9 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div yl-pagination data-dataset="vmManager.datasets" data-datasource="vmManager.datasource"></div>
                 </div>
-            </div>
+            </div>*@
         </div>
         <div bs-pane data-title="维修信息" data-name="repairInfoTab">
 

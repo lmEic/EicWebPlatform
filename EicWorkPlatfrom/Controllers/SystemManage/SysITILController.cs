@@ -70,5 +70,14 @@ namespace EicWorkPlatfrom.Controllers
             var datas = ItilService.ItilDevelopModuleManager.GetChangeRecordListBy(entity);
             return DateJsonResult(datas);            
         }
+        /// <summary>
+        /// 发送邮件通知
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult SendMail()
+        {
+            var result = ItilService.ItilDevelopModuleManager.SendMail();
+            return Json(result);
+        }
     }
 }

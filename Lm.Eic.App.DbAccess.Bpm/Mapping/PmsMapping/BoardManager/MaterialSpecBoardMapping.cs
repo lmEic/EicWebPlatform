@@ -18,7 +18,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.BoardManager
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Board_MaterialSpec");
+            this.ToTable("Pms_MaterialBoard");
         }
     }
 

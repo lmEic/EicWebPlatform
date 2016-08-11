@@ -131,12 +131,10 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     //视图管理器
     var vmManager = {
-        activeTab: 'initTab',
-        planDate: new Date(),
+        activeTab: 'baseInfoTab',
         datasets: [],
         datasource:[],
         getAstArchiveOverview: function () {
-            vmManager.datasets = [];
             vmManager.datasource = [];
             $scope.promise = astDataopService.getAstArchiveOverview().then(function (datas) {
                 vmManager.datasource = datas;
@@ -370,6 +368,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         }
     };
     $scope.vmManager = vmManager;
+  
 })
 .controller('astInputCheckRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
     ///登记校验记录
@@ -410,6 +409,46 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             });
         })
     };
+
+
+
+    var video;
+    var dev;
+
+    var getPlugin = function () {
+        return document.getElementById('view1');
+    };
+    //关闭
+    var closeVideo = function () {
+        //if (video) {
+        //    getPlugin().Video_Release(video);
+        //    video = null;
+
+        //    if (getPlugin().Device_GetEloamType(dev) == 1) {
+        //        getPlugin().View_SetText("", 0);
+        //    }
+        //    else {
+        //        getPlugin().View_SetText("", 0);
+        //    }
+        //}
+    };
+
+    $scope.openVideo = function () {
+        closeVideo();
+
+        dev = getPlugin().Global_CreateDevice(1, 0);
+
+        if (!dev)
+            return;
+        video = getPlugin().Device_CreateVideo(dev, 1, 1);
+        if (video) {
+            getPlugin().View_SelectVideo(video);
+            getPlugin().View_SetText("打开视频中，请等待...", 0);
+        }
+    }
+
+    $scope.openVideo();
+  
 })
 
 .controller('astBuildMaintenanceListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
