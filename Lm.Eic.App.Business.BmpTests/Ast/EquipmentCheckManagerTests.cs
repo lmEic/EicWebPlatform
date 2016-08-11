@@ -56,9 +56,15 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             string path = @"E:\\设备系统设备总览表.xls";
             var m = ExcelHelper.ExcelToEntityList<EquipmentModel>(path, 44,out str);
             string FilePath = @"C:\testDir\test.txt";
-            FilePath.CreateFile(str.ToString());
+            int Number = m.Count;
+            if (str.ToString() != string.Empty)
+            { 
+                FilePath.CreateFile(str.ToString());
+                Assert.Fail(); 
+                return;
+            }
             
-            System.IO.File.WriteAllLines(@"C:\testDir\test.txt", lines, Encoding.UTF8);
+        
             m.ForEach(e => {
                 AstService.EquipmentManager.Store(e);
             });
