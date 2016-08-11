@@ -74,6 +74,7 @@ namespace EicWorkPlatfrom.Controllers
         /// 发送邮件通知
         /// </summary>
         /// <returns></returns>
+        [NoAuthenCheck]
         public JsonResult SendMail()
         {
             var result = ItilService.ItilDevelopModuleManager.SendMail();
