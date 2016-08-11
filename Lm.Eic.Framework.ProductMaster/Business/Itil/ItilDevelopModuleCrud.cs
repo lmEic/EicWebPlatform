@@ -51,6 +51,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     internal class ItilDevelopModuleManageCrud : CrudBase<ItilDevelopModuleManageModel, IItilDevelopModuleManageRepository>
     {
         private List<ItilDevelopModuleManageModel> _waittingSendMailList = new List<ItilDevelopModuleManageModel>();
+        /// <summary>
+        /// 待发送邮件列表
+        /// </summary>
+        internal List<ItilDevelopModuleManageModel> WaittingSendMailList
+        {
+            get { return _waittingSendMailList; }
+        }
 
         /// <summary>
         /// 构造函数 初始化数据访问接口
@@ -239,57 +246,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         }
         #endregion
 
-        #region SendMail
-
-        /// <summary>
-        /// 发送邮件通知
-        /// </summary>
-        /// <param name="receiveUserList">接收用户列表</param>
-        /// <returns></returns>
-        public OpResult SendMail()
-        {
-            //ToDO:根据执行人 邮件发送任务
-            EmailMessageHelper email = new EmailMessageHelper();
-            email.mailFrom = "softwareadmin@ezconn.cn";
-            email.mailPwd = "Echo4u";
-            email.mailSubject = "开发任务进度变更";
-            email.mailBody = BulidMailContext();
-            email.isbodyHtml = true;    //是否是HTML
-            email.mailToArray = new string[] { "zwm@ezconn.cn" };//收件人邮件集合
-            return email.Send() ? OpResult.SetResult("邮件发送成功！", true) : OpResult.SetResult("邮件发送失败！");
-        }
-
-        /// <summary>
-        /// 生成邮件内容
-        /// </summary>
-        /// <returns></returns>
-        private string BulidMailContext()
-        {
-            string mailContext = "<h2>已修改进度的任务列表如下：</h2>";
-            mailContext += "<style type="+"text/css"+">table.gridtable {	font-family: verdana,arial,sans-serif;	font-size:13px;	color:#333333;	border-width: 1px;	border-color: #666666;	border-collapse: collapse;}table.gridtable th {	border-width: 1px;	padding: 8px;	border-style: solid;	border-color: #666666;	background-color: #dedede;}table.gridtable td {	border-width: 1px;	padding: 8px;	border-style: solid;	border-color: #666666;	background-color: #ffffff;}</style><!-- Table goes in the document BODY --><table class="+"gridtable"+"><tr><th>模块名称</th><th>类名称</th><th>函数名称</th><th>功能描述</th><th>难度系数</th><th>开始日期</th><th>当前进度</th><th>执行人</th><th>变更日期</th></tr>";
-          
-            foreach(var tem in _waittingSendMailList)
-            {
-                mailContext += "<tr>";
-                mailContext += string.Format("<td>{0}</td>", tem.ModuleName);
-                mailContext += string.Format("<td>{0}</td>", tem.MClassName);
-                mailContext += string.Format("<td>{0}</td>", tem.MFunctionName);
-                mailContext += string.Format("<td>{0}</td>", tem.FunctionDescription);
-                mailContext += string.Format("<td>{0}</td>", tem.DifficultyCoefficient);
-                mailContext += string.Format("<td>{0}</td>", tem.StartDate);
-                mailContext += string.Format("<td>{0}</td>", tem.CurrentProgress);
-                mailContext += string.Format("<td>{0}</td>", tem.Executor);
-                mailContext += string.Format("<td>{0}</td>", tem.FinishDate);
-                mailContext += "</tr>";
-            }
-
-            mailContext += "</table>";
-            return mailContext;
-        }
-
-
-
-        #endregion
 
     }
 
