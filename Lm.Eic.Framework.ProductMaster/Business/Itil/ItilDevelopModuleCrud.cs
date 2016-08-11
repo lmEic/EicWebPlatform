@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
+using Lm.Eic.Uti.Common.YleeMessage.Email;
 
 namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 {
@@ -50,6 +51,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
     internal class ItilDevelopModuleManageCrud : CrudBase<ItilDevelopModuleManageModel, IItilDevelopModuleManageRepository>
     {
         private List<ItilDevelopModuleManageModel> _waittingSendMailList = new List<ItilDevelopModuleManageModel>();
+        /// <summary>
+        /// 待发送邮件列表
+        /// </summary>
+        internal List<ItilDevelopModuleManageModel> WaittingSendMailList
+        {
+            get { return _waittingSendMailList; }
+        }
 
         /// <summary>
         /// 构造函数 初始化数据访问接口
@@ -238,24 +246,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         }
         #endregion
 
-        #region SendMail
-
-        /// <summary>
-        /// 发送邮件通知
-        /// </summary>
-        /// <param name="receiveUserList">接收用户列表</param>
-        /// <returns></returns>
-        public OpResult SendMail(List<string> receiveUserList)
-        {
-            //TODO：根据 _waitingSendMailList 发送邮件进行通知
-            //将邮件发送给执行人
-
-            return null;
-        }
-
-
-
-        #endregion
 
     }
 

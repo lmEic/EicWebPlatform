@@ -52,6 +52,7 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
             model.CurrentProgress = "待审核";
             var result = ItilService.ItilDevelopModuleManager.ChangeProgressStatus(model);
             if (!result.Result) { Assert.Fail(); }
+            ItilService.ItilDevelopModuleManager.SendMail();
         }
 
         [TestMethod()]
