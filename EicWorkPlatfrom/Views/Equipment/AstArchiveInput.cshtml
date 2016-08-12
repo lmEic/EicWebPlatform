@@ -95,7 +95,22 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="form-group" ng-show="vm.TaxType==='保税'">
+                                        <label for="freeOrderNumber" class="col-md-2 control-label">免单号</label>
+                                        <div class="col-md-4">
+                                            <input name="freeOrderNumber" class="form-control" ng-model="vm.FreeOrderNumber" required />
+                                            <div class="error-messages" ng-messages="formEquipment.freeOrderNumber.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">免单号不能为空</small>
+                                            </div>
+                                        </div>
+                                        <label for="declarationNumber" class="col-md-2 control-label">报关单号</label>
+                                        <div class="col-md-4">
+                                            <input name="declarationNumber" class="form-control" ng-model="vm.DeclarationNumber" required />
+                                            <div class="error-messages" ng-messages="formEquipment.declarationNumber.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">报关单号不能为空</small>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label for="deliveryDate" class="col-md-2 control-label">购入日期</label>
                                         <div class="col-md-4">
