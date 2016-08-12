@@ -77,7 +77,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                     waittingSendMailUserList.Add(model.Executor);
             });
 
-            //依据人员列表进行邮件发送
+            //依据人员列表进行邮件发送  
             foreach (var user in waittingSendMailUserList)
             {
                 if (_userMailAddsDic.ContainsKey(user))
