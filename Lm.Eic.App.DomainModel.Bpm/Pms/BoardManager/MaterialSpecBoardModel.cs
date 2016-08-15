@@ -97,5 +97,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.BoardManager
         }
         #endregion Model
     }
+    //
+    public partial class MaterialBomModel
+    {
+        public  MaterialBomModel()
+        { }
+        #region
+        //主件品号
+        // 阶  次
+        // 元件品号
+        //
+        //
+        //
+        //
 
+        #endregion
+    }
 }

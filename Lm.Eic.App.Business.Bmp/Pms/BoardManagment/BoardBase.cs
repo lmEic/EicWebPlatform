@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 {
-    class BoardBase
+  public   class BoardBase
     {
     }
 }
