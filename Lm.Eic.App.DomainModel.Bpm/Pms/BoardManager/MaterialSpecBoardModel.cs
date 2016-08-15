@@ -32,11 +32,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.BoardManager
             set { _materialid = value; }
             get { return _materialid; }
         }
-        private string _drawing;
+        private byte[] _drawing;
         /// <summary>
         ///图纸
         /// </summary>
-        public string Drawing
+        public byte[] Drawing
         {
             set { _drawing = value; }
             get { return _drawing; }
