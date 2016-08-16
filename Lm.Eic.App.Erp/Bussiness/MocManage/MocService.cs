@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb;
+using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using Lm.Eic.App.Erp.Bussiness.MocManage.OrderManage;
 
 namespace Lm.Eic.App.Erp.Bussiness.MocManage
 {
-    class MocService
+   public static  class MocService
     {
+    
     }
 }

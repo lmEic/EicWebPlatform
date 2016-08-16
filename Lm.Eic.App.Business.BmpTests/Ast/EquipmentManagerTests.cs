@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.App.Erp.Bussiness.MocManage.OrderManage;
 
 namespace Lm.Eic.App.Business.Bmp.Ast.Tests
 {
@@ -44,5 +45,12 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             var tem = AstService.EquipmentManager.Store(model);
             if (!tem.Result) { Assert.Fail(); }
         }
+
+        public void testErp()
+        {
+            test Mytest = new test();
+            Mytest.gte();
+        }
+
     }
 }

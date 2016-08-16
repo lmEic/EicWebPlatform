@@ -50,6 +50,7 @@
     <Compile Include="DbAccess\PurchaseManageDb\RequisitionDb.cs" />
     <Compile Include="DbAccess\QuantitySampleDb\MaterialSampleDb.cs" />
     <Compile Include="Domain\MocManageModel\OrderManageModel\MaterialModel.cs" />
+    <Compile Include="Domain\MocManageModel\OrderManageModel\OrderBase.cs" />
     <Compile Include="Domain\MocManageModel\OrderManageModel\OrderModel.cs" />
     <Compile Include="Domain\PurchaseManage\PerchaseHeaderModel.cs" />
     <Compile Include="Domain\PurchaseManage\PurchaseModelBase.cs" />

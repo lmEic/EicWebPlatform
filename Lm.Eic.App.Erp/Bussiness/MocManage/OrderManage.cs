@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.App.Erp.Bussiness.MocManage.OrderManage
+namespace Lm.Eic.App.Erp.Bussiness.MocManage
 {
     /// <summary>
     /// 工单管理Crud工厂
