@@ -9,8 +9,14 @@ using Lm.Eic.Uti.Common.YleeObjectBuilder;
 
 namespace Lm.Eic.App.Erp.Bussiness.MocManage
 {
-   public static  class MocService
+    public static class MocService
     {
-    
+        /// <summary>
+        /// 工单管理器
+        /// </summary>
+        public static OrderManage OrderManage
+        {
+            get { return OBulider.BuildInstance<OrderManage>(); }
+        }
     }
 }

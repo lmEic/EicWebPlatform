@@ -45,12 +45,5 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             var tem = AstService.EquipmentManager.Store(model);
             if (!tem.Result) { Assert.Fail(); }
         }
-
-        public void testErp()
-        {
-            test Mytest = new test();
-            Mytest.gte();
-        }
-
     }
 }
