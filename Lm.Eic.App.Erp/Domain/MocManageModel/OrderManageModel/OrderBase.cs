@@ -8,20 +8,20 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
     /// <summary>
     /// OrderModel型基类
     /// </summary>
-      
-  public   class OrderBase
+
+    public class OrderBase
     {
-             /// <summary>
-            /// 单别
-            /// </summary>
-            public string Category { get; set; }
+        /// <summary>
+        /// 单别
+        /// </summary>
+        public string Category { get; set; }
 
-            /// <summary>
-            /// 单号
-            /// </summary>
-            public string Code { get; set; }
+        /// <summary>
+        /// 单号
+        /// </summary>
+        public string Code { get; set; }
 
-            protected string ID { get { return string.Format("{0}-{1}", Category.Trim(), Code.Trim()); } }
-      
+        protected string OrderID { get { return string.Format("{0}-{1}", Category.Trim(), Code.Trim()); } }
+
     }
 }

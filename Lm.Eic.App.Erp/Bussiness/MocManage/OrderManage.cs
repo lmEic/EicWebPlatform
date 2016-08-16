@@ -36,6 +36,7 @@ namespace Lm.Eic.App.Erp.Bussiness.MocManage
     /// </summary>
     public class OrderManage
     {
+        public OrderManage() { }
         /// <summary>
         /// 初始化一个工单
         /// </summary>
@@ -48,7 +49,14 @@ namespace Lm.Eic.App.Erp.Bussiness.MocManage
         /// 全局变量 OrderID
         /// </summary>
         string _orderId = string.Empty;
-
+        /// <summary>
+        /// 设置工单单号
+        /// </summary>
+        /// <param name="orderId"></param>
+        public void SetOrderId(string orderId)
+        {
+            _orderId = orderId;
+        }
         /// <summary>
         /// 获取工单详情
         /// </summary>
@@ -66,16 +74,4 @@ namespace Lm.Eic.App.Erp.Bussiness.MocManage
             return OrderCrudFactory.OrderMaterialDb.GetOrderMaterialListBy(_orderId);
         }
     }
-
-
-    public class test
-    {
-        OrderManage order = new OrderManage("512-1607067");
-
-        public void gte()
-        {
-            var tttt = order.GetOrderDetails();
-            var ttttList = order.GetOrderMaterialList();
-        }
-}
 }
