@@ -11,12 +11,12 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
     public class OrderDetailsDb
     {
 
-        private string GetOrderDataSqlFields()
+        private string OrderSqlString
         {
-            return "Select TA001,TA002,TA006,TA034,TA035,TA016,TA010,TA063 from MOCTA";
+            get { return "Select TA001,TA002,TA006,TA034,TA035,TA016,TA010,TA063 from MOCTA"; };
         }
 
-        private void MapBodyRowAndModel(DataRow dr, OrderModel m)
+        private void ConvertToModel(DataRow dr, OrderModel m)
         {
             m.Code = dr["TA002"].ToString();
             m.Category = dr["TA001"].ToString();
@@ -38,9 +38,9 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
         {
              var idm = ErpDbAccessHelper.DecomposeID(orderID);
             string sqlWhere = string.Format(" where TA001='{0}' and TA002='{1}'", idm.Category, idm.Code);
-            var ListModels=  ErpDbAccessHelper.FindDataBy<OrderModel>(GetOrderDataSqlFields(), sqlWhere, (dr, m) =>
+            var ListModels=  ErpDbAccessHelper.FindDataBy<OrderModel>(OrderSqlString, sqlWhere, (dr, m) =>
             {
-                this.MapBodyRowAndModel(dr, m);
+                this.ConvertToModel(dr, m);
             });
 
 
@@ -53,12 +53,12 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
     {
 
 
-        private string GetOrderDataSqlFields()
+        private string OrderMaterialSqlString
         {
-            return " select TB003 AS 材料品号,TB012 as 品名,TB013 as 规格,TB007 as 单位,TB004 as 需领用量 from MOCTB ";
+            get { return " select TB003 AS 材料品号,TB012 as 品名,TB013 as 规格,TB007 as 单位,TB004 as 需领用量 from MOCTB "; }
         }
 
-        private void MapBodyRowAndModel(DataRow dr,MaterialModel m)
+        private void ConvertToModel(DataRow dr, MaterialModel m)
         {
             m.MaterialId = dr["材料品号"].ToString();
             m.MaterialName = dr["品名"].ToString();
@@ -77,9 +77,9 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
             var idm = ErpDbAccessHelper.DecomposeID(orderId);
             ///除掉    “  PE袋  隔板    纸箱    ”
             string sqlWhere = string.Format(" where TB001='{0}' and TB002='{1}' and TB012<>'PE袋' and TB012 not like '隔板%' and TB012 not like '纸箱%'", idm.Category, idm.Code);
-          return   ErpDbAccessHelper.FindDataBy<MaterialModel>(GetOrderDataSqlFields(), sqlWhere, (dr, m) =>
+            return ErpDbAccessHelper.FindDataBy<MaterialModel>(OrderMaterialSqlString, sqlWhere, (dr, m) =>
             {
-                this.MapBodyRowAndModel(dr, m);
+                this.ConvertToModel(dr, m);
             });
 
 
