@@ -104,12 +104,51 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.BoardManager
         { }
         #region
         //主件品号
+        public string MainMaterailId
+        { set; get; }
         // 阶  次
+        public string MaterailStep
+        {
+            set;
+            get;
+        }
         // 元件品号
-        //
-        //
-        //
-        //
+        public string MaterailNum
+        {
+            set;
+            get;
+        }
+        //  属    性
+        public string Material
+        {
+            set;
+            get;
+        }
+        // 品     名
+        public string MaterailName
+        {
+            set;
+            get;
+        }
+        // 规     格
+        public string MaterialSpec
+        {
+            set;
+            get;
+        }
+        //  单位
+        public string Uint
+        {
+            set;
+            get;
+        }
+        //组成用量
+        public double Number
+        {
+            set;
+            get;
+        }
+        //底数
 
         #endregion
     }

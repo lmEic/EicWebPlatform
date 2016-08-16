@@ -43,8 +43,10 @@
     <Compile Include="Bussiness\PurchaseManage\PurchaseManager.cs" />
     <Compile Include="Bussiness\QuantityManage\QuantityManager.cs" />
     <Compile Include="DbAccess\DbAccessHelper.cs" />
+    <Compile Include="DbAccess\PMSDb\PmsMaterialManageDb.cs" />
     <Compile Include="DbAccess\PurchaseManageDb\RequisitionDb.cs" />
     <Compile Include="DbAccess\QuantitySampleDb\MaterialSampleDb.cs" />
+    <Compile Include="Domain\PMSManageModel\MaterialInfo.cs" />
     <Compile Include="Domain\PurchaseManage\PerchaseHeaderModel.cs" />
     <Compile Include="Domain\PurchaseManage\PurchaseModelBase.cs" />
     <Compile Include="Domain\PurchaseManage\PuroductSupplierAnalogModel.cs" />
@@ -65,6 +67,7 @@
       <Name>Lm.Eic.Uti.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
