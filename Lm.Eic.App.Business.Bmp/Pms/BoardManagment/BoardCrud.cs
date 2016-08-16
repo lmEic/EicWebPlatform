@@ -14,11 +14,18 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 {
-  public   class BoardCrud : CrudBase<MaterialSpecBoardModel, IMaterialSpecBoardRepository>
+ 
+   internal class BorardCrudFactory
+   {
+       public static   BoardCrud  BoardCrud
+       {
+           get {return OBulider.BuildInstance <BoardCrud >();}
+       }
+   }
+  public  class BoardCrud : CrudBase<MaterialSpecBoardModel, IMaterialSpecBoardRepository>
     {
         public BoardCrud() : base(new MaterialSpecBoardRepository(), "物料规格看板")
         {
-
         }
 
         protected override void AddCrudOpItems()
@@ -36,6 +43,26 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         {
             return null;
         }
-    
+
+        #region Find
+
+      /// <summary>
+      ///  通过物料查找看板信息
+      /// </summary>
+      /// <param name="materialID">料号</param>
+      /// <returns></returns>
+        public List<MaterialSpecBoardModel> FindMaterialSpecBoardBy(string materialID)
+        {
+            try
+            {
+                return irep.Entities.Where(m => m.MaterialID == materialID).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+
+        #endregion
     }
 }
