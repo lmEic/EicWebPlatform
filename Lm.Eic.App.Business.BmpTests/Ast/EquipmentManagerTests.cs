@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using Lm.Eic.App.Erp.Bussiness.MocManage.OrderManage;
+using Lm.Eic.App.Erp.Bussiness.MocManage;
 
 namespace Lm.Eic.App.Business.Bmp.Ast.Tests
 {
