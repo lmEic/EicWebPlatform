@@ -34,14 +34,27 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             AddOpItem(OpMode.Edit, EditChangeRecord);
             
         }
-
+          /// <summary>
+        /// 修改数据仓库
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult Store(MaterialSpecBoardModel model)
+        {
+            return this.PersistentDatas(model);
+        }
         private OpResult AddChangeRecord( MaterialSpecBoardModel model)
         {
-            return null;
+            ///产品品号唯一，如有存就添加料号
+           if (irep.IsExist (e=>e.ProductID==model.ProductID ) )
+           {
+               return OpResult.SetResult("此产品号已存在！");
+           }
+            return irep.Insert(model).ToOpResult("添加新看板成功");
         }
         private OpResult EditChangeRecord(MaterialSpecBoardModel model)
         {
-            return null;
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成"); 
         }
 
         #region Find
