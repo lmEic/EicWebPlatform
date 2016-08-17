@@ -31,14 +31,14 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
             string sqlWhere = string.Format(" where TA001='{0}' and TA002='{1}'", idm.Category, idm.Code);
             var ListModels = ErpDbAccessHelper.FindDataBy<OrderModel>(SqlFields, sqlWhere, (dr, m) =>
             {
-                m.Code = dr["TA002"].ToString();
-                m.Category = dr["TA001"].ToString();
-                m.ProductID = dr["TA006"].ToString();
-                m.ProductName = dr["TA034"].ToString();
-                m.ProductSpecify = dr["TA035"].ToString();
-                m.Count = dr["TA016"].ToString().ToDouble();
-                m.OrderFinishDate = DateTime.ParseExact(dr["TA010"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
-                m.InStockDate = DateTime.ParseExact(dr["TA063"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+                m.Code = dr["TA002"].ToString().Trim ();
+                m.Category = dr["TA001"].ToString().Trim ();
+                m.ProductID = dr["TA006"].ToString().Trim ();
+                m.ProductName = dr["TA034"].ToString().Trim ();
+                m.ProductSpecify = dr["TA035"].ToString().Trim ();
+                m.Count = dr["TA016"].ToString().Trim ().ToDouble();
+                m.OrderFinishDate = DateTime.ParseExact(dr["TA010"].ToString().Trim (), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+                m.InStockDate = DateTime.ParseExact(dr["TA063"].ToString().Trim (), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
             });
             return ListModels.FirstOrDefault();
         }
@@ -67,11 +67,11 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
             string sqlWhere = string.Format(" where TB001='{0}' and TB002='{1}' ", idm.Category, idm.Code);
             return ErpDbAccessHelper.FindDataBy<MaterialModel>(SqlFields, sqlWhere, (dr, m) =>
             {
-                m.MaterialId = dr["材料品号"].ToString();
-                m.MaterialName = dr["品名"].ToString();
-                m.MaterialSpecify = dr["规格"].ToString();
-                m.Unit = dr["单位"].ToString();
-                m.ReceiveCount = dr["需领用量"].ToString().ToDouble();
+                m.MaterialId = dr["材料品号"].ToString().Trim ();
+                m.MaterialName = dr["品名"].ToString().Trim ();
+                m.MaterialSpecify = dr["规格"].ToString().Trim();
+                m.Unit = dr["单位"].ToString().Trim();
+                m.ReceiveCount = dr["需领用量"].ToString().Trim ().ToDouble();
             });
         }
     }

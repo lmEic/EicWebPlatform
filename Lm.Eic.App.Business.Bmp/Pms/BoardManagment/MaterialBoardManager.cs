@@ -10,8 +10,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 {
     public class MaterialBoardManager
     {
-        private object materialBom;
-
         /// <summary>
         /// 获取物料规格看板
         /// </summary>
