@@ -5,6 +5,7 @@ using System.Text;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.SystemInit.Commom;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Ast.Tests
 {
@@ -54,7 +55,16 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             StringBuilder str = new StringBuilder();
             string path = @"E:\\设备系统设备总览表.xls";
             var m = ExcelHelper.ExcelToEntityList<EquipmentModel>(path, 44,out str);
+            string FilePath = @"C:\testDir\test.txt";
+            int Number = m.Count;
+            if (str.ToString() != string.Empty)
+            { 
+                FilePath.CreateFile(str.ToString());
+                Assert.Fail(); 
+                return;
+            }
             
+        
             m.ForEach(e => {
                 AstService.EquipmentManager.Store(e);
             });

@@ -1917,10 +1917,10 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         closeSpecifies:[],
         productNames: [
             {
-                id: "夏季厂服", text: "夏季厂服", specifyList: [ { id: "38", text: "38" }, { id: "39", text: "39" },{ id: "40", text: "40" },{ id: "41", text: "41" },]
+                id: "夏季厂服", text: "夏季厂服", specifyList: [{ id: "34", text: "34" }, { id: "35", text: "35" }, { id: "36", text: "36" }, { id: "37", text: "37" }, { id: "38", text: "38" }, { id: "39", text: "39" }, { id: "40", text: "40" }, { id: "41", text: "41" }, { id: "42", text: "42" }, { id: "43", text: "43" }, { id: "44", text: "44" }, ]
             },
             {
-                id: "冬季厂服", text: "冬季厂服", specifyList: [{ id: "M", text: "M" }, { id: "L", text: "L" }, { id: "XL", text: "XL" }, { id: "XXL", text: "XXL" }, ] 
+                id: "冬季厂服", text: "冬季厂服", specifyList: [{ id: "S", text: "S" }, { id: "M", text: "M" }, { id: "L", text: "L" }, { id: "XL", text: "XL" }, { id: "XXL", text: "XXL" }, { id: "XXXL", text: "XXXL" }, ]
             },
         ],
         selectProductName: function () {
@@ -1934,6 +1934,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             { id: "领取新衣", text: "领取新衣" },
             { id: "以旧换新", text: "以旧换新" },
             { id: "以旧换旧", text: "以旧换旧" },
+            { id: "购买新衣", text: "购买新衣" },
         ],
         getWorkerInfo: function () {
             if (uiVM.WorkerId === undefined) return;

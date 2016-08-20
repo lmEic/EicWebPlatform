@@ -204,7 +204,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             if (model.State == null)
                 model.State = "运行正常";
             if (model.IsScrapped == null)
-                model.IsScrapped = "正常";
+                model.IsScrapped = "否";
             //仓储操作
             return irep.Insert(model).ToOpResult_Add("设备档案", model.Id_Key);
         }
