@@ -43,4 +43,17 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.AstMapping
         }
     }
 
+    /// <summary>
+    ///设备报废EquipmentDiscardRecordModel
+    /// </summary>
+    public class EquipmentDiscardRecordModelMapping : EntityTypeConfiguration<EquipmentDiscardRecordModel>
+    {
+        public EquipmentDiscardRecordModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Ast_EquipmentDiscardRecord");
+        }
+    }
+
 }
