@@ -679,4 +679,135 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         #endregion Model
     }
 
+
+    /// <summary>
+    ///设备报废记录模型
+    /// </summary>
+    [Serializable]
+    public partial class EquipmentDiscardRecordModel
+    {
+        public EquipmentDiscardRecordModel()
+        { }
+        #region Model
+        private string _assetnumber;
+        /// <summary>
+        ///财产编号
+        /// </summary>
+        public string AssetNumber
+        {
+            set { _assetnumber = value; }
+            get { return _assetnumber; }
+        }
+        private string _equipmentname;
+        /// <summary>
+        ///设备名称
+        /// </summary>
+        public string EquipmentName
+        {
+            set { _equipmentname = value; }
+            get { return _equipmentname; }
+        }
+        private DateTime _discarddate;
+        /// <summary>
+        ///报废日期
+        /// </summary>
+        public DateTime DiscardDate
+        {
+            set { _discarddate = value; }
+            get { return _discarddate; }
+        }
+        private string _discardmonth;
+        /// <summary>
+        ///报废月份
+        /// </summary>
+        public string DiscardMonth
+        {
+            set { _discardmonth = value; }
+            get { return _discardmonth; }
+        }
+        private string _discardtype;
+        /// <summary>
+        ///报废类别
+        /// </summary>
+        public string DiscardType
+        {
+            set { _discardtype = value; }
+            get { return _discardtype; }
+        }
+        private string _discardcause;
+        /// <summary>
+        ///报废原因
+        /// </summary>
+        public string DiscardCause
+        {
+            set { _discardcause = value; }
+            get { return _discardcause; }
+        }
+        private string _documentid;
+        /// <summary>
+        ///文档编号
+        /// </summary>
+        public string DocumentId
+        {
+            set { _documentid = value; }
+            get { return _documentid; }
+        }
+        private string _documentpath;
+        /// <summary>
+        ///文档路径
+        /// </summary>
+        public string DocumentPath
+        {
+            set { _documentpath = value; }
+            get { return _documentpath; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标示
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
+
+
 }

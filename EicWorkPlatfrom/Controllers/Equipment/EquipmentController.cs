@@ -4,6 +4,7 @@ using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using Lm.Eic.App.Business.Bmp.Ast;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using System.IO;
 
 
 
@@ -190,6 +191,29 @@ namespace EicWorkPlatfrom.Controllers
             model.MaintenanceDate = model.MaintenanceDate.ToDate();
             var result = AstService.EquipmentManager.MaintenanceManager.Store(model);
             return Json(result);
+          
+        }
+        [NoAuthenCheck]
+        public JsonResult HandleFile(string moduleName, string fileName)
+        {
+            bool result = false;
+            string dateFile = DateTime.Now.ToDateStr();
+            string[] f = fileName.Split('-');
+            string assetNum = string.Empty;
+            string imgUrl = string.Empty;
+            if (f.Length == 3)
+            {
+                assetNum = f[1];
+                string sourceFileName = CombinedFilePath("FileLibrary", "PreviewFiles") +"\\"+ fileName;
+                var imgBytes = sourceFileName.ToPhotoByte();
+                imgUrl = GetBase64Url(imgBytes);
+                string destFileName = CombinedFilePath("FileLibrary", moduleName, dateFile) + "\\" + assetNum + ".jpg";
+                if (System.IO.File.Exists(destFileName)) System.IO.File.Delete(destFileName);
+                System.IO.File.Move(sourceFileName, destFileName);
+                result = true;
+            }
+            var data = new { exist = result, dateFile = dateFile, imgUrl = imgUrl };
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

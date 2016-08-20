@@ -440,7 +440,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
 
         #region Store
-
         /// <summary>
         /// 修改数据仓库 model.OpSign = add/edit/delete
         /// </summary>
@@ -520,8 +519,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             return OpResult.SetResult("更新设备保养日期成功！", "更新设备保养日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
         }
         #endregion
-
-
     }
 
 }

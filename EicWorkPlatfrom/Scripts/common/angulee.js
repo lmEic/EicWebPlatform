@@ -99,18 +99,34 @@ var leeDataHandler = (function () {
                 //姓名
                 userName: null,
                 //头像
-                headPortrait:null
+                headPortrait: null,
+                //网站物理路径
+                webSitePhysicalApplicationPath: null,
+                serverName:null,
             };
 
-            var userJson = localStorage.getItem("loginUser");
-            if (!_.isUndefined(userJson) && !_.isNull(userJson))
+            var loginInfoJson = localStorage.getItem("loginUser");
+            if (!_.isUndefined(loginInfoJson) && !_.isNull(loginInfoJson))
             {
-                var user = JSON.parse(userJson);
-                if (_.isObject(user))
+                var loginInfo = JSON.parse(loginInfoJson);
+                if (_.isObject(loginInfo))
                 {
-                    loginedUser.userId = user.LoginedUser.UserId;
-                    loginedUser.userName = user.LoginedUser.UserName;
-                    loginedUser.headPortrait = user.LoginedUser.HeadPortrait;
+                    //保存用户信息
+                    if (loginInfo.loginUser !== undefined)
+                    {
+                        var user = loginInfo.loginUser;
+                        loginedUser.userId = user.LoginedUser.UserId;
+                        loginedUser.userName = user.LoginedUser.UserName;
+                        loginedUser.headPortrait = user.LoginedUser.HeadPortrait;
+                       
+                    }
+                    //保存站点信息
+                    if (loginInfo.webSite !== undefined)
+                    {
+                        var webSite = loginInfo.webSite;
+                        loginedUser.webSitePhysicalApplicationPath = webSite.PhysicalApplicationPath;
+                        loginedUser.serverName = webSite.ServerName;
+                    }
                     return loginedUser;
                 }
             }

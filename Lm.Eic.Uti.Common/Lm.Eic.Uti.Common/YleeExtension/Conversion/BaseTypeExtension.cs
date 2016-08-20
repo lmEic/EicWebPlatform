@@ -221,7 +221,24 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
             ms.Dispose();
             return mybite;
         }
-
+        /// <summary>
+        /// 读取文件到字节数组
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static byte[] ToPhotoByte(this string fileName)
+        {
+            byte[] photo_byte = null;
+            if (!File.Exists(fileName)) return photo_byte;
+            using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (BinaryReader br = new BinaryReader(fs))
+                {
+                    photo_byte = br.ReadBytes((int)fs.Length);
+                }
+            }
+            return photo_byte;
+        }
         #endregion Image
 
         #region Byte[]
