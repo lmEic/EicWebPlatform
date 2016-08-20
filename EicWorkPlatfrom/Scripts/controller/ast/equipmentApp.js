@@ -1,4 +1,5 @@
-﻿/// <reference path="../../common/angulee.js" />
+﻿/// <reference path="../../common/eloam.js" />
+/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
 
@@ -21,6 +22,9 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     })
     .state('astInputCheckRecord', {
         templateUrl: urlPrefix + 'AstInputCheckRecord',
+        onExit: function () {
+            //eloam.UnLoad();
+        }
     })
     //--------------保养管理--------------------------
     .state('astBuildMaintenanceList', {
@@ -28,6 +32,9 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     })
     .state('astInputMaintenanceRecord', {
         templateUrl: urlPrefix + 'AstInputMaintenanceRecord',
+        onExit: function () {
+            eloam.UnLoad();
+        }
     })
 })
 .factory('astDataopService', function (ajaxService) {
@@ -100,6 +107,13 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             model: model,
         });
     };
+    ast.handleFile = function (moduleName, fileName) {
+        var url = astUrlPrefix + 'HandleFile';
+        return ajaxService.getData(url, {
+            moduleName: moduleName,
+            fileName: fileName,
+        });
+    };
     return ast;
 })
 .controller('moduleNavCtrl', function ($scope, navDataService, $state) {
@@ -132,14 +146,15 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     //视图管理器
     var vmManager = {
         activeTab: 'baseInfoTab',
-        datasets: [],
         datasource:[],
+        datasets: [],
         getAstArchiveOverview: function () {
-            vmManager.datasource = [];
+            vmManager.datasets = [];
+            vmManager.datasource=[],
             $scope.promise = astDataopService.getAstArchiveOverview().then(function (datas) {
                 vmManager.datasource = datas;
             });
-        }
+        },
     };
     $scope.vmManager = vmManager;
 
@@ -372,7 +387,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.vmManager = vmManager;
   
 })
-.controller('astInputCheckRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
+.controller('astInputCheckRecordCtrl', function ($scope,connDataOpService, astDataopService, $modal) {
     ///登记校验记录
     var uiVM = {
         AssetNumber: null,
@@ -383,74 +398,102 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         OpSign: 'add',
     }
     $scope.vm = uiVM;
+
+    ///设备实体校验模型
+    var checkVM = {
+        AssetNumber: null,
+        EquipmentName: null,
+        EquipmentSpec: null,
+        ManufacturingNumber: null,
+        SafekeepDepartment: null,
+        IsCheck: null,
+        CheckType: null,
+        CheckDate: null,
+        CheckInterval: 0,
+        CheckState: null,
+    }
+    $scope.checkvm = checkVM;
+
     var vmManager = {
-        activeTab: 'initTab',
         init: function () {
             leeHelper.clearVM(uiVM, ['CheckDate']);
         },
-        datasets:[],
+        datasets: [],
+        //验证是否可以保存数据
+        canSave: function () {
+            ///验证内容
+            if (angular.isUndefined(uiVM.AssetNumber) || uiVM.AssetNumber === null || angular.isUndefined(uiVM.CheckDate) || uiVM.CheckDate === null) {
+                var msgModal = $modal({
+                    title: "错误提示:校验日期或者财产编号不能为空！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
+                });
+                msgModal.$promise.then(msgModal.show);
+                return false;
+            }
+            else { return true;}
+        },
+        getAstDatas: function () {
+            if (uiVM.AssetNumber === undefined || uiVM.AssetNumber.length < 6) return;
+            $scope.searchPromise = astDataopService.getEquipmentArchivesBy(uiVM.CheckDate,uiVM.AssetNumber, 1).then(function (datas) {
+                if (angular.isArray(datas) && datas.length > 0)
+                {
+                    leeHelper.copyVm(datas[0], checkVM);
+                }
+            });
+        }
     };
     $scope.vmManager = vmManager;
 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    operate.saveAll = function (isValid) {
-        leeDataHandler.dataOperate.add(operate, isValid, function () {
-            astDataopService.storeInputCheckRecord(uiVM).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                    var checkRecord = opresult.Attach;
-                    if (checkRecord !== null)
-                    {
-                        if (checkRecord.OpSign === 'add') {
-                            vmManager.datasets.push(checkRecord);
-                        }
-                        vmManager.init();
+    operate.saveAll = function () {
+        if (!vmManager.canSave()) return;
+        astDataopService.storeInputCheckRecord(uiVM).then(function (opresult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                var checkRecord = opresult.Attach;
+                if (checkRecord !== null) {
+                    if (checkRecord.OpSign === 'add') {
+                        vmManager.datasets.push(checkRecord);
                     }
-                    
-                });
+                    vmManager.init();
+                }
             });
-        })
+        });
     };
 
-
-
-    var video;
-    var dev;
-
-    var getPlugin = function () {
-        return document.getElementById('view1');
+ 
+    var previewImgPrefix = "Equcheck-";
+    ///高拍仪控制对象
+    var vedio = {
+        previewFileName: '',
+        open: function () { eloam.OpenVideo(); },
+        close: function () { eloam.CloseVideo(); },
+        rotateLeft: function () { eloam.RotateLeft(); },
+        rotateRight: function () { eloam.RotateRight(); },
+        saveAsImage: function () {
+            if (!vmManager.canSave()) return;
+            var loginUser = leeDataHandler.dataStorage.getLoginedUser();
+            uiVM.OpPerson = loginUser.userName;
+            var day = new Date();
+            var random = day.getSeconds();
+            var isServer = loginUser.serverName === "EICMAIN";
+            var previewImgPath = isServer ? "PreviewFiles/" : "FileLibrary/PreviewFiles/";
+            var serverHost = isServer ? "\\\\192.168.0.187\\" : loginUser.webSitePhysicalApplicationPath;
+            var serverFilePath = (serverHost + previewImgPath).replace(/\//g, "\\");//服务器文件夹路径
+            var fileName = previewImgPrefix + uiVM.AssetNumber + "-" + random + ".jpg";
+            eloam.SaveAsImg(serverFilePath + fileName);
+            $scope.previewPromise = astDataopService.handleFile("EqucheckFiles", fileName).then(function (result) {
+                if (result.exist) {
+                    vedio.previewFileName = result.imgUrl;
+                    uiVM.DocumentPath = "FileLibrary/MaintenanceFiles/" + result.dateFile + "/" + uiVM.AssetNumber + ".jpg";
+                }
+            });
+        },
     };
-    //关闭
-    var closeVideo = function () {
-        //if (video) {
-        //    getPlugin().Video_Release(video);
-        //    video = null;
 
-        //    if (getPlugin().Device_GetEloamType(dev) == 1) {
-        //        getPlugin().View_SetText("", 0);
-        //    }
-        //    else {
-        //        getPlugin().View_SetText("", 0);
-        //    }
-        //}
-    };
-
-    $scope.openVideo = function () {
-        closeVideo();
-
-        dev = getPlugin().Global_CreateDevice(1, 0);
-
-        if (!dev)
-            return;
-        video = getPlugin().Device_CreateVideo(dev, 1, 1);
-        if (video) {
-            getPlugin().View_SelectVideo(video);
-            getPlugin().View_SetText("打开视频中，请等待...", 0);
-        }
-    }
-
-    $scope.openVideo();
-  
+    $scope.vedio = vedio;
+    $scope.$watch('$viewContentLoaded', function (event) {
+        eloam.Load();
+    })
 })
 
 .controller('astBuildMaintenanceListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
@@ -480,34 +523,100 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         MaintenanceDate:new Date(),
         DocumentPath:null,
         OpPerson:null,
-        OpSign:null,
+        OpSign:'add',
     }
     $scope.vm = uiVM;
+
+    ///设备实体保养模型
+    var maintenanceVM = {
+        AssetNumber: null,
+        EquipmentName: null,
+        EquipmentSpec: null,
+        ManufacturingNumber: null,
+        SafekeepDepartment: null,
+        IsMaintenance:null,
+        MaintenanceDate: null,
+        MaintenanceInterval: 0,
+        MaintenanceState: null,
+    }
+    $scope.maintenancevm = maintenanceVM;
+
     var vmManager = {
-        activeTab: 'initTab',
         init: function () {
             leeHelper.clearVM(uiVM, ['MaintenanceDate']);
         },
         datasets: [],
+        //验证是否可以保存数据
+        canSave: function () {
+            ///验证内容
+            if (angular.isUndefined(uiVM.AssetNumber) || uiVM.AssetNumber === null || angular.isUndefined(uiVM.MaintenanceDate) || uiVM.MaintenanceDate === null) {
+                var msgModal = $modal({
+                    title: "错误提示:校验日期或者财产编号不能为空！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
+                });
+                msgModal.$promise.then(msgModal.show);
+                return false;
+            }
+            else { return true; }
+        },
+        getAstDatas: function () {
+            if (uiVM.AssetNumber === undefined || uiVM.AssetNumber.length < 6) return;
+            $scope.searchPromise = astDataopService.getEquipmentArchivesBy(uiVM.MaintenanceDate, uiVM.AssetNumber, 1).then(function (datas) {
+                if (angular.isArray(datas) && datas.length > 0) {
+                    leeHelper.copyVm(datas[0], maintenanceVM);
+                }
+            });
+        }
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    operate.saveAll = function (isValid) {
-        leeDataHandler.dataOperate.add(operate, isValid, function () {
-            astDataopService.storeInputMaintenanceRecord(uiVM).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                    var MaintenanceRecord = opresult.Attach;
-                    if (MaintenanceRecord !== null)
-                    {
-                        if (MaintenanceRecord.OpSign === 'add') {
-                            vmManager.datasets.push(MaintenanceRecord);
-                        }
+    operate.saveAll = function () {
+        if (!vmManager.canSave()) return;
+        astDataopService.storeInputMaintenanceRecord(uiVM).then(function (opresult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                var MaintenanceRecord = opresult.Attach;
+                if (MaintenanceRecord !== null) {
+                    if (MaintenanceRecord.OpSign === 'add') {
+                        vmManager.datasets.push(MaintenanceRecord);
                     }
-                    vmManager.init();
-                });
+                }
+                vmManager.init();
             });
-        })
+        });
     };
+
+
+    var previewImgPrefix = "Equmaintenance-";
+    ///高拍仪控制对象
+    var vedio = {
+        previewFileName: '',
+        open: function () { eloam.OpenVideo(); },
+        close: function () { eloam.CloseVideo(); },
+        rotateLeft: function () { eloam.RotateLeft(); },
+        rotateRight: function () { eloam.RotateRight(); },
+        saveAsImage: function () {
+            if (!vmManager.canSave()) return;
+            var loginUser = leeDataHandler.dataStorage.getLoginedUser();
+            uiVM.OpPerson = loginUser.userName;
+            var day = new Date();
+            var random = day.getSeconds();
+            var isServer=loginUser.serverName === "EICMAIN";
+            var previewImgPath = isServer ? "PreviewFiles/" : "FileLibrary/PreviewFiles/";
+            var serverHost = isServer ? "\\\\192.168.0.187\\" : loginUser.webSitePhysicalApplicationPath;
+            var serverFilePath = (serverHost + previewImgPath).replace(/\//g, "\\");//服务器文件夹路径
+            var fileName=previewImgPrefix + uiVM.AssetNumber + "-" + random + ".jpg";
+            eloam.SaveAsImg(serverFilePath + fileName);
+            $scope.previewPromise = astDataopService.handleFile("MaintenanceFiles",fileName).then(function (result) {
+                if (result.exist) {
+                    vedio.previewFileName = result.imgUrl;
+                    uiVM.DocumentPath = "FileLibrary/MaintenanceFiles/" + result.dateFile + "/" + uiVM.AssetNumber + ".jpg";
+                }
+            });
+        },
+    };
+    $scope.vedio = vedio;
+    $scope.$watch('$viewContentLoaded', function (event) {
+        eloam.Load();
+    })
 })
 

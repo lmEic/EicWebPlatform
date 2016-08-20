@@ -679,6 +679,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
     var urlPrefix = {
         hrArchivesManage: '/HrArchivesManage/',
         configManage: '/SysConfig/',
+        commonTpl:'/CommonTpl/'
     };
     //获取部门数据
     conn.getDepartments = function () {

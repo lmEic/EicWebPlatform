@@ -217,6 +217,49 @@ namespace EicWorkPlatfrom.Controllers
             return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
         }
 
+
+        #region CombinedFilePath
+        protected string CombinedFilePath(string path1)
+        {
+            string siteRootPath = this.HttpContext.Request.PhysicalApplicationPath;
+            string dirctoryPath = Path.Combine(siteRootPath,path1);
+            if (!Directory.Exists(dirctoryPath))
+            {
+                Directory.CreateDirectory(dirctoryPath);
+            }
+            return dirctoryPath;
+        }
+        protected string CombinedFilePath(string path1, string path2)
+        {
+            string dirctoryPath = Path.Combine(CombinedFilePath(path1), path2);
+            if (!Directory.Exists(dirctoryPath))
+            {
+                Directory.CreateDirectory(dirctoryPath);
+            }
+            return dirctoryPath;
+        }
+        protected string CombinedFilePath(string path1, string path2, string path3)
+        {
+            string dirctoryPath = Path.Combine(CombinedFilePath(path1,path2), path3);
+            if (!Directory.Exists(dirctoryPath))
+            {
+                Directory.CreateDirectory(dirctoryPath);
+            }
+            return dirctoryPath;
+        }
+        #endregion
+
+        /// <summary>
+        /// 获取图像Base64Url
+        /// </summary>
+        /// <param name="imgBytes"></param>
+        /// <returns></returns>
+        protected string GetBase64Url(byte[] imgBytes)
+        {
+            if (imgBytes == null) return "default.jpg";
+            return "data:image/jpg;base64," + Convert.ToBase64String(imgBytes);
+        }
+
         #endregion file operate method
     }
 
@@ -235,6 +278,20 @@ namespace EicWorkPlatfrom.Controllers
         public RoleModel Role { get; set; }
 
         public string Department { get; set; }
+    }
+    /// <summary>
+    /// 站点信息
+    /// </summary>
+    public class WebSiteInfo
+    {
+        /// <summary>
+        /// 站点服务器名称
+        /// </summary>
+        public string ServerName { get; set; }
+        /// <summary>
+        /// 站点物理跟路径
+        /// </summary>
+        public string PhysicalApplicationPath { get; set; }
     }
 
     /// <summary>
@@ -267,7 +324,6 @@ namespace EicWorkPlatfrom.Controllers
             imgStream.WriteTo(response.OutputStream);
         }
     }
-
     /// <summary>
     /// 不需要权限验证特性标注
     /// 标注有此标记的将不会对其进行权限验证

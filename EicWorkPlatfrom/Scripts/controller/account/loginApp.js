@@ -65,8 +65,8 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
                 }
             }).success(function (data) {
                 leeDataHandler.dataStorage.setLoginedUser(data);
-                if (data.LoginStatus !== null) {
-                    if (data.LoginStatus.StatusCode === 0) {
+                if (data.loginUser.LoginStatus !== null) {
+                    if (data.loginUser.LoginStatus.StatusCode === 0) {
                         loginResult.isSuccess = true;
                         window.location = "/Home/Index";
                     }
