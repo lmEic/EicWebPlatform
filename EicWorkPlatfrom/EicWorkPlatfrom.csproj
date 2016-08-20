@@ -341,6 +341,12 @@
     <Content Include="Content\ztree\dist\js\jquery.ztree.exedit.min.js" />
     <Content Include="Content\ztree\dist\js\jquery.ztree.exhide.js" />
     <Content Include="Content\ztree\dist\js\jquery.ztree.exhide.min.js" />
+    <Content Include="FileLibrary\EquCheckFiles\2016-8-17\12345678.jpg" />
+    <Content Include="FileLibrary\EquCheckFiles\2016-8-17\Z169086.jpg" />
+    <Content Include="FileLibrary\MaintenanceFiles\2016-8-17\Z160079.jpg" />
+    <Content Include="FileLibrary\MaintenanceFiles\2016-8-17\Z160088.jpg" />
+    <Content Include="FileLibrary\MaintenanceFiles\2016-8-17\Z169037.jpg" />
+    <Content Include="FileLibrary\MaintenanceFiles\2016-8-17\Z169086.jpg" />
     <Content Include="Global.asax" />
     <Content Include="Content\underscore\underscore-min.map" />
     <Content Include="Content\login\lightmaster.png" />
@@ -373,6 +379,7 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\common\angulee.js" />
     <Content Include="Scripts\common\commDirective.js" />
+    <Content Include="Scripts\common\eloam.js" />
     <Content Include="Scripts\controller\ast\equipmentApp.js" />
     <Content Include="Scripts\controller\home\homeApp.js" />
     <Content Include="Scripts\controller\account\loginApp.js" />
@@ -1274,6 +1281,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="FileLibrary\PreviewFiles\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
