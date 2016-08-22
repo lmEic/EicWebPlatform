@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using Lm.Eic.Uti.Common.YleeDbHandler;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
@@ -41,6 +42,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         public static EquipmentMaintenanceCrud EquipmentMaintenanceCrud
         {
             get { return OBulider.BuildInstance<EquipmentMaintenanceCrud>(); }
+        }
+
+        /// <summary>
+        /// 设备报废操作Crud
+        /// </summary>
+        public static EquipmentDiscarCrud EquipmentDiscarCrud
+        {
+            get { return OBulider.BuildInstance<EquipmentDiscarCrud>(); }
         }
     }
 
@@ -520,5 +529,98 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
         #endregion
     }
+
+
+    /***********************************************   设备报废CRUD   *********************************
+  *                                        
+  *  2017-7-27  初版   张明                  
+  ***************************************************************************************************/
+  /// <summary>
+  /// 报废管理Crud
+  /// </summary>
+    internal class EquipmentDiscarCrud : CrudBase<EquipmentDiscardRecordModel, IEquipmentDiscardRepositoryRepository>
+    {
+        public EquipmentDiscarCrud() : base(new EquipmentDiscardRepositoryRepository(), "设备报废记录")
+        {
+        }
+
+        /// <summary>
+        /// 添加CRUD方法到方法组
+        /// </summary>
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddEquipmentDiscardRecord);
+            this.AddOpItem(OpMode.Edit, EditEquipmentDiscardRecord);
+            this.AddOpItem(OpMode.UpDate, DeleteEquipmentDiscardRecord);
+        }
+
+        /// <summary>
+        /// 添加一条设备报废记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        OpResult AddEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
+        {
+            OpResult result = OpResult.SetResult("未执行任何操作");
+            //TODO：先根据财产编号确认是否存在该设备 如果存在 修改设备状态的是否报废为 是 存储报废记录
+
+            //设备是否存在
+            var equipment = EquipmentCrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber, SearchMode = 1 }).FirstOrDefault();
+
+            if (equipment == null)
+                return OpResult.SetResult("未找到报废单上的设备\r\n请确定财产编号是否正确！");
+
+            if (equipment.IsScrapped == "是")
+                return OpResult.SetResult("操作失败！\r\n设备报废为已报废，不能重复报废！");
+
+            //修改设备报废状态
+            equipment.IsScrapped = "是";
+            equipment.OpSign = OpMode.Edit;
+            var equipmentOpResult = EquipmentCrudFactory.EquipmentCrud.Store(equipment);
+            if (!equipmentOpResult.Result)
+                return OpResult.SetResult("修改设备报废状态失败！");
+
+            model.DiscardMonth = DateTime.Now.ToString("yyyyMM");
+            //存储记录
+            model.EquipmentName = equipment.EquipmentName;
+            result = irep.Insert(model).ToOpResult_Add(OpContext, model.Id_Key);
+            return result;
+        }
+
+        /// <summary>
+        /// 修改一条设备报废记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        OpResult EditEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
+        {
+            OpResult result = OpResult.SetResult("咱不提供修改方法");
+            return result;
+        }
+
+        /// <summary>
+        /// 删除一条设备报废记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        OpResult DeleteEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
+        {
+            OpResult result = OpResult.SetResult("暂不提供删除方法");
+            return result;
+        }
+
+        /// <summary>
+        /// 获取设备报废记录
+        /// </summary>
+        /// <param name="assetNumber">财产编号</param>
+        /// <returns></returns>
+        public EquipmentDiscardRecordModel GetEquipmentDiscardRecord(string assetNumber)
+        {
+           return irep.Entities.FirstOrDefault(m => m.AssetNumber == assetNumber);
+        }
+        
+    }
+
+     
 
 }

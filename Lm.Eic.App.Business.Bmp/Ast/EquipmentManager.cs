@@ -117,6 +117,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             get { return OBulider.BuildInstance<EquipmentMaintenanceManager>(); }
         }
+
+        /// <summary>
+        /// 报废管理
+        /// </summary>
+        public EquipmentDiscardManager DiscardManager
+        {
+            get { return OBulider.BuildInstance<EquipmentDiscardManager>(); }
+        }
     }
 
 
@@ -294,6 +302,30 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             return CrudFactory.EquipmentMaintenanceCrud.Store(model);
         }
 
+    }
+
+
+    public class EquipmentDiscardManager
+    {
+        /// <summary>
+        /// 获取设备报废记录
+        /// </summary>
+        /// <param name="assetNumber">财产编号</param>
+        /// <returns></returns>
+        public EquipmentDiscardRecordModel GetEquipmentDiscardRecord(string assetNumber)
+        {
+            return CrudFactory.EquipmentDiscarCrud.GetEquipmentDiscardRecord(assetNumber);
+        }
+
+        /// <summary>
+        /// 仓储操作
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult Store(EquipmentDiscardRecordModel model)
+        {
+            return CrudFactory.EquipmentDiscarCrud.Store(model);
+        }
     }
 
 
