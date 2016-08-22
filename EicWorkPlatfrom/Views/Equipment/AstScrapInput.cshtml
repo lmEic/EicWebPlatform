@@ -54,14 +54,14 @@
                             <tr class="info">
                                 <th>财产编号</th>
                                 <th>设备名称</th>
-                                <th>保养日期</th>
+                                <th>报废日期</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in vmManager.datasets track by $index">
                                 <th>{{item.AssetNumber}}</th>
                                 <th>{{item.EquipmentName}}</th>
-                                <th>{{item.CheckDate}}</th>
+                                <th>{{item.DiscardDate|Date}}</th>
                             </tr>
                         </tbody>
                     </table>
