@@ -105,6 +105,19 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 保存报废数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StoreAstScrapData(EquipmentDiscardRecordModel model)
+        {
+            model.DiscardDate = model.DiscardDate.ToDate();
+            var result = AstService.EquipmentManager.DiscardManager.Store(model);
+            return Json(result);
+        }
         #endregion
 
         #region equipment check module method

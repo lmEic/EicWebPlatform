@@ -204,6 +204,5 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return result;
         }
-
     }
 }

@@ -75,6 +75,13 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         return ajaxService.getData(url, {
         });
     };
+    ///保存设备报废记录
+    ast.storeAstScrapData = function (model) {
+        var url = astUrlPrefix + 'StoreAstScrapData';
+        return ajaxService.postData(url, {
+            model: model,
+        });
+    };
     //保存设备档案记录
     ast.saveEquipmentRecord = function (equipment)
     {
@@ -430,19 +437,18 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.operate = operate;
     operate.saveAll = function () {
         if (!vmManager.canSave()) return;
-        astDataopService.storeInputMaintenanceRecord(uiVM).then(function (opresult) {
+        astDataopService.storeAstScrapData(uiVM).then(function (opresult) {
             leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                var MaintenanceRecord = opresult.Attach;
-                if (MaintenanceRecord !== null) {
-                    if (MaintenanceRecord.OpSign === 'add') {
-                        vmManager.datasets.push(MaintenanceRecord);
+                var storeEntity = opresult.Attach;
+                if (Record !== null) {
+                    if (storeEntity.OpSign === 'add') {
+                        vmManager.datasets.push(storeEntity);
                     }
                 }
                 vmManager.init();
             });
         });
     };
-
 
     var previewImgPrefix = "Equscrap-";
     ///高拍仪控制对象
