@@ -119,21 +119,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             this.AddOpItem(OpMode.Edit, EditDevelopModuleManageRecord);
             this.AddOpItem(OpMode.UpDate, UpdateDevelopModuleManageRecord);
         }
-        /// <summary>
-        /// 修改数据仓库
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public OpResult Store(ItilDevelopModuleManageModel model)
-        {
-            // return PersistentDatas(model);
-            //TODO: 修改一下 修改为 先存储开发管理记录 然后存储开发任务，如果开发任务存储失败 Delete 开发管理记录
-
-
-           return this.PersistentDatas(model);
-
-           
-        }
+        
         /// <summary>
         /// 添加一条开发任务到数据库
         /// </summary>

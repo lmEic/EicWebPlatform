@@ -1,7 +1,9 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Mapping.AstMapping;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.BoardManager;
+using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManager;
+using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Data.Entity;
@@ -23,6 +25,16 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         public DbSet<EquipmentMaintenanceRecordModel> EquipmentMaintenance { get; set; }
 
+        public DbSet<EquipmentDiscardRecordModel> EquipmentDiscard { get; set; }
+
+
+        public DbSet<DailyReportModel> DailyReports { get; set; }
+
+        public DbSet<DailyReportTemplateModel> DailyReportTemplate { get; set; }
+
+        public DbSet<ProductFlowModel> ProductFlow { get; set; }
+
+
         public DbSet<MaterialSpecBoardModel> MaterialSpecBoard { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -32,7 +44,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new EquipmentModelMapping());
             modelBuilder.Configurations.Add(new EquipmentCheckModelMapping());
             modelBuilder.Configurations.Add(new EquipmentMaintenanceModelMapping());
+            modelBuilder.Configurations.Add(new EquipmentDiscardRecordModelMapping());
+
+            modelBuilder.Configurations.Add(new DailyReportModelMapping());
+            modelBuilder.Configurations.Add(new DailyReportsTemplateModelMapping());
+            modelBuilder.Configurations.Add(new ProductFlowModelMapping());
+
             modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
+
         }
     }
 
