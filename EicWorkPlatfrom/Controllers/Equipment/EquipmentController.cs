@@ -97,6 +97,14 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 设备报废登记
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AstScrapInput() 
+        {
+            return View();
+        }
         #endregion
 
         #region equipment check module method

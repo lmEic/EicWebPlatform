@@ -1278,6 +1278,7 @@
     <Content Include="Views\Equipment\AstInputMaintenanceRecord.cshtml" />
     <Content Include="Views\SysITIL\ChangeDevelopModuleProgressStatusTpl.cshtml" />
     <Content Include="Views\HrGeneralAffairsManage\GaWorkerClothesManage.cshtml" />
+    <Content Include="Views\Equipment\AstScrapInput.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

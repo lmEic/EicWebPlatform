@@ -16,6 +16,10 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     .state('astArchiveOverview', {
         templateUrl: urlPrefix + 'AstArchiveOverview',
     })
+         //设备报废登记
+    .state('astScrapInput', {
+        templateUrl: urlPrefix + 'AstScrapInput',
+    })
     //--------------校验管理--------------------------
     .state('astBuildCheckList', {
         templateUrl: urlPrefix + 'AstBuildCheckList',
@@ -369,7 +373,114 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         departmentTreeSet.setTreeDataset(vmManager.departments);
     });
 })
+///报废统计 astScrapInputCtrl
+.controller('astScrapInputCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
+    ///设备保养记录模型
+    var uiVM = {
+        AssetNumber: null,
+        EquipmentName: null,
+        DiscardDate: new Date(),
+        DiscardType: null,
+        DiscardCause: null,
+        DocumentId: null,
+        DocumentPath: null,
+        OpPerson: null,
+        OpSign: 'add',
+    }
+    $scope.vm = uiVM;
 
+    ///设备实体保养模型
+    var equipmentVM = {
+        AssetNumber: null,
+        EquipmentName: null,
+        EquipmentSpec: null,
+        ManufacturingNumber: null,
+    }
+    $scope.equipmentvm = equipmentVM;
+
+    var vmManager = {
+        init: function () {
+            leeHelper.clearVM(uiVM, ['DiscardDate']);
+        },
+        discardTypes:[{id:1,text:"自然报废"},{id:2,text:"人为报废"}],
+        datasets: [],
+        //验证是否可以保存数据
+        canSave: function () {
+            ///验证内容
+            if (angular.isUndefined(uiVM.AssetNumber) || uiVM.AssetNumber === null || angular.isUndefined(uiVM.DiscardDate) || uiVM.DiscardDate === null) {
+                var msgModal = $modal({
+                    title: "错误提示:报废日期或者财产编号不能为空！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
+                });
+                msgModal.$promise.then(msgModal.show);
+                return false;
+            }
+            else { return true; }
+        },
+        getAstDatas: function () {
+            if (uiVM.AssetNumber === undefined || uiVM.AssetNumber.length < 6) return;
+            $scope.searchPromise = astDataopService.getEquipmentArchivesBy(uiVM.DiscardDate, uiVM.AssetNumber, 1).then(function (datas) {
+                if (angular.isArray(datas) && datas.length > 0) {
+                    leeHelper.copyVm(datas[0], equipmentVM);
+                }
+            });
+        }
+    };
+    $scope.vmManager = vmManager;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveAll = function () {
+        if (!vmManager.canSave()) return;
+        astDataopService.storeInputMaintenanceRecord(uiVM).then(function (opresult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                var MaintenanceRecord = opresult.Attach;
+                if (MaintenanceRecord !== null) {
+                    if (MaintenanceRecord.OpSign === 'add') {
+                        vmManager.datasets.push(MaintenanceRecord);
+                    }
+                }
+                vmManager.init();
+            });
+        });
+    };
+
+
+    var previewImgPrefix = "Equscrap-";
+    ///高拍仪控制对象
+    var vedio = {
+        previewFileName: '',
+        open: function () { eloam.OpenVideo(); },
+        close: function () { eloam.CloseVideo(); },
+        rotateLeft: function () { eloam.RotateLeft(); },
+        rotateRight: function () { eloam.RotateRight(); },
+        saveAsImage: function () {
+            if (!vmManager.canSave()) return;
+            var loginUser = leeDataHandler.dataStorage.getLoginedUser();
+            uiVM.OpPerson = loginUser.userName;
+            var day = new Date();
+            var random = day.getSeconds();
+            var isServer = loginUser.serverName === "EICMAIN";
+            var previewImgPath = isServer ? "PreviewFiles/" : "FileLibrary/PreviewFiles/";
+            var serverHost = isServer ? "\\\\192.168.0.187\\" : loginUser.webSitePhysicalApplicationPath;
+            var serverFilePath = (serverHost + previewImgPath).replace(/\//g, "\\");//服务器文件夹路径
+            var fileName = previewImgPrefix + uiVM.AssetNumber + "_" + uiVM.DocumentId + "-" + random + ".jpg";
+            eloam.SaveAsImg(serverFilePath + fileName);
+            $scope.previewPromise = astDataopService.handleFile("EquScrapFiles", fileName).then(function (result) {
+                if (result.exist) {
+                    vedio.previewFileName = result.imgUrl;
+                    uiVM.DocumentPath = "FileLibrary/EquScrapFiles/" + result.dateFile + "/" + uiVM.AssetNumber + ".jpg";
+                }
+            });
+        },
+    };
+    $scope.vedio = vedio;
+    $scope.$watch('$viewContentLoaded', function (event) {
+        eloam.Load();
+    })
+    $scope.$on('$destroy', function () {
+        eloam.UnLoad();
+    })
+})
+  
 .controller('astBuildCheckListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
     //视图管理器
     var vmManager = {
@@ -491,8 +602,12 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     };
 
     $scope.vedio = vedio;
+
     $scope.$watch('$viewContentLoaded', function (event) {
         eloam.Load();
+    })
+    $scope.$on('$destroy', function () {
+        eloam.UnLoad();
     })
 })
 
@@ -528,7 +643,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.vm = uiVM;
 
     ///设备实体保养模型
-    var maintenanceVM = {
+    var equipmentVM = {
         AssetNumber: null,
         EquipmentName: null,
         EquipmentSpec: null,
@@ -539,7 +654,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         MaintenanceInterval: 0,
         MaintenanceState: null,
     }
-    $scope.maintenancevm = maintenanceVM;
+    $scope.equipmentVM = equipmentVM;
 
     var vmManager = {
         init: function () {
@@ -551,7 +666,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             ///验证内容
             if (angular.isUndefined(uiVM.AssetNumber) || uiVM.AssetNumber === null || angular.isUndefined(uiVM.MaintenanceDate) || uiVM.MaintenanceDate === null) {
                 var msgModal = $modal({
-                    title: "错误提示:校验日期或者财产编号不能为空！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
+                    title: "错误提示:设备保养日期或者财产编号不能为空！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
                 });
                 msgModal.$promise.then(msgModal.show);
                 return false;
@@ -562,7 +677,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             if (uiVM.AssetNumber === undefined || uiVM.AssetNumber.length < 6) return;
             $scope.searchPromise = astDataopService.getEquipmentArchivesBy(uiVM.MaintenanceDate, uiVM.AssetNumber, 1).then(function (datas) {
                 if (angular.isArray(datas) && datas.length > 0) {
-                    leeHelper.copyVm(datas[0], maintenanceVM);
+                    leeHelper.copyVm(datas[0], equipmentVM);
                 }
             });
         }
@@ -617,6 +732,9 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.vedio = vedio;
     $scope.$watch('$viewContentLoaded', function (event) {
         eloam.Load();
+    })
+    $scope.$on('$destroy', function () {
+        eloam.UnLoad();
     })
 })
 
