@@ -10,11 +10,11 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     var urlPrefix = leeHelper.controllers.equipment + "/";
     //设备档案登记
     $stateProvider.state('astArchiveInput', {
-        templateUrl: urlPrefix + 'AstArchiveInput',
+        templateUrl: urlPrefix + 'AstArchiveInput'
     })
     //设备档案总览
     .state('astArchiveOverview', {
-        templateUrl: urlPrefix + 'AstArchiveOverview',
+        templateUrl: urlPrefix + 'AstArchiveOverview'
     })
          //设备报废登记
     .state('astScrapInput', {
@@ -320,7 +320,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                             vmManager.equipments.push(equipment);
                             vmManager.getAstId();
                         }
-                        else if (equipment.OpSign == 'edit') {
+                        else if (equipment.OpSign === 'edit') {
                             var current = _.find(vmManager.equipments, { AssetNumber: equipment.AssetNumber });
                             if (current !== undefined)
                                 leeHelper.copyVm(equipment, current);

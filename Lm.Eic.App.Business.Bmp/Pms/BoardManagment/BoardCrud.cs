@@ -42,7 +42,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult Store(MaterialSpecBoardModel model)
+        public override OpResult Store(MaterialSpecBoardModel model)
         {
             return this.PersistentDatas(model);
         }

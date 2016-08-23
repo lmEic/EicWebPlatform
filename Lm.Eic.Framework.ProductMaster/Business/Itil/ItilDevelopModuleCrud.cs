@@ -272,7 +272,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private  OpResult Store(ItilDevelopModuleManageChangeRecordModel model)
+        public override OpResult Store(ItilDevelopModuleManageChangeRecordModel model)
         {
             return this.PersistentDatas(model);
         }
