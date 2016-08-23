@@ -1,13 +1,37 @@
 ﻿using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
-using  Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
 
 namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
 {
+
+    /// <summary>
+    /// 工单管理Crud工厂
+    /// </summary>
+    internal class OrderCrudFactory
+    {
+        /// <summary>
+        /// 工单详情Crud
+        /// </summary>
+        public static OrderDetailsDb OrderDetailsDb
+        {
+            get { return OBulider.BuildInstance<OrderDetailsDb>(); }
+        }
+
+        /// <summary>
+        /// 工单物料Crud
+        /// </summary>
+        public static OrderMaterialDb OrderMaterialDb
+        {
+            get { return OBulider.BuildInstance<OrderMaterialDb>(); }
+        }
+    }
+
     /// <summary>
     /// 工单详情Db
     /// </summary>
