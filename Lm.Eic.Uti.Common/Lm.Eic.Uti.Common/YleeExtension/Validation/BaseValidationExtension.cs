@@ -79,6 +79,29 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
             return dt != null && dt.Count >= 1;
         }
 
+        //
+        // 摘要:
+        //     确定string[] 中的所有元素是否都在List中
+        //
+        // 参数:
+        //   stList:
+        //     该值不能
+        //
+        // 返回结果:
+        //     如果在List中全部找到，则为 true，否则为 false。
+        public static bool Contains(this List<string> mystList,string[] stList )
+        {
+            if (mystList == null || stList == null)
+                return false;
+
+            //物料是否都存在与工单物料中
+            foreach (var str in stList)
+            {
+                if (!mystList.Contains(str))
+                    return false;
+            }
+            return true;
+        }
         #endregion List
     }
 }
