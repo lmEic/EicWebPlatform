@@ -2,7 +2,6 @@
 /// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
-
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
@@ -152,6 +151,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
 })
+///设备档案总览
 .controller('astArchiveOverviewCtrl', function ($scope,astDataopService) {
 
     //视图管理器
@@ -171,7 +171,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     vmManager.getAstArchiveOverview();
 })
-
+///设备档案登记
 .controller('astArchiveInputCtrl', function ($scope, dataDicConfigTreeSet,connDataOpService, astDataopService,$modal) {
     ///设备档案模型
     var uiVM = {
@@ -486,7 +486,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         eloam.UnLoad();
     })
 })
-  
+///生成校验清单  
 .controller('astBuildCheckListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
     //视图管理器
     var vmManager = {
@@ -504,7 +504,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.vmManager = vmManager;
   
 })
-.controller('astInputCheckRecordCtrl', function ($scope,connDataOpService, astDataopService, $modal) {
+///录入校验记录
+.controller('astInputCheckRecordCtrl', function ($scope, connDataOpService, astDataopService, $modal) {
     ///登记校验记录
     var uiVM = {
         AssetNumber: null,
@@ -616,7 +617,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         eloam.UnLoad();
     })
 })
-
+///生成保养清单
 .controller('astBuildMaintenanceListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
     //视图管理器
     var vmManager = {
@@ -635,7 +636,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
    
 })
-
+///录入保养记录
 .controller('astInputMaintenanceRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
     ///设备保养记录模型
     var uiVM = {
