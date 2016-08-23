@@ -1,0 +1,87 @@
+﻿<div class="panel panel-primary" ng-controller="jumperWireBoardCtrl">
+    <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
+        <div bs-pane data-title="看板资料录入" data-name="initTab">
+            <div class="well">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form role="form" name="formJumperWire" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="productID" class="col-md-3 control-label">产品品号</label>
+                                    <div class="col-md-8">
+                                        <input name="productID" class="form-control" ng-model="vm.ProductID" required />
+                                        <div class="error-messages" ng-messages="formJumperWire.productID.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">产品品号不能为空</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="materialID" class="col-md-3 control-label">物料编号</label>
+                                    <div class="col-md-8">
+                                        <input name="materialID" class="form-control" ng-model="vm.MaterialID" required />
+                                        <div class="error-messages" ng-messages="formJumperWire.materialID.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">物料编号不能为空</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="drawing" class="col-md-3 control-label">文件名称：</label>
+                                    <div class="col-md-8">
+                                        <input name="drawing" type="file" class="form-control" ng-change="vmManager.uploadFile()" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="remarks" class="col-md-3 control-label">备注</label>
+                                    <div class="col-md-8">
+                                        <textarea rows="3" name="remarks" placeholder="填写备注" class="form-control" ng-model="vm.Remarks" />
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <hr />
+                            <div class="alert alert-info">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-10">
+                                        <button class="btn btn-primary" ng-click="operate.saveAll(formJumperWire.$valid)"><i class="fa fa-save"></i>保存</button>
+                                        <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                        <span yl-operatemsg-board></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="col-md-6" cg-busy="{promise:previewPromise}">
+                        <img class="img-rounded" ng-src="{{vedio.previewFileName}}" style="width:480px;height:400px;" />
+                    </div>
+                </div>
+            </div>
+            <div class="well" cg-busy="{promise:searchPromise}">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr class="info">
+                                <th>产品品号</th>
+                                <th>物料编号</th>
+                                <th>图纸</th>
+                                <th>备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.dataSet track by $index">
+                                <td>{{item.ProductID}}</td>
+                                <td>{{item.MaterialID}}</td>
+                                <td>{{item.Drawing}}</td>
+                                <td>{{item.Remarks}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>

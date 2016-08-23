@@ -146,6 +146,7 @@
     <Compile Include="Controllers\DevelopmentController.cs" />
     <Compile Include="Controllers\BaseController\EicBaseController.cs" />
     <Compile Include="Controllers\Hr\HrGeneralAffairsManageController.cs" />
+    <Compile Include="Controllers\Product\ProBoardController.cs" />
     <Compile Include="Controllers\SystemManage\EicSystemManageController.cs" />
     <Compile Include="Controllers\Equipment\EquipmentController.cs" />
     <Compile Include="Controllers\FinanceController.cs" />
@@ -384,6 +385,7 @@
     <Content Include="Scripts\controller\home\homeApp.js" />
     <Content Include="Scripts\controller\account\loginApp.js" />
     <Content Include="Scripts\controller\hr\hrApp.js" />
+    <Content Include="Scripts\controller\product\proBoard.js" />
     <Content Include="Scripts\controller\sysmanage\sysAccountManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysItilManage.js" />
     <Content Include="Scripts\controller\masterProduct\mpconfigApp.js" />
@@ -1279,6 +1281,7 @@
     <Content Include="Views\SysITIL\ChangeDevelopModuleProgressStatusTpl.cshtml" />
     <Content Include="Views\HrGeneralAffairsManage\GaWorkerClothesManage.cshtml" />
     <Content Include="Views\Equipment\AstScrapInput.cshtml" />
+    <Content Include="Views\ProBoard\JumperWireBoard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -156,7 +156,8 @@ var leeHelper = (function () {
         equipment: 'Equipment',
         systemManage: 'EicSystemManage',
         configManage: 'SysConfig',
-        itilManage:'SysITIL'
+        itilManage: 'SysITIL',
+        productBoard: 'ProBoard',
     };
     return {
         ///控制器名称
