@@ -11,7 +11,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
     public class MaterialBoardManager
     {
 
-        List<Erp.Domain.MocManageModel.OrderManageModel.MaterialModel> _bomMaterialList = new List<Erp.Domain.MocManageModel.OrderManageModel.MaterialModel>();
+        List<Erp.Domain.MocManageModel.OrderManageModel.MaterialBomModel> _bomMaterialList = new List<Erp.Domain.MocManageModel.OrderManageModel.MaterialBomModel>();
 
         /// <summary>
         /// 获取物料规格看板

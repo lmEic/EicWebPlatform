@@ -13,7 +13,7 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.BoardManagmentTest
         {
             var m = BoardService.MaterialBoardManager.GetMaterialSpecBoardBy("512-1607086");
             if (m != null)
-                BoardService.MaterialBoardManager.Store(m);
+                BoardService.MaterialBoardManager.AddMaterialSpecBoard(m);
         }
 
         public void TestStore()
@@ -25,7 +25,7 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.BoardManagmentTest
                 OpSign = "Add",
                 Remarks = "暂时没有图号"
             };
-          var result=  BoardService.MaterialBoardManager.Store(model);
+            var result = BoardService.MaterialBoardManager.AddMaterialSpecBoard(model);
         }
     }
 }

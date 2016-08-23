@@ -38,8 +38,11 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public List<MaterialModel> GetBomMaterialListBy(string productId)
+        public List<MaterialBomModel> GetBomMaterialListBy(string productId)
         {
+
+            //主件品号	阶次	元件品号	属性	品名	规格	单位	组成用量	底数
+
             return null;
         }
     }
