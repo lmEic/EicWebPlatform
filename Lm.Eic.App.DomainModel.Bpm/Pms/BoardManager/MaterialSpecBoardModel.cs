@@ -32,14 +32,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.BoardManager
             set { _materialid = value; }
             get { return _materialid; }
         }
-        private byte[] _drawing;
+        private string _boardPath;
         /// <summary>
-        ///图纸
+        ///看板路径
         /// </summary>
-        public byte[] Drawing
+        public string BoardPath
         {
-            set { _drawing = value; }
-            get { return _drawing; }
+            set { _boardPath = value; }
+            get { return _boardPath; }
         }
         private string _remarks;
         /// <summary>

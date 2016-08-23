@@ -18,5 +18,10 @@ namespace Lm.Eic.App.Erp.Bussiness.MocManage
         {
             get { return OBulider.BuildInstance<OrderManage>(); }
         }
+
+        public static BomManage BomManage
+        {
+            get { return OBulider.BuildInstance<BomManage>(); }
+        }
     }
 }
