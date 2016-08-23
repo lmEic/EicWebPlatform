@@ -42,18 +42,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult Store(MaterialSpecBoardModel model)
+        public override OpResult Store(MaterialSpecBoardModel model)
         {
             return this.PersistentDatas(model);
         }
 
         private OpResult AddMaterialBoard( MaterialSpecBoardModel model)
         {
-            ///产品品号唯一，如有存就添加料号
+            ///判断产品品号是否存在
            if (irep.IsExist (e=>e.ProductID==model.ProductID ) )
-           {
                return OpResult.SetResult("此产品号已存在！");
-           }
+
             return irep.Insert(model).ToOpResult("添加新看板成功");
         }
 
@@ -61,6 +60,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         {
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成"); 
         }
+
+       
 
         #region Find
 

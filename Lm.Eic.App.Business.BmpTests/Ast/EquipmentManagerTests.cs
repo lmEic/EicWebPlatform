@@ -46,4 +46,28 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             if (!tem.Result) { Assert.Fail(); }
         }
     }
+
+
+    public class EquipmentDiscardTests
+    {
+        public void StoreEquipmentDiscardTest()
+        {
+            DomainModel.Bpm.Ast.EquipmentDiscardRecordModel model = new DomainModel.Bpm.Ast.EquipmentDiscardRecordModel();
+            model.AssetNumber = "Z160001";
+            model.DiscardDate = DateTime.Now;
+            model.DiscardType = "无法修复";
+            model.DiscardCause = "无法修复了";
+            model.DocumentId = "BF20160822";
+            model.OpSign = "add";
+            var tem = AstService.EquipmentManager.DiscardManager.Store(model);
+            if (!tem.Result) { Assert.Fail(); }
+        }
+
+        public void GetEquipmentDiscardRecord()
+        {
+
+            var temList = AstService.EquipmentManager.DiscardManager.GetEquipmentDiscardRecord("Z160001");
+            if (temList == null) { Assert.Fail(); }
+        }
+    }
 }

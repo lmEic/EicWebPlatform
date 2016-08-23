@@ -155,7 +155,7 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Email
             }
             catch (System.Net.Mail.SmtpException ex)
             {
-                return false;
+                throw new Exception(ex.Message);
             }
 
         }

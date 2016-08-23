@@ -10,28 +10,6 @@ using System.Text;
 namespace Lm.Eic.App.Erp.Bussiness.MocManage
 {
     /// <summary>
-    /// 工单管理Crud工厂
-    /// </summary>
-    internal class OrderCrudFactory
-    {
-        /// <summary>
-        /// 工单详情Crud
-        /// </summary>
-        public static OrderDetailsDb OrderDetailsDb
-        {
-            get { return OBulider.BuildInstance<OrderDetailsDb>(); }
-        }
-
-        /// <summary>
-        /// 工单物料Crud
-        /// </summary>
-        public static OrderMaterialDb OrderMaterialDb
-        {
-            get { return OBulider.BuildInstance<OrderMaterialDb>(); }
-        }
-    }
-
-    /// <summary>
     /// 工单管理
     /// </summary>
     public class OrderManage

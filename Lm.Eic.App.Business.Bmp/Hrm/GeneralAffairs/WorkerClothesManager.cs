@@ -172,7 +172,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// </summary>
         /// <param name="model">实体</param>
         /// <returns></returns>
-        public OpResult Store(WorkClothesManageModel model)
+        public override OpResult Store(WorkClothesManageModel model)
         {
             model.InputDate = DateTime.Now.Date;
             model.ReceiveMonth = DateTime.Now.ToString("yyyyMM");

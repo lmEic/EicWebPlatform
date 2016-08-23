@@ -10,6 +10,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 {
     public class MaterialBoardManager
     {
+
+        List<Erp.Domain.MocManageModel.OrderManageModel.MaterialModel> _bomMaterialList = new List<Erp.Domain.MocManageModel.OrderManageModel.MaterialModel>();
+
         /// <summary>
         /// 获取物料规格看板
         /// </summary>
@@ -27,24 +30,70 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             //依据产品品号查找看板 
             var materialBoard = BorardCrudFactory.MaterialBoardCrud.FindMaterialSpecBoardBy(orderDetails.ProductID);
 
-            //得到Bom表中的所以料号
+            //得到工单中的所以料号
             var orderMaterialIdList = new List<string>();
             orderMaterialList.ForEach(e => { orderMaterialIdList.Add(e.MaterialId); });
 
             //看板的所有物号 是否在Bom的料号中 能找到
-            if (IsContainsMaterialId(orderMaterialIdList, materialBoard.MaterialID))
+            if (ContainsMaterialId(orderMaterialIdList, materialBoard.MaterialID))
             {
                 return materialBoard;
             }
             return null;
         }
+
         /// <summary>
-        /// 工单物料是否包含此物料
+        /// 添加一个物料规格看板
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult AddMaterialSpecBoard(MaterialSpecBoardModel model)
+        {
+            //产品品号是否存在
+            if (!ContainsProductId(model.ProductID))
+                return OpResult.SetResult("未在Erp中找到此产品");
+
+            //物料是否存在与BOM
+            if (!ContainsMaterialId(model.MaterialID))
+                return OpResult.SetResult("未在物料列表中找到指定的物料");
+            else
+                return BorardCrudFactory.MaterialBoardCrud.Store(model);
+        }
+
+        /// <summary>
+        /// Erp中是否存在产品品号 
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        public bool ContainsProductId(string productId)
+        {
+            MocService.BomManage.SetProductId(productId);
+            _bomMaterialList = MocService.BomManage.GetBomMaterialList();
+            return _bomMaterialList != null && _bomMaterialList.Count >= 1;
+        }
+
+        /// <summary>
+        /// BOM表中是否存在物料编号
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        public bool ContainsMaterialId(string materialId)
+        {
+            //得到Bom中的所有料号
+            var bomMaterialIdList = new List<string>();
+            _bomMaterialList.ForEach(e => { bomMaterialIdList.Add(e.MaterialId); });
+
+            //看板的所有物号 是否在Bom的料号中  
+            return ContainsMaterialId(bomMaterialIdList, materialId);
+        }
+
+        /// <summary>
+        /// 确定物料是否在物料列表中 如果都在 true 否则 false
         /// </summary>
         /// <param name="orderMaterialIdList"></param>
         /// <param name="materialID"></param>
         /// <returns></returns>
-        private bool IsContainsMaterialId(List<string> orderMaterialIdList, string materialID)
+        private bool ContainsMaterialId(List<string> orderMaterialIdList, string materialID)
         {
             //如果只有一个料号
             if (!materialID.Contains(","))
@@ -54,7 +103,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             string[] materials = materialID.Split(',');
             if (materials == null || materials.Count() < 1)
                 return false;
-            
+
             //物料是否都存在与工单物料中
             foreach (var material in materials)
             {
@@ -64,16 +113,5 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             return true;
         }
 
-        /// <summary>
-        /// 仓储操作 model.OpSign = add/edit/delete
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public OpResult Store(MaterialSpecBoardModel model)
-        {
-            //TODO ：依据产品品号为唯一值进行看板的存储 线材料号可以以 “，” 分隔的形式存储多个线材料号 实现CRUD
-            return BorardCrudFactory.MaterialBoardCrud.Store (model);
-        }
     }
-
 }

@@ -55,6 +55,16 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         }
 
         /// <summary>
+        /// 修改数据仓库
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public virtual OpResult Store(TEntity model)
+        {
+            return this.PersistentDatas(model);
+        }
+
+        /// <summary>
         /// 持久化数据
         /// </summary>
         /// <param name="entity"></param>
@@ -63,6 +73,10 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             OpResult result = OpResult.SetResult("持久化数据操作失败!");
             string opSign = "default";
+
+            //存储报废记录
+            if (entity == null)
+                return OpResult.SetResult(string.Format("{0}不能为空！",OpContext));
             try
             {
                 //基本属性赋值
@@ -190,6 +204,5 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return result;
         }
-
     }
 }
