@@ -41,9 +41,9 @@
                             <hr />
                             <div class="alert alert-info">
                                 <div class="row">
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                     </div>
-                                    <div class="col-md-10">
+                                    <div class="col-md-9">
                                         <button class="btn btn-primary" ng-click="operate.saveAll(formJumperWire.$valid)"><i class="fa fa-save"></i>保存</button>
                                         <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
                                         <span yl-operatemsg-board></span>
@@ -65,15 +65,13 @@
                             <tr class="info">
                                 <th>产品品号</th>
                                 <th>物料编号</th>
-                                <th>图纸</th>
                                 <th>备注</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in vmManager.dataSet track by $index">
+                            <tr ng-repeat="item in vmManager.datasets track by $index">
                                 <td>{{item.ProductID}}</td>
                                 <td>{{item.MaterialID}}</td>
-                                <td>{{item.Drawing}}</td>
                                 <td>{{item.Remarks}}</td>
                             </tr>
                         </tbody>
