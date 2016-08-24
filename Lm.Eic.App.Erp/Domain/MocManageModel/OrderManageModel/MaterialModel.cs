@@ -10,6 +10,7 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
     /// </summary>
     public class MaterialModel
     {
+
         /// <summary>
         ///  料号
         /// </summary>
