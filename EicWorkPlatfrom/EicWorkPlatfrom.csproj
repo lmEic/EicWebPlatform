@@ -175,6 +175,8 @@
     <Content Include="Content\angular-busy\dist\angular-busy.js" />
     <Content Include="Content\angular-busy\dist\angular-busy.min.css" />
     <Content Include="Content\angular-busy\dist\angular-busy.min.js" />
+    <Content Include="Content\angular-fileupload\dist\angular-file-upload.js" />
+    <Content Include="Content\angular-fileupload\dist\angular-file-upload.min.js" />
     <Content Include="Content\angular-motion\dist\angular-motion.css" />
     <Content Include="Content\angular-motion\dist\angular-motion.min.css" />
     <Content Include="Content\angular-motion\dist\modules\collapse.css" />
@@ -457,6 +459,8 @@
     <Content Include="Content\bootwatch\_bootswatch.scss" />
     <Content Include="Content\bootwatch\_variables.scss" />
     <Content Include="Content\pdfmaker\pdfmake.min.js.map" />
+    <Content Include="Content\angular-fileupload\dist\angular-file-upload.js.map" />
+    <Content Include="Content\angular-fileupload\dist\angular-file-upload.min.js.map" />
     <None Include="Properties\PublishProfiles\eicApp.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />

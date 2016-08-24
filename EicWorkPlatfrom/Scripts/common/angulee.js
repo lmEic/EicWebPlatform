@@ -264,7 +264,19 @@ var leeHelper = (function () {
         checkIsChineseValue: function (val) {
             var reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
             return reg.test(val)
-        }
+        },
+        ///读入文件并预览
+        readFile: function (imgId, file) {
+            var reader = new FileReader();
+            var img = document.getElementById(imgId)
+            //载入事件
+            reader.onload = (function (aimg) {
+                return function (e) {
+                    aimg.src = e.target.result;
+                };
+            })(img);
+            reader.readAsDataURL(file);
+        },
     };
 })();
 ///zTree 助手

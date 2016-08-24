@@ -658,6 +658,19 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             });
             return defer.promise;
         };
+        //上传单个文件
+        myajax.uploadFile = function (url, para) {
+            var defer = $q.defer();
+            $http.post(url, para, {
+                transformRequest: angular.identity,
+                headers: { 'Content-Type': undefined }
+            }).success(function (data) {
+                defer.resolve(data);
+            }).error(function (errdata) {
+                defer.reject(errdata);
+            });
+            return defer.promise;
+        };
         return myajax;
  })
 .factory('navDataService', function (ajaxService) {

@@ -27,7 +27,7 @@
                                 <div class="form-group">
                                     <label for="drawing" class="col-md-3 control-label">文件名称：</label>
                                     <div class="col-md-8">
-                                        <input name="drawing" type="file" class="form-control" ng-change="vmManager.uploadFile()" />
+                                        <input type="file" name="file" class="form-control" id="boardFile" onchange="angular.element(this).scope().selectFile(this)"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -53,7 +53,7 @@
 
                     </div>
                     <div class="col-md-6" cg-busy="{promise:previewPromise}">
-                        <img class="img-rounded" ng-src="{{vedio.previewFileName}}" style="width:480px;height:400px;" />
+                        <img class="img-rounded" id="previewFile" ng-src="{{previewFileName}}" style="width:480px;height:400px;" />
                     </div>
                 </div>
             </div>
