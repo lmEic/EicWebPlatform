@@ -18,7 +18,7 @@
                                 <div class="form-group">
                                     <label for="materialID" class="col-md-3 control-label">物料编号</label>
                                     <div class="col-md-8">
-                                        <input name="materialID" class="form-control" ng-model="vm.MaterialID" required />
+                                        <input name="materialID" class="form-control" ng-model="vm.MaterialID" ng-keypress="vmManager.isMatchProductId($event)" required />
                                         <div class="error-messages" ng-messages="formJumperWire.materialID.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">物料编号不能为空</small>
                                         </div>

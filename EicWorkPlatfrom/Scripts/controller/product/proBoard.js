@@ -9,7 +9,14 @@ productModule.factory('boardDataOpService', function (ajaxService) {
         var url = urlPrefix + 'UploadMaterialBoardFile';
         return ajaxService.uploadFile(url,file);
     };
-
+    ///检测物料料号是否与产品料号相匹配
+    boardDataOp.checkMaterialIdMatchProductId = function (materialId, productId) {
+        var url = urlPrefix + 'CheckMaterialIdMatchProductId';
+        return ajaxService.postData(url, {
+            materialId: materialId,
+            productId: productId,
+        });
+    };
     return boardDataOp;
 });
 ///线材看板
@@ -27,6 +34,14 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
     $scope.vm = uiVM;
     var vmManager = {
         activeTab: 'initTab',
+        isMatchProductId: function ($event) {
+            if ($event.keyCode === 13)
+            {
+                boardDataOpService.checkMaterialIdMatchProductId(uiVM.ProductID, uiVM.MaterialID).then(function (opResult) {
+
+                });
+            }
+        }
     };
     $scope.vmManager = vmManager;
 
@@ -42,8 +57,13 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
             var file = files[0];
             var fd = new FormData();
             fd.append('file', file);
-            boardDataOpService.uploadMaterialBoardFile(fd).then(function () {
-                leeHelper.readFile('previewFile', file);
+            boardDataOpService.uploadMaterialBoardFile(fd).then(function (result) {
+                if (result) {
+                    leeHelper.readFile('previewFile', file);
+                }
+                else {
+
+                }
             });
         }
     };
