@@ -2,7 +2,7 @@
 using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.BoardManager;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
-using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManager;
+using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment;
 using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;

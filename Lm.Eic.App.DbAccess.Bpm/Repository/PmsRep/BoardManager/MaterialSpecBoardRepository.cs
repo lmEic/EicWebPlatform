@@ -1,5 +1,5 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Mapping;
-using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManager;
+using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Collections.Generic;

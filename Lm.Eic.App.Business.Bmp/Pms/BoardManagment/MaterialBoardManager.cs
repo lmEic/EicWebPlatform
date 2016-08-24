@@ -1,4 +1,4 @@
-﻿using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManager;
+﻿using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
@@ -49,7 +49,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <returns></returns>
         public OpResult AddMaterialSpecBoard(MaterialSpecBoardModel model)
         {
-            var viefyResult = ContainsMaterialId(model.ProductID, model.MaterialID);
+            var viefyResult = CheckMaterialIdMatchProductId(model.ProductID, model.MaterialID);
             return viefyResult.Result ? BorardCrudFactory.MaterialBoardCrud.Store(model) : viefyResult;
         }
 
@@ -59,7 +59,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <param name="productId">产品品号</param>
         /// <param name="materialId">物料编号 多个物料请用逗号分隔</param>
         /// <returns></returns>
-        public OpResult ContainsMaterialId(string productId, string materialId)
+        public OpResult CheckMaterialIdMatchProductId(string productId, string materialId)
         {
             if (!ContainsProductId(productId))
                 return OpResult.SetResult("未找到输入的产品品号！");

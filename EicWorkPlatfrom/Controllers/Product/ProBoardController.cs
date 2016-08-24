@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Lm.Eic.App.Business.Bmp.Pms.BoardManagment;
+using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment;
 
 namespace EicWorkPlatfrom.Controllers.Product
 {
