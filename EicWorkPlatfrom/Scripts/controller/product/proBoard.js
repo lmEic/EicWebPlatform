@@ -34,6 +34,7 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
         MaterialID: null,
         DocumentPath: null,
         Remarks: null,
+        Department:null,
         OpPerson: null,
         OpSign:'add',
         Id_Key: null,
@@ -68,13 +69,14 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
     $scope.operate = operate;
     operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
+            leeHelper.setUserData(uiVM);
             boardDataOpService.addMaterialSpecBoardRecord(uiVM).then(function (opresult) {
                 var storeEntity = _.clone(uiVM);
                 storeEntity.Id_Key = opresult.Id_Key;
                 if (storeEntity.OpSign === 'add') {
                     vmManager.datasets.push(storeEntity);
                 }
-                
+                vmManager.init();
             });
         })
     };
@@ -93,7 +95,7 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
             boardDataOpService.uploadMaterialBoardFile(fd).then(function (result) {
                 if (result) {
                     leeHelper.readFile('previewFile', file);
-                    uiVM.DocumentPath = "FileLibrary/TwoMaterialBoard/";
+                    uiVM.DocumentPath = "FileLibrary/TwoMaterialBoard/" + file.name;
                 }
                 else {
 
