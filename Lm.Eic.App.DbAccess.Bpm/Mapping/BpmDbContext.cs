@@ -1,5 +1,5 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Mapping.AstMapping;
-using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.BoardManager;
+using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.BoardManagment;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment;

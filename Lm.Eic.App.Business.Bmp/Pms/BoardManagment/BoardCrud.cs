@@ -1,5 +1,5 @@
 ﻿
-using Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.BoardManager;
+using Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.BoardManagment;
 using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;

@@ -6,7 +6,7 @@ using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.BoardManager
+namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.BoardManagment
 {
 
     /// <summary>
