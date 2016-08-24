@@ -2,7 +2,12 @@
 /// <reference path="../../angular.min.js" />
 
 angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
+
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
+
+    var boardUrlPrefix = leeHelper.controllers.productBoard + "/";
+
     $stateProvider.state('standardHoursConfig', {
         templateUrl: 'DailyReport/StandardHoursConfig',
     }).state('proStationConfig', {
@@ -11,12 +16,19 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     //--------------人员管理--------------------------
     .state('registWorkerInfo', {
         templateUrl: 'ProEmployee/RegistWorkerInfo'
-    }).state('proStationManage', {
+    })
+    .state('proStationManage', {
         templateUrl: 'ProEmployee/ProStationManage'
-    }).state('proClassManage', {
+    })
+    .state('proClassManage', {
         templateUrl: 'ProEmployee/ProClassManage'
-    }).state('workHoursManage', {
+    })
+    .state('workHoursManage', {
         templateUrl: 'ProEmployee/WorkHoursManage'
+    })
+    //-------------看板管理-------------------
+    .state('jumperWireBoard', {//线材看板管理
+        templateUrl:boardUrlPrefix+ 'JumperWireBoard'
     })
 })
 .factory('proEmployeeDataService', function (ajaxService) {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.App.DomainModel.Bpm.Pms.BoardManager
+namespace Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment
 {
     /// <summary>
     ///物料规格看板

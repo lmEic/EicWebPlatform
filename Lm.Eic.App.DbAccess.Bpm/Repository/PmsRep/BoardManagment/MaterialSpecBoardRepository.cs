@@ -1,12 +1,12 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Mapping;
-using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManager;
+using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.BoardManager
+namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.BoardManagment
 {
     /// <summary>
     ///物料规格看板

@@ -1,4 +1,4 @@
-﻿using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManager;
+﻿using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +6,7 @@ using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.BoardManager
+namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.BoardManagment
 {
 
     /// <summary>
