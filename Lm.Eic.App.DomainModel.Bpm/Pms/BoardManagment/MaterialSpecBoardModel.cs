@@ -25,21 +25,30 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment
         }
         private string _materialid;
         /// <summary>
-        ///料号
+        ///物料品号
         /// </summary>
         public string MaterialID
         {
             set { _materialid = value; }
             get { return _materialid; }
         }
-        private string _boardPath;
+        private string _documentpath;
         /// <summary>
-        ///看板路径
+        ///文档路径
         /// </summary>
-        public string BoardPath
+        public string DocumentPath
         {
-            set { _boardPath = value; }
-            get { return _boardPath; }
+            set { _documentpath = value; }
+            get { return _documentpath; }
+        }
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
         }
         private string _remarks;
         /// <summary>
@@ -61,7 +70,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment
         }
         private string _opsign;
         /// <summary>
-        ///操作标识
+        ///操作标示
         /// </summary>
         public string OpSign
         {
@@ -97,5 +106,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment
         }
         #endregion Model
     }
- 
+
+
 }
