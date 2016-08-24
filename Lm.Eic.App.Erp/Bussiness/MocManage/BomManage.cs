@@ -13,41 +13,13 @@ namespace Lm.Eic.App.Erp.Bussiness.MocManage
     public class BomManage
     {
         public BomManage() { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="productId"></param>
-        public BomManage(string productId)
-        {
-            this._productId = productId;
-        }
-
-        /// <summary>
-        /// 设置产品品号
-        /// </summary>
-        /// <param name="productId"></param>
-        public void SetProductId(string productId)
-        {
-            this._productId = productId;
-        }
-         
-        string _productId;
-        /// <summary>
-        /// 产品品号
-        /// </summary>
-        public string ProductId
-        {
-            get { return _productId; }
-        }
-
         /// <summary>
         /// 获取Bom物料列表
         /// </summary>
         /// <returns></returns>
-        public List<MaterialModel> GetBomMaterialList()
+        public List<MaterialModel> GetBomMaterialList(string productId)
         {
-          return  BomCrudFactory.BomManageDb.GetBomMaterialListBy(_productId);
+          return  BomCrudFactory.BomManageDb.GetBomMaterialListBy(productId);
         }
 
     }

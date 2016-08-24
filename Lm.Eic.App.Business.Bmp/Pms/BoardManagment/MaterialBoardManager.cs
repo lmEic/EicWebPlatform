@@ -23,22 +23,22 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             //TODO ：根据工单号获取产品品号 =》依据产品品号查找看板 =》根据看板的线材品号 在工单的物料BOM中查找 =>只有存在该线材才能通过
 
             //根据工单号获取Erp中的工单信息
-            MocService.OrderManage.SetOrderId(orderId);
-            var orderDetails = MocService.OrderManage.GetOrderDetails();
-            var orderMaterialList = MocService.OrderManage.GetOrderMaterialList();
+            var orderDetails = MocService.OrderManage.GetOrderDetails(orderId);
+            var orderMaterialList = MocService.OrderManage.GetOrderMaterialList(orderId);
 
             //依据产品品号查找看板 
             var materialBoard = BorardCrudFactory.MaterialBoardCrud.FindMaterialSpecBoardBy(orderDetails.ProductID);
+            if (materialBoard == null)
+                return null;
 
-            //得到工单中的所以料号
+            //得到工单中的所有料号
             var orderMaterialIdList = new List<string>();
             orderMaterialList.ForEach(e => { orderMaterialIdList.Add(e.MaterialId); });
 
             //看板的所有物号 是否在Bom的料号中 能找到
             if (ContainsMaterialId(orderMaterialIdList, materialBoard.MaterialID))
-            {
                 return materialBoard;
-            }
+
             return null;
         }
 
@@ -49,15 +49,24 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <returns></returns>
         public OpResult AddMaterialSpecBoard(MaterialSpecBoardModel model)
         {
-            //产品品号是否存在
-            if (!ContainsProductId(model.ProductID))
-                return OpResult.SetResult("未在Erp中找到此产品");
+            var viefyResult = ContainsMaterialId(model.ProductID, model.MaterialID);
+            return viefyResult.Result ? BorardCrudFactory.MaterialBoardCrud.Store(model) : viefyResult;
+        }
 
-            //物料是否存在与BOM
-            if (!ContainsMaterialId(model.MaterialID))
-                return OpResult.SetResult("未在物料列表中找到指定的物料");
-            else
-                return BorardCrudFactory.MaterialBoardCrud.Store(model);
+        /// <summary>
+        /// 物料是否存在
+        /// </summary>
+        /// <param name="productId">产品品号</param>
+        /// <param name="materialId">物料编号 多个物料请用逗号分隔</param>
+        /// <returns></returns>
+        public OpResult ContainsMaterialId(string productId, string materialId)
+        {
+            if (!ContainsProductId(productId))
+                return OpResult.SetResult("未找到输入的产品品号！");
+            if (ContainsProductId(materialId))
+                return OpResult.SetResult("未在BOM中找到料号");
+
+            return OpResult.SetResult("", true);
         }
 
         /// <summary>
@@ -65,10 +74,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public bool ContainsProductId(string productId)
+        private bool ContainsProductId(string productId)
         {
-            MocService.BomManage.SetProductId(productId);
-            _bomMaterialList = MocService.BomManage.GetBomMaterialList();
+            _bomMaterialList = MocService.BomManage.GetBomMaterialList(productId);
             return _bomMaterialList != null && _bomMaterialList.Count >= 1;
         }
 
@@ -77,7 +85,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public bool ContainsMaterialId(string materialId)
+        private bool ContainsMaterialId(string materialId)
         {
             //得到Bom中的所有料号
             var bomMaterialIdList = new List<string>();

@@ -15,41 +15,22 @@ namespace Lm.Eic.App.Erp.Bussiness.MocManage
     public class OrderManage
     {
         public OrderManage() { }
-        /// <summary>
-        /// 初始化一个工单
-        /// </summary>
-        /// <param name="orderId"></param>
-        public OrderManage(string orderId)
-        {
-            this._orderId = orderId;
-        }
-        /// <summary>
-        /// 全局变量 OrderID
-        /// </summary>
-        string _orderId = string.Empty;
-        /// <summary>
-        /// 设置工单单号
-        /// </summary>
-        /// <param name="orderId"></param>
-        public void SetOrderId(string orderId)
-        {
-            _orderId = orderId;
-        }
+       
         /// <summary>
         /// 获取工单详情
         /// </summary>
         /// <returns></returns>
-        public OrderModel GetOrderDetails()
+        public OrderModel GetOrderDetails(string orderId)
         {
-            return OrderCrudFactory.OrderDetailsDb.GetOrderDetailsBy(_orderId);
+            return OrderCrudFactory.OrderDetailsDb.GetOrderDetailsBy(orderId);
         }
         /// <summary>
         /// 获取工单物料列表
         /// </summary>
         /// <returns></returns>
-        public List<MaterialModel> GetOrderMaterialList()
+        public List<MaterialModel> GetOrderMaterialList(string orderId)
         {
-            return OrderCrudFactory.OrderMaterialDb.GetOrderMaterialListBy(_orderId);
+            return OrderCrudFactory.OrderMaterialDb.GetOrderMaterialListBy(orderId);
         }
     }
 }
