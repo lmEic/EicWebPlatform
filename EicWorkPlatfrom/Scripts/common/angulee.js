@@ -100,6 +100,8 @@ var leeDataHandler = (function () {
                 userName: null,
                 //头像
                 headPortrait: null,
+                //部门
+                department:null,
                 //网站物理路径
                 webSitePhysicalApplicationPath: null,
                 serverName:null,
@@ -118,7 +120,7 @@ var leeDataHandler = (function () {
                         loginedUser.userId = user.LoginedUser.UserId;
                         loginedUser.userName = user.LoginedUser.UserName;
                         loginedUser.headPortrait = user.LoginedUser.HeadPortrait;
-                       
+                        loginedUser.department = user.loginedUser.Department;
                     }
                     //保存站点信息
                     if (loginInfo.webSite !== undefined)
@@ -276,6 +278,21 @@ var leeHelper = (function () {
                 };
             })(img);
             reader.readAsDataURL(file);
+        },
+        ///设置用户数据
+        setUserData: function (uiVm) {
+            var user = leeDataHandler.dataStorage.getLoginedUser();
+            if (user !== null)
+            {
+                if (uiVm.OpPerson !== undefined)
+                {
+                    uiVm.OpPerson = user.userName;
+                }
+                if (uiVm.Department !== undefined)
+                {
+                    uiVm.Department = user.department;
+                }
+            }
         },
     };
 })();

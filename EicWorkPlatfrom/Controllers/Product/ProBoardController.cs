@@ -61,7 +61,18 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult CheckMaterialIdMatchProductId(string materialId, string productId)
         {
-            var result = 0;
+            var result = BoardService.MaterialBoardManager.CheckMaterialIdMatchProductId(productId,materialId);
+            return Json(result);
+        }
+        /// <summary>
+        /// 添加物料看板规格记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult AddMaterialSpecBoardRecord(MaterialSpecBoardModel model)
+        {
+            var result = BoardService.MaterialBoardManager.AddMaterialSpecBoard(model);
             return Json(result);
         }
     }

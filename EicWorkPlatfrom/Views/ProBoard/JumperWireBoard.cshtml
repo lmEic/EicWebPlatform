@@ -18,7 +18,8 @@
                                 <div class="form-group">
                                     <label for="materialID" class="col-md-3 control-label">物料编号</label>
                                     <div class="col-md-8">
-                                        <input name="materialID" class="form-control" ng-model="vm.MaterialID" ng-keypress="vmManager.isMatchProductId($event)" required />
+                                        <input name="materialID" class="form-control" ng-model="vm.MaterialID" placeholder="输入物料编号并按下回车键"
+                                                ng-keypress="vmManager.isMatchProductId($event)" required />
                                         <div class="error-messages" ng-messages="formJumperWire.materialID.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">物料编号不能为空</small>
                                         </div>
@@ -40,9 +41,9 @@
                             <hr />
                             <div class="alert alert-info">
                                 <div class="row">
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                     </div>
-                                    <div class="col-md-10">
+                                    <div class="col-md-9">
                                         <button class="btn btn-primary" ng-click="operate.saveAll(formJumperWire.$valid)"><i class="fa fa-save"></i>保存</button>
                                         <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
                                         <span yl-operatemsg-board></span>
@@ -53,30 +54,30 @@
 
                     </div>
                     <div class="col-md-6" cg-busy="{promise:previewPromise}">
-                        <img class="img-rounded" id="previewFile" ng-src="{{previewFileName}}" style="width:480px;height:400px;" />
+                        <img class="img-rounded" id="previewFile" ng-src="{{previewFileName}}" style="width:100%;height:420px;" />
                     </div>
                 </div>
             </div>
-            <div class="well" cg-busy="{promise:searchPromise}">
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr class="info">
-                                <th>产品品号</th>
-                                <th>物料编号</th>
-                                <th>图纸</th>
-                                <th>备注</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="item in vmManager.dataSet track by $index">
-                                <td>{{item.ProductID}}</td>
-                                <td>{{item.MaterialID}}</td>
-                                <td>{{item.Drawing}}</td>
-                                <td>{{item.Remarks}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        </div>
+        <div bs-pane data-title="打印物料看板" data-name="printMaterialTab">
+            <div class="well">
+                <div class="row">
+                    <div class="col-md-4">
+                        <form role="form" name="formJumperWire" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <input name="productID" class="form-control" placeholder="输入工单单号" ng-model="vm.ProductID" required />
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="col-md-8">
+                        <div style="width:100%;height:460px;">
+                            <iframe id='pdfV' style="width:100%;height:100%;font-weight:600;"></iframe>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
