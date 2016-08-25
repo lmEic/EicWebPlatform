@@ -22,21 +22,21 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     /// <summary>
     ///
     /// </summary>
-    public interface IDailyReportsRepositoryRepository : IRepository<DailyReportModel> { }
+    public interface IDailyReportRepositoryRepository : IRepository<DailyReportModel> { }
     /// <summary>
     ///
     /// </summary>
-    public class DailyReportsRepositoryRepository : BpmRepositoryBase<DailyReportModel>, IDailyReportsRepositoryRepository
+    public class DailyReportRepositoryRepository : BpmRepositoryBase<DailyReportModel>, IDailyReportRepositoryRepository
     { }
 
     /// <summary>
     ///
     /// </summary>
-    public interface IDailyReportsTemplateRepositoryRepository : IRepository<DailyReportTemplateModel> { }
+    public interface IDailyReportTemplateRepositoryRepository : IRepository<DailyReportTemplateModel> { }
     /// <summary>
     ///
     /// </summary>
-    public class DailyReportsTemplateRepositoryRepository : BpmRepositoryBase<DailyReportTemplateModel>, IDailyReportsTemplateRepositoryRepository
+    public class DailyReportTemplateRepositoryRepository : BpmRepositoryBase<DailyReportTemplateModel>, IDailyReportTemplateRepositoryRepository
     { }
 
 }
