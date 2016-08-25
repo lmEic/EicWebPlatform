@@ -63,7 +63,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         {
             if (!ContainsProductId(productId))
                 return OpResult.SetResult("未找到输入的产品品号！");
-            if (ContainsMaterialId(materialId))
+            if (!ContainsMaterialId(materialId))
                 return OpResult.SetResult("未在BOM中找到料号");
 
             return OpResult.SetResult("", true);

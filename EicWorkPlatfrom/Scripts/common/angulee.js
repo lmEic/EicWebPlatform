@@ -120,7 +120,8 @@ var leeDataHandler = (function () {
                         loginedUser.userId = user.LoginedUser.UserId;
                         loginedUser.userName = user.LoginedUser.UserName;
                         loginedUser.headPortrait = user.LoginedUser.HeadPortrait;
-                        loginedUser.department = user.loginedUser.Department;
+                        if (!_.isUndefined(user.LoginedUser.Department))
+                            loginedUser.department = user.LoginedUser.Department;
                     }
                     //保存站点信息
                     if (loginInfo.webSite !== undefined)
@@ -278,6 +279,7 @@ var leeHelper = (function () {
                 };
             })(img);
             reader.readAsDataURL(file);
+            return img.src;
         },
         ///设置用户数据
         setUserData: function (uiVm) {
