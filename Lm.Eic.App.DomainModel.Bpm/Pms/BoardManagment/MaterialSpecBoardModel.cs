@@ -32,6 +32,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment
             set { _materialid = value; }
             get { return _materialid; }
         }
+        private string _documenturl;
+        /// <summary>
+        ///文档Url
+        /// </summary>
+        public string DocumentUrl
+        {
+            set { _documenturl = value; }
+            get { return _documenturl; }
+        }
         private string _documentpath;
         /// <summary>
         ///文档路径
@@ -49,6 +58,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment
         {
             set { _department = value; }
             get { return _department; }
+        }
+        private string _state;
+        /// <summary>
+        ///状态
+        /// </summary>
+        public string State
+        {
+            set { _state = value; }
+            get { return _state; }
         }
         private string _remarks;
         /// <summary>
@@ -106,6 +124,5 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment
         }
         #endregion Model
     }
-
 
 }

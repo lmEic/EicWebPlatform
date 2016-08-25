@@ -82,6 +82,22 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             }
         }
 
+        /// <summary>
+        /// 获取待审核的看板列表
+        /// </summary>
+        /// <returns></returns>
+        public List<MaterialSpecBoardModel> GetWaittingAuditBoardList()
+        {
+            try
+            {
+                return irep.Entities.Where(m => m.State=="待审核").ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+
         #endregion
     }
 }
