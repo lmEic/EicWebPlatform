@@ -8,7 +8,7 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
     /// <summary>
     /// 工单物料
     /// </summary>
-    public class MaterialModel
+    public class OrderMaterialModel
     {
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
     /// <summary>
     /// Bom表信息
     /// </summary>
-    public class MaterialBomModel
+    public class BomMaterialModel
     {
         /// <summary>
         ///  主件料号
@@ -67,8 +67,6 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
         /// 低数   (MD007)
         /// </summary>
         public double  BaseNumber { get; set; }
-       
-        
     }
     /// <summary>
     /// 物料基本信息
