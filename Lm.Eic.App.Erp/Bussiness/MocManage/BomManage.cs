@@ -45,9 +45,9 @@ namespace Lm.Eic.App.Erp.Bussiness.MocManage
         /// 获取Bom物料列表
         /// </summary>
         /// <returns></returns>
-        public List<MaterialBomModel> GetBomMaterialList()
+        public List<MaterialBomModel> GetBomMaterialList(string productId)
         {
-          return  BomCrudFactory.BomManageDb.GetBomMaterialListBy(_productId);
+          return  BomCrudFactory.BomManageDb.GetBomMaterialListBy(productId);
         }
 
     }

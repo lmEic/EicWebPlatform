@@ -36,7 +36,9 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
         /// </summary>
         public double ReceiveCount { set; get; }
     }
-
+    /// <summary>
+    /// Bom表信息
+    /// </summary>
     public class MaterialBomModel
     {
         /// <summary>
@@ -51,23 +53,12 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
         ///  组件料号
         /// </summary>
         public string MaterialId { set; get; }
-         /// <summary>
-         /// 组件属性
-         /// </summary>
-        public string Property { set; get; }
-         /// <summary>
-         /// 组件物料名称
-         /// </summary>
-        public string MaterialName { set; get; }
-   
+
         /// <summary>
-        ///  规格
+        /// 料号信息
         /// </summary>
-        public string MaterialSpecify { set; get; }
-        /// <summary>
-        ///  单位
-        /// </summary>
-        public string Unit { set; get; }
+        public MarterialBaseInfo MaterialIdInfo { set;get; } 
+     
         /// <summary>
         /// 组成用量  (MD006)
         /// </summary>
@@ -75,8 +66,47 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
         /// <summary>
         /// 低数   (MD007)
         /// </summary>
-        public string BaseNumber { get; set; }
+        public double  BaseNumber { get; set; }
        
         
+    }
+    /// <summary>
+    /// 物料基本信息
+    /// </summary>
+    public class MarterialBaseInfo
+    {
+        public MarterialBaseInfo()
+        { }
+        /// <summary>
+        ///  组件料号
+        /// </summary>
+        public string MaterialId { set; get; }
+        /// <summary>
+        /// 组件物料名称
+        /// </summary>
+        public string MaterialName { set; get; }
+        /// <summary>
+        ///  规格
+        /// </summary>
+        public string MaterialSpecify { set; get; }
+        /// <summary>
+        /// 组件属性
+        /// </summary>
+        public string Property { set; get; }
+        /// <summary>
+        ///  单位
+        /// </summary>
+        public string Unit { set; get; }
+
+
+    }
+    /// <summary>
+    /// 替代料件
+    /// </summary>
+    public class AgentMaterilModel
+    {
+        public string MatreialID { set; get; }
+        public string AgentMaterialId { set; get; }
+
     }
 }
