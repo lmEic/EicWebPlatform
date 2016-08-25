@@ -63,7 +63,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         {
             if (!ContainsProductId(productId))
                 return OpResult.SetResult("未找到输入的产品品号！");
-            if (ContainsProductId(materialId))
+            if (ContainsMaterialId(materialId))
                 return OpResult.SetResult("未在BOM中找到料号");
 
             return OpResult.SetResult("", true);
@@ -76,8 +76,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <returns></returns>
         private bool ContainsProductId(string productId)
         {
-            _bomMaterialList = MocService.BomManage.GetBomMaterialList(productId);
-            return _bomMaterialList != null && _bomMaterialList.Count >= 1;
+            //_bomMaterialList = MocService.BomManage.GetBomMaterialList(productId);
+            //return _bomMaterialList != null && _bomMaterialList.Count >= 1;
+
+            //----------------------------------------由于Bom还没好  暂时不判断
+
+            return true;
         }
 
         /// <summary>
@@ -88,11 +92,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         private bool ContainsMaterialId(string materialId)
         {
             //得到Bom中的所有料号
-            var bomMaterialIdList = new List<string>();
-            _bomMaterialList.ForEach(e => { bomMaterialIdList.Add(e.MaterialId); });
+            //var bomMaterialIdList = new List<string>();
+            //_bomMaterialList.ForEach(e => { bomMaterialIdList.Add(e.MaterialId); });
 
             //看板的所有物号 是否在Bom的料号中  
-            return ContainsMaterialId(bomMaterialIdList, materialId);
+            //return ContainsMaterialId(bomMaterialIdList, materialId);
+
+
+            //----------------------------------------由于Bom还没好  暂时不判断
+
+            return true;
         }
 
         /// <summary>
