@@ -116,9 +116,9 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
             content: [
 		          'pdfmake (since it\'s based on pdfkit) supports JPEG and PNG format',
 		          'If no width/height/fit is provided, image original size will be used',
-                  {
-                      image:'/FileLibrary/TwoMaterialBoard/LocalStore.PNG', 
-                  },
+                  //{
+                  //    image:'/FileLibrary/TwoMaterialBoard/LocalStore.PNG', 
+                  //},
             ],
         };
         pdfMake.createPdf(dd).getDataUrl(function (outDoc) {

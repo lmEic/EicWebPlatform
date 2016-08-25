@@ -63,7 +63,15 @@
             <div class="well">
                 <div class="row">
                     <div class="col-md-4">
-
+                        <form role="form" name="formJumperWire" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <input name="productID" class="form-control" placeholder="输入工单单号" ng-model="vm.ProductID" required />
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
                     </div>
                     <div class="col-md-8">
                         <div style="width:100%;height:460px;">
