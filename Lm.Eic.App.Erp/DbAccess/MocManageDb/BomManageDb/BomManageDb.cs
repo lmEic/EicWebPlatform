@@ -28,14 +28,12 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
     /// </summary>
     public class BomManageDb
     {
-        
-
         /// <summary>
         /// 获取工单详情      主物料    品号     底数   组成用量
         /// </summary>
         /// <param name="orderID"></param>
         /// <returns></returns>
-        public  List<MaterialBomModel> GetBomFormERP_BOMMD_By(string productId ,int grade )
+         private   List<MaterialBomModel> GetBomFormERP_BOMMD_By(string productId ,int grade )
         {
            
             string SqlFields= "Select MD003 as 组料品号,MD007 as 底数,MD006 as 组成用量 from BOMMD";
@@ -52,7 +50,12 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
           
             return ListModels;
         }
-        private AgentMaterilModel tdmaterial(string productId)
+        /// <summary>
+        /// 替代料件
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+         private AgentMaterilModel tdmaterial(string productId)
         {  
             string sqlFields = "SELECT  distinct  MB004  FROM  BOMMB  ";
             string sqlwhere = string.Format("WHERE   MB001 = '{0}' AND (MB007 = ''  or  MB007 >= '{1}')", productId, DateTime.Now.Date.ToString("yyyyMMdd"));
@@ -68,7 +71,7 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
          /// <summary>
         /// Sql      品号    品名    规格   属性   单位
         /// </summary>
-        public MarterialBaseInfo GetBomFormERP_INVMB_By(string productId)
+        private  MarterialBaseInfo GetBomFormERP_INVMB_By(string productId)
         {
             string SqlFields="SELECT MB001 as 品号,MB002 as 品名, MB003 as 规格, MB025 as 属性,MB004 as 单位 FROM  INVMB"; 
             string sqlWhere = string.Format(" where MB001='{0}'", productId);
@@ -111,18 +114,16 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
         /// <param name="gradeNumber"></param>
         /// <returns></returns>
         private  string  ConvertGrade (int gradeNumber)
-        {      string returnGrade=string.Empty ;
-        if (gradeNumber==10000)
-        {
-            returnGrade = "替代料件";
-        }
-        else
-        {
-            for (int i = 0; i < gradeNumber; i++)
-            { returnGrade = returnGrade + "*"; }
-            returnGrade = returnGrade + gradeNumber.ToString();
-        }
-               
+        {      
+            string returnGrade=string.Empty ;
+            if (gradeNumber == 10000)
+            { returnGrade = "替代料件"; }
+            else
+            {
+                for (int i = 0; i < gradeNumber; i++)
+                { returnGrade = returnGrade + "*"; }
+                returnGrade = returnGrade + gradeNumber.ToString();
+            }
                 return returnGrade;
         }
 
@@ -134,16 +135,16 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
         public List<MaterialBomModel> GetBomMaterialListBy(string productId)
         {
             
-            List<MaterialBomModel> returnMaterialModel = new List<MaterialBomModel>();
+            List<MaterialBomModel> componentModelList = new List<MaterialBomModel>();
             List<MaterialBomModel> mainMaterialModel = new List<MaterialBomModel>();
-            List<MaterialBomModel> componentMaterialModel = new List<MaterialBomModel>();
+            List<MaterialBomModel> returnMaterialModel = new List<MaterialBomModel>();
             int grade = 1;
-            returnMaterialModel = GetBomFormERP_BOMMD_By(productId, grade);
+            componentModelList = GetBomFormERP_BOMMD_By(productId, grade);
             returnxuhuan:
-            foreach (var fu in returnMaterialModel)
+            foreach (var materialModel in componentModelList)
             {
                
-                var tt2 = GetBomFormERP_BOMMD_By(fu.MaterialId, grade);
+                var tt2 = GetBomFormERP_BOMMD_By(materialModel.MaterialId, grade);
                 if (tt2 != null && tt2.Count>0)
                 {
                     tt2.ForEach(t =>
@@ -151,23 +152,23 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
                         mainMaterialModel.Add(t);
                     });
                 }
-                componentMaterialModel.Add(new MaterialBomModel {
+                returnMaterialModel.Add(new MaterialBomModel {
                     MainMaterialId = productId,
-                    MaterialIdInfo =fu.MaterialIdInfo,
-                    Grade =fu.Grade ,
-                    BaseNumber=fu.BaseNumber ,
-                    MaterialId = fu.MaterialId,
-                    NeedNumber=fu.NeedNumber 
+                    MaterialIdInfo =materialModel.MaterialIdInfo,
+                    Grade =materialModel.Grade ,
+                    BaseNumber=materialModel.BaseNumber ,
+                    MaterialId = materialModel.MaterialId,
+                    NeedNumber=materialModel.NeedNumber 
                 });
             }
                 grade++;
                 //如果子阶不为空 循环子阶
                 if (mainMaterialModel != null && mainMaterialModel.Count > 0)
                 {
-                    returnMaterialModel.Clear();
+                    componentModelList.Clear();
                     mainMaterialModel.ForEach(m =>
                     {
-                        returnMaterialModel.Add(new MaterialBomModel
+                        componentModelList.Add(new MaterialBomModel
                         {
                             MainMaterialId = productId,
                             MaterialIdInfo = m.MaterialIdInfo,
@@ -184,7 +185,7 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
          
             //主件品号	阶次	元件品号	属性	品名	规格	单位	组成用量	底数
 
-                return componentMaterialModel;
+                return returnMaterialModel;
         }
 
     }
