@@ -12,8 +12,9 @@ namespace EicWorkPlatfrom
 
             bundles.Add(new ScriptBundle("~/bundles/angularJs").Include(
                          "~/Content/print/print.min.js",
+                         "~/Content/pdfmaker/pdfmake.min.js",
+                         "~/Content/pdfmaker/vfs_fonts.js",
                          "~/Content/underscore/underscore-min.js",
-                         //"~/Content/angular-pageloadingeffect/snap.svg-min.js",
                          "~/Scripts/angular.min.js",
                          "~/Scripts/angular-animate.min.js",
                          "~/Scripts/angular-messages.min.js",

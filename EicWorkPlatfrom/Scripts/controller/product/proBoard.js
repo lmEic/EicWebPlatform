@@ -1,5 +1,7 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
+/// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
+
 var productModule = angular.module('bpm.productApp');
 productModule.factory('boardDataOpService', function (ajaxService) {
     var urlPrefix = "/" + leeHelper.controllers.productBoard + "/";
@@ -103,4 +105,28 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
             });
         }
     };
+
+    $scope.makePdfFile = function () {
+        var dd = {
+            info: {
+                title: '物料看板',
+                author:'ylee'
+            },
+            pageSize: 'A4',
+            content: [
+		          'pdfmake (since it\'s based on pdfkit) supports JPEG and PNG format',
+		          'If no width/height/fit is provided, image original size will be used',
+                  {
+                      image:'/FileLibrary/TwoMaterialBoard/LocalStore.PNG', 
+                  },
+            ],
+        };
+        pdfMake.createPdf(dd).getDataUrl(function (outDoc) {
+            document.getElementById('pdfV').src = outDoc;
+
+        });
+    };
+   
+
+    $scope.makePdfFile();
 });
