@@ -28,7 +28,7 @@ namespace Lm.Eic.App.Erp.Bussiness.MocManage
         /// 获取工单物料列表
         /// </summary>
         /// <returns></returns>
-        public List<MaterialModel> GetOrderMaterialList(string orderId)
+        public List<OrderMaterialModel> GetOrderMaterialList(string orderId)
         {
             return OrderCrudFactory.OrderMaterialDb.GetOrderMaterialListBy(orderId);
         }

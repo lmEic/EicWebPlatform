@@ -85,11 +85,11 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
         /// </summary>
         /// <param name="orderId"></param>
         /// <returns></returns>
-        public List<MaterialModel> GetOrderMaterialListBy(string orderId)
+        public List<OrderMaterialModel> GetOrderMaterialListBy(string orderId)
         {
             var idm = ErpDbAccessHelper.DecomposeID(orderId);
             string sqlWhere = string.Format(" where TB001='{0}' and TB002='{1}' ", idm.Category, idm.Code);
-            return ErpDbAccessHelper.FindDataBy<MaterialModel>(SqlFields, sqlWhere, (dr, m) =>
+            return ErpDbAccessHelper.FindDataBy<OrderMaterialModel>(SqlFields, sqlWhere, (dr, m) =>
             {
                 m.MaterialId = dr["材料品号"].ToString().Trim ();
                 m.MaterialName = dr["品名"].ToString().Trim ();
