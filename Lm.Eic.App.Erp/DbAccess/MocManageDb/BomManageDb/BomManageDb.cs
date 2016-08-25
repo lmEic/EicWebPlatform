@@ -38,12 +38,21 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
            
             string SqlFields= "Select MD003 as 组料品号,MD007 as 底数,MD006 as 组成用量 from BOMMD";
             string sqlWhere = string.Format(" where MD001='{0}' and  MD012=''", productId);
+
+            string mygrade = ConvertGrade(grade);
+            var agentProductMaterial = tdmaterial(productId);
+            if (agentProductMaterial != null)
+            {
+                sqlWhere = string.Format(" where MD001='{0}' and  MD012=''", agentProductMaterial.AgentMaterialId);
+                productId = agentProductMaterial.MatreialID;
+                mygrade = "替代料件";
+            }
             var ListModels = ErpDbAccessHelper.FindDataBy<MaterialBomModel>(SqlFields, sqlWhere, (dr, m) =>
             {
                 m.MainMaterialId = productId;
                 m.MaterialId = dr["组料品号"].ToString().Trim();
                 m.MaterialIdInfo = GetBomFormERP_INVMB_By(dr["组料品号"].ToString().Trim());
-                m.Grade = ConvertGrade(grade);
+                m.Grade = mygrade;
                 m.BaseNumber = dr["底数"].ToString().Trim().ToDouble();
                 m.NeedNumber = dr["组成用量"].ToString().Trim().ToDouble ();
             });
@@ -75,9 +84,6 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
         {
             string SqlFields="SELECT MB001 as 品号,MB002 as 品名, MB003 as 规格, MB025 as 属性,MB004 as 单位 FROM  INVMB"; 
             string sqlWhere = string.Format(" where MB001='{0}'", productId);
-
-
-          
             var ListModels = ErpDbAccessHelper.FindDataBy<MarterialBaseInfo>(SqlFields, sqlWhere, (dr, m) =>
             {
                 m.MaterialId = dr["品号"].ToString().Trim();
@@ -115,15 +121,10 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
         /// <returns></returns>
         private  string  ConvertGrade (int gradeNumber)
         {      
-            string returnGrade=string.Empty ;
-            if (gradeNumber == 10000)
-            { returnGrade = "替代料件"; }
-            else
-            {
+                string returnGrade=string.Empty ;
                 for (int i = 0; i < gradeNumber; i++)
                 { returnGrade = returnGrade + "*"; }
                 returnGrade = returnGrade + gradeNumber.ToString();
-            }
                 return returnGrade;
         }
 
