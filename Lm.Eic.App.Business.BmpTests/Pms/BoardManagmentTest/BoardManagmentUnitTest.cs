@@ -12,9 +12,9 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.BoardManagmentTest
         [TestMethod]
         public void TestMethod1()
         {
-            var m = BoardService.MaterialBoardManager.GetMaterialSpecBoardBy("512-1607086");
-            if (m != null)
-                BoardService.MaterialBoardManager.AddMaterialSpecBoard(m);
+            //var m = BoardService.MaterialBoardManager.GetMaterialSpecBoardBy("512-1607086");
+            //if (m != null)
+            //    BoardService.MaterialBoardManager.AddMaterialSpecBoard(m);
         }
 
         public void TestStore()

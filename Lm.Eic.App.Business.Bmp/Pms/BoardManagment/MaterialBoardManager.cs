@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using Lm.Eic.App.Erp.Bussiness.MocManage;
 using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 {
@@ -21,7 +23,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// </summary>
         /// <param name="orderId"></param>
         /// <returns></returns>
-        public MaterialSpecBoardModel GetMaterialSpecBoardBy(string orderId)
+        public Image GetMaterialSpecBoardBy(string orderId)
         {
             //TODO ：根据工单号获取产品品号 =》依据产品品号查找看板 =》根据看板的线材品号 在工单的物料BOM中查找 =>只有存在该线材才能通过
 
@@ -37,10 +39,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             //得到工单中的所有料号
             var orderMaterialIdList = new List<string>();
             orderMaterialList.ForEach(e => { orderMaterialIdList.Add(e.MaterialId); });
-
-            //看板的所有物号 是否在Bom的料号中 能找到
+            
+            //看板的所有料号是否都能找到
             if (ContainsMaterialId(orderMaterialIdList, materialBoard.MaterialID))
-                return materialBoard;
+                return BuildImage(materialBoard.DocumentPath.Replace("/", @"\"), string.Format("工单单号:{0}  批量：{1}", orderDetails.OrderId, orderDetails.Count));
 
             return null;
         }
@@ -101,6 +103,37 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 
         #region private Methods
       
+        private Image BuildImage(string strPatch,string context)
+        {
+            try
+            {
+                Image myImage = Image.FromFile(strPatch);
+                //创建一个画布
+                int mapWidth = myImage.Width;
+                int mapHeight = myImage.Height + 30;
+                Bitmap map = new Bitmap(mapWidth, mapHeight);
+
+                //GDI+ 绘图 将文字与图片合成
+                Graphics graphics = Graphics.FromImage(map);
+                graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                graphics.Clear(Color.White);
+                graphics.DrawString(context,
+                  new Font("宋体", 15),
+                  new SolidBrush(Color.Black),
+                  new PointF(0, 5));
+                graphics.DrawImage(myImage, new PointF(0, 30));
+
+                //释放缓存 
+                graphics.Dispose();
+                myImage.Dispose();
+                return map;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+
         /// <summary>
         /// Erp中是否存在产品品号 
         /// </summary>
