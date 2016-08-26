@@ -33,7 +33,7 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
         /// </summary>
         /// <param name="orderID"></param>
         /// <returns></returns>
-         private   List<BomMaterialModel> GetBomFormERP_BOMMD_By(string productId ,int grade )
+        private   List<BomMaterialModel> GetBomFormERP_BOMMD_By(string productId ,int grade )
         {
            
             string SqlFields= "Select MD003 as 组料品号,MD007 as 底数,MD006 as 组成用量 from BOMMD";
@@ -55,7 +55,7 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        private AgentMaterilModel AgentMaterial(string productId)
+        private AgentMaterilModel GetAgentMaterialFormERP_BOMMB_BY(string productId)
         {
             string sqlFields = "SELECT  distinct  MB004  FROM  BOMMB  ";
             string sqlwhere = string.Format("WHERE   MB001 = '{0}' AND (MB007 = ''  or  MB007 >= '{1}')", productId, DateTime.Now.Date.ToString("yyyyMMdd"));
@@ -64,11 +64,7 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
                 m.MatreialID = productId;
                 m.AgentMaterialId = dr["MB004"].ToString().Trim();
             });
-
-            if (ListModels != null && ListModels.Count() > 0)
-                return ListModels.FirstOrDefault();
-
-            return null;
+            return ListModels.FirstOrDefault();
         }
          /// <summary>
         /// Sql      品号    品名    规格   属性   单位
@@ -142,6 +138,9 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
         public List<BomMaterialModel> GetBomMaterialListBy(string productId)
         {
             List<BomMaterialModel> componentModelList = new List<BomMaterialModel>();
+            List<BomMaterialModel> componentAgentModelList = new List<BomMaterialModel>();
+
+
             List<BomMaterialModel> mainMaterialModel = new List<BomMaterialModel>();
             List<BomMaterialModel> returnMaterialModel = new List<BomMaterialModel>();
             int grade = 1;
@@ -149,11 +148,20 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
             returnxuhuan:
             foreach (var materialModel in componentModelList)
             {
-               
-                var tt2 = GetBomFormERP_BOMMD_By(materialModel.MaterialId, grade);
-                if (tt2 != null && tt2.Count>0)
+                var agentBomMaterilal = GetAgentMaterialFormERP_BOMMB_BY(materialModel.MaterialId);
+                if (agentBomMaterilal != null)
                 {
-                    tt2.ForEach(t =>
+                    componentAgentModelList = GetBomFormERP_BOMMD_By(materialModel.MaterialId, 10000);
+                }
+            }
+            if (componentAgentModelList.Count > 0)
+            { componentModelList=componentModelList.Union(componentAgentModelList).ToList(); }
+            foreach (var materialModel in componentModelList)
+            {
+                var bomMaterilal = GetBomFormERP_BOMMD_By(materialModel.MaterialId, grade);
+                if (bomMaterilal.Count>0)
+                {
+                    bomMaterilal.ForEach(t =>
                     {
                         mainMaterialModel.Add(t);
                     });
@@ -169,7 +177,7 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
             }
                 grade++;
                 //如果子阶不为空 循环子阶
-                if (mainMaterialModel != null && mainMaterialModel.Count > 0)
+                if ( mainMaterialModel.Count > 0)
                 {
                     componentModelList.Clear();
                     mainMaterialModel.ForEach(m =>
