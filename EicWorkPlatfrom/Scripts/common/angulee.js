@@ -279,7 +279,6 @@ var leeHelper = (function () {
                 };
             })(img);
             reader.readAsDataURL(file);
-            return img.src;
         },
         ///设置用户数据
         setUserData: function (uiVm) {
