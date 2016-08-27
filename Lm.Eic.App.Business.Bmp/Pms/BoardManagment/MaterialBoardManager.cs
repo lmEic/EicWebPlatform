@@ -22,30 +22,41 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <summary>
         /// 获取物料规格看板
         /// </summary>
-        /// <param name="orderId"></param>
+        /// <param name="orderId">工单</param>
+        /// <param name="shipmentDate">出货日期</param>
+        /// <param name="shipmentCount">出货数量</param>
         /// <returns></returns>
-        public Image GetMaterialSpecBoardBy(string orderId)
+        public Image GetMaterialSpecBoardBy(string orderId,string shipmentDate,string shipmentCount)
         {
-            //TODO ：根据工单号获取产品品号 =》依据产品品号查找看板 =》根据看板的线材品号 在工单的物料BOM中查找 =>只有存在该线材才能通过
+            try
+            {
+                //TODO ：根据工单号获取产品品号 =》依据产品品号查找看板 =》根据看板的线材品号 在工单的物料BOM中查找 =>只有存在该线材才能通过
 
-            //根据工单号获取Erp中的工单信息
-            var orderDetails = MocService.OrderManage.GetOrderDetails(orderId);
-            var orderMaterialList = MocService.OrderManage.GetOrderMaterialList(orderId);
+                //根据工单号获取Erp中的工单信息
+                var orderDetails = MocService.OrderManage.GetOrderDetails(orderId);
+                var orderMaterialList = MocService.OrderManage.GetOrderMaterialList(orderId);
 
-            //依据产品品号查找看板 
-            var materialBoard = BorardCrudFactory.MaterialBoardCrud.FindMaterialSpecBoardBy(orderDetails.ProductID);
-            if (materialBoard == null)
+                //依据产品品号查找看板 
+                var materialBoard = BorardCrudFactory.MaterialBoardCrud.FindMaterialSpecBoardBy(orderDetails.ProductID);
+                if (materialBoard == null)
+                    return null;
+
+                //得到工单中的所有料号
+                var orderMaterialIdList = new List<string>();
+                orderMaterialList.ForEach(e => { orderMaterialIdList.Add(e.MaterialId); });
+
+                //看板的所有料号是否都能找到
+                if (ContainsMaterialId(orderMaterialIdList, materialBoard.MaterialID))
+                    return BuildImage(materialBoard.DocumentPath.Replace("/", @"\"),
+                        string.Format("工单单号:{0} 出货日期：{1}  批量：{2}", orderDetails.OrderId, shipmentDate, shipmentCount));
+
                 return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
 
-            //得到工单中的所有料号
-            var orderMaterialIdList = new List<string>();
-            orderMaterialList.ForEach(e => { orderMaterialIdList.Add(e.MaterialId); });
-            
-            //看板的所有料号是否都能找到
-            if (ContainsMaterialId(orderMaterialIdList, materialBoard.MaterialID))
-                return BuildImage(materialBoard.DocumentPath.Replace("/", @"\"), string.Format("工单单号:{0}  批量：{1}", orderDetails.OrderId, orderDetails.Count));
-
-            return null;
         }
         /// <summary>
         /// 获取待审核的看板列表
@@ -125,7 +136,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
                 graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
                 graphics.Clear(Color.White);
                 graphics.DrawString(context,
-                  new Font("宋体", 15),
+                  new Font("宋体", 12),
                   new SolidBrush(Color.Black),
                   new PointF(0, 5));
 
