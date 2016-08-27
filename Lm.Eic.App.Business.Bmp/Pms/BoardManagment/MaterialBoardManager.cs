@@ -102,6 +102,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             var viefyResult = CheckMaterialIdMatchProductId(model.MaterialID, model.ProductID);
             return viefyResult.Result ? BorardCrudFactory.MaterialBoardCrud.Store(model) : viefyResult;
         }
+
         /// <summary>
         /// 审核看板
         /// </summary>
@@ -109,9 +110,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <returns></returns>
         public OpResult AuditMaterialBoard(MaterialSpecBoardModel model)
         {
-            model.OpSign = OpMode.Edit;
-            model.State = "已审核";
-            return BorardCrudFactory.MaterialBoardCrud.Store(model);
+            return BorardCrudFactory.MaterialBoardCrud.AuditMaterialBoard(model);
         }
 
         #endregion

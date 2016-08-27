@@ -34,7 +34,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         protected override void AddCrudOpItems()
         {
             AddOpItem(OpMode.Add, AddMaterialBoard);
-            AddOpItem(OpMode.Edit, UpdateMaterialBoard);
+            AddOpItem(OpMode.Edit, EditMaterialBoard);
             
         }
           /// <summary>
@@ -56,14 +56,32 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             return irep.Insert(model).ToOpResult("添加新看板成功");
         }
 
-        private OpResult UpdateMaterialBoard(MaterialSpecBoardModel model)
+        private OpResult EditMaterialBoard(MaterialSpecBoardModel model)
         {
             var board = FindMaterialSpecBoardBy(model.ProductID);
             model.Id_Key = board.Id_Key;
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
         }
 
-       
+
+        /// <summary>
+        /// 审核看板
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult AuditMaterialBoard(MaterialSpecBoardModel model)
+        {
+           return irep.Update(u => u.Id_Key == model.Id_Key,m=> new MaterialSpecBoardModel()
+            {
+                State= "已审核",
+                OpPerson= model.OpPerson,
+                OpDate = model.OpDate,
+                OpTime = model.OpTime,
+                OpSign = "update"
+            }).ToOpResult_Eidt("修改完成");
+        }
+
+
 
         #region Find
 
