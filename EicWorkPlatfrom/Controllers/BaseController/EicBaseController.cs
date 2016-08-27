@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -31,8 +33,6 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         #endregion json date converter
-
-
 
         #region my define
 
@@ -297,33 +297,53 @@ namespace EicWorkPlatfrom.Controllers
     /// <summary>
     /// 图片行为结果
     /// </summary>
-    public class ImageEicResult : ActionResult
+    public class ImageResult : ActionResult
     {
-        private MemoryStream imgStream;
-        private string contentType;
+        private Image image;
 
-        public ImageEicResult(MemoryStream imgStream, string contentType)
+        public ImageResult(Image image)
         {
-            this.imgStream = imgStream;
-            this.contentType = contentType;
+            this.image = image;
         }
 
         public override void ExecuteResult(ControllerContext context)
         {
             if (context == null)
                 throw new ArgumentException("context");
-            if (imgStream == null)
-                throw new ArgumentException("imgStream is null");
-            if (contentType == null)
-                throw new ArgumentException("contentType is null");
+            if (image == null)
+                throw new ArgumentException("image is null");
 
             HttpResponseBase response = context.HttpContext.Response;
             response.Clear();
+            ImageFormat imageFormat = image.RawFormat;
             response.Cache.SetCacheability(HttpCacheability.NoCache);
-            response.ContentType = contentType;
-            imgStream.WriteTo(response.OutputStream);
+            if (imageFormat.Equals(ImageFormat.Bmp)) context.HttpContext.Response.ContentType = "image/bmp";
+            if (imageFormat.Equals(ImageFormat.Gif)) context.HttpContext.Response.ContentType = "image/gif";
+            if (imageFormat.Equals(ImageFormat.Icon)) context.HttpContext.Response.ContentType = "image/vnd.microsoft.icon";
+            if (imageFormat.Equals(ImageFormat.Jpeg)) context.HttpContext.Response.ContentType = "image/jpeg";
+            if (imageFormat.Equals(ImageFormat.Png)) context.HttpContext.Response.ContentType = "image/png";
+            if (imageFormat.Equals(ImageFormat.Tiff)) context.HttpContext.Response.ContentType = "image/tiff";
+            if (imageFormat.Equals(ImageFormat.Wmf)) context.HttpContext.Response.ContentType = "image/wmf";
+            image.Save(context.HttpContext.Response.OutputStream,imageFormat);
         }
     }
+    /// <summary>
+    /// 控制器扩展类
+    /// </summary>
+    public static class ControllerExtension
+    {
+        /// <summary>
+        /// Image Result
+        /// </summary>
+        /// <param name="ctrl"></param>
+        /// <param name="image"></param>
+        /// <returns></returns>
+        public static ImageResult ImageResult(this Controller ctrl, Image image)
+        {
+            return new ImageResult(image);
+        }
+    }
+
     /// <summary>
     /// 不需要权限验证特性标注
     /// 标注有此标记的将不会对其进行权限验证

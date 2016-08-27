@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Pms.BoardManagment;
 using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace EicWorkPlatfrom.Controllers.Product
 {
@@ -43,8 +44,6 @@ namespace EicWorkPlatfrom.Controllers.Product
                 if (file.ContentLength > 0)
                 {
                     ///待加入验证文件名称逻辑:
-                    ///
-
                     string fileName = Path.Combine(this.CombinedFilePath("FileLibrary", "TwoMaterialBoard"), file.FileName);
                     file.SaveAs(fileName);
                     result = 1;
@@ -74,6 +73,14 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             var result = BoardService.MaterialBoardManager.AddMaterialSpecBoard(model);
             return Json(result);
+        }
+
+        [NoAuthenCheck]
+        public ActionResult GetMaterialSpecBoardBy(string orderId,string shippingDate,int shippingCount)
+        {
+            //var image = BoardService.MaterialBoardManager.BuildImage(@"E:\sss.jpg", "出货数量");
+            var image = BoardService.MaterialBoardManager.GetMaterialSpecBoardBy(orderId, shippingDate, shippingCount.ToString());
+            return this.ImageResult(image);
         }
     }
 }
