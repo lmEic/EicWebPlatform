@@ -18,7 +18,7 @@
                                 <div class="form-group">
                                     <label for="materialID" class="col-md-3 control-label">物料编号</label>
                                     <div class="col-md-8">
-                                        <input name="materialID" class="form-control" ng-model="vm.MaterialID" placeholder="输入物料编号并按下回车键"
+                                        <input name="materialID" class="form-control" ng-model="vm.MaterialID" placeholder="输入物料编号并按下回车键进行系统验证"
                                                 ng-keypress="vmManager.isMatchProductId($event)" required />
                                         <div class="error-messages" ng-messages="formJumperWire.materialID.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">物料编号不能为空</small>
@@ -58,6 +58,37 @@
                 </div>
             </div>
         </div>
+        <div bs-pane data-title="看板信息审核" data-name="initTab">
+            <div class="well" cg-busy="{promise:searchPromise}">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr class="info">
+                                <th>产品品号</th>
+                                <th>物料品号</th>
+                                <th>文档Url</th>
+                                <th>操作人</th>
+                                <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.editDatas track by $index">
+                                <td>{{item.ProductID}}</td>
+                                <td>{{item.MaterialID}}</td>
+                                <td>{{item.DocumentPath}}</td>
+                                <td>{{item.OpPerson}}</td>
+                                <td>
+                                    <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="审核">
+                                        修改
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
         <div bs-pane data-title="打印物料看板" data-name="printMaterialTab">
             <div class="well">
                 <div class="row">
@@ -88,13 +119,11 @@
                                 <div class="col-md-4">
                                 </div>
                                 <div class="col-md-8">
-                                    <button class="btn btn-primary" ng-click="printvm.make()"><i class="fa fa-print"></i>生成</button>
+                                    <button class="btn btn-primary" ng-click="printvm.make()"><i class="fa fa-image"></i>生成</button>
                                     <button class="btn btn-success" ng-click="printvm.print()"><i class="fa fa-print"></i>打印</button>
                                 </div>
                             </div>
-                           
                         </form>
-                       
                     </div>
                     <div class="col-md-8">
                         <div style="width:100%;height:420px;">

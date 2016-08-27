@@ -130,13 +130,13 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
         shippingDate:new Date(),
         shippingCount: 0,
         make: function () {
-            var queryPara = "orderId=" + printVM.orderId;
+            var queryPara = "orderId=" + printVM.orderId + "&shippingDate=" + printVM.shippingDate.pattern("yyyy-MM-dd") + "&shippingCount=" + printVM.shippingCount;
             $scope.previewFileName = "ProBoard/GetMaterialSpecBoardBy?" + queryPara;
-        },
+        },//生成图片
         print: function () {
             var img = document.getElementById('imagePreview');
             printJS(img.src, "image");
-        },
+        },//打印图片
     };
 
     $scope.printvm = printVM;
