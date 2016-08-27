@@ -33,6 +33,14 @@ productModule.factory('boardDataOpService', function (ajaxService) {
         return ajaxService.getData(url, {
         });
     };
+    ///审核物料信息看板数据
+    boardDataOp.auditMaterialBoardData = function (model) {
+        var url = urlPrefix + 'AuditMaterialBoardData';
+        return ajaxService.postData(url, {
+            model: model,
+        });
+    };
+
     return boardDataOp;
 });
 ///线材看板
@@ -51,6 +59,9 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
         Id_Key: null,
     }
     $scope.vm = uiVM;
+
+    var waittingAuditItem;
+
     var vmManager = {
         activeTab: 'initTab',
         init: function () {
@@ -76,18 +87,25 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
             $scope.searchPromise = boardDataOpService.getWaittingAuditBoardList().then(function (datas) {
                 vmManager.editDatas = datas;
             });
-            //vmManager.editDatas.push({
-            //    ProductID: "12333333", MaterialID: "asfasdfasfasd", DocumentPath: "afadfasdf", OpPerson: "杨垒"
-            //});
         },
         aduitItem: function (item) {
+            waittingAuditItem = item;
             vmManager.editModal.$promise.then(vmManager.editModal.show);
         },
         editModal: $modal({
             title: "物料看板审核", content: '',
             templateUrl: leeHelper.controllers.productBoard + '/AuditMaterailBoardTpl/',
             controller: function ($scope) {
-
+                $scope.previewFileName = waittingAuditItem.DocumentPath;
+                $scope.auditMaterialBoard = function () {
+                    waittingAuditItem.OpSign = 'edit';
+                    boardDataOpService.auditMaterialBoardData(waittingAuditItem).then(function (opresult) {
+                        if (opresult.Result) {
+                            vmManager.editModal.$promise.then(vmManager.editModal.hide);
+                            leeHelper.remove(vmManager.editDatas, waittingAuditItem);
+                        }
+                    });
+                };
             },
             show:false
         })
@@ -115,6 +133,14 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
             vmManager.inti();
         });
     };
+    //生成图片
+    operate.createImage = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            var queryPara = "orderId=" + printVM.orderId + "&shippingDate=" + printVM.shippingDate.pattern("yyyy-MM-dd") + "&shippingCount=" + printVM.shippingCount;
+            $scope.previewFileName = "ProBoard/GetMaterialSpecBoardBy?" + queryPara;
+        });
+    };
+
     ///选择文件并预览
     $scope.selectFile = function (el) {
         var files = el.files;
@@ -133,6 +159,8 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
             });
         }
     };
+
+
     function convertImgToBase64(url, callback, outputFormat) {
         var img = new Image();
         img.crossOrigin = 'Anonymous';
@@ -154,10 +182,6 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
         orderId:'',
         shippingDate:new Date(),
         shippingCount: 0,
-        make: function () {
-            var queryPara = "orderId=" + printVM.orderId + "&shippingDate=" + printVM.shippingDate.pattern("yyyy-MM-dd") + "&shippingCount=" + printVM.shippingCount;
-            $scope.previewFileName = "ProBoard/GetMaterialSpecBoardBy?" + queryPara;
-        },//生成图片
         print: function () {
             var img = document.getElementById('imagePreview');
             printJS(img.src, "image");

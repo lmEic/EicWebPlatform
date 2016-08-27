@@ -82,17 +82,30 @@ namespace EicWorkPlatfrom.Controllers.Product
             var image = BoardService.MaterialBoardManager.GetMaterialSpecBoardBy(orderId, shippingDate, shippingCount.ToString());
             return this.ImageResult(image);
         }
-
+        /// <summary>
+        /// 获取待审核信息面板列表
+        /// </summary>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult GetWaittingAuditBoardList()
         {
             var datas = BoardService.MaterialBoardManager.GetWaittingAuditBoardList();
-            return Json(datas);
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
-
+        [NoAuthenCheck]
         public ActionResult AuditMaterailBoardTpl()
         {
             return View();
+        }
+        /// <summary>
+        /// 审核信息看板
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult AuditMaterialBoardData(MaterialSpecBoardModel model)
+        {
+            var result = BoardService.MaterialBoardManager.AuditMaterialBoard(model);
+            return Json(result);
         }
     }
 }
