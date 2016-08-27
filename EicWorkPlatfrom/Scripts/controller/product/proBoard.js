@@ -143,7 +143,7 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
 
         //convertImgToBase64("FileLibrary/TwoMaterialBoard/授权信息.jpg", function (iurl) {
         //    url = iurl;
-        $scope.previewFileName = "ProBoard/GetMaterialSpecBoardBy/";
+        $scope.previewFileName = "ProBoard/GetMaterialSpecBoardBy";
         //})
     };
    

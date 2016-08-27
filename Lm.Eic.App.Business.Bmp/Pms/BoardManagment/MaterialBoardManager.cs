@@ -103,14 +103,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 
 
         #region private Methods
-      
+
         /// <summary>
         /// 生成看板图片
         /// </summary>
         /// <param name="strPatch">图片路径</param>
         /// <param name="context"></param>
         /// <returns></returns>
-        private Image BuildImage(string strPatch,string context)
+        public Image BuildImage(string strPatch,string context)
         {
             try
             {
@@ -128,7 +128,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
                   new Font("宋体", 15),
                   new SolidBrush(Color.Black),
                   new PointF(0, 5));
-                graphics.DrawImage(myImage, new PointF(0, 30));
+
+                Point ulCorner = new Point(0, 30);
+                Point urCorner = new Point(mapWidth, 30);
+                Point llCorner = new Point(0, mapHeight);
+                Point[] destPara = { ulCorner, urCorner, llCorner };
+                graphics.DrawImage(myImage, destPara);
 
                 //存储到流 进行格式转化
                 MemoryStream bmpStream = new MemoryStream();
