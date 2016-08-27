@@ -50,7 +50,13 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
           
             return ListModels;
         }
-
+        /// <summary>
+        /// 查找替代料件属性
+        /// </summary>
+        /// <param name="mainMaterial">主物料</param>
+        /// <param name="productId">分物料</param>
+        /// <param name="agentproductId">替代料号</param>
+        /// <returns></returns>
         private BomMaterialModel GetAgentBomFormERP_BOMMD_By(string mainMaterial,string productId,string agentproductId)
         {
 
@@ -84,9 +90,12 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
             });
             return ListModels;
         }
-         /// <summary>
+        /// <summary>
         /// Sql      品号    品名    规格   属性   单位
-        /// </summary>
+      /// </summary>
+      /// <param name="productId">产品料号</param>
+      /// <returns></returns>
+        
         private  MarterialBaseInfo GetBomFormERP_INVMB_By(string productId)
         {
             string SqlFields="SELECT MB001 as 品号,MB002 as 品名, MB003 as 规格, MB025 as 属性,MB004 as 单位 FROM  INVMB"; 
@@ -133,18 +142,11 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
         private string ConvertGrade(int gradeNumber)
         {
             string returnGrade = string.Empty;
-            if (gradeNumber == 10000)
-            {
-                returnGrade = "替代料件";
-            }
-            else
-            {
                 for (int i = 0; i < gradeNumber; i++)
                 {
                     returnGrade = returnGrade + "*";
                 }
                 returnGrade = returnGrade + gradeNumber.ToString();
-            }
             return returnGrade;
         }
 
