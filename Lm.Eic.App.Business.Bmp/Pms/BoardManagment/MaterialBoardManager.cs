@@ -83,7 +83,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 
             return OpResult.SetResult("", true);
         }
-
         #endregion
 
 
@@ -108,7 +107,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult AffirmMaterialBoard(MaterialSpecBoardModel model)
+        public OpResult AuditMaterialBoard(MaterialSpecBoardModel model)
         {
             model.OpSign = OpMode.Edit;
             model.State = "已审核";
