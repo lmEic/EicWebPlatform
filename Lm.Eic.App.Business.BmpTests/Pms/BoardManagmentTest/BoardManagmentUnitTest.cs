@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lm.Eic.App.Business.Bmp.Pms.BoardManagment;
-
+using Lm.Eic.App.Erp.Bussiness.MocManage;
 
 
 namespace Lm.Eic.App.Business.BmpTests.Pms.BoardManagmentTest
@@ -27,8 +27,9 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.BoardManagmentTest
             //    Remarks = "暂时没有图号"
             //};
             //var result = BoardService.MaterialBoardManager.AddMaterialSpecBoard(model);
-            //BomManage mdoel = new BomManage();
-            //var models = mdoel.GetBomMaterialList("24JKA015100M0RN");
+            BomManage model = new BomManage();
+          
+            var models = model.GetBomMaterialList("24JKA015100M0RN");
            
 
         }

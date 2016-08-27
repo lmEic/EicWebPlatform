@@ -58,7 +58,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 
         private OpResult UpdateMaterialBoard(MaterialSpecBoardModel model)
         {
-            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成"); 
+            var board = FindMaterialSpecBoardBy(model.ProductID);
+            model.Id_Key = board.Id_Key;
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
         }
 
        
