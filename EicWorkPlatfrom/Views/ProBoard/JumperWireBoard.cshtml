@@ -88,8 +88,8 @@
                                 <div class="col-md-4">
                                 </div>
                                 <div class="col-md-8">
-                                    <button class="btn btn-primary" ng-click="print()"><i class="fa fa-print"></i>生成</button>
-                                    <button class="btn btn-primary" ng-click="print()"><i class="fa fa-print"></i>打印</button>
+                                    <button class="btn btn-primary" ng-click="printvm.make()"><i class="fa fa-print"></i>生成</button>
+                                    <button class="btn btn-success" ng-click="printvm.print()"><i class="fa fa-print"></i>打印</button>
                                 </div>
                             </div>
                            
@@ -98,7 +98,7 @@
                     </div>
                     <div class="col-md-8">
                         <div style="width:100%;height:420px;">
-                            <img class="img-rounded" id="pp" ng-src="{{previewFileName}}" style="width:100%;height:100%;" />
+                            <img class="img-rounded" id="imagePreview" ng-src="{{previewFileName}}" style="width:100%;height:100%;" />
                         </div>
                     </div>
                 </div>

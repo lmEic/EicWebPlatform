@@ -126,26 +126,18 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
 
     ///打印视图模型
     var printVM = {
+        orderId:'',
         shippingDate:new Date(),
-        shippingCount:0,
+        shippingCount: 0,
+        make: function () {
+            var queryPara = "orderId=" + printVM.orderId;
+            $scope.previewFileName = "ProBoard/GetMaterialSpecBoardBy?" + queryPara;
+        },
+        print: function () {
+            var img = document.getElementById('imagePreview');
+            printJS(img.src, "image");
+        },
     };
 
     $scope.printvm = printVM;
-
-
-    $scope.print = function () {
-        var img = document.getElementById('pp');
-        printJS(img.src, "image");
-    };
-
-    $scope.makePdfFile = function () {
-        //var url;
-
-        //convertImgToBase64("FileLibrary/TwoMaterialBoard/授权信息.jpg", function (iurl) {
-        //    url = iurl;
-        $scope.previewFileName = "ProBoard/GetMaterialSpecBoardBy";
-        //})
-    };
-   
-    $scope.makePdfFile();
 });
