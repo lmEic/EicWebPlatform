@@ -8,6 +8,7 @@ using Lm.Eic.App.Erp.Bussiness.MocManage;
 using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 {
@@ -103,6 +104,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 
         #region private Methods
       
+        /// <summary>
+        /// 生成看板图片
+        /// </summary>
+        /// <param name="strPatch">图片路径</param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         private Image BuildImage(string strPatch,string context)
         {
             try
@@ -123,10 +130,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
                   new PointF(0, 5));
                 graphics.DrawImage(myImage, new PointF(0, 30));
 
+                //存储到流 进行格式转化
+                MemoryStream bmpStream = new MemoryStream();
+                map.Save(bmpStream, myImage.RawFormat);
+                Image resultImage = Bitmap.FromStream(bmpStream);
+               
                 //释放缓存 
                 graphics.Dispose();
                 myImage.Dispose();
-                return map;
+                return resultImage;
             }
             catch (Exception ex)
             {
