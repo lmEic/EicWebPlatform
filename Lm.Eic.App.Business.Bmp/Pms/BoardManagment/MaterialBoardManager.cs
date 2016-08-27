@@ -9,6 +9,7 @@ using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
+using System.Drawing.Imaging;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 {
@@ -26,36 +27,37 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <param name="shipmentDate">出货日期</param>
         /// <param name="shipmentCount">出货数量</param>
         /// <returns></returns>
-        public Image GetMaterialSpecBoardBy(string orderId,string shipmentDate,string shipmentCount)
+        public Image GetMaterialSpecBoardBy(string orderId, string shipmentDate, string shipmentCount)
         {
-            try
-            {
-                //TODO ：根据工单号获取产品品号 =》依据产品品号查找看板 =》根据看板的线材品号 在工单的物料BOM中查找 =>只有存在该线材才能通过
 
-                //根据工单号获取Erp中的工单信息
-                var orderDetails = MocService.OrderManage.GetOrderDetails(orderId);
-                var orderMaterialList = MocService.OrderManage.GetOrderMaterialList(orderId);
+            //TODO ：根据工单号获取产品品号 =》依据产品品号查找看板 =》根据看板的线材品号 在工单的物料BOM中查找 =>只有存在该线材才能通过
 
-                //依据产品品号查找看板 
-                var materialBoard = BorardCrudFactory.MaterialBoardCrud.FindMaterialSpecBoardBy(orderDetails.ProductID);
-                if (materialBoard == null)
-                    return null;
+            //根据工单号获取Erp中的工单信息
+            var orderDetails = MocService.OrderManage.GetOrderDetails(orderId);
+            var orderMaterialList = MocService.OrderManage.GetOrderMaterialList(orderId);
 
-                //得到工单中的所有料号
-                var orderMaterialIdList = new List<string>();
-                orderMaterialList.ForEach(e => { orderMaterialIdList.Add(e.MaterialId); });
+            if (orderDetails == null)
+                return BuildImageErr("未找到此工单");
+                            
+            //依据产品品号查找看板 
+            var materialBoard = BorardCrudFactory.MaterialBoardCrud.FindMaterialSpecBoardBy(orderDetails.ProductID);
+            if (materialBoard == null)
+                return BuildImageErr("未找到看板");
 
-                //看板的所有料号是否都能找到
-                if (ContainsMaterialId(orderMaterialIdList, materialBoard.MaterialID))
-                    return BuildImage(materialBoard.DocumentPath.Replace("/", @"\"),
-                        string.Format("工单单号:{0} 出货日期：{1}  批量：{2}", orderDetails.OrderId, shipmentDate, shipmentCount));
+            if (materialBoard.State == "待审核")
+                return BuildImageErr("看板未审核");
 
-                return null;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
+            //得到工单中的所有料号
+            var orderMaterialIdList = new List<string>();
+            orderMaterialList.ForEach(e => { orderMaterialIdList.Add(e.MaterialId); });
+
+            //看板的所有料号是否都能找到
+            if (ContainsMaterialId(orderMaterialIdList, materialBoard.MaterialID))
+                return BuildImage(string.Format(@"E:\Repositorys\EicWebPlatform\EicWorkPlatfrom\{0}", materialBoard.DocumentPath.Replace("/", @"\")),
+                    string.Format("工单单号:{0} 出货日期：{1}  批量：{2}", orderDetails.OrderId, shipmentDate, shipmentCount));
+
+            return BuildImageErr("未找到看板");
+            
 
         }
         /// <summary>
@@ -72,7 +74,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <param name="productId">产品品号</param>
         /// <param name="materialId">物料编号 多个物料请用逗号分隔</param>
         /// <returns></returns>
-        public OpResult CheckMaterialIdMatchProductId(string materialId ,string productId)
+        public OpResult CheckMaterialIdMatchProductId(string materialId, string productId)
         {
             if (!ContainsProductId(productId))
                 return OpResult.SetResult("未找到输入的产品品号！");
@@ -94,8 +96,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <returns></returns>
         public OpResult AddMaterialSpecBoard(MaterialSpecBoardModel model)
         {
+            //依据产品品号查找看板 
+            var materialBoard = BorardCrudFactory.MaterialBoardCrud.FindMaterialSpecBoardBy(model.ProductID);
+            model.OpSign = materialBoard == null ? OpMode.Add : OpMode.Edit;
             model.State = "待审核";
-            var viefyResult = CheckMaterialIdMatchProductId(model.ProductID, model.MaterialID);
+            var viefyResult = CheckMaterialIdMatchProductId(model.MaterialID, model.ProductID);
             return viefyResult.Result ? BorardCrudFactory.MaterialBoardCrud.Store(model) : viefyResult;
         }
         /// <summary>
@@ -121,7 +126,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <param name="strPatch">图片路径</param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public Image BuildImage(string strPatch,string context)
+        public Image BuildImage(string strPatch, string context)
         {
             try
             {
@@ -136,7 +141,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
                 graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
                 graphics.Clear(Color.White);
                 graphics.DrawString(context,
-                  new Font("宋体", 12),
+                  new Font("宋体", 10),
                   new SolidBrush(Color.Black),
                   new PointF(0, 5));
 
@@ -150,7 +155,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
                 MemoryStream bmpStream = new MemoryStream();
                 map.Save(bmpStream, myImage.RawFormat);
                 Image resultImage = Bitmap.FromStream(bmpStream);
-               
+
                 //释放缓存 
                 graphics.Dispose();
                 myImage.Dispose();
@@ -160,6 +165,32 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             {
                 throw new Exception(ex.InnerException.Message);
             }
+        }
+
+
+
+        private Image BuildImageErr(string errMessage)
+        {
+            //创建一个画布
+            Bitmap map = new Bitmap(400, 300);
+            //GDI+ 绘图 将文字与图片合成
+            Graphics graphics = Graphics.FromImage(map);
+            graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+            graphics.Clear(Color.White);
+            graphics.DrawString(errMessage,
+              new Font("宋体", 18),
+              new SolidBrush(Color.Black),
+              new PointF(100, 140));
+
+            //存储到流 进行格式转化
+            MemoryStream bmpStream = new MemoryStream();
+            map.Save(bmpStream, ImageFormat.Png);
+            Image resultImage = Bitmap.FromStream(bmpStream);
+
+            //释放缓存 
+            graphics.Dispose();
+            map.Dispose();
+            return resultImage;
         }
 
         /// <summary>
@@ -211,7 +242,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             }
             return true;
         }
-     
+
         #endregion
 
     }
