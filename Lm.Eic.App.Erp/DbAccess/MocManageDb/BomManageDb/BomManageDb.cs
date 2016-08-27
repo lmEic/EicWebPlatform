@@ -50,12 +50,30 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
           
             return ListModels;
         }
+
+        private BomMaterialModel GetAgentBomFormERP_BOMMD_By(string mainMaterial,string productId,string agentproductId)
+        {
+
+            string SqlFields = "Select MD001 AS 主料件, MD003 as 组料品号,MD007 as 底数,MD006 as 组成用量 from BOMMD";
+            string sqlWhere = string.Format(" where MD001='{0}' and MD003='{1}' and  MD012=''", mainMaterial, productId);
+            var ListModels = ErpDbAccessHelper.FindDataBy<BomMaterialModel>(SqlFields, sqlWhere, (dr, m) =>
+            {
+                m.MainMaterialId = mainMaterial;
+                m.MaterialId = agentproductId;
+                m.MaterialIdInfo = GetBomFormERP_INVMB_By(agentproductId.Trim());
+                m.Grade = "替代料件";
+                m.BaseNumber = dr["底数"].ToString().Trim().ToDouble();
+                m.NeedNumber = dr["组成用量"].ToString().Trim().ToDouble();
+            });
+
+            return ListModels.FirstOrDefault();
+        }
         /// <summary>
         /// 替代料件
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        private AgentMaterilModel GetAgentMaterialFormERP_BOMMB_BY(string productId)
+        private  List<AgentMaterilModel> GetAgentMaterialFormERP_BOMMB_BY(string productId)
         {
             string sqlFields = "SELECT  distinct  MB004  FROM  BOMMB  ";
             string sqlwhere = string.Format("WHERE   MB001 = '{0}' AND (MB007 = ''  or  MB007 >= '{1}')", productId, DateTime.Now.Date.ToString("yyyyMMdd"));
@@ -64,7 +82,7 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
                 m.MatreialID = productId;
                 m.AgentMaterialId = dr["MB004"].ToString().Trim();
             });
-            return ListModels.FirstOrDefault();
+            return ListModels;
         }
          /// <summary>
         /// Sql      品号    品名    规格   属性   单位
@@ -139,8 +157,6 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
         {
             List<BomMaterialModel> componentModelList = new List<BomMaterialModel>();
             List<BomMaterialModel> componentAgentModelList = new List<BomMaterialModel>();
-
-
             List<BomMaterialModel> mainMaterialModel = new List<BomMaterialModel>();
             List<BomMaterialModel> returnMaterialModel = new List<BomMaterialModel>();
             int grade = 1;
@@ -149,22 +165,28 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
             foreach (var materialModel in componentModelList)
             {
                 var agentBomMaterilal = GetAgentMaterialFormERP_BOMMB_BY(materialModel.MaterialId);
-                if (agentBomMaterilal != null)
+                if (agentBomMaterilal != null && agentBomMaterilal.Count()>0)
                 {
-                    componentAgentModelList = GetBomFormERP_BOMMD_By(materialModel.MaterialId, 10000);
+                    agentBomMaterilal.ForEach(e =>
+                    {
+                        componentAgentModelList.Add(GetAgentBomFormERP_BOMMD_By(materialModel.MainMaterialId, e.MatreialID, e.AgentMaterialId));
+                    }); 
                 }
             }
             if (componentAgentModelList.Count > 0)
-            { componentModelList=componentModelList.Union(componentAgentModelList).ToList(); }
+            { componentModelList = componentModelList.Union(componentAgentModelList).ToList(); componentAgentModelList.Clear(); }
             foreach (var materialModel in componentModelList)
             {
-                var bomMaterilal = GetBomFormERP_BOMMD_By(materialModel.MaterialId, grade);
-                if (bomMaterilal.Count>0)
+                if (materialModel.Grade != "替代料件")
                 {
-                    bomMaterilal.ForEach(t =>
+                    var bomMaterilal = GetBomFormERP_BOMMD_By(materialModel.MaterialId, grade);
+                    if (bomMaterilal.Count > 0)
                     {
-                        mainMaterialModel.Add(t);
-                    });
+                        bomMaterilal.ForEach(t =>
+                        {
+                            mainMaterialModel.Add(t);
+                        });
+                    }
                 }
                 returnMaterialModel.Add(new BomMaterialModel {
                     MainMaterialId = productId,
@@ -182,15 +204,7 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
                     componentModelList.Clear();
                     mainMaterialModel.ForEach(m =>
                     {
-                        componentModelList.Add(new BomMaterialModel
-                        {
-                            MainMaterialId = productId,
-                            MaterialIdInfo = m.MaterialIdInfo,
-                            Grade = m.Grade,
-                            BaseNumber = m.BaseNumber,
-                            MaterialId = m.MaterialId,
-                            NeedNumber = m.NeedNumber
-                        });
+                        componentModelList.Add(m);
                     }); 
                     mainMaterialModel.Clear();
                     goto returnxuhuan;
