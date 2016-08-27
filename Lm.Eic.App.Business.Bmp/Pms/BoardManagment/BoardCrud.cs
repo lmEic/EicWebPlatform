@@ -71,17 +71,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <returns></returns>
         public OpResult AuditMaterialBoard(MaterialSpecBoardModel model)
         {
-           return irep.Update(u => u.Id_Key == model.Id_Key,m=> new MaterialSpecBoardModel()
+            DateTime opDate = DateTime.Now;
+
+           return irep.Update(u => u.Id_Key == model.Id_Key,m=> new MaterialSpecBoardModel
             {
                 State= "已审核",
                 OpPerson= model.OpPerson,
-                OpDate = model.OpDate,
-                OpTime = model.OpTime,
+                OpDate = opDate.ToDate(),
+                OpTime = opDate,
                 OpSign = "update"
-            }).ToOpResult_Eidt("修改完成");
+            }).ToOpResult_Eidt("审核完成");
         }
-
-
 
         #region Find
 
