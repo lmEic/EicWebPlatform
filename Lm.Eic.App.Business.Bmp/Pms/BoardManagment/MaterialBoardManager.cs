@@ -8,6 +8,7 @@ using Lm.Eic.App.Erp.Bussiness.MocManage;
 using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 {
@@ -103,31 +104,41 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 
         #region private Methods
       
-        public Image BuildImage(string strPatch,string context)
+        /// <summary>
+        /// 生成看板图片
+        /// </summary>
+        /// <param name="strPatch">图片路径</param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private Image BuildImage(string strPatch,string context)
         {
             try
             {
                 Image myImage = Image.FromFile(strPatch);
-                ////创建一个画布
-                //int mapWidth = myImage.Width;
-                //int mapHeight = myImage.Height + 30;
-                //Bitmap map = new Bitmap(mapWidth, mapHeight);
+                //创建一个画布
+                int mapWidth = myImage.Width;
+                int mapHeight = myImage.Height + 30;
+                Bitmap map = new Bitmap(mapWidth, mapHeight);
 
-                ////GDI+ 绘图 将文字与图片合成
-                //Graphics graphics = Graphics.FromImage(map);
-                //graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
-                //graphics.Clear(Color.White);
-                //graphics.DrawString(context,
-                //  new Font("宋体", 15),
-                //  new SolidBrush(Color.Black),
-                //  new PointF(0, 5));
-                //graphics.DrawImage(myImage, new PointF(0, 30));
+                //GDI+ 绘图 将文字与图片合成
+                Graphics graphics = Graphics.FromImage(map);
+                graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                graphics.Clear(Color.White);
+                graphics.DrawString(context,
+                  new Font("宋体", 15),
+                  new SolidBrush(Color.Black),
+                  new PointF(0, 5));
+                graphics.DrawImage(myImage, new PointF(0, 30));
 
-                ////释放缓存 
-                //graphics.Dispose();
-                //myImage.Dispose();
-                //return tem;
-                return myImage;
+                //存储到流 进行格式转化
+                MemoryStream bmpStream = new MemoryStream();
+                map.Save(bmpStream, myImage.RawFormat);
+                Image resultImage = Bitmap.FromStream(bmpStream);
+               
+                //释放缓存 
+                graphics.Dispose();
+                myImage.Dispose();
+                return resultImage;
             }
             catch (Exception ex)
             {
