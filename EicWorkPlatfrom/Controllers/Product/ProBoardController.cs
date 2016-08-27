@@ -82,5 +82,17 @@ namespace EicWorkPlatfrom.Controllers.Product
             var image = BoardService.MaterialBoardManager.GetMaterialSpecBoardBy(orderId, shippingDate, shippingCount.ToString());
             return this.ImageResult(image);
         }
+
+        [NoAuthenCheck]
+        public JsonResult GetWaittingAuditBoardList()
+        {
+            var datas = BoardService.MaterialBoardManager.GetWaittingAuditBoardList();
+            return Json(datas);
+        }
+
+        public ActionResult AuditMaterailBoardTpl()
+        {
+            return View();
+        }
     }
 }

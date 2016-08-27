@@ -27,6 +27,12 @@ productModule.factory('boardDataOpService', function (ajaxService) {
             model: model,
         });
     };
+    ///获取待审核列表
+    boardDataOp.getWaittingAuditBoardList = function () {
+        var url = urlPrefix + 'GetWaittingAuditBoardList';
+        return ajaxService.getData(url, {
+        });
+    };
     return boardDataOp;
 });
 ///线材看板
@@ -51,13 +57,11 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
             leeHelper.clearVM(uiVM);
         },
         isMatchProductId: function ($event) {
-            if ($event.keyCode === 13)
-            {
+            if ($event.keyCode === 13) {
                 boardDataOpService.checkMaterialIdMatchProductId(uiVM.ProductID, uiVM.MaterialID).then(function (opResult) {
-                    if (!opResult.Result)
-                    {
+                    if (!opResult.Result) {
                         var msgModal = $modal({
-                            title: "错误提示", content:opResult.Message, templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
+                            title: "错误提示", content: opResult.Message, templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
                         });
                         msgModal.$promise.then(msgModal.show);
                         uiVM.MaterialID = null;
@@ -65,7 +69,28 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
                 });
             }
         },
-        datasets:[],
+        datasets: [],
+        editDatas: [],
+        ///获取待审核信息
+        getWaittingCheckInfo: function () {
+            $scope.searchPromise = boardDataOpService.getWaittingAuditBoardList().then(function (datas) {
+                vmManager.editDatas = datas;
+            });
+            //vmManager.editDatas.push({
+            //    ProductID: "12333333", MaterialID: "asfasdfasfasd", DocumentPath: "afadfasdf", OpPerson: "杨垒"
+            //});
+        },
+        aduitItem: function (item) {
+            vmManager.editModal.$promise.then(vmManager.editModal.show);
+        },
+        editModal: $modal({
+            title: "物料看板审核", content: '',
+            templateUrl: leeHelper.controllers.productBoard + '/AuditMaterailBoardTpl/',
+            controller: function ($scope) {
+
+            },
+            show:false
+        })
     };
     $scope.vmManager = vmManager;
 

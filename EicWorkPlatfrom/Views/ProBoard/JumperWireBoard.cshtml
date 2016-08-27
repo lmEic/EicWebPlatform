@@ -58,10 +58,12 @@
                 </div>
             </div>
         </div>
-        <div bs-pane data-title="看板信息审核" data-name="initTab">
+        <div bs-pane data-title="看板信息审核" data-name="checkTab">
             <div class="well" cg-busy="{promise:searchPromise}">
+                <span class="btn btn-sm btn-primary" ng-click="vmManager.getWaittingCheckInfo()"><i class="fa fa-tablet"></i>查看待审核信息</span>
+                <div class="h-split"></div>
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-bordered table-condensed table-hover">
                         <thead>
                             <tr class="info">
                                 <th>产品品号</th>
@@ -78,8 +80,8 @@
                                 <td>{{item.DocumentPath}}</td>
                                 <td>{{item.OpPerson}}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="审核">
-                                        修改
+                                    <button class="btn btn-xs btn-danger" ng-click="vmManager.aduitItem(item)" title="审核">
+                                        <i class="fa fa-pencil"></i>审核
                                     </button>
                                 </td>
                             </tr>
