@@ -103,30 +103,31 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 
         #region private Methods
       
-        private Image BuildImage(string strPatch,string context)
+        public Image BuildImage(string strPatch,string context)
         {
             try
             {
                 Image myImage = Image.FromFile(strPatch);
-                //创建一个画布
-                int mapWidth = myImage.Width;
-                int mapHeight = myImage.Height + 30;
-                Bitmap map = new Bitmap(mapWidth, mapHeight);
+                ////创建一个画布
+                //int mapWidth = myImage.Width;
+                //int mapHeight = myImage.Height + 30;
+                //Bitmap map = new Bitmap(mapWidth, mapHeight);
 
-                //GDI+ 绘图 将文字与图片合成
-                Graphics graphics = Graphics.FromImage(map);
-                graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
-                graphics.Clear(Color.White);
-                graphics.DrawString(context,
-                  new Font("宋体", 15),
-                  new SolidBrush(Color.Black),
-                  new PointF(0, 5));
-                graphics.DrawImage(myImage, new PointF(0, 30));
+                ////GDI+ 绘图 将文字与图片合成
+                //Graphics graphics = Graphics.FromImage(map);
+                //graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                //graphics.Clear(Color.White);
+                //graphics.DrawString(context,
+                //  new Font("宋体", 15),
+                //  new SolidBrush(Color.Black),
+                //  new PointF(0, 5));
+                //graphics.DrawImage(myImage, new PointF(0, 30));
 
-                //释放缓存 
-                graphics.Dispose();
-                myImage.Dispose();
-                return map;
+                ////释放缓存 
+                //graphics.Dispose();
+                //myImage.Dispose();
+                //return tem;
+                return myImage;
             }
             catch (Exception ex)
             {

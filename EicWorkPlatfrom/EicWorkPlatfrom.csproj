@@ -344,16 +344,6 @@
     <Content Include="Content\ztree\dist\js\jquery.ztree.exedit.min.js" />
     <Content Include="Content\ztree\dist\js\jquery.ztree.exhide.js" />
     <Content Include="Content\ztree\dist\js\jquery.ztree.exhide.min.js" />
-    <Content Include="FileLibrary\EquCheckFiles\2016-8-17\12345678.jpg" />
-    <Content Include="FileLibrary\EquCheckFiles\2016-8-17\Z169086.jpg" />
-    <Content Include="FileLibrary\MaintenanceFiles\2016-8-17\Z160079.jpg" />
-    <Content Include="FileLibrary\MaintenanceFiles\2016-8-17\Z160088.jpg" />
-    <Content Include="FileLibrary\MaintenanceFiles\2016-8-17\Z169037.jpg" />
-    <Content Include="FileLibrary\MaintenanceFiles\2016-8-17\Z169086.jpg" />
-    <Content Include="FileLibrary\TwoMaterialBoard\812.jpg" />
-    <Content Include="FileLibrary\TwoMaterialBoard\LocalStore.png" />
-    <Content Include="FileLibrary\TwoMaterialBoard\uirouter.bmp" />
-    <Content Include="FileLibrary\TwoMaterialBoard\授权信息.jpg" />
     <Content Include="Global.asax" />
     <Content Include="Content\underscore\underscore-min.map" />
     <Content Include="Content\login\lightmaster.png" />

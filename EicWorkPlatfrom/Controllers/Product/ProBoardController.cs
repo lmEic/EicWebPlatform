@@ -74,5 +74,12 @@ namespace EicWorkPlatfrom.Controllers.Product
             var result = BoardService.MaterialBoardManager.AddMaterialSpecBoard(model);
             return Json(result);
         }
+
+        [NoAuthenCheck]
+        public ActionResult GetMaterialSpecBoardBy(DateTime shippingDate)
+        {
+            var image = BoardService.MaterialBoardManager.BuildImage(@"E:\sss.jpg", "出货数量");
+            return this.ImageResult(image);
+        }
     }
 }

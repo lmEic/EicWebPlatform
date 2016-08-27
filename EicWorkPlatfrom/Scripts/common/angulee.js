@@ -295,6 +295,16 @@ var leeHelper = (function () {
                 }
             }
         },
+        ///打印视图
+        printView: function (elId) {
+            if (confirm('确定打印吗？')) {
+                var newstr = document.getElementById(elId).innerHTML;
+                var printWindow = window.open();
+                printWindow.document.write(newstr);
+                printWindow.print();
+                return false;
+            };
+        },
     };
 })();
 ///zTree 助手

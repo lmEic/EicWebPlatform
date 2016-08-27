@@ -1,4 +1,5 @@
-﻿/// <reference path="../../common/angulee.js" />
+﻿/// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/print/print.min.js" />
+/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
 
@@ -123,13 +124,27 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
         img.src = url;
     };
 
-    $scope.makePdfFile = function () {
-        var url;
+    ///打印视图模型
+    var printVM = {
+        shippingDate:new Date(),
+        shippingCount:0,
+    };
 
-        convertImgToBase64("FileLibrary/TwoMaterialBoard/授权信息.jpg", function (iurl) {
-            url = iurl;
-            $scope.previewFileName = iurl;
-        })
+    $scope.printvm = printVM;
+
+
+    $scope.print = function () {
+        var img = document.getElementById('pp');
+        printJS(img.src, "image");
+    };
+
+    $scope.makePdfFile = function () {
+        //var url;
+
+        //convertImgToBase64("FileLibrary/TwoMaterialBoard/授权信息.jpg", function (iurl) {
+        //    url = iurl;
+        $scope.previewFileName = "ProBoard/GetMaterialSpecBoardBy/";
+        //})
     };
    
     $scope.makePdfFile();

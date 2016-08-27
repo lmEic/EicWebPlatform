@@ -202,7 +202,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         #endregion String
 
         #region Image
-
         /// <summary>
         /// 将图片转换为字节数组
         /// </summary>
@@ -213,13 +212,51 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
             if (img == null) return null;
             Bitmap map = new Bitmap(img);
             MemoryStream ms = new MemoryStream();
-            map.Save(ms, ImageFormat.Jpeg);
+            saveImageToMs(img, ms);
             ms.Position = 0;
             byte[] mybite = new byte[int.Parse(ms.Length.ToString())];
             ms.Read(mybite, 0, int.Parse(ms.Length.ToString()));
             ms.Close();
             ms.Dispose();
             return mybite;
+        }
+
+        private static void saveImageToMs(Image img, MemoryStream ms)
+        {
+            ImageFormat format = img.RawFormat;
+            if (format.Equals(ImageFormat.Jpeg))
+            {
+                img.Save(ms, ImageFormat.Jpeg);
+            }
+            else if (format.Equals(ImageFormat.Png))
+            {
+                img.Save(ms, ImageFormat.Png);
+            }
+            else if (format.Equals(ImageFormat.Bmp))
+            {
+                img.Save(ms, ImageFormat.Bmp);
+            }
+            else if (format.Equals(ImageFormat.Gif))
+            {
+                img.Save(ms, ImageFormat.Gif);
+            }
+            else if (format.Equals(ImageFormat.Icon))
+            {
+                img.Save(ms, ImageFormat.Icon);
+            }
+        }
+        /// <summary>
+        /// 将Image转换为内存流
+        /// </summary>
+        /// <param name="img"></param>
+        /// <returns></returns>
+        public static MemoryStream ToMemoryStream(this Image img)
+        {
+            if (img == null) return null;
+            Bitmap map = new Bitmap(img);
+            MemoryStream ms = new MemoryStream();
+            saveImageToMs(img, ms);
+            return ms;
         }
         /// <summary>
         /// 读取文件到字节数组
