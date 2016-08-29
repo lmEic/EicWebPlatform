@@ -72,15 +72,18 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         public OpResult AuditMaterialBoard(MaterialSpecBoardModel model)
         {
             DateTime opDate = DateTime.Now;
+            model.State = "已审核";
+            model.OpSign = OpMode.Edit;
+            return Store(model);
 
-           return irep.Update(u => u.Id_Key == model.Id_Key,m=> new MaterialSpecBoardModel
-            {
-                State= "已审核",
-                OpPerson= model.OpPerson,
-                OpDate = opDate.ToDate(),
-                OpTime = opDate,
-                OpSign = "update"
-            }).ToOpResult_Eidt("审核完成");
+            //return irep.Update(u => u.Id_Key == model.Id_Key,m=> new MaterialSpecBoardModel
+            //{
+            //    State= "已审核",
+            //    OpPerson= model.OpPerson,
+            //    OpDate = opDate.ToDate(),
+            //    OpTime = opDate,
+            //    OpSign = "update"
+            //}).ToOpResult_Eidt("审核完成");
         }
 
         #region Find
@@ -94,7 +97,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         {
             try
             {
-                return irep.Entities.Where(m => m.ProductID == productId).FirstOrDefault();
+
+                return irep.Entities.Where(m => m.ProductID == productId).ToList().FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -110,7 +114,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         {
             try
             {
-                return irep.Entities.Where(m => m.State=="待审核").ToList();
+                var tem = irep.Entities.Where(m => m.State == "待审核").ToList();
+                return tem;
             }
             catch (Exception ex)
             {
