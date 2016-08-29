@@ -20,14 +20,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 
         #region Find
 
+
         /// <summary>
         /// 获取物料规格看板
         /// </summary>
-        /// <param name="orderId">工单</param>
-        /// <param name="shipmentDate">出货日期</param>
-        /// <param name="shipmentCount">出货数量</param>
+        /// <param name="rootPath"></param>
+        /// <param name="orderId"></param>
+        /// <param name="shipmentDate"></param>
+        /// <param name="shipmentCount"></param>
         /// <returns></returns>
-        public Image GetMaterialSpecBoardBy(string orderId, string rootPath, string shipmentDate, string shipmentCount)
+        public Image GetMaterialSpecBoardBy( string rootPath, string orderId, string shipmentDate, string shipmentCount)
         {
 
             //TODO ：根据工单号获取产品品号 =》依据产品品号查找看板 =》根据看板的线材品号 在工单的物料BOM中查找 =>只有存在该线材才能通过
