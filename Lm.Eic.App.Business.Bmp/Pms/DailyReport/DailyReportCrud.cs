@@ -52,5 +52,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             throw new NotImplementedException();
         }
+
+
+        
     }
 }

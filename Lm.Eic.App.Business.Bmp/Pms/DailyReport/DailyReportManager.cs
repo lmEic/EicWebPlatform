@@ -47,5 +47,48 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// 删除工序
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult DeleteProductFlow(ProductFlowModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 导入工序
+        /// </summary>
+        /// <param name="documentPatch">文档路径</param>
+        /// <returns></returns>
+        public List<ProductFlowModel> ExportProductFlow(string documentPatch)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 仓储
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult Store(ProductFlowModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        public List<ProductFlowModel> FindBy(QueryDailyReportDto dto)
+        {
+            throw new NotImplementedException();
+        }
     }
+
+
+ 
 }
