@@ -72,14 +72,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
         private OpResult AddDailyReportTemplateModel(DailyReportTemplateModel model)
         {
-            //return OpResult.SetResult("此日报模板已存在！");
+           
             return irep.Insert(model).ToOpResult("日报添加成功");
         }
   
         private OpResult EditDailyReportTemplateModel(DailyReportTemplateModel model)
         {
-            var board = FindPutInDateDailyReportBy(model.Department,model.OrderId);
-            model.Id_Key = board.Id_Key;
+            var putInDateDailyReport = FindPutInDateDailyReportBy(model.Department, model.OrderId);
+            model.Id_Key = putInDateDailyReport.Id_Key;
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
 
         }
@@ -122,7 +122,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             throw new NotImplementedException();
         }
          /// <summary>
-         /// 
+         /// 工序模板存储
          /// </summary>
          /// <param name="model"></param>
          /// <returns></returns>
