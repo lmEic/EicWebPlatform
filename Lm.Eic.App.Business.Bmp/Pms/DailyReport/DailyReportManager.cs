@@ -28,42 +28,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// </summary>
     public class ProductFlowManager
     {
-        /// <summary>
-        /// 添加工序
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public OpResult AddProductFlow(ProductFlowModel model)
-        {
-            throw new NotImplementedException();
-        } 
 
         /// <summary>
-        /// 添加工序
+        /// 导入工序列表
         /// </summary>
-        /// <param name="modleList"></param>
+        /// <param name="documentPatch">Excel文档路径</param>
         /// <returns></returns>
-        public OpResult AddProductFlow(List<ProductFlowModel> modleList)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 删除工序
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public OpResult DeleteProductFlow(ProductFlowModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 导入工序
-        /// </summary>
-        /// <param name="documentPatch">文档路径</param>
-        /// <returns></returns>
-        public List<ProductFlowModel> ExportProductFlow(string documentPatch)
+        public List<ProductFlowModel> ImportProductFlowListBy(string documentPatch)
         {
             throw new NotImplementedException();
         }
@@ -79,11 +50,32 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
 
         /// <summary>
-        /// 查询
+        /// 克隆一个产品
+        /// </summary>
+        /// <param name="sourceFlowList">源产品工序列表</param>
+        /// <param name="newProductName">新产品</param>
+        /// <returns></returns>
+        public OpResult CloneProduct(List<ProductFlowModel> sourceFlowList,string newProductName)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 获取工序列表
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public List<ProductFlowModel> FindBy(QueryDailyReportDto dto)
+        public List<ProductFlowModel> GetProductFlowListBy(QueryDailyReportDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 获取产品列表
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        public List<string> GetProductListBy(QueryDailyReportDto dto)
         {
             throw new NotImplementedException();
         }
