@@ -43,6 +43,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             throw new NotImplementedException();
         }
+        /// <summary>
+        /// 日报录入数据仓库
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public override OpResult Store(DailyReportModel model)
+        {
+            return this.PersistentDatas(model);
+        }
     }
 
     /// <summary>
@@ -56,7 +65,46 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
         protected override void AddCrudOpItems()
         {
-            throw new NotImplementedException();
+
+            AddOpItem(OpMode.Add, AddDailyReportTemplateModel);
+            AddOpItem(OpMode.Edit, EditDailyReportTemplateModel);
+        
+        }
+        private OpResult AddDailyReportTemplateModel(DailyReportTemplateModel model)
+        {
+            //return OpResult.SetResult("此日报模板已存在！");
+            return irep.Insert(model).ToOpResult("日报添加成功");
+        }
+  
+        private OpResult EditDailyReportTemplateModel(DailyReportTemplateModel model)
+        {
+            var board = FindPutInDateDailyReportBy(model.Department,model.OrderId);
+            model.Id_Key = board.Id_Key;
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
+
+        }
+
+
+     public  DailyReportTemplateModel FindPutInDateDailyReportBy(string department,string orderId  )
+        {
+            try
+            {
+
+                return irep.Entities.Where(m => m.Department == department&&m.OrderId ==orderId ).ToList().FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public override OpResult Store(DailyReportTemplateModel model)
+        {
+            return this.PersistentDatas(model);
         }
     }
 
@@ -73,7 +121,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             throw new NotImplementedException();
         }
-
+         /// <summary>
+         /// 
+         /// </summary>
+         /// <param name="model"></param>
+         /// <returns></returns>
+        public override OpResult Store(ProductFlowModel model)
+        {
+            return this.PersistentDatas(model);
+        }
 
         
     }
