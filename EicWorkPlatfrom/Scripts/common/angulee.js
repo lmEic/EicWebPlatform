@@ -114,17 +114,21 @@ var leeDataHandler = (function () {
                 if (_.isObject(loginInfo))
                 {
                     //保存用户信息
-                    if (loginInfo.loginUser !== undefined)
+                    if (loginInfo.loginUser !== undefined && loginInfo.loginUser!==null)
                     {
                         var user = loginInfo.loginUser;
-                        loginedUser.userId = user.LoginedUser.UserId;
-                        loginedUser.userName = user.LoginedUser.UserName;
-                        loginedUser.headPortrait = user.LoginedUser.HeadPortrait;
-                        if (!_.isUndefined(user.LoginedUser.Department))
-                            loginedUser.department = user.LoginedUser.Department;
+                        if (user.LoginedUser !== null)
+                        {
+                            loginedUser.userId = user.LoginedUser.UserId;
+                            loginedUser.userName = user.LoginedUser.UserName;
+                            loginedUser.headPortrait = user.LoginedUser.HeadPortrait;
+                            if (!_.isUndefined(user.LoginedUser.Department))
+                                loginedUser.department = user.LoginedUser.Department;
+                        }
+                       
                     }
                     //保存站点信息
-                    if (loginInfo.webSite !== undefined)
+                    if (loginInfo.webSite !== undefined && loginInfo.webSite!==null)
                     {
                         var webSite = loginInfo.webSite;
                         loginedUser.webSitePhysicalApplicationPath = webSite.PhysicalApplicationPath;
@@ -161,6 +165,7 @@ var leeHelper = (function () {
         configManage: 'SysConfig',
         itilManage: 'SysITIL',
         productBoard: 'ProBoard',
+        dailyReport: 'ProDailyReport'
     };
     return {
         ///控制器名称

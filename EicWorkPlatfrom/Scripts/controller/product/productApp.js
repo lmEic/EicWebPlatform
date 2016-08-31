@@ -5,11 +5,14 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
-
+    //看板Url前缀
     var boardUrlPrefix = leeHelper.controllers.productBoard + "/";
+    //报表Url前缀
+    var reportUrlPrefix = leeHelper.controllers.dailyReport + "/";
 
-    $stateProvider.state('standardHoursConfig', {
-        templateUrl: 'DailyReport/StandardHoursConfig',
+    //--------------生产日报-------------------------
+    $stateProvider.state('dReportHoursSet', {//标准工时设定
+        templateUrl: reportUrlPrefix + 'dReportHoursSet',
     }).state('proStationConfig', {
         templateUrl: 'DailyReport/ProStationConfig',
     })
