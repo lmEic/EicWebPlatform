@@ -629,6 +629,44 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
     public class QueryDailyReportDto
     {
 
+        string department = string.Empty;
+
+        /// <summary>
+        /// 部门
+        /// </summary>
+        public string Department
+        {
+            get { return department; }
+            set { if (department != value) { department = value; } }
+        }
+
+        DateTime inputDate;
+        public DateTime InputDate
+        {
+            get { return inputDate; }
+            set { if (inputDate != value) { inputDate = value; } }
+        }
+
+        string productName = string.Empty;
+
+        /// <summary>
+        ///  产品名称
+        /// </summary>
+        public string ProductName
+        {
+            get { return productName; }
+            set { if (productName != value) { productName = value; } }
+        }
+
+        private int searchMode = 0;
+        /// <summary>
+        /// 搜索模式
+        /// </summary>
+        public int SearchMode
+        {
+            get { return searchMode; }
+            set { if (searchMode != value) { searchMode = value; } }
+        }
     }
 
 }

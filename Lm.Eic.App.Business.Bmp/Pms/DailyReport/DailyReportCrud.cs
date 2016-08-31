@@ -119,8 +119,27 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
         protected override void AddCrudOpItems()
         {
-            throw new NotImplementedException();
+            AddOpItem(OpMode.Add, AddProductFlowModel);
+            AddOpItem(OpMode.Edit, EditProductFlowModel);
         }
+
+
+        private OpResult AddProductFlowModel(ProductFlowModel model)
+        {
+
+            return irep.Insert(model).ToOpResult("工时添加成功");
+        }
+
+        private OpResult EditProductFlowModel(ProductFlowModel model)
+        {
+            var putInProductFlow = FindBy(new QueryDailyReportDto { ProductName = model.ProductName, SearchMode = 2 }).FirstOrDefault();
+            model.Id_Key = putInProductFlow.Id_Key;
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
+
+        }
+
+
+     
          /// <summary>
          /// 工序模板存储
          /// </summary>
@@ -131,6 +150,35 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return this.PersistentDatas(model);
         }
 
-        
+        /// <summary>
+        /// 查询 1.依据部门查询 2.依据产品品名查询 3.依据录入日期查询 
+        /// </summary>
+        /// <param name="qryDto">设备查询数据传输对象 </param>
+        /// <returns></returns>
+        public List<ProductFlowModel> FindBy(QueryDailyReportDto qryDto)
+        {
+            try
+            {
+                switch (qryDto.SearchMode)
+                {
+                    case 1: //依据部门查询
+                        return irep.Entities.Where(m => m.Department==qryDto.Department).ToList();
+                    case 2: //依据产品品名查询
+                        return irep.Entities.Where(m => m.ProductName==qryDto.ProductName ).ToList();
+                    case 3: //依据录入日期查询
+                        DateTime inputDate = qryDto.InputDate.ToDate();
+                        return irep.Entities.Where(m => m.OpDate == inputDate).ToList();
+                    case 4://依据部门和日期查询
+                        return irep.Entities.Where(e => e.ProductName == qryDto.ProductName & e.OpDate  == qryDto.InputDate).ToList();
+                  
+                    default:
+                        return new List<ProductFlowModel>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
     }
 }

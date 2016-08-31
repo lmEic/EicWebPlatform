@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Uti.SystemInit.Commom;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +68,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<ProductFlowModel> GetProductFlowListBy(QueryDailyReportDto dto)
         {
-            throw new NotImplementedException();
+            return BorardCrudFactory.ProductFlowCrud.FindBy(dto);
         }
 
         /// <summary>
@@ -79,6 +80,23 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             throw new NotImplementedException();
         }
+
+        public List<ProductFlowModel>geteet(string pathfieth)
+        {
+            StringBuilder str = new StringBuilder();
+            string path = @"E:\\设备系统设备总览表.xls";
+            var m = ExcelHelper.ExcelToEntityList<ProductFlowModel>>(path, 44, out str);
+            string FilePath = @"C:\testDir\test.txt";
+            int Number = m.Count;
+            if (str.ToString() != string.Empty)
+            {
+                FilePath.CreateFile(str.ToString());
+                Assert.Fail();
+                return;
+            }
+            
+        }
+        
     }
 
 
