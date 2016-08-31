@@ -82,11 +82,11 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             {
                 case 1:
                     if (dto.ProgressSignList != null)
-                        itilList = irep.Entities.Where(m => m.CurrentProgress != "结案" && dto.ProgressSignList.Contains(m.CurrentProgress)).ToList();
+                        itilList = irep.Entities.Where(m => dto.ProgressSignList.Contains(m.CurrentProgress)).ToList();
                     break;
                 case 2:
                     if (!dto.FunctionName.IsNullOrEmpty())
-                        itilList = irep.Entities.Where(m => m.CurrentProgress != "结案" && m.MFunctionName == dto.FunctionName).ToList();
+                        itilList = irep.Entities.Where(m => m.MFunctionName == dto.FunctionName).ToList();
                     break;
             }
             return itilList;
