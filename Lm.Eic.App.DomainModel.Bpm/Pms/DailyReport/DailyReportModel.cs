@@ -626,4 +626,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
 
 
 
+    public class QueryDailyReportDto
+    {
+
+    }
+
 }
