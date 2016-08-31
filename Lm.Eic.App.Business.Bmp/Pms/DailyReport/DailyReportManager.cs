@@ -1,9 +1,9 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
-using Lm.Eic.Uti.SystemInit.Commom;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
@@ -80,20 +80,25 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             throw new NotImplementedException();
         }
-
-        public List<ProductFlowModel>geteet(string pathfieth)
+        /// <summary>
+        /// Excel路径转换实体
+        ///
+        /// </summary>
+        /// <param name="putInExcelFilePath"></param>
+        /// <param name="excelCo"></param>
+        /// <returns></returns>
+        public List<ProductFlowModel> excelToEntity(string putInExcelFilePath, int sheetColumn)
         {
             StringBuilder str = new StringBuilder();
-            string path = @"E:\\设备系统设备总览表.xls";
-            var m = ExcelHelper.ExcelToEntityList<ProductFlowModel>>(path, 44, out str);
+            var listEntity = ExcelHelper.ExcelToEntityList<ProductFlowModel>(putInExcelFilePath, sheetColumn, out str);
             string FilePath = @"C:\testDir\test.txt";
-            int Number = m.Count;
             if (str.ToString() != string.Empty)
             {
                 FilePath.CreateFile(str.ToString());
-                Assert.Fail();
-                return;
+
+                return listEntity;
             }
+            else return new List<ProductFlowModel>();
             
         }
         
