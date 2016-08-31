@@ -2,7 +2,7 @@
 
 namespace EicWorkPlatfrom.Controllers.Product
 {
-    public class DailyReportController : EicBaseController
+    public class ProDailyReportController : EicBaseController
     {
         //
         // GET: /DailyReport/
@@ -12,7 +12,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             return View();
         }
 
-        public ActionResult StandardHoursConfig()
+        public ActionResult DReportHoursSet()
         {
             return View();
         }

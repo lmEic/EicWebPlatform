@@ -29,7 +29,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <param name="shipmentDate"></param>
         /// <param name="shipmentCount"></param>
         /// <returns></returns>
-        public Image GetMaterialSpecBoardBy( string rootPath, string orderId, string shipmentDate, string shipmentCount)
+        public Image GetMaterialSpecBoardBy(string rootPath, string orderId, string shipmentDate, string shipmentCount)
         {
 
             //TODO ：根据工单号获取产品品号 =》依据产品品号查找看板 =》根据看板的线材品号 在工单的物料BOM中查找 =>只有存在该线材才能通过

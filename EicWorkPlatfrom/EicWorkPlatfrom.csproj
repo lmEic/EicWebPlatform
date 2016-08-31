@@ -155,7 +155,7 @@
     <Compile Include="Controllers\Hr\HrAttendanceManageController.cs" />
     <Compile Include="Controllers\Hr\HRController.cs" />
     <Compile Include="Controllers\CommonTplController.cs" />
-    <Compile Include="Controllers\Product\DailyReportController.cs" />
+    <Compile Include="Controllers\Product\ProDailyReportController.cs" />
     <Compile Include="Controllers\Product\ProductController.cs" />
     <Compile Include="Controllers\Product\ProEmployeeController.cs" />
     <Compile Include="Controllers\PurchaseController.cs" />
@@ -382,6 +382,7 @@
     <Content Include="Scripts\controller\account\loginApp.js" />
     <Content Include="Scripts\controller\hr\hrApp.js" />
     <Content Include="Scripts\controller\product\proBoard.js" />
+    <Content Include="Scripts\controller\product\proDailyReport.js" />
     <Content Include="Scripts\controller\sysmanage\sysAccountManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysItilManage.js" />
     <Content Include="Scripts\controller\masterProduct\mpconfigApp.js" />
@@ -1281,6 +1282,7 @@
     <Content Include="Views\Equipment\AstScrapInput.cshtml" />
     <Content Include="Views\ProBoard\JumperWireBoard.cshtml" />
     <Content Include="Views\ProBoard\AuditMaterailBoardTpl.cshtml" />
+    <Content Include="Views\ProDailyReport\DReportHoursSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

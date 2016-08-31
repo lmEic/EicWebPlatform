@@ -66,6 +66,7 @@
                                     <li>
                                         <a data-ui-sref-active="active" data-ui-sref="registWorkerInfo" style="cursor:pointer">注册用户</a>
                                         <a data-ui-sref-active="active" data-ui-sref="jumperWireBoard" style="cursor:pointer">线材看板管理</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="dReportHoursSet" style="cursor:pointer">标准工时设置</a>
                                     </li>
                                 </ol>
                             </div>
@@ -86,16 +87,19 @@
 
     @Scripts.Render("~/bundles/anstrap")
 
-    @Scripts.Render("~/common/leehelper")
-
     <script src="@Url.Content("~/Content/ztree/dist/js/jquery.ztree.all.min.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
 
     <script src="@Url.Content("~/Scripts/controller/masterProduct/mpConfigApp.js")"></script>
 
-    @*<script src="@Url.Content("~/Content/angular-fileupload/dist/angular-file-upload.min.js")"></script>*@
-
-    <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/product/productApp.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/product/proBoard.js")"></script>
+    <script src="@Url.Content("~/Scripts/controller/product/proDailyReport.js")"></script>
+   
+
+
 </body>
 </html>
