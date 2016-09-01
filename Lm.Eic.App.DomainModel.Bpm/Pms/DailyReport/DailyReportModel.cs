@@ -630,7 +630,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
     {
 
         string department = string.Empty;
-
         /// <summary>
         /// 部门
         /// </summary>
@@ -640,7 +639,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { if (department != value) { department = value; } }
         }
 
-        DateTime inputDate;
+        DateTime inputDate=DateTime.Now.Date ;
+        /// <summary>
+        /// 输入日期
+        /// </summary>
         public DateTime InputDate
         {
             get { return inputDate; }
@@ -648,7 +650,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
 
         string productName = string.Empty;
-
         /// <summary>
         ///  产品名称
         /// </summary>
@@ -656,6 +657,18 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         {
             get { return productName; }
             set { if (productName != value) { productName = value; } }
+        }
+
+        string productFlowName = string.Empty;
+        /// <summary>
+        /// 工艺名称
+        /// </summary>
+        public string ProductFlowName
+        {
+            set
+            { if (productFlowName != value) { productFlowName = value; }  }
+            get
+            {  return productFlowName; }
         }
 
         private int searchMode = 0;
