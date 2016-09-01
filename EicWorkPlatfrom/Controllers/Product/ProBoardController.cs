@@ -79,7 +79,8 @@ namespace EicWorkPlatfrom.Controllers.Product
         public ActionResult GetMaterialSpecBoardBy(string orderId,string shippingDate,int shippingCount)
         {
             //var image = BoardService.MaterialBoardManager.BuildImage(@"E:\sss.jpg", "出货数量");
-            var image = BoardService.MaterialBoardManager.GetMaterialSpecBoardBy(orderId, shippingDate, shippingCount.ToString());
+            var rootPath = HttpContext.Request.PhysicalApplicationPath;
+            var image = BoardService.MaterialBoardManager.GetMaterialSpecBoardBy(rootPath,orderId, shippingDate, shippingCount.ToString());
             return this.ImageResult(image);
         }
         /// <summary>

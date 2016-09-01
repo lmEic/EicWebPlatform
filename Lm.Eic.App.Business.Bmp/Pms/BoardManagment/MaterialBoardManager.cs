@@ -19,15 +19,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         List<BomMaterialModel> _bomMaterialList = new List<BomMaterialModel>();
 
         #region Find
-
         /// <summary>
         /// 获取物料规格看板
         /// </summary>
-        /// <param name="orderId">工单</param>
-        /// <param name="shipmentDate">出货日期</param>
-        /// <param name="shipmentCount">出货数量</param>
+        /// <param name="rootPath"></param>
+        /// <param name="orderId"></param>
+        /// <param name="shipmentDate"></param>
+        /// <param name="shipmentCount"></param>
         /// <returns></returns>
-        public Image GetMaterialSpecBoardBy(string orderId, string shipmentDate, string shipmentCount)
+        public Image GetMaterialSpecBoardBy(string rootPath, string orderId, string shipmentDate, string shipmentCount)
         {
 
             //TODO ：根据工单号获取产品品号 =》依据产品品号查找看板 =》根据看板的线材品号 在工单的物料BOM中查找 =>只有存在该线材才能通过
@@ -52,13 +52,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             orderMaterialList.ForEach(e => { orderMaterialIdList.Add(e.MaterialId); });
 
             //看板的所有料号是否都能找到
-            if (ContainsMaterialId(orderMaterialIdList, materialBoard.MaterialID))
-                return BuildImage(string.Format(@"E:\Repositorys\EicWebPlatform\EicWorkPlatfrom\{0}", materialBoard.DocumentPath.Replace("/", @"\")),
-                    string.Format("工单单号:{0} 出货日期：{1}  批量：{2}", orderDetails.OrderId, shipmentDate, shipmentCount));
+            if (!ContainsMaterialId(orderMaterialIdList, materialBoard.MaterialID))
+                return BuildImageErr("物料不存在与工单");
 
-            return BuildImageErr("未找到看板");
-            
-
+            return BuildImage(string.Format(@"{0}{1}",rootPath, materialBoard.DocumentPath.Replace("/", @"\")),
+                string.Format("工单单号:{0} 出货日期：{1}  批量：{2}", orderDetails.OrderId, shipmentDate, shipmentCount));
         }
         /// <summary>
         /// 获取待审核的看板列表
@@ -124,7 +122,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <param name="strPatch">图片路径</param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public Image BuildImage(string strPatch, string context)
+        private  Image BuildImage(string strPatch, string context)
         {
             try
             {
@@ -166,7 +164,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         }
 
 
-
+        /// <summary>
+        /// 生成错误看板图片
+        /// </summary>
+        /// <param name="errMessage"></param>
+        /// <returns></returns>
         private Image BuildImageErr(string errMessage)
         {
             //创建一个画布

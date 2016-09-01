@@ -1,5 +1,4 @@
-﻿
-using Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.BoardManagment;
+﻿using Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.BoardManagment;
 using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
@@ -71,17 +70,20 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <returns></returns>
         public OpResult AuditMaterialBoard(MaterialSpecBoardModel model)
         {
-           return irep.Update(u => u.Id_Key == model.Id_Key,m=> new MaterialSpecBoardModel()
-            {
-                State= "已审核",
-                OpPerson= model.OpPerson,
-                OpDate = model.OpDate,
-                OpTime = model.OpTime,
-                OpSign = "update"
-            }).ToOpResult_Eidt("修改完成");
+            DateTime opDate = DateTime.Now;
+            model.State = "已审核";
+            model.OpSign = OpMode.Edit;
+            return Store(model);
+
+            //return irep.Update(u => u.Id_Key == model.Id_Key,m=> new MaterialSpecBoardModel
+            //{
+            //    State= "已审核",
+            //    OpPerson= model.OpPerson,
+            //    OpDate = opDate.ToDate(),
+            //    OpTime = opDate,
+            //    OpSign = "update"
+            //}).ToOpResult_Eidt("审核完成");
         }
-
-
 
         #region Find
 
@@ -94,7 +96,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         {
             try
             {
-                return irep.Entities.Where(m => m.ProductID == productId).FirstOrDefault();
+
+                return irep.Entities.Where(m => m.ProductID == productId).ToList().FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -110,7 +113,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         {
             try
             {
-                return irep.Entities.Where(m => m.State=="待审核").ToList();
+                var tem = irep.Entities.Where(m => m.State == "待审核").ToList();
+                return tem;
             }
             catch (Exception ex)
             {
