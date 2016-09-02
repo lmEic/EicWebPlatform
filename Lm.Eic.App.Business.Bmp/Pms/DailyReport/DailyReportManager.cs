@@ -3,6 +3,7 @@ using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
+using System.IO ;
 using System.Collections.Generic;
 using System.Text;
 
@@ -50,6 +51,64 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="modelfilePath"></param>
+        /// <returns></returns>
+        public System.IO.MemoryStream GetProductFlowExcelModel(string modelfilePath)
+        {
+
+            try
+            {
+                //数据为Null时返回数值
+                System.IO.MemoryStream stream = new System.IO.MemoryStream();
+                NPOI.HSSF.UserModel.HSSFWorkbook workbook = InitializeWorkbook(modelfilePath);
+                if (workbook == null) return null;
+                NPOI.SS.UserModel.ISheet sheet = workbook.GetSheetAt(0);
+                sheet.ForceFormulaRecalculation = true;
+                workbook.Write(stream);
+                return stream;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
+        /// <summary>
+        ///   模板导入到NPOI Workbook中
+        /// </summary>
+        /// <param name="dataSourceFilePath">数据源路经</param>
+        /// <returns></returns>
+        private NPOI.HSSF.UserModel.HSSFWorkbook InitializeWorkbook(string dataSourceFilePath)
+        {
+            try
+            {
+                NPOI.HSSF.UserModel.HSSFWorkbook hssfworkbook = null;
+                System.IO.FileStream file = new System.IO.FileStream(dataSourceFilePath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+                if (null == file)
+                { return hssfworkbook; }
+                hssfworkbook = new NPOI.HSSF.UserModel.HSSFWorkbook(file);
+                if (null == hssfworkbook)
+                { return hssfworkbook; }
+                //create a entry of DocumentSummaryInformation
+                NPOI.HPSF.DocumentSummaryInformation dsi = NPOI.HPSF.PropertySetFactory.CreateDocumentSummaryInformation();
+                dsi.Company = "test";
+                hssfworkbook.DocumentSummaryInformation = dsi;
+                //create a entry of SummaryInformation
+                NPOI.HPSF.SummaryInformation si = NPOI.HPSF.PropertySetFactory.CreateSummaryInformation();
+                si.Subject = "test";
+                hssfworkbook.SummaryInformation = si;
+                return hssfworkbook;
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw new Exception(ex.ToString());
+            }
+
+        }
+
+        /// <summary>
         /// 仓储
         /// </summary>
         /// <param name="model"></param>
@@ -69,7 +128,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             try
             {
-                OpResult result = OpResult.SetResult("数据克隆保存失败!");
+                OpResult result = OpResult.SetResult("数据保存失败!");
                 List<ProductFlowModel> newFlowList = new List<ProductFlowModel>();
                 if (sourceFlowList != null && sourceFlowList.Count > 0)
                 {
