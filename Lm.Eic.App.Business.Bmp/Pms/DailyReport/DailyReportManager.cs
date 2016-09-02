@@ -7,6 +7,7 @@ using System.IO ;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 {
     /// <summary>
@@ -60,6 +61,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
             try
             {
+                var  filePath = HttpContext.Request.PhysicalApplicationPath;
                 //数据为Null时返回数值
                 System.IO.MemoryStream stream = new System.IO.MemoryStream();
                 NPOI.HSSF.UserModel.HSSFWorkbook workbook = InitializeWorkbook(modelfilePath);

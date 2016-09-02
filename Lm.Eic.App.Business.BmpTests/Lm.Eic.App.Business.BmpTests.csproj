@@ -73,6 +73,7 @@
     <Compile Include="Hrm\Attendance\AttendSlodFingerDataCurrentMonthHandlerTests.cs" />
     <Compile Include="Hrm\GeneralAffairs\UnitTest1.cs" />
     <Compile Include="Pms\BoardManagmentTest\BoardManagmentUnitTest.cs" />
+    <Compile Include="Pms\DailyReport\UnitTest1.cs" />
     <Compile Include="ProductMaster\ItilDevelopModuleManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quantity\UnitTest.cs" />
