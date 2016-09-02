@@ -132,14 +132,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
         private OpResult EditProductFlowModel(ProductFlowModel model)
         {
-            var putInProductFlow = FindBy(new QueryDailyReportDto { ProductName = model.ProductName, SearchMode = 2 }).FirstOrDefault();
+            var putInProductFlow = FindBy(new QueryDailyReportDto
+            {
+                ProductName = model.ProductName,
+                ProductFlowName = model.ProductFlowName,
+                SearchMode = 5
+            }).FirstOrDefault();
             model.Id_Key = putInProductFlow.Id_Key;
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
 
         }
-
-
-     
          /// <summary>
          /// 工序模板存储
          /// </summary>
@@ -151,9 +153,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
 
         /// <summary>
-        /// 查询 1.依据部门查询 2.依据产品品名查询 3.依据录入日期查询 
+        /// 查询 1.依据部门查询 2.依据产品品名查询 3.依据录入日期查询 4.依据工艺名称查询 5.依据部门和工艺名称综合查询
         /// </summary>
-        /// <param name="qryDto">设备查询数据传输对象 </param>
+        /// <param name="qryDto">设备查询数据传输对象</param>
         /// <returns></returns>
         public List<ProductFlowModel> FindBy(QueryDailyReportDto qryDto)
         {
@@ -168,9 +170,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                     case 3: //依据录入日期查询
                         DateTime inputDate = qryDto.InputDate.ToDate();
                         return irep.Entities.Where(m => m.OpDate == inputDate).ToList();
-                    case 4://依据部门和日期查询
-                        return irep.Entities.Where(e => e.ProductName == qryDto.ProductName & e.OpDate  == qryDto.InputDate).ToList();
-                  
+                    case 4: //依据工艺名称查询
+                        return irep.Entities.Where(m => m.ProductFlowName ==qryDto .ProductFlowName ).ToList();
+                    case 5://依据部门和工艺名称查询
+                        return irep.Entities.Where(e => e.ProductName == qryDto.ProductName && e.ProductFlowName ==qryDto .ProductFlowName).ToList();
                     default:
                         return new List<ProductFlowModel>();
                 }
