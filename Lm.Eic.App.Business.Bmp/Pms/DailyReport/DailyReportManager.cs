@@ -45,10 +45,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             if (errorStr.ToString() != string.Empty)
             {
                 errorStoreFilePath.CreateFile(errorStr.ToString());
-
-                return listEntity;
             }
-            else return new List<ProductFlowModel>();
+            return listEntity;
         }
 
         /// <summary>
@@ -61,7 +59,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
             try
             {
-                var  filePath = HttpContext.Request.PhysicalApplicationPath;
+                
                 //数据为Null时返回数值
                 System.IO.MemoryStream stream = new System.IO.MemoryStream();
                 NPOI.HSSF.UserModel.HSSFWorkbook workbook = InitializeWorkbook(modelfilePath);
@@ -172,8 +170,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return returnstr;
           
         }
-       
-        
     }
 
 
