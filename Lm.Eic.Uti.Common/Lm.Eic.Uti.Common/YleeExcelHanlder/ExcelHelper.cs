@@ -387,6 +387,11 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
                     else { rs = (int)Convert.ChangeType(sourceCell.StringCellValue.ToString(), distanceType); }
                     break;
                 case "float":
+                case "decimal":
+                     if (sourceCell.CellType == CellType.Numeric)
+                    { rs = (decimal )Convert.ChangeType(sourceCell.NumericCellValue.ToString(), distanceType); }
+                    else { rs = (decimal)Convert.ChangeType(sourceCell.StringCellValue.ToString(), distanceType); }
+                    break;
                 case "single":
                     if (sourceCell.CellType == CellType.Numeric)
                     { rs = (float)Convert.ChangeType(sourceCell.NumericCellValue.ToString(), distanceType); }

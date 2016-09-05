@@ -14,6 +14,9 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.DailyReport
             string path = @"E:\日报数据表.xls";
                 var tem=md.ImportProductFlowListBy (path);
                 if (tem ==null ) { Assert.Fail(); }
+
+                md.CloneProductStore(tem);
+                
         }
     }
 }
