@@ -31,7 +31,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// </summary>
     public class ProductFlowManager
     {
-
         /// <summary>
         /// 导入工序列表
         /// </summary>
@@ -50,19 +49,19 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
 
         /// <summary>
-        /// 
+        /// 获取工序Excel模板
         /// </summary>
         /// <param name="modelfilePath"></param>
         /// <returns></returns>
         public System.IO.MemoryStream GetProductFlowExcelModel(string modelfilePath)
         {
-
             try
             {
-                
                 //数据为Null时返回数值
                 System.IO.MemoryStream stream = new System.IO.MemoryStream();
                 NPOI.HSSF.UserModel.HSSFWorkbook workbook = InitializeWorkbook(modelfilePath);
+
+
                 if (workbook == null) return null;
                 NPOI.SS.UserModel.ISheet sheet = workbook.GetSheetAt(0);
                 sheet.ForceFormulaRecalculation = true;
@@ -74,8 +73,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 throw new Exception(ex.ToString());
             }
         }
+
         /// <summary>
-        ///   模板导入到NPOI Workbook中
+        /// 模板导入到NPOI Workbook中
         /// </summary>
         /// <param name="dataSourceFilePath">数据源路经</param>
         /// <returns></returns>
@@ -105,7 +105,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 return null;
                 throw new Exception(ex.ToString());
             }
-
         }
 
         /// <summary>
@@ -134,12 +133,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 {
                     sourceFlowList.ForEach(e =>
                     {
-                        result=Store(e);
+                        result = Store(e);
                     });
                 }
                 return result;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             { throw new Exception(ex.InnerException.Message); }
         }
 
@@ -158,20 +157,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public List<string> GetProductListBy(QueryDailyReportDto dto)
+        public List<ProductFlowOverviewModel> GetProductList()
         {
-            List<string> returnstr = new List<string>();
-
-            var productFlowList = GetProductFlowListBy(dto);
-            if (productFlowList != null && productFlowList.Count > 0)
-            {
-                productFlowList.ForEach(e => { returnstr.Add(e.ProductName); });
-            }
-            return returnstr;
-          
+            return null;
         }
     }
-
-
- 
 }
