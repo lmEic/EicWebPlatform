@@ -275,7 +275,7 @@ smModule.controller('addUserMatchRoleCtrl', function ($scope, accountService) {
                 vmManager.matchRoles = [];
                 vmManager.dataset = [];
                 $scope.promise = accountService.getUserIdentityByUserId(userVm.UserId).then(function (data) {
-                    leeHelper.copyVm(data.RegistUser, userVm);
+                    leeHelper.copyVm(data.LoginedUser, userVm);
                     angular.forEach(data.MatchRoleList, function (item) {
                         var role = _.clone(userVm);
                         leeHelper.copyVm(item, role);

@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 
-angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
+angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', "pageslide-directive"])
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
@@ -12,22 +12,12 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
 
     //--------------生产日报-------------------------
     $stateProvider.state('dReportHoursSet', {//标准工时设定
-        templateUrl: reportUrlPrefix + 'dReportHoursSet',
-    }).state('proStationConfig', {
-        templateUrl: 'DailyReport/ProStationConfig',
+        templateUrl: reportUrlPrefix + 'DReportHoursSet',
+
     })
     //--------------人员管理--------------------------
     .state('registWorkerInfo', {
         templateUrl: 'ProEmployee/RegistWorkerInfo'
-    })
-    .state('proStationManage', {
-        templateUrl: 'ProEmployee/ProStationManage'
-    })
-    .state('proClassManage', {
-        templateUrl: 'ProEmployee/ProClassManage'
-    })
-    .state('workHoursManage', {
-        templateUrl: 'ProEmployee/WorkHoursManage'
     })
     //-------------看板管理-------------------
     .state('jumperWireBoard', {//线材看板管理
