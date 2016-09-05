@@ -37,8 +37,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         {
            
             var tem = AstService.EquipmentManager.CheckManager.BuildWaitingCheckList();
-
-
             #region 输出到Excel
             string path = @"E:\\IQC.xls";
             using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
