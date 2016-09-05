@@ -116,20 +116,37 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     public class ProductFlowCrud : CrudBase<ProductFlowModel, IProductFlowRepositoryRepository>
     {
         public ProductFlowCrud() : base(new ProductFlowRepositoryRepository(),"工序")
-        {
-        }
-
+        {  }
+        /// <summary>
+        /// 重写添加项
+        /// </summary>
         protected override void AddCrudOpItems()
         {
             AddOpItem(OpMode.Add, AddProductFlowModel);
             AddOpItem(OpMode.Edit, EditProductFlowModel);
         }
-
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private OpResult AddProductFlowModel(ProductFlowModel model)
         {
+            if( irep.IsExist(e=>
+                e.ProductName==model.ProductName
+                &&e.ProductFlowName==model.ProductFlowName 
+                &&e.MouldId==model.MouldId 
+                ))
+            {
+                return OpResult.SetResult("此数据已经添加!");
+            }
             return irep.Insert(model).ToOpResult("工时添加成功");
         }
-
+        /// <summary>
+        /// 编辑
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private OpResult EditProductFlowModel(ProductFlowModel model)
         {
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
@@ -165,6 +182,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             {
                 throw new Exception(ex.InnerException.Message);
             }
+        }
+        /// <summary>
+        /// 获取产品总概述前30行
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        public List<ProductFlowOverviewModel> GetFlowOverviewListBy(string department)
+        {
+            return irep.GetFlowOverviewListBy(department);
         }
     }
 }

@@ -142,14 +142,14 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <summary>
         /// 获取文件留
         /// </summary>
-        /// <param name="doucmentPatch">文档路径</param>
+        /// <param name="documentPatch">文档路径</param>
         /// <returns></returns>
-        public static MemoryStream GetMemoryStream(string doucmentPatch)
+        public static MemoryStream GetMemoryStream(string documentPatch)
         {
-            if (!File.Exists(doucmentPatch))
+            if (!File.Exists(documentPatch))
                 return new MemoryStream();
 
-            byte[] data = File.ReadAllBytes(doucmentPatch);
+            byte[] data = File.ReadAllBytes(documentPatch);
             return new MemoryStream(data);
         }
 

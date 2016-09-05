@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 {
-    public class DailyReportService
+    public static  class DailyReportService
     {
         /// <summary>
         /// 工序管理

@@ -83,6 +83,14 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         }
 
         /// <summary>
+        /// 业务流程管理数据访问入口
+        /// </summary>
+        public static DbAcess Bpm
+        {
+            get { return CreateInstance("Bpm", "192.168.0.237", "LmBpm", "sa", "lm2011"); }
+        }
+
+        /// <summary>
         /// 生产日报
         /// </summary>
         public static DbAcess ProReport

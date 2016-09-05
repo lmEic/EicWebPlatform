@@ -10,10 +10,49 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.DailyReport
         [TestMethod]
         public void TestMethod1()
         {
-            ProductFlowManager md = new ProductFlowManager();
+         
             string path = @"E:\日报数据表.xls";
-                var tem=md.ImportProductFlowListBy (path);
+                var tem=DailyReportService.MaterialBoardManager.ImportProductFlowListBy (path);
                 if (tem ==null ) { Assert.Fail(); }
+
+               var temp= DailyReportService.MaterialBoardManager.CloneProductStore(tem);
+               if (temp == null) { Assert.Fail(); }
+                
         }
     }
+    [TestClass]
+    public class Unittest
+    {
+        [TestMethod]
+        public void test()
+        {
+           
+            string path = @"E:\日报数据表.xls";
+            var stream = DailyReportService.MaterialBoardManager.GetProductFlowTemplate(path);
+            #region 输出到Excel
+            string path11 = @"E:\\11111.xls";
+            using (System.IO.FileStream fs = new System.IO.FileStream(path11, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+            {
+                byte[] bArr = stream.ToArray();
+                fs.Write(bArr, 0, bArr.Length);
+                fs.Flush();
+
+            }
+            #endregion
+        }
+    }
+
+    [TestClass]
+    public class Unittest22
+    {
+        [TestMethod]
+        public void test()
+        {
+           var temp = DailyReportService.MaterialBoardManager.GetProductFlowOverviewBy("生技部");
+            if (temp == null) { Assert.Fail(); }
+        
+        }
+    }
+
+
 }
