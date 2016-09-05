@@ -193,7 +193,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             List<ProductFlowOverviewModel> flowOverviewModels = new List<ProductFlowOverviewModel>();
             ProductFlowOverviewModel flowOverviewModel = null;
-            var modellist = BorardCrudFactory.ProductFlowCrud.FindBy(new QueryDailyReportDto() { Department = department, SearchMode = 1 });
+            var modellist = irep.Entities.Where(e => e.Department == department).ToList ();
             List<string> productName = new List<string>();
             if (modellist != null && modellist.Count > 0)
             {
