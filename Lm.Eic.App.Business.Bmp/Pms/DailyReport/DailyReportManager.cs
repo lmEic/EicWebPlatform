@@ -105,11 +105,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 获取产品列表
         /// </summary>
-        /// <param name="dto"></param>
+        /// <param name="departemant"> 部门</param>
         /// <returns></returns>
-        public List<ProductFlowOverviewModel> GetProductList()
+        public List<ProductFlowOverviewModel> GetProductFlowOverviewBy(string departemant)
         {
-            return BorardCrudFactory.ProductFlowCrud.GetFlowOverviewList(30);
+            return BorardCrudFactory.ProductFlowCrud.GetFlowOverviewListBy(departemant);
         }
     }
 }

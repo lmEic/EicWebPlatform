@@ -116,8 +116,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     public class ProductFlowCrud : CrudBase<ProductFlowModel, IProductFlowRepositoryRepository>
     {
         public ProductFlowCrud() : base(new ProductFlowRepositoryRepository(),"工序")
-        {
-        }
+        {  }
         /// <summary>
         /// 重写添加项
         /// </summary>
@@ -185,52 +184,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             }
         }
         /// <summary>
-        /// 获取产品总概述
+        /// 获取产品总概述前30行
         /// </summary>
-        /// <param name="needReturnCount"></param>
+        /// <param name="department">部门</param>
         /// <returns></returns>
-        public List<ProductFlowOverviewModel> GetFlowOverviewList(QueryDailyReportDto dto)
+        public List<ProductFlowOverviewModel> GetFlowOverviewListBy(string department)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("SELECT DISTINCT ProductName AS ProductName, COUNT(ProductName) AS ProductFlowCount, SUM(StandardHours) AS StandardHoursCount ")
-              .Append("FROM      Pms_ProductFlow ")
-              .Append("WHERE   (Department = '" + dto.Department + "')")
-              .Append("GROUP BY ProductName ");
-            string sqltext = sb.ToString();
-            return DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).Take(30).ToList();
-
-
-
-            //List<ProductFlowOverviewModel> flowOverviewModelList = new List<ProductFlowOverviewModel>();
-            //ProductFlowOverviewModel flowOverviewModel = null;
-            //var modellist = BorardCrudFactory.ProductFlowCrud.FindBy(new QueryDailyReportDto() { Department = "生技部", SearchMode = 1 });
-            //List<string> productName = new List<string>();
-            //if (modellist != null && modellist.Count > 0)
-            //{
-            //    ///得到产品名称
-            //    modellist.ForEach(e =>
-            //    {
-            //        if (!productName.Contains(e.ProductName))
-            //        {
-            //            productName.Add(e.Department);
-            //        }
-            //    });
-            //    ///取所数量
-            //    productName = (List<string>)productName.Take(needReturnCount);
-            //    if (productName.Count <= 0) return flowOverviewModelList;
-            //    productName.ForEach(e =>
-            //    {
-            //        flowOverviewModel = new ProductFlowOverviewModel()
-            //        {
-            //            ProductName = e,
-            //            ProductFlowCount = modellist.Where(f => f.ProductName == e).Count(),
-            //            StandardHoursCount = double.Parse(modellist.Where(f => f.ProductName == e).Sum(g => g.StandardHours).ToString())
-            //        };
-            //        flowOverviewModelList.Add(flowOverviewModel);
-            //    });
-            //}
-            //return flowOverviewModelList;
-
+            return irep.GetFlowOverviewListBy(department);
         }
     }
 }
