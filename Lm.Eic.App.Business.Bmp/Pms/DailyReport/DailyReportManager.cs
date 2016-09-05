@@ -109,7 +109,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<ProductFlowOverviewModel> GetProductList()
         {
-            return BorardCrudFactory.ProductFlowCrud.GetFlowOverviewList(30);
+            return BorardCrudFactory.ProductFlowCrud.GetFlowOverviewList("生技部");
         }
     }
 }

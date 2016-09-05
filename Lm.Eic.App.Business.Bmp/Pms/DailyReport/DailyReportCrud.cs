@@ -189,16 +189,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="needReturnCount"></param>
         /// <returns></returns>
-        public List<ProductFlowOverviewModel> GetFlowOverviewList(int needReturnCount)
+        public List<ProductFlowOverviewModel> GetFlowOverviewList(string department)
         {
             List<ProductFlowOverviewModel> flowOverviewModels = new List<ProductFlowOverviewModel>();
             ProductFlowOverviewModel flowOverviewModel = null;
-            var modellist = BorardCrudFactory.ProductFlowCrud.FindBy(new QueryDailyReportDto() { Department = "生技部", SearchMode = 1 });
-            int i = 0;
+            var modellist = BorardCrudFactory.ProductFlowCrud.FindBy(new QueryDailyReportDto() { Department = department, SearchMode = 1 });
             List<string> productName = new List<string>();
             if (modellist != null && modellist.Count > 0)
             {
-
                 ///得到产品名称
                 modellist.ForEach(e =>
                 {
@@ -208,7 +206,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                     }
                 });
                 ///取所数量
-                productName = (List<string>)productName.Take(needReturnCount);
+                productName = (List<string>)productName.Take(30);
                 if (productName.Count <= 0) return flowOverviewModels;
                 productName.ForEach(e =>
                 {
