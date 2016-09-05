@@ -51,11 +51,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 获取工序Excel模板
         /// </summary>
-        /// <param name="modelfilePath"></param>
+        /// <param name="documentPath"></param>
         /// <returns></returns>
-        public System.IO.MemoryStream GetProductFlowExcelModel(string modelfilePath)
+        public System.IO.MemoryStream GetProductFlowTemplate(string documentPath)
         {
-            return FileOperationExtension.GetMemoryStream(modelfilePath);
+            return FileOperationExtension.GetMemoryStream(documentPath);
         }
         /// <summary>
         /// 仓储
