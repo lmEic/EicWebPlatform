@@ -135,7 +135,7 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
-      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+      <HintPath>..\libs\WebGrease.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
