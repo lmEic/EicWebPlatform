@@ -11,7 +11,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 工序管理
         /// </summary>
-        public static ProductFlowManager MaterialBoardManager
+        public static ProductFlowManager ProductFlowManager
         {
             get { return OBulider.BuildInstance<ProductFlowManager>(); }
         }
