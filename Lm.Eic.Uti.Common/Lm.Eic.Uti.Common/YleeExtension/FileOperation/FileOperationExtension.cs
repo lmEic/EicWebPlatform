@@ -140,6 +140,20 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         }
 
         /// <summary>
+        /// 获取文件留
+        /// </summary>
+        /// <param name="doucmentPatch">文档路径</param>
+        /// <returns></returns>
+        public static MemoryStream GetMemoryStream(string doucmentPatch)
+        {
+            if (!File.Exists(doucmentPatch))
+                return new MemoryStream();
+
+            byte[] data = File.ReadAllBytes(doucmentPatch);
+            return new MemoryStream(data);
+        }
+
+        /// <summary>
         /// 扩展方法：使用NPOI将数据导入到Excel内存流
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>

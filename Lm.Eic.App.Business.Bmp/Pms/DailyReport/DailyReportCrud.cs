@@ -12,24 +12,26 @@ using System.Text;
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 {
 
-   internal class BorardCrudFactory
-        {
-             /// <summary>
-             /// 日报录入
-             /// </summary>
-            public static DailyReportCrud DailyReportCrud
-            { get { return OBulider.BuildInstance<DailyReportCrud>(); } }
-             /// <summary>
-            /// 日报模板
-             /// </summary>
-            public static DailyReportTemplateCrud DailyReportTemplateCrud
-            { get { return OBulider.BuildInstance<DailyReportTemplateCrud>(); } }
-            /// <summary>
-            /// 工序
-            /// </summary>
-            public static ProductFlowCrud ProductFlowCrud
-            { get { return OBulider.BuildInstance<ProductFlowCrud>(); } }
-        }
+    internal class BorardCrudFactory
+    {
+        /// <summary>
+        /// 日报录入
+        /// </summary>
+        public static DailyReportCrud DailyReportCrud
+        { get { return OBulider.BuildInstance<DailyReportCrud>(); } }
+        /// <summary>
+        /// 日报模板
+        /// </summary>
+        public static DailyReportTemplateCrud DailyReportTemplateCrud
+        { get { return OBulider.BuildInstance<DailyReportTemplateCrud>(); } }
+        /// <summary>
+        /// 工序
+        /// </summary>
+        public static ProductFlowCrud ProductFlowCrud
+        { get { return OBulider.BuildInstance<ProductFlowCrud>(); } }
+    }
+
+
     /// <summary>
     /// 日报录入CRUD
     /// </summary>
@@ -123,33 +125,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             AddOpItem(OpMode.Edit, EditProductFlowModel);
         }
 
-
         private OpResult AddProductFlowModel(ProductFlowModel model)
         {
-
             return irep.Insert(model).ToOpResult("工时添加成功");
         }
 
         private OpResult EditProductFlowModel(ProductFlowModel model)
         {
-            var putInProductFlow = FindBy(new QueryDailyReportDto
-            {
-                ProductName = model.ProductName,
-                ProductFlowName = model.ProductFlowName,
-                SearchMode = 5
-            }).FirstOrDefault();
-            model.Id_Key = putInProductFlow.Id_Key;
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
-
-        }
-         /// <summary>
-         /// 工序模板存储
-         /// </summary>
-         /// <param name="model"></param>
-         /// <returns></returns>
-        public override OpResult Store(ProductFlowModel model)
-        {
-            return this.PersistentDatas(model);
         }
 
         /// <summary>

@@ -6,6 +6,27 @@ using System.Text;
 namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
 {
     /// <summary>
+    /// 产品工艺概述模型
+    /// </summary>
+    public class ProductFlowOverviewModel
+    {
+        /// <summary>
+        /// 产品品名
+        /// </summary>
+        public string ProductName { get; set; }
+        /// <summary>
+        /// 工序总数
+        /// </summary>
+        public int ProductFlowCount { get; set; }
+
+        /// <summary>
+        /// 总工时
+        /// </summary>
+        public double StandardHoursCount { get; set; }
+    }
+
+
+    /// <summary>
     ///产品工艺模型
     /// </summary>
     [Serializable]
