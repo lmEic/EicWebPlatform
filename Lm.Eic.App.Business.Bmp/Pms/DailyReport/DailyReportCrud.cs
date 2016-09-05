@@ -189,39 +189,47 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="needReturnCount"></param>
         /// <returns></returns>
-        public List<ProductFlowOverviewModel> GetFlowOverviewList(int needReturnCount)
+        public List<ProductFlowOverviewModel> GetFlowOverviewList(QueryDailyReportDto dto)
         {
-            List<ProductFlowOverviewModel> flowOverviewModels = new List<ProductFlowOverviewModel>();
-            ProductFlowOverviewModel flowOverviewModel = null;
-            var modellist = BorardCrudFactory.ProductFlowCrud.FindBy(new QueryDailyReportDto() { Department = "生技部", SearchMode = 1 });
-            int i = 0;
-            List<string> productName = new List<string>();
-            if (modellist != null && modellist.Count > 0)
-            {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("SELECT DISTINCT ProductName AS ProductName, COUNT(ProductName) AS ProductFlowCount, SUM(StandardHours) AS StandardHoursCount ")
+              .Append("FROM      Pms_ProductFlow ")
+              .Append("WHERE   (Department = '" + dto.Department + "')")
+              .Append("GROUP BY ProductName ");
+            string sqltext = sb.ToString();
+            return DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).Take(30).ToList();
 
-                ///得到产品名称
-                modellist.ForEach(e =>
-                {
-                    if (!productName.Contains(e.ProductName))
-                    {
-                        productName.Add(e.Department);
-                    }
-                });
-                ///取所数量
-                productName = (List<string>)productName.Take(needReturnCount);
-                if (productName.Count <= 0) return flowOverviewModels;
-                productName.ForEach(e =>
-                {
-                    flowOverviewModel = new ProductFlowOverviewModel()
-                    {
-                        ProductName = e,
-                        ProductFlowCount = modellist.Where(f => f.ProductName == e).Count(),
-                        StandardHoursCount = double.Parse(modellist.Where(f => f.ProductName == e).Sum(g => g.StandardHours).ToString())
-                    };
-                    flowOverviewModels.Add(flowOverviewModel);
-                });
-            }
-            return flowOverviewModels;
+
+
+            //List<ProductFlowOverviewModel> flowOverviewModelList = new List<ProductFlowOverviewModel>();
+            //ProductFlowOverviewModel flowOverviewModel = null;
+            //var modellist = BorardCrudFactory.ProductFlowCrud.FindBy(new QueryDailyReportDto() { Department = "生技部", SearchMode = 1 });
+            //List<string> productName = new List<string>();
+            //if (modellist != null && modellist.Count > 0)
+            //{
+            //    ///得到产品名称
+            //    modellist.ForEach(e =>
+            //    {
+            //        if (!productName.Contains(e.ProductName))
+            //        {
+            //            productName.Add(e.Department);
+            //        }
+            //    });
+            //    ///取所数量
+            //    productName = (List<string>)productName.Take(needReturnCount);
+            //    if (productName.Count <= 0) return flowOverviewModelList;
+            //    productName.ForEach(e =>
+            //    {
+            //        flowOverviewModel = new ProductFlowOverviewModel()
+            //        {
+            //            ProductName = e,
+            //            ProductFlowCount = modellist.Where(f => f.ProductName == e).Count(),
+            //            StandardHoursCount = double.Parse(modellist.Where(f => f.ProductName == e).Sum(g => g.StandardHours).ToString())
+            //        };
+            //        flowOverviewModelList.Add(flowOverviewModel);
+            //    });
+            //}
+            //return flowOverviewModelList;
 
         }
     }
