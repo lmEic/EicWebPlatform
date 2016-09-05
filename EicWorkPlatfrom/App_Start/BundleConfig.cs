@@ -10,6 +10,7 @@ namespace EicWorkPlatfrom
                 "~/Scripts/jquery-2.1.4.js",
                 "~/Content/bootstrap/dist/js/bootstrap.min.js"));
 
+
             bundles.Add(new ScriptBundle("~/bundles/angularJs").Include(
                          "~/Content/print/print.min.js",
                          "~/Content/pdfmaker/pdfmake.min.js",
@@ -24,11 +25,11 @@ namespace EicWorkPlatfrom
 
             bundles.Add(new ScriptBundle("~/bundles/anstrap").Include(
                 "~/Content/angular-busy/dist/angular-busy.min.js",
+                "~/Content/angular-pageslide/angular-pageslide-directive.min.js",
                 "~/Content/angular-strap/dist/angular-strap.min.js",
                 "~/Content/angular-strap/dist/angular-strap.tpl.min.js"));
 
-            bundles.Add(new ScriptBundle("~/common/leehelper").Include(
-               "~/Scripts/common/angulee.js"));
+
 
             bundles.Add(new StyleBundle("~/css/anstrap").Include(
                          "~/Content/print/print.min.css",

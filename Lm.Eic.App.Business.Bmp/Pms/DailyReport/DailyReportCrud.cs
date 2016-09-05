@@ -116,8 +116,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     public class ProductFlowCrud : CrudBase<ProductFlowModel, IProductFlowRepositoryRepository>
     {
         public ProductFlowCrud() : base(new ProductFlowRepositoryRepository(),"工序")
-        {
-        }
+        {  }
         /// <summary>
         /// 重写添加项
         /// </summary>
@@ -185,42 +184,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             }
         }
         /// <summary>
-        /// 获取产品总概述
+        /// 获取产品总概述前30行
         /// </summary>
-        /// <param name="needReturnCount"></param>
+        /// <param name="department">部门</param>
         /// <returns></returns>
-        public List<ProductFlowOverviewModel> GetFlowOverviewList(string department)
+        public List<ProductFlowOverviewModel> GetFlowOverviewListBy(string department)
         {
-            List<ProductFlowOverviewModel> flowOverviewModels = new List<ProductFlowOverviewModel>();
-            ProductFlowOverviewModel flowOverviewModel = null;
-            var modellist = irep.Entities.Where(e => e.Department == department).ToList ();
-            List<string> productName = new List<string>();
-            if (modellist != null && modellist.Count > 0)
-            {
-                ///得到产品名称
-                modellist.ForEach(e =>
-                {
-                    if (!productName.Contains(e.ProductName))
-                    {
-                        productName.Add(e.Department);
-                    }
-                });
-                ///取所数量
-                productName = (List<string>)productName.Take(30);
-                if (productName.Count <= 0) return flowOverviewModels;
-                productName.ForEach(e =>
-                {
-                    flowOverviewModel = new ProductFlowOverviewModel()
-                    {
-                        ProductName = e,
-                        ProductFlowCount = modellist.Where(f => f.ProductName == e).Count(),
-                        StandardHoursCount = double.Parse(modellist.Where(f => f.ProductName == e).Sum(g => g.StandardHours).ToString())
-                    };
-                    flowOverviewModels.Add(flowOverviewModel);
-                });
-            }
-            return flowOverviewModels;
-
+            return irep.GetFlowOverviewListBy(department);
         }
     }
 }

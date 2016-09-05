@@ -7,18 +7,21 @@ namespace EicWorkPlatfrom
     {
         static AuthenCheckManager()
         {
-           IsCheck = true;
-           //IsCheck = false;
+            //IsCheck = true;
         }
 
+        private static bool isCheck = false;
         /// <summary>
         /// 是否进行权限检测
         /// 在开发测试中，可将此属性设置为false
         /// 正式发布时，设置为true
         /// </summary>
-        public static bool IsCheck { get; set; }
+        public static bool IsCheck
+        {
+            get { return isCheck; }
+            set { isCheck = value; }
+        }
     }
-
     public class RouteConfig
     {
         public static void RegisterRoutes(RouteCollection routes)

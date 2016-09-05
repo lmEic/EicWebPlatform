@@ -197,6 +197,8 @@
     <Content Include="Content\angular-pageloadingeffect\me-pageloading.min.js" />
     <Content Include="Content\angular-pageloadingeffect\snap.svg-min.js" />
     <Content Include="Content\angular-pageloadingeffect\snap.svg.js" />
+    <Content Include="Content\angular-pageslide\angular-pageslide-directive.js" />
+    <Content Include="Content\angular-pageslide\angular-pageslide-directive.min.js" />
     <Content Include="Content\angular-strap\dist\angular-strap.compat.js" />
     <Content Include="Content\angular-strap\dist\angular-strap.compat.min.js" />
     <Content Include="Content\angular-strap\dist\angular-strap.js" />
