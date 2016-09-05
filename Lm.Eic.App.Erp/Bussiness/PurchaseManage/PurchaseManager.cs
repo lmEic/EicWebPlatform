@@ -30,8 +30,8 @@ namespace Lm.Eic.App.Erp.Bussiness.PurchaseManage
       public static StockDb StockDb
       {
           get
-          {
-              return OBulider.BuildInstance<StockDb>();
+          { 
+              return OBulider.BuildInstance<StockDb>(); 
           }
       }
 
