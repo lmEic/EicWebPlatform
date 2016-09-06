@@ -107,6 +107,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         public JsonResult GetProductFlowInitData()
         {
             var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
+            
             var initDatas = new { departments = departments };
 
             return Json(initDatas, JsonRequestBehavior.AllowGet);
