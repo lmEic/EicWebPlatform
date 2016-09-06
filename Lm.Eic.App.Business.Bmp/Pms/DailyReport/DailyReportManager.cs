@@ -11,9 +11,9 @@ using System.Text;
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 {
     /// <summary>
-    /// 日报管理器
+    /// 日报录入管理器
     /// </summary>
-    public class DailyReportManager
+    public class DailyReportInputManager
     {
 
     }
