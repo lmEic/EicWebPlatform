@@ -12,7 +12,7 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.DailyReport
         {
          
             string path = @"E:\日报数据表.xls";
-                var tem=DailyReportService.MaterialBoardManager.ImportProductFlowListBy (path);
+                var tem=DailyReportService.ConfigManager.ProductFlowSetting.GetProductFlowTemplateProductFlowSetting(path);
                 if (tem ==null ) { Assert.Fail(); }
 
                var temp= DailyReportService.MaterialBoardManager.CloneProductStore(tem);
