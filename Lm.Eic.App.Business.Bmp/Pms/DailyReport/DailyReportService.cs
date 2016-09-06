@@ -37,9 +37,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public static class ConfigManager
         {
             /// <summary>
-            /// 工序管理
+            /// 工艺流程设置
             /// </summary>
-            public static ProductFlowManager ProductFlowManager
+            public static ProductFlowManager ProductFlowSetter
             {
                 get { return OBulider.BuildInstance<ProductFlowManager>(); }
             }

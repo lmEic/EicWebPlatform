@@ -16,7 +16,8 @@ productModule.factory('DReportDataOpService', function (ajaxService) {
         });
     };
     //保存产品工艺流程数据
-    reportDataOp.storeProductFlowDatas = function(entities){var url = _+'StoreProductFlowDatas';
+    reportDataOp.storeProductFlowDatas = function (entities) {
+        var url = urlPrefix + 'StoreProductFlowDatas';
         return ajaxService.postData(url, {
             entities: entities,
         });
