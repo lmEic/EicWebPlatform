@@ -6,44 +6,23 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 {
-    public static  class DailyReportService
+    public static class DailyReportService
     {
         /// <summary>
         /// 日报输入管理器
         /// </summary>
-        public static class DailyReportEnterManager
+        public static InputManager InputManager
         {
-
-            /// <summary>
-            /// 日报输入管理器
-            /// </summary>
-            public static DailyReportInputManager DailyReportInputManager
-            {
-                get { return OBulider.BuildInstance<DailyReportInputManager>(); }
-            }
-
-            /// <summary>
-            /// 日报模板管理器
-            /// </summary>
-            public static DailyReportTemplateManager DailyReportTemplateManager
-            {
-                get { return OBulider.BuildInstance<DailyReportTemplateManager>(); }
-            }
+            get { return OBulider.BuildInstance<InputManager>(); }
         }
 
         /// <summary>
         /// 日报配置管理器
         /// </summary>
-        public static class DailyReportConfigManager
+        public static ConfigManager ConfigManager
         {
-            /// <summary>
-            /// 工序管理
-            /// </summary>
-            public static ProductFlowManager ProductFlowManager
-            {
-                get { return OBulider.BuildInstance<ProductFlowManager>(); }
-            }
+            get { return OBulider.BuildInstance<ConfigManager>(); }
         }
-      
+
     }
 }

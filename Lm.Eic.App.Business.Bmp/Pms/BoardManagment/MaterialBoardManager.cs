@@ -124,8 +124,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <returns></returns>
         private  Image BuildImage(string strPatch, string context)
         {
-            try
-            {
+            //try
+            //{
                 Image myImage = Image.FromFile(strPatch);
                 //创建一个画布
                 int mapWidth = myImage.Width;
@@ -137,7 +137,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
                 graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
                 graphics.Clear(Color.White);
                 graphics.DrawString(context,
-                  new Font("宋体", 10),
+                  new Font("宋体", 15),
                   new SolidBrush(Color.Black),
                   new PointF(0, 5));
 
@@ -156,11 +156,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
                 graphics.Dispose();
                 myImage.Dispose();
                 return resultImage;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new Exception(ex.InnerException.Message);
+            //}
         }
 
 
