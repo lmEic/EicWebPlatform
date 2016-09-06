@@ -11,7 +11,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 日报输入管理器
         /// </summary>
-        public static class DailyReportEnterManager
+        public static class InputManager
         {
 
             /// <summary>
@@ -34,7 +34,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 日报配置管理器
         /// </summary>
-        public static class DailyReportConfigManager
+        public static class ConfigManager
         {
             /// <summary>
             /// 工序管理
