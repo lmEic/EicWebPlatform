@@ -55,8 +55,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 throw new Exception(ex.InnerException.Message);
             }
         }
-        
-        
         /// <summary>
         /// 重写添加项
         /// </summary>
@@ -73,7 +71,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         private OpResult AddProductFlowModel(ProductFlowModel model)
         {
-            model.ParameterKey = string.Format("{0}&{1}&{2}&{3}",model.Department, model.ProductName, model.ProductFlowName, model.MouldId);
+           if(model.MouldId !=null)
+               model.ParameterKey = string.Format("{0}&{1}&{2}&{3}",model.Department, model.ProductName, model.ProductFlowName, model.MouldId);
+           else
+               model.ParameterKey = string.Format("{0}&{1}&{2}", model.Department, model.ProductName, model.ProductFlowName);
+            
             if (irep.IsExist(e => e.ParameterKey == model.ParameterKey ))
             {
                 return OpResult.SetResult("此数据已经添加!");
@@ -101,7 +103,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             OpResult opResult = OpResult.SetResult("未执行任何操作");
             if (model.Id_Key <= 0)
                 return OpResult.SetResult("Id_Key未设置！");
-
             opResult = irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
             return opResult;
         }
