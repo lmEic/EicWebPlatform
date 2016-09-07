@@ -157,7 +157,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 if (model.ProductName == "冬季厂服")
                     yearDate = yearDate.AddYears(-1);
                 //排除“以旧换旧” 的时间  再判断
-                var returnWorkClothes = workClothesList.Where(e => e.ProductName == model.ProductName && e.DealwithType != "以旧换旧" && e.InputDate >= yearDate);
+                var returnWorkClothes = workClothesList.Where(e => e.ProductName == model.ProductName && e.DealwithType != "以旧换旧" && e.DealwithType != "购买新衣" && e.InputDate >= yearDate);
                 bool result = (returnWorkClothes == null || returnWorkClothes.Count() <= 0);
                 return result;
             }
