@@ -11,9 +11,13 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     var reportUrlPrefix = leeHelper.controllers.dailyReport + "/";
 
     //--------------生产日报-------------------------
-    $stateProvider.state('dReportHoursSet', {//标准工时设定
+    $stateProvider.state('dReportHoursSet', {
+        //标准工时设定
         templateUrl: reportUrlPrefix + 'DReportHoursSet',
-
+    })
+    .state('dReportInput', {
+        //日报录入
+        templateUrl: reportUrlPrefix + 'DReportInput',
     })
     //--------------人员管理--------------------------
     .state('registWorkerInfo', {

@@ -6,7 +6,7 @@
         <div class="row">
             <div class="pull-left" style="width:40%;">
                 <div cg-busy="{promise:promise}">
-                    部门<label class="label label-default">{{vmManager.Department}}</label>
+                    部门<label class="label label-default">{{vm.Department}}</label>
                     <button class="btn btn-sm btn-primary"
                             data-title="选择部门名称"
                             data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
@@ -15,7 +15,7 @@
                         <i class="fa fa-sitemap"></i>
                     </button>
                     <label>产品品名</label>
-                    <input placeholder="输产品品名按下回车键查找" ng-model=""/>
+                    <input placeholder="输产品品名按下回车键查找" />
                     <div class="h-split"></div>
                 </div>
             </div>
@@ -25,9 +25,9 @@
                     <button class="btn btn-sm btn-warning" title="保存" ng-click="operate.save()"><i class="fa fa-save"></i>保存</button>
 
                     <span class="pull-right">
-                        <button class="btn btn-sm btn-primary" title="下载模板" ng-click="operate.loadTemplateFile()"><i class="fa fa-download"></i>载入模板</button>
+                        <button class="btn btn-sm btn-primary" title="下载模板" ng-click="operate.loadTemplateFile()"><i class="fa fa-download"></i>下载模板</button>
                         <a href="javascript:;" class="btn btn-sm btn-info file" title="从Excel中导入数据">
-                            <i class="fa fa-file-excel-o"></i>导入<input type="file" onchange="angular.element(this).scope().selectFile(this)" name="file">
+                            <i class="fa fa-file-excel-o"></i>导入<input type="file" name="fileTemplate">
                         </a>
                         <button class="btn btn-sm btn-success" title="批量复制" ng-click="operate.copyAll()"><i class="fa fa-copy"></i>批量复制</button>
                     </span>
@@ -139,7 +139,7 @@
                                     </div>
                                     <label for="relaxCoefficient" class="col-md-2 control-label">宽放系数</label>
                                     <div class="col-md-4">
-                                        <input name="relaxCoefficient" type="number" class="form-control" ng-model="vm.RelaxCoefficient" required />
+                                        <input name="relaxCoefficient" type="range" class="form-control" ng-model="vm.RelaxCoefficient" required />
                                         <div class="error-messages" ng-messages="formProductFlow.relaxCoefficient.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">宽放系数不能为空</small>
                                         </div>
@@ -264,6 +264,7 @@
                 </div>
             </div>
         </div>
+     
     </div>
   
     <div class="panel-footer">

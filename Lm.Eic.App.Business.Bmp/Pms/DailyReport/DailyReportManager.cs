@@ -3,21 +3,79 @@ using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
-using System.IO ;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
-
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 {
+
+    /***********************************************   日报输入管理器   ********************************
+ *                                        
+ *  2016-9-06  初版   张明                  
+ **************************************************************************************************/
     /// <summary>
-    /// 日报管理器
+    /// 日报输入管理器
     /// </summary>
-    public class DailyReportManager
+    public class InputManager
+    {
+
+        /// <summary>
+        /// 日报输入管理器
+        /// </summary>
+        public DailyReportInputManager DailyReportInputManager
+        {
+            get { return OBulider.BuildInstance<DailyReportInputManager>(); }
+        }
+
+        /// <summary>
+        /// 日报模板管理器
+        /// </summary>
+        public DailyReportTemplateManager DailyReportTemplateManager
+        {
+            get { return OBulider.BuildInstance<DailyReportTemplateManager>(); }
+        }
+    }
+
+
+    /***********************************************   日报配置管理器   ********************************
+ *                                        
+ *  2016-9-06  初版   张明                  
+ **************************************************************************************************/
+    /// <summary>
+    /// 日报配置管理器
+    /// </summary>
+    public class ConfigManager
+    {
+        /// <summary>
+        /// 产品工艺设置
+        /// </summary>
+        public ProductFlowManager ProductFlowSetter
+        {
+            get { return OBulider.BuildInstance<ProductFlowManager>(); }
+        }
+    }
+
+
+    /***********************************************   日报录入管理器   ********************************
+     *                                        
+     *  2016-9-06  初版   张明                  
+     **************************************************************************************************/
+
+    /// <summary>
+    /// 日报录入管理器
+    /// </summary>
+    public class DailyReportInputManager
     {
 
     }
 
+
+    /***********************************************   日报模板管理器  ******************************
+  *                                        
+  *  2016-9-06  初版   张明                  
+  **************************************************************************************************/
     /// <summary>
     /// 日报模板管理器
     /// </summary>
@@ -26,8 +84,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
     }
 
+
+    /***********************************************   产品工艺管理器   ********************************
+     *                                        
+     *  2016-9-06  初版   张明                  
+     **************************************************************************************************/
     /// <summary>
-    /// 工序管理器
+    /// 产品工艺管理器
     /// </summary>
     public class ProductFlowManager
     {
