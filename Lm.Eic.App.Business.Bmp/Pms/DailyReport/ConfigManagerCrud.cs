@@ -19,7 +19,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         public static ProductFlowCrud ProductFlowCrud
         { get { return OBulider.BuildInstance<ProductFlowCrud>(); } }
-      
+
     }
 
 
@@ -55,8 +55,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 throw new Exception(ex.InnerException.Message);
             }
         }
-        
-        
+
+
         /// <summary>
         /// 重写添加项
         /// </summary>
@@ -73,14 +73,18 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         private OpResult AddProductFlowModel(ProductFlowModel model)
         {
-            model.ParameterKey = string.Format("{0}&{1}&{2}&{3}",model.Department, model.ProductName, model.ProductFlowName, model.MouldId);
-            if (irep.IsExist(e => e.ParameterKey == model.ParameterKey ))
-            {
+            //生成组合键值
+            if (model.MouldId != null)
+                model.ParameterKey = string.Format("{0}&{1}&{2}&{3}", model.Department, model.ProductName, model.ProductFlowName, model.MouldId);
+            else model.ParameterKey = string.Format("{0}&{1}&{2}", model.Department, model.ProductName, model.ProductFlowName);
+
+            //此工艺是否已经存在
+            if (irep.IsExist(e => e.ParameterKey == model.ParameterKey))
                 return OpResult.SetResult("此数据已经添加!");
-            }
+
             return irep.Insert(model).ToOpResult(OpContext);
         }
-       
+
         /// <summary>
         /// 编辑
         /// </summary>
@@ -139,7 +143,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 throw new Exception(ex.InnerException.Message);
             }
         }
-       
+
         /// <summary>
         /// 获取产品总概述前30行
         /// </summary>
