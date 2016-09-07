@@ -48,6 +48,7 @@
     <Compile Include="Hrm\GeneralAffairs\QueryGeneralAffairsDto.cs" />
     <Compile Include="Pms\DailyReport\DailyReportModel.cs" />
     <Compile Include="Pms\DailyReport\ProductFlowModel.cs" />
+    <Compile Include="Pms\DailyReport\QueryDailyReportDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quanity\QuantitySampleRecordModel.cs" />
     <Compile Include="Hrm\GeneralAffairs\WorkClothesManageModel.cs" />
