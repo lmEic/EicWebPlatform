@@ -73,11 +73,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         private OpResult AddProductFlowModel(ProductFlowModel model)
         {
-            if (irep.IsExist(e =>
-                e.ProductName == model.ProductName
-                && e.ProductFlowName == model.ProductFlowName
-                && e.MouldId == model.MouldId
-                ))
+            model.ParameterKey = string.Format("{0}&{1}&{2}&{3}",model.Department, model.ProductName, model.ProductFlowName, model.MouldId);
+            if (irep.IsExist(e => e.ParameterKey == model.ParameterKey ))
             {
                 return OpResult.SetResult("此数据已经添加!");
             }

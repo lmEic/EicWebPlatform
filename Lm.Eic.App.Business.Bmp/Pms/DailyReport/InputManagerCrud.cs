@@ -39,7 +39,30 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
         protected override void AddCrudOpItems()
         {
-            throw new NotImplementedException();
+            AddOpItem(OpMode.Add, AddDailyReportModel);
+            AddOpItem(OpMode.Edit, EditDailyReportModel);
+            AddOpItem(OpMode.Delete, DeleteDailyReportModel);
+        }
+
+        private OpResult AddDailyReportModel(DailyReportModel model)
+        {
+
+            return irep.Insert(model).ToOpResult("日报添加成功");
+        }
+
+        private OpResult EditDailyReportModel(DailyReportModel model)
+        {
+           ////添加条件
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
+
+        }
+        private OpResult DeleteDailyReportModel(DailyReportModel model)
+        {
+            OpResult opResult = OpResult.SetResult("未执行任何操作");
+            if (model.Id_Key <= 0)
+                return OpResult.SetResult("Id_Key未设置！");
+            opResult = irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+            return opResult;
         }
         /// <summary>
         /// 日报录入数据仓库
@@ -66,12 +89,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
             AddOpItem(OpMode.Add, AddDailyReportTemplateModel);
             AddOpItem(OpMode.Edit, EditDailyReportTemplateModel);
+            AddOpItem(OpMode.Delete, DeleteDailyReportTemplateModel);
 
         }
         private OpResult AddDailyReportTemplateModel(DailyReportTemplateModel model)
         {
 
-            return irep.Insert(model).ToOpResult("日报添加成功");
+            return irep.Insert(model).ToOpResult("日报模板添加成功");
         }
 
         private OpResult EditDailyReportTemplateModel(DailyReportTemplateModel model)
@@ -81,13 +105,19 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
 
         }
-
+        private  OpResult DeleteDailyReportTemplateModel(DailyReportTemplateModel model)
+        {
+            OpResult opResult = OpResult.SetResult("未执行任何操作");
+            if (model.Id_Key <= 0)
+                return OpResult.SetResult("Id_Key未设置！");
+            opResult = irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+            return opResult;
+        }
 
         public DailyReportTemplateModel FindPutInDateDailyReportBy(string department, string orderId)
         {
             try
             {
-
                 return irep.Entities.Where(m => m.Department == department && m.OrderId == orderId).ToList().FirstOrDefault();
             }
             catch (Exception ex)
