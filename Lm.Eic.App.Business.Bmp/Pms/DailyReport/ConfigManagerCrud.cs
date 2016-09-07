@@ -103,7 +103,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         private OpResult DeleteProductFlowModel(ProductFlowModel model)
         {
             OpResult opResult = OpResult.SetResult("未执行任何操作");
-            if (model.Id_Key <= 0)
+            if (model.Id_Key == 0)
                 return OpResult.SetResult("Id_Key未设置！");
 
             opResult = irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
