@@ -43,7 +43,22 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
         protected override void AddCrudOpItems()
         {
+            AddOpItem(OpMode.Add, AddDailyReportModel);
+            AddOpItem(OpMode.Edit, EditDailyReportModel);
             throw new NotImplementedException();
+        }
+
+
+        private OpResult  AddDailyReportModel (DailyReportModel model)
+        {
+            ///需要添加条件
+            ///
+            return irep.Insert(model).ToOpResult("日报添加成功");
+        }
+        private OpResult EditDailyReportModel(DailyReportModel model)
+        {
+            ///需要添加
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
         }
         /// <summary>
         /// 日报录入数据仓库
@@ -80,8 +95,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
   
         private OpResult EditDailyReportTemplateModel(DailyReportTemplateModel model)
         {
-            var putInDateDailyReport = FindPutInDateDailyReportBy(model.Department, model.OrderId);
-            model.Id_Key = putInDateDailyReport.Id_Key;
+            v
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
 
         }
@@ -125,6 +139,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             AddOpItem(OpMode.Add, AddProductFlowModel);
             AddOpItem(OpMode.Edit, EditProductFlowModel);
         }
+        private OpResult DelectProductFlowModel(ProductFlowModel model)
+        {
+            return irep.Delete();
+        }
         /// <summary>
         /// 添加
         /// </summary>
@@ -133,12 +151,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         private OpResult AddProductFlowModel(ProductFlowModel model)
         {
             model.ParameterKey = string.Format("{0}&{1}&{2}", model.ProductName, model.ProductFlowId, model.MouldId);
-            if( irep.IsExist(e=> e.ParameterKey==model.ParameterKey ))
-            {
-                return OpResult.SetResult("此数据已经添加!");
-            }
-            
-            return irep.Insert(model).ToOpResult("工时添加成功");
+            if (irep.IsExist(e => e.ParameterKey == model.ParameterKey))
+                //如果存在侧更新
+            { return EditProductFlowModel(model); }
+            else
+               //存储
+            { return irep.Insert(model).ToOpResult("工时添加成功"); }
         }
         /// <summary>
         /// 编辑
@@ -147,7 +165,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         private OpResult EditProductFlowModel(ProductFlowModel model)
         {
-            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
         /// <summary>
