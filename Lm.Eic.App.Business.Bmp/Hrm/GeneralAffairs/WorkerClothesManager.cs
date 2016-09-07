@@ -150,6 +150,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             try
             {
                 if (model.DealwithType == "以旧换旧") return true;
+                if (model.DealwithType == "购买新衣") return true;
                 var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = model.WorkerId, SearchMode = 1 });
                 if (workClothesList == null || workClothesList.Count() <= 0) return true;
                 DateTime yearDate = DateTime.Now.Date.AddYears(-2);
