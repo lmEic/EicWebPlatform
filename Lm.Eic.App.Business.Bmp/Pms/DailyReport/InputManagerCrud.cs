@@ -59,19 +59,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         private OpResult DeleteDailyReportModel(DailyReportModel model)
         {
             OpResult opResult = OpResult.SetResult("未执行任何操作");
-            if (model.Id_Key <= 0)
+            if (model.Id_Key == 0)
                 return OpResult.SetResult("Id_Key未设置！");
             opResult = irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
             return opResult;
-        }
-        /// <summary>
-        /// 日报录入数据仓库
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public override OpResult Store(DailyReportModel model)
-        {
-            return this.PersistentDatas(model);
         }
     }
 
@@ -84,56 +75,28 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
         }
 
-        protected override void AddCrudOpItems()
+
+        public OpResult AddTemplateList(List<DailyReportTemplateModel> modelList)
         {
-
-            AddOpItem(OpMode.Add, AddDailyReportTemplateModel);
-            AddOpItem(OpMode.Edit, EditDailyReportTemplateModel);
-            AddOpItem(OpMode.Delete, DeleteDailyReportTemplateModel);
-
-        }
-        private OpResult AddDailyReportTemplateModel(DailyReportTemplateModel model)
-        {
-
-            return irep.Insert(model).ToOpResult("日报模板添加成功");
+            //添加模板列表       要求：一次保存整个列表
+            return null;
         }
 
-        private OpResult EditDailyReportTemplateModel(DailyReportTemplateModel model)
+        public OpResult DeleteTemplateListBy(string department)
         {
-            var putInDateDailyReport = FindPutInDateDailyReportBy(model.Department, model.OrderId);
-            model.Id_Key = putInDateDailyReport.Id_Key;
-            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
-
-        }
-        private  OpResult DeleteDailyReportTemplateModel(DailyReportTemplateModel model)
-        {
-            OpResult opResult = OpResult.SetResult("未执行任何操作");
-            if (model.Id_Key <= 0)
-                return OpResult.SetResult("Id_Key未设置！");
-            opResult = irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
-            return opResult;
+            //TODO:删除部门列表  要求：一次性删除 
+            return null;
         }
 
-        public DailyReportTemplateModel FindPutInDateDailyReportBy(string department, string orderId)
+        public List<DailyReportTemplateModel> GetTemplateListBy(string department)
         {
-            try
-            {
-                return irep.Entities.Where(m => m.Department == department && m.OrderId == orderId).ToList().FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
+            //TODO:获取模板
+            return null;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public override OpResult Store(DailyReportTemplateModel model)
-        {
-            return this.PersistentDatas(model);
-        }
+
+        protected override void AddCrudOpItems(){}
+
+ 
     }
 
 }
