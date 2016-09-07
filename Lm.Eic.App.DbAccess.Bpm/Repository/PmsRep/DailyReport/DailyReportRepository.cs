@@ -14,11 +14,18 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     public interface IProductFlowRepositoryRepository : IRepository<ProductFlowModel> 
     {
         /// <summary>
-        /// 获取产品总概述前30行接口
+        /// 获取产品总概述前30行接口  =》部门是必须的
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        List<ProductFlowOverviewModel> GetFlowOverviewListBy(string department);
+        List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department);
+
+        /// <summary>
+        /// 获取产品工艺总览 =》品名和部门是必须的
+        /// </summary>
+        /// <param name="dto">数据传输对象 请设置部门和品名</param>
+        /// <returns></returns>
+        ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto);
     }
     /// <summary>
     ///工序仓储
@@ -26,19 +33,50 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     public class ProductFlowRepositoryRepository : BpmRepositoryBase<ProductFlowModel>, IProductFlowRepositoryRepository
     {
         /// <summary>
+        /// 获取产品工艺总览 =》品名和部门是必须的
+        /// </summary>
+        /// <param name="dto">数据传输对象 请设置部门和品名</param>
+        /// <returns></returns>
+        public ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT DISTINCT ProductName AS ProductName, COUNT(ProductName) AS ProductFlowCount, SUM(StandardHours) AS StandardHoursCount ")
+                  .Append("FROM   Pms_ProductFlow ")
+                  .Append("WHERE   (Department = '" + dto.Department + "')  AND (ProductName = '" + dto.ProductName + "')")
+                  .Append("GROUP BY ProductName ");
+                string sqltext = sb.ToString();
+                return DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).ToList().FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+
+        }
+
+        /// <summary>
         /// 获取产品总概述前30行
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        public List<ProductFlowOverviewModel> GetFlowOverviewListBy(string department)
+        public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("SELECT DISTINCT ProductName AS ProductName, COUNT(ProductName) AS ProductFlowCount, SUM(StandardHours) AS StandardHoursCount ")
-              .Append("FROM   Pms_ProductFlow ")
-              .Append("WHERE   (Department = '" + department + "')")
-              .Append("GROUP BY ProductName ");
-            string sqltext = sb.ToString();
-            return DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).Take(30).ToList();
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT DISTINCT ProductName AS ProductName, COUNT(ProductName) AS ProductFlowCount, SUM(StandardHours) AS StandardHoursCount ")
+                  .Append("FROM   Pms_ProductFlow ")
+                  .Append("WHERE   (Department = '" + department + "')")
+                  .Append("GROUP BY ProductName ");
+                string sqltext = sb.ToString();
+                return DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).Take(30).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
         }
     }
 

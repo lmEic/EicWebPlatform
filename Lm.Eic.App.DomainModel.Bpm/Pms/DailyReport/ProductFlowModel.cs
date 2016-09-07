@@ -80,6 +80,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _productflowname = value; }
             get { return _productflowname; }
         }
+
+        public string _parameterKey;
+        /// <summary>
+        /// 标识键
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterKey = value; }
+            get { return _parameterKey; }
+        }
         private int _standardhourstype;
         /// <summary>
         ///标准工时类别(1m,2s,3pcs/h)
