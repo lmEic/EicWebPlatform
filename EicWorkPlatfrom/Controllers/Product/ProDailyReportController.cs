@@ -59,5 +59,18 @@ namespace EicWorkPlatfrom.Controllers.Product
             MemoryStream ms = null;
             return this.ExportToExcel(ms, "产品工艺流程模板", "产品工艺流程模板");
         }
+
+
+
+        #region daily report  input method
+        /// <summary>
+        /// 日报录入
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult DReportInput()
+        {
+            return View();
+        }
+        #endregion
     }
 }

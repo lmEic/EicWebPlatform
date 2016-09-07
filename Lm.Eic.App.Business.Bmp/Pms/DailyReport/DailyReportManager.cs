@@ -51,7 +51,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 产品工艺设置
         /// </summary>
-        public ProductFlowManager ProductFlowSetting
+        public ProductFlowManager ProductFlowSetter
         {
             get { return OBulider.BuildInstance<ProductFlowManager>(); }
         }
