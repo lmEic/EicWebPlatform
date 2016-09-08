@@ -172,6 +172,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public OpResult Store(List<DailyReportModel> modelList)
         {
+            //TODO:先查找出该部门的模板进行删除 然后进行存储 保证数据库中始终是最新的模板
             try
             {
                 OpResult retrueOpResult = OpResult.SetResult("列表为空");
@@ -179,10 +180,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 if (modelList != null && modelList.Count() > 0)
                 {
                     string department = modelList.FirstOrDefault().Department;
+                    //转化日报转化为日报模板
                     var templateList = ConventTemplateList(modelList);
                     if (templateList != null && templateList.Count() > 0)
                     {
+                        //删除此部门的日报模板
                        refreshTemplateResult= DailyReportInputCrudFactory.DailyReportTemplateCrud.DeleteTemplateListBy(department);
+                        //添加新模板
                        refreshTemplateResult =DailyReportInputCrudFactory.DailyReportTemplateCrud.AddTemplateList(templateList);
                     }
                     retrueOpResult = DailyReportInputCrudFactory.DailyReportCrud.AddDailyReportList(modelList);
@@ -193,7 +197,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             {
                 throw new Exception(ex.InnerException.Message);
             }
-            //TODO:先查找出该部门的模板进行删除 然后进行存储 保证数据库中始终是最新的模板
+           
            
         }
     }
