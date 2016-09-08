@@ -4,6 +4,7 @@ using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.App.Business.Bmp.Pms.DailyReport;
 using System.IO;
 using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+using System.Web;
 
 namespace EicWorkPlatfrom.Controllers.Product
 {
@@ -72,8 +73,26 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public FileResult LoadProductFlowTemplateFile()
         {
-            MemoryStream ms = null;
+            string filePath = @"E:\各部门日报格式\日报数据表.xls";
+            MemoryStream ms = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowTemplate(filePath);
             return this.ExportToExcel(ms, "产品工艺流程模板", "产品工艺流程模板");
+        }
+
+        public JsonResult ImportProductFlowDatas(HttpPostedFileBase file)
+        {
+            List<ProductFlowModel> datas = null;
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    ///待加入验证文件名称逻辑:
+                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
+                    file.SaveAs(fileName);
+                    datas= DailyReportService.ConfigManager.ProductFlowSetter.ImportProductFlowListBy(fileName);
+                    System.IO.File.Delete(fileName);
+                }
+            }
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

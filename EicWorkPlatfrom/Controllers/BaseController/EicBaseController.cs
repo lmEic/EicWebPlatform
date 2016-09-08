@@ -354,4 +354,24 @@ namespace EicWorkPlatfrom.Controllers
         public NoAuthenCheckAttribute()
         { }
     }
+
+    /// <summary>
+    /// 文件库键值
+    /// </summary>
+    public class FileLibraryKey
+    {
+        /// <summary>
+        /// 文件库根路径
+        /// </summary>
+        public const string FileLibrary = "FileLibrary";
+
+        /// <summary>
+        /// 制二物料看板文件夹
+        /// </summary>
+        public const string TwoMaterialBoard = "TwoMaterialBoard";
+        /// <summary>
+        /// 临时存放文件夹
+        /// </summary>
+        public const string Temp = "Temp";
+    }
 }
