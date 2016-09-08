@@ -56,7 +56,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
                 return BuildImageErr("物料不存在与工单");
 
             return BuildImage(string.Format(@"{0}{1}",rootPath, materialBoard.DocumentPath.Replace("/", @"\")),
-                string.Format("工单单号:{0} 出货日期：{1}  批量：{2}", orderDetails.OrderId, shipmentDate, shipmentCount));
+                string.Format("工单单号:{0}         出货日期：{1}         批量：{2}", orderDetails.OrderId, shipmentDate, shipmentCount));
         }
         /// <summary>
         /// 获取待审核的看板列表
@@ -139,7 +139,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
                 graphics.DrawString(context,
                   new Font("宋体", 15,FontStyle.Bold),
                   new SolidBrush(Color.Black),
-                  new PointF(100, 5));
+                  new PointF(0, 5));
 
                 Point ulCorner = new Point(0, 32);
                 Point urCorner = new Point(mapWidth, 32);
