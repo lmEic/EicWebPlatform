@@ -139,7 +139,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
                 graphics.DrawString(context,
                   new Font("宋体", 15,FontStyle.Bold),
                   new SolidBrush(Color.Black),
-                  new PointF(0, 5));
+                  new PointF(100, 5));
 
                 Point ulCorner = new Point(0, 32);
                 Point urCorner = new Point(mapWidth, 32);
