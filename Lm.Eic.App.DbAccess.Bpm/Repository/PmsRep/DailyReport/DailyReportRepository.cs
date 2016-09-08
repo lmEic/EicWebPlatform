@@ -25,7 +25,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
         /// </summary>
         /// <param name="dto">数据传输对象 请设置部门和品名</param>
         /// <returns></returns>
-        ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto);
+        List<ProductFlowOverviewModel> GetProductFlowOverviewBy(QueryDailyReportDto dto);
     }
     /// <summary>
     ///工序仓储
@@ -37,17 +37,17 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
         /// </summary>
         /// <param name="dto">数据传输对象 请设置部门和品名</param>
         /// <returns></returns>
-        public ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
+        public List<ProductFlowOverviewModel> GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
             try
             {
                 StringBuilder sb = new StringBuilder();
-                sb.Append("SELECT DISTINCT ProductName AS ProductName, COUNT(ProductName) AS ProductFlowCount, SUM(StandardHours) AS StandardHoursCount ")
+                sb.Append("SELECT DISTINCT ProductName AS ProductName , StandardHoursType, COUNT(ProductName) AS ProductFlowCount, SUM(StandardHours) AS StandardHoursCount ")
                   .Append("FROM   Pms_ProductFlow ")
                   .Append("WHERE   (Department = '" + dto.Department + "')  AND (ProductName = '" + dto.ProductName + "')")
-                  .Append("GROUP BY ProductName ");
+                  .Append("GROUP BY ProductName , StandardHoursType");
                 string sqltext = sb.ToString();
-                return DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).ToList().FirstOrDefault();
+                return DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).ToList();
             }
             catch (Exception ex)
             {
@@ -66,10 +66,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
             try
             {
                 StringBuilder sb = new StringBuilder();
-                sb.Append("SELECT DISTINCT ProductName AS ProductName, COUNT(ProductName) AS ProductFlowCount, SUM(StandardHours) AS StandardHoursCount ")
+                sb.Append("SELECT DISTINCT ProductName AS ProductName , StandardHoursType, COUNT(ProductName) AS ProductFlowCount, SUM(StandardHours) AS StandardHoursCount ")
                   .Append("FROM   Pms_ProductFlow ")
                   .Append("WHERE   (Department = '" + department + "')")
-                  .Append("GROUP BY ProductName ");
+                  .Append("GROUP BY ProductName , StandardHoursType");
                 string sqltext = sb.ToString();
                 return DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).Take(30).ToList();
             }

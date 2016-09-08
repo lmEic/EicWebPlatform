@@ -1,0 +1,96 @@
+﻿<div class="panel panel-primary" ng-controller="dReportInputCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title">生产日报录入</h6>
+    </div>
+    <div class="panel-body">
+        <div cg-busy="{promise:promise}">
+            部门<label class="label label-default">{{vm.Department}}</label>
+            <button class="btn btn-sm btn-default"
+                    data-title="选择部门名称"
+                    data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
+                    data-animation="am-flip-x" data-auto-close="1"
+                    data-bs-popover>
+                <i class="fa fa-sitemap"></i>
+            </button>
+            <label>录入日期</label>
+            <input type="date" />
+            <span>
+                <button class="btn btn-sm btn-primary" title="载入模板" ng-click="operate.loadTemplateFile()"><i class="fa fa-download"></i>载入模板</button>
+                <button class="btn btn-sm btn-info" title="新增" ng-click="vmManager.showDReportInputView()"><i class="fa fa-pencil"></i>新增</button>
+                <button class="btn btn-sm btn-success" title="保存" ng-click="operate.save()"><i class="fa fa-save"></i>保存</button>
+                <span class="pull-right">
+                    <button class="btn btn-sm btn-primary" title="日报预览看板" ng-click="vmManager.showDReportPreviewView()"><i class="fa fa-table"></i>日报预览</button>
+                    <button class="btn btn-sm btn-default" title="工序汇总看板" ng-click="vmManager.showProFlowView()"><i class="fa fa-th-large"></i>工序汇总</button>
+                    <button class="btn btn-sm btn-default" title="人员汇总看板" ng-click="vmManager.showPersonView()"><i class="fa fa-th-list"></i>人员汇总</button>
+                    <button class="btn btn-sm btn-default" title="工单汇总看板" ng-click="vmManager.showOrderIdView()"><i class="fa fa-list-ol"></i>工单汇总</button>
+                </span>
+            </span>
+            <div class="h-split"></div>
+        </div>
+        <div class="bs-callout bs-callout-info" style="min-height:465px;" id="editWindow">
+            <div class="table-responsive">
+                <table class="table table-bordered table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center">工单</th>
+                            <th class="text-center">工艺</th>
+                            <th class="text-center">人员</th>
+                            <th class="text-center">机台</th>
+                            <th class="text-center">磨具</th>
+                            <th class="text-center danger">操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                            <th class="text-center">工时</th>
+                            <th class="text-center">产量</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in vmManager.editDatas track by $index">
+                            <td>{{item.Department}}</td>
+                            <td>{{item.DailyReportDate}}</td>
+                            <td>{{item.DailyReportMonth}}</td>
+                            <td>{{item.InputTime}}</td>
+                            <td>{{item.MachineId}}</td>
+                            <td>
+                                <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
+                                    修改
+                                </button>
+                            </td>
+                            <td>{{item.EquipmentEifficiency}}</td>
+                            <td>{{item.DifficultyCoefficient}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div pageslide ps-open="vmManager.dReportInputDisplay" ps-side="right" ps-size="{{vmManager.inputViewSize}}" p ps-speed="0.15" ps-container='editWindow'>
+            <div style="padding:10px;overflow-y:auto">
+
+            </div>
+        </div>
+
+        <div pageslide ps-open="vmManager.dReportPreviewDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
+            <div style="padding:10px;overflow-y:auto">
+
+            </div>
+        </div>
+        <div pageslide ps-open="vmManager.proFlowBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
+            <div style="padding:10px;overflow-y:auto">
+
+            </div>
+        </div>
+        <div pageslide ps-open="vmManager.personBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
+            <div style="padding:10px;overflow-y:auto">
+
+            </div>
+        </div>
+        <div pageslide ps-open="vmManager.orderIdBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
+            <div style="padding:10px;overflow-y:auto">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-footer">
+
+    </div>
+</div>
