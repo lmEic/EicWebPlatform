@@ -160,7 +160,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private int _standardhourstype;
         /// <summary>
-        ///标准工时类别(1m,2s,3pcs/h)
+        ///标准工时类别(1s,2m,3pcs/h)
         /// </summary>
         public int StandardHoursType
         {

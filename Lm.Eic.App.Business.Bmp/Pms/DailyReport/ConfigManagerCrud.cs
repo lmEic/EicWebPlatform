@@ -56,6 +56,41 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             }
         }
 
+        /// <summary>
+        /// 删除产品工序列表
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <param name="productName">产品品名</param>
+        /// <returns></returns>
+        public OpResult DeleteProductFlowModelBy(string department, string productName)
+        {
+            try
+            {
+                return irep.Delete(m => m.Department == department && m.ProductName == productName).ToOpResult_Delete(OpContext);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+
+        /// <summary>
+        /// 添加列表到数据库中
+        /// </summary>
+        /// <param name="modelList">工序列表</param>
+        /// <returns></returns>
+        public OpResult AddProductFlowModelList(List<ProductFlowModel> modelList)
+        {
+            try
+            {
+                return irep.Insert(modelList).ToOpResult_Add(OpContext);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
 
         /// <summary>
         /// 重写添加项
@@ -151,8 +186,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department)
         {
-            var tem = irep.GetProductFlowOverviewListBy(department);
-            return StatanardHoursProcessor(tem);
+            return irep.GetProductFlowOverviewListBy(department);
         }
 
         /// <summary>
@@ -162,19 +196,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
-            var temList = StatanardHoursProcessor(irep.GetProductFlowOverviewBy(dto));
-            return temList.Count > 0 ? temList[0] : null;
+
+            return irep.GetProductFlowOverviewBy(dto);
         }
 
-        /// <summary>
-        /// 标准工时处理器
-        /// </summary>
-        /// <param name="modelList"></param>
-        /// <returns></returns>
-        List<ProductFlowOverviewModel> StatanardHoursProcessor(List<ProductFlowOverviewModel> modelList)
-        {
-            return null;
-        }
     }
 
 }

@@ -150,13 +150,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             try
             {
                 if (model.DealwithType == "以旧换旧") return true;
+                if (model.DealwithType == "购买新衣") return true;
                 var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = model.WorkerId, SearchMode = 1 });
                 if (workClothesList == null || workClothesList.Count() <= 0) return true;
                 DateTime yearDate = DateTime.Now.Date.AddYears(-2);
                 if (model.ProductName == "冬季厂服")
                     yearDate = yearDate.AddYears(-1);
                 //排除“以旧换旧” 的时间  再判断
-                var returnWorkClothes = workClothesList.Where(e => e.ProductName == model.ProductName && e.DealwithType != "以旧换旧" && e.InputDate >= yearDate);
+                var returnWorkClothes = workClothesList.Where(e => e.ProductName == model.ProductName && e.DealwithType != "以旧换旧" && e.DealwithType != "购买新衣" && e.InputDate >= yearDate);
                 bool result = (returnWorkClothes == null || returnWorkClothes.Count() <= 0);
                 return result;
             }
