@@ -19,7 +19,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         public static ProductFlowCrud ProductFlowCrud
         { get { return OBulider.BuildInstance<ProductFlowCrud>(); } }
-      
+
     }
 
 
@@ -55,6 +55,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 throw new Exception(ex.InnerException.Message);
             }
         }
+
+
         /// <summary>
         /// 重写添加项
         /// </summary>
@@ -71,18 +73,18 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         private OpResult AddProductFlowModel(ProductFlowModel model)
         {
-           if(model.MouldId !=null)
-               model.ParameterKey = string.Format("{0}&{1}&{2}&{3}",model.Department, model.ProductName, model.ProductFlowName, model.MouldId);
-           else
-               model.ParameterKey = string.Format("{0}&{1}&{2}", model.Department, model.ProductName, model.ProductFlowName);
-            
-            if (irep.IsExist(e => e.ParameterKey == model.ParameterKey ))
-            {
+            //生成组合键值
+            if (model.MouldId != null)
+                model.ParameterKey = string.Format("{0}&{1}&{2}&{3}", model.Department, model.ProductName, model.ProductFlowName, model.MouldId);
+            else model.ParameterKey = string.Format("{0}&{1}&{2}", model.Department, model.ProductName, model.ProductFlowName);
+
+            //此工艺是否已经存在
+            if (irep.IsExist(e => e.ParameterKey == model.ParameterKey))
                 return OpResult.SetResult("此数据已经添加!");
-            }
+
             return irep.Insert(model).ToOpResult(OpContext);
         }
-       
+
         /// <summary>
         /// 编辑
         /// </summary>
@@ -101,8 +103,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         private OpResult DeleteProductFlowModel(ProductFlowModel model)
         {
             OpResult opResult = OpResult.SetResult("未执行任何操作");
-            if (model.Id_Key <= 0)
+            if (model.Id_Key == 0)
                 return OpResult.SetResult("Id_Key未设置！");
+
             opResult = irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
             return opResult;
         }
@@ -140,7 +143,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 throw new Exception(ex.InnerException.Message);
             }
         }
-       
+
         /// <summary>
         /// 获取产品总概述前30行
         /// </summary>
@@ -148,7 +151,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department)
         {
-            return irep.GetProductFlowOverviewListBy(department);
+            var tem = irep.GetProductFlowOverviewListBy(department);
+            return StatanardHoursProcessor(tem);
         }
 
         /// <summary>
@@ -158,7 +162,18 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
-            return irep.GetProductFlowOverviewBy(dto);
+            var temList = StatanardHoursProcessor(irep.GetProductFlowOverviewBy(dto));
+            return temList.Count > 0 ? temList[0] : null;
+        }
+
+        /// <summary>
+        /// 标准工时处理器
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        List<ProductFlowOverviewModel> StatanardHoursProcessor(List<ProductFlowOverviewModel> modelList)
+        {
+            return null;
         }
     }
 
