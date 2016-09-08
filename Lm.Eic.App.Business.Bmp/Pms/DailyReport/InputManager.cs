@@ -64,9 +64,46 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         List<DailyReportTemplateModel> ConventTemplateList(List<DailyReportModel> modelList)
         {
             //TODO：实现日报List 转换为模板List
-            return null;
+            try
+            {
+                List<DailyReportTemplateModel> returnList = new List<DailyReportTemplateModel>();
+                if (modelList != null && modelList.Count > 0)
+                {
+                    DailyReportTemplateModel returnModel = null;
+                    modelList.ForEach(e =>
+                    {
+                        returnModel = new DailyReportTemplateModel()
+                        {
+                            Department = e.Department,
+                            OrderId = e.OrderId,
+                            ProductName = e.ProductName,
+                            ProductSpecification = e.ProductSpecification,
+                            ProductFlowSign = e.ProductFlowSign,
+                            ProductFlowID = e.ProductFlowID,
+                            ProductFlowName = e.ProductFlowName,
+                            MachineId = e.MachineId,
+                            UserName = e.UserName,
+                            UserWorkerId = e.UserWorkerId,
+                            MasterName = e.MasterName,
+                            MasterWorkerId = e.MasterWorkerId,
+                            MouldId = e.MouldId,
+                            MouldName = e.MouldName,
+                            MouldCavityCount = e.MouldCavityCount,
+                            StandardHours = e.StandardHours,
+                            StandardHoursType = e.StandardHoursType,
+                            ClassType = e.ClassType,
+                            DifficultyCoefficient = e.DifficultyCoefficient,
+                        };
+                        returnList.Add(returnModel);
+                    });
+                }
+                return returnList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
         }
-
         /// <summary>
         /// 转会为日报列表
         /// </summary>
@@ -75,9 +112,46 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         List<DailyReportModel> ConventDailyReportList(List<DailyReportTemplateModel> modelList)
         {
             //TODO：实现模板list 转换为日报List
-            return null;
+            try
+            {
+                List<DailyReportModel> returnList = new List<DailyReportModel>();
+                if (modelList != null && modelList.Count > 0)
+                {
+                    DailyReportModel returnModel = null;
+                    modelList.ForEach(e =>
+                    {
+                        returnModel = new DailyReportModel()
+                        {
+                            Department = e.Department,
+                            OrderId = e.OrderId,
+                            ProductName = e.ProductName,
+                            ProductSpecification = e.ProductSpecification,
+                            ProductFlowSign = e.ProductFlowSign,
+                            ProductFlowID = e.ProductFlowID,
+                            ProductFlowName = e.ProductFlowName,
+                            MachineId = e.MachineId,
+                            UserName = e.UserName,
+                            UserWorkerId = e.UserWorkerId,
+                            MasterName = e.MasterName,
+                            MasterWorkerId = e.MasterWorkerId,
+                            MouldId = e.MouldId,
+                            MouldName = e.MouldName,
+                            MouldCavityCount = e.MouldCavityCount,
+                            StandardHours = e.StandardHours,
+                            StandardHoursType = e.StandardHoursType,
+                            ClassType = e.ClassType,
+                            DifficultyCoefficient = e.DifficultyCoefficient,
+                        };
+                        returnList.Add(returnModel);
+                    });
+                }
+                return returnList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
         }
-
         /// <summary>
         /// 获取日报模板列表
         /// </summary>
@@ -87,7 +161,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             //TODO:从数据集中找到模板列表
             //将模板列表转换为日报列表 并返回
-            return null;
+           var templateList =  DailyReportInputCrudFactory.DailyReportTemplateCrud.GetTemplateListBy(department);
+           return ConventDailyReportList(templateList);
         }
 
         /// <summary>
@@ -97,8 +172,29 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public OpResult Store(List<DailyReportModel> modelList)
         {
+            try
+            {
+                OpResult retrueOpResult = OpResult.SetResult("列表为空");
+                OpResult refreshTemplateResult = OpResult.SetResult("没有任何操作");
+                if (modelList != null && modelList.Count() > 0)
+                {
+                    string department = modelList.FirstOrDefault().Department;
+                    var templateList = ConventTemplateList(modelList);
+                    if (templateList != null && templateList.Count() > 0)
+                    {
+                       refreshTemplateResult= DailyReportInputCrudFactory.DailyReportTemplateCrud.DeleteTemplateListBy(department);
+                       refreshTemplateResult =DailyReportInputCrudFactory.DailyReportTemplateCrud.AddTemplateList(templateList);
+                    }
+                    retrueOpResult = DailyReportInputCrudFactory.DailyReportCrud.AddDailyReportList(modelList);
+                }
+                return retrueOpResult;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
             //TODO:先查找出该部门的模板进行删除 然后进行存储 保证数据库中始终是最新的模板
-            return null;
+           
         }
     }
 
