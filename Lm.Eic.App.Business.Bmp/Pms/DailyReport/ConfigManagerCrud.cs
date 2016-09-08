@@ -56,6 +56,41 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             }
         }
 
+        /// <summary>
+        /// 删除产品工序列表
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <param name="productName">产品品名</param>
+        /// <returns></returns>
+        public OpResult DeleteProductFlowModelBy(string department, string productName)
+        {
+            try
+            {
+                return irep.Delete(m => m.Department == department && m.ProductName == productName).ToOpResult_Delete(OpContext);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+
+        /// <summary>
+        /// 添加列表到数据库中
+        /// </summary>
+        /// <param name="modelList">工序列表</param>
+        /// <returns></returns>
+        public OpResult AddProductFlowModelList(List<ProductFlowModel> modelList)
+        {
+            try
+            {
+                return irep.Insert(modelList).ToOpResult_Add(OpContext);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
 
         /// <summary>
         /// 重写添加项
