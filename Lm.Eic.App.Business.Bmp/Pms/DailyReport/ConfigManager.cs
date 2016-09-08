@@ -54,9 +54,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
 
         /// <summary>
-        /// 获取工艺列表 1.根据部门  2.根据产品品名 3.根据录入日期 4.根据产品品名&工艺名称
+        /// 获取工艺列表 1.根据部门  2.根据产品品名 3.根据录入日期 4.根据产品品名和工艺名称
         /// </summary>
-        /// <param name="qryDto">数据传输对象 部门是必须的 </param>
+        /// <param name="dto">数据传输对部门是必须的</param>
         /// <returns></returns>
         public List<ProductFlowModel> GetProductFlowListBy(QueryDailyReportDto dto)
         {

@@ -33,8 +33,9 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult GetProductFlowList(string department, string productName)
         {
-            var result = 0;
-
+            var result = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto() { 
+             Department =department, ProductName =productName,SearchMode=2
+            }); 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
