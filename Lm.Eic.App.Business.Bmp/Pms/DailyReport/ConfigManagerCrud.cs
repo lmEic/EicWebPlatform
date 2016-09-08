@@ -103,7 +103,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         private OpResult DeleteProductFlowModel(ProductFlowModel model)
         {
             OpResult opResult = OpResult.SetResult("未执行任何操作");
-            if (model.Id_Key <= 0)
+            if (model.Id_Key == 0)
                 return OpResult.SetResult("Id_Key未设置！");
 
             opResult = irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
@@ -151,7 +151,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department)
         {
-            return irep.GetProductFlowOverviewListBy(department);
+            var tem = irep.GetProductFlowOverviewListBy(department);
+            return StatanardHoursProcessor(tem);
         }
 
         /// <summary>
@@ -161,7 +162,18 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
-            return irep.GetProductFlowOverviewBy(dto);
+            var temList = StatanardHoursProcessor(irep.GetProductFlowOverviewBy(dto));
+            return temList.Count > 0 ? temList[0] : null;
+        }
+
+        /// <summary>
+        /// 标准工时处理器
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        List<ProductFlowOverviewModel> StatanardHoursProcessor(List<ProductFlowOverviewModel> modelList)
+        {
+            return null;
         }
     }
 

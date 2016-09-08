@@ -129,7 +129,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
                 Image myImage = Image.FromFile(strPatch);
                 //创建一个画布
                 int mapWidth = myImage.Width;
-                int mapHeight = myImage.Height + 30;
+                int mapHeight = myImage.Height + 32;
                 Bitmap map = new Bitmap(mapWidth, mapHeight);
 
                 //GDI+ 绘图 将文字与图片合成
@@ -137,12 +137,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
                 graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
                 graphics.Clear(Color.White);
                 graphics.DrawString(context,
-                  new Font("宋体", 15),
+                  new Font("宋体", 15,FontStyle.Bold),
                   new SolidBrush(Color.Black),
                   new PointF(0, 5));
 
-                Point ulCorner = new Point(0, 30);
-                Point urCorner = new Point(mapWidth, 30);
+                Point ulCorner = new Point(0, 32);
+                Point urCorner = new Point(mapWidth, 32);
                 Point llCorner = new Point(0, mapHeight);
                 Point[] destPara = { ulCorner, urCorner, llCorner };
                 graphics.DrawImage(myImage, destPara);
