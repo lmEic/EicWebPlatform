@@ -136,7 +136,7 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
     //生成图片
     operate.createImage = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            var queryPara = "orderId=" + printVM.orderId + "&shippingDate=" + printVM.shippingDate.pattern("yyyy-MM-dd") + "&shippingCount=" + printVM.shippingCount;
+            var queryPara = "orderId=" + printVM.orderId + "&shippingDate=" + printVM.shippingDate + "&shippingCount=" + printVM.shippingCount;
             $scope.previewFileName = "ProBoard/GetMaterialSpecBoardBy?" + queryPara;
         });
     };
