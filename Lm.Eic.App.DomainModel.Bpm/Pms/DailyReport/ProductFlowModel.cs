@@ -18,7 +18,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         /// 工序总数
         /// </summary>
         public int ProductFlowCount { get; set; }
-
+        /// <summary>
+        /// 标准工时类别
+        /// </summary>
+        public int StandardHoursType { get; set; }
         /// <summary>
         /// 总工时
         /// </summary>
