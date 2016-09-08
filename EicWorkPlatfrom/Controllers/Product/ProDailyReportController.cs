@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.App.Business.Bmp.Pms.DailyReport;
 using System.IO;
+using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 
 namespace EicWorkPlatfrom.Controllers.Product
 {
@@ -16,6 +17,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             return View();
         }
 
+        #region report hour set method
         public ActionResult DReportHoursSet()
         {
             return View();
@@ -49,6 +51,19 @@ namespace EicWorkPlatfrom.Controllers.Product
 
             return Json(datas);
         }
+
+        /// <summary>
+        /// 获取产品工艺初始化数据
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetProductFlowInitData(string department)
+        {
+            var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
+            var productFlowOverviews = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department);
+            var data = new { departments = departments, overviews = productFlowOverviews };
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
         /// <summary>
         /// 载入产品工艺流程模板
         /// </summary>
@@ -59,7 +74,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             MemoryStream ms = null;
             return this.ExportToExcel(ms, "产品工艺流程模板", "产品工艺流程模板");
         }
-
+        #endregion
 
 
         #region daily report  input method

@@ -4,7 +4,7 @@
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
 
 var productModule = angular.module('bpm.productApp');
-productModule.factory('DReportDataOpService', function (ajaxService) {
+productModule.factory('dReportDataOpService', function (ajaxService) {
     var urlPrefix = "/" + leeHelper.controllers.dailyReport + "/";
     var reportDataOp = {};
     //获取产品工艺流程列表
@@ -35,15 +35,16 @@ productModule.factory('DReportDataOpService', function (ajaxService) {
         });
     };
     //获取产品工艺流程配置数据
-    reportDataOp.getProductFlowInitData = function () {
+    reportDataOp.getProductFlowInitData = function (department) {
         var url = urlPrefix + 'GetProductFlowInitData';
         return ajaxService.getData(url, {
+            department: department,
         });
     };
     return reportDataOp;
 });
 //标准工时设定
-productModule.controller("dReportHoursSetCtrl", function ($scope,DReportDataOpService,dataDicConfigTreeSet, connDataOpService) {
+productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpService,dataDicConfigTreeSet, connDataOpService) {
     ///工艺标准工时视图模型
     var uiVM = {
         Department: null,
@@ -72,15 +73,19 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,DReportDataOpSe
         editWindowDisplay: false,
         editWindowWidth: '100%',
         copyWindowDisplay: false,
-        department:null,
-        productName:null,
+        department: '生技部',
+        productName: null,
+        editDatas:[],
+        flowOverviews:[],
         //获取产品工艺总览
         getProductFlowOverview: function () {
            
         },
         //查看工艺流程明细
         viewProductFlowDetails: function (item) {
-
+            $scope.searchPromise = dReportDataOpService.getProductFlowList(vmManager.department, item.ProductName).then(function (datas) {
+                vmManager.editDatas = datas;
+            });
         },
 
 
@@ -123,8 +128,9 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,DReportDataOpSe
         var dto = _.clone(departmentTreeSet.treeNode.vm);
         vmManager.department = dto.DataNodeText;
     };
-    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (data) {
-        departmentTreeSet.setTreeDataset(data);
+    $scope.promise =dReportDataOpService.getProductFlowInitData(vmManager.department).then(function (data) {
+        departmentTreeSet.setTreeDataset(data.departments);
+        vmManager.flowOverviews = data.overviews;
     });
 
     $scope.ztree = departmentTreeSet;
