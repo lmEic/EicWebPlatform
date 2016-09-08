@@ -151,8 +151,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department)
         {
-            var tem = irep.GetProductFlowOverviewListBy(department);
-            return StatanardHoursProcessor(tem);
+            return irep.GetProductFlowOverviewListBy(department);
         }
 
         /// <summary>
@@ -162,19 +161,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
-            var temList = StatanardHoursProcessor(irep.GetProductFlowOverviewBy(dto));
-            return temList.Count > 0 ? temList[0] : null;
+
+            return irep.GetProductFlowOverviewBy(dto);
         }
 
-        /// <summary>
-        /// 标准工时处理器
-        /// </summary>
-        /// <param name="modelList"></param>
-        /// <returns></returns>
-        List<ProductFlowOverviewModel> StatanardHoursProcessor(List<ProductFlowOverviewModel> modelList)
-        {
-            return null;
-        }
     }
 
 }
