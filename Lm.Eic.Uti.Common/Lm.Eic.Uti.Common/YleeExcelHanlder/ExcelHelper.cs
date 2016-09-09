@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using System.Web;
+
 namespace Lm.Eic.Uti.Common.YleeExcelHanlder
 {
     /// <summary>
@@ -68,7 +69,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
         /// <param name="sheetColumn">列</param>
         /// <param name="errorMsg">错误信息</param>
         /// <returns>转换后的List对象集合<</returns>
-        public static List<T> ExcelToEntityList<T>(string filePath, int sheetColumn, out StringBuilder errorMsg) where T : new()
+        public static List<T> ExcelToEntityList<T>(string filePath, out StringBuilder errorMsg) where T : new()
         {
             List<T> enlist = new List<T>();
             errorMsg = new StringBuilder();
@@ -76,7 +77,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
             {
                 if (Regex.IsMatch(filePath, ".xls$")) // 2003
                 {
-                    enlist = Excel2003ToEntityList<T>(filePath, sheetColumn, out errorMsg);
+                    enlist = Excel2003ToEntityList<T>(filePath, out errorMsg);
                 }
                 else if (Regex.IsMatch(filePath, ".xlsx$")) // 2007
                 {
@@ -98,7 +99,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
         /// <param name="filePath">保存文件绝对路径</param>
         /// <param name="errorMsg">错误信息</param>
         /// <returns>转换好的List对象集合</returns>
-        private static List<T> Excel2003ToEntityList<T>(string filePath, int sheetColumn, out StringBuilder errorMsg) where T : new()
+        private static List<T> Excel2003ToEntityList<T>(string filePath, out StringBuilder errorMsg) where T : new()
         {
             errorMsg = new StringBuilder(); // 错误信息,Excel转换到实体对象时，会有格式的错误信息
             List<T> enlist = new List<T>(); // 转换后的集合
@@ -113,8 +114,9 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
                     #region    导出头二行 做为对应的字典
                     try
                     {
+                        int cellCount = sheet.GetRow(0).LastCellNum;
                         List<string> EnglishCellHeardGGroup = new List<string>();
-                        for (int jj = 0; jj < sheetColumn; jj++)
+                        for (int jj = 0; jj < cellCount; jj++)
                         {
                             if (sheet.LastRowNum >= 2)
                             {

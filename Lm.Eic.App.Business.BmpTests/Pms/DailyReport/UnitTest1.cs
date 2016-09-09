@@ -10,13 +10,13 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.DailyReport
         [TestMethod]
         public void TestMethod1()
         {
-         
-            //string path = @"E:\日报数据表.xls";
-            //    var tem=DailyReportService.MaterialBoardManager.ImportProductFlowListBy (path);
-            //    if (tem ==null ) { Assert.Fail(); }
 
-            //   var temp= DailyReportService.MaterialBoardManager.CloneProductStore(tem);
-            //   if (temp == null) { Assert.Fail(); }
+            string path = @"E:\日报数据表.xls";
+            var tem = DailyReportService.ConfigManager.ProductFlowSetter.ImportProductFlowListBy(path);
+            if (tem == null) { Assert.Fail(); }
+
+            //var temp = DailyReportService.ConfigManager.ProductFlowSetter.
+            //if (temp == null) { Assert.Fail(); }
                 
         }
     }
