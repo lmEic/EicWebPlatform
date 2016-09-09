@@ -15,8 +15,8 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.DailyReport
             var tem = DailyReportService.ConfigManager.ProductFlowSetter.ImportProductFlowListBy(path);
             if (tem == null) { Assert.Fail(); }
 
-            //var temp = DailyReportService.ConfigManager.ProductFlowSetter.
-            //if (temp == null) { Assert.Fail(); }
+            var temp = DailyReportService.ConfigManager.ProductFlowSetter.Store(tem);
+            if (temp == null) { Assert.Fail(); }
                 
         }
     }

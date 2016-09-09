@@ -181,11 +181,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 if (!deleteOpResult.Result)
                     return OpResult.SetResult("清除原始模板失败！");
 
-                //添加新的模板到数据库
+                //日报列表转化为模板列表
                 var templateList = ConventTemplateList(modelList);
-                var addOpResult = DailyReportInputCrudFactory.DailyReportTemplateCrud.AddTemplateList(templateList);
-                return addOpResult;
-
+                //转换的列表是否成功
+                if (templateList==null ||templateList.Count <1)  return OpResult.SetResult("日报数据转化模板失败！");
+                //添加新的模板到数据库
+                return  DailyReportInputCrudFactory.DailyReportTemplateCrud.AddTemplateList(templateList);
             }
             catch (Exception ex)
             {

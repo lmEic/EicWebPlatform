@@ -40,42 +40,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public OpResult AddDailyReportList(List<DailyReportModel> modelList)
         {
             //添加模板列表       要求：一次保存整个列表
-            return DailyDailyReportOp(modelList, "add");
+            return null;
         }
-        /// <summary>
-        /// 日报模块操作
-        /// </summary>
-        /// <param name="modelList">日报模块列表</param>
-        /// <param name="opSign">操作标识</param>
-        /// <returns></returns>
-        private OpResult DailyDailyReportOp(List<DailyReportModel> modelList, string opSign)
-        {
-            try
-            {
-                if (modelList != null && modelList.Count > 0)
-                {
-                    int errCout = 0;
-                    modelList.ForEach((model) =>
-                    {
-                        model.OpSign = opSign;
-                        OpResult deleteResult = Store(model);
-                        if (!deleteResult.Result) errCout++;
-                    });
-                    int total = modelList.Count;
-                    int victory = total - errCout;
-                    return errCout > 0 ?
-                        OpResult.SetResult(string.Format("{0}失败！ 总数：{1} 成功:{2} 失败:{1}",
-                        opSign, total, victory, errCout)) : OpResult.SetResult(string.Format("{0}记录数{1}", opSign, total), true);
-                }
-                else return OpResult.SetResult("列表为空");
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-
-        }
+     
         protected override void AddCrudOpItems()
         {
             AddOpItem(OpMode.Add, AddDailyReportModel);
