@@ -113,76 +113,39 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
         }
 
+        protected override void AddCrudOpItems() { }
 
+        /// <summary>
+        /// 添加模板
+        /// </summary>
+        /// <param name="modelList">模板列表</param>
+        /// <returns></returns>
         public OpResult AddTemplateList(List<DailyReportTemplateModel> modelList)
         {
-            //添加模板列表       要求：一次保存整个列表
-            return DailyReportTemplateOp(modelList, "add");
+            SetFixFieldValue(modelList, OpMode.Add);
+            return irep.Insert(modelList).ToOpResult_Add(OpContext);
         }
 
+        /// <summary>
+        /// 删除模板
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
         public OpResult DeleteTemplateListBy(string department)
         {
-              //TODO:删除部门列表  要求：一次性删除 
-                var modelList = GetTemplateListBy(department);
-                return DailyReportTemplateOp(modelList, "delete");
+            return irep.Delete(m => m.Department == department).ToOpResult_Delete(OpContext);
         }
+ 
         /// <summary>
-        /// 日报模块操作
+        /// 获取模板列表
         /// </summary>
-        /// <param name="modelList">日报模块列表</param>
-        /// <param name="opSign">操作标识</param>
+        /// <param name="department">部门</param>
         /// <returns></returns>
-        private OpResult DailyReportTemplateOp(List<DailyReportTemplateModel> modelList, string opSign)
-        {
-            try
-            {
-                if (modelList != null && modelList.Count > 0)
-                {
-                    int errCout = 0;
-                    modelList.ForEach((model) =>
-                    {
-                        model.OpSign = opSign;
-                        OpResult deleteResult = Store(model);
-                        if (!deleteResult.Result) errCout++;
-                    });
-                    int total = modelList.Count;
-                    int victory = total - errCout;
-                    return errCout > 0 ?
-                        OpResult.SetResult(string.Format("{0}失败！ 总数：{1} 成功:{2} 失败:{1}",
-                        opSign, total, victory, errCout)) : OpResult.SetResult(string.Format("{0}记录数{1}", opSign, total), true);
-                }
-                else   return OpResult.SetResult("列表为空");
-             
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-           
-        }
-
         public List<DailyReportTemplateModel> GetTemplateListBy(string department)
         {
-            //TODO:获取模板
             return irep.Entities.Where(e => e.Department == department).ToList();
         }
 
-        protected override void AddCrudOpItems()
-        {
-            AddOpItem(OpMode.Add, AddDailyReportTemplate);
-            AddOpItem(OpMode.Delete, DeleteDailyReportTemplate);
-        }
-        private  OpResult AddDailyReportTemplate(DailyReportTemplateModel model)
-        {
-            //添加条件  ??
-            return irep.Insert(model).ToOpResult_Add (OpContext);
-        }
-        private  OpResult  DeleteDailyReportTemplate(DailyReportTemplateModel model)
-        {
-            return  (model.Id_Key >0)? 
-                irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext):
-                OpResult.SetResult("未执行任何操作");
-        }
     }
 
 }

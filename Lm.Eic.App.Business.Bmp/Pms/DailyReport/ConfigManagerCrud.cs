@@ -84,6 +84,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             try
             {
+                SetFixFieldValue(modelList, OpMode.Add);
                 return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
             catch (Exception ex)
@@ -189,7 +190,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
-
             return irep.GetProductFlowOverviewBy(dto);
         }
 

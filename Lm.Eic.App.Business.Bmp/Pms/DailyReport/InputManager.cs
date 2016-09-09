@@ -43,7 +43,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<DailyReportModel> GetDailyReportTemplate(string department)
         {
-          return  DailyReportTemplateManager.GetDailyReportTemplateListBy(department);
+            return DailyReportTemplateManager.GetDailyReportTemplateListBy(department);
         }
 
 
@@ -69,30 +69,29 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 List<DailyReportTemplateModel> returnList = new List<DailyReportTemplateModel>();
                 if (modelList != null && modelList.Count > 0)
                 {
-                    DailyReportTemplateModel returnModel = null;
-                    modelList.ForEach(e =>
+                    modelList.ForEach(m =>
                     {
-                        returnModel = new DailyReportTemplateModel()
+                       var returnModel = new DailyReportTemplateModel()
                         {
-                            Department = e.Department,
-                            OrderId = e.OrderId,
-                            ProductName = e.ProductName,
-                            ProductSpecification = e.ProductSpecification,
-                            ProductFlowSign = e.ProductFlowSign,
-                            ProductFlowID = e.ProductFlowID,
-                            ProductFlowName = e.ProductFlowName,
-                            MachineId = e.MachineId,
-                            UserName = e.UserName,
-                            UserWorkerId = e.UserWorkerId,
-                            MasterName = e.MasterName,
-                            MasterWorkerId = e.MasterWorkerId,
-                            MouldId = e.MouldId,
-                            MouldName = e.MouldName,
-                            MouldCavityCount = e.MouldCavityCount,
-                            StandardHours = e.StandardHours,
-                            StandardHoursType = e.StandardHoursType,
-                            ClassType = e.ClassType,
-                            DifficultyCoefficient = e.DifficultyCoefficient,
+                            Department = m.Department,
+                            OrderId = m.OrderId,
+                            ProductName = m.ProductName,
+                            ProductSpecification = m.ProductSpecification,
+                            ProductFlowSign = m.ProductFlowSign,
+                            ProductFlowID = m.ProductFlowID,
+                            ProductFlowName = m.ProductFlowName,
+                            MachineId = m.MachineId,
+                            UserName = m.UserName,
+                            UserWorkerId = m.UserWorkerId,
+                            MasterName = m.MasterName,
+                            MasterWorkerId = m.MasterWorkerId,
+                            MouldId = m.MouldId,
+                            MouldName = m.MouldName,
+                            MouldCavityCount = m.MouldCavityCount,
+                            StandardHours = m.StandardHours,
+                            StandardHoursType = m.StandardHoursType,
+                            ClassType = m.ClassType,
+                            DifficultyCoefficient = m.DifficultyCoefficient,
                         };
                         returnList.Add(returnModel);
                     });
@@ -117,30 +116,29 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 List<DailyReportModel> returnList = new List<DailyReportModel>();
                 if (modelList != null && modelList.Count > 0)
                 {
-                    DailyReportModel returnModel = null;
-                    modelList.ForEach(e =>
+                    modelList.ForEach(m =>
                     {
-                        returnModel = new DailyReportModel()
+                       var returnModel = new DailyReportModel()
                         {
-                            Department = e.Department,
-                            OrderId = e.OrderId,
-                            ProductName = e.ProductName,
-                            ProductSpecification = e.ProductSpecification,
-                            ProductFlowSign = e.ProductFlowSign,
-                            ProductFlowID = e.ProductFlowID,
-                            ProductFlowName = e.ProductFlowName,
-                            MachineId = e.MachineId,
-                            UserName = e.UserName,
-                            UserWorkerId = e.UserWorkerId,
-                            MasterName = e.MasterName,
-                            MasterWorkerId = e.MasterWorkerId,
-                            MouldId = e.MouldId,
-                            MouldName = e.MouldName,
-                            MouldCavityCount = e.MouldCavityCount,
-                            StandardHours = e.StandardHours,
-                            StandardHoursType = e.StandardHoursType,
-                            ClassType = e.ClassType,
-                            DifficultyCoefficient = e.DifficultyCoefficient,
+                            Department = m.Department,
+                            OrderId = m.OrderId,
+                            ProductName = m.ProductName,
+                            ProductSpecification = m.ProductSpecification,
+                            ProductFlowSign = m.ProductFlowSign,
+                            ProductFlowID = m.ProductFlowID,
+                            ProductFlowName = m.ProductFlowName,
+                            MachineId = m.MachineId,
+                            UserName = m.UserName,
+                            UserWorkerId = m.UserWorkerId,
+                            MasterName = m.MasterName,
+                            MasterWorkerId = m.MasterWorkerId,
+                            MouldId = m.MouldId,
+                            MouldName = m.MouldName,
+                            MouldCavityCount = m.MouldCavityCount,
+                            StandardHours = m.StandardHours,
+                            StandardHoursType = m.StandardHoursType,
+                            ClassType = m.ClassType,
+                            DifficultyCoefficient = m.DifficultyCoefficient,
                         };
                         returnList.Add(returnModel);
                     });
@@ -159,10 +157,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<DailyReportModel> GetDailyReportTemplateListBy(string department)
         {
-            //TODO:从数据集中找到模板列表
-            //将模板列表转换为日报列表 并返回
-           var templateList =  DailyReportInputCrudFactory.DailyReportTemplateCrud.GetTemplateListBy(department);
-           return ConventDailyReportList(templateList);
+            //TODO:从数据集中找到模板列表，将模板列表转换为日报列表 并返回
+            var templateList = DailyReportInputCrudFactory.DailyReportTemplateCrud.GetTemplateListBy(department);
+            return ConventDailyReportList(templateList);
         }
 
         /// <summary>
@@ -175,30 +172,25 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             //TODO:先查找出该部门的模板进行删除 然后进行存储 保证数据库中始终是最新的模板
             try
             {
-                OpResult retrueOpResult = OpResult.SetResult("列表为空");
-                OpResult refreshTemplateResult = OpResult.SetResult("没有任何操作");
-                if (modelList != null && modelList.Count() > 0)
-                {
-                    string department = modelList.FirstOrDefault().Department;
-                    //转化日报转化为日报模板
-                    var templateList = ConventTemplateList(modelList);
-                    if (templateList != null && templateList.Count() > 0)
-                    {
-                        //删除此部门的日报模板
-                       refreshTemplateResult= DailyReportInputCrudFactory.DailyReportTemplateCrud.DeleteTemplateListBy(department);
-                        //添加新模板
-                       refreshTemplateResult =DailyReportInputCrudFactory.DailyReportTemplateCrud.AddTemplateList(templateList);
-                    }
-                    retrueOpResult = DailyReportInputCrudFactory.DailyReportCrud.AddDailyReportList(modelList);
-                }
-                return retrueOpResult;
+                //列表是否为空
+                if (modelList == null || modelList.Count < 1)
+                    return OpResult.SetResult("列表不能为空");
+
+                //清除原始模板列表
+                var deleteOpResult = DailyReportInputCrudFactory.DailyReportTemplateCrud.DeleteTemplateListBy(modelList[0].Department);
+                if (!deleteOpResult.Result)
+                    return OpResult.SetResult("清除原始模板失败！");
+
+                //添加新的模板到数据库
+                var templateList = ConventTemplateList(modelList);
+                var addOpResult = DailyReportInputCrudFactory.DailyReportTemplateCrud.AddTemplateList(templateList);
+                return addOpResult;
+
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
             }
-           
-           
         }
     }
 
