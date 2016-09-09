@@ -83,6 +83,10 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         productName: null,
         //编辑显示的数据集合
         editDatas: [],
+        //编辑数据复制副本
+        copyEditDatas: [],
+        productNameFrom: null,
+        productNameTo:null,
         delItem:null,
         flowOverviews:[],
         //获取产品工艺总览
@@ -125,9 +129,18 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         vmManager.editWindowDisplay = true;
     };
     operate.copyAll = function () {
+        vmManager.productNameFrom = vmManager.productName;
         vmManager.copyWindowDisplay = true;
     };
+    operate.copyConfirm = function () {
+        vmManager.productName = vmManager.productNameTo;
+        angular.forEach(vmManager.editDatas, function (item) {
+            item.ProductName = vmManager.productNameTo;
+            vmManager.copyEditDatas.push(item);
+        });
+    };
     operate.copyok = function () {
+        vmManager.editDatas = vmManager.copyEditDatas;
         vmManager.copyWindowDisplay = false;
     };
     operate.copycancel = function () {
