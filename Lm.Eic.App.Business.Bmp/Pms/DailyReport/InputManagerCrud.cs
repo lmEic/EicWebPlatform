@@ -98,7 +98,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
         private OpResult DeleteDailyReportModel(DailyReportModel model)
         {
-            return(model.Id_Key != null || model.Id_Key > 0) ?
+            return(model.Id_Key > 0) ?
                  irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext) :
                  OpResult.SetResult("未执行任何操作");
         }
@@ -179,7 +179,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
         private  OpResult  DeleteDailyReportTemplate(DailyReportTemplateModel model)
         {
-            return  (model.Id_Key != null || model.Id_Key >0)? 
+            return  (model.Id_Key >0)? 
                 irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext):
                 OpResult.SetResult("未执行任何操作");
         }
