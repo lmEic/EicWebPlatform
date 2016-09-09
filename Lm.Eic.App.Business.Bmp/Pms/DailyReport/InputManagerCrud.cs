@@ -110,7 +110,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<DailyReportTemplateModel> GetTemplateListBy(string department)
         {
-            return irep.Entities.Where(e => e.Department == department).ToList();
+            return irep.Entities.Where(e => e.Department == department).OrderBy (e=>e.ProductFlowID).ToList ();
         }
 
     }
