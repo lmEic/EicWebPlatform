@@ -84,6 +84,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             try
             {
+                SetFixFieldValue(modelList, OpMode.Add);
                 return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
             catch (Exception ex)
@@ -137,7 +138,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         private OpResult DeleteProductFlowModel(ProductFlowModel model)
         {
-            return   (model.Id_Key >0)? 
+            return (model.Id_Key >0)? 
                 irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
                 :OpResult.SetResult("未执行任何操作");
         }
@@ -189,7 +190,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
-
             return irep.GetProductFlowOverviewBy(dto);
         }
 
