@@ -48,7 +48,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="dto">数据传输对象 品名和部门是必须的</param>
         /// <returns></returns>
-        public ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
+        public  ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
             return DailyReportConfigCrudFactory.ProductFlowCrud.GetProductFlowOverviewBy(dto);
         }
