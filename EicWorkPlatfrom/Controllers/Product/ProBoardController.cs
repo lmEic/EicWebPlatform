@@ -44,7 +44,7 @@ namespace EicWorkPlatfrom.Controllers.Product
                 if (file.ContentLength > 0)
                 {
                     ///待加入验证文件名称逻辑:
-                    string fileName = Path.Combine(this.CombinedFilePath("FileLibrary", "TwoMaterialBoard"), file.FileName);
+                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.TwoMaterialBoard), file.FileName);
                     file.SaveAs(fileName);
                     result = 1;
                 }
@@ -78,7 +78,6 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ActionResult GetMaterialSpecBoardBy(string orderId,string shippingDate,int shippingCount)
         {
-            //var image = BoardService.MaterialBoardManager.BuildImage(@"E:\sss.jpg", "出货数量");
             var rootPath = HttpContext.Request.PhysicalApplicationPath;
             var image = BoardService.MaterialBoardManager.GetMaterialSpecBoardBy(rootPath,orderId, shippingDate, shippingCount.ToString());
             return this.ImageResult(image);
