@@ -48,7 +48,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="dto">数据传输对象 品名和部门是必须的</param>
         /// <returns></returns>
-        public ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
+        public List< ProductFlowOverviewModel> GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
             return DailyReportConfigCrudFactory.ProductFlowCrud.GetProductFlowOverviewBy(dto);
         }
@@ -86,7 +86,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public List<ProductFlowModel> ImportProductFlowListBy(string documentPatch)
         {
             StringBuilder errorStr = new StringBuilder();
-            var listEntity = ExcelHelper.ExcelToEntityList<ProductFlowModel>(documentPatch, 17, out errorStr);
+            var listEntity = ExcelHelper.ExcelToEntityList<ProductFlowModel>(documentPatch,out errorStr);
             string errorStoreFilePath = @"C:\ExcelToEntity\ErrorStr.txt";
             if (errorStr.ToString() != string.Empty)
             {

@@ -137,18 +137,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         private OpResult DeleteProductFlowModel(ProductFlowModel model)
         {
-            OpResult opResult = OpResult.SetResult("未执行任何操作");
-            if (model.Id_Key == 0)
-                return OpResult.SetResult("Id_Key未设置！");
-
-            opResult = irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
-            return opResult;
+            return   (model.Id_Key!=null |model.Id_Key >0)? 
+                irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
+                :OpResult.SetResult("未执行任何操作");
         }
         #endregion
-
-
-
-
         /// <summary>
         /// 查询 1.依据部门查询  2.依据产品品名查询 3.依据录入日期查询 4.依据产品品名&工艺名称查询 
         /// </summary>
@@ -194,7 +187,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="dto">数据传输对象 请设置部门和品名</param>
         /// <returns></returns>
-        public ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
+        public List<ProductFlowOverviewModel> GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
 
             return irep.GetProductFlowOverviewBy(dto);

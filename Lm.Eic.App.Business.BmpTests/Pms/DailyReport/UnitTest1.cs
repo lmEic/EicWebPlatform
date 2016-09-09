@@ -10,13 +10,13 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.DailyReport
         [TestMethod]
         public void TestMethod1()
         {
-         
-            //string path = @"E:\日报数据表.xls";
-            //    var tem=DailyReportService.MaterialBoardManager.ImportProductFlowListBy (path);
-            //    if (tem ==null ) { Assert.Fail(); }
 
-            //   var temp= DailyReportService.MaterialBoardManager.CloneProductStore(tem);
-            //   if (temp == null) { Assert.Fail(); }
+            string path = @"E:\日报数据表.xls";
+            var tem = DailyReportService.ConfigManager.ProductFlowSetter.ImportProductFlowListBy(path);
+            if (tem == null) { Assert.Fail(); }
+
+            //var temp = DailyReportService.ConfigManager.ProductFlowSetter.
+            //if (temp == null) { Assert.Fail(); }
                 
         }
     }
@@ -48,16 +48,9 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.DailyReport
         [TestMethod]
         public void test()
         {
-            var temp = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy("生技部");
-            if (temp == null) { Assert.Fail(); }
-
-            var tem = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewBy(new DomainModel.Bpm.Pms.DailyReport.QueryDailyReportDto()
-            {
-                Department = "生技部",
-                ProductName = "167751-P-01"
-            });
-
-            if (tem == null) { Assert.Fail(); }
+           //var temp = DailyReportService.MaterialBoardManager.GetProductFlowOverviewBy("生技部");
+           // if (temp == null) { Assert.Fail(); }
+        
         }
     }
 
