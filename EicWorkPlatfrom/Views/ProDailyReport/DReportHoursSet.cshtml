@@ -149,16 +149,10 @@
                                     <label for="minMachineCount" class="col-md-2 control-label">最小机台数</label>
                                     <div class="col-md-4">
                                         <input name="minMachineCount" type="number" class="form-control" ng-model="vm.MinMachineCount" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.minMachineCount.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">最小机台数不能为空</small>
-                                        </div>
                                     </div>
                                     <label for="maxMachineCount" class="col-md-2 control-label">最大机台数</label>
                                     <div class="col-md-4">
                                         <input name="maxMachineCount" type="number" class="form-control" ng-model="vm.MaxMachineCount" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.maxMachineCount.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">最大机台数不能为空</small>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -172,25 +166,16 @@
                                     <label for="mouldId" class="col-md-2 control-label">磨具编号</label>
                                     <div class="col-md-4">
                                         <input name="mouldId" class="form-control" ng-model="vm.MouldId" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.mouldId.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">磨具编号不能为空</small>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="mouldName" class="col-md-2 control-label">磨具名称</label>
                                     <div class="col-md-4">
                                         <input name="mouldName" class="form-control" ng-model="vm.MouldName" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.mouldName.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">磨具名称不能为空</small>
-                                        </div>
                                     </div>
                                     <label for="mouldCavityCount" class="col-md-2 control-label">模穴数</label>
                                     <div class="col-md-4">
                                         <input name="mouldCavityCount" class="form-control" ng-model="vm.MouldCavityCount" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.mouldCavityCount.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">模穴数不能为空</small>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">

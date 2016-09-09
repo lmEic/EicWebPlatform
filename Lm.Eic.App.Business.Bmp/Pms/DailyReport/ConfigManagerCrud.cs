@@ -137,9 +137,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         private OpResult DeleteProductFlowModel(ProductFlowModel model)
         {
-            return   (model.Id_Key!=null |model.Id_Key >0)? 
-                irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
-                :OpResult.SetResult("未执行任何操作");
+            return   (model.Id_Key >=0)? 
+                irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext):OpResult.SetResult("未执行任何操作");
         }
         #endregion
         /// <summary>
@@ -187,7 +186,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="dto">数据传输对象 请设置部门和品名</param>
         /// <returns></returns>
-        public List<ProductFlowOverviewModel> GetProductFlowOverviewBy(QueryDailyReportDto dto)
+        public ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
 
             return irep.GetProductFlowOverviewBy(dto);

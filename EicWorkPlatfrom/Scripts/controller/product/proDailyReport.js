@@ -104,7 +104,8 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpSe
                     vmManager.editDatas = datas;
                 });
             }
-        }
+        },
+        delModalWindow:$m
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
