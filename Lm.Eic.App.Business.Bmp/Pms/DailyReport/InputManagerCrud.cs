@@ -40,7 +40,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public OpResult AddDailyReportList(List<DailyReportModel> modelList)
         {
             //添加模板列表       要求：一次保存整个列表
-            return null;
+            SetFixFieldValue(modelList, OpMode.Add);
+            return irep.Insert(modelList).ToOpResult_Add(OpContext);
         }
      
         protected override void AddCrudOpItems()
