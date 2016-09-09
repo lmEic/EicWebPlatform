@@ -6,7 +6,7 @@
         <div class="row">
             <div class="pull-left" style="width:40%;">
                 <div cg-busy="{promise:promise}">
-                    部门<label class="label label-default">{{vmManager.Department}}</label>
+                    部门<label class="label label-default">{{vmManager.department}}</label>
                     <button class="btn btn-sm btn-primary"
                             data-title="选择部门名称"
                             data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
@@ -15,19 +15,19 @@
                         <i class="fa fa-sitemap"></i>
                     </button>
                     <label>产品品名</label>
-                    <input placeholder="输产品品名按下回车键查找" />
+                    <input placeholder="输产品品名按下回车键查找" ng-model="vmManager.productName" ng-keypress="vmManager.getProductFlowList($event)" />
                     <div class="h-split"></div>
                 </div>
             </div>
             <div class="pull-right" style="width:60%;">
                 <span>
                     <button class="btn btn-sm btn-default" title="新增" ng-click="operate.add()"><i class="fa fa-pencil"></i>新增</button>
-                    <button class="btn btn-sm btn-warning" title="保存" ng-click="operate.save()"><i class="fa fa-save"></i>保存</button>
+                    <button class="btn btn-sm btn-warning" title="保存" ng-click="operate.saveAll()"><i class="fa fa-save"></i>保存</button>
 
                     <span class="pull-right">
-                        <button class="btn btn-sm btn-primary" title="下载模板" ng-click="operate.loadTemplateFile()"><i class="fa fa-download"></i>下载模板</button>
+                        <a class="btn btn-sm btn-primary" title="下载模板" href="@Url.Action("LoadProductFlowTemplateFile", "ProDailyReport")"><i class="fa fa-download"></i>下载模板</a>
                         <a href="javascript:;" class="btn btn-sm btn-info file" title="从Excel中导入数据">
-                            <i class="fa fa-file-excel-o"></i>导入<input type="file" name="fileTemplate">
+                            <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)">
                         </a>
                         <button class="btn btn-sm btn-success" title="批量复制" ng-click="operate.copyAll()"><i class="fa fa-copy"></i>批量复制</button>
                     </span>
@@ -44,7 +44,7 @@
                                 <tr>
                                     <th>产品品名</th>
                                     <th>工序总数</th>
-                                    <th>工时总计</th>
+                                    <th>工时总计(分)</th>
                                     <th>查看(<i class="fa fa-eye"></i>)</th>
                                 </tr>
                             </thead>
@@ -116,7 +116,7 @@
                                 <div class="form-group">
                                     <label for="productFlowId" class="col-md-2 control-label">工艺编号</label>
                                     <div class="col-md-4">
-                                        <input name="productFlowId" type="number" class="form-control" ng-model="vm.ProductFlowId" required />
+                                        <input name="productFlowId" class="form-control" ng-model="vm.ProductFlowId" required />
                                         <div class="error-messages" ng-messages="formProductFlow.productFlowId.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">工艺编号不能为空</small>
                                         </div>
@@ -139,7 +139,7 @@
                                     </div>
                                     <label for="relaxCoefficient" class="col-md-2 control-label">宽放系数</label>
                                     <div class="col-md-4">
-                                        <input name="relaxCoefficient" type="range" class="form-control" ng-model="vm.RelaxCoefficient" required />
+                                        <input name="relaxCoefficient" type="number" class="form-control" ng-model="vm.RelaxCoefficient" required />
                                         <div class="error-messages" ng-messages="formProductFlow.relaxCoefficient.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">宽放系数不能为空</small>
                                         </div>
@@ -148,23 +148,17 @@
                                 <div class="form-group">
                                     <label for="minMachineCount" class="col-md-2 control-label">最小机台数</label>
                                     <div class="col-md-4">
-                                        <input name="minMachineCount" class="form-control" ng-model="vm.MinMachineCount" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.minMachineCount.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">最小机台数不能为空</small>
-                                        </div>
+                                        <input name="minMachineCount" type="number" class="form-control" ng-model="vm.MinMachineCount" required />
                                     </div>
                                     <label for="maxMachineCount" class="col-md-2 control-label">最大机台数</label>
                                     <div class="col-md-4">
-                                        <input name="maxMachineCount" class="form-control" ng-model="vm.MaxMachineCount" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.maxMachineCount.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">最大机台数不能为空</small>
-                                        </div>
+                                        <input name="maxMachineCount" type="number" class="form-control" ng-model="vm.MaxMachineCount" required />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="difficultyCoefficient" class="col-md-2 control-label">难度系数</label>
                                     <div class="col-md-4">
-                                        <input name="difficultyCoefficient" class="form-control" ng-model="vm.DifficultyCoefficient" required />
+                                        <input name="difficultyCoefficient" type="number" class="form-control" ng-model="vm.DifficultyCoefficient" required />
                                         <div class="error-messages" ng-messages="formProductFlow.difficultyCoefficient.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">难度系数不能为空</small>
                                         </div>
@@ -172,25 +166,16 @@
                                     <label for="mouldId" class="col-md-2 control-label">磨具编号</label>
                                     <div class="col-md-4">
                                         <input name="mouldId" class="form-control" ng-model="vm.MouldId" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.mouldId.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">磨具编号不能为空</small>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="mouldName" class="col-md-2 control-label">磨具名称</label>
                                     <div class="col-md-4">
                                         <input name="mouldName" class="form-control" ng-model="vm.MouldName" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.mouldName.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">磨具名称不能为空</small>
-                                        </div>
                                     </div>
                                     <label for="mouldCavityCount" class="col-md-2 control-label">模穴数</label>
                                     <div class="col-md-4">
                                         <input name="mouldCavityCount" class="form-control" ng-model="vm.MouldCavityCount" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.mouldCavityCount.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">模穴数不能为空</small>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -205,7 +190,7 @@
                                     <div class="col-md-2">
                                     </div>
                                     <div class="col-md-10">
-                                        <button class="btn btn-primary" ng-click="operate.saveAll(formProductFlow.$valid)"><i class="fa fa-save"></i>保存</button>
+                                        <button class="btn btn-primary" ng-click="operate.save(formProductFlow.$valid)"><i class="fa fa-save"></i>保存</button>
                                         <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
                                         <span yl-operatemsg-board></span>
                                     </div>

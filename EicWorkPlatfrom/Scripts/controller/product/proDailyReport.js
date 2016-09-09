@@ -24,7 +24,7 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     };
     //导入模板数据
     reportDataOp.importProductFlowTemplateFile = function (file) {
-        var url = urlPrefix + 'ImportProductFlowTemplateFile';
+        var url = urlPrefix + 'ImportProductFlowDatas';
         return ajaxService.uploadFile(url,file);
     };
     //获取产品工艺流程总览
@@ -62,20 +62,29 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpSe
         MouldName: null,
         MouldCavityCount: 0,
         Remark: null,
-        OpPerson: null,
-        OpSign: null,
-        OpDate: null,
-        OpTime: null,
+        OpPerson: '章亚娅',
+        OpSign: 'add',
         Id_Key: null,
     }
     $scope.vm = uiVM;
+    //初始化视图
+    var initVM = _.clone(uiVM);
+
     var vmManager = {
+        init: function () {
+            uiVM = _.clone(initVM);
+            $scope.vm = uiVM;
+        },
+        opSign:null,
         editWindowDisplay: false,
         editWindowWidth: '100%',
         copyWindowDisplay: false,
         department: '生技部',
         productName: null,
-        editDatas:[],
+        //编辑显示的数据集合
+        editDatas: [],
+        //要存储的数据集合
+        storeDatas:[],
         flowOverviews:[],
         //获取产品工艺总览
         getProductFlowOverview: function () {
@@ -83,17 +92,28 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpSe
         },
         //查看工艺流程明细
         viewProductFlowDetails: function (item) {
-            $scope.searchPromise = dReportDataOpService.getProductFlowList(vmManager.department, item.ProductName).then(function (datas) {
+            vmManager.productName = item.ProductName;
+            $scope.searchPromise = dReportDataOpService.getProductFlowList(vmManager.department,vmManager.productName).then(function (datas) {
                 vmManager.editDatas = datas;
             });
         },
-
-
+        //获取产品工艺流程列表
+        getProductFlowList: function ($event) {
+            if ($event.keyCode === 13) {
+               $scope.searchPromise=dReportDataOpService.getProductFlowList(vmManager.department, vmManager.productName).then(function (datas) {
+                    vmManager.editDatas = datas;
+                });
+            }
+        },
+        delModalWindow:$m
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.add = function () {
+        vmManager.opSign = 'add';
+        vmManager.init();
+        uiVM.ProductName = vmManager.productName;
         vmManager.editWindowDisplay = true;
     };
     operate.copyAll = function () {
@@ -105,8 +125,35 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpSe
     operate.copycancel = function () {
         vmManager.copyWindowDisplay = false;
     };
-    operate.saveAll = function (isValid) { };
-    operate.refresh = function () { };
+    operate.editItem = function (item) {
+        vmManager.opSign = 'edit';
+        uiVM = item;
+        $scope.vm = uiVM;
+        vmManager.editWindowDisplay = true;
+    };
+    //保存数据
+    operate.save = function (isValid) {
+        if (vmManager.opSign === 'add') {
+            leeDataHandler.dataOperate.add(operate, isValid, function () {
+                vmManager.editDatas.push($scope.vm);
+                vmManager.editWindowDisplay = false;
+            })
+        }
+        else {
+            vmManager.editWindowDisplay = false;
+        }
+    };
+
+    operate.saveAll = function () {
+
+    };
+
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.init();
+            vmManager.editWindowDisplay = false;
+        });
+    };
    
     ///选择文件并导入数据
     $scope.selectFile = function (el) {
@@ -115,10 +162,8 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpSe
             var file = files[0];
             var fd = new FormData();
             fd.append('file', file);
-            DReportDataOpService.importProductFlowTemplateFile(fd).then(function (result) {
-                if (result) {
-                    alert("OK");
-                }
+            dReportDataOpService.importProductFlowTemplateFile(fd).then(function (datas) {
+                vmManager.editDatas = datas;
             });
         }
     };
