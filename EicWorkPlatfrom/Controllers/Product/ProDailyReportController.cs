@@ -49,8 +49,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult StoreProductFlowDatas(List<ProductFlowModel> entities)
         {
-            var datas = 0;
-
+            var datas = DailyReportService.ConfigManager.ProductFlowSetter.Store(entities);
             return Json(datas);
         }
 

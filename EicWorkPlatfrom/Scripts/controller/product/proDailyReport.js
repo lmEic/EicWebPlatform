@@ -44,7 +44,7 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     return reportDataOp;
 });
 //标准工时设定
-productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpService,dataDicConfigTreeSet, connDataOpService) {
+productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpService, dataDicConfigTreeSet, connDataOpService, $modal) {
     ///工艺标准工时视图模型
     var uiVM = {
         Department: null,
@@ -83,8 +83,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpSe
         productName: null,
         //编辑显示的数据集合
         editDatas: [],
-        //要存储的数据集合
-        storeDatas:[],
+        delItem:null,
         flowOverviews:[],
         //获取产品工艺总览
         getProductFlowOverview: function () {
@@ -105,7 +104,16 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpSe
                 });
             }
         },
-        delModalWindow:$m
+        delModalWindow: $modal({
+            title: "删除提示", content: "您确定要删除此工序信息吗?",
+            templateUrl: leeHelper.modalTplUrl.deleteModalUrl, show: false,
+            controller: function ($scope) {
+                $scope.confirmDelete = function () {
+                    leeHelper.remove(vmManager.editDatas, vmManager.delItem);
+                    vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.hide);
+                };
+            },
+        }),
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -131,6 +139,10 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpSe
         $scope.vm = uiVM;
         vmManager.editWindowDisplay = true;
     };
+    operate.deleteItem = function (item) {
+        vmManager.delItem = item;
+        vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.show);
+    },
     //保存数据
     operate.save = function (isValid) {
         if (vmManager.opSign === 'add') {
@@ -143,11 +155,15 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpSe
             vmManager.editWindowDisplay = false;
         }
     };
-
+    //批量保存数据
     operate.saveAll = function () {
-
+        $scope.searchPromise = dReportDataOpService.storeProductFlowDatas(vmManager.editDatas).then(function (opresult) {
+            if (opresult.Result) {
+                vmManager.editDatas = [];
+            }
+        });
     };
-
+    //取消编辑
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
             vmManager.init();
