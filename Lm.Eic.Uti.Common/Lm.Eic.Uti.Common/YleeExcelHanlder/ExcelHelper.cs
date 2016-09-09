@@ -136,7 +136,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
                     #endregion   导出头二行 做为对应的字典
 
                     List<string> keys = cellHeard.Keys.ToList(); // 要赋值的实体对象属性名称
-                    for (int i = 2; i <= sheet.LastRowNum; i++) // 从2开始，第0，1行为单元头 英中文对应
+                    for (int i = 2; i <= sheet.LastRowNum; i++) // 从2开始，第0，1行为单元头 英 中文对应
                     {
                         // 1.判断当前行是否空行，若空行就不在进行读取下一行操作，结束Excel读取操作
                         if (sheet.GetRow(i) == null)
