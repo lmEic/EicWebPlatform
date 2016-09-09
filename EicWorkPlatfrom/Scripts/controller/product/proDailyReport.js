@@ -92,7 +92,8 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpSe
         },
         //查看工艺流程明细
         viewProductFlowDetails: function (item) {
-            $scope.searchPromise = dReportDataOpService.getProductFlowList(vmManager.department, item.ProductName).then(function (datas) {
+            vmManager.productName = item.ProductName;
+            $scope.searchPromise = dReportDataOpService.getProductFlowList(vmManager.department,vmManager.productName).then(function (datas) {
                 vmManager.editDatas = datas;
             });
         },
@@ -111,6 +112,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpSe
     operate.add = function () {
         vmManager.opSign = 'add';
         vmManager.init();
+        uiVM.ProductName = vmManager.productName;
         vmManager.editWindowDisplay = true;
     };
     operate.copyAll = function () {
@@ -130,9 +132,13 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpSe
     };
     //保存数据
     operate.save = function (isValid) {
-        if (vmManager.opSign === 'add')
-        {
-            vmManager.editDatas.push($scope.vm);
+        if (vmManager.opSign === 'add') {
+            leeDataHandler.dataOperate.add(operate, isValid, function () {
+                vmManager.editDatas.push($scope.vm);
+                vmManager.editWindowDisplay = false;
+            })
+        }
+        else {
             vmManager.editWindowDisplay = false;
         }
     };
@@ -143,7 +149,8 @@ productModule.controller("dReportHoursSetCtrl", function ($scope,dReportDataOpSe
 
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
-            vmManager.inti();
+            vmManager.init();
+            vmManager.editWindowDisplay = false;
         });
     };
    

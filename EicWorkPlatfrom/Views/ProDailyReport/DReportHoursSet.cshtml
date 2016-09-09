@@ -44,7 +44,7 @@
                                 <tr>
                                     <th>产品品名</th>
                                     <th>工序总数</th>
-                                    <th>工时总计</th>
+                                    <th>工时总计(分)</th>
                                     <th>查看(<i class="fa fa-eye"></i>)</th>
                                 </tr>
                             </thead>
@@ -148,14 +148,14 @@
                                 <div class="form-group">
                                     <label for="minMachineCount" class="col-md-2 control-label">最小机台数</label>
                                     <div class="col-md-4">
-                                        <input name="minMachineCount" class="form-control" ng-model="vm.MinMachineCount" required />
+                                        <input name="minMachineCount" type="number" class="form-control" ng-model="vm.MinMachineCount" required />
                                         <div class="error-messages" ng-messages="formProductFlow.minMachineCount.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">最小机台数不能为空</small>
                                         </div>
                                     </div>
                                     <label for="maxMachineCount" class="col-md-2 control-label">最大机台数</label>
                                     <div class="col-md-4">
-                                        <input name="maxMachineCount" class="form-control" ng-model="vm.MaxMachineCount" required />
+                                        <input name="maxMachineCount" type="number" class="form-control" ng-model="vm.MaxMachineCount" required />
                                         <div class="error-messages" ng-messages="formProductFlow.maxMachineCount.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">最大机台数不能为空</small>
                                         </div>
@@ -164,7 +164,7 @@
                                 <div class="form-group">
                                     <label for="difficultyCoefficient" class="col-md-2 control-label">难度系数</label>
                                     <div class="col-md-4">
-                                        <input name="difficultyCoefficient" class="form-control" ng-model="vm.DifficultyCoefficient" required />
+                                        <input name="difficultyCoefficient" type="number" class="form-control" ng-model="vm.DifficultyCoefficient" required />
                                         <div class="error-messages" ng-messages="formProductFlow.difficultyCoefficient.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">难度系数不能为空</small>
                                         </div>
