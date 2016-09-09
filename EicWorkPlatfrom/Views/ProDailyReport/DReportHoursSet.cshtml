@@ -66,7 +66,6 @@
             </div>
             <div class="pull-right" style="width:60%;">
                 <div class="bs-callout bs-callout-info" style="height:480px;overflow-y:auto;" id="editWindow">
-
                     <div class="table-responsive" cg-busy="{promise:searchPromise}">
                         <table class="table table-condensed table-bordered table-hover">
                             <thead>
@@ -148,11 +147,11 @@
                                 <div class="form-group">
                                     <label for="minMachineCount" class="col-md-2 control-label">最小机台数</label>
                                     <div class="col-md-4">
-                                        <input name="minMachineCount" type="number" class="form-control" ng-model="vm.MinMachineCount" required />
+                                        <input name="minMachineCount" type="number" class="form-control" ng-model="vm.MinMachineCount"/>
                                     </div>
                                     <label for="maxMachineCount" class="col-md-2 control-label">最大机台数</label>
                                     <div class="col-md-4">
-                                        <input name="maxMachineCount" type="number" class="form-control" ng-model="vm.MaxMachineCount" required />
+                                        <input name="maxMachineCount" type="number" class="form-control" ng-model="vm.MaxMachineCount"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -165,17 +164,17 @@
                                     </div>
                                     <label for="mouldId" class="col-md-2 control-label">磨具编号</label>
                                     <div class="col-md-4">
-                                        <input name="mouldId" class="form-control" ng-model="vm.MouldId" required />
+                                        <input name="mouldId" class="form-control" ng-model="vm.MouldId"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="mouldName" class="col-md-2 control-label">磨具名称</label>
                                     <div class="col-md-4">
-                                        <input name="mouldName" class="form-control" ng-model="vm.MouldName" required />
+                                        <input name="mouldName" class="form-control" ng-model="vm.MouldName"/>
                                     </div>
                                     <label for="mouldCavityCount" class="col-md-2 control-label">模穴数</label>
                                     <div class="col-md-4">
-                                        <input name="mouldCavityCount" class="form-control" ng-model="vm.MouldCavityCount" required />
+                                        <input name="mouldCavityCount" class="form-control" ng-model="vm.MouldCavityCount"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -205,34 +204,30 @@
                             <div class="panel-heading">
                                 <span>
                                     <i class="fa fa-hand-o-right"></i>
-                                    <input readonly placeholder="要复制的产品品名" style="color:black" /><i class="fa fa-arrows-h"></i>
-                                    <input placeholder="待生成的产品品名" style="color:black" />
-                                    <span class="btn btn-xs btn-default"><i class="fa fa-copy"></i>复制</span>
+                                    <input readonly placeholder="要复制的产品品名" ng-model="vmManager.productNameFrom" style="color:black" /><i class="fa fa-arrows-h"></i>
+                                    <input placeholder="待生成的产品品名" ng-model="vmManager.productNameTo" style="color:black" />
+                                    <span class="btn btn-xs btn-default" ng-click="operate.copyConfirm()"><i class="fa fa-copy"></i>复制</span>
                                 </span>
                             </div>
                             <table class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr>
+                                        <th>产品品名</th>
                                         <th>工艺编号</th>
                                         <th>工艺名称</th>
                                         <th>标准工时</th>
                                         <th>备注</th>
                                         <th>操作人</th>
-                                        <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="item in vmManager.editDatas track by $index">
+                                    <tr ng-repeat="item in vmManager.copyEditDatas track by $index">
+                                        <td>{{item.ProductName}}</td>
                                         <td>{{item.ProductFlowId}}</td>
                                         <td>{{item.ProductFlowName}}</td>
                                         <td>{{item.StandardHours}}</td>
                                         <td>{{item.Remark}}</td>
                                         <td>{{item.OpPerson}}</td>
-                                        <td>
-                                            <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item)" title="移除">
-                                                <i class="fa fa-remove"></i>
-                                            </button>
-                                        </td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
