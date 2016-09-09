@@ -54,7 +54,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         ProductFlowName: null,
         StandardHoursType: 0,
         StandardHours: null,
-        RelaxCoefficient: null,
+        RelaxCoefficient: 1,
         MinMachineCount: 0,
         MaxMachineCount: 0,
         DifficultyCoefficient: null,
@@ -159,11 +159,11 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
     //保存数据
     operate.save = function (isValid) {
         //leeHelper.setUserData($scope.uiVM);
+        $scope.vm.Department = vmManager.department;
 
         if (vmManager.opSign === 'add') {
             leeDataHandler.dataOperate.add(operate, isValid, function () {
                 vmManager.editDatas.push($scope.vm);
-                vmManager.editWindowDisplay = false;
             })
         }
         else {

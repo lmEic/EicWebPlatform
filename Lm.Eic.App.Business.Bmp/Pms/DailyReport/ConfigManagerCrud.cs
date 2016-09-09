@@ -85,6 +85,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             try
             {
                 SetFixFieldValue(modelList, OpMode.Add);
+                //处理内部内容
+                modelList.ForEach((m) =>
+                {
+                    if (m.MaxMachineCount != 0)
+                    {
+                        m.MinMachineCount = 1;
+                        m.DifficultyCoefficient = m.MinMachineCount / m.MaxMachineCount;
+                    }
+                });
                 return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
             catch (Exception ex)
@@ -113,7 +122,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             if (model.MouldId != null)
                 model.ParameterKey = string.Format("{0}&{1}&{2}&{3}", model.Department, model.ProductName, model.ProductFlowName, model.MouldId);
             else model.ParameterKey = string.Format("{0}&{1}&{2}", model.Department, model.ProductName, model.ProductFlowName);
-
+          
             //此工艺是否已经存在
             if (irep.IsExist(e => e.ParameterKey == model.ParameterKey))
                 return OpResult.SetResult("此数据已经添加!");
@@ -157,7 +166,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                     case 1: //依据部门查询
                         return irep.Entities.Where(m => m.Department == qryDto.Department).ToList();
                     case 2: //依据产品品名查询
-                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName).ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName).OrderBy (e=>e.ProductFlowId).ToList();
                     case 3: //依据录入日期查询
                         DateTime inputDate = qryDto.InputDate.ToDate();
                         return irep.Entities.Where(m => m.Department == qryDto.Department && m.OpDate == inputDate).ToList();
