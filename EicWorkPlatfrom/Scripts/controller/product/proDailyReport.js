@@ -158,6 +158,8 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
     },
     //保存数据
     operate.save = function (isValid) {
+        //leeHelper.setUserData($scope.uiVM);
+
         if (vmManager.opSign === 'add') {
             leeDataHandler.dataOperate.add(operate, isValid, function () {
                 vmManager.editDatas.push($scope.vm);
