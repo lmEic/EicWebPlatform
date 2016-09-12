@@ -31,9 +31,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 日报录入CRUD
     /// </summary>
-    public class DailyReportInputCrud : CrudBase<DailyReportModel, IDailyReportRepositoryRepository>
+    public class DailyReportInputCrud : CrudBase<DailyReportModel,IDailyReportRepository>
     {
-        public DailyReportInputCrud() : base(new DailyReportRepositoryRepository(), "日报录入")
+        public DailyReportInputCrud() : base(new DailyReportRepository(), "日报录入")
         {
         }
 
@@ -75,9 +75,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 日报模板CRUD
     /// </summary>
-    public class DailyReportTemplateCrud : CrudBase<DailyReportTemplateModel, IDailyReportTemplateRepositoryRepository>
+    public class DailyReportTemplateCrud : CrudBase<DailyReportModel,IDailyReportTempRepository >
     {
-        public DailyReportTemplateCrud() : base(new DailyReportTemplateRepositoryRepository(), "日报模板")
+        public DailyReportTemplateCrud() : base(new DailyReportTepmRepository (), "日报表临时模板")
         {
         }
 
@@ -88,7 +88,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="modelList">模板列表</param>
         /// <returns></returns>
-        public OpResult AddTemplateList(List<DailyReportTemplateModel> modelList)
+        public OpResult AddTemplateList(List<DailyReportModel> modelList)
         {
             SetFixFieldValue(modelList, OpMode.Add);
             return irep.Insert(modelList).ToOpResult_Add(OpContext);
@@ -109,7 +109,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        public List<DailyReportTemplateModel> GetTemplateListBy(string department)
+        public List<DailyReportModel> GetTemplateListBy(string department)
         {
             return irep.Entities.Where(e => e.Department == department).ToList();
         }
