@@ -128,7 +128,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return irep.Delete (e=>e.ParamenterKey ==paramenterKey ).ToOpResult (OpContext);
         }
 
-
+       /// <summary>
+       /// 从临时日报表中获取日报表
+       /// </summary>
+       /// <param name="department">部门</param>
+       /// <returns></returns>
         public List<DailyReportModel> GetTempDailyReportModel(string department)
         {
             return irep.Entities.Where(e => e.Department == department).ToList();
