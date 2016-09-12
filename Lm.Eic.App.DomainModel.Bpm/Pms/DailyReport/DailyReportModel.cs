@@ -6,7 +6,7 @@ using System.Text;
 namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
 {
     /// <summary>
-    ///日报模型
+    ///日报实体模型
     /// </summary>
     [Serializable]
     public partial class DailyReportModel
@@ -43,7 +43,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private DateTime _inputtime;
         /// <summary>
-        ///录入日期
+        ///录入时间
         /// </summary>
         public DateTime InputTime
         {
@@ -61,7 +61,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private decimal _equipmenteifficiency;
         /// <summary>
-        ///稼动率（设备效率）
+        ///稼动率（机台效率）
         /// </summary>
         public decimal EquipmentEifficiency
         {
@@ -142,7 +142,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private string _productflowid;
         /// <summary>
-        ///工艺编号
+        ///工序编号
         /// </summary>
         public string ProductFlowID
         {
@@ -151,7 +151,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private string _productflowname;
         /// <summary>
-        ///工艺名称
+        ///工序名称
         /// </summary>
         public string ProductFlowName
         {
@@ -160,7 +160,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private int _standardhourstype;
         /// <summary>
-        ///标准工时类别(1s,2m,3pcs/h)
+        ///标准工时类别(1m,2s,3pcs/h)
         /// </summary>
         public int StandardHoursType
         {
@@ -187,7 +187,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private string _userworkerid;
         /// <summary>
-        ///员工工号
+        ///操作员工号
         /// </summary>
         public string UserWorkerId
         {
@@ -196,7 +196,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private string _username;
         /// <summary>
-        ///员工姓名
+        ///操作员姓名
         /// </summary>
         public string UserName
         {
@@ -232,7 +232,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private decimal _qty;
         /// <summary>
-        ///生成总数
+        ///总产量
         /// </summary>
         public decimal Qty
         {
@@ -286,7 +286,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private decimal _productionhours;
         /// <summary>
-        ///生产时数
+        ///生成时数
         /// </summary>
         public decimal ProductionHours
         {
@@ -346,6 +346,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         {
             set { _operationefficiency = value; }
             get { return _operationefficiency; }
+        }
+        private string _paramenterkey;
+        /// <summary>
+        ///组合键
+        /// </summary>
+        public string ParamenterKey
+        {
+            set { _paramenterkey = value; }
+            get { return _paramenterkey; }
         }
         private string _opperson;
         /// <summary>
