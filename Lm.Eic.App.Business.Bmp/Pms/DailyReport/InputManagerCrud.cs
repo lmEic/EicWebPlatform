@@ -21,17 +21,27 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public static DailyReportInputCrud DailyReportCrud
         { get { return OBulider.BuildInstance<DailyReportInputCrud>(); } }
 
+
+        /// <summary>
+        /// 日报Temp
+        /// </summary>
+        public static DailyReportTempCrud DailyReportTempCrud
+        {
+            get { return OBulider.BuildInstance<DailyReportTempCrud>(); }
+        }
     }
 
 
     /// <summary>
-    /// 日报录入CRUD
+    /// 日报录入 正式表 CRUD
     /// </summary>
     public class DailyReportInputCrud : CrudBase<DailyReportModel, IDailyReportRepository>
     {
-        public DailyReportInputCrud() : base(new DailyReportRepository(), "日报录入")
+        public DailyReportInputCrud() : base(new DailyReportRepository(), "日报")
         {
         }
+        protected override void AddCrudOpItems() { }
+
 
         /// <summary>
         /// 保存日报数据列表
@@ -44,57 +54,25 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return null;
         }
 
+
         /// <summary>
-        /// 根据组合值删除符合条件的数据
+        /// 获取日报列表
         /// </summary>
-        /// <param name="paramenterKey"></param>
+        /// <param name="department">部门</param>
         /// <returns></returns>
-        public OpResult DeleteDailyReportListBy(string paramenterKey)
+        public List<DailyReportModel> GetDailyReportListBy(string department)
         {
-            //TODO：根据组合值清除符合条件的列表
             return null;
         }
-
-        #region Store
-
-        protected override void AddCrudOpItems()
-        {
-            AddOpItem(OpMode.Add, AddDailyReportModel);
-            AddOpItem(OpMode.Edit, EditDailyReportModel);
-            AddOpItem(OpMode.Delete, DeleteDailyReportModel);
-        }
-
-
-        private OpResult AddDailyReportModel(DailyReportModel model)
-        {
-
-            return irep.Insert(model).ToOpResult_Add(OpContext);
-        }
-
-        private OpResult EditDailyReportModel(DailyReportModel model)
-        {
-            ////添加条件
-            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
-
-        }
-        private OpResult DeleteDailyReportModel(DailyReportModel model)
-        {
-            return (model.Id_Key > 0) ?
-                 irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext) :
-                 OpResult.SetResult("未执行任何操作");
-        }
-
-        #endregion
-
     }
 
 
     /// <summary>
-    /// 日报临时库 CRUD
+    /// 日报录入 临时表 CRUD
     /// </summary>
     public class DailyReportTempCrud : CrudBase<DailyReportModel, IDailyReportTempRepository>
     {
-        public DailyReportTempCrud(IDailyReportTempRepository repository, string opContext) : base(repository, opContext)
+        public DailyReportTempCrud() : base(new DailyReportTepmRepository(), "日报Temp")
         {
         }
 
@@ -117,14 +95,23 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 根据组合值删除符合条件的数据
         /// </summary>
-        /// <param name="paramenterKey"></param>
+        /// <param name="department"></param>
         /// <returns></returns>
-        public OpResult DeleteDailyReportListBy(string paramenterKey)
+        public OpResult DeleteDailyReportListBy(string department)
         {
             //TODO：根据组合值清除符合条件的列表
             return null;
         }
 
+        /// <summary>
+        /// 获取日报列表
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        public List<DailyReportModel> GetDailyReportListBy(string department)
+        {
+            return null;
+        }
 
     }
 
