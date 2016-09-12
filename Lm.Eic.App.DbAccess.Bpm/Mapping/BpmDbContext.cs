@@ -30,7 +30,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         public DbSet<DailyReportModel> DailyReports { get; set; }
 
-        public DbSet<DailyReportTemplateModel> DailyReportTemplate { get; set; }
+        public DbSet<DailyReportModel> DailyReportsTemp { get; set; }
+
 
         public DbSet<ProductFlowModel> ProductFlow { get; set; }
 
@@ -47,7 +48,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new EquipmentDiscardRecordModelMapping());
 
             modelBuilder.Configurations.Add(new DailyReportModelMapping());
-            modelBuilder.Configurations.Add(new DailyReportsTemplateModelMapping());
+            modelBuilder.Configurations.Add(new DailyReportTempModelMapping());
             modelBuilder.Configurations.Add(new ProductFlowModelMapping());
 
             modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());

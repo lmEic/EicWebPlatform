@@ -10,7 +10,7 @@ using System.Text;
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
 {
     /// <summary>
-    ///DailyReportModel
+    ///DailyReportModelMapping
     /// </summary>
     public class DailyReportModelMapping : EntityTypeConfiguration<DailyReportModel>
     {
@@ -23,20 +23,21 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
     }
 
     /// <summary>
-    ///DailyReportsTemplateModel
+    ///DailyReportTempModelMapping
     /// </summary>
-    public class DailyReportsTemplateModelMapping : EntityTypeConfiguration<DailyReportTemplateModel>
+    public class DailyReportTempModelMapping : EntityTypeConfiguration<DailyReportModel>
     {
-        public DailyReportsTemplateModelMapping()
+        public DailyReportTempModelMapping()
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Pms_DailyReportsTemplate");
+            this.ToTable("Pms_DailyReportsTemp");
         }
     }
 
+
     /// <summary>
-    ///ProductFlowModel
+    ///ProductFlowModelMapping
     /// </summary>
     public class ProductFlowModelMapping : EntityTypeConfiguration<ProductFlowModel>
     {
