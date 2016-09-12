@@ -33,29 +33,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
         #region Store
 
-        public OpResult Store(List<ProductFlowModel> modelList)
-        {
-            try
-            {
-                if (modelList == null || modelList.Count < 1)
-                    return OpResult.SetResult("列表不能为空");
-                int errCout = 0;
-                modelList.ForEach((model) =>
-                {
-                    OpResult storeResult = Store(model);
-                    if (!storeResult.Result) errCout++;
-                });
-
-                int total = modelList.Count;
-                int victory = modelList.Count - errCout;
-                return errCout > 0 ? OpResult.SetResult(string.Format("保存失败！ 总数：{0} 成功:{1} 失败:{2}", total, victory, errCout)) : OpResult.SetResult(string.Format("保存成功！记录数", total), true);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
-
         /// <summary>
         /// 删除产品工序列表
         /// </summary>

@@ -40,7 +40,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             //TODO:先从日报中查找是否有当前的日报记录，如果有 返回当前，没有 从模板中生成
             //确定一个日报是否唯一：部门&日期&班别
-            return null;
+
+            return null ;
         }
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public OpResult SavaDailyReportList(List<DailyReportModel> modelList)
         {
-            return null;
+            return DailyReportInputCrudFactory.DailyReportCrud.SavaDailyReportList (modelList);
         }
 
         /// <summary>
