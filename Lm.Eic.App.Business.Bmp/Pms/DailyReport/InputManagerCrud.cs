@@ -105,7 +105,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             //添加模板列表       要求：一次保存整个列表
             SetFixFieldValue(modelList, OpMode.Add);
-            
+            if (modelList == null || modelList.Count <= 0) return OpResult.SetResult("保存失败");
             modelList.ForEach(m =>
             {
                 m.ParamenterKey = m.OrderId + "&" + m.UserName + "&" + m.ProductFlowName + "&" 
