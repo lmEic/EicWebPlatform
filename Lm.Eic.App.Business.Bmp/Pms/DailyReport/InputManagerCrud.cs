@@ -1,7 +1,9 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
+using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
@@ -19,101 +21,145 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         public static DailyReportInputCrud DailyReportCrud
         { get { return OBulider.BuildInstance<DailyReportInputCrud>(); } }
+
         /// <summary>
-        /// 日报模板
+        ///  临时日报录入
         /// </summary>
-        public static DailyReportTemplateCrud DailyReportTemplateCrud
-        { get { return OBulider.BuildInstance<DailyReportTemplateCrud>(); } }
-
+        public static DailyReportTempCrud DailyReportTempCrud
+        {
+            get { return OBulider.BuildInstance<DailyReportTempCrud>(); }
+        }
     }
 
 
     /// <summary>
-    /// 日报录入CRUD
+    /// 日报录入正式表CRUD
     /// </summary>
-    public class DailyReportInputCrud : CrudBase<DailyReportModel,IDailyReportRepository>
+    public class DailyReportInputCrud : CrudBase<DailyReportModel, IDailyReportRepository>
     {
-        public DailyReportInputCrud() : base(new DailyReportRepository(), "日报录入")
-        {
-        }
-
-        public OpResult AddDailyReportList(List<DailyReportModel> modelList)
-        {
-            //添加模板列表       要求：一次保存整个列表
-            SetFixFieldValue(modelList, OpMode.Add);
-            return irep.Insert(modelList).ToOpResult_Add(OpContext);
-        }
-     
-        protected override void AddCrudOpItems()
-        {
-            AddOpItem(OpMode.Add, AddDailyReportModel);
-            AddOpItem(OpMode.Edit, EditDailyReportModel);
-            AddOpItem(OpMode.Delete, DeleteDailyReportModel);
-        }
-
-
-        private OpResult AddDailyReportModel(DailyReportModel model)
-        {
-
-            return irep.Insert(model).ToOpResult_Add (OpContext);
-        }
-
-        private OpResult EditDailyReportModel(DailyReportModel model)
-        {
-           ////添加条件
-            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
-
-        }
-        private OpResult DeleteDailyReportModel(DailyReportModel model)
-        {
-            return(model.Id_Key > 0) ?
-                 irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext) :
-                 OpResult.SetResult("未执行任何操作");
-        }
-    }
-
-    /// <summary>
-    /// 日报模板CRUD
-    /// </summary>
-    public class DailyReportTemplateCrud : CrudBase<DailyReportModel,IDailyReportTempRepository >
-    {
-        public DailyReportTemplateCrud() : base(new DailyReportTepmRepository (), "日报表临时模板")
-        {
-        }
+        public DailyReportInputCrud() : base(new DailyReportRepository(), "日报录入") { }
 
         protected override void AddCrudOpItems() { }
 
         /// <summary>
-        /// 添加模板
+        /// 保存日报数据列表
         /// </summary>
-        /// <param name="modelList">模板列表</param>
+        /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult AddTemplateList(List<DailyReportModel> modelList)
+        public OpResult SavaDailyReportList(List<DailyReportModel> modelList)
         {
-            SetFixFieldValue(modelList, OpMode.Add);
-            return irep.Insert(modelList).ToOpResult_Add(OpContext);
+            //添加模板列表       要求：一次保存整个列表
+            try
+            {
+                return irep.Insert(modelList).ToOpResult(OpContext);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
         }
 
         /// <summary>
-        /// 删除模板
+        /// 删除日报列表
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        public OpResult DeleteTemplateListBy(string department)
+        public OpResult DeleteDailyReportListBy(string department)
         {
-            return irep.Delete(m => m.Department == department).ToOpResult_Delete(OpContext);
-        }
- 
-        /// <summary>
-        /// 获取模板列表
-        /// </summary>
-        /// <param name="department">部门</param>
-        /// <returns></returns>
-        public List<DailyReportModel> GetTemplateListBy(string department)
-        {
-            return irep.Entities.Where(e => e.Department == department).ToList();
+            try
+            {
+                return irep.Delete(e => e.Department == department).ToOpResult(OpContext);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
         }
 
+        /// <summary>
+        /// 获取日报列表
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        public List<DailyReportModel> GetDailyReportListBy(string department)
+        {
+            try
+            {
+                return irep.Entities.Where(e => e.Department == department).ToList();
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        }
     }
+
+
+    /// <summary>
+    /// 日报临时库 CRUD
+    /// </summary>
+    public class DailyReportTempCrud : CrudBase<DailyReportModel, IDailyReportTempRepository>
+    {
+        public DailyReportTempCrud() : base(new DailyReportTepmRepository(), "日报临时录入")
+        { }
+
+        protected override void AddCrudOpItems() { }
+
+
+        /// <summary>
+        /// 保存日报数据列表
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        public OpResult SavaDailyReportList(List<DailyReportModel> modelList)
+        {
+            //添加模板列表       要求：一次保存整个列表
+
+            try
+            {
+                SetFixFieldValue(modelList, OpMode.Add);
+
+                if (!modelList.IsNullOrEmpty())
+                    return OpResult.SetResult("日报列表不能为空！ 保存失败");
+
+                modelList.ForEach(m =>
+                {
+                    m.ParamenterKey = m.Department + "&" + m.DailyReportDate.ToShortDateString();
+                    m.DailyReportMonth = m.DailyReportDate.ToString("yyyyMM");
+                });
+
+                return irep.Insert(modelList).ToOpResult(OpContext);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        }
+
+        /// <summary>
+        /// 删除日报列表
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        public OpResult DeleteDailyReportListBy(string department)
+        {
+            //TODO：根据组合值清除符合条件的列表
+            try
+            {
+                return irep.Delete(e => e.Department == department).ToOpResult(OpContext);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+
+        }
+
+        /// <summary>
+        /// 获取日报列表
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        public List<DailyReportModel> GetDailyReportListBy(string department)
+        {
+            try
+            {
+                return irep.Entities.Where(e => e.Department == department).ToList();
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        }
+    }
+
 
 }

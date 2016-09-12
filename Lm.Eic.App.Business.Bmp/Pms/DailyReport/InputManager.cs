@@ -1,6 +1,7 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.App.Erp.Bussiness.MocManage;
 using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
+using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
@@ -30,18 +31,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// </summary>
     public class DailyReportInputManager
     {
-      
+
         /// <summary>
         /// 获取日报模板
         /// </summary>
-        /// <param name="department">部门</param>
+        /// <param name="paramenterKey">部门</param>
         /// <returns></returns>
         public List<DailyReportModel> GetDailyReportTemplate(string department)
         {
-            //TODO:先从日报中查找是否有当前的日报记录，如果有 返回当前，没有 从模板中生成
-            //确定一个日报是否唯一：部门&日期&班别
-
-            return null ;
+            //TODO:从临时表中获取本部门所有的日报数据
+            return DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
         }
 
         /// <summary>
@@ -51,17 +50,38 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public OpResult SavaDailyReportList(List<DailyReportModel> modelList)
         {
-            return DailyReportInputCrudFactory.DailyReportCrud.SavaDailyReportList (modelList);
+            //清空本部门所有日报列表 =》存入当前列表
+            var department = string.Empty;
+            if (modelList.IsNullOrEmpty())
+                department = modelList[0].Department;
+
+            if (department.IsNullOrEmpty())
+                return OpResult.SetResult("部门不能为空！");
+
+            var deleteResult = DailyReportInputCrudFactory.DailyReportTempCrud.DeleteDailyReportListBy(department);
+            if (!deleteResult.Result)
+                return OpResult.SetResult("清除日报历史记录失败！");
+
+            return DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(modelList);
         }
 
         /// <summary>
         /// 日报审核
         /// </summary>
         /// <returns></returns>
-        public OpResult AuditDailyReport()
+        public OpResult AuditDailyReport(string department)
         {
-            return null;
+            //将临时表中的本部门的所有列表 克隆至正式日报表中
+            var dailyReportTempList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
+
+            if (!dailyReportTempList.IsNullOrEmpty())
+                return OpResult.SetResult("未找到本部门的任何日报记录！");
+
+            return DailyReportInputCrudFactory.DailyReportCrud.SavaDailyReportList(dailyReportTempList);
         }
+
+
+        #region Find
 
         /// <summary>
         /// 获取工序列表
@@ -71,7 +91,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public List<ProductFlowModel> GetProductFlowListBy(string orderId)
         {
             var temOrderFetails = GetOrderDetails(orderId);
-            if(temOrderFetails!=null && temOrderFetails.ProductName.Length > 0)
+            if (temOrderFetails != null && temOrderFetails.ProductName.Length > 0)
             {
                 return DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
                 {
@@ -82,6 +102,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return new List<ProductFlowModel>();
         }
 
+
         /// <summary>
         /// 获取工单详情
         /// </summary>
@@ -91,6 +112,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             return MocService.OrderManage.GetOrderDetails(orderId);
         }
+        #endregion
+
+
     }
 
 
