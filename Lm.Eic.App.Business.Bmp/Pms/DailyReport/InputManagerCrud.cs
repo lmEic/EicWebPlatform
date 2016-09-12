@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
+using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
@@ -33,11 +34,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
 
         /// <summary>
-        /// 添加日报数据列表
+        /// 保存日报数据列表
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult AddDailyReportList(List<DailyReportModel> modelList)
+        public OpResult SavaDailyReportList(List<DailyReportModel> modelList)
         {
             //添加模板列表       要求：一次保存整个列表
             return null;
@@ -103,11 +104,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
 
         /// <summary>
-        /// 添加日报数据列表
+        /// 保存日报数据列表
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult AddDailyReportList(List<DailyReportModel> modelList)
+        public OpResult SavaDailyReportList(List<DailyReportModel> modelList)
         {
             //添加模板列表       要求：一次保存整个列表
             return null;

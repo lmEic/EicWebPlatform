@@ -65,6 +65,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Lm.Eic.App.DomainModel.Bpm\Lm.Eic.App.DomainModel.Bpm.csproj">
+      <Project>{B4B07C08-AFF7-4BE3-B8AE-5A6E85DA2018}</Project>
+      <Name>Lm.Eic.App.DomainModel.Bpm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Lm.Eic.Uti.Common.YleeDbHandler\Lm.Eic.Uti.Common.YleeDbHandler\Lm.Eic.Uti.Common.YleeDbHandler.csproj">
       <Project>{8301c71a-afde-4853-8c05-39ff96b207c6}</Project>
       <Name>Lm.Eic.Uti.Common.YleeDbHandler</Name>

@@ -1,4 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
+using Lm.Eic.App.Erp.Bussiness.MocManage;
+using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
@@ -41,6 +43,44 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return null;
         }
 
+        /// <summary>
+        /// 保存日报列表
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        public OpResult SavaDailyReportList(List<DailyReportModel> modelList)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 日报审核
+        /// </summary>
+        /// <returns></returns>
+        public OpResult AuditDailyReport()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 获取工序列表
+        /// </summary>
+        /// <param name="orderId">工单单号</param>
+        /// <returns></returns>
+        public List<ProductFlowModel> GetProductFlowListBy(string orderId)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 获取工单详情
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public OrderModel GetOrderDetails(string orderId)
+        {
+            return MocService.OrderManage.GetOrderDetails(orderId);
+        }
     }
 
 
