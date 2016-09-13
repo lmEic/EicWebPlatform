@@ -1,4 +1,7 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
+using Lm.Eic.App.Erp.Bussiness.MocManage;
+using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
+using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
@@ -28,171 +31,90 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// </summary>
     public class DailyReportInputManager
     {
-        /// <summary>
-        /// 日报输入管理器
-        /// </summary>
-        private DailyReportTemplateManager DailyReportTemplateManager
-        {
-            get { return OBulider.BuildInstance<DailyReportTemplateManager>(); }
-        }
 
         /// <summary>
         /// 获取日报模板
         /// </summary>
-        /// <param name="department">部门</param>
+        /// <param name="paramenterKey">部门</param>
         /// <returns></returns>
         public List<DailyReportModel> GetDailyReportTemplate(string department)
         {
-            return DailyReportTemplateManager.GetDailyReportTemplateListBy(department);
-        }
-
-
-    }
-
-
-    /// <summary>
-    /// 日报模板管理器
-    /// </summary>
-    internal class DailyReportTemplateManager
-    {
-
-        /// <summary>
-        /// 转换为日报模板列表
-        /// </summary>
-        /// <param name="modelList">日报列表</param>
-        /// <returns></returns>
-        List<DailyReportTemplateModel> ConventTemplateList(List<DailyReportModel> modelList)
-        {
-            //TODO：实现日报List 转换为模板List
-            try
-            {
-                List<DailyReportTemplateModel> returnList = new List<DailyReportTemplateModel>();
-                if (modelList != null && modelList.Count > 0)
-                {
-                    modelList.ForEach(m =>
-                    {
-                       var returnModel = new DailyReportTemplateModel()
-                        {
-                            Department = m.Department,
-                            OrderId = m.OrderId,
-                            ProductName = m.ProductName,
-                            ProductSpecification = m.ProductSpecification,
-                            ProductFlowSign = m.ProductFlowSign,
-                            ProductFlowID = m.ProductFlowID,
-                            ProductFlowName = m.ProductFlowName,
-                            MachineId = m.MachineId,
-                            UserName = m.UserName,
-                            UserWorkerId = m.UserWorkerId,
-                            MasterName = m.MasterName,
-                            MasterWorkerId = m.MasterWorkerId,
-                            MouldId = m.MouldId,
-                            MouldName = m.MouldName,
-                            MouldCavityCount = m.MouldCavityCount,
-                            StandardHours = m.StandardHours,
-                            StandardHoursType = m.StandardHoursType,
-                            ClassType = m.ClassType,
-                            DifficultyCoefficient = m.DifficultyCoefficient,
-                        };
-                        returnList.Add(returnModel);
-                    });
-                }
-                return returnList;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
-        /// <summary>
-        /// 转会为日报列表
-        /// </summary>
-        /// <param name="modelList">模板列表</param>
-        /// <returns></returns>
-        List<DailyReportModel> ConventDailyReportList(List<DailyReportTemplateModel> modelList)
-        {
-            //TODO：实现模板list 转换为日报List
-            try
-            {
-                List<DailyReportModel> returnList = new List<DailyReportModel>();
-                if (modelList != null && modelList.Count > 0)
-                {
-                    modelList.ForEach(m =>
-                    {
-                       var returnModel = new DailyReportModel()
-                        {
-                            Department = m.Department,
-                            OrderId = m.OrderId,
-                            ProductName = m.ProductName,
-                            ProductSpecification = m.ProductSpecification,
-                            ProductFlowSign = m.ProductFlowSign,
-                            ProductFlowID = m.ProductFlowID,
-                            ProductFlowName = m.ProductFlowName,
-                            MachineId = m.MachineId,
-                            UserName = m.UserName,
-                            UserWorkerId = m.UserWorkerId,
-                            MasterName = m.MasterName,
-                            MasterWorkerId = m.MasterWorkerId,
-                            MouldId = m.MouldId,
-                            MouldName = m.MouldName,
-                            MouldCavityCount = m.MouldCavityCount,
-                            StandardHours = m.StandardHours,
-                            StandardHoursType = m.StandardHoursType,
-                            ClassType = m.ClassType,
-                            DifficultyCoefficient = m.DifficultyCoefficient,
-                        };
-                        returnList.Add(returnModel);
-                    });
-                }
-                return returnList;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
-        /// <summary>
-        /// 获取日报模板列表
-        /// </summary>
-        /// <param name="department">部门</param>
-        /// <returns></returns>
-        public List<DailyReportModel> GetDailyReportTemplateListBy(string department)
-        {
-            //TODO:从数据集中找到模板列表，将模板列表转换为日报列表 并返回
-            var templateList = DailyReportInputCrudFactory.DailyReportTemplateCrud.GetTemplateListBy(department);
-            return ConventDailyReportList(templateList);
+            //TODO:从临时表中获取本部门所有的日报数据
+            return DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
         }
 
         /// <summary>
-        /// 存储模板列表
+        /// 保存日报列表
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult Store(List<DailyReportModel> modelList)
+        public OpResult SavaDailyReportList(List<DailyReportModel> modelList)
         {
-            //TODO:先查找出该部门的模板进行删除 然后进行存储 保证数据库中始终是最新的模板
-            try
-            {
-                //列表是否为空
-                if (modelList == null || modelList.Count < 1)
-                    return OpResult.SetResult("列表不能为空");
+            //清空本部门所有日报列表 =》存入当前列表
+            var department = string.Empty;
+            if (modelList.IsNullOrEmpty())
+                department = modelList[0].Department;
 
-                //清除原始模板列表
-                var deleteOpResult = DailyReportInputCrudFactory.DailyReportTemplateCrud.DeleteTemplateListBy(modelList[0].Department);
-                if (!deleteOpResult.Result)
-                    return OpResult.SetResult("清除原始模板失败！");
+            if (department.IsNullOrEmpty())
+                return OpResult.SetResult("部门不能为空！");
 
-                //日报列表转化为模板列表
-                var templateList = ConventTemplateList(modelList);
-                //转换的列表是否成功
-                if (templateList==null ||templateList.Count <1)  return OpResult.SetResult("日报数据转化模板失败！");
-                //添加新的模板到数据库
-                return  DailyReportInputCrudFactory.DailyReportTemplateCrud.AddTemplateList(templateList);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
+            var deleteResult = DailyReportInputCrudFactory.DailyReportTempCrud.DeleteDailyReportListBy(department);
+            if (!deleteResult.Result)
+                return OpResult.SetResult("清除日报历史记录失败！");
+
+            return DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(modelList);
         }
+
+        /// <summary>
+        /// 日报审核
+        /// </summary>
+        /// <returns></returns>
+        public OpResult AuditDailyReport(string department)
+        {
+            //将临时表中的本部门的所有列表 克隆至正式日报表中
+            var dailyReportTempList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
+
+            if (!dailyReportTempList.IsNullOrEmpty())
+                return OpResult.SetResult("未找到本部门的任何日报记录！");
+
+            return DailyReportInputCrudFactory.DailyReportCrud.SavaDailyReportList(dailyReportTempList);
+        }
+
+
+        #region Find
+
+        /// <summary>
+        /// 获取工序列表
+        /// </summary>
+        /// <param name="orderId">工单单号</param>
+        /// <returns></returns>
+        public List<ProductFlowModel> GetProductFlowListBy(string orderId)
+        {
+            var temOrderFetails = GetOrderDetails(orderId);
+            if (temOrderFetails != null && temOrderFetails.ProductName.Length > 0)
+            {
+                return DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
+                {
+                    SearchMode = 2,
+                    ProductName = temOrderFetails.ProductName
+                });
+            }
+            return new List<ProductFlowModel>();
+        }
+
+
+        /// <summary>
+        /// 获取工单详情
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public OrderModel GetOrderDetails(string orderId)
+        {
+            return MocService.OrderManage.GetOrderDetails(orderId);
+        }
+        #endregion
+
+
     }
 
 

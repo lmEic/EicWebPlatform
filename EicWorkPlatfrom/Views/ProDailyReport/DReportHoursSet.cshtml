@@ -72,9 +72,9 @@
                                 <tr class="info">
                                     <th>工艺编号</th>
                                     <th>工艺名称</th>
+                                    <th>工艺标示</th>
+                                    <th>工时类别</th>
                                     <th>标准工时</th>
-                                    <th>备注</th>
-                                    <th>操作人</th>
                                     <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                 </tr>
                             </thead>
@@ -82,9 +82,9 @@
                                 <tr ng-repeat="item in vmManager.editDatas track by $index">
                                     <td>{{item.ProductFlowId}}</td>
                                     <td>{{item.ProductFlowName}}</td>
+                                    <td>{{item.ProductFlowSign}}</td>
+                                    <td>{{item.StandardHoursType}}</td>
                                     <td>{{item.StandardHours}}</td>
-                                    <td>{{item.Remark}}</td>
-                                    <td>{{item.OpPerson}}</td>
                                     <td>
                                         <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="编辑">
                                             <i class="fa fa-edit"></i>
@@ -216,9 +216,9 @@
                                         <th>产品品名</th>
                                         <th>工艺编号</th>
                                         <th>工艺名称</th>
+                                        <th>工艺标示</th>
+                                        <th>工时类别</th>
                                         <th>标准工时</th>
-                                        <th>备注</th>
-                                        <th>操作人</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -226,9 +226,9 @@
                                         <td>{{item.ProductName}}</td>
                                         <td>{{item.ProductFlowId}}</td>
                                         <td>{{item.ProductFlowName}}</td>
+                                        <td>{{item.ProductFlowSign}}</td>
+                                        <td>{{item.StandardHoursType}}</td>
                                         <td>{{item.StandardHours}}</td>
-                                        <td>{{item.Remark}}</td>
-                                        <td>{{item.OpPerson}}</td>
                                     </tr>
                                 </tbody>
                                 <tfoot>

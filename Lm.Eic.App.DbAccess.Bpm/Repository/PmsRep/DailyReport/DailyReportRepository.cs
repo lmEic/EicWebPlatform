@@ -84,29 +84,24 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     /// <summary>
     ///
     /// </summary>
-    public interface IDailyReportRepositoryRepository : IRepository<DailyReportModel> { }
+    public interface IDailyReportRepository : IRepository<DailyReportModel> { }
     /// <summary>
     /// 日报录入仓储
     /// </summary>
-    public class DailyReportRepositoryRepository : BpmRepositoryBase<DailyReportModel>, IDailyReportRepositoryRepository
+    public class DailyReportRepository : BpmRepositoryBase<DailyReportModel>, IDailyReportRepository
     { }
+
 
     /// <summary>
     ///
     /// </summary>
-    public interface IDailyReportTemplateRepositoryRepository : IRepository<DailyReportTemplateModel> 
-    {
-      
-    }
-
-
+    public interface IDailyReportTempRepository : IRepository<DailyReportModel> { }
     /// <summary>
-    ///日报模板仓储
+    /// 日报录入仓储
     /// </summary>
-    public class DailyReportTemplateRepositoryRepository : BpmRepositoryBase<DailyReportTemplateModel>, IDailyReportTemplateRepositoryRepository
-    {
-       
-    
-    }
+    public class DailyReportTepmRepository : BpmRepositoryBase<DailyReportModel>, IDailyReportTempRepository
+    { }
+
+
 
 }

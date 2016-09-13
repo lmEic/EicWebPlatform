@@ -69,14 +69,14 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
         #region List
 
         /// <summary>
-        /// 判断此集合是否为空 集合是否大于1
+        /// 判断此集合是否 不为空 且 Item大于0
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="dt"></param>
         /// <returns></returns>
         public static bool IsNullOrEmpty<T>(this List<T> dt)
         {
-            return dt != null && dt.Count >= 1;
+            return dt != null && dt.Count > 0;
         }
 
         //
