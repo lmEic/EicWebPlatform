@@ -25,7 +25,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
     /// <summary>
     ///DailyReportTempModelMapping
     /// </summary>
-    public class DailyReportTempModelMapping : EntityTypeConfiguration<DailyReportModel>
+    public class DailyReportTempModelMapping : EntityTypeConfiguration<DailyReportTempModel>
     {
         public DailyReportTempModelMapping()
         {

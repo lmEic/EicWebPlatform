@@ -37,7 +37,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="paramenterKey">部门</param>
         /// <returns></returns>
-        public List<DailyReportModel> GetDailyReportTemplate(string department)
+        public List<DailyReportTempModel> GetDailyReportTemplate(string department)
         {
             //TODO:从临时表中获取本部门所有的日报数据
             return DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
@@ -48,7 +48,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult SavaDailyReportList(List<DailyReportModel> modelList)
+        public OpResult SavaDailyReportList(List<DailyReportTempModel> modelList)
         {
             //清空本部门所有日报列表 =》存入当前列表
             var department = string.Empty;
@@ -77,31 +77,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             if (!dailyReportTempList.IsNullOrEmpty())
                 return OpResult.SetResult("未找到本部门的任何日报记录！");
 
-            return DailyReportInputCrudFactory.DailyReportCrud.SavaDailyReportList(dailyReportTempList);
+            var dailyReportList = OOMaper.Mapper<DailyReportTempModel, DailyReportModel>(dailyReportTempList).ToList();
+            return DailyReportInputCrudFactory.DailyReportCrud.SavaDailyReportList(dailyReportList);
         }
-
-
-        #region Find
-
-        /// <summary>
-        /// 获取工序列表
-        /// </summary>
-        /// <param name="orderId">工单单号</param>
-        /// <returns></returns>
-        public List<ProductFlowModel> GetProductFlowListBy(string orderId)
-        {
-            var temOrderFetails = GetOrderDetails(orderId);
-            if (temOrderFetails != null && temOrderFetails.ProductName.Length > 0)
-            {
-                return DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
-                {
-                    SearchMode = 2,
-                    ProductName = temOrderFetails.ProductName
-                });
-            }
-            return new List<ProductFlowModel>();
-        }
-
 
         /// <summary>
         /// 获取工单详情
@@ -112,10 +90,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             return MocService.OrderManage.GetOrderDetails(orderId);
         }
-        #endregion
 
 
     }
-
-
 }

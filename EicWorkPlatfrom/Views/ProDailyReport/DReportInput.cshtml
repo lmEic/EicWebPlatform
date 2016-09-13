@@ -4,7 +4,7 @@
     </div>
     <div class="panel-body">
         <div cg-busy="{promise:promise}">
-            部门<label class="label label-default">{{vm.Department}}</label>
+            部门<label class="label label-default">{{vmManager.department}}</label>
             <button class="btn btn-sm btn-default"
                     data-title="选择部门名称"
                     data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
@@ -13,9 +13,9 @@
                 <i class="fa fa-sitemap"></i>
             </button>
             <label>录入日期</label>
-            <input type="date" />
+            <input type="date" ng-model="vmManager.InputDate"/>
             <span>
-                <button class="btn btn-sm btn-primary" title="载入模板" ng-click="operate.loadTemplateFile()"><i class="fa fa-download"></i>载入模板</button>
+                <button class="btn btn-sm btn-primary" title="载入模板" ng-click="vmManager.getReportInputDataTemplate()"><i class="fa fa-download"></i>载入模板</button>
                 <button class="btn btn-sm btn-info" title="新增" ng-click="vmManager.showDReportInputView()"><i class="fa fa-pencil"></i>新增</button>
                 <button class="btn btn-sm btn-success" title="保存" ng-click="operate.save()"><i class="fa fa-save"></i>保存</button>
                 <span class="pull-right">
@@ -64,9 +64,212 @@
 
         <div pageslide ps-open="vmManager.dReportInputDisplay" ps-side="right" ps-size="{{vmManager.inputViewSize}}" p ps-speed="0.15" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
-
+                <form role="form" name="formDailyReports" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                    <fieldset>
+                        <legend>
+                        工单信息
+                            <span class="label label-default">{{vm.OrderId}}</span>
+                            <span class="label label-info">{{vm.ProductName}}</span>
+                            <span class="label label-success">{{vm.ProductSpecification}}</span>
+                        </legend>
+                        <div class="form-group">
+                            <label for="orderId" class="col-md-3 control-label">工单单号</label>
+                            <div class="col-md-4">
+                                <input name="orderId" class="form-control" ng-model="vm.OrderId" ng-keypress="vmManager.getWorkOrderInfo($event)"
+                                      placeholder="请输入工单单号" required />
+                                <div class="error-messages" ng-messages="formDailyReports.orderId.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">工单单号不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>
+                        人员信息
+                            <span class="label label-default">{{vm.Department}}</span>
+                            <span class="label label-info">{{vm.UserWorkerId}}</span>
+                            <span class="label label-success">{{vm.UserName}}</span>
+                        </legend>
+                        <div class="form-group">
+                            <label for="userWorkerId" class="col-md-3 control-label">员工工号</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input name="userWorkerId" class="form-control" ng-model="vm.UserWorkerId" ng-keypress="vmManager.getWorkerInfo($event)"
+                                           focus-if="focus.workerIdFocus" focus-setter required data-ensure-user-exist placeholder="输入作业工号或者姓名" />
+                                    <div class="error-messages" ng-messages="formDailyReports.userWorkerId.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">员工工号不能为空</small>
+                                    </div>
+                                    <div class="input-group-addon" ng-show="vmManager.isSingle">
+                                        <label class="label label-primary"> <i class="fa fa-user"></i> {{vm.WorkerName}}</label>
+                                    </div>
+                                    <div class="input-group-btn" ng-hide="vmManager.isSingle">
+                                        <button type="button" class="btn btn-primary"
+                                                data-animation="am-flip-x"
+                                                bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                            <span class="fa fa-chevron-circle-down"></span>
+                                        </button>
+                                        <div class="dropdown-menu" role="menu">
+                                            <ul class="list-group">
+                                                <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker)"
+                                                    ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                    <i class="fa fa-user"></i>
+                                                    <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
+                                                    <span>姓名：{{worker.Name}}</span>|
+                                                    <span>部门：{{worker.Department}}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>工艺信息</legend>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label for="productFlowID" class="col-md-3 control-label">工序编号(或名称)</label>
+                                <div class="col-md-4">
+                                    <input name="productFlowID" class="form-control" ng-model="vm.ProductFlowID" focus-if="focus.productFlowFocus" focus-setter
+                                           ng-keypress="vmManager.getProductFlowInfo($event)" required placeholder="输入工序编号或者工序名称" />
+                                    <div class="error-messages" ng-messages="formDailyReports.productFlowID.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">工序编号不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <hr />
+                    <div class="alert alert-info">
+                        <div class="row">
+                            <div class="col-md-3">
+                            </div>
+                            <div class="col-md-9">
+                                <button class="btn btn-primary" focus-if="focus.saveCmdFocus" focus-setter ng-keypress="vmManager.addRecord(formDailyReports.$valid)"
+                                        ng-click="operate.add(formDailyReports.$valid)">
+                                    <i class="fa fa-save"></i>保存
+                                </button>
+                                <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                <span yl-operatemsg-board></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
+
+        @*<div pageslide ps-open="vmManager.dReportInputDisplay" ps-side="right" ps-size="{{vmManager.inputViewSize}}" p ps-speed="0.15" ps-container='editWindow'>
+            <div style="padding:10px;overflow-y:auto">
+                <form role="form" name="formDailyReports" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="qty" class="col-md-2 control-label">总产量</label>
+                            <div class="col-md-4">
+                                <input name="qty" class="form-control" ng-model="vm.Qty" required />
+                                <div class="error-messages" ng-messages="formDailyReports.qty.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">总产量不能为空</small>
+                                </div>
+                            </div>
+                            <label for="qtyGood" class="col-md-2 control-label">良品数量</label>
+                            <div class="col-md-4">
+                                <input name="qtyGood" class="form-control" ng-model="vm.QtyGood" required />
+                                <div class="error-messages" ng-messages="formDailyReports.qtyGood.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">良品数量不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="qtyBad" class="col-md-2 control-label">不良品数量</label>
+                            <div class="col-md-4">
+                                <input name="qtyBad" class="form-control" ng-model="vm.QtyBad" required />
+                                <div class="error-messages" ng-messages="formDailyReports.qtyBad.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">不良品数量不能为空</small>
+                                </div>
+                            </div>
+                            <label for="failureRate" class="col-md-2 control-label">不良率</label>
+                            <div class="col-md-4">
+                                <input name="failureRate" class="form-control" ng-model="vm.FailureRate" required />
+                                <div class="error-messages" ng-messages="formDailyReports.failureRate.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">不良率不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputHours" class="col-md-2 control-label">投入时数</label>
+                            <div class="col-md-4">
+                                <input name="inputHours" class="form-control" ng-model="vm.InputHours" required />
+                                <div class="error-messages" ng-messages="formDailyReports.inputHours.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">投入时数不能为空</small>
+                                </div>
+                            </div>
+                            <label for="attendanceHours" class="col-md-2 control-label">出勤时数</label>
+                            <div class="col-md-4">
+                                <input name="attendanceHours" class="form-control" ng-model="vm.AttendanceHours" required />
+                                <div class="error-messages" ng-messages="formDailyReports.attendanceHours.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">出勤时数不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="nonProductionHours" class="col-md-2 control-label">非生产时数</label>
+                            <div class="col-md-4">
+                                <input name="nonProductionHours" class="form-control" ng-model="vm.NonProductionHours" required />
+                                <div class="error-messages" ng-messages="formDailyReports.nonProductionHours.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">非生产时数不能为空</small>
+                                </div>
+                            </div>
+                            <label for="receiveHours" class="col-md-2 control-label">得到工时</label>
+                            <div class="col-md-4">
+                                <input name="receiveHours" class="form-control" ng-model="vm.ReceiveHours" required />
+                                <div class="error-messages" ng-messages="formDailyReports.receiveHours.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">得到工时不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="manHours" class="col-md-2 control-label">人工工时</label>
+                            <div class="col-md-4">
+                                <input name="manHours" class="form-control" ng-model="vm.ManHours" required />
+                                <div class="error-messages" ng-messages="formDailyReports.manHours.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">人工工时不能为空</small>
+                                </div>
+                            </div>
+                            <label for="productionEfficiency" class="col-md-2 control-label">生产效率</label>
+                            <div class="col-md-4">
+                                <input name="productionEfficiency" class="form-control" ng-model="vm.ProductionEfficiency" required />
+                                <div class="error-messages" ng-messages="formDailyReports.productionEfficiency.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">生产效率不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="operationEfficiency" class="col-md-2 control-label">作业效率</label>
+                            <div class="col-md-4">
+                                <input name="operationEfficiency" class="form-control" ng-model="vm.OperationEfficiency" required />
+                                <div class="error-messages" ng-messages="formDailyReports.operationEfficiency.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">作业效率不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                    <hr />
+                    <div class="alert alert-info">
+                        <div class="row">
+                            <div class="col-md-2">
+                            </div>
+                            <div class="col-md-10">
+                                <button class="btn btn-primary" ng-click="operate.saveAll(formDailyReports.$valid)"><i class="fa fa-save"></i>保存</button>
+                                <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                <span yl-operatemsg-board></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>*@
 
         <div pageslide ps-open="vmManager.dReportPreviewDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">

@@ -32,7 +32,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         [HttpGet]
         [NoAuthenCheck]
-        public JsonResult GetProductFlowList(string department, string productName)
+        public JsonResult GetProductFlowList(string department, string productName,string orderId,int searchMode)
         {
             var result = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto() { 
              Department =department, ProductName =productName,SearchMode=2
@@ -104,6 +104,17 @@ namespace EicWorkPlatfrom.Controllers.Product
         public ActionResult DReportInput()
         {
             return View();
+        }
+        /// <summary>
+        /// 获取日报输入模板
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetDailyReportTemplate(string department)
+        {
+            var datas = 0;
+            return Json(datas,JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

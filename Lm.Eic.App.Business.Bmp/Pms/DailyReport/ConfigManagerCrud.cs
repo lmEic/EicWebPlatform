@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
+using Lm.Eic.App.Erp.Bussiness.MocManage;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
@@ -99,7 +100,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             if (model.MouldId != null)
                 model.ParameterKey = string.Format("{0}&{1}&{2}&{3}", model.Department, model.ProductName, model.ProductFlowName, model.MouldId);
             else model.ParameterKey = string.Format("{0}&{1}&{2}", model.Department, model.ProductName, model.ProductFlowName);
-          
+
             //此工艺是否已经存在
             if (irep.IsExist(e => e.ParameterKey == model.ParameterKey))
                 return OpResult.SetResult("此数据已经添加!");
@@ -124,13 +125,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         private OpResult DeleteProductFlowModel(ProductFlowModel model)
         {
-            return (model.Id_Key >0)? 
+            return (model.Id_Key > 0) ?
                 irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
-                :OpResult.SetResult("未执行任何操作");
+                : OpResult.SetResult("未执行任何操作");
         }
         #endregion
         /// <summary>
-        /// 查询 1.依据部门查询  2.依据产品品名查询 3.依据录入日期查询 4.依据产品品名 工艺名称查询 
+        /// 查询 1.依据部门查询  2.依据产品品名查询 3.依据录入日期查询 4.依据产品品名&工艺名称查询 
+        /// 5.依据工单单号查询
         /// </summary>
         /// <param name="qryDto">数据传输对象 部门是必须的 </param>
         /// <returns></returns>
@@ -143,12 +145,19 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                     case 1: //依据部门查询
                         return irep.Entities.Where(m => m.Department == qryDto.Department).ToList();
                     case 2: //依据产品品名查询
-                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName).OrderBy (e=>e.ProductFlowId).ToList();
+                        return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName).OrderBy(e => e.ProductFlowId).ToList();
                     case 3: //依据录入日期查询
                         DateTime inputDate = qryDto.InputDate.ToDate();
                         return irep.Entities.Where(m => m.Department == qryDto.Department && m.OpDate == inputDate).ToList();
                     case 4: //依据工艺名称查询
                         return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName && m.ProductFlowName == qryDto.ProductFlowName).ToList();
+                    case 5: //依据工单单号查询
+                        {
+                            var orderDetails = MocService.OrderManage.GetOrderDetails(qryDto.OrderId);
+                            if (orderDetails != null)
+                                qryDto.ProductName = orderDetails.ProductName;
+                            return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName).ToList();
+                        }
                     default:
                         return new List<ProductFlowModel>();
                 }
