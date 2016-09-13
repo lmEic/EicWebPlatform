@@ -30,7 +30,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         public DbSet<DailyReportModel> DailyReports { get; set; }
 
-        public DbSet<DailyReportModel> DailyReportsTemp { get; set; }
+        public DbSet<DailyReportTempModel> DailyReportsTemp { get; set; }
 
 
         public DbSet<ProductFlowModel> ProductFlow { get; set; }
