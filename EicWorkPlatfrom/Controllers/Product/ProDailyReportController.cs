@@ -32,7 +32,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         [HttpGet]
         [NoAuthenCheck]
-        public JsonResult GetProductFlowList(string department, string productName)
+        public JsonResult GetProductFlowList(string department, string productName,string orderId,int searchMode)
         {
             var result = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto() { 
              Department =department, ProductName =productName,SearchMode=2

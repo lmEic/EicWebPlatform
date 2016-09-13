@@ -9,11 +9,13 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     var reportDataOp = {};
     //-------------------------标准工时设置-------------------------------------
     //获取产品工艺流程列表
-    reportDataOp.getProductFlowList = function (department, productName) {
+    reportDataOp.getProductFlowList = function (department, productName, orderId, searchMode) {
         var url = urlPrefix + 'GetProductFlowList';
         return ajaxService.getData(url, {
             department: department,
             productName: productName,
+            orderId: orderId,
+            searchMode: searchMode,
         });
     };
     //保存产品工艺流程数据
