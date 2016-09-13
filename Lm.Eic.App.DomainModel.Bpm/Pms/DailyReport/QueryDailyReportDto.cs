@@ -44,12 +44,19 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         /// </summary>
         public string ProductFlowName
         {
-            set
-            { if (productFlowName != value) { productFlowName = value; } }
-            get
-            { return productFlowName; }
+            set { if (productFlowName != value) { productFlowName = value; } }
+            get { return productFlowName; }
         }
 
+        string orderId = string.Empty;
+        /// <summary>
+        /// 工单单号
+        /// </summary>
+        public string OrderId
+        {
+            set { if(orderId != value) { orderId = value; } }
+            get { return orderId; }
+        }
         private int searchMode = 0;
         /// <summary>
         /// 搜索模式

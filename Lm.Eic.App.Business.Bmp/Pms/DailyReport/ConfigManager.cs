@@ -55,39 +55,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
 
         /// <summary>
-        /// 获取工艺列表 1.根据部门  2.根据产品品名 3.根据录入日期 4.根据产品品名和工艺名称
+        /// 查询 1.依据部门查询  2.依据产品品名查询 3.依据录入日期查询 4.依据产品品名&工艺名称查询 
+        /// 5.依据工单单号查询
         /// </summary>
-        /// <param name="dto">数据传输对部门是必须的</param>
+        /// <param name="qryDto">数据传输对象 部门是必须的 </param>
         /// <returns></returns>
         public List<ProductFlowModel> GetProductFlowListBy(QueryDailyReportDto dto)
         {
             return DailyReportConfigCrudFactory.ProductFlowCrud.FindBy(dto);
         }
 
-        /// <summary>
-        /// 获取工艺列表
-        /// </summary>
-        /// <param name="orderId">工单单号</param>
-        /// <returns></returns>
-        public List<ProductFlowModel> GetProductFlowListBy(string department, string orderId)
-        {
-            try
-            {
-                var temOrderFetails = MocService.OrderManage.GetOrderDetails(orderId);
-                if (temOrderFetails != null && temOrderFetails.ProductName.Length > 0)
-                {
-                    return DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
-                    {
-                        SearchMode = 2,
-                        ProductName = temOrderFetails.ProductName,
-                        Department = department
-                    });
-                }
-                return new List<ProductFlowModel>();
-            }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
-        }
-        #endregion
+         #endregion
 
 
         #region FileOption
