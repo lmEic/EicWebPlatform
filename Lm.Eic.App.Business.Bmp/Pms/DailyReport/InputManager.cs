@@ -90,16 +90,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<ProductFlowModel> GetProductFlowListBy(string orderId)
         {
-            var temOrderFetails = GetOrderDetails(orderId);
-            if (temOrderFetails != null && temOrderFetails.ProductName.Length > 0)
-            {
-                return DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
-                {
-                    SearchMode = 2,
-                    ProductName = temOrderFetails.ProductName
-                });
-            }
-            return new List<ProductFlowModel>();
+            return DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(orderId);
         }
 
 

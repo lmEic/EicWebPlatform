@@ -111,7 +111,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public OpResult SavaDailyReportList(List<DailyReportModel> modelList)
         {
             //添加模板列表       要求：一次保存整个列表
-
             try
             {
                 SetFixFieldValue(modelList, OpMode.Add);

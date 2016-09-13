@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
+using Lm.Eic.App.Erp.Bussiness.MocManage;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
@@ -63,6 +64,28 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return DailyReportConfigCrudFactory.ProductFlowCrud.FindBy(dto);
         }
 
+        /// <summary>
+        /// 获取工艺列表
+        /// </summary>
+        /// <param name="orderId">工单单号</param>
+        /// <returns></returns>
+        public List<ProductFlowModel> GetProductFlowListBy(string orderId)
+        {
+            try
+            {
+                var temOrderFetails = MocService.OrderManage.GetOrderDetails(orderId);
+                if (temOrderFetails != null && temOrderFetails.ProductName.Length > 0)
+                {
+                    return DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
+                    {
+                        SearchMode = 2,
+                        ProductName = temOrderFetails.ProductName
+                    });
+                }
+                return new List<ProductFlowModel>();
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        }
         #endregion
 
 
