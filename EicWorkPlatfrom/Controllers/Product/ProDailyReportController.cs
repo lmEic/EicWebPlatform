@@ -32,11 +32,15 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         [HttpGet]
         [NoAuthenCheck]
-        public JsonResult GetProductFlowList(string department, string productName,string orderId,int searchMode)
+        public JsonResult GetProductFlowList(string department, string productName, string orderId, int searchMode)
         {
-            var result = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto() { 
-             Department =department, ProductName =productName,SearchMode=2
-            }); 
+            var result = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
+            {
+                Department = department,
+                ProductName = productName,
+                OrderId = orderId,
+                SearchMode = searchMode
+            });
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -115,6 +119,26 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             var datas = 0;
             return Json(datas,JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 获取工单详细信息
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [NoAuthenCheck]
+        public JsonResult GetOrderDetails(string department,string orderId)
+        {
+            var orderDetails = DailyReportService.InputManager.DailyReportInputManager.GetOrderDetails(orderId);
+            //var productFlows = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
+            //{
+            //    SearchMode = 5,
+            //    Department = department,
+            //    OrderId = orderId
+            //});
+            var data = new { orderDetails = orderDetails,  };//productFlows = productFlows
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
         #endregion
     }

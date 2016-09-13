@@ -55,7 +55,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
 
         /// <summary>
-        /// 查询 1.依据部门查询  2.依据产品品名查询 3.依据录入日期查询 4.依据产品品名&工艺名称查询 
+        /// 查询 1.依据部门查询  2.依据产品品名查询 3.依据录入日期查询 4.依据产品品名 工艺名称查询 
         /// 5.依据工单单号查询
         /// </summary>
         /// <param name="qryDto">数据传输对象 部门是必须的 </param>
