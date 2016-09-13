@@ -80,20 +80,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return DailyReportInputCrudFactory.DailyReportCrud.SavaDailyReportList(dailyReportTempList);
         }
 
-
-        #region Find
-
-        /// <summary>
-        /// 获取工序列表
-        /// </summary>
-        /// <param name="orderId">工单单号</param>
-        /// <returns></returns>
-        public List<ProductFlowModel> GetProductFlowListBy(string department, string orderId)
-        {
-            return DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(department,orderId);
-        }
-
-
         /// <summary>
         /// 获取工单详情
         /// </summary>
@@ -103,10 +89,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             return MocService.OrderManage.GetOrderDetails(orderId);
         }
-        #endregion
 
 
     }
-
-
 }
