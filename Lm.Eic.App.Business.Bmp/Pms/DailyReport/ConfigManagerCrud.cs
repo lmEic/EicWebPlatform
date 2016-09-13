@@ -156,7 +156,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                             var orderDetails = MocService.OrderManage.GetOrderDetails(qryDto.OrderId);
                             if (orderDetails != null)
                                 qryDto.ProductName = orderDetails.ProductName;
-                            return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName).OrderBy(e => e.ProductFlowId).ToList();
+                            return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName).ToList();
                         }
                     default:
                         return new List<ProductFlowModel>();

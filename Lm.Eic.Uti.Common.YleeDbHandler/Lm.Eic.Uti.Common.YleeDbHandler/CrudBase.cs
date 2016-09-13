@@ -155,5 +155,18 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return result;
         }
+
+        /// <summary>
+        /// 模型转换
+        /// </summary>
+        /// <typeparam name="TDestination">目标模型</typeparam>
+        /// <param name="oldModel"></param>
+        /// <returns></returns>
+        protected TDestination ConventModel<TDestination>(TEntity oldModel) where TDestination : class, new()
+        {
+            TDestination newModel = new TDestination();
+            OOMaper.Mapper(oldModel, newModel);
+            return newModel;
+        }
     }
 }

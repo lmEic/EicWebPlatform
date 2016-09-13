@@ -95,7 +95,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 日报临时库 CRUD
     /// </summary>
-    public class DailyReportTempCrud : CrudBase<DailyReportModel, IDailyReportTempRepository>
+    public class DailyReportTempCrud : CrudBase<DailyReportTempModel, IDailyReportTempRepository>
     {
         public DailyReportTempCrud() : base(new DailyReportTepmRepository(), "日报临时录入")
         { }
@@ -108,7 +108,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult SavaDailyReportList(List<DailyReportModel> modelList)
+        public OpResult SavaDailyReportList(List<DailyReportTempModel> modelList)
         {
             //添加模板列表       要求：一次保存整个列表
             try
@@ -123,7 +123,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                     m.ParamenterKey = m.Department + "&" + m.DailyReportDate.ToShortDateString();
                     m.DailyReportMonth = m.DailyReportDate.ToString("yyyyMM");
                 });
-
                 return irep.Insert(modelList).ToOpResult(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
@@ -150,11 +149,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        public List<DailyReportModel> GetDailyReportListBy(string department)
+        public List<DailyReportTempModel> GetDailyReportListBy(string department)
         {
             try
             {
-                return irep.Entities.Where(e => e.Department == department).ToList();
+                  return irep.Entities.Where(e => e.Department == department).ToList();
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }

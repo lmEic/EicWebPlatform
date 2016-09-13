@@ -95,11 +95,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     /// <summary>
     ///
     /// </summary>
-    public interface IDailyReportTempRepository : IRepository<DailyReportModel> { }
+    public interface IDailyReportTempRepository : IRepository<DailyReportTempModel> { }
     /// <summary>
     /// 日报录入仓储
     /// </summary>
-    public class DailyReportTepmRepository : BpmRepositoryBase<DailyReportModel>, IDailyReportTempRepository
+    public class DailyReportTepmRepository : BpmRepositoryBase<DailyReportTempModel>, IDailyReportTempRepository
     { }
 
 
