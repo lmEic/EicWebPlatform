@@ -88,9 +88,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="orderId">工单单号</param>
         /// <returns></returns>
-        public List<ProductFlowModel> GetProductFlowListBy(string orderId)
+        public List<ProductFlowModel> GetProductFlowListBy(string department, string orderId)
         {
-            return DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(orderId);
+            return DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(department,orderId);
         }
 
 

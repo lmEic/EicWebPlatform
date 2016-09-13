@@ -69,7 +69,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="orderId">工单单号</param>
         /// <returns></returns>
-        public List<ProductFlowModel> GetProductFlowListBy(string orderId)
+        public List<ProductFlowModel> GetProductFlowListBy(string department, string orderId)
         {
             try
             {
@@ -79,7 +79,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                     return DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
                     {
                         SearchMode = 2,
-                        ProductName = temOrderFetails.ProductName
+                        ProductName = temOrderFetails.ProductName,
+                        Department = department
                     });
                 }
                 return new List<ProductFlowModel>();
