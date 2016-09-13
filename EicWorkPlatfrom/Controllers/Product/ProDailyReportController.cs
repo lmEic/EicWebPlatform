@@ -105,6 +105,17 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
+        /// <summary>
+        /// 获取日报输入模板
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetDailyReportTemplate(string department)
+        {
+            var datas = 0;
+            return Json(datas,JsonRequestBehavior.AllowGet);
+        }
         #endregion
     }
 }
