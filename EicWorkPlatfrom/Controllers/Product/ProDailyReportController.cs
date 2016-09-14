@@ -131,13 +131,13 @@ namespace EicWorkPlatfrom.Controllers.Product
         public JsonResult GetOrderDetails(string department,string orderId)
         {
             var orderDetails = DailyReportService.InputManager.DailyReportInputManager.GetOrderDetails(orderId);
-            //var productFlows = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
-            //{
-            //    SearchMode = 5,
-            //    Department = department,
-            //    OrderId = orderId
-            //});
-            var data = new { orderDetails = orderDetails,  };//productFlows = productFlows
+            var productFlows = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
+            {
+                SearchMode = 5,
+                Department = department,
+                OrderId = orderId
+            });
+            var data = new { orderDetails = orderDetails, productFlows = productFlows };//productFlows = productFlows
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         #endregion

@@ -156,10 +156,30 @@
                             <div class="form-group">
                                 <label for="productFlowID" class="col-md-3 control-label">工序编号(或名称)</label>
                                 <div class="col-md-4">
-                                    <input name="productFlowID" class="form-control" ng-model="vm.ProductFlowID" focus-if="focus.productFlowFocus" focus-setter
-                                           ng-keypress="vmManager.getProductFlowInfo($event)" required placeholder="输入工序编号或者工序名称" />
-                                    <div class="error-messages" ng-messages="formDailyReports.productFlowID.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">工序编号不能为空</small>
+                                    <div class="input-group">
+                                        <input name="productFlowID" class="form-control" ng-model="vm.ProductFlowID" focus-if="focus.productFlowFocus" focus-setter
+                                               ng-keypress="vmManager.getProductFlowInfo($event)" required placeholder="输入工序编号或者工序名称" />
+                                        <div class="error-messages" ng-messages="formDailyReports.productFlowID.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">工序编号不能为空</small>
+                                        </div>
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-primary"
+                                                    data-animation="am-flip-x"
+                                                    bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                                <span class="fa fa-chevron-circle-down"></span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectProductFlow(pflow)"
+                                                        ng-repeat="pflow in vmManager.productFlows track by $index" data-title="岗位：{{w.Post}}" data-bs-tooltip>
+                                                        <i class="fa fa-user"></i>
+                                                        <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
+                                                        <span>姓名：{{worker.Name}}</span>|
+                                                        <span>部门：{{worker.Department}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -300,18 +300,33 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
 
         },
         //工单数据信息
-        orderDatas:[],
+        orderDatas: [],
+        //工艺流程集合
+        productFlows:[],
+        //绑定工单信息
+        bindOrderInfo: function (orderDetails) {
+            uiVM.OrderId = orderDetails.OrderId;
+            uiVM.ProductName = orderDetails.ProductName;
+            uiVM.ProductSpecification = orderDetails.ProductSpecify;
+        },
         //获取工单信息
         getWorkOrderInfo: function ($event) {
             if ($event.keyCode === 13)
             {
-                dReportDataOpService.getOrderDetails(vmManager.department, $scope.vm.OrderId).then(function (data) {
-                    if (angular.isObject(data)) {
-                        uiVM.OrderId = data.orderDetails.OrderId;
-                        uiVM.ProductName = data.orderDetails.ProductName;
-                        uiVM.ProductSpecification = data.orderDetails.ProductSpecify;
-                    }
-                });
+                var item = _.find(vmManager.orderDatas, { orderId: $scope.vm.OrderId });
+                if (!angular.isUndefined) {
+                    vmManager.bindOrderInfo(item.orderDetails);
+                    vmManager.productFlows = data.productFlows;
+                }
+                else {
+                    dReportDataOpService.getOrderDetails(vmManager.department, $scope.vm.OrderId).then(function (data) {
+                        if (angular.isObject(data)) {
+                            vmManager.orderDatas.push({ orderId: $scope.vm.OrderId, data: data });
+                            vmManager.bindOrderInfo(data.orderDetails);
+                            vmManager.productFlows = data.productFlows;
+                        }
+                    });
+                }
                 focusSetter.moveFocusTo($event, 'workerIdFocus');
             }
         },
