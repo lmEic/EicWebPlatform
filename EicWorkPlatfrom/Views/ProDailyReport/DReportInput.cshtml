@@ -35,52 +35,25 @@
                             <th class="text-center">工单</th>
                             <th class="text-center">工艺</th>
                             <th class="text-center">人员</th>
-                            <th class="text-center">机台</th>
-                            <th class="text-center">磨具</th>
                             <th class="text-center danger">操作(<i class="fa fa-pencil-square-o"></i>)</th>
-                            <th class="text-center">工时</th>
-                            <th class="text-center">产量</th>
+                           
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="item in vmManager.editDatas track by $index">
-                            <td style="width:15%;">
-                                <h6>
-                                    <span class="label label-primary">{{item.OrderId}}</span>
-                                </h6>
-                                <h6>
-                                    <span class="label label-default">{{item.ProductName}}</span>
-                                </h6>
-                                <h6>
-                                    <span class="label label-default">{{item.ProductSpecification}}</span>
-                                </h6>
-                            </td>
-                            <td></td>
-                            <td style="width:10%;">
-                                <h6>
-                                    <span class="label label-primary">{{item.UserWorkerId}}</span>
-                                </h6>
-                                <h6>
-                                    <span class="label label-default">{{item.UserName}}</span>
-                                </h6>
-                                <h6>
-                                    <span class="label label-default">{{item.Department}}</span>
-                                </h6>
+                           <td>
+                               <span ng-hide="item.editting">{{item.id}}</span>
+                               <input ng-model="vm.OrderId" focus-if="focus.orderIdFocus" focus-setter
+                                      ng-keypress="vmManager.getWorkOrderInfo($event)" ng-show="item.editting" />
+                           </td>
+                            <td>
+                                <span ng-hide="item.editting">{{item.name}}</span>
+                                <input ng-show="item.editting" />
                             </td>
                             <td>
-                               
+                                <span ng-hide="item.editting">{{item.text}}</span>
+                                <input ng-show="item.editting" />
                             </td>
-                          
-
-                            <td>{{item.InputTime}}</td>
-                            <td>{{item.MachineId}}</td>
-                            <td>
-                                <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
-                                    修改
-                                </button>
-                            </td>
-                            <td>{{item.EquipmentEifficiency}}</td>
-                            <td>{{item.DifficultyCoefficient}}</td>
                         </tr>
                     </tbody>
                 </table>

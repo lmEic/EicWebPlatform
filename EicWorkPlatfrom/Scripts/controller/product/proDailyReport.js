@@ -115,7 +115,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         //查看工艺流程明细
         viewProductFlowDetails: function (item) {
             vmManager.productName = item.ProductName;
-            $scope.searchPromise = dReportDataOpService.getProductFlowList(vmManager.department,vmManager.productName).then(function (datas) {
+            $scope.searchPromise = dReportDataOpService.getProductFlowList(vmManager.department,vmManager.productName,"",2).then(function (datas) {
                 vmManager.editDatas = datas;
             });
         },
@@ -291,7 +291,10 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         orderIdBoardDisplay: false,
         boardViewSize: '100%',
         inputViewSize: '70%',
-        showDReportInputView: function () { vmManager.dReportInputDisplay = true; },
+        showDReportInputView: function () {
+            //vmManager.dReportInputDisplay = true;
+            vmManager.editDatas.push({ id: null, name: null, text: null, editting: true });
+        },
         showDReportPreviewView: function () { vmManager.dReportPreviewDisplay = true; },
         showProFlowView: function () { vmManager.proFlowBoardDisplay = true; },
         showPersonView: function () { vmManager.personBoardDisplay = true; },
