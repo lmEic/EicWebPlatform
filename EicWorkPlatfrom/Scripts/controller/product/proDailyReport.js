@@ -52,6 +52,14 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             department: department,
         });
     };
+    //获取工单详细信息
+    reportDataOp.getOrderDetails = function (department, orderId) {
+        var url = urlPrefix + 'GetOrderDetails';
+        return ajaxService.getData(url, {
+            department: department,
+            orderId: orderId,
+        });
+    };
     return reportDataOp;
 });
 //标准工时设定
@@ -114,7 +122,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         //获取产品工艺流程列表
         getProductFlowList: function ($event) {
             if ($event.keyCode === 13) {
-               $scope.searchPromise=dReportDataOpService.getProductFlowList(vmManager.department, vmManager.productName).then(function (datas) {
+               $scope.searchPromise=dReportDataOpService.getProductFlowList(vmManager.department, vmManager.productName,"",2).then(function (datas) {
                     vmManager.editDatas = datas;
                 });
             }
@@ -223,7 +231,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
     $scope.ztree = departmentTreeSet;
 });
 //日报录入
-productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService) {
+productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService,$modal) {
     ///日报录入视图模型
     var uiVM = {
         Department: null,
@@ -270,6 +278,9 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         Id_Key: null,
     }
     $scope.vm = uiVM;
+
+    var initVM = _.clone(uiVM);
+
     var vmManager = {
         department: '生技部',
         InputDate:new Date(),
@@ -288,10 +299,36 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         getReportInputDataTemplate: function () {
 
         },
+        //工单数据信息
+        orderDatas: [],
+        //工艺流程集合
+        productFlows:[],
+        //绑定工单信息
+        bindOrderInfo: function (orderDetails) {
+            uiVM.OrderId = orderDetails.OrderId;
+            uiVM.ProductName = orderDetails.ProductName;
+            uiVM.ProductSpecification = orderDetails.ProductSpecify;
+        },
         //获取工单信息
         getWorkOrderInfo: function ($event) {
-
-            focusSetter.moveFocusTo($event, 'workerIdFocus');
+            if ($event.keyCode === 13)
+            {
+                var item = _.find(vmManager.orderDatas, { orderId: $scope.vm.OrderId });
+                if (!angular.isUndefined) {
+                    vmManager.bindOrderInfo(item.orderDetails);
+                    vmManager.productFlows = data.productFlows;
+                }
+                else {
+                    dReportDataOpService.getOrderDetails(vmManager.department, $scope.vm.OrderId).then(function (data) {
+                        if (angular.isObject(data)) {
+                            vmManager.orderDatas.push({ orderId: $scope.vm.OrderId, data: data });
+                            vmManager.bindOrderInfo(data.orderDetails);
+                            vmManager.productFlows = data.productFlows;
+                        }
+                    });
+                }
+                focusSetter.moveFocusTo($event, 'workerIdFocus');
+            }
         },
         searchedWorkers: [],
         isSingle: true,//是否搜寻到的是单个人
@@ -335,9 +372,19 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         getProductFlowInfo: function ($event) {
             focusSetter.moveFocusTo($event, 'saveCmdFocus');
         },
+        //待编辑的记录集合
+        editDatas:[],
         //新增记录
-        addRecord: function (valid) {
+        addRecord: function (isValid) {
+            leeDataHandler.dataOperate.add(operate, isValid, function () {
+                var vm = _.clone($scope.vm);
+                vmManager.editDatas.push(vm);
 
+                uiVM = _.clone(initVM);
+                $scope.vm = uiVM;
+
+                focusSetter['orderIdFocus'] = true;
+            })
         },
     };
     $scope.vmManager = vmManager;
@@ -359,6 +406,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
 
     //焦点设置器
     var focusSetter = {
+        orderIdFocus:false,
         workerIdFocus: false,
         productFlowFocus: false,
         saveCmdFocus:false,
