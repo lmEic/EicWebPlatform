@@ -180,10 +180,11 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     };
 
     //获取部门的当天的考勤数据信息
-    hr.getAttendanceDatasOfToday = function (department) {
+    hr.getAttendanceDatasOfToday = function (department,qryDate) {
         var url = attendUrl + "GetAttendanceDatasOfToday";
         return ajaxService.getData(url, {
             department: department,
+            qryDate:qryDate
         });
     };
 
@@ -279,6 +280,20 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         stateTo: function (navItem) {
             $state.go(navItem.UiSerf);
         },
+        navViewSwitch: true,//左侧视图导航开关
+        switchView: function () {
+            moduleNavLayoutVm.navViewSwitch = !moduleNavLayoutVm.navViewSwitch;
+            if (moduleNavLayoutVm.navViewSwitch) {
+                moduleNavLayoutVm.navLeftSize = '16%';
+                moduleNavLayoutVm.navMainSize = '83%';
+            }
+            else {
+                moduleNavLayoutVm.navLeftSize = '3%';
+                moduleNavLayoutVm.navMainSize = '96%';
+            }
+        },
+        navLeftSize: '16%',
+        navMainSize: '83%',
     };
     $scope.navLayout = moduleNavLayoutVm;
     $scope.promise = navDataService.getSubModuleNavs('人力资源管理', 'HrManage').then(function (datas) {
@@ -1330,7 +1345,8 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     var qryDto = {
         Department: '部门',
         DepartmentText: '部门',
-        ClassType: '白班'
+        ClassType: '白班',
+        AttendanceDate:new Date(),
     };
     $scope.vm = qryDto;
 
@@ -1378,7 +1394,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
 
     operate.loadData = function () {
         vmManager.init();
-        $scope.promise = hrDataOpService.getAttendanceDatasOfToday(qryDto.Department).then(function (datas) {
+        $scope.promise = hrDataOpService.getAttendanceDatasOfToday(qryDto.Department,qryDto.AttendanceDate).then(function (datas) {
             vmManager.dataSource = datas;
             vmManager.dataSets = _.clone(vmManager.dataSource);
         });

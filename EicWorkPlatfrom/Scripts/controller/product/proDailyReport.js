@@ -281,6 +281,17 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
 
     var initVM = _.clone(uiVM);
 
+    var tablevm = {
+        colVisible:true,//列的可见性
+        orderIdColSpan: 3,
+        proFlowColSpan:2,
+        workerColSpan: 3,
+        productColSpan: 4,
+        workHoursColSpan:5
+    };
+
+    $scope.tbl = tablevm;
+
     var vmManager = {
         department: '生技部',
         InputDate:new Date(),
@@ -291,9 +302,39 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         orderIdBoardDisplay: false,
         boardViewSize: '100%',
         inputViewSize: '70%',
+        inputMode:'',
+        inputModes: [{ id: 'simple', text: '普通编辑' }, { id: 'fast', text: '快速编辑' }],
+        selectInputMode: function () {
+            if (vmManager.inputMode === 'simple') {
+                tablevm.colVisible = true;
+                tablevm.orderIdColSpan = 3;
+                tablevm.proFlowColSpan = 2;
+                tablevm.workerColSpan = 3;
+                tablevm.productColSpan = 4;
+                tablevm.workHoursColSpan = 5;
+            }
+            else {
+                tablevm.colVisible = false;
+                tablevm.orderIdColSpan = 1;
+                tablevm.proFlowColSpan = 1;
+                tablevm.workerColSpan = 2;
+                tablevm.productColSpan = 2;
+                tablevm.workHoursColSpan = 4;
+            }
+        },
+        edittingRowIndex: 0,//编辑中的行索引
+        addRow: function () {
+            vmManager.edittingRowIndex = vmManager.editDatas.length > 0 ? vmManager.editDatas.length + 1 : 1;
+            var vm = _.clone(initVM);
+            vm.rowindex = vmManager.edittingRowIndex;
+            vm.editting = true;
+            vmManager.editDatas.push(vm);
+        },
         showDReportInputView: function () {
             //vmManager.dReportInputDisplay = true;
-            vmManager.editDatas.push({ id: null, name: null, text: null, editting: true });
+
+
+            vmManager.addRow();
         },
         showDReportPreviewView: function () { vmManager.dReportPreviewDisplay = true; },
         showProFlowView: function () { vmManager.proFlowBoardDisplay = true; },
@@ -314,52 +355,53 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         },
         //获取工单信息
         getWorkOrderInfo: function ($event) {
-            if ($event.keyCode === 13)
+            if ($event.keyCode === 13 || $event.keyCode === 40)
             {
-                var item = _.find(vmManager.orderDatas, { orderId: $scope.vm.OrderId });
-                if (!angular.isUndefined) {
-                    vmManager.bindOrderInfo(item.orderDetails);
-                    vmManager.productFlows = data.productFlows;
-                }
-                else {
-                    dReportDataOpService.getOrderDetails(vmManager.department, $scope.vm.OrderId).then(function (data) {
-                        if (angular.isObject(data)) {
-                            vmManager.orderDatas.push({ orderId: $scope.vm.OrderId, data: data });
-                            vmManager.bindOrderInfo(data.orderDetails);
-                            vmManager.productFlows = data.productFlows;
-                        }
-                    });
-                }
-                focusSetter.moveFocusTo($event, 'workerIdFocus');
+                //var item = _.find(vmManager.orderDatas, { orderId: $scope.vm.OrderId });
+                //if (!angular.isUndefined) {
+                //    vmManager.bindOrderInfo(item.orderDetails);
+                //    vmManager.productFlows = data.productFlows;
+                //}
+                //else {
+                //    dReportDataOpService.getOrderDetails(vmManager.department, $scope.vm.OrderId).then(function (data) {
+                //        if (angular.isObject(data)) {
+                //            vmManager.orderDatas.push({ orderId: $scope.vm.OrderId, data: data });
+                //            vmManager.bindOrderInfo(data.orderDetails);
+                //            vmManager.productFlows = data.productFlows;
+                //        }
+                //    });
+                //}
+                
             }
+            focusSetter.moveFocusTo($event, "orderIdFocus", 'workerIdFocus');
         },
         searchedWorkers: [],
         isSingle: true,//是否搜寻到的是单个人
         //获取作业人员信息
         getWorkerInfo: function ($event) {
             if ($event.keyCode === 13) {
-                if (uiVM.UserWorkerId === undefined) return;
-                var strLen = leeHelper.checkIsChineseValue(uiVM.UserWorkerId) ? 2 : 6;
-                if (uiVM.UserWorkerId.length >= strLen) {
-                    vmManager.searchedWorkers = [];
-                    $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.UserWorkerId).then(function (datas) {
-                        if (datas.length > 0) {
-                            vmManager.searchedWorkers = datas;
-                            if (vmManager.searchedWorkers.length === 1) {
-                                vmManager.isSingle = true;
-                                vmManager.selectWorker(vmManager.searchedWorkers[0]);
-                            }
-                            else {
-                                vmManager.isSingle = false;
-                            }
-                        }
-                        else {
-                            vmManager.selectWorker(null);
-                        }
-                    });
-                }
+                //if (uiVM.UserWorkerId === undefined) return;
+                //var strLen = leeHelper.checkIsChineseValue(uiVM.UserWorkerId) ? 2 : 6;
+                //if (uiVM.UserWorkerId.length >= strLen) {
+                //    vmManager.searchedWorkers = [];
+                //    $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.UserWorkerId).then(function (datas) {
+                //        if (datas.length > 0) {
+                //            vmManager.searchedWorkers = datas;
+                //            if (vmManager.searchedWorkers.length === 1) {
+                //                vmManager.isSingle = true;
+                //                vmManager.selectWorker(vmManager.searchedWorkers[0]);
+                //            }
+                //            else {
+                //                vmManager.isSingle = false;
+                //            }
+                //        }
+                //        else {
+                //            vmManager.selectWorker(null);
+                //        }
+                //    });
+                //}
             }
-            focusSetter.moveFocusTo($event, 'productFlowFocus');
+            focusSetter.moveFocusTo($event, 'orderIdFocus', 'productFlowFocus');
         },
         selectWorker: function (worker) {
             if (worker !== null) {
@@ -373,7 +415,41 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         },
         //获取工序信息
         getProductFlowInfo: function ($event) {
-            focusSetter.moveFocusTo($event, 'saveCmdFocus');
+            //focusSetter.moveFocusTo($event, 'saveCmdFocus');
+            if ($event.keyCode === 37) { focusSetter['workerIdFocus'] = true; }
+            if ($event.keyCode === 13) {
+                var rowItem = _.find(vmManager.editDatas, { rowindex: vmManager.edittingRowIndex });
+                if (!angular.isUndefined(rowItem)) {
+                    leeHelper.copyVm(uiVM, rowItem);
+                    uiVM = _.clone(initVM);
+                    $scope.vm = uiVM;
+                    rowItem.editting = false;
+                    vmManager.addRow();
+                    focusSetter['orderIdFocus'] = true;
+                }
+            };
+        },
+        editOver: function () {
+            var rowItem = _.find(vmManager.editDatas, { rowindex: vmManager.edittingRowIndex });
+            if (!angular.isUndefined(rowItem)) {
+                leeHelper.copyVm(uiVM, rowItem);
+                uiVM = _.clone(initVM);
+                $scope.vm = uiVM;
+                rowItem.editting = false;
+            }
+        },
+        removeRow: function () {
+            var rowItem = _.find(vmManager.editDatas, { rowindex: vmManager.edittingRowIndex });
+            if (!angular.isUndefined(rowItem)) {
+                leeHelper.remove(vmManager.editDatas, rowItem);
+            }
+        },
+        editRow: function (item) {
+            angular.forEach(vmManager.editDatas, function (edititem) { edititem.editting = false });
+            leeHelper.copyVm(item, uiVM);
+            $scope.vm = uiVM;
+            vmManager.edittingRowIndex = item.rowindex;
+            item.editting = true;
         },
         //待编辑的记录集合
         editDatas:[],
@@ -401,9 +477,10 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         var dto = _.clone(departmentTreeSet.treeNode.vm);
         vmManager.department = dto.DataNodeText;
     };
-    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (data) {
-        departmentTreeSet.setTreeDataset(data);
-    });
+
+    //$scope.promise = connDataOpService.getConfigDicData('Organization').then(function (data) {
+    //    departmentTreeSet.setTreeDataset(data);
+    //});
 
     $scope.ztree = departmentTreeSet;
 
@@ -414,10 +491,13 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         productFlowFocus: false,
         saveCmdFocus:false,
         //移动焦点到指定对象
-        moveFocusTo: function ($event, elName) {
-            if ($event.keyCode === 13) {
-                focusSetter[elName] = true;
+        moveFocusTo: function ($event, elPreName,elNextName) {
+            if ($event.keyCode === 13 || $event.keyCode === 39) {
+                focusSetter[elNextName] = true;
             }
+            else if ($event.keyCode === 37) {
+                focusSetter[elPreName] = true;
+            };
         },
     };
     $scope.focus = focusSetter;
