@@ -406,7 +406,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
 
 
     /// <summary>
-    ///日报实体模型
+    ///日报模板实体模型
     /// </summary>
     [Serializable]
     public partial class DailyReportTempModel
@@ -803,6 +803,101 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         #endregion Model
     }
+
+
+    /// <summary>
+    ///机台实体模型
+    /// </summary>
+    [Serializable]
+    public partial class MachineModel
+    {
+        public MachineModel()
+        { }
+        #region Model
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _machineid;
+        /// <summary>
+        ///机台编号
+        /// </summary>
+        public string MachineId
+        {
+            set { _machineid = value; }
+            get { return _machineid; }
+        }
+        private string _machinename;
+        /// <summary>
+        ///机台名称
+        /// </summary>
+        public string MachineName
+        {
+            set { _machinename = value; }
+            get { return _machinename; }
+        }
+        private string _paramenterkey;
+        /// <summary>
+        ///组合键
+        /// </summary>
+        public string ParamenterKey
+        {
+            set { _paramenterkey = value; }
+            get { return _paramenterkey; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标示
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
+
 
 
 }

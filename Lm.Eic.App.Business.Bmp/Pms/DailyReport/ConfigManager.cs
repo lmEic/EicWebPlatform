@@ -24,8 +24,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             get { return OBulider.BuildInstance<ProductFlowConfig>(); }
         }
-    }
+        /// <summary>
+        /// 机台设置
+        /// </summary>
+        public MachineConfig MachineSetter
+        {
+            get { return OBulider.BuildInstance<MachineConfig>(); }
+        }
 
+    }
 
     /// <summary>
     /// 产品工艺管理器
@@ -122,6 +129,33 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
         #endregion
 
+    }
+
+    /// <summary>
+    /// 机台配置管理器
+    /// </summary>
+    public class MachineConfig
+    {
+        /// <summary>
+        /// 获取机台列表
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        public List<MachineModel> GetMachineListBy(string department)
+        {
+            return DailyReportConfigCrudFactory.MachineCrud.GetMachineListBy(department);
+        }
+
+        /// <summary>
+        /// 添加一条机台记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult AddMachineRecord(MachineModel model)
+        {
+            return DailyReportConfigCrudFactory.MachineCrud.AddMachineRecord(model);
+        }
+      
     }
 
 }

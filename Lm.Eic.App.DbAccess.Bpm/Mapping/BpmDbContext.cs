@@ -32,11 +32,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         public DbSet<DailyReportTempModel> DailyReportsTemp { get; set; }
 
+        public DbSet<MachineModel> Machine { get; set; }
 
         public DbSet<ProductFlowModel> ProductFlow { get; set; }
 
 
         public DbSet<MaterialSpecBoardModel> MaterialSpecBoard { get; set; }
+
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -50,8 +53,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new DailyReportModelMapping());
             modelBuilder.Configurations.Add(new DailyReportTempModelMapping());
             modelBuilder.Configurations.Add(new ProductFlowModelMapping());
+            modelBuilder.Configurations.Add(new MachineModelMapping());
 
             modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
+
+           
 
         }
     }
