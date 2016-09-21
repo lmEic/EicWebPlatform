@@ -103,5 +103,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     { }
 
 
+    /// <summary>
+    ///机台仓储
+    /// </summary>
+    public interface IMachineRepositoryRepository : IRepository<MachineModel> { }
+    /// <summary>
+    ///机台仓储
+    /// </summary>
+    public class MachineRepositoryRepository : BpmRepositoryBase<MachineModel>, IMachineRepositoryRepository
+    { }
 
 }

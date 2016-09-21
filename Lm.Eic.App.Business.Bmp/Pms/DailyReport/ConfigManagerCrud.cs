@@ -21,13 +21,21 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public static ProductFlowCrud ProductFlowCrud
         { get { return OBulider.BuildInstance<ProductFlowCrud>(); } }
 
+        /// <summary>
+        /// 机台
+        /// </summary>
+        public static MachineCrud MachineCrud
+        {
+            get { return OBulider.BuildInstance<MachineCrud>(); }
+        }
+
     }
 
 
     /// <summary>
     /// 工序CRUD
     /// </summary>
-    public class ProductFlowCrud : CrudBase<ProductFlowModel, IProductFlowRepositoryRepository>
+    internal class ProductFlowCrud : CrudBase<ProductFlowModel, IProductFlowRepositoryRepository>
     {
         public ProductFlowCrud() : base(new ProductFlowRepositoryRepository(), "工艺")
         { }
@@ -188,6 +196,45 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return irep.GetProductFlowOverviewBy(dto);
         }
 
+    }
+
+    /// <summary>
+    /// 机台CRUD
+    /// </summary>
+    internal class MachineCrud : CrudBase<MachineModel, IMachineRepositoryRepository>
+    {
+        public MachineCrud() : base(new MachineRepositoryRepository(), "机台管理")
+        {
+        }
+
+        protected override void AddCrudOpItems()
+        {
+            //增加
+            //this.AddOpItem(OpMode.Add, AddMachineRecord);
+        }
+
+        /// <summary>
+        /// 获取机台列表
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        public List<MachineModel> GetMachineListBy(string department)
+        {
+            return irep.Entities.Where(m => m.Department ==department).ToList();
+        }
+
+        /// <summary>
+        /// 添加一条机台记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult AddMachineRecord(MachineModel model)
+        {
+            model.OpSign = OpMode.Add;
+            model.ParamenterKey = string.Format("{0}&{1}", model.Department, model.MachineId);
+            SetFixFieldValue(model);
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
     }
 
 }

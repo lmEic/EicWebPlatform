@@ -40,6 +40,11 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
         /// </summary>
         public DbSet<ModuleNavigationModel> ModuleNavigations { get; set; }
 
+        /// <summary>
+        /// 审核
+        /// </summary>
+        public DbSet<AuditModel> Audit { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -52,6 +57,8 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
             modelBuilder.Configurations.Add(new RoleMatchModuleModelMapping());
 
             modelBuilder.Configurations.Add(new ModuleNavigationModelMapping());
+
+            modelBuilder.Configurations.Add(new AuditModelMapping());
         }
     }
 

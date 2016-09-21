@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
 {
@@ -37,6 +38,32 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
             if (tem == null) { Assert.Fail(); }
 
           
+        }
+
+        [TestMethod]
+        public void AddMachineTest()
+        {
+            var model = new MachineModel();
+            model.Department = "生技部";
+            model.MachineId = "M90T-1";
+            model.MachineName = "测试机台";
+
+            var tem = DailyReportService.ConfigManager.MachineSetter.AddMachineRecord(model);
+            
+            if (tem == null) { Assert.Fail(); }
+        }
+
+        [TestMethod]
+        public void GetMachineListByTest()
+        {
+            var model = new MachineModel();
+            model.Department = "生技部";
+            model.MachineId = "M90T-1";
+            model.MachineName = "测试机台";
+
+            var tem = DailyReportService.ConfigManager.MachineSetter.GetMachineListBy(model.Department);
+
+            if (tem == null) { Assert.Fail(); }
         }
     }
 }
