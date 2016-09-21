@@ -323,11 +323,14 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             }
         },
         edittingRowIndex: 0,//编辑中的行索引
+        edittingRow:null,
         addRow: function () {
             vmManager.edittingRowIndex = vmManager.editDatas.length > 0 ? vmManager.editDatas.length + 1 : 1;
             var vm = _.clone(initVM);
             vm.rowindex = vmManager.edittingRowIndex;
             vm.editting = true;
+            vm.isMachineMode = false;
+            vmManager.edittingRow = vm;
             vmManager.editDatas.push(vm);
         },
         showDReportInputView: function () {
@@ -346,88 +349,147 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         //工单数据信息
         orderDatas: [],
         //工艺流程集合
-        productFlows:[],
+        productFlows: [],
+        //选择工艺流程
+        selectProductFlow: function (flow) {
+            uiVM.ProductFlowID = flow.ProductFlowId;
+            vmManager.edittingRow.ProductFlowID = flow.ProductFlowId;
+            vmManager.edittingRow.ProductFlowName = flow.ProductFlowName;
+            vmManager.edittingRow.ProductFlowSign = flow.ProductFlowSign;
+            vmManager.edittingRow.StandardHours = flow.StandardHours;
+            vmManager.edittingRow.StandardHoursType = flow.StandardHoursType;
+            $scope.vm = uiVM;
+        },
         //绑定工单信息
         bindOrderInfo: function (orderDetails) {
-            uiVM.OrderId = orderDetails.OrderId;
-            uiVM.ProductName = orderDetails.ProductName;
-            uiVM.ProductSpecification = orderDetails.ProductSpecify;
+            vmManager.edittingRow.OrderId = orderDetails.OrderId;
+            vmManager.edittingRow.ProductName = orderDetails.ProductName;
+            vmManager.edittingRow.ProductSpecification = orderDetails.ProductSpecify;
+        },
+        getProductFlows: function (orderId) {
+            var item = _.find(vmManager.orderDatas, { orderId: $scope.vm.OrderId });
+            if (!angular.isUndefined(item)) {
+                vmManager.productFlows = item.data.productFlows;
+            }
+            else {
+                vmManager.productFlows = [];
+            }
         },
         //获取工单信息
         getWorkOrderInfo: function ($event) {
             if ($event.keyCode === 13 || $event.keyCode === 40)
             {
-                //var item = _.find(vmManager.orderDatas, { orderId: $scope.vm.OrderId });
-                //if (!angular.isUndefined) {
-                //    vmManager.bindOrderInfo(item.orderDetails);
-                //    vmManager.productFlows = data.productFlows;
-                //}
-                //else {
-                //    dReportDataOpService.getOrderDetails(vmManager.department, $scope.vm.OrderId).then(function (data) {
-                //        if (angular.isObject(data)) {
-                //            vmManager.orderDatas.push({ orderId: $scope.vm.OrderId, data: data });
-                //            vmManager.bindOrderInfo(data.orderDetails);
-                //            vmManager.productFlows = data.productFlows;
-                //        }
-                //    });
-                //}
-                
+                var item = _.find(vmManager.orderDatas, { orderId: $scope.vm.OrderId });
+                if (!angular.isUndefined(item)) {
+                    vmManager.bindOrderInfo(item.data.orderDetails);
+                    vmManager.productFlows = item.data.productFlows;
+                }
+                else {
+                   $scope.searchPromise= dReportDataOpService.getOrderDetails(vmManager.department, $scope.vm.OrderId).then(function (data) {
+                        if (angular.isObject(data)) {
+                            vmManager.orderDatas.push({ orderId: $scope.vm.OrderId, data: data });
+                            vmManager.bindOrderInfo(data.orderDetails);
+                            vmManager.productFlows = data.productFlows;
+                        }
+                    });
+                }
             }
-            focusSetter.moveFocusTo($event, "orderIdFocus", 'workerIdFocus');
+            focusSetter.moveFocusTo($event, "orderIdFocus", 'productFlowFocus');
         },
         searchedWorkers: [],
         isSingle: true,//是否搜寻到的是单个人
         //获取作业人员信息
-        getWorkerInfo: function ($event) {
+        getWorkerInfo: function ($event,workerType) {
             if ($event.keyCode === 13) {
-                //if (uiVM.UserWorkerId === undefined) return;
-                //var strLen = leeHelper.checkIsChineseValue(uiVM.UserWorkerId) ? 2 : 6;
-                //if (uiVM.UserWorkerId.length >= strLen) {
-                //    vmManager.searchedWorkers = [];
-                //    $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.UserWorkerId).then(function (datas) {
-                //        if (datas.length > 0) {
-                //            vmManager.searchedWorkers = datas;
-                //            if (vmManager.searchedWorkers.length === 1) {
-                //                vmManager.isSingle = true;
-                //                vmManager.selectWorker(vmManager.searchedWorkers[0]);
-                //            }
-                //            else {
-                //                vmManager.isSingle = false;
-                //            }
-                //        }
-                //        else {
-                //            vmManager.selectWorker(null);
-                //        }
-                //    });
-                //}
+                var workerId = null;
+                if (workerType === 'worker') {
+                    workerId = uiVM.UserWorkerId;
+                    if (uiVM.UserWorkerId === undefined) return;
+                }
+                else {
+                    workerId = uiVM.MasterWorkerId;
+                    if (uiVM.MasterWorkerId === undefined) return;
+                }
+                var strLen = leeHelper.checkIsChineseValue(workerId) ? 2 : 6;
+                if (workerId.length >= strLen) {
+                    vmManager.searchedWorkers = [];
+                    $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(workerId).then(function (datas) {
+                        if (datas.length > 0) {
+                            vmManager.searchedWorkers = datas;
+                            if (vmManager.searchedWorkers.length === 1) {
+                                vmManager.isSingle = true;
+                                vmManager.selectWorker(vmManager.searchedWorkers[0],workerType);
+                            }
+                            else {
+                                vmManager.isSingle = false;
+                            }
+                        }
+                        else {
+                            vmManager.selectWorker(null,workerType);
+                        }
+                        if (workerType === 'worker') {
+                            //处理焦点移动
+                            if (vmManager.edittingRow.isMachineMode) {
+                                focusSetter.moveFocusTo($event, 'productFlowFocus', 'masterWorkerIdFocus');
+                            }
+                            else {
+                                vmManager.addNewRow($event);
+                            }
+                        }
+                        else {
+                            vmManager.addNewRow($event);
+                        }
+                        vmManager.searchedWorkers = [];
+                    });
+                }
             }
-            focusSetter.moveFocusTo($event, 'orderIdFocus', 'productFlowFocus');
         },
-        selectWorker: function (worker) {
+        getEdittingRow: function () {
+            var rowItem = _.find(vmManager.editDatas, { rowindex: vmManager.edittingRowIndex });
+            return rowItem;
+        },
+        addNewRow: function ($event) {
+            if ($event.keyCode === 13) {
+                uiVM = _.clone(initVM);
+                $scope.vm = uiVM;
+                vmManager.edittingRow.editting = false;
+                vmManager.addRow();
+                focusSetter['orderIdFocus'] = true;
+            };
+        },
+        selectWorker: function (worker,workerType) {
             if (worker !== null) {
-                uiVM.UserName = worker.Name;
-                uiVM.UserWorkerId = worker.WorkerId;
-                uiVM.Department = worker.Department;
+                if (workerType === 'worker') {
+                    vmManager.edittingRow.UserName = worker.Name;
+                    vmManager.edittingRow.UserWorkerId = worker.WorkerId;
+                    vmManager.edittingRow.ClassType = worker.ClassType;
+                }
+                else {
+                    vmManager.edittingRow.MasterName = worker.Name;
+                    vmManager.edittingRow.MasterWorkerId = worker.WorkerId;
+                }
+                vmManager.edittingRow.Department = worker.Department;
             }
             else {
-                uiVM.Department = null;
+                vmManager.edittingRow.Department = null;
             }
+
+            leeHelper.copyVm(vmManager.edittingRow, uiVM);
+            $scope.vm = uiVM;
         },
         //获取工序信息
         getProductFlowInfo: function ($event) {
-            //focusSetter.moveFocusTo($event, 'saveCmdFocus');
-            if ($event.keyCode === 37) { focusSetter['workerIdFocus'] = true; }
             if ($event.keyCode === 13) {
-                var rowItem = _.find(vmManager.editDatas, { rowindex: vmManager.edittingRowIndex });
-                if (!angular.isUndefined(rowItem)) {
-                    leeHelper.copyVm(uiVM, rowItem);
-                    uiVM = _.clone(initVM);
-                    $scope.vm = uiVM;
-                    rowItem.editting = false;
-                    vmManager.addRow();
-                    focusSetter['orderIdFocus'] = true;
+                if (vmManager.productFlows.length > 0) {
+                    var flowItem = _.find(vmManager.productFlows, { ProductFlowId: $scope.vm.ProductFlowID });
+                    if (!angular.isUndefined(flowItem)) {
+                        vmManager.selectProductFlow(flowItem);
+                    }
                 }
-            };
+            }
+            vmManager.edittingRow.isMachineMode = true;
+
+            focusSetter.moveFocusTo($event, 'orderIdFocus', 'workerIdFocus');
         },
         editOver: function () {
             var rowItem = _.find(vmManager.editDatas, { rowindex: vmManager.edittingRowIndex });
@@ -449,6 +511,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             leeHelper.copyVm(item, uiVM);
             $scope.vm = uiVM;
             vmManager.edittingRowIndex = item.rowindex;
+            vmManager.edittingRow = item;
+            vmManager.getProductFlows(item.OrderId);
             item.editting = true;
         },
         //待编辑的记录集合
@@ -488,6 +552,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     var focusSetter = {
         orderIdFocus:false,
         workerIdFocus: false,
+        masterWorkerIdFocus:false,
         productFlowFocus: false,
         saveCmdFocus:false,
         //移动焦点到指定对象

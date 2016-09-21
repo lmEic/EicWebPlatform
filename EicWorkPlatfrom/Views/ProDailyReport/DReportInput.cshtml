@@ -7,7 +7,7 @@
             <button class="btn btn-sm btn-warning" title="载入模板" ng-click="vmManager.getReportInputDataTemplate()"><i class="fa fa-download"></i>载入模板</button>
             <button type="button" class="btn btn-sm btn-default" ng-model="vmManager.inputMode"
                     data-html="1" data-multiple="0" ng-change="vmManager.selectInputMode()"
-                    data-animation="am-flip-x" data-placeholder="录入模式"
+                    data-animation="am-flip-x" data-placeholder="普通编辑"
                     bs-options="item.id as item.text for item in vmManager.inputModes" bs-select>
                 <span class="caret"></span>
             </button>
@@ -34,99 +34,198 @@
             </span>
             <div class="h-split"></div>
         </div>
-        <div class="bs-callout bs-callout-info" style="min-height:465px;" id="editWindow">
-            <div class="table-responsive">
-                <table class="table table-bordered table-condensed table-hover">
-                    <thead>
-                        <tr>
-                            <th class="text-center" colspan="{{tbl.orderIdColSpan}}">工单信息</th>
+        <div class="bs-callout bs-callout-info" style="min-height:475px;" id="editWindow">
+            <div class="table-responsive" style="min-height:470px;max-height:475px;overflow-y:auto">
+                <table class=" table table-bordered table-condensed table-hover" style="table-layout:fixed;">
+                <colgroup>
+                    <col width="110" />
+                    <col width="140" ng-show="tbl.colVisible" />
+                    <col width="160" ng-show="tbl.colVisible" />
+                </colgroup>
+                <colgroup>
+                    <col width="130" />
+                    <col width="110" ng-show="tbl.colVisible" />
+                </colgroup>
+                <colgroup>
+                    <col width="110" />
+                    <col width="110" />
+                    <col width="80" ng-show="tbl.colVisible" />
+                </colgroup>
+                <colgroup>
+                    <col width="70" />
+                </colgroup>
+                <colgroup>
+                    <col width="80" />
+                    <col width="100" />
+                    <col width="100" />
+                    <col width="100" />
+                </colgroup>
+                <colgroup>
+                    <col width="90" />
+                    <col width="90" />
+                    <col width="90" />
+                    <col width="90" />
+                    <col width="90" />
+                </colgroup>
+                <colgroup>
+                    <col width="80" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th class="text-center" colspan="{{tbl.orderIdColSpan}}">工单信息</th>
 
-                            <th class="text-center" colspan="{{tbl.proFlowColSpan}}">机台/工艺</th>
+                        <th class="text-center" colspan="{{tbl.proFlowColSpan}}">机台/工艺</th>
 
-                            <th class="text-center" colspan="{{tbl.workerColSpan}}">人员</th>
+                        <th class="text-center" colspan="{{tbl.workerColSpan}}">人员</th>
 
-                            <th style="width:80px;" class="text-center info"><i class="fa fa-flag"></i></th>
+                        <th class="text-center"></th>
 
-                            <th class="text-center" colspan="{{tbl.productColSpan}}">产量</th>
+                        <th class="text-center" colspan="{{tbl.productColSpan}}">产量</th>
 
-                            <th class="text-center" colspan="{{tbl.workHoursColSpan}}">工时</th>
+                        <th class="text-center" colspan="{{tbl.workHoursColSpan}}">工时</th>
 
-                            <th class="text-center danger">操作(<i class="fa fa-pencil-square-o"></i>)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="width:100px;" class="text-center"><span>工单号</span></td>
-                            <td style="width:auto" class="text-center" ng-show="tbl.colVisible"><span>品名</span></td>
-                            <td style="width:auto" class="text-center" ng-show="tbl.colVisible"><span>规格</span></td>
+                        <th class="text-center danger">操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
 
-                            <td style="width:100px;" class="text-center">
-                                <span>机台*工艺</span>
-                            </td>
-                            <td style="width:auto" class="text-center" ng-show="tbl.colVisible">
-                                <span>标准工时</span>
-                            </td>
+                        <td class="text-center info"><span>工单号</span></td>
+                        <td class="text-center info" ng-show="tbl.colVisible"><span>品名</span></td>
+                        <td class="text-center info" ng-show="tbl.colVisible"><span>规格</span></td>
 
-                            <td style="width:80px;" class="text-center"><span>作业员</span></td>
-                            <td style="width:80px;" class="text-center"><span>师傅</span></td>
-                            <td ng-show="tbl.colVisible"><span>班别</span></td>
+                        <td class="text-center info">
+                            <span>机台*工艺</span>
+                        </td>
+                        <td class=" text-center info" ng-show="tbl.colVisible">
+                            <span>标准工时</span>
+                        </td>
 
-
-                            <td style="width:80px;" class="text-center"></td>
+                        <td class="text-center info"><span>作业员</span></td>
+                        <td class="text-center info"><span>师傅</span></td>
+                        <td ng-show="tbl.colVisible" class="text-center info"><span>班别</span></td>
 
 
-                            <td><span>产量</span></td>
-                            <td ng-show="tbl.colVisible"><span>调机不良数</span></td>
-                            <td><span>生产不良数</span></td>
-                            <td ng-show="tbl.colVisible"><span>校验不良数</span></td>
+                        <td class="text-center info"><i class="fa fa-flag"></i></td>
 
-                            <td ng-show="tbl.colVisible"><span>设置时数</span></td>
-                            <td><span>投入工时</span></td>
-                            <td><span>出勤时数</span></td>
-                            <td><span>生产时数</span></td>
-                            <td><span>非生产时数</span></td>
-                        </tr>
 
-                        <tr ng-repeat="item in vmManager.editDatas track by $index" ng-dblclick="vmManager.editRow(item)">
-                            @*工单信息*@
-                            <td style="width:100px;">
-                                <span ng-hide="item.editting">{{item.OrderId}}</span>
-                                <input ng-model="vm.OrderId" focus-if="focus.orderIdFocus" focus-setter style="width:100px;"
-                                       ng-keydown="vmManager.getWorkOrderInfo($event)" placeholder="工单单号" ng-show="item.editting" />
-                            </td>
+                        <td class="text-center info"><span>产量</span></td>
+                        <td ng-show="tbl.colVisible" class="text-center info"><span>调机不良数</span></td>
+                        <td class="text-center info"><span>生产不良数</span></td>
+                        <td ng-show="tbl.colVisible" class="text-center info"><span>校验不良数</span></td>
 
-                            <td style="width:auto" class="text-center" ng-show="tbl.colVisible">{{ProductName}}</td>
-                            <td style="width:auto" class="text-center" ng-show="tbl.colVisible">{{ProductSpecification}}</td>
+                        <td ng-show="tbl.colVisible" class="text-center info"><span>设置时数</span></td>
+                        <td class="text-center info"><span>投入工时</span></td>
+                        <td class="text-center info"><span>出勤时数</span></td>
+                        <td class="text-center info"><span>生产时数</span></td>
+                        <td class="text-center info"><span>非生产时数</span></td>
 
-                            @*工艺、机台*@
-                            <td style="width:100px;">
-                                <span ng-hide="item.editting">{{item.ProductFlowID}}</span>
+                        <td class="text-center info"></td>
+                    </tr>
+
+                    <tr ng-repeat="item in vmManager.editDatas track by $index" ng-dblclick="vmManager.editRow(item)">
+                        @*工单信息*@
+                        <td>
+                            <span ng-hide="item.editting">{{item.OrderId}}</span>
+                            <input ng-model="vm.OrderId" focus-if="focus.orderIdFocus" focus-setter style="width:100px;"
+                                   ng-keydown="vmManager.getWorkOrderInfo($event)" placeholder="工单单号" ng-show="item.editting" />
+                        </td>
+
+                        <td class="text-center" ng-show="tbl.colVisible" cg-busy="{promise:searchPromise}">{{item.ProductName}}</td>
+                        <td class="text-center" ng-show="tbl.colVisible">{{item.ProductSpecification}}</td>
+
+                        @*工艺、机台*@
+                        <td>
+                            <span ng-hide="item.editting">{{item.ProductFlowName}}</span>
+                            <div class="input-group">
                                 <input ng-model="vm.ProductFlowID" focus-if="focus.productFlowFocus" focus-setter style="width:100px;"
-                                       ng-keydown="vmManager.getProductFlowInfo($event)" placeholder="编号或名称" ng-show="item.editting" />
-                            </td>
-                            <td style="width:auto" class="text-center" ng-show="tbl.colVisible">{{StandardHours}}</td>
+                                       ng-keydown="vmManager.getProductFlowInfo($event)" placeholder="工艺/机台编号" ng-show="item.editting" />
+                                <div class="input-group-btn" ng-show="item.editting">
+                                    <button type="button" class="btn btn-xs btn-primary"
+                                            data-animation="am-flip-x"
+                                            bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                        <span class="fa fa-chevron-circle-down"></span>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                        <ul class="list-group">
+                                            <li ng-repeat="flow in vmManager.productFlows track by $index" class="list-group-item">
+                                                <a href="#" ng-click="vmManager.selectProductFlow(flow)">{{flow.ProductFlowName}}</a>
+                                                <span class="badge">{{flow.ProductFlowId}}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </td>
+                        <td class=" text-center" ng-show="tbl.colVisible">{{item.StandardHours}}</td>
 
 
-                            <td>
-                                <span ng-hide="item.editting">{{item.UserWorkerId}}</span>
-                                <input ng-model="vm.UserWorkerId" ng-keydown="vmManager.getWorkerInfo($event)"
-                                       focus-if="focus.workerIdFocus" focus-setter style="width:80px;"
-                                       placeholder="工号或姓名" ng-show="item.editting" />
-                            </td>
-                            <td>
-                                <span ng-hide="item.editting">{{item.MasterWorkerId}}</span>
-                                <input ng-model="vm.MasterWorkerId" ng-keydown="vmManager.getWorkerInfo($event)"
-                                       focus-if="focus.workerIdFocus" focus-setter style="width:80px;"
-                                       placeholder="工号或姓名" ng-show="item.editting" />
-                            </td>
-                            <td ng-show="tbl.colVisible" style="width:auto" class="text-center">{{item.ClassType}}</td>
+                        <td>
+                            <span ng-hide="item.editting">{{item.UserName}}</span>
+                            
+                            <div class="input-group" ng-show="item.editting">
+                                <input ng-model="vm.UserWorkerId" ng-keydown="vmManager.getWorkerInfo($event,'worker')"
+                                       focus-if="focus.workerIdFocus" focus-setter data-ensure-user-exist style="width:100px;"
+                                       placeholder="工号或姓名" />
+                                <div class="input-group-btn" ng-hide="vmManager.isSingle">
+                                    <button type="button" class="btn btn-xs btn-primary"
+                                            data-animation="am-flip-x"
+                                            bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                        <span class="fa fa-chevron-circle-down"></span>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                        <ul class="list-group">
+                                            <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker,'worker')"
+                                                ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                <i class="fa fa-user"></i>
+                                                <span class="label label-default">{{worker.WorkerId}}</span>
+                                                <span class="label label-primary">{{worker.Name}}</span>|
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-hide="item.editting">
+                                <span ng-show="item.isMachineMode">{{item.MasterName}}</span>
+                                <span ng-hide="item.isMachineMode">--</span>
+                            </div>
+                            <div ng-show="item.editting">
+                                <span ng-hide="item.isMachineMode">--</span>
+                                <div class="input-group" ng-show="item.editting">
+                                    <input ng-model="vm.MasterWorkerId" ng-keydown="vmManager.getWorkerInfo($event,'master')"
+                                           focus-if="focus.masterWorkerIdFocus" focus-setter style="width:100px;"
+                                           placeholder="工号或姓名" ng-show="item.isMachineMode" />
+                                    <div class="input-group-btn" ng-hide="vmManager.isSingle">
+                                        <button type="button" class="btn btn-xs btn-primary"
+                                                data-animation="am-flip-x"
+                                                bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                            <span class="fa fa-chevron-circle-down"></span>
+                                        </button>
+                                        <div class="dropdown-menu" role="menu">
+                                            <ul class="list-group">
+                                                <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker,'master')"
+                                                    ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                    <i class="fa fa-user"></i>
+                                                    <span class="label label-default">{{worker.WorkerId}}</span>
+                                                    <span class="label label-primary">{{worker.Name}}</span>|
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td ng-show="tbl.colVisible" class="text-center">{{item.ClassType}}</td>
 
-                            <td style="width:80px;" class="text-center">
-                                <span class="btn btn-xs btn-primary" ng-show="item.editting" ng-click="vmManager.editOver()" title="结束编辑"><i class="fa fa-sign-out"></i></span>
-                                <span class="btn btn-xs btn-danger" ng-show="item.editting" ng-click="vmManager.removeRow()" title="删除此行"><i class="fa fa-remove"></i></span>
-                            </td>
-                        </tr>
-                    </tbody>
+                        <td class="text-center">
+                            <span class="btn btn-xs btn-primary" ng-show="item.editting" ng-click="vmManager.editOver()" title="结束编辑"><i class="fa fa-sign-out"></i></span>
+                            <span class="btn btn-xs btn-danger" ng-show="item.editting" ng-click="vmManager.removeRow()" title="删除此行"><i class="fa fa-remove"></i></span>
+                        </td>
+                    </tr>
+                </tbody>
                 </table>
             </div>
         </div>
