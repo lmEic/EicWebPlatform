@@ -153,9 +153,7 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
                     leeHelper.readFile('previewFile', file);
                     uiVM.DocumentPath = "FileLibrary/TwoMaterialBoard/" + file.name;
                 }
-                else {
-
-                }
+              
             });
         }
     };

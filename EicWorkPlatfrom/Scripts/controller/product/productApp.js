@@ -97,7 +97,7 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
             }
         },
         searchWorker: function ($event) {
-            if ($event.keyCode == 13) {
+            if ($event.keyCode === 13) {
                 $scope.promise = proEmployeeDataService.GetWorkerBy(vmManager.WorkerId).then(function (user) {
                     if (angular.isObject(user)) {
                         uiVM = user;

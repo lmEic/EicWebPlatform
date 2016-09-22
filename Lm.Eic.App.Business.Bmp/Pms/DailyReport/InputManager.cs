@@ -1,6 +1,7 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.App.Erp.Bussiness.MocManage;
 using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
+using Lm.Eic.Framework.Authenticate.Business;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
@@ -35,12 +36,20 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 获取日报模板
         /// </summary>
-        /// <param name="paramenterKey">部门</param>
+        /// <param name="department">部门</param>
+        /// <param name="dailyReportDate">日报日期</param>
         /// <returns></returns>
-        public List<DailyReportTempModel> GetDailyReportTemplate(string department)
+        public List<DailyReportTempModel> GetDailyReportTemplate(string department, DateTime dailyReportDate)
         {
-            //TODO:从临时表中获取本部门所有的日报数据
-            return DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
+            //TODO:从临时表中获取本部门的日报数据 如果有今天的就返回今天的 如果没有就返回上一次的
+            var dailyReportList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
+            var nowDailyReportList = dailyReportList.Where(m => m.DailyReportDate == dailyReportDate).ToList();
+            //获取当前日期的日报
+            if (nowDailyReportList != null)
+                return nowDailyReportList;
+            //获取最近日期的日报
+            var maxDailyReportDate = dailyReportList.Max(m=>m.DailyReportDate);
+            return dailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).ToList();
         }
 
         /// <summary>
@@ -52,13 +61,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             //清空本部门所有日报列表 =》存入当前列表
             var department = string.Empty;
+            var dailyReportDate = new DateTime();
+
             if (modelList.IsNullOrEmpty())
+            {
                 department = modelList[0].Department;
-
-            if (department.IsNullOrEmpty())
-                return OpResult.SetResult("部门不能为空！");
-
-            var deleteResult = DailyReportInputCrudFactory.DailyReportTempCrud.DeleteDailyReportListBy(department);
+                dailyReportDate = modelList[0].DailyReportDate;
+            }
+               
+            var deleteResult = DailyReportInputCrudFactory.DailyReportTempCrud.DeleteDailyReportListBy(department,dailyReportDate);
             if (!deleteResult.Result)
                 return OpResult.SetResult("清除日报历史记录失败！");
 
@@ -69,16 +80,33 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// 日报审核
         /// </summary>
         /// <returns></returns>
-        public OpResult AuditDailyReport(string department)
+        public OpResult AuditDailyReport(string department,DateTime dailyReportDate)
         {
             //将临时表中的本部门的所有列表 克隆至正式日报表中
-            var dailyReportTempList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
+            var dailyReportTempList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department,dailyReportDate);
 
             if (!dailyReportTempList.IsNullOrEmpty())
                 return OpResult.SetResult("未找到本部门的任何日报记录！");
 
             var dailyReportList = OOMaper.Mapper<DailyReportTempModel, DailyReportModel>(dailyReportTempList).ToList();
             return DailyReportInputCrudFactory.DailyReportCrud.SavaDailyReportList(dailyReportList);
+        }
+
+        /// <summary>
+        /// 添加一条审核记录
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="date"></param>
+        private OpResult AddAuditRecord(string department, DateTime date)
+        {
+            var auditModel = new Framework.Authenticate.Model.AuditModel();
+            auditModel.ModuleName = "DailyReport";
+            auditModel.ParameterKey = string.Format("{0}&{1}&{2}", auditModel.ModuleName, department, date.ToString("yyyyMMdd"));
+            auditModel.AuditRand = 0;
+            auditModel.AuditState = "已审核";
+            auditModel.EndRand = 0;
+            auditModel.AuditUser = "admin";
+            return AuthenService.AuditManager.AddAuditRecoud(auditModel);
         }
 
         /// <summary>
