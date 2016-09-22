@@ -144,6 +144,20 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         stateTo: function (navItem) {
             $state.go(navItem.UiSerf);
         },
+        navViewSwitch: true,//左侧视图导航开关
+        switchView: function () {
+            moduleNavLayoutVm.navViewSwitch = !moduleNavLayoutVm.navViewSwitch;
+            if (moduleNavLayoutVm.navViewSwitch) {
+                moduleNavLayoutVm.navLeftSize = '16%';
+                moduleNavLayoutVm.navMainSize = '83%';
+            }
+            else {
+                moduleNavLayoutVm.navLeftSize = '3%';
+                moduleNavLayoutVm.navMainSize = '96%';
+            }
+        },
+        navLeftSize: '16%',
+        navMainSize: '83%',
     };
     $scope.navLayout = moduleNavLayoutVm;
     $scope.promise = navDataService.getSubModuleNavs('设备管理', 'EquipmentManage').then(function (datas) {

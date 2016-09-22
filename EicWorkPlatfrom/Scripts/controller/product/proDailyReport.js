@@ -44,6 +44,14 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             department: department,
         });
     };
+    //获取工单详细信息
+    reportDataOp.getOrderDetails = function (department, orderId) {
+        var url = urlPrefix + 'GetOrderDetails';
+        return ajaxService.getData(url, {
+            department: department,
+            orderId: orderId,
+        });
+    };
     //-------------------------生产日报录入--------------------------------------
     //获取日报输入模板
     reportDataOp.getDailyReportTemplate = function (department) {
@@ -52,12 +60,25 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             department: department,
         });
     };
-    //获取工单详细信息
-    reportDataOp.getOrderDetails = function (department, orderId) {
-        var url = urlPrefix + 'GetOrderDetails';
+    //获取日报录入初始化数据
+    reportDataOp.getDReportInitData = function (department) {
+        var url = urlPrefix + 'GetDReportInitData';
         return ajaxService.getData(url, {
             department: department,
-            orderId: orderId,
+        });
+    };
+    //保存日报录入数据
+    reportDataOp.saveDailyReportDatas = function (datas) {
+        var url = urlPrefix + 'SaveDailyReportDatas';
+        return ajaxService.postData(url, {
+          datas:datas,
+        });
+    };
+    //审核日报数据
+    reportDataOp.auditDailyReport = function (department) {
+        var url = urlPrefix + 'AuditDailyReport';
+        return ajaxService.postData(url, {
+            department: department,
         });
     };
     return reportDataOp;
@@ -108,10 +129,6 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         productNameTo:null,
         delItem:null,
         flowOverviews:[],
-        //获取产品工艺总览
-        getProductFlowOverview: function () {
-           
-        },
         //查看工艺流程明细
         viewProductFlowDetails: function (item) {
             vmManager.productName = item.ProductName;
@@ -133,6 +150,14 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
             controller: function ($scope) {
                 $scope.confirmDelete = function () {
                     leeHelper.remove(vmManager.editDatas, vmManager.delItem);
+                    if (vmManager.editDatas.length === 0)
+                    {
+                        var flowItem = _.find(vmManager.flowOverviews, { ProductName: vmManager.productName });
+                        if (flowItem !== undefined)
+                        {
+                            leeHelper.remove(vmManager.flowOverviews, flowItem);
+                        }
+                    }
                     vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.hide);
                 };
             },
@@ -193,6 +218,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
     operate.saveAll = function () {
         $scope.searchPromise = dReportDataOpService.storeProductFlowDatas(vmManager.editDatas).then(function (opresult) {
             if (opresult.Result) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
                 vmManager.editDatas = [];
             }
         });
@@ -281,8 +307,21 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
 
     var initVM = _.clone(uiVM);
 
+    var tablevm = {
+        colVisible:true,//列的可见性
+        orderIdColSpan: 3,
+        proFlowColSpan:2,
+        workerColSpan: 3,
+        productColSpan: 3,
+        workHoursColSpan:5
+    };
+
+    $scope.tbl = tablevm;
+
     var vmManager = {
         department: '生技部',
+        //该部门的机台列表
+        machines:[],
         InputDate:new Date(),
         dReportInputDisplay: false,
         dReportPreviewDisplay: false,
@@ -291,9 +330,42 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         orderIdBoardDisplay: false,
         boardViewSize: '100%',
         inputViewSize: '70%',
+        inputMode:'',
+        inputModes: [{ id: 'simple', text: '普通编辑' }, { id: 'fast', text: '快速编辑' }],
+        selectInputMode: function () {
+            if (vmManager.inputMode === 'simple') {
+                tablevm.colVisible = true;
+                tablevm.orderIdColSpan = 3;
+                tablevm.proFlowColSpan = 2;
+                tablevm.workerColSpan = 3;
+                tablevm.productColSpan = 3;
+                tablevm.workHoursColSpan = 5;
+            }
+            else {
+                tablevm.colVisible = false;
+                tablevm.orderIdColSpan = 1;
+                tablevm.proFlowColSpan = 1;
+                tablevm.workerColSpan = 2;
+                tablevm.productColSpan = 2;
+                tablevm.workHoursColSpan = 4;
+            }
+        },
+        edittingRowIndex: 0,//编辑中的行索引
+        edittingRow:null,
+        addRow: function () {
+            vmManager.edittingRowIndex = vmManager.editDatas.length > 0 ? vmManager.editDatas.length + 1 : 1;
+            var vm = _.clone(initVM);
+            vm.rowindex = vmManager.edittingRowIndex;
+            vm.editting = true;
+            vm.isMachineMode = false;
+            vmManager.edittingRow = vm;
+            vmManager.editDatas.push(vm);
+        },
         showDReportInputView: function () {
             //vmManager.dReportInputDisplay = true;
-            vmManager.editDatas.push({ id: null, name: null, text: null, editting: true });
+
+
+            vmManager.addRow();
         },
         showDReportPreviewView: function () { vmManager.dReportPreviewDisplay = true; },
         showProFlowView: function () { vmManager.proFlowBoardDisplay = true; },
@@ -305,24 +377,41 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         //工单数据信息
         orderDatas: [],
         //工艺流程集合
-        productFlows:[],
+        productFlows: [],
+        //选择工艺流程
+        selectProductFlow: function (flow) {
+            uiVM.ProductFlowID = flow.ProductFlowId;
+            vmManager.edittingRow.ProductFlowID = flow.ProductFlowId;
+            vmManager.edittingRow.ProductFlowName = flow.ProductFlowName;
+            vmManager.edittingRow.ProductFlowSign = flow.ProductFlowSign;
+            vmManager.edittingRow.StandardHours = flow.StandardHours;
+            vmManager.edittingRow.StandardHoursType = flow.StandardHoursType;
+            $scope.vm = uiVM;
+        },
         //绑定工单信息
         bindOrderInfo: function (orderDetails) {
-            uiVM.OrderId = orderDetails.OrderId;
-            uiVM.ProductName = orderDetails.ProductName;
-            uiVM.ProductSpecification = orderDetails.ProductSpecify;
+            vmManager.edittingRow.OrderId = orderDetails.OrderId;
+            vmManager.edittingRow.ProductName = orderDetails.ProductName;
+            vmManager.edittingRow.ProductSpecification = orderDetails.ProductSpecify;
+        },
+        getProductFlows: function (orderId) {
+            vmManager.productFlows = [];
+            var item = _.find(vmManager.orderDatas, { orderId: $scope.vm.OrderId });
+            if (!angular.isUndefined(item)) {
+                vmManager.productFlows = item.data.productFlows;
+            }
         },
         //获取工单信息
         getWorkOrderInfo: function ($event) {
-            if ($event.keyCode === 13)
+            if ($event.keyCode === 13 || $event.keyCode === 40)
             {
                 var item = _.find(vmManager.orderDatas, { orderId: $scope.vm.OrderId });
-                if (!angular.isUndefined) {
-                    vmManager.bindOrderInfo(item.orderDetails);
-                    vmManager.productFlows = data.productFlows;
+                if (!angular.isUndefined(item)) {
+                    vmManager.bindOrderInfo(item.data.orderDetails);
+                    vmManager.productFlows = item.data.productFlows;
                 }
                 else {
-                    dReportDataOpService.getOrderDetails(vmManager.department, $scope.vm.OrderId).then(function (data) {
+                   $scope.searchPromise= dReportDataOpService.getOrderDetails(vmManager.department, $scope.vm.OrderId).then(function (data) {
                         if (angular.isObject(data)) {
                             vmManager.orderDatas.push({ orderId: $scope.vm.OrderId, data: data });
                             vmManager.bindOrderInfo(data.orderDetails);
@@ -330,50 +419,162 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                         }
                     });
                 }
-                focusSetter.moveFocusTo($event, 'workerIdFocus');
             }
+            focusSetter.moveFocusTo($event, "orderIdFocus", 'productFlowFocus');
         },
         searchedWorkers: [],
         isSingle: true,//是否搜寻到的是单个人
         //获取作业人员信息
-        getWorkerInfo: function ($event) {
+        getWorkerInfo: function ($event, workerType) {
+            if ($event.keyCode === 37) {
+                if (workerType === 'worker') {
+                    focusSetter['productFlowFocus'] = true;
+                    return;
+                }
+                else {
+                    focusSetter['workerIdFocus'] = true;
+                    return;
+                }
+            }
             if ($event.keyCode === 13) {
-                if (uiVM.UserWorkerId === undefined) return;
-                var strLen = leeHelper.checkIsChineseValue(uiVM.UserWorkerId) ? 2 : 6;
-                if (uiVM.UserWorkerId.length >= strLen) {
+                var workerId = null;
+                if (workerType === 'worker') {
+                    workerId = uiVM.UserWorkerId;
+                    if (uiVM.UserWorkerId === undefined) return;
+                }
+                else {
+                    workerId = uiVM.MasterWorkerId;
+                    if (uiVM.MasterWorkerId === undefined) return;
+                }
+                var strLen = leeHelper.checkIsChineseValue(workerId) ? 2 : 6;
+                if (workerId.length >= strLen) {
                     vmManager.searchedWorkers = [];
-                    $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.UserWorkerId).then(function (datas) {
+                    $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(workerId).then(function (datas) {
                         if (datas.length > 0) {
                             vmManager.searchedWorkers = datas;
                             if (vmManager.searchedWorkers.length === 1) {
                                 vmManager.isSingle = true;
-                                vmManager.selectWorker(vmManager.searchedWorkers[0]);
+                                vmManager.selectWorker(vmManager.searchedWorkers[0],workerType);
                             }
                             else {
                                 vmManager.isSingle = false;
                             }
                         }
                         else {
-                            vmManager.selectWorker(null);
+                            vmManager.selectWorker(null,workerType);
                         }
+                        if (workerType === 'worker') {
+                            //处理焦点移动
+                            if (vmManager.edittingRow.isMachineMode) {
+                                focusSetter.moveFocusTo($event, 'productFlowFocus', 'masterWorkerIdFocus');
+                            }
+                            else {
+                                vmManager.addNewRow($event);
+                            }
+                        }
+                        else {
+                            vmManager.addNewRow($event);
+                        }
+                        vmManager.searchedWorkers = [];
                     });
                 }
             }
-            focusSetter.moveFocusTo($event, 'productFlowFocus');
         },
-        selectWorker: function (worker) {
+        //获取正在编辑的行
+        getEdittingRow: function () {
+            var rowItem = _.find(vmManager.editDatas, { rowindex: vmManager.edittingRowIndex });
+            return rowItem;
+        },
+        //添加新的行
+        addNewRow: function ($event) {
+            if ($event.keyCode === 13) {
+                uiVM = _.clone(initVM);
+                $scope.vm = uiVM;
+                vmManager.edittingRow.editting = false;
+                vmManager.addRow();
+                focusSetter['orderIdFocus'] = true;
+            };
+        },
+        selectWorker: function (worker,workerType) {
             if (worker !== null) {
-                uiVM.UserName = worker.Name;
-                uiVM.UserWorkerId = worker.WorkerId;
-                uiVM.Department = worker.Department;
+                if (workerType === 'worker') {
+                    vmManager.edittingRow.UserName = worker.Name;
+                    vmManager.edittingRow.UserWorkerId = worker.WorkerId;
+                    vmManager.edittingRow.ClassType = worker.ClassType;
+                }
+                else {
+                    vmManager.edittingRow.MasterName = worker.Name;
+                    vmManager.edittingRow.MasterWorkerId = worker.WorkerId;
+                }
+                vmManager.edittingRow.Department = worker.Department;
             }
             else {
-                uiVM.Department = null;
+                vmManager.edittingRow.Department = null;
             }
+
+            leeHelper.copyVm(vmManager.edittingRow, uiVM);
+            $scope.vm = uiVM;
+        },
+        //是否是机台名称
+        isInputMachineName: function () {
+            var machineItem = _.find(vmManager.machines, { MachineId: $scope.vm.ProductFlowID });
+            return machineItem !== undefined;
         },
         //获取工序信息
         getProductFlowInfo: function ($event) {
-            focusSetter.moveFocusTo($event, 'saveCmdFocus');
+            if ($event.keyCode === 13) {
+                if (vmManager.productFlows.length > 0) {
+                    var flowItem = null;
+                    if (vmManager.isInputMachineName()) {
+                        vmManager.edittingRow.isMachineMode = true;
+                        vmManager.edittingRow.MachineId = $scope.vm.ProductFlowID;
+                        flowItem = vmManager.productFlows[0];
+                    }
+                    else {
+                        flowItem = _.find(vmManager.productFlows, { ProductFlowId: $scope.vm.ProductFlowID });
+                        vmManager.edittingRow.isMachineMode = false;
+                    }
+                    if (!angular.isUndefined(flowItem)) {
+                        vmManager.selectProductFlow(flowItem);
+                    }
+                }
+            }
+            focusSetter.moveFocusTo($event, 'orderIdFocus', 'workerIdFocus');
+        },
+        //结束编辑
+        editOver: function (rowItem) {
+            if (!angular.isUndefined(rowItem)) {
+                leeHelper.copyVm(uiVM, rowItem);
+                uiVM = _.clone(initVM);
+                $scope.vm = uiVM;
+                rowItem.editting = false;
+            }
+        },
+        //删除行
+        removeRow: function (item) {
+            leeHelper.remove(vmManager.editDatas, item);
+        },
+        //复制并粘贴行
+        copyAndPaste: function (item) {
+            item.editting = false;
+            var vm = _.clone(item);
+            vm.rowindex = item.rowindex + 1;
+            vmManager.edittingRow = vm;
+            vmManager.editDatas.push(vm);
+        },
+        //取消编辑
+        cancelEdit: function (item) {
+            item.pheditting = false;
+        },
+        //编辑行
+        editRow: function (item) {
+            angular.forEach(vmManager.editDatas, function (edititem) { edititem.editting = false });
+            leeHelper.copyVm(item, uiVM);
+            $scope.vm = uiVM;
+            vmManager.edittingRowIndex = item.rowindex;
+            vmManager.edittingRow = item;
+            vmManager.getProductFlows(item.OrderId);
+            item.editting = true;
         },
         //待编辑的记录集合
         editDatas:[],
@@ -389,20 +590,92 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 focusSetter['orderIdFocus'] = true;
             })
         },
+        //编辑产量工时信息
+        editProductHoursRow: function (item) {
+            if (item !== undefined && item !== null) {
+                angular.forEach(vmManager.editDatas, function (edititem) { edititem.pheditting = false });
+                leeHelper.copyVm(item, uiVM);
+                $scope.vm = uiVM;
+                vmManager.edittingRowIndex = item.rowindex;
+                vmManager.edittingRow = item;
+                vmManager.getProductFlows(item.OrderId);
+                item.pheditting = true;
+                focusSetter['qtyFocus'] = true;
+            }
+        },
+        inputQty: function ($event) {
+
+            focusSetter.moveFocusTo($event, 'qtyFocus', 'qtyBadFocus');
+        },
+        inputQtyBad: function ($event,item) {
+            //良品数=总产量-不良品数
+            item.QtyGood = item.Qty - item.QtyBad;
+
+            focusSetter.moveFocusTo($event, 'qtyFocus', 'inputHoursFocus');
+        },
+        inputHours: function ($event) {
+
+            focusSetter.moveFocusTo($event, 'qtyBadFocus', 'productHoursFoucs');
+        },
+        inputProductionHours: function ($event) {
+
+            focusSetter.moveFocusTo($event, 'inputHoursFocus', 'attendanceHoursFoucs');
+        },
+        inputAttendanceHours: function ($event) {
+
+            focusSetter.moveFocusTo($event, 'productHoursFoucs', 'nonProductHoursFocus');
+        },
+        inputNonProductionHours: function ($event,item) {
+            if ($event.keyCode === 37) {
+                focusSetter['AttendanceHours'] = true;
+                return;
+            }
+            if ($event.keyCode === 13) {
+                leeHelper.copyVm($scope.vm, vmManager.edittingRow);
+                if (item.rowindex < vmManager.editDatas.length) {
+                    vmManager.edittingRowIndex = item.rowindex + 1;
+                    var rowItem = vmManager.getEdittingRow();
+                    vmManager.editProductHoursRow(rowItem);
+                }
+                else {
+                    vmManager.edittingRow.pheditting = false;
+                }
+            }
+        },
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    operate.saveAll = function (isValid) { };
-    operate.refresh = function () { };
+    //保存日报录入数据
+    operate.save = function () {
+        if (vmManager.editDatas.length > 0)
+        {
+            $scope.promise = dReportDataOpService.saveDailyReportDatas(vmManager.editDatas).then(function (opresult) {
+                if (opresult.Result) {
+                    vmManager.editDatas = [];
+                    leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
+                }
+            });
+        }
+    };
+    //审核确认日报录入数据
+    operate.audit = function () {
+        $scope.promise = dReportDataOpService.auditDailyReport(vmManager.department).then(function (opresult) {
+            if (opresult.Result) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
+            }
+        });
+    };
 
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);
         vmManager.department = dto.DataNodeText;
     };
-    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (data) {
-        departmentTreeSet.setTreeDataset(data);
+
+    $scope.promise = dReportDataOpService.getDReportInitData(vmManager.department).then(function (datas) {
+        departmentTreeSet.setTreeDataset(datas.departments);
+        vmManager.machines = datas.machines;
     });
 
     $scope.ztree = departmentTreeSet;
@@ -411,13 +684,22 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     var focusSetter = {
         orderIdFocus:false,
         workerIdFocus: false,
+        masterWorkerIdFocus:false,
         productFlowFocus: false,
-        saveCmdFocus:false,
+        qtyFocus: false,
+        qtyBadFocus: false,
+        inputHoursFocus: false,
+        productHoursFoucs: false,
+        attendanceHoursFoucs: false,
+        nonProductHoursFocus:false,
         //移动焦点到指定对象
-        moveFocusTo: function ($event, elName) {
-            if ($event.keyCode === 13) {
-                focusSetter[elName] = true;
+        moveFocusTo: function ($event, elPreName,elNextName) {
+            if ($event.keyCode === 13 || $event.keyCode === 39) {
+                focusSetter[elNextName] = true;
             }
+            else if ($event.keyCode === 37) {
+                focusSetter[elPreName] = true;
+            };
         },
     };
     $scope.focus = focusSetter;
