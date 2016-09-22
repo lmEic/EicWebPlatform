@@ -90,7 +90,5 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             return MocService.OrderManage.GetOrderDetails(orderId);
         }
-
-
     }
 }
