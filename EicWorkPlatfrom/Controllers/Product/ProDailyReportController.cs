@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using System.Collections.Generic;
 using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.App.Business.Bmp.Pms.DailyReport;
@@ -172,9 +173,9 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <param name="department">部门</param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult AuditDailyReport(string department)
+        public JsonResult AuditDailyReport(string department,DateTime dailyReportDate)
         {
-            var result = DailyReportService.InputManager.DailyReportInputManager.AuditDailyReport(department);
+            var result = DailyReportService.InputManager.DailyReportInputManager.AuditDailyReport(department, dailyReportDate);
             return Json(result);
         }
         #endregion
