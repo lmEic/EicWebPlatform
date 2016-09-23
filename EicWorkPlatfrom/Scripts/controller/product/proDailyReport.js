@@ -75,10 +75,11 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
         });
     };
     //审核日报数据
-    reportDataOp.auditDailyReport = function (department) {
+    reportDataOp.auditDailyReport = function (department, dailyReportDate) {
         var url = urlPrefix + 'AuditDailyReport';
         return ajaxService.postData(url, {
             department: department,
+            dailyReportDate: dailyReportDate
         });
     };
     return reportDataOp;
@@ -604,29 +605,49 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 focusSetter['qtyFocus'] = true;
             }
         },
-        inputQty: function ($event) {
-
+        inputQty: function ($event, item) {
+            focusSetter.doWhenKeyDown($event, function () {
+                item.Qty = $scope.vm.Qty;
+            });
+          
             focusSetter.moveFocusTo($event, 'qtyFocus', 'qtyBadFocus');
         },
-        inputQtyBad: function ($event,item) {
-            //良品数=总产量-不良品数
-            item.QtyGood = item.Qty - item.QtyBad;
+        inputQtyBad: function ($event, item) {
+            focusSetter.doWhenKeyDown($event, function () {
+                //良品数=总产量-不良品数
+                item.QtyGood = item.Qty - item.QtyBad;
+                $scope.vm.QtyGood = item.QtyGood;
+            });
+         
 
             focusSetter.moveFocusTo($event, 'qtyFocus', 'inputHoursFocus');
         },
-        inputHours: function ($event) {
-
+        inputHours: function ($event,item) {
+            focusSetter.doWhenKeyDown($event, function () {
+                item.InputHours = $scope.vm.InputHours;
+            });
+           
             focusSetter.moveFocusTo($event, 'qtyBadFocus', 'productHoursFoucs');
         },
-        inputProductionHours: function ($event) {
-
+        inputProductionHours: function ($event,item) {
+            focusSetter.doWhenKeyDown($event, function () {
+                item.ProductionHours = $scope.vm.ProductionHours;
+            });
+            
             focusSetter.moveFocusTo($event, 'inputHoursFocus', 'attendanceHoursFoucs');
         },
-        inputAttendanceHours: function ($event) {
-
+        inputAttendanceHours: function ($event,item) {
+            focusSetter.doWhenKeyDown($event, function () {
+                item.AttendanceHours = $scope.vm.AttendanceHours;
+            });
+            
             focusSetter.moveFocusTo($event, 'productHoursFoucs', 'nonProductHoursFocus');
         },
-        inputNonProductionHours: function ($event,item) {
+        inputNonProductionHours: function ($event, item) {
+            focusSetter.doWhenKeyDown($event, function () {
+                item.InputNonProductionHours = $scope.vm.InputNonProductionHours;
+            });
+
             if ($event.keyCode === 37) {
                 focusSetter['AttendanceHours'] = true;
                 return;
@@ -661,7 +682,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     };
     //审核确认日报录入数据
     operate.audit = function () {
-        $scope.promise = dReportDataOpService.auditDailyReport(vmManager.department).then(function (opresult) {
+        $scope.promise = dReportDataOpService.auditDailyReport(vmManager.department,vmManager.InputDate).then(function (opresult) {
             if (opresult.Result) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
             }
@@ -702,6 +723,9 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 focusSetter[elPreName] = true;
             };
         },
+        doWhenKeyDown: function ($event, fn) {
+            if ($event.keyCode === 13 || $event.keyCode === 39) { fn();}
+        }
     };
     $scope.focus = focusSetter;
 
