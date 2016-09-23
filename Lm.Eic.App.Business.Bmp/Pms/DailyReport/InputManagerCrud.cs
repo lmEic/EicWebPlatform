@@ -1,6 +1,5 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
-using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
@@ -9,7 +8,6 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 {
@@ -113,20 +111,25 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             //添加模板列表       要求：一次保存整个列表
             try
             {
-                SetFixFieldValue(modelList, OpMode.Add);
+                DateTime date = DateTime.Now.ToDate();
+               // SetFixFieldValue(modelList, OpMode.Add);
+                SetFixFieldValue(modelList, OpMode.Add,m=>
+                {
+                    m.DailyReportDate = date;
+                    m.InputTime = date;
+                    m.ParamenterKey = m.Department + "&" + m.DailyReportDate.ToShortDateString();
+                    m.DailyReportMonth = m.DailyReportDate.ToString("yyyyMM");
+                });
 
                 if (!modelList.IsNullOrEmpty())
                     return OpResult.SetResult("日报列表不能为空！ 保存失败");
 
-                modelList.ForEach(m =>
-                {
-                    m.ParamenterKey = m.Department + "&" + m.DailyReportDate.ToShortDateString();
-                    m.DailyReportMonth = m.DailyReportDate.ToString("yyyyMM");
-                });
-                return irep.Insert(modelList).ToOpResult(OpContext);
+                return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
+
+      
 
         /// <summary>
         /// 删除日报列表
@@ -135,7 +138,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public OpResult DeleteDailyReportListBy(string department,DateTime dailyReportDate)
         {
-            //TODO：根据组合值清除符合条件的列表
+            //TODO：根据组合值清除符合条件的列表 
             try
             {
                 return irep.Delete(m => m.Department == department && m.DailyReportDate == dailyReportDate).ToOpResult(OpContext);

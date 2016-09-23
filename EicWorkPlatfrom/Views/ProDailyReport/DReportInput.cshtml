@@ -251,7 +251,7 @@
                         @*产量信息*@
                         <td>
                             <span ng-hide="item.pheditting">{{item.Qty}}</span>
-                            <input ng-model="vm.Qty" ng-keydown="vmManager.inputQty($event)"
+                            <input ng-model="vm.Qty" ng-keydown="vmManager.inputQty($event,item)"
                                    focus-if="focus.qtyFocus" focus-setter style="width:80px;"
                                    placeholder="总产量" ng-show="item.pheditting" />
                         </td>
@@ -266,19 +266,19 @@
                         <td ng-show="tbl.colVisible">{{item.SetHours}}</td>
                         <td>
                             <span ng-hide="item.pheditting">{{item.InputHours}}</span>
-                            <input ng-model="vm.InputHours" ng-keydown="vmManager.inputHours($event)"
+                            <input ng-model="vm.InputHours" ng-keydown="vmManager.inputHours($event,item)"
                                    focus-if="focus.inputHoursFocus" focus-setter style="width:80px;"
                                    placeholder="投入工时" ng-show="item.pheditting" />
                         </td>
                         <td>
                             <span ng-hide="item.pheditting">{{item.ProductionHours}}</span>
-                            <input ng-model="vm.ProductionHours" ng-keydown="vmManager.inputProductionHours($event)"
+                            <input ng-model="vm.ProductionHours" ng-keydown="vmManager.inputProductionHours($event,item)"
                                    focus-if="focus.productHoursFoucs" focus-setter style="width:80px;"
                                    placeholder="生产时数" ng-show="item.pheditting" />
                         </td>
                         <td>
                             <span ng-hide="item.pheditting">{{item.AttendanceHours}}</span>
-                            <input ng-model="vm.AttendanceHours" ng-keydown="vmManager.inputAttendanceHours($event)"
+                            <input ng-model="vm.AttendanceHours" ng-keydown="vmManager.inputAttendanceHours($event,item)"
                                    focus-if="focus.attendanceHoursFoucs" focus-setter style="width:80px;"
                                    placeholder="出勤时数" ng-show="item.pheditting" />
                         </td>
