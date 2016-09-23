@@ -91,6 +91,23 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         }
 
         /// <summary>
+        /// 设置固定字段的值
+        /// </summary>
+        /// <param name="entityList">列表</param>
+        /// <param name="opMode">操作标示</param>
+        protected virtual void SetFixFieldValue(IEnumerable<TEntity> entityList, string opMode, Action<TEntity> setFixFieldMethod)
+        {
+            entityList.ToList().ForEach((m) =>
+            {
+                SetFixFieldValue(m);
+                var opSignPi = IsHasProperty(m, "OpSign");
+                if (opSignPi != null) opSignPi.SetValue(m, opMode, null);
+                setFixFieldMethod(m);
+            });
+        }
+
+       
+        /// <summary>
         /// 持久化数据
         /// </summary>
         /// <param name="entity"></param>

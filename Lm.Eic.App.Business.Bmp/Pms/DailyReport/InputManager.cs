@@ -2,6 +2,7 @@
 using Lm.Eic.App.Erp.Bussiness.MocManage;
 using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using Lm.Eic.Framework.Authenticate.Business;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
@@ -39,14 +40,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <param name="department">部门</param>
         /// <param name="dailyReportDate">日报日期</param>
         /// <returns></returns>
-        public List<DailyReportTempModel> GetDailyReportTemplate(string department, DateTime dailyReportDate)
+        public List<DailyReportTempModel> GetDailyReportTemplate(string department)
         {
             //TODO:从临时表中获取本部门的日报数据 如果有今天的就返回今天的 如果没有就返回上一次的
             var dailyReportList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
-            var nowDailyReportList = dailyReportList.Where(m => m.DailyReportDate == dailyReportDate).ToList();
-            //获取当前日期的日报
-            if (nowDailyReportList != null)
-                return nowDailyReportList;
+           
             //获取最近日期的日报
             var maxDailyReportDate = dailyReportList.Max(m=>m.DailyReportDate);
             return dailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).ToList();
@@ -61,17 +59,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             //清空本部门所有日报列表 =》存入当前列表
             var department = string.Empty;
-            var dailyReportDate = new DateTime();
+            var dailyReportDate = DateTime.Now.ToDate();
 
             if (modelList.IsNullOrEmpty())
             {
                 department = modelList[0].Department;
-                dailyReportDate = modelList[0].DailyReportDate;
+                //dailyReportDate = modelList[0].DailyReportDate;
             }
                
-            var deleteResult = DailyReportInputCrudFactory.DailyReportTempCrud.DeleteDailyReportListBy(department,dailyReportDate);
-            if (!deleteResult.Result)
-                return OpResult.SetResult("清除日报历史记录失败！");
+            DailyReportInputCrudFactory.DailyReportTempCrud.DeleteDailyReportListBy(department,dailyReportDate);
+           
 
             return DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(modelList);
         }
@@ -80,10 +77,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// 日报审核
         /// </summary>
         /// <returns></returns>
-        public OpResult AuditDailyReport(string department,DateTime dailyReportDate)
+        public OpResult AuditDailyReport(string department)
         {
             //将临时表中的本部门的所有列表 克隆至正式日报表中
-            var dailyReportTempList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department,dailyReportDate);
+            var dailyReportTempList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
 
             if (!dailyReportTempList.IsNullOrEmpty())
                 return OpResult.SetResult("未找到本部门的任何日报记录！");
