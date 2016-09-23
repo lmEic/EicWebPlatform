@@ -355,6 +355,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         addRow: function () {
             vmManager.edittingRowIndex = vmManager.editDatas.length > 0 ? vmManager.editDatas.length + 1 : 1;
             var vm = _.clone(initVM);
+            vm.DailyReportDate = vmManager.InputDate;
             vm.rowindex = vmManager.edittingRowIndex;
             vm.editting = true;
             vm.isMachineMode = false;
