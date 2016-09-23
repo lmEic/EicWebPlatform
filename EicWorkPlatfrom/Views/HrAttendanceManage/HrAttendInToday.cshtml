@@ -7,26 +7,32 @@
             <div class="panel-body" cg-busy="{promise:promise}">
                 <div class="well">
                     <div class="row">
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-primary" ng-click="operate.change(dep)"
-                                            title="选择部门信息"
-                                            data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
-                                            data-animation="am-flip-x" data-auto-close="1"
-                                            data-bs-popover>
-                                        选择部门
-                                    </button>
+                        <div class="col-md-7">
+                            <form class="form-inline" role="form" novalidate>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-primary" ng-click="operate.change(dep)"
+                                                    title="选择部门信息"
+                                                    data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
+                                                    data-animation="am-flip-x" data-auto-close="1"
+                                                    data-bs-popover>
+                                                选择部门
+                                            </button>
+                                        </div>
+                                        <input type="text" readonly placeholder="部门" ng-model="vm.DepartmentText" class="form-control" />
+                                    </div>
                                 </div>
-                                <input type="text" readonly placeholder="部门" ng-model="vm.DepartmentText" class="form-control" />
-                                <div class="input-group-btn">
+
+                                <div class="form-group">
+                                    <input type="date" ng-model="vm.AttendanceDate" format-date class="form-control" />
+                                </div>
+                                <div class="form-group">
                                     <button type="button" class="btn btn-info" ng-click="operate.loadData()"><i class="fa fa-search"></i>查看</button>
                                 </div>
-                            </div>
+                            </form>
                         </div>
-                        <div class="col-md-1">
-                        </div>
-                        <div class="col-md-7">
+                        <div class="col-md-5">
                             <div class="input-group">
                                 <div class="input-group-addon">
                                     过滤条件

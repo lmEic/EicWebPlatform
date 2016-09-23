@@ -34,7 +34,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
     /// </summary>
     public interface IAttendSlodFingerDataCurrentMonthRepository : IRepository<AttendSlodFingerDataCurrentMonthModel>
     {
-        List<AttendanceDataModel> LoadAttendDataOfToday(string department);
+        List<AttendanceDataModel> LoadAttendDataOfToday(string department,DateTime qryDate);
     }
 
     /// <summary>
@@ -47,9 +47,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public List<AttendanceDataModel> LoadAttendDataOfToday(string department)
+        public List<AttendanceDataModel> LoadAttendDataOfToday(string department,DateTime qryDate)
         {
-            string sqlText = string.Format("SELECT WorkerId, WorkerName, Department, ClassType, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth where Department='{0}'  And AttendanceDate='{1}'", department, DateTime.Now.ToDate());
+            string sqlText = string.Format("SELECT WorkerId, WorkerName, Department, ClassType, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth where Department='{0}'  And AttendanceDate='{1}'", department, qryDate);
             return DbHelper.Hrm.LoadEntities<AttendanceDataModel>(sqlText);
         }
     }

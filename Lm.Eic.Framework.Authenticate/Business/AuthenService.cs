@@ -41,6 +41,14 @@ namespace Lm.Eic.Framework.Authenticate.Business
                 return OBulider.BuildInstance<ModuleNavManager>();
             }
         }
+
+        /// <summary>
+        /// 审核管理器
+        /// </summary>
+        public static AuditManager AuditManager
+        {
+            get { return OBulider.BuildInstance<AuditManager>(); }
+        }
     }
 
     /// <summary>

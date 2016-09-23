@@ -48,4 +48,17 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
             this.ToTable("Pms_ProductFlow");
         }
     }
+
+    /// <summary>
+    ///MachineModel
+    /// </summary>
+    public class MachineModelMapping : EntityTypeConfiguration<MachineModel>
+    {
+        public MachineModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Pms_Machine");
+        }
+    }
 }

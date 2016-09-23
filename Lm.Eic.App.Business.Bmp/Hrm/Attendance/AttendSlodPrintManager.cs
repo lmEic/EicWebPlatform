@@ -39,9 +39,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public List<AttendanceDataModel> LoadAttendDataInToday(string department)
+        public List<AttendanceDataModel> LoadAttendDataInToday(string department,DateTime qryDate)
         {
-            return this.currentMonthAttendDataHandler.LoadAttendDataInToday(department);
+            var qdate = qryDate.ToDate();
+            return this.currentMonthAttendDataHandler.LoadAttendDataInToday(department,qdate);
         }
 
         /// <summary>
@@ -106,14 +107,15 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// 载入今天的考勤数据
         /// </summary>
         /// <param name="department"></param>
+        /// <param name="qryDate"></param>
         /// <returns></returns>
-        public List<AttendanceDataModel> LoadAttendDataInToday(string department)
+        public List<AttendanceDataModel> LoadAttendDataInToday(string department,DateTime qryDate)
         {
             if (this.fingerPrintDataInTime.IsExsitAttendData)
             {
                 TransimitAttendDatas();
             }
-            return this.irep.LoadAttendDataOfToday(department);
+            return this.irep.LoadAttendDataOfToday(department,qryDate);
         }
 
         /// <summary>

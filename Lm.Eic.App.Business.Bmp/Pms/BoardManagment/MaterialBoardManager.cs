@@ -42,10 +42,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             //依据产品品号查找看板 
             var materialBoard = BorardCrudFactory.MaterialBoardCrud.FindMaterialSpecBoardBy(orderDetails.ProductID);
             if (materialBoard == null)
-                return BuildImageErr("未找到看板");
+                 return BuildImageErr("未找到看板");
 
             if (materialBoard.State == "待审核")
-                return BuildImageErr("看板未审核");
+                 return BuildImageErr("看板未审核");
+               
 
             //得到工单中的所有料号
             var orderMaterialIdList = new List<string>();
@@ -124,8 +125,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         /// <returns></returns>
         private  Image BuildImage(string strPatch, string context)
         {
-            //try
-            //{
+            try
+            {
                 Image myImage = Image.FromFile(strPatch);
                 //创建一个画布
                 int mapWidth = myImage.Width;
@@ -156,11 +157,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
                 graphics.Dispose();
                 myImage.Dispose();
                 return resultImage;
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new Exception(ex.InnerException.Message);
-            //}
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
         }
 
 

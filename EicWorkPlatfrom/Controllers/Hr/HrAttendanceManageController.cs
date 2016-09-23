@@ -1,4 +1,5 @@
-﻿using Lm.Eic.App.Business.Bmp.Hrm.Attendance;
+﻿using System;
+using Lm.Eic.App.Business.Bmp.Hrm.Attendance;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
 using Lm.Eic.Framework.ProductMaster.Business.Config;
 using Lm.Eic.Framework.ProductMaster.Model;
@@ -49,9 +50,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="department"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetAttendanceDatasOfToday(string department)
+        public ContentResult GetAttendanceDatasOfToday(string department,DateTime qryDate)
         {
-            var datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(department);
+            var datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(department,qryDate);
             return DateJsonResult(datas);
         }
 

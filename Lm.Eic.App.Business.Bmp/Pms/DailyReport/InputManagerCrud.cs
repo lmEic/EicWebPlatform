@@ -133,12 +133,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        public OpResult DeleteDailyReportListBy(string department)
+        public OpResult DeleteDailyReportListBy(string department,DateTime dailyReportDate)
         {
             //TODO：根据组合值清除符合条件的列表
             try
             {
-                return irep.Delete(e => e.Department == department).ToOpResult(OpContext);
+                return irep.Delete(m => m.Department == department && m.DailyReportDate == dailyReportDate).ToOpResult(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
@@ -153,7 +153,21 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             try
             {
-                  return irep.Entities.Where(e => e.Department == department).ToList();
+                  return irep.Entities.Where(m => m.Department == department).ToList();
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        }
+
+        /// <summary>
+        /// 获取日报列表
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        public List<DailyReportTempModel> GetDailyReportListBy(string department,DateTime dailyReportDate)
+        {
+            try
+            {
+                return irep.Entities.Where(m => m.Department == department && m.DailyReportDate == dailyReportDate).ToList();
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }

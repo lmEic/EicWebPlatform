@@ -140,6 +140,43 @@ namespace EicWorkPlatfrom.Controllers.Product
             var data = new { orderDetails = orderDetails, productFlows = productFlows };//productFlows = productFlows
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 获取日报录入初始化数据
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetDReportInitData(string department)
+        {
+            var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
+            var machines = DailyReportService.ConfigManager.MachineSetter.GetMachineListBy(department);
+            var datas = new { departments = departments, machines = machines };
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 保存日报录入数据
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveDailyReportDatas(List<DailyReportTempModel> datas)
+        {
+            var result = DailyReportService.InputManager.DailyReportInputManager.SavaDailyReportList(datas);
+
+            return Json(result);
+        }
+        /// <summary>
+        /// 审核日报数据
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult AuditDailyReport(string department)
+        {
+            var result = DailyReportService.InputManager.DailyReportInputManager.AuditDailyReport(department);
+            return Json(result);
+        }
         #endregion
     }
 }
