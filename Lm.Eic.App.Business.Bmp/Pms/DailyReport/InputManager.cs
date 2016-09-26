@@ -81,7 +81,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             //将临时表中的本部门的所有列表 克隆至正式日报表中
             var dailyReportTempList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
-
             if (!dailyReportTempList.IsNullOrEmpty())
                 return OpResult.SetResult("未找到本部门的任何日报记录！");
 
@@ -114,6 +113,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public OrderModel GetOrderDetails(string orderId)
         {
             return MocService.OrderManage.GetOrderDetails(orderId);
+        }
+
+        public object AuditDailyReport(string department, DateTime dailyReportDate)
+        {
+            throw new NotImplementedException();
         }
     }
 }
