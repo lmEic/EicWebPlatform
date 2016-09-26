@@ -49,7 +49,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             //添加模板列表       要求：一次保存整个列表
             try
             {
-                return irep.Insert(modelList).ToOpResult(OpContext);
+                return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
             catch (Exception ex)
             {
@@ -62,11 +62,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        public OpResult DeleteDailyReportListBy(string department)
+        public OpResult DeleteDailyReportListBy(string department,DateTime dailyReportDate)
         {
             try
             {
-                return irep.Delete(e => e.Department == department).ToOpResult(OpContext);
+                return irep.Delete(m => m.Department == department && m.DailyReportDate == dailyReportDate).ToOpResult(OpContext);
             }
             catch (Exception ex)
             {
@@ -117,7 +117,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 {
                     m.DailyReportDate = date;
                     m.InputTime = date;
-                    m.ParamenterKey = m.Department + "&" + m.DailyReportDate.ToShortDateString();
+                    m.ParamenterKey = m.Department + "&" + m.DailyReportDate.ToString("yyyyMMdd");
                     m.DailyReportMonth = m.DailyReportDate.ToString("yyyyMM");
                 });
 

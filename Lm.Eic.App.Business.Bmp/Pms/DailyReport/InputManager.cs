@@ -43,11 +43,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public List<DailyReportTempModel> GetDailyReportTemplate(string department, DateTime dailyReportDate)
         {
             //TODO:从临时表中获取本部门的日报数据 如果有今天的就返回今天的 如果没有就返回上一次的
-            var dailyReportList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department,dailyReportDate);
-            if (dailyReportList.Count<1)
+            var dailyReportList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
+            if (dailyReportList.Count < 1)
                 return new List<DailyReportTempModel>();
             //获取最近日期的日报
-            var maxDailyReportDate = dailyReportList.Max(m=>m.DailyReportDate);
+            var maxDailyReportDate = dailyReportList.Max(m => m.DailyReportDate);
             return dailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).ToList();
         }
 
@@ -67,9 +67,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 department = modelList[0].Department;
                 //dailyReportDate = modelList[0].DailyReportDate;
             }
-               
-            DailyReportInputCrudFactory.DailyReportTempCrud.DeleteDailyReportListBy(department,dailyReportDate);
-           
+
+            DailyReportInputCrudFactory.DailyReportTempCrud.DeleteDailyReportListBy(department, dailyReportDate);
+
 
             return DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(modelList);
         }
@@ -78,14 +78,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// 日报审核
         /// </summary>
         /// <returns></returns>
-        public OpResult AuditDailyReport(string department,DateTime dailyReportDate)
+        public OpResult AuditDailyReport(string department, DateTime dailyReportDate)
         {
             //将临时表中的本部门的所有列表 克隆至正式日报表中
-            var dailyReportTempList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department,dailyReportDate);
+            var dailyReportTempList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
 
             if (!dailyReportTempList.IsNullOrEmpty())
                 return OpResult.SetResult("未找到本部门的任何日报记录！");
 
+            //清除正式表中的本部门的日报数据
+            DailyReportInputCrudFactory.DailyReportCrud.DeleteDailyReportListBy(department, dailyReportDate.ToDate());
             var dailyReportList = OOMaper.Mapper<DailyReportTempModel, DailyReportModel>(dailyReportTempList).ToList();
             return DailyReportInputCrudFactory.DailyReportCrud.SavaDailyReportList(dailyReportList);
         }
