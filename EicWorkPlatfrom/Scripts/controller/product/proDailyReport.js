@@ -54,10 +54,11 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     };
     //-------------------------生产日报录入--------------------------------------
     //获取日报输入模板
-    reportDataOp.getDailyReportTemplate = function (department) {
+    reportDataOp.getDailyReportTemplate = function (department,dailyReportDate) {
         var url = urlPrefix + 'GetDailyReportTemplate';
         return ajaxService.getData(url, {
             department: department,
+            dailyReportDate:dailyReportDate
         });
     };
     //获取日报录入初始化数据
@@ -374,7 +375,21 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         showPersonView: function () { vmManager.personBoardDisplay = true; },
         showOrderIdView: function () { vmManager.orderIdBoardDisplay = true; },
         getReportInputDataTemplate: function () {
-
+            $scope.promise = dReportDataOpService.getDailyReportTemplate(vmManager.department,vmManager.InputDate).then(function (datas) {
+                angular.forEach(datas, function (item) {
+                    item.editting = false;
+                    //判断是否为机台
+                    if (item.MachineId) {
+                        item.isMachineMode = true;
+                    } else {
+                        item.isMachineMode = false;
+                    }
+                    item.pheditting = false;
+                    vmManager.editDatas.push(item);
+                });
+               
+            });
+            
         },
         //工单数据信息
         orderDatas: [],

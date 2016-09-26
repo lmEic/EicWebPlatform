@@ -116,9 +116,9 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <param name="department"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetDailyReportTemplate(string department)
+        public JsonResult GetDailyReportTemplate(string department,DateTime dailyReportDate)
         {
-            var datas = 0;
+            var datas = DailyReportService.InputManager.DailyReportInputManager.GetDailyReportTemplate(department, dailyReportDate);
             return Json(datas,JsonRequestBehavior.AllowGet);
         }
         /// <summary>
