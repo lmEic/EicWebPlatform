@@ -170,6 +170,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             try
             {
+                dailyReportDate = dailyReportDate.ToDate();
                 return irep.Entities.Where(m => m.Department == department && m.DailyReportDate == dailyReportDate).ToList();
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
