@@ -527,7 +527,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                     vmManager.edittingRow.MasterName = worker.Name;
                     vmManager.edittingRow.MasterWorkerId = worker.WorkerId;
                 }
-                vmManager.edittingRow.Department = worker.Department;
+                vmManager.edittingRow.Department = vmManager.department;
             }
             else {
                 vmManager.edittingRow.Department = null;
