@@ -614,6 +614,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         },
         inputQtyBad: function ($event, item) {
             focusSetter.doWhenKeyDown($event, function () {
+                item.QtyBad = $scope.vm.QtyBad;
                 //良品数=总产量-不良品数
                 item.QtyGood = item.Qty - item.QtyBad;
                 $scope.vm.QtyGood = item.QtyGood;

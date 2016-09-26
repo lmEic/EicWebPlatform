@@ -77,7 +77,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// 日报审核
         /// </summary>
         /// <returns></returns>
-        public OpResult AuditDailyReport(string department)
+        public OpResult AuditDailyReport(string department,DateTime dailyReportDate)
         {
             //将临时表中的本部门的所有列表 克隆至正式日报表中
             var dailyReportTempList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
