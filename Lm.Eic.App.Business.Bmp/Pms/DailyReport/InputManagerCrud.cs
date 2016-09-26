@@ -49,7 +49,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             //添加模板列表       要求：一次保存整个列表
             try
             {
-                return irep.Insert(modelList).ToOpResult_Add(OpContext);
+                int record = irep.Insert(modelList);
+                return OpResult.SetResult("审核成功", "审核失败", record);
             }
             catch (Exception ex)
             {

@@ -290,7 +290,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         QtyGood: null,
         QtyBad: null,
         FailureRate: null,
-        SetHours: null,
+        SetHours: 12,
         InputHours: null,
         ProductionHours: null,
         AttendanceHours: null,
@@ -694,8 +694,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         {
             $scope.promise = dReportDataOpService.saveDailyReportDatas(vmManager.editDatas).then(function (opresult) {
                 if (opresult.Result) {
-                    vmManager.editDatas = [];
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
+                    vmManager.editDatas = []; 
                 }
             });
         }
@@ -705,6 +705,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         $scope.promise = dReportDataOpService.auditDailyReport(vmManager.department,vmManager.InputDate).then(function (opresult) {
             if (opresult.Result) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
+                vmManager.editDatas = [];
             }
         });
     };
