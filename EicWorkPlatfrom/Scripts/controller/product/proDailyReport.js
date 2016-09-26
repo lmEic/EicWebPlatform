@@ -376,18 +376,22 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         showOrderIdView: function () { vmManager.orderIdBoardDisplay = true; },
         getReportInputDataTemplate: function () {
             $scope.promise = dReportDataOpService.getDailyReportTemplate(vmManager.department,vmManager.InputDate).then(function (datas) {
-                angular.forEach(datas, function (item) {
-                    item.editting = false;
-                    //判断是否为机台
-                    if (item.MachineId) {
-                        item.isMachineMode = true;
-                    } else {
-                        item.isMachineMode = false;
-                    }
-                    item.pheditting = false;
-                    vmManager.editDatas.push(item);
-                });
-               
+                if (angular.isArray(datas) && datas.length > 0) {
+                    angular.forEach(datas, function (item) {
+                        item.editting = false;
+                        //判断是否为机台
+                        if (item.MachineId) {
+                            item.isMachineMode = true;
+                        } else {
+                            item.isMachineMode = false;
+                        }
+                        item.pheditting = false;
+                        vmManager.editDatas.push(item);
+                    });
+                }
+                else {
+                    vmManager.editDatas = [];
+                }
             });
             
         },
