@@ -45,7 +45,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Pms_ProductFlow");
+            this.ToTable("Pms_DailyReportsProductFlow");
         }
     }
 
@@ -58,7 +58,21 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Pms_Machine");
+            this.ToTable("Pms_DailyReportsMachine");
+        }
+    }
+
+
+    /// <summary>
+    ///NonProductionModel
+    /// </summary>
+    public class NonProductionModelMapping : EntityTypeConfiguration<NonProductionModel>
+    {
+        public NonProductionModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Pms_DailyReportsNonProduction");
         }
     }
 }

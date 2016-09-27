@@ -32,6 +32,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             get { return OBulider.BuildInstance<MachineConfig>(); }
         }
 
+        /// <summary>
+        /// 非生产原因设置
+        /// </summary>
+        public NonProductionConfig NonProductionSetter
+        {
+            get { return OBulider.BuildInstance<NonProductionConfig>(); }
+        }
     }
 
     /// <summary>
@@ -156,6 +163,33 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return DailyReportConfigCrudFactory.MachineCrud.AddMachineRecord(model);
         }
       
+    }
+
+    /// <summary>
+    /// 非生产原因管理器
+    /// </summary>
+    public class NonProductionConfig
+    {
+        /// <summary>
+        /// 获取非生产原因列表
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        public List<NonProductionModel> GetNonProductionListBy(string department)
+        {
+            return DailyReportConfigCrudFactory.NonProduction.GetNonProductionListBy(department);
+        }
+
+        /// <summary>
+        /// 添加一条非生产原因
+        /// </summary>
+        /// <param name="model">非生产原因模型</param>
+        /// <returns></returns>
+        public OpResult AddNonProductionRecord(NonProductionModel model)
+        {
+            return DailyReportConfigCrudFactory.NonProduction.AddNonProductionRecord(model);
+        }
+
     }
 
 }

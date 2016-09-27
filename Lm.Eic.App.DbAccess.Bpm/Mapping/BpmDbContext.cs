@@ -34,6 +34,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         public DbSet<MachineModel> Machine { get; set; }
 
+        public DbSet<NonProductionModel> NonProduction { get; set; }
+
         public DbSet<ProductFlowModel> ProductFlow { get; set; }
 
 
@@ -54,6 +56,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new DailyReportTempModelMapping());
             modelBuilder.Configurations.Add(new ProductFlowModelMapping());
             modelBuilder.Configurations.Add(new MachineModelMapping());
+            modelBuilder.Configurations.Add(new NonProductionModelMapping());
 
             modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
 
