@@ -1,11 +1,6 @@
-﻿using Lm.Eic.App.DomainModel.Bpm.Ast;
-using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
-using System;
-using System.Collections.Generic;
+﻿using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
 {
@@ -35,7 +30,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
         }
     }
 
-
     /// <summary>
     ///ProductFlowModelMapping
     /// </summary>
@@ -45,7 +39,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Pms_ProductFlow");
+            this.ToTable("Pms_DReportsProductFlow");
         }
     }
 
@@ -58,7 +52,20 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Pms_Machine");
+            this.ToTable("Pms_DReportsMachine");
+        }
+    }
+
+    /// <summary>
+    ///NonProductionModel
+    /// </summary>
+    public class NonProductionModelMapping : EntityTypeConfiguration<NonProductionModel>
+    {
+        public NonProductionModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Pms_DReportsNonProduction");
         }
     }
 }
