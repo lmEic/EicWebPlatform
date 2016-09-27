@@ -290,11 +290,13 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         QtyGood: null,
         QtyBad: null,
         FailureRate: null,
-        SetHours: 12,
+        SetHours: null,
         InputHours: null,
         ProductionHours: null,
         AttendanceHours: null,
         NonProductionHours: null,
+        NonProductionReasonCode: null,
+        NonProductionReason: null,
         ReceiveHours: null,
         ManHours: null,
         ProductionEfficiency: null,
@@ -315,7 +317,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         proFlowColSpan:2,
         workerColSpan: 3,
         productColSpan: 3,
-        workHoursColSpan:5
+        workHoursColSpan:6
     };
 
     $scope.tbl = tablevm;
@@ -341,7 +343,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 tablevm.proFlowColSpan = 2;
                 tablevm.workerColSpan = 3;
                 tablevm.productColSpan = 3;
-                tablevm.workHoursColSpan = 5;
+                tablevm.workHoursColSpan = 6;
             }
             else {
                 tablevm.colVisible = false;
@@ -349,7 +351,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 tablevm.proFlowColSpan = 1;
                 tablevm.workerColSpan = 2;
                 tablevm.productColSpan = 2;
-                tablevm.workHoursColSpan = 4;
+                tablevm.workHoursColSpan = 6;
             }
         },
         edittingRowIndex: 0,//编辑中的行索引
@@ -615,6 +617,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         editProductHoursRow: function (item) {
             if (item !== undefined && item !== null) {
                 angular.forEach(vmManager.editDatas, function (edititem) { edititem.pheditting = false });
+                item.SetHours = 12;
+                item.InputHours = 12;
                 leeHelper.copyVm(item, uiVM);
                 $scope.vm = uiVM;
                 vmManager.edittingRowIndex = item.rowindex;
@@ -640,28 +644,28 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             });
          
 
-            focusSetter.moveFocusTo($event, 'qtyFocus', 'inputHoursFocus');
+            focusSetter.moveFocusTo($event, 'qtyFocus', 'setHoursFocus');
+        },
+        inputSetHours: function ($event, item) {
+            focusSetter.doWhenKeyDown($event, function () {
+                item.SetHours = $scope.vm.SetHours;
+            });
+
+            focusSetter.moveFocusTo($event, 'qtyBadFocus', 'inputHoursFocus');
         },
         inputHours: function ($event,item) {
             focusSetter.doWhenKeyDown($event, function () {
                 item.InputHours = $scope.vm.InputHours;
             });
            
-            focusSetter.moveFocusTo($event, 'qtyBadFocus', 'productHoursFoucs');
-        },
-        inputProductionHours: function ($event,item) {
-            focusSetter.doWhenKeyDown($event, function () {
-                item.ProductionHours = $scope.vm.ProductionHours;
-            });
-            
-            focusSetter.moveFocusTo($event, 'inputHoursFocus', 'attendanceHoursFoucs');
+            focusSetter.moveFocusTo($event, 'setHoursFocus', 'attendanceHoursFoucs');
         },
         inputAttendanceHours: function ($event,item) {
             focusSetter.doWhenKeyDown($event, function () {
                 item.AttendanceHours = $scope.vm.AttendanceHours;
             });
             
-            focusSetter.moveFocusTo($event, 'productHoursFoucs', 'nonProductHoursFocus');
+            focusSetter.moveFocusTo($event, 'inputHoursFoucs', 'nonProductHoursFocus');
         },
         inputNonProductionHours: function ($event, item) {
             focusSetter.doWhenKeyDown($event, function () {
@@ -731,6 +735,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         productFlowFocus: false,
         qtyFocus: false,
         qtyBadFocus: false,
+        setHoursFocus:false,
         inputHoursFocus: false,
         productHoursFoucs: false,
         attendanceHoursFoucs: false,
