@@ -117,11 +117,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     /// <summary>
     /// 非生产原因仓储
     /// </summary>
-    public interface INonProductionModelRepositoryRepository : IRepository<NonProductionModel> { }
+    public interface INonProductionReasonModelRepository : IRepository<NonProductionReasonModel> { }
     /// <summary>
     ///  非生产原因仓储
     /// </summary>
-    public class NonProductionModelRepositoryRepository : BpmRepositoryBase<NonProductionModel>, INonProductionModelRepositoryRepository
+    public class NonProductionReasonModelRepository : BpmRepositoryBase<NonProductionReasonModel>, INonProductionReasonModelRepository
     { }
 
 

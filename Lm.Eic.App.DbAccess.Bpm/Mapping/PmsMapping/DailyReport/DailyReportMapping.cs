@@ -59,7 +59,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
     /// <summary>
     ///NonProductionModel
     /// </summary>
-    public class NonProductionModelMapping : EntityTypeConfiguration<NonProductionModel>
+    public class NonProductionModelMapping : EntityTypeConfiguration<NonProductionReasonModel>
     {
         public NonProductionModelMapping()
         {

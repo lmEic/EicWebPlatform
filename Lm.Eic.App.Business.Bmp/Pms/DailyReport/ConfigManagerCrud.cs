@@ -18,23 +18,23 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 日报录入
         /// </summary>
-        public static ProductFlowCrud ProductFlowCrud
-        { get { return OBulider.BuildInstance<ProductFlowCrud>(); } }
+        public static ProductFlowConfigCrud ProductFlowConfigCrud
+        { get { return OBulider.BuildInstance<ProductFlowConfigCrud>(); } }
 
         /// <summary>
         /// 机台
         /// </summary>
-        public static MachineCrud MachineCrud
+        public static MachineConfigCrud MachineConfigCrud
         {
-            get { return OBulider.BuildInstance<MachineCrud>(); }
+            get { return OBulider.BuildInstance<MachineConfigCrud>(); }
         }
 
         /// <summary>
         /// 非生产原因
         /// </summary>
-        public static NonProductionReasonCrud NonProductionReason
+        public static NonProductionReasonConfigCrud NonProductionReasonConfigCrud
         {
-            get { return OBulider.BuildInstance<NonProductionReasonCrud>(); }
+            get { return OBulider.BuildInstance<NonProductionReasonConfigCrud>(); }
         }
 
     }
@@ -43,9 +43,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 工序CRUD
     /// </summary>
-    internal class ProductFlowCrud : CrudBase<ProductFlowModel, IProductFlowRepositoryRepository>
+    internal class ProductFlowConfigCrud : CrudBase<ProductFlowModel, IProductFlowRepositoryRepository>
     {
-        public ProductFlowCrud() : base(new ProductFlowRepositoryRepository(), "工艺")
+        public ProductFlowConfigCrud() : base(new ProductFlowRepositoryRepository(), "工艺")
         { }
 
         #region Store
@@ -209,9 +209,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 机台CRUD
     /// </summary>
-    internal class MachineCrud : CrudBase<MachineModel, IMachineRepositoryRepository>
+    internal class MachineConfigCrud : CrudBase<MachineModel, IMachineRepositoryRepository>
     {
-        public MachineCrud() : base(new MachineRepositoryRepository(), "机台管理")
+        public MachineConfigCrud() : base(new MachineRepositoryRepository(), "机台管理")
         {
         }
 
@@ -256,9 +256,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 非生产原因CRUD
     /// </summary>
-    internal class NonProductionReasonCrud : CrudBase<NonProductionModel, INonProductionModelRepositoryRepository>
+    internal class NonProductionReasonConfigCrud : CrudBase<NonProductionReasonModel, INonProductionReasonModelRepository>
     {
-        public NonProductionReasonCrud() : base(new NonProductionModelRepositoryRepository(), "非生产原因")
+        public NonProductionReasonConfigCrud() : base(new NonProductionReasonModelRepository(), "非生产原因")
         {
         }
 
@@ -272,7 +272,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public List<NonProductionModel> GetNonProductionListBy(string department)
+        public List<NonProductionReasonModel> GetNonProductionListBy(string department)
         {
             try
             {
@@ -287,7 +287,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="model">非生产原因实体模型</param>
         /// <returns></returns>
-        public OpResult AddNonProductionRecord(NonProductionModel model)
+        public OpResult AddNonProductionRecord(NonProductionReasonModel model)
         {
             try
             {

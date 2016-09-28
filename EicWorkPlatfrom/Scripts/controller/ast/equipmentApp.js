@@ -39,6 +39,13 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             eloam.UnLoad();
         }
     })
+
+    //--------------维修管理--------------------------
+     .state('astInputRepairRecord', {
+         templateUrl: urlPrefix + 'AstInputRepairRecord',
+     })
+    
+
 })
 .factory('astDataopService', function (ajaxService) {
     var ast = {};
@@ -758,4 +765,25 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         eloam.UnLoad();
     })
 })
+
+ 
+///录入设备维修单
+.controller('astInputRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
+    //视图管理器
+    var vmManager = {
+        activeTab: 'initTab',
+        planDate: new Date(),
+        datasource: [],
+        datasets: [],
+        getAstCheckList: function () {
+            vmManager.datasource = [];
+            $scope.searchPromise = astDataopService.getAstCheckListByPlanDate(vmManager.planDate).then(function (datas) {
+                vmManager.datasource = datas;
+            });
+        }
+    };
+    $scope.vmManager = vmManager;
+
+})
+
 
