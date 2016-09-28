@@ -310,6 +310,12 @@ var leeHelper = (function () {
                 return false;
             };
         },
+        //将小数转换为百分比
+        toPercent: function (data,len) {
+            var strData = (parseFloat(data) * 100).toFixed(len);
+            var ret = strData.toString() + "%";
+            return ret;
+        },
     };
 })();
 ///zTree 助手
