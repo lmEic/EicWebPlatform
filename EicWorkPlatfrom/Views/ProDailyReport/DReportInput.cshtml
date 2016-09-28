@@ -332,7 +332,7 @@
                             </td>
                             <td>
                                 <div ng-hide="item.pheditting">
-                                    <span ng-show="item.isHadNonProductionHours">【{{item.NonProductionReasonCode}}】{{item.NonProductionHoursReason}}</span>
+                                    <span ng-show="item.isHadNonProductionHours">【{{item.NonProductionReasonCode}}】{{item.NonProductionReason}}</span>
                                     <span ng-hide="item.isHadNonProductionHours">--</span>
                                 </div>
                                 <div ng-show="item.pheditting">
@@ -367,7 +367,31 @@
         </div>
         <div pageslide ps-open="vmManager.personBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
+                <div class="pull-left" style="width:15%;">
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>工号</th>
+                                    <th>姓名</th>
+                                    <th>总时数</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="pull-right" style="width:85%;">
+                    <div class="bs-callout bs-callout-info">
 
+                    </div>
+                </div>
             </div>
         </div>
         <div pageslide ps-open="vmManager.orderIdBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>

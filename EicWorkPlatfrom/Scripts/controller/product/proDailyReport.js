@@ -327,7 +327,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         department: '生技部',
         classTypes: [{id:'B', text:'晚班'}, {id:'A',text:"白班"}],
         //该部门的机台列表
-        machines:[],
+        machines: [],
+        unproductReasons:[],
         InputDate:new Date(),
         dReportInputDisplay: false,
         dReportPreviewDisplay: false,
@@ -750,6 +751,14 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             }
             if ($event.keyCode === 13 || $event.keyCode === 9) {
                 item.NonProductionReasonCode = $scope.vm.NonProductionReasonCode;
+                var itemcode = _.find(vmManager.unproductReasons, { NonProductionReasonCode: item.NonProductionReasonCode });
+                if (itemcode !== undefined) {
+                    item.NonProductionReason = itemcode.NonProductionReason;
+                }
+                else {
+                    item.NonProductionReason = '待添加--';
+                }
+                $scope.vm.NonProductionReason = item.NonProductionReason;
             }
             vmManager.editNextProductHoursRow($event, item);
         },
@@ -808,6 +817,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     $scope.promise = dReportDataOpService.getDReportInitData(vmManager.department).then(function (datas) {
         departmentTreeSet.setTreeDataset(datas.departments);
         vmManager.machines = datas.machines;
+        vmManager.unproductReasons = datas.unproductReasons;
     });
 
     $scope.ztree = departmentTreeSet;

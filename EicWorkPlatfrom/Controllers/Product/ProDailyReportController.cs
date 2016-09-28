@@ -156,8 +156,8 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
             var machines = DailyReportService.ConfigManager.MachineSetter.GetMachineListBy(department);
-            //var unproductReasons=DailyReportService.ConfigManager.NonProductionReasonSetter.GetNonProductionListBy
-            var datas = new { departments = departments, machines = machines };
+            var unproductReasons = DailyReportService.ConfigManager.NonProductionReasonSetter.GetNonProductionReasonListBy(department);
+            var datas = new { departments = departments, machines = machines, unproductReasons = unproductReasons };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
