@@ -76,7 +76,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
             model.NonProductionReason = "Test2";
            // var tem = DailyReportService.ConfigManager.NonProductionSetter.AddNonProductionRecord(model);
 
-            var tem2 = DailyReportService.ConfigManager.NonProductionSetter.GetNonProductionListBy("生技部");
+            var tem2 = DailyReportService.ConfigManager.NonProductionReasonSetter.GetNonProductionReasonListBy("生技部");
           
             if (tem2 == null) { Assert.Fail(); }
         }

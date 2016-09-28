@@ -35,9 +35,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 非生产原因设置
         /// </summary>
-        public NonProductionConfig NonProductionSetter
+        public NonProductionReasonConfig NonProductionReasonSetter
         {
-            get { return OBulider.BuildInstance<NonProductionConfig>(); }
+            get { return OBulider.BuildInstance<NonProductionReasonConfig>(); }
         }
     }
 
@@ -168,16 +168,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 非生产原因管理器
     /// </summary>
-    public class NonProductionConfig
+    public class NonProductionReasonConfig
     {
         /// <summary>
         /// 获取非生产原因列表
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        public List<NonProductionModel> GetNonProductionListBy(string department)
+        public List<NonProductionModel> GetNonProductionReasonListBy(string department)
         {
-            return DailyReportConfigCrudFactory.NonProduction.GetNonProductionListBy(department);
+            return DailyReportConfigCrudFactory.NonProductionReason.GetNonProductionListBy(department);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public OpResult AddNonProductionRecord(NonProductionModel model)
         {
-            return DailyReportConfigCrudFactory.NonProduction.AddNonProductionRecord(model);
+            return DailyReportConfigCrudFactory.NonProductionReason.AddNonProductionRecord(model);
         }
 
     }

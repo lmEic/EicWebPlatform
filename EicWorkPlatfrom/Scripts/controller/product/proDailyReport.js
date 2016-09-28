@@ -290,15 +290,18 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         QtyGood: null,
         QtyBad: null,
         FailureRate: null,
-        SetHours: 12,
+        SetHours: null,
         InputHours: null,
         ProductionHours: null,
         AttendanceHours: null,
         NonProductionHours: null,
+        NonProductionReasonCode: null,
+        NonProductionReason: null,
         ReceiveHours: null,
         ManHours: null,
         ProductionEfficiency: null,
         OperationEfficiency: null,
+        Remarks:null,
         OpPerson: null,
         OpSign: null,
         OpDate: null,
@@ -315,13 +318,14 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         proFlowColSpan:2,
         workerColSpan: 3,
         productColSpan: 3,
-        workHoursColSpan:5
+        workHoursColSpan:6
     };
 
     $scope.tbl = tablevm;
 
     var vmManager = {
         department: '生技部',
+        classTypes: [{id:'B', text:'晚班'}, {id:'A',text:"白班"}],
         //该部门的机台列表
         machines:[],
         InputDate:new Date(),
@@ -341,15 +345,15 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 tablevm.proFlowColSpan = 2;
                 tablevm.workerColSpan = 3;
                 tablevm.productColSpan = 3;
-                tablevm.workHoursColSpan = 5;
+                tablevm.workHoursColSpan = 6;
             }
             else {
                 tablevm.colVisible = false;
                 tablevm.orderIdColSpan = 1;
                 tablevm.proFlowColSpan = 1;
-                tablevm.workerColSpan = 2;
+                tablevm.workerColSpan = 3;
                 tablevm.productColSpan = 2;
-                tablevm.workHoursColSpan = 4;
+                tablevm.workHoursColSpan = 6;
             }
         },
         edittingRowIndex: 0,//编辑中的行索引
@@ -432,7 +436,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                     vmManager.productFlows = item.data.productFlows;
                 }
                 else {
-                   $scope.searchPromise= dReportDataOpService.getOrderDetails(vmManager.department, $scope.vm.OrderId).then(function (data) {
+                    $scope.searchPromise= dReportDataOpService.getOrderDetails(vmManager.department, $scope.vm.OrderId).then(function (data) {
                         if (angular.isObject(data)) {
                             vmManager.orderDatas.push({ orderId: $scope.vm.OrderId, data: data });
                             vmManager.bindOrderInfo(data.orderDetails);
@@ -457,7 +461,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                     return;
                 }
             }
-            if ($event.keyCode === 13) {
+            if ($event.keyCode === 13 || $event.keyCode === 9) {
                 var workerId = null;
                 if (workerType === 'worker') {
                     workerId = uiVM.UserWorkerId;
@@ -500,6 +504,40 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                     });
                 }
             }
+        },
+        //添加备注信息
+        addRemarks: function (item) {
+            vmManager.getCurrentRow(item);
+            vmManager.editRemarksModal.$promise.then(vmManager.editRemarksModal.show);
+        },
+        editRemarksModal: $modal({
+            title: '添加备注信息',
+            content: '',
+            templateUrl:leeHelper.controllers.dailyReport+"/EditRemarkViewTpl/",
+            controller: function ($scope) {
+                $scope.vm = {
+                    Remarks:null,
+                };
+                var op = Object.create(leeDataHandler.operateStatus);
+                $scope.save = function (isValid) {
+                    leeDataHandler.dataOperate.add(op, isValid, function () {
+                        vmManager.edittingRow.Remarks = $scope.vm.Remarks;
+                        vmManager.editRemarksModal.$promise.then(vmManager.editRemarksModal.hide);
+                    });
+                };
+            },
+            show:false,
+        }),
+        //编辑班别
+        editClassType: function (item) {
+            item.isEdittingClassType = true;
+            vmManager.getCurrentRow(item);
+            $scope.vm.ClassType = item.ClassType;
+        },
+        //选择班别
+        selectClassType: function () {
+            vmManager.edittingRow.ClassType = $scope.vm.ClassType;
+            vmManager.edittingRow.isEdittingClassType = false;
         },
         //获取正在编辑的行
         getEdittingRow: function () {
@@ -597,6 +635,11 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             vmManager.getProductFlows(item.OrderId);
             item.editting = true;
         },
+        //设定行
+        getCurrentRow: function (item) {
+            vmManager.edittingRowIndex = item.rowindex;
+            vmManager.edittingRow = item;
+        },
         //待编辑的记录集合
         editDatas:[],
         //新增记录
@@ -615,6 +658,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         editProductHoursRow: function (item) {
             if (item !== undefined && item !== null) {
                 angular.forEach(vmManager.editDatas, function (edititem) { edititem.pheditting = false });
+                item.SetHours = 12;
+                item.InputHours = 12;
                 leeHelper.copyVm(item, uiVM);
                 $scope.vm = uiVM;
                 vmManager.edittingRowIndex = item.rowindex;
@@ -622,6 +667,20 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 vmManager.getProductFlows(item.OrderId);
                 item.pheditting = true;
                 focusSetter['qtyFocus'] = true;
+            }
+        },
+        //编辑下一行产量工时信息
+        editNextProductHoursRow: function ($event,item) {
+            if ($event.keyCode === 13 || $event.keyCode === 9) {
+                leeHelper.copyVm($scope.vm, vmManager.edittingRow);
+                if (item.rowindex < vmManager.editDatas.length) {
+                    vmManager.edittingRowIndex = item.rowindex + 1;
+                    var rowItem = vmManager.getEdittingRow();
+                    vmManager.editProductHoursRow(rowItem);
+                }
+                else {
+                    vmManager.edittingRow.pheditting = false;
+                }
             }
         },
         inputQty: function ($event, item) {
@@ -640,49 +699,57 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             });
          
 
-            focusSetter.moveFocusTo($event, 'qtyFocus', 'inputHoursFocus');
+            focusSetter.moveFocusTo($event, 'qtyFocus', 'setHoursFocus');
+        },
+        inputSetHours: function ($event, item) {
+            focusSetter.doWhenKeyDown($event, function () {
+                item.SetHours = $scope.vm.SetHours;
+            });
+
+            focusSetter.moveFocusTo($event, 'qtyBadFocus', 'inputHoursFocus');
         },
         inputHours: function ($event,item) {
             focusSetter.doWhenKeyDown($event, function () {
                 item.InputHours = $scope.vm.InputHours;
             });
            
-            focusSetter.moveFocusTo($event, 'qtyBadFocus', 'productHoursFoucs');
-        },
-        inputProductionHours: function ($event,item) {
-            focusSetter.doWhenKeyDown($event, function () {
-                item.ProductionHours = $scope.vm.ProductionHours;
-            });
-            
-            focusSetter.moveFocusTo($event, 'inputHoursFocus', 'attendanceHoursFoucs');
+            focusSetter.moveFocusTo($event, 'setHoursFocus', 'attendanceHoursFoucs');
         },
         inputAttendanceHours: function ($event,item) {
             focusSetter.doWhenKeyDown($event, function () {
                 item.AttendanceHours = $scope.vm.AttendanceHours;
             });
             
-            focusSetter.moveFocusTo($event, 'productHoursFoucs', 'nonProductHoursFocus');
+            focusSetter.moveFocusTo($event, 'inputHoursFoucs', 'nonProductHoursFocus');
         },
         inputNonProductionHours: function ($event, item) {
-            focusSetter.doWhenKeyDown($event, function () {
-                item.InputNonProductionHours = $scope.vm.InputNonProductionHours;
-            });
-
             if ($event.keyCode === 37) {
                 focusSetter['AttendanceHours'] = true;
                 return;
             }
-            if ($event.keyCode === 13) {
-                leeHelper.copyVm($scope.vm, vmManager.edittingRow);
-                if (item.rowindex < vmManager.editDatas.length) {
-                    vmManager.edittingRowIndex = item.rowindex + 1;
-                    var rowItem = vmManager.getEdittingRow();
-                    vmManager.editProductHoursRow(rowItem);
+            focusSetter.doWhenKeyDown($event, function () {
+                item.NonProductionHours = $scope.vm.NonProductionHours;
+                if ($scope.vm.NonProductionHours > 0) {
+                    item.ProductionHours = item.SetHours - item.NonProductionHours;
+                    item.isHadNonProductionHours = true;
+                    $scope.vm.ProductionHours = item.ProductionHours;
+                    focusSetter['nonProductReasonCodeFocus'] = true;
                 }
                 else {
-                    vmManager.edittingRow.pheditting = false;
+                    item.isHadNonProductionHours = false;
+                    vmManager.editNextProductHoursRow($event, item);
                 }
+            });
+        },
+        inputNonProductionReasonCode: function ($event, item) {
+            if ($event.keyCode === 37) {
+                focusSetter['AttendanceHours'] = true;
+                return;
             }
+            if ($event.keyCode === 13 || $event.keyCode === 9) {
+                item.NonProductionReasonCode = $scope.vm.NonProductionReasonCode;
+            }
+            vmManager.editNextProductHoursRow($event, item);
         },
     };
     $scope.vmManager = vmManager;
@@ -731,13 +798,15 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         productFlowFocus: false,
         qtyFocus: false,
         qtyBadFocus: false,
+        setHoursFocus:false,
         inputHoursFocus: false,
         productHoursFoucs: false,
         attendanceHoursFoucs: false,
-        nonProductHoursFocus:false,
+        nonProductHoursFocus: false,
+        nonProductReasonCodeFocus: false,
         //移动焦点到指定对象
         moveFocusTo: function ($event, elPreName,elNextName) {
-            if ($event.keyCode === 13 || $event.keyCode === 39) {
+            if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {
                 focusSetter[elNextName] = true;
             }
             else if ($event.keyCode === 37) {
@@ -745,7 +814,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             };
         },
         doWhenKeyDown: function ($event, fn) {
-            if ($event.keyCode === 13 || $event.keyCode === 39) { fn();}
+            if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) { fn(); }
         }
     };
     $scope.focus = focusSetter;

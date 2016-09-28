@@ -1251,9 +1251,4 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         #endregion Model
     }
-
-
-
-
-
 }
