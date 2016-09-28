@@ -1288,6 +1288,7 @@
     <Content Include="Views\ProBoard\AuditMaterailBoardTpl.cshtml" />
     <Content Include="Views\ProDailyReport\DReportHoursSet.cshtml" />
     <Content Include="Views\ProDailyReport\DReportInput.cshtml" />
+    <Content Include="Views\ProDailyReport\EditRemarkViewTpl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -110,6 +110,10 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
+        public ActionResult EditRemarkViewTpl()
+        {
+            return View();
+        }
         /// <summary>
         /// 获取日报输入模板
         /// </summary>
@@ -152,6 +156,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
             var machines = DailyReportService.ConfigManager.MachineSetter.GetMachineListBy(department);
+            //var unproductReasons=DailyReportService.ConfigManager.NonProductionReasonSetter.GetNonProductionListBy
             var datas = new { departments = departments, machines = machines };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }

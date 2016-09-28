@@ -32,9 +32,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 非生产原因
         /// </summary>
-        public static NonProductionCrud NonProduction
+        public static NonProductionReasonCrud NonProductionReason
         {
-            get { return OBulider.BuildInstance<NonProductionCrud>(); }
+            get { return OBulider.BuildInstance<NonProductionReasonCrud>(); }
         }
 
     }
@@ -256,9 +256,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 非生产原因CRUD
     /// </summary>
-    internal class NonProductionCrud : CrudBase<NonProductionModel, INonProductionModelRepositoryRepository>
+    internal class NonProductionReasonCrud : CrudBase<NonProductionModel, INonProductionModelRepositoryRepository>
     {
-        public NonProductionCrud() : base(new NonProductionModelRepositoryRepository(), "非生产原因")
+        public NonProductionReasonCrud() : base(new NonProductionModelRepositoryRepository(), "非生产原因")
         {
         }
 
