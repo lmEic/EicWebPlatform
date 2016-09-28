@@ -237,5 +237,18 @@ namespace EicWorkPlatfrom.Controllers
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         #endregion
+
+        #region equipment repair module method
+      
+        /// <summary>
+        /// 设备维修录入
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AstInputRepairRecord()
+        {
+            return View();
+        }
+
+        #endregion
     }
 }
