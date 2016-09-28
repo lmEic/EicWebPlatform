@@ -32,6 +32,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             get { return OBulider.BuildInstance<MachineConfig>(); }
         }
 
+        /// <summary>
+        /// 非生产原因设置
+        /// </summary>
+        public NonProductionReasonConfig NonProductionReasonSetter
+        {
+            get { return OBulider.BuildInstance<NonProductionReasonConfig>(); }
+        }
     }
 
     /// <summary>
@@ -48,7 +55,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string departemant)
         {
-            return DailyReportConfigCrudFactory.ProductFlowCrud.GetProductFlowOverviewListBy(departemant);
+            return DailyReportConfigCrudFactory.ProductFlowConfigCrud.GetProductFlowOverviewListBy(departemant);
         }
 
         /// <summary>
@@ -58,7 +65,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public  ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
-            return DailyReportConfigCrudFactory.ProductFlowCrud.GetProductFlowOverviewBy(dto);
+            return DailyReportConfigCrudFactory.ProductFlowConfigCrud.GetProductFlowOverviewBy(dto);
         }
 
         /// <summary>
@@ -69,7 +76,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<ProductFlowModel> GetProductFlowListBy(QueryDailyReportDto dto)
         {
-            return DailyReportConfigCrudFactory.ProductFlowCrud.FindBy(dto);
+            return DailyReportConfigCrudFactory.ProductFlowConfigCrud.FindBy(dto);
         }
 
          #endregion
@@ -119,8 +126,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             //先依据部门和品名进行数据库清除 然后批量添加进数据库
             if (modelList.Count > 0)
             {
-                DailyReportConfigCrudFactory.ProductFlowCrud.DeleteProductFlowModelBy(modelList[0].Department, modelList[0].ProductName);
-                return DailyReportConfigCrudFactory.ProductFlowCrud.AddProductFlowModelList(modelList);
+                DailyReportConfigCrudFactory.ProductFlowConfigCrud.DeleteProductFlowModelBy(modelList[0].Department, modelList[0].ProductName);
+                return DailyReportConfigCrudFactory.ProductFlowConfigCrud.AddProductFlowModelList(modelList);
             }
             else
             {
@@ -143,7 +150,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<MachineModel> GetMachineListBy(string department)
         {
-            return DailyReportConfigCrudFactory.MachineCrud.GetMachineListBy(department);
+            return DailyReportConfigCrudFactory.MachineConfigCrud.GetMachineListBy(department);
         }
 
         /// <summary>
@@ -153,9 +160,36 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public OpResult AddMachineRecord(MachineModel model)
         {
-            return DailyReportConfigCrudFactory.MachineCrud.AddMachineRecord(model);
+            return DailyReportConfigCrudFactory.MachineConfigCrud.AddMachineRecord(model);
         }
       
+    }
+
+    /// <summary>
+    /// 非生产原因管理器
+    /// </summary>
+    public class NonProductionReasonConfig
+    {
+        /// <summary>
+        /// 获取非生产原因列表
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        public List<NonProductionReasonModel> GetNonProductionReasonListBy(string department)
+        {
+            return DailyReportConfigCrudFactory.NonProductionReasonConfigCrud.GetNonProductionListBy(department);
+        }
+
+        /// <summary>
+        /// 添加一条非生产原因
+        /// </summary>
+        /// <param name="model">非生产原因模型</param>
+        /// <returns></returns>
+        public OpResult AddNonProductionRecord(NonProductionReasonModel model)
+        {
+            return DailyReportConfigCrudFactory.NonProductionReasonConfigCrud.AddNonProductionRecord(model);
+        }
+
     }
 
 }

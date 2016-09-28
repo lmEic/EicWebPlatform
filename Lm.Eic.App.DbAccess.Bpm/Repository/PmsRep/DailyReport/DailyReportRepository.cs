@@ -113,4 +113,16 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     public class MachineRepositoryRepository : BpmRepositoryBase<MachineModel>, IMachineRepositoryRepository
     { }
 
+
+    /// <summary>
+    /// 非生产原因仓储
+    /// </summary>
+    public interface INonProductionReasonModelRepository : IRepository<NonProductionReasonModel> { }
+    /// <summary>
+    ///  非生产原因仓储
+    /// </summary>
+    public class NonProductionReasonModelRepository : BpmRepositoryBase<NonProductionReasonModel>, INonProductionReasonModelRepository
+    { }
+
+
 }

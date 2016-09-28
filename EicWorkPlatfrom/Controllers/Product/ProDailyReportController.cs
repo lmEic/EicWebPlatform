@@ -110,15 +110,19 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
+        public ActionResult EditRemarkViewTpl()
+        {
+            return View();
+        }
         /// <summary>
         /// 获取日报输入模板
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetDailyReportTemplate(string department)
+        public JsonResult GetDailyReportTemplate(string department,DateTime dailyReportDate)
         {
-            var datas = 0;
+            var datas = DailyReportService.InputManager.DailyReportInputManager.GetDailyReportTemplate(department, dailyReportDate);
             return Json(datas,JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -152,6 +156,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
             var machines = DailyReportService.ConfigManager.MachineSetter.GetMachineListBy(department);
+            //var unproductReasons=DailyReportService.ConfigManager.NonProductionReasonSetter.GetNonProductionListBy
             var datas = new { departments = departments, machines = machines };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }

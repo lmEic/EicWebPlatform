@@ -33,7 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
             {
                 Department = "生技部",
                 SearchMode = 5,
-                OrderId = "512-1608092"
+                OrderId = "517-1605031"
             });
             if (tem == null) { Assert.Fail(); }
 
@@ -58,12 +58,27 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
         {
             var model = new MachineModel();
             model.Department = "生技部";
-            model.MachineId = "M90T-1";
+            model.MachineId = "M10T-1";
             model.MachineName = "测试机台";
 
             var tem = DailyReportService.ConfigManager.MachineSetter.GetMachineListBy(model.Department);
 
             if (tem == null) { Assert.Fail(); }
+        }
+
+
+        [TestMethod()]
+        public void GetNonProductionListByTest()
+        {
+            var model = new NonProductionReasonModel();
+            model.Department = "生技部";
+            model.NonProductionReasonCode = "A2";
+            model.NonProductionReason = "Test2";
+           // var tem = DailyReportService.ConfigManager.NonProductionSetter.AddNonProductionRecord(model);
+
+            var tem2 = DailyReportService.ConfigManager.NonProductionReasonSetter.GetNonProductionReasonListBy("生技部");
+          
+            if (tem2 == null) { Assert.Fail(); }
         }
     }
 }

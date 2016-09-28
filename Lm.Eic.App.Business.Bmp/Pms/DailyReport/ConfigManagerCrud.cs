@@ -18,15 +18,23 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 日报录入
         /// </summary>
-        public static ProductFlowCrud ProductFlowCrud
-        { get { return OBulider.BuildInstance<ProductFlowCrud>(); } }
+        public static ProductFlowConfigCrud ProductFlowConfigCrud
+        { get { return OBulider.BuildInstance<ProductFlowConfigCrud>(); } }
 
         /// <summary>
         /// 机台
         /// </summary>
-        public static MachineCrud MachineCrud
+        public static MachineConfigCrud MachineConfigCrud
         {
-            get { return OBulider.BuildInstance<MachineCrud>(); }
+            get { return OBulider.BuildInstance<MachineConfigCrud>(); }
+        }
+
+        /// <summary>
+        /// 非生产原因
+        /// </summary>
+        public static NonProductionReasonConfigCrud NonProductionReasonConfigCrud
+        {
+            get { return OBulider.BuildInstance<NonProductionReasonConfigCrud>(); }
         }
 
     }
@@ -35,9 +43,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 工序CRUD
     /// </summary>
-    internal class ProductFlowCrud : CrudBase<ProductFlowModel, IProductFlowRepositoryRepository>
+    internal class ProductFlowConfigCrud : CrudBase<ProductFlowModel, IProductFlowRepositoryRepository>
     {
-        public ProductFlowCrud() : base(new ProductFlowRepositoryRepository(), "工艺")
+        public ProductFlowConfigCrud() : base(new ProductFlowRepositoryRepository(), "工艺")
         { }
 
         #region Store
@@ -201,9 +209,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 机台CRUD
     /// </summary>
-    internal class MachineCrud : CrudBase<MachineModel, IMachineRepositoryRepository>
+    internal class MachineConfigCrud : CrudBase<MachineModel, IMachineRepositoryRepository>
     {
-        public MachineCrud() : base(new MachineRepositoryRepository(), "机台管理")
+        public MachineConfigCrud() : base(new MachineRepositoryRepository(), "机台管理")
         {
         }
 
@@ -220,7 +228,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<MachineModel> GetMachineListBy(string department)
         {
-            return irep.Entities.Where(m => m.Department ==department).ToList();
+            try
+            {
+                return irep.Entities.Where(m => m.Department == department).ToList();
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
 
         /// <summary>
@@ -230,10 +242,61 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public OpResult AddMachineRecord(MachineModel model)
         {
-            model.OpSign = OpMode.Add;
-            model.ParamenterKey = string.Format("{0}&{1}", model.Department, model.MachineId);
-            SetFixFieldValue(model);
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+            try
+            {
+                model.OpSign = OpMode.Add;
+                SetFixFieldValue(model);
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        }
+    }
+
+
+    /// <summary>
+    /// 非生产原因CRUD
+    /// </summary>
+    internal class NonProductionReasonConfigCrud : CrudBase<NonProductionReasonModel, INonProductionReasonModelRepository>
+    {
+        public NonProductionReasonConfigCrud() : base(new NonProductionReasonModelRepository(), "非生产原因")
+        {
+        }
+
+        protected override void AddCrudOpItems()
+        {
+           // throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 获取非生产原因列表
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public List<NonProductionReasonModel> GetNonProductionListBy(string department)
+        {
+            try
+            {
+                return irep.Entities.Where(m => m.Department == m.Department).ToList();
+
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        }
+
+        /// <summary>
+        /// 添加一条非生产原因
+        /// </summary>
+        /// <param name="model">非生产原因实体模型</param>
+        /// <returns></returns>
+        public OpResult AddNonProductionRecord(NonProductionReasonModel model)
+        {
+            try
+            {
+                model.OpSign = OpMode.Add;
+                SetFixFieldValue(model);
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
     }
 
