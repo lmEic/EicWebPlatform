@@ -34,7 +34,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         public DbSet<MachineModel> Machine { get; set; }
 
-        public DbSet<NonProductionModel> NonProduction { get; set; }
+        public DbSet<NonProductionReasonModel> NonProduction { get; set; }
 
         public DbSet<ProductFlowModel> ProductFlow { get; set; }
 

@@ -70,7 +70,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
         [TestMethod()]
         public void GetNonProductionListByTest()
         {
-            var model = new NonProductionModel();
+            var model = new NonProductionReasonModel();
             model.Department = "生技部";
             model.NonProductionReasonCode = "A2";
             model.NonProductionReason = "Test2";

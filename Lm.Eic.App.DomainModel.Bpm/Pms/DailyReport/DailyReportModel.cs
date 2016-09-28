@@ -1172,9 +1172,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
     ///非生产原因实体模型
     /// </summary>
     [Serializable]
-    public partial class NonProductionModel
+    public partial class NonProductionReasonModel
     {
-        public NonProductionModel()
+        public NonProductionReasonModel()
         { }
         #region Model
         private string _department;
