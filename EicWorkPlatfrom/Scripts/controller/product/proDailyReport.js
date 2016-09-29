@@ -385,6 +385,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         },
         showOrderIdView: function () { vmManager.orderIdBoardDisplay = true; },
         getReportInputDataTemplate: function () {
+            vmManager.editDatas = [];
             $scope.promise = dReportDataOpService.getDailyReportTemplate(vmManager.department,vmManager.InputDate).then(function (datas) {
                 if (angular.isArray(datas) && datas.length > 0) {
                     angular.forEach(datas, function (item) {
@@ -809,7 +810,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                     vmManager.workerAttendanceSumerizeHours.push({
                         UserWorkerId: rowItem.UserWorkerId,
                         UserName: rowItem.UserName,
-                        AttendanceHours:parseFloat(rowItem.AttendanceHours)
+                        AttendanceHours: parseFloat(rowItem.AttendanceHours),
+                        isAlert:parseFloat(rowItem.AttendanceHours)>12
                     });
                 }
                 else {

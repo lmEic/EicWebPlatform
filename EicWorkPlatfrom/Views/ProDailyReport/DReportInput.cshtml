@@ -43,7 +43,8 @@
             <div class="h-split"></div>
             <span yl-operatemsg-board></span>
         </div>
-        <div class="bs-callout bs-callout-info" style="min-height:475px;" id="editWindow">
+
+        <div style="min-height:471px;max-height:476px;" id="editWindow">
             <div class="table-responsive" style="min-height:470px;max-height:475px;overflow-y:auto">
                 <table class="table table-bordered table-condensed table-hover" style="table-layout:fixed;">
                     <colgroup>
@@ -161,8 +162,8 @@
                                        ng-keydown="vmManager.getWorkOrderInfo($event)" placeholder="工单单号" ng-show="item.editting" />
                             </td>
 
-                            <td class="text-center" ng-show="tbl.colVisible" cg-busy="{promise:searchPromise}">{{item.ProductName}}</td>
-                            <td class="text-center" ng-show="tbl.colVisible">{{item.ProductSpecification}}</td>
+                            <td ng-show="tbl.colVisible" cg-busy="{promise:searchPromise}">{{item.ProductName}}</td>
+                            <td ng-show="tbl.colVisible">{{item.ProductSpecification}}</td>
 
                             @*工艺、机台*@
                             <td>
@@ -263,7 +264,7 @@
                                 <button type="button" class="btn btn-xs btn-primary" ng-show="item.editting"
                                         data-animation="am-flip-x"
                                         bs-dropdown aria-haspopup="true" aria-expanded="false">
-                                       <span class="fa fa-pencil-square"></span>
+                                    <span class="fa fa-pencil-square"></span>
                                 </button>
                                 <div class="dropdown-menu" role="menu">
                                     <div class="list-group">
@@ -328,7 +329,7 @@
                                        placeholder="非生产时数" ng-show="item.pheditting" />
                             </td>
                             <td>
-                               {{item.ProductionHours}}
+                                {{item.ProductionHours}}
                             </td>
                             <td>
                                 <div ng-hide="item.pheditting">
@@ -354,18 +355,20 @@
                 </table>
             </div>
         </div>
+        
 
-        <div pageslide ps-open="vmManager.dReportPreviewDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
+        <div pageslide ps-open="vmManager.dReportPreviewDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
 
             </div>
         </div>
-        <div pageslide ps-open="vmManager.proFlowBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
+        <div pageslide ps-open="vmManager.proFlowBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
 
             </div>
         </div>
-        <div pageslide ps-open="vmManager.personBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
+
+        <div pageslide ps-open="vmManager.personBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
                 <div class="pull-left" style="width:20%;">
                     <div class="table-responsive">
@@ -386,11 +389,11 @@
                                 <tr ng-repeat="item in vmManager.workerAttendanceSumerizeHours track by $index">
                                     <td>{{item.UserWorkerId}}</td>
                                     <td>{{item.UserName}}</td>
-                                    <td>
-                                    {{item.AttendanceHours}}
-                                    <span class="btn btn-xs btn-primary pull-right">
-                                        <i class="fa fa-location-arrow" ng-click="vmManager.viewAttendanceHoursDetails(item)"></i>
-                                    </span>
+                                    <td ng-class="item.isAlert===true?'danger':''">
+                                        {{item.AttendanceHours}}
+                                        <span class="btn btn-xs btn-primary pull-right">
+                                            <i class="fa fa-location-arrow" ng-click="vmManager.viewAttendanceHoursDetails(item)"></i>
+                                        </span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -460,7 +463,8 @@
                 </div>
             </div>
         </div>
-        <div pageslide ps-open="vmManager.orderIdBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
+
+        <div pageslide ps-open="vmManager.orderIdBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
 
             </div>
