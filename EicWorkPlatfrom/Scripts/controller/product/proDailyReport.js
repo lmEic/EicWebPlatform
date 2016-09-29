@@ -324,7 +324,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     $scope.tbl = tablevm;
 
     var vmManager = {
-        department: '生技部',
+        department: '成型课',
         classTypes: [{id:'B', text:'晚班'}, {id:'A',text:"白班"}],
         //该部门的机台列表
         machines: [],
@@ -377,7 +377,12 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         },
         showDReportPreviewView: function () { vmManager.dReportPreviewDisplay = true; },
         showProFlowView: function () { vmManager.proFlowBoardDisplay = true; },
-        showPersonView: function () { vmManager.personBoardDisplay = true; },
+        showPersonView: function () {
+            vmManager.workerAttendanceSumerizeHours = [];
+            vmManager.workerAttendanceHoursDetails = [];
+            vmManager.sumerizeWorkerAttendanceHours(vmManager.editDatas);
+            vmManager.personBoardDisplay = true;
+        },
         showOrderIdView: function () { vmManager.orderIdBoardDisplay = true; },
         getReportInputDataTemplate: function () {
             $scope.promise = dReportDataOpService.getDailyReportTemplate(vmManager.department,vmManager.InputDate).then(function (datas) {
@@ -431,6 +436,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         getWorkOrderInfo: function ($event) {
             if ($event.keyCode === 13 || $event.keyCode === 40)
             {
+                if ($scope.vm.OrderId === undefined || $scope.vm.OrderId.length <= 10) return;
+
                 var item = _.find(vmManager.orderDatas, { orderId: $scope.vm.OrderId });
                 if (!angular.isUndefined(item)) {
                     vmManager.bindOrderInfo(item.data.orderDetails);
@@ -523,6 +530,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 $scope.save = function (isValid) {
                     leeDataHandler.dataOperate.add(op, isValid, function () {
                         vmManager.edittingRow.Remarks = $scope.vm.Remarks;
+                        uiVM.Remarks = vmManager.edittingRow.Remarks;
                         vmManager.editRemarksModal.$promise.then(vmManager.editRemarksModal.hide);
                     });
                 };
@@ -734,8 +742,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 $scope.vm.ProductionHours = item.ProductionHours;
                 if ($scope.vm.NonProductionHours > 0) {
                     item.isHadNonProductionHours = true;
-                    vmManager.caculateEfficient(item);
                     focusSetter['nonProductReasonCodeFocus'] = true;
+                    vmManager.caculateEfficient(item);
                 }
                 else {
                     item.isHadNonProductionHours = false;
@@ -765,15 +773,20 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         //计算效率
         caculateEfficient: function (item) {
             //稼动率=生产工时/设置工时*100%
-            item.EquipmentEifficiency = leeHelper.toPercent(item.ProductionHours / item.SetHours, 0);
+            if (parseInt(item.SetHours) !== 0)
+                item.EquipmentEifficiency = leeHelper.toPercent(parseFloat(item.ProductionHours) /parseFloat(item.SetHours), 0);
             //得到工时=生产数量/标准工时*100%
-            var getProductHours = item.Qty / item.StandardHours;
+            if (parseInt(item.StandardHours) !== 0)
+                var getProductHours =parseFloat(item.Qty) /parseFloat(item.StandardHours);
             //作业效率=得到工时/生产工时*100%
-            item.OperationEfficiency = leeHelper.toPercent(getProductHours / item.ProductionHours, 1);
+            if (parseInt(item.ProductionHours) !== 0)
+                item.OperationEfficiency = leeHelper.toPercent(getProductHours /parseFloat(item.ProductionHours), 1);
             //生产效率=得到工时/投入时数*100%
-            item.ProductionEfficiency = leeHelper.toPercent(getProductHours / item.InputHours, 1);
+            if (parseInt(item.InputHours) !== 0)
+                item.ProductionEfficiency = leeHelper.toPercent(getProductHours /parseFloat(item.InputHours), 1);
             //不良率=不良品数量/总产量*100%
-            item.FailureRate = leeHelper.toPercent(item.QtyBad / item.Qty, 2);
+            if (parseInt(item.Qty) !== 0)
+                item.FailureRate = leeHelper.toPercent(parseFloat(item.QtyBad) /parseFloat(item.Qty), 2);
 
 
             $scope.vm.EquipmentEifficiency = item.EquipmentEifficiency;
@@ -781,6 +794,63 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             $scope.vm.OperationEfficiency = item.OperationEfficiency;
             $scope.vm.ProductionEfficiency = item.ProductionEfficiency;
 
+        },
+        //员工出勤汇总工时数据
+        workerAttendanceSumerizeHours: [],
+        //员工出勤汇总工时数据明细
+        workerAttendanceHoursDetails:[],
+        //汇总员工出勤工时
+        sumerizeWorkerAttendanceHours: function (dReportDatas) {
+            vmManager.workerAttendanceSumerizeHours = [];
+            if (!angular.isArray(dReportDatas) || dReportDatas.length === 0) return;
+            angular.forEach(dReportDatas, function (rowItem) {
+                var wah = _.find(vmManager.workerAttendanceSumerizeHours, { UserWorkerId: rowItem.UserWorkerId });
+                if (angular.isUndefined(wah)) {
+                    vmManager.workerAttendanceSumerizeHours.push({
+                        UserWorkerId: rowItem.UserWorkerId,
+                        UserName: rowItem.UserName,
+                        AttendanceHours:parseFloat(rowItem.AttendanceHours)
+                    });
+                }
+                else {
+                    wah.AttendanceHours +=parseFloat(rowItem.AttendanceHours);
+                }
+            })
+        },
+        //查看作业员的工时记录明细
+        viewAttendanceHoursDetails: function (item) {
+            vmManager.edittingAttendanceHoursRow = item;
+            vmManager.workerAttendanceHoursDetails = [];
+            vmManager.workerAttendanceHoursDetails = _.where(vmManager.editDatas, { UserWorkerId: item.UserWorkerId });
+        },
+        //要编辑的出勤工时
+        editAttendanceHours: 0,
+        edittingAttendanceHoursRow:null,
+        //进入编辑出勤工时模式
+        enterEditAttendanceHoursMode: function (item) {
+            vmManager.editAttendanceHours = item.AttendanceHours;
+            item.edittingAttendanceHours = true;
+        },
+        //退出编辑出勤工时模式
+        exitEditAttendanceHoursMode: function ($event, item) {
+            focusSetter.doWhenKeyDown($event, function () {
+                item.AttendanceHours = vmManager.editAttendanceHours;
+                item.edittingAttendanceHours = false;
+                //同步更新日报中的出勤工时数据
+                var workerItem = _.find(vmManager.editDatas, { rowindex: item.rowindex });
+                if (!angular.isUndefined(workerItem)) {
+                    workerItem.AttendanceHours = vmManager.editAttendanceHours;
+                }
+                //同步更新左侧汇总表中的出勤工时数据
+                var workerAttendanceHoursDetails = _.where(vmManager.editDatas, { UserWorkerId: item.UserWorkerId });
+                var sumAttendanceHours = 0;
+                if (workerAttendanceHoursDetails.length > 0) {
+                    angular.forEach(workerAttendanceHoursDetails, function (data) {
+                        sumAttendanceHours += parseFloat(data.AttendanceHours);
+                    });
+                    vmManager.edittingAttendanceHoursRow.AttendanceHours = sumAttendanceHours;
+                }
+            });
         },
     };
     $scope.vmManager = vmManager;
