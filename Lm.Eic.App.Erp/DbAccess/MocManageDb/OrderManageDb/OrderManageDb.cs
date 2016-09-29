@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,4 +100,31 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
             });
         }
     }
+
+
+   public class BusinessOrder
+   {
+       public List<string>MesProductType()
+       {
+           StringBuilder sb = new StringBuilder();
+           sb.Append("SELECT  DISTINCT ProductTypeCommon  ")
+             .Append("FROM    Para_ProductType ")
+             .Append("WHERE  (TypeVisible = '1') AND (MaterialId IS NOT NULL) ");
+          DataTable dt= DbHelper.Mes.LoadTable(sb.ToString());
+          List<string> ProductTypeList = new List<string>();
+           if (dt.Rows.Count > 0)
+           {
+               foreach (DataRow dr in dt.Rows)
+               {
+                  ProductTypeList.Add (dr[0].ToString ());
+               }
+           }
+           return ProductTypeList;
+
+          
+       }
+
+
+
+   }
 }
