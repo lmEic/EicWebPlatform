@@ -345,10 +345,10 @@
 
                             <td ng-show="tbl.colVisible">{{item.Remarks}}</td>
 
-                            <td ng-show="tbl.colVisible">{{item.EquipmentEifficiency}}</td>
-                            <td ng-show="tbl.colVisible">{{item.ProductionEfficiency}}</td>
-                            <td ng-show="tbl.colVisible">{{item.OperationEfficiency}}</td>
-                            <td ng-show="tbl.colVisible">{{item.FailureRate}}</td>
+                            <td ng-show="tbl.colVisible" class="info">{{item.EquipmentEifficiency}}</td>
+                            <td ng-show="tbl.colVisible" class="info">{{item.ProductionEfficiency}}</td>
+                            <td ng-show="tbl.colVisible" class="info">{{item.OperationEfficiency}}</td>
+                            <td ng-show="tbl.colVisible" class="info">{{item.FailureRate}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -367,29 +367,95 @@
         </div>
         <div pageslide ps-open="vmManager.personBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
-                <div class="pull-left" style="width:15%;">
+                <div class="pull-left" style="width:20%;">
                     <div class="table-responsive">
                         <table class="table table-condensed table-bordered table-hover">
+                            <colgroup>
+                                <col width="90" />
+                                <col width="90" />
+                                <col width="120" />
+                            </colgroup>
                             <thead>
                                 <tr>
-                                    <th>工号</th>
-                                    <th>姓名</th>
-                                    <th>总时数</th>
+                                    <th class="info">工号</th>
+                                    <th class="info">姓名</th>
+                                    <th class="info">出勤时数</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                <tr ng-repeat="item in vmManager.workerAttendanceSumerizeHours track by $index">
+                                    <td>{{item.UserWorkerId}}</td>
+                                    <td>{{item.UserName}}</td>
+                                    <td>
+                                    {{item.AttendanceHours}}
+                                    <span class="btn btn-xs btn-primary pull-right">
+                                        <i class="fa fa-location-arrow" ng-click="vmManager.viewAttendanceHoursDetails(item)"></i>
+                                    </span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="pull-right" style="width:85%;">
-                    <div class="bs-callout bs-callout-info">
+                <div class="pull-right" style="width:80%;">
+                    <div class="table-responsive" ng-show="vmManager.workerAttendanceHoursDetails.length>0">
+                        <table class="table table-condensed table-bordered table-hover" style="table-layout:fixed;">
+                            <colgroup>
+                                <col width="110" />
+                            </colgroup>
+                            <colgroup>
+                                <col width="130" />
+                            </colgroup>
+                            <colgroup>
+                                <col width="80" />
+                                <col width="80" />
+                            </colgroup>
+                            <colgroup>
+                                <col width="85" />
+                                <col width="85" />
+                                <col width="85" />
+                                <col width="85" />
+                                <col width="85" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <td class="text-center info"><span>工单号</span></td>
 
+                                    <td class="text-center info">
+                                        <span>机台/工艺</span>
+                                    </td>
+
+                                    <td class="text-center info"><span>产量</span></td>
+                                    <td class="text-center info"><span>不良数</span></td>
+
+                                    <td class="text-center info"><span>设置时数</span></td>
+                                    <td class="text-center info"><span>投入工时</span></td>
+                                    <td class="text-center info"><span>出勤时数</span></td>
+                                    <td class="text-center info"><span>非生产时数</span></td>
+                                    <td class="text-center info"><span>生产时数</span></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vmManager.workerAttendanceHoursDetails track by $index">
+                                    <td>{{item.OrderId}}</td>
+                                    <td><span ng-show="item.MachineId">{{item.MachineId}}/</span>{{item.ProductFlowName}}</td>
+                                    <td>{{item.Qty}}</td>
+                                    <td>{{item.QtyBad}}</td>
+                                    <td>{{item.SetHours}}</td>
+                                    <td>{{item.InputHours}}</td>
+
+                                    <td ng-dblclick="vmManager.enterEditAttendanceHoursMode(item)">
+                                        <span ng-hide="item.edittingAttendanceHours">{{item.AttendanceHours}}</span>
+                                        <input ng-model="vmManager.editAttendanceHours" ng-keydown="vmManager.exitEditAttendanceHoursMode($event,item)" style="width:75px;"
+                                               placeholder="出勤时数" ng-show="item.edittingAttendanceHours" />
+                                    </td>
+
+
+                                    <td>{{item.NonProductionHours}}</td>
+                                    <td>{{item.ProductionHours}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
