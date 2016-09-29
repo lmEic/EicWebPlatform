@@ -179,7 +179,7 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
     var printVM = {
         orderId:'',
         shippingDate:new Date(),
-        shippingCount: 0,
+        shippingCount: '0',
         print: function () {
             var img = document.getElementById('imagePreview');
             printJS(img.src, "image");
