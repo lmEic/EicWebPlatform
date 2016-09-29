@@ -1289,6 +1289,7 @@
     <Content Include="Views\ProDailyReport\DReportHoursSet.cshtml" />
     <Content Include="Views\ProDailyReport\DReportInput.cshtml" />
     <Content Include="Views\ProDailyReport\EditRemarkViewTpl.cshtml" />
+    <Content Include="Views\Equipment\AstInputRepairRecord.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

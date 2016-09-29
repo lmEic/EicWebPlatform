@@ -327,7 +327,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         department: '生技部',
         classTypes: [{id:'B', text:'晚班'}, {id:'A',text:"白班"}],
         //该部门的机台列表
-        machines:[],
+        machines: [],
+        unproductReasons:[],
         InputDate:new Date(),
         dReportInputDisplay: false,
         dReportPreviewDisplay: false,
@@ -729,14 +730,16 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             }
             focusSetter.doWhenKeyDown($event, function () {
                 item.NonProductionHours = $scope.vm.NonProductionHours;
+                item.ProductionHours = item.SetHours - item.NonProductionHours;
+                $scope.vm.ProductionHours = item.ProductionHours;
                 if ($scope.vm.NonProductionHours > 0) {
-                    item.ProductionHours = item.SetHours - item.NonProductionHours;
                     item.isHadNonProductionHours = true;
-                    $scope.vm.ProductionHours = item.ProductionHours;
+                    vmManager.caculateEfficient(item);
                     focusSetter['nonProductReasonCodeFocus'] = true;
                 }
                 else {
                     item.isHadNonProductionHours = false;
+                    vmManager.caculateEfficient(item);
                     vmManager.editNextProductHoursRow($event, item);
                 }
             });
@@ -748,8 +751,36 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             }
             if ($event.keyCode === 13 || $event.keyCode === 9) {
                 item.NonProductionReasonCode = $scope.vm.NonProductionReasonCode;
+                var itemcode = _.find(vmManager.unproductReasons, { NonProductionReasonCode: item.NonProductionReasonCode });
+                if (itemcode !== undefined) {
+                    item.NonProductionReason = itemcode.NonProductionReason;
+                }
+                else {
+                    item.NonProductionReason = '待添加--';
+                }
+                $scope.vm.NonProductionReason = item.NonProductionReason;
             }
             vmManager.editNextProductHoursRow($event, item);
+        },
+        //计算效率
+        caculateEfficient: function (item) {
+            //稼动率=生产工时/设置工时*100%
+            item.EquipmentEifficiency = leeHelper.toPercent(item.ProductionHours / item.SetHours, 0);
+            //得到工时=生产数量/标准工时*100%
+            var getProductHours = item.Qty / item.StandardHours;
+            //作业效率=得到工时/生产工时*100%
+            item.OperationEfficiency = leeHelper.toPercent(getProductHours / item.ProductionHours, 1);
+            //生产效率=得到工时/投入时数*100%
+            item.ProductionEfficiency = leeHelper.toPercent(getProductHours / item.InputHours, 1);
+            //不良率=不良品数量/总产量*100%
+            item.FailureRate = leeHelper.toPercent(item.QtyBad / item.Qty, 2);
+
+
+            $scope.vm.EquipmentEifficiency = item.EquipmentEifficiency;
+            $scope.vm.FailureRate = item.FailureRate;
+            $scope.vm.OperationEfficiency = item.OperationEfficiency;
+            $scope.vm.ProductionEfficiency = item.ProductionEfficiency;
+
         },
     };
     $scope.vmManager = vmManager;
@@ -786,6 +817,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     $scope.promise = dReportDataOpService.getDReportInitData(vmManager.department).then(function (datas) {
         departmentTreeSet.setTreeDataset(datas.departments);
         vmManager.machines = datas.machines;
+        vmManager.unproductReasons = datas.unproductReasons;
     });
 
     $scope.ztree = departmentTreeSet;
