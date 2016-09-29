@@ -388,8 +388,10 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             vmManager.editDatas = [];
             $scope.promise = dReportDataOpService.getDailyReportTemplate(vmManager.department,vmManager.InputDate).then(function (datas) {
                 if (angular.isArray(datas) && datas.length > 0) {
+                    var rowindex = 1;
                     angular.forEach(datas, function (item) {
                         item.editting = false;
+                        item.rowindex = rowindex;
                         //判断是否为机台
                         if (item.MachineId) {
                             item.isMachineMode = true;
@@ -398,6 +400,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                         }
                         item.pheditting = false;
                         vmManager.editDatas.push(item);
+                        rowindex += 1;
                     });
                 }
                 else {
