@@ -52,17 +52,16 @@
                     </colgroup>
                     <colgroup>
                         <col width="110" />
-                        <col width="140" ng-show="tbl.colVisible" />
-                        <col width="160" ng-show="tbl.colVisible" />
+                        <col width="160" ng-if="tbl.colVisible" />
                     </colgroup>
                     <colgroup>
                         <col width="130" />
-                        <col width="110" ng-show="tbl.colVisible" />
+                        <col width="110" ng-if="tbl.colVisible" />
                     </colgroup>
                     <colgroup>
                         <col width="95" />
                         <col width="95" />
-                        <col width="60" ng-show="tbl.colVisible" />
+                        <col width="60" ng-if="tbl.colVisible" />
                     </colgroup>
                     <colgroup>
                         <col width="40" />
@@ -70,7 +69,7 @@
                     <colgroup>
                         <col width="80" />
                         <col width="80" />
-                        <col width="80" />
+                        <col width="80" ng-if="tbl.colVisible" />
                     </colgroup>
                     <colgroup>
                         <col width="85" />
@@ -81,14 +80,13 @@
                         <col width="85" />
                     </colgroup>
                     <colgroup>
-                        <col width="65" ng-show="tbl.colVisible" />
+                        <col width="70"/>
                     </colgroup>
-                    <colgroup>
-                        <col width="80" ng-show="tbl.colVisible" />
-                        <col width="80" ng-show="tbl.colVisible" />
-                        <col width="80" ng-show="tbl.colVisible" />
-                        <col width="80" ng-show="tbl.colVisible" />
-                        <col width="80" ng-show="tbl.colVisible" />
+                    <colgroup ng-show="tbl.colVisible">
+                        <col width="80" ng-if="tbl.colVisible" />
+                        <col width="80" ng-if="tbl.colVisible" />
+                        <col width="80" ng-if="tbl.colVisible" />
+                        <col width="80" ng-if="tbl.colVisible" />
                     </colgroup>
                     <thead>
                         <tr>
@@ -106,7 +104,7 @@
 
                             <th class="text-center" colspan="{{tbl.workHoursColSpan}}">工时</th>
 
-                            <th class="text-center" ng-show="tbl.colVisible">备注</th>
+                            <th class="text-center" style="width:70px;">备注</th>
 
                             <th class="text-center" ng-show="tbl.colVisible" colspan="4">生产绩效</th>
                         </tr>
@@ -116,7 +114,7 @@
                             <td class="text-center info"><i class="fa fa-share-alt-square"></i></td>
 
                             <td class="text-center info"><span>工单号</span></td>
-                            <td class="text-center info" ng-show="tbl.colVisible"><span>品名</span></td>
+                            <td class="text-center info"><span>品名</span></td>
                             <td class="text-center info" ng-show="tbl.colVisible"><span>规格</span></td>
 
                             <td class="text-center info">
@@ -128,7 +126,7 @@
 
                             <td class="text-center info"><span>作业员</span></td>
                             <td class="text-center info"><span>师傅</span></td>
-                            <td ng-show="tbl.colVisible" class="text-center info"><span>班别</span></td>
+                            <td class="text-center info"><span>班别</span></td>
 
 
                             <td class="text-center info"><i class="fa fa-flag"></i></td>
@@ -143,9 +141,9 @@
                             <td class="text-center info"><span>出勤时数</span></td>
                             <td class="text-center info"><span>非生产时数</span></td>
                             <td class="text-center info"><span>生产时数</span></td>
-                            <td class="text-center info"><span>非生产原因</span></td>
+                            <td class="text-center info" style="width:155px;"><span>非生产原因</span></td>
 
-                            <td class="text-center info"><span>备注</span></td>
+                            <td class="text-center info" style="width:70px;"><span>备注</span></td>
 
                             <td ng-show="tbl.colVisible" class="text-center info"><span>稼动率</span></td>
                             <td ng-show="tbl.colVisible" class="text-center info"><span>生产效率</span></td>
@@ -344,7 +342,7 @@
                                 </div>
                             </td>
 
-                            <td ng-show="tbl.colVisible">{{item.Remarks}}</td>
+                            <td>{{item.Remarks}}</td>
 
                             <td ng-show="tbl.colVisible" class="info">{{item.EquipmentEifficiency}}</td>
                             <td ng-show="tbl.colVisible" class="info">{{item.ProductionEfficiency}}</td>

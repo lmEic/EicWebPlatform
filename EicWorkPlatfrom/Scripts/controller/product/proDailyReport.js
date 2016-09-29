@@ -350,7 +350,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             }
             else {
                 tablevm.colVisible = false;
-                tablevm.orderIdColSpan = 1;
+                tablevm.orderIdColSpan = 2;
                 tablevm.proFlowColSpan = 1;
                 tablevm.workerColSpan = 3;
                 tablevm.productColSpan = 2;
@@ -814,7 +814,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                         UserWorkerId: rowItem.UserWorkerId,
                         UserName: rowItem.UserName,
                         AttendanceHours: parseFloat(rowItem.AttendanceHours),
-                        isAlert:parseFloat(rowItem.AttendanceHours)>12
+                        isAlert:parseFloat(rowItem.AttendanceHours)>11
                     });
                 }
                 else {
@@ -854,6 +854,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                         sumAttendanceHours += parseFloat(data.AttendanceHours);
                     });
                     vmManager.edittingAttendanceHoursRow.AttendanceHours = sumAttendanceHours;
+                    vmManager.edittingAttendanceHoursRow.isAlert = sumAttendanceHours > 11;
                 }
             });
         },
