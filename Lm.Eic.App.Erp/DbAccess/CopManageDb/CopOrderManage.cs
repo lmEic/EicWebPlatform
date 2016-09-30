@@ -48,15 +48,20 @@ namespace Lm.Eic.App.Erp.DbAccess.CopManageDb
             }
             return ProductTypeList;
         }
+
+
+        private string  SqlFields
+        {
+            get { return "TD001 AS 单别, TD002 AS 单号, TD003 AS 序号, TD004 AS 品号, TD005 AS 品名, TD006 AS 规格, TD007 AS 仓位号,   TD008 AS 计划产量, TD009 AS 已交量  FROM  COPTD"; }
+        }
         /// <summary>
         /// 未完工业务订单
         /// </summary>
-        /// <param name="ProductType"></param>
+        /// <param name="ContainsProductType">所包括品名</param>
         /// <returns></returns>
-        public List<CopOrderModel> GetCopOrderBy(string ProductType)
+        public List<CopOrderModel> GetCopOrderBy(string ContainsProductType)
         {
-            string SqlFields = "TD001 AS 单别, TD002 AS 单号, TD003 AS 序号, TD004 AS 品号, TD005 AS 品名, TD006 AS 规格, TD007 AS 仓位号,   TD008 AS 计划产量, TD009 AS 已交量";
-            string sqlWhere = string.Format(" where (TD005 like'%{0}%' or TD006 LIKE '%{0}%')and (TD016 = 'N') ", ProductType);
+            string sqlWhere = string.Format(" where (TD005 like'%{0}%' or TD006 LIKE '%{0}%')and (TD016 = 'N') ", ContainsProductType);
             return ErpDbAccessHelper.FindDataBy<CopOrderModel>(SqlFields, sqlWhere, (dr, m) =>
             {
                 m.Category = dr["单别"].ToString().Trim();

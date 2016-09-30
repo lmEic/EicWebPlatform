@@ -68,14 +68,14 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
             });
             return ListModels.FirstOrDefault();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ContProductName"></param>
-        /// <returns></returns>
-        public List<OrderModel> GetOrderListBy(string ContProductName)
+       /// <summary>
+       /// 未完工的工单
+       /// </summary>
+       /// <param name="ContainsProductName"></param>
+       /// <returns></returns>
+        public List<OrderModel> GetUnfinishedOrderBy(string ContainsProductName)
         {
-            string sqlWhere = string.Format(" where TA001='{0}' and TA002='{1}'", ContProductName);
+            string sqlWhere = string.Format(" (NOT (TA011 = 'Y' OR  TA011 = 'y')) AND (TA034 LIKE '%{0}%')", ContainsProductName);
             return ErpDbAccessHelper.FindDataBy<OrderModel>(SqlFields, sqlWhere, (dr, m) =>
             {
                 m.Code = dr["TA002"].ToString().Trim();
