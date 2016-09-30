@@ -43,7 +43,8 @@
             <div class="h-split"></div>
             <span yl-operatemsg-board></span>
         </div>
-        <div class="bs-callout bs-callout-info" style="min-height:475px;" id="editWindow">
+
+        <div style="min-height:471px;max-height:476px;" id="editWindow">
             <div class="table-responsive" style="min-height:470px;max-height:475px;overflow-y:auto">
                 <table class="table table-bordered table-condensed table-hover" style="table-layout:fixed;">
                     <colgroup>
@@ -51,17 +52,16 @@
                     </colgroup>
                     <colgroup>
                         <col width="110" />
-                        <col width="140" ng-show="tbl.colVisible" />
-                        <col width="160" ng-show="tbl.colVisible" />
+                        <col width="160" ng-if="tbl.colVisible" />
                     </colgroup>
                     <colgroup>
                         <col width="130" />
-                        <col width="110" ng-show="tbl.colVisible" />
+                        <col width="110" ng-if="tbl.colVisible" />
                     </colgroup>
                     <colgroup>
                         <col width="95" />
                         <col width="95" />
-                        <col width="60" ng-show="tbl.colVisible" />
+                        <col width="60" ng-if="tbl.colVisible" />
                     </colgroup>
                     <colgroup>
                         <col width="40" />
@@ -69,7 +69,7 @@
                     <colgroup>
                         <col width="80" />
                         <col width="80" />
-                        <col width="80" />
+                        <col width="80" ng-if="tbl.colVisible" />
                     </colgroup>
                     <colgroup>
                         <col width="85" />
@@ -80,14 +80,13 @@
                         <col width="85" />
                     </colgroup>
                     <colgroup>
-                        <col width="65" ng-show="tbl.colVisible" />
+                        <col width="70"/>
                     </colgroup>
-                    <colgroup>
-                        <col width="80" ng-show="tbl.colVisible" />
-                        <col width="80" ng-show="tbl.colVisible" />
-                        <col width="80" ng-show="tbl.colVisible" />
-                        <col width="80" ng-show="tbl.colVisible" />
-                        <col width="80" ng-show="tbl.colVisible" />
+                    <colgroup ng-show="tbl.colVisible">
+                        <col width="80" ng-if="tbl.colVisible" />
+                        <col width="80" ng-if="tbl.colVisible" />
+                        <col width="80" ng-if="tbl.colVisible" />
+                        <col width="80" ng-if="tbl.colVisible" />
                     </colgroup>
                     <thead>
                         <tr>
@@ -105,7 +104,7 @@
 
                             <th class="text-center" colspan="{{tbl.workHoursColSpan}}">工时</th>
 
-                            <th class="text-center" ng-show="tbl.colVisible">备注</th>
+                            <th class="text-center" style="width:70px;">备注</th>
 
                             <th class="text-center" ng-show="tbl.colVisible" colspan="4">生产绩效</th>
                         </tr>
@@ -115,7 +114,7 @@
                             <td class="text-center info"><i class="fa fa-share-alt-square"></i></td>
 
                             <td class="text-center info"><span>工单号</span></td>
-                            <td class="text-center info" ng-show="tbl.colVisible"><span>品名</span></td>
+                            <td class="text-center info"><span>品名</span></td>
                             <td class="text-center info" ng-show="tbl.colVisible"><span>规格</span></td>
 
                             <td class="text-center info">
@@ -127,7 +126,7 @@
 
                             <td class="text-center info"><span>作业员</span></td>
                             <td class="text-center info"><span>师傅</span></td>
-                            <td ng-show="tbl.colVisible" class="text-center info"><span>班别</span></td>
+                            <td class="text-center info"><span>班别</span></td>
 
 
                             <td class="text-center info"><i class="fa fa-flag"></i></td>
@@ -142,9 +141,9 @@
                             <td class="text-center info"><span>出勤时数</span></td>
                             <td class="text-center info"><span>非生产时数</span></td>
                             <td class="text-center info"><span>生产时数</span></td>
-                            <td class="text-center info"><span>非生产原因</span></td>
+                            <td class="text-center info" style="width:155px;"><span>非生产原因</span></td>
 
-                            <td class="text-center info"><span>备注</span></td>
+                            <td class="text-center info" style="width:70px;"><span>备注</span></td>
 
                             <td ng-show="tbl.colVisible" class="text-center info"><span>稼动率</span></td>
                             <td ng-show="tbl.colVisible" class="text-center info"><span>生产效率</span></td>
@@ -161,8 +160,8 @@
                                        ng-keydown="vmManager.getWorkOrderInfo($event)" placeholder="工单单号" ng-show="item.editting" />
                             </td>
 
-                            <td class="text-center" ng-show="tbl.colVisible" cg-busy="{promise:searchPromise}">{{item.ProductName}}</td>
-                            <td class="text-center" ng-show="tbl.colVisible">{{item.ProductSpecification}}</td>
+                            <td ng-show="tbl.colVisible" cg-busy="{promise:searchPromise}">{{item.ProductName}}</td>
+                            <td ng-show="tbl.colVisible">{{item.ProductSpecification}}</td>
 
                             @*工艺、机台*@
                             <td>
@@ -263,7 +262,7 @@
                                 <button type="button" class="btn btn-xs btn-primary" ng-show="item.editting"
                                         data-animation="am-flip-x"
                                         bs-dropdown aria-haspopup="true" aria-expanded="false">
-                                       <span class="fa fa-pencil-square"></span>
+                                    <span class="fa fa-pencil-square"></span>
                                 </button>
                                 <div class="dropdown-menu" role="menu">
                                     <div class="list-group">
@@ -328,7 +327,7 @@
                                        placeholder="非生产时数" ng-show="item.pheditting" />
                             </td>
                             <td>
-                               {{item.ProductionHours}}
+                                {{item.ProductionHours}}
                             </td>
                             <td>
                                 <div ng-hide="item.pheditting">
@@ -343,7 +342,7 @@
                                 </div>
                             </td>
 
-                            <td ng-show="tbl.colVisible">{{item.Remarks}}</td>
+                            <td>{{item.Remarks}}</td>
 
                             <td ng-show="tbl.colVisible" class="info">{{item.EquipmentEifficiency}}</td>
                             <td ng-show="tbl.colVisible" class="info">{{item.ProductionEfficiency}}</td>
@@ -354,18 +353,20 @@
                 </table>
             </div>
         </div>
+        
 
-        <div pageslide ps-open="vmManager.dReportPreviewDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
+        <div pageslide ps-open="vmManager.dReportPreviewDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
 
             </div>
         </div>
-        <div pageslide ps-open="vmManager.proFlowBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
+        <div pageslide ps-open="vmManager.proFlowBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
 
             </div>
         </div>
-        <div pageslide ps-open="vmManager.personBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
+
+        <div pageslide ps-open="vmManager.personBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
                 <div class="pull-left" style="width:20%;">
                     <div class="table-responsive">
@@ -386,11 +387,11 @@
                                 <tr ng-repeat="item in vmManager.workerAttendanceSumerizeHours track by $index">
                                     <td>{{item.UserWorkerId}}</td>
                                     <td>{{item.UserName}}</td>
-                                    <td>
-                                    {{item.AttendanceHours}}
-                                    <span class="btn btn-xs btn-primary pull-right">
-                                        <i class="fa fa-location-arrow" ng-click="vmManager.viewAttendanceHoursDetails(item)"></i>
-                                    </span>
+                                    <td ng-class="item.isAlert===true?'danger':''">
+                                        {{item.AttendanceHours}}
+                                        <span class="btn btn-xs btn-primary pull-right">
+                                            <i class="fa fa-location-arrow" ng-click="vmManager.viewAttendanceHoursDetails(item)"></i>
+                                        </span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -460,7 +461,8 @@
                 </div>
             </div>
         </div>
-        <div pageslide ps-open="vmManager.orderIdBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" p ps-speed="0.25" ps-container='editWindow'>
+
+        <div pageslide ps-open="vmManager.orderIdBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
 
             </div>

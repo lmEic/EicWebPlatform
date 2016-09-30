@@ -76,7 +76,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
 
         [NoAuthenCheck]
-        public ActionResult GetMaterialSpecBoardBy(string orderId,string shippingDate,int shippingCount)
+        public ActionResult GetMaterialSpecBoardBy(string orderId,string shippingDate,string shippingCount)
         {
             var rootPath = HttpContext.Request.PhysicalApplicationPath;
             var image = BoardService.MaterialBoardManager.GetMaterialSpecBoardBy(rootPath,orderId, shippingDate, shippingCount.ToString());

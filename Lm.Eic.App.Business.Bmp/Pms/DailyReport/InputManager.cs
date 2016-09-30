@@ -58,20 +58,36 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public OpResult SavaDailyReportList(List<DailyReportTempModel> modelList)
         {
-            //清空本部门所有日报列表 =》存入当前列表
+            //先获取待保存的数据列表 如果新数据保存失败 则将清空的数据还原回数据库
             var department = string.Empty;
             var dailyReportDate = DateTime.Now.ToDate();
 
             if (modelList.IsNullOrEmpty())
             {
                 department = modelList[0].Department;
-                //dailyReportDate = modelList[0].DailyReportDate;
+                dailyReportDate = modelList[0].DailyReportDate;
             }
+            var temDailyList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
 
-            DailyReportInputCrudFactory.DailyReportTempCrud.DeleteDailyReportListBy(department, dailyReportDate);
+            try
+            {
+                DailyReportInputCrudFactory.DailyReportTempCrud.DeleteDailyReportListBy(department, dailyReportDate);
+                var savaResult = DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(modelList);
+                if (!savaResult.Result)
+                {
+                    DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(temDailyList);
+                    return OpResult.SetResult("数据保存失败！");
+                }
+                else
+                    return savaResult;
+            }
+            catch (Exception ex)
+            {
+                DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(temDailyList);
+                return OpResult.SetResult("数据保存失败！");
+                throw new Exception(ex.InnerException.Message);
+            }    
 
-
-            return DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(modelList);
         }
 
         /// <summary>
