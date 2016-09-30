@@ -55,6 +55,7 @@
     <Compile Include="Domain\MocManageModel\OrderManageModel\MaterialModel.cs" />
     <Compile Include="Domain\MocManageModel\OrderManageModel\OrderBase.cs" />
     <Compile Include="Domain\MocManageModel\OrderManageModel\OrderModel.cs" />
+    <Compile Include="Domain\ProductTypeMonitorModel\ProductTypeMonitorModel.cs" />
     <Compile Include="Domain\PurchaseManage\PerchaseHeaderModel.cs" />
     <Compile Include="Domain\PurchaseManage\PurchaseModelBase.cs" />
     <Compile Include="Domain\PurchaseManage\PuroductSupplierAnalogModel.cs" />
