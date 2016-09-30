@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.App.Erp.Bussiness.PmcMaange
+namespace Lm.Eic.App.Erp.Bussiness.CopMaange
 {
-    class ProductsOrderManager
+   public  class CopService
     {
     }
 }

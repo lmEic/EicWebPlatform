@@ -40,13 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bussiness\CopMaange\CopService.cs" />
+    <Compile Include="Bussiness\CopMaange\OrderManage.cs" />
     <Compile Include="Bussiness\MocManage\BomManage.cs" />
     <Compile Include="Bussiness\MocManage\MocBase.cs" />
     <Compile Include="Bussiness\MocManage\MocService.cs" />
     <Compile Include="Bussiness\MocManage\OrderManage.cs" />
-    <Compile Include="Bussiness\PmcMaange\ProductsOrderManager.cs" />
     <Compile Include="Bussiness\PurchaseManage\PurchaseManager.cs" />
     <Compile Include="Bussiness\QuantityManage\QuantityManager.cs" />
+    <Compile Include="DbAccess\CopManageDb\CopOrderManage.cs" />
     <Compile Include="DbAccess\DbAccessHelper.cs" />
     <Compile Include="DbAccess\MocManageDb\BomManageDb\BomManageDb.cs" />
     <Compile Include="DbAccess\MocManageDb\OrderManageDb\OrderManageDb.cs" />
