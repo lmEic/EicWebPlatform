@@ -20,7 +20,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
 
         #region Find
         /// <summary>
-        /// 获取物料规格看板
+        /// 获取物料规格看板.
         /// </summary>
         /// <param name="rootPath"></param>
         /// <param name="orderId"></param>

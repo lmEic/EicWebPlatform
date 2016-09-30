@@ -47,42 +47,53 @@
         <div style="min-height:471px;max-height:476px;" id="editWindow">
             <div class="table-responsive" style="min-height:470px;max-height:475px;overflow-y:auto">
                 <table class="table table-bordered table-condensed table-hover" style="table-layout:fixed;">
+                    @*操作栏*@
                     <colgroup>
                         <col width="38" />
                     </colgroup>
-                    <colgroup>
+                    @*工单信息*@
+                    <colgroup span="{{tbl.colSpans[0]}}">
                         <col width="110" />
+                        <col width="140" />
                         <col width="160" ng-if="tbl.colVisible" />
                     </colgroup>
-                    <colgroup>
+                    @*工艺信息*@
+                    <colgroup span="{{tbl.colSpans[1]}}">
                         <col width="130" />
                         <col width="110" ng-if="tbl.colVisible" />
                     </colgroup>
-                    <colgroup>
+                    @*人员信息*@
+                    <colgroup span="{{tbl.colSpans[2]}}">
                         <col width="95" />
                         <col width="95" />
-                        <col width="60" ng-if="tbl.colVisible" />
+                        <col width="60" />
                     </colgroup>
+                    @*工具菜单信息*@
                     <colgroup>
                         <col width="40" />
                     </colgroup>
-                    <colgroup>
+                    @*产量信息*@
+                    <colgroup span="{{tbl.colSpans[3]}}">
                         <col width="80" />
                         <col width="80" />
                         <col width="80" ng-if="tbl.colVisible" />
                     </colgroup>
-                    <colgroup>
+                    @*工时信息*@
+                    <colgroup span="{{tbl.colSpans[4]}}">
                         <col width="85" />
                         <col width="85" />
                         <col width="85" />
+
                         <col width="85" />
                         <col width="85" />
-                        <col width="85" />
+                        <col width="95" />
                     </colgroup>
+                    @*备注信息*@
                     <colgroup>
                         <col width="70"/>
                     </colgroup>
-                    <colgroup ng-show="tbl.colVisible">
+                    @*效率信息*@
+                    <colgroup ng-if="tbl.colVisible">
                         <col width="80" ng-if="tbl.colVisible" />
                         <col width="80" ng-if="tbl.colVisible" />
                         <col width="80" ng-if="tbl.colVisible" />
@@ -92,19 +103,19 @@
                         <tr>
                             <th class="text-center"><i class="fa fa-square"></i></th>
 
-                            <th class="text-center" colspan="{{tbl.orderIdColSpan}}">工单信息</th>
+                            <th class="text-center" colspan="{{tbl.colSpans[0]}}">工单信息</th>
 
-                            <th class="text-center" colspan="{{tbl.proFlowColSpan}}">机台/工艺</th>
+                            <th class="text-center" colspan="{{tbl.colSpans[1]}}">机台/工艺</th>
 
-                            <th class="text-center" colspan="{{tbl.workerColSpan}}">人员</th>
+                            <th class="text-center" colspan="{{tbl.colSpans[2]}}">人员</th>
 
                             <th class="text-center"><i class="fa fa-pencil-square-o"></i></th>
 
-                            <th class="text-center" colspan="{{tbl.productColSpan}}">产量</th>
+                            <th class="text-center" colspan="{{tbl.colSpans[3]}}">产量</th>
 
-                            <th class="text-center" colspan="{{tbl.workHoursColSpan}}">工时</th>
+                            <th class="text-center" colspan="{{tbl.colSpans[4]}}">工时</th>
 
-                            <th class="text-center" style="width:70px;">备注</th>
+                            <th class="text-center">备注</th>
 
                             <th class="text-center" ng-show="tbl.colVisible" colspan="4">生产绩效</th>
                         </tr>
@@ -141,7 +152,7 @@
                             <td class="text-center info"><span>出勤时数</span></td>
                             <td class="text-center info"><span>非生产时数</span></td>
                             <td class="text-center info"><span>生产时数</span></td>
-                            <td class="text-center info" style="width:155px;"><span>非生产原因</span></td>
+                            <td class="text-center info"><span>非生产原因</span></td>
 
                             <td class="text-center info" style="width:70px;"><span>备注</span></td>
 
@@ -156,11 +167,11 @@
                             @*工单信息*@
                             <td>
                                 <span ng-hide="item.editting">{{item.OrderId}}</span>
-                                <input ng-model="vm.OrderId" focus-if="focus.orderIdFocus" focus-setter style="width:100px;"
+                                <input ng-model="vm.OrderId" focus-if="focus.orderIdFocus" focus-setter style="width:100px;" cg-busy="{promise:searchPromise}"
                                        ng-keydown="vmManager.getWorkOrderInfo($event)" placeholder="工单单号" ng-show="item.editting" />
                             </td>
 
-                            <td ng-show="tbl.colVisible" cg-busy="{promise:searchPromise}">{{item.ProductName}}</td>
+                            <td>{{item.ProductName}}</td>
                             <td ng-show="tbl.colVisible">{{item.ProductSpecification}}</td>
 
                             @*工艺、机台*@
