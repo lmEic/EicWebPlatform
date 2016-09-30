@@ -313,15 +313,14 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     var initVM = _.clone(uiVM);
 
     var tablevm = {
-        colVisible:true,//列的可见性
-        orderIdColSpan: 3,
-        proFlowColSpan:2,
-        workerColSpan: 3,
-        productColSpan: 3,
-        workHoursColSpan:6
+        //跨列数字集合
+        colSpans: [3, 2, 3, 3, 6],
+        colVisible: true,//列的可见性
     };
-
+    var tableSet = _.clone(tablevm);
     $scope.tbl = tablevm;
+
+
 
     var vmManager = {
         department: '成型课',
@@ -341,20 +340,12 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         inputModes: [{ id: 'simple', text: '普通编辑' }, { id: 'fast', text: '快速编辑' }],
         selectInputMode: function () {
             if (vmManager.inputMode === 'simple') {
-                tablevm.colVisible = true;
-                tablevm.orderIdColSpan = 3;
-                tablevm.proFlowColSpan = 2;
-                tablevm.workerColSpan = 3;
-                tablevm.productColSpan = 3;
-                tablevm.workHoursColSpan = 6;
+                tablevm = _.clone(tableSet);
+                $scope.tbl = tablevm;
             }
             else {
+                tablevm.colSpans = [2, 1, 3, 2, 6];
                 tablevm.colVisible = false;
-                tablevm.orderIdColSpan = 2;
-                tablevm.proFlowColSpan = 1;
-                tablevm.workerColSpan = 3;
-                tablevm.productColSpan = 2;
-                tablevm.workHoursColSpan = 6;
             }
         },
         edittingRowIndex: 0,//编辑中的行索引
@@ -438,7 +429,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         },
         //获取工单信息
         getWorkOrderInfo: function ($event) {
-            if ($event.keyCode === 13 || $event.keyCode === 40)
+            if ($event.keyCode === 13 || $event.keyCode === 40 || $event.keyCode===9)
             {
                 if ($scope.vm.OrderId === undefined || $scope.vm.OrderId.length <= 10) return;
 
