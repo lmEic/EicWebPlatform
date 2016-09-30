@@ -350,7 +350,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             }
             else {
                 tablevm.colVisible = false;
-                tablevm.orderIdColSpan = 1;
+                tablevm.orderIdColSpan = 2;
                 tablevm.proFlowColSpan = 1;
                 tablevm.workerColSpan = 3;
                 tablevm.productColSpan = 2;
@@ -385,10 +385,13 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         },
         showOrderIdView: function () { vmManager.orderIdBoardDisplay = true; },
         getReportInputDataTemplate: function () {
+            vmManager.editDatas = [];
             $scope.promise = dReportDataOpService.getDailyReportTemplate(vmManager.department,vmManager.InputDate).then(function (datas) {
                 if (angular.isArray(datas) && datas.length > 0) {
+                    var rowindex = 1;
                     angular.forEach(datas, function (item) {
                         item.editting = false;
+                        item.rowindex = rowindex;
                         //判断是否为机台
                         if (item.MachineId) {
                             item.isMachineMode = true;
@@ -397,6 +400,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                         }
                         item.pheditting = false;
                         vmManager.editDatas.push(item);
+                        rowindex += 1;
                     });
                 }
                 else {
@@ -809,7 +813,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                     vmManager.workerAttendanceSumerizeHours.push({
                         UserWorkerId: rowItem.UserWorkerId,
                         UserName: rowItem.UserName,
-                        AttendanceHours:parseFloat(rowItem.AttendanceHours)
+                        AttendanceHours: parseFloat(rowItem.AttendanceHours),
+                        isAlert:parseFloat(rowItem.AttendanceHours)>11
                     });
                 }
                 else {
@@ -849,6 +854,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                         sumAttendanceHours += parseFloat(data.AttendanceHours);
                     });
                     vmManager.edittingAttendanceHoursRow.AttendanceHours = sumAttendanceHours;
+                    vmManager.edittingAttendanceHoursRow.isAlert = sumAttendanceHours > 11;
                 }
             });
         },

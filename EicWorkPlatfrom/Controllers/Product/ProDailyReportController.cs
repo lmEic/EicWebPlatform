@@ -120,10 +120,10 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <param name="department"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetDailyReportTemplate(string department,DateTime dailyReportDate)
+        public ContentResult GetDailyReportTemplate(string department,DateTime dailyReportDate)
         {
             var datas = DailyReportService.InputManager.DailyReportInputManager.GetDailyReportTemplate(department, dailyReportDate);
-            return Json(datas,JsonRequestBehavior.AllowGet);
+            return DateJsonResult(datas);
         }
         /// <summary>
         /// 获取工单详细信息
