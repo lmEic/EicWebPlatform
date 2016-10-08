@@ -55,8 +55,9 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
             string sqlWhere = string.Format(" where TA001='{0}' and TA002='{1}'", idm.Category, idm.Code);
             var ListModels = ErpDbAccessHelper.FindDataBy<OrderModel>(SqlFields, sqlWhere, (dr, m) =>
             {
-                m.Code = dr["TA002"].ToString().Trim ();
-                m.Category = dr["TA001"].ToString().Trim ();
+                m.OrderId = string.Format("{0}-{1}", 
+                    dr["TA001"].ToString().Trim(), 
+                    dr["TA002"].ToString().Trim());
                 m.ProductID = dr["TA006"].ToString().Trim ();
                 m.ProductName = dr["TA034"].ToString().Trim ();
                 m.ProductSpecify = dr["TA035"].ToString().Trim ();

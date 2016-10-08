@@ -562,8 +562,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         OpResult AddEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
         {
             OpResult result = OpResult.SetResult("未执行任何操作");
-            //TODO：先根据财产编号确认是否存在该设备 如果存在 修改设备状态的是否报废为 是 存储报废记录
-
+         
             //设备是否存在
             var equipment = EquipmentCrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber, SearchMode = 1 }).FirstOrDefault();
 

@@ -41,6 +41,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         public DbSet<MaterialSpecBoardModel> MaterialSpecBoard { get; set; }
 
+        public DbSet<DReportsOrderModel> DReportOrder { get; set; }
+
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -60,8 +62,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
             modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
 
-           
-
+            modelBuilder.Configurations.Add(new DReportsOrderModelMapping());
         }
     }
 

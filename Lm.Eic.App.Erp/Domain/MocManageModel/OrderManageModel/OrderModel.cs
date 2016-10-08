@@ -9,12 +9,12 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
     /// <summary>
     /// 订单详情
     /// </summary>
-    public class OrderModel : OrderBase
+    public class OrderModel
     {
         /// <summary>
-        ///   TA001 +TA002
+        /// 工单单号
         /// </summary>
-        public string OrderId { get { return OrderID; } }
+        public string OrderId { get; set; }
         /// <summary>
         /// 品号 TA006
         /// </summary>

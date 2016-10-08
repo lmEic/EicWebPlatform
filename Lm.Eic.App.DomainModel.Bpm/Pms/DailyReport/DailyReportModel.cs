@@ -1251,4 +1251,126 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         #endregion Model
     }
+
+
+    /// <summary>
+    ///工单信息实体模型
+    /// </summary>
+    [Serializable]
+    public partial class DReportsOrderModel
+    {
+        public DReportsOrderModel()
+        { }
+        #region Model
+        private string _orderid;
+        /// <summary>
+        ///工单单号
+        /// </summary>
+        public string OrderId
+        {
+            set { _orderid = value; }
+            get { return _orderid; }
+        }
+        private string _productid;
+        /// <summary>
+        ///产品品号
+        /// </summary>
+        public string ProductID
+        {
+            set { _productid = value; }
+            get { return _productid; }
+        }
+        private string _productname;
+        /// <summary>
+        ///产品品名
+        /// </summary>
+        public string ProductName
+        {
+            set { _productname = value; }
+            get { return _productname; }
+        }
+        private string _productspecify;
+        /// <summary>
+        ///产品规格
+        /// </summary>
+        public string ProductSpecify
+        {
+            set { _productspecify = value; }
+            get { return _productspecify; }
+        }
+        private int _count;
+        /// <summary>
+        ///批量
+        /// </summary>
+        public int Count
+        {
+            set { _count = value; }
+            get { return _count; }
+        }
+        private DateTime _instockdate;
+        /// <summary>
+        ///入库日期
+        /// </summary>
+        public DateTime InStockDate
+        {
+            set { _instockdate = value; }
+            get { return _instockdate; }
+        }
+        private DateTime _orderfinishdate;
+        /// <summary>
+        ///工单完工日期
+        /// </summary>
+        public DateTime OrderFinishDate
+        {
+            set { _orderfinishdate = value; }
+            get { return _orderfinishdate; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标示
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
+
 }

@@ -33,6 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// </summary>
     public class DailyReportInputManager
     {
+        private List<OrderModel> _orderDetailsList = new List<OrderModel>();  //工单缓存
 
         /// <summary>
         /// 获取日报模板
@@ -42,7 +43,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<DailyReportTempModel> GetDailyReportTemplate(string department, DateTime dailyReportDate)
         {
-            //TODO:从临时表中获取本部门的日报数据 如果有今天的就返回今天的 如果没有就返回上一次的
+            //从临时表中获取本部门的日报数据 如果有今天的就返回今天的 如果没有就返回上一次的
             var dailyReportList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
             if (dailyReportList.Count < 1)
                 return new List<DailyReportTempModel>();
@@ -86,7 +87,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(temDailyList);
                 return OpResult.SetResult("数据保存失败！");
                 throw new Exception(ex.InnerException.Message);
-            }    
+            }
 
         }
 
@@ -132,7 +133,21 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public OrderModel GetOrderDetails(string orderId)
         {
-            return MocService.OrderManage.GetOrderDetails(orderId);
+            OrderModel orderDetails = null;
+
+            if (_orderDetailsList.Count > 0)
+                orderDetails = _orderDetailsList.FirstOrDefault(m => m.OrderId == orderId);
+
+            if (orderDetails == null)
+                orderDetails = MocService.OrderManage.GetOrderDetails(orderId);
+
+            if (orderDetails == null)
+                orderDetails = DailyReportConfigCrudFactory.DailyOrderConfigCrud.GetOrderDetails(orderId);
+
+            if (orderDetails != null)
+                _orderDetailsList.Add(orderDetails);
+
+            return orderDetails;
         }
     }
 }
