@@ -86,11 +86,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _machineid = value; }
             get { return _machineid; }
         }
-        private decimal _equipmenteifficiency;
+        private string _equipmenteifficiency;
         /// <summary>
         ///稼动率（机台效率）
         /// </summary>
-        public decimal EquipmentEifficiency
+        public string EquipmentEifficiency
         {
             set { _equipmenteifficiency = value; }
             get { return _equipmenteifficiency; }
@@ -284,11 +284,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _qtybad = value; }
             get { return _qtybad; }
         }
-        private decimal _failurerate;
+        private string _failurerate;
         /// <summary>
         ///不良率
         /// </summary>
-        public decimal FailureRate
+        public string FailureRate
         {
             set { _failurerate = value; }
             get { return _failurerate; }
@@ -356,20 +356,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _manhours = value; }
             get { return _manhours; }
         }
-        private decimal _productionefficiency;
+        private string _productionefficiency;
         /// <summary>
         ///生产效率
         /// </summary>
-        public decimal ProductionEfficiency
+        public string ProductionEfficiency
         {
             set { _productionefficiency = value; }
             get { return _productionefficiency; }
         }
-        private decimal _operationefficiency;
+        private string _operationefficiency;
         /// <summary>
         ///作业效率
         /// </summary>
-        public decimal OperationEfficiency
+        public string OperationEfficiency
         {
             set { _operationefficiency = value; }
             get { return _operationefficiency; }
@@ -433,7 +433,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
 
 
     /// <summary>
-    ///日报模板实体模型
+    ///日报实体模型 临时表
     /// </summary>
     [Serializable]
     public partial class DailyReportTempModel
@@ -513,11 +513,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _machineid = value; }
             get { return _machineid; }
         }
-        private decimal _equipmenteifficiency;
+        private string _equipmenteifficiency;
         /// <summary>
         ///稼动率（机台效率）
         /// </summary>
-        public decimal EquipmentEifficiency
+        public string EquipmentEifficiency
         {
             set { _equipmenteifficiency = value; }
             get { return _equipmenteifficiency; }
@@ -711,11 +711,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _qtybad = value; }
             get { return _qtybad; }
         }
-        private decimal _failurerate;
+        private string _failurerate;
         /// <summary>
         ///不良率
         /// </summary>
-        public decimal FailureRate
+        public string FailureRate
         {
             set { _failurerate = value; }
             get { return _failurerate; }
@@ -783,20 +783,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _manhours = value; }
             get { return _manhours; }
         }
-        private decimal _productionefficiency;
+        private string _productionefficiency;
         /// <summary>
         ///生产效率
         /// </summary>
-        public decimal ProductionEfficiency
+        public string ProductionEfficiency
         {
             set { _productionefficiency = value; }
             get { return _productionefficiency; }
         }
-        private decimal _operationefficiency;
+        private string _operationefficiency;
         /// <summary>
         ///作业效率
         /// </summary>
-        public decimal OperationEfficiency
+        public string OperationEfficiency
         {
             set { _operationefficiency = value; }
             get { return _operationefficiency; }
