@@ -44,9 +44,9 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
     /// <summary>
     /// 业务订单
     /// </summary>
-    public class CopOrderModel:OrderBase
+    public class CopOrderModel
     {
-        public string OrderId { get { return OrderID; } }
+        public string OrderId { get; set; }
         /// <summary>
         /// TD003 AS 序号
         /// </summary>
