@@ -27,6 +27,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         public DbSet<EquipmentDiscardRecordModel> EquipmentDiscard { get; set; }
 
+        public DbSet<EquipmentRepairedRecordModel> EquipmentRepaired { get; set; }
 
         public DbSet<DailyReportModel> DailyReports { get; set; }
 
@@ -38,12 +39,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         public DbSet<ProductFlowModel> ProductFlow { get; set; }
 
-
         public DbSet<MaterialSpecBoardModel> MaterialSpecBoard { get; set; }
 
         public DbSet<DReportsOrderModel> DReportOrder { get; set; }
-
-
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -53,6 +51,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new EquipmentCheckModelMapping());
             modelBuilder.Configurations.Add(new EquipmentMaintenanceModelMapping());
             modelBuilder.Configurations.Add(new EquipmentDiscardRecordModelMapping());
+            modelBuilder.Configurations.Add(new EquipmentRepairedRecordModelMapping());
 
             modelBuilder.Configurations.Add(new DailyReportModelMapping());
             modelBuilder.Configurations.Add(new DailyReportTempModelMapping());

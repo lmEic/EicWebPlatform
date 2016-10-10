@@ -30,7 +30,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     })
     //--------------保养管理--------------------------
     .state('astBuildMaintenanceList', {
-        templateUrl: urlPrefix + 'AstBuildMaintenanceList',
+        templateUrl: urlPrefix + 'AstBuildMaintenanceList'
     })
     .state('astInputMaintenanceRecord', {
         templateUrl: urlPrefix + 'AstInputMaintenanceRecord',
@@ -41,8 +41,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     //--------------维修管理--------------------------
      .state('astInputRepairRecord', {
-         templateUrl: urlPrefix + 'AstInputRepairRecord',
-     })
+         templateUrl: urlPrefix + 'AstInputRepairRecord'
+     });
 })
 .factory('astDataopService', function (ajaxService) {
     var ast = {};
@@ -58,7 +58,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         return ajaxService.getData(url, {
             inputDate: inputDate,
             assetId: assetId,
-            searchMode: searchMode,
+            searchMode: searchMode
         });
     };
     //获取设备编号
@@ -67,7 +67,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         return ajaxService.getData(url, {
             equipmentType: equipmentType,
             assetType: assetType,
-            taxType: taxType,
+            taxType: taxType
         });
     };
     ///获取设备档案总览
@@ -81,49 +81,49 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     ast.storeAstScrapData = function (model) {
         var url = astUrlPrefix + 'StoreAstScrapData';
         return ajaxService.postData(url, {
-            model: model,
+            model: model
         });
     };
     //保存设备档案记录
     ast.saveEquipmentRecord = function (equipment) {
         var url = astUrlPrefix + 'SaveEquipmentRecord';
         return ajaxService.postData(url, {
-            equipment: equipment,
+            equipment: equipment
         });
     };
     ///获取设备校验清单
     ast.getAstCheckListByPlanDate = function (planDate) {
         var url = astUrlPrefix + 'GetAstCheckListByPlanDate';
         return ajaxService.getData(url, {
-            planDate: planDate,
+            planDate: planDate
         });
     };
     ///保存设备校验记录
     ast.storeInputCheckRecord = function (model) {
         var url = astUrlPrefix + 'StoreInputCheckRecord';
         return ajaxService.postData(url, {
-            model: model,
+            model: model
         });
     };
     //获取设备保养清单
     ast.getAstMaintenanceListByPlanMonth = function (planMonth) {
         var url = astUrlPrefix + 'GetAstMaintenanceListByPlanMonth';
         return ajaxService.getData(url, {
-            planMonth: planMonth,
+            planMonth: planMonth
         });
     };
     ///保存设备保养记录
     ast.storeInputMaintenanceRecord = function (model) {
         var url = astUrlPrefix + 'StoreInputMaintenanceRecord';
         return ajaxService.postData(url, {
-            model: model,
+            model: model
         });
     };
     ast.handleFile = function (moduleName, fileName) {
         var url = astUrlPrefix + 'HandleFile';
         return ajaxService.getData(url, {
             moduleName: moduleName,
-            fileName: fileName,
+            fileName: fileName
         });
     };
     return ast;
@@ -141,7 +141,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                 if (!angular.isUndefined(navItem)) {
                     moduleNavLayoutVm.navItems.push(navItem);
                 }
-            })
+            });
         },
         stateTo: function (navItem) {
             $state.go(navItem.UiSerf);
@@ -159,7 +159,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             }
         },
         navLeftSize: '16%',
-        navMainSize: '83%',
+        navMainSize: '83%'
     };
     $scope.navLayout = moduleNavLayoutVm;
     $scope.promise = navDataService.getSubModuleNavs('设备管理', 'EquipmentManage').then(function (datas) {
@@ -180,7 +180,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             $scope.promise = astDataopService.getAstArchiveOverview().then(function (datas) {
                 vmManager.datasource = datas;
             });
-        },
+        }
     };
     $scope.vmManager = vmManager;
 
@@ -231,8 +231,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         OpDate: null,
         OpPerson: null,
         OpSign: 'add',
-        Id_Key: null,
-    }
+        Id_Key: null
+    };
 
     $scope.vm = uiVM;
 
@@ -340,13 +340,13 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                     vmManager.init();
                 });
             });
-        })
-    }
+        });
+    };
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
             vmManager.inti();
         });
-    }
+    };
     operate.editModal = $modal({
         title: "操作窗口",
         templateUrl: leeHelper.controllers.equipment + '/EditEquipmentTpl/',
@@ -367,11 +367,11 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                             vmManager.init();
                             operate.editModal.$promise.then(operate.editModal.hide);
                         }
-                    })
+                    });
                 });
             };
         },
-        show: false,
+        show: false
     });
 
     operate.editItem = function (item) {
@@ -403,8 +403,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         DocumentId: null,
         DocumentPath: null,
         OpPerson: null,
-        OpSign: 'add',
-    }
+        OpSign: 'add'
+    };
     $scope.vm = uiVM;
 
     ///设备实体保养模型
@@ -412,8 +412,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         AssetNumber: null,
         EquipmentName: null,
         EquipmentSpec: null,
-        ManufacturingNumber: null,
-    }
+        ManufacturingNumber: null
+    };
     $scope.equipmentvm = equipmentVM;
 
     var vmManager = {
@@ -487,15 +487,15 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                     uiVM.DocumentPath = "FileLibrary/EquScrapFiles/" + result.dateFile + "/" + uiVM.AssetNumber + ".jpg";
                 }
             });
-        },
+        }
     };
     $scope.vedio = vedio;
     $scope.$watch('$viewContentLoaded', function (event) {
         eloam.Load();
-    })
+    });
     $scope.$on('$destroy', function () {
         eloam.UnLoad();
-    })
+    });
 })
 ///生成校验清单
 .controller('astBuildCheckListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
@@ -523,8 +523,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         CheckDate: new Date(),
         DocumentPath: null,
         OpPerson: null,
-        OpSign: 'add',
-    }
+        OpSign: 'add'
+    };
     $scope.vm = uiVM;
 
     ///设备实体校验模型
@@ -538,8 +538,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         CheckType: null,
         CheckDate: null,
         CheckInterval: 0,
-        CheckState: null,
-    }
+        CheckState: null
+    };
     $scope.checkvm = checkVM;
 
     var vmManager = {
@@ -613,17 +613,17 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                     uiVM.DocumentPath = "FileLibrary/MaintenanceFiles/" + result.dateFile + "/" + uiVM.AssetNumber + ".jpg";
                 }
             });
-        },
+        }
     };
 
     $scope.vedio = vedio;
 
     $scope.$watch('$viewContentLoaded', function (event) {
         eloam.Load();
-    })
+    });
     $scope.$on('$destroy', function () {
         eloam.UnLoad();
-    })
+    });
 })
 ///生成保养清单
 .controller('astBuildMaintenanceListCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
@@ -651,8 +651,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         MaintenanceDate: new Date(),
         DocumentPath: null,
         OpPerson: null,
-        OpSign: 'add',
-    }
+        OpSign: 'add'
+    };
     $scope.vm = uiVM;
 
     ///设备实体保养模型
@@ -665,8 +665,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         IsMaintenance: null,
         MaintenanceDate: null,
         MaintenanceInterval: 0,
-        MaintenanceState: null,
-    }
+        MaintenanceState: null
+    };
     $scope.equipmentVM = equipmentVM;
 
     var vmManager = {
@@ -739,31 +739,82 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                     uiVM.DocumentPath = "FileLibrary/MaintenanceFiles/" + result.dateFile + "/" + uiVM.AssetNumber + ".jpg";
                 }
             });
-        },
+        }
     };
     $scope.vedio = vedio;
     $scope.$watch('$viewContentLoaded', function (event) {
         eloam.Load();
-    })
+    });
     $scope.$on('$destroy', function () {
         eloam.UnLoad();
-    })
+    });
 })
 
 ///录入设备维修单
 .controller('astInputRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
+
+    ///设备档案模型
+    var uiVM = {
+        AssetNumber: 5555,
+        EquipmentName: null,
+        EquipmentSpec: null,
+        FunctionDescription: null,
+        ServiceLife: 10,
+        EquipmentPhoto: null,
+        AssetType: '低质易耗品',
+        EquipmentType: '量测设备',
+        TaxType: null,
+        FreeOrderNumber: null,
+        DeclarationNumber: null,
+        Unit: '台',
+        Manufacturer: null,
+        ManufacturingNumber: null,
+        ManufacturerWebsite: null,
+        ManufacturerTel: null,
+        AfterSalesTel: null,
+        AddMode: "外购",
+        DeliveryDate: null,
+        DeliveryUser: null,
+        DeliveryCheckUser: null,
+        SafekeepWorkerID: null,
+        SafekeepUser: null,
+        SafekeepDepartment: null,
+        Installationlocation: null,
+        IsMaintenance: null,
+        MaintenanceDate: new Date(),
+        MaintenanceInterval: 1,
+        PlannedMaintenanceDate: null,
+        MaintenanceState: null,
+        State: null,
+        IsCheck: null,
+        CheckType: '内校',
+        CheckDate: new Date(),
+        CheckInterval: 6,
+        PlannedCheckDate: null,
+        ChechState: null,
+        InputDate: null,
+        OpDate: null,
+        OpPerson: null,
+        OpSign: 'add',
+        Id_Key: null
+    };
+
+    $scope.vm = uiVM;
+
     //视图管理器
     var vmManager = {
-        activeTab: 'initTab',
-        planDate: new Date(),
-        datasource: [],
-        datasets: [],
-        getAstCheckList: function () {
-            vmManager.datasource = [];
-            $scope.searchPromise = astDataopService.getAstCheckListByPlanDate(vmManager.planDate).then(function (datas) {
-                vmManager.datasource = datas;
-            });
-        }
+       
     };
+
     $scope.vmManager = vmManager;
-})
+
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    //存储
+    operate.saveAll = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+           
+        });
+    };
+
+});

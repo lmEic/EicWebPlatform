@@ -538,9 +538,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
   /// <summary>
   /// 报废管理Crud
   /// </summary>
-    internal class EquipmentDiscarCrud : CrudBase<EquipmentDiscardRecordModel, IEquipmentDiscardRepositoryRepository>
+    internal class EquipmentDiscarCrud : CrudBase<EquipmentDiscardRecordModel, IEquipmentDiscardRepository>
     {
-        public EquipmentDiscarCrud() : base(new EquipmentDiscardRepositoryRepository(), "设备报废记录")
+        public EquipmentDiscarCrud() : base(new EquipmentDiscardRepository(), "设备报废记录")
         {
         }
 

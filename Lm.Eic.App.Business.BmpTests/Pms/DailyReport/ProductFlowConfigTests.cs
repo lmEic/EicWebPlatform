@@ -1,11 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Lm.Eic.App.Business.Bmp.Pms.DailyReport;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
+﻿using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
 {
@@ -15,20 +9,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
         [TestMethod()]
         public void ImportProductFlowListByTest()
         {
-
             string path = @"E:\日报数据表.xls";
             var tem = DailyReportService.ConfigManager.ProductFlowSetter.ImportProductFlowListBy(path);
             if (tem == null) { Assert.Fail(); }
 
             var temp = DailyReportService.ConfigManager.ProductFlowSetter.Store(tem);
             if (temp == null) { Assert.Fail(); }
-
         }
 
         [TestMethod()]
         public void GetProductFlowListByTest()
         {
-
             var tem = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new DomainModel.Bpm.Pms.DailyReport.QueryDailyReportDto()
             {
                 Department = "生技部",
@@ -36,8 +27,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
                 OrderId = "517-1605031"
             });
             if (tem == null) { Assert.Fail(); }
-
-          
         }
 
         [TestMethod]
@@ -49,7 +38,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
             model.MachineName = "测试机台";
 
             var tem = DailyReportService.ConfigManager.MachineSetter.AddMachineRecord(model);
-            
+
             if (tem == null) { Assert.Fail(); }
         }
 
@@ -66,7 +55,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
             if (tem == null) { Assert.Fail(); }
         }
 
-
         [TestMethod()]
         public void GetNonProductionListByTest()
         {
@@ -74,10 +62,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
             model.Department = "生技部";
             model.NonProductionReasonCode = "A2";
             model.NonProductionReason = "Test2";
-           // var tem = DailyReportService.ConfigManager.NonProductionSetter.AddNonProductionRecord(model);
+            // var tem = DailyReportService.ConfigManager.NonProductionSetter.AddNonProductionRecord(model);
 
             var tem2 = DailyReportService.ConfigManager.NonProductionReasonSetter.GetNonProductionReasonListBy("生技部");
-          
+
             if (tem2 == null) { Assert.Fail(); }
         }
     }
