@@ -51,6 +51,11 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             get { return OBulider.BuildInstance<EquipmentDiscarCrud>(); }
         }
+        /// <summary>
+        /// 设备维修操作Crud
+        /// </summary>
+        public static EquipmentRepairedRecordCrud EquipmentRepairedRecordCrud
+        { get { return OBulider.BuildInstance<EquipmentRepairedRecordCrud>(); } }
     }
 
 
@@ -619,7 +624,50 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
         
     }
+    /// <summary>
+    /// 维修管理Crud
+    /// </summary>
+    internal class EquipmentRepairedRecordCrud : CrudBase<EquipmentRepairedRecordModel, IEquipmentRepairedRecordRepository>
+    {
+        public EquipmentRepairedRecordCrud()
+            : base(new EquipmentRepairedRecordRepository(), "设备维修记录")
+        { }
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddEquipmentRepairedRecord);
+            this.AddOpItem(OpMode.Edit, EditEquipmentRepairedRecord);
+        }
+        /// <summary>
+        /// 添加一条设备维修申请记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        OpResult AddEquipmentRepairedRecord(EquipmentRepairedRecordModel model)
+        {
 
-     
+            return irep.Insert(model).ToOpResult_Add(OpContext, model.Id_Key);
+        }
 
+        /// <summary>
+        /// 修改一条设备维修记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        OpResult EditEquipmentRepairedRecord(EquipmentRepairedRecordModel model)
+        {
+            OpResult result = OpResult.SetResult("未执行任何操作");
+            return result;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="assetNumber"></param>
+        /// <returns></returns>
+        public  EquipmentRepairedRecordModel  GetEquipmentRedpaiRedapplyRecord(string assetNumber)
+        {
+            return irep.Entities.FirstOrDefault(m => m.AssetNumber == assetNumber);
+        }
+    }
 }

@@ -57,7 +57,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.AstMapping
     }
 
     /// <summary>
-    ///EquipmentRepairedRecordModel
+    ///设备维修EquipmentRepairedRecordModel
     /// </summary>
     public class EquipmentRepairedRecordModelMapping : EntityTypeConfiguration<EquipmentRepairedRecordModel>
     {

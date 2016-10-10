@@ -1007,7 +1007,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Ast
         private string _assetnumber;
 
         /// <summary>
-        ///财产滨蒿
+        ///财产编号
         /// </summary>
         public string AssetNumber
         {

@@ -125,6 +125,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             get { return OBulider.BuildInstance<EquipmentDiscardManager>(); }
         }
+       
+       /// <summary>
+       /// 维修管理
+       /// </summary>
+        public EquipmentRepairedManager RepairedManager
+        {
+            get { return OBulider.BuildInstance<EquipmentRepairedManager>(); }
+        }
     }
 
 
@@ -304,7 +312,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
     }
 
-
+    /// <summary>
+    ///设备报废管理
+    /// </summary>
     public class EquipmentDiscardManager
     {
         /// <summary>
@@ -327,6 +337,28 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             return CrudFactory.EquipmentDiscarCrud.Store(model);
         }
     }
-
-
+    /// <summary>
+    /// 设备维修管理
+    /// </summary>
+    public class EquipmentRepairedManager
+    {
+        /// <summary>
+        /// 获取维修申请记录
+        /// </summary>
+        /// <param name="assetNumber"></param>
+        /// <returns></returns>
+        public EquipmentRepairedRecordModel GetEquipmentRedpaiRedapplyRecord(string assetNumber)
+        {
+            return CrudFactory.EquipmentRepairedRecordCrud.GetEquipmentRedpaiRedapplyRecord(assetNumber);
+        }
+        /// <summary>
+        /// 仓储操作
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult Store(EquipmentDiscardRecordModel model)
+        {
+            return CrudFactory.EquipmentDiscarCrud.Store(model);
+        }
+    }
 }
