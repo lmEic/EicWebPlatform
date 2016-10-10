@@ -101,7 +101,7 @@
                     </colgroup>
                     <thead>
                         <tr>
-                            <th class="text-center"><i class="fa fa-square"></i></th>
+                            <th class="text-center"><i class="fa fa-eraser"></i></th>
 
                             <th class="text-center" colspan="{{tbl.colSpans[0]}}">工单信息</th>
 
@@ -122,7 +122,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-center info"><i class="fa fa-share-alt-square"></i></td>
+                            <td class="text-center text-danger"><i class="fa fa-eraser"></i></td>
 
                             <td class="text-center info"><span>工单号</span></td>
                             <td class="text-center info"><span>品名</span></td>
@@ -163,7 +163,10 @@
                         </tr>
 
                         <tr ng-repeat="item in vmManager.editDatas track by $index" ng-click="vmManager.getCurrentRow(item)">
-                            <td class="text-center" ng-dblclick="vmManager.editRow(item)" title="双击此单元格进入编辑模式"><i class="fa fa-share-alt"></i></td>
+                            <td class="text-center text-danger" ng-dblclick="vmManager.editRow(item)" title="双击此单元格进入编辑模式">
+                                <span ng-click="vmManager.removeRow(item)" title="点击我将会删除本行数据"><i class="fa fa-remove"></i></span>   
+                            </td>
+                            
                             @*工单信息*@
                             <td>
                                 <span ng-hide="item.editting">{{item.OrderId}}</span>
@@ -271,30 +274,44 @@
                             @*工具按钮*@
                             <td class="text-center">
                                 <button type="button" class="btn btn-xs btn-primary" ng-show="item.editting"
-                                        data-animation="am-flip-x"
+                                        data-animation="am-flip-x" data-placement="right"
                                         bs-dropdown aria-haspopup="true" aria-expanded="false">
                                     <span class="fa fa-pencil-square"></span>
                                 </button>
                                 <div class="dropdown-menu" role="menu">
-                                    <div class="list-group">
-                                        <a href="#" class="list-group-item" ng-click="vmManager.editOver(item)" title="结束编辑"><i class="fa fa-check-square"></i>结束</a>
-                                        <a href="#" class="list-group-item" ng-click="vmManager.removeRow(item)" title="删除此行"><i class="fa fa-remove"></i>删除</a>
-                                    </div>
+                                    <ul class="nav nav-pills" role="tablist">
+                                        <li role="presentation">
+                                            <a href="#" ng-click="vmManager.editOver(item)" title="结束编辑"><i class="fa fa-check-square"></i>结束</a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="#" ng-click="vmManager.removeRow(item)" title="删除此行"><i class="fa fa-remove"></i>删除</a>
+                                        </li>
+                                    </ul>
                                 </div>
 
                                 <button type="button" class="btn btn-xs btn-success" ng-hide="item.editting"
-                                        data-animation="am-flip-x"
+                                        data-animation="am-flip-x" data-placement="right"
                                         bs-dropdown aria-haspopup="true" aria-expanded="false">
                                     <span class="fa fa-indent"></span>
                                 </button>
                                 <div class="dropdown-menu" role="menu">
-                                    <div class="list-group">
-                                        <a href="#" class="list-group-item" ng-click="vmManager.editProductHoursRow(item)" title="编辑产量工时信息"><i class="fa fa-sign-out"></i>编辑</a>
-                                        <a href="#" class="list-group-item" ng-click="vmManager.copyAndPaste(item)" title="复制并粘贴行"><i class="fa fa-clipboard"></i>复制并粘贴</a>
-                                        <a href="#" class="list-group-item" ng-click="vmManager.addRemarks(item)" title="添加备注信息"><i class="fa fa-tags"></i>添加备注</a>
-                                        <a href="#" class="list-group-item" ng-click="vmManager.removeRow(item)" title="删除此行"><i class="fa fa-remove"></i>删除</a>
-                                        <a href="#" class="list-group-item" ng-click="vmManager.cancelEdit(item)" title="取消编辑行"><i class="fa fa-undo"></i>取消</a>
-                                    </div>
+                                    <ul class="nav nav-pills" role="tablist">
+                                        <li role="presentation">
+                                            <a href="#" ng-click="vmManager.editProductHoursRow(item)" title="编辑产量工时信息"><i class="fa fa-pencil"></i>编辑</a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="#" ng-click="vmManager.copyAndPaste(item)" title="复制并粘贴行"><i class="fa fa-clipboard"></i>复制并粘贴</a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="#" ng-click="vmManager.addRemarks(item)" title="添加备注信息"><i class="fa fa-tags"></i>添加备注</a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="#" ng-click="vmManager.removeRow(item)" title="删除此行"><i class="fa fa-remove"></i>删除</a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="#" ng-click="vmManager.cancelEdit(item)" title="取消编辑行"><i class="fa fa-undo"></i>取消</a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </td>
 

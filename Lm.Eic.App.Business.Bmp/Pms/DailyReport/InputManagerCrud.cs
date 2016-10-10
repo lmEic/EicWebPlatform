@@ -139,7 +139,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public OpResult DeleteDailyReportListBy(string department,DateTime dailyReportDate)
         {
-            //TODO：根据组合值清除符合条件的列表 
+            //根据组合值清除符合条件的列表 
             try
             {
                 return irep.Delete(m => m.Department == department && m.DailyReportDate == dailyReportDate).ToOpResult(OpContext);

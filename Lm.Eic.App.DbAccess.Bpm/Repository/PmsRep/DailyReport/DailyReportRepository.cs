@@ -125,4 +125,16 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     { }
 
 
+
+    /// <summary>
+    /// 工单信息仓储
+    /// </summary>
+    public interface IDReportsOrderModelRepository : IRepository<DReportsOrderModel> { }
+    /// <summary>
+    /// 工单信息仓储
+    /// </summary>
+    public class DReportsOrderModelRepository : BpmRepositoryBase<DReportsOrderModel>, IDReportsOrderModelRepository
+    { }
+
+
 }

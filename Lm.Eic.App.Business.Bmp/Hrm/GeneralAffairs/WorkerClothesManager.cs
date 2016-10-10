@@ -89,7 +89,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         public MemoryStream BuildReceiveWorkClothesList()
         {
             var dataGroupping = _workClothesmangeModelList.GetGroupList<WorkClothesManageModel>("ReceiveMonth");
-            //TODO:生成厂服领取清单
+            //生成厂服领取清单
           return   dataGroupping.ExportToExcelMultiSheets<WorkClothesManageModel>(fieldmappping);
         }
 

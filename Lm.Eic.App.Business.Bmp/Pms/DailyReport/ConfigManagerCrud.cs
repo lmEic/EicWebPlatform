@@ -1,6 +1,7 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.App.Erp.Bussiness.MocManage;
+using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
@@ -16,7 +17,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     internal class DailyReportConfigCrudFactory
     {
         /// <summary>
-        /// 日报录入
+        ///工序管理
         /// </summary>
         public static ProductFlowConfigCrud ProductFlowConfigCrud
         { get { return OBulider.BuildInstance<ProductFlowConfigCrud>(); } }
@@ -37,6 +38,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             get { return OBulider.BuildInstance<NonProductionReasonConfigCrud>(); }
         }
 
+        /// <summary>
+        /// 工单信息
+        /// </summary>
+        public static DailyOrderConfigCrud DailyOrderConfigCrud
+        {
+            get { return OBulider.BuildInstance<DailyOrderConfigCrud>(); }
+        }
     }
 
 
@@ -170,6 +178,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                     case 5: //依据工单单号查询
                         {
                             var orderDetails = MocService.OrderManage.GetOrderDetails(qryDto.OrderId);
+
+                            if (orderDetails == null)
+                                orderDetails = DailyReportConfigCrudFactory.DailyOrderConfigCrud.GetOrderDetails(qryDto.OrderId);
+
                             if (orderDetails != null)
                                 qryDto.ProductName = orderDetails.ProductName;
                             return irep.Entities.Where(m => m.Department == qryDto.Department && m.ProductName == qryDto.ProductName).ToList();
@@ -264,7 +276,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
         protected override void AddCrudOpItems()
         {
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -298,6 +310,52 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
+    }
+
+    /// <summary>
+    /// 工单CRUD
+    /// </summary>
+    internal class DailyOrderConfigCrud : CrudBase<DReportsOrderModel, IDReportsOrderModelRepository>
+    {
+        public DailyOrderConfigCrud() : base(new DReportsOrderModelRepository(), "工单配置")
+        {
+        }
+
+        protected override void AddCrudOpItems()
+        {
+            //throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 获取工单详情
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public OrderModel GetOrderDetails(string orderId)
+        {
+            var orderDetails = irep.Entities.FirstOrDefault(m => m.OrderId == orderId);
+            return ConvertToErpOrderModel(orderDetails);
+        }
+
+        /// <summary>
+        /// 转换为Erp工单模型
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OrderModel ConvertToErpOrderModel(DReportsOrderModel model)
+        {
+            try
+            {
+                if (model == null)
+                    return null;
+
+                var orderDetails = new OrderModel();
+                OOMaper.Mapper( model ,orderDetails);
+                return orderDetails;
+            }
+            catch (Exception) {throw new NotImplementedException();}
+        }
+
     }
 
 }

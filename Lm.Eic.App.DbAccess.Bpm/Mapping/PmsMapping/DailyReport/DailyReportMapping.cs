@@ -68,4 +68,19 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
             this.ToTable("Pms_DReportsNonProduction");
         }
     }
+
+
+    /// <summary>
+    ///DReportsOrderModel
+    /// </summary>
+    public class DReportsOrderModelMapping : EntityTypeConfiguration<DReportsOrderModel>
+    {
+        public DReportsOrderModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Pms_DReportsOrder");
+        }
+    }
+
 }

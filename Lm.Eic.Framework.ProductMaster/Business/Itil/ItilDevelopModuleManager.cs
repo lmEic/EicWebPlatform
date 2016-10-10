@@ -64,7 +64,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult SendMail()
         {
-            //ToDO:根据执行人 邮件发送任务
             OpResult opResult = OpResult.SetResult("未执行任何邮件发送！");
             EmailMessageHelper email = new EmailMessageHelper("softwareadmin@ezconn.cn", "Echo4u", true);
             email.mailSubject = "开发任务进度变更";
