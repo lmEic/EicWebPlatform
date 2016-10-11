@@ -44,7 +44,7 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
         /// </summary>
         private string SqlFields
         {
-            get { return "Select TA001,TA002,TA006,TA034,TA035,TA016,TA010,TA063 from MOCTA"; }
+            get { return "Select TA001,TA002,TA006,TA034,TA035,TA015,TA010,TA063 from MOCTA"; }
         }
         /// <summary>
         /// 获取工单详情
@@ -74,14 +74,14 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
        /// <returns></returns>
         public List<OrderModel> GetUnfinishedOrderBy(string ContainsProductName)
         {
-            string sqlWhere = string.Format(" (NOT (TA011 = 'Y' OR  TA011 = 'y')) AND (TA034 LIKE '%{0}%')", ContainsProductName);
+            string sqlWhere = string.Format(" WHERE (NOT (TA011 = 'Y' OR  TA011 = 'y')) AND (TA034 LIKE '%{0}%'  AND (NOT (TA035 LIKE '%镭射雕刻%')))", ContainsProductName);
             return ErpDbAccessHelper.FindDataBy<OrderModel>(SqlFields, sqlWhere, (dr, m) =>
             {
                 m.OrderId = string.Format("{0}-{1}", dr["TA001"].ToString().Trim(), dr["TA002"].ToString().Trim()); ;
                 m.ProductID = dr["TA006"].ToString().Trim();
                 m.ProductName = dr["TA034"].ToString().Trim();
                 m.ProductSpecify = dr["TA035"].ToString().Trim();
-                m.Count = dr["TA016"].ToString().Trim().ToDouble();
+                m.Count = dr["TA015"].ToString().Trim().ToDouble();
                 m.OrderFinishDate = DateTime.ParseExact(dr["TA010"].ToString().Trim(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
                 m.InStockDate = DateTime.ParseExact(dr["TA063"].ToString().Trim(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
             });

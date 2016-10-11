@@ -52,7 +52,7 @@ namespace Lm.Eic.App.Erp.DbAccess.CopManageDb
 
         private string  SqlFields
         {
-            get { return "TD001 AS 单别, TD002 AS 单号, TD003 AS 序号, TD004 AS 品号, TD005 AS 品名, TD006 AS 规格, TD007 AS 仓位号,   TD008 AS 计划产量, TD009 AS 已交量  FROM  COPTD"; }
+            get { return "SELECT TD001 AS 单别, TD002 AS 单号, TD003 AS 序号, TD004 AS 品号, TD005 AS 品名, TD006 AS 规格, TD007 AS 仓位号,   TD008 AS 计划产量, TD009 AS 已交量  FROM  COPTD"; }
         }
         /// <summary>
         /// 未完工的业务订单
@@ -69,7 +69,7 @@ namespace Lm.Eic.App.Erp.DbAccess.CopManageDb
                 m.OrderDesc = dr["序号"].ToString().Trim();
 
                 m.ProductID = dr["品号"].ToString().Trim();
-                m.ProductName = dr["品名"].ToString().Trim();
+                m.ProductName = ContainsProductType;
                 m.ProductSpecify = dr["规格"].ToString().Trim();
                 m.WarehouseID = (dr["仓位号"].ToString().Trim());
 

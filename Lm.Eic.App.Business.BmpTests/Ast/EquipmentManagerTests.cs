@@ -2,7 +2,7 @@
 using System;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.App.Erp.Bussiness.MocManage;
-
+using Lm.Eic.App.Erp.Bussiness.CopMaange;
 namespace Lm.Eic.App.Business.Bmp.Ast.Tests
 {
     [TestClass()]
@@ -69,5 +69,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             var temList = AstService.EquipmentManager.DiscardManager.GetEquipmentDiscardRecord("Z160001");
             if (temList == null) { Assert.Fail(); }
         }
+    }
+
+    public class test
+    {
+       public void getstss()
+       {
+           var mmm= CopService.OrderManageManager .GetProductTypeMonitor();
+       }
     }
 }
