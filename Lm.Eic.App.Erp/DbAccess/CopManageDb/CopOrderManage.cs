@@ -55,11 +55,11 @@ namespace Lm.Eic.App.Erp.DbAccess.CopManageDb
         /// <summary>
         /// 未完工的业务订单
         /// </summary>
-        /// <param name="ContainsProductType">所包括品名</param>
+        /// <param name="containsProductType">所包括品名</param>
         /// <returns></returns>
-        public List<CopOrderModel> GetCopOrderBy(string ContainsProductType)
+        public List<CopOrderModel> GetCopOrderBy(string containsProductType)
         {
-            string sqlWhere = string.Format(" where (TD005 like'%{0}%' or TD006 LIKE '%{0}%')and (TD016 = 'N') ", ContainsProductType);
+            string sqlWhere = string.Format(" where (TD005 like'%{0}%' or TD006 LIKE '%{0}%')and (TD016 = 'N') ", containsProductType);
             return ErpDbAccessHelper.FindDataBy<CopOrderModel>(SqlFields, sqlWhere, (dr, m) =>
             {
               
@@ -67,7 +67,7 @@ namespace Lm.Eic.App.Erp.DbAccess.CopManageDb
                 m.OrderDesc = dr["序号"].ToString().Trim();
 
                 m.ProductID = dr["品号"].ToString().Trim();
-                m.ProductName = ContainsProductType;
+                m.ProductName = containsProductType;
                 m.ProductSpecify = dr["规格"].ToString().Trim();
                 m.WarehouseID = (dr["仓位号"].ToString().Trim());
 

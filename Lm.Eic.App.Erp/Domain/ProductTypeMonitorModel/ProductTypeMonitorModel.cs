@@ -18,7 +18,7 @@ namespace Lm.Eic.App.Erp.Domain.ProductTypeMonitorModel
       public string ProductSpecify
       { set; get; }
       /// <summary>
-      /// 生产总量
+      /// 汇总数量
       /// </summary>
       public double SumNumber
       { set; get; }
