@@ -121,7 +121,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         editWindowDisplay: false,
         editWindowWidth: '100%',
         copyWindowDisplay: false,
-        department: '生技部',
+        department: '成型课',
         productName: null,
         //编辑显示的数据集合
         editDatas: [],

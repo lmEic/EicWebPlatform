@@ -54,10 +54,11 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 string temAssetNumber = string.Format("{0}{1}{2}", assetNumber_1, assetNumber_2_3, assetNumber_4);
                 var temEntitylist = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = temAssetNumber, SearchMode = 1 });
 
-                if(temEntitylist!=null && temEntitylist.Count > 0)
+                if (temEntitylist != null && temEntitylist.Count > 0)
                 {
                     List<int> numList = new List<int>();
-                    temEntitylist.ForEach((m) => {
+                    temEntitylist.ForEach((m) =>
+                    {
                         if (m.AssetNumber != null && m.AssetNumber.Length > 3)
                         {
                             int temNum = 0;
@@ -81,8 +82,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
 
         /// <summary>
-        /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询 
-        /// 4.依据录入日期查询待校验设备 5.依据录入日期查询待保养设备 
+        /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询
+        /// 4.依据录入日期查询待校验设备 5.依据录入日期查询待保养设备
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
@@ -100,7 +101,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return CrudFactory.EquipmentCrud.Store(model);
         }
-        #endregion
+
+        #endregion Equipment
 
         /// <summary>
         /// 校验管理
@@ -125,28 +127,27 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             get { return OBulider.BuildInstance<EquipmentDiscardManager>(); }
         }
-       
-       /// <summary>
-       /// 维修管理
-       /// </summary>
+
+        /// <summary>
+        /// 维修管理
+        /// </summary>
         public EquipmentRepairedManager RepairedManager
         {
             get { return OBulider.BuildInstance<EquipmentRepairedManager>(); }
         }
     }
 
-
     /// <summary>
     /// 设备校验管理器
     /// </summary>
     public class EquipmentCheckManager
     {
-        List<EquipmentModel> _waitingCheckList = new List<EquipmentModel>();
+        private List<EquipmentModel> _waitingCheckList = new List<EquipmentModel>();
 
         /// <summary>
         /// 获取待校验设备列表
         /// </summary>
-        /// <param name="plannedCheckDate">计划校验日期</param>  
+        /// <param name="plannedCheckDate">计划校验日期</param>
         /// <returns></returns>
         public List<EquipmentModel> GetWaitingCheckListBy(DateTime plannedCheckDate)
         {
@@ -167,7 +168,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public MemoryStream BuildWaitingCheckList()
         {
-
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
                  new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次",} ,
                   new FileFieldMapping {FieldName ="AssetNumber",FieldDiscretion="编号",}  ,
@@ -209,8 +209,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             DateTime NowDate = DateTime.Now.Date.ToDate();
             return waitingChecklist.FindAll(e => e.PlannedCheckDate > NowDate);
         }
+
         /// <summary>
-        /// 查询 1.依据财产编号查询 
+        /// 查询 1.依据财产编号查询
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
@@ -228,21 +229,19 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return CrudFactory.EquipmentCheckCrud.Store(model);
         }
-
-
     }
 
-
-   /// <summary>
-   /// 设备保养管理器
-   /// </summary>
+    /// <summary>
+    /// 设备保养管理器
+    /// </summary>
     public class EquipmentMaintenanceManager
     {
-        List<EquipmentModel> _waitingMaintenanceList = new List<EquipmentModel>();
+        private List<EquipmentModel> _waitingMaintenanceList = new List<EquipmentModel>();
+
         /// <summary>
         /// 导出Excel
         /// </summary>
-        List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+        private List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
                   new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次",},
                   new FileFieldMapping {FieldName ="AssetNumber",FieldDiscretion="财产编号",} ,
                   new FileFieldMapping {FieldName ="EquipmentName",FieldDiscretion="名称",} ,
@@ -253,6 +252,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                   new FileFieldMapping {FieldName ="ManufacturingNumber",FieldDiscretion="制造编号",} ,
                   new FileFieldMapping {FieldName ="More",FieldDiscretion="备注",}
                 };
+
         /// <summary>
         /// 获取待保养清单
         /// </summary>
@@ -262,7 +262,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             try
             {
-
                 _waitingMaintenanceList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { PlannedMaintenanceMonth = plannedMaintenanceMonth, SearchMode = 5 });
                 return _waitingMaintenanceList;
             }
@@ -271,7 +270,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 throw new Exception(ex.InnerException.Message);
             }
         }
-
 
         /// <summary>
         /// 生成保养清单
@@ -290,8 +288,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             }
             //return NPOIHelper.ExportToExcel(_waitingMaintenanceList, "待保养设备列表");
         }
+
         /// <summary>
-        /// 查询 1.依据财产编号查询 
+        /// 查询 1.依据财产编号查询
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
@@ -309,7 +308,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return CrudFactory.EquipmentMaintenanceCrud.Store(model);
         }
-
     }
 
     /// <summary>
@@ -337,28 +335,32 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             return CrudFactory.EquipmentDiscarCrud.Store(model);
         }
     }
+
     /// <summary>
     /// 设备维修管理
     /// </summary>
     public class EquipmentRepairedManager
     {
+         
         /// <summary>
-        /// 获取维修申请记录
-        /// </summary>
-        /// <param name="assetNumber"></param>
-        /// <returns></returns>
-        public EquipmentRepairedRecordModel GetEquipmentRedpaiRedapplyRecord(string assetNumber)
-        {
-            return CrudFactory.EquipmentRepairedRecordCrud.GetEquipmentRedpaiRedapplyRecord(assetNumber);
-        }
-        /// <summary>
-        /// 仓储操作
+        /// 添加一条设备维修记录
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult Store(EquipmentDiscardRecordModel model)
+        public OpResult AddEquipmentRepairedRecord(EquipmentRepairedRecordModel model)
         {
-            return CrudFactory.EquipmentDiscarCrud.Store(model);
+            model.OpSign = OpMode.Add;
+            return CrudFactory.EquipmentRepairedRecordCrud.Store(model);
+        }
+
+        /// <summary>
+        /// 获取设备维修记录
+        /// </summary>
+        /// <param name="assetNumber">财产编号</param>
+        /// <returns></returns>
+        public List<EquipmentRepairedRecordModel> GetEquipmentRepairedRecordBy(string assetNumber)
+        {
+            return CrudFactory.EquipmentRepairedRecordCrud.GetEquipmentRepairedRecordBy(assetNumber);
         }
     }
 }

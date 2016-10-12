@@ -249,6 +249,22 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+
+        /// <summary>
+        /// 保存维修数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StoreAstRepairedData(EquipmentRepairedRecordModel model)
+        {
+            var result = AstService.EquipmentManager.RepairedManager.AddEquipmentRepairedRecord(model);
+            return Json(result);
+        }
+
+
+
         #endregion
     }
 }

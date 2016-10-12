@@ -119,6 +119,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             model: model
         });
     };
+
     ast.handleFile = function (moduleName, fileName) {
         var url = astUrlPrefix + 'HandleFile';
         return ajaxService.getData(url, {
@@ -126,6 +127,15 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             fileName: fileName
         });
     };
+
+    ///保存设备维修记录
+    ast.storeAstRepairedData = function (model) {
+        var url = astUrlPrefix + 'StoreAstRepairedData';
+        return ajaxService.postData(url, {
+            model: model
+        });
+    };
+
     return ast;
 })
 .controller('moduleNavCtrl', function ($scope, navDataService, $state) {
@@ -751,49 +761,22 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 })
 
 ///录入设备维修单
-.controller('astInputRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
-
+.controller('astInputRepairedRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
     ///设备档案模型
     var uiVM = {
-        AssetNumber: 5555,
+        FormId: null,
+        AssetNumber: null,
         EquipmentName: null,
-        EquipmentSpec: null,
-        FunctionDescription: null,
-        ServiceLife: 10,
-        EquipmentPhoto: null,
-        AssetType: '低质易耗品',
-        EquipmentType: '量测设备',
-        TaxType: null,
-        FreeOrderNumber: null,
-        DeclarationNumber: null,
-        Unit: '台',
-        Manufacturer: null,
         ManufacturingNumber: null,
-        ManufacturerWebsite: null,
-        ManufacturerTel: null,
-        AfterSalesTel: null,
-        AddMode: "外购",
-        DeliveryDate: null,
-        DeliveryUser: null,
-        DeliveryCheckUser: null,
-        SafekeepWorkerID: null,
-        SafekeepUser: null,
         SafekeepDepartment: null,
-        Installationlocation: null,
-        IsMaintenance: null,
-        MaintenanceDate: new Date(),
-        MaintenanceInterval: 1,
-        PlannedMaintenanceDate: null,
-        MaintenanceState: null,
-        State: null,
-        IsCheck: null,
-        CheckType: '内校',
-        CheckDate: new Date(),
-        CheckInterval: 6,
-        PlannedCheckDate: null,
-        ChechState: null,
-        InputDate: null,
+        FilingDate: null,
+        RepairedUser: null,
+        FinishDate: null,
+        RepairedResult: null,
+        FaultDescription: null,
+        Solution: null,
         OpDate: null,
+        OpTime: null,
         OpPerson: null,
         OpSign: 'add',
         Id_Key: null
@@ -803,7 +786,57 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     //视图管理器
     var vmManager = {
-       
+
+        init: function () {
+            uiVM.OpSign = 'add';
+            leeHelper.clearVM(uiVM);
+            $scope.vm = uiVM;
+        },
+
+        searchedWorkers: [],
+
+        isSingle: true,//是否搜寻到的是单个人
+
+        getWorkerInfo: function () {
+            if (uiVM.RepairedUser === undefined) return;
+            var strLen = leeHelper.checkIsChineseValue(uiVM.RepairedUser) ? 2 : 6;
+            if (uiVM.RepairedUser.length >= strLen) {
+                vmManager.searchedWorkers = [];
+                $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.RepairedUser).then(function (datas) {
+                    if (datas.length > 0) {
+                        vmManager.searchedWorkers = datas;
+                        if (vmManager.searchedWorkers.length === 1) {
+                            vmManager.isSingle = true;
+                            vmManager.selectWorker(vmManager.searchedWorkers[0]);
+                        }
+                        else {
+                            vmManager.isSingle = false;
+                        }
+                    }
+                    else {
+                        vmManager.selectWorker(null);
+                    }
+                });
+            }
+        },
+        selectWorker: function (worker) {
+            if (worker !== null) {
+                uiVM.RepairedUser = worker.Name;
+            }
+        },
+
+        getAstDatas: function ($event) {
+            if ($event.keyCode === 13) {//回车
+                if (uiVM.AssetNumber === undefined || uiVM.AssetNumber.length < 6) return;
+                $scope.searchPromise = astDataopService.getEquipmentArchivesBy(new Date(), uiVM.AssetNumber, 1).then(function (datas) {
+                    if (angular.isArray(datas) && datas.length > 0) {
+                        leeHelper.copyVm(datas[0], uiVM);
+                    } else {
+                        leeHelper.clearVM(uiVM, null);
+                    }
+                });
+            }
+        }
     };
 
     $scope.vmManager = vmManager;
@@ -813,8 +846,13 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     //存储
     operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-           
+            astDataopService.storeAstRepairedData(uiVM).then(function (opresult){
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    vmManager.init();
+                });
+            });
         });
     };
+
 
 });
