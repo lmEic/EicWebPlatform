@@ -28,9 +28,13 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
         /// </summary>
         public string ProductSpecify { get; set; }
         /// <summary>
-        /// 总批量
+        ///订单总数TA015
         /// </summary>
         public double Count { set; get; }
+        /// <summary>
+        ///订单已入库数TA017
+        /// </summary>
+        public double InStoreCount { set; get; }
         /// <summary>
         /// 入库日期
         /// </summary>
@@ -39,6 +43,7 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
         /// 订单完工日期
         /// </summary>
         public DateTime OrderFinishDate { set; get; }
+
     }
 
     /// <summary>

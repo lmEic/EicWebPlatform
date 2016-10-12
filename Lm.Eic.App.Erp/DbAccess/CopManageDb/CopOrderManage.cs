@@ -20,8 +20,6 @@ namespace Lm.Eic.App.Erp.DbAccess.CopManageDb
         {
             get { return OBulider.BuildInstance<CopOrderManage>(); }
         }
-
-    
     }
 
 

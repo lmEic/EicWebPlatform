@@ -23,24 +23,29 @@ namespace Lm.Eic.App.Erp.Domain.ProductTypeMonitorModel
       public double SumNumber
       { set; get; }
       /// <summary>
-      ///   在制工单数量
+      /// 工单数量
       /// </summary>
-      public double ProductOrderNumber
+      public double OrderNumber
       { set;  get; }
       /// <summary>
       /// 现场成品仓量
       /// </summary>
-      public double LocaleFinishedProductNumber
+      public double LocaleFinishedNumber
       {  set; get; }
       /// <summary>
-      /// 库存成品量
+      /// 保税库存成品量
       /// </summary>
-      public double InHouseFinishedProductNumber
+      public double FreeTradeInHouseNumber
       { set; get; }
       /// <summary>
       /// 全检工单量
       /// </summary>
       public double AllCheckOrderNumber
+      { set; get; }
+      /// <summary>
+      /// 来料成品
+      /// </summary>
+      public double PutInMaterialNumber
       { set; get; }
       /// <summary>
       /// 差异量
