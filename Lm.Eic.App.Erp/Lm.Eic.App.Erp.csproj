@@ -40,8 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bussiness\CopMaange\CopService.cs" />
-    <Compile Include="Bussiness\CopMaange\OrderManage.cs" />
+    <Compile Include="Bussiness\CopManage\CopService.cs" />
+    <Compile Include="Bussiness\CopManage\OrderManage.cs" />
     <Compile Include="Bussiness\MocManage\BomManage.cs" />
     <Compile Include="Bussiness\MocManage\MocBase.cs" />
     <Compile Include="Bussiness\MocManage\MocService.cs" />

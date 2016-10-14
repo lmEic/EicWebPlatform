@@ -2,7 +2,7 @@
 using System;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.App.Erp.Bussiness.MocManage;
-using Lm.Eic.App.Erp.Bussiness.CopMaange;
+using Lm.Eic.App.Erp.Bussiness.CopManage;
 namespace Lm.Eic.App.Business.Bmp.Ast.Tests
 {
     [TestClass()]
