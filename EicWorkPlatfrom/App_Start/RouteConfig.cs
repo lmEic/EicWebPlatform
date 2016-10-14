@@ -11,6 +11,7 @@ namespace EicWorkPlatfrom
         }
 
         private static bool isCheck = false;
+
         /// <summary>
         /// 是否进行权限检测
         /// 在开发测试中，可将此属性设置为false
@@ -22,6 +23,7 @@ namespace EicWorkPlatfrom
             set { isCheck = value; }
         }
     }
+
     public class RouteConfig
     {
         public static void RegisterRoutes(RouteCollection routes)
@@ -45,7 +47,7 @@ namespace EicWorkPlatfrom
                 routes.MapRoute(
                              name: "Default",
                              url: "{controller}/{action}/{id}",
-                             defaults: new { controller = "Product", action = "Index", id = UrlParameter.Optional }
+                             defaults: new { controller = "Equipment", action = "Index", id = UrlParameter.Optional }
                          );
             }
         }

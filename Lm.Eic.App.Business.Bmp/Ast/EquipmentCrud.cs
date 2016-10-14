@@ -1,21 +1,21 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Repository.AstRep;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
+using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lm.Eic.Uti.Common.YleeObjectBuilder;
-using Lm.Eic.Uti.Common.YleeDbHandler;
 
 namespace Lm.Eic.App.Business.Bmp.Ast
 {
-
     /***********************************************   设备管理CRUD工厂   *****************************
-    *                                        
-    *  2017-7-27  初版   张明                  
+    *
+    *  2017-7-27  初版   张明
     **************************************************************************************************/
+
     /// <summary>
     /// 设备管理模块Crud工厂
     /// </summary>
@@ -28,6 +28,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             get { return OBulider.BuildInstance<EquipmentCrud>(); }
         }
+
         /// <summary>
         /// 设备校验操作Crud
         /// </summary>
@@ -51,13 +52,19 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             get { return OBulider.BuildInstance<EquipmentDiscarCrud>(); }
         }
+
+        /// <summary>
+        /// 设备维修操作Crud
+        /// </summary>
+        public static EquipmentRepairedRecordCrud EquipmentRepairedRecordCrud
+        { get { return OBulider.BuildInstance<EquipmentRepairedRecordCrud>(); } }
     }
 
-
     /***********************************************   设备档案CRUD   *********************************
-   *                                        
-   *  2017-7-27  初版   张明                  
+   *
+   *  2017-7-27  初版   张明
    ***************************************************************************************************/
+
     /// <summary>
     /// 设备档案CRUD
     /// </summary>
@@ -73,7 +80,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         #region Find
 
         /// <summary>
-        /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询 
+        /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询
         /// 4.依据录入日期查询待校验设备 5.依据录入日期查询待保养设备 6.生成设备总览表
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
@@ -86,18 +93,24 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 {
                     case 1: //依据财产编号查询
                         return irep.Entities.Where(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
+
                     case 2: //依据保管部门查询
                         return irep.Entities.Where(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();
+
                     case 3: //依据录入日期查询
                         DateTime inputDate = qryDto.InputDate.ToDate();
                         return irep.Entities.Where(m => m.InputDate == inputDate).ToList();
+
                     case 4: //依据录入日期查询待校验设备  //结束日期=输入日期加一个月 超期设备等于 计划日期<=当天日期
                         DateTime startPlannedDate = qryDto.PlannedCheckDate.ToDate(), endPlannedDate = startPlannedDate.AddMonths(1), nowDate = DateTime.Now.ToDate();
-                        return irep.Entities.Where(m => (  m.IsScrapped == "否" && m.IsCheck=="是" && m.PlannedCheckDate >= startPlannedDate && m.PlannedCheckDate <= endPlannedDate )  || (m.IsScrapped == "正常" && m.IsCheck=="是"&& m.PlannedCheckDate <= nowDate)).ToList();
+                        return irep.Entities.Where(m => (m.IsScrapped == "否" && m.IsCheck == "是" && m.PlannedCheckDate >= startPlannedDate && m.PlannedCheckDate <= endPlannedDate) || (m.IsScrapped == "正常" && m.IsCheck == "是" && m.PlannedCheckDate <= nowDate)).ToList();
+
                     case 5: //依据录入日期查询待保养设备  //按计划保养月查询待保养待设备列表
                         return irep.Entities.Where(m => m.IsMaintenance == "是" && m.PlannedMaintenanceMonth == qryDto.PlannedMaintenanceMonth).ToList();
+
                     case 6: //查询所有在使用待设备 生成设备总览表
-                        return irep.Entities.Where(m=>m.IsScrapped== "否").ToList();
+                        return irep.Entities.Where(m => m.IsScrapped == "否").ToList();
+
                     default:
                         return new List<EquipmentModel>();
                 }
@@ -108,8 +121,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             }
         }
 
-        #endregion
-
+        #endregion Find
 
         #region Store
 
@@ -159,7 +171,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
             return opResult;
         }
-
 
         /// <summary>
         /// 修改数据仓库 model.OpSign = add/edit/delete
@@ -230,8 +241,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return irep.Delete(model.Id_Key).ToOpResult_Delete("设备档案");
         }
-        #endregion
 
+        #endregion Store
 
         #region Rule
 
@@ -241,7 +252,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="model"></param>
         private void SetEquipmentCheckRule(EquipmentModel model)
         {
-            if(model.EquipmentType != "量测设备")  //如果不等于量测设备 不校验
+            if (model.EquipmentType != "量测设备")  //如果不等于量测设备 不校验
             {
                 model.CheckDate = DateTime.Now.ToDate();//设置为默认日期
                 model.CheckInterval = 0;
@@ -259,9 +270,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <param name="model"></param>
         private void SetEquipmentMaintenanceRule(EquipmentModel model)
         {
-            if(model.AssetType == "低质易耗品")  //如果等于低值易耗品 不保养
+            if (model.AssetType == "低质易耗品")  //如果等于低值易耗品 不保养
             {
-                model.MaintenanceDate = DateTime.Now.ToDate(); 
+                model.MaintenanceDate = DateTime.Now.ToDate();
                 model.MaintenanceInterval = 0;
             }
             //保养处理
@@ -272,16 +283,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             model.MaintenanceState = "在期";
         }
 
-
-        #endregion
-
-
+        #endregion Rule
     }
-   
+
     /***********************************************   设备校验CRUD   *********************************
-    *                                        
-    *  2017-7-27  初版   张明                  
+    *
+    *  2017-7-27  初版   张明
     ***************************************************************************************************/
+
     /// <summary>
     /// 校验管理Crud
     /// </summary>
@@ -297,7 +306,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         #region FindBy
 
         /// <summary>
-        /// 查询 1.依据财产编号查询 
+        /// 查询 1.依据财产编号查询
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
@@ -309,6 +318,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 {
                     case 1: //依据财产编号查询
                         return irep.Entities.Where(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
+
                     default: return null;
                 }
             }
@@ -318,7 +328,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             }
         }
 
-        #endregion
+        #endregion FindBy
 
         #region Store
 
@@ -349,7 +359,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             try
             {
                 //判断设备校验日期是否等于校验单上的日期
-                if (equipment.CheckDate != model.CheckDate)  
+                if (equipment.CheckDate != model.CheckDate)
                 {
                     switch (model.OpSign)
                     {
@@ -357,12 +367,15 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                             opResult = irep.Insert(model).ToOpResult_Add(opContext, model.Id_Key);
                             opResult.Attach = model;
                             break;
+
                         case OpMode.Edit: //修改
                             opResult = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(opContext);
                             break;
+
                         case OpMode.Delete: //删除
                             opResult = irep.Delete(model.Id_Key).ToOpResult_Delete(opContext);
                             break;
+
                         default:
                             opResult = OpResult.SetResult("操作模式溢出");
                             break;
@@ -381,8 +394,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                     opResult.Attach = model;
                     return opResult;
                 }
-                else 
-                { 
+                else
+                {
                     return OpResult.SetResult("设备校验日期与录入日期相等");
                 }
             }
@@ -397,25 +410,28 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult SetEquipmentCheckDateRule(EquipmentCheckRecordModel model , EquipmentModel equipment)
+        private OpResult SetEquipmentCheckDateRule(EquipmentCheckRecordModel model, EquipmentModel equipment)
         {
             equipment.CheckDate = model.CheckDate;
             equipment.OpSign = OpMode.Edit;
             return OpResult.SetResult("更新设备校验日期成功！", "更新设备校验日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
         }
-        #endregion
+
+        #endregion Store
     }
 
     /***********************************************   设备保养CRUD   *********************************
-   *                                        
-   *  2017-7-27  初版   张明                  
+   *
+   *  2017-7-27  初版   张明
    ***************************************************************************************************/
+
     /// <summary>
     /// 保养管理Crud
     /// </summary>
     internal class EquipmentMaintenanceCrud
     {
         private IEquipmentMaintenanceRepositor irep = null;
+
         public EquipmentMaintenanceCrud()
         {
             irep = new EquipmentMaintenanceRepository();
@@ -424,7 +440,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         #region FindBy
 
         /// <summary>
-        /// 查询 1.依据财产编号查询 
+        /// 查询 1.依据财产编号查询
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
@@ -436,6 +452,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 {
                     case 1: //依据财产编号查询
                         return irep.Entities.Where(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
+
                     default: return null;
                 }
             }
@@ -445,10 +462,10 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             }
         }
 
-        #endregion
-
+        #endregion FindBy
 
         #region Store
+
         /// <summary>
         /// 修改数据仓库 model.OpSign = add/edit/delete
         /// </summary>
@@ -466,7 +483,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 return OpResult.SetResult("保养记录不能为空！");
 
             //设备是否存在
-            var equipment = EquipmentCrudFactory.EquipmentCrud.FindBy (new QueryEquipmentDto (){ SearchMode =1, AssetNumber=model.AssetNumber}).FirstOrDefault();
+            var equipment = EquipmentCrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { SearchMode = 1, AssetNumber = model.AssetNumber }).FirstOrDefault();
             if (equipment == null)
                 return OpResult.SetResult("未找到保养单上的设备\r\n请确定财产编号是否正确！");
 
@@ -476,19 +493,22 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             //保存操作记录
             try
             {
-                if (equipment.MaintenanceDate !=model.MaintenanceDate)
+                if (equipment.MaintenanceDate != model.MaintenanceDate)
                 {
                     switch (model.OpSign)
                     {
                         case OpMode.Add: //新增
                             opResult = irep.Insert(model).ToOpResult_Add(opContext, model.Id_Key);
                             break;
+
                         case OpMode.Edit: //修改
                             opResult = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(opContext);
                             break;
+
                         case OpMode.Delete: //删除
                             opResult = irep.Delete(model.Id_Key).ToOpResult_Delete(opContext);
                             break;
+
                         default:
                             opResult = OpResult.SetResult("操作模式溢出");
                             break;
@@ -508,7 +528,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                     return opResult;
                 }
                 else { return OpResult.SetResult("设备保养日期与录入日期相等"); }
-                   
             }
             catch (Exception ex)
             {
@@ -521,26 +540,27 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="model"></param>
         /// <returns></保养returns>
-        private OpResult SetEquipmentMaintenanceDateRule(EquipmentMaintenanceRecordModel model,EquipmentModel equipment)
+        private OpResult SetEquipmentMaintenanceDateRule(EquipmentMaintenanceRecordModel model, EquipmentModel equipment)
         {
             equipment.MaintenanceDate = model.MaintenanceDate;
             equipment.OpSign = OpMode.Edit;
             return OpResult.SetResult("更新设备保养日期成功！", "更新设备保养日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
         }
-        #endregion
+
+        #endregion Store
     }
 
-
     /***********************************************   设备报废CRUD   *********************************
-  *                                        
-  *  2017-7-27  初版   张明                  
+  *
+  *  2017-7-27  初版   张明
   ***************************************************************************************************/
-  /// <summary>
-  /// 报废管理Crud
-  /// </summary>
-    internal class EquipmentDiscarCrud : CrudBase<EquipmentDiscardRecordModel, IEquipmentDiscardRepositoryRepository>
+
+    /// <summary>
+    /// 报废管理Crud
+    /// </summary>
+    internal class EquipmentDiscarCrud : CrudBase<EquipmentDiscardRecordModel, IEquipmentDiscardRepository>
     {
-        public EquipmentDiscarCrud() : base(new EquipmentDiscardRepositoryRepository(), "设备报废记录")
+        public EquipmentDiscarCrud() : base(new EquipmentDiscardRepository(), "设备报废记录")
         {
         }
 
@@ -559,10 +579,10 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        OpResult AddEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
+        private OpResult AddEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
         {
             OpResult result = OpResult.SetResult("未执行任何操作");
-         
+
             //设备是否存在
             var equipment = EquipmentCrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber, SearchMode = 1 }).FirstOrDefault();
 
@@ -591,7 +611,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        OpResult EditEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
+        private OpResult EditEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
         {
             OpResult result = OpResult.SetResult("咱不提供修改方法");
             return result;
@@ -602,7 +622,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        OpResult DeleteEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
+        private OpResult DeleteEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
         {
             OpResult result = OpResult.SetResult("暂不提供删除方法");
             return result;
@@ -615,11 +635,47 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public EquipmentDiscardRecordModel GetEquipmentDiscardRecord(string assetNumber)
         {
-           return irep.Entities.FirstOrDefault(m => m.AssetNumber == assetNumber);
+            return irep.Entities.FirstOrDefault(m => m.AssetNumber == assetNumber);
         }
-        
     }
 
-     
+    /***********************************************   设备维修CRUD   *********************************
+   *
+   *  2017-7-27  初版   张明
+   ***************************************************************************************************/
 
+    /// <summary>
+    /// 维修管理Crud
+    /// </summary>
+    internal class EquipmentRepairedRecordCrud : CrudBase<EquipmentRepairedRecordModel, IEquipmentRepairedRecordRepository>
+    {
+        public EquipmentRepairedRecordCrud()
+            : base(new EquipmentRepairedRecordRepository(), "设备维修记录")
+        { }
+
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddEquipmentRepairedRecord);
+        }
+
+        /// <summary>
+        /// 添加一条设备维修申请记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult AddEquipmentRepairedRecord(EquipmentRepairedRecordModel model)
+        {
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+
+        /// <summary>
+        /// 获取设备维修记录
+        /// </summary>
+        /// <param name="assetNumber">财产编号</param>
+        /// <returns></returns>
+        public List<EquipmentRepairedRecordModel> GetEquipmentRepairedRecordBy(string assetNumber)
+        {
+            return irep.Entities.Where(m => m.AssetNumber == assetNumber).ToList();
+        }
+    }
 }

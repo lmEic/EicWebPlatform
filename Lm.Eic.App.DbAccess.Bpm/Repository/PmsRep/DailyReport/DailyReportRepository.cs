@@ -11,7 +11,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     /// <summary>
     ///
     /// </summary>
-    public interface IProductFlowRepositoryRepository : IRepository<ProductFlowModel> 
+    public interface IProductFlowRepositoryRepository : IRepository<ProductFlowModel>
     {
         /// <summary>
         /// 获取产品总概述前30行接口  =》部门是必须的
@@ -43,7 +43,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("SELECT   ProductName, COUNT(ProductName) AS ProductFlowCount, CAST(SUM(CASE StandardHoursType WHEN '1' THEN StandardHours / 60 WHEN '3' THEN 60 / StandardHours ELSE StandardHours END) AS decimal(10, 2)) AS StandardHoursCount ")
-                  .Append("FROM   Pms_ProductFlow ")
+                  .Append("FROM   Pms_DReportsProductFlow ")
                   .Append("WHERE   (Department = '" + dto.Department + "')  AND (ProductName = '" + dto.ProductName + "')")
                   .Append("GROUP BY ProductName ");
                 string sqltext = sb.ToString();
@@ -65,13 +65,18 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
         {
             try
             {
+                department = "成型课";
+
                 StringBuilder sb = new StringBuilder();
                 sb.Append("SELECT   ProductName, COUNT(ProductName) AS ProductFlowCount, CAST(SUM(CASE StandardHoursType WHEN '1' THEN StandardHours / 60 WHEN '3' THEN 60 / StandardHours ELSE StandardHours END) AS decimal(10, 2)) AS StandardHoursCount ")
-                  .Append("FROM   Pms_ProductFlow ")
+                  .Append("FROM   Pms_DReportsProductFlow ")
                   .Append("WHERE   (Department = '" + department + "')")
                   .Append("GROUP BY ProductName");
                 string sqltext = sb.ToString();
-                return DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).Take(30).ToList();
+                var productFlowList = DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).ToList();
+                if (productFlowList.Count >= 30)
+                    productFlowList = productFlowList.Take(30).ToList();
+                return productFlowList;
             }
             catch (Exception ex)
             {

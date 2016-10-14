@@ -56,4 +56,16 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.AstMapping
         }
     }
 
+    /// <summary>
+    ///设备维修EquipmentRepairedRecordModel
+    /// </summary>
+    public class EquipmentRepairedRecordModelMapping : EntityTypeConfiguration<EquipmentRepairedRecordModel>
+    {
+        public EquipmentRepairedRecordModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Ast_EquipmentRepairedRecord");
+        }
+    }
 }
