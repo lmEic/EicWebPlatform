@@ -7,7 +7,6 @@ namespace Lm.Eic.App.Erp.Bussiness.CopMaange
 {
    public  class CopService
     {
-
        public static OrderManage OrderManageManager
        {
            get { return OBulider.BuildInstance<OrderManage>(); }

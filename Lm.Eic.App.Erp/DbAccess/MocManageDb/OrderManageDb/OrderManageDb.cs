@@ -44,7 +44,7 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
         /// </summary>
         private string SqlFields
         {
-            get { return "Select TA001,TA002,TA006,TA034,TA035,TA015,TA017,TA010,TA063 from MOCTA"; }
+            get { return "Select TA001,TA002,TA006,TA034,TA035,TA015,TA017,TA010,TA063 from MOCTA "; }
         }
         /// <summary>
         /// 获取工单详情
@@ -71,7 +71,7 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
        /// <summary>
        /// 未完工的工单
        /// </summary>
-       /// <param name="ContainsProductName"></param>
+        /// <param name="ContainsProductName">产品型号或规格</param>
        /// <returns></returns>
         public List<OrderModel> GetUnfinishedOrderBy(string ContainsProductName)
         {
@@ -86,6 +86,29 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
                 m.InStoreCount = dr["TA017"].ToString().Trim().ToDouble();
                 m.OrderFinishDate = DateTime.ParseExact(dr["TA010"].ToString().Trim(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
                 m.InStockDate = DateTime.ParseExact(dr["TA063"].ToString().Trim(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+            });
+        }
+
+
+        /// <summary>
+        /// 所有的工单
+        /// </summary>
+        /// <param name="ContainsProductName">产品型号或规格</param>
+        /// <returns></returns>
+        public List<OrderModel> GetAllOrderBy(string ContainsProductName)
+        {
+            string sqlWhere = string.Format(" WHERE (TA034 LIKE '%{0}%') AND (NOT (TA010 = '')) AND (NOT (TA063 = '')) OR(TA035 LIKE '%{0}%') AND (NOT (TA010 = '')) AND (NOT (TA063 = ''))", ContainsProductName);
+            return ErpDbAccessHelper.FindDataBy<OrderModel>(SqlFields, sqlWhere, (dr, m) =>
+            {
+                m.OrderId = string.Format("{0}-{1}", dr["TA001"].ToString().Trim(), dr["TA002"].ToString().Trim()); ;
+                m.ProductID = dr["TA006"].ToString().Trim();
+                m.ProductName = dr["TA034"].ToString().Trim();
+                m.ProductSpecify = dr["TA035"].ToString().Trim();
+                m.Count = dr["TA015"].ToString().Trim().ToDouble();
+                m.InStoreCount = dr["TA017"].ToString().Trim().ToDouble();
+                m.OrderFinishDate = DateTime.ParseExact(dr["TA010"].ToString().Trim(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+                m.InStockDate = DateTime.ParseExact(dr["TA063"].ToString().Trim(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+               
             });
         }
     }

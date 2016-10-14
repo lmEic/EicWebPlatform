@@ -23,7 +23,7 @@ namespace Lm.Eic.App.Erp.Domain.ProductTypeMonitorModel
       public double SumNumber
       { set; get; }
       /// <summary>
-      /// 工单数量
+      /// 在制工单数量
       /// </summary>
       public double OrderNumber
       { set;  get; }

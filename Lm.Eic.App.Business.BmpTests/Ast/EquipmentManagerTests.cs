@@ -77,5 +77,21 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
        {
            var mmm= CopService.OrderManageManager .GetProductTypeMonitor();
        }
+
+       public void Test1212112()
+       {
+           var tem = CopService.OrderManageManager.ProductTypeMonitoList();
+           if (tem==null ) { Assert.Fail(); }
+           #region 输出到Excel
+           string path = @"E:\\IQC.xls";
+           using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+           {
+               byte[] bArr = tem.ToArray();
+               fs.Write(bArr, 0, bArr.Length);
+               fs.Flush();
+           }
+
+           #endregion
+       }
     }
 }
