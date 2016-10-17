@@ -203,9 +203,9 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
         var vmManager = {
             AssetNumber: null,
+            datasource: [],
 
             init: function () {
-                uiVM.OpSign = 'add';
                 leeHelper.clearVM(uiVM);
                 $scope.vm = uiVM;
             },

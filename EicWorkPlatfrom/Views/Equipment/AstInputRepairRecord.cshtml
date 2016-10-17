@@ -17,6 +17,7 @@
                     <label class="control-label">保管部门:<span class="label label-default">{{vm.SafekeepDepartment}}</span></label>
                 </div>
             </div>
+
             <hr class="col-md-11" />
 
             <div class="row clearfix ">
@@ -27,10 +28,10 @@
                     </div>
                     <div class="error-messages" ng-messages="formEquipment.assetNumber.$error" ng-show="operate.showValidation">
                         <small ng-message="required">设备编号不能为空</small>
-                    </div> 
+                    </div>
                 </div>
 
-                <div class="col-md-3 ">
+                <div class="col-md-3">
                     <div class="input-group">
                         <span class="input-group-addon">表单编号:</span>
                         <input name="formId" type="text" class="form-control" ng-model="vm.FormId" placeholder="输入维修单编号" required>
@@ -143,7 +144,6 @@
                 </div>
 
             </div>
-
 
             <br />
 
