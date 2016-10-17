@@ -2,7 +2,7 @@
 using System;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.App.Erp.Bussiness.MocManage;
-
+using Lm.Eic.App.Erp.Bussiness.CopManage;
 namespace Lm.Eic.App.Business.Bmp.Ast.Tests
 {
     [TestClass()]
@@ -69,5 +69,29 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             var temList = AstService.EquipmentManager.DiscardManager.GetEquipmentDiscardRecord("Z160001");
             if (temList == null) { Assert.Fail(); }
         }
+    }
+
+    public class test
+    {
+       public void getstss()
+       {
+           var mmm= CopService.OrderManageManager .GetMS589ProductTypeMonitor();
+       }
+
+       public void Test1212112()
+       {
+           var tem = CopService.OrderManageManager.ProductTypeMonitoList();
+           if (tem==null ) { Assert.Fail(); }
+           #region 输出到Excel
+           string path = @"E:\\IQC.xls";
+           using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+           {
+               byte[] bArr = tem.ToArray();
+               fs.Write(bArr, 0, bArr.Length);
+               fs.Flush();
+           }
+
+           #endregion
+       }
     }
 }
