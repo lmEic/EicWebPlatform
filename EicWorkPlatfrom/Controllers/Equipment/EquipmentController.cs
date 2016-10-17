@@ -275,9 +275,6 @@ namespace EicWorkPlatfrom.Controllers
             var result = AstService.EquipmentManager.RepairedManager.AddEquipmentRepairedRecord(model);
             return Json(result);
         }
-
-
-
         #endregion
     }
 }

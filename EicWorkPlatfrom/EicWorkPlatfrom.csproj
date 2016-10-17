@@ -148,6 +148,7 @@
     <Compile Include="Controllers\DevelopmentController.cs" />
     <Compile Include="Controllers\BaseController\EicBaseController.cs" />
     <Compile Include="Controllers\Hr\HrGeneralAffairsManageController.cs" />
+    <Compile Include="Controllers\Product\ProMocManageController.cs" />
     <Compile Include="Controllers\Product\ProBoardController.cs" />
     <Compile Include="Controllers\SystemManage\EicSystemManageController.cs" />
     <Compile Include="Controllers\Equipment\EquipmentController.cs" />
@@ -387,6 +388,7 @@
     <Content Include="Scripts\controller\hr\hrApp.js" />
     <Content Include="Scripts\controller\product\proBoard.js" />
     <Content Include="Scripts\controller\product\proDailyReport.js" />
+    <Content Include="Scripts\controller\product\proMocManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysAccountManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysItilManage.js" />
     <Content Include="Scripts\controller\masterProduct\mpconfigApp.js" />
@@ -1290,7 +1292,6 @@
     <Content Include="Views\ProDailyReport\DReportInput.cshtml" />
     <Content Include="Views\ProDailyReport\EditRemarkViewTpl.cshtml" />
     <Content Include="Views\Equipment\AstInputRepairRecord.cshtml" />
-    <Content Include="Views\Equipment\AstEquipmentInfoView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

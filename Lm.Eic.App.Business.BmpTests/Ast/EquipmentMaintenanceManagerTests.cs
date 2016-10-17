@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-
+using Lm.Eic.App.Erp.Bussiness.CopManage;
 
 namespace Lm.Eic.App.Business.Bmp.Ast.Tests
 {

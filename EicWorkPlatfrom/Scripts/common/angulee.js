@@ -164,8 +164,12 @@ var leeHelper = (function () {
         systemManage: 'EicSystemManage',
         configManage: 'SysConfig',
         itilManage: 'SysITIL',
+        //生产看板
         productBoard: 'ProBoard',
-        dailyReport: 'ProDailyReport'
+        //日报管理
+        dailyReport: 'ProDailyReport',
+        //工单管理
+        mocManage:'ProMocManage',
     };
     return {
         ///控制器名称

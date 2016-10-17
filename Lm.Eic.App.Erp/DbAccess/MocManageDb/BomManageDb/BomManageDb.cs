@@ -96,11 +96,10 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
       /// <param name="productId">产品料号</param>
       /// <returns></returns>
         
-        private  MarterialBaseInfo GetBomFormERP_INVMB_By(string productId)
+       public   MarterialBaseInfo GetBomFormERP_INVMB_By(string productId)
         {
             string SqlFields="SELECT MB001 as 品号,MB002 as 品名, MB003 as 规格, MB025 as 属性,MB004 as 单位 FROM  INVMB"; 
             string sqlWhere = string.Format(" where MB001='{0}'", productId);
-
             var ListModels = ErpDbAccessHelper.FindDataBy<MarterialBaseInfo>(SqlFields, sqlWhere, (dr, m) =>
             {
                 m.MaterialId = dr["品号"].ToString().Trim();
