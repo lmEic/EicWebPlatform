@@ -6,10 +6,17 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
 
     var urlPrefix = leeHelper.controllers.equipment + "/";
+
+    //设备信息展示
+    $stateProvider.state('astEquipmentInfoView', {
+        templateUrl: urlPrefix + 'AstEquipmentInfoView'
+    })
+
     //设备档案登记
     $stateProvider.state('astArchiveInput', {
         templateUrl: urlPrefix + 'AstArchiveInput'
     })
+
     //设备档案总览
     .state('astArchiveOverview', {
         templateUrl: urlPrefix + 'AstArchiveOverview'
@@ -177,6 +184,51 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
 })
+    //设备详细信息与各记录
+    .controller('astEquipmentInfoViewCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
+        ///设备档案模型
+        var uiVM = {
+            AssetNumber: 5555,
+            EquipmentName: 66666,
+            EquipmentSpec: null,
+            EquipmentType: null,
+            AssetType: '低质易耗品',
+            SafekeepDepartment: null,
+            ManufacturingNumber: null,
+            MaintenanceDate: new Date(),
+            CheckDate: new Date()
+        };
+
+        $scope.vm = uiVM;
+
+        var vmManager = {
+            AssetNumber: null,
+
+            init: function () {
+                uiVM.OpSign = 'add';
+                leeHelper.clearVM(uiVM);
+                $scope.vm = uiVM;
+            },
+
+            //mIndex ==1 回车调用  否则直接调用
+            getAstDatas: function ($event,mthIndex) {
+                if (mthIndex === 1 && $event.keyCode !== 13) return; 
+                if (vmManager.AssetNumber === null || vmManager.AssetNumber === undefined || vmManager.AssetNumber.length < 6) return;
+                $scope.searchPromise = astDataopService.getEquipmentArchivesBy(new Date(), vmManager.AssetNumber, 1).then(function (datas) {
+                    if (angular.isArray(datas) && datas.length > 0) {
+                        leeHelper.copyVm(datas[0], uiVM);
+                    } else {
+                        leeHelper.clearVM(uiVM, null);
+                    }
+                });
+            }
+        };
+
+        $scope.vmManager = vmManager;
+
+
+    })
+
 ///设备档案总览
 .controller('astArchiveOverviewCtrl', function ($scope, astDataopService) {
     //视图管理器
@@ -846,7 +898,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     //存储
     operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            astDataopService.storeAstRepairedData(uiVM).then(function (opresult){
+            astDataopService.storeAstRepairedData(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     vmManager.init();
                 });
@@ -856,3 +908,5 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
 
 });
+
+
