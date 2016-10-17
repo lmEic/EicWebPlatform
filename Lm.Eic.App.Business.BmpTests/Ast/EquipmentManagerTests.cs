@@ -75,7 +75,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
     {
        public void getstss()
        {
-           var mmm= CopService.OrderManageManager .GetProductTypeMonitor();
+           var mmm= CopService.OrderManageManager .GetMS589ProductTypeMonitor();
        }
 
        public void Test1212112()

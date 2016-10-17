@@ -36,6 +36,10 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
         /// </summary>
         public double InStoreCount { set; get; }
         /// <summary>
+        /// 订单完工状态
+        /// </summary>
+        public string OrderFinishStatus { set;get ; }
+        /// <summary>
         /// 入库日期
         /// </summary>
         public DateTime InStockDate { set; get; }
