@@ -10,6 +10,9 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     //报表Url前缀
     var reportUrlPrefix = leeHelper.controllers.dailyReport + "/";
 
+    //工单Url前缀
+    var mocUrlPrefix = leeHelper.controllers.mocManage + "/";
+
     //--------------生产日报-------------------------
     $stateProvider.state('dReportHoursSet', {
         //标准工时设定
@@ -26,6 +29,10 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     //-------------看板管理-------------------
     .state('jumperWireBoard', {//线材看板管理
         templateUrl:boardUrlPrefix+ 'JumperWireBoard'
+    })
+    //-------------工单管理-------------------
+    .state('checkOrderBills', {//工单订单对比
+        templateUrl: mocUrlPrefix + 'CheckOrderBills'
     })
 })
 .factory('proEmployeeDataService', function (ajaxService) {

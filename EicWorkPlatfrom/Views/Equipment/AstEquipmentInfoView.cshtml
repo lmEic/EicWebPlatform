@@ -1,0 +1,180 @@
+﻿@{
+    ViewBag.Title = "AstEquipmentInfoView";
+}
+
+<div class="panel panel-primary container" ng-controller="astEquipmentInfoViewCtrl">
+
+
+    <!--Search hav-->
+    <div class="row clearfix">
+        <div class="col-md-11 column">
+            <div class="h-split">
+                <div class="nav">
+                    <p class="navbar-text navbar-left">设备信息</p>
+                    <form class="navbar-form navbar-right" role="search">
+
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="vmManager.AssetNumber" ng-keypress="vmManager.getAstDatas($event,1)" placeholder="请输入财产编号" />
+                        </div>
+                        <button type="button" class="btn btn-default glyphicon glyphicon-search" ng-click="vmManager.getAstDatas(null,2)">搜索</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Equipment Info -->
+    <div class="row clearfix" cg-busy="{promise:searchPromise}">
+        <div class="col-md-11 column">
+            <div class="row clearfix">
+                <div class="col-md-4">
+                    <p><label>财产编号:</label>{{vm.AssetNumber}}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><label>设备名称:</label>{{vm.EquipmentName}}</p>
+                </div>
+                <div class="col-md-3">
+                    <p><label>设备型号:</label>{{vm.EquipmentSpec}} </p>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <div class="col-md-4">
+                    <p><label>设备类别:</label>{{vm.EquipmentType}} </p>
+                </div>
+                <div class="col-md-4">
+                    <p><label>资产类别:</label>{{vm.AssetType}} </p>
+                </div>
+                <div class="col-md-3">
+                    <p><label>保管单位:</label>{{vm.SafekeepDepartment}} </p>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <div class="col-md-4">
+                    <p><label>制造编号:</label>{{vm.ManufacturingNumber}} </p>
+                </div>
+                <div class="col-md-4">
+                    <p><label>保养日期:</label>{{vm.MaintenanceDate}} </p>
+                </div>
+                <div class="col-md-3">
+                    <p><label>校验日期:</label>{{vm.CheckDate}} </p>
+                </div>
+            </div>
+
+
+            <!-- All Equipment Record-->
+            <div class="row clearfix">
+                <div class="col-md-11">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">维修记录</a></li>
+                        <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">校验记录</a></li>
+                        <li role="presentation"><a href="#messages" role="tab" data-toggle="tab">保养记录</a></li>
+                        <li role="presentation"><a href="#settings" role="tab" data-toggle="tab">报废信息</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <p>Home</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="profile">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr class="info">
+                                            <th>财产编号</th>
+                                            <th>设备名称</th>
+                                            <th>设备型号</th>
+                                            <th>制造编号</th>
+                                            <th>是否校验</th>
+                                            <th>校验类型</th>
+                                            <th>校验日期</th>
+                                            <th>校验间隔</th>
+                                            <th>计划校验日期</th>
+                                            <th>校验状态</th>
+                                            <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vmManager.datasets track by $index">
+                                            <td>{{item.AssetNumber}}</td>
+                                            <td>{{item.EquipmentName}}</td>
+                                            <td>{{item.EquipmentSpec}}</td>
+                                            <td>{{item.ManufacturingNumber}}</td>
+                                            <td>{{item.IsCheck}}</td>
+                                            <td>{{item.CheckType}}</td>
+                                            <td>{{item.CheckDate}}</td>
+                                            <td>{{item.CheckInterval}}</td>
+                                            <td>{{item.PlannedCheckDate}}</td>
+                                            <td>{{item.CheckState}}</td>
+                                            <td>
+                                                <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="履历">
+                                                    履历
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div yl-pagination data-dataset="vmManager.datasets" data-datasource="vmManager.datasource"></div>
+                            </div>
+
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="messages">
+                            <div class="table-responsive">
+                                <table class="table table-condensed table-bordered table-hover">
+                                    <thead>
+                                        <tr class="info">
+                                            <th>财产编号</th>
+                                            <th>设备名称</th>
+                                            <th>设备型号</th>
+                                            <th>制造编号</th>
+                                            <th>是否保养</th>
+                                            <th>保养日期</th>
+                                            <th>保养间隔</th>
+                                            <th>计划保养日期</th>
+                                            <th>保养状态</th>
+                                            <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vmManager.datasets track by $index">
+                                            <td>{{item.AssetNumber}}</td>
+                                            <td>{{item.EquipmentName}}</td>
+                                            <td>{{item.EquipmentSpec}}</td>
+                                            <td>{{item.ManufacturingNumber}}</td>
+                                            <td>{{item.IsMaintenance}}</td>
+                                            <td>{{item.MaintenanceDate}}</td>
+                                            <td>{{item.MaintenanceInterval}}</td>
+                                            <td>{{item.PlannedMaintenanceDate}}</td>
+                                            <td>{{item.MaintenanceState}}</td>
+                                            <td>
+                                                <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="履历">
+                                                    履历
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div yl-pagination
+                                     data-datasource="vmManager.datasource"
+                                     data-dataset="vmManager.datasets">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="settings">
+                            <p>settings</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
