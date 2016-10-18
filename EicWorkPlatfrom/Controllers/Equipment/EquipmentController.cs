@@ -30,6 +30,19 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
+        #region Ast EquipmentInfo View
+        /// <summary>
+        /// 生成校验清单
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AstEquipmentInfoView()
+        {
+            return View();
+        }
+        #endregion
+
+
         #region Ast Archive Overview
         /// <summary>
         /// 获取设备总览数据
