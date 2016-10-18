@@ -49,7 +49,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public FileResult CreateProductTypeMonitoList()
         {
-            var ds = CopService.OrderManageManager.BuildProductTypeMonitoList();
+            var ds = CopService.OrderManageManager.ProductTypeMonitoList();
             return this.ExportToExcel(ds, "工单核对清单", "工单核对清单");
         }
     }

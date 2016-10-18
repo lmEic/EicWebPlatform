@@ -80,7 +80,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
 
        public void Test1212112()
        {
-           var tem = CopService.OrderManageManager.BuildProductTypeMonitoList();
+           var tem = CopService.OrderManageManager.ProductTypeMonitoList ();
            if (tem==null ) { Assert.Fail(); }
            #region 输出到Excel
            string path = @"E:\\IQC.xls";
