@@ -169,7 +169,11 @@ var leeHelper = (function () {
         //日报管理
         dailyReport: 'ProDailyReport',
         //工单管理
-        mocManage:'ProMocManage',
+        mocManage: 'ProMocManage',
+        //采购管理
+        purchaseManage: 'Purchase',
+        //采购供应商管理
+        supplierManage:'PurSupplierManage',
     };
     return {
         ///控制器名称

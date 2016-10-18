@@ -4,67 +4,105 @@
 
 <!DOCTYPE html>
 
-<html ng-app="Erp.purchaseApp">
+<html ng-app="bpm.purchaseApp">
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>采购管理</title>
     <link rel="shortcut icon" href="@Url.Content("~/Content/login/lmlogo.png")" />
 
     <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/angular-motion/dist/angular-motion.min.css")" type="text/css" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/bootstrap-additions/dist/bootstrap-additions.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootwatch/cerulean.bootstrap.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/font-awesome/css/font-awesome.min.css")" type="text/css" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/angular-busy/dist/angular-busy.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/main.css")" type="text/css" rel="stylesheet" />
+
+    <link href="@Url.Content("~/Content/zTree/dist/css/zTreeStyle/zTreeStyle.css")" type="text/css" rel="stylesheet" />
+
+    @Styles.Render("~/css/anstrap")
 </head>
-<body>
-    <header role="banner">
-        <nav role="navigation" class="navbar navbar-static-top navbar-inverse">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="@Url.Action("Index","Home")">
-                        <span>
-                            <img alt="lightmaster" src="@Url.Content("~/Content/login/lmlogo.png")" />光圣科技企业信息化平台
-                        </span>
-                    </a>
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a data-ui-sref-active="active" data-ui-sref="purchaseQuery">采购信息查询</a></li>
-                        @*<li><a data-ui-sref-active="active" data-ui-sref="roleManage">角色管理</a></li>
-                        <li><a data-ui-sref-active="active" data-ui-sref="moduleManage">模块管理</a></li>
-                        <li><a data-ui-sref-active="active" data-ui-sref="assemblyManage">程序集管理</a></li>
-                        <li><a data-ui-sref-active="active" data-ui-sref="assignPower">权限分配</a></li>*@
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container" data-ui-view>
-    </div>
+<body ng-controller="moduleNavCtrl">
 
-    <script src="@Url.Content("~/Scripts/jquery-2.1.4.js")"></script>
-    <script src="@Url.Content("~/Content/underscore/underscore-min.js")"></script>
+    @if (ViewBag.IsLoginMode)
+    {
+        <div ng-include="'@Url.Action("ModuleLayoutIndexTpl", "CommonTpl")'"></div>
+    }
+    else
+    {
+        <div>
+            <header role="banner">
+                <nav role="navigation" class="navbar navbar-static-top navbar-inverse" ng-cloak>
+                    <div class="container">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="@Url.Action("Index","Home")">
+                                <span>
+                                    <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司"
+                                         src="@Url.Content("~/Content/login/lmlogo.png")" />企业信息化平台(V1.0)
+                                </span>
+                            </a>
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a href="#">生产管理</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <main class="container-fluid">
+                <div class="row" ng-cloak>
+                    <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-show="navLayout.navViewSwitch">
+                        <div class="bs-callout bs-callout-info">
+                            <h4>
+                                <span class="fa fa-list-ul">导航菜单</span>
+                                <span class="pull-right">
+                                    <span class="badge" ng-click="navLayout.switchView()" title="点击折叠导航面板" style="cursor:pointer"><i class="fa fa-hand-o-left"></i></span>
+                                </span>
+                            </h4>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <ol class="rounded-list">
+                                    <li>
+                                        @*实验版导航，待添加*@
+                                        <a data-ui-sref-active="active" data-ui-sref="buildQualifiedSupplierInventory" style="cursor:pointer">建立合格供应商清册</a>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-hide="navLayout.navViewSwitch">
+                        <span class="badge" ng-click="navLayout.switchView()" title="点击打开导航面板" style="cursor:pointer"><i class="fa fa-hand-o-right"></i></span>
+                    </div>
+                    <div class="pull-right" style="width:{{navLayout.navMainSize}};">
+                        <div data-ui-view>
+
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    }
+
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/angularJs")
+
+    @Scripts.Render("~/bundles/anstrap")
+
+    <script src="@Url.Content("~/Content/ztree/dist/js/jquery.ztree.all.min.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/controller/masterProduct/mpConfigApp.js")"></script>
+
     <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
-    <script src="@Url.Content("~/Content/bootstrap/dist/js/bootstrap.min.js")"></script>
-
-    <script src="@Url.Content("~/Scripts/angular.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/angular-animate.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/angular-messages.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/angular-sanitize.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/angular-ui-router.min.js")"></script>
-
-    <script src="@Url.Content("~/Content/angular-busy/dist/angular-busy.min.js")"></script>
-
-    <script src="@Url.Content("~/Content/angular-strap/dist/angular-strap.min.js")"></script>
-    <script src="@Url.Content("~/Content/angular-strap/dist/angular-strap.tpl.min.js")"></script>
-
     <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
-    <script src="@Url.Content("~/Scripts/controller/purchaseApp.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/controller/purchase/purchaseApp.js")"></script>
+    <script src="@Url.Content("~/Scripts/controller/purchase/purSupplierManage.js")"></script>
 </body>
 </html>

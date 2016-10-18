@@ -150,6 +150,7 @@
     <Compile Include="Controllers\Hr\HrGeneralAffairsManageController.cs" />
     <Compile Include="Controllers\Product\ProMocManageController.cs" />
     <Compile Include="Controllers\Product\ProBoardController.cs" />
+    <Compile Include="Controllers\Purchase\PurSupplierManageController.cs" />
     <Compile Include="Controllers\SystemManage\EicSystemManageController.cs" />
     <Compile Include="Controllers\Equipment\EquipmentController.cs" />
     <Compile Include="Controllers\FinanceController.cs" />
@@ -161,7 +162,7 @@
     <Compile Include="Controllers\Product\ProDailyReportController.cs" />
     <Compile Include="Controllers\Product\ProductController.cs" />
     <Compile Include="Controllers\Product\ProEmployeeController.cs" />
-    <Compile Include="Controllers\PurchaseController.cs" />
+    <Compile Include="Controllers\Purchase\PurchaseController.cs" />
     <Compile Include="Controllers\Product\ShippingController.cs" />
     <Compile Include="Controllers\SystemManage\SysConfigController.cs" />
     <Compile Include="Global.asax.cs">
@@ -389,11 +390,12 @@
     <Content Include="Scripts\controller\product\proBoard.js" />
     <Content Include="Scripts\controller\product\proDailyReport.js" />
     <Content Include="Scripts\controller\product\proMocManage.js" />
+    <Content Include="Scripts\controller\purchase\purSupplierManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysAccountManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysItilManage.js" />
     <Content Include="Scripts\controller\masterProduct\mpconfigApp.js" />
     <Content Include="Scripts\controller\product\productApp.js" />
-    <Content Include="Scripts\controller\purchaseApp.js" />
+    <Content Include="Scripts\controller\purchase\purchaseApp.js" />
     <Content Include="Scripts\controller\shippingApp.js" />
     <Content Include="Scripts\controller\sysmanage\sysConfigManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysmanageApp.js" />
@@ -1292,7 +1294,8 @@
     <Content Include="Views\ProDailyReport\DReportInput.cshtml" />
     <Content Include="Views\ProDailyReport\EditRemarkViewTpl.cshtml" />
     <Content Include="Views\Equipment\AstInputRepairRecord.cshtml" />
-    <Content Include="Views\Equipment\AstEquipmentInfoView.cshtml" />
+    <Content Include="Views\ProMocManage\CheckOrderBills.cshtml" />
+    <Content Include="Views\PurSupplierManage\BuildQualifiedSupplierInventory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

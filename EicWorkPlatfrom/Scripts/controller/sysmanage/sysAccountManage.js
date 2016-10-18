@@ -779,15 +779,17 @@ smModule.controller("assignUserPowerLotCtrl", function ($scope, vmService, accou
     var operate = Object.create(leeDataHandler.operateStatus);
 
     operate.saveDatas = function () {
-        leeDataHandler.dataOperate.add(operate, true, function () {
-            $scope.savePromise = accountService.saveRoleMatchModule(vmManager.dbDataset).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+        var dataList = _.where(vmManager.dbDataset, { IsNew: true });
+        if (_.isArray(dataList) && dataList.length > 0)
+        {
+            accountService.saveRoleMatchModule(dataList).then(function (opresult) {
+                if (opresult.Result) {
                     leeTreeHelper.checkAllNodes(zTreeSet.treeId, false);
                     vmManager.dbDataset = [];
                     vmManager.roleMatchModules = [];
-                });
+                }
             });
-        });
+        }
     };
     $scope.operate = operate;
 
@@ -804,6 +806,7 @@ smModule.controller("assignUserPowerLotCtrl", function ($scope, vmService, accou
         item.RoleId = vmManager.selectedRole.RoleId;
         item.RoleName = vmManager.selectedRole.RoleName;
         item.OpSign = 'add';
+        item.IsNew = true;
 
         var rm = _.find(vmManager.roleMatchModules, { ModuleName: vm.ModuleName, AssemblyName: vm.AssemblyName });
         var dataitem = _.find(vmManager.dbDataset, { ModuleName: vm.ModuleName, AssemblyName: vm.AssemblyName });

@@ -1,14 +1,14 @@
-﻿/// <reference path="../../Content/underscore/underscore.js" />
-/// <reference path="../common/angulee.js" />
-/// <reference path="../jquery-2.1.4.js" />
-/// <reference path="../angular.js" />
-angular.module('Erp.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
-.config(function ($stateProvider,$urlRouterProvider) {
-    $stateProvider.state('purchaseQuery', {
-        url: 'Purchase/PurQuery',
-        templateUrl: 'Purchase/PurQuery'
+﻿/// <reference path="../../common/angulee.js" />
+/// <reference path="../../angular.min.js" />
+angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
+.config(function ($stateProvider, $urlRouterProvider) {
+    var supplierUrlPrefix = leeHelper.controllers.supplierManage + "/";
+    //--------------供应商管理----------------------------
+    $stateProvider.state('buildQualifiedSupplierInventory', {
+        templateUrl: supplierUrlPrefix + 'BuildQualifiedSupplierInventory'
     })
 })
+
 .factory('purchaseService', function ($http,$q) {
     var purDb = {};
     //--------------requisition---------------------
@@ -146,6 +146,45 @@ angular.module('Erp.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
     return purDb;
 })
 //----------------------purchase-------------------------
+.controller('moduleNavCtrl', function ($scope, navDataService, $state) {
+    ///模块导航布局视图对象
+    var moduleNavLayoutVm = {
+        menus: [],
+        navList: [],
+        navItems: [],
+        navTo: function (navMenu) {
+            moduleNavLayoutVm.navItems = [];
+            angular.forEach(navMenu.Childrens, function (childNav) {
+                var navItem = _.findWhere(moduleNavLayoutVm.menus, { Name: childNav.ModuleName, AtLevel: 3 });
+                if (!angular.isUndefined(navItem)) {
+                    moduleNavLayoutVm.navItems.push(navItem);
+                }
+            })
+        },
+        stateTo: function (navItem) {
+            $state.go(navItem.UiSerf);
+        },
+        navViewSwitch: true,//左侧视图导航开关
+        switchView: function () {
+            moduleNavLayoutVm.navViewSwitch = !moduleNavLayoutVm.navViewSwitch;
+            if (moduleNavLayoutVm.navViewSwitch) {
+                moduleNavLayoutVm.navLeftSize = '16%';
+                moduleNavLayoutVm.navMainSize = '83%';
+            }
+            else {
+                moduleNavLayoutVm.navLeftSize = '3%';
+                moduleNavLayoutVm.navMainSize = '96%';
+            }
+        },
+        navLeftSize: '16%',
+        navMainSize: '83%',
+    };
+    $scope.navLayout = moduleNavLayoutVm;
+    $scope.promise = navDataService.getSubModuleNavs('采购管理', 'PurchaseManage').then(function (datas) {
+        moduleNavLayoutVm.menus = datas;
+        moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
+    });
+})
 .controller('purchaseQueryCtrl', function ($scope) {
     $scope.navmenu = {
         getMenuItems: function () {
