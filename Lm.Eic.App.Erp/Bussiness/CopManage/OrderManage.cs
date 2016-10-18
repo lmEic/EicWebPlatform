@@ -37,16 +37,16 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
                   ProductType = containsProductTypeOrProductSpecify,
                   ProductSpecify = getCoporderModel.Find(f => f.ProductName == containsProductTypeOrProductSpecify).ProductSpecify,
                   //工单总量-工单入库量  不包括“全检工单523”
-                  OrderNumber = unfinishedOrderList.FindAll(f => !f.OrderId.Contains("523")).ToList().Sum(f => f.Count) -
+                  OrderCount = unfinishedOrderList.FindAll(f => !f.OrderId.Contains("523")).ToList().Sum(f => f.Count) -
                                 unfinishedOrderList.FindAll(f => !f.OrderId.Contains("523")).ToList().Sum(f => f.InStoreCount),
                   //订单总量-订单已交量
-                  SumNumber = getCoporderModel.FindAll(f => f.ProductName == containsProductTypeOrProductSpecify).ToList().Sum(m => m.ProductNumber) -
+                  SumCount = getCoporderModel.FindAll(f => f.ProductName == containsProductTypeOrProductSpecify).ToList().Sum(m => m.ProductNumber) -
                                 getCoporderModel.FindAll(f => f.ProductName == containsProductTypeOrProductSpecify).ToList().Sum(m => m.FinishNumber),
-                  LocaleFinishedNumber = ProductInStoreInfoList.FindAll(f => f.StroeId == "D05").ToList().Sum(m => m.InStroeNumber),
-                  FreeTradeInHouseNumber = ProductInStoreInfoList.FindAll(f => f.StroeId == "B03").ToList().Sum(m => m.InStroeNumber),
-                  PutInMaterialNumber = ProductInStoreInfoList.FindAll(f => f.StroeId == "C03").ToList().Sum(m => m.InStroeNumber),
+                  LocaleFinishedCount = ProductInStoreInfoList.FindAll(f => f.StroeId == "D05").ToList().Sum(m => m.InStroeNumber),
+                  FreeTradeInHouseCount = ProductInStoreInfoList.FindAll(f => f.StroeId == "B03").ToList().Sum(m => m.InStroeNumber),
+                  PutInMaterialCount = ProductInStoreInfoList.FindAll(f => f.StroeId == "C03").ToList().Sum(m => m.InStroeNumber),
                   //另外统计 “全检工单523”
-                  AllCheckOrderNumber = unfinishedOrderList.FindAll(f => f.OrderId.Contains("523")).ToList().Sum(f => f.Count)
+                  AllCheckOrderCount = unfinishedOrderList.FindAll(f => f.OrderId.Contains("523")).ToList().Sum(f => f.Count)
               };
       
          
@@ -69,10 +69,10 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
       }
    
       /// <summary>
-      /// 生成EXCEL表格
+      /// 生成产品监控列表
       /// </summary>
       /// <returns></returns>
-      public MemoryStream ProductTypeMonitoList()
+      public MemoryStream BuildProductTypeMonitoList()
       {
           try
           {

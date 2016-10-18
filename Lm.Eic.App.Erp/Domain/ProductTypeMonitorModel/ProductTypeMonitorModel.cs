@@ -8,52 +8,52 @@ namespace Lm.Eic.App.Erp.Domain.ProductTypeMonitorModel
   public  class ProductTypeMonitorModel
     {
       /// <summary>
-      /// 生产型号
+      /// 品名
       /// </summary>
       public string ProductType
       { set; get; }
       /// <summary>
-      /// 生产规格
+      /// 规格
       /// </summary>
       public string ProductSpecify
       { set; get; }
       /// <summary>
-      /// 汇总数量
+      /// 汇总
       /// </summary>
-      public double SumNumber
+      public double SumCount
       { set; get; }
       /// <summary>
-      /// 在制工单数量
+      /// 工单
       /// </summary>
-      public double OrderNumber
+      public double OrderCount
       { set;  get; }
       /// <summary>
-      /// 现场成品仓量
+      /// 现场成品仓
       /// </summary>
-      public double LocaleFinishedNumber
+      public double LocaleFinishedCount
       {  set; get; }
       /// <summary>
-      /// 保税库存成品量
+      /// 库存成品
       /// </summary>
-      public double FreeTradeInHouseNumber
+      public double FreeTradeInHouseCount
       { set; get; }
       /// <summary>
-      /// 全检工单量
+      /// 全检工单
       /// </summary>
-      public double AllCheckOrderNumber
+      public double AllCheckOrderCount
       { set; get; }
       /// <summary>
       /// 来料成品
       /// </summary>
-      public double PutInMaterialNumber
+      public double PutInMaterialCount
       { set; get; }
       /// <summary>
-      /// 差异量
+      /// 差异
       /// </summary>
-      public double DifferenceNumber
+      public double DifferenceCount
       { set; get; }
       /// <summary>
-      /// 注释说明
+      /// 备注
       /// </summary>
       public string More
       { set; get; }

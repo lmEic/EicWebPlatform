@@ -5,7 +5,7 @@
 
 var productModule = angular.module('bpm.productApp');
 productModule.factory('mocDataOpService', function (ajaxService) {
-    var urlPrefix = "/" + leeHelper.controllers.mocManage + "/";
+    var mocUrlPrefix = "/" + leeHelper.controllers.mocManage + "/";
     var mocDataOp = {};
     //-------------------------工单管理-------------------------------------
     //待填写
@@ -18,4 +18,31 @@ productModule.factory('mocDataOpService', function (ajaxService) {
             searchMode: searchMode,
         });
     };
+
+    ///获取设备校验清单
+    mocDataOp.getProductTypeMonitor = function (department) {
+        var url = mocUrlPrefix + 'GetMS589ProductTypeMonitor';
+        return ajaxService.getData(url, {
+            department: department
+        });
+    };
+
+    //CreateProductTypeMonitoList
+
+    return mocDataOp;
+});
+
+productModule.controller('checkOrderBillsCtrl', function ($scope,mocDataOpService,$modal) {
+    var vmManager = {
+        department: '589',
+        dataSource: [],
+
+        getProductTypeMonitor: function () {
+            $scope.searchPromise = mocDataOpService.getProductTypeMonitor(vmManager.department).then(function (datas) {
+                vmManager.dataSource = datas;
+            });
+        }
+    };
+
+    $scope.vmManager = vmManager;  
 });

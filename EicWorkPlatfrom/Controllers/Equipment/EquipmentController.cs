@@ -155,6 +155,22 @@ namespace EicWorkPlatfrom.Controllers
 
             return DateJsonResult(datas);
         }
+        /// <summary>
+        /// 获取校验清单
+        /// </summary>
+        /// <param name="planDate"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [NoAuthenCheck]
+        public ContentResult GetAstCheckListByAssetNumber(string assetNumber)
+        {
+            var datas = AstService.EquipmentManager.CheckManager.FindBy(new QueryEquipmentDto()
+            {
+                AssetNumber = assetNumber,
+                SearchMode = 1
+            });
+            return DateJsonResult(datas);
+        }
         [NoAuthenCheck]
         public FileResult CreateWaitingCheckList()
         {

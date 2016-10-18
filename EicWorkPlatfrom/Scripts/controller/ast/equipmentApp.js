@@ -105,6 +105,13 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             planDate: planDate
         });
     };
+    ///获取设备校验清单
+    ast.getAstCheckListByAssetNumber = function (assetNumber) {
+        var url = astUrlPrefix + 'GetAstCheckListByAssetNumber';
+        return ajaxService.getData(url, {
+            assetNumber: assetNumber
+        });
+    };
     ///保存设备校验记录
     ast.storeInputCheckRecord = function (model) {
         var url = astUrlPrefix + 'StoreInputCheckRecord';
@@ -185,7 +192,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     });
 })
     //设备详细信息与各记录
-    .controller('astEquipmentInfoViewCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
+.controller('astEquipmentInfoViewCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
         ///设备档案模型
         var uiVM = {
             AssetNumber: 5555,
@@ -203,7 +210,10 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
         var vmManager = {
             AssetNumber: null,
-            datasource: [],
+            ScrapDataSource: [], //报废记录
+            CheckDataSource: [], //校验记录
+            RepairedDataSource: [], //维修记录
+            MaintenanceDataSource: [], //保养记录
 
             init: function () {
                 leeHelper.clearVM(uiVM);
@@ -211,8 +221,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             },
 
             //mIndex ==1 回车调用  否则直接调用
-            getAstDatas: function ($event,mthIndex) {
-                if (mthIndex === 1 && $event.keyCode !== 13) return; 
+            getAstDatas: function ($event, mthIndex) {
+                if (mthIndex === 1 && $event.keyCode !== 13) return;
                 if (vmManager.AssetNumber === null || vmManager.AssetNumber === undefined || vmManager.AssetNumber.length < 6) return;
                 $scope.searchPromise = astDataopService.getEquipmentArchivesBy(new Date(), vmManager.AssetNumber, 1).then(function (datas) {
                     if (angular.isArray(datas) && datas.length > 0) {
@@ -221,6 +231,13 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                         leeHelper.clearVM(uiVM, null);
                     }
                 });
+
+                //校验记录
+                vmManager.CheckDataSource = [];
+                $scope.searchPromise = astDataopService.getAstCheckListByAssetNumber(vmManager.AssetNumber).then(function (datas) {
+                    vmManager.CheckDataSource = datas;
+                });
+
             }
         };
 
