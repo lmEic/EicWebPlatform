@@ -29,7 +29,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
              if (getCoporderModel == null || getCoporderModel.Count <= 0) return null;
               //依型号汇总工单信息 
               var unfinishedOrderList = GetAllProductOrderList(containsProductTypeOrProductSpecify).
-                                        FindAll(e => e.OrderFinishStatus == "已完工" || e.OrderFinishStatus == "指定完工");
+                                        FindAll(e => !(e.OrderFinishStatus == "已完工" || e.OrderFinishStatus == "指定完工"));
               //依型号成品仓信息  
               var ProductInStoreInfoList = GetProductInStoreInfoBy(containsProductTypeOrProductSpecify);
             return  new ProductTypeMonitorModel
