@@ -32,21 +32,30 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
                                         FindAll(e => !(e.OrderFinishStatus == "已完工" || e.OrderFinishStatus == "指定完工"));
               //依型号成品仓信息  
               var ProductInStoreInfoList = GetProductInStoreInfoBy(containsProductTypeOrProductSpecify);
-            return  new ProductTypeMonitorModel
+           
+            double orderCount= unfinishedOrderList.FindAll(f => !f.OrderId.Contains("523")).ToList().Sum(f => f.Count) -
+                                unfinishedOrderList.FindAll(f => !f.OrderId.Contains("523")).ToList().Sum(f => f.InStoreCount);
+            double sumCount=getCoporderModel.FindAll(f => f.ProductName == containsProductTypeOrProductSpecify).ToList().Sum(m => m.ProductNumber) -
+                                getCoporderModel.FindAll(f => f.ProductName == containsProductTypeOrProductSpecify).ToList().Sum(m => m.FinishNumber);
+            double  localeFinishedCount=ProductInStoreInfoList.FindAll(f => f.StroeId == "D05").ToList().Sum(m => m.InStroeNumber);
+            double freeTradeInHouseCount = ProductInStoreInfoList.FindAll(f => f.StroeId == "B03").ToList().Sum(m => m.InStroeNumber);
+            double putInMaterialCount = ProductInStoreInfoList.FindAll(f => f.StroeId == "C03").ToList().Sum(m => m.InStroeNumber);
+            double allCheckOrderCount=unfinishedOrderList.FindAll(f => f.OrderId.Contains("523")).ToList().Sum(f => f.Count);
+            
+          return  new ProductTypeMonitorModel
               {
                   ProductType = containsProductTypeOrProductSpecify,
                   ProductSpecify = getCoporderModel.Find(f => f.ProductName == containsProductTypeOrProductSpecify).ProductSpecify,
-                  //工单总量-工单入库量  不包括“全检工单523”
-                  OrderCount = unfinishedOrderList.FindAll(f => !f.OrderId.Contains("523")).ToList().Sum(f => f.Count) -
-                                unfinishedOrderList.FindAll(f => !f.OrderId.Contains("523")).ToList().Sum(f => f.InStoreCount),
+                   //工单总量-工单入库量  不包括“全检工单523”
+                  OrderCount = orderCount,
                   //订单总量-订单已交量
-                  SumCount = getCoporderModel.FindAll(f => f.ProductName == containsProductTypeOrProductSpecify).ToList().Sum(m => m.ProductNumber) -
-                                getCoporderModel.FindAll(f => f.ProductName == containsProductTypeOrProductSpecify).ToList().Sum(m => m.FinishNumber),
-                  LocaleFinishedCount = ProductInStoreInfoList.FindAll(f => f.StroeId == "D05").ToList().Sum(m => m.InStroeNumber),
-                  FreeTradeInHouseCount = ProductInStoreInfoList.FindAll(f => f.StroeId == "B03").ToList().Sum(m => m.InStroeNumber),
-                  PutInMaterialCount = ProductInStoreInfoList.FindAll(f => f.StroeId == "C03").ToList().Sum(m => m.InStroeNumber),
+                  SumCount = sumCount,
+                  LocaleFinishedCount = localeFinishedCount,
+                  FreeTradeInHouseCount =freeTradeInHouseCount,
+                  PutInMaterialCount =putInMaterialCount,
                   //另外统计 “全检工单523”
-                  AllCheckOrderCount = unfinishedOrderList.FindAll(f => f.OrderId.Contains("523")).ToList().Sum(f => f.Count)
+                  AllCheckOrderCount = allCheckOrderCount,
+                  DifferenceCount = (sumCount + localeFinishedCount + freeTradeInHouseCount + putInMaterialCount+ allCheckOrderCount) - orderCount
               };
       
          
