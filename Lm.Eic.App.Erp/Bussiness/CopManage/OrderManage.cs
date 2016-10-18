@@ -32,6 +32,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
                                         FindAll(e => !(e.OrderFinishStatus == "已完工" || e.OrderFinishStatus == "指定完工"));
               //依型号成品仓信息  
               var ProductInStoreInfoList = GetProductInStoreInfoBy(containsProductTypeOrProductSpecify);
+           
             double orderCount= unfinishedOrderList.FindAll(f => !f.OrderId.Contains("523")).ToList().Sum(f => f.Count) -
                                 unfinishedOrderList.FindAll(f => !f.OrderId.Contains("523")).ToList().Sum(f => f.InStoreCount);
             double sumCount=getCoporderModel.FindAll(f => f.ProductName == containsProductTypeOrProductSpecify).ToList().Sum(m => m.ProductNumber) -
@@ -46,12 +47,12 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
                   ProductType = containsProductTypeOrProductSpecify,
                   ProductSpecify = getCoporderModel.Find(f => f.ProductName == containsProductTypeOrProductSpecify).ProductSpecify,
                    //工单总量-工单入库量  不包括“全检工单523”
-                  OrderCount = orderCount ,
+                  OrderCount = orderCount,
                   //订单总量-订单已交量
                   SumCount = sumCount,
-                  LocaleFinishedCount = localeFinishedCount ,
-                  FreeTradeInHouseCount =freeTradeInHouseCount  ,
-                  PutInMaterialCount =putInMaterialCount  ,
+                  LocaleFinishedCount = localeFinishedCount,
+                  FreeTradeInHouseCount =freeTradeInHouseCount,
+                  PutInMaterialCount =putInMaterialCount,
                   //另外统计 “全检工单523”
                   AllCheckOrderCount = allCheckOrderCount,
                   DifferenceCount = (sumCount + localeFinishedCount + freeTradeInHouseCount + putInMaterialCount+ allCheckOrderCount) - orderCount
