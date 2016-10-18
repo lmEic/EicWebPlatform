@@ -4,7 +4,7 @@
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
 
 var productModule = angular.module('bpm.productApp');
-productModule.factory('MocDataOpService', function (ajaxService) {
+productModule.factory('mocDataOpService', function (ajaxService) {
     var urlPrefix = "/" + leeHelper.controllers.mocManage + "/";
     var mocDataOp = {};
     //-------------------------工单管理-------------------------------------
