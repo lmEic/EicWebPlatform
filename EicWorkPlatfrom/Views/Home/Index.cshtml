@@ -62,14 +62,36 @@
         </nav>
     </header>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-2 bs-docs-sidebar">
+    <main class="container-fluid" ng-controller="layoutCtrl">
+        <div class="row" ng-cloak>
+            <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-show="navLayout.navViewSwitch">
+                <div class="bs-callout bs-callout-info">
+                    <h4>
+                        <span class="fa fa-list-ul">我的信息
+                            <img ng-src="{{headPortrait}}" class="img-circle" style="width:30px;height:30px;"/>
+                        </span>
+                        <span class="pull-right">
+                            <span class="badge" ng-click="navLayout.switchView()" title="点击折叠导航面板" style="cursor:pointer"><i class="fa fa-hand-o-left"></i></span>
+                        </span>
+                    </h4>
+                </div>
+                @*<div class="panel panel-default">
+                    <div class="panel-body">
+                       
+                    </div>
+                </div>*@
             </div>
-            <div class="col-md-10 col-lg-offset-2">
+            <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-hide="navLayout.navViewSwitch">
+                <span class="badge" ng-click="navLayout.switchView()" title="点击打开导航面板" style="cursor:pointer"><i class="fa fa-hand-o-right"></i></span>
+            </div>
+            <div class="pull-right" style="width:{{navLayout.navMainSize}};">
+                <div data-ui-view>
+
+                </div>
             </div>
         </div>
-    </div>
+    </main>
+
     <footer role="banner">
         <nav role="navigation" class="navbar navbar-fixed-bottom navbar-default">
             <div class="row">
