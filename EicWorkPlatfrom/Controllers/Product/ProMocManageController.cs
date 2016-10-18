@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lm.Eic.App.Erp.Bussiness.CopManage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -29,6 +30,27 @@ namespace EicWorkPlatfrom.Controllers.Product
         public ActionResult CheckOrderBills()
         {
             return View();
+        }
+
+        /// <summary>
+        /// 获取校验清单
+        /// </summary>
+        /// <param name="planDate"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [NoAuthenCheck]
+        public JsonResult GetMS589ProductTypeMonitor(string department)
+        {
+            var datas =  CopService.OrderManageManager.GetMS589ProductTypeMonitor();
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [NoAuthenCheck]
+        public FileResult CreateProductTypeMonitoList()
+        {
+            var ds = CopService.OrderManageManager.BuildProductTypeMonitoList();
+            return this.ExportToExcel(ds, "工单核对清单", "工单核对清单");
         }
     }
 }
