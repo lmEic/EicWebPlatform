@@ -190,7 +190,6 @@ namespace EicWorkPlatfrom.Controllers
             var modules = AuthenService.ModuleManager.NavMneus;
             return Json(modules, JsonRequestBehavior.AllowGet);
         }
-
         #endregion module nav
 
         #region user match roles
