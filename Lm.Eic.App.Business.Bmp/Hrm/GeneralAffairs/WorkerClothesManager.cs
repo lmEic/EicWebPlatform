@@ -51,7 +51,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <param name="productName">厂服名称</param>
         /// <param name="dealwithType">处理方式</param>
         /// <returns></returns>
-        public bool CanOldChangeNew(string workerId, string productName, string dealwithType)
+        public bool CanOldChangeNew(string workerId, string productName, string dealwithType, string department)
         {
             // "以旧换旧"不用判定
             //冬季厂服满三年允许更换一次  夏季厂服满两年允许更换一次
@@ -61,7 +61,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 {
                     WorkerId = workerId,
                     ProductName = productName,
-                    DealwithType = dealwithType
+                    DealwithType = dealwithType,
+                    Department = department
                 };
 
                 return CrudFactory.WorkerClothesCrud.IsCanOldChangeNew(model);
@@ -142,83 +143,86 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
             }
         }
         #endregion
-
+        /// <summary>
+        /// 特别的部门
+        /// </summary>
+        private List<string>SpecialDepartmentList
+        {
+            get { return new List<string> { "制七课" , "制六课" ,"制三课" ,"生技课" }; }
+        }
+       
         public bool IsCanOldChangeNew(WorkClothesManageModel model)
         {
             // "以旧换旧"不用判定
             //冬季厂服满三年允许更换一次  夏季厂服满两年允许更换一次
             try
             {
-                if (model.DealwithType == "以旧换旧") return true;
-                if (model.DealwithType == "购买新衣") return true;
-               
-                var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = model.WorkerId, SearchMode = 1 });
-                DateTime yearDate = DateTime.Now.Date.AddYears(-2);
-
-                if (workClothesList == null || workClothesList.Count() <= 0) return true;
-                 if(model.DealwithType == "领取新衣")
-                 {
-                     int sumPerCount = workClothesList.Sum(e => e.PerCount);
-                     if (model.ProductName == "冬季厂服")
-                     {
-                         if (model.Department != "制七课" || model.Department != "制六课" || model.Department != "制三课" || !model.Department.Contains("生技课"))
-                         {
-                             if (sumPerCount <= 3) return true;
-                             else return false;
-                         }
-                         else
-                         {
-                             if (sumPerCount <= 2) return true;
-                             else return false;
-                         }
-                     }
-                     if (model.ProductName == "夏季厂服")
-                     {
-                         if (sumPerCount <= 3) return true;
-                         else return false;
-                     }
-                
-                 }
-                 if (model.DealwithType == "以旧换新")
-                 {
-                     if (model.ProductName == "冬季厂服")
-                         yearDate = yearDate.AddYears(-1);
-                     //排除“以旧换旧” 的时间  再判断
-                     var returnWorkClothes = workClothesList.Where(e => e.ProductName == model.ProductName && e.DealwithType != "以旧换旧" && e.DealwithType != "购买新衣" && e.InputDate >= yearDate);
-                     bool result = (returnWorkClothes == null || returnWorkClothes.Count() <= 0);
-                     return result;
-                 }
-                 else return true;
-               
-               
+                bool boolOldChangeNew = false;
+                switch (model.DealwithType)
+                {
+                    case "以旧换旧":
+                    case "购买新衣":
+                        boolOldChangeNew = true;
+                        break;
+                    case "领取新衣":
+                        boolOldChangeNew = IsReeviceNow(model);
+                        break;
+                    case "以旧换新":
+                        boolOldChangeNew = IsOldChangeNew(model);
+                        break;
+                }
+                return boolOldChangeNew;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
             }
         }
+      
         /// <summary>
-        /// 领取方式的条件
+        /// 以旧换新的条件
         /// </summary>
-        /// <param name="dealwithType"></param>
+        /// <param name="model"></param>
         /// <returns></returns>
-        private bool IsReceiveDealwithTypeConditions(string dealwithType)
+        private  bool IsOldChangeNew(WorkClothesManageModel model)
         {
-            bool returnBool = true;
-            switch (dealwithType)
-            {
-                case "领取新衣":
-                    returnBool = true ;
-                    break;
-                case "以旧换新":
-                    returnBool = true;
-                    break;
-                default:
-                    returnBool = false ;
-                    break;
-            }
-            return returnBool ;
+            var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = model.WorkerId, SearchMode = 1 });
+            DateTime yearDate = DateTime.Now.Date.AddYears(-2);
+            if (workClothesList == null || workClothesList.Count() <= 0) return true;
+            if (model.ProductName == "冬季厂服")
+                yearDate = yearDate.AddYears(-1);
+            //排除“以旧换旧” 的时间  再判断
+            var returnWorkClothes = workClothesList.Where(e => e.ProductName == model.ProductName && e.DealwithType != "以旧换旧" && e.DealwithType != "购买新衣" && e.InputDate >= yearDate);
+            bool result = (returnWorkClothes == null || returnWorkClothes.Count() <= 0);
+            return result;
         }
+        /// <summary>
+        ///统计领取的件数
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private int GetSumPerCount(WorkClothesManageModel model)
+        {
+            var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = model.WorkerId, SearchMode = 1 });
+            return workClothesList.FindAll(e => e.DealwithType == model.DealwithType & e.ProductName == model.ProductName).Sum(e => e.PerCount);
+        }
+        /// <summary>
+        /// 领取新衣的条件
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private bool IsReeviceNow(WorkClothesManageModel model)
+        {
+            int count=GetSumPerCount(model);
+            //冬季厂服 不是特别的部门 只能领二件  其它都可以取三件
+            if (model.ProductName == "冬季厂服" && !SpecialDepartmentList.Contains(model.Department))
+            {
+                return count <2;
+            }
+            else return  count < 3;
+        }
+     
+     
    
 
         #region     store

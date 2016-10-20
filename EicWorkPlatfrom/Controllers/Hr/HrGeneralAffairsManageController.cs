@@ -34,14 +34,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
         
         [HttpGet]
         [NoAuthenCheck]
-        public JsonResult CanChangeOldForNew(string workerId, string productName, string dealwithType)
+        public JsonResult CanChangeOldForNew(string workerId, string productName, string dealwithType,string department)
         {
-            bool canChange = GeneralAffairsService.WorkerClothesManager.CanOldChangeNew(workerId, productName, dealwithType);
-            return Json(canChange, JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult CanChangeOldForNew(WorkClothesManageModel model)
-        {
-            bool canChange = GeneralAffairsService.WorkerClothesManager.CanOldChangeNew(model.WorkerId, model.ProductName, model.DealwithType);
+            bool canChange = GeneralAffairsService.WorkerClothesManager.CanOldChangeNew(workerId, productName, dealwithType, department);
             return Json(canChange, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
