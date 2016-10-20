@@ -137,15 +137,21 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
       private List<string> GetAllPorductIdBy(string containsProductName)
       {
           List<string> productIDList = new List<string>();
+          var copOrderList = CopOrderCrudFactory.CopOrderManage.GetCopOrderBy(containsProductName);
+
           var allOrderList = GetAllProductOrderList(containsProductName);
+          //销售订单
+          copOrderList.ForEach(e =>
+          {
+              if (!productIDList.Contains(e.ProductID))
+              { productIDList.Add(e.ProductID); }
+          });
           //所有工单材号
           allOrderList.ForEach(e =>
           {
               if (!productIDList.Contains(e.ProductID))
               { productIDList.Add(e.ProductID); }
           });
-
-   
           return productIDList;
       }
 
