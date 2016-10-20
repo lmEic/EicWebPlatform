@@ -65,7 +65,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
 
         public void GetEquipmentDiscardRecord()
         {
-
             var temList = AstService.EquipmentManager.DiscardManager.GetEquipmentDiscardRecord("Z160001");
             if (temList == null) { Assert.Fail(); }
         }

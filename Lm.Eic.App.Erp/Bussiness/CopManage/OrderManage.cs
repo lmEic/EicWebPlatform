@@ -95,7 +95,6 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
           {
               throw new Exception(ex.InnerException.Message);
           }
-          
       }
 
 
