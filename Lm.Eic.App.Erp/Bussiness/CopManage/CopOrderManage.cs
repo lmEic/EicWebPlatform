@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Lm.Eic.App.Erp.DbAccess.CopManageDb;
 using Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb;
-
 using Lm.Eic.App.Erp.Domain.InvManageModel;
 using Lm.Eic.App.Erp.DbAccess.InvManageDb;
 using Lm.Eic.App.Erp.Domain.ProductTypeMonitorModel;
@@ -15,7 +14,7 @@ using System.IO;
 namespace Lm.Eic.App.Erp.Bussiness.CopManage
 {
   
-  public   class OrderManage
+  public   class CopOrderManage
     {
 
       /// <summary>
@@ -85,7 +84,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
       /// 生成EXCEL表格
       /// </summary>
       /// <returns></returns>
-      public MemoryStream ProductTypeMonitoList()
+      public MemoryStream BuildProductTypeMonitoList()
       {
           try
           {

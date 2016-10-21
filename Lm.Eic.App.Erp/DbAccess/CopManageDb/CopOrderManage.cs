@@ -1,10 +1,12 @@
 ﻿using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
+using Lm.Eic.App.Erp.Domain.CopManageModel;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+
 
 namespace Lm.Eic.App.Erp.DbAccess.CopManageDb
 {
