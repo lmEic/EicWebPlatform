@@ -9,6 +9,7 @@ using Lm.Eic.App.Erp.Domain.InvManageModel;
 using Lm.Eic.App.Erp.DbAccess.InvManageDb;
 using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.App.Erp.DbAccess.CopManageDb;
 using System.IO;
 
 namespace Lm.Eic.App.Erp.Bussiness.CopManage
@@ -16,6 +17,9 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
   
   public   class CopOrderManage
   {
+ 
+      public CopOrderManage()
+      { }
       #region 常量字符
       /// <summary>
       /// 全检工单单别
@@ -50,7 +54,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
      public  ProductTypeMonitorModel GetProductTypeMonitorInfoBy(string containsProductTypeOrProductSpecify)
      {
          //查找一个型号的订单 并添加到业务订单中
-         var getCoporderModel = CopOrderCrudFactory.CopOrderManage.GetCopOrderBy(containsProductTypeOrProductSpecify);
+         var getCoporderModel = CopOrderCrudFactory.CopOrderManageDb.GetCopOrderBy(containsProductTypeOrProductSpecify);
          //如果业务订单中没有，直接返回空
          if (getCoporderModel == null || getCoporderModel.Count <= 0) return null;
          // 依型号汇总工单信息 
@@ -58,7 +62,8 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
                                    FindAll(e => !(e.OrderFinishStatus == HaveFinishSign || e.OrderFinishStatus == SpecifiedFinishSign));
          if (unfinishedOrderList == null || unfinishedOrderList.Count <= 0) return null;
          //依型号成品仓信息  
-         double localeFinishedCount = 0, freeTradeInHouseCount = 0, putInMaterialCount = 0, orderCount = 0, allCheckOrderCount = 0, sumCount = 0;
+         double localeFinishedCount ,freeTradeInHouseCount ,putInMaterialCount, orderCount = 0, allCheckOrderCount = 0, sumCount = 0;
+         //输出成品仓库信息
          OutProductInStoreConctBy(containsProductTypeOrProductSpecify, out localeFinishedCount, out freeTradeInHouseCount, out putInMaterialCount);
          //不包括全检工单的工单
          var UnallCheckCategoryList = unfinishedOrderList.FindAll(f => !f.OrderId.Contains(AllCheckCategory));
@@ -104,15 +109,15 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
       private void OutProductInStoreConctBy(string containsProductTypeOrProductSpecify, out double localeFinishedCount, out double freeTradeInHouseCount, out double putInMaterialCount)
       {
           var ProductInStoreInfoList = GetProductInStoreInfoBy(containsProductTypeOrProductSpecify);
-          localeFinishedCount = 0;
-          freeTradeInHouseCount = 0;
-          putInMaterialCount = 0;
-
           if (ProductInStoreInfoList != null || ProductInStoreInfoList.Count > 0)
           {
               localeFinishedCount = ProductInStoreInfoList.FindAll(f => f.StroeId == localeFinishedSign).ToList().Sum(m => m.InStroeNumber);
               freeTradeInHouseCount = ProductInStoreInfoList.FindAll(f => f.StroeId == FreeTradeSign).ToList().Sum(m => m.InStroeNumber);
               putInMaterialCount = ProductInStoreInfoList.FindAll(f => f.StroeId == IncomingmaterialSign).ToList().Sum(m => m.InStroeNumber);
+          }
+          else
+          {
+              localeFinishedCount = 0; freeTradeInHouseCount = 0;  putInMaterialCount = 0;
           }
       }
       /// <summary>
@@ -125,8 +130,9 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
           {
               List<ProductTypeMonitorModel> typeMonitorModelList = new List<ProductTypeMonitorModel>();
               //获取MES的产品型号
-              var mesPortype = CopOrderCrudFactory.CopOrderManage.MesProductTypeList();
-            if (mesPortype == null || mesPortype.Count <= 0) return typeMonitorModelList;
+              var mesPortype = CopOrderCrudFactory.CopOrderManageDb.MesProductTypeList();
+            
+              if (mesPortype == null || mesPortype.Count <= 0) return typeMonitorModelList;
                 mesPortype.ForEach(e =>
                  {
                      var m = GetProductTypeMonitorInfoBy(e);
@@ -197,7 +203,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
       private List<string> GetAllPorductIdBy(string containsProductName)
       {
           List<string> productIDList = new List<string>();
-          var copOrderList = CopOrderCrudFactory.CopOrderManage.GetCopOrderBy(containsProductName);
+          var copOrderList = CopOrderCrudFactory.CopOrderManageDb.GetCopOrderBy(containsProductName);
 
           var allOrderList = GetAllProductOrderList(containsProductName);
           //销售订单

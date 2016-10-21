@@ -48,7 +48,7 @@
     <Compile Include="Bussiness\MocManage\OrderManage.cs" />
     <Compile Include="Bussiness\PurchaseManage\PurchaseManager.cs" />
     <Compile Include="Bussiness\QuantityManage\QuantityManager.cs" />
-    <Compile Include="DbAccess\CopManageDb\CopOrderManage.cs" />
+    <Compile Include="DbAccess\CopManageDb\CopOrderManageDb.cs" />
     <Compile Include="DbAccess\DbAccessHelper.cs" />
     <Compile Include="DbAccess\InvManageDb\InvOrderManage.cs" />
     <Compile Include="DbAccess\MocManageDb\BomManageDb\BomManageDb.cs" />

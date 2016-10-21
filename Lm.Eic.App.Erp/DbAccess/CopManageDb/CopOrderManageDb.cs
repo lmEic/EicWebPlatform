@@ -14,19 +14,19 @@ namespace Lm.Eic.App.Erp.DbAccess.CopManageDb
     /// <summary>
     /// 销售订单管理Crud工厂
     /// </summary>
-    internal  class CopOrderCrudFactory
+    public  class CopOrderCrudFactory
     {
         /// <summary>
         /// 销售订单Crud
         /// </summary>
-        public static CopOrderManage CopOrderManage
+        public static CopOrderManageDb CopOrderManageDb
         {
-            get { return OBulider.BuildInstance<CopOrderManage>(); }
+            get { return OBulider.BuildInstance<CopOrderManageDb>(); }
         }
     }
 
 
-    public class CopOrderManage
+    public class CopOrderManageDb
     {
         private string SqlFields
         {
@@ -86,8 +86,5 @@ namespace Lm.Eic.App.Erp.DbAccess.CopManageDb
 
 
         }
-
-
-
     }
 }
