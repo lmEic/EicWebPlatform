@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.App.Erp.Bussiness.PurchaseManage;
 using Lm.Eic.App.Erp.Domain.PurchaseManage;
+using  Lm.Eic.App.DomainModel.Bpm.Purchase;
 using System;
 using System.Collections.Generic;
 
@@ -27,6 +28,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase
         public List<PurchaseBodyModel> FindPurBodyDatasBy(string department, DateTime dateFrom, DateTime dateTo)
         {
             return PurchaseDbManager.PurchaseDb.FindPurBodyByDepartment(department, dateFrom, dateTo);
+        }
+      public List<QualifiedSupplierModel> FindQualifiedSupplier(string year)
+        {
+            return null;
         }
     }
 }

@@ -1,8 +1,11 @@
 ﻿using Lm.Eic.App.Erp.Domain.PurchaseManage;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
+using System.Linq;
 
 namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
 {
@@ -160,6 +163,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             return "Select TC001,TC002,TC003,TC004,TC011,TC019  from PURTC";
         }
 
+       
         private void MapPurHeaderRowAndModel(DataRow dr, PurchaseHeaderModel m)
         {
             m.Code = dr["TC002"].ToString();
@@ -169,7 +173,35 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             m.PurchasePerson = dr["TC011"].ToString();
             m.SupplierID = dr["TC004"].ToString();
         }
-
+        /// <summary>
+        /// 获取采购供应商ID （331 333）
+        /// </summary>
+        /// <param name="year">年份格式YY</param>
+        /// <returns></returns>
+        public List<string> PurchaseSppuerId(string year)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT  DISTINCT TC004 ")
+                  .Append("FROM   PURTC ")
+                  .Append("WHERE   (TC001 = '331' OR TC001 = '333') AND (TC002 LIKE '{0}%')" );
+                DataTable dt = DbHelper.Erp.LoadTable(string.Format(sb.ToString(), year));
+                List<string> SppuerIdList = new List<string>();
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        SppuerIdList.Add(dr[0].ToString());
+                    }
+                }
+                return SppuerIdList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
         /// <summary>
         /// 根据查询条件获取采购单单头数据信息
         /// </summary>
@@ -217,6 +249,23 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             return purHeaders;
         }
 
+
+        /// <summary>
+        /// 供应商最近二项采购
+        /// </summary>
+        /// <param name="suppplierId"></param>
+        /// <returns></returns>
+        public List<PurchaseHeaderModel> FindSupplierLatestTwoPurchaseBy(string suppplierId)
+        {
+            string SqlFields = "Select TOP (2) TC001,TC002,TC003,TC004,TC011,TC019  from PURTC ";
+            string whereSql = string .Format ("WHERE   (TC004 = '{0}')  ORDER BY TC003 DESC ",suppplierId );
+            return ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(SqlFields, whereSql, (dr, m) =>
+            {
+                this.MapPurHeaderRowAndModel(dr, m);
+            });
+        }
+
+
         #endregion PurchaseHeader
 
         //-----------------PurchaseBody---------------------------------
@@ -259,6 +308,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             return FindPurBodyBy(sqlWhere);
         }
 
+
         public List<PurchaseBodyModel> FindPurBodyByID(string id)
         {
             var idm = ErpDbAccessHelper.DecomposeID(id);
@@ -290,7 +340,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             }
             return purBodys;
         }
-
+       
         #endregion PurchaseBody
     }
 
@@ -456,5 +506,43 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         }
 
         #endregion StockBody
+    }
+
+
+    /// <summary>
+    /// 采购供应商数据访问DB
+    /// </summary>
+    public class SupplierDb
+    {
+        // MA001 AS 编号, MA002 AS 简称, MA003 AS 全称, MA008 AS 电话, MA010 AS 传真, MA012 AS 负责人,
+        //MA013 AS 联系人地址, MA014 AS 地址, MA025 AS 付款条件, MA051 AS 账单地址
+
+        private string SqlFields
+        {
+            get { return "SELECT MA014,MA051,MA013, MA010,MA025,MA012,MA001,MA003,MA002,MA008  FROM   PURMA "; }
+        }
+        /// <summary>
+        /// 获得供应商信息
+        /// </summary>
+        /// <param name="SupplierId">供应商ID</param>
+        /// <returns></returns>
+       public SupplierModel FindSpupplierInfoBy(string SupplierId)
+        {
+            string whereSql = string.Format("where MA001='{0}'", SupplierId);
+            var listModels= ErpDbAccessHelper.FindDataBy<SupplierModel>(SqlFields, whereSql,(dr, m) => 
+            {
+                m.Address = dr["MA014"].ToString().Trim();
+                m.BillAddress = dr["MA051"].ToString().Trim();
+                m.Contact = dr["MA013"].ToString().Trim();
+                m.FaxNo = dr["MA010"].ToString().Trim();
+                m.PayCondition = dr["MA025"].ToString().Trim();
+                m.Principal = dr["MA012"].ToString().Trim();
+                m.SupplierID = dr["MA001"].ToString().Trim();
+                m.SupplierName = dr["MA003"].ToString().Trim();
+                m.SupplierShortName = dr["MA002"].ToString().Trim();
+                m.Tel = dr["MA008"].ToString().Trim();
+            });
+          return listModels.FirstOrDefault();
+        }
     }
 }
