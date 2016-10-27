@@ -8,6 +8,7 @@ using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement;
 
 
@@ -44,7 +45,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
      /// </summary>
      /// <param name="model"></param>
      /// <returns></returns>
-     private OpResult Add(QualifiedSupplierModel model)
+    public  OpResult Add(QualifiedSupplierModel model)
      {
          ///判断产品品号是否存在
          try
@@ -56,6 +57,25 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
      }
+    public OpResult SavaQualifiedSupplierInfoList(List<QualifiedSupplierModel> modelList)
+    {
+        try
+        {
+            DateTime date = DateTime.Now.ToDate();
+            SetFixFieldValue(modelList, OpMode.Add, m =>
+            {
+                m.Opdate = date;
+                m.SuperlierEligibleprojectsDate = "imyyyyy";
+            });
+
+            if (!modelList.IsNullOrEmpty())
+                return OpResult.SetResult("日报列表不能为空！ 保存失败");
+
+            return irep.Insert(modelList).ToOpResult_Add(OpContext);
+        }
+        catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+
+    }
      /// <summary>
      /// 获取供应商合格的列表
      /// </summary>

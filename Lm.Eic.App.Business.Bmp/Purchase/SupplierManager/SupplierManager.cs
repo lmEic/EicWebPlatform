@@ -13,57 +13,61 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
 
     public class QualifiedSupplierManager
+    {
+
+        /// <summary>
+        /// 从ERP中获取年份合格供应商信息
+        /// </summary>
+        /// <param name="year">年份(格式yy)</param>
+        /// <returns></returns>
+        List<QualifiedSupplierModel> FindQualifiedSupplierList(string year)
         {
-
-            /// <summary>
-            /// 从ERP中获取年份合格供应商信息
-            /// </summary>
-            /// <param name="year">年份(格式yy)</param>
-            /// <returns></returns>
-             List<QualifiedSupplierModel> FindQualifiedSupplierList(string year)
+            List<QualifiedSupplierModel> QualifiedSupplierInfo = new List<QualifiedSupplierModel>();
+            var supplierList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(year);
+            if (supplierList == null || supplierList.Count <= 0) return null;
+            supplierList.ForEach(supplierId =>
             {
-                List<QualifiedSupplierModel> QualifiedSupplierInfo = new List<QualifiedSupplierModel>();
-                var supplierList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(year);
-                if (supplierList == null || supplierList.Count <= 0) return null;
-                supplierList.ForEach(e =>
+                var SupplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierId);
+                var mm = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
+                QualifiedSupplierInfo.Add(new QualifiedSupplierModel
                 {
-                    var SupplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(e);
-                    var mm = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(e);
-                    QualifiedSupplierInfo.Add(new QualifiedSupplierModel
-                    {
-                        LastPurchaseDate = SupplierLatestTwoPurchase.LastOrDefault().PurchaseDate.Trim().ToDate(),
-                        LatestPurchaseDate = SupplierLatestTwoPurchase.FirstOrDefault().PurchaseDate.Trim().ToDate(),
-                        PurchaseClass = SupplierLatestTwoPurchase.FirstOrDefault().PurchasePerson,
-                        PurchasePeople = SupplierLatestTwoPurchase.FirstOrDefault().PurchasePerson,
-                        SuppliersId = e,
-                        SupplierAddress = mm.Address,
-                        SupplierEmail = mm.BillAddress,
-                        SupplierFaxNo = mm.FaxNo,
-                        SupplierName = mm.SupplierName,
-                        SupplierShortName = mm.SupplierShortName,
-                        SupplierPeople = mm.Contact,
-                        SupplierTel = mm.Tel
-                    });
+                    LastPurchaseDate = SupplierLatestTwoPurchase.LastOrDefault().PurchaseDate.Trim().ToDate(),
+                    LatestPurchaseDate = SupplierLatestTwoPurchase.FirstOrDefault().PurchaseDate.Trim().ToDate(),
+                    PurchaseClass = SupplierLatestTwoPurchase.FirstOrDefault().PurchasePerson,
+                    PurchasePeople = SupplierLatestTwoPurchase.FirstOrDefault().PurchasePerson,
+                    SuppliersId = supplierId,
+                    SupplierAddress = mm.Address,
+                    BillAddress =mm.BillAddress ,
+                    SupplierFaxNo = mm.FaxNo,
+                    SupplierName = mm.SupplierName,
+                    SupplierShortName = mm.SupplierShortName,
+                    SupplierPeople = mm.Contact,
+                    SupplierTel = mm.Tel,
+                    SuperlierEligibleprojectsDate ="测试",
+                    SupplierEmail="ww@163.com",
+                    SupplierEligibleprojects="111111",
+                    SupplierParty="1212122",
+                    OpPersom="fff",
+                    Remark="454454",
+                    OpTime=DateTime.Now.ToDate(),
+                    Opdate=DateTime.Now.ToDate(),
+                    OpSign="add"
                 });
+            });
 
 
-                return QualifiedSupplierInfo;
-            }
-
-
-           public void store(string year)
-            {
-                var qualifiedSupplierList = FindQualifiedSupplierList(year);
-                if (qualifiedSupplierList != null || qualifiedSupplierList.Count >= 0)
-               {
-                   qualifiedSupplierList.ForEach(m =>
-                   {
-                          QualifiedSupplierCrudFactory.QualifiedSupplierCrud.Store(m);
-                   });
-               }
-
-            }
-
+            return QualifiedSupplierInfo;
         }
+
+
+        public void store(string year)
+        {
+            var qualifiedSupplierList = FindQualifiedSupplierList(year);
+            if (qualifiedSupplierList != null || qualifiedSupplierList.Count >= 0)
+            {
+                QualifiedSupplierCrudFactory.QualifiedSupplierCrud.SavaQualifiedSupplierInfoList(qualifiedSupplierList);
+            }
+        }
+    }
    
 }

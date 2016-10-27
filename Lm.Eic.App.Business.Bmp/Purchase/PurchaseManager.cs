@@ -29,9 +29,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase
         {
             return PurchaseDbManager.PurchaseDb.FindPurBodyByDepartment(department, dateFrom, dateTo);
         }
-      public List<QualifiedSupplierModel> FindQualifiedSupplier(string year)
-        {
-            return null;
-        }
+     
     }
 }
