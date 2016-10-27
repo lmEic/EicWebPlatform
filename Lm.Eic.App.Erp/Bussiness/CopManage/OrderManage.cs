@@ -29,7 +29,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
              if (getCoporderModel == null || getCoporderModel.Count <= 0) return null;
               //依型号汇总工单信息 
               var unfinishedOrderList = GetAllProductOrderList(containsProductTypeOrProductSpecify).
-                                        FindAll(e => e.OrderFinishStatus == "已完工" || e.OrderFinishStatus == "指定完工");
+                                        FindAll(e => !(e.OrderFinishStatus == "已完工" || e.OrderFinishStatus == "指定完工"));
               //依型号成品仓信息  
               var ProductInStoreInfoList = GetProductInStoreInfoBy(containsProductTypeOrProductSpecify);
             return  new ProductTypeMonitorModel
@@ -57,15 +57,15 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
       /// <returns></returns>
       public  List <ProductTypeMonitorModel>GetMS589ProductTypeMonitor()
       {
-          List<ProductTypeMonitorModel> TypeMonitorModelList = new List<ProductTypeMonitorModel>();
+          List<ProductTypeMonitorModel> typeMonitorModelList = new List<ProductTypeMonitorModel>();
           //获取MES的产品型号
           List<string> mesPortype = CopOrderCrudFactory.CopOrderManage.MesProductType();
           mesPortype.ForEach(e => {
               var m = GetProductTypeMonitorInfoBy(e);
               if (m != null)
-              { TypeMonitorModelList.Add(m); }
+              { typeMonitorModelList.Add(m); }
           });
-          return TypeMonitorModelList;
+          return typeMonitorModelList;
       }
    
       /// <summary>
@@ -105,16 +105,16 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
       /// <returns></returns>
       private  List<FinishedProductStoreModel> GetProductInStoreInfoBy(string  containsProductName)
       {
-          List<FinishedProductStoreModel> ProductInStoreInfoList = new List<FinishedProductStoreModel>();
+          List<FinishedProductStoreModel> productInStoreInfoList = new List<FinishedProductStoreModel>();
           //从销售订单和生产工单中得到型号所对应的所有料号
           List<string> productIDList = GetAllPorductIdBy(containsProductName);
           //对每个料号得到相应的成品仓信息
          productIDList.ForEach(e =>
               {
                   var mmm = InvOrderCrudFactory.InvManageDb.GetProductStroeInfoBy(e);
-                  ProductInStoreInfoList.AddRange(mmm);
+                  productInStoreInfoList.AddRange(mmm);
               });
-          return ProductInStoreInfoList;
+          return productInStoreInfoList;
 
       }
       /// <summary>
