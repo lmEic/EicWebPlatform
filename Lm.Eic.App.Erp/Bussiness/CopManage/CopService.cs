@@ -7,9 +7,9 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
 {
    public  class CopService
     {
-       public static OrderManage OrderManageManager
+       public static CopOrderManage OrderManageManager
        {
-           get { return OBulider.BuildInstance<OrderManage>(); }
+           get { return OBulider.BuildInstance<CopOrderManage>(); }
        }
     }
 }

@@ -41,20 +41,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bussiness\CopManage\CopService.cs" />
-    <Compile Include="Bussiness\CopManage\OrderManage.cs" />
+    <Compile Include="Bussiness\CopManage\CopOrderManage.cs" />
     <Compile Include="Bussiness\MocManage\BomManage.cs" />
     <Compile Include="Bussiness\MocManage\MocBase.cs" />
     <Compile Include="Bussiness\MocManage\MocService.cs" />
     <Compile Include="Bussiness\MocManage\OrderManage.cs" />
     <Compile Include="Bussiness\PurchaseManage\PurchaseManager.cs" />
     <Compile Include="Bussiness\QuantityManage\QuantityManager.cs" />
-    <Compile Include="DbAccess\CopManageDb\CopOrderManage.cs" />
+    <Compile Include="DbAccess\CopManageDb\CopOrderManageDb.cs" />
     <Compile Include="DbAccess\DbAccessHelper.cs" />
     <Compile Include="DbAccess\InvManageDb\InvOrderManage.cs" />
     <Compile Include="DbAccess\MocManageDb\BomManageDb\BomManageDb.cs" />
     <Compile Include="DbAccess\MocManageDb\OrderManageDb\OrderManageDb.cs" />
     <Compile Include="DbAccess\PurchaseManageDb\RequisitionDb.cs" />
     <Compile Include="DbAccess\QuantitySampleDb\MaterialSampleDb.cs" />
+    <Compile Include="Domain\CopManageModel\CopOrderModel.cs" />
     <Compile Include="Domain\InvManageModel\FinishedProductStoreModel.cs" />
     <Compile Include="Domain\MocManageModel\OrderManageModel\MaterialModel.cs" />
     <Compile Include="Domain\MocManageModel\OrderManageModel\OrderModel.cs" />
