@@ -37,15 +37,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
      /// <param name="model"></param>
      /// <returns></returns>
      protected override void AddCrudOpItems()
-     {
-
-     }
+     {  }
      /// <summary>
      /// / 添加一条合格供应商的记录
      /// </summary>
      /// <param name="model"></param>
      /// <returns></returns>
-    public  OpResult Add(QualifiedSupplierModel model)
+     public OpResult SavaQualifiedSupplier(QualifiedSupplierModel model)
      {
          ///判断产品品号是否存在
          try
@@ -57,6 +55,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
      }
+    /// <summary>
+     /// 批量保存供应商的记录
+    /// </summary>
+    /// <param name="modelList"></param>
+    /// <returns></returns>
     public OpResult SavaQualifiedSupplierInfoList(List<QualifiedSupplierModel> modelList)
     {
         try
@@ -64,17 +67,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             DateTime date = DateTime.Now.ToDate();
             SetFixFieldValue(modelList, OpMode.Add, m =>
             {
-                m.Opdate = date;
-                m.SuperlierEligibleprojectsDate = "imyyyyy";
+                m.OpDate = date;
+                //需要添加附加答条件
             });
 
             if (!modelList.IsNullOrEmpty())
                 return OpResult.SetResult("日报列表不能为空！ 保存失败");
-
             return irep.Insert(modelList).ToOpResult_Add(OpContext);
         }
         catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
-
     }
      /// <summary>
      /// 获取供应商合格的列表
@@ -92,4 +93,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
 
  }
+  public class SupplierEligibleCrud:CrudBase <SupplierEligibleModel,ISupplierEligibleRepository >
+  {
+      public SupplierEligibleCrud():base(new SupplierEligibleRepository() ,"供应商合格文件录入")
+      {}
+
+  }
+
 }

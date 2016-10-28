@@ -18,9 +18,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <summary>
         /// 从ERP中获取年份合格供应商信息
         /// </summary>
-        /// <param name="year">年份(格式yy)</param>
+        /// <param name="year">年份格式yyyy</param>
         /// <returns></returns>
-        List<QualifiedSupplierModel> FindQualifiedSupplierList(string year)
+       public  List<QualifiedSupplierModel> FindQualifiedSupplierList(string year)
         {
             List<QualifiedSupplierModel> QualifiedSupplierInfo = new List<QualifiedSupplierModel>();
             var supplierList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(year);
@@ -31,27 +31,17 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 var mm = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
                 QualifiedSupplierInfo.Add(new QualifiedSupplierModel
                 {
-                    LastPurchaseDate = SupplierLatestTwoPurchase.LastOrDefault().PurchaseDate.Trim().ToDate(),
-                    LatestPurchaseDate = SupplierLatestTwoPurchase.FirstOrDefault().PurchaseDate.Trim().ToDate(),
-                    PurchaseClass = SupplierLatestTwoPurchase.FirstOrDefault().PurchasePerson,
-                    PurchasePeople = SupplierLatestTwoPurchase.FirstOrDefault().PurchasePerson,
+                    LastPurchaseDate =  SupplierLatestTwoPurchase.FirstOrDefault().PurchaseDate.Trim().ToDate(),
+                    UpperPurchaseDate = SupplierLatestTwoPurchase.LastOrDefault().PurchaseDate.Trim().ToDate(),
+                    PurchaseUser= SupplierLatestTwoPurchase.FirstOrDefault().PurchasePerson,
                     SuppliersId = supplierId,
                     SupplierAddress = mm.Address,
                     BillAddress =mm.BillAddress ,
                     SupplierFaxNo = mm.FaxNo,
                     SupplierName = mm.SupplierName,
                     SupplierShortName = mm.SupplierShortName,
-                    SupplierPeople = mm.Contact,
-                    SupplierTel = mm.Tel,
-                    SuperlierEligibleprojectsDate ="测试",
-                    SupplierEmail="ww@163.com",
-                    SupplierEligibleprojects="111111",
-                    SupplierParty="1212122",
-                    OpPersom="fff",
-                    Remark="454454",
-                    OpTime=DateTime.Now.ToDate(),
-                    Opdate=DateTime.Now.ToDate(),
-                    OpSign="add"
+                    SupplierUser  = mm.Contact,
+                    SupplierTel = mm.Tel
                 });
             });
 
@@ -59,15 +49,16 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return QualifiedSupplierInfo;
         }
 
+      /// <summary>
+       /// 批量保存供应商信息
+      /// </summary>
+      /// <param name="modelList"></param>
+      /// <returns></returns>
+       public OpResult SavaQualifiedSupplierInfoS(List<QualifiedSupplierModel> modelList)
+       {
 
-        public void store(string year)
-        {
-            var qualifiedSupplierList = FindQualifiedSupplierList(year);
-            if (qualifiedSupplierList != null || qualifiedSupplierList.Count >= 0)
-            {
-                QualifiedSupplierCrudFactory.QualifiedSupplierCrud.SavaQualifiedSupplierInfoList(qualifiedSupplierList);
-            }
-        }
+           return QualifiedSupplierCrudFactory.QualifiedSupplierCrud.SavaQualifiedSupplierInfoList(modelList);
+       }
     }
    
 }

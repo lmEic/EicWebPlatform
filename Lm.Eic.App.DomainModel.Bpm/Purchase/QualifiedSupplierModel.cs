@@ -40,14 +40,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
           set { _suppliername = value; }
           get { return _suppliername; }
       }
-      private string _supplierparty;
+      private string _supplierproperty;
       /// <summary>
-      ///供应商分类
+      ///供应商属性
       /// </summary>
-      public string SupplierParty
+      public string SupplierProperty
       {
-          set { _supplierparty = value; }
-          get { return _supplierparty; }
+          set { _supplierproperty = value; }
+          get { return _supplierproperty; }
       }
       private string _suppliertel;
       /// <summary>
@@ -58,14 +58,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
           set { _suppliertel = value; }
           get { return _suppliertel; }
       }
-      private string _supplierpeople;
+      private string _supplieruser;
       /// <summary>
-      ///联系人
+      ///供应商联系人
       /// </summary>
-      public string SupplierPeople
+      public string SupplierUser
       {
-          set { _supplierpeople = value; }
-          get { return _supplierpeople; }
+          set { _supplieruser = value; }
+          get { return _supplieruser; }
       }
       private string _supplierfaxno;
       /// <summary>
@@ -94,50 +94,50 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
           set { _supplieraddress = value; }
           get { return _supplieraddress; }
       }
-      private string _billAddress;
+      private string _billaddress;
       /// <summary>
-      ///货单地址
+      ///交货地址
       /// </summary>
-      public string  BillAddress
+      public string BillAddress
       {
-          set { _billAddress = value; }
-          get { return _billAddress; }
+          set { _billaddress = value; }
+          get { return _billaddress; }
       }
-      private string _purchasepeople;
+      private string _purchaseuser;
       /// <summary>
-      ///采购负责人
+      ///采购人员
       /// </summary>
-      public string PurchasePeople
+      public string PurchaseUser
       {
-          set { _purchasepeople = value; }
-          get { return _purchasepeople; }
+          set { _purchaseuser = value; }
+          get { return _purchaseuser; }
+      }
+      private DateTime _upperpurchasedate;
+      /// <summary>
+      ///上次采购日期
+      /// </summary>
+      public DateTime UpperPurchaseDate
+      {
+          set { _upperpurchasedate = value; }
+          get { return _upperpurchasedate; }
       }
       private DateTime _lastpurchasedate;
       /// <summary>
-      ///上次采购时间
+      ///最近采购日期
       /// </summary>
       public DateTime LastPurchaseDate
       {
           set { _lastpurchasedate = value; }
           get { return _lastpurchasedate; }
       }
-      private DateTime _latestpurchasedate;
+      private string _purchasetype;
       /// <summary>
-      ///最近采购时间
+      ///采购类型
       /// </summary>
-      public DateTime LatestPurchaseDate
+      public string PurchaseType
       {
-          set { _latestpurchasedate = value; }
-          get { return _latestpurchasedate; }
-      }
-      private string _purchaseclass;
-      /// <summary>
-      ///采购类别
-      /// </summary>
-      public string PurchaseClass
-      {
-          set { _purchaseclass = value; }
-          get { return _purchaseclass; }
+          set { _purchasetype = value; }
+          get { return _purchasetype; }
       }
       private string _suppliereligibleprojects;
       /// <summary>
@@ -166,14 +166,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
           set { _remark = value; }
           get { return _remark; }
       }
-      private string _oppersom;
+      private string _opperson;
       /// <summary>
-      ///操作人
+      ///操作人员
       /// </summary>
-      public string OpPersom
+      public string OpPerson
       {
-          set { _oppersom = value; }
-          get { return _oppersom; }
+          set { _opperson = value; }
+          get { return _opperson; }
       }
       private string _opsign;
       /// <summary>
@@ -188,7 +188,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       /// <summary>
       ///操作日期
       /// </summary>
-      public DateTime Opdate
+      public DateTime OpDate
       {
           set { _opdate = value; }
           get { return _opdate; }
@@ -213,4 +213,107 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       #endregion Model
     }
+
+
+
+
+    /// <summary>
+   /// 供应商合格文件
+    /// </summary>
+   public class SupplierEligibleModel
+   {
+          #region Model
+       private string _suppliersid;
+       /// <summary>
+       ///供应商Id
+       /// </summary>
+       public string SuppliersID
+       {
+           set { _suppliersid = value; }
+           get { return _suppliersid; }
+       }
+       private string _eligibleitems;
+       /// <summary>
+       ///合格项目
+       /// </summary>
+       public string EligibleItems
+       {
+           set { _eligibleitems = value; }
+           get { return _eligibleitems; }
+       }
+       private DateTime _validitydate;
+       /// <summary>
+       ///有效期
+       /// </summary>
+       public DateTime ValidityDate
+       {
+           set { _validitydate = value; }
+           get { return _validitydate; }
+       }
+       private DateTime _putindate;
+       /// <summary>
+       ///录入日期
+       /// </summary>
+       public DateTime PutInDate
+       {
+           set { _putindate = value; }
+           get { return _putindate; }
+       }
+       private int _isvalidity;
+       /// <summary>
+       ///是否有效0无效1为有效
+       /// </summary>
+       public int IsValidity
+       {
+           set { _isvalidity = value; }
+           get { return _isvalidity; }
+       }
+       private string _remark;
+       /// <summary>
+       ///备注
+       /// </summary>
+       public string Remark
+       {
+           set { _remark = value; }
+           get { return _remark; }
+       }
+       private string _opperson;
+       /// <summary>
+       ///操作人
+       /// </summary>
+       public string OpPerson
+       {
+           set { _opperson = value; }
+           get { return _opperson; }
+       }
+       private DateTime _opdate;
+       /// <summary>
+       ///操作日期
+       /// </summary>
+       public DateTime OpDate
+       {
+           set { _opdate = value; }
+           get { return _opdate; }
+       }
+       private string _opsign;
+       /// <summary>
+       ///操作标识
+       /// </summary>
+       public string OpSign
+       {
+           set { _opsign = value; }
+           get { return _opsign; }
+       }
+       private decimal _id_key;
+       /// <summary>
+       ///自增键
+       /// </summary>
+       public decimal Id_key
+       {
+           set { _id_key = value; }
+           get { return _id_key; }
+       }
+       #endregion Model
+   }
+
 }

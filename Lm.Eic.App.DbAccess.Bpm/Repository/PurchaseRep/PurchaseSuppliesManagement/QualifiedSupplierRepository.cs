@@ -18,4 +18,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagem
   /// </summary>
   public class QualifiedSupplierRepository : BpmRepositoryBase<QualifiedSupplierModel>, IQualifiedSupplierRepository
   { }
+    /// <summary>
+   /// 供应商合格文件
+    /// </summary>
+  public interface ISupplierEligibleRepository : IRepository<SupplierEligibleModel> { }
+  public class SupplierEligibleRepository : BpmRepositoryBase<SupplierEligibleModel>, ISupplierEligibleRepository
+    { }
 }
