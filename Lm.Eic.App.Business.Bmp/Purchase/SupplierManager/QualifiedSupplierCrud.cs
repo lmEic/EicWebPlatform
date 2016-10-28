@@ -97,7 +97,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
   {
       public SupplierEligibleCrud():base(new SupplierEligibleRepository() ,"供应商合格文件录入")
       {}
-
+      /// 
+      /// </summary>
+      /// <param name="model"></param>
+      /// <returns></returns>
+      protected override void AddCrudOpItems()
+      { }
   }
 
 }
