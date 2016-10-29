@@ -13,14 +13,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       public QualifiedSupplierModel ()
        { }
       #region Model
-      private string _suppliersid;
+      private string _supplierid;
       /// <summary>
       ///供应商Id
       /// </summary>
-      public string SuppliersId
+      public string SupplierId
       {
-          set { _suppliersid = value; }
-          get { return _suppliersid; }
+          set { _supplierid = value; }
+          get { return _supplierid; }
       }
       private string _suppliershortname;
       /// <summary>
@@ -327,5 +327,188 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
        }
        #endregion Model
    }
+
+    /// <summary>
+   /// 供应商信息表
+    /// </summary>
+  public class SupplierInfoModel
+  {
+      public SupplierInfoModel ()
+      { }
+
+      #region Model
+      private string _suppliersid;
+      /// <summary>
+      ///供应商ID
+      /// </summary>
+      public string SuppliersId
+      {
+          set { _suppliersid = value; }
+          get { return _suppliersid; }
+      }
+      private string _purchasetype;
+      /// <summary>
+      ///采购类型
+      /// </summary>
+      public string PurchaseType
+      {
+          set { _purchasetype = value; }
+          get { return _purchasetype; }
+      }
+      private string _supplierproperty;
+      /// <summary>
+      ///供应商属性
+      /// </summary>
+      public string SupplierProperty
+      {
+          set { _supplierproperty = value; }
+          get { return _supplierproperty; }
+      }
+      private string _suppliershortname;
+      /// <summary>
+      ///供应商简称
+      /// </summary>
+      public string SupplierShortName
+      {
+          set { _suppliershortname = value; }
+          get { return _suppliershortname; }
+      }
+      private string _suppliername;
+      /// <summary>
+      ///全称
+      /// </summary>
+      public string SupplierName
+      {
+          set { _suppliername = value; }
+          get { return _suppliername; }
+      }
+      private string _purchaseuser;
+      /// <summary>
+      ///采购负责人
+      /// </summary>
+      public string PurchaseUser
+      {
+          set { _purchaseuser = value; }
+          get { return _purchaseuser; }
+      }
+      private string _suppliertel;
+      /// <summary>
+      ///供应商电话
+      /// </summary>
+      public string SupplierTel
+      {
+          set { _suppliertel = value; }
+          get { return _suppliertel; }
+      }
+      private string _supplieruser;
+      /// <summary>
+      ///供应商联系人
+      /// </summary>
+      public string SupplierUser
+      {
+          set { _supplieruser = value; }
+          get { return _supplieruser; }
+      }
+      private string _supplierfaxno;
+      /// <summary>
+      ///供应商传真
+      /// </summary>
+      public string SupplierFaxNo
+      {
+          set { _supplierfaxno = value; }
+          get { return _supplierfaxno; }
+      }
+      private string _supplieremail;
+      /// <summary>
+      ///供应商邮箱
+      /// </summary>
+      public string SupplierEmail
+      {
+          set { _supplieremail = value; }
+          get { return _supplieremail; }
+      }
+      private string _supplieraddress;
+      /// <summary>
+      ///供应商地址
+      /// </summary>
+      public string SupplierAddress
+      {
+          set { _supplieraddress = value; }
+          get { return _supplieraddress; }
+      }
+      private string _billaddress;
+      /// <summary>
+      ///供应商付款地址
+      /// </summary>
+      public string BillAddress
+      {
+          set { _billaddress = value; }
+          get { return _billaddress; }
+      }
+      private string _paycondition;
+      /// <summary>
+      ///供应商付款方式
+      /// </summary>
+      public string PayCondition
+      {
+          set { _paycondition = value; }
+          get { return _paycondition; }
+      }
+      private string _remark;
+      /// <summary>
+      ///备注
+      /// </summary>
+      public string Remark
+      {
+          set { _remark = value; }
+          get { return _remark; }
+      }
+      private string _opperson;
+      /// <summary>
+      ///操作人
+      /// </summary>
+      public string OpPerson
+      {
+          set { _opperson = value; }
+          get { return _opperson; }
+      }
+      private string _opsign;
+      /// <summary>
+      ///操作标识
+      /// </summary>
+      public string OpSign
+      {
+          set { _opsign = value; }
+          get { return _opsign; }
+      }
+      private DateTime _opdate;
+      /// <summary>
+      ///操作日期
+      /// </summary>
+      public DateTime OpDate
+      {
+          set { _opdate = value; }
+          get { return _opdate; }
+      }
+      private DateTime _optime;
+      /// <summary>
+      ///操作时间
+      /// </summary>
+      public DateTime OpTime
+      {
+          set { _optime = value; }
+          get { return _optime; }
+      }
+      private decimal _id_key;
+      /// <summary>
+      ///自增键
+      /// </summary>
+      public decimal Id_key
+      {
+          set { _id_key = value; }
+          get { return _id_key; }
+      }
+      #endregion Model
+  }
 
 }

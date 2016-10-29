@@ -16,11 +16,31 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
   internal class QualifiedSupplierCrudFactory
     {
-        public static QualifiedSupplierCrud QualifiedSupplierCrud
+
+
+        /// <summary>
+        /// 合格供应商清册CRUD
+        /// </summary>
+ 
+      public static QualifiedSupplierCrud QualifiedSupplierCrud
         {
             get { return OBulider.BuildInstance<QualifiedSupplierCrud>(); }
         }
            
+       /// <summary>
+       /// 供应商合格文件CRUD
+       /// </summary>
+      public static SupplierEligibleCrud SupplierEligibleCrud
+      {
+          get { return OBulider.BuildInstance<SupplierEligibleCrud>(); }
+      }
+      /// <summary>
+      /// 供应商信息
+      /// </summary>
+      public static SuppliersInfoCrud SuppliersInfoCrud
+      {
+          get { return OBulider.BuildInstance<SuppliersInfoCrud>();}
+      }
     }
 
  /// <summary>
@@ -37,7 +57,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
      /// <param name="model"></param>
      /// <returns></returns>
      protected override void AddCrudOpItems()
-     {  }
+     { 
+
+     }
      /// <summary>
      /// / 添加一条合格供应商的记录
      /// </summary>
@@ -82,18 +104,21 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
      /// </summary>
      /// <param name="department">部门</param>
      /// <returns></returns>
-     public List<QualifiedSupplierModel> GetQualifiedSupplierListBy(string suppliersId)
+     public List<QualifiedSupplierModel> GetQualifiedSupplierListBy(string supplierId)
      {
          try
          {
-             return irep.Entities.Where(m => m.SuppliersId == suppliersId).ToList();
+             return irep.Entities.Where(m => m.SupplierId == supplierId).ToList();
          }
          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
      }
 
 
  }
-  public class SupplierEligibleCrud:CrudBase <SupplierEligibleModel,ISupplierEligibleRepository >
+  /// <summary>
+ /// 供应商合格文件CRUD
+  /// </summary>
+ public class SupplierEligibleCrud:CrudBase <SupplierEligibleModel,ISupplierEligibleRepository >
   {
       public SupplierEligibleCrud():base(new SupplierEligibleRepository() ,"供应商合格文件录入")
       {}
@@ -103,6 +128,57 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// <returns></returns>
       protected override void AddCrudOpItems()
       { }
+      /// <summary>
+      /// / 添加一条供应商的合格文件记录
+      /// </summary>
+      /// <param name="model"></param>
+      /// <returns></returns>
+      public OpResult SavaSupplierEligible(SupplierEligibleModel model)
+      {
+          ///判断产品品号是否存在
+          try
+          {
+              model.OpSign = OpMode.Add;
+              SetFixFieldValue(model);
+              return irep.Insert(model).ToOpResult_Add(OpContext);
+          }
+          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+
+      }
+
+      
+    
+     /// <summary>
+     /// 获得供应商合格文件项目
+     /// </summary>
+     /// <param name="supplierId"></param>
+     /// <returns></returns>
+     public List<SupplierEligibleModel> GetEligibleItemsBy(string supplierId)
+      {
+          try
+          {
+              return irep.Entities.Where(m => m.SuppliersID == supplierId).ToList();
+          }
+          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+      }
   }
+
+
+/// <summary>
+ /// 供应商信息
+/// </summary>
+public class SuppliersInfoCrud:CrudBase <SupplierInfoModel,ISupplierInfoRepository >
+{
+
+    public SuppliersInfoCrud()
+        : base(new SupplierInfoRepository(), "供应商信息")
+      {}
+      /// 
+      /// </summary>
+      /// <param name="model"></param>
+      /// <returns></returns>
+      protected override void AddCrudOpItems()
+      { }
+}
 
 }
