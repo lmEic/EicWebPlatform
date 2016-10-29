@@ -271,14 +271,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
 
 
 
-       private string _imagePath;
+       private string _filePath;
        /// <summary>
        ///文件存放路
        /// </summary>
-       public string ImagePath
+       public string FilePath
        {
-           set { _imagePath = value; }
-           get { return _imagePath; }
+           set { _filePath = value; }
+           get { return _filePath; }
        }
        private string _remark;
        /// <summary>
