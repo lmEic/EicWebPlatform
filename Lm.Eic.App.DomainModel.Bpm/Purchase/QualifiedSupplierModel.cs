@@ -259,14 +259,26 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
            set { _putindate = value; }
            get { return _putindate; }
        }
-       private int _isvalidity;
+       private string  _isvalidity;
        /// <summary>
-       ///是否有效0无效1为有效
+       ///是否有效(是/否)
        /// </summary>
-       public int IsValidity
+       public string  IsValidity
        {
            set { _isvalidity = value; }
            get { return _isvalidity; }
+       }
+
+
+
+       private string _filePath;
+       /// <summary>
+       ///文件存放路
+       /// </summary>
+       public string FilePath
+       {
+           set { _filePath = value; }
+           get { return _filePath; }
        }
        private string _remark;
        /// <summary>
