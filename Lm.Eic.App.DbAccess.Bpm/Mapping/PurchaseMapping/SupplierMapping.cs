@@ -9,7 +9,7 @@ using Lm.Eic.App.DomainModel.Bpm.Purchase;
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
 {
    /// <summary>
-  ///QualifiedSupplierModelMapping   545454
+  ///QualifiedSupplierModelMapping   
   /// </summary>
   public class QualifiedSupplierModelMapping : EntityTypeConfiguration<QualifiedSupplierModel>
 {
