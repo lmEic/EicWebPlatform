@@ -14,7 +14,7 @@ using Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
-  internal class QualifiedSupplierCrudFactory
+  internal class SupplierCrudFactory
     {
 
 
@@ -102,7 +102,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
      /// <summary>
      /// 获取供应商合格的列表
      /// </summary>
-     /// <param name="department">部门</param>
+    /// <param name="supplierId">供应商ID</param>
      /// <returns></returns>
      public List<QualifiedSupplierModel> GetQualifiedSupplierListBy(string supplierId)
      {
@@ -167,7 +167,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 /// <summary>
  /// 供应商信息
 /// </summary>
-public class SuppliersInfoCrud:CrudBase <SupplierInfoModel,ISupplierInfoRepository >
+ public class SuppliersInfoCrud:CrudBase <SupplierInfoModel,ISupplierInfoRepository >
 {
 
     public SuppliersInfoCrud()
@@ -179,6 +179,44 @@ public class SuppliersInfoCrud:CrudBase <SupplierInfoModel,ISupplierInfoReposito
       /// <returns></returns>
       protected override void AddCrudOpItems()
       { }
+
+
+      /// <summary>
+      /// 批量保存供应商信息
+      /// </summary>
+      /// <param name="modelList"></param>
+      /// <returns></returns>
+      public OpResult SavaSupplierInfoList(List<SupplierInfoModel> modelList)
+      {
+          try
+          {
+              DateTime date = DateTime.Now.ToDate();
+              SetFixFieldValue(modelList, OpMode.Add, m =>
+              {
+                  m.OpDate = date;
+                  //需要添加附加答条件
+              });
+
+              if (!modelList.IsNullOrEmpty())
+                  return OpResult.SetResult("列表不能为空！ 保存失败");
+              return irep.Insert(modelList).ToOpResult_Add(OpContext);
+          }
+          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+      }
+
+      /// <summary>
+      /// 获取供应商信息
+      /// </summary>
+      /// <param name="supplierId">供应商ID</param>
+      /// <returns></returns>
+      public SupplierInfoModel GetSupplierInfoBy(string supplierId)
+      {
+          try
+          {
+              return irep.Entities.Where(m => m.SupplierId == supplierId).ToList().FirstOrDefault ();
+          }
+          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+      }
 }
 
 }

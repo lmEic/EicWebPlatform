@@ -23,9 +23,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
        public  List<QualifiedSupplierModel> FindQualifiedSupplierList(string year)
         {
             List<QualifiedSupplierModel> QualifiedSupplierInfo = new List<QualifiedSupplierModel>();
+           //从ERP中得到此年中所有供应商Id号
             var supplierList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(year);
             if (supplierList == null || supplierList.Count <= 0) return null;
-            supplierList.ForEach(supplierId =>
+            
+           supplierList.ForEach(supplierId =>
             {
                 var SupplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierId);
                 var mm = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
@@ -50,6 +52,63 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return QualifiedSupplierInfo;
         }
 
+
+
+
+       /// <summary>
+       /// 从ERP中获取年份供应商信息
+       /// </summary>
+       /// <param name="yearMoth">年份格式yyyyMM</param>
+       /// <returns></returns>
+       public List<SupplierInfoModel> ERPFindSupplierInformationList(string yearMoth)
+       {
+           List<SupplierInfoModel> SupplierInfoList = new List<SupplierInfoModel>();
+           //从ERP中得到此年中所有供应商Id号
+           var supplierList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(yearMoth);
+           if (supplierList == null || supplierList.Count <= 0) return null;
+           supplierList.ForEach(supplierId =>
+           {
+               //先从已存的数据信息中找 没有找到再从ERP中找
+               var SupplierInfo = SupplierCrudFactory.SuppliersInfoCrud.GetSupplierInfoBy(supplierId);
+               if (SupplierInfo == null)
+               { SupplierInfo = GetErpSuppplierInfoBy(supplierId); }
+               SupplierInfoList.Add(SupplierInfo);
+           });
+           return SupplierInfoList;
+       }
+       /// <summary>
+       /// 从ERP中得到供应商信息
+       /// </summary>
+       /// <param name="supplierId"></param>
+       /// <returns></returns>
+       private SupplierInfoModel GetErpSuppplierInfoBy(string supplierId)
+       {
+           var erpSupplierInfo = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
+           if (erpSupplierInfo == null) return null;
+           return  new SupplierInfoModel
+           {
+               SupplierId = supplierId,
+               SupplierEmail = erpSupplierInfo.Email,
+               SupplierAddress = erpSupplierInfo.Address,
+               BillAddress = erpSupplierInfo.BillAddress,
+               SupplierFaxNo = erpSupplierInfo.FaxNo,
+               SupplierName = erpSupplierInfo.SupplierName,
+               SupplierShortName = erpSupplierInfo.SupplierShortName,
+               SupplierUser = erpSupplierInfo.Contact,
+               SupplierTel = erpSupplierInfo.Tel,
+               PayCondition = erpSupplierInfo.PayCondition
+               //PurchaseType = "光纤主、被动元件散件",
+               //SupplierProperty = "关键供应商",
+               //PurchaseUser = ""
+           };
+       }
+
+
+        public OpResult SaveSupplierInfoS(List<SupplierInfoModel> modelList)
+       {
+
+       }
+
       /// <summary>
        /// 批量保存供应商信息
       /// </summary>
@@ -57,7 +116,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// <returns></returns>
        public OpResult SavaQualifiedSupplierInfoS(List<QualifiedSupplierModel> modelList)
        {
-           return QualifiedSupplierCrudFactory.QualifiedSupplierCrud.SavaQualifiedSupplierInfoList(modelList);
+           return SupplierCrudFactory.QualifiedSupplierCrud.SavaQualifiedSupplierInfoList(modelList);
        }
     }
    

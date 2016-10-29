@@ -341,7 +341,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       /// <summary>
       ///供应商ID
       /// </summary>
-      public string SuppliersId
+      public string SupplierId
       {
           set { _suppliersid = value; }
           get { return _suppliersid; }
