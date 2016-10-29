@@ -81,13 +81,18 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         public static DateTime ToDate(this string dt)
         {
             DateTime d = DateTime.Now.ToDate();
+            
             if (DateTime.TryParse(dt, out d))
+            {
+                return d.ToDate();
+            }
+            if (DateTime.TryParseExact(dt, "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out d))
             {
                 return d.ToDate();
             }
             return d;
         }
-
+       
         /// <summary>
         /// 将字符串转换为int类型
         /// </summary>

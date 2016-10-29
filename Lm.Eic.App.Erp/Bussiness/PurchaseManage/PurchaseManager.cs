@@ -34,6 +34,13 @@ namespace Lm.Eic.App.Erp.Bussiness.PurchaseManage
               return OBulider.BuildInstance<StockDb>(); 
           }
       }
-
+        
+      /// <summary>
+      /// 采购供应商访问接口
+      /// </summary>
+      public static SupplierDb SupplierDb
+      {
+          get { return OBulider.BuildInstance<SupplierDb>(); }
+      }
     }
 }
