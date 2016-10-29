@@ -215,6 +215,19 @@ namespace EicWorkPlatfrom.Controllers
             var datas = AstService.EquipmentManager.MaintenanceManager.GetWaitingMaintenanceListBy(planMonth);
             return DateJsonResult(datas);
         }
+
+        /// <summary>
+        /// 获取保养记录
+        /// </summary>
+        /// <param name="assetNumber">财产编号</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetAstMaintenanceListByAssetNumber(string assetNumber)
+        {
+            var datas = AstService.EquipmentManager.MaintenanceManager.FindBy(new QueryEquipmentDto() { AssetNumber = assetNumber, SearchMode = 1 });
+            return DateJsonResult(datas);
+        }
+
         [NoAuthenCheck]
         public FileResult CreateWaitingMaintenanceList()
         {
@@ -291,6 +304,19 @@ namespace EicWorkPlatfrom.Controllers
             var result = AstService.EquipmentManager.RepairedManager.AddEquipmentRepairedRecord(model);
             return Json(result);
         }
+
+        /// <summary>
+        /// 获取维修记录
+        /// </summary>
+        /// <param name="assetNumber">财产编号</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetAstRepairListByAssetNumber(string assetNumber)
+        {
+            var datas = AstService.EquipmentManager.RepairedManager.GetEquipmentRepairedRecordBy(assetNumber);
+            return DateJsonResult(datas);
+        }
+
         #endregion
     }
 }
