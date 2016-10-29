@@ -9,7 +9,6 @@ using Lm.Eic.App.Erp.Domain.InvManageModel;
 using Lm.Eic.App.Erp.DbAccess.InvManageDb;
 using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
-using Lm.Eic.App.Erp.DbAccess.CopManageDb;
 using System.IO;
 
 namespace Lm.Eic.App.Erp.Bussiness.CopManage

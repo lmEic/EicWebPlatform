@@ -56,7 +56,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// <returns></returns>
        public OpResult SavaQualifiedSupplierInfoS(List<QualifiedSupplierModel> modelList)
        {
-
            return QualifiedSupplierCrudFactory.QualifiedSupplierCrud.SavaQualifiedSupplierInfoList(modelList);
        }
     }
