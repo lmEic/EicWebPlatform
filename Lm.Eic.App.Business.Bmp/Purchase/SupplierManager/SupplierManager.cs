@@ -47,14 +47,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     SupplierTel = mm.Tel
                 });
             });
-
-
             return QualifiedSupplierInfo;
         }
-
-
-
-
        /// <summary>
        /// 从ERP中获取年份供应商信息
        /// </summary>
