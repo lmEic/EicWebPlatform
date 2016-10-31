@@ -194,8 +194,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
               ///如查SupplierID号存在  
               if (!modelList.IsNullOrEmpty())
                   return OpResult.SetResult("列表不能为空！ 保存失败");
-            //     var board = FindMaterialSpecBoardBy(model.ProductID);
-            //model.Id_Key = board.Id_Key;
+          
             //return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
              
               return irep.Insert(modelList).ToOpResult_Add(OpContext);
