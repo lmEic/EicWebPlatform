@@ -44,7 +44,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
              double freeTradeInHouseCount = ProductInStoreInfoList.FindAll(f => f.StroeId == "B03").ToList().Sum(m => m.InStroeNumber);
              double putInMaterialCount = ProductInStoreInfoList.FindAll(f => f.StroeId == "C03").ToList().Sum(m => m.InStroeNumber);
              double allCheckOrderCount = unfinishedOrderList.FindAll(f => f.OrderId.Contains("523")).ToList().Sum(f => f.Count)-
-                                 unfinishedOrderList.FindAll(f =>f.OrderId.Contains("523")).ToList().Sum(f => f.InStoreCount); ;
+                                 unfinishedOrderList.FindAll(f =>f.OrderId.Contains("523")).ToList().Sum(f => f.InStoreCount); 
             
           return  new ProductTypeMonitorModel
               {
