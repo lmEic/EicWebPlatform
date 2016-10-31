@@ -97,20 +97,21 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                SupplierUser = erpSupplierInfo.Contact,
                SupplierTel = erpSupplierInfo.Tel,
                PayCondition = erpSupplierInfo.PayCondition
-               //PurchaseType = "光纤主、被动元件散件",
-               //SupplierProperty = "关键供应商",
-               //PurchaseUser = ""
            };
        }
 
-
-        public OpResult SaveSupplierInfoS(List<SupplierInfoModel> modelList)
+       /// <summary>
+       /// 批量保存供应商信息
+       /// </summary>
+       /// <param name="modelList"></param>
+       /// <returns></returns>
+       public OpResult SaveSupplierInfos(List<SupplierInfoModel> modelList)
        {
-
+           return SupplierCrudFactory.SuppliersInfoCrud.SavaSupplierInfoList(modelList);
        }
 
       /// <summary>
-       /// 批量保存供应商信息
+       /// 批量保存合格供应商信息
       /// </summary>
       /// <param name="modelList"></param>
       /// <returns></returns>

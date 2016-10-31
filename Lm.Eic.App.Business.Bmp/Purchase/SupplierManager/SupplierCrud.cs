@@ -14,7 +14,7 @@ using Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
-  internal class SupplierCrudFactory
+ internal class SupplierCrudFactory
     {
 
 
@@ -179,7 +179,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// <returns></returns>
       protected override void AddCrudOpItems()
       { }
-
 
       /// <summary>
       /// 批量保存供应商信息
