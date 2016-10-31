@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using Lm.Eic.App.Business.Bmp.Purchase.SupplierManager;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase
 {
@@ -29,6 +30,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase
         public static StockManager StoManager
         {
             get { return OBulider.BuildInstance<StockManager>(); }
+        }
+        /// <summary>
+        /// 供应商管理
+        /// </summary>
+        public static QualifiedSupplierManager QualifiedSupplierManager
+        {
+            get { return OBulider.BuildInstance<QualifiedSupplierManager>(); }
         }
     }
 }

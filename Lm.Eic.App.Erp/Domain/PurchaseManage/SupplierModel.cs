@@ -29,7 +29,10 @@
         /// 传真 MA010
         /// </summary>
         public string FaxNo { get; set; }
-
+        /// <summary>
+        /// 邮箱
+        /// </summary>
+        public string Email { get;set; }
         /// <summary>
         /// 负责人 MA012
         /// </summary>

@@ -675,7 +675,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public List<EquipmentRepairedRecordModel> GetEquipmentRepairedRecordBy(string assetNumber)
         {
-            return irep.Entities.Where(m => m.AssetNumber == assetNumber).ToList();
+            var data = irep.Entities.Where(m => m.AssetNumber == assetNumber).ToList();
+            return data;
+
         }
     }
 }

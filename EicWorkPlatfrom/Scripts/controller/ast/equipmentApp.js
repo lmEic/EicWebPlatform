@@ -91,6 +91,9 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             model: model
         });
     };
+
+    
+
     //保存设备档案记录
     ast.saveEquipmentRecord = function (equipment) {
         var url = astUrlPrefix + 'SaveEquipmentRecord';
@@ -126,6 +129,16 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             planMonth: planMonth
         });
     };
+
+    //获取设备保养记录
+    ast.getAstMaintenanceListByAssetNumber = function (assetNumber) {
+        var url = astUrlPrefix + 'GetAstMaintenanceListByAssetNumber';
+        return ajaxService.getData(url, {
+            assetNumber: assetNumber
+        });
+    };
+
+
     ///保存设备保养记录
     ast.storeInputMaintenanceRecord = function (model) {
         var url = astUrlPrefix + 'StoreInputMaintenanceRecord';
@@ -149,6 +162,15 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             model: model
         });
     };
+
+    //获取设备维修记录
+    ast.getAstRepairListByAssetNumber = function (assetNumber) {
+        var url = astUrlPrefix + 'GetAstRepairListByAssetNumber';
+        return ajaxService.getData(url, {
+            assetNumber: assetNumber
+        });
+    };
+    
 
     return ast;
 })
@@ -237,6 +259,20 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                 $scope.searchPromise = astDataopService.getAstCheckListByAssetNumber(vmManager.AssetNumber).then(function (datas) {
                     vmManager.CheckDataSource = datas;
                 });
+
+                //保养记录
+                vmManager.MaintenanceDataSource = [];
+                $scope.searchPromise = astDataopService.getAstMaintenanceListByAssetNumber(vmManager.AssetNumber).then(function (datas) {
+                    vmManager.MaintenanceDataSource = datas;
+                });
+
+                //维修记录
+                vmManager.RepairedDataSource = [];
+                $scope.searchPromise = astDataopService.getAstRepairListByAssetNumber(vmManager.AssetNumber).then(function (datas) {
+                    vmManager.RepairedDataSource = datas;
+                });
+
+                //报废记录
 
             }
         };

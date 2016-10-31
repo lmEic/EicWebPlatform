@@ -9,8 +9,10 @@ using System.Data;
 using System.Text;
 namespace Lm.Eic.App.Erp.DbAccess.InvManageDb
 {
-
-   internal class InvOrderCrudFactory
+    /// <summary>
+    /// 
+    /// </summary>
+  internal class InvOrderCrudFactory
     {
         /// <summary>
         /// 订单Crud
@@ -32,9 +34,8 @@ namespace Lm.Eic.App.Erp.DbAccess.InvManageDb
       {
           get { return " SELECT   MC001 AS 品号, MC002 AS 仓位, MC003 AS 备注, MC007 AS 人库数量, MC012 AS 人库日期  FROM INVMC  "; }
       }
-     public List<FinishedProductStoreModel> GetProductStroeInfoBy(string productId)
+      public List<FinishedProductStoreModel> GetProductStroeInfoBy(string productId)
       {
-         
           string sqlWhere = string.Format(" where (MC001 = '{0}') ", productId);
           var marterialBaasInfo = MarterialBaasInfo(productId);
           return ErpDbAccessHelper.FindDataBy<FinishedProductStoreModel>(SqlFields, sqlWhere, (dr, m) =>
@@ -46,16 +47,7 @@ namespace Lm.Eic.App.Erp.DbAccess.InvManageDb
               m.StroeId = dr["仓位"].ToString().Trim();
               m.InStroeNumber = dr["人库数量"].ToString().ToDouble();
               m.More = dr["备注"].ToString().Trim();
-
-           
           });
       }
- 
-      /// <summary>
-      /// 
-      /// </summary>
-      /// <param name="ContainsProductName">产品型号</param>
-      /// <returns></returns>
-  
     }
 }

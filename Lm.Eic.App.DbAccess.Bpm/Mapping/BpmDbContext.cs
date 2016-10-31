@@ -1,6 +1,8 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Mapping.AstMapping;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.BoardManagment;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport;
+using Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping;
+using Lm.Eic.App.DomainModel.Bpm.Purchase;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment;
 using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
@@ -42,6 +44,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         public DbSet<MaterialSpecBoardModel> MaterialSpecBoard { get; set; }
 
         public DbSet<DReportsOrderModel> DReportOrder { get; set; }
+        //合格供应商清册
+        public DbSet<QualifiedSupplierModel> QualifiedSupplier { set; get; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -62,6 +66,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
 
             modelBuilder.Configurations.Add(new DReportsOrderModelMapping());
+            //合格供应商清册
+            modelBuilder.Configurations.Add(new QualifiedSupplierModelMapping());
+            modelBuilder.Configurations.Add(new SupplierEligibleMapping());
         }
     }
 

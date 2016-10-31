@@ -71,6 +71,7 @@
     <Compile Include="Ast\EquipmentCheckManagerTests.cs" />
     <Compile Include="Ast\EquipmentMaintenanceManagerTests.cs" />
     <Compile Include="Ast\EquipmentManagerTests.cs" />
+    <Compile Include="Erp\ProductTypeMonitorTest.cs" />
     <Compile Include="Hrm\Archives\ArchivesManagerTests.cs" />
     <Compile Include="Hrm\Attendance\AttendSlodFingerDataCurrentMonthHandlerTests.cs" />
     <Compile Include="Hrm\GeneralAffairs\UnitTest1.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Pms\DailyReport\ProductFlowConfigTests.cs" />
     <Compile Include="ProductMaster\ItilDevelopModuleManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Purchase\QualifiedSupperlierUnitTest.cs" />
     <Compile Include="Quantity\UnitTest.cs" />
   </ItemGroup>
   <ItemGroup>

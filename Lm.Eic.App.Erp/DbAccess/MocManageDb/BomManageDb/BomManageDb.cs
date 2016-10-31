@@ -92,10 +92,9 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.BomManageBb
         }
         /// <summary>
         /// Sql      品号    品名    规格   属性   单位
-      /// </summary>
-      /// <param name="productId">产品料号</param>
-      /// <returns></returns>
-        
+        /// </summary>
+        /// <param name="productId">产品料号</param>
+       /// <returns></returns>
        public   MarterialBaseInfo GetBomFormERP_INVMB_By(string productId)
         {
             string SqlFields="SELECT MB001 as 品号,MB002 as 品名, MB003 as 规格, MB025 as 属性,MB004 as 单位 FROM  INVMB"; 

@@ -1,56 +1,65 @@
 ﻿using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
+using Lm.Eic.App.Erp.Domain.CopManageModel;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using System.Collections.Generic;
+using System;
 using System.Data;
 using System.Text;
+
 
 namespace Lm.Eic.App.Erp.DbAccess.CopManageDb
 {
     /// <summary>
     /// 销售订单管理Crud工厂
     /// </summary>
-    internal class CopOrderCrudFactory
+    public  class CopOrderCrudFactory
     {
         /// <summary>
         /// 销售订单Crud
         /// </summary>
-        public static CopOrderManage CopOrderManage
+        public static CopOrderManageDb CopOrderManageDb
         {
-            get { return OBulider.BuildInstance<CopOrderManage>(); }
+            get { return OBulider.BuildInstance<CopOrderManageDb>(); }
         }
     }
 
 
-    public class CopOrderManage
+    public class CopOrderManageDb
     {
+        private string SqlFields
+        {
+            get { return "SELECT TD001 AS 单别, TD002 AS 单号, TD003 AS 序号, TD004 AS 品号, TD005 AS 品名, TD006 AS 规格, TD007 AS 仓位号,   TD008 AS 计划产量, TD009 AS 已交量  FROM  COPTD"; }
+        }
         /// <summary>
         /// MES产品型号
         /// </summary>
         /// <returns></returns>
-        public  List<string> MesProductType()
+        public  List<string> MesProductTypeList()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("SELECT  DISTINCT ProductTypeCommon  ")
-              .Append("FROM    Para_ProductType ")
-              .Append("WHERE  (TypeVisible = '1') AND (MaterialId IS NOT NULL) ");
-            DataTable dt = DbHelper.Mes.LoadTable(sb.ToString());
-            List<string> ProductTypeList = new List<string>();
-            if (dt.Rows.Count > 0)
+            try
             {
-                foreach (DataRow dr in dt.Rows)
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT  DISTINCT ProductTypeCommon  ")
+                  .Append("FROM    Para_ProductType ")
+                  .Append("WHERE  (TypeVisible = '1') AND (MaterialId IS NOT NULL) ");
+                DataTable dt = DbHelper.Mes.LoadTable(sb.ToString());
+                List<string> ProductTypeList = new List<string>();
+                if (dt.Rows.Count > 0)
                 {
-                    ProductTypeList.Add(dr[0].ToString());
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        ProductTypeList.Add(dr[0].ToString());
+                    }
                 }
+                return ProductTypeList;
             }
-            return ProductTypeList;
-        }
-
-
-        private string  SqlFields
-        {
-            get { return "SELECT TD001 AS 单别, TD002 AS 单号, TD003 AS 序号, TD004 AS 品号, TD005 AS 品名, TD006 AS 规格, TD007 AS 仓位号,   TD008 AS 计划产量, TD009 AS 已交量  FROM  COPTD"; }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+           
         }
         /// <summary>
         /// 未完工的业务订单
@@ -77,8 +86,5 @@ namespace Lm.Eic.App.Erp.DbAccess.CopManageDb
 
 
         }
-
-
-
     }
 }

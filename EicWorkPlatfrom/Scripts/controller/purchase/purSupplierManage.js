@@ -5,17 +5,20 @@
 
 var purchaseModule = angular.module('bpm.purchaseApp');
 purchaseModule.factory('supplierDataOpService', function (ajaxService) {
+    var purDb = {};
     var urlPrefix = "/" + leeHelper.controllers.supplierManage + "/";
     var supplierDataOp = {};
     //-------------------------供应商管理-------------------------------------
     //待填写
-    supplierDataOp.getProductFlowList = function (department, productName, orderId, searchMode) {
-        var url = urlPrefix + 'GetProductFlowList';
-        return ajaxService.getData(url, {
-            department: department,
-            productName: productName,
-            orderId: orderId,
-            searchMode: searchMode,
-        });
-    };
+    return purDb;
 });
+
+purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService, $state) {
+
+    var vmManager = {
+        AssetNumber: 55555
+    };
+
+    $scope.vmManager = vmManager;
+});
+
