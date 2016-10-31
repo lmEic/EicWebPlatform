@@ -12,9 +12,8 @@ using Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement;
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
 
-    public class QualifiedSupplierManager
+    public class PurSupplierManager
     {
-
         /// <summary>
         /// 从ERP中获取年份合格供应商信息
         /// </summary>
@@ -93,7 +92,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                PayCondition = erpSupplierInfo.PayCondition
            };
        }
-
        /// <summary>
        /// 批量保存供应商信息
        /// </summary>
@@ -103,7 +101,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
        {
            return SupplierCrudFactory.SuppliersInfoCrud.SavaSupplierInfoList(modelList);
        }
-
       /// <summary>
        /// 批量保存合格供应商信息
       /// </summary>

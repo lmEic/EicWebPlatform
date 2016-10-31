@@ -66,9 +66,13 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
 
             modelBuilder.Configurations.Add(new DReportsOrderModelMapping());
+            
             //合格供应商清册
             modelBuilder.Configurations.Add(new QualifiedSupplierModelMapping());
+            //供应商证书信息
             modelBuilder.Configurations.Add(new SupplierEligibleMapping());
+            //供应商信息
+            modelBuilder.Configurations.Add(new SuppliersInfoMapping());
         }
     }
 

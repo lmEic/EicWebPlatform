@@ -16,17 +16,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
  internal class SupplierCrudFactory
     {
-
-
-        /// <summary>
-        /// 合格供应商清册CRUD
-        /// </summary>
- 
-      public static QualifiedSupplierCrud QualifiedSupplierCrud
+       /// <summary>
+       /// 合格供应商清册CRUD
+       /// </summary>
+       public static QualifiedSupplierCrud QualifiedSupplierCrud
         {
             get { return OBulider.BuildInstance<QualifiedSupplierCrud>(); }
-        }
-           
+        }     
        /// <summary>
        /// 供应商合格文件CRUD
        /// </summary>
@@ -34,10 +30,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       {
           get { return OBulider.BuildInstance<SupplierEligibleCrud>(); }
       }
-      /// <summary>
-      /// 供应商信息
-      /// </summary>
-      public static SuppliersInfoCrud SuppliersInfoCrud
+       /// <summary>
+       /// 供应商信息
+       /// </summary>
+       public static SuppliersInfoCrud SuppliersInfoCrud
       {
           get { return OBulider.BuildInstance<SuppliersInfoCrud>();}
       }
@@ -195,14 +191,37 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                   m.OpDate = date;
                   //需要添加附加答条件
               });
-
+              ///如查SupplierID号存在  
               if (!modelList.IsNullOrEmpty())
                   return OpResult.SetResult("列表不能为空！ 保存失败");
+            //     var board = FindMaterialSpecBoardBy(model.ProductID);
+            //model.Id_Key = board.Id_Key;
+            //return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
+             
               return irep.Insert(modelList).ToOpResult_Add(OpContext);
           }
           catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
       }
+       /// <summary>
+      /// 批量更新供应商信息
+     /// </summary>
+     /// <param name="modelList"></param>
+     /// <returns></returns>
+      public OpResult UpdateSupplierInfoList(List<SupplierInfoModel> modelList)
+      { 
+          int i=0;
+          if (!modelList.IsNullOrEmpty())
+              return OpResult.SetResult("列表不能为空！ 保存失败");
+           modelList .ForEach (m=>{
+               if (irep.IsExist(e => e.SupplierId == m.SupplierId))
+               {
+                   i += irep.Update(e => e.SupplierId == m.SupplierId, m);
+               }
+               else i += irep.Insert(m);
+           });
+          return i.ToOpResult_Eidt(OpContext);
 
+      }
       /// <summary>
       /// 获取供应商信息
       /// </summary>
