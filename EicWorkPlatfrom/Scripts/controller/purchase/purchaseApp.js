@@ -4,6 +4,11 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
 .config(function ($stateProvider, $urlRouterProvider) {
     var supplierUrlPrefix = leeHelper.controllers.supplierManage + "/";
     //--------------供应商管理----------------------------
+  
+    $stateProvider.state('purSupplierInput', {
+        templateUrl: supplierUrlPrefix + 'PurSupplierInput'
+    })
+
     $stateProvider.state('buildQualifiedSupplierInventory', {
         templateUrl: supplierUrlPrefix + 'BuildQualifiedSupplierInventory'
     })

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lm.Eic.App.Business.Bmp.Purchase;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,6 +16,16 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             return View();
         }
+
+        /// <summary>
+        /// 供应商录入
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult PurSupplierInput()
+        {
+            return View();
+        }
+
         /// <summary>
         /// 建立合格供应商清册
         /// </summary>
@@ -23,5 +34,19 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             return View();
         }
+
+
+        /// <summary>
+        /// 获取合格供应商列表
+        /// </summary>
+        /// <param name="assetNumber">年份</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetPurQualifiedSupplierListBy(string yearStr)
+        {
+            var datas = PurchaseService.QualifiedSupplierManager.FindQualifiedSupplierList(yearStr);
+            return DateJsonResult(datas);
+        }
+
     }
 }
