@@ -514,12 +514,12 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
     /// </summary>
     public class SupplierDb
     {
-        // MA001 AS 编号, MA002 AS 简称, MA003 AS 全称, MA008 AS 电话, MA010 AS 传真, MA012 AS 负责人,
+        // MA001 AS 编号, MA002 AS 简称, MA003 AS 全称, MA008 AS 电话, MA010 AS 传真, MA012 AS 负责人,MA01 AS  Email,
         //MA013 AS 联系人地址, MA014 AS 地址, MA025 AS 付款条件, MA051 AS 账单地址
 
         private string SqlFields
         {
-            get { return "SELECT MA014,MA051,MA013, MA010,MA025,MA012,MA001,MA003,MA002,MA008  FROM   PURMA "; }
+            get { return "SELECT MA001,MA002,MA003,MA008,MA010,MA011,MA012,MA013,MA014,MA025,MA051   FROM   PURMA "; }
         }
         /// <summary>
         /// 获得供应商信息
@@ -531,16 +531,17 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             string whereSql = string.Format("where MA001='{0}'", SupplierId);
             var listModels= ErpDbAccessHelper.FindDataBy<SupplierModel>(SqlFields, whereSql,(dr, m) => 
             {
-                m.Address = dr["MA014"].ToString().Trim();
-                m.BillAddress = dr["MA051"].ToString().Trim();
-                m.Contact = dr["MA013"].ToString().Trim();
-                m.FaxNo = dr["MA010"].ToString().Trim();
-                m.PayCondition = dr["MA025"].ToString().Trim();
-                m.Principal = dr["MA012"].ToString().Trim();
                 m.SupplierID = dr["MA001"].ToString().Trim();
-                m.SupplierName = dr["MA003"].ToString().Trim();
                 m.SupplierShortName = dr["MA002"].ToString().Trim();
+                m.SupplierName = dr["MA003"].ToString().Trim();
                 m.Tel = dr["MA008"].ToString().Trim();
+                m.FaxNo = dr["MA010"].ToString().Trim();
+                m.Email = dr["MA011"].ToString().Trim();
+                m.Principal = dr["MA012"].ToString().Trim();
+                m.Contact = dr["MA013"].ToString().Trim();
+                m.Address = dr["MA014"].ToString().Trim();
+                m.PayCondition = dr["MA025"].ToString().Trim();
+                m.BillAddress = dr["MA051"].ToString().Trim();
             });
           return listModels.FirstOrDefault();
         }
