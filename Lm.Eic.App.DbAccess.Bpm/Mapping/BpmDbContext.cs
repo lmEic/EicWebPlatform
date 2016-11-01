@@ -43,10 +43,19 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         public DbSet<MaterialSpecBoardModel> MaterialSpecBoard { get; set; }
 
+
+
         public DbSet<DReportsOrderModel> DReportOrder { get; set; }
         //合格供应商清册
         public DbSet<QualifiedSupplierModel> QualifiedSupplier { set; get; }
-
+        //供应商证书信息
+        public DbSet<SupplierEligibleModel> SupplierEligible { set; get; }
+        //供应商信息
+        public DbSet<SupplierInfoModel> SupplierInfo { set; get; }
+        //季度考核总览表
+        public DbSet<SupplieSeasonAuditModel> SupplieSeasonAudit { set; get; }
+       
+        
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -73,6 +82,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new SupplierEligibleMapping());
             //供应商信息
             modelBuilder.Configurations.Add(new SuppliersInfoMapping());
+            //季度考核总览表
+            modelBuilder.Configurations.Add(new SupplieSeasonAuditMapping());
         }
     }
 

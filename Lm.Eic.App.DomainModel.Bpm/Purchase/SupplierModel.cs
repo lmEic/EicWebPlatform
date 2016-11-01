@@ -214,11 +214,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       #endregion Model
     }
 
-
-
-
     /// <summary>
-   /// 供应商合格文件
+    /// 供应商合格文件
     /// </summary>
    public class SupplierEligibleModel
    {
@@ -510,5 +507,185 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       #endregion Model
   }
+
+   /// <summary>
+   /// 季度考核总览表
+   /// </summary>
+   public class SupplieSeasonAuditModel
+   {
+       #region Model
+       private string _supplierid;
+       /// <summary>
+       ///供应商ID
+       /// </summary>
+       public string SupplierId
+       {
+           set { _supplierid = value; }
+           get { return _supplierid; }
+       }
+       private string _suppliername;
+       /// <summary>
+       ///供应商名称
+       /// </summary>
+       public string SupplierName
+       {
+           set { _suppliername = value; }
+           get { return _suppliername; }
+       }
+       private double _qualitycheck;
+       /// <summary>
+       ///品质考核
+       /// </summary>
+       public double QualityCheck
+       {
+           set { _qualitycheck = value; }
+           get { return _qualitycheck; }
+       }
+       private double _auditprice;
+       /// <summary>
+       ///审计价格
+       /// </summary>
+       public double AuditPrice
+       {
+           set { _auditprice = value; }
+           get { return _auditprice; }
+       }
+       private double _deliverydate;
+       /// <summary>
+       ///交期
+       /// </summary>
+       public double DeliveryDate
+       {
+           set { _deliverydate = value; }
+           get { return _deliverydate; }
+       }
+       private double _actionliven;
+       /// <summary>
+       ///配合度
+       /// </summary>
+       public double ActionLiven
+       {
+           set { _actionliven = value; }
+           get { return _actionliven; }
+       }
+       private double _hsfgrade;
+       /// <summary>
+       ///HSF能力考核等级
+       /// </summary>
+       public double HSFGrade
+       {
+           set { _hsfgrade = value; }
+           get { return _hsfgrade; }
+       }
+       private double _totalcheckscore;
+       /// <summary>
+       ///考核总分
+       /// </summary>
+       public double TotalCheckScore
+       {
+           set { _totalcheckscore = value; }
+           get { return _totalcheckscore; }
+       }
+       private string _checklevel;
+       /// <summary>
+       ///考核分级
+       /// </summary>
+       public string CheckLevel
+       {
+           set { _checklevel = value; }
+           get { return _checklevel; }
+       }
+       private string _rewardsway;
+       /// <summary>
+       ///奖惩方式
+       /// </summary>
+       public string RewardsWay
+       {
+           set { _rewardsway = value; }
+           get { return _rewardsway; }
+       }
+       private string _materialgrade;
+       /// <summary>
+       ///物料级别
+       /// </summary>
+       public string MaterialGrade
+       {
+           set { _materialgrade = value; }
+           get { return _materialgrade; }
+       }
+       private string _managerrisk;
+       /// <summary>
+       ///对供应商的管理风险
+       /// </summary>
+       public string ManagerRisk
+       {
+           set { _managerrisk = value; }
+           get { return _managerrisk; }
+       }
+       private string _substitutionsupplierid;
+       /// <summary>
+       ///替代供应商
+       /// </summary>
+       public string SubstitutionSupplierId
+       {
+           set { _substitutionsupplierid = value; }
+           get { return _substitutionsupplierid; }
+       }
+       private int _seasonnum;
+       /// <summary>
+       ///考核季度
+       /// </summary>
+       public int SeasonNum
+       {
+           set { _seasonnum = value; }
+           get { return _seasonnum; }
+       }
+       private string _remark;
+       /// <summary>
+       ///备注
+       /// </summary>
+       public string Remark
+       {
+           set { _remark = value; }
+           get { return _remark; }
+       }
+       private string _oppserson;
+       /// <summary>
+       ///操作人
+       /// </summary>
+       public string OpPserson
+       {
+           set { _oppserson = value; }
+           get { return _oppserson; }
+       }
+       private DateTime _opdate;
+       /// <summary>
+       ///操作日期
+       /// </summary>
+       public DateTime OpDate
+       {
+           set { _opdate = value; }
+           get { return _opdate; }
+       }
+       private string _opsign;
+       /// <summary>
+       ///操作标签
+       /// </summary>
+       public string OpSign
+       {
+           set { _opsign = value; }
+           get { return _opsign; }
+       }
+       private decimal _id_key;
+       /// <summary>
+       ///自增建
+       /// </summary>
+       public decimal Id_key
+       {
+           set { _id_key = value; }
+           get { return _id_key; }
+       }
+       #endregion Model
+   }
 
 }

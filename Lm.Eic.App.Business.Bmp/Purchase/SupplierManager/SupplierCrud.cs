@@ -37,6 +37,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       {
           get { return OBulider.BuildInstance<SuppliersInfoCrud>();}
       }
+      /// <summary>
+       /// 供应商季度审计考核表
+      /// </summary>
+       public static SuppliersSeasonAuditCrud  SuppliersSeasonAuditCrud
+       {
+           get { return OBulider.BuildInstance<SuppliersSeasonAuditCrud>(); }
+       }
     }
 
  /// <summary>
@@ -169,7 +176,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     public SuppliersInfoCrud()
         : base(new SupplierInfoRepository(), "供应商信息")
       {}
-      /// 
+ 
       /// </summary>
       /// <param name="model"></param>
       /// <returns></returns>
@@ -235,5 +242,20 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
           catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
       }
 }
+
+/// <summary>
+/// 
+/// </summary>
+ public class SuppliersSeasonAuditCrud:CrudBase <SupplieSeasonAuditModel ,ISupplierSeasonAuditRepository>
+ {
+     public SuppliersSeasonAuditCrud()
+         : base(new SupplierSeasonAuditRepository(), "供应商季度审计考核表")
+     { }
+     /// </summary>
+     /// <param name="model"></param>
+     /// <returns></returns>
+     protected override void AddCrudOpItems()
+     { }
+ }
 
 }

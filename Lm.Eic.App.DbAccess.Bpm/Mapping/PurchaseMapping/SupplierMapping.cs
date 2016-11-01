@@ -46,4 +46,18 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
           this.ToTable("Pur_SuppliersInfo");
       }
   }
+
+
+  /// <summary>
+  /// SupplieSeasonAuditMapping
+  /// </summary>
+  public class SupplieSeasonAuditMapping : EntityTypeConfiguration<SupplieSeasonAuditModel>
+  {
+      public SupplieSeasonAuditMapping()
+      {
+          this.HasKey(t => t.Id_key);
+          this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+          this.ToTable("Pur_SupplieSeasonAuditTable");
+      }
+  }
 }
