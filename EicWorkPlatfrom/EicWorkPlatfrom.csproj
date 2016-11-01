@@ -1297,6 +1297,7 @@
     <Content Include="Views\ProMocManage\CheckOrderBills.cshtml" />
     <Content Include="Views\PurSupplierManage\BuildQualifiedSupplierInventory.cshtml" />
     <Content Include="Views\Equipment\AstEquipmentInfoView.cshtml" />
+    <Content Include="Views\PurSupplierManage\PurSupplierInput.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

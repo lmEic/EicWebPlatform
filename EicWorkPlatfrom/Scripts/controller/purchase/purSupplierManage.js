@@ -13,6 +13,18 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     return purDb;
 });
 
+//供应商信息录入
+purchaseModule.controller('purSupplierInputCtrl', function ($scope, supplierDataOpService, $state) {
+
+    var vmManager = {
+        AssetNumber: 66666
+    };
+
+    $scope.vmManager = vmManager;
+});
+
+
+//生成合格供应商清单
 purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService, $state) {
 
     var vmManager = {
