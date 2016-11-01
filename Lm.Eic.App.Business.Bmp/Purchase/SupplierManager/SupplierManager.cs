@@ -15,12 +15,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     public class PurSupplierManager
     {
        
-     public PurInPutSupplierInfo PutInMange
+     public purSupplierInputManager PutInManage
         {
-            get { return OBulider.BuildInstance<PurInPutSupplierInfo>(); }
+            get { return OBulider.BuildInstance<purSupplierInputManager>(); }
         }
     }
-    public class PurInPutSupplierInfo
+    public class purSupplierInputManager
     {
         /// <summary>
         /// 从ERP中获取年份合格供应商信息
