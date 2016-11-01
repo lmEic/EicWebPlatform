@@ -97,7 +97,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             });
 
             if (!modelList.IsNullOrEmpty())
-                return OpResult.SetResult("日报列表不能为空！ 保存失败");
+                return OpResult.SetResult("供应商的列表不能为空！ 保存失败");
             return irep.Insert(modelList).ToOpResult_Add(OpContext);
         }
         catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
@@ -138,12 +138,35 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// <returns></returns>
       public OpResult SavaSupplierEligible(SupplierEligibleModel model)
       {
-          ///判断产品品号是否存在
           try
           {
               model.OpSign = OpMode.Add;
               SetFixFieldValue(model);
               return irep.Insert(model).ToOpResult_Add(OpContext);
+          }
+          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+
+      }
+     /// <summary>
+      /// 批量保存供应商的合格文件记录
+     /// </summary>
+     /// <param name="modelList"></param>
+     /// <returns></returns>
+      public OpResult SavaSupplierEligibleList(List<SupplierEligibleModel> modelList)
+      {
+      
+          try
+          {
+              DateTime date = DateTime.Now.ToDate();
+              SetFixFieldValue(modelList, OpMode.Add, m =>
+              {
+                  m.OpDate = date;
+                  //需要添加附加答条件
+              });
+
+              if (!modelList.IsNullOrEmpty())
+                  return OpResult.SetResult("合格文件记录列表不能为空！ 保存失败");
+              return irep.Insert(modelList).ToOpResult_Add(OpContext);
           }
           catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
@@ -181,7 +204,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// <param name="model"></param>
       /// <returns></returns>
       protected override void AddCrudOpItems()
-      { }
+      {
+          this.AddOpItem(OpMode.Add, AddSupplierInfo);
+          this.AddOpItem(OpMode.Edit, EidtSupplierInfo);
+          this.AddOpItem(OpMode.UpDate, DeleteSupplierInfo);
+      }
 
       /// <summary>
       /// 批量保存供应商信息
@@ -208,26 +235,46 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
           }
           catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
       }
-       /// <summary>
-      /// 批量更新供应商信息
-     /// </summary>
-     /// <param name="modelList"></param>
-     /// <returns></returns>
-      public OpResult UpdateSupplierInfoList(List<SupplierInfoModel> modelList)
-      { 
-          int i=0;
-          if (!modelList.IsNullOrEmpty())
-              return OpResult.SetResult("列表不能为空！ 保存失败");
-           modelList .ForEach (m=>{
-               if (irep.IsExist(e => e.SupplierId == m.SupplierId))
-               {
-                   i += irep.Update(e => e.SupplierId == m.SupplierId, m);
-               }
-               else i += irep.Insert(m);
-           });
-          return i.ToOpResult_Eidt(OpContext);
+      #region  Store
+      /// <summary>
+       /// 添加供应商信息
+      /// </summary>
+      /// <param name="model></param>
+      /// <returns></returns>
+      OpResult AddSupplierInfo(SupplierInfoModel model)
+      {
+
+          ///判断产品品号是否存在
+          try
+          {
+              if (irep.IsExist(m => m.Id_key == model.Id_key))
+              {
+                  return OpResult.SetResult("此数据已存在！");
+              }
+              SetFixFieldValue(model);
+              return irep.Insert(model).ToOpResult_Add(OpContext);
+          }
+          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
       }
+
+      OpResult EidtSupplierInfo(SupplierInfoModel model)
+      {
+          if (irep.IsExist(m => m.Id_key  == model.Id_key ))
+          {
+              return irep.Update(m => m.Id_key == model.Id_key, model).ToOpResult_Add("修改成功", model.Id_key);
+             
+          }
+          else  return OpResult.SetResult("此数据不存在！无法修改");
+         
+
+      }
+
+      OpResult DeleteSupplierInfo(SupplierInfoModel model)
+      {
+          return irep.Delete (model).ToOpResult_Add("添加完成", model.Id_key);
+      }
+      #endregion
       /// <summary>
       /// 获取供应商信息
       /// </summary>
@@ -244,7 +291,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 }
 
 /// <summary>
-/// 
+ /// 供应商季度审计考核表
 /// </summary>
  public class SuppliersSeasonAuditCrud:CrudBase <SupplieSeasonAuditModel ,ISupplierSeasonAuditRepository>
  {
@@ -255,7 +302,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
      /// <param name="model"></param>
      /// <returns></returns>
      protected override void AddCrudOpItems()
-     { }
+     {
+        
+     }
+     
  }
 
 }

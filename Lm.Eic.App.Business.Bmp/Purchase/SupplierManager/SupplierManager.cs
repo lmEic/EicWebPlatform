@@ -98,7 +98,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="supplierId"></param>
         /// <returns></returns>
-        private SupplierInfoModel GetErpSuppplierInfoBy(string supplierId)
+        SupplierInfoModel GetErpSuppplierInfoBy(string supplierId)
         {
             var erpSupplierInfo = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
             if (erpSupplierInfo == null) return null;
@@ -124,6 +124,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public OpResult SaveSupplierInfos(List<SupplierInfoModel> modelList)
         {
             return SupplierCrudFactory.SuppliersInfoCrud.SavaSupplierInfoList(modelList);
+        }
+        /// <summary>
+        /// 保存供应商信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult StoreSupplierInfo(SupplierInfoModel model )
+        {
+            return SupplierCrudFactory.SuppliersInfoCrud.Store(model);
         }
         /// <summary>
         /// 批量保存合格供应商信息
