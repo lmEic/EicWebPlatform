@@ -12,22 +12,14 @@ using Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement;
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
 
-    public  class PurSupplierManager
+    public class PurSupplierManager
     {
-        /// <summary>
-        /// 供应商录入管理
-        /// </summary>
-        public  purSupplierInputManager InPutManage
+       
+     public purSupplierInputManager PutInManage
         {
             get { return OBulider.BuildInstance<purSupplierInputManager>(); }
         }
-
     }
-
-
-    /// <summary>
-    /// 供应商录入管理
-    /// </summary>
     public class purSupplierInputManager
     {
         /// <summary>
@@ -38,28 +30,30 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public List<QualifiedSupplierModel> FindQualifiedSupplierList(string year)
         {
             List<QualifiedSupplierModel> QualifiedSupplierInfo = new List<QualifiedSupplierModel>();
-            //从ERP中得到此年中所有供应商Id号
-            var supplierList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(year);
-            if (supplierList == null || supplierList.Count <= 0) return null;
 
-            supplierList.ForEach(supplierId =>
+            var supplierInfoList = ERPFindSupplierInformationList(year);
+
+            if (supplierInfoList == null || supplierInfoList.Count <= 0) return null;
+
+            supplierInfoList.ForEach(supplierInfo =>
             {
-                var SupplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierId);
-                var mm = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
+                //从ERP中得到最新二次采购信息
+                var SupplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierInfo.SupplierId);
+
                 QualifiedSupplierInfo.Add(new QualifiedSupplierModel
                 {
                     LastPurchaseDate = SupplierLatestTwoPurchase.FirstOrDefault().PurchaseDate.Trim().ToDate(),
                     UpperPurchaseDate = SupplierLatestTwoPurchase.LastOrDefault().PurchaseDate.Trim().ToDate(),
                     PurchaseUser = SupplierLatestTwoPurchase.FirstOrDefault().PurchasePerson,
-                    SupplierId = supplierId,
-                    SupplierEmail = mm.Email,
-                    SupplierAddress = mm.Address,
-                    BillAddress = mm.BillAddress,
-                    SupplierFaxNo = mm.FaxNo,
-                    SupplierName = mm.SupplierName,
-                    SupplierShortName = mm.SupplierShortName,
-                    SupplierUser = mm.Contact,
-                    SupplierTel = mm.Tel
+                    SupplierId = supplierInfo.SupplierId,
+                    SupplierEmail = supplierInfo.SupplierEmail,
+                    SupplierAddress = supplierInfo.SupplierAddress,
+                    BillAddress = supplierInfo.BillAddress,
+                    SupplierFaxNo = supplierInfo.SupplierFaxNo,
+                    SupplierName = supplierInfo.SupplierName,
+                    SupplierShortName = supplierInfo.SupplierShortName,
+                    SupplierUser = supplierInfo.PurchaseUser,
+                    SupplierTel = supplierInfo.SupplierTel
                 });
             });
             return QualifiedSupplierInfo;
@@ -77,20 +71,34 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             if (supplierList == null || supplierList.Count <= 0) return null;
             supplierList.ForEach(supplierId =>
             {
-                //先从已存的数据信息中找 没有找到再从ERP中找
-                var SupplierInfo = SupplierCrudFactory.SuppliersInfoCrud.GetSupplierInfoBy(supplierId);
-                if (SupplierInfo == null)
-                { SupplierInfo = GetErpSuppplierInfoBy(supplierId); }
-                SupplierInfoList.Add(SupplierInfo);
+                SupplierInfoList.Add(GetSuppplierInfoBy(supplierId));
             });
             return SupplierInfoList;
+        }
+
+        /// <summary>
+        /// 获取供应商信息
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        public SupplierInfoModel GetSuppplierInfoBy(string supplierId)
+        {
+            try
+            {
+                //先从已存的数据信息中找 没有找到再从ERP中找
+                SupplierInfoModel SupplierInfo = SupplierCrudFactory.SuppliersInfoCrud.GetSupplierInfoBy(supplierId);
+                if (SupplierInfo == null)
+                { SupplierInfo = GetErpSuppplierInfoBy(supplierId); }
+                return SupplierInfo;
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
         /// <summary>
         /// 从ERP中得到供应商信息
         /// </summary>
         /// <param name="supplierId"></param>
         /// <returns></returns>
-        public SupplierInfoModel GetErpSuppplierInfoBy(string supplierId)
+        private SupplierInfoModel GetErpSuppplierInfoBy(string supplierId)
         {
             var erpSupplierInfo = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
             if (erpSupplierInfo == null) return null;
