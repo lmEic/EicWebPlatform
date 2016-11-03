@@ -679,5 +679,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             return data;
 
         }
+
+        /// <summary>
+        /// 获取设备维修总览表
+        /// </summary>
+        /// <returns></returns>
+        public List<EquipmentRepairedRecordModel> GetEquipmentRepairedOverView()
+        {
+            return irep.Entities.ToList();
+        }
     }
 }

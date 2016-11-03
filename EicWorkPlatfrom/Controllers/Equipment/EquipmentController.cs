@@ -31,6 +31,15 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        [NoAuthenCheck]
+        public ActionResult AstEquipmentInfoViewTpl()
+        {
+            return View();
+        }
+
+
+
+
         #region Ast EquipmentInfo View
         /// <summary>
         /// 生成校验清单
@@ -314,6 +323,17 @@ namespace EicWorkPlatfrom.Controllers
         public ContentResult GetAstRepairListByAssetNumber(string assetNumber)
         {
             var datas = AstService.EquipmentManager.RepairedManager.GetEquipmentRepairedRecordBy(assetNumber);
+            return DateJsonResult(datas);
+        }
+
+        /// <summary>
+        /// 获取设备维修总览表
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetEquipmentRepairedOverView()
+        {
+            var datas = AstService.EquipmentManager.RepairedManager.GetEquipmentRepairedOverView();
             return DateJsonResult(datas);
         }
 
