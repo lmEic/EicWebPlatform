@@ -179,6 +179,13 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     };
     
 
+    //获取设备报废总览表
+    ast.getEquipmentDiscardOverView = function () {
+        var url = astUrlPrefix + 'GetEquipmentDiscardOverView';
+        return ajaxService.getData(url, {
+        });
+    };
+
     return ast;
 })
 .controller('moduleNavCtrl', function ($scope, navDataService, $state) {
@@ -318,6 +325,9 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         repairDataSource: [],
         repairDataSets: [],
 
+        discardDataSource: [],
+        discardDataSets:[],
+
         //设备信息总览表
         getAstArchiveOverview: function () {
             vmManager.datasets = [];
@@ -334,13 +344,26 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             $scope.promise = astDataopService.getEquipmentRepairedOverView().then(function (datas) {
                 vmManager.repairDataSource = datas;
             });
-        }
+        },
+
+        //获取报废总览表
+        getAstDiscardOverView: function () {
+            vmManager.discardDataSource = [];
+            vmManager.discardDataSets = [];
+            $scope.promise = astDataopService.getEquipmentDiscardOverView().then(function (datas) {
+                vmManager.discardDataSource = datas;
+            });
+        },
+
+
+
 
     };
     $scope.vmManager = vmManager;
 
     vmManager.getAstArchiveOverview();
     vmManager.getAstRepairOverView();
+    vmManager.getAstDiscardOverView();
 })
 ///设备档案登记
 .controller('astArchiveInputCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
