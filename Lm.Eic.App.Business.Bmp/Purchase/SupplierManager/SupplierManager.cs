@@ -15,7 +15,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     public class PurSupplierManager
     {
        
-     public purSupplierInputManager PutInManage
+     public purSupplierInputManager InPutManage
         {
             get { return OBulider.BuildInstance<purSupplierInputManager>(); }
         }
