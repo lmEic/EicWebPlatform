@@ -637,6 +637,15 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return irep.Entities.FirstOrDefault(m => m.AssetNumber == assetNumber);
         }
+
+        /// <summary>
+        /// 获取设备报废总览表
+        /// </summary>
+        /// <returns></returns>
+        public List<EquipmentDiscardRecordModel> GetEquipmentDiscardOverView()
+        {
+            return irep.Entities.ToList();
+        }
     }
 
     /***********************************************   设备维修CRUD   *********************************
