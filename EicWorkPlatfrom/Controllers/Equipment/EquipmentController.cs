@@ -289,6 +289,7 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
+        
         #region equipment repair module method
       
         /// <summary>
@@ -334,6 +335,23 @@ namespace EicWorkPlatfrom.Controllers
         public ContentResult GetEquipmentRepairedOverView()
         {
             var datas = AstService.EquipmentManager.RepairedManager.GetEquipmentRepairedOverView();
+            return DateJsonResult(datas);
+        }
+
+        #endregion
+
+
+
+        #region equipment Discard module method
+
+        /// <summary>
+        /// 获取设备报废总览表
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetEquipmentDiscardOverView()
+        {
+            var datas = AstService.EquipmentManager.DiscardManager.GetEquipmentDiscardOverView();
             return DateJsonResult(datas);
         }
 

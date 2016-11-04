@@ -56,7 +56,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public ContentResult GetErpSuppplierInfoBy(string supplierId)
         {
-            var datas = PurchaseService.PurSupplierManager.InPutManage.GetErpSuppplierInfoBy(supplierId);
+            var datas = PurchaseService.PurSupplierManager.PutInManage.GetSuppplierInfoBy(supplierId);
             return DateJsonResult(datas);
         }
 
