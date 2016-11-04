@@ -22,7 +22,7 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
 
         public void SupplierInfoTest()
         {
-            var supplierInfos = PurchaseService.PurSupplierManager.InPutManage.ERPFindSupplierInformationList("201601");
+            var supplierInfos = PurchaseService.PurSupplierManager.InPutManage.FindSupplierInformationList("201601");
             if(supplierInfos!=null ||supplierInfos.Count >0)
             {
                 var tem = PurchaseService.PurSupplierManager.InPutManage.SaveSupplierInfos(supplierInfos);
