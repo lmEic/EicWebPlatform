@@ -39,12 +39,24 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <summary>
         /// 获取合格供应商列表
         /// </summary>
-        /// <param name="assetNumber">年份</param>
+        /// <param name="yearStr">年份</param>
         /// <returns></returns>
         [NoAuthenCheck]
         public ContentResult GetPurQualifiedSupplierListBy(string yearStr)
         {
             var datas = PurchaseService.PurSupplierManager.PutInManage.FindQualifiedSupplierList(yearStr);
+            return DateJsonResult(datas);
+        }
+
+        /// <summary>
+        /// 获取合格供应商信息
+        /// </summary>
+        /// <param name="supplierId">供应商编号</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetErpSuppplierInfoBy(string supplierId)
+        {
+            var datas = PurchaseService.PurSupplierManager.InPutManage.GetErpSuppplierInfoBy(supplierId);
             return DateJsonResult(datas);
         }
 

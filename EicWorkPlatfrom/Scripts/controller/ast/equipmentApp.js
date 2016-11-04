@@ -170,6 +170,13 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             assetNumber: assetNumber
         });
     };
+
+    //获取设备维修总览表
+    ast.getEquipmentRepairedOverView = function () {
+        var url = astUrlPrefix + 'GetEquipmentRepairedOverView';
+        return ajaxService.getData(url, {
+        });
+    };
     
 
     return ast;
@@ -217,21 +224,22 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 .controller('astEquipmentInfoViewCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
         ///设备档案模型
         var uiVM = {
-            AssetNumber: 5555,
-            EquipmentName: 66666,
+            AssetNumber: null,
+            EquipmentName: null,
             EquipmentSpec: null,
             EquipmentType: null,
-            AssetType: '低质易耗品',
+            AssetType: null,
             SafekeepDepartment: null,
             ManufacturingNumber: null,
-            MaintenanceDate: new Date(),
-            CheckDate: new Date()
+            MaintenanceDate: null,
+            CheckDate: null
         };
 
         $scope.vm = uiVM;
 
         var vmManager = {
             AssetNumber: null,
+            PreviewFileName:null, //图片路径
             ScrapDataSource: [], //报废记录
             CheckDataSource: [], //校验记录
             RepairedDataSource: [], //维修记录
@@ -274,7 +282,24 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
                 //报废记录
 
-            }
+            },
+
+            showImage: function (imageFileName) {
+                PreviewFileName = imageFileName;
+                vmManager.editModal.$promise.then(vmManager.editModal.show);
+            },
+            editModal: $modal({
+                templateUrl: leeHelper.controllers.equipment + '/AstEquipmentInfoViewTpl',
+                controller: function ($scope) {
+                    $scope.previewFileName = PreviewFileName;
+                },
+                show: false
+            })
+
+
+
+
+
         };
 
         $scope.vmManager = vmManager;
@@ -289,17 +314,33 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         activeTab: 'baseInfoTab',
         datasource: [],
         datasets: [],
+
+        repairDataSource: [],
+        repairDataSets: [],
+
+        //设备信息总览表
         getAstArchiveOverview: function () {
             vmManager.datasets = [];
             vmManager.datasource = [],
             $scope.promise = astDataopService.getAstArchiveOverview().then(function (datas) {
                 vmManager.datasource = datas;
             });
+        },
+
+        //设备维修总览表
+        getAstRepairOverView: function () {
+            vmManager.repairDataSource = [];
+            vmManager.repairDataSets = [];
+            $scope.promise = astDataopService.getEquipmentRepairedOverView().then(function (datas) {
+                vmManager.repairDataSource = datas;
+            });
         }
+
     };
     $scope.vmManager = vmManager;
 
     vmManager.getAstArchiveOverview();
+    vmManager.getAstRepairOverView();
 })
 ///设备档案登记
 .controller('astArchiveInputCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
