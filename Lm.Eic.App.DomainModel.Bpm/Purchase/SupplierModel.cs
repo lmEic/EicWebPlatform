@@ -60,7 +60,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       private string _supplieruser;
       /// <summary>
-      ///供应商联系人
+      ///联系人
       /// </summary>
       public string SupplierUser
       {
@@ -78,7 +78,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       private string _supplieremail;
       /// <summary>
-      /// 邮箱
+      ///邮箱
       /// </summary>
       public string SupplierEmail
       {
@@ -114,7 +114,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       private DateTime _upperpurchasedate;
       /// <summary>
-      ///上次采购日期
+      ///上次采购时间
       /// </summary>
       public DateTime UpperPurchaseDate
       {
@@ -123,7 +123,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       private DateTime _lastpurchasedate;
       /// <summary>
-      ///最近采购日期
+      ///最近采购时间
       /// </summary>
       public DateTime LastPurchaseDate
       {
@@ -139,23 +139,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
           set { _purchasetype = value; }
           get { return _purchasetype; }
       }
-      private string _suppliereligibleprojects;
+      private string _eligiblecertificate;
       /// <summary>
-      ///合格项目
+      ///供应商合格证书
       /// </summary>
-      public string SupplierEligibleprojects
+      public string EligibleCertificate
       {
-          set { _suppliereligibleprojects = value; }
-          get { return _suppliereligibleprojects; }
-      }
-      private string _superliereligibleprojectsdate;
-      /// <summary>
-      ///合格项目对应的日期
-      /// </summary>
-      public string SuperlierEligibleprojectsDate
-      {
-          set { _superliereligibleprojectsdate = value; }
-          get { return _superliereligibleprojectsdate; }
+          set { _eligiblecertificate = value; }
+          get { return _eligiblecertificate; }
       }
       private string _remark;
       /// <summary>
@@ -168,7 +159,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       private string _opperson;
       /// <summary>
-      ///操作人员
+      ///操作人
       /// </summary>
       public string OpPerson
       {
@@ -177,7 +168,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       private string _opsign;
       /// <summary>
-      ///操作标识
+      ///操作标签 
       /// </summary>
       public string OpSign
       {
@@ -215,67 +206,55 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     }
 
     /// <summary>
-    /// 供应商合格文件
+    /// 供应商合格证书
     /// </summary>
-   public class SupplierEligibleModel
+   public class SupplierEligibleCertificateModel
    {
-          #region Model
-       private string _suppliersid;
+       #region Model
+       private string _supplierid;
        /// <summary>
        ///供应商Id
        /// </summary>
-       public string SuppliersID
+       public string SupplierId
        {
-           set { _suppliersid = value; }
-           get { return _suppliersid; }
+           set { _supplierid = value; }
+           get { return _supplierid; }
        }
-       private string _eligibleitems;
+       private string _eligiblecertificate;
        /// <summary>
-       ///合格项目
+       ///合格证书
        /// </summary>
-       public string EligibleItems
+       public string EligibleCertificate
        {
-           set { _eligibleitems = value; }
-           get { return _eligibleitems; }
+           set { _eligiblecertificate = value; }
+           get { return _eligiblecertificate; }
        }
-       private DateTime _validitydate;
+       private DateTime _dateofcertificate;
        /// <summary>
-       ///有效期
+       ///证书获得日期
        /// </summary>
-       public DateTime ValidityDate
+       public DateTime DateOfCertificate
        {
-           set { _validitydate = value; }
-           get { return _validitydate; }
+           set { _dateofcertificate = value; }
+           get { return _dateofcertificate; }
        }
-       private DateTime _putindate;
+       private string _isefficacy;
        /// <summary>
-       ///录入日期
+       ///是否有效
        /// </summary>
-       public DateTime PutInDate
+       public string IsEfficacy
        {
-           set { _putindate = value; }
-           get { return _putindate; }
+           set { _isefficacy = value; }
+           get { return _isefficacy; }
        }
-       private string  _isvalidity;
+       private string _filepath;
        /// <summary>
-       ///是否有效(是/否)
-       /// </summary>
-       public string  IsValidity
-       {
-           set { _isvalidity = value; }
-           get { return _isvalidity; }
-       }
-
-
-
-       private string _filePath;
-       /// <summary>
-       ///文件存放路
+       ///文档存放路径
        /// </summary>
        public string FilePath
        {
-           set { _filePath = value; }
-           get { return _filePath; }
+           set { _filepath = value; }
+           get { return _filepath; }
        }
        private string _remark;
        /// <summary>
@@ -304,9 +283,18 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
            set { _opdate = value; }
            get { return _opdate; }
        }
+       private DateTime _optime;
+       /// <summary>
+       ///操作时间
+       /// </summary>
+       public DateTime OpTime
+       {
+           set { _optime = value; }
+           get { return _optime; }
+       }
        private string _opsign;
        /// <summary>
-       ///操作标识
+       ///操作标签
        /// </summary>
        public string OpSign
        {
@@ -330,22 +318,19 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     /// </summary>
   public class SupplierInfoModel
   {
-      public SupplierInfoModel ()
-      { }
-
       #region Model
-      private string _suppliersid;
+      private string _supplierid;
       /// <summary>
       ///供应商ID
       /// </summary>
       public string SupplierId
       {
-          set { _suppliersid = value; }
-          get { return _suppliersid; }
+          set { _supplierid = value; }
+          get { return _supplierid; }
       }
       private string _purchasetype;
       /// <summary>
-      ///采购类型
+      ///采购类别
       /// </summary>
       public string PurchaseType
       {
@@ -372,7 +357,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       private string _suppliername;
       /// <summary>
-      ///全称
+      ///供应商全称
       /// </summary>
       public string SupplierName
       {
@@ -381,7 +366,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       private string _purchaseuser;
       /// <summary>
-      ///采购负责人
+      ///采购人员
       /// </summary>
       public string PurchaseUser
       {
@@ -435,7 +420,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       private string _billaddress;
       /// <summary>
-      ///供应商付款地址
+      ///供应商交货地址
       /// </summary>
       public string BillAddress
       {
@@ -444,7 +429,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       private string _paycondition;
       /// <summary>
-      ///供应商付款方式
+      ///付款条件
       /// </summary>
       public string PayCondition
       {
@@ -471,7 +456,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       private string _opsign;
       /// <summary>
-      ///操作标识
+      ///操作标签
       /// </summary>
       public string OpSign
       {
@@ -498,7 +483,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       }
       private decimal _id_key;
       /// <summary>
-      ///自增键
+      ///自增建
       /// </summary>
       public decimal Id_key
       {
@@ -509,11 +494,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
   }
 
    /// <summary>
-   /// 季度考核总览表
+   /// 季度审查总览表
    /// </summary>
    public class SupplieSeasonAuditModel
    {
        #region Model
+       private DateTime _optime;
+       /// <summary>
+       ///操作时间
+       /// </summary>
+       public DateTime Optime
+       {
+           set { _optime = value; }
+           get { return _optime; }
+       }
        private string _supplierid;
        /// <summary>
        ///供应商ID

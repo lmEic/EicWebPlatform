@@ -49,7 +49,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         //合格供应商清册
         public DbSet<QualifiedSupplierModel> QualifiedSupplier { set; get; }
         //供应商证书信息
-        public DbSet<SupplierEligibleModel> SupplierEligible { set; get; }
+        public DbSet<SupplierEligibleCertificateModel> SupplierEligible { set; get; }
         //供应商信息
         public DbSet<SupplierInfoModel> SupplierInfo { set; get; }
         //季度考核总览表
