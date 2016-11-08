@@ -79,9 +79,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             var temDailyList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
 
             try
-            {
+            { 
+                //更新日报表
+                //先删除
                 DailyReportInputCrudFactory.DailyReportTempCrud.DeleteDailyReportListBy(department, dailyReportDate);
+                //后保存
                 var savaResult = DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(modelList, dailyReportDate);
+                //如果保存失败 恢复原来的数据
                 if (!savaResult.Result)
                 {
                     DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(temDailyList, dailyReportDate);
