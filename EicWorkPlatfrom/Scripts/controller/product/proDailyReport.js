@@ -69,10 +69,11 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
         });
     };
     //保存日报录入数据
-    reportDataOp.saveDailyReportDatas = function (datas) {
+    reportDataOp.saveDailyReportDatas = function (datas,inputDate) {
         var url = urlPrefix + 'SaveDailyReportDatas';
         return ajaxService.postData(url, {
-          datas:datas,
+            datas: datas,
+            inputDate:inputDate
         });
     };
     //审核日报数据
@@ -857,7 +858,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     operate.save = function () {
         if (vmManager.editDatas.length > 0)
         {
-            $scope.promise = dReportDataOpService.saveDailyReportDatas(vmManager.editDatas).then(function (opresult) {
+            $scope.promise = dReportDataOpService.saveDailyReportDatas(vmManager.editDatas,vmManager.InputDate).then(function (opresult) {
                 if (opresult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
                     vmManager.editDatas = []; 

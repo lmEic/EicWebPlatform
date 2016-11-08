@@ -8,13 +8,20 @@ var purchaseModule = angular.module('bpm.purchaseApp');
 purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     var purDb = {};
     var purUrlPrefix = "/" + leeHelper.controllers.supplierManage + "/";
-    var supplierDataOp = {};
     //-------------------------供应商管理-------------------------------------
     //获取供应商信息
     purDb.getErpSuppplierInfoBy = function (supplierId) {
         var url = purUrlPrefix + 'GetErpSuppplierInfoBy';
         return ajaxService.getData(url, {
             supplierId: supplierId
+        });
+    };
+    //根据年份获取合格供应商清单
+    purDb.getPurQualifiedSupplierListBy = function (yearStr)
+    {
+        var url = purUrlPrefix + 'GetPurQualifiedSupplierListBy';
+        return ajaxService.getData(url, {
+            yearStr: yearStr,
         });
     };
 
@@ -73,7 +80,14 @@ purchaseModule.controller('purSupplierInputCtrl', function ($scope, supplierData
 purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService, $state) {
 
     var vmManager = {
-        AssetNumber: 55555
+        searchYear: new Date().getFullYear(),
+        datasets: [],
+        datasource:[],
+        getPurQualifiedSupplier: function () {
+            $scope.searchPromise = supplierDataOpService.getPurQualifiedSupplierListBy(vmManager.searchYear).then(function (datas) {
+                vmManager.datasource = datas;
+            });
+        },
     };
 
     $scope.vmManager = vmManager;
