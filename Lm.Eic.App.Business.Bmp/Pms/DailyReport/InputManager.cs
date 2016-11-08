@@ -45,7 +45,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             //从临时表中获取本部门的日报数据 如果有今天的就返回今天的 如果没有就返回上一次的
             var departmentAllDailyReportList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
-            if (departmentAllDailyReportList.Count > 1)
+            if (departmentAllDailyReportList.Count > 0)
             {
                 var dailyReportList = departmentAllDailyReportList.Where(date => date.DailyReportDate == dailyReportDate.ToDate()).ToList();
                 if (dailyReportList.Count < 1)
@@ -68,12 +68,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public OpResult SavaDailyReportList(List<DailyReportTempModel> modelList, DateTime inPutReportDate)
         {
             //先获取待保存的数据列表 如果新数据保存失败 则将清空的数据还原回数据库
-            var department = string.Empty;
+            string department = string.Empty; 
             var dailyReportDate = DateTime.Now.ToDate();
-
             if (modelList.IsNullOrEmpty())
             {
                 department = modelList[0].Department;
+                
                 dailyReportDate = inPutReportDate.ToDate();
             }
             var temDailyList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
