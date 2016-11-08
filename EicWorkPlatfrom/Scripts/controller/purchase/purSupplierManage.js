@@ -4,6 +4,7 @@
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
 
 var purchaseModule = angular.module('bpm.purchaseApp');
+//获取供应商信息
 purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     var purDb = {};
     var purUrlPrefix = "/" + leeHelper.controllers.supplierManage + "/";

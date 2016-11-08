@@ -121,7 +121,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
   /// <summary>
  /// 供应商合格文件CRUD
   /// </summary>
- public class SupplierEligibleCrud:CrudBase <SupplierEligibleModel,ISupplierEligibleRepository >
+ public class SupplierEligibleCrud:CrudBase <SupplierEligibleCertificateModel,ISupplierEligibleRepository >
   {
       public SupplierEligibleCrud():base(new SupplierEligibleRepository() ,"供应商合格文件录入")
       {}
@@ -136,7 +136,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// </summary>
       /// <param name="model"></param>
       /// <returns></returns>
-      public OpResult SavaSupplierEligible(SupplierEligibleModel model)
+      public OpResult SavaSupplierEligible(SupplierEligibleCertificateModel model)
       {
           try
           {
@@ -152,7 +152,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
      /// </summary>
      /// <param name="modelList"></param>
      /// <returns></returns>
-      public OpResult SavaSupplierEligibleList(List<SupplierEligibleModel> modelList)
+      public OpResult SavaSupplierEligibleList(List<SupplierEligibleCertificateModel> modelList)
       {
       
           try
@@ -179,11 +179,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
      /// </summary>
      /// <param name="supplierId"></param>
      /// <returns></returns>
-     public List<SupplierEligibleModel> GetEligibleItemsBy(string supplierId)
+     public List<SupplierEligibleCertificateModel> GetEligibleItemsBy(string supplierId)
       {
           try
           {
-              return irep.Entities.Where(m => m.SuppliersID == supplierId).ToList();
+              return irep.Entities.Where(m => m.SupplierId  == supplierId).ToList();
           }
           catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
       }

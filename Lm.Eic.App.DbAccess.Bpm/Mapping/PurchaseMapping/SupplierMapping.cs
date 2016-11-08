@@ -9,7 +9,7 @@ using Lm.Eic.App.DomainModel.Bpm.Purchase;
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
 {
    /// <summary>
-  ///QualifiedSupplierModelMapping   
+    ///Pur_SupplierQualifiedTable_Mapping   
   /// </summary>
   public class QualifiedSupplierModelMapping : EntityTypeConfiguration<QualifiedSupplierModel>
 {
@@ -22,20 +22,20 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
 }
  
     /// <summary>
-  /// SupplierEligibleMapping
+  /// Pur_SupplierEligibleCertificate_Mapping
   /// </summary>
-  public class SupplierEligibleMapping : EntityTypeConfiguration<SupplierEligibleModel>
+  public class SupplierEligibleMapping : EntityTypeConfiguration<SupplierEligibleCertificateModel>
     {
        public SupplierEligibleMapping()
         {
             this.HasKey(t => t.Id_key );
             this.Property(t => t.Id_key ).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Pur_SupplierEligible");
+            this.ToTable("Pur_SupplierEligibleCertificate");
         }
     }
 
   /// <summary>
-  /// SuppliersInfoMapping
+  /// Pur_SuppliersInfo_Mapping
   /// </summary>
   public class SuppliersInfoMapping : EntityTypeConfiguration<SupplierInfoModel>
   {
@@ -49,7 +49,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
 
 
   /// <summary>
-  /// SupplieSeasonAuditMapping
+  /// Pur_SupplieSeasonAuditTable_Mapping
   /// </summary>
   public class SupplieSeasonAuditMapping : EntityTypeConfiguration<SupplieSeasonAuditModel>
   {
