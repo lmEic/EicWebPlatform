@@ -107,7 +107,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult SavaDailyReportList(List<DailyReportTempModel> modelList)
+        public OpResult SavaDailyReportList(List<DailyReportTempModel> modelList,DateTime inPutDate)
         {
             //添加模板列表       要求：一次保存整个列表
             try
@@ -116,7 +116,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                // SetFixFieldValue(modelList, OpMode.Add);
                 SetFixFieldValue(modelList, OpMode.Add,m=>
                 {
-                    m.DailyReportDate = date;
+                    m.DailyReportDate = inPutDate;
                     m.InputTime = date;
                     m.ParamenterKey = m.Department + "&" + m.DailyReportDate.ToString("yyyyMMdd");
                     m.DailyReportMonth = m.DailyReportDate.ToString("yyyyMM");

@@ -168,8 +168,8 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult SaveDailyReportDatas(List<DailyReportTempModel> datas,DateTime inputDate)
         {
-            var d = inputDate;
-            var result = DailyReportService.InputManager.DailyReportInputManager.SavaDailyReportList(datas);
+           
+            var result = DailyReportService.InputManager.DailyReportInputManager.SavaDailyReportList(datas,inputDate);
             return Json(result);
         }
         /// <summary>
