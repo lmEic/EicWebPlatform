@@ -1997,4 +1997,111 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
 
         #endregion Model
     }
+    /// <summary>
+    /// 离职人员信息
+    /// </summary>
+    public partial class ArWorkerLeaveOfficeModel
+    {
+        #region Model
+        private string _id;
+        /// <summary>
+        ///身份证
+        /// </summary>
+        public string ID
+        {
+            set { _id = value; }
+            get { return _id; }
+        }
+        private string _workerid;
+        /// <summary>
+        ///工号
+        /// </summary>
+        public string WorkerId
+        {
+            set { _workerid = value; }
+            get { return _workerid; }
+        }
+        private string _workername;
+        /// <summary>
+        ///姓名
+        /// </summary>
+        public string WorkerName
+        {
+            set { _workername = value; }
+            get { return _workername; }
+        }
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _post;
+        /// <summary>
+        ///类型
+        /// </summary>
+        public string Post
+        {
+            set { _post = value; }
+            get { return _post; }
+        }
+        private DateTime _leavedate;
+        /// <summary>
+        ///离职日期
+        /// </summary>
+        public DateTime LeaveDate
+        {
+            set { _leavedate = value; }
+            get { return _leavedate; }
+        }
+        private string _leavereason;
+        /// <summary>
+        ///离职原因
+        /// </summary>
+        public string LeaveReason
+        {
+            set { _leavereason = value; }
+            get { return _leavereason; }
+        }
+        private string _memo;
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string Memo
+        {
+            set { _memo = value; }
+            get { return _memo; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
 }
