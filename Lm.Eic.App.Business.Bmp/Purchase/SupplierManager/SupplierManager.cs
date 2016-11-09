@@ -30,8 +30,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public List<QualifiedSupplierModel> FindQualifiedSupplierList(string year)
         {
             List<QualifiedSupplierModel> QualifiedSupplierInfo = new List<QualifiedSupplierModel>();
-
-            var supplierInfoList = ERPFindSupplierInformationList(year);
+            //获取供应商信息
+            var supplierInfoList = FindSupplierInformationList(year);
 
             if (supplierInfoList == null || supplierInfoList.Count <= 0) return null;
 
@@ -63,7 +63,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="yearMoth">年份格式yyyyMM</param>
         /// <returns></returns>
-        public List<SupplierInfoModel> ERPFindSupplierInformationList(string yearMoth)
+        public List<SupplierInfoModel> FindSupplierInformationList(string yearMoth)
         {
             List<SupplierInfoModel> SupplierInfoList = new List<SupplierInfoModel>();
             //从ERP中得到此年中所有供应商Id号
