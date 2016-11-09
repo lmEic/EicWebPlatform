@@ -45,6 +45,15 @@ namespace EicWorkPlatfrom.Controllers.Hr
             return View();
         }
 
+        /// <summary>
+        /// 离职管理
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult HrLeaveOffManage()
+        {
+            return View();
+        }
+
         [NoAuthenCheck]
         public JsonResult GetIdentityInfoBy(string lastSixIdWord)
         {

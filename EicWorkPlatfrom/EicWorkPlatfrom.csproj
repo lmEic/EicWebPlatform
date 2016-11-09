@@ -309,8 +309,8 @@
     <Content Include="Content\font-awesome\css\font-awesome.css" />
     <Content Include="Content\font-awesome\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
-    <Content Include="Content\image\DirectCardTemplate.jpg" />
-    <Content Include="Content\image\IndirectCardTemplate.jpg" />
+    <Content Include="Content\image\DirectCardTpl.jpg" />
+    <Content Include="Content\image\IndirectCardTpl.jpg" />
     <Content Include="Content\login\bg.jpg" />
     <Content Include="Content\login\input-spinner.gif" />
     <Content Include="Content\login\lmlogo.png" />
@@ -387,6 +387,7 @@
     <Content Include="Scripts\controller\home\homeApp.js" />
     <Content Include="Scripts\controller\account\loginApp.js" />
     <Content Include="Scripts\controller\hr\hrApp.js" />
+    <Content Include="Scripts\controller\hr\hrArchivesManage.js" />
     <Content Include="Scripts\controller\product\proBoard.js" />
     <Content Include="Scripts\controller\product\proDailyReport.js" />
     <Content Include="Scripts\controller\product\proMocManage.js" />
@@ -1299,6 +1300,7 @@
     <Content Include="Views\Equipment\AstEquipmentInfoView.cshtml" />
     <Content Include="Views\PurSupplierManage\PurSupplierInput.cshtml" />
     <Content Include="Views\Equipment\AstEquipmentInfoViewTpl.cshtml" />
+    <Content Include="Views\HrArchivesManage\HrLeaveOffManage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
