@@ -1736,6 +1736,17 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     /// </summary>
     public partial class ArWorkerInfo
     {
+        private string _identityid;
+
+        /// <summary>
+        ///身份证号码
+        /// </summary>
+        public string IdentityID
+        {
+            set { _identityid = value; }
+            get { return _identityid; }
+        }
+
         private string _workerid;
 
         /// <summary>
@@ -1822,6 +1833,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         {
             set { _personalpicture = value; }
             get { return _personalpicture; }
+        }
+
+        public string PersonImageUrl
+        {
+            get { return "data:image/jpg;base64," + Convert.ToBase64String(this.PersonalPicture); }
         }
     }
 

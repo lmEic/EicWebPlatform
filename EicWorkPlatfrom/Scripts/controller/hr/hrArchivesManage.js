@@ -924,23 +924,7 @@ hrModule.controller('printCardCtrl', function ($scope, hrArchivesDataOpService) 
 
 
     var vmManager = {
-        dataSet: [
-        //    { WorkerId: '001359', Name: '万晓桥', Department: '企业讯息中心', PostNature: '直接' },
-        //{ WorkerId: '001359', Name: '杨垒', Department: '企业讯息中心', PostNature: '直接' },
-        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '间接' },
-        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
-        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
-        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '间接' },
-        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
-        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
-        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
-        //{ WorkerId: '002295', Name: '孙晓华', Department: '企业讯息中心', PostNature: '直接' },
-        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '间接' },
-        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
-        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
-        //{ WorkerId: '001569', Name: '张文明', Department: '企业讯息中心', PostNature: '直接' },
-        //{ WorkerId: '002295', Name: '孙晓华', Department: '企业讯息中心', PostNature: '直接' }
-        ],
+        dataSet: [],
         workerId: null,
         searchDatasBy: function (mode) {
             uiVM.workerId = vmManager.workerId;
@@ -988,6 +972,60 @@ hrModule.controller('printCardCtrl', function ($scope, hrArchivesDataOpService) 
     }
 });
 //离职管理控制器
-hrModule.controller('arLeaveOffCtrl', function ($scope, hrArchivesDataOpService) {
+hrModule.controller('arLeaveOffCtrl', function ($scope, hrArchivesDataOpService, connDataOpService) {
+    ///离职视图模型
+    var uiVM = {
+        ID: null,
+        WorkerId: null,
+        WorkerName: null,
+        Department: null,
+        Post: null,
+        LeaveDate: null,
+        LeaveReason: null,
+        Memo: null,
+        OpPerson: null,
+        OpDate: null,
+        Id_Key: null,
+    }
+    $scope.vm = uiVM;
+    var vmManager = {
+        init: function () {
 
+        },
+        workerId:null,
+        leaveReasonTypes: [],
+        workerInfo:null,
+        getWorker: function ($event) {
+            if (event.keyCode == 13)
+            {
+                if (vmManager.workerId !== undefined && vmManager.workerId.length >= 6)
+                {
+                    $scope.searchPromise = connDataOpService.getWorkersBy(vmManager.workerId).then(function (datas) {
+                        if (angular.isArray(datas) && datas.length > 0)
+                        {
+                            vmManager.workerInfo = datas[0];
+                        }
+                    });
+                }
+            }
+        },
+
+    };
+    $scope.vmManager = vmManager;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.save = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+
+        })
+    };
+    operate.refresh = function () { };
+
+    $scope.promise = connDataOpService.loadConfigDicData('ArchiiveConfig', 'LeaveOff').then(function (datas) {
+        vmManager.leaveReasonTypes = [];
+        angular.forEach(datas, function (dataitem) {
+            vmManager.leaveReasonTypes.push({ name: dataitem.DataNodeName, text: dataitem.DataNodeText });
+        });
+    });
+    
 })

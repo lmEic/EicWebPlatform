@@ -53,6 +53,17 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
+        /// <summary>
+        /// 办理离职数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]       
+        [NoAuthenCheck]
+        public JsonResult StoreLeaveOffData()
+        {
+
+            return Json(1);
+        }
 
         [NoAuthenCheck]
         public JsonResult GetIdentityInfoBy(string lastSixIdWord)
@@ -241,6 +252,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 datas.ForEach(e =>
                 {
                     e.Department = ArchiveService.ArchivesManager.DepartmentMananger.GetDepartmentText(e.Department);
+                    
                 });
             }
         }
