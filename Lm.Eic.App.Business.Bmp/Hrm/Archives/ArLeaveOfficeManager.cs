@@ -7,6 +7,7 @@ using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using  Lm.Eic.Uti.Common.YleeOOMapper;
 using  Lm.Eic.Uti.Common.YleeObjectBuilder;
+using Lm.Eic.Uti.Common.YleeExtension.Validation;
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
     public class ArLeaveOfficeManager 
@@ -14,7 +15,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
        
         public OpResult SaveLeaveOfficeInfo(List <ArWorkerLeaveOfficeModel> modelList)
         {
-            return ArLeaveOfficeFactory.ArleaveOfficeCrud.SaveWorkerleaveOfficeInfo(modelList);
+            if (modelList.IsNullOrEmpty() )
+            {
+                ArLeaveOfficeFactory.ArchivesManager.ChangeWorkingStatus(modelList[0].WorkerId, "离职");
+                return ArLeaveOfficeFactory.ArleaveOfficeCrud.SaveWorkerleaveOfficeInfo(modelList);
+            }
+            else return OpResult.SetResult("数据不能为空！");
         }
 
       

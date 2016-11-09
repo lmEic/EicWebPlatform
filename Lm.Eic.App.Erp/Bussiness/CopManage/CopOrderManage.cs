@@ -178,8 +178,22 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
       {
           try
           {
+              List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                 new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次",} ,
+                  new FileFieldMapping {FieldName ="ProductType",FieldDiscretion="品名",}  ,
+                  new FileFieldMapping {FieldName ="ProductSpecify",FieldDiscretion="规格",} ,
+                  new FileFieldMapping {FieldName ="SumCount",FieldDiscretion="汇总",} ,
+                  new FileFieldMapping {FieldName ="OrderCount",FieldDiscretion="工单数量",}  ,
+                  new FileFieldMapping {FieldName ="LocaleFinishedCount",FieldDiscretion="现场成品仓",} ,
+                  new FileFieldMapping {FieldName ="FreeTradeInHouseCount",FieldDiscretion="库存成品",},
+                  new FileFieldMapping {FieldName ="AllCheckOrderCountt",FieldDiscretion="全检工单",},
+                  new FileFieldMapping {FieldName ="PutInMaterialCount",FieldDiscretion="来料成品",},
+                  new FileFieldMapping {FieldName ="DifferenceCount",FieldDiscretion="差异",},
+                  new FileFieldMapping {FieldName ="More",FieldDiscretion="备注",}
+                };
               var dataGroupping = GetMS589ProductTypeMonitor();
-              return dataGroupping.ExportToExcel<ProductTypeMonitorModel>("订单与工单对比");
+              var ddd = dataGroupping.GetGroupList<ProductTypeMonitorModel>("订单与工单对比");
+              return ddd.ExportToExcelMultiSheets<ProductTypeMonitorModel>(fieldmappping);
           }
           catch (Exception ex)
           {

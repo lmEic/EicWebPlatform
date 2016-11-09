@@ -351,6 +351,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             return this.irep.Update(e => e.WorkerId == workerId, u => new ArchivesEmployeeIdentityModel { ClassType = classType });
         }
 
+        public OpResult ChangeWorkingStatus(string workerId,string workingStatus)
+        {
+            return this.irep.Update(e => e.WorkerId == workerId, u => new ArchivesEmployeeIdentityModel { WorkingStatus = workingStatus }).ToOpResult("修改离职状态");
+        }
         #endregion change data method
 
         #region find data method
