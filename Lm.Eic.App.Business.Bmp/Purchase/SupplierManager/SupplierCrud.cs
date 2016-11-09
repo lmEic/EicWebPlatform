@@ -119,7 +119,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
  }
   /// <summary>
- /// 供应商合格文件CRUD
+ /// 供应商合格证书CRUD
   /// </summary>
  public class SupplierEligibleCrud:CrudBase <SupplierEligibleCertificateModel,ISupplierEligibleRepository >
   {
@@ -291,7 +291,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 }
 
 /// <summary>
- /// 供应商季度审计考核表
+ /// 供应商季度审查表
 /// </summary>
  public class SuppliersSeasonAuditCrud:CrudBase <SupplieSeasonAuditModel ,ISupplierSeasonAuditRepository>
  {

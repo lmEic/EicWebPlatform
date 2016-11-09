@@ -120,6 +120,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                     m.InputTime = date;
                     m.ParamenterKey = m.Department + "&" + m.DailyReportDate.ToString("yyyyMMdd");
                     m.DailyReportMonth = m.DailyReportDate.ToString("yyyyMM");
+                    if(m.FailureRate ==null)
+                    { m.FailureRate = "0.00%"; }
                 });
 
                 if (!modelList.IsNullOrEmpty())

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+ using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
+using Lm.Eic.App.Erp.Domain.ProductTypeMonitorModel;
 
 namespace EicWorkPlatfrom.Controllers.Product
 {
@@ -51,6 +53,10 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             var ds = CopService.OrderManageManager.BuildProductTypeMonitoList() ;
             return this.ExportToExcel(ds, "工单核对清单", "工单核对清单");
+        }
+       public FileResult FileExprotToexcel(List<ProductTypeMonitorModel> datas)
+        {
+            return this.ExportToExcel(datas, "工单核对清单", "工单核对清单");
         }
     }
 }

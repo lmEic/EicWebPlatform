@@ -120,4 +120,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
     /// </summary>
     public class ProWorkerInfoRepository : HrmRepositoryBase<ProWorkerInfo>, IProWorkerInfoRepository
     { }
+    /// <summary>
+    /// 离职人员
+    /// </summary>
+    public interface IArWorkerLeaveOfficeRepository : IRepository<ArWorkerLeaveOfficeModel>
+    { }
+    public class ArWorkerLeaveOfficeRepository : HrmRepositoryBase<ArWorkerLeaveOfficeModel>, IArWorkerLeaveOfficeRepository
+    { }
 }

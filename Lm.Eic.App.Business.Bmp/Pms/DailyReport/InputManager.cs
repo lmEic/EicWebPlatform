@@ -31,7 +31,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 日报录入管理器
     /// </summary>
-    public class DailyReportInputManager
+    public class DailyReportInputManager 
     {
         private List<OrderModel> _orderDetailsList = new List<OrderModel>();  //工单缓存
 
@@ -47,19 +47,31 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             var departmentAllDailyReportList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
             if (departmentAllDailyReportList.Count > 0)
             {
-                var dailyReportList = departmentAllDailyReportList.Where(date => date.DailyReportDate == dailyReportDate.ToDate()).ToList();
-                if (dailyReportList.Count < 1)
+               
+               var dailyReportList = departmentAllDailyReportList.Where(date => date.DailyReportDate == dailyReportDate.ToDate()).ToList();
+                if (dailyReportList.Count > 0)
                 {
                     //获取最近日期的日报
-                    var maxDailyReportDate = departmentAllDailyReportList.Max(m => m.DailyReportDate);
-                    return departmentAllDailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).ToList();
+                    return dailyReportList;
                 }
-                else return dailyReportList;
+                else 
+                {
+                    var maxDailyReportDate = departmentAllDailyReportList.Max(m => m.DailyReportDate);
+
+                    var maxDailyReportList = departmentAllDailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).ToList();
+                    var returnList = new List<DailyReportTempModel>();
+                    maxDailyReportList.ForEach(m =>
+                    {
+                        DailyReportTempModel mdl = (DailyReportTempModel)m.Clone();
+                        mdl.Qty = 0; mdl.QtyBad = 0; mdl.QtyGood = 0;
+                        returnList.Add(mdl);
+                    }); 
+                    return returnList;
+                }
             }
             return new List<DailyReportTempModel>();
           
         }
-
         /// <summary>
         /// 保存日报列表
         /// </summary>
@@ -162,4 +174,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return orderDetails;
         }
     }
+
+ 
 }

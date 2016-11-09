@@ -62,6 +62,7 @@
     <Compile Include="Ast\AstService.cs" />
     <Compile Include="Ast\EquipmentCrud.cs" />
     <Compile Include="Ast\EquipmentManager.cs" />
+    <Compile Include="Hrm\Archives\ArLeaveOfficeManager.cs" />
     <Compile Include="Pms\BoardManagment\BoardBase.cs" />
     <Compile Include="Pms\BoardManagment\BoardService.cs" />
     <Compile Include="Pms\BoardManagment\BoardCrud.cs" />
