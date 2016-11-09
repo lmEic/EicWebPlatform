@@ -169,16 +169,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
               throw new Exception(ex.InnerException.Message);
           }
       }
-   
-      /// <summary>
-      /// 生成EXCEL表格
-      /// </summary>
-      /// <returns></returns>
-      public MemoryStream BuildProductTypeMonitoList()
-      {
-          try
-          {
-              List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+      List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
                  new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次",} ,
                   new FileFieldMapping {FieldName ="ProductType",FieldDiscretion="品名",}  ,
                   new FileFieldMapping {FieldName ="ProductSpecify",FieldDiscretion="规格",} ,
@@ -191,9 +182,18 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
                   new FileFieldMapping {FieldName ="DifferenceCount",FieldDiscretion="差异",},
                   new FileFieldMapping {FieldName ="More",FieldDiscretion="备注",}
                 };
+      /// <summary>
+      /// 生成EXCEL表格
+      /// </summary>
+      /// <returns></returns>
+      public MemoryStream BuildProductTypeMonitoList()
+      {
+          try
+          {
+              
               var dataGroupping = GetMS589ProductTypeMonitor();
-              var ddd = dataGroupping.GetGroupList<ProductTypeMonitorModel>("订单与工单对比");
-              return ddd.ExportToExcelMultiSheets<ProductTypeMonitorModel>(fieldmappping);
+              var GroupdataGroupping = dataGroupping.GetGroupList<ProductTypeMonitorModel>("订单与工单对比");
+              return GroupdataGroupping.ExportToExcelMultiSheets<ProductTypeMonitorModel>(fieldmappping);
           }
           catch (Exception ex)
           {
@@ -201,7 +201,23 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
           }
       }
 
+      public MemoryStream BuildProductTypeMonitoList(List<ProductTypeMonitorModel>datas)
+      {
+          try
+          {
 
+              if (datas != null || datas.Count > 0)
+              {
+                  var GroupdataGroupping = datas.GetGroupList<ProductTypeMonitorModel>("订单与工单对比");
+                  return GroupdataGroupping.ExportToExcelMultiSheets<ProductTypeMonitorModel>(fieldmappping);
+              }
+              else return null;
+          }
+          catch (Exception ex)
+          {
+              throw new Exception(ex.InnerException.Message);
+          }
+      }
       #region 依产品型号得到相应信息
       /// <summary>
       ///  获取所有生产工单, 除掉镭射雕刻,客退品
