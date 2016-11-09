@@ -44,12 +44,20 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public List<DailyReportTempModel> GetDailyReportTemplate(string department, DateTime dailyReportDate)
         {
             //从临时表中获取本部门的日报数据 如果有今天的就返回今天的 如果没有就返回上一次的
-            var dailyReportList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
-            if (dailyReportList.Count < 1)
-                return new List<DailyReportTempModel>();
-            //获取最近日期的日报
-            var maxDailyReportDate = dailyReportList.Max(m => m.DailyReportDate);
-            return dailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).ToList();
+            var departmentAllDailyReportList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
+            if (departmentAllDailyReportList.Count > 0)
+            {
+                var dailyReportList = departmentAllDailyReportList.Where(date => date.DailyReportDate == dailyReportDate.ToDate()).ToList();
+                if (dailyReportList.Count < 1)
+                {
+                    //获取最近日期的日报
+                    var maxDailyReportDate = departmentAllDailyReportList.Max(m => m.DailyReportDate);
+                    return departmentAllDailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).ToList();
+                }
+                else return dailyReportList;
+            }
+            return new List<DailyReportTempModel>();
+          
         }
 
         /// <summary>
@@ -57,26 +65,30 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult SavaDailyReportList(List<DailyReportTempModel> modelList)
+        public OpResult SavaDailyReportList(List<DailyReportTempModel> modelList, DateTime inPutReportDate)
         {
             //先获取待保存的数据列表 如果新数据保存失败 则将清空的数据还原回数据库
-            var department = string.Empty;
+            string department = string.Empty; 
             var dailyReportDate = DateTime.Now.ToDate();
-
             if (modelList.IsNullOrEmpty())
             {
                 department = modelList[0].Department;
-                dailyReportDate = modelList[0].DailyReportDate;
+                
+                dailyReportDate = inPutReportDate.ToDate();
             }
             var temDailyList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
 
             try
-            {
+            { 
+                //更新日报表
+                //先删除
                 DailyReportInputCrudFactory.DailyReportTempCrud.DeleteDailyReportListBy(department, dailyReportDate);
-                var savaResult = DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(modelList);
+                //后保存
+                var savaResult = DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(modelList, dailyReportDate);
+                //如果保存失败 恢复原来的数据
                 if (!savaResult.Result)
                 {
-                    DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(temDailyList);
+                    DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(temDailyList, dailyReportDate);
                     return OpResult.SetResult("数据保存失败！");
                 }
                 else
@@ -84,7 +96,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             }
             catch (Exception ex)
             {
-                DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(temDailyList);
+                DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(temDailyList, dailyReportDate);
                 return OpResult.SetResult("数据保存失败！");
                 throw new Exception(ex.InnerException.Message);
             }
