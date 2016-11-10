@@ -38,13 +38,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public ArleaveOfficeCrud()
             : base(new ArWorkerLeaveOfficeRepository(),"离职人员信息")
       { }
-
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddWorkerleaveOfficeInfo);
         }
-
-        OpResult AddWorkerleaveOfficeInfo(ArLeaveOfficeModel entity)
+      private   OpResult AddWorkerleaveOfficeInfo(ArLeaveOfficeModel entity)
         {
             try
             {
