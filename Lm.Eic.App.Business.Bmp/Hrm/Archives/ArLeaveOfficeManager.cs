@@ -28,7 +28,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// <returns></returns>
         public OpResult StoreLeaveOffInfo(ArLeaveOfficeModel entity)
         {
-            return this.crud.SaveWorkerleaveOfficeInfo(entity);
+            return this.crud.Store(entity);
         }
     }
 
@@ -38,25 +38,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public ArleaveOfficeCrud()
             : base(new ArWorkerLeaveOfficeRepository(),"离职人员信息")
       { }
-      
-        public OpResult SaveWorkerleaveOfficeInfo(ArLeaveOfficeModel entity)
-        {
-            try
-            {
-                return this.PersistentDatas(entity);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
 
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, store);
+            this.AddOpItem(OpMode.Add, AddWorkerleaveOfficeInfo);
         }
 
-        OpResult store(ArLeaveOfficeModel entity)
+        OpResult AddWorkerleaveOfficeInfo(ArLeaveOfficeModel entity)
         {
             try
             {
