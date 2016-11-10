@@ -850,6 +850,27 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 }
             });
         },
+        //排序方向
+        sortDirection:'asc',
+        //排序
+        sortBy: function () {
+            if (vmManager.sortDirection === 'asc') {
+                vmManager.sortDirection = 'desc';
+               vmManager.editDatas= vmManager.editDatas.sort(function (a, b) {
+                    var maa = a.MachineId.toLowerCase();
+                    var mab = b.MachineId.toLowerCase();
+                    return maa - mab > 1;
+                })
+            }
+            else if(vmManager.sortDirection==='desc') {
+                vmManager.sortDirection = 'asc';
+                vmManager.editDatas = vmManager.editDatas.sort(function (a, b) {
+                    var maa = a.MachineId.toLowerCase();
+                    var mab = b.MachineId.toLowerCase();
+                    return maa - mab < 1;
+                });
+            }
+        }
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
