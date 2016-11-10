@@ -108,7 +108,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         }
     }
 
-    public class ArWorkerLeaveOfficeInfoMapping: EntityTypeConfiguration<ArWorkerLeaveOfficeModel>
+    public class ArWorkerLeaveOfficeInfoMapping: EntityTypeConfiguration<ArLeaveOfficeModel>
     {
         public ArWorkerLeaveOfficeInfoMapping()
         {

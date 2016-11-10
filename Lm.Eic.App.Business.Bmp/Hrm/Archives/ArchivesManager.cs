@@ -9,6 +9,7 @@ using Lm.Eic.Framework.ProductMaster.Model;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,6 +82,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             get
             {
                 return _PostManager;
+            }
+        }
+        /// <summary>
+        /// 离职管理器
+        /// </summary>
+        public ArLeaveOfficeManager LeaveOffManager
+        {
+            get
+            {
+                return OBulider.BuildInstance<ArLeaveOfficeManager>();
             }
         }
 
@@ -349,11 +360,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public int ChangeClassType(string workerId, string classType)
         {
             return this.irep.Update(e => e.WorkerId == workerId, u => new ArchivesEmployeeIdentityModel { ClassType = classType });
-        }
-
-        public OpResult ChangeWorkingStatus(string workerId,string workingStatus)
-        {
-            return this.irep.Update(e => e.WorkerId == workerId, u => new ArchivesEmployeeIdentityModel { WorkingStatus = workingStatus }).ToOpResult("修改离职状态");
         }
         #endregion change data method
 

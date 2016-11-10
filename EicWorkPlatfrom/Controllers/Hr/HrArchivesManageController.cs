@@ -59,7 +59,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <returns></returns>
         [HttpPost]       
         [NoAuthenCheck]
-        public JsonResult StoreLeaveOffData()
+        public JsonResult StoreLeaveOffData(ArLeaveOfficeModel leaveEntity)
         {
 
             return Json(1);
@@ -302,8 +302,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// </summary>
         public bool IsExpire { get; set; }
     }
-
-
 
     /// <summary>
     /// 生成厂牌模板

@@ -3,26 +3,26 @@
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
 var hrModule = angular.module('bpm.hrApp');
 hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
-    var archiveCtrl = "/HrArchivesManage/";
+    var archiveUrlPrefix = "/HrArchivesManage/";
     var hrArchive = {};
 
     ///获取身份证信息
     hrArchive.getIdentityInfoBy = function (lastSixIdWord) {
-        var url = archiveCtrl + "GetIdentityInfoBy";
+        var url = archiveUrlPrefix + "GetIdentityInfoBy";
         return ajaxService.getData(url, {
             lastSixIdWord: lastSixIdWord
         });
     };
     //获取作业工号
     hrArchive.getWorkerIdBy = function (workerIdNumType) {
-        var url = archiveCtrl + "GetWorkerIdBy";
+        var url = archiveUrlPrefix + "GetWorkerIdBy";
         return ajaxService.getData(url, {
             workerIdNumType: workerIdNumType
         });
     };
     //获取作业人员信息
     hrArchive.getWorkersInfo = function (vm, searchMode) {
-        var url = archiveCtrl + "GetWorkersInfo";
+        var url = archiveUrlPrefix + "GetWorkersInfo";
         return ajaxService.getData(url, {
             workerId: vm.workerId,
             registedDateStart: vm.registedDateStart,
@@ -30,10 +30,17 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
             searchMode: searchMode
         });
     };
+    //存储离职人员数据
+    hrArchive.storeLeaveOffData = function (leaveEntity) {
+        var url = archiveUrlPrefix + 'StoreLeaveOffData';
+        return ajaxService.postData(url, {
+            leaveEntity: leaveEntity,
+        });
+    };
 
     ///获取档案信息配置数据
     hrArchive.getArchiveConfigDatas = function () {
-        var url = archiveCtrl + "GetArchiveConfigDatas";
+        var url = archiveUrlPrefix + "GetArchiveConfigDatas";
         return ajaxService.getData(url, {});
     };
 
@@ -41,7 +48,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
     //mode:0为部门或岗位信息
     //1:为学习信息;2：为联系方式信息
     hrArchive.getEmployeeByWorkerIds = function (workerIdList, mode) {
-        var url = archiveCtrl + "FindEmployeeByWorkerIds";
+        var url = archiveUrlPrefix + "FindEmployeeByWorkerIds";
         return ajaxService.getData(url, {
             workerIdList: workerIdList,
             mode: mode
@@ -50,7 +57,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
 
     ///输入员工档案信息
     hrArchive.inputWorkerArchive = function (employee, oldEmployeeIdentity, opSign) {
-        var url = archiveCtrl + "InputWorkerArchive";
+        var url = archiveUrlPrefix + "InputWorkerArchive";
         return ajaxService.postData(url, {
             employee: employee,
             oldEmployeeIdentity: oldEmployeeIdentity,
@@ -60,7 +67,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
 
     ///修改部门信息
     hrArchive.changeDepartment = function (changeDepartments) {
-        var url = archiveCtrl + "ChangeDepartment";
+        var url = archiveUrlPrefix + "ChangeDepartment";
         return ajaxService.postData(url, {
             changeDepartments: changeDepartments,
         });
@@ -68,7 +75,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
 
     ///修改岗位信息
     hrArchive.changePost = function (changePosts) {
-        var url = archiveCtrl + "ChangePost";
+        var url = archiveUrlPrefix + "ChangePost";
         return ajaxService.postData(url, {
             changePosts: changePosts,
         });
@@ -76,7 +83,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
 
     ///修改学习信息
     hrArchive.changeStudy = function (studyInfos) {
-        var url = archiveCtrl + "ChangeStudy";
+        var url = archiveUrlPrefix + "ChangeStudy";
         return ajaxService.postData(url, {
             studyInfos: studyInfos,
         });
@@ -84,7 +91,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
 
     ///修改联系方式信息
     hrArchive.changeTel = function (tels) {
-        var url = archiveCtrl + "ChangeTelInfo";
+        var url = archiveUrlPrefix + "ChangeTelInfo";
         return ajaxService.postData(url, {
             tels: tels,
         });
@@ -92,7 +99,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
 
     //获取厂牌图片信息
     hrArchive.getWorkerCardImages = function () {
-        var url = archiveCtrl + 'GetWorkerCardImages';
+        var url = archiveUrlPrefix + 'GetWorkerCardImages';
         return ajaxService.getData(url, {
 
         });
@@ -983,14 +990,17 @@ hrModule.controller('arLeaveOffCtrl', function ($scope, hrArchivesDataOpService,
         LeaveDate: null,
         LeaveReason: null,
         Memo: null,
-        OpPerson: null,
-        OpDate: null,
-        Id_Key: null,
     }
     $scope.vm = uiVM;
+
+    var vmCopy = _.clone(uiVM);
+
     var vmManager = {
         init: function () {
-
+            uiVM = vmCopy;
+            vmManager.workerId = '';
+            vmManager.workerInfo = null;
+            $scope.vm = uiVM;
         },
         workerId:null,
         leaveReasonTypes: [],
@@ -1009,22 +1019,35 @@ hrModule.controller('arLeaveOffCtrl', function ($scope, hrArchivesDataOpService,
                 }
             }
         },
-
+        setVmValue: function () {
+            uiVM.ID = vmManager.workerInfo.IdentityID;
+            uiVM.WorkerId = vmManager.workerInfo.WorkerId;
+            uiVM.WorkerName = vmManager.workerInfo.Name;
+            uiVM.Department = vmManager.workerInfo.Department;
+            uiVM.Post = vmManager.workerInfo.Post;
+        },
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.save = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-
+            vmManager.setVmValue();
+            hrArchivesDataOpService.storeLeaveOffData(uiVM).then(function (opResult) {
+                //leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
+                vmManager.init();
+                //})
+            })
         })
     };
-    operate.refresh = function () { };
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); })
+    };
 
     $scope.promise = connDataOpService.loadConfigDicData('ArchiiveConfig', 'LeaveOff').then(function (datas) {
         vmManager.leaveReasonTypes = [];
         angular.forEach(datas, function (dataitem) {
-            vmManager.leaveReasonTypes.push({ name: dataitem.DataNodeName, text: dataitem.DataNodeText });
+            vmManager.leaveReasonTypes.push({ name: dataitem.DataNodeText, text: dataitem.DataNodeText });
         });
     });
     

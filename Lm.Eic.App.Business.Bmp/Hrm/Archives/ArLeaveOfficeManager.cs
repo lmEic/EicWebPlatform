@@ -12,48 +12,45 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
     public class ArLeaveOfficeManager 
     {
-       
-        public OpResult SaveLeaveOfficeInfo(List <ArWorkerLeaveOfficeModel> modelList)
+        private ArleaveOfficeCrud crud = null;
+        public ArLeaveOfficeManager()
         {
-            if (modelList.IsNullOrEmpty() )
-            {
-                ArLeaveOfficeFactory.ArchivesManager.ChangeWorkingStatus(modelList[0].WorkerId, "离职");
-                return ArLeaveOfficeFactory.ArleaveOfficeCrud.SaveWorkerleaveOfficeInfo(modelList);
-            }
-            else return OpResult.SetResult("数据不能为空！");
+            this.crud = new ArleaveOfficeCrud();
         }
 
-      
+        /// <summary>
+        /// 存储离职信息
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public OpResult StoreLeaveOffInfo(ArLeaveOfficeModel entity)
+        {
+            return this.crud.SaveWorkerleaveOfficeInfo(entity);
+        }
     }
 
-   internal class  ArLeaveOfficeFactory
-   {
-        public static  ArleaveOfficeCrud ArleaveOfficeCrud
-       {
-           get { return OBulider.BuildInstance<ArleaveOfficeCrud>(); }
-       }
-       public static ArchivesManager ArchivesManager
-        {
-            get { return OBulider.BuildInstance<ArchivesManager>(); }
-        }
-   }
-    public class ArleaveOfficeCrud: CrudBase<ArWorkerLeaveOfficeModel, IArWorkerLeaveOfficeRepository>
+   
+    public class ArleaveOfficeCrud: CrudBase<ArLeaveOfficeModel, IArWorkerLeaveOfficeRepository>
     {
         public ArleaveOfficeCrud()
             : base(new ArWorkerLeaveOfficeRepository(),"离职人员信息")
       { }
-         protected override void AddCrudOpItems() { }
-        public OpResult SaveWorkerleaveOfficeInfo(List<ArWorkerLeaveOfficeModel> modelList)
+      
+        public OpResult SaveWorkerleaveOfficeInfo(ArLeaveOfficeModel entity)
         {
               try
             {
-                int record = irep.Insert(modelList);
-                return OpResult.SetResult("保存成功", "保存失败", record);
+                return this.PersistentDatas(entity);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
             }
+        }
+
+        protected override void AddCrudOpItems()
+        {
+            //this.AddOpItem("add", entity => {  });
         }
     }
 }

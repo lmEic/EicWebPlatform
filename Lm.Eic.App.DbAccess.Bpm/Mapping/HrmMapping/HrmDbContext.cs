@@ -68,7 +68,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         /// <summary>
         /// 离职人员信息
         /// </summary>
-        public DbSet<ArWorkerLeaveOfficeModel> ArWorkerLeaveOfficeInfo { get; set; }
+        public DbSet<ArLeaveOfficeModel> ArWorkerLeaveOfficeInfo { get; set; }
 
         #endregion dbset
 
