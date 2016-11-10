@@ -9,6 +9,7 @@ using Lm.Eic.Framework.ProductMaster.Model;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,16 +36,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             get { return identityManager; }
         }
 
-        private ArleaveOfficeManager _ArleaveOfficeManager = null;
-        /// <summary>
-        /// 离职人员管理器
-        /// </summary>
-        public ArleaveOfficeManager ArleaveOfficeManager 
-        { get { return _ArleaveOfficeManager; } }
-   
-
         private ArStudyManager _StudyManager;
-    
 
         /// <summary>
         /// 学习信息管理器
@@ -92,6 +84,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 return _PostManager;
             }
         }
+        /// <summary>
+        /// 离职管理器
+        /// </summary>
+        public ArLeaveOfficeManager LeaveOffManager
+        {
+            get
+            {
+                return OBulider.BuildInstance<ArLeaveOfficeManager>();
+            }
+        }
 
         #endregion property
 
@@ -105,8 +107,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             this._TelManager = new ArTelManager();
             this._DepartmentMananger = new ArDepartmentManager();
             this._PostManager = new ArPostManager();
-            //离职人员管理
-            this._ArleaveOfficeManager = new ArleaveOfficeManager();
         }
 
         #endregion constructure
@@ -360,16 +360,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public int ChangeClassType(string workerId, string classType)
         {
             return this.irep.Update(e => e.WorkerId == workerId, u => new ArchivesEmployeeIdentityModel { ClassType = classType });
-        }
-        /// <summary>
-        /// 改变离职状态
-        /// </summary>
-        /// <param name="workerId"></param>
-        /// <param name="workingStatus">离职/在职</param>
-        /// <returns></returns>
-        private  OpResult ChangeWorkingStatus(string workerId,string workingStatus)
-        {
-            return this.irep.Update(e => e.WorkerId == workerId, u => new ArchivesEmployeeIdentityModel { WorkingStatus = workingStatus }).ToOpResult("修改离职状态");
         }
         #endregion change data method
 

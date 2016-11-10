@@ -22,6 +22,5 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 return OBulider.BuildInstance<ProWorkerManager>();
             }
         }
-    
     }
 }

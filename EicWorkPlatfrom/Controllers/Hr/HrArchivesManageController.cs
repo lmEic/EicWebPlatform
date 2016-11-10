@@ -45,6 +45,26 @@ namespace EicWorkPlatfrom.Controllers.Hr
             return View();
         }
 
+        /// <summary>
+        /// 离职管理
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult HrLeaveOffManage()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 办理离职数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]       
+        [NoAuthenCheck]
+        public JsonResult StoreLeaveOffData(ArLeaveOfficeModel leaveEntity)
+        {
+            var opResult = ArchiveService.ArchivesManager.LeaveOffManager.StoreLeaveOffInfo(leaveEntity);
+            return Json(opResult);
+        }
+
         [NoAuthenCheck]
         public JsonResult GetIdentityInfoBy(string lastSixIdWord)
         {
@@ -232,6 +252,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 datas.ForEach(e =>
                 {
                     e.Department = ArchiveService.ArchivesManager.DepartmentMananger.GetDepartmentText(e.Department);
+                    
                 });
             }
         }
@@ -281,8 +302,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// </summary>
         public bool IsExpire { get; set; }
     }
-
-
 
     /// <summary>
     /// 生成厂牌模板

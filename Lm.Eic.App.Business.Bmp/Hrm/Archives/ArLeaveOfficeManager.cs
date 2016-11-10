@@ -10,42 +10,74 @@ using  Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
-    //public class ArLeaveOfficeCrud 
-    //{
-       
-    //    public OpResult SaveLeaveOfficeInfo(ArWorkerLeaveOfficeModel model)
-    //    {
-    //        if (model!=null  )
-    //        {
-    //            ArLeaveOfficeFactory.ArchivesManager.ChangeWorkingStatus(model.WorkerId, "离职");
-    //            return ArLeaveOfficeFactory.ArleaveOfficeCrud.SaveWorkerleaveOfficeInfo(model);
-    //        }
-    //        else return OpResult.SetResult("数据不能为空！");
-    //    }
-
-      
-    //}
-
-
-    public class ArleaveOfficeManager: CrudBase<ArLeaveOfficeModel, IArWorkerLeaveOfficeRepository>
+    /// <summary>
+    /// 离职管理器
+    /// </summary>
+    public class ArLeaveOfficeManager 
     {
-        public ArleaveOfficeManager()
-            : base(new ArWorkerLeaveOfficeRepository(),"离职人员信息")
-        { }
-         protected override void AddCrudOpItems() { }
-        public OpResult StoreleaveOfficeInfo(ArLeaveOfficeModel model)
+        private ArleaveOfficeCrud crud = null;
+        public ArLeaveOfficeManager()
         {
-              try
+            this.crud = new ArleaveOfficeCrud();
+        }
+
+        /// <summary>
+        /// 存储离职信息
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public OpResult StoreLeaveOffInfo(ArLeaveOfficeModel entity)
+        {
+            return this.crud.SaveWorkerleaveOfficeInfo(entity);
+        }
+    }
+
+   
+    public class ArleaveOfficeCrud: CrudBase<ArLeaveOfficeModel, IArWorkerLeaveOfficeRepository>
+    {
+        public ArleaveOfficeCrud()
+            : base(new ArWorkerLeaveOfficeRepository(),"离职人员信息")
+      { }
+      
+        public OpResult SaveWorkerleaveOfficeInfo(ArLeaveOfficeModel entity)
+        {
+            try
             {
-             
-                SetFixFieldValue(model);
-                int record = irep.Insert(model);
-                return OpResult.SetResult("保存成功", "保存失败", record);
+                return this.PersistentDatas(entity);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
             }
+        }
+
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, store);
+        }
+
+        OpResult store(ArLeaveOfficeModel entity)
+        {
+            try
+            {
+                if (entity != null)
+                {
+                    int record = this.irep.Insert(entity);
+                    if (record > 0)
+                    {
+                        int recordChangeStatus= this.irep.ChangeWorkingStatus("离职", entity.WorkerId);
+                        return OpResult.SetResult("离职操作成功", "离职存保成功,状态更变失败", recordChangeStatus);
+                    }
+                    else return OpResult.SetResult("离职存保失败", true);
+                }
+                else return OpResult.SetResult("实体不能为空", true);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+
+
         }
     }
 }
