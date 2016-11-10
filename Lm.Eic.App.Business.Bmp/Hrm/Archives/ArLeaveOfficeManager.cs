@@ -53,7 +53,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         protected override void AddCrudOpItems()
         {
-            //this.AddOpItem("add", entity => {  });
+            this.AddOpItem(OpMode.Add, entity => { return OpResult.SetResult("离职状更新成功", this.irep.ChanegeWorkingStatus(entity.WorkerId) > 0); });
         }
+     
     }
 }
