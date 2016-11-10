@@ -1034,9 +1034,9 @@ hrModule.controller('arLeaveOffCtrl', function ($scope, hrArchivesDataOpService,
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             vmManager.setVmValue();
             hrArchivesDataOpService.storeLeaveOffData(uiVM).then(function (opResult) {
-                //leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
-                vmManager.init();
-                //})
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
+                    vmManager.init();
+                })
             })
         })
     };

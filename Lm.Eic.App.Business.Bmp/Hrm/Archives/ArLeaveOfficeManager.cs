@@ -10,6 +10,9 @@ using  Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
+    /// <summary>
+    /// 离职管理器
+    /// </summary>
     public class ArLeaveOfficeManager 
     {
         private ArleaveOfficeCrud crud = null;
