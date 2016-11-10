@@ -10,44 +10,36 @@ using  Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
-    public class ArLeaveOfficeManager 
-    {
+    //public class ArLeaveOfficeCrud 
+    //{
        
-        public OpResult SaveLeaveOfficeInfo(List <ArWorkerLeaveOfficeModel> modelList)
-        {
-            if (modelList.IsNullOrEmpty() )
-            {
-                ArLeaveOfficeFactory.ArchivesManager.ChangeWorkingStatus(modelList[0].WorkerId, "离职");
-                return ArLeaveOfficeFactory.ArleaveOfficeCrud.SaveWorkerleaveOfficeInfo(modelList);
-            }
-            else return OpResult.SetResult("数据不能为空！");
-        }
+    //    public OpResult SaveLeaveOfficeInfo(ArWorkerLeaveOfficeModel model)
+    //    {
+    //        if (model!=null  )
+    //        {
+    //            ArLeaveOfficeFactory.ArchivesManager.ChangeWorkingStatus(model.WorkerId, "离职");
+    //            return ArLeaveOfficeFactory.ArleaveOfficeCrud.SaveWorkerleaveOfficeInfo(model);
+    //        }
+    //        else return OpResult.SetResult("数据不能为空！");
+    //    }
 
       
-    }
+    //}
 
-   internal class  ArLeaveOfficeFactory
-   {
-        public static  ArleaveOfficeCrud ArleaveOfficeCrud
-       {
-           get { return OBulider.BuildInstance<ArleaveOfficeCrud>(); }
-       }
-       public static ArchivesManager ArchivesManager
-        {
-            get { return OBulider.BuildInstance<ArchivesManager>(); }
-        }
-   }
-    public class ArleaveOfficeCrud: CrudBase<ArWorkerLeaveOfficeModel, IArWorkerLeaveOfficeRepository>
+
+    public class ArleaveOfficeManager: CrudBase<ArLeaveOfficeModel, IArWorkerLeaveOfficeRepository>
     {
-        public ArleaveOfficeCrud()
+        public ArleaveOfficeManager()
             : base(new ArWorkerLeaveOfficeRepository(),"离职人员信息")
-      { }
+        { }
          protected override void AddCrudOpItems() { }
-        public OpResult SaveWorkerleaveOfficeInfo(List<ArWorkerLeaveOfficeModel> modelList)
+        public OpResult StoreleaveOfficeInfo(ArLeaveOfficeModel model)
         {
               try
             {
-                int record = irep.Insert(modelList);
+             
+                SetFixFieldValue(model);
+                int record = irep.Insert(model);
                 return OpResult.SetResult("保存成功", "保存失败", record);
             }
             catch (Exception ex)

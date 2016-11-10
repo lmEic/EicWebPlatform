@@ -123,8 +123,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
     /// <summary>
     /// 离职人员
     /// </summary>
-    public interface IArWorkerLeaveOfficeRepository : IRepository<ArWorkerLeaveOfficeModel>
+    public interface IArWorkerLeaveOfficeRepository : IRepository<ArLeaveOfficeModel>
     { }
-    public class ArWorkerLeaveOfficeRepository : HrmRepositoryBase<ArWorkerLeaveOfficeModel>, IArWorkerLeaveOfficeRepository
+    public class ArWorkerLeaveOfficeRepository : HrmRepositoryBase<ArLeaveOfficeModel>, IArWorkerLeaveOfficeRepository
     { }
 }

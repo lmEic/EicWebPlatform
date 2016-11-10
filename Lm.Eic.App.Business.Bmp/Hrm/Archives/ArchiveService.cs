@@ -22,15 +22,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 return OBulider.BuildInstance<ProWorkerManager>();
             }
         }
-        /// <summary>
-        /// 离职人员管理器
-        /// </summary>
-        public static ArLeaveOfficeManager ArLeaveOfficeManager 
-        {
-            get
-            {
-                return OBulider.BuildInstance<ArLeaveOfficeManager>();
-            }
-        }
+    
     }
 }

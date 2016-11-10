@@ -35,7 +35,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             get { return identityManager; }
         }
 
+        private ArleaveOfficeManager _ArleaveOfficeManager = null;
+        /// <summary>
+        /// 离职人员管理器
+        /// </summary>
+        public ArleaveOfficeManager ArleaveOfficeManager 
+        { get { return _ArleaveOfficeManager; } }
+   
+
         private ArStudyManager _StudyManager;
+    
 
         /// <summary>
         /// 学习信息管理器
@@ -96,6 +105,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             this._TelManager = new ArTelManager();
             this._DepartmentMananger = new ArDepartmentManager();
             this._PostManager = new ArPostManager();
+            //离职人员管理
+            this._ArleaveOfficeManager = new ArleaveOfficeManager();
         }
 
         #endregion constructure
@@ -350,8 +361,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             return this.irep.Update(e => e.WorkerId == workerId, u => new ArchivesEmployeeIdentityModel { ClassType = classType });
         }
-
-        public OpResult ChangeWorkingStatus(string workerId,string workingStatus)
+        /// <summary>
+        /// 改变离职状态
+        /// </summary>
+        /// <param name="workerId"></param>
+        /// <param name="workingStatus">离职/在职</param>
+        /// <returns></returns>
+        private  OpResult ChangeWorkingStatus(string workerId,string workingStatus)
         {
             return this.irep.Update(e => e.WorkerId == workerId, u => new ArchivesEmployeeIdentityModel { WorkingStatus = workingStatus }).ToOpResult("修改离职状态");
         }

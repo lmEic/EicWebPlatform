@@ -1984,7 +1984,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
     /// <summary>
     /// 离职人员信息
     /// </summary>
-    public partial class ArWorkerLeaveOfficeModel
+    public partial class ArLeaveOfficeModel
     {
         #region Model
         private string _id;
