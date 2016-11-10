@@ -125,10 +125,16 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
     /// </summary>
     public interface IArWorkerLeaveOfficeRepository : IRepository<ArLeaveOfficeModel>
     {
-
+        int ChanegeWorkingStatus(string workerId);
     }
     public class ArWorkerLeaveOfficeRepository : HrmRepositoryBase<ArLeaveOfficeModel>, IArWorkerLeaveOfficeRepository
     {
- 
+
+
+        public int ChanegeWorkingStatus(string workerId)
+        {
+            string sqlText = string.Format("Updeta Archives_EmployeeIdentityInfo Set  WorkingStatus='离职' where Workerid='{0}' ", workerId);
+            return DbHelper.Hrm.ExecuteNonQuery(sqlText);
+        }
     }
 }
