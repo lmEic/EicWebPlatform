@@ -61,8 +61,8 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public JsonResult StoreLeaveOffData(ArLeaveOfficeModel leaveEntity)
         {
-
-            return Json(1);
+            var opResult = ArchiveService.ArchivesManager.LeaveOffManager.StoreLeaveOffInfo(leaveEntity);
+            return Json(opResult);
         }
 
         [NoAuthenCheck]
