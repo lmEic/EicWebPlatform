@@ -990,6 +990,7 @@ hrModule.controller('arLeaveOffCtrl', function ($scope, hrArchivesDataOpService,
         LeaveDate: null,
         LeaveReason: null,
         Memo: null,
+        OpSign: 'add',
     }
     $scope.vm = uiVM;
 

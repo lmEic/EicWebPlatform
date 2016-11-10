@@ -41,7 +41,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
       
         public OpResult SaveWorkerleaveOfficeInfo(ArLeaveOfficeModel entity)
         {
-              try
+            try
             {
                 return this.PersistentDatas(entity);
             }
@@ -53,8 +53,31 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, entity => { return OpResult.SetResult("离职状更新成功", this.irep.ChangeWorkingStatus("离职", entity.WorkerId) > 0); });
+            this.AddOpItem(OpMode.Add, store);
         }
-     
+
+        OpResult store(ArLeaveOfficeModel entity)
+        {
+            try
+            {
+                if (entity != null)
+                {
+                    int record = this.irep.Insert(entity);
+                    if (record > 0)
+                    {
+                        int recordChangeStatus= this.irep.ChangeWorkingStatus("离职", entity.WorkerId);
+                        return OpResult.SetResult("离职操作成功", "离职存保成功,状态更变失败", recordChangeStatus);
+                    }
+                    else return OpResult.SetResult("离职存保失败", true);
+                }
+                else return OpResult.SetResult("实体不能为空", true);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+
+
+        }
     }
 }
