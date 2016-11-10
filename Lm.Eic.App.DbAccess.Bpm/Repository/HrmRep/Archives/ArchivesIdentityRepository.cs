@@ -37,7 +37,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
 
         public List<ArWorkerInfo> GetWorkerInfos(string whereAppend = "")
         {
-            string sql = "Select IdentityID, WorkerId,Name,Post, PostNature,Organizetion, Department,ClassType,PersonalPicture from Archives_EmployeeIdentityInfo ";
+            string sql = "Select WorkerId,Name,Post, PostNature,Organizetion, Department,ClassType,PersonalPicture from Archives_EmployeeIdentityInfo ";
             if (whereAppend != "")
                 sql = sql + " where " + whereAppend;
             return DbHelper.Hrm.LoadEntities<ArWorkerInfo>(sql);
@@ -124,21 +124,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
     /// 离职人员
     /// </summary>
     public interface IArWorkerLeaveOfficeRepository : IRepository<ArLeaveOfficeModel>
-    {
-        int ChanegeWorkingStatus(string workingStatus, string workerId);
-    }
+    { }
     public class ArWorkerLeaveOfficeRepository : HrmRepositoryBase<ArLeaveOfficeModel>, IArWorkerLeaveOfficeRepository
-    {
-        /// <summary>
-        /// 改变档案资料中的在职状态
-        /// </summary>
-        /// <param name="workingStatus"></param>
-        /// <param name="workerId"></param>
-        /// <returns></returns>
-        public int ChanegeWorkingStatus(string workingStatus,string workerId)
-        {
-            string sqlText = string.Format("UPDATE  Archives_EmployeeIdentityInfo   SET   WorkingStatus = '{0}'  where Workerid='{1}' ",  workingStatus,workerId);
-            return DbHelper.Hrm.ExecuteNonQuery(sqlText);
-        }
-    }
+    { }
 }
