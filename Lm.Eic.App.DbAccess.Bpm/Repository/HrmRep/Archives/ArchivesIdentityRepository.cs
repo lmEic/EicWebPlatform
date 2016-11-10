@@ -37,7 +37,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
 
         public List<ArWorkerInfo> GetWorkerInfos(string whereAppend = "")
         {
-            string sql = "Select IdentityID, WorkerId,Name,Post, PostNature,Organizetion, Department,ClassType,PersonalPicture from Archives_EmployeeIdentityInfo ";
+            string sql = "Select WorkerId,Name,Post, PostNature,Organizetion, Department,ClassType,PersonalPicture from Archives_EmployeeIdentityInfo ";
             if (whereAppend != "")
                 sql = sql + " where " + whereAppend;
             return DbHelper.Hrm.LoadEntities<ArWorkerInfo>(sql);
@@ -125,10 +125,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
     /// </summary>
     public interface IArWorkerLeaveOfficeRepository : IRepository<ArLeaveOfficeModel>
     {
-
+        int ChangeWorkingStatus(string workingStatus, string workerId);
     }
     public class ArWorkerLeaveOfficeRepository : HrmRepositoryBase<ArLeaveOfficeModel>, IArWorkerLeaveOfficeRepository
     {
- 
+        public int ChangeWorkingStatus(string workingStatus, string workerId)
+        {
+            string sqlText = string.Format("UPDATE  Archives_EmployeeIdentityInfo SET  WorkingStatus ='{0}' WHERE   (WorkerId = '{1}')", workingStatus, workerId);
+            return DbHelper.Hrm.ExecuteNonQuery(sqlText);
+        }
     }
 }

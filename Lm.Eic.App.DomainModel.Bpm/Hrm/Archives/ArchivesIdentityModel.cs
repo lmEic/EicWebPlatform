@@ -2041,7 +2041,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         }
         private string _post;
         /// <summary>
-        ///类型
+        ///岗位
         /// </summary>
         public string Post
         {
@@ -2092,6 +2092,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         {
             set { _opdate = value; }
             get { return _opdate; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作符
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
         }
         private decimal _id_key;
         /// <summary>

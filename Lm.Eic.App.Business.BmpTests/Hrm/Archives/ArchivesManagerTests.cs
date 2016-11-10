@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+ using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using System;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
@@ -17,6 +18,24 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
                 DateTime b = DateTime.Parse(et);
             }
             Assert.Fail();
+        }
+        public void Change()
+        {
+            var model = new ArLeaveOfficeModel
+            {
+                ID="42092319811109247X",
+                WorkerId="001359",
+                WorkerName ="万晓桥",
+                Department="Eic",
+                LeaveDate=DateTime.Now,
+                LeaveReason="漫漫流量监测",
+                OpPerson ="万晓桥",
+                Post ="操作工",
+                Memo ="测试",
+                OpSign ="add"
+
+            };
+         var Result=   ArchiveService.ArchivesManager.LeaveOffManager.StoreLeaveOffInfo(model);
         }
     }
 }
