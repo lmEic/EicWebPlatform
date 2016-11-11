@@ -1026,6 +1026,7 @@ hrModule.controller('arLeaveOffCtrl', function ($scope, hrArchivesDataOpService,
             uiVM.WorkerName = vmManager.workerInfo.Name;
             uiVM.Department = vmManager.workerInfo.Department;
             uiVM.Post = vmManager.workerInfo.Post;
+            
         },
     };
     $scope.vmManager = vmManager;

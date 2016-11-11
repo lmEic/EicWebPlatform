@@ -8,6 +8,7 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 using  Lm.Eic.Uti.Common.YleeOOMapper;
 using  Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
     /// <summary>
@@ -43,28 +44,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             this.AddOpItem(OpMode.Add, AddWorkerleaveOfficeInfo);
         }
 
-       private  OpResult AddWorkerleaveOfficeInfo(ArLeaveOfficeModel entity)
+        private OpResult AddWorkerleaveOfficeInfo(ArLeaveOfficeModel entity)
         {
-            try
+            int record = this.irep.Insert(entity);
+            if (record > 0)
             {
-                if (entity != null)
-                {
-                    int record = this.irep.Insert(entity);
-                    if (record > 0)
-                    {
-                        int recordChangeStatus= this.irep.ChangeWorkingStatus("离职", entity.WorkerId);
-                        return OpResult.SetResult("离职操作成功", "离职存保成功,状态更变失败", recordChangeStatus);
-                    }
-                    else return OpResult.SetResult("离职存保失败", true);
-                }
-                else return OpResult.SetResult("实体不能为空", true);
+                return this.irep.ChangeWorkingStatus("离职", entity.WorkerId).ToOpResult("离职操作成功", "离职存保成功,状态更变失败");
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-
-
+            else return OpResult.SetResult("离职存保失败", true);
         }
     }
 }
