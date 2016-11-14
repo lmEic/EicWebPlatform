@@ -6,8 +6,10 @@ using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -172,6 +174,26 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 _orderDetailsList.Add(orderDetails);
 
             return orderDetails;
+        }
+        List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                 new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次",} 
+                };
+        public MemoryStream ExportToExcel(List<DailyReportTempModel> datas)
+        {
+            try
+            {
+
+                if (datas != null || datas.Count > 0)
+                {
+                    var GroupdataGroupping = datas.GetGroupList<DailyReportTempModel>("日报表");
+                    return GroupdataGroupping.ExportToExcelMultiSheets<DailyReportTempModel>(fieldmappping);
+                }
+                else return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
         }
     }
 
