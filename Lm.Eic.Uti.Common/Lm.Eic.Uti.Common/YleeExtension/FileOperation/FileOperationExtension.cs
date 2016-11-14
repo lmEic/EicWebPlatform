@@ -311,17 +311,21 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                     {
                         ICell cellContent = rowContent.CreateCell(colIndex);
                         cellContent.SetCellValue((rowIndex+1).ToString());
-                        colIndex++; 
+                        colIndex++;
+                       
                     }
                     else 
                     {
-                      for (int tipsIndex = 0; tipsIndex < tpis.Length; tipsIndex++)
+                        for (int tipsIndex = 0; tipsIndex < tpis.Length; tipsIndex++)
                       {
-                        //如不是所需字段 跳过
-                        if (e.FieldName != tpis[tipsIndex].Name) continue;
-                        FillIcell<T>(cellSytleDate, rowContent, entity, tpis, tipsIndex, colIndex);
-                        colIndex++; 
-                       }
+                          //如不是所需字段 跳过
+                          if (e.FieldName == tpis[tipsIndex].Name)
+                          {
+                              FillIcell<T>(cellSytleDate, rowContent, entity, tpis, tipsIndex, colIndex);
+                              colIndex++;
+                              break;
+                          }
+                      }
                     }
                 
                 });
@@ -427,7 +431,10 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
 
                 #region 如果未找到指定待属性，返回
                 if (!isFind)
+                { 
+                    dicGroupingEntity.Add(propertyStr, dataSource);
                     return dicGroupingEntity;
+                }
 
                 string groupName = string.Empty;
                 //获取分组列表

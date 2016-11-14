@@ -44,7 +44,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public ContentResult GetPurQualifiedSupplierListBy(string yearStr)
         {
-            var datas = PurchaseService.PurSupplierManager.PutInManage.FindQualifiedSupplierList(yearStr);
+            var datas = PurchaseService.PurSupplierManager.InPutManage.FindQualifiedSupplierList(yearStr);
             return DateJsonResult(datas);
         }
 
@@ -56,7 +56,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public ContentResult GetErpSuppplierInfoBy(string supplierId)
         {
-            var datas = PurchaseService.PurSupplierManager.PutInManage.GetSuppplierInfoBy(supplierId);
+            var datas = PurchaseService.PurSupplierManager.InPutManage.GetSuppplierInfoBy(supplierId);
             return DateJsonResult(datas);
         }
 

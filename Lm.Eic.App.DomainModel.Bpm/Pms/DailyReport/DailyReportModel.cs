@@ -436,10 +436,18 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
     ///日报实体模型 临时表
     /// </summary>
     [Serializable]
-    public partial class DailyReportTempModel
+    public partial class DailyReportTempModel : ICloneable
     {
         public DailyReportTempModel()
         { }
+        object ICloneable.Clone()
+        {
+            return this.Clone();
+        }
+        public DailyReportTempModel Clone()
+        {
+            return (DailyReportTempModel)this.MemberwiseClone();
+        } 
         #region Model
         private string _nonproductionreasoncode;
         /// <summary>
@@ -858,6 +866,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         #endregion Model
     }
 
+
+    public interface ICloneable
+    {
+        object Clone();
+    }
     /// <summary>
     /// 产品工艺概述模型
     /// </summary>

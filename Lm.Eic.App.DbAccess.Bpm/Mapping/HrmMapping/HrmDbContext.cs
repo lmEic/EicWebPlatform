@@ -65,6 +65,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         public DbSet<AttendSlodFingerDataCurrentMonthModel> AttendSlodFingerDataCurrentMonth { get; set; }
 
         public DbSet<WorkClothesManageModel> WorkClothesManage { get; set; }
+        /// <summary>
+        /// 离职人员信息
+        /// </summary>
+        public DbSet<ArLeaveOfficeModel> ArWorkerLeaveOfficeInfo { get; set; }
 
         #endregion dbset
 
@@ -80,6 +84,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             modelBuilder.Configurations.Add(new ArchivesEmployeeIdentityModelMapping());
 
             modelBuilder.Configurations.Add(new ProWorkerInfoMapping());
+            //离职人员信息
+            modelBuilder.Configurations.Add(new ArWorkerLeaveOfficeInfoMapping ());
 
             //考勤模块
             modelBuilder.Configurations.Add(new AttendClassTypeModelMapping());

@@ -124,18 +124,25 @@
                         <tr>
                             <td class="text-center text-danger"><i class="fa fa-eraser"></i></td>
 
-                            <td class="text-center info"><span>工单号</span></td>
+                            <td class="text-center info">
+                                <span>工单号</span>
+                                <span yl-sortby-field data-dbset="vmManager.editDatas" data-sort-field="OrderId"></span>
+                            </td>
                             <td class="text-center info"><span>品名</span></td>
                             <td class="text-center info" ng-show="tbl.colVisible"><span>规格</span></td>
 
                             <td class="text-center info">
                                 <span>机台/工艺</span>
+                                <span yl-sortby-field data-dbset="vmManager.editDatas" data-sort-field="MachineId"></span>
                             </td>
                             <td class="text-center info" ng-show="tbl.colVisible">
                                 <span>标准工时</span>
                             </td>
 
-                            <td class="text-center info"><span>作业员</span></td>
+                            <td class="text-center info">
+                                <span>作业员</span>
+                                <span yl-sortby-field data-dbset="vmManager.editDatas" data-sort-field="UserName"></span>
+                            </td>
                             <td class="text-center info"><span>师傅</span></td>
                             <td class="text-center info"><span>班别</span></td>
 

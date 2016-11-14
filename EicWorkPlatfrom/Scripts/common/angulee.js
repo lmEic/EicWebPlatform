@@ -177,12 +177,11 @@ var leeHelper = (function () {
     };
     return {
         ///控制器名称
-        controllers:controllerNames,
+        controllers: controllerNames,
         ///清空视图对象的每个属性值
         //vm:视图对象
         //notKeys:不包含的要清楚值的键值
-        clearVM: function (vm,notKeys)
-        {
+        clearVM: function (vm, notKeys) {
             for (var key in vm) {
                 if (_.isArray(notKeys)) {
                     if (!_.contains(notKeys, key)) {
@@ -196,7 +195,7 @@ var leeHelper = (function () {
         },
         ///将srcObj对象中各个属性值赋值到desObj中去
         ///notKeys表示不包含要复制的键值集合
-        copyVm: function (srcObj, desObj,notKeys) {
+        copyVm: function (srcObj, desObj, notKeys) {
             for (var key in desObj) {
                 if (_.isArray(notKeys)) {
                     if (!_.contains(notKeys, key)) {
@@ -211,13 +210,10 @@ var leeHelper = (function () {
             }
         },
         ///从数组中移除指定选项
-        remove: function (ary, item)
-        {
+        remove: function (ary, item) {
             if (!Array.isArray(ary)) return;
-            for (var i = 0, len = ary.length; i < len;i++)
-            {
-                if (ary[i] === item)
-                {
+            for (var i = 0, len = ary.length; i < len; i++) {
+                if (ary[i] === item) {
                     ary.splice(i, 1);
                     break;
                 }
@@ -247,8 +243,7 @@ var leeHelper = (function () {
                 else {
                     ckey = item[uniqProperties];
                 }
-                if (_.isUndefined(keys[ckey]))
-                {
+                if (_.isUndefined(keys[ckey])) {
                     keys[ckey] = true;
                     datas.push(item);
                 }
@@ -258,16 +253,14 @@ var leeHelper = (function () {
         ///模态窗口模板URL路径对象
         modalTplUrl: modalTpl,
         ///获取部门名称
-        getDepartmentText: function (datas,department) {
-            var departmentItem = _.findWhere(datas, { DataNodeName: department});
-            if (departmentItem !== undefined)
-            {
+        getDepartmentText: function (datas, department) {
+            var departmentItem = _.findWhere(datas, { DataNodeName: department });
+            if (departmentItem !== undefined) {
                 return departmentItem.DataNodeText;
             }
         },
         ///获取转变后的部门人员信息
-        getWorkersAboutChangedDepartment: function (workerDatas, departments)
-        {
+        getWorkersAboutChangedDepartment: function (workerDatas, departments) {
             angular.forEach(workerDatas, function (item) {
                 var dep = _.find(departments, { DataNodeName: item.Department });
                 if (dep !== undefined) {
@@ -296,14 +289,11 @@ var leeHelper = (function () {
         ///设置用户数据
         setUserData: function (uiVm) {
             var user = leeDataHandler.dataStorage.getLoginedUser();
-            if (user !== null)
-            {
-                if (uiVm.OpPerson !== undefined)
-                {
+            if (user !== null) {
+                if (uiVm.OpPerson !== undefined) {
                     uiVm.OpPerson = user.userName;
                 }
-                if (uiVm.Department !== undefined)
-                {
+                if (uiVm.Department !== undefined) {
                     uiVm.Department = user.department;
                 }
             }
@@ -319,12 +309,29 @@ var leeHelper = (function () {
             };
         },
         //将小数转换为百分比
-        toPercent: function (data,len) {
+        toPercent: function (data, len) {
             var strData = (parseFloat(data) * 100).toFixed(len);
             var ret = strData.toString() + "%";
             return ret;
         },
-    };
+        //对数组对象进行排序
+        sortArrOfObjectsByPtName: function (arrToSort /* array */, strObjPropertyName /* string */, sortAscending /* bool(optional, defaults to true) */) {
+            if (sortAscending == undefined) sortAscending = true;  // default to true
+            if (sortAscending) {
+                //arrToSort.sort(function (a, b) {
+                //    return a[strObjPropertyName].toLowerCase() > b[strObjPropertyName].toLowerCase();
+                //});
+                return _.sortBy(arrToSort,strObjPropertyName);
+            }
+            else {
+                //arrToSort.sort(function (a, b) {
+                //    return a[strObjPropertyName].toLowerCase() < b[strObjPropertyName].toLowerCase();
+                //});
+                //return _(arrToSort).sortBy(function (a) { return -a[strObjPropertyName] });
+                return _.sortBy(arrToSort, strObjPropertyName).reverse();
+            }
+        }
+    }
 })();
 ///zTree 助手
 var leeTreeHelper = (function () {

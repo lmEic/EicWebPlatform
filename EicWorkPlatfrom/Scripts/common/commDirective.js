@@ -112,6 +112,27 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         }
     };
 })
+.directive('ylSortbyField', function () {
+    return {
+        restrict: 'EA',
+        template: '<span class="fa fa-arrow-circle-up text-info" ng-show="sortAscDirection" ng-click="sortBy(true)"></span>' +
+                  '<span class="fa fa-arrow-circle-down text-info" ng-hide="sortAscDirection" ng-click="sortBy(false)"></span>',
+        replace: false,
+        scope: {
+            dbset: '=',
+            sortField: '@'
+        },
+        link: function (scope, element, attr) {
+            //排序方向
+            scope.sortAscDirection = true;
+            //排序
+            scope.sortBy = function (isAsc) {
+                scope.dbset = leeHelper.sortArrOfObjectsByPtName(scope.dbset, scope.sortField, isAsc);
+                scope.sortAscDirection = !isAsc;
+            }
+        },
+    }
+})
 .directive('ylEditCommandbar', function ($modal) {
     return {
         restrict: 'EA',

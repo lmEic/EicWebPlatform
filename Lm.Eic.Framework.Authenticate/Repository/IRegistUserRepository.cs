@@ -30,7 +30,8 @@ namespace Lm.Eic.Framework.Authenticate.Repository
             var loginUser = DbHelper.Hrm.LoadEntities<LoginedUserInfo>(sql).FirstOrDefault();
             if (loginUser != null)
             {
-                loginUser.HeadPortrait = "data:image/jpg;base64," + Convert.ToBase64String(loginUser.PersonalPicture);
+                if (loginUser.PersonalPicture != null)
+                    loginUser.HeadPortrait = "data:image/jpg;base64," + Convert.ToBase64String(loginUser.PersonalPicture);
             }
             return loginUser;
         }
