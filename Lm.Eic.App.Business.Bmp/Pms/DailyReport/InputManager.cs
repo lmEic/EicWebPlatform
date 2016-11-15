@@ -7,9 +7,11 @@ using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 {
@@ -45,10 +47,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             //从临时表中获取本部门的日报数据 如果有今天的就返回今天的 如果没有就返回上一次的
             var departmentAllDailyReportList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department);
+            DateTime dailyDate = dailyReportDate.ToDate();
             if (departmentAllDailyReportList.Count > 0)
             {
-               
-               var dailyReportList = departmentAllDailyReportList.Where(date => date.DailyReportDate == dailyReportDate.ToDate()).ToList();
+
+                var dailyReportList = departmentAllDailyReportList.Where(date => date.DailyReportDate == dailyDate).ToList();
                 if (dailyReportList.Count > 0)
                 {
                     //获取最近日期的日报
@@ -56,8 +59,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 }
                 else 
                 {
-                    var maxDailyReportDate = departmentAllDailyReportList.Max(m => m.DailyReportDate);
-
+                    //已审核数据模板
+                    var maxDailyReportDate = departmentAllDailyReportList.Where (m=>m.CheckSign=="已审核").Max(m => m.DailyReportDate);
+                   //得到最近数据
                     var maxDailyReportList = departmentAllDailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).ToList();
                     var returnList = new List<DailyReportTempModel>();
                     maxDailyReportList.ForEach(m =>
@@ -72,6 +76,27 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return new List<DailyReportTempModel>();
           
         }
+
+        private List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                  new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次"}
+                };
+        /// <summary>
+        /// 生成日报表清单
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="dailyReportDate"></param>
+        /// <returns></returns>
+        public MemoryStream BuildDailyReportTempList(string department, DateTime dailyReportDate)
+        {
+            var datas= DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
+            if (datas != null || datas.Count > 0)
+            { //按工艺分组
+                var dataGroupping = datas.GetGroupList<DailyReportTempModel>("ProductFlowName");
+                return dataGroupping.ExportToExcelMultiSheets<DailyReportTempModel>(null);
+            }
+            else return null;
+        }
+
         /// <summary>
         /// 保存日报列表
         /// </summary>
@@ -126,10 +151,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
             if (!dailyReportTempList.IsNullOrEmpty())
                 return OpResult.SetResult("未找到本部门的任何日报记录！");
-
+        
             //清除正式表中的本部门的日报数据
             DailyReportInputCrudFactory.DailyReportCrud.DeleteDailyReportListBy(department, dailyReportDate.ToDate());
+            //改审核状态
+            DailyReportInputCrudFactory.DailyReportTempCrud.ChangeChackSign(department, dailyReportDate.ToDate(), "已审核");
+            //由DailyReportTempModel 转化为 DailyReportModel
             var dailyReportList = OOMaper.Mapper<DailyReportTempModel, DailyReportModel>(dailyReportTempList).ToList();
+
             return DailyReportInputCrudFactory.DailyReportCrud.SavaDailyReportList(dailyReportList);
         }
 

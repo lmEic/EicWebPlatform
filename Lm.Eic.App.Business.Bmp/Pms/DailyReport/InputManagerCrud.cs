@@ -74,7 +74,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 throw new Exception(ex.InnerException.Message);
             }
         }
-
         /// <summary>
         /// 获取日报列表
         /// </summary>
@@ -120,6 +119,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                     m.InputTime = date;
                     m.ParamenterKey = m.Department + "&" + m.DailyReportDate.ToString("yyyyMMdd");
                     m.DailyReportMonth = m.DailyReportDate.ToString("yyyyMM");
+                    m.CheckSign = "未审核";
                     if(m.FailureRate ==null)
                     { m.FailureRate = "0.00%"; }
                 });
@@ -133,6 +133,18 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
 
       
+        public OpResult ChangeChackSign(string department,DateTime dailyReportDate,string chackSign)
+        {
+            try
+            {
+                return irep.ChangeCheckSign(department, dailyReportDate, chackSign).ToOpResult("审核成功", "审核未成功");
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
 
         /// <summary>
         /// 删除日报列表

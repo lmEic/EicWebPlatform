@@ -49,6 +49,17 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// 生成盘点清单
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult CreateInventoryList()
+        {
+            var ds = AstService.EquipmentManager.BuildInventoryList();
+            return this.ExportToExcel(ds, "设备盘点清单", "设备盘点清单");
+        }
         #endregion
 
 
@@ -142,6 +153,7 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
+       
         #region equipment check module method
         /// <summary>
         /// 生成校验清单
@@ -204,6 +216,7 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
+      
         #region equipment maintenance module method
         /// <summary>
         /// 生成保养清单
@@ -237,12 +250,7 @@ namespace EicWorkPlatfrom.Controllers
             return DateJsonResult(datas);
         }
 
-        [NoAuthenCheck]
-        public FileResult CreateWaitingMaintenanceList()
-        {
-            var ds = AstService.EquipmentManager.MaintenanceManager.BuildWaitingMaintenanceList();
-            return this.ExportToExcel(ds, "设备保养清单", "设备保养清单");
-        }
+     
 
         /// <summary>
         /// 输入保养记录
@@ -339,7 +347,6 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         #endregion
-
 
 
         #region equipment Discard module method

@@ -818,6 +818,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _paramenterkey = value; }
             get { return _paramenterkey; }
         }
+        private string _checkSign;
+        /// <summary>
+        ///审核标志
+        /// </summary>
+        public string CheckSign
+        {
+            set { _checkSign = value; }
+            get { return _checkSign; }
+        }
+
         private string _opperson;
         /// <summary>
         ///操作人
