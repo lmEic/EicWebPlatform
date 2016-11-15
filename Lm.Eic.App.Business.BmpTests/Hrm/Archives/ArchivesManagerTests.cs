@@ -19,7 +19,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
             }
             Assert.Fail();
         }
-        public void Change()
+          [TestMethod()]
+        public void testLeaveOffManager()
         {
             var model = new ArLeaveOfficeModel
             {

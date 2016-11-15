@@ -41,18 +41,17 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
       { }  
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add,AddWorkerleaveOfficeInfo);
+            this.AddOpItem(OpMode.Add, AddWorkerleaveOfficeInfo);
         }
 
-       private  OpResult AddWorkerleaveOfficeInfo(ArLeaveOfficeModel entity)
+        private OpResult AddWorkerleaveOfficeInfo(ArLeaveOfficeModel entity)
         {
             int record = this.irep.Insert(entity);
             if (record > 0)
             {
                 return this.irep.ChangeWorkingStatus("离职", entity.WorkerId).ToOpResult("离职操作成功", "离职存保成功,状态更变失败");
             }
-            else
-                return OpResult.SetResult("保存离职数据失败!");
+            else return OpResult.SetResult("离职存保失败", true);
         }
     }
 }
