@@ -25,6 +25,7 @@
                 <button class="btn btn-sm btn-primary" title="新增" ng-click="vmManager.showDReportInputView()"><i class="fa fa-pencil"></i>新增</button>
                 <button class="btn btn-sm btn-success" title="保存" ng-click="operate.save()"><i class="fa fa-save"></i>保存</button>
                 <span class="pull-right">
+                    <a class="btn btn-sm btn-success" title="导出" href="@Url.Action("CreateDailyReportList", "ProDailyReport")"><i class="fa fa-file-excel-o"></i>导出</a>
                     <button type="button" class="btn btn-sm btn-primary" 
                             data-animation="am-flip-x"
                             bs-dropdown aria-haspopup="true" aria-expanded="false">
