@@ -168,8 +168,8 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public FileResult CreateDailyReportList()
         {
-         
-            string department="成型课";
+
+            string department = "成型课";
             DateTime dailyReportDate = DateTime.Now;
             //待添加
             var ms = DailyReportService.InputManager.DailyReportInputManager.BuildDailyReportTempList(department, dailyReportDate);
