@@ -55,8 +55,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
             if (!ContainsMaterialId(orderMaterialIdList, materialBoard.MaterialID))
                 return BuildImageErr("物料不存在与工单");
 
+            
             return BuildImage(string.Format(@"{0}{1}",rootPath, materialBoard.DocumentPath.Replace("/", @"\")),
-                string.Format("工单单号:{0}         出货日期：{1}         批量：{2}", orderDetails.OrderId, shipmentDate, shipmentCount));
+                string.Format("工单单号:{0} 出货日期：{1} 批量：{2}", orderDetails.OrderId, shipmentDate, shipmentCount));
         }
         /// <summary>
         /// 获取待审核的看板列表
