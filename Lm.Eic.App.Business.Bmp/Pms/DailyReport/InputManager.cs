@@ -6,10 +6,8 @@ using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
-using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -131,9 +129,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
             //清除正式表中的本部门的日报数据
             DailyReportInputCrudFactory.DailyReportCrud.DeleteDailyReportListBy(department, dailyReportDate.ToDate());
-            //把DailyReportTempModel 转化为 DailyReportModel
+            //改审核状态
+            DailyReportInputCrudFactory.DailyReportTempCrud.ChangeChackSign(department, dailyReportDate.ToDate(), "已审核");
+            //由DailyReportTempModel 转化为 DailyReportModel
             var dailyReportList = OOMaper.Mapper<DailyReportTempModel, DailyReportModel>(dailyReportTempList).ToList();
-            //批量保存到正式表中
+
             return DailyReportInputCrudFactory.DailyReportCrud.SavaDailyReportList(dailyReportList);
         }
 
@@ -176,26 +176,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 _orderDetailsList.Add(orderDetails);
 
             return orderDetails;
-        }
-        List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
-                 new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次",} 
-                };
-        public MemoryStream ExportToExcel(List<DailyReportTempModel> datas)
-        {
-            try
-            {
-
-                if (datas != null || datas.Count > 0)
-                {
-                    var GroupdataGroupping = datas.GetGroupList<DailyReportTempModel>("日报表");
-                    return GroupdataGroupping.ExportToExcelMultiSheets<DailyReportTempModel>(fieldmappping);
-                }
-                else return null;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
         }
     }
 

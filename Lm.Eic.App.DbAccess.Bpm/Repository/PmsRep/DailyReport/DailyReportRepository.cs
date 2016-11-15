@@ -100,12 +100,34 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     /// <summary>
     ///
     /// </summary>
-    public interface IDailyReportTempRepository : IRepository<DailyReportTempModel> { }
+    public interface IDailyReportTempRepository : IRepository<DailyReportTempModel> 
+    {
+        int ChangeCheckSign(string department, DateTime dailyReportDate, string checkSign);
+
+    }
     /// <summary>
     /// 日报录入仓储
     /// </summary>
     public class DailyReportTepmRepository : BpmRepositoryBase<DailyReportTempModel>, IDailyReportTempRepository
-    { }
+    {
+        public int ChangeCheckSign(string department, DateTime dailyReportDate, string checkSign)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Update   Pms_DailyReportsTemp ")
+                  .Append("Set CheckSign ='" + checkSign + "'")
+                  .Append("WHERE   (Department = '" + department + "')  AND (DailyReportDate = '" + dailyReportDate.ToShortDateString() + "')");
+             
+                string sqltext = sb.ToString();
+              return  DbHelper.Bpm.ExecuteNonQuery(sqltext);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+    }
 
 
     /// <summary>
