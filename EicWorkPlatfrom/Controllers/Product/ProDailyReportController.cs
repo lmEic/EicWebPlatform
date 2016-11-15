@@ -166,7 +166,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
-        public FileResult CreateDailyReportList()
+        public FileResult CreateDailyReportList(string department,DateTime inputDate)
         {
             DateTime dailyReportDate = DateTime.Now;
             //待添加
