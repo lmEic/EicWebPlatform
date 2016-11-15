@@ -329,7 +329,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         //该部门的机台列表
         machines: [],
         unproductReasons:[],
-        InputDate:new Date(),
+        InputDate:null,
         dReportInputDisplay: false,
         dReportPreviewDisplay: false,
         proFlowBoardDisplay: false,
@@ -856,6 +856,12 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 }
             });
         },
+        //导出到Excel
+        exportToExcel: function () {
+            var url = leeHelper.controllers.dailyReport + "/CreateDailyReportList/?department=" + vmManager.department + "&inputDate=" + vmManager.InputDate;
+            return url;
+        }
+
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);

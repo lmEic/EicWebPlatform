@@ -270,7 +270,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         private static ISheet WorkbookCreateSheet<T>(List<T> dataSource, string xlsSheetName, List<FileFieldMapping> FieldMapList, HSSFWorkbook workbook) where T : class, new()
         {
             ISheet sheet = workbook.CreateSheet(xlsSheetName);
-       
             ICellStyle cellSytleDate = workbook.CreateCellStyle();
             IDataFormat format = workbook.CreateDataFormat();
             cellSytleDate.DataFormat = format.GetFormat("yyyy年mm月dd日");

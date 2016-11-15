@@ -160,6 +160,21 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datas = new { departments = departments, machines = machines, unproductReasons = unproductReasons };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 生成日报清单
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult CreateDailyReportList()
+        {
+         
+            string department="成型课";
+            DateTime dailyReportDate = DateTime.Now;
+            //待添加
+            var ms = DailyReportService.InputManager.DailyReportInputManager.BuildDailyReportTempList(department, dailyReportDate);
+            return this.ExportToExcel(ms, "日报数据", "日报数据");
+        }
         /// <summary>
         /// 保存日报录入数据
         /// </summary>

@@ -88,10 +88,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public MemoryStream BuildDailyReportTempList(string department, DateTime dailyReportDate)
         {
-            var datas= DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
+            var datas = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
             if (datas != null || datas.Count > 0)
-            { //按工艺分组
-                var dataGroupping = datas.GetGroupList<DailyReportTempModel>("ProductFlowName");
+            { 
+                //按日期
+                var dataGroupping = datas.GetGroupList<DailyReportTempModel>("DailyReportDate");
                 return dataGroupping.ExportToExcelMultiSheets<DailyReportTempModel>(null);
             }
             else return null;
