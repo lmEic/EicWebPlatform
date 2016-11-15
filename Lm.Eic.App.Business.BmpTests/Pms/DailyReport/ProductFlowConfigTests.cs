@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
 {
@@ -67,6 +68,21 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
             var tem2 = DailyReportService.ConfigManager.NonProductionReasonSetter.GetNonProductionReasonListBy("生技部");
 
             if (tem2 == null) { Assert.Fail(); }
+        }
+      [TestMethod ()]
+        public void getDailyReportedData()
+        {
+            
+            var tem = DailyReportService.InputManager.DailyReportInputManager.BuildDailyReportTempList("成型课", "2016-11-15".ToDate());
+            #region 输出到Excel
+            string path = @"E:\\IQC.xls";
+            using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+            {
+                byte[] bArr = tem.ToArray();
+                fs.Write(bArr, 0, bArr.Length);
+                fs.Flush();
+            }
+            #endregion
         }
     }
 }
