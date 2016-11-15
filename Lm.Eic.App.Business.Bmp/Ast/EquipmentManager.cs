@@ -46,7 +46,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                     new FileFieldMapping {FieldName ="AssetType",FieldDiscretion="资产分类",}
                 };
             var modelList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { SearchMode = 6 });
-            var dataTableGrouping = modelList.GetGroupList<EquipmentModel>("EquipmentType");
+            var dataTableGrouping = modelList.GetGroupList<EquipmentModel>("SafekeepDepartment");
             return dataTableGrouping.ExportToExcelMultiSheets<EquipmentModel>(fieldmappping);
         }
         /// <summary>
