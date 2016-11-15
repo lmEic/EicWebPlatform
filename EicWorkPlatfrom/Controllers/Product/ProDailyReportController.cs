@@ -168,10 +168,10 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public FileResult CreateDailyReportList(string department,DateTime inputDate)
         {
-            DateTime dailyReportDate = DateTime.Now;
+          
             //待添加
-            var ms = DailyReportService.InputManager.DailyReportInputManager.BuildDailyReportTempList("成型课", dailyReportDate);
-            return this.ExportToExcel(ms, "日报数据", "日报数据");
+            var ms = DailyReportService.InputManager.DailyReportInputManager.BuildDailyReportTempList(department, inputDate);
+            return this.ExportToExcel(ms, "日报数据", department + "日报数据(" + inputDate.ToShortDateString ()+")");
         }
         /// <summary>
         /// 保存日报录入数据
