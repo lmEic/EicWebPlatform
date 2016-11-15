@@ -29,6 +29,27 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
 
         /// <summary>
+        /// 生成盘点清单
+        /// </summary>
+        /// <returns></returns>
+        public MemoryStream BuildInventoryList()
+        {
+              //AssetNumber, EquipmentName, EquipmentSpec, ManufacturingNumber, MaintenanceDate, SafekeepDepartment, AssetType
+            List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                 new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次",} ,
+                  new FileFieldMapping {FieldName ="AssetNumber",FieldDiscretion="编号",}  ,
+                  new FileFieldMapping {FieldName ="EquipmentName",FieldDiscretion="名称",} ,
+                  new FileFieldMapping {FieldName ="EquipmentSpec",FieldDiscretion="规格型号/厂名",} ,
+                  new FileFieldMapping {FieldName ="ManufacturingNumber",FieldDiscretion="制造编号",}  ,
+                  new FileFieldMapping {FieldName ="MaintenanceDate",FieldDiscretion="登录日期",} ,
+                  new FileFieldMapping {FieldName ="SafekeepDepartment",FieldDiscretion="部门",},
+                    new FileFieldMapping {FieldName ="AssetType",FieldDiscretion="资产分类",}
+                };
+            var modelList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { SearchMode = 6 });
+            var dataTableGrouping = modelList.GetGroupList<EquipmentModel>("EquipmentType");
+            return dataTableGrouping.ExportToExcelMultiSheets<EquipmentModel>(fieldmappping);
+        }
+        /// <summary>
         /// 生成财产编号
         /// </summary>
         /// <param name="equipmentType">设备类别 （生产设备，量测设备）</param>
