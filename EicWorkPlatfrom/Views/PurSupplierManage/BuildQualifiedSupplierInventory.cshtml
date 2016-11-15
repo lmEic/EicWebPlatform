@@ -7,6 +7,7 @@
         <form class="form-inline" role="search">
             <input type="text" class="form-control" ng-model="vmManager.searchYear" placeholder="请输入四位年份 如：2016" />
             <button type="button" class="btn btn-default" ng-click="vmManager.getPurQualifiedSupplier()"><i class="fa fa-search"></i> 载入</button>
+            <a class="btn btn-success"><i class="fa fa-search"></i> 导出Excel</a>
         </form>
         <div class="h-split"></div>
         <div class="well" cg-busy="{promise:searchPromise}">
