@@ -13,7 +13,7 @@
                 <i class="fa fa-sitemap"></i>
             </button>
             <label>录入日期</label>
-            <input type="date" ng-model="vmManager.InputDate"/>
+            <input type="date" ng-model="vmManager.InputDate" format-date/>
             <button class="btn btn-sm btn-warning" title="载入模板" ng-click="vmManager.getReportInputDataTemplate()"><i class="fa fa-download"></i>载入模板</button>
             <button type="button" class="btn btn-sm btn-default" ng-model="vmManager.inputMode"
                     data-html="1" data-multiple="0" ng-change="vmManager.selectInputMode()"
@@ -25,7 +25,7 @@
                 <button class="btn btn-sm btn-primary" title="新增" ng-click="vmManager.showDReportInputView()"><i class="fa fa-pencil"></i>新增</button>
                 <button class="btn btn-sm btn-success" title="保存" ng-click="operate.save()"><i class="fa fa-save"></i>保存</button>
                 <span class="pull-right">
-                    <a class="btn btn-sm btn-success" title="导出" href="@Url.Action("CreateDailyReportList", "ProDailyReport")"><i class="fa fa-file-excel-o"></i>导出</a>
+                    <a class="btn btn-sm btn-success" title="导出" ng-href="{{ vmManager.exportToExcel()}}"><i class="fa fa-file-excel-o"></i>导出</a>
                     <button type="button" class="btn btn-sm btn-primary" 
                             data-animation="am-flip-x"
                             bs-dropdown aria-haspopup="true" aria-expanded="false">
@@ -395,7 +395,6 @@
             </div>
         </div>
         
-
         <div pageslide ps-open="vmManager.dReportPreviewDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
 

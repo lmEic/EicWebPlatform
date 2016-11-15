@@ -166,7 +166,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
-        public FileResult CreateDailyReportList()
+        public FileResult CreateDailyReportList(string department,DateTime inputDate)
         {
             //待添加
             MemoryStream ms = new MemoryStream();
@@ -181,7 +181,6 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult SaveDailyReportDatas(List<DailyReportTempModel> datas, DateTime inputDate)
         {
-
             var result = DailyReportService.InputManager.DailyReportInputManager.SavaDailyReportList(datas, inputDate);
             return Json(result);
         }
