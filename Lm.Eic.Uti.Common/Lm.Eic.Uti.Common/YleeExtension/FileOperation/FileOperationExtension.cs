@@ -205,7 +205,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                     for (int colIndex = 0; colIndex < tpis.Length; colIndex++)
                     {
                         FillIcell<T>(cellSytleDate, rowContent, entity, tpis, colIndex, colIndex);
-                       
                     }
                 }
 
@@ -286,17 +285,32 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             cellFontHeader.FontHeightInPoints = 12;
             headStyle.SetFont(cellFontHeader);
             int forEachindex = 0;
-            FieldMapList.ForEach(e =>
+
+            if (FieldMapList == null || FieldMapList.Count <1)
             {
-                ICell cell = rowHeader.CreateCell(forEachindex);
-                cell.SetCellValue(e.FieldDiscretion);
-                cell.CellStyle = headStyle;
-                forEachindex++;
-            });
+
+                Type t = dataSource[0].GetType();
+                PropertyInfo[] pis = t.GetProperties();
+                for (int colIndex = 0; colIndex < pis.Length; colIndex++)
+                {
+                    ICell cell = rowHeader.CreateCell(colIndex);
+                    cell.SetCellValue(pis[colIndex].Name);
+                    cell.CellStyle = headStyle;
+                }
+            }
+            else
+            {
+                FieldMapList.ForEach(e =>
+                {
+                    ICell cell = rowHeader.CreateCell(forEachindex);
+                    cell.SetCellValue(e.FieldDiscretion);
+                    cell.CellStyle = headStyle;
+                    forEachindex++;
+                });
+            }
+          
             #endregion 填充列头区域
-
             #region 对所需字段依数 填充内容区域
-
             for (int rowIndex = 0; rowIndex < dataSource.Count; rowIndex++)
             {
                 IRow rowContent = sheet.CreateRow(rowIndex + 1);
@@ -304,34 +318,39 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 Type tentity = entity.GetType();
                 PropertyInfo[] tpis = tentity.GetProperties();
                 int colIndex = 0;
-                FieldMapList.ForEach(e =>
+                if (FieldMapList==null || FieldMapList.Count  < 1)
                 {
-                    //添加项次序号
-                    if (e.FieldDiscretion == "项次")
+                    for (int Index = 0; Index < tpis.Length; Index++)
                     {
-                        ICell cellContent = rowContent.CreateCell(colIndex);
-                        cellContent.SetCellValue((rowIndex+1).ToString());
-                        colIndex++;
-                       
+                        FillIcell<T>(cellSytleDate, rowContent, entity, tpis, Index, Index);
                     }
-                    else 
+                }
+                else
+                {
+                    FieldMapList.ForEach(e =>
                     {
-                        for (int tipsIndex = 0; tipsIndex < tpis.Length; tipsIndex++)
-                      {
-                          //如不是所需字段 跳过
-                          if (e.FieldName == tpis[tipsIndex].Name)
-                          {
-                              FillIcell<T>(cellSytleDate, rowContent, entity, tpis, tipsIndex, colIndex);
-                              colIndex++;
-                              break;
-                          }
-                      }
-                    }
-                
-                });
+                        //添加项次序号
+                        if (e.FieldDiscretion == "项次")
+                        {
+                            ICell cellContent = rowContent.CreateCell(colIndex);
+                            cellContent.SetCellValue((rowIndex + 1).ToString());
+                            colIndex++;
+                        }
+                        else
+                        {
+                            for (int tipsIndex = 0; tipsIndex < tpis.Length; tipsIndex++)
+                            { //如不是所需字段 跳过
+                                if (e.FieldName == tpis[tipsIndex].Name)
+                                {
+                                    FillIcell<T>(cellSytleDate, rowContent, entity, tpis, tipsIndex, colIndex);
+                                    colIndex++;
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                }
             }
-
-
             #endregion 填充内容区域
             return sheet;
         }

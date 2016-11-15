@@ -7,9 +7,11 @@ using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 {
@@ -72,6 +74,24 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return new List<DailyReportTempModel>();
           
         }
+
+        private List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                  new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次"}
+                };
+        /// <summary>
+        /// 生成日报表清单
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="dailyReportDate"></param>
+        /// <returns></returns>
+        public MemoryStream BuildDailyReportTempList(string department, DateTime dailyReportDate)
+        {
+            var datas= DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
+            //按工艺分组
+            var dataGroupping = datas.GetGroupList<DailyReportTempModel>("ProductFlowName");
+            return dataGroupping.ExportToExcelMultiSheets<DailyReportTempModel>(fieldmappping);
+        }
+
         /// <summary>
         /// 保存日报列表
         /// </summary>
