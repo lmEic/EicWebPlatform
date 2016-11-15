@@ -119,7 +119,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
 
             //存储报废记录
             if (entity == null)
-                return OpResult.SetResult(string.Format("{0}不能为空！",OpContext));
+                return OpResult.SetResult(string.Format("{0}不能为null！",OpContext));
             try
             {
                 //基本属性赋值
