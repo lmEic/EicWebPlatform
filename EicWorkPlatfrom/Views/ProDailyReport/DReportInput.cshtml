@@ -83,6 +83,7 @@
                         <col width="85" />
                         <col width="85" />
                         <col width="85" />
+                        <col width="85" />
 
                         <col width="85" />
                         <col width="85" />
@@ -154,6 +155,7 @@
                             <td class="text-center info"><span>不良数</span></td>
                             <td class="text-center info" ng-show="tbl.colVisible"><span>良品数</span></td>
 
+                            <td class="text-center info"><span>得到工时</span></td>
                             <td class="text-center info"><span>设置时数</span></td>
                             <td class="text-center info"><span>投入工时</span></td>
                             <td class="text-center info"><span>出勤时数</span></td>
@@ -337,6 +339,9 @@
                             </td>
                             <td ng-show="tbl.colVisible" class="text-center">{{item.QtyGood}}</td>
                             @*工时信息*@
+                            <td>
+                                {{item.ReceiveHours}}
+                            </td>
                             <td>
                                 <span ng-hide="item.pheditting">{{item.SetHours}}</span>
                                 <input ng-model="vm.SetHours" ng-keydown="vmManager.inputSetHours($event,item)"

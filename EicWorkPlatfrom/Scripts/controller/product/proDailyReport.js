@@ -315,7 +315,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
 
     var tablevm = {
         //跨列数字集合
-        colSpans: [3, 2, 3, 3, 6],
+        colSpans: [3, 2, 3, 3, 7],
         colVisible: true,//列的可见性
     };
     var tableSet = _.clone(tablevm);
@@ -345,7 +345,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 $scope.tbl = tablevm;
             }
             else {
-                tablevm.colSpans = [2, 1, 3, 2, 6];
+                tablevm.colSpans = [2, 1, 3, 2, 7];
                 tablevm.colVisible = false;
             }
         },
@@ -701,9 +701,15 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 //良品数=总产量-不良品数
                 item.QtyGood = item.Qty - item.QtyBad;
                 $scope.vm.QtyGood = item.QtyGood;
-            });
-         
 
+                //得到工时=生产数量/标准工时*100%
+                if (parseInt(item.StandardHours) !== 0)
+                {
+                    item.ReceiveHours = parseFloat(item.Qty) / parseFloat(item.StandardHours);
+                    $scope.vm.ReceiveHours = item.ReceiveHours;
+                }
+                    
+            });
             focusSetter.moveFocusTo($event, 'qtyFocus', 'setHoursFocus');
         },
         inputSetHours: function ($event, item) {
