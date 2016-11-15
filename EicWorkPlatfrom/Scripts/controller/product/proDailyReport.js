@@ -705,7 +705,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 //得到工时=生产数量/标准工时*100%
                 if (parseInt(item.StandardHours) !== 0)
                 {
-                    item.ReceiveHours = parseFloat(item.Qty) / parseFloat(item.StandardHours);
+                    item.ReceiveHours = parseFloat(item.Qty) / parseFloat(item.StandardHours).toFixed(2);
                     $scope.vm.ReceiveHours = item.ReceiveHours;
                 }
                     
