@@ -89,7 +89,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             var datas= DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
             //按工艺分组
             var dataGroupping = datas.GetGroupList<DailyReportTempModel>("ProductFlowName");
-            return dataGroupping.ExportToExcelMultiSheets<DailyReportTempModel>(fieldmappping);
+            return dataGroupping.ExportToExcelMultiSheets<DailyReportTempModel>(null);
         }
 
         /// <summary>
