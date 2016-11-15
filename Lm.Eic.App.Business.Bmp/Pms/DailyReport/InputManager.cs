@@ -131,7 +131,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
             //清除正式表中的本部门的日报数据
             DailyReportInputCrudFactory.DailyReportCrud.DeleteDailyReportListBy(department, dailyReportDate.ToDate());
+            //把DailyReportTempModel 转化为 DailyReportModel
             var dailyReportList = OOMaper.Mapper<DailyReportTempModel, DailyReportModel>(dailyReportTempList).ToList();
+            //批量保存到正式表中
             return DailyReportInputCrudFactory.DailyReportCrud.SavaDailyReportList(dailyReportList);
         }
 
