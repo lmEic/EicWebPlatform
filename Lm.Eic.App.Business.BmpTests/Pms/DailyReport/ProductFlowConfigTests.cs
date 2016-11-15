@@ -72,8 +72,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
       [TestMethod ()]
         public void getDailyReportedData()
         {
-            
-            var tem = DailyReportService.InputManager.DailyReportInputManager.BuildDailyReportTempList("成型课", "2016-11-15".ToDate());
+           
+            var tem = DailyReportService.InputManager.DailyReportInputManager.BuildDailyReportTempList("成型课", "2016-11-15".t);
             #region 输出到Excel
             string path = @"E:\\IQC.xls";
             using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))

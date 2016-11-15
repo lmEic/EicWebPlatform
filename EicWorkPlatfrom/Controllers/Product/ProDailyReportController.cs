@@ -168,9 +168,9 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public FileResult CreateDailyReportList()
         {
+            DateTime dailyReportDate = DateTime.Now;
             //待添加
-            MemoryStream ms = new MemoryStream();
-
+            var ms = DailyReportService.InputManager.DailyReportInputManager.BuildDailyReportTempList("成型课", dailyReportDate);
             return this.ExportToExcel(ms, "日报数据", "日报数据");
         }
         /// <summary>
