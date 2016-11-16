@@ -78,21 +78,21 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
 
         private List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
-                  new FileFieldMapping {FieldName ="MachineId",FieldDiscretion="機台號"},
-                  new FileFieldMapping {FieldName ="OrderId",FieldDiscretion="制令单"},
-                  new FileFieldMapping {FieldName ="ProductName",FieldDiscretion="品名"},
-                  new FileFieldMapping {FieldName ="ProductSpecification",FieldDiscretion="规格"},
-                  new FileFieldMapping {FieldName ="UserName",FieldDiscretion="作业员"},
-                  new FileFieldMapping {FieldName ="MasterName",FieldDiscretion="师傅"},
-                  new FileFieldMapping {FieldName ="StandardHours",FieldDiscretion="标准工时"},
-                  new FileFieldMapping {FieldName ="ReceiveHours",FieldDiscretion="得到時數"},
-                  new FileFieldMapping {FieldName ="Qty",FieldDiscretion="产量"},
-                  new FileFieldMapping {FieldName ="QtyBad",FieldDiscretion="不良数"},
-                  new FileFieldMapping {FieldName ="SetHours",FieldDiscretion="設置時數"},
-                  new FileFieldMapping {FieldName ="InputHours",FieldDiscretion="投入時數"},
-                  new FileFieldMapping {FieldName ="AttendanceHours",FieldDiscretion="出勤時數"},
-                  new FileFieldMapping {FieldName ="NonProductionHours",FieldDiscretion="非生产時數"},
-                  new FileFieldMapping {FieldName ="NonProductionHours",FieldDiscretion="非生产時數"}      
+                  new FileFieldMapping ("MachineId","機台號"),
+                  new FileFieldMapping ("OrderId","制令单"),
+                  new FileFieldMapping ("ProductName","品名"),
+                  new FileFieldMapping ("ProductSpecification","规格"),
+                  new FileFieldMapping ("UserName","作业员"),
+                  new FileFieldMapping ("MasterName","师傅"),
+                  new FileFieldMapping ("StandardHours","标准工时"),
+                  new FileFieldMapping ("ReceiveHours","得到時數"),
+                  new FileFieldMapping ("Qty","产量"),
+                  new FileFieldMapping ("QtyBad","不良数"),
+                  new FileFieldMapping ("SetHours","設置時數"),
+                  new FileFieldMapping ("InputHours","投入時數"),
+                  new FileFieldMapping ("AttendanceHours","出勤時數"),
+                  new FileFieldMapping ("NonProductionHours","非生产時數"),
+                  new FileFieldMapping ("NonProductionHours","非生产時數")      
                 };
         /// <summary>
         /// 生成日报表清单
@@ -103,13 +103,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public MemoryStream BuildDailyReportTempList(string department, DateTime dailyReportDate)
         {
             var datas = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
-            if (datas != null || datas.Count > 0)
+            if (datas != null && datas.Count > 0)
             { 
                 //按工艺分类
                 var dataGroupping = datas.GetGroupList<DailyReportTempModel>("ProductFlowName");
                 return dataGroupping.ExportToExcelMultiSheets<DailyReportTempModel>(fieldmappping);
             }
-            else return null;
+            else return new MemoryStream() ;
         }
 
         /// <summary>

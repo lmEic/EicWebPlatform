@@ -36,14 +36,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
               //AssetNumber, EquipmentName, EquipmentSpec, ManufacturingNumber, MaintenanceDate, SafekeepDepartment, AssetType
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
-                 new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次",} ,
-                  new FileFieldMapping {FieldName ="AssetNumber",FieldDiscretion="编号",}  ,
-                  new FileFieldMapping {FieldName ="EquipmentName",FieldDiscretion="名称",} ,
-                  new FileFieldMapping {FieldName ="EquipmentSpec",FieldDiscretion="规格型号/厂名",} ,
-                  new FileFieldMapping {FieldName ="ManufacturingNumber",FieldDiscretion="制造编号",}  ,
-                  new FileFieldMapping {FieldName ="MaintenanceDate",FieldDiscretion="登录日期",} ,
-                  new FileFieldMapping {FieldName ="SafekeepDepartment",FieldDiscretion="部门",},
-                    new FileFieldMapping {FieldName ="AssetType",FieldDiscretion="资产分类",}
+                 new FileFieldMapping ("Number","项次") ,
+                  new FileFieldMapping ("AssetNumber","编号")  ,
+                  new FileFieldMapping ("EquipmentName","名称") ,
+                  new FileFieldMapping ("EquipmentSpec","规格型号/厂名") ,
+                  new FileFieldMapping ("ManufacturingNumber","制造编号")  ,
+                  new FileFieldMapping ("MaintenanceDate","登录日期"),
+                  new FileFieldMapping ("SafekeepDepartment","部门"),
+                    new FileFieldMapping ("AssetType","资产分类")
                 };
             var modelList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { SearchMode = 6 });
             var dataTableGrouping = modelList.GetGroupList<EquipmentModel>("SafekeepDepartment");
@@ -190,13 +190,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         public MemoryStream BuildWaitingCheckList()
         {
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
-                 new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次",} ,
-                  new FileFieldMapping {FieldName ="AssetNumber",FieldDiscretion="编号",}  ,
-                  new FileFieldMapping {FieldName ="EquipmentName",FieldDiscretion="名称",} ,
-                  new FileFieldMapping {FieldName ="EquipmentSpec",FieldDiscretion="规格型号",} ,
-                  new FileFieldMapping {FieldName ="ManufacturingNumber",FieldDiscretion="制造编号",}  ,
-                  new FileFieldMapping {FieldName ="DeliveryDate",FieldDiscretion="购入日期",} ,
-                  new FileFieldMapping {FieldName ="EquipmentType",FieldDiscretion="分类",}
+                 new FileFieldMapping ("Number","项次") ,
+                  new FileFieldMapping ("AssetNumber","编号") ,
+                  new FileFieldMapping ("EquipmentName","名称") ,
+                  new FileFieldMapping ("EquipmentSpec","规格型号") ,
+                  new FileFieldMapping ("ManufacturingNumber","制造编号")  ,
+                  new FileFieldMapping ("DeliveryDate","购入日期") ,
+                  new FileFieldMapping ("EquipmentType","分类")
                 };
             //对未超期的数据按部门分组的处理
             var inDateList = GetPeriodWaitingCheckListRule(_waitingCheckList);
@@ -263,15 +263,15 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// 导出Excel
         /// </summary>
         private List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
-                  new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次",},
-                  new FileFieldMapping {FieldName ="AssetNumber",FieldDiscretion="财产编号",} ,
-                  new FileFieldMapping {FieldName ="EquipmentName",FieldDiscretion="名称",} ,
-                  new FileFieldMapping {FieldName ="EquipmentSpec",FieldDiscretion="规格型号",} ,
-                  new FileFieldMapping {FieldName ="FunctionDescription",FieldDiscretion="使用范围",},
-                  new FileFieldMapping {FieldName ="PlannedCheckDate",FieldDiscretion="计划校验日期",},
-                  new FileFieldMapping {FieldName ="SafekeepDepartment",FieldDiscretion="保管部门",},
-                  new FileFieldMapping {FieldName ="ManufacturingNumber",FieldDiscretion="制造编号",} ,
-                  new FileFieldMapping {FieldName ="More",FieldDiscretion="备注",}
+                  new FileFieldMapping ("Number","项次"),
+                  new FileFieldMapping ("AssetNumber","财产编号") ,
+                  new FileFieldMapping ("EquipmentName","名称") ,
+                  new FileFieldMapping ("EquipmentSpec","规格型号") ,
+                  new FileFieldMapping ("FunctionDescription","使用范围"),
+                  new FileFieldMapping ("PlannedCheckDate","计划校验日期"),
+                  new FileFieldMapping ("SafekeepDepartment","保管部门"),
+                  new FileFieldMapping ("ManufacturingNumber","制造编号") ,
+                  new FileFieldMapping ("More","备注")
                 };
 
         /// <summary>
