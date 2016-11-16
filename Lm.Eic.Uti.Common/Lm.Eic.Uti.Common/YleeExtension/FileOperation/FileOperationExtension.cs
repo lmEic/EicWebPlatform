@@ -520,16 +520,18 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <summary>
         /// 文件字段描述
         /// </summary>
-        public  string FieldDiscretion { set; get; }
+        string _fieldDiscretion;
+        public string FieldDiscretion {  get{return _fieldDiscretion;}}
         /// <summary>
         /// 文件字段名
         /// </summary>
-        public string FieldName { set; get; }
+        string _fieldName;
+        public string FieldName { get { return _fieldName; } }
 
-        public void  SetField(string fieldName,string fieldDiscretion )
+        public  FileFieldMapping(string fieldName, string fieldDiscretion)
         {
-            this.FieldDiscretion =fieldDiscretion;
-            this.FieldName = fieldName;
+            this._fieldDiscretion = fieldDiscretion;
+            this._fieldName = fieldName;
         }
        
     }

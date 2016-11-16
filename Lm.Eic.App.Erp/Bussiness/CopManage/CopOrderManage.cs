@@ -170,17 +170,17 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
           }
       }
       List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
-                 new FileFieldMapping {FieldName ="Number",FieldDiscretion="项次",} ,
-                  new FileFieldMapping {FieldName ="ProductType",FieldDiscretion="品名",}  ,
-                  new FileFieldMapping {FieldName ="ProductSpecify",FieldDiscretion="规格",} ,
-                  new FileFieldMapping {FieldName ="SumCount",FieldDiscretion="汇总",} ,
-                  new FileFieldMapping {FieldName ="OrderCount",FieldDiscretion="工单数量",}  ,
-                  new FileFieldMapping {FieldName ="LocaleFinishedCount",FieldDiscretion="现场成品仓",} ,
-                  new FileFieldMapping {FieldName ="FreeTradeInHouseCount",FieldDiscretion="库存成品",},
-                  new FileFieldMapping {FieldName ="AllCheckOrderCountt",FieldDiscretion="全检工单",},
-                  new FileFieldMapping {FieldName ="PutInMaterialCount",FieldDiscretion="来料成品",},
-                  new FileFieldMapping {FieldName ="DifferenceCount",FieldDiscretion="差异",},
-                  new FileFieldMapping {FieldName ="More",FieldDiscretion="备注",}
+                 new FileFieldMapping ("Number","项次") ,
+                  new FileFieldMapping ("ProductType","品名") ,
+                  new FileFieldMapping ("ProductSpecify","规格") ,
+                  new FileFieldMapping ("SumCount","汇总") ,
+                  new FileFieldMapping ("OrderCount","工单数量")  ,
+                  new FileFieldMapping ("LocaleFinishedCount","现场成品仓") ,
+                  new FileFieldMapping ("FreeTradeInHouseCount","库存成品"),
+                  new FileFieldMapping ("AllCheckOrderCountt","全检工单"),
+                  new FileFieldMapping ("PutInMaterialCount","来料成品"),
+                  new FileFieldMapping ("DifferenceCount","差异"),
+                  new FileFieldMapping ("More","备注")
                 };
       /// <summary>
       /// 生成EXCEL表格

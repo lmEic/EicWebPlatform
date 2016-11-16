@@ -24,15 +24,15 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
     {
         List<WorkClothesManageModel> _workClothesmangeModelList = new List<WorkClothesManageModel>();
         List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
-                  new FileFieldMapping {FieldName ="WorkerId",FieldDiscretion="工号",},
-                  new FileFieldMapping {FieldName ="WorkerName",FieldDiscretion="姓名",} ,
-                  new FileFieldMapping {FieldName ="Department",FieldDiscretion="部门",} ,
-                  new FileFieldMapping {FieldName ="ProductName",FieldDiscretion="厂服内类型",} ,
-                  new FileFieldMapping {FieldName ="ProductSpecify",FieldDiscretion="规格",},
-                  new FileFieldMapping {FieldName ="PerCount",FieldDiscretion="领取数量",},
-                  new FileFieldMapping {FieldName ="InputDate",FieldDiscretion="录入日期",},
-                  new FileFieldMapping {FieldName ="DealwithType",FieldDiscretion="处理类型",} ,
-                  new FileFieldMapping {FieldName ="ReceiveMonth",FieldDiscretion="领用月份",}
+                  new FileFieldMapping ("WorkerId","工号"),
+                  new FileFieldMapping ("WorkerName","姓名"),
+                  new FileFieldMapping ("Department","部门") ,
+                  new FileFieldMapping ("ProductName","厂服内类型") ,
+                  new FileFieldMapping ("ProductSpecify","规格"),
+                  new FileFieldMapping ("PerCount","领取数量"),
+                  new FileFieldMapping ("InputDate","录入日期"),
+                  new FileFieldMapping ("DealwithType","处理类型") ,
+                  new FileFieldMapping ("ReceiveMonth","领用月份")
                 };
         /// <summary>
         /// 获取领用记录  搜索模式 1 => 按工号查找  2 => 按部门查找  3 => 按领取月查找 
