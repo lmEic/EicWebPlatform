@@ -7,7 +7,7 @@ using System.Text;
 namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
 {
     /// <summary>
-    /// 订单详情
+    /// 工单详情
     /// </summary>
     public class OrderModel
     {
@@ -28,15 +28,15 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
         /// </summary>
         public string ProductSpecify { get; set; }
         /// <summary>
-        ///订单总数TA015
+        ///工单总数TA015
         /// </summary>
         public double Count { set; get; }
         /// <summary>
-        ///订单已入库数TA017
+        ///工单已入库数TA017
         /// </summary>
         public double InStoreCount { set; get; }
         /// <summary>
-        /// 订单完工状态
+        /// 工单完工状态
         /// </summary>
         public string OrderFinishStatus { set;get ; }
         /// <summary>
@@ -44,7 +44,7 @@ namespace Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel
         /// </summary>
         public DateTime InStockDate { set; get; }
         /// <summary>
-        /// 订单完工日期
+        /// 工单完工日期
         /// </summary>
         public DateTime OrderFinishDate { set; get; }
 

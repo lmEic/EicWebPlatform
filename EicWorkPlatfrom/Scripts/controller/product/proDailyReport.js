@@ -354,6 +354,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         addRow: function () {
             vmManager.edittingRowIndex = vmManager.editDatas.length > 0 ? vmManager.editDatas.length + 1 : 1;
             var vm = _.clone(initVM);
+            uiVM = _.clone(vm);
+            $scope.vm = uiVM;
             vm.DailyReportDate = vmManager.InputDate;
             vm.rowindex = vmManager.edittingRowIndex;
             vm.editting = true;
@@ -361,10 +363,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             vmManager.edittingRow = vm;
             vmManager.editDatas.push(vm);
         },
-        showDReportInputView: function () {
-            //vmManager.dReportInputDisplay = true;
-
-
+        createNewRow: function () {
             vmManager.addRow();
         },
         showDReportPreviewView: function () { vmManager.dReportPreviewDisplay = true; },
@@ -434,6 +433,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             {
                 if ($scope.vm.OrderId === undefined || $scope.vm.OrderId.length <= 10) return;
 
+                
                 var item = _.find(vmManager.orderDatas, { orderId: $scope.vm.OrderId });
                 if (!angular.isUndefined(item)) {
                     vmManager.bindOrderInfo(item.data.orderDetails);
@@ -448,6 +448,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                         }
                     });
                 }
+                if (vmManager.checkOrderIdIsFinished(item.data.orderDetails)) return;
             }
             focusSetter.moveFocusTo($event, "orderIdFocus", 'productFlowFocus');
         },
@@ -533,6 +534,13 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             },
             show:false,
         }),
+        //工单完工信息提醒
+        orderIdAlertModal: $modal({
+            title: '警示',
+            content: '该工单已经完工了，禁止在继续录入产量信息！',
+            templateUrl: leeHelper.modalTplUrl.msgModalUrl,
+            show:false
+        }),
         //编辑班别
         editClassType: function (item) {
             item.isEdittingClassType = true;
@@ -581,17 +589,23 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         },
         //是否是机台名称
         isInputMachineName: function () {
-            var machineItem = _.find(vmManager.machines, { MachineId: $scope.vm.ProductFlowID });
-            return machineItem !== undefined;
+            var machineId = $scope.vm.ProductFlowID.toUpperCase();//强制转换为大写
+            var machineItem = _.find(vmManager.machines, { MachineId: machineId });
+            return {
+                isMachine: machineItem !== undefined,
+                machineInfo:machineItem
+            };
         },
         //获取工序信息
         getProductFlowInfo: function ($event) {
             if ($event.keyCode === 13) {
                 if (vmManager.productFlows.length > 0) {
                     var flowItem = null;
-                    if (vmManager.isInputMachineName()) {
+                    var machineCheckInfo=vmManager.isInputMachineName();
+                    //如果输入的是机台编号
+                    if (machineCheckInfo.isMachine) {
                         vmManager.edittingRow.isMachineMode = true;
-                        vmManager.edittingRow.MachineId = $scope.vm.ProductFlowID;
+                        vmManager.edittingRow.MachineId = machineCheckInfo.machineInfo.MachineCode;
                         flowItem = vmManager.productFlows[0];
                     }
                     else {
@@ -705,37 +719,45 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 //得到工时=生产数量/标准工时*100%
                 if (parseInt(item.StandardHours) !== 0)
                 {
-                    item.ReceiveHours = parseFloat(item.Qty) / parseFloat(item.StandardHours).toFixed(2);
+                    item.ReceiveHours = (parseFloat(item.Qty) / parseFloat(item.StandardHours)).toFixed(2);
                     $scope.vm.ReceiveHours = item.ReceiveHours;
                 }
                     
             });
-            focusSetter.moveFocusTo($event, 'qtyFocus', 'setHoursFocus');
+            focusSetter.moveFocusTo($event, 'qtyFocus', 'attendanceHoursFocus'); //  
+        },
+        inputAttendanceHours: function ($event, item) {
+            var isInMachineMode = false;
+            focusSetter.doWhenKeyDown($event, function () {
+                item.AttendanceHours = $scope.vm.AttendanceHours;
+                //如果是录入机台模式，则设置工时与投入工时，出勤工时相等
+                if (!item.isMachineMode)
+                {
+                    $scope.vm.SetHours = $scope.vm.InputHours = item.SetHours = item.InputHours = item.AttendanceHours;
+                    focusSetter["nonProductHoursFocus"] = true;//焦点直接转移至非生产工时处
+                    isInMachineMode = true;
+                }
+            });
+            if (!isInMachineMode)
+                focusSetter.moveFocusTo($event, 'qtyBadFocus', 'setHoursFocus');
         },
         inputSetHours: function ($event, item) {
             focusSetter.doWhenKeyDown($event, function () {
                 item.SetHours = $scope.vm.SetHours;
             });
 
-            focusSetter.moveFocusTo($event, 'qtyBadFocus', 'inputHoursFocus');
+            focusSetter.moveFocusTo($event, 'attendanceHoursFocus', 'inputHoursFocus');
         },
         inputHours: function ($event,item) {
             focusSetter.doWhenKeyDown($event, function () {
                 item.InputHours = $scope.vm.InputHours;
             });
            
-            focusSetter.moveFocusTo($event, 'setHoursFocus', 'attendanceHoursFoucs');
-        },
-        inputAttendanceHours: function ($event,item) {
-            focusSetter.doWhenKeyDown($event, function () {
-                item.AttendanceHours = $scope.vm.AttendanceHours;
-            });
-            
-            focusSetter.moveFocusTo($event, 'inputHoursFoucs', 'nonProductHoursFocus');
+            focusSetter.moveFocusTo($event, 'setHoursFocus', 'nonProductHoursFocus');
         },
         inputNonProductionHours: function ($event, item) {
             if ($event.keyCode === 37) {
-                focusSetter['AttendanceHours'] = true;
+                focusSetter['inputHoursFocus'] = true;
                 return;
             }
             focusSetter.doWhenKeyDown($event, function () {
@@ -756,7 +778,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         },
         inputNonProductionReasonCode: function ($event, item) {
             if ($event.keyCode === 37) {
-                focusSetter['AttendanceHours'] = true;
+                focusSetter['attendanceHoursFocus'] = true;
                 return;
             }
             if ($event.keyCode === 13 || $event.keyCode === 9) {
@@ -860,8 +882,17 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         exportToExcel: function () {
             var url = leeHelper.controllers.dailyReport + "/CreateDailyReportList/?department=" + vmManager.department + "&inputDate=" + vmManager.InputDate;
             return url;
+        },
+        //检测工单单号是否已经完工
+        checkOrderIdIsFinished: function (orderIdDetail)
+        {
+            var isFinished = orderIdDetail.OrderFinishStatus === "已完工";
+            if (isFinished)
+            {
+                vmManager.orderIdAlertModal.$promise.then(vmManager.orderIdAlertModal.show);
+            }
+            return isFinished;
         }
-
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -912,8 +943,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         qtyBadFocus: false,
         setHoursFocus:false,
         inputHoursFocus: false,
-        productHoursFoucs: false,
-        attendanceHoursFoucs: false,
+        productHoursFocus: false,
+        attendanceHoursFocus: false,
         nonProductHoursFocus: false,
         nonProductReasonCodeFocus: false,
         //移动焦点到指定对象

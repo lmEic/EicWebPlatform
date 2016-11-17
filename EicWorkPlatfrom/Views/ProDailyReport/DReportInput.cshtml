@@ -22,7 +22,7 @@
                 <span class="caret"></span>
             </button>
             <span>
-                <button class="btn btn-sm btn-primary" title="新增" ng-click="vmManager.showDReportInputView()"><i class="fa fa-pencil"></i>新增</button>
+                <button class="btn btn-sm btn-primary" title="新增" ng-click="vmManager.createNewRow()"><i class="fa fa-pencil"></i>新增</button>
                 <button class="btn btn-sm btn-success" title="保存" ng-click="operate.save()"><i class="fa fa-save"></i>保存</button>
                 <span class="pull-right">
                     <a class="btn btn-sm btn-success" title="导出" ng-href="{{ vmManager.exportToExcel()}}"><i class="fa fa-file-excel-o"></i>导出</a>
@@ -157,9 +157,10 @@
                             <td class="text-center info" ng-show="tbl.colVisible"><span>良品数</span></td>
 
                             <td class="text-center info"><span>得到工时</span></td>
+                            <td class="text-center info"><span>出勤时数</span></td>
                             <td class="text-center info"><span>设置时数</span></td>
                             <td class="text-center info"><span>投入工时</span></td>
-                            <td class="text-center info"><span>出勤时数</span></td>
+                           
                             <td class="text-center info"><span>非生产时数</span></td>
                             <td class="text-center info"><span>生产时数</span></td>
                             <td class="text-center info"><span>非生产原因</span></td>
@@ -344,6 +345,13 @@
                                 {{item.ReceiveHours}}
                             </td>
                             <td>
+                                <span ng-hide="item.pheditting">{{item.AttendanceHours}}</span>
+                                <input ng-model="vm.AttendanceHours" ng-keydown="vmManager.inputAttendanceHours($event,item)"
+                                       focus-if="focus.attendanceHoursFocus" focus-setter style="width:75px;"
+                                       placeholder="出勤时数" ng-show="item.pheditting" />
+                            </td>
+
+                            <td>
                                 <span ng-hide="item.pheditting">{{item.SetHours}}</span>
                                 <input ng-model="vm.SetHours" ng-keydown="vmManager.inputSetHours($event,item)"
                                        focus-if="focus.setHoursFocus" focus-setter style="width:75px;"
@@ -355,12 +363,7 @@
                                        focus-if="focus.inputHoursFocus" focus-setter style="width:75px;"
                                        placeholder="投入工时" ng-show="item.pheditting" />
                             </td>
-                            <td>
-                                <span ng-hide="item.pheditting">{{item.AttendanceHours}}</span>
-                                <input ng-model="vm.AttendanceHours" ng-keydown="vmManager.inputAttendanceHours($event,item)"
-                                       focus-if="focus.attendanceHoursFoucs" focus-setter style="width:75px;"
-                                       placeholder="出勤时数" ng-show="item.pheditting" />
-                            </td>
+                         
                             <td>
                                 <span ng-hide="item.pheditting">{{item.NonProductionHours}}</span>
                                 <input ng-model="vm.NonProductionHours" ng-keydown="vmManager.inputNonProductionHours($event,item)"
