@@ -947,6 +947,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _productflowid = value; }
             get { return _productflowid; }
         }
+        private string _productFlowpDegree;
+        /// <summary>
+        /// 工艺主次关系(Primary / Secondary)
+        /// </summary>
+        public string ProductFlowpDegree
+        {
+            set { _productFlowpDegree = value; }
+            get { return  _productFlowpDegree; }
+        }
         private string _productflowname;
         /// <summary>
         ///工艺名称
@@ -1132,6 +1141,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _machineid = value; }
             get { return _machineid; }
         }
+        private string _machineCode;
+        /// <summary>
+        /// 机台编码
+        /// </summary>
+        public string MachineCode
+        {
+            set { _machineCode = value; }
+            get { return _machineCode; }
+        }
+
         private string _machinename;
         /// <summary>
         ///机台名称

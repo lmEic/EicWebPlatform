@@ -84,6 +84,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                   new FileFieldMapping ("ProductSpecification","规格"),
                   new FileFieldMapping ("UserName","作业员"),
                   new FileFieldMapping ("MasterName","师傅"),
+                  new FileFieldMapping ("ClassType","班别"),
                   new FileFieldMapping ("StandardHours","标准工时"),
                   new FileFieldMapping ("ReceiveHours","得到時數"),
                   new FileFieldMapping ("Qty","产量"),
