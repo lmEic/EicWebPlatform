@@ -947,6 +947,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _productflowid = value; }
             get { return _productflowid; }
         }
+        private string _productFlowpDegree;
+        /// <summary>
+        /// 工艺主次关系(Primary / Secondary)
+        /// </summary>
+        public string ProductFlowpDegree
+        {
+            set { _productFlowpDegree = value; }
+            get { return  _productFlowpDegree; }
+        }
         private string _productflowname;
         /// <summary>
         ///工艺名称
