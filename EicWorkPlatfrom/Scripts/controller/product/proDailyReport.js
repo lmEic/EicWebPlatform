@@ -436,6 +436,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 
                 var item = _.find(vmManager.orderDatas, { orderId: $scope.vm.OrderId });
                 if (!angular.isUndefined(item)) {
+                    if (vmManager.checkOrderIdIsFinished(item.data.orderDetails)) return;
                     vmManager.bindOrderInfo(item.data.orderDetails);
                     vmManager.productFlows = item.data.productFlows;
                 }
@@ -443,12 +444,13 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                     $scope.searchPromise= dReportDataOpService.getOrderDetails(vmManager.department, $scope.vm.OrderId).then(function (data) {
                         if (angular.isObject(data)) {
                             vmManager.orderDatas.push({ orderId: $scope.vm.OrderId, data: data });
+                            if (vmManager.checkOrderIdIsFinished(data.orderDetails)) return;
                             vmManager.bindOrderInfo(data.orderDetails);
                             vmManager.productFlows = data.productFlows;
                         }
                     });
                 }
-                if (vmManager.checkOrderIdIsFinished(item.data.orderDetails)) return;
+              
             }
             focusSetter.moveFocusTo($event, "orderIdFocus", 'productFlowFocus');
         },
