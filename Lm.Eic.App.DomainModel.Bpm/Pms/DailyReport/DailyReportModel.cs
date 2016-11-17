@@ -1132,6 +1132,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _machineid = value; }
             get { return _machineid; }
         }
+        private string _machineCode;
+        /// <summary>
+        /// 机台编码
+        /// </summary>
+        public string MachineCode
+        {
+            set { _machineCode = value; }
+            get { return _machineCode; }
+        }
+
         private string _machinename;
         /// <summary>
         ///机台名称
