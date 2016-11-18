@@ -112,7 +112,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             }
             else return new MemoryStream() ;
         }
-
         /// <summary>
         /// 保存日报列表
         /// </summary>
@@ -153,7 +152,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 return OpResult.SetResult("数据保存失败！");
                 throw new Exception(ex.InnerException.Message);
             }
-
         }
 
         /// <summary>
