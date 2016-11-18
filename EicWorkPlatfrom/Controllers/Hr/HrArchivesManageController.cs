@@ -148,8 +148,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <returns></returns>
         public ContentResult GetWorkerArchives(int searchMode)
         {
-            QueryWorkerArchivesDto dto = new QueryWorkerArchivesDto();
-            var data = ArchiveService.ArchivesManager.FindWorkers(dto, searchMode); //待填写
+            var data = ArchiveService.ArchivesManager.FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto { SearchMode = searchMode }); //待填写
             return DateJsonResult(data);
         }
 

@@ -14,6 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using System.IO;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
@@ -24,8 +26,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     {
         private IArchivesEmployeeIdentityRepository irep = null;
 
+
+
         #region property
 
+        private List<ArchivesEmployeeIdentityModel> WorkerArchivesInfoList = null;
         private ArIdentityInfoManager identityManager = null;
 
         /// <summary>
@@ -107,7 +112,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             this._TelManager = new ArTelManager();
             this._DepartmentMananger = new ArDepartmentManager();
             this._PostManager = new ArPostManager();
-        }
+            this.WorkerArchivesInfoList = new List<ArchivesEmployeeIdentityModel>();
+    }
 
         #endregion constructure
 
@@ -407,33 +413,37 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// 4：直接/间接
         /// 5：职工属性
         /// <returns></returns>
-        public List<ArchivesEmployeeIdentityModel>QueryArchivesInfo(QueryWorkerArchivesDto qryDto=null ,int searchMode=0)
+        public List<ArchivesEmployeeIdentityModel> FindWorkerArchivesInfoBy(QueryWorkerArchivesDto qryDto)
         {
             try
             {
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依工号查询
-                        return irep.Entities.Where(m => m.WorkerId.StartsWith (qryDto.WorkerId)).ToList();
-
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkerId.StartsWith(qryDto.WorkerId)).ToList();
+                        return WorkerArchivesInfoList;
                     case 2: //依部门查询
-                        return irep.Entities.Where(m => m.Department.StartsWith(qryDto.Department)).ToList();
-
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.Department.StartsWith(qryDto.Department)).ToList();
+                        return WorkerArchivesInfoList;
                     case 3: //依入职时间段查询
                         DateTime StartDate = qryDto.RegistedDateStart.ToDate();
                         DateTime endDate = qryDto.RegistedDateEnd.ToDate();
                         if (StartDate <= endDate)
-                            return irep.Entities.Where(m => m.RegistedDate >= StartDate && m.RegistedDate <= endDate).ToList();
-                        else return irep.Entities.Where(m => m.RegistedDate >= StartDate).ToList();
+                            WorkerArchivesInfoList = irep.Entities.Where(m => m.RegistedDate >= StartDate && m.RegistedDate <= endDate).ToList();
+                        else WorkerArchivesInfoList = irep.Entities.Where(m => m.RegistedDate >= StartDate).ToList();
+                        return WorkerArchivesInfoList;
                     case 4: //直接 间接
-                        return irep.Entities.Where(m => m.PostNature == qryDto.PostNature).ToList(); 
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.PostNature == qryDto.PostNature).ToList();
+                        return WorkerArchivesInfoList;
                     case 5://职工属性
-                        return irep.Entities.Where(m => m.WorkerIdType.StartsWith(qryDto.WorkerIdType)).ToList();
-                     
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkerIdType.StartsWith(qryDto.WorkerIdType)).ToList();
+                        return WorkerArchivesInfoList;
+
                     case 0: //在职全部人员
-                        return irep.Entities.Where(m => m.WorkingStatus .StartsWith("在职")).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith("在职")).ToList();
+                        return WorkerArchivesInfoList;
                     default:
-                        return new List<ArchivesEmployeeIdentityModel>();
+                        return WorkerArchivesInfoList;
                 }
             }
             catch (Exception ex)
@@ -443,6 +453,27 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         }
 
+        public MemoryStream BuildWorkerArchivesInfoList()
+        {
+            //IdentityID, WorkerId, WorkerIdNumType, WorkerIdType, Name, CardID, Organizetion, Department, 
+            // DepartmentChangeRecord, Post, PostNature, PostType, PostChangeRecord, Sex, Birthday, Address, Nation, 
+            // SignGovernment, LimitedDate, NewAddress, PoliticalStatus, NativePlace, RegisteredPermanent, MarryStatus
+            //BirthMonth, IdentityExpirationDate, PersonalPicture, SchoolName, MajorName, Education, FamilyPhone, TelPhone
+            //CertificateName, WorkingStatus, RegistedDate,
+            List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                 new FileFieldMapping ("Number","项次") ,
+                  new FileFieldMapping ("IdentityID","身份证号码")  ,
+                  new FileFieldMapping ("WorkerId","作业工号") ,
+                  new FileFieldMapping ("WorkerIdType","工号类型") ,
+                  new FileFieldMapping ("Name","姓名")  ,
+                  new FileFieldMapping ("Department","部门"),
+                  new FileFieldMapping ("Post","岗位"),
+                    new FileFieldMapping ("PostType","岗位性质")
+                };
+            
+            var dataTableGrouping = WorkerArchivesInfoList.GetGroupList<ArchivesEmployeeIdentityModel>("SafekeepDepartment");
+            return dataTableGrouping.ExportToExcelMultiSheets<ArchivesEmployeeIdentityModel>(fieldmappping);
+        }
         #endregion find data method
     }
 
