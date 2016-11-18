@@ -44,6 +44,14 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
         return ajaxService.getData(url, {});
     };
 
+    ///获取档案数据
+    hrArchive.getWorkerArchives = function (searchMode) {
+        var url = archiveUrlPrefix + 'GetWorkerArchives';
+        return ajaxService.getData(url, {
+            searchMode: searchMode,
+        });
+    };
+
     //获取该工号列表的所有人员信息
     //mode:0为部门或岗位信息
     //1:为学习信息;2：为联系方式信息
@@ -169,6 +177,7 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
 
 
     var archiveInput = {
+        activeTab:'inputTab',
         opSign:'add',
         //输入成功的员工档案数据信息
         inputedEmployeeDatas:[],
@@ -202,9 +211,12 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         //根据身份证号后六位获取的数据是否唯一
         isSingle: true,
         setIdentityValue: function () {
-            employeeIdentity.IdentityID = archiveInput.identityInfo.IdentityID;
-            employeeIdentity.Name = archiveInput.identityInfo.Name;
-            employeeIdentity.NativePlace = archiveInput.identityInfo.NativePlace;
+            if (archiveInput.identityInfo.IdentityID !== null)
+            {
+                employeeIdentity.IdentityID = archiveInput.identityInfo.IdentityID;
+                employeeIdentity.Name = archiveInput.identityInfo.Name;
+                employeeIdentity.NativePlace = archiveInput.identityInfo.NativePlace;
+            }
         },
         //根据身份证号获取身份证数据
         getIdentityInfo: function ($event) {
@@ -220,6 +232,7 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
                             var identityItem = datas[0];
                             archiveInput.identityInfo = identityItem.Identity;
                             archiveInput.showIdentityExpireInfoMsgModal(identityItem.IsExpire);
+                            archiveInput.setIdentityValue();
                         }
                         else {
                             angular.forEach(datas, function (item) {
@@ -230,7 +243,6 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
                     else {
                         leeHelper.clearVM(archiveInput.identityInfo);
                     }
-                    archiveInput.setIdentityValue();
                 });
             }
         },
@@ -316,6 +328,14 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         goToEditCertificate: function () {
             archiveInput.navigateTo(5);
         },
+        editDatas: [],
+        //获取档案数据
+        getWorkerArchiveDatas: function (searchMode)
+        {
+            $scope.searchPromise = hrArchivesDataOpService.getWorkerArchives(searchMode).then(function (data) {
+
+            });
+        }
     }
     $scope.configPromise = hrArchivesDataOpService.getArchiveConfigDatas().then(function (datas) {
         

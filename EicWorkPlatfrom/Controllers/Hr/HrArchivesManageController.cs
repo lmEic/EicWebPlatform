@@ -79,7 +79,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
                     if (m.PersonalPicture != null)
                         //将个人的图片信息转换为Base64字符串编码保存到此属性中
                         m.NewAddress = Convert.ToBase64String(m.PersonalPicture);
-                    vm = new IdentityViewModel() { Identity = m, IsExpire = ArchiveService.ArchivesManager.IdentityManager.IdentityLimitDateIsExpired(m) };
+                    vm = new IdentityViewModel() { Identity = m, IsExpire = ArchiveService.ArchivesManager.IdentityManager.IdentityLimitDateIsExpired(m),Name=m.Name };
                     datas.Add(vm);
                 });
             }
@@ -140,6 +140,16 @@ namespace EicWorkPlatfrom.Controllers.Hr
             employee.OpPerson = OnLineUser.UserName;
             var result = ArchiveService.ArchivesManager.Store(employee, oldEmployeeIdentity, opSign);
             return Json(result);
+        }
+        /// <summary>
+        /// 获取档案数据
+        /// </summary>
+        /// <param name="searchMode"></param>
+        /// <returns></returns>
+        public ContentResult GetWorkerArchives(int searchMode)
+        {
+            var data = 0; //待填写
+            return DateJsonResult(data);
         }
 
         /// <summary>
@@ -301,6 +311,10 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// 身份证是否过期
         /// </summary>
         public bool IsExpire { get; set; }
+        /// <summary>
+        /// 姓名
+        /// </summary>
+        public string Name { get; set; }
     }
 
     /// <summary>
