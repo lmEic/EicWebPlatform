@@ -396,6 +396,43 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             return this.irep.GetWorkerInfos(sqlWhere);
         }
 
+        public List<ArchivesEmployeeIdentityModel>QueryArchivesInfo(QueryWorkerArchivesDto qryDto=null ,int searchMode=0)
+        {
+            try
+            {
+                switch (qryDto.SearchMode)
+                {
+                    case 1: //依工号查询
+                        return irep.Entities.Where(m => m.WorkerId.StartsWith (qryDto.WorkerId)).ToList();
+
+                    case 2: //依部门查询
+                        return irep.Entities.Where(m => m.Department.StartsWith(qryDto.Department)).ToList();
+
+                    case 3: //依入职时间段查询
+                        DateTime StartDate = qryDto.RegistedDateStart.ToDate();
+                        DateTime endDate = qryDto.RegistedDateEnd.ToDate();
+                        if (StartDate <= endDate)
+                            return irep.Entities.Where(m => m.RegistedDate >= StartDate && m.RegistedDate <= endDate).ToList();
+                        else return irep.Entities.Where(m => m.RegistedDate >= StartDate).ToList();
+                    case 4: 
+                     
+
+                    case 5: 
+                     
+                    case 6: 
+                      
+
+                    default:
+                        return new List<ArchivesEmployeeIdentityModel>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+
+        }
+
         #endregion find data method
     }
 
