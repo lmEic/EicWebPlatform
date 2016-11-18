@@ -112,6 +112,14 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
 
         });
     };
+    ///变更工号
+    hrArchive.changeWorkerId = function (workerId, newWorkerId) {
+        var url = archiveUrlPrefix + 'ChangeWorkerId';
+        return ajaxService.postData(url, {
+            workerId: workerId,
+            newWorkerId: newWorkerId,
+        });
+    };
 
     return hrArchive;
 });
@@ -1073,4 +1081,93 @@ hrModule.controller('arLeaveOffCtrl', function ($scope, hrArchivesDataOpService,
         });
     });
     
+})
+//变更工号控制器
+hrModule.controller('arChangeWorkerIdCtrl', function ($scope, hrArchivesDataOpService, connDataOpService) {
+    ///离职视图模型
+    var uiVM = {
+        ID: null,
+        WorkerId: null,
+        WorkerName: null,
+        Department: null,
+        Post: null,
+        WorkerIdNumType: 0,
+        WorkerIdType: '',
+        NewWorkerId:null,
+        OpSign: 'add',
+    }
+    $scope.vm = uiVM;
+
+    var vmCopy = _.clone(uiVM);
+
+    var vmManager = {
+        init: function () {
+            uiVM = vmCopy;
+            vmManager.workerId = '';
+            vmManager.workerInfo = null;
+            $scope.vm = uiVM;
+        },
+        workerId: null,
+      
+        workerInfo: null,
+        getWorker: function ($event) {
+            if (event.keyCode == 13) {
+                if (vmManager.workerId !== undefined && vmManager.workerId.length >= 6) {
+                    $scope.searchPromise = connDataOpService.getWorkersBy(vmManager.workerId).then(function (datas) {
+                        if (angular.isArray(datas) && datas.length > 0) {
+                            vmManager.workerInfo = datas[0];
+                        }
+                    });
+                }
+            }
+        },
+        setVmValue: function () {
+            uiVM.ID = vmManager.workerInfo.IdentityID;
+            uiVM.WorkerId = vmManager.workerInfo.WorkerId;
+            uiVM.WorkerName = vmManager.workerInfo.Name;
+            uiVM.Department = vmManager.workerInfo.Department;
+            uiVM.Post = vmManager.workerInfo.Post;
+
+        },
+        //作业工号配置数据
+        workerIdConfigs:[],
+        //工号数字类别
+        workerIdCategories: [],
+        selectWorkerIdCategory: function () {
+            var workerIdTypes = _.where(vmManager.workerIdConfigs, { ParentDataNodeText: $scope.vm.WorkerIdNumType });
+            angular.forEach(workerIdTypes, function (dataitem) {
+                vmManager.workerIdTypes.push({ name: dataitem.DataNodeText, text: dataitem.DataNodeText });
+            });
+           
+            hrArchivesDataOpService.getWorkerIdBy($scope.vm.WorkerIdNumType).then(function (data) {
+                $scope.vm.NewWorkerId = data;
+            });
+        },
+        //工号具体类型
+        workerIdTypes: [],
+    };
+    $scope.vmManager = vmManager;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.changeWorkerId = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            hrArchivesDataOpService.changeWorkerId(vmManager.workerId, $scope.vm.NewWorkerId).then(function (opResult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
+                    vmManager.init();
+                })
+            })
+        })
+    };
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); })
+    };
+
+    $scope.promise = connDataOpService.loadConfigDicData('ArchiiveConfig', 'WorkerIdCategory').then(function (datas) {
+        vmManager.workerIdConfigs = datas;
+        var workerIdCategories = _.where(datas, { ParentDataNodeText: '工号类别' });
+        angular.forEach(workerIdCategories, function (dataitem) {
+                vmManager.workerIdCategories.push({ name: dataitem.DataNodeName, text: dataitem.DataNodeText });
+        });
+    });
+
 })

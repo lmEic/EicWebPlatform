@@ -4,7 +4,405 @@
     </div>
     <div class="panel-body">
         <div bs-tabs bs-active-pane="archive.activeTab">
-           
+            <div bs-pane data-title="档案登记" data-name="inputTab">
+                <div class="row">
+                    <div class="col-md-10">
+                        <form role="form" name="employeeIdentityForm" novalidate class="form-horizontal">
+                            <div class="well">
+                                <div class="form-group">
+                                    <div class="col-md-5">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <label for="registedDate">报到日期</label>
+                                            </div>
+                                            <input name="registedDate" class="form-control" type="date" ng-model="vm.RegistedDate" required />
+                                            <div class="error-messages" ng-messages="employeeIdentityForm.registedDate.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">报到日期不能为空</small>
+                                            </div>
+                                            <div class="input-group-addon">
+                                                <span class="fa fa-ellipsis-v"></span>
+                                            </div>
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-success" ng-model="vm.RegistedSegment"
+                                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="时间段"
+                                                        data-bs-options="seg.name as seg.text for seg in archive.registedTimeSegments" data-bs-select>
+                                                    时间段<span class="caret"></span>
+                                                </button>
+                                                <input name="registedSegment" class="form-control" ng-model="vm.RegistedSegment" ng-show="false" required />
+                                                <div class="error-messages" ng-messages="employeeIdentityForm.registedSegment.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">报到日期不能为空</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="input-group" cg-busy="{promise:identityPromise}">
+                                            <div class="input-group-addon">
+                                                <label>身份证号码</label>
+                                            </div>
+                                            <input name="identityID" class="form-control" ng-model="vm.IdentityID"
+                                                   ng-change="archive.getIdentityInfo()" placeholder="输入身份证号码后六位" required />
+                                            <div class="error-messages" ng-messages="employeeIdentityForm.identityID.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">身份证号码不能为空</small>
+                                            </div>
+                                            <div class="input-group-btn" ng-hide="archive.isSingle">
+                                                <button type="button" class="btn btn-default" ng-model="vm.Name"
+                                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择姓名"
+                                                        data-bs-options="n.name as n.text for n in archive.namesInfo" ng-change="archive.selectName()" data-bs-select>
+                                                    选择姓名 <span class="caret"></span>
+                                                </button>
+                                            </div>
+                                            <div class="input-group-addon" ng-show="archive.isSingle">
+                                                <label class="label label-primary">{{vm.Name}}</label>
+                                            </div>
+                                            <div class="error-messages" ng-messages="employeeIdentityForm.name.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">姓名不能为空</small>
+                                            </div>
+                                            <div class="input-group-addon">
+                                                <img class="img-circle" style="max-width:32px;max-height:20px;" ng-src="data:image/jpg;base64,{{archive.identityInfo.NewAddress}}" />
+                                            </div>
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-sm btn-primary"><i ng-click="archive.showIdentityBoard()" class="{{archive.showIdetityIcon}}"></i></button>报到日期
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive" ng-show="archive.showIdentitySwitch">
+                                    <table class="table">
+                                        <tr>
+                                            <td>身份证号</td>
+                                            <td><strong>{{archive.identityInfo.IdentityID}}</strong></td>
+                                            <td>姓名</td>
+                                            <td><strong>{{archive.identityInfo.Name}}</strong></td>
+                                            <td>性别</td>
+                                            <td><strong>{{archive.identityInfo.Sex}}</strong></td>
+                                            <td rowspan="3"><img ng-src="data:image/jpg;base64,{{archive.identityInfo.NewAddress}}" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>家庭住址</td>
+                                            <td><strong>{{archive.identityInfo.Address}}</strong></td>
+                                            <td>出生日期</td>
+                                            <td><strong>{{archive.identityInfo.Birthday}}</strong></td>
+                                            <td>民族</td>
+                                            <td><strong>{{archive.identityInfo.Nation}}</strong></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>发证机关</td>
+                                            <td><strong>{{archive.identityInfo.SignGovernment}}</strong></td>
+                                            <td>有效期</td>
+                                            <td colspan="3"><strong>{{archive.identityInfo.LimitedDate}}</strong></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="well" cg-busy="{promise:configPromise}">
+                                <fieldset>
+                                    <legend>
+                                        <button class="{{btn.defaultCls}}" ng-repeat="btn in archive.btnTypes" ng-click="archive.selectBtnType(btn)">
+                                            {{btn.text}}<span class="badge"><i class="{{btn.iconCls}}"></i></span>
+                                        </button>
+                                    </legend>
+
+                                    <div ng-show="archive.currentBtnType.name==='workerInfo'">
+                                        <div class="form-group">
+                                            <div class="col-md-7">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <label for="workerIdNumType">工号类别</label>
+                                                    </div>
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-model="vm.WorkerIdNumType"
+                                                                data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择工号数字类别"
+                                                                ng-change="archive.selectWorkerIdCategory()"
+                                                                data-bs-options="workerIdNumType.name as workerIdNumType.text for workerIdNumType in archive.workerIdCategories" data-bs-select>
+                                                            选择工号数字类别 <span class="caret"></span>
+                                                        </button>
+                                                        <input name="workerIdNumType" class="form-control" ng-model="vm.WorkerIdNumType" ng-show="false" required />
+                                                        <div class="error-messages" ng-messages="employeeIdentityForm.workerIdNumType.$error" ng-show="operate.showValidation">
+                                                            <small ng-message="required">作业工号数字类型不能为空</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-ellipsis-v"></i>
+                                                    </div>
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-success" ng-model="vm.WorkerIdType"
+                                                                data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择工号类别"
+                                                                data-bs-options="workerIdType.name as workerIdType.text for workerIdType in archive.workerIdTypes" data-bs-select>
+                                                            选择工号类别 <span class="caret"></span>
+                                                        </button>
+                                                        <input name="workerIdType" class="form-control" ng-model="vm.WorkerIdType" ng-show="false" required />
+                                                        <div class="error-messages" ng-messages="employeeIdentityForm.workerIdType.$error" ng-show="operate.showValidation">
+                                                            <small ng-message="required">作业工号类型不能为空</small>
+                                                        </div>
+                                                    </div>
+                                                    <input name="workerIdT" class="form-control" readonly ng-model="vm.WorkerId" placeholder="作业工号" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <label>籍贯</label>
+                                                    </div>
+                                                    <input name="nation" class="form-control" ng-model="vm.NativePlace" readonly placeholder="籍贯" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-7">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <label for="politicalStatus">政治面貌</label>
+                                                    </div>
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-model="vm.PoliticalStatus"
+                                                                data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择政治面貌"
+                                                                data-bs-options="ps.name as ps.text for ps in archive.politicalStatus" data-bs-select>
+                                                            选择政治面貌<span class="caret"></span>
+                                                        </button>
+                                                        <input name="politicalStatus" class="form-control" ng-model="vm.PoliticalStatus" ng-show="false" required />
+                                                        <div class="error-messages" ng-messages="employeeIdentityForm.politicalStatus.$error" ng-show="operate.showValidation">
+                                                            <small ng-message="required">政治面貌不能为空</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-group-addon">
+                                                        <label for="registeredPermanent">户口</label>
+                                                    </div>
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-model="vm.RegisteredPermanent"
+                                                                data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择户口"
+                                                                data-bs-options="rp.name as rp.text for rp in archive.registeredPermanents" data-bs-select>
+                                                            选择户口<span class="caret"></span>
+                                                        </button>
+                                                        <input name="registeredPermanent" class="form-control" ng-model="vm.RegisteredPermanent" ng-show="false" required />
+                                                        <div class="error-messages" ng-messages="employeeIdentityForm.registeredPermanent.$error" ng-show="operate.showValidation">
+                                                            <small ng-message="required">户口不能为空</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <label for="marryStatus">婚否</label>
+                                                    </div>
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-model="vm.MarryStatus"
+                                                                data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择婚否"
+                                                                data-bs-options="ms.name as ms.text for ms in archive.marryStatuses" data-bs-select>
+                                                            选择婚否<span class="caret"></span>
+                                                        </button>
+                                                        <input name="marryStatus" class="form-control" ng-model="vm.MarryStatus" ng-show="false" required />
+                                                        <div class="error-messages" ng-messages="employeeIdentityForm.marryStatus.$error" ng-show="operate.showValidation">
+                                                            <small ng-message="required">婚姻状态不能为空</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button class="btn btn-sm btn-info" ng-click="archive.goToEditDepartment()"><i class="fa fa-hand-o-right"></i>保存并继续编辑部门信息</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div ng-show="archive.currentBtnType.name==='department'">
+                                        <div class="form-group">
+                                            <div class="control-label col-md-2">
+                                                <label>部门名称：</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-default" style="margin-bottom:6px;" ng-click="archive.selectDepartment()"
+                                                        data-title="选择部门名称"
+                                                        data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
+                                                        data-animation="am-flip-x" data-auto-close="1"
+                                                        data-bs-popover>
+                                                    选择部门名称
+                                                    <span class="label label-warning" ng-hide="vm.DepartmentText===null"><strong>{{vm.DepartmentText}}</strong></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="form-group">
+                                            <div class="col-md-6">
+                                                <button class="btn btn-sm btn-info" ng-click="archive.goToEditPost()"><i class="fa fa-hand-o-right"></i>保存并继续编辑岗位信息</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div ng-show="archive.currentBtnType.name==='post'">
+                                        <div class="form-group">
+                                            <label for="postNature" class="col-md-2 control-label">岗位性质</label>
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-default" ng-model="vm.PostNature"
+                                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择岗位性质"
+                                                        data-bs-options="pn.name as pn.text for pn in archive.postNatures" data-bs-select>
+                                                    选择岗位性质 <span class="caret"></span>
+                                                </button>
+                                                <input name="postNature" class="form-control" ng-model="vm.PostNature" ng-show="false" required />
+                                                <div class="error-messages" ng-messages="employeeIdentityForm.postNature.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">岗位性质不能为空</small>
+                                                </div>
+                                            </div>
+
+                                            <div class="control-label col-md-2">
+                                                <label>岗位信息：</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="btn btn-default" style="margin-bottom:6px;" ng-click="archive.selectPost()"
+                                                     data-title="选择岗位名称"
+                                                     data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
+                                                     data-animation="am-flip-x" data-auto-close="1"
+                                                     data-bs-popover>
+                                                    选择岗位信息
+                                                    <span class="label label-success" ng-hide="vm.PostType===null">
+                                                        <strong>{{vm.PostType}}</strong>
+                                                    </span>
+                                                    <i class="fa fa-angle-double-right" ng-hide="vm.PostType===null"></i>
+                                                    <input name="postType" class="form-control" ng-model="vm.PostType" ng-show="false" required />
+                                                    <span class="error-messages" ng-messages="employeeIdentityForm.postType.$error" ng-show="operate.showValidation">
+                                                        <small ng-message="required">岗位类型不能为空</small>
+                                                    </span>
+
+                                                    <span class="label label-warning" ng-hide="vm.Post===null">
+                                                        <strong>{{vm.Post}}</strong>
+                                                    </span>
+                                                    <input name="post" class="form-control" ng-model="vm.Post" ng-show="false" required />
+                                                    <span class="error-messages" ng-messages="employeeIdentityForm.post.$error" ng-show="operate.showValidation">
+                                                        <small ng-message="required">岗位名称不能为空</small>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <button class="btn btn-sm btn-info" ng-click="archive.goToEditSchool()"><i class="fa fa-hand-o-right"></i>保存并继续编辑学历信息</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div ng-show="archive.currentBtnType.name==='school'">
+                                        <div class="form-group">
+                                            <label for="studyDateFrom" class="col-md-2 control-label">起始日期</label>
+                                            <div class="col-md-3">
+                                                <input name="studyDateFrom" class="form-control" ng-model="vm.StudyDateFrom" type="date" required />
+                                                <div class="error-messages" ng-messages="employeeIdentityForm.studyDateFrom.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">起始日期不能为空</small>
+                                                </div>
+                                            </div>
+                                            <label for="studyDateTo" class="col-md-1 control-label">至</label>
+                                            <div class="col-md-3">
+                                                <input name="studyDateTo" class="form-control" ng-model="vm.StudyDateTo" type="date" required />
+                                                <div class="error-messages" ng-messages="employeeIdentityForm.studyDateTo.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">结束日期不能为空</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="schoolName" class="col-md-2 control-label">学校名称</label>
+                                            <div class="col-md-7">
+                                                <input name="schoolName" class="form-control" ng-model="vm.SchoolName" required />
+                                                <div class="error-messages" ng-messages="employeeIdentityForm.schoolName.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">学校名称不能为空</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="majorName" class="col-md-2 control-label">专业名称</label>
+                                            <div class="col-md-3">
+                                                <input name="majorName" class="form-control" ng-model="vm.MajorName" />
+                                            </div>
+                                            <label for="education" class="col-md-2 control-label">获得学历</label>
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-default" ng-model="vm.Education"
+                                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择获得学历"
+                                                        data-bs-options="qu.name as qu.text for qu in archive.qulifacations" data-bs-select>
+                                                    选择获得学历<span class="caret"></span>
+                                                </button>
+                                                <input name="education" class="form-control" ng-model="vm.Education" ng-show="false" required />
+                                                <div class="error-messages" ng-messages="employeeIdentityForm.education.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">学历不能为空</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button class="btn btn-sm btn-info" ng-click="archive.goToEditTel()"><i class="fa fa-hand-o-right"></i>保存并继续编辑联系方式信息</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div ng-show="archive.currentBtnType.name==='tel'">
+                                        <div class="form-group">
+                                            <label for="personPhone" class="col-md-2 control-label">手机号码</label>
+                                            <div class="col-md-4">
+                                                <input name="personPhone" class="form-control" ng-model="vm.PersonPhone" placeholder="输入格式：xxxx-xxxxxxxx" required />
+                                                <div class="error-messages" ng-messages="employeeIdentityForm.personPhone.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">手机号码不能为空</small>
+                                                </div>
+                                            </div>
+                                            <label for="telPhone" class="col-md-2 control-label">联系电话</label>
+                                            <div class="col-md-4">
+                                                <input name="telPhone" class="form-control" ng-model="vm.TelPhone" placeholder="输入格式：xxx xxxx xxxx" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="familyPhone" class="col-md-2 control-label">家庭电话</label>
+                                            <div class="col-md-4">
+                                                <input name="familyPhone" class="form-control" ng-model="vm.FamilyPhone" placeholder="输入格式：xxxx-xxxxxxxx" />
+                                            </div>
+
+                                            <label for="memo" class="col-md-2 control-label">备注</label>
+                                            <div class="col-md-4">
+                                                <input name="memo" class="form-control" ng-model="vm.Memo" />
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button class="btn btn-sm btn-info" ng-click="operate.saveAll(employeeIdentityForm.$valid)"><i class="fa fa-hand-o-right"></i>保存全部数据并继续编辑下一个人员信息</button>
+                                                <button class="btn btn-sm btn-primary" ng-click="archive.saveTelInfo()"><i class="fa fa-hand-o-right"></i>保存</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="alert alert-info">
+                                <button class="btn btn-primary" ng-click="operate.saveAll(employeeIdentityForm.$valid)"><i class="fa fa-save"></i>保存</button>
+                                <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                <span ng-class="operate.result==true ? 'alert alert-success':'alert alert-danger'" ng-show="operate.msgDisplay">
+                                    <i class="fa fa-info-circle"></i>
+                                    {{operate.message}}
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2">
+                        <ul class="list-group">
+                            <li ng-repeat="emp in archive.inputedEmployeeDatas" class="list-group-item list-group-item-info">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <img ng-src="data:image/jpg;base64,{{emp.identityInfo.NewAddress}}" class="img-circle" style="width:24px;height:24px;" />
+                                        <span>
+                                            {{emp.employee.Name}}({{emp.employee.WorkerId}})
+                                        </span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span class="btn btn-xs btn-info" ng-click="operate.edit(emp)">修改</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <div bs-pane data-title="档案查询" data-name="queryTab">
                 <div bs-tabs bs-active-pane="archive.queryActiveTab">
                     <div bs-pane data-title="全部" data-name="qryAllTab">
@@ -141,6 +539,5 @@
 
             </div>
         </div>
-
     </div>
 </div>

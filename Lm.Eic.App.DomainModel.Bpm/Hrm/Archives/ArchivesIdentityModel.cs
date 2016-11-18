@@ -1837,7 +1837,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
 
         public string PersonImageUrl
         {
-            get { return "data:image/jpg;base64," + Convert.ToBase64String(this.PersonalPicture); }
+            get 
+            {
+                return "data:image/jpg;base64," + (this.PersonalPicture != null ? Convert.ToBase64String(this.PersonalPicture) : "");
+            }
         }
     }
 

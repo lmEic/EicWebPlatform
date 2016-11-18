@@ -35,8 +35,11 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
      .state('hrTelManage', {
          templateUrl: 'HrArchivesManage/HrTelManage',
      })
+     .state('hrChangeWorkerId', {
+         templateUrl: 'HrArchivesManage/HrChangeWorkerId',
+     })
      .state('hrLeaveOffManage', {
-         templateUrl: 'HrArchivesManage/HrLeaveOffManage',
+             templateUrl: 'HrArchivesManage/HrLeaveOffManage',
      })
     //--------------档案业务管理--------------------------
      .state('hrPrintCard', {
