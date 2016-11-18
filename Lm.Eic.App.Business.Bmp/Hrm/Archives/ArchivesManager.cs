@@ -395,7 +395,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             return this.irep.GetWorkerInfos(sqlWhere);
         }
-
+        /// <summary>
+        /// 人员档案查询
+        /// </summary>
+        /// <param name="qryDto"></param>
+        /// <param name="searchMode"></param>
+        /// 0: 默认载入全部在职数据
+        /// 1：根据人员工号查询
+        /// 2：根据人员所属部门载入数据
+        /// 3：依入职时间段查询
+        /// 4：直接/间接
+        /// 5：职工属性
+        /// <returns></returns>
         public List<ArchivesEmployeeIdentityModel>QueryArchivesInfo(QueryWorkerArchivesDto qryDto=null ,int searchMode=0)
         {
             try
@@ -414,14 +425,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                         if (StartDate <= endDate)
                             return irep.Entities.Where(m => m.RegistedDate >= StartDate && m.RegistedDate <= endDate).ToList();
                         else return irep.Entities.Where(m => m.RegistedDate >= StartDate).ToList();
-                    case 4: 
+                    case 4: //直接 间接
+                        return irep.Entities.Where(m => m.PostNature == qryDto.PostNature).ToList(); 
+                    case 5://职工属性
+                        return irep.Entities.Where(m => m.WorkerIdType.StartsWith(qryDto.WorkerIdType)).ToList();
                      
-
-                    case 5: 
-                     
-                    case 6: 
-                      
-
+                    case 0: //在职全部人员
+                        return irep.Entities.Where(m => m.WorkingStatus .StartsWith("在职")).ToList();
                     default:
                         return new List<ArchivesEmployeeIdentityModel>();
                 }

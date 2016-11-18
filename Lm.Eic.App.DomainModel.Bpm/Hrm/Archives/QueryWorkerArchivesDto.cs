@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
 {
+    /// <summary>
+    /// 查询职工档案转输入对象
+    /// </summary>
     public class QueryWorkerArchivesDto
     {
          string _Department;
@@ -25,27 +28,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
                 }
             }
         }
-
-        private List<string> _WorkerIdList;
-
-        /// <summary>
-        /// 作业工号列表
-        /// </summary>
-        public List<string> WorkerIdList
-        {
-            get
-            {
-                return _WorkerIdList;
-            }
-            set
-            {
-                if (_WorkerIdList != value)
-                {
-                    _WorkerIdList = value;
-                }
-            }
-        }
-
+        
         private string _WorkerId;
         /// <summary>
         /// 作业工号

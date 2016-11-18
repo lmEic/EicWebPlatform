@@ -1824,7 +1824,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             get { return _classtype; }
         }
 
-        private byte[] _personalpicture;
+        private byte[] _personalpicture=null ;
 
         /// <summary>
         ///照片
