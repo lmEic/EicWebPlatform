@@ -146,6 +146,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// </summary>
         /// <param name="searchMode"></param>
         /// <returns></returns>
+        [NoAuthenCheck]
         public ContentResult GetWorkerArchives(int searchMode)
         {
             var data = 0; //待填写
@@ -300,6 +301,28 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var data = GetBase64Url(imgBytes);
 
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 变更工号
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult HrChangeWorkerId()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 变更工号办理
+        /// </summary>
+        /// <param name="workerId"></param>
+        /// <param name="newWorkerId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult ChangeWorkerId(string workerId, string newWorkerId)
+        {
+            var opResult = 0;
+            return Json(opResult);
         }
     }
 
