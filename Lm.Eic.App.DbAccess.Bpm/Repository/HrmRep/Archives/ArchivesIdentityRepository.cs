@@ -3,6 +3,7 @@ using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System.Collections.Generic;
 using System.Data;
+using System;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
 {
@@ -133,6 +134,50 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
         {
             string sqlText = string.Format("UPDATE  Archives_EmployeeIdentityInfo SET  WorkingStatus ='{0}' WHERE   (WorkerId = '{1}')", workingStatus, workerId);
             return DbHelper.Hrm.ExecuteNonQuery(sqlText);
+        }
+    }
+
+    public interface IArWorkerIdChangedRepository:IRepository <WorkerChangedModel>
+    {
+        int UpdateAllTableWorkerId(string oldWorkerId, string newWorkreId);
+        
+    }
+    public class ArworkerIdChangedRepository : HrmRepositoryBase<WorkerChangedModel>, IArWorkerIdChangedRepository
+    {
+        public int UpdateAllTableWorkerId(string oldWorkerId, string newWorkreId)
+        {
+
+            try
+            {
+                int updateInt = 0;
+                string wheresqlText = string.Format(" WHERE (workerid='{0}')", oldWorkerId);
+
+                string setSqlText = string.Format(" set (workerid='{0}') ", newWorkreId);
+                List<string> updateTable = new List<string>()
+                {
+                    "Archives_Study",
+                    "Archives_TelInfo",
+                    "Archives_WorkerInfo",
+                    "Attendance_CardSet",
+                    "Attendance_ClassType",
+                    "Archives_EmployeeIdentityInfo",
+                    "Archives_IdentitySumerize"
+                };
+                updateTable.ForEach(e =>
+                {
+
+                    updateInt += DbHelper.Hrm.ExecuteNonQuery("Upadte " + e + setSqlText + wheresqlText);
+                });
+
+                return updateInt;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+          
         }
     }
 }

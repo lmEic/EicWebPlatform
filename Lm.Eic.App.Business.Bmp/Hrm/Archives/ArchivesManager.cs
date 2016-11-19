@@ -32,6 +32,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         private List<ArchivesEmployeeIdentityModel> WorkerArchivesInfoList = null;
         private ArIdentityInfoManager identityManager = null;
+      
+       
 
         /// <summary>
         /// 身份证管理器
@@ -100,6 +102,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
         }
 
+        /// <summary>
+        /// 工号变更管理
+        /// </summary>
+        public ArWorkerIdChangeManager WorkerIdChangeManager
+        {
+            get { return OBulider.BuildInstance<ArWorkerIdChangeManager>(); }
+        }
         #endregion property
 
         #region constructure

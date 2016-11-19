@@ -117,4 +117,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             this.ToTable("Archives_LeaveOffice");
         }
     }
+   
+    public class ArWorkerIdChangedMapping:EntityTypeConfiguration <WorkerChangedModel>
+    {
+        public ArWorkerIdChangedMapping ()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Archives_WorkerIdChanged");
+        }
+    }
 }
