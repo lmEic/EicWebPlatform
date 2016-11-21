@@ -60,8 +60,12 @@
   <ItemGroup>
     <Compile Include="Ast\AstBase.cs" />
     <Compile Include="Ast\AstService.cs" />
+    <Compile Include="Ast\EquipmentCheckManager.cs" />
     <Compile Include="Ast\EquipmentCrud.cs" />
+    <Compile Include="Ast\EquipmentDiscardManager.cs" />
+    <Compile Include="Ast\EquipmentMaintenanceManager.cs" />
     <Compile Include="Ast\EquipmentManager.cs" />
+    <Compile Include="Ast\EquipmentRepairedManager.cs" />
     <Compile Include="Hrm\Archives\ArLeaveOfficeManager.cs" />
     <Compile Include="Hrm\Archives\ArWorkerIdChangeManager.cs" />
     <Compile Include="Pms\BoardManagment\BoardBase.cs" />
