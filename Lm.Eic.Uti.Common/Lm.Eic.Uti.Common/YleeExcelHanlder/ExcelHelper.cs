@@ -86,10 +86,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
                 }
                 return enlist;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
 
         /// <summary>

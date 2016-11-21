@@ -38,5 +38,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
             };
          var Result=   ArchiveService.ArchivesManager.LeaveOffManager.StoreLeaveOffInfo(model);
         }
+
+        public void testWorkerIdChange()
+        {
+
+            var model = new WorkerChangedModel {
+                OldWorkerId = "881359",
+                NewWorkerId ="001359",
+                WorkerName = "万晓桥",
+                OpSign = "add",
+                OpPerson ="万晓桥"
+                
+              
+                
+            };
+            var resulst = ArchiveService.ArchivesManager.WorkerIdChangeManager.StoreWorkerIdChangeInfo(model);
+        }
     }
 }

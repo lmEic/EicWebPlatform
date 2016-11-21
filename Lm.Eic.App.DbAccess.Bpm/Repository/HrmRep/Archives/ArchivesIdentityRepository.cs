@@ -150,9 +150,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
             try
             {
                 int updateInt = 0;
+                string setSqlText = string.Format("  set workerid ='{0}' ", newWorkreId);
                 string wheresqlText = string.Format(" WHERE (workerid='{0}')", oldWorkerId);
-
-                string setSqlText = string.Format(" set (workerid='{0}') ", newWorkreId);
                 List<string> updateTable = new List<string>()
                 {
                     "Archives_Study",
@@ -166,7 +165,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
                 updateTable.ForEach(e =>
                 {
 
-                    updateInt += DbHelper.Hrm.ExecuteNonQuery("Upadte " + e + setSqlText + wheresqlText);
+                    updateInt += DbHelper.Hrm.ExecuteNonQuery("UPDATE  " + e + setSqlText + wheresqlText);
                 });
 
                 return updateInt;
