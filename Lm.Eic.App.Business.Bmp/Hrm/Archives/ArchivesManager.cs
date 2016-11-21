@@ -477,7 +477,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                   new FileFieldMapping ("Name","姓名")  ,
                   new FileFieldMapping ("Department","部门"),
                   new FileFieldMapping ("Post","岗位"),
-                    new FileFieldMapping ("PostType","岗位性质")
+                  new FileFieldMapping ("PostType","岗位性质")
                 };
             
             var dataTableGrouping = WorkerArchivesInfoList.GetGroupList<ArchivesEmployeeIdentityModel>("SafekeepDepartment");

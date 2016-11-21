@@ -336,13 +336,19 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         goToEditCertificate: function () {
             archiveInput.navigateTo(5);
         },
-        editDatas: [],
+        datasets: [],
+        datasource:[],
         //获取档案数据
         getWorkerArchiveDatas: function (searchMode)
         {
-            $scope.searchPromise = hrArchivesDataOpService.getWorkerArchives(searchMode).then(function (data) {
-
+            archiveInput.datasets = [];
+            archiveInput.datasource = [];
+            $scope.searchPromise = hrArchivesDataOpService.getWorkerArchives(searchMode).then(function (datas) {
+                archiveInput.datasource = datas;
             });
+        },
+        exportToExcel: function () {
+            return "HrArchivesManage/BuildWorkerArchivesList/";
         }
     }
     $scope.configPromise = hrArchivesDataOpService.getArchiveConfigDatas().then(function (datas) {

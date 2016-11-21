@@ -152,6 +152,12 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var data = ArchiveService.ArchivesManager.FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto { SearchMode = searchMode }); //待填写
             return DateJsonResult(data);
         }
+        [NoAuthenCheck]
+        public FileResult BuildWorkerArchivesList()
+        {
+            var ms = ArchiveService.ArchivesManager.BuildWorkerArchivesInfoList();
+            return this.ExportToExcel(ms, "员工档案总表", "员工档案总表");
+        }
 
         /// <summary>
         /// 变更部门信息

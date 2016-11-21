@@ -410,15 +410,15 @@
                     </div>
                 </div>
                 <div>
-                    <button class="btn btn-sm btn-primary" ng-click="archive.getWorkerArchiveDatas()"><i class="fa fa-search"></i>查询</button>
-                    <a class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i>导出</a>
+                    <button class="btn btn-sm btn-primary" ng-click="archive.getWorkerArchiveDatas(0)"><i class="fa fa-search"></i>查询</button>
+                    <a class="btn btn-sm btn-success" ng-href="{{archive.exportToExcel()}}"><i class="fa fa-file-excel-o"></i>导出</a>
                 </div>
                 <div class="h-split"></div>
                 <div cg-busy="{promise:searchPromise}">
                     <div class="table-responsive">
                         <table class="table table-bordered table-condensed" style="table-layout:fixed;">
                             <colgroup>
-                                <col width="180" />
+                                <col width="170" />
                                 <col width="90" />
                                 <col width="90" />
                                 <col width="90" />
@@ -428,11 +428,12 @@
                                 <col width="90" />
                                 <col width="90" />
                                 <col width="90" />
+                                <col width="120" />
+                                <col width="345" />
+
                                 <col width="90" />
-                                <col width="90" />
-                                <col width="90" />
-                                <col width="90" />
-                                <col width="90" />
+                                <col width="120" />
+                                <col width="240" />
                                 <col width="90" />
                                 <col width="90" />
                                 <col width="90" />
@@ -443,12 +444,13 @@
                                 <col width="190" />
                                 <col width="90" />
                              
-                                <col width="140" />
-                                <col width="90" />
-                                <col width="90" />
+                                <col width="160" />
+                                <col width="110" />
 
                                 <col width="90" />
-                                <col width="90" />
+
+                                <col width="100" />
+                                <col width="100" />
                                 <col width="90" />
                                 <col width="90" />
                                 <col width="90" />
@@ -495,14 +497,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in vmManager.editDatas track by $index">
+                                <tr ng-repeat="item in archive.datasets track by $index">
                                     <td>{{item.IdentityID}}</td>
                                     <td>{{item.WorkerId}}</td>
                                     <td>{{item.WorkerIdType}}</td>
                                     <td>{{item.Name}}</td>
-                                  
+
                                     <td>{{item.Department}}</td>
-                                   
+
                                     <td>{{item.Post}}</td>
                                     <td>{{item.PostNature}}</td>
                                     <td>{{item.PostType}}</td>
@@ -520,7 +522,8 @@
                                     <td>{{item.MarryStatus}}</td>
                                     <td>{{item.BirthMonth}}</td>
                                     <td>{{item.IdentityExpirationDate}}</td>
-                                    <td>{{item.PersonalPicture}}</td>
+                                    <td></td>
+                                    @*<td>{{item.PersonalPicture}}</td>*@
                                     <td>{{item.SchoolName}}</td>
                                     <td>{{item.MajorName}}</td>
                                     <td>{{item.Education}}</td>
@@ -534,9 +537,12 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div yl-pagination
+                             data-datasource="archive.datasource"
+                             data-dataset="archive.datasets">
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
