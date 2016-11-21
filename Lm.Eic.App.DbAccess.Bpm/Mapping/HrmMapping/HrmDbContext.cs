@@ -94,6 +94,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
 
             //总务
             modelBuilder.Configurations.Add(new WorkClothesManageModelMapping());
+            //工号变更
+            modelBuilder.Configurations.Add(new ArWorkerIdChangedMapping());
         }
     }
 

@@ -21,7 +21,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             crud = new ArWorkerIdChangeCurd();
         }
 
-        public OpResult StoreLeaveOffInfo(WorkerChangedModel entity)
+        public OpResult StoreWorkerIdChangeInfo(WorkerChangedModel entity)
         {
             return this.crud.Store(entity);
         }
@@ -41,7 +41,7 @@ internal class ArWorkerIdChangeCurd:CrudBase <WorkerChangedModel,IArWorkerIdChan
             int record = this.irep.Insert(entity);
             if (record > 0)
             {
-                return this.irep.UpdateAllTableWorkerId(entity.NewWorkerId, entity.OldWorkerId).ToOpResult("工号变更操作成功", "工号变更更变失败");
+                return this.irep.UpdateAllTableWorkerId(entity.OldWorkerId,entity.NewWorkerId).ToOpResult("工号变更操作成功", "工号变更更变失败");
             }
             else return OpResult.SetResult("工号变更失败", true);
 
