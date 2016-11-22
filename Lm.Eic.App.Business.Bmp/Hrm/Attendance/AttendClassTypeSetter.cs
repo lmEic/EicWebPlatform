@@ -39,7 +39,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         {
             int record = 0;
             if (!this.irep.IsExist(e => e.WorkerId == entity.WorkerId))
+            {
                 record = this.irep.Insert(entity);
+            }
             return record;
         }
 

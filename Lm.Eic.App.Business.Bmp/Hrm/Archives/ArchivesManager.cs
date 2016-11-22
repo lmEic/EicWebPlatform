@@ -614,6 +614,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         private static string GetAreaName(XmlNode root, string areaCode)
         {
             string result = null;
+            bool findresult = false ;
 
             if (root == null)
             {
@@ -624,19 +625,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             {
                 if (root.Attributes.Count > 0)
                 {
+                    
                     if (root.Attributes["code"].Value.Equals(areaCode))
                     {
                         result = root.Attributes["name"].Value;
+                        findresult = true;
                         return result;
                     }
                 }
 
-                if (root.HasChildNodes)
+                if (root.HasChildNodes && !findresult)
                 {
                     result = GetAreaName(root.FirstChild, areaCode);
                 }
 
-                if (root.NextSibling != null)
+                if ((root.NextSibling != null) && !findresult)
                 {
                     result = GetAreaName(root.NextSibling, areaCode);
                 }

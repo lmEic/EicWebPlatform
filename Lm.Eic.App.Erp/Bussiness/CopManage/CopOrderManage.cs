@@ -177,7 +177,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
                   new FileFieldMapping ("OrderCount","工单数量")  ,
                   new FileFieldMapping ("LocaleFinishedCount","现场成品仓") ,
                   new FileFieldMapping ("FreeTradeInHouseCount","库存成品"),
-                  new FileFieldMapping ("AllCheckOrderCountt","全检工单"),
+                  new FileFieldMapping ("AllCheckOrderCount","全检工单"),
                   new FileFieldMapping ("PutInMaterialCount","来料成品"),
                   new FileFieldMapping ("DifferenceCount","差异"),
                   new FileFieldMapping ("More","备注")
