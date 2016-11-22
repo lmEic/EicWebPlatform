@@ -1302,6 +1302,7 @@
     <Content Include="Views\Equipment\AstEquipmentInfoViewTpl.cshtml" />
     <Content Include="Views\HrArchivesManage\HrLeaveOffManage.cshtml" />
     <Content Include="Views\HrArchivesManage\HrChangeWorkerId.cshtml" />
+    <Content Include="Views\PurSupplierManage\EditPurSupplierCertificateViewTpl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

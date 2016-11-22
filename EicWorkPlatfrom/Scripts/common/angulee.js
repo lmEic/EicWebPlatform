@@ -274,7 +274,7 @@ var leeHelper = (function () {
             var reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
             return reg.test(val)
         },
-        ///读入文件并预览
+        ///读入图片文件并预览
         readFile: function (imgId, file) {
             var reader = new FileReader();
             var img = document.getElementById(imgId)

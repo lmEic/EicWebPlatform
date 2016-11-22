@@ -24,6 +24,11 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
             yearStr: yearStr,
         });
     };
+    ///上传供应商证书文件
+    purDb.uploadPurSupplierCertificateFile = function (file) {
+        var url = purUrlPrefix + 'UploadPurSupplierCertificateFile';
+        return ajaxService.uploadFile(url, file);
+    };
 
     return purDb;
 });
@@ -77,16 +82,136 @@ purchaseModule.controller('purSupplierInputCtrl', function ($scope, supplierData
 
 
 //生成合格供应商清单
-purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService, $state) {
+purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService,$modal) {
+
+    var item = {
+        BillAddress
+:
+"慈溪市周巷镇三江口村协同191号",
+        EligibleCertificate
+:
+null,
+        Id_key
+    :
+    0,
+        LastPurchaseDate
+    :
+    "2016-11-22",
+        OpDate
+    :
+    "0001-01-01",
+        OpPerson
+    :
+    null,
+        OpSign
+    :
+    null,
+        OpTime
+    :
+    "0001-01-01",
+        PurchaseType
+    :
+    null,
+        PurchaseUser
+    :
+    "008409    ",
+        Remark
+    :
+    null,
+        SupplierAddress
+    :
+    "慈溪市周巷镇三江口村协同191号",
+        SupplierEmail
+    :
+    "46158433@qq.com",
+        SupplierFaxNo
+    :
+    "63498634",
+        SupplierId
+    :
+    "D04004    ",
+        SupplierName
+    :
+    "慈溪市周巷双溪橡胶制品厂",
+        SupplierProperty
+    :
+    null,
+        SupplierShortName
+    :
+    "双溪橡胶",
+        SupplierTel
+    :
+    "63498634",
+        SupplierUser
+    :
+    "袁晓春",
+        UpperPurchaseDate
+    :
+    "2016-11-19",
+    };
 
     var vmManager = {
         searchYear: new Date().getFullYear(),
         datasets: [],
-        datasource:[],
+        datasource:[item],
         getPurQualifiedSupplier: function () {
             $scope.searchPromise = supplierDataOpService.getPurQualifiedSupplierListBy(vmManager.searchYear).then(function (datas) {
                 vmManager.datasource = datas;
             });
+        },
+        supplierCertificateEditModal: $modal({
+            title: "供应商证书编辑", content: '',
+            templateUrl: leeHelper.controllers.supplierManage + '/EditPurSupplierCertificateViewTpl/',
+            controller: function ($scope) {
+                //$scope.previewFileName = waittingAuditItem.DocumentPath;
+                //$scope.auditMaterialBoard = function () {
+                //    waittingAuditItem.OpSign = 'edit';
+                //    boardDataOpService.auditMaterialBoardData(waittingAuditItem).then(function (opresult) {
+                //        if (opresult.Result) {
+                //            vmManager.editModal.$promise.then(vmManager.editModal.hide);
+                //            leeHelper.remove(vmManager.editDatas, waittingAuditItem);
+                //        }
+                //    });
+                //};
+                var vmManager = {
+                    fileList: [{id:1, fileName: '',certificateName:'', adding: true, uploadSuccess: false }, ],
+                    addFile: function (item) {
+                        item.adding = false;
+                        var id = vmManager.fileList.length + 1;
+                        vmManager.fileList.push({ id: id, fileName: '', certificateName: '', adding: true, uploadSuccess: false });
+                       
+                    },
+                    getFile: function (fileItem) {
+                        vmManager.uploadFileItem = _.clone(fileItem);
+                    },
+                    uploadFileItem:null,
+                };
+                $scope.vmManager = vmManager;
+                ///选择文件并上传
+                $scope.selectFile = function (el) {
+                    var files = el.files;
+                    if (files.length > 0) {
+                        var file = files[0];
+                        var fd = new FormData();
+                        fd.append('file', file);
+                        //上传证书文件
+                        $scope.uploadPromie = supplierDataOpService.uploadPurSupplierCertificateFile(fd).then(function (result) {
+                            if (result) {
+                                var fileItem = _.find(vmManager.fileList, { id: vmManager.uploadFileItem.id });
+                                if (!_.isUndefined(fileItem)) {
+                                    fileItem.uploadSuccess = true;
+                                    fileItem.fileName = file.name;
+                                }
+                            }
+                        });
+                    }
+                };
+            },
+            show: false
+        }),
+        editSupplierCertificate: function (item) {
+
+            vmManager.supplierCertificateEditModal.$promise.then(vmManager.supplierCertificateEditModal.show);
         },
     };
 
