@@ -29,7 +29,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
 
         #region property
-
+        /// <summary>
+        /// 工作人员信息
+        /// </summary>
         private List<ArchivesEmployeeIdentityModel> WorkerArchivesInfoList = null;
         private ArIdentityInfoManager identityManager = null;
 
@@ -141,7 +143,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             try
             {
                 ArchivesEmployeeIdentityModel empIdentityMdl = new ArchivesEmployeeIdentityModel();
-
                 ArStudyModel studyMdl = null;
                 ArTelModel telMdl = null;
                 //得到身份证的信息
