@@ -39,7 +39,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             return DateTime.Now >= ArchiveEntityMapper.GetIdentityExpirationDate(model.LimitedDate);
         }
-
+        /// <summary>
+        /// 通过身份证ID获取信息
+        /// </summary>
+        /// <param name="identityID">身份证ID</param>
+        /// <returns></returns>
         public ArchivesIdentityModel GetOneBy(string identityID)
         {
             return this.irep.Entities.FirstOrDefault(e => e.IdentityID == identityID);

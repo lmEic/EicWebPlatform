@@ -32,8 +32,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         private List<ArchivesEmployeeIdentityModel> WorkerArchivesInfoList = null;
         private ArIdentityInfoManager identityManager = null;
-      
-       
+
+
 
         /// <summary>
         /// 身份证管理器
@@ -122,7 +122,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             this._DepartmentMananger = new ArDepartmentManager();
             this._PostManager = new ArPostManager();
             this.WorkerArchivesInfoList = new List<ArchivesEmployeeIdentityModel>();
-    }
+        }
 
         #endregion constructure
 
@@ -479,7 +479,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                   new FileFieldMapping ("Post","岗位"),
                   new FileFieldMapping ("PostType","岗位性质")
                 };
-            
+
             var dataTableGrouping = WorkerArchivesInfoList.GetGroupList<ArchivesEmployeeIdentityModel>("SafekeepDepartment");
             return dataTableGrouping.ExportToExcelMultiSheets<ArchivesEmployeeIdentityModel>(fieldmappping);
         }
@@ -504,8 +504,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         }
 
         #endregion constructure
-
-
 
         #region method
 
@@ -547,7 +545,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         #endregion method
     }
 
-    internal class ArchiveEntityMapper
+  
+
+    internal static class ArchiveEntityMapper
     {
         internal static void GetEmployeeDataFrom(ArchivesEmployeeIdentityDto dto, ArchivesEmployeeIdentityModel entity)
         {
@@ -565,13 +565,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             entity.ClassType = "白班";
             entity.Id_Key = dto.Id_Key;
         }
-
         /// <summary>
         /// 获取身份证信息
         /// </summary>
-        /// <param name="IdentityId"></param>
-        /// <param name="entity"></param>
-        /// <param name="manager"></param>
+        /// <param name="IdentityId">身份证Id</param>
+        /// <param name="entity">实体</param>
+        /// <param name="manager">管理信息</param>
         internal static bool GetIdentityDataFrom(string IdentityId, ArchivesEmployeeIdentityModel entity, ArIdentityInfoManager manager)
         {
             ArchivesIdentityModel model = manager.GetOneBy(IdentityId);
