@@ -1,6 +1,7 @@
 ﻿using Lm.Eic.App.Business.Bmp.Purchase;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -60,5 +61,36 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             return DateJsonResult(datas);
         }
 
+        /// <summary>
+        /// 编辑供应商证书模板
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ActionResult EditPurSupplierCertificateViewTpl()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 上传采购供应商证书文件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult UploadPurSupplierCertificateFile(HttpPostedFileBase file)
+        {
+            var result = 0;
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    string year = DateTime.Now.Year.ToString();///按年份进行存储
+                    ///待加入验证文件名称逻辑:
+                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.PurSupplierCertificate,year), file.FileName);
+                    file.SaveAs(fileName);
+                    result = 1;
+                }
+            }
+            return Json(result);
+        }
     }
 }

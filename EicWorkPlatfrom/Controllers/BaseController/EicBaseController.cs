@@ -369,6 +369,10 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         public const string TwoMaterialBoard = "TwoMaterialBoard";
         /// <summary>
+        /// 采购供应商证书文件夹
+        /// </summary>
+        public const string PurSupplierCertificate = "PurSupplierCertificate";
+        /// <summary>
         /// 临时存放文件夹
         /// </summary>
         public const string Temp = "Temp";
