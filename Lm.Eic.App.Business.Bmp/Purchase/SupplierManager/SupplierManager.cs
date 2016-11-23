@@ -142,7 +142,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 decimal findId_key = 0;
                 if (SupplierCrudFactory.SuppliersInfoCrud.IsExistSupperid(model.SupplierId, out findId_key))
                 {
-                    model.OpSign = "eidt";
+                    model.OpSign = "edit";
                     model.Id_key = findId_key;
                 }
                 else model.OpSign = "add";
