@@ -682,4 +682,48 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
        #endregion Model
    }
 
+    /// <summary>
+    /// 供应商编辑输入模块
+    /// </summary>
+    public class PutIntSupplieInfoModel
+    {
+        #region Model
+       /// <summary>
+       /// 供应商ID
+       /// </summary>
+        public string SupplierId
+        { set; get; }
+        /// <summary>
+        /// 采购类别
+        /// /// </summary>
+        public string PurchaseType
+        { set; get; }
+        /// <summary>
+        /// 供应商属性
+        /// </summary>
+        public string SupplierProperty
+        { set; get; }
+        /// <summary>
+        /// 证书名称
+        /// </summary>
+        public string EligibleCertificate
+        { set; get; }
+       /// <summary>
+       /// 文件路经
+       /// </summary>
+        public string FilePath
+        { set; get; }
+        /// <summary>
+        /// 获取证书日期
+        /// </summary>
+        public DateTime DateOfCertificate
+        { set; get; }
+        /// <summary>
+        /// 有效性（是/否）
+        /// </summary>
+        public string IsEfficacy
+        { set; get; }
+        #endregion
+    }
+
 }

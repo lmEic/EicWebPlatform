@@ -85,6 +85,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                   new FileFieldMapping ("UserName","作业员"),
                   new FileFieldMapping ("MasterName","师傅"),
                   new FileFieldMapping ("ClassType","班别"),
+                  new FileFieldMapping ("ProductFlowName","工序"),
                   new FileFieldMapping ("StandardHours","标准工时"),
                   new FileFieldMapping ("ReceiveHours","得到時數"),
                   new FileFieldMapping ("Qty","产量"),
@@ -107,7 +108,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             if (datas != null && datas.Count > 0)
             { 
                 //按工艺分类
-                var dataGroupping = datas.GetGroupList<DailyReportTempModel>("ProductFlowName");
+                var dataGroupping = datas.GetGroupList<DailyReportTempModel>("");
                 return dataGroupping.ExportToExcelMultiSheets<DailyReportTempModel>(fieldmappping);
             }
             else return new MemoryStream() ;

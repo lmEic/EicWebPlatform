@@ -29,11 +29,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
 
         #region property
-
+        /// <summary>
+        /// 工作人员信息
+        /// </summary>
         private List<ArchivesEmployeeIdentityModel> WorkerArchivesInfoList = null;
         private ArIdentityInfoManager identityManager = null;
-      
-       
+
+
 
         /// <summary>
         /// 身份证管理器
@@ -122,7 +124,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             this._DepartmentMananger = new ArDepartmentManager();
             this._PostManager = new ArPostManager();
             this.WorkerArchivesInfoList = new List<ArchivesEmployeeIdentityModel>();
-    }
+        }
 
         #endregion constructure
 
@@ -141,7 +143,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             try
             {
                 ArchivesEmployeeIdentityModel empIdentityMdl = new ArchivesEmployeeIdentityModel();
-
                 ArStudyModel studyMdl = null;
                 ArTelModel telMdl = null;
                 //得到身份证的信息
@@ -479,7 +480,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                   new FileFieldMapping ("Post","岗位"),
                   new FileFieldMapping ("PostType","岗位性质")
                 };
-            
+
             var dataTableGrouping = WorkerArchivesInfoList.GetGroupList<ArchivesEmployeeIdentityModel>("SafekeepDepartment");
             return dataTableGrouping.ExportToExcelMultiSheets<ArchivesEmployeeIdentityModel>(fieldmappping);
         }
@@ -504,8 +505,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         }
 
         #endregion constructure
-
-
 
         #region method
 
@@ -547,7 +546,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         #endregion method
     }
 
-    internal class ArchiveEntityMapper
+  
+
+    internal static class ArchiveEntityMapper
     {
         internal static void GetEmployeeDataFrom(ArchivesEmployeeIdentityDto dto, ArchivesEmployeeIdentityModel entity)
         {
@@ -565,13 +566,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             entity.ClassType = "白班";
             entity.Id_Key = dto.Id_Key;
         }
-
         /// <summary>
         /// 获取身份证信息
         /// </summary>
-        /// <param name="IdentityId"></param>
-        /// <param name="entity"></param>
-        /// <param name="manager"></param>
+        /// <param name="IdentityId">身份证Id</param>
+        /// <param name="entity">实体</param>
+        /// <param name="manager">管理信息</param>
         internal static bool GetIdentityDataFrom(string IdentityId, ArchivesEmployeeIdentityModel entity, ArIdentityInfoManager manager)
         {
             ArchivesIdentityModel model = manager.GetOneBy(IdentityId);
@@ -614,6 +614,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         private static string GetAreaName(XmlNode root, string areaCode)
         {
             string result = null;
+            bool findresult = false ;
 
             if (root == null)
             {
@@ -624,19 +625,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             {
                 if (root.Attributes.Count > 0)
                 {
+                    
                     if (root.Attributes["code"].Value.Equals(areaCode))
                     {
                         result = root.Attributes["name"].Value;
+                        findresult = true;
                         return result;
                     }
                 }
 
-                if (root.HasChildNodes)
+                if (root.HasChildNodes && !findresult)
                 {
                     result = GetAreaName(root.FirstChild, areaCode);
                 }
 
-                if (root.NextSibling != null)
+                if ((root.NextSibling != null) && !findresult)
                 {
                     result = GetAreaName(root.NextSibling, areaCode);
                 }

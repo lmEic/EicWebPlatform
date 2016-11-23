@@ -938,6 +938,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _productflowsign = value; }
             get { return _productflowsign; }
         }
+        private string _productflowpdegree;
+        /// <summary>
+        ///工艺主次关系(Primary / Secondary)
+        /// </summary>
+        public string ProductFlowpDegree
+        {
+            set { _productflowpdegree = value; }
+            get { return _productflowpdegree; }
+        }
         private string _productflowid;
         /// <summary>
         ///工艺编号
@@ -947,15 +956,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _productflowid = value; }
             get { return _productflowid; }
         }
-        private string _productFlowpDegree;
-        /// <summary>
-        /// 工艺主次关系(Primary / Secondary)
-        /// </summary>
-        public string ProductFlowpDegree
-        {
-            set { _productFlowpDegree = value; }
-            get { return  _productFlowpDegree; }
-        }
         private string _productflowname;
         /// <summary>
         ///工艺名称
@@ -964,16 +964,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         {
             set { _productflowname = value; }
             get { return _productflowname; }
-        }
-
-        public string _parameterKey;
-        /// <summary>
-        /// 标识键
-        /// </summary>
-        public string ParameterKey
-        {
-            set { _parameterKey = value; }
-            get { return _parameterKey; }
         }
         private int _standardhourstype;
         /// <summary>
@@ -995,7 +985,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private decimal _relaxcoefficient;
         /// <summary>
-        ///狂放系数
+        ///宽放系数
         /// </summary>
         public decimal RelaxCoefficient
         {
@@ -1055,6 +1045,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         {
             set { _mouldcavitycount = value; }
             get { return _mouldcavitycount; }
+        }
+        private string _parameterkey;
+        /// <summary>
+        ///标识键
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterkey = value; }
+            get { return _parameterkey; }
         }
         private string _remark;
         /// <summary>

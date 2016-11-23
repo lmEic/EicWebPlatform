@@ -190,26 +190,37 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
   }
 
 
-/// <summary>
- /// 供应商信息
-/// </summary>
- public class SuppliersInfoCrud:CrudBase <SupplierInfoModel,ISupplierInfoRepository >
-{
+    /// <summary>
+    /// 供应商信息
+    /// </summary>
+    public class SuppliersInfoCrud : CrudBase<SupplierInfoModel, ISupplierInfoRepository>
+    {
 
-    public SuppliersInfoCrud()
-        : base(new SupplierInfoRepository(), "供应商信息")
-      {}
- 
-      /// </summary>
-      /// <param name="model"></param>
-      /// <returns></returns>
-      protected override void AddCrudOpItems()
-      {
-          this.AddOpItem(OpMode.Add, AddSupplierInfo);
-          this.AddOpItem(OpMode.Edit, EidtSupplierInfo);
-          this.AddOpItem(OpMode.UpDate, DeleteSupplierInfo);
-      }
+        public SuppliersInfoCrud()
+            : base(new SupplierInfoRepository(), "供应商信息")
+        { }
 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddSupplierInfo);
+            this.AddOpItem(OpMode.Edit, EidtSupplierInfo);
+            this.AddOpItem(OpMode.Delete, DeleteSupplierInfo);
+        }
+
+        public bool IsExistSupperid(string supplierId, out decimal findId_key)
+        {
+            if (irep.IsExist(e => e.SupplierId == supplierId))
+            {
+                findId_key = irep.Entities .Where (e=>e.SupplierId ==supplierId ).ToList ().FirstOrDefault().Id_key;
+                return true;
+            }
+            else
+            { findId_key = 0;  return false; }
+        }
+       
       /// <summary>
       /// 批量保存供应商信息
       /// </summary>
@@ -272,7 +283,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
       OpResult DeleteSupplierInfo(SupplierInfoModel model)
       {
-          return irep.Delete (model).ToOpResult_Add("添加完成", model.Id_key);
+          return irep.Delete (model).ToOpResult_Add("删除成功", model.Id_key);
       }
       #endregion
       /// <summary>

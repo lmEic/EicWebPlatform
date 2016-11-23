@@ -269,6 +269,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// </summary>
         private static ISheet WorkbookCreateSheet<T>(List<T> dataSource, string xlsSheetName, List<FileFieldMapping> FieldMapList, HSSFWorkbook workbook) where T : class, new()
         {
+            if (xlsSheetName == string.Empty) xlsSheetName = "Sheet1";
             ISheet sheet = workbook.CreateSheet(xlsSheetName);
             ICellStyle cellSytleDate = workbook.CreateCellStyle();
             IDataFormat format = workbook.CreateDataFormat();
