@@ -25,13 +25,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <summary>
         /// 从ERP中获取年份合格供应商信息
         /// </summary>
-        /// <param name="year">年份格式yyyy</param>
+        /// <param name="yearMoth">年份格式yyyyMM</param>
         /// <returns></returns>
-        public List<QualifiedSupplierModel> FindQualifiedSupplierList(string year)
+        public List<QualifiedSupplierModel> FindQualifiedSupplierList(string yearMoth)
         {
             List<QualifiedSupplierModel> QualifiedSupplierInfo = new List<QualifiedSupplierModel>();
             //获取供应商信息
-            var supplierInfoList = FindSupplierInformationList(year);
+            var supplierInfoList = FindSupplierInformationList(yearMoth);
 
             if (supplierInfoList == null || supplierInfoList.Count <= 0) return QualifiedSupplierInfo;
 
@@ -133,6 +133,74 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public OpResult SavaQualifiedSupplierInfoS(List<QualifiedSupplierModel> modelList)
         {
             return SupplierCrudFactory.QualifiedSupplierCrud.SavaQualifiedSupplierInfoList(modelList);
+        }
+         OpResult SaveSupplierInfoModel(SupplierInfoModel model)
+        {
+
+            try
+            {
+                decimal findId_key = 0;
+                if (SupplierCrudFactory.SuppliersInfoCrud.IsExistSupperid(model.SupplierId, out findId_key))
+                {
+                    model.OpSign = "eidt";
+                    model.Id_key = findId_key;
+                }
+                else model.OpSign = "add";
+
+                return SupplierCrudFactory.SuppliersInfoCrud.Store(model);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+
+
+            
+        }
+        /// <summary>
+        /// 批量保存证书信息
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        public OpResult SavaEditSpplierPutInt(List<PutIntSupplieInfoModel> modelList)
+        {
+
+            //判断列表是否为空
+            if (modelList == null || modelList.Count <= 0) return new OpResult("数据列表不能为空",true);
+            //通过SupplierId得到供应商信息
+            var supplierInfoModel = GetErpSuppplierInfoBy(modelList.FirstOrDefault().SupplierId);
+            //赋修供应商属性和采购性质
+            if (supplierInfoModel!=null)
+            {
+                if ((supplierInfoModel.PurchaseType ==null)|| (supplierInfoModel.PurchaseType==string.Empty) )
+                {
+                    supplierInfoModel.PurchaseType = modelList.FirstOrDefault().PurchaseType;
+                }
+                if ((supplierInfoModel.SupplierProperty == null) || (supplierInfoModel.SupplierProperty  == string.Empty))
+                {
+                    supplierInfoModel.SupplierProperty = modelList.FirstOrDefault().SupplierProperty;
+                }
+               
+            }
+            //更新保存数据
+            if (SaveSupplierInfoModel(supplierInfoModel).Result)
+            {
+                List<SupplierEligibleCertificateModel> certificateModelList = new List<SupplierEligibleCertificateModel>();
+                //保存证书数据
+                modelList.ForEach(e =>
+                {
+                    SupplierEligibleCertificateModel model = new SupplierEligibleCertificateModel()
+                    {
+                        SupplierId = e.SupplierId,
+                        EligibleCertificate = e.EligibleCertificate,
+                        FilePath = e.FilePath,
+                        DateOfCertificate = e.DateOfCertificate,
+                        IsEfficacy = e.IsEfficacy,
+                        OpSign = "add"
+                    };
+                    certificateModelList.Add(model);
+                });
+
+                return SupplierCrudFactory.SupplierEligibleCrud.SavaSupplierEligibleList(certificateModelList);
+            }
+            else return new OpResult("数据保存失败");
         }
     }
    
