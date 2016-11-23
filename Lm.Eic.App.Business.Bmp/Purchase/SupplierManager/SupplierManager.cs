@@ -33,7 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             //获取供应商信息
             var supplierInfoList = FindSupplierInformationList(year);
 
-            if (supplierInfoList == null || supplierInfoList.Count <= 0) return null;
+            if (supplierInfoList == null || supplierInfoList.Count <= 0) return QualifiedSupplierInfo;
 
             supplierInfoList.ForEach(supplierInfo =>
             {
