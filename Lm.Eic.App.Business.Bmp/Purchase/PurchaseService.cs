@@ -38,5 +38,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase
         {
             get { return OBulider.BuildInstance<PurSupplierManager>(); }
         }
+      
     }
 }
