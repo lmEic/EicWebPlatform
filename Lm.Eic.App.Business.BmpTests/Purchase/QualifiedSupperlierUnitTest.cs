@@ -12,11 +12,11 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
         [TestMethod]
         public void QualifiedSupplierTest()
         {
-            var mm = PurchaseService.PurSupplierManager.InPutManage.FindQualifiedSupplierList("2016");
+            var mm = PurchaseService.PurSupplierManager.FindQualifiedSupplierList("2016");
            
            if (mm!=null ||mm.Count >0)
             {
-               var tem=  PurchaseService.PurSupplierManager.InPutManage.SavaQualifiedSupplierInfoS(mm);
+               var tem=  PurchaseService.PurSupplierManager.SavaQualifiedSupplierInfoS(mm);
                if (!tem.Result) { Assert.Fail(); }
             }
       
@@ -25,10 +25,10 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
 
         public void SupplierInfoTest()
         {
-            var supplierInfos = PurchaseService.PurSupplierManager.InPutManage.FindSupplierInformationList("201601");
+            var supplierInfos = PurchaseService.PurSupplierManager.FindSupplierInformationList("201601");
             if(supplierInfos!=null ||supplierInfos.Count >0)
             {
-                var tem = PurchaseService.PurSupplierManager.InPutManage.SaveSupplierInfos(supplierInfos);
+                var tem = PurchaseService.PurSupplierManager.SaveSupplierInfos(supplierInfos);
                 if (!tem.Result) { Assert.Fail(); }
             }
         }
@@ -49,7 +49,7 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
             };
             var modellist = new List<PutIntSupplieInfoModel>();
             modellist.Add(model);
-            var tem = PurchaseService.PurSupplierManager.InPutManage.SavaEditSpplierPutInt(modellist);
+            var tem = PurchaseService.PurSupplierManager.SavaEditSpplierPutInt(modellist);
             if (!tem.Result) { Assert.Fail(); }
 
         }

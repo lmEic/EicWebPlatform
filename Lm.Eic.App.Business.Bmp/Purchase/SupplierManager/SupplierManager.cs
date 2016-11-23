@@ -11,16 +11,7 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement;
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
-
     public class PurSupplierManager
-    {
-       
-     public purSupplierInputManager InPutManage
-        {
-            get { return OBulider.BuildInstance<purSupplierInputManager>(); }
-        }
-    }
-    public class purSupplierInputManager
     {
         /// <summary>
         /// 从ERP中获取年份合格供应商信息
@@ -93,29 +84,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
-        /// <summary>
-        /// 从ERP中得到供应商信息
-        /// </summary>
-        /// <param name="supplierId"></param>
-        /// <returns></returns>
-        private SupplierInfoModel GetErpSuppplierInfoBy(string supplierId)
-        {
-            var erpSupplierInfo = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
-            if (erpSupplierInfo == null) return null;
-            return new SupplierInfoModel
-            {
-                SupplierId = supplierId,
-                SupplierEmail = erpSupplierInfo.Email,
-                SupplierAddress = erpSupplierInfo.Address,
-                BillAddress = erpSupplierInfo.BillAddress,
-                SupplierFaxNo = erpSupplierInfo.FaxNo,
-                SupplierName = erpSupplierInfo.SupplierName,
-                SupplierShortName = erpSupplierInfo.SupplierShortName,
-                SupplierUser = erpSupplierInfo.Contact,
-                SupplierTel = erpSupplierInfo.Tel,
-                PayCondition = erpSupplierInfo.PayCondition
-            };
-        }
+       
         /// <summary>
         /// 批量保存供应商信息
         /// </summary>
@@ -134,26 +103,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             return SupplierCrudFactory.QualifiedSupplierCrud.SavaQualifiedSupplierInfoList(modelList);
         }
-         OpResult SaveSupplierInfoModel(SupplierInfoModel model)
-        {
-
-            try
-            {
-                decimal findId_key = 0;
-                if (SupplierCrudFactory.SuppliersInfoCrud.IsExistSupperid(model.SupplierId, out findId_key))
-                {
-                    model.OpSign = "edit";
-                    model.Id_key = findId_key;
-                }
-                else model.OpSign = "add";
-
-                return SupplierCrudFactory.SuppliersInfoCrud.Store(model);
-            }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
-
-
-            
-        }
+       
         /// <summary>
         /// 批量保存证书信息
         /// </summary>
@@ -161,12 +111,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public OpResult SavaEditSpplierPutInt(List<PutIntSupplieInfoModel> modelList)
         {
-
             //判断列表是否为空
             if (modelList == null || modelList.Count <= 0) return new OpResult("数据列表不能为空",true);
             //通过SupplierId得到供应商信息
             var supplierInfoModel = GetErpSuppplierInfoBy(modelList.FirstOrDefault().SupplierId);
-            //赋修供应商属性和采购性质
+            //赋值 供应商属性和采购性质
             if (supplierInfoModel!=null)
             {
                 if ((supplierInfoModel.PurchaseType ==null)|| (supplierInfoModel.PurchaseType==string.Empty) )
@@ -177,7 +126,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 {
                     supplierInfoModel.SupplierProperty = modelList.FirstOrDefault().SupplierProperty;
                 }
-               
             }
             //更新保存数据
             if (SaveSupplierInfoModel(supplierInfoModel).Result)
@@ -202,6 +150,59 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             }
             else return new OpResult("数据保存失败");
         }
+
+
+
+        #region   internal
+        /// <summary>
+        /// 更新并保存供应商信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        OpResult SaveSupplierInfoModel(SupplierInfoModel model)
+        {
+
+            try
+            {
+                decimal findId_key = 0;
+                if (SupplierCrudFactory.SuppliersInfoCrud.IsExistSupperid(model.SupplierId, out findId_key))
+                {
+                    model.OpSign = "edit";
+                    model.Id_key = findId_key;
+                }
+                else model.OpSign = "add";
+
+                return SupplierCrudFactory.SuppliersInfoCrud.Store(model);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+
+
+
+        }
+        /// <summary>
+        /// 从ERP中得到供应商信息
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        SupplierInfoModel GetErpSuppplierInfoBy(string supplierId)
+        {
+            var erpSupplierInfo = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
+            if (erpSupplierInfo == null) return null;
+            return new SupplierInfoModel
+            {
+                SupplierId = supplierId,
+                SupplierEmail = erpSupplierInfo.Email,
+                SupplierAddress = erpSupplierInfo.Address,
+                BillAddress = erpSupplierInfo.BillAddress,
+                SupplierFaxNo = erpSupplierInfo.FaxNo,
+                SupplierName = erpSupplierInfo.SupplierName,
+                SupplierShortName = erpSupplierInfo.SupplierShortName,
+                SupplierUser = erpSupplierInfo.Contact,
+                SupplierTel = erpSupplierInfo.Tel,
+                PayCondition = erpSupplierInfo.PayCondition
+            };
+        }
+        #endregion
     }
-   
+
 }
