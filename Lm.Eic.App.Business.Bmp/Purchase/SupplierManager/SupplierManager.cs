@@ -135,7 +135,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                         EligibleCertificate = e.EligibleCertificate,
                         FilePath = e.FilePath,
                         DateOfCertificate = DateTime.Now.ToDate () ,
-                        IsEfficacy = e.IsEfficacy,
+                        IsEfficacy = "是",
                         OpSign = "add"
                     };
                     certificateModelList.Add(savemodel);
