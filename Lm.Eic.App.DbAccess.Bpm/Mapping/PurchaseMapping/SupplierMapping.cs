@@ -8,36 +8,39 @@ using Lm.Eic.App.DomainModel.Bpm.Purchase;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
 {
-   /// <summary>
-    ///Pur_SupplierQualifiedTable_Mapping   
-  /// </summary>
-  public class QualifiedSupplierModelMapping : EntityTypeConfiguration<QualifiedSupplierModel>
+    /// <summary>
+    /// 符合条件的供应商清单表
+    /// Pur_EligibleSupplierTable
+    /// </summary>
+    public class EligibleSuppliersModelMapping : EntityTypeConfiguration<EligibleSuppliersModel>
 {
-    public QualifiedSupplierModelMapping()
+    public EligibleSuppliersModelMapping()
     { 
         this.HasKey(t => t.Id_key);
         this.Property(t => t.Id_key ).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-        this.ToTable("Pur_SupplierQualifiedTable");
+        this.ToTable("Pur_EligibleSuppliersTable");
     }
 }
  
-    /// <summary>
+   /// <summary>
+  ///供应商合格证书
   /// Pur_SupplierEligibleCertificate_Mapping
   /// </summary>
-  public class SupplierEligibleMapping : EntityTypeConfiguration<SupplierEligibleCertificateModel>
+  public class SuppliersQualifiedCertificateMapping : EntityTypeConfiguration<SuppliersQualifiedCertificateModel>
     {
-       public SupplierEligibleMapping()
+       public SuppliersQualifiedCertificateMapping()
         {
             this.HasKey(t => t.Id_key );
             this.Property(t => t.Id_key ).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Pur_SupplierEligibleCertificate");
+            this.ToTable("Pur_SuppliersQualifiedCertificate");
         }
     }
 
   /// <summary>
+  /// 供应商信息
   /// Pur_SuppliersInfo_Mapping
   /// </summary>
-  public class SuppliersInfoMapping : EntityTypeConfiguration<SupplierInfoModel>
+  public class SuppliersInfoMapping : EntityTypeConfiguration<SuppliersInfoModel>
   {
       public SuppliersInfoMapping()
       {
@@ -49,15 +52,16 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
 
 
   /// <summary>
+  ///
   /// Pur_SupplieSeasonAuditTable_Mapping
   /// </summary>
-  public class SupplieSeasonAuditMapping : EntityTypeConfiguration<SupplieSeasonAuditModel>
+  public class SuppliersSeasonAuditMapping : EntityTypeConfiguration<SupplieSeasonAuditModel>
   {
-      public SupplieSeasonAuditMapping()
+      public SuppliersSeasonAuditMapping()
       {
           this.HasKey(t => t.Id_key);
           this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-          this.ToTable("Pur_SupplieSeasonAuditTable");
+          this.ToTable("Pur_SuppliersSeasonAuditTable");
       }
   }
 }

@@ -47,11 +47,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         public DbSet<DReportsOrderModel> DReportOrder { get; set; }
         //合格供应商清册
-        public DbSet<QualifiedSupplierModel> QualifiedSupplier { set; get; }
+        public DbSet<EligibleSuppliersModel> QualifiedSupplier { set; get; }
         //供应商证书信息
-        public DbSet<SupplierEligibleCertificateModel> SupplierEligible { set; get; }
+        public DbSet<SuppliersQualifiedCertificateModel> SupplierEligible { set; get; }
         //供应商信息
-        public DbSet<SupplierInfoModel> SupplierInfo { set; get; }
+        public DbSet<SuppliersInfoModel> SupplierInfo { set; get; }
         //季度考核总览表
         public DbSet<SupplieSeasonAuditModel> SupplieSeasonAudit { set; get; }
        
@@ -77,13 +77,13 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new DReportsOrderModelMapping());
             
             //合格供应商清册
-            modelBuilder.Configurations.Add(new QualifiedSupplierModelMapping());
+            modelBuilder.Configurations.Add(new EligibleSuppliersModelMapping());
             //供应商证书信息
-            modelBuilder.Configurations.Add(new SupplierEligibleMapping());
+            modelBuilder.Configurations.Add(new SuppliersQualifiedCertificateMapping());
             //供应商信息
             modelBuilder.Configurations.Add(new SuppliersInfoMapping());
             //季度考核总览表
-            modelBuilder.Configurations.Add(new SupplieSeasonAuditMapping());
+            modelBuilder.Configurations.Add(new SuppliersSeasonAuditMapping());
         }
     }
 

@@ -16,7 +16,7 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
            
            if (mm!=null ||mm.Count >0)
             {
-               var tem=  PurchaseService.PurSupplierManager.SavaQualifiedSupplierInfoS(mm);
+               var tem=  PurchaseService.PurSupplierManager.SavaQualifiedSupplierInfoList(mm);
                if (!tem.Result) { Assert.Fail(); }
             }
       
@@ -28,7 +28,7 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
             var supplierInfos = PurchaseService.PurSupplierManager.GetSupplierInformationListBy("201601");
             if(supplierInfos!=null ||supplierInfos.Count >0)
             {
-                var tem = PurchaseService.PurSupplierManager.SaveSupplierInfos(supplierInfos);
+                var tem = PurchaseService.PurSupplierManager.SaveSupplierInfoList(supplierInfos);
                 if (!tem.Result) { Assert.Fail(); }
             }
         }
@@ -37,19 +37,19 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
 
         public void EditsupplierInfoTest()
         {
-            PutIntSupplieInfoModel model = new PutIntSupplieInfoModel()
+            InPutSupplieCertificateInfoModel model = new InPutSupplieCertificateInfoModel()
             {
                 DateOfCertificate = DateTime.Now,
                 EligibleCertificate = "学习证书",
                 FilePath = @"d:\ee\test",
                 IsEfficacy = "是",
-                SupplierId = "D04005",
+                SupplierId = "D048888",
                 PurchaseType = "光纤主、被动元件散件",
                 SupplierProperty = "关键供应商"
             };
-            var modellist = new List<PutIntSupplieInfoModel>();
+            var modellist = new List<InPutSupplieCertificateInfoModel>();
             modellist.Add(model);
-            var tem = PurchaseService.PurSupplierManager.SavaEditSpplierPutInt(modellist);
+            var tem = PurchaseService.PurSupplierManager.SavaEditSpplierCertificate(modellist);
             if (!tem.Result) { Assert.Fail(); }
 
         }
