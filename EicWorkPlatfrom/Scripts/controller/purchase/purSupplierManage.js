@@ -172,8 +172,7 @@ null,
                 var editUiVM = {
                     PurchaseType: '',
                     SupplierProperty: '',
-                    SupplierId: '',
-                    EligibleCertificate:''
+                    SupplierId: ''
                 };
                 leeHelper.copyVm(vmManager.editItem, editUiVM);
 
@@ -230,7 +229,6 @@ null,
                                     //更新文件模型数据
                                     var year = new Date().getFullYear();
                                     fileItem.uploadSuccess = true;
-                                    fileItem.EligibleCertificate = $scope.vm.EligibleCertificate;
                                     leeHelper.copyVm(editUiVM, fileItem);
                                     fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + file.name;
                                 }
