@@ -11,7 +11,7 @@
             <div class="modal-body">
                 <div class="panel">
                     <form role="form" name="formPurchase" novalidate class="form-horizontal">
-                        <label>类别信息</label>
+                        <label>类别信息</label><span class="label label-primary pull-right">供应商编号：【{{vm.SupplierId}}】</span>
                         <div class="h-split"></div>
                         <div class="form-group">
                             <label for="purchaseType" class="col-md-2 control-label">采购类别</label>
@@ -60,7 +60,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
-                <button type="button" class="btn btn-primary" ng-click="save(formEquipment.$valid)"><i class="fa fa-save"></i>确定</button>
+                <button type="button" class="btn btn-primary" ng-click="savePurSupplierCertificateDatas(formPurchase.$valid)"><i class="fa fa-save"></i>确定</button>
             </div>
         </div>
     </div>

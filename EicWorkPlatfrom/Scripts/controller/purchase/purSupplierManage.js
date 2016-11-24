@@ -163,30 +163,53 @@ null,
             title: "供应商证书编辑", content: '',
             templateUrl: leeHelper.controllers.supplierManage + '/EditPurSupplierCertificateViewTpl/',
             controller: function ($scope) {
-                //$scope.previewFileName = waittingAuditItem.DocumentPath;
-                //$scope.auditMaterialBoard = function () {
-                //    waittingAuditItem.OpSign = 'edit';
-                //    boardDataOpService.auditMaterialBoardData(waittingAuditItem).then(function (opresult) {
-                //        if (opresult.Result) {
-                //            vmManager.editModal.$promise.then(vmManager.editModal.hide);
-                //            leeHelper.remove(vmManager.editDatas, waittingAuditItem);
-                //        }
-                //    });
-                //};
-                var vmManager = {
-                    fileList: [{id:1, fileName: '',certificateName:'', adding: true, uploadSuccess: false }, ],
+                var editUiVM = {
+                    PurchaseType: '',
+                    SupplierProperty: '',
+                    SupplierId: '',
+                    EligibleCertificate:''
+                };
+                leeHelper.copyVm(vmManager.editItem, editUiVM);
+
+                $scope.vm = editUiVM;
+
+              
+                $scope.savePurSupplierCertificateDatas = function (isValid) {
+                    if (isValid)
+                    {
+                        添加数据
+                        //supplierDataOpService.auditMaterialBoardData(waittingAuditItem).then(function (opresult) {
+                        if (opresult.Result) {
+                            vmManager.supplierCertificateEditModal.$promise.then(vmManager.supplierCertificateEditModal.hide);
+                            vmManager.editItem.PurchaseType = $scope.vm.PurchaseType;
+                            vmManager.editItem.SupplierProperty = $scope.vm.SupplierProperty;
+                            editManager.fileList = [];
+                        }
+                       // });
+                    }
+                };
+
+                //上传文件项目
+                var uploadFileItem = {
+                    id: 1,EligibleCertificate: '', adding: true, uploadSuccess: false,
+                    PurchaseType: '', SupplierProperty: '', SupplierId: '', FilePath: ''
+                };
+
+                var editManager = {
+                    fileList: [_.clone(uploadFileItem)],
+                    //新上传文件
                     addFile: function (item) {
                         item.adding = false;
-                        var id = vmManager.fileList.length + 1;
-                        vmManager.fileList.push({ id: id, fileName: '', certificateName: '', adding: true, uploadSuccess: false });
-                       
+                        var newItem = _.clone(uploadFileItem);
+                        newItem.id = editManager.fileList.length + 1;
+                        editManager.fileList.push(newItem);
                     },
                     getFile: function (fileItem) {
-                        vmManager.uploadFileItem = _.clone(fileItem);
+                        editManager.uploadFileItem = _.clone(fileItem);
                     },
                     uploadFileItem:null,
                 };
-                $scope.vmManager = vmManager;
+                $scope.vmManager = editManager;
                 ///选择文件并上传
                 $scope.selectFile = function (el) {
                     var files = el.files;
@@ -197,10 +220,14 @@ null,
                         //上传证书文件
                         $scope.uploadPromie = supplierDataOpService.uploadPurSupplierCertificateFile(fd).then(function (result) {
                             if (result) {
-                                var fileItem = _.find(vmManager.fileList, { id: vmManager.uploadFileItem.id });
+                                var fileItem = _.find(editManager.fileList, { id: editManager.uploadFileItem.id });
                                 if (!_.isUndefined(fileItem)) {
+                                    //更新文件模型数据
+                                    var year = new Date().getFullYear();
                                     fileItem.uploadSuccess = true;
-                                    fileItem.fileName = file.name;
+                                    fileItem.EligibleCertificate = $scope.vm.EligibleCertificate;
+                                    leeHelper.copyVm(editUiVM, fileItem);
+                                    fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + file.name;
                                 }
                             }
                         });
@@ -209,8 +236,9 @@ null,
             },
             show: false
         }),
+        editItem:null,
         editSupplierCertificate: function (item) {
-
+            vmManager.editItem = item;
             vmManager.supplierCertificateEditModal.$promise.then(vmManager.supplierCertificateEditModal.show);
         },
     };
