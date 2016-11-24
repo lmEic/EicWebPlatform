@@ -12,17 +12,17 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagem
   /// <summary>
   ///合格供应商
   /// </summary>
-    public interface IQualifiedSupplierRepository : IRepository<QualifiedSupplierModel> { }
+    public interface IQualifiedSupplierRepository : IRepository<EligibleSuppliersModel> { }
   /// <summary>
   ///合格供应商
   /// </summary>
-    public class QualifiedSupplierRepository : BpmRepositoryBase<QualifiedSupplierModel>, IQualifiedSupplierRepository
+    public class QualifiedSupplierRepository : BpmRepositoryBase<EligibleSuppliersModel>, IQualifiedSupplierRepository
   { }
     /// <summary>
    /// 供应商合格文件
     /// </summary>
-  public interface ISupplierEligibleRepository : IRepository<SupplierEligibleCertificateModel> { }
-  public class SupplierEligibleRepository : BpmRepositoryBase<SupplierEligibleCertificateModel>, ISupplierEligibleRepository
+  public interface ISupplierEligibleRepository : IRepository<SuppliersQualifiedCertificateModel> { }
+  public class SupplierEligibleRepository : BpmRepositoryBase<SuppliersQualifiedCertificateModel>, ISupplierEligibleRepository
     { }
 
 
@@ -30,8 +30,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagem
   /// <summary>
   /// 供应商信息
   /// </summary>
-  public interface ISupplierInfoRepository : IRepository<SupplierInfoModel> { }
-  public class SupplierInfoRepository : BpmRepositoryBase<SupplierInfoModel>, ISupplierInfoRepository 
+  public interface ISupplierInfoRepository : IRepository<SuppliersInfoModel> { }
+  public class SupplierInfoRepository : BpmRepositoryBase<SuppliersInfoModel>, ISupplierInfoRepository 
   { }
 
 

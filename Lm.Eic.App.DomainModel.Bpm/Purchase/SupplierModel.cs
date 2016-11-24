@@ -8,9 +8,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     /// <summary>
     /// 合格的供应商清册Model
     /// </summary>
-   public  class QualifiedSupplierModel
+   public  class EligibleSuppliersModel
     {
-      public QualifiedSupplierModel ()
+      public EligibleSuppliersModel ()
        { }
       #region Model
       private string _supplierid;
@@ -208,7 +208,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     /// <summary>
     /// 供应商合格证书
     /// </summary>
-   public class SupplierEligibleCertificateModel
+   public class SuppliersQualifiedCertificateModel
    {
        #region Model
        private string _supplierid;
@@ -316,7 +316,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     /// <summary>
    /// 供应商信息表
     /// </summary>
-  public class SupplierInfoModel
+  public class SuppliersInfoModel
   {
       #region Model
       private string _supplierid;
@@ -683,9 +683,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
    }
 
     /// <summary>
-    /// 供应商编辑输入模块
+    /// 供应商编辑输入模形
     /// </summary>
-    public class PutIntSupplieInfoModel
+    public class InPutSupplieCertificateInfoModel
     {
         #region Model
        /// <summary>
