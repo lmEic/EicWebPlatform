@@ -51,11 +51,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
   }
 
 
-  /// <summary>
-  ///
-  /// Pur_SupplieSeasonAuditTable_Mapping
-  /// </summary>
-  public class SuppliersSeasonAuditMapping : EntityTypeConfiguration<SupplieSeasonAuditModel>
+    /// <summary>
+    ///供应商季度审计总览表
+    /// Pur_SupplieSeasonAuditTable_Mapping
+    /// </summary>
+    public class SuppliersSeasonAuditMapping : EntityTypeConfiguration<SupplieSeasonAuditModel>
   {
       public SuppliersSeasonAuditMapping()
       {
