@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.App.Business.Bmp.Purchase;
+using Lm.Eic.App.DomainModel.Bpm.Purchase;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -91,6 +92,18 @@ namespace EicWorkPlatfrom.Controllers.Purchase
                 }
             }
             return Json(result);
+        }
+        /// <summary>
+        /// 保存供应商证书信息
+        /// </summary>
+        /// <param name="certificateDatas"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StorePurSupplierCertificateInfo(List<InPutSupplieCertificateInfoModel> certificateDatas)
+        {
+            var opResult = PurchaseService.PurSupplierManager.SavaEditSpplierCertificate(certificateDatas);
+            return Json(opResult);
         }
     }
 }

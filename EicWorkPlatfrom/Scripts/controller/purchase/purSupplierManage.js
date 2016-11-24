@@ -30,6 +30,12 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
         return ajaxService.uploadFile(url, file);
     };
 
+    purDb.storePurSupplierCertificateInfo = function (certificateDatas) {
+        var url = purUrlPrefix + 'StorePurSupplierCertificateInfo';
+        return ajaxService.postData(url, {
+            certificateDatas: certificateDatas,
+        });
+    };
     return purDb;
 });
 
@@ -173,19 +179,18 @@ null,
 
                 $scope.vm = editUiVM;
 
-              
+                //保存供应商证书数据
                 $scope.savePurSupplierCertificateDatas = function (isValid) {
-                    if (isValid)
-                    {
-                        添加数据
-                        //supplierDataOpService.auditMaterialBoardData(waittingAuditItem).then(function (opresult) {
-                        if (opresult.Result) {
-                            vmManager.supplierCertificateEditModal.$promise.then(vmManager.supplierCertificateEditModal.hide);
-                            vmManager.editItem.PurchaseType = $scope.vm.PurchaseType;
-                            vmManager.editItem.SupplierProperty = $scope.vm.SupplierProperty;
-                            editManager.fileList = [];
-                        }
-                       // });
+                    if (isValid) {
+                        //添加数据
+                        supplierDataOpService.storePurSupplierCertificateInfo(editManager.fileList).then(function (opresult) {
+                            if (opresult.Result) {
+                                vmManager.supplierCertificateEditModal.$promise.then(vmManager.supplierCertificateEditModal.hide);
+                                vmManager.editItem.PurchaseType = $scope.vm.PurchaseType;
+                                vmManager.editItem.SupplierProperty = $scope.vm.SupplierProperty;
+                                editManager.fileList = [];
+                            }
+                        });
                     }
                 };
 
