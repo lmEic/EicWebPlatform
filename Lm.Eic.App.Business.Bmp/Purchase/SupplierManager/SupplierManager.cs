@@ -14,7 +14,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     public class PurSupplierManager
     {
         /// <summary>
-        /// 从ERP中获取年份合格供应商信息
+        /// 从ERP中获取年份合格供应商清册表
         /// </summary>
         /// <param name="yearMoth">年份格式yyyyMM</param>
         /// <returns></returns>
@@ -22,7 +22,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             List<QualifiedSupplierModel> QualifiedSupplierInfo = new List<QualifiedSupplierModel>();
             //获取供应商信息
-            var supplierInfoList = FindSupplierInformationList(yearMoth);
+            var supplierInfoList = GetSupplierInformationListBy(yearMoth);
 
             if (supplierInfoList == null || supplierInfoList.Count <= 0) return QualifiedSupplierInfo;
 
@@ -49,12 +49,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             });
             return QualifiedSupplierInfo.Take(10).ToList();
         }
+
         /// <summary>
-        /// 从ERP中获取年份供应商信息
+        /// 获取供应商信息表
         /// </summary>
         /// <param name="yearMoth">年份格式yyyyMM</param>
         /// <returns></returns>
-        public List<SupplierInfoModel> FindSupplierInformationList(string yearMoth)
+        public  List<SupplierInfoModel> GetSupplierInformationListBy(string yearMoth)
         {
             List<SupplierInfoModel> SupplierInfoList = new List<SupplierInfoModel>();
             //从ERP中得到此年中所有供应商Id号
@@ -66,7 +67,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             });
             return SupplierInfoList;
         }
-
         /// <summary>
         /// 获取供应商信息
         /// </summary>
@@ -95,7 +95,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return SupplierCrudFactory.SuppliersInfoCrud.SavaSupplierInfoList(modelList);
         }
         /// <summary>
-        /// 批量保存合格供应商信息
+        /// 批量保存合格供应商清册
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
@@ -103,9 +103,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             return SupplierCrudFactory.QualifiedSupplierCrud.SavaQualifiedSupplierInfoList(modelList);
         }
-       
+
         /// <summary>
-        /// 批量保存证书信息
+        /// 保存编辑的供应商证书信息
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
@@ -154,6 +154,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
 
         #region   internal
+
+        
         /// <summary>
         /// 更新并保存供应商信息
         /// </summary>

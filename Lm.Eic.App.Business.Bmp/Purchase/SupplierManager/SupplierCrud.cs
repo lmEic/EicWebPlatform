@@ -14,6 +14,9 @@ using Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
+    /// <summary>
+    /// 供应商Curd管理工厂
+    /// </summary>
  internal class SupplierCrudFactory
     {
        /// <summary>
@@ -47,7 +50,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     }
 
  /// <summary>
- /// 合格供应商清册CRUD
+ /// 合格供应商清册Curd
  /// </summary>
  public class QualifiedSupplierCrud : CrudBase<QualifiedSupplierModel, IQualifiedSupplierRepository>
  {
@@ -119,7 +122,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
  }
   /// <summary>
- /// 供应商合格证书CRUD
+ /// 供应商合格证书Curd
   /// </summary>
  public class SupplierEligibleCrud:CrudBase <SupplierEligibleCertificateModel,ISupplierEligibleRepository >
   {
@@ -130,7 +133,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// <param name="model"></param>
       /// <returns></returns>
       protected override void AddCrudOpItems()
-      { }
+      {
+            
+
+      }
       /// <summary>
       /// / 添加一条供应商的合格文件记录
       /// </summary>
@@ -191,7 +197,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
 
     /// <summary>
-    /// 供应商信息
+    /// 供应商信息Curd
     /// </summary>
     public class SuppliersInfoCrud : CrudBase<SupplierInfoModel, ISupplierInfoRepository>
     {
@@ -302,7 +308,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 }
 
 /// <summary>
- /// 供应商季度审查表
+ /// 供应商季度审查表Curd
 /// </summary>
  public class SuppliersSeasonAuditCrud:CrudBase <SupplieSeasonAuditModel ,ISupplierSeasonAuditRepository>
  {
