@@ -679,8 +679,11 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         editProductHoursRow: function (item) {
             if (item !== undefined && item !== null) {
                 angular.forEach(vmManager.editDatas, function (edititem) { edititem.pheditting = false });
-                item.SetHours = 12;
-                item.InputHours = 12;
+                if (angular.isUndefined(item.SetHours) || item.SetHours===null)
+                    item.SetHours = 12;
+                if (angular.isUndefined(item.InputHours)|| item.InputHours===null)
+                    item.InputHours = 12;
+
                 leeHelper.copyVm(item, uiVM);
                 $scope.vm = uiVM;
                 vmManager.edittingRowIndex = item.rowindex;

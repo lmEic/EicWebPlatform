@@ -42,6 +42,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             {
                 record = this.irep.Insert(entity);
             }
+            else
+            {
+                var OldId_key = this.irep.Entities.Where(e => e.WorkerId == entity.WorkerId).ToList ().FirstOrDefault ().Id_Key;
+                record=this.irep.Update(e => e.Id_Key == OldId_key, entity);
+            }
             return record;
         }
 
