@@ -25,7 +25,7 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
 
         public void SupplierInfoTest()
         {
-            var supplierInfos = PurchaseService.PurSupplierManager.FindSupplierInformationList("201601");
+            var supplierInfos = PurchaseService.PurSupplierManager.GetSupplierInformationListBy("201601");
             if(supplierInfos!=null ||supplierInfos.Count >0)
             {
                 var tem = PurchaseService.PurSupplierManager.SaveSupplierInfos(supplierInfos);
