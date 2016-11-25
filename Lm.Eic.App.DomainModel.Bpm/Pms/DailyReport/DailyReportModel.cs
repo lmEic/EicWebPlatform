@@ -77,6 +77,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _inputtime = value; }
             get { return _inputtime; }
         }
+
         private string _machineid;
         /// <summary>
         ///机台编号
@@ -511,6 +512,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         {
             set { _inputtime = value; }
             get { return _inputtime; }
+        }
+        private int _inPutId;
+        /// <summary>
+        /// 输入的次序
+        /// </summary>
+        public int InPutId
+        {
+            set { _inPutId = value; }
+            get { return _inPutId; }
         }
         private string _machineid;
         /// <summary>

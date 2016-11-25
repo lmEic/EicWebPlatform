@@ -40,8 +40,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             int record = 0;
             if (!this.irep.IsExist(e => e.WorkerId == entity.WorkerId))
             {
-                record = this.irep.Insert(entity);
+                var OldId_key = this.irep.Entities.First(e => e.WorkerId == entity.WorkerId).Id_Key;
+                this.irep.Delete (e => e.Id_Key == OldId_key);
             }
+            record = this.irep.Insert(entity);
             return record;
         }
 

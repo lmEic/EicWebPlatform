@@ -51,7 +51,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             if (departmentAllDailyReportList.Count > 0)
             {
 
-                var dailyReportList = departmentAllDailyReportList.Where(date => date.DailyReportDate == dailyDate).ToList();
+                var dailyReportList = departmentAllDailyReportList.Where(date => date.DailyReportDate == dailyDate).OrderBy (e=>e.InPutId).ToList();
                 if (dailyReportList.Count > 0)
                 {
                     //获取最近日期的日报
@@ -59,7 +59,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 }
                 else 
                 {
-                    //已审核数据模板
+                   //已审核数据模板
                     var maxDailyReportDate = departmentAllDailyReportList.Where (m=>m.CheckSign=="已审核").Max(m => m.DailyReportDate);
                    //得到最近数据
                     var maxDailyReportList = departmentAllDailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).ToList();

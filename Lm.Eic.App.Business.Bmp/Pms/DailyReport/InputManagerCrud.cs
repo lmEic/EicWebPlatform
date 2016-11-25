@@ -111,17 +111,20 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             //添加模板列表       要求：一次保存整个列表
             try
             {
+                int inPutId = 0;
                 DateTime date = DateTime.Now.ToDate();
                // SetFixFieldValue(modelList, OpMode.Add);
                 SetFixFieldValue(modelList, OpMode.Add,m=>
                 {
+                    m.InPutId = inPutId;
                     m.DailyReportDate = inPutDate;
                     m.InputTime = date;
                     m.ParamenterKey = m.Department + "&" + m.DailyReportDate.ToString("yyyyMMdd");
                     m.DailyReportMonth = m.DailyReportDate.ToString("yyyyMM");
                     m.CheckSign = "未审核";
                     if(m.FailureRate ==null)
-                    { m.FailureRate = "0.00%"; }
+                    { m.FailureRate = "0.00%";}
+                    inPutId++;
                 });
 
                 if (!modelList.IsNullOrEmpty())
