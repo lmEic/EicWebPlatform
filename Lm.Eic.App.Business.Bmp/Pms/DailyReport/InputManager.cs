@@ -51,7 +51,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             if (departmentAllDailyReportList.Count > 0)
             {
 
-                var dailyReportList = departmentAllDailyReportList.Where(date => date.DailyReportDate == dailyDate).ToList();
+                var dailyReportList = departmentAllDailyReportList.Where(date => date.DailyReportDate == dailyDate).OrderBy (e=>e.InPutId).ToList();
                 if (dailyReportList.Count > 0)
                 {
                     //获取最近日期的日报
