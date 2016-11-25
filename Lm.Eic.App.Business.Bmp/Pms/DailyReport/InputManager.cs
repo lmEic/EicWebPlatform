@@ -59,7 +59,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 }
                 else 
                 {
-                    //已审核数据模板
+                   //已审核数据模板
                     var maxDailyReportDate = departmentAllDailyReportList.Where (m=>m.CheckSign=="已审核").Max(m => m.DailyReportDate);
                    //得到最近数据
                     var maxDailyReportList = departmentAllDailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).ToList();

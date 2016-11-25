@@ -173,15 +173,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         private int AddEmployee(int record, ArchivesEmployeeIdentityModel empIdentityMdl, ArStudyModel studyMdl, ArTelModel telMdl)
         {
-            if (!this.irep.IsExist(e => e.IdentityID == empIdentityMdl.IdentityID))
-                record = this.irep.Insert(empIdentityMdl);
+            if (this.irep.IsExist(e => e.IdentityID == empIdentityMdl.IdentityID))
+            {
+                var getOldempIdentityId_key = this.irep.Entities.First(e => e.IdentityID == empIdentityMdl.IdentityID).Id_Key;
+                record = this.irep.Delete(e => e.Id_Key == getOldempIdentityId_key);
+                if (record<=0) return record;
+            }
+            record = this.irep.Insert(empIdentityMdl);
             ////处理外部逻辑
             ////1.处理学习信息存储
-            //record += StudyManager.Insert(studyMdl);
+             StudyManager.Insert(studyMdl);
             ////2.处理联系方式信息
-            //record += TelManager.Insert(telMdl);
+             TelManager.Insert(telMdl);
             //3.初始化班别信息
-            record += AttendanceService.ClassTypeSetter.InitClassType(CreateClassTypeModel(empIdentityMdl));
+             AttendanceService.ClassTypeSetter.InitClassType(CreateClassTypeModel(empIdentityMdl));
             return record;
         }
 
@@ -207,17 +212,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             ArStudyModel oldStudyMdl = null;
             ArTelModel oldTelMdl = null;
             ArchivesEmployeeIdentityModel oldEmpIdentityMdl = new ArchivesEmployeeIdentityModel();
-
             ArchiveEntityMapper.GetStudyDataFrom(dto, oldEmpIdentityMdl, out oldStudyMdl);
             ArchiveEntityMapper.GetTelDataFrom(dto, oldEmpIdentityMdl, out oldTelMdl);
 
             ////添加修改逻辑
-            //record = this.irep.Update(u => u.Id_Key == dto.Id_Key, empIdentityMdl);
+            record = this.irep.Update(u => u.Id_Key == dto.Id_Key, empIdentityMdl);
             ////处理外部逻辑
             ////1.修改学习信息存储
-            //record += StudyManager.Edit(studyMdl, oldStudyMdl);
+            record += StudyManager.Edit(studyMdl, oldStudyMdl);
             ////2.修改联系方式信息存储
-            //record += TelManager.Edit(telMdl, oldTelMdl);
+            record += TelManager.Edit(telMdl, oldTelMdl);
             return record;
         }
 
@@ -614,8 +618,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         private static string GetAreaName(XmlNode root, string areaCode)
         {
             string result = null;
-            bool findresult = false ;
-
             if (root == null)
             {
                 return null;
@@ -629,17 +631,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     if (root.Attributes["code"].Value.Equals(areaCode))
                     {
                         result = root.Attributes["name"].Value;
-                        findresult = true;
                         return result;
                     }
                 }
 
-                if (root.HasChildNodes && !findresult)
+                if (root.HasChildNodes)
                 {
                     result = GetAreaName(root.FirstChild, areaCode);
                 }
 
-                if ((root.NextSibling != null) && !findresult)
+                if (root.NextSibling != null) 
                 {
                     result = GetAreaName(root.NextSibling, areaCode);
                 }
@@ -666,10 +667,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 ////获取籍贯信息及居住地信息   籍贯一般指省市  居住地比较详细的地址
                 //if (getAreaName(docXml.DocumentElement, areaCode) != null)
                 //{
-                if (GetAreaName(docXml.DocumentElement, areaCode.Substring(0, 2).PadRight(6, '0')) != null)
+                //籍贯信息获取前两位编码，籍贯到省份就可以了
+                string getNativePlace = GetAreaName(docXml.DocumentElement, areaCode.Substring(0, 2).PadRight(6, '0'));
+                if (getNativePlace != null)
                 {
-                    //籍贯信息获取前两位编码，籍贯到省份就可以了
-                    nativePlace = GetAreaName(docXml.DocumentElement, areaCode.Substring(0, 2).PadRight(6, '0'));
+                    nativePlace = getNativePlace;
                 }
                 else
                 {
