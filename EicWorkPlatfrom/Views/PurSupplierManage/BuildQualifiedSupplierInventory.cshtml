@@ -17,9 +17,9 @@
                         <tr class="info">
                             <th>供应商信息</th>
                             <th>地址</th>
-                            <th>人员</th>
+                            <th>联系人员</th>
                             <th>采购时间</th>
-                            <th>采购类类型</th>
+                            <th>供应商类型</th>
                             <th>备注</th>
                             <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                         </tr>
@@ -29,7 +29,7 @@
                             <td>
                                 <span class="label label-default" title="供应商编号">{{item.SupplierId}}</span>
                                 <span class="label label-primary" title="供应商简称">{{item.SupplierShortName}}</span>
-                                <span class="label label-warning" title="供应商属性" ng-show="item.SupplierProperty">|{{item.SupplierProperty}}</span>
+                            
                                 <div class="h-split"></div>
                                 <span title="供应商全称">{{item.SupplierName}}</span><br />
                                 <div class="h-split"></div>
@@ -48,7 +48,7 @@
                             <td>
                                 <span title="供应商联系人">{{item.SupplierUser}}</span><br />
                                 <div class="h-split"></div>
-                                <span title="采购人员">{{item.PurchaseUser}}</span>
+                                <span title="常用电话">{{item.SupplierTel}}</span>
                             </td>
 
                             <td>
@@ -56,7 +56,7 @@
                                 <div class="h-split"></div>
                                 <span title="最近采购时间">{{item.LastPurchaseDate}}</span>
                             </td>
-                            <td>{{item.PurchaseType}}</td>
+                            <td>{{item.SupplierProperty}}</td>
                             <td>{{item.Remark}}</td>
                             <td>
                                 <button class="btn btn-xs btn-primary" ng-click="vmManager.editSupplierCertificate(item)" title="编辑">

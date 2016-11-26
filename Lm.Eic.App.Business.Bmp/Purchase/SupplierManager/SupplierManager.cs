@@ -38,17 +38,21 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     UpperPurchaseDate = SupplierLatestTwoPurchase.LastOrDefault().PurchaseDate.Trim().ToDate(),
                     PurchaseUser = SupplierLatestTwoPurchase.FirstOrDefault().PurchasePerson,
                     SupplierId = supplierInfo.SupplierId,
+                    SupplierProperty = supplierInfo.SupplierProperty,
+                    PurchaseType = supplierInfo.PurchaseType,
                     SupplierEmail = supplierInfo.SupplierEmail,
                     SupplierAddress = supplierInfo.SupplierAddress,
                     BillAddress = supplierInfo.BillAddress,
                     SupplierFaxNo = supplierInfo.SupplierFaxNo,
                     SupplierName = supplierInfo.SupplierName,
+                    Remark = supplierInfo.Remark,
                     SupplierShortName = supplierInfo.SupplierShortName,
-                    SupplierUser = supplierInfo.PurchaseUser,
-                    SupplierTel = supplierInfo.SupplierTel
+                    SupplierUser = supplierInfo.SupplierUser,
+                    SupplierTel = supplierInfo.SupplierTel,
+                    EligibleCertificate = SupplierLatestTwoPurchase.FirstOrDefault().PurchaseDate.Trim().ToDate().ToString()
                 });
             });
-            return QualifiedSupplierInfo.Take(10).ToList();
+            return QualifiedSupplierInfo.ToList();
         }
 
         /// <summary>
