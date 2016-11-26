@@ -175,7 +175,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             if (this.irep.IsExist(e => e.IdentityID == empIdentityMdl.IdentityID))
             {
-                //如果存在身份证信息，则先删除掉再进行添加
+                //如果存在删除
                 record = this.irep.Delete(e => e.IdentityID == empIdentityMdl.IdentityID);
                 if (record<=0) return record;
             }
