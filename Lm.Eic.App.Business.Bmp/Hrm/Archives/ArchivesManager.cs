@@ -175,8 +175,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             if (this.irep.IsExist(e => e.IdentityID == empIdentityMdl.IdentityID))
             {
-                var getOldempIdentityId_key = this.irep.Entities.First(e => e.IdentityID == empIdentityMdl.IdentityID).Id_Key;
-                record = this.irep.Delete(e => e.Id_Key == getOldempIdentityId_key);
+                //如果存在删除
+                record = this.irep.Delete(e => e.IdentityID == empIdentityMdl.IdentityID);
                 if (record<=0) return record;
             }
             record = this.irep.Insert(empIdentityMdl);
