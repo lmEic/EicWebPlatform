@@ -50,17 +50,17 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
           get { return _supplierproperty; }
       }
       private string _suppliertel;
-      /// <summary>
-      ///电话
-      /// </summary>
-      public string SupplierTel
+        /// <summary>
+        ///供应商电话
+        /// </summary>
+        public string SupplierTel
       {
           set { _suppliertel = value; }
           get { return _suppliertel; }
       }
       private string _supplieruser;
       /// <summary>
-      ///联系人
+      ///供应商联系人
       /// </summary>
       public string SupplierUser
       {
@@ -68,28 +68,28 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
           get { return _supplieruser; }
       }
       private string _supplierfaxno;
-      /// <summary>
-      ///传真
-      /// </summary>
-      public string SupplierFaxNo
+        /// <summary>
+        ///供应商传真
+        /// </summary>
+        public string SupplierFaxNo
       {
           set { _supplierfaxno = value; }
           get { return _supplierfaxno; }
       }
       private string _supplieremail;
-      /// <summary>
-      ///邮箱
-      /// </summary>
-      public string SupplierEmail
+        /// <summary>
+        ///供应商邮箱
+        /// </summary>
+        public string SupplierEmail
       {
           set { _supplieremail = value; }
           get { return _supplieremail; }
       }
       private string _supplieraddress;
-      /// <summary>
-      ///地址
-      /// </summary>
-      public string SupplierAddress
+        /// <summary>
+        ///供应商地址
+        /// </summary>
+        public string SupplierAddress
       {
           set { _supplieraddress = value; }
           get { return _supplieraddress; }
