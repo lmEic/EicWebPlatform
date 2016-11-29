@@ -392,6 +392,7 @@
     <Content Include="Scripts\controller\product\proDailyReport.js" />
     <Content Include="Scripts\controller\product\proMocManage.js" />
     <Content Include="Scripts\controller\purchase\purSupplierManage.js" />
+    <Content Include="Scripts\controller\purchase\TestJavaScript.js" />
     <Content Include="Scripts\controller\sysmanage\sysAccountManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysItilManage.js" />
     <Content Include="Scripts\controller\masterProduct\mpconfigApp.js" />
