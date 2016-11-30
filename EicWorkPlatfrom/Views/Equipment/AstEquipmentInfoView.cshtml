@@ -67,13 +67,97 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active"><a href="#Repaired" role="tab" data-toggle="tab">维修记录</a></li>
                         <li role="presentation"><a href="#profile" role="tab" data-toggle="tab">校验记录</a></li>
-                        <li role="presentation"><a href="#messages" role="tab" data-toggle="tab">保养记录</a></li>
+                        <li role="presentation"><a href="#maintenance" role="tab" data-toggle="tab">保养记录</a></li>
+                        <li role="presentation"><a href="#Discard" role="tab" data-toggle="tab">报废记录</a></li>
                     </ul>
-
                     <!-- Tab panes -->
                     <div class="tab-content">
+                        <!--校验记录-->
+                        <div role="tabpanel" class="tab-pane" id="profile">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr class="info">
+                                            <th>财产编号</th>
+                                            <th>设备名称</th>
+                                            <th>设备型号</th>
+                                            <th>制造编号</th>
+                                            <th>校验日期</th>
+                                            <th>预览</th>
+                                            <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vmManager.checkRecordDataset track by $index" ng-if="vmManager.checkRecordDataset.length>0">
+                                            <td>{{item.AssetNumber}}</td>
+                                            <td>{{item.EquipmentName}}</td>
+                                            <td>{{item.EquipmentSpec}}</td>
+                                            <td>{{item.ManufacturingNumber}}</td>
+                                            <td>{{item.CheckDate}}</td>
+                                            <td>
+                                                <img ng-src="{{item.DocumentPath}}" style="width:100px;height:80px;" class="img-rounded" />
+                                            </td>
+                                            <td>
+                                                <button yl-image-preview data-src="item.DocumentPath"
+                                                        class="btn btn-xs btn-primary" title="查看">
+                                                    查看
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" ng-if="vmManager.checkRecordDataset.length==0">
+                                                <label class="text-info">没有校验履历</label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div ng-if="vmManager.checkRecordDataSource.length>0"
+                                     yl-pagination data-dataset="vmManager.checkRecordDataset" data-datasource="vmManager.checkRecordDataSource"></div>
+                            </div>
+                        </div>
+
+                        <!--保养记录-->
+                        <div role="tabpanel" class="tab-pane" id="maintenance">
+                            <div class="table-responsive">
+                                <table class="table table-condensed table-bordered table-hover">
+                                    <thead>
+                                        <tr class="info">
+                                            <th>财产编号</th>
+                                            <th>设备名称</th>
+                                            <th>保养日期</th>
+                                            <th>预览</th>
+                                            <th>文档(<i class="fa fa-pencil-square-o"></i>)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vmManager.maintenanceDataSet track by $index" ng-if="vmManager.maintenanceDataSet.length>0">
+                                            <td>{{item.AssetNumber}}</td>
+                                            <td>{{item.EquipmentName}}</td>
+                                            <td>{{item.MaintenanceDate}}</td>
+                                            <td>
+                                                <img ng-src="{{item.DocumentPath}}" style="width:100px;height:80px;" class="img-rounded" />
+                                            </td>
+                                            <td>
+                                                <button ng-click="vmManager.showImage(item.DocumentPath)" class="btn btn-xs btn-primary" title="查看"> 查看</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" ng-if="vmManager.maintenanceDataSet.length==0">
+                                                <label class="text-info">没有保养履历</label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div yl-pagination ng-if="vmManager.maintenanceDataSource.length>0"
+                                     data-datasource="vmManager.maintenanceDataSource"
+                                     data-dataset="vmManager.maintenanceDataSet">
+                                </div>
+                            </div>
+
+                        </div>
+
                         <!--维修记录-->
-                        <div role="tabpanel" class="tab-pane active" id="Repaired">
+                        <div role="tabpanel" class="tab-pane" id="Repaired">
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover">
                                     <thead>
@@ -88,7 +172,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="item in vmManager.RepairedDataSource track by $index">
+                                        <tr ng-repeat="item in vmManager.repairedDataSet track by $index" ng-if="vmManager.repairedDataSet.length>0">
                                             <td>{{item.FormId}}</td>
                                             <td>{{item.FilingDate}}</td>
                                             <td>{{item.FaultDescription}}</td>
@@ -97,92 +181,55 @@
                                             <td>{{item.RepairedUser}}</td>
                                             <td>{{item.FinishDate}}</td>
                                         </tr>
+                                        <tr>
+                                            <td colspan="8" ng-if="vmManager.repairedDataSet.length==0">
+                                                <label class="text-info">没有维修记录</label>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
-                                <div yl-pagination data-dataset="vmManager.datasets" data-datasource="vmManager.datasource"></div>
+                                <div yl-pagination ng-if="vmManager.repairedDataSource.length>0"
+                                     data-datasource="vmManager.repairedDataSource"
+                                     data-dataset="vmManager.repairedDataSet">
+                                </div>
                             </div>
                         </div>
-                        <!--校验记录-->
-                        <div role="tabpanel" class="tab-pane" id="profile">
+                        <!--报废记录-->
+                        <div role="tabpanel" class="tab-pane" id="Discard">
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <tr class="info">
-                                            <th>财产编号</th>
-                                            <th>设备名称</th>
-                                            <th>设备型号</th>
-                                            <th>制造编号</th>
-                                            <th>是否校验</th>
-                                            <th>校验类型</th>
-                                            <th>校验日期</th>
-                                            <th>校验间隔</th>
-                                            <th>计划校验日期</th>
-                                            <th>校验状态</th>
+                                            <th style="min-width:80px;">财产编号</th>
+                                            <th style="min-width:80px;">设备名称</th>
+                                            <th style="min-width:80px;">报废日期</th>
+                                            <th>报废类别</th>
+                                            <th>报废原因</th>
+                                            <th>档案编号</th>
                                             <th>预览</th>
-                                            <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="item in vmManager.CheckDataSource track by $index">
-                                            <td>{{item.AssetNumber}}</td>
+                                        <tr ng-repeat="item in vmManager.discardDataSets track by $index" ng-if="vmManager.discardDataSets.length>0">
+                                            <td style="min-width:120px;">{{item.AssetNumber}}</td>
                                             <td>{{item.EquipmentName}}</td>
-                                            <td>{{item.EquipmentSpec}}</td>
-                                            <td>{{item.ManufacturingNumber}}</td>
-                                            <td>{{item.IsCheck}}</td>
-                                            <td>{{item.CheckType}}</td>
-                                            <td>{{item.CheckDate}}</td>
-                                            <td>{{item.CheckInterval}}</td>
-                                            <td>{{item.PlannedCheckDate}}</td>
-                                            <td>{{item.CheckState}}</td>
+                                            <td>{{item.DiscardDate}}</td>
+                                            <td>{{item.DiscardType}}</td>
+                                            <td>{{item.DiscardCause}}</td>
+                                            <td>{{item.DocumentId}}</td>
                                             <td>
-                                                <img ng-src="{{item.DocumentPath}}" style="width:100px;height:80px;" class="img-rounded"/>
-                                            </td>
-                                            <td>
-                                                <button ng-click="vmManager.showImage(item.DocumentPath)" class="btn btn-xs btn-primary"   title="查看"> 查看</button>
+                                                <button yl-image-preview data-src="item.DocumentPath"
+                                                        class="btn btn-xs btn-primary" title="查看">
+                                                    查看
+                                                </button>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div yl-pagination data-dataset="vmManager.datasets" data-datasource="vmManager.datasource"></div>
+                                <div yl-pagination ng-if="vmManager.discardDataSource.length>0"
+                                     data-dataset="vmManager.discardDataSets" data-datasource="vmManager.discardDataSource"></div>
                             </div>
-
                         </div>
-
-                        <!--保养记录-->
-                        <div role="tabpanel" class="tab-pane" id="messages">
-                            <div class="table-responsive">
-                                <table class="table table-condensed table-bordered table-hover">
-                                    <thead>
-                                        <tr class="info">
-                                            <th>财产编号</th>
-                                            <th>设备名称</th>
-                                            <th>保养日期</th>
-                                            <th>预览</th>
-                                            <th>文档(<i class="fa fa-pencil-square-o"></i>)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="item in vmManager.MaintenanceDataSource track by $index">
-                                            <td>{{item.AssetNumber}}</td>
-                                            <td>{{item.EquipmentName}}</td>
-                                            <td>{{item.MaintenanceDate}}</td>
-                                            <td>
-                                                <img ng-src="{{item.DocumentPath}}" style="width:100px;height:80px;" class="img-rounded" />
-                                            </td>
-                                            <td>
-                                                <button ng-click="vmManager.showImage(item.DocumentPath)" class="btn btn-xs btn-primary" title="查看"> 查看</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div yl-pagination
-                                     data-datasource="vmManager.datasource"
-                                     data-dataset="vmManager.datasets">
-                                </div>
-                            </div>
-
-                        </div>
-
                     </div>
                 </div>
 

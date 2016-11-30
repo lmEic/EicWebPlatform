@@ -58,5 +58,15 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// 图片文件查看预览窗口
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ActionResult ImageFilePreviewTpl()
+        {
+            return View();
+        }
     }
 }

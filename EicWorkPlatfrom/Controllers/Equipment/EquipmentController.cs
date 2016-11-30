@@ -31,15 +31,6 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
-        [NoAuthenCheck]
-        public ActionResult AstEquipmentInfoViewTpl()
-        {
-            return View();
-        }
-
-
-
-
         #region Ast EquipmentInfo View
         /// <summary>
         /// 生成校验清单
@@ -361,7 +352,17 @@ namespace EicWorkPlatfrom.Controllers
             var datas = AstService.EquipmentManager.DiscardManager.GetEquipmentDiscardOverView();
             return DateJsonResult(datas);
         }
-
+        /// <summary>
+        /// 获取报废记录
+        /// </summary>
+        /// <param name="assetNumber">财产编号</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetAstDiscardListByAssetNumber(string assetNumber)
+        {
+            var datas = AstService.EquipmentManager.DiscardManager.GetEquipmentDiscardDetails(assetNumber);
+            return DateJsonResult(datas);
+        }
         #endregion
     }
 }
