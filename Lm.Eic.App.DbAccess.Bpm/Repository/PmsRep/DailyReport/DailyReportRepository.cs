@@ -19,7 +19,12 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
         /// <param name="department">部门</param>
         /// <returns></returns>
         List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department);
-
+        /// <summary>
+        /// 获取产品总概述前30行接口  =》部门是必须的
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department,  string containsProductName);
         /// <summary>
         /// 获取产品工艺总览 =》品名和部门是必须的
         /// </summary>
@@ -82,6 +87,26 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
             {
                 throw new Exception(ex.InnerException.Message);
             }
+        }
+        public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department, string containsProductName)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT   ProductName, COUNT(ProductName) AS ProductFlowCount, CAST(SUM(CASE StandardHoursType WHEN '1' THEN StandardHours / 60 WHEN '3' THEN 60 / StandardHours ELSE StandardHours END) AS decimal(10, 2)) AS StandardHoursCount ")
+                  .Append("FROM   Pms_DReportsProductFlow ")
+                  .Append("WHERE   (Department = '" + department + "')")
+                   .Append("AND  (ProductName Like '%" + containsProductName + "%')")
+                  .Append("GROUP BY ProductName");
+                string sqltext = sb.ToString();
+                var productFlowList = DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).ToList();
+                return productFlowList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+
         }
     }
 

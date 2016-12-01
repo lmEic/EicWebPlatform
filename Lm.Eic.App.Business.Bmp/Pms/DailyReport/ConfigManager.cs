@@ -57,7 +57,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             return DailyReportConfigCrudFactory.ProductFlowConfigCrud.GetProductFlowOverviewListBy(departemant);
         }
-
+        public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string departemant ,string ProductName)
+        {
+            return DailyReportConfigCrudFactory.ProductFlowConfigCrud.GetProductFlowOverviewListBy(departemant, ProductName);
+        }
         /// <summary>
         /// 获取产品工艺总览
         /// </summary>
@@ -79,6 +82,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return DailyReportConfigCrudFactory.ProductFlowConfigCrud.FindBy(dto);
         }
 
+    
          #endregion
 
 

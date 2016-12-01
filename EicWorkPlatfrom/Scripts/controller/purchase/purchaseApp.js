@@ -1,6 +1,9 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
+
+
+//--------配置文件----------------
 .config(function ($stateProvider, $urlRouterProvider) {
     var supplierUrlPrefix = leeHelper.controllers.supplierManage + "/";
     //--------------供应商管理----------------------------

@@ -12,17 +12,17 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagem
   /// <summary>
   ///合格供应商
   /// </summary>
-    public interface IQualifiedSupplierRepository : IRepository<EligibleSuppliersModel> { }
+    public interface IEligibleSupplierRepository : IRepository<EligibleSuppliersModel> { }
   /// <summary>
   ///合格供应商
   /// </summary>
-    public class QualifiedSupplierRepository : BpmRepositoryBase<EligibleSuppliersModel>, IQualifiedSupplierRepository
-  { }
+    public class EligibleSupplierRepository : BpmRepositoryBase<EligibleSuppliersModel>, IEligibleSupplierRepository
+    { }
     /// <summary>
    /// 供应商合格文件
     /// </summary>
-  public interface ISupplierEligibleRepository : IRepository<SuppliersQualifiedCertificateModel> { }
-  public class SupplierEligibleRepository : BpmRepositoryBase<SuppliersQualifiedCertificateModel>, ISupplierEligibleRepository
+  public interface ISupplierQualifiedCertificateRepository : IRepository<SuppliersQualifiedCertificateModel> { }
+  public class SupplierQualifiedCertifcateRepository : BpmRepositoryBase<SuppliersQualifiedCertificateModel>, ISupplierQualifiedCertificateRepository
     { }
 
 
