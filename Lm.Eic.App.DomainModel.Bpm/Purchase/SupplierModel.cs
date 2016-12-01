@@ -247,15 +247,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
            set { _isefficacy = value; }
            get { return _isefficacy; }
        }
-       private string _filepath;
-       /// <summary>
-       ///证书存放路径
-       /// </summary>
-       public string FilePath
-       {
-           set { _filepath = value; }
-           get { return _filepath; }
-       }
         private string _certificateFileName;
         /// <summary>
         ///证书文件名称
@@ -265,6 +256,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _certificateFileName = value; }
             get { return _certificateFileName; }
         }
+        private string _filepath;
+       /// <summary>
+       ///证书存放路径
+       /// </summary>
+       public string FilePath
+       {
+           set { _filepath = value; }
+           get { return _filepath; }
+       }
         private string _remark;
        /// <summary>
        ///备注
@@ -717,9 +717,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         /// </summary>
         public string EligibleCertificate
         { set; get; }
-       /// <summary>
-       /// 文件路经
-       /// </summary>
+        /// <summary>
+        /// 证书文件名称
+        /// </summary>
+        public string CertificateFileName
+        { set; get; }
+        /// <summary>
+        /// 文件路经
+        /// </summary>
         public string FilePath
         { set; get; }
         /// <summary>
