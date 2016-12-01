@@ -43,7 +43,7 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     //
     //
     //
-    reportDataOp.FindProductFlowOverview = function (department, productName) {
+    reportDataOp.getLikeProductFlowOverview = function (department, productName) {
         var url = urlp + 'FindProductFlowData';
         return ajaxService.getData(url, {
             department: department,
@@ -155,7 +155,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         // 模糊查找
         getProductFlowDatails: function () {
 
-            $scope.searchPromise = dReportDataOpService.FindProductFlowOverview(vmManager.department,vmManager.productName).then(function (datas) {
+            $scope.searchPromise = dReportDataOpService.getLikeProductFlowOverview (vmManager.department,vmManager.productName).then(function (datas) {
                 vmManager.flowOverviews = datas;
             });
         },
