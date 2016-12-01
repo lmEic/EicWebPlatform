@@ -110,6 +110,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// </summary>
         /// <param name="supplierId">供应商Id</param>
         /// <returns></returns>
+        [NoAuthenCheck]
 
         public ContentResult GetSupplierQualifiedCertificateListBy(string supplierId)
         {
