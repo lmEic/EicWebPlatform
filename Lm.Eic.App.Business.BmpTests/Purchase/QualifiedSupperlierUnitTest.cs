@@ -22,7 +22,7 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
       
         }
 
-
+        [TestMethod]
         public void SupplierInfoTest()
         {
             var supplierInfos = PurchaseService.PurSupplierManager.GetSupplierInformationListBy("201601");
@@ -34,7 +34,7 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
         }
 
 
-
+        [TestMethod]
         public void EditsupplierInfoTest()
         {
             InPutSupplieCertificateInfoModel model = new InPutSupplieCertificateInfoModel()
@@ -52,6 +52,12 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
             var tem = PurchaseService.PurSupplierManager.SavaEditSpplierCertificate(modellist);
             if (!tem.Result) { Assert.Fail(); }
 
+        }
+        [TestMethod]
+        public void GetSupplierQualifiedCertificateList()
+        {
+            var datas = PurchaseService.PurSupplierManager.GetSupplierQualifiedCertificateListBy("D04004");
+            if (datas==null ) { Assert.Fail(); }
         }
     }
 }

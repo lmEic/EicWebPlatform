@@ -206,6 +206,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return irep.GetProductFlowOverviewListBy(department);
         }
 
+        public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department,string containsProductName)
+        {
+            return irep.GetProductFlowOverviewListBy(department, containsProductName);
+        }
         /// <summary>
         /// 获取产品工艺总览 =》品名和部门是必须的
         /// </summary>

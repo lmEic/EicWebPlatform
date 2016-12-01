@@ -29,7 +29,7 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
         var url = purUrlPrefix + 'UploadPurSupplierCertificateFile';
         return ajaxService.uploadFile(url, file);
     };
-
+    ///存储合格证书
     purDb.storePurSupplierCertificateInfo = function (certificateDatas) {
         var url = purUrlPrefix + 'StorePurSupplierCertificateInfo';
         return ajaxService.postData(url, {
@@ -192,7 +192,6 @@ null,
                         });
                     }
                 };
-
                 //上传文件项目
                 var uploadFileItem = {
                     id: 1,EligibleCertificate: '', adding: true, uploadSuccess: false,

@@ -16,6 +16,7 @@
                     </button>
                     <label>产品品名</label>
                     <input placeholder="输产品品名按下回车键查找" ng-model="vmManager.productName" ng-keypress="vmManager.getProductFlowList($event)" />
+                    <button class="btn btn-sm btn-primary" title="模糊查找品号" ng-click="vmManager.getProductFlowDatails()">模糊查找</button>
                     <div class="h-split"></div>
                 </div>
             </div>
@@ -23,7 +24,6 @@
                 <span>
                     <button class="btn btn-sm btn-default" title="新增" ng-click="operate.add()"><i class="fa fa-pencil"></i>新增</button>
                     <button class="btn btn-sm btn-warning" title="批量保存" ng-click="operate.saveAll()"><i class="fa fa-save"></i>批量保存</button>
-
                     <span class="pull-right">
                         <a class="btn btn-sm btn-primary" title="下载模板" href="@Url.Action("LoadProductFlowTemplateFile", "ProDailyReport")"><i class="fa fa-download"></i>下载模板</a>
                         <a href="javascript:;" class="btn btn-sm btn-info file" title="从Excel中导入数据">

@@ -37,6 +37,19 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             department: department,
         });
     };
+    //
+    //
+    ///模糊查找品名
+    //
+    //
+    //
+    reportDataOp.FindProductFlowOverview = function (department, productName) {
+        var url = urlp + 'FindProductFlowData';
+        return ajaxService.getData(url, {
+            department: department,
+            ProductName: productName,
+        });
+    };
     //获取产品工艺流程配置数据
     reportDataOp.getProductFlowInitData = function (department) {
         var url = urlPrefix + 'GetProductFlowInitData';
@@ -137,6 +150,13 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
             vmManager.productName = item.ProductName;
             $scope.searchPromise = dReportDataOpService.getProductFlowList(vmManager.department,vmManager.productName,"",2).then(function (datas) {
                 vmManager.editDatas = datas;
+            });
+        },
+        // 模糊查找
+        getProductFlowDatails: function () {
+
+            $scope.searchPromise = dReportDataOpService.FindProductFlowOverview(vmManager.department,vmManager.productName).then(function (datas) {
+                vmManager.flowOverviews = datas;
             });
         },
         //获取产品工艺流程列表

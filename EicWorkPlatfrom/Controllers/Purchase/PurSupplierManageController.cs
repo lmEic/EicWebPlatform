@@ -61,7 +61,6 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             var datas = PurchaseService.PurSupplierManager.GetSuppplierInfoBy(supplierId);
             return DateJsonResult(datas);
         }
-
         /// <summary>
         /// 编辑供应商证书模板
         /// </summary>
@@ -104,6 +103,18 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             var opResult = PurchaseService.PurSupplierManager.SavaEditSpplierCertificate(certificateDatas);
             return Json(opResult);
+        }
+
+        /// <summary>
+        /// 获供应商合格的证书列表
+        /// </summary>
+        /// <param name="supplierId">供应商Id</param>
+        /// <returns></returns>
+
+        public ContentResult GetSupplierQualifiedCertificateListBy(string supplierId)
+        {
+            var datas = PurchaseService.PurSupplierManager.GetSupplierQualifiedCertificateListBy(supplierId);
+            return DateJsonResult(datas);
         }
     }
 }
