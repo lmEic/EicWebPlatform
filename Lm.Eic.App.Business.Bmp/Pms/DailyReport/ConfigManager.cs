@@ -53,10 +53,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="departemant"> 部门</param>
         /// <returns></returns>
-        //public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string departemant)
-        //{
-        //    return DailyReportConfigCrudFactory.ProductFlowConfigCrud.GetProductFlowOverviewListBy(departemant);
-        //}
+        public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string departemant)
+        {
+            return DailyReportConfigCrudFactory.ProductFlowConfigCrud.GetProductFlowOverviewListBy(departemant);
+        }
         public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string departemant ,string ProductName)
         {
             return DailyReportConfigCrudFactory.ProductFlowConfigCrud.GetProductFlowOverviewListBy(departemant, ProductName);

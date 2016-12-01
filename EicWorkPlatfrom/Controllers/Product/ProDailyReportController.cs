@@ -81,15 +81,17 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult GetProductFlowOverview(string department, string productName, int searchMode)
         {
-            var ProductFlowdatas = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department, productName);
+            
             if (searchMode == 0)
             {
+                var ProductFlowdatas = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department);
                 var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
                 var datas = new { departments = departments, overviews = ProductFlowdatas };
                 return Json(datas, JsonRequestBehavior.AllowGet);
             }
             else
             {
+                var ProductFlowdatas = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department, productName);
                 return Json(ProductFlowdatas, JsonRequestBehavior.AllowGet);
             }
         }

@@ -459,6 +459,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _nonproductionreasoncode = value; }
             get { return _nonproductionreasoncode; }
         }
+        private string _isMachine;
+        /// <summary>
+        /// 是否为机器生产
+        /// </summary>
+        public string IsMachine
+        {
+            set { _isMachine = value; }
+            get { return _isMachine; }
+        }
         private string _nonproductionreason;
         /// <summary>
         ///非生产原因
