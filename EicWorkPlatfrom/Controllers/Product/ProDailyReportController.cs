@@ -47,27 +47,6 @@ namespace EicWorkPlatfrom.Controllers.Product
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 查找包含品名数据
-        /// </summary>
-        /// <param name="department"></param>
-        /// <param name="likeProductName">包函的品名</param>
-        /// <returns></returns>
-        public JsonResult FindProductFlowData(string department, string likeProductName)
-        {
-            if (likeProductName == string.Empty) return Json(null, JsonRequestBehavior.AllowGet);
-            var productFlowOverviews = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department, likeProductName);
-            if (productFlowOverviews == null|| productFlowOverviews.Count <=0) return Json(productFlowOverviews, JsonRequestBehavior.AllowGet);
-                var result = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
-                {
-                    Department = department,
-                    ProductName = productFlowOverviews[0].ProductName,
-                    SearchMode = 2
-                });
-                var data = new { result = result, overviews = productFlowOverviews };
-                return Json(data, JsonRequestBehavior.AllowGet);
-        }
-
-        /// <summary>
         /// 保存产品工艺流程数据
         /// </summary>
         /// <param name="entities"></param>
