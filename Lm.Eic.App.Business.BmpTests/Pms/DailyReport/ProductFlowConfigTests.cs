@@ -19,16 +19,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
         }
 
         [TestMethod()]
-        public void GetProductFlowListByTest()
-        {
-            var tem = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new DomainModel.Bpm.Pms.DailyReport.QueryDailyReportDto()
-            {
-                Department = "生技部",
-                SearchMode = 5,
-                OrderId = "517-1605031"
-            });
-            if (tem == null) { Assert.Fail(); }
-        }
+        //public void GetProductFlowListByTest()
+        //{
+        //    var tem = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new DomainModel.Bpm.Pms.DailyReport.QueryDailyReportDto()
+        //    {
+        //        Department = "生技部",
+        //        SearchMode = 5,
+        //        OrderId = "517-1605031"
+        //    });
+        //    if (tem == null) { Assert.Fail(); }
+        //}
 
         [TestMethod]
         public void AddMachineTest()
