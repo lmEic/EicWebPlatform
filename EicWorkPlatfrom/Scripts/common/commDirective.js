@@ -192,6 +192,29 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         }
     };
 })
+///图片预览按钮
+.directive('ylImagePreview', function ($modal) {
+    return {
+        restrict: 'A',
+        replace: false,
+        scope: {
+            fileSrc:'=src'
+        },
+        link: function (scope, element, attrs) {
+            var imagePreviewModal = $modal({
+                templateUrl: '/CommonTpl/ImageFilePreviewTpl',
+                controller: function ($scope) {
+                    $scope.fileSrc = scope.fileSrc;
+                },
+                show: false,
+            });
+
+            element.bind('click', function () {
+                imagePreviewModal.$promise.then(imagePreviewModal.show);
+            })
+        },
+    }
+})
 .directive('ylOperatesignFilterbutton', function () {
     return {
         restrict: 'EA',

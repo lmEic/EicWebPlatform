@@ -637,6 +637,15 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return irep.Entities.FirstOrDefault(m => m.AssetNumber == assetNumber);
         }
+        /// <summary>
+        /// 获取设备报废记录列表
+        /// </summary>
+        /// <param name="assetNumber">财产编号</param>
+        /// <returns></returns>
+        public List<EquipmentDiscardRecordModel> GetEquipmentDiscardRecordList(string assetNumber)
+        {
+            return irep.Entities.Where(m => m.AssetNumber == assetNumber).ToList();
+        }
 
         /// <summary>
         /// 获取设备报废总览表

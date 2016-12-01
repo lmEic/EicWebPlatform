@@ -153,10 +153,15 @@ var leeDataHandler = (function () {
 ///常用操作助手
 var leeHelper = (function () {
     var modalTpl = {
+        //消息提示窗口
         msgModalUrl: '/CommonTpl/InfoMsgModalTpl',
-        deleteModalUrl: '/CommonTpl/DeleteModalTpl'
+        //删除提示窗口
+        deleteModalUrl: '/CommonTpl/DeleteModalTpl',
+        //文件预览模态窗口
+        imgFilePreviewModalUrl: '/CommonTpl/ImageFilePreviewTpl'
     };
-    var commonTplUrl={
+    var commonTplUrl = {
+        //树组件选择窗口
         treeSelectTplUrl: '/CommonTpl/TreeSelectTpl',
     };
     var controllerNames = {

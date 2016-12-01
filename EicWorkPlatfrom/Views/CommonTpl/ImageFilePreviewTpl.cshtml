@@ -1,19 +1,15 @@
 ﻿<!-- 添加供应商认证文件 -->
 <div class="modal" id="mymodal-data" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" >
             <div class="modal-header">
                 <button type="button" class="close" ng-click="$hide()">&times;</button>
                 <h4 class="modal-title">文件预览</h4>
             </div>
 
-            <div class="modal-body">
-                <div style="width:100%;height:360px;">
-                    <img class="img-rounded" id="imagePreview" ng-src="{{previewFileName}}" style="width:100%;height:95%;" />
-                </div>
+            <div class="modal-body" style="height:540px;width:630px;">
+                <img class="img-rounded" id="imagePreview" ng-src="{{fileSrc}}" style="height:508px;width:568px;" />
             </div>
-
-            
         </div>
     </div>
 </div>

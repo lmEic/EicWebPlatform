@@ -45,5 +45,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return CrudFactory.EquipmentDiscarCrud.GetEquipmentDiscardOverView();
         }
+
+        /// <summary>
+        /// 获取设备报废总览表
+        /// </summary>
+        /// <returns></returns>
+        public List<EquipmentDiscardRecordModel> GetEquipmentDiscardDetails(string assetNumber)
+        {
+            return CrudFactory.EquipmentDiscarCrud.GetEquipmentDiscardRecordList(assetNumber);
+        }
     }
 }
