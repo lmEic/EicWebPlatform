@@ -130,6 +130,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             if (SaveSupplierInfoModel(supplierInfoModel).Result)
             {
                 List<SuppliersQualifiedCertificateModel> certificateModelList = new List<SuppliersQualifiedCertificateModel>();
+                
                 //保存证书数据
                 modelList.ForEach(e =>
                 {
