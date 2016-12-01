@@ -143,7 +143,7 @@ null,
     "63498634",
         SupplierId
     :
-    "D04004    ",
+    "D10069",
         SupplierName
     :
     "慈溪市周巷双溪橡胶制品厂",
@@ -203,7 +203,8 @@ null,
                 //上传文件项目
                 var uploadFileItem = {
                     id: 1,EligibleCertificate: '', adding: true, uploadSuccess: false,
-                    PurchaseType: '', SupplierProperty: '', SupplierId: '', FilePath: ''
+                    PurchaseType: '', SupplierProperty: '', SupplierId: '', FilePath: '',
+                    EligibleFileName:'',DateOfCertificate:null,
                 };
 
                 var editManager = {
@@ -244,6 +245,7 @@ null,
                                     //更新文件模型数据
                                     var year = new Date().getFullYear();
                                     fileItem.uploadSuccess = true;
+                                    fileItem.EligibleFileName = file.name;
                                     leeHelper.copyVm(editUiVM, fileItem);
                                     fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + file.name;
                                 }

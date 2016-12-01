@@ -50,9 +50,18 @@
                             <div class="h-split"></div>
                             <div class="form-group" ng-repeat="fileItem in vmManager.fileList track by $index">
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control" ng-model="fileItem.EligibleCertificate" placeholder="输入证书名称" />
+                                    <input type="text" name="eligibleCertificate" class="form-control" ng-model="fileItem.EligibleCertificate" placeholder="输入证书名称" />
+                                    <div class="error-messages" ng-messages="formPurchase.eligibleCertificate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">证书名称不能为空</small>
+                                    </div>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-3">
+                                    <input type="date" name="dateOfCertificate" class="form-control" ng-model="fileItem.DateOfCertificate" placeholder="获取证书日期" />
+                                    <div class="error-messages" ng-messages="formPurchase.dateOfCertificate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">证书日期不能为空</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <label for="drawing">文件名称：</label>
