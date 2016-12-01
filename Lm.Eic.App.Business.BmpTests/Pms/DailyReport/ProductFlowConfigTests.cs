@@ -18,7 +18,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
             if (temp == null) { Assert.Fail(); }
         }
 
-        [TestMethod()]
+        //[TestMethod()]
         //public void GetProductFlowListByTest()
         //{
         //    var tem = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new DomainModel.Bpm.Pms.DailyReport.QueryDailyReportDto()

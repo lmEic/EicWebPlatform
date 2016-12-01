@@ -106,7 +106,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public OpResult SavaQualifiedSupplierInfoList(List<EligibleSuppliersModel> modelList)
         {
-            return SupplierCrudFactory.QualifiedSupplierCrud.SavaQualifiedSupplierInfoList(modelList);
+            return SupplierCrudFactory.EligibleSupplierCrud.SavaEligibleSuppliersList(modelList);
         }
 
         /// <summary>
@@ -144,16 +144,24 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     };
                     certificateModelList.Add(savemodel);
                 });
-                return SupplierCrudFactory.SupplierEligibleCrud.SavaSupplierEligibleList(certificateModelList);
+                return SupplierCrudFactory.SupplierQualifiedCertificateCrud.SavaSupplierEligibleList(certificateModelList);
             }
             else return new OpResult("数据保存失败");
         }
-
+        /// <summary>
+        ///获取供应商证书列表
+        /// </summary>
+        /// <param name="suppliersId">供应商Id</param>
+        /// <returns></returns>
+        public List<SuppliersQualifiedCertificateModel> GetQualifiedCertificateListBy(string suppliersId)
+        {
+            return SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(suppliersId);
+        }
 
 
         #region   internal
 
-        
+
         /// <summary>
         /// 更新并保存供应商信息
         /// </summary>
