@@ -222,7 +222,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
        }
        private string _eligiblecertificate;
        /// <summary>
-       ///合格证书
+       ///合格证书总称
        /// </summary>
        public string EligibleCertificate
        {
@@ -249,14 +249,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
        }
        private string _filepath;
        /// <summary>
-       ///文档存放路径
+       ///证书存放路径
        /// </summary>
        public string FilePath
        {
            set { _filepath = value; }
            get { return _filepath; }
        }
-       private string _remark;
+        private string _certificateFileName;
+        /// <summary>
+        ///证书文件名称
+        /// </summary>
+        public string CertificateFileName
+        {
+            set { _certificateFileName = value; }
+            get { return _certificateFileName; }
+        }
+        private string _remark;
        /// <summary>
        ///备注
        /// </summary>
