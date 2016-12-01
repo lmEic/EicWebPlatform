@@ -13,12 +13,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     /// </summary>
     public interface IProductFlowRepositoryRepository : IRepository<ProductFlowModel>
     {
-        /// <summary>
-        /// 获取产品总概述前30行接口  =》部门是必须的
-        /// </summary>
-        /// <param name="department">部门</param>
-        /// <returns></returns>
-        List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department);
+
         /// <summary>
         /// 获取产品总概述前30行接口  =》部门是必须的
         /// </summary>
@@ -64,42 +59,36 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
         /// <summary>
         /// 获取产品总概述前30行
         /// </summary>
-        /// <param name="department">部门</param>
+        /// <param name="department"></param>
+        /// <param name="containsProductName">包函产品名称</param>
         /// <returns></returns>
-        public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department)
-        {
-            try
-            {
-                department = "成型课";
-
-                StringBuilder sb = new StringBuilder();
-                sb.Append("SELECT   ProductName, COUNT(ProductName) AS ProductFlowCount, CAST(SUM(CASE StandardHoursType WHEN '1' THEN StandardHours / 60 WHEN '3' THEN 60 / StandardHours ELSE StandardHours END) AS decimal(10, 2)) AS StandardHoursCount ")
-                  .Append("FROM   Pms_DReportsProductFlow ")
-                  .Append("WHERE   (Department = '" + department + "')")
-                  .Append("GROUP BY ProductName");
-                string sqltext = sb.ToString();
-                var productFlowList = DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).ToList();
-                if (productFlowList.Count >= 30)
-                    productFlowList = productFlowList.Take(30).ToList();
-                return productFlowList;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
         public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department, string containsProductName)
         {
             try
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("SELECT   ProductName, COUNT(ProductName) AS ProductFlowCount, CAST(SUM(CASE StandardHoursType WHEN '1' THEN StandardHours / 60 WHEN '3' THEN 60 / StandardHours ELSE StandardHours END) AS decimal(10, 2)) AS StandardHoursCount ")
-                  .Append("FROM   Pms_DReportsProductFlow ")
-                  .Append("WHERE   (Department = '" + department + "')")
-                   .Append("AND  (ProductName Like '%" + containsProductName + "%')")
-                  .Append("GROUP BY ProductName");
-                string sqltext = sb.ToString();
+                if (containsProductName == null) containsProductName = string.Empty;
+                 StringBuilder sbFront = new StringBuilder();
+                sbFront.Append("SELECT   ProductName, COUNT(ProductName) AS ProductFlowCount, CAST(SUM(CASE StandardHoursType WHEN '1' THEN StandardHours / 60 WHEN '3' THEN 60 / StandardHours ELSE StandardHours END) AS decimal(10, 2)) AS StandardHoursCount ")
+                  .Append("FROM   Pms_DReportsProductFlow ");
+
+
+                StringBuilder sbMiddle = new StringBuilder();
+                sbMiddle.Append("WHERE   (Department = '" + department + "')")
+                      .Append("AND  (ProductName Like '%" + containsProductName + "%')");
+
+                StringBuilder sbBack= new StringBuilder();
+
+                sbBack.Append("GROUP BY ProductName");
+                string sqltext = sbFront.ToString();
+                if (department == null || department == string.Empty)
+                {
+                    sqltext += sbBack.ToString();
+                }
+                else
+                { sqltext += sbMiddle.ToString() + sbBack.ToString(); }
                 var productFlowList = DbHelper.Bpm.LoadEntities<ProductFlowOverviewModel>(sqltext).ToList();
+                if (productFlowList.Count >= 30)
+                    productFlowList = productFlowList.Take(30).ToList();
                 return productFlowList;
             }
             catch (Exception ex)

@@ -201,10 +201,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department)
-        {
-            return irep.GetProductFlowOverviewListBy(department);
-        }
+        //public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department)
+        //{
+        //    return irep.GetProductFlowOverviewListBy(department);
+        //}
 
         public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department,string containsProductName)
         {
