@@ -50,7 +50,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             DateTime dailyDate = dailyReportDate.ToDate();
             if (departmentAllDailyReportList.Count > 0)
             {
-
                 var dailyReportList = departmentAllDailyReportList.Where(date => date.DailyReportDate == dailyDate).OrderBy (e=>e.InPutId).ToList();
                 if (dailyReportList.Count > 0)
                 {
@@ -62,12 +61,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                    //已审核数据模板
                     var maxDailyReportDate = departmentAllDailyReportList.Where (m=>m.CheckSign=="已审核").Max(m => m.DailyReportDate);
                    //得到最近数据
-                    var maxDailyReportList = departmentAllDailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).ToList();
+                    var maxDailyReportList = departmentAllDailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).OrderBy(e => e.InPutId).ToList();
                     var returnList = new List<DailyReportTempModel>();
                     maxDailyReportList.ForEach(m =>
                     {
                         DailyReportTempModel mdl = (DailyReportTempModel)m.Clone();
-                        mdl.Qty = 0; mdl.QtyBad = 0; mdl.QtyGood = 0;
+                        mdl.Qty = 0;
+                        mdl.QtyBad = 0;
+                        mdl.QtyGood = 0;
                         returnList.Add(mdl);
                     }); 
                     return returnList;
@@ -76,7 +77,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return new List<DailyReportTempModel>();
           
         }
-
+        /// <summary>
+        /// 导出Excel列表
+        /// </summary>
         private List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
                   new FileFieldMapping ("MachineId","機台號"),
                   new FileFieldMapping ("OrderId","制令单"),
@@ -107,7 +110,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             var datas = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
             if (datas != null && datas.Count > 0)
             { 
-                //按工艺分类
+                
                 var dataGroupping = datas.GetGroupList<DailyReportTempModel>("");
                 return dataGroupping.ExportToExcelMultiSheets<DailyReportTempModel>(fieldmappping);
             }
@@ -163,7 +166,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             //将临时表中的本部门的所有列表 克隆至正式日报表中
             var dailyReportTempList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
-
             if (!dailyReportTempList.IsNullOrEmpty())
                 return OpResult.SetResult("未找到本部门的任何日报记录！");
         
