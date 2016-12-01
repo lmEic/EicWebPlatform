@@ -16,7 +16,8 @@
                     </button>
                     <label>产品品名</label>
                     <input placeholder="输产品品名按下回车键查找" ng-model="vmManager.productName" ng-keypress="vmManager.getProductFlowList($event)" />
-                    <button class="btn btn-sm btn-primary" title="模糊查找品号" ng-click="vmManager.getProductFlowDatails()">模糊查找</button>
+                    <button class="btn btn-sm btn-primary" title="模糊查找品号" ng-click="vmManager.getProductFlowDatails()">
+                                 <i class="fa fa-search"></i>模糊查找</button>
                     <div class="h-split"></div>
                 </div>
             </div>

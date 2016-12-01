@@ -46,6 +46,20 @@ namespace EicWorkPlatfrom.Controllers.Product
                 });
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 查找包含品名数据
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="likeProductName">包函的品名</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetProductFlowListBy(string department, string likeProductName)
+        {
+            var productFlowOverviews = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department, likeProductName);
+            return Json(productFlowOverviews, JsonRequestBehavior.AllowGet);
+        }
+
         /// <summary>
         /// 保存产品工艺流程数据
         /// </summary>
@@ -61,15 +75,25 @@ namespace EicWorkPlatfrom.Controllers.Product
 
         /// <summary>
         /// 获取产品工艺初始化数据
+        /// searchMode:0查询全部；1按名称模糊查询
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetProductFlowInitData(string department)
+        public JsonResult GetProductFlowOverview(string department, string productName, int searchMode)
         {
-            var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
-            var productFlowOverviews = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department);
-            var data = new { departments = departments, overviews = productFlowOverviews };
-            return Json(data, JsonRequestBehavior.AllowGet);
+            
+            if (searchMode == 0)
+            {
+                var ProductFlowdatas = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department);
+                var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
+                var datas = new { departments = departments, overviews = ProductFlowdatas };
+                return Json(datas, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var ProductFlowdatas = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department, productName);
+                return Json(ProductFlowdatas, JsonRequestBehavior.AllowGet);
+            }
         }
         /// <summary>
         /// 载入产品工艺流程模板

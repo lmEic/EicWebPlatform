@@ -192,7 +192,7 @@
                             <td>
                                 <span ng-hide="item.editting"><span ng-show="item.MachineId">{{item.MachineId}}/</span>{{item.ProductFlowName}}</span>
                                 <div class="input-group">
-                                    <input ng-model="vm.ProductFlowID" focus-if="focus.productFlowFocus" focus-setter style="width:100px;"
+                                    <input ng-model="tempVm.ProductFlowID" focus-if="focus.productFlowFocus" focus-setter style="width:100px;"
                                            ng-keydown="vmManager.getProductFlowInfo($event)" placeholder="工艺/机台编号" ng-show="item.editting" />
                                     <div class="input-group-btn" ng-show="item.editting">
                                         <button type="button" class="btn btn-xs btn-primary"
@@ -220,7 +220,7 @@
                                 <span ng-hide="item.editting">{{item.UserName}}</span>
 
                                 <div class="input-group" ng-show="item.editting">
-                                    <input ng-model="vm.UserWorkerId" ng-keydown="vmManager.getWorkerInfo($event,'worker')"
+                                    <input ng-model="tempVm.UserWorkerId" ng-keydown="vmManager.getWorkerInfo($event,'worker')"
                                            focus-if="focus.workerIdFocus" focus-setter data-ensure-user-exist style="width:85px;"
                                            placeholder="工号或姓名" />
                                     <div class="input-group-btn" ng-hide="vmManager.isSingle">
@@ -250,7 +250,7 @@
                                 <div ng-show="item.editting">
                                     <span ng-hide="item.isMachineMode">--</span>
                                     <div class="input-group" ng-show="item.editting">
-                                        <input ng-model="vm.MasterWorkerId" ng-keydown="vmManager.getWorkerInfo($event,'master')"
+                                        <input ng-model="tempVm.MasterWorkerId" ng-keydown="vmManager.getWorkerInfo($event,'master')"
                                                focus-if="focus.masterWorkerIdFocus" focus-setter style="width:85px;"
                                                placeholder="工号或姓名" ng-show="item.isMachineMode" />
                                         <div class="input-group-btn" ng-hide="vmManager.isSingle">
