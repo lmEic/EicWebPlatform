@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
 {
+    /// <summary>
+    /// 制三部日报表模型
+    /// </summary>
     public class Ms589DaiyReportModel
     {
         public Ms589DaiyReportModel()

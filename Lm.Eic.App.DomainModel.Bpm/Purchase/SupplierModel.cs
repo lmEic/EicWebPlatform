@@ -5,10 +5,14 @@ using System.Text;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Purchase
 {
+
+
+    #region   映射到数据库模型
     /// <summary>
     /// 合格的供应商清册Model
+    /// EligibleSuppliersTable
     /// </summary>
-   public  class EligibleSuppliersModel
+    public class EligibleSuppliersModel
     {
       public EligibleSuppliersModel ()
        { }
@@ -207,8 +211,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
 
     /// <summary>
     /// 供应商合格证书
+    /// SuppliersQualifiedCertificate
     /// </summary>
-   public class SuppliersQualifiedCertificateModel
+    public class SuppliersQualifiedCertificateModel
    {
        #region Model
        private string _supplierid;
@@ -323,9 +328,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
    }
 
     /// <summary>
-   /// 供应商信息表
+    /// 供应商信息表
+    /// SuppliersInfo
     /// </summary>
-  public class SuppliersInfoModel
+    public class SuppliersInfoModel
   {
       #region Model
       private string _supplierid;
@@ -502,10 +508,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
       #endregion Model
   }
 
-   /// <summary>
-   /// 季度审查总览表
-   /// </summary>
-   public class SupplieSeasonAuditModel
+    /// <summary>
+    /// 季度审查总览表
+    /// SuppliersSeasonAuditTable
+    /// </summary>
+    public class SupplieSeasonAuditModel
    {
        #region Model
        private DateTime _optime;
@@ -690,7 +697,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
        }
        #endregion Model
    }
-
+    #endregion
+    #region  展示模型
     /// <summary>
     /// 供应商编辑输入模形
     /// </summary>
@@ -739,5 +747,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         { set; get; }
         #endregion
     }
+    #endregion
 
 }
