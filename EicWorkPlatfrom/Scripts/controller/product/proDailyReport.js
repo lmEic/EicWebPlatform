@@ -315,6 +315,12 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
 
     var initVM = _.clone(uiVM);
 
+    $scope.tempVm = tempVm = {
+        ProductFlowID: null,
+        UserWorkerId: null,
+        MasterWorkerId:null,
+    };
+
     var tablevm = {
         //跨列数字集合
         colSpans: [3, 2, 3, 3, 7],
@@ -323,7 +329,10 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     var tableSet = _.clone(tablevm);
     $scope.tbl = tablevm;
 
-
+    //工单前缀对象
+    var orderIdPre = {
+        '成型课':'517-'+ new Date().getFullYear().toString().substr(2,2),
+    };
 
     var vmManager = {
         department: '成型课',
@@ -362,6 +371,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             vm.rowindex = vmManager.edittingRowIndex;
             vm.editting = true;
             vm.isMachineMode = false;
+
+            $scope.vm.OrderId = orderIdPre[vmManager.department];
             vmManager.edittingRow = vm;
             vmManager.editDatas.push(vm);
         },
@@ -422,12 +433,52 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             vmManager.edittingRow.ProductName = orderDetails.ProductName;
             vmManager.edittingRow.ProductSpecification = orderDetails.ProductSpecify;
         },
+        //获取工艺流程信息
         getProductFlows: function (orderId) {
             vmManager.productFlows = [];
             var item = _.find(vmManager.orderDatas, { orderId: $scope.vm.OrderId });
             if (!angular.isUndefined(item)) {
                 vmManager.productFlows = item.data.productFlows;
             }
+        },
+        //是否是机台名称
+        isInputMachineName: function () {
+            var machineId = $scope.vm.ProductFlowID.toUpperCase();//强制转换为大写
+            var machineItem = _.find(vmManager.machines, { MachineId: machineId });
+            return {
+                isMachine: machineItem !== undefined,
+                machineInfo: machineItem
+            };
+        },
+        //获取工序信息
+        getProductFlowInfo: function ($event) {
+            if ($event.keyCode === 13) {
+                if (vmManager.productFlows.length > 0) {
+                    var flowItem = null;
+                    //赋值给模型的工艺流程编号
+                    $scope.vm.ProductFlowID = $scope.tempVm.ProductFlowID;
+
+                    var machineCheckInfo = vmManager.isInputMachineName();
+                    //如果输入的是机台编号
+                    if (machineCheckInfo.isMachine) {
+                        vmManager.edittingRow.isMachineMode = true;
+                        vmManager.edittingRow.MachineId = machineCheckInfo.machineInfo.MachineCode;
+                        flowItem = vmManager.productFlows[0];
+                        //更新文本框显示内容
+                        $scope.tempVm.ProductFlowID = machineCheckInfo.machineInfo.MachineId + "/" + flowItem.ProductFlowName;
+                    }
+                    else {
+                        flowItem = _.find(vmManager.productFlows, { ProductFlowId: $scope.vm.ProductFlowID });
+                        vmManager.edittingRow.isMachineMode = false;
+                        //更新界面显示值
+                        $scope.tempVm.ProductFlowID = flowItem.ProductFlowName;
+                    }
+                    if (!angular.isUndefined(flowItem)) {
+                        vmManager.selectProductFlow(flowItem);
+                    }
+                }
+            }
+            focusSetter.moveFocusTo($event, 'orderIdFocus', 'workerIdFocus');
         },
         //获取工单信息
         getWorkOrderInfo: function ($event) {
@@ -457,6 +508,30 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             focusSetter.moveFocusTo($event, "orderIdFocus", 'productFlowFocus');
         },
         searchedWorkers: [],
+        selectWorker: function (worker, workerType) {
+            if (worker !== null) {
+                if (workerType === 'worker') {
+                    vmManager.edittingRow.UserName = worker.Name;
+                    vmManager.edittingRow.UserWorkerId = worker.WorkerId;
+                    vmManager.edittingRow.ClassType = worker.ClassType;
+                    //更新界面职
+                    $scope.tempVm.UserWorkerId = worker.Name;
+                }
+                else {
+                    vmManager.edittingRow.MasterName = worker.Name;
+                    vmManager.edittingRow.MasterWorkerId = worker.WorkerId;
+                    //更新界面职
+                    $scope.tempVm.MasterWorkerId = worker.Name;
+                }
+                vmManager.edittingRow.Department = vmManager.department;
+            }
+            else {
+                vmManager.edittingRow.Department = null;
+            }
+
+            leeHelper.copyVm(vmManager.edittingRow, uiVM);
+            $scope.vm = uiVM;
+        },
         isSingle: true,//是否搜寻到的是单个人
         //获取作业人员信息
         getWorkerInfo: function ($event, workerType) {
@@ -472,13 +547,16 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             }
             if ($event.keyCode === 13 || $event.keyCode === 9) {
                 var workerId = null;
+               
                 if (workerType === 'worker') {
+                    uiVM.UserWorkerId = $scope.tempVm.UserWorkerId;
                     workerId = uiVM.UserWorkerId;
-                    if (uiVM.UserWorkerId === undefined) return;
+                    if (uiVM.UserWorkerId === undefined || uiVM.UserWorkerId === null) return;
                 }
                 else {
+                    uiVM.MasterWorkerId = $scope.tempVm.MasterWorkerId;
                     workerId = uiVM.MasterWorkerId;
-                    if (uiVM.MasterWorkerId === undefined) return;
+                    if (uiVM.MasterWorkerId === undefined || uiVM.MasterWorkerId === null) return;
                 }
                 var strLen = leeHelper.checkIsChineseValue(workerId) ? 2 : 6;
                 if (workerId.length >= strLen) {
@@ -566,62 +644,12 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             if ($event.keyCode === 13) {
                 uiVM = _.clone(initVM);
                 $scope.vm = uiVM;
+                leeHelper.clearVM(tempVm);
+                $scope.tempVm = tempVm;
                 vmManager.edittingRow.editting = false;
                 vmManager.addRow();
                 focusSetter['orderIdFocus'] = true;
             };
-        },
-        selectWorker: function (worker,workerType) {
-            if (worker !== null) {
-                if (workerType === 'worker') {
-                    vmManager.edittingRow.UserName = worker.Name;
-                    vmManager.edittingRow.UserWorkerId = worker.WorkerId;
-                    vmManager.edittingRow.ClassType = worker.ClassType;
-                }
-                else {
-                    vmManager.edittingRow.MasterName = worker.Name;
-                    vmManager.edittingRow.MasterWorkerId = worker.WorkerId;
-                }
-                vmManager.edittingRow.Department = vmManager.department;
-            }
-            else {
-                vmManager.edittingRow.Department = null;
-            }
-
-            leeHelper.copyVm(vmManager.edittingRow, uiVM);
-            $scope.vm = uiVM;
-        },
-        //是否是机台名称
-        isInputMachineName: function () {
-            var machineId = $scope.vm.ProductFlowID.toUpperCase();//强制转换为大写
-            var machineItem = _.find(vmManager.machines, { MachineId: machineId });
-            return {
-                isMachine: machineItem !== undefined,
-                machineInfo:machineItem
-            };
-        },
-        //获取工序信息
-        getProductFlowInfo: function ($event) {
-            if ($event.keyCode === 13) {
-                if (vmManager.productFlows.length > 0) {
-                    var flowItem = null;
-                    var machineCheckInfo=vmManager.isInputMachineName();
-                    //如果输入的是机台编号
-                    if (machineCheckInfo.isMachine) {
-                        vmManager.edittingRow.isMachineMode = true;
-                        vmManager.edittingRow.MachineId = machineCheckInfo.machineInfo.MachineCode;
-                        flowItem = vmManager.productFlows[0];
-                    }
-                    else {
-                        flowItem = _.find(vmManager.productFlows, { ProductFlowId: $scope.vm.ProductFlowID });
-                        vmManager.edittingRow.isMachineMode = false;
-                    }
-                    if (!angular.isUndefined(flowItem)) {
-                        vmManager.selectProductFlow(flowItem);
-                    }
-                }
-            }
-            focusSetter.moveFocusTo($event, 'orderIdFocus', 'workerIdFocus');
         },
         //结束编辑
         editOver: function (rowItem) {
