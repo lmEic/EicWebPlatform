@@ -723,7 +723,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         public string CertificateFileName
         { set; get; }
         /// <summary>
-        /// 文件路经
+        ///  证书文件路经
         /// </summary>
         public string FilePath
         { set; get; }
