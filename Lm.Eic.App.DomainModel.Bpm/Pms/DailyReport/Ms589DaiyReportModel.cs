@@ -7,6 +7,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
 {
     public class Ms589DaiyReportModel
     {
+        public Ms589DaiyReportModel()
+        { }
 
         #region Model
         private string _departmentname;

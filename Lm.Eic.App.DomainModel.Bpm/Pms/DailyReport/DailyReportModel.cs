@@ -5,8 +5,11 @@ using System.Text;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
 {
+
+    #region  存储到数据库的数据模型 
     /// <summary>
     ///日报实体模型
+    ///DailyReports
     /// </summary>
     [Serializable]
     public partial class DailyReportModel
@@ -432,9 +435,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         #endregion Model
     }
 
-
+    #region  日报实体模型 临时表  
     /// <summary>
     ///日报实体模型 临时表
+    ///DailyReportsTemp
     /// </summary>
     [Serializable]
     public partial class DailyReportTempModel : ICloneable
@@ -895,35 +899,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         #endregion Model 
 
     }
-
-
     public interface ICloneable
     {
         object Clone();
     }
-    /// <summary>
-    /// 产品工艺概述模型
-    /// </summary>
-    public class ProductFlowOverviewModel
-    {
-        /// <summary>
-        /// 产品品名
-        /// </summary>
-        public string ProductName { get; set; }
-        /// <summary>
-        /// 工序总数
-        /// </summary>
-        public int ProductFlowCount { get; set; }
-
-        /// <summary>
-        /// 总工时
-        /// </summary>
-        public double StandardHoursCount { get; set; }
-    }
+    #endregion
 
 
     /// <summary>
     ///产品工艺模型
+    ///DReportsProductFlow
     /// </summary>
     [Serializable]
     public partial class ProductFlowModel
@@ -1135,6 +1120,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
 
     /// <summary>
     ///机台实体模型
+    ///DReportsMachine
     /// </summary>
     [Serializable]
     public partial class MachineModel
@@ -1231,6 +1217,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
 
     /// <summary>
     ///非生产原因实体模型
+    ///DReportsNonProduction
     /// </summary>
     [Serializable]
     public partial class NonProductionReasonModel
@@ -1313,6 +1300,30 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         #endregion Model
     }
 
+    #endregion
+
+
+    #region  用来展示的模型
+
+    /// <summary>
+    /// 产品工艺概述模型
+    /// </summary>
+    public class ProductFlowOverviewModel
+    {
+        /// <summary>
+        /// 产品品名
+        /// </summary>
+        public string ProductName { get; set; }
+        /// <summary>
+        /// 工序总数
+        /// </summary>
+        public int ProductFlowCount { get; set; }
+
+        /// <summary>
+        /// 总工时
+        /// </summary>
+        public double StandardHoursCount { get; set; }
+    }
 
     /// <summary>
     ///工单信息实体模型
@@ -1434,4 +1445,5 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         #endregion Model
     }
 
+    #endregion
 }
