@@ -1,6 +1,6 @@
 ﻿<div class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-        <div class="modal-content" style="min-width:840px;">
+        <div class="modal-content" style="min-width:880px;">
             <div class="modal-header" ng-show="title">
                 <button type="button" class="close" ng-click="$hide()">&times;</button>
                 <h4>
@@ -10,21 +10,19 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-2">
-                        <div class="well">
-                            <table class="table table-condensed table-bordered"> 
-                                <thead>
-                                    <tr><td>证书列表</td></tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="fileItem in vmManager.certificateDatas track by $index">
-                                        <td>{{item.EligibleCertificate}}<label class="label label-primary">{{item.EligibleFileName}}</label></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="col-md-3">
+                        <table class="table table-condensed table-bordered">
+                            <thead>
+                                <tr class="info"><td>证书列表</td></tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="fileItem in vmManager.certificateDatas track by $index">
+                                    <td>{{item.EligibleCertificate}}<label class="label label-primary">{{item.EligibleFileName}}</label></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <form role="form" name="formPurchase" novalidate class="form-horizontal">
                             <label>类别信息</label>
                             <span class="label label-primary pull-right">供应商编号：【{{vm.SupplierId}}】</span>
