@@ -36,6 +36,14 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
             certificateDatas: certificateDatas,
         });
     };
+    ///获取合格供应商证书信息
+    purDb.getSupplierQualifiedCertificateListBy = function (supplierId)
+    {
+        var url = purUrlPrefix + 'GetSupplierQualifiedCertificateListBy';
+        return ajaxService.getData(url, {
+            supplierId: supplierId,
+        });
+    };
     return purDb;
 });
 
@@ -156,7 +164,7 @@ null,
     "2016-11-19",
     };
 
-    var vmManager = {
+    var vmManager = $scope.vmManager = {
         searchYear: new Date().getFullYear(),
         datasets: [],
         datasource:[item],
@@ -210,7 +218,15 @@ null,
                     getFile: function (fileItem) {
                         editManager.uploadFileItem = _.clone(fileItem);
                     },
-                    uploadFileItem:null,
+                    uploadFileItem: null,
+                    //证书数据
+                    certificateDatas:[],
+                    getCertificateDatas: function () {
+                        editManager.certificateDatas = [];
+                        $scope.searchPromise = supplierDataOpService.getSupplierQualifiedCertificateListBy(vmManager.editItem.SupplierId).then(function (datas) {
+                            editManager.certificateDatas = datas;
+                        });
+                    },
                 };
                 $scope.vmManager = editManager;
                 ///选择文件并上传
@@ -235,6 +251,9 @@ null,
                         });
                     }
                 };
+
+                //提取数据
+                editManager.getCertificateDatas();
             },
             show: false
         }),
@@ -244,7 +263,5 @@ null,
             vmManager.supplierCertificateEditModal.$promise.then(vmManager.supplierCertificateEditModal.show);
         },
     };
-
-    $scope.vmManager = vmManager;
 });
 
