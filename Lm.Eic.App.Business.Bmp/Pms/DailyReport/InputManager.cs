@@ -75,7 +75,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                         mdl.ProductionHours = 0;
                         mdl.SetHours =12;
                         mdl.InputHours = 12;
-
                         returnList.Add(mdl);
                     }); 
                     return returnList;

@@ -698,6 +698,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
        #endregion Model
    }
     #endregion
+   
+    
     #region  展示模型
     /// <summary>
     /// 供应商编辑输入模形
