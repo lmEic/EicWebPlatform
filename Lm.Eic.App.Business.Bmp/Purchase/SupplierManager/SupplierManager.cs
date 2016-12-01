@@ -130,7 +130,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             if (SaveSupplierInfoModel(supplierInfoModel).Result)
             {
                 List<SuppliersQualifiedCertificateModel> certificateModelList = new List<SuppliersQualifiedCertificateModel>();
-                
                 //保存证书数据
                 modelList.ForEach(e =>
                 {
@@ -140,7 +139,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                         EligibleCertificate = e.EligibleCertificate,
                         CertificateFileName =e.CertificateFileName,
                         FilePath = e.FilePath,
-                        DateOfCertificate =e.DateOfCertificate,
+                        DateOfCertificate =e.DateOfCertificate.ToDate(),
                         IsEfficacy = "是",
                         OpSign = "add"
                     };
