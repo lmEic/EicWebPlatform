@@ -137,8 +137,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     {
                         SupplierId = e.SupplierId,
                         EligibleCertificate = e.EligibleCertificate,
+                        CertificateFileName =e.CertificateFileName,
                         FilePath = e.FilePath,
-                        DateOfCertificate = DateTime.Now.ToDate () ,
+                        DateOfCertificate =e.DateOfCertificate,
                         IsEfficacy = "是",
                         OpSign = "add"
                     };
