@@ -1,6 +1,6 @@
 ﻿<div class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-        <div class="modal-content" style="min-width:880px;">
+        <div class="modal-content" style="min-width:890px;">
             <div class="modal-header" ng-show="title">
                 <button type="button" class="close" ng-click="$hide()">&times;</button>
                 <h4>
@@ -11,13 +11,13 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <table class="table table-condensed table-bordered">
+                        <table class="table table-bordered table-condensed">
                             <thead>
                                 <tr class="info"><td>证书列表</td></tr>
                             </thead>
-                            <tbody>
-                                <tr ng-repeat="fileItem in vmManager.certificateDatas track by $index">
-                                    <td>{{item.EligibleCertificate}}<label class="label label-primary">{{item.EligibleFileName}}</label></td>
+                            <tbody cg-busy="{promise:searchPromise}">
+                                <tr ng-repeat="item in vmManager.certificateDatas track by $index">
+                                    <td>{{item.CertificateFileName}}</td>
                                 </tr>
                             </tbody>
                         </table>

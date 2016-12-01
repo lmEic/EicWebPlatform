@@ -204,7 +204,7 @@ null,
                 var uploadFileItem = {
                     id: 1,EligibleCertificate: '', adding: true, uploadSuccess: false,
                     PurchaseType: '', SupplierProperty: '', SupplierId: '', FilePath: '',
-                    EligibleFileName:'',DateOfCertificate:null,
+                    CertificateFileName: '', DateOfCertificate: null,
                 };
 
                 var editManager = {
@@ -245,7 +245,7 @@ null,
                                     //更新文件模型数据
                                     var year = new Date().getFullYear();
                                     fileItem.uploadSuccess = true;
-                                    fileItem.EligibleFileName = file.name;
+                                    fileItem.CertificateFileName = file.name;
                                     leeHelper.copyVm(editUiVM, fileItem);
                                     fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + file.name;
                                 }
