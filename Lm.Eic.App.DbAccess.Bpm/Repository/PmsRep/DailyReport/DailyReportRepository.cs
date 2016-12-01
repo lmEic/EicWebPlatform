@@ -100,7 +100,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
                 sbFront.Append("SELECT   ProductName, COUNT(ProductName) AS ProductFlowCount, CAST(SUM(CASE StandardHoursType WHEN '1' THEN StandardHours / 60 WHEN '3' THEN 60 / StandardHours ELSE StandardHours END) AS decimal(10, 2)) AS StandardHoursCount ")
                        .Append("FROM   Pms_DReportsProductFlow ");
                 StringBuilder sbBack = new StringBuilder();
-                if (department == null || department == string.Empty)
+                if (department != null || department != string.Empty)
                 {
                     sbBack.Append(" WHERE  (Department = '" + department + "')")
                           .Append("AND  (ProductName Like '%" + containsProductName + "%')");
