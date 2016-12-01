@@ -153,9 +153,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="suppliersId">供应商Id</param>
         /// <returns></returns>
-        public List<SuppliersQualifiedCertificateModel> GetQualifiedCertificateListBy(string suppliersId)
+        public List<SuppliersQualifiedCertificateModel> GetSupplierQualifiedCertificateListBy(string supplierId)
         {
-            return SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(suppliersId);
+            return SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId);
         }
 
 
