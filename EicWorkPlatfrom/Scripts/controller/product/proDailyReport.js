@@ -31,32 +31,15 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
         return ajaxService.uploadFile(url,file);
     };
     //获取产品工艺流程总览
-    reportDataOp.getProductFlowOverview = function (department) {
+    reportDataOp.getProductFlowOverview = function (department, productName, searchMode) {
         var url = urlPrefix + 'GetProductFlowOverview';
         return ajaxService.getData(url, {
             department: department,
+            productName: productName,
+            searchMode: searchMode,
         });
     };
-    //
-    //
-    ///模糊查找品名
-    //
-    //
-    //
-    reportDataOp.getLikeProductFlowOverview = function (department, productName) {
-        var url = urlp + 'FindProductFlowData';
-        return ajaxService.getData(url, {
-            department: department,
-            ProductName: productName,
-        });
-    };
-    //获取产品工艺流程配置数据
-    reportDataOp.getProductFlowInitData = function (department) {
-        var url = urlPrefix + 'GetProductFlowInitData';
-        return ajaxService.getData(url, {
-            department: department,
-        });
-    };
+
     //获取工单详细信息
     reportDataOp.getOrderDetails = function (department, orderId) {
         var url = urlPrefix + 'GetOrderDetails';
@@ -154,8 +137,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         },
         // 模糊查找
         getProductFlowDatails: function () {
-
-            $scope.searchPromise = dReportDataOpService.getLikeProductFlowOverview (vmManager.department,vmManager.productName).then(function (datas) {
+            $scope.searchPromise = dReportDataOpService.getProductFlowOverview(vmManager.department,vmManager.productName,1).then(function (datas) {
                 vmManager.flowOverviews = datas;
             });
         },
@@ -272,7 +254,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         var dto = _.clone(departmentTreeSet.treeNode.vm);
         vmManager.department = dto.DataNodeText;
     };
-    $scope.promise =dReportDataOpService.getProductFlowInitData(vmManager.department).then(function (data) {
+    $scope.promise =dReportDataOpService.getProductFlowOverview(vmManager.department,vmManager.productName,0).then(function (data) {
         departmentTreeSet.setTreeDataset(data.departments);
         vmManager.flowOverviews = data.overviews;
     });

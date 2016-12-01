@@ -46,25 +46,18 @@ namespace EicWorkPlatfrom.Controllers.Product
                 });
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
         /// <summary>
         /// 查找包含品名数据
         /// </summary>
         /// <param name="department"></param>
         /// <param name="likeProductName">包函的品名</param>
         /// <returns></returns>
-        public JsonResult FindProductFlowData(string department, string likeProductName)
+        [NoAuthenCheck]
+        public JsonResult GetProductFlowListBy(string department, string likeProductName)
         {
-            if (likeProductName == string.Empty) return Json(null, JsonRequestBehavior.AllowGet);
             var productFlowOverviews = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department, likeProductName);
-            if (productFlowOverviews == null|| productFlowOverviews.Count <=0) return Json(productFlowOverviews, JsonRequestBehavior.AllowGet);
-                var result = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
-                {
-                    Department = department,
-                    ProductName = productFlowOverviews[0].ProductName,
-                    SearchMode = 2
-                });
-                var data = new { result = result, overviews = productFlowOverviews };
-                return Json(data, JsonRequestBehavior.AllowGet);
+            return Json(productFlowOverviews, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -82,15 +75,24 @@ namespace EicWorkPlatfrom.Controllers.Product
 
         /// <summary>
         /// 获取产品工艺初始化数据
+        /// searchMode:0查询全部；1按名称模糊查询
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetProductFlowInitData(string department)
+        public JsonResult GetProductFlowOverview(string department, string productName, int searchMode)
         {
-            var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
-            var productFlowOverviews = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department);
-            var data = new { departments = departments, overviews = productFlowOverviews };
-            return Json(data, JsonRequestBehavior.AllowGet);
+            if (searchMode == 0)
+            {
+                var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
+                var productFlowOverviews = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department);
+                var data = new { departments = departments, overviews = productFlowOverviews };
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var data = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department,productName);
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
         }
         /// <summary>
         /// 载入产品工艺流程模板
