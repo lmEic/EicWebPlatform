@@ -270,6 +270,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         DailyReportMonth: null,
         InputTime: null,
         MachineId: null,
+        IsMachine:null,
         EquipmentEifficiency: null,
         DifficultyCoefficient: null,
         MouldId: null,
@@ -463,6 +464,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                     if (machineCheckInfo.isMachine) {
                         vmManager.edittingRow.isMachineMode = true;
                         vmManager.edittingRow.MachineId = machineCheckInfo.machineInfo.MachineCode;
+                        vmManager.edittingRow.IsMachine = "是";
                         flowItem = vmManager.productFlows[0];
                         //更新文本框显示内容
                         $scope.tempVm.ProductFlowID = machineCheckInfo.machineInfo.MachineId + "/" + flowItem.ProductFlowName;
@@ -470,6 +472,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                     else {
                         flowItem = _.find(vmManager.productFlows, { ProductFlowId: $scope.vm.ProductFlowID });
                         vmManager.edittingRow.isMachineMode = false;
+                        vmManager.edittingRow.IsMachine = "否";
                         //更新界面显示值
                         $scope.tempVm.ProductFlowID = flowItem.ProductFlowName;
                     }
