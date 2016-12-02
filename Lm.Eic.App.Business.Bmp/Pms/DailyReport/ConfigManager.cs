@@ -39,6 +39,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             get { return OBulider.BuildInstance<NonProductionReasonConfig>(); }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public LmProDailyReportConfig LmProDailyReportData
+        {
+            get { return OBulider.BuildInstance<LmProDailyReportConfig>(); }
+        }
     }
 
     /// <summary>
@@ -194,6 +201,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return DailyReportConfigCrudFactory.NonProductionReasonConfigCrud.AddNonProductionRecord(model);
         }
 
+    }
+
+
+    public class LmProDailyReportConfig
+    {
+        public List<WipProductCompleteInputDataModel> getProdcutCompleteInPutDailyRrportList()
+        {
+            DateTime productDate = Convert.ToDateTime ("2016-12-1");
+            return DailyReportConfigCrudFactory.LmProDailyReportCrud.getProdcutCompleteInPutDailyRrportList(productDate);
+        }
     }
 
 }

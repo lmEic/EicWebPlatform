@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mapping\LmProMasterMapping\LmProMasterDbContext.cs" />
+    <Compile Include="Mapping\LmProMasterMapping\MesDailyReportMapping.cs" />
     <Compile Include="Mapping\PmsMapping\BoardManagment\MaterialSpecBoardMapping.cs" />
     <Compile Include="Mapping\BpmDbContext.cs" />
     <Compile Include="Mapping\AstMapping\EquipmentMapping.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="Repository\HrmRep\Attendance\AttendClassTypeRepository.cs" />
     <Compile Include="Repository\HrmRep\GeneralAffairs\GeneralAffairsRepository.cs" />
     <Compile Include="Repository\PmsRep\DailyReport\DailyReportRepository.cs" />
+    <Compile Include="Repository\PmsRep\DailyReport\LmProMasterDailyReportRepository.cs" />
     <Compile Include="Repository\PurchaseRep\PurchaseSuppliesManagement\QualifiedSupplierRepository.cs" />
     <Compile Include="Repository\QuantityRep\SampleReposity.cs" />
   </ItemGroup>

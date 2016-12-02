@@ -6,6 +6,7 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.App.Business.Bmp.Pms.DailyReport.LmProMasterDailyReort;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public static DailyOrderConfigCrud DailyOrderConfigCrud
         {
             get { return OBulider.BuildInstance<DailyOrderConfigCrud>(); }
+        }
+
+        /// <summary>
+        /// 制三部日报表CRUD
+        /// </summary>
+        public static LmProDailyReportCrud LmProDailyReportCrud
+        {
+            get { return OBulider.BuildInstance<LmProDailyReportCrud>(); }
         }
     }
 
