@@ -11,7 +11,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     public interface ILmProDailyReportRepository : IRepository<WipProductCompleteInputDataModel>
     {
     }
-    public class LmProDailyReportRepository : LmProMasterRepositoryBase<WipProductCompleteInputDataModel>, ILmProDailyReportRepository
+    public class LmProDailyReportRepository : LightMasterMesRepositoryBase<WipProductCompleteInputDataModel>, ILmProDailyReportRepository
     {
 
     }

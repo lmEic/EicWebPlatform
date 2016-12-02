@@ -6,12 +6,12 @@ using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.LightMaterMapping
 {
-    public class LmProMasterDbContext : DbContext
+    public class LightMasterMesDbContext : DbContext
     {
 
-        public LmProMasterDbContext(string databaseName = "LmLightMasterDbContext")
+        public LightMasterMesDbContext(string databaseName = "OpticalMesDbContext")
         {
-            Database.SetInitializer<LmProMasterDbContext>(null);
+            Database.SetInitializer<LightMasterMesDbContext>(null);
         }
 
         #region dbset
@@ -40,13 +40,13 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.LightMaterMapping
     /// <summary>
     ///
     /// </summary>
-    public class LmProMasterUnitOfWorkContext : UnitOfWorkContextBase, IUnitOfWorkContext
+    public class LightMasterMesUnitOfWorkContext : UnitOfWorkContextBase, IUnitOfWorkContext
     {
         protected override void SetDbContext()
         {
             try
             {
-                this.Context = new LmProMasterDbContext();
+                this.Context = new LightMasterMesDbContext();
             }
             catch (Exception ex)
             {
@@ -59,14 +59,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.LightMaterMapping
     ///
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class LmProMasterRepositoryBase<TEntity> : EFRepositoryBase<TEntity>, IRepository<TEntity>
+    public class LightMasterMesRepositoryBase<TEntity> : EFRepositoryBase<TEntity>, IRepository<TEntity>
     where TEntity : class, new()
     {
         protected override void SetUnitOfWorkContext()
         {
             try
             {
-                this.EFContext = new LmProMasterUnitOfWorkContext();
+                this.EFContext = new LightMasterMesUnitOfWorkContext();
             }
             catch (Exception ex)
             {

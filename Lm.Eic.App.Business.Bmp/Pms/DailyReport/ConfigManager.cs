@@ -42,9 +42,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 
         /// </summary>
-        public LmProDailyReportConfig LmProDailyReportData
+        public LmMesDailyReportConfig LmProDailyReportData
         {
-            get { return OBulider.BuildInstance<LmProDailyReportConfig>(); }
+            get { return OBulider.BuildInstance<LmMesDailyReportConfig>(); }
         }
     }
 
@@ -204,11 +204,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     }
 
 
-    public class LmProDailyReportConfig
+    public class LmMesDailyReportConfig
     {
-        public List<WipProductCompleteInputDataModel> getProdcutCompleteInPutDailyRrportList()
+        public List<WipProductCompleteInputDataModel> getProdcutCompleteInPutDailyRrportList(string productDatestring)
         {
-            DateTime productDate = Convert.ToDateTime ("2016-12-1");
+            DateTime productDate = Convert.ToDateTime(productDatestring);
             return DailyReportConfigCrudFactory.LmProDailyReportCrud.getProdcutCompleteInPutDailyRrportList(productDate);
         }
     }

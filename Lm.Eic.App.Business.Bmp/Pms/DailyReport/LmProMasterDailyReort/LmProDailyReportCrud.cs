@@ -13,9 +13,6 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.LmProMasterDailyReort
 {
-
-
-
     public class LmProDailyReportCrud : CrudBase<WipProductCompleteInputDataModel, ILmProDailyReportRepository>
     {
         public LmProDailyReportCrud() : base(new LmProDailyReportRepository(), "制三部日报表")
@@ -27,8 +24,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.LmProMasterDailyReort
         }
         public List<WipProductCompleteInputDataModel> getProdcutCompleteInPutDailyRrportList(DateTime productDate)
         {
-            DateTime convterproductDate = productDate.ToDate();
-            return this.irep.Entities.Where(e => e.ProductDate == convterproductDate).ToList();
+        
+            DateTime   convertProductDate = productDate.ToDate();
+            return irep.Entities.Where(e => e.ProductDate == convertProductDate).ToList();
         }
     }
 }

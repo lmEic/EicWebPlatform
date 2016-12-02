@@ -90,7 +90,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
         public void getLMproductDialyReportListByTest ()
         {
             
-            var tem = DailyReportService.ConfigManager.LmProDailyReportData.getProdcutCompleteInPutDailyRrportList();
+            var tem = DailyReportService.ConfigManager.LmProDailyReportData.getProdcutCompleteInPutDailyRrportList("2016-11-30");
         }
     }
 }
