@@ -170,16 +170,29 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 return OpResult.SetResult("保存档案数据失败！", false);
             }
         }
-
-        private int AddEmployee(int record, ArchivesEmployeeIdentityModel empIdentityMdl, ArStudyModel studyMdl, ArTelModel telMdl)
+    /// <summary>
+    /// 更新人员基本资料
+    /// </summary>
+    /// <param name="empIdentityMdl"></param>
+    /// <returns></returns>
+       private  int UpdataEMployee(ArchivesEmployeeIdentityModel empIdentityMdl)
         {
+            int record = 0;
             if (this.irep.IsExist(e => e.IdentityID == empIdentityMdl.IdentityID))
             {
                 //如果存在删除
                 record = this.irep.Delete(e => e.IdentityID == empIdentityMdl.IdentityID);
-                if (record<=0) return record;
+                if (record <= 0) return record;
             }
             record = this.irep.Insert(empIdentityMdl);
+            return record;
+            
+
+        }
+        private int AddEmployee(int record, ArchivesEmployeeIdentityModel empIdentityMdl, ArStudyModel studyMdl, ArTelModel telMdl)
+        {
+          
+             record = this.UpdataEMployee(empIdentityMdl);
             ////处理外部逻辑
             ////1.处理学习信息存储
              StudyManager.Insert(studyMdl);
@@ -381,6 +394,35 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             return this.irep.Update(e => e.WorkerId == workerId, u => new ArchivesEmployeeIdentityModel { ClassType = classType });
         }
+
+        /// <summary>
+        /// 更变工号
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+
+        public OpResult StoreWorkerIdChangeInfo(WorkerChangedModel entity)
+        {
+            OpResult result = OpResult.SetResult("更变工号操作失败!");
+            if (entity == null) return result;
+            List<ArchivesEmployeeIdentityModel> oldWorkerBaseInfoList = FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto {WorkerId=entity.OldWorkerId,SearchMode=1 });
+
+            if (oldWorkerBaseInfoList!=null&& oldWorkerBaseInfoList.Count >0)
+            {
+                ArchivesEmployeeIdentityModel oldWorkerBaseInfo = oldWorkerBaseInfoList[0];
+                var newWorkerBaseInfo = oldWorkerBaseInfo;
+                newWorkerBaseInfo.WorkerId = entity.NewWorkerId;
+                newWorkerBaseInfo.WorkerIdNumType = entity.NewWorkerId.Substring(0, 1);
+                entity.WorkerName = newWorkerBaseInfo.Name;
+                int record=this. UpdataEMployee(newWorkerBaseInfo);
+                if (record>0)
+                {
+                    result = WorkerIdChangeManager.StoreWorkerIdChangeInfo(entity);
+                }
+            }
+            return result;
+        }
+
         #endregion change data method
 
         #region find data method
