@@ -21,7 +21,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         {
             Database.SetInitializer<BpmDbContext>(null);
         }
-
+        #region DbSet
         public DbSet<EquipmentModel> Equipment { get; set; }
         public DbSet<EquipmentCheckRecordModel> EquipmentCheck { get; set; }
 
@@ -54,8 +54,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         public DbSet<SuppliersInfoModel> SupplierInfo { set; get; }
         //季度考核总览表
         public DbSet<SupplieSeasonAuditModel> SupplieSeasonAudit { set; get; }
-       
-        
+        #endregion
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

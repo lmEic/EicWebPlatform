@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mapping\LightMasterMesMapping\LightMasterMesDbContext.cs" />
+    <Compile Include="Mapping\LightMasterMesMapping\OpticalMesDbContext.cs" />
     <Compile Include="Mapping\LightMasterMesMapping\MesDailyReportMapping.cs" />
     <Compile Include="Mapping\PmsMapping\BoardManagment\MaterialSpecBoardMapping.cs" />
     <Compile Include="Mapping\BpmDbContext.cs" />
