@@ -752,12 +752,13 @@
 
         <div pageslide ps-open="vmManager.personBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
-                <div class="pull-left" style="width:20%;">
+                <div class="pull-left" style="width:29%;">
                     <div class="table-responsive">
                         <table class="table table-condensed table-bordered table-hover">
                             <colgroup>
                                 <col width="90" />
                                 <col width="90" />
+                                <col width="120" />
                                 <col width="120" />
                             </colgroup>
                             <thead>
@@ -765,6 +766,7 @@
                                     <th class="info">工号</th>
                                     <th class="info">姓名</th>
                                     <th class="info">出勤时数</th>
+                                    <th class="info">产量汇总</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -773,6 +775,9 @@
                                     <td>{{item.UserName}}</td>
                                     <td ng-class="item.isAlert===true?'danger':''">
                                         {{item.AttendanceHours}}
+                                    </td>
+                                    <td>
+                                        {{item.Qty}}
                                         <span class="btn btn-xs btn-primary pull-right">
                                             <i class="fa fa-location-arrow" ng-click="vmManager.viewAttendanceHoursDetails(item)"></i>
                                         </span>
@@ -782,18 +787,18 @@
                         </table>
                     </div>
                 </div>
-                <div class="pull-right" style="width:80%;">
+                <div class="pull-right" style="width:71%;">
                     <div class="table-responsive" ng-show="vmManager.workerAttendanceHoursDetails.length>0">
                         <table class="table table-condensed table-bordered table-hover" style="table-layout:fixed;">
                             <colgroup>
                                 <col width="110" />
                             </colgroup>
                             <colgroup>
-                                <col width="130" />
+                                <col width="120" />
                             </colgroup>
                             <colgroup>
-                                <col width="80" />
-                                <col width="80" />
+                                <col width="60" />
+                                <col width="70" />
                             </colgroup>
                             <colgroup>
                                 <col width="85" />

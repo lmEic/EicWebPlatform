@@ -44,6 +44,13 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
             supplierId: supplierId,
         });
     };
+    ///删除供应商证书文件
+    purDb.delPurSupplierCertificateFile = function (entity) {
+        var url = purUrlPrefix + 'DelPurSupplierCertificateFile';
+        return ajaxService.postData(url, {
+            entity: entity,
+        });
+    };
     return purDb;
 });
 
@@ -220,6 +227,15 @@ null,
                         editManager.uploadFileItem = _.clone(fileItem);
                     },
                     uploadFileItem: null,
+                    //删除证书文件
+                    removeCertificateFile: function (item) {
+                        supplierDataOpService.delPurSupplierCertificateFile(item).then(function (opResult) {
+                            if (opResult === 1)
+                            {
+                                leeHelper.remove(editManager.certificateDatas,item);
+                            }
+                        })
+                    },
                     //证书数据
                     certificateDatas:[],
                     getCertificateDatas: function () {
@@ -253,7 +269,6 @@ null,
                         });
                     }
                 };
-
                 //提取数据
                 editManager.getCertificateDatas();
             },

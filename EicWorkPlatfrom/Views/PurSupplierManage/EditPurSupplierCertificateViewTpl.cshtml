@@ -17,7 +17,10 @@
                             </thead>
                             <tbody cg-busy="{promise:searchPromise}">
                                 <tr ng-repeat="item in vmManager.certificateDatas track by $index">
-                                    <td>{{item.CertificateFileName}}</td>
+                                    <td>
+                                        {{item.CertificateFileName}}
+                                        <span class="btn btn-danger btn-xs pull-right" ng-click="vmManager.removeCertificateFile(item)"><i class="fa fa-remove"></i></span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

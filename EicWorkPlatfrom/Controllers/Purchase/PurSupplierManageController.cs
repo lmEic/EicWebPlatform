@@ -117,5 +117,17 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             var datas = PurchaseService.PurSupplierManager.GetSupplierQualifiedCertificateListBy(supplierId);
             return DateJsonResult(datas);
         }
+        /// <summary>
+        /// 删除供应商证书文件
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult DelPurSupplierCertificateFile(SuppliersQualifiedCertificateModel entity)
+        {
+            var datas = 1;//真实逻辑待添加
+
+            return Json(datas);
+        }
     }
 }

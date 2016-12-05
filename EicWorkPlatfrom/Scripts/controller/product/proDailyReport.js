@@ -874,11 +874,13 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                         UserWorkerId: rowItem.UserWorkerId,
                         UserName: rowItem.UserName,
                         AttendanceHours: parseFloat(rowItem.AttendanceHours),
+                        Qty:parseInt(rowItem.Qty),
                         isAlert:parseFloat(rowItem.AttendanceHours)>11
                     });
                 }
                 else {
-                    wah.AttendanceHours +=parseFloat(rowItem.AttendanceHours);
+                    wah.AttendanceHours += parseFloat(rowItem.AttendanceHours);
+                    wah.Qty += parseInt(rowItem.Qty);
                 }
             })
         },
