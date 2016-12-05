@@ -33,7 +33,7 @@
                     </button>
                     <span class="dropdown-menu" role="menu">
                         <span class="list-group">
-                            <a href="#" class="list-group-item" ng-click="vmManager.showProFlowView()" title="工序汇总看板"><i class="fa fa-th-large"></i>工序汇总</a>
+                            <a href="#" class="list-group-item" ng-click="vmManager.showDReportSumerizeView()" title="日报汇总看板"><i class="fa fa-th-large"></i>日报汇总</a>
                             <a href="#" class="list-group-item" ng-click="vmManager.showPersonView()" title="人员汇总看板"><i class="fa fa-th-list"></i>人员汇总</a>
                             <a href="#" class="list-group-item" ng-click="vmManager.showOrderIdView()" title="工单汇总看板"><i class="fa fa-list-ol"></i>工单汇总</a>
                         </span>
@@ -398,11 +398,352 @@
             </div>
         </div>
         
-        <div pageslide ps-open="vmManager.dReportPreviewDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
-            <div style="padding:10px;overflow-y:auto">
+        <div pageslide ps-open="vmManager.dReportSumerizeViewDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
+            <div style="padding:10px">
+                <div>
+                    <a href="#" ng-click="vmManager.displayMachineSumerizeBoard=true;"><span class="label label-primary">机台</span></a>
+                    <a href="#" ng-click="vmManager.displayMachineSumerizeBoard=false;"><span class="label label-success">工艺</span></a>
+                </div>
+                <div class="h-split"></div>
+                <div class="table-responsive" style="min-height:430px;max-height:435px;overflow-y:auto" ng-if="vmManager.displayMachineSumerizeBoard">
+                    <table class="table table-bordered table-condensed table-hover" style="table-layout:fixed;">
+                        @*工单信息*@
+                        <colgroup span="3">
+                            <col width="110" />
+                            <col width="140" />
+                            <col width="160" />
+                        </colgroup>
+                        @*工艺信息*@
+                        <colgroup span="2">
+                            <col width="130" />
+                            <col width="110" />
+                        </colgroup>
+                        @*人员信息*@
+                        <colgroup span="3">
+                            <col width="95" />
+                            <col width="95" />
+                            <col width="60" />
+                        </colgroup>
 
+                        @*产量信息*@
+                        <colgroup span="3">
+                            <col width="80" />
+                            <col width="80" />
+                            <col width="80" />
+                        </colgroup>
+                        @*工时信息*@
+                        <colgroup span="7">
+                            <col width="85" />
+                            <col width="85" />
+                            <col width="85" />
+                            <col width="85" />
+
+                            <col width="85" />
+                            <col width="85" />
+                            <col width="95" />
+                        </colgroup>
+
+                        @*效率信息*@
+                        <colgroup>
+                            <col width="80" />
+                            <col width="80" />
+                            <col width="80" />
+                            <col width="80" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th class="text-center" colspan="3">工单信息</th>
+
+                                <th class="text-center" colspan="2">机台/工艺</th>
+
+                                <th class="text-center" colspan="3">人员</th>
+
+                                <th class="text-center" colspan="3">产量</th>
+
+                                <th class="text-center" colspan="7">工时</th>
+
+                                <th class="text-center" colspan="4">生产绩效</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center info">
+                                    <span>工单号</span>
+                                    <span yl-sortby-field data-dbset="vmManager.dReportMachineSumerize.sumerizeDatas" data-sort-field="OrderId"></span>
+                                </td>
+                                <td class="text-center info"><span>品名</span></td>
+                                <td class="text-center info"><span>规格</span></td>
+
+                                <td class="text-center info">
+                                    <span>机台/工艺</span>
+                                    <span yl-sortby-field data-dbset="vmManager.dReportMachineSumerize.sumerizeDatas" data-sort-field="MachineId"></span>
+                                </td>
+                                <td class="text-center info">
+                                    <span>标准工时</span>
+                                </td>
+
+                                <td class="text-center info">
+                                    <span>作业员</span>
+                                    <span yl-sortby-field data-dbset="vmManager.dReportMachineSumerize.sumerizeDatas" data-sort-field="UserName"></span>
+                                </td>
+                                <td class="text-center info"><span>师傅</span></td>
+                                <td class="text-center info"><span>班别</span></td>
+
+                                <td class="text-center info"><span>产量</span></td>
+                                <td class="text-center info"><span>不良数</span></td>
+                                <td class="text-center info"><span>良品数</span></td>
+
+                                <td class="text-center info"><span>得到工时</span></td>
+                                <td class="text-center info"><span>出勤时数</span></td>
+                                <td class="text-center info"><span>设置时数</span></td>
+                                <td class="text-center info"><span>投入工时</span></td>
+
+                                <td class="text-center info"><span>非生产时数</span></td>
+                                <td class="text-center info"><span>生产时数</span></td>
+
+                                <td class="text-center info"><span>稼动率</span></td>
+                                <td class="text-center info"><span>生产效率</span></td>
+                                <td class="text-center info"><span>作业效率</span></td>
+                                <td class="text-center info"><span>不良率</span></td>
+                            </tr>
+
+                            <tr ng-repeat="item in vmManager.dReportMachineSumerize.sumerizeDatas track by $index">
+
+                                @*工单信息*@
+                                <td><span>{{item.OrderId}}</span></td>
+                                <td>{{item.ProductName}}</td>
+                                <td>{{item.ProductSpecification}}</td>
+
+                                @*工艺、机台*@
+                                <td>
+                                    <span><span>{{item.MachineId}}/</span>{{item.ProductFlowName}}</span>
+                                </td>
+                                <td class="text-center">{{item.StandardHours}}</td>
+
+                                @*人员信息*@
+                                <td><span ng-hide="item.editting">{{item.UserName}}</span></td>
+                                <td><span>{{item.MasterName}}</span></td>
+                                <td class="text-center">
+                                    <span>{{item.ClassType}}</span>
+                                </td>
+
+                                @*产量信息*@
+                                <td>
+                                    <span>{{item.Qty}}</span>
+                                </td>
+                                <td>
+                                    <span>{{item.QtyBad}}</span>
+                                </td>
+                                <td class="text-center">{{item.QtyGood}}</td>
+                                @*工时信息*@
+                                <td>
+                                    {{item.ReceiveHours}}
+                                </td>
+                                <td><span>{{item.AttendanceHours}}</span></td>
+
+                                <td><span>{{item.SetHours}}</span></td>
+                                <td><span>{{item.InputHours}}</span></td>
+
+                                <td><span>{{item.NonProductionHours}}</span></td>
+                                <td>{{item.ProductionHours}} </td>
+
+                                <td class="info">{{item.EquipmentEifficiency}}</td>
+                                <td class="info">{{item.ProductionEfficiency}}</td>
+                                <td class="info">{{item.OperationEfficiency}}</td>
+                                <td class="info">{{item.FailureRate}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="success">
+                                <td colspan="3" class="text-center">今日开机台数</td>
+                                <td>{{vmManager.dReportMachineSumerize.machineCount}}</td>
+                                <td></td>
+                                <td colspan="3" class="text-center">今日产出合计</td>
+                                <td>{{vmManager.dReportMachineSumerize.QtySum}}</td>
+                                <td>{{vmManager.dReportMachineSumerize.QtyBadSum}}</td>
+                                <td>{{vmManager.dReportMachineSumerize.QtyGoodSum}}</td>
+                                @*工时信息*@
+                                <td>
+                                    {{vmManager.dReportMachineSumerize.ReceiveHoursSum}}
+                                </td>
+                                <td><span>{{vmManager.dReportMachineSumerize.AttendanceHoursSum}}</span></td>
+
+                                <td><span>{{vmManager.dReportMachineSumerize.SetHoursSum}}</span></td>
+                                <td><span>{{vmManager.dReportMachineSumerize.InputHoursSum}}</span></td>
+
+                                <td><span>{{vmManager.dReportMachineSumerize.NonProductionHoursSum}}</span></td>
+                                <td>{{vmManager.dReportMachineSumerize.ProductionHoursSum}} </td>
+
+                                <td>{{vmManager.dReportMachineSumerize.EquipmentEifficiencySum}}</td>
+                                <td>{{vmManager.dReportMachineSumerize.ProductionEfficiencySum}}</td>
+                                <td>{{vmManager.dReportMachineSumerize.OperationEfficiencySum}}</td>
+                                <td>{{vmManager.dReportMachineSumerize.FailureRateSum}}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                   
+                <div class="table-responsive" style="min-height:430px;max-height:435px;overflow-y:auto" ng-if="!vmManager.displayMachineSumerizeBoard">
+                    <table class="table table-bordered table-condensed table-hover" style="table-layout:fixed;">
+                        @*工单信息*@
+                        <colgroup span="3">
+                            <col width="110" />
+                            <col width="140" />
+                            <col width="160" />
+                        </colgroup>
+                        @*工艺信息*@
+                        <colgroup span="2">
+                            <col width="130" />
+                            <col width="110" />
+                        </colgroup>
+                        @*人员信息*@
+                        <colgroup span="3">
+                            <col width="95" />
+                            <col width="60" />
+                        </colgroup>
+
+                        @*产量信息*@
+                        <colgroup span="3">
+                            <col width="80" />
+                            <col width="80" />
+                            <col width="80" />
+                        </colgroup>
+                        @*工时信息*@
+                        <colgroup span="5">
+                            <col width="85" />
+                            <col width="85" />
+
+                            <col width="85" />
+                            <col width="85" />
+                            <col width="95" />
+                        </colgroup>
+
+                        @*效率信息*@
+                        <colgroup span="3">
+                            <col width="80" />
+                            <col width="80" />
+                            <col width="80" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th class="text-center" colspan="3">工单信息</th>
+
+                                <th class="text-center" colspan="2">机台/工艺</th>
+
+                                <th class="text-center" colspan="2">人员</th>
+
+                                <th class="text-center" colspan="3">产量</th>
+
+                                <th class="text-center" colspan="5">工时</th>
+
+                                <th class="text-center" colspan="3">生产绩效</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center info">
+                                    <span>工单号</span>
+                                    <span yl-sortby-field data-dbset="vmManager.dReportFlowSumerize.sumerizeDatas" data-sort-field="OrderId"></span>
+                                </td>
+                                <td class="text-center info"><span>品名</span></td>
+                                <td class="text-center info"><span>规格</span></td>
+
+                                <td class="text-center info">
+                                    <span>工艺</span>
+                                    <span yl-sortby-field data-dbset="vmManager.dReportFlowSumerize.sumerizeDatas" data-sort-field="MachineId"></span>
+                                </td>
+                                <td class="text-center info">
+                                    <span>标准工时</span>
+                                </td>
+
+                                <td class="text-center info">
+                                    <span>作业员</span>
+                                    <span yl-sortby-field data-dbset="vmManager.dReportFlowSumerize.sumerizeDatas" data-sort-field="UserName"></span>
+                                </td>
+                                <td class="text-center info"><span>班别</span></td>
+
+                                <td class="text-center info"><span>产量</span></td>
+                                <td class="text-center info"><span>不良数</span></td>
+                                <td class="text-center info"><span>良品数</span></td>
+
+                                <td class="text-center info"><span>得到工时</span></td>
+                                <td class="text-center info"><span>投入工时</span></td>
+
+                                <td class="text-center info"><span>非生产时数</span></td>
+                                <td class="text-center info"><span>生产时数</span></td>
+
+                                <td class="text-center info"><span>生产效率</span></td>
+                                <td class="text-center info"><span>作业效率</span></td>
+                                <td class="text-center info"><span>不良率</span></td>
+                            </tr>
+
+                            <tr ng-repeat="item in vmManager.dReportFlowSumerize.sumerizeDatas track by $index">
+
+                                @*工单信息*@
+                                <td><span>{{item.OrderId}}</span></td>
+                                <td>{{item.ProductName}}</td>
+                                <td>{{item.ProductSpecification}}</td>
+
+                                @*工艺、机台*@
+                                <td>
+                                    <span>{{item.ProductFlowName}}</span>
+                                </td>
+                                <td class="text-center">{{item.StandardHours}}</td>
+
+                                @*人员信息*@
+                                <td><span ng-hide="item.editting">{{item.UserName}}</span></td>
+                                <td class="text-center">
+                                    <span>{{item.ClassType}}</span>
+                                </td>
+
+                                @*产量信息*@
+                                <td>
+                                    <span>{{item.Qty}}</span>
+                                </td>
+                                <td>
+                                    <span>{{item.QtyBad}}</span>
+                                </td>
+                                <td class="text-center">{{item.QtyGood}}</td>
+                                @*工时信息*@
+                                <td>
+                                    {{item.ReceiveHours}}
+                                </td>
+                                <td><span>{{item.InputHours}}</span></td>
+
+                                <td><span>{{item.NonProductionHours}}</span></td>
+                                <td>{{item.ProductionHours}} </td>
+
+                                <td class="info">{{item.ProductionEfficiency}}</td>
+                                <td class="info">{{item.OperationEfficiency}}</td>
+                                <td class="info">{{item.FailureRate}}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="success">
+                                <td colspan="7" class="text-center">今日产出合计</td>
+                                <td>{{vmManager.dReportFlowSumerize.QtySum}}</td>
+                                <td>{{vmManager.dReportFlowSumerize.QtyBadSum}}</td>
+                                <td>{{vmManager.dReportFlowSumerize.QtyGoodSum}}</td>
+                                @*工时信息*@
+                                <td>
+                                    {{vmManager.dReportFlowSumerize.ReceiveHoursSum}}
+                                </td>
+                                <td><span>{{vmManager.dReportFlowSumerize.InputHoursSum}}</span></td>
+
+                                <td><span>{{vmManager.dReportFlowSumerize.NonProductionHoursSum}}</span></td>
+
+                                <td>{{vmManager.dReportFlowSumerize.ProductionHoursSum}} </td>
+
+                                <td>{{vmManager.dReportFlowSumerize.ProductionEfficiencySum}}</td>
+                                <td>{{vmManager.dReportFlowSumerize.OperationEfficiencySum}}</td>
+                                <td>{{vmManager.dReportFlowSumerize.FailureRateSum}}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
+
         <div pageslide ps-open="vmManager.proFlowBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
 
@@ -507,7 +848,7 @@
 
         <div pageslide ps-open="vmManager.orderIdBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
-
+              
             </div>
         </div>
     </div>
