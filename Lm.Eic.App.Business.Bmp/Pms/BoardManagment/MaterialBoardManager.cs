@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lm.Eic.App.Erp.Bussiness.MocManage;
 using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -127,6 +128,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         {
             try
             {
+                if (!strPatch.ExistFile ())
+                {
+                    BuildImageErr("没有此物料看板");
+                }
                 Image myImage = Image.FromFile(strPatch);
                 //创建一个画布
                 int mapWidth = myImage.Width;
