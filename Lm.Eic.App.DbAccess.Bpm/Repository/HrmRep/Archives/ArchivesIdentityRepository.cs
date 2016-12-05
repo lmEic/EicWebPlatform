@@ -32,6 +32,13 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
                 workerId = dt.Rows[0][0].ToString().Trim();
                 int id = int.Parse(workerId) + 1;
                 workerId = id.ToString().PadLeft(6, '0');
+                //判定生成工号是否在更变的工号中
+                string SqlFindChangeWorkerId= string.Format("SELECT OldWorkerId FROM Archives_WorkerIdChanged WHERE (OldWorkerId = '{0}')", workerId);
+                if(DbHelper.Hrm.IsExist(SqlFindChangeWorkerId))
+                {
+                    int newid = int.Parse(workerId) + 1;
+                    workerId = newid.ToString().PadLeft(6, '0');
+                }
             }
             return workerId;
         }
@@ -151,6 +158,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
             {
                 int updateInt = 0;
                 string setSqlText = string.Format("  set workerid ='{0}' ", newWorkreId);
+
                 string wheresqlText = string.Format(" WHERE (workerid='{0}')", oldWorkerId);
                 List<string> updateTable = new List<string>()
                 {
@@ -159,15 +167,17 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
                     "Archives_WorkerInfo",
                     "Attendance_CardSet",
                     "Attendance_ClassType",
-                    "Archives_EmployeeIdentityInfo",
-                    "Archives_IdentitySumerize"
+                    "Archives_IdentitySumerize",
+                    "Archives_Department",
+                    "Archives_Employee"
+                 
                 };
                 updateTable.ForEach(e =>
                 {
 
-                    updateInt += DbHelper.Hrm.ExecuteNonQuery("UPDATE  " + e + setSqlText + wheresqlText);
+                    string UpdateSQlstring = "UPDATE  " + e + setSqlText + wheresqlText;
+                    updateInt = DbHelper.Hrm.ExecuteNonQuery(UpdateSQlstring);
                 });
-
                 return updateInt;
 
             }

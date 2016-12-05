@@ -69,6 +69,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                         mdl.Qty = 0;
                         mdl.QtyBad = 0;
                         mdl.QtyGood = 0;
+                        mdl.ReceiveHours = 0;
+                        mdl.AttendanceHours = 0;
+                        mdl.NonProductionHours = 0;
+                        mdl.ProductionHours = 0;
+                        mdl.SetHours =12;
+                        mdl.InputHours = 12;
+
                         returnList.Add(mdl);
                     }); 
                     return returnList;

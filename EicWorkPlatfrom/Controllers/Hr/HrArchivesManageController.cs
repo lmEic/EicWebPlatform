@@ -327,7 +327,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public JsonResult ChangeWorkerId(string workerId, string newWorkerId)
         {
-            var opResult = ArchiveService.ArchivesManager.WorkerIdChangeManager.StoreWorkerIdChangeInfo(new WorkerChangedModel() { OldWorkerId=workerId, NewWorkerId=newWorkerId });
+            var opResult = ArchiveService.ArchivesManager.StoreWorkerIdChangeInfo(new WorkerChangedModel() { OldWorkerId=workerId, NewWorkerId=newWorkerId ,OpSign="add"});
             return Json(opResult);
         }
     }
