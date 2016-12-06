@@ -127,13 +127,20 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             //赋值 供应商属性和采购性质
             supplierInfoModel.PurchaseType = model.PurchaseType;
             supplierInfoModel.SupplierProperty = model.SupplierProperty;
+            string isExistCertificateFileName = string.Empty;
             //更新保存数据
             if (SaveSupplierInfoModel(supplierInfoModel).Result)
             {
                 List<SuppliersQualifiedCertificateModel> certificateModelList = new List<SuppliersQualifiedCertificateModel>();
+             
                 //保存证书数据
                 modelList.ForEach(e =>
                 {
+
+                   if(SupplierCrudFactory.SupplierQualifiedCertificateCrud.IsExistCertificateFileName(e.CertificateFileName))
+                    {
+                        isExistCertificateFileName += e.CertificateFileName + ",";
+                    }
                     SuppliersQualifiedCertificateModel savemodel = new SuppliersQualifiedCertificateModel()
                     {
                         SupplierId = e.SupplierId,
@@ -146,26 +153,27 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     };
                     certificateModelList.Add(savemodel);
                 });
-                return SupplierCrudFactory.SupplierQualifiedCertificateCrud.SavaSupplierEligibleList(certificateModelList);
+                if (isExistCertificateFileName != String.Empty) return new OpResult("此"+isExistCertificateFileName+"文档已经存在，数据保存失败");
+               else  return SupplierCrudFactory.SupplierQualifiedCertificateCrud.SavaSupplierEligibleList(certificateModelList);
             }
             else return new OpResult("数据保存失败");
         }
         /// <summary>
-        /// 
+        /// 删除供应商证书
         /// </summary>
-        /// <param name="model"></param>
-        /// <param name="fileDocumentFlid"></param>
+        /// <param name="model">实体</param>
+        /// <param name="rootPath">根路经</param>
         /// <returns></returns>
         public OpResult DelEditSpplierCertificate(SuppliersQualifiedCertificateModel model, string rootPath)
         {
-            if (model == null || model.FilePath == string.Empty)  return new OpResult("此文档路经为空", true);
-         
+            if (model == null || model.FilePath == string.Empty)  return new OpResult("此文档实体路经不能空");
+            if (rootPath == null || rootPath == string.Empty) return new OpResult("此根路经发生错误");
             var fileDocumentPath = rootPath + model.FilePath.Replace("/", @"\"); 
             if (fileDocumentPath.DeleteFileDocumentation())
             {
                 return SupplierCrudFactory.SupplierQualifiedCertificateCrud.DeleteSupplierCertificate(model);
             }
-            else return new OpResult("此文档不存在", true);
+            else return new OpResult("此" + fileDocumentPath+"文档不存在或路经不对");
         }
         /// <summary>
         ///获取供应商证书列表
