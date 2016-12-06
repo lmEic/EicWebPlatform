@@ -186,15 +186,23 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
           catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
       }
+        /// <summary>
+        /// 是否已经保存在证书
+        /// </summary>
+        /// <param name="CertificateFileName"></param>
+        /// <returns></returns>
+        public bool IsExistCertificateFileName(string CertificateFileName)
+        {
+            return irep.IsExist(e => e.CertificateFileName == CertificateFileName);
+        }
 
-      
-    
+
      /// <summary>
      /// 获得供应商合格文件项目
      /// </summary>
      /// <param name="supplierId"></param>
      /// <returns></returns>
-     public List<SuppliersQualifiedCertificateModel> GetQualifiedCertificateListBy(string supplierId)
+        public List<SuppliersQualifiedCertificateModel> GetQualifiedCertificateListBy(string supplierId)
       {
           try
           {
