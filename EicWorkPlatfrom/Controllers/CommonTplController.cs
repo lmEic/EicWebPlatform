@@ -53,6 +53,16 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 季度按钮模板
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ActionResult QuarterButtonTpl()
+        {
+            return View();
+        }
+
         [NoAuthenCheck]
         public ActionResult OperateMsgBoardTpl()
         {

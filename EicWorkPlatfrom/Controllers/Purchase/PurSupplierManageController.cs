@@ -28,6 +28,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             return View();
         }
 
+        #region PurQualifiedSupplier
         /// <summary>
         /// 建立合格供应商清册
         /// </summary>
@@ -36,8 +37,6 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             return View();
         }
-
-
         /// <summary>
         /// 获取合格供应商列表
         /// </summary>
@@ -49,7 +48,6 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             var datas = PurchaseService.PurSupplierManager.FindQualifiedSupplierList(yearStr);
             return DateJsonResult(datas);
         }
-
         /// <summary>
         /// 获取合格供应商信息
         /// </summary>
@@ -85,7 +83,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
                 {
                     string year = DateTime.Now.Year.ToString();///按年份进行存储
                     ///待加入验证文件名称逻辑:
-                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.PurSupplierCertificate,year), file.FileName);
+                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.PurSupplierCertificate, year), file.FileName);
                     file.SaveAs(fileName);
                     result = 1;
                 }
@@ -120,14 +118,27 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <summary>
         /// 删除供应商证书文件
         /// </summary>
-        /// <param name="entity">实体</param>
+        /// <param name="entity"></param>
         /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult DelPurSupplierCertificateFile(SuppliersQualifiedCertificateModel entity)
         {
+        
             var rootPath = HttpContext.Request.PhysicalApplicationPath;
+
             var datas = PurchaseService.PurSupplierManager.DelEditSpplierCertificate(entity, rootPath);
+
+            
+
             return Json(datas);
         }
+        #endregion
+
+        #region SupplierEvaluationManage
+        public ActionResult SupplierEvaluationManage()
+        {
+            return View();
+        }
+        #endregion
     }
 }
