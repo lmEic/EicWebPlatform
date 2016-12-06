@@ -257,12 +257,30 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         /// <returns></returns>
         public List<PurchaseHeaderModel> FindSupplierLatestTwoPurchaseBy(string suppplierId)
         {
-            string SqlFields = "Select TOP (2) TC001,TC002,TC003,TC004,TC011,TC019  from PURTC ";
-            string whereSql = string .Format ("WHERE   (TC004 = '{0}')  ORDER BY TC003 DESC ",suppplierId );
-            return ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(SqlFields, whereSql, (dr, m) =>
-            {
-                this.MapPurHeaderRowAndModel(dr, m);
-            });
+
+         
+            List<PurchaseHeaderModel> FindSupplierLatestTwoPurchase = new List<PurchaseHeaderModel>();
+
+            string SqlFields = "Select TOP (1) TC001,TC002,TC003,TC004,TC011,TC019  from PURTC ";
+
+            string whereSql = string .Format ("WHERE (TC004 = '{0}')  ORDER BY TC003 DESC ",suppplierId );
+          var  lastestPruchase = ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(SqlFields, whereSql, (dr, m) => {
+              this.MapPurHeaderRowAndModel(dr, m);
+          }).FirstOrDefault();
+            if (lastestPruchase == null) return FindSupplierLatestTwoPurchase;
+            
+                FindSupplierLatestTwoPurchase.Add(lastestPruchase);
+                string notmonth = lastestPruchase.PurchaseDate.Substring(0, lastestPruchase.PurchaseDate.Length - 2);
+                string whereSql2 = string.Format("WHERE   (TC004 = '{0}')  AND (NOT (TC003 LIKE '{1}%'))  ORDER BY TC003 DESC ", suppplierId, notmonth);
+                var FirstPruchase = ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(SqlFields, whereSql2, (dr, m) => {
+                    this.MapPurHeaderRowAndModel(dr, m);
+                }).FirstOrDefault();
+                if (FirstPruchase == null )
+                { FindSupplierLatestTwoPurchase.Add(lastestPruchase); }
+              else  FindSupplierLatestTwoPurchase.Add(FirstPruchase);
+          
+            
+            return FindSupplierLatestTwoPurchase;
         }
 
 
@@ -403,7 +421,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             var idm = ErpDbAccessHelper.DecomposeID(id);
             return FindStoHeaderBy(idm.Code, idm.Category);
         }
-
+        
         /// <summary>
         /// 根据采购部门获取进货单单头数据信息
         /// </summary>

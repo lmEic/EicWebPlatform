@@ -118,7 +118,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public OpResult SavaEditSpplierCertificate(List<InPutSupplieCertificateInfoModel> modelList)
         {
             //判断列表是否为空
-            if (modelList == null || modelList.Count <= 0) return new OpResult("数据列表不能为空",true);
+            if (modelList == null || modelList.Count <= 0) return new OpResult("数据列表不能为空");
             var model = modelList[0];
             //通过SupplierId得到供应商信息
             var supplierInfoModel = GetErpSuppplierInfoBy(model.SupplierId);
@@ -166,14 +166,29 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public OpResult DelEditSpplierCertificate(SuppliersQualifiedCertificateModel model, string rootPath)
         {
-            if (model == null || model.FilePath == string.Empty)  return new OpResult("此文档实体路经不能空");
-            if (rootPath == null || rootPath == string.Empty) return new OpResult("此根路经发生错误");
-            var fileDocumentPath = rootPath + model.FilePath.Replace("/", @"\"); 
-            if (fileDocumentPath.DeleteFileDocumentation())
+            try
             {
-                return SupplierCrudFactory.SupplierQualifiedCertificateCrud.DeleteSupplierCertificate(model);
+                OpResult result = OpResult.SetResult("数据操作失败!");
+                if (model == null || model.FilePath == string.Empty) return new  OpResult("此文档实体路经不能空");
+
+                if (rootPath == null || rootPath == string.Empty) return  new OpResult("此根路经发生错误");
+
+                var fileDocumentPath = rootPath + model.FilePath.Replace("/", @"\");
+                if(! fileDocumentPath.ExistFile())
+                     result= new OpResult("此" + fileDocumentPath + "文档不存在或路经不对");
+                else
+                {
+                    if (fileDocumentPath.DeleteFileDocumentation())
+                        result = SupplierCrudFactory.SupplierQualifiedCertificateCrud.DeleteSupplierCertificate(model);
+                }
+               
+                return result;
             }
-            else return new OpResult("此" + fileDocumentPath+"文档不存在或路经不对");
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+
         }
         /// <summary>
         ///获取供应商证书列表
