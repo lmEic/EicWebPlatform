@@ -153,6 +153,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
           catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
       }
+
+        public OpResult DeleteSupplierCertificate(SuppliersQualifiedCertificateModel model)
+        {
+            try
+            {
+                return irep.Delete(e => e.Id_key == model.Id_key, true).ToOpResult_Delete("删除完成");
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        }
      /// <summary>
       /// 批量保存供应商的合格文件记录
      /// </summary>

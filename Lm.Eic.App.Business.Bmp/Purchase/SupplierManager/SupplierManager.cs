@@ -9,6 +9,7 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
@@ -148,6 +149,23 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 return SupplierCrudFactory.SupplierQualifiedCertificateCrud.SavaSupplierEligibleList(certificateModelList);
             }
             else return new OpResult("数据保存失败");
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="fileDocumentFlid"></param>
+        /// <returns></returns>
+        public OpResult DelEditSpplierCertificate(SuppliersQualifiedCertificateModel model, string rootPath)
+        {
+            if (model == null || model.FilePath == string.Empty)  return new OpResult("此文档路经为空", true);
+         
+            var fileDocumentPath = rootPath + model.FilePath.Replace("/", @"\"); 
+            if (fileDocumentPath.DeleteFileDocumentation())
+            {
+                return SupplierCrudFactory.SupplierQualifiedCertificateCrud.DeleteSupplierCertificate(model);
+            }
+            else return new OpResult("此文档不存在", true);
         }
         /// <summary>
         ///获取供应商证书列表

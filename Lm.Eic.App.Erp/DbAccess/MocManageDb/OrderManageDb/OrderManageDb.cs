@@ -64,8 +64,8 @@ namespace Lm.Eic.App.Erp.DbAccess.MocManageDb.OrderManageDb
                 m.OrderFinishStatus = OrderFinishStatusConverter(dr["TA011"].ToString().Trim());
                 m.Count = dr["TA015"].ToString().Trim ().ToDouble();
                 m.InStoreCount = dr["TA017"].ToString().Trim().ToDouble();
-                m.OrderFinishDate = DateTime.ParseExact(dr["TA010"].ToString().Trim (), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
-                m.InStockDate = DateTime.ParseExact(dr["TA063"].ToString().Trim (), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+                m.OrderFinishDate = dr["TA010"].ToString().Trim ().ToDate();
+                m.InStockDate = dr["TA063"].ToString().Trim ().ToDate();
             });
             return ListModels.FirstOrDefault();
         }
