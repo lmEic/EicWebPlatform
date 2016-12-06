@@ -101,7 +101,6 @@ purchaseModule.controller('purSupplierInputCtrl', function ($scope, supplierData
     $scope.vmManager = vmManager;
 });
 
-
 //生成合格供应商清单
 purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService,$modal) {
 
@@ -230,10 +229,10 @@ null,
                     //删除证书文件
                     removeCertificateFile: function (item) {
                         supplierDataOpService.delPurSupplierCertificateFile(item).then(function (opResult) {
-                            if (opResult === 1)
-                            {
-                                leeHelper.remove(editManager.certificateDatas,item);
+                            if (opResult.Result) {
+                                leeHelper.remove(editManager.certificateDatas, item);
                             }
+                            else { alert(opResult.Message);}
                         })
                     },
                     //证书数据
@@ -280,5 +279,9 @@ null,
             vmManager.supplierCertificateEditModal.$promise.then(vmManager.supplierCertificateEditModal.show);
         },
     };
+});
+//供应商考核管理
+purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supplierDataOpService, $modal) {
+
 });
 

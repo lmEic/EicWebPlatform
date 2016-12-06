@@ -1304,6 +1304,7 @@
     <Content Include="Views\PurSupplierManage\EditPurSupplierCertificateViewTpl.cshtml" />
     <Content Include="Views\CommonTpl\ImageFilePreviewTpl.cshtml" />
     <Content Include="Views\PurSupplierManage\SupplierEvaluationManage.cshtml" />
+    <Content Include="Views\CommonTpl\QuarterButtonTpl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

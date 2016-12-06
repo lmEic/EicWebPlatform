@@ -123,9 +123,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult DelPurSupplierCertificateFile(SuppliersQualifiedCertificateModel entity)
         {
-
-
-            // E:\\Repositorys\\EicWebPlatform\\EicWorkPlatfrom\\FileLibrary\\TwoMaterialBoard\\1419999998083RN.jpg
+        
             var rootPath = HttpContext.Request.PhysicalApplicationPath;
 
             var datas = PurchaseService.PurSupplierManager.DelEditSpplierCertificate(entity, rootPath);
