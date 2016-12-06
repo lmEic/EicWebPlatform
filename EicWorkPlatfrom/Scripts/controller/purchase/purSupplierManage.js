@@ -282,6 +282,80 @@ null,
 });
 //供应商考核管理
 purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supplierDataOpService, $modal) {
+    var item = {
+        SupplierId: 'D10069',
+        SupplierShortName: '双溪橡胶',
+        QualityCheck: null,
+        AuditPrice: null,
+        DeliveryDate: null,
+        ActionLiven: null,
+        HSFGrade: null,
+        TotalCheckScore: 95,
+        CheckLevel: null,
+        RewardsWay: null,
+        MaterialGrade: null,
+        ManagerRisk: null,
+        SubstitutionSupplierId: null,
+        SeasonNum: 0,
+        Remark: null,
+        OpPserson: null,
+        OpDate: null,
+        Optime: null,
+        OpSign: null,
+        Id_key: null,
+        isEditting:false,
+    };
 
+    ///供应商考核视图模型
+   var uiVM=$scope.vm = {
+        SupplierId: null,
+        SupplierName: null,
+        QualityCheck: null,
+        AuditPrice: null,
+        DeliveryDate: null,
+        ActionLiven: null,
+        HSFGrade: null,
+        TotalCheckScore: null,
+        CheckLevel: null,
+        RewardsWay: null,
+        MaterialGrade: null,
+        ManagerRisk: null,
+        SubstitutionSupplierId: null,
+        SeasonNum: 0,
+        Remark: null,
+        OpPserson: null,
+        OpDate: null,
+        Optime: null,
+        OpSign: null,
+        Id_key: null,
+    }
+   
+   var initVm = _.clone(uiVM);
+
+
+    var vmManager = {
+        activeTab: 'initTab',
+    };
+    $scope.vmManager = vmManager;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveAll = function (isValid) { };
+    operate.refresh = function () { };
+
+
+    //视图管理器
+    var vmManager = $scope.vmManager = {
+        editDatas: [item],
+        //获取要考核的供应商数据列表
+        getAuditSupplierDatas: function () {
+
+        },
+        editItem: null,
+        displayEditForm:false,
+        editSupplierAuditData: function (item) {
+            vmManager.displayEditForm = true;
+            vmManager.editItem = $scope.vm = item;
+        },
+    };
 });
 

@@ -139,6 +139,30 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             return View();
         }
+        /// <summary>
+        /// 获取要考核的供应商列表
+        /// </summary>
+        /// <param name="season"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetAuditSupplierList(string season)
+        {
+            var datas = 0;//待添加
+
+            return Json(datas);
+        }
+        /// <summary>
+        /// 保存供应商季度考核数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveAuditSupplierInfo(SupplieSeasonAuditModel entity)
+        {
+            var datas = 0;//待添加
+
+            return Json(datas);
+        }
         #endregion
     }
 }
