@@ -9,6 +9,7 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
@@ -117,7 +118,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public OpResult SavaEditSpplierCertificate(List<InPutSupplieCertificateInfoModel> modelList)
         {
             //判断列表是否为空
-            if (modelList == null || modelList.Count <= 0) return new OpResult("数据列表不能为空",true);
+            if (modelList == null || modelList.Count <= 0) return new OpResult("数据列表不能为空");
             var model = modelList[0];
             //通过SupplierId得到供应商信息
             var supplierInfoModel = GetErpSuppplierInfoBy(model.SupplierId);
@@ -126,13 +127,20 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             //赋值 供应商属性和采购性质
             supplierInfoModel.PurchaseType = model.PurchaseType;
             supplierInfoModel.SupplierProperty = model.SupplierProperty;
+            string isExistCertificateFileName = string.Empty;
             //更新保存数据
             if (SaveSupplierInfoModel(supplierInfoModel).Result)
             {
                 List<SuppliersQualifiedCertificateModel> certificateModelList = new List<SuppliersQualifiedCertificateModel>();
+             
                 //保存证书数据
                 modelList.ForEach(e =>
                 {
+
+                   if(SupplierCrudFactory.SupplierQualifiedCertificateCrud.IsExistCertificateFileName(e.CertificateFileName))
+                    {
+                        isExistCertificateFileName += e.CertificateFileName + ",";
+                    }
                     SuppliersQualifiedCertificateModel savemodel = new SuppliersQualifiedCertificateModel()
                     {
                         SupplierId = e.SupplierId,
@@ -145,9 +153,42 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     };
                     certificateModelList.Add(savemodel);
                 });
-                return SupplierCrudFactory.SupplierQualifiedCertificateCrud.SavaSupplierEligibleList(certificateModelList);
+                if (isExistCertificateFileName != String.Empty) return new OpResult("此"+isExistCertificateFileName+"文档已经存在，数据保存失败");
+               else  return SupplierCrudFactory.SupplierQualifiedCertificateCrud.SavaSupplierEligibleList(certificateModelList);
             }
             else return new OpResult("数据保存失败");
+        }
+        /// <summary>
+        /// 删除供应商证书
+        /// </summary>
+        /// <param name="model">实体</param>
+        /// <param name="rootPath">根路经</param>
+        /// <returns></returns>
+        public OpResult DelEditSpplierCertificate(SuppliersQualifiedCertificateModel model, string rootPath)
+        {
+            try
+            {
+                OpResult result = OpResult.SetResult("数据操作失败!");
+                if (model == null || model.FilePath == string.Empty) return new  OpResult("此文档实体路经不能空");
+
+                if (rootPath == null || rootPath == string.Empty) return  new OpResult("此根路经发生错误");
+
+                var fileDocumentPath = rootPath + model.FilePath.Replace("/", @"\");
+                if(! fileDocumentPath.ExistFile())
+                     result= new OpResult("此" + fileDocumentPath + "文档不存在或路经不对");
+                else
+                {
+                    if (fileDocumentPath.DeleteFileDocumentation())
+                        result = SupplierCrudFactory.SupplierQualifiedCertificateCrud.DeleteSupplierCertificate(model);
+                }
+               
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+
         }
         /// <summary>
         ///获取供应商证书列表

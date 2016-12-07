@@ -153,6 +153,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
           catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
       }
+
+        public OpResult DeleteSupplierCertificate(SuppliersQualifiedCertificateModel model)
+        {
+            try
+            {
+                return irep.Delete(e => e.Id_key == model.Id_key, true).ToOpResult_Delete("删除完成");
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        }
      /// <summary>
       /// 批量保存供应商的合格文件记录
      /// </summary>
@@ -177,15 +186,23 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
           catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
       }
+        /// <summary>
+        /// 是否已经保存在证书
+        /// </summary>
+        /// <param name="CertificateFileName"></param>
+        /// <returns></returns>
+        public bool IsExistCertificateFileName(string CertificateFileName)
+        {
+            return irep.IsExist(e => e.CertificateFileName == CertificateFileName);
+        }
 
-      
-    
+
      /// <summary>
      /// 获得供应商合格文件项目
      /// </summary>
      /// <param name="supplierId"></param>
      /// <returns></returns>
-     public List<SuppliersQualifiedCertificateModel> GetQualifiedCertificateListBy(string supplierId)
+        public List<SuppliersQualifiedCertificateModel> GetQualifiedCertificateListBy(string supplierId)
       {
           try
           {

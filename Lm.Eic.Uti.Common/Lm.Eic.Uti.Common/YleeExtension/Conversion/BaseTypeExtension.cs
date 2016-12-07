@@ -81,6 +81,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         public static DateTime ToDate(this string dt)
         {
             DateTime d = DateTime.Now.ToDate();
+            if (dt == string.Empty) return d; 
             
             if (DateTime.TryParse(dt, out d))
             {

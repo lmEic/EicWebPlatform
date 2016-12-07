@@ -381,7 +381,11 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             vmManager.addRow();
         },
         showDReportPreviewView: function () { vmManager.dReportPreviewDisplay = true; },
-        showProFlowView: function () { vmManager.proFlowBoardDisplay = true; },
+        //显示日报汇总数据
+        showDReportSumerizeView: function () {
+            vmManager.sumierzeDReportDatas(vmManager.editDatas);
+            vmManager.dReportSumerizeViewDisplay = true;
+        },
         showPersonView: function () {
             vmManager.workerAttendanceSumerizeHours = [];
             vmManager.workerAttendanceHoursDetails = [];
@@ -839,7 +843,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 item.EquipmentEifficiency = leeHelper.toPercent(parseFloat(item.ProductionHours) /parseFloat(item.SetHours), 0);
             //得到工时=生产数量/标准工时*100%
             if (parseInt(item.StandardHours) !== 0)
-                var getProductHours =parseFloat(item.Qty) /parseFloat(item.StandardHours);
+                var getProductHours = parseFloat(item.Qty) / parseFloat(item.StandardHours);
             //作业效率=得到工时/生产工时*100%
             if (parseInt(item.ProductionHours) !== 0)
                 item.OperationEfficiency = leeHelper.toPercent(getProductHours /parseFloat(item.ProductionHours), 1);
@@ -850,12 +854,10 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             if (parseInt(item.Qty) !== 0)
                 item.FailureRate = leeHelper.toPercent(parseFloat(item.QtyBad) /parseFloat(item.Qty), 2);
 
-
             $scope.vm.EquipmentEifficiency = item.EquipmentEifficiency;
             $scope.vm.FailureRate = item.FailureRate;
             $scope.vm.OperationEfficiency = item.OperationEfficiency;
             $scope.vm.ProductionEfficiency = item.ProductionEfficiency;
-
         },
         //员工出勤汇总工时数据
         workerAttendanceSumerizeHours: [],
@@ -872,11 +874,13 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                         UserWorkerId: rowItem.UserWorkerId,
                         UserName: rowItem.UserName,
                         AttendanceHours: parseFloat(rowItem.AttendanceHours),
+                        Qty:parseInt(rowItem.Qty),
                         isAlert:parseFloat(rowItem.AttendanceHours)>11
                     });
                 }
                 else {
-                    wah.AttendanceHours +=parseFloat(rowItem.AttendanceHours);
+                    wah.AttendanceHours += parseFloat(rowItem.AttendanceHours);
+                    wah.Qty += parseInt(rowItem.Qty);
                 }
             })
         },
@@ -930,7 +934,108 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 vmManager.orderIdAlertModal.$promise.then(vmManager.orderIdAlertModal.show);
             }
             return isFinished;
-        }
+        },
+        //显示机台类汇总数据看板开关
+        displayMachineSumerizeBoard:true,
+        //机台汇总对象
+        dReportMachineSumerize: {
+            //汇总日报数据
+            sumerizeDatas:[],
+            machineCount: 0,
+            QtySum: 0,
+            QtyBadSum: 0,
+            QtyGoodSum: 0,
+            ReceiveHoursSum: 0,
+            AttendanceHoursSum: 0,
+            SetHoursSum: 0,
+            InputHoursSum: 0,
+            NonProductionHoursSum: 0,
+            ProductionHoursSum: 0,
+            EquipmentEifficiencySum: 0,
+            OperationEfficiency: 0,
+            ProductionEfficiencySum:0,
+            FailureRateSum:0,
+        },
+        //工艺类日报汇总数据
+        dReportFlowSumerize: {
+            //汇总日报数据
+            sumerizeDatas: [],
+            QtySum: 0,
+            QtyBadSum: 0,
+            QtyGoodSum: 0,
+            ReceiveHoursSum: 0,
+            InputHoursSum: 0,
+            NonProductionHoursSum: 0,
+            ProductionHoursSum: 0,
+            OperationEfficiency: 0,
+            ProductionEfficiencySum: 0,
+            FailureRateSum: 0,
+        },
+        sumerizeMachineDatas: function (dReportDatas) {
+            leeHelper.clearVM(vmManager.dReportMachineSumerize, 'sumerizeDatas', 0);
+            vmManager.dReportMachineSumerize.sumerizeDatas = [];
+            vmManager.dReportMachineSumerize.sumerizeDatas = _.where(dReportDatas, { IsMachine: '是' });
+            var workingMachines = []
+            angular.forEach(vmManager.dReportMachineSumerize.sumerizeDatas, function (row) {
+                var item = _.find(workingMachines, { MachineId: row.MachineId });
+                if (item === undefined)
+                    workingMachines.push({ MachineId: row.MachineId });
+                vmManager.dReportMachineSumerize.QtySum += row.Qty;
+                vmManager.dReportMachineSumerize.QtyBadSum += row.QtyBad;
+                vmManager.dReportMachineSumerize.QtyGoodSum += row.QtyGood;
+                vmManager.dReportMachineSumerize.ReceiveHoursSum += parseFloat(row.ReceiveHours);
+                vmManager.dReportMachineSumerize.AttendanceHoursSum += row.AttendanceHours;
+                vmManager.dReportMachineSumerize.SetHoursSum += row.SetHours;
+                vmManager.dReportMachineSumerize.InputHoursSum += row.InputHours;
+                vmManager.dReportMachineSumerize.NonProductionHoursSum += row.NonProductionHours;
+                vmManager.dReportMachineSumerize.ProductionHoursSum += row.ProductionHours;
+            });
+            //稼动率=生产工时/设置工时*100%
+            if (parseInt(vmManager.dReportMachineSumerize.AttendanceHoursSum) !== 0)
+                vmManager.dReportMachineSumerize.EquipmentEifficiencySum = leeHelper.toPercent(parseFloat(vmManager.dReportMachineSumerize.ProductionHoursSum) / parseFloat(vmManager.dReportMachineSumerize.SetHoursSum), 0);
+            //作业效率=得到工时/生产工时*100%
+            if (parseInt(vmManager.dReportMachineSumerize.ProductionHoursSum) !== 0)
+                vmManager.dReportMachineSumerize.OperationEfficiencySum = leeHelper.toPercent(vmManager.dReportMachineSumerize.ReceiveHoursSum / parseFloat(vmManager.dReportMachineSumerize.ProductionHoursSum), 1);
+            //生产效率=得到工时/投入时数*100%
+            if (parseInt(vmManager.dReportMachineSumerize.InputHoursSum) !== 0)
+                vmManager.dReportMachineSumerize.ProductionEfficiencySum = leeHelper.toPercent(vmManager.dReportMachineSumerize.ReceiveHoursSum / parseFloat(vmManager.dReportMachineSumerize.InputHoursSum), 1);
+            //不良率=不良品数量/总产量*100%
+            if (parseInt(vmManager.dReportMachineSumerize.QtyBadSum) !== 0)
+                vmManager.dReportMachineSumerize.FailureRateSum = leeHelper.toPercent(parseFloat(vmManager.dReportMachineSumerize.QtyBadSum) / parseFloat(vmManager.dReportMachineSumerize.QtySum), 2);
+            if (workingMachines.length > 0)
+                vmManager.dReportMachineSumerize.machineCount = workingMachines.length;
+        },
+        sumerizeFlowDatas: function (dReportDatas) {
+            leeHelper.clearVM(vmManager.dReportFlowSumerize, 'sumerizeDatas', 0);
+            vmManager.dReportFlowSumerize.sumerizeDatas = [];
+            vmManager.dReportFlowSumerize.sumerizeDatas = _.where(dReportDatas, { IsMachine: '否' });
+            angular.forEach(vmManager.dReportFlowSumerize.sumerizeDatas, function (row) {
+                vmManager.dReportFlowSumerize.QtySum += row.Qty;
+                vmManager.dReportFlowSumerize.QtyBadSum += row.QtyBad;
+                vmManager.dReportFlowSumerize.QtyGoodSum += row.QtyGood;
+                vmManager.dReportFlowSumerize.ReceiveHoursSum += row.ReceiveHours;
+                vmManager.dReportFlowSumerize.InputHoursSum += row.InputHours;
+                vmManager.dReportFlowSumerize.NonProductionHoursSum += row.NonProductionHours;
+                vmManager.dReportFlowSumerize.ProductionHoursSum += row.ProductionHours;
+            });
+
+            vmManager.dReportFlowSumerize.ReceiveHoursSum = vmManager.dReportFlowSumerize.ReceiveHoursSum.toFixed(1);
+            //作业效率=得到工时/生产工时*100%
+            if (parseInt(vmManager.dReportFlowSumerize.ProductionHoursSum) !== 0)
+                vmManager.dReportFlowSumerize.OperationEfficiencySum = leeHelper.toPercent(vmManager.dReportFlowSumerize.ReceiveHoursSum / parseFloat(vmManager.dReportFlowSumerize.ProductionHoursSum), 1);
+            //生产效率=得到工时/投入时数*100%
+            if (parseInt(vmManager.dReportFlowSumerize.InputHoursSum) !== 0)
+                vmManager.dReportFlowSumerize.ProductionEfficiencySum = leeHelper.toPercent(vmManager.dReportFlowSumerize.ReceiveHoursSum / parseFloat(vmManager.dReportFlowSumerize.InputHoursSum), 1);
+            //不良率=不良品数量/总产量*100%
+            if (parseInt(vmManager.dReportFlowSumerize.QtyBadSum) !== 0)
+                vmManager.dReportFlowSumerize.FailureRateSum = leeHelper.toPercent(parseFloat(vmManager.dReportFlowSumerize.QtyBadSum) / parseFloat(vmManager.dReportFlowSumerize.QtySum), 2);
+        },
+        //汇总日报数据
+        sumierzeDReportDatas: function (dReportDatas) {
+            if (!angular.isArray(dReportDatas) || dReportDatas.length === 0) return;
+            vmManager.sumerizeMachineDatas(dReportDatas);
+            vmManager.sumerizeFlowDatas(dReportDatas);
+        },
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);

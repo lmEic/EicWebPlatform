@@ -15,6 +15,9 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
     $stateProvider.state('buildQualifiedSupplierInventory', {
         templateUrl: supplierUrlPrefix + 'BuildQualifiedSupplierInventory'
     })
+    .state('supplierEvaluationManage', {
+        templateUrl: supplierUrlPrefix + 'SupplierEvaluationManage'
+    })
 })
 
 .factory('purchaseService', function ($http,$q) {

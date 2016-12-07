@@ -44,6 +44,13 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
             supplierId: supplierId,
         });
     };
+    ///删除供应商证书文件
+    purDb.delPurSupplierCertificateFile = function (entity) {
+        var url = purUrlPrefix + 'DelPurSupplierCertificateFile';
+        return ajaxService.postData(url, {
+            entity: entity,
+        });
+    };
     return purDb;
 });
 
@@ -93,7 +100,6 @@ purchaseModule.controller('purSupplierInputCtrl', function ($scope, supplierData
     };
     $scope.vmManager = vmManager;
 });
-
 
 //生成合格供应商清单
 purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService,$modal) {
@@ -220,6 +226,15 @@ null,
                         editManager.uploadFileItem = _.clone(fileItem);
                     },
                     uploadFileItem: null,
+                    //删除证书文件
+                    removeCertificateFile: function (item) {
+                        supplierDataOpService.delPurSupplierCertificateFile(item).then(function (opResult) {
+                            if (opResult.Result) {
+                                leeHelper.remove(editManager.certificateDatas, item);
+                            }
+                            else { alert(opResult.Message);}
+                        })
+                    },
                     //证书数据
                     certificateDatas:[],
                     getCertificateDatas: function () {
@@ -253,7 +268,6 @@ null,
                         });
                     }
                 };
-
                 //提取数据
                 editManager.getCertificateDatas();
             },
@@ -263,6 +277,84 @@ null,
         editSupplierCertificate: function (item) {
             vmManager.editItem = item;
             vmManager.supplierCertificateEditModal.$promise.then(vmManager.supplierCertificateEditModal.show);
+        },
+    };
+});
+//供应商考核管理
+purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supplierDataOpService, $modal) {
+    var item = {
+        SupplierId: 'D10069',
+        SupplierShortName: '双溪橡胶',
+        QualityCheck: null,
+        AuditPrice: null,
+        DeliveryDate: null,
+        ActionLiven: null,
+        HSFGrade: null,
+        TotalCheckScore: 95,
+        CheckLevel: null,
+        RewardsWay: null,
+        MaterialGrade: null,
+        ManagerRisk: null,
+        SubstitutionSupplierId: null,
+        SeasonNum: 0,
+        Remark: null,
+        OpPserson: null,
+        OpDate: null,
+        Optime: null,
+        OpSign: null,
+        Id_key: null,
+        isEditting:false,
+    };
+
+    ///供应商考核视图模型
+   var uiVM=$scope.vm = {
+        SupplierId: null,
+        SupplierName: null,
+        QualityCheck: null,
+        AuditPrice: null,
+        DeliveryDate: null,
+        ActionLiven: null,
+        HSFGrade: null,
+        TotalCheckScore: null,
+        CheckLevel: null,
+        RewardsWay: null,
+        MaterialGrade: null,
+        ManagerRisk: null,
+        SubstitutionSupplierId: null,
+        SeasonNum: 0,
+        Remark: null,
+        OpPserson: null,
+        OpDate: null,
+        Optime: null,
+        OpSign: null,
+        Id_key: null,
+    }
+   
+   var initVm = _.clone(uiVM);
+
+
+    var vmManager = {
+        activeTab: 'initTab',
+    };
+    $scope.vmManager = vmManager;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveAll = function (isValid) { };
+    operate.refresh = function () { };
+
+
+    //视图管理器
+    var vmManager = $scope.vmManager = {
+        editDatas: [item],
+        //获取要考核的供应商数据列表
+        getAuditSupplierDatas: function () {
+
+        },
+        editItem: null,
+        displayEditForm:false,
+        editSupplierAuditData: function (item) {
+            vmManager.displayEditForm = true;
+            vmManager.editItem = $scope.vm = item;
         },
     };
 });

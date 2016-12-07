@@ -186,15 +186,22 @@ var leeHelper = (function () {
         ///清空视图对象的每个属性值
         //vm:视图对象
         //notKeys:不包含的要清楚值的键值
-        clearVM: function (vm, notKeys) {
+        //defValue:清除后，设定每个字段的默认值
+        clearVM: function (vm, notKeys,defValue) {
             for (var key in vm) {
                 if (_.isArray(notKeys)) {
                     if (!_.contains(notKeys, key)) {
-                        vm[key] = null;
+                        if (defValue !== undefined)
+                            vm[key] = defValue;
+                        else
+                            vm[key] = null;
                     }
                 }
                 else {
-                    vm[key] = null;
+                    if (defValue !== undefined)
+                        vm[key] = defValue;
+                    else
+                        vm[key] = null;
                 }
             }
         },
