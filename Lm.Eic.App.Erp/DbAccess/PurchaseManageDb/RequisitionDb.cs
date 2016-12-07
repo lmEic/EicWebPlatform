@@ -249,7 +249,6 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             return purHeaders;
         }
 
-
         /// <summary>
         /// 供应商最近二项采购
         /// </summary>
@@ -278,8 +277,6 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             
             return FindSupplierLatestTwoPurchase;
         }
-
-
         #endregion PurchaseHeader
 
         //-----------------PurchaseBody---------------------------------
