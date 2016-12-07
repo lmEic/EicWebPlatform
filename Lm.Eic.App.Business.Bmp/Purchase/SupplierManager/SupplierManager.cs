@@ -20,11 +20,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="yearMoth">年份格式yyyyMM</param>
         /// <returns></returns>
-        public List<EligibleSuppliersModel> FindQualifiedSupplierList(string yearMoth)
+        public List<EligibleSuppliersModel> FindQualifiedSupplierList(string endYearMonth)
         {
             List<EligibleSuppliersModel> QualifiedSupplierInfo = new List<EligibleSuppliersModel>();
+            string startYearMonth = "201501";
             //获取供应商信息
-            var supplierInfoList = GetSupplierInformationListBy(yearMoth);
+            var supplierInfoList = GetSupplierInformationListBy(startYearMonth, endYearMonth);
 
             if (supplierInfoList == null || supplierInfoList.Count <= 0) return QualifiedSupplierInfo;
 
@@ -55,17 +56,17 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             });
             return QualifiedSupplierInfo.ToList();
         }
-
         /// <summary>
         /// 获取供应商信息表
         /// </summary>
         /// <param name="yearMoth">年份格式yyyyMM</param>
         /// <returns></returns>
-        public  List<SuppliersInfoModel> GetSupplierInformationListBy(string yearMoth)
+        public  List<SuppliersInfoModel> GetSupplierInformationListBy(string startYearMonth,string endYearMonth)
         {
             List<SuppliersInfoModel> SupplierInfoList = new List<SuppliersInfoModel>();
             //从ERP中得到此年中所有供应商Id号
-            var supplierList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(yearMoth);
+            var supplierList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(startYearMonth, endYearMonth);
+
             if (supplierList == null || supplierList.Count <= 0) return null;
             supplierList.ForEach(supplierId =>
             {
@@ -90,26 +91,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
-       
-        /// <summary>
-        /// 批量保存供应商信息
-        /// </summary>
-        /// <param name="modelList"></param>
-        /// <returns></returns>
-        public OpResult SaveSupplierInfoList(List<SuppliersInfoModel> modelList)
-        {
-            return SupplierCrudFactory.SuppliersInfoCrud.SavaSupplierInfoList(modelList);
-        }
-        /// <summary>
-        /// 批量保存合格供应商清册
-        /// </summary>
-        /// <param name="modelList"></param>
-        /// <returns></returns>
-        public OpResult SavaQualifiedSupplierInfoList(List<EligibleSuppliersModel> modelList)
-        {
-            return SupplierCrudFactory.EligibleSupplierCrud.SavaEligibleSuppliersList(modelList);
-        }
-
         /// <summary>
         /// 保存编辑的供应商证书信息
         /// </summary>
@@ -203,7 +184,24 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         #region   internal
 
-
+        /// <summary>
+        /// 批量保存供应商信息
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        OpResult SaveSupplierInfoList(List<SuppliersInfoModel> modelList)
+        {
+            return SupplierCrudFactory.SuppliersInfoCrud.SavaSupplierInfoList(modelList);
+        }
+        /// <summary>
+        /// 批量保存合格供应商清册
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        OpResult SavaQualifiedSupplierInfoList(List<EligibleSuppliersModel> modelList)
+        {
+            return SupplierCrudFactory.EligibleSupplierCrud.SavaEligibleSuppliersList(modelList);
+        }
         /// <summary>
         /// 更新并保存供应商信息
         /// </summary>

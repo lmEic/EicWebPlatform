@@ -16,8 +16,8 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
            
            if (mm!=null ||mm.Count >0)
             {
-               var tem=  PurchaseService.PurSupplierManager.SavaQualifiedSupplierInfoList(mm);
-               if (!tem.Result) { Assert.Fail(); }
+               //var tem=  PurchaseService.PurSupplierManager.SavaQualifiedSupplierInfoList(mm);
+               //if (!tem.Result) { Assert.Fail(); }
             }
       
         }
@@ -25,11 +25,11 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
         [TestMethod]
         public void SupplierInfoTest()
         {
-            var supplierInfos = PurchaseService.PurSupplierManager.GetSupplierInformationListBy("201601");
+            var supplierInfos = PurchaseService.PurSupplierManager.GetSupplierInformationListBy("201511","201611");
             if(supplierInfos!=null ||supplierInfos.Count >0)
             {
-                var tem = PurchaseService.PurSupplierManager.SaveSupplierInfoList(supplierInfos);
-                if (!tem.Result) { Assert.Fail(); }
+                //var tem = PurchaseService.PurSupplierManager.SaveSupplierInfoList(supplierInfos);
+                //if (!tem.Result) { Assert.Fail(); }
             }
         }
 

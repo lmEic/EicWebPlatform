@@ -176,17 +176,17 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         /// <summary>
         /// 获取采购供应商ID （331 333）
         /// </summary>
-        /// <param name="year">年份格式yyyy</param>
+        /// <param name="startYearMonth">年份格式yyyy</param>
         /// <returns></returns>
-        public List<string> PurchaseSppuerId(string   year)
+        public List<string> PurchaseSppuerId(string  startYearMonth ,string endYearMonth)
         {
             try
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("SELECT  DISTINCT TC004 ")
                   .Append("FROM   PURTC ")
-                  .Append("WHERE   (TC001 = '331' OR TC001 = '333') AND (TC003 >= '{0}%')" );
-                DataTable dt = DbHelper.Erp.LoadTable(string.Format(sb.ToString(), year));
+                  .Append("WHERE   (TC001 = '331' OR TC001 = '333') AND (TC003 > '{0}%') AND  (TC003 <= '{1}')");
+                DataTable dt = DbHelper.Erp.LoadTable(string.Format(sb.ToString(), startYearMonth, endYearMonth));
                 List<string> SppuerIdList = new List<string>();
                 if (dt.Rows.Count > 0)
                 {
