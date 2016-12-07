@@ -257,12 +257,8 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         /// <returns></returns>
         public List<PurchaseHeaderModel> FindSupplierLatestTwoPurchaseBy(string suppplierId)
         {
-
-         
             List<PurchaseHeaderModel> FindSupplierLatestTwoPurchase = new List<PurchaseHeaderModel>();
-
             string SqlFields = "Select TOP (1) TC001,TC002,TC003,TC004,TC011,TC019  from PURTC ";
-
             string whereSql = string .Format ("WHERE (TC004 = '{0}')  ORDER BY TC003 DESC ",suppplierId );
           var  lastestPruchase = ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(SqlFields, whereSql, (dr, m) => {
               this.MapPurHeaderRowAndModel(dr, m);
