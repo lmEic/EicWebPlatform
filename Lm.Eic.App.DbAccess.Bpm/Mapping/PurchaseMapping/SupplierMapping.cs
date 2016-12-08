@@ -38,6 +38,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
   }
 
 
+   
+
     /// <summary>
     ///供应商季度审计总览表
     /// Pur_SupplieSeasonAuditTable_Mapping

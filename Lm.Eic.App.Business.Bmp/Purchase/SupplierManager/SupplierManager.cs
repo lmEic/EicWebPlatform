@@ -33,6 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             {
                 //从ERP中得到最新二次采购信息
                 var SupplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierInfo.SupplierId);
+                // 获取供应商证书列表
                 var SuppliersQualifiedCertificate = GetSupplierQualifiedCertificateListBy(supplierInfo.SupplierId);
                 QualifiedSupplierInfo.Add(new EligibleSuppliersModel
                 {
