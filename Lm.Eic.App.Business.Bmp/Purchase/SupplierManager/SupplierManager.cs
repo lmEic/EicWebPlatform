@@ -33,7 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             {
                 //从ERP中得到最新二次采购信息
                 var SupplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierInfo.SupplierId);
-
+                var SuppliersQualifiedCertificate = GetSupplierQualifiedCertificateListBy(supplierInfo.SupplierId);
                 QualifiedSupplierInfo.Add(new EligibleSuppliersModel
                 {
                     LastPurchaseDate = SupplierLatestTwoPurchase.FirstOrDefault().PurchaseDate.Trim().ToDate(),
@@ -50,31 +50,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     Remark = supplierInfo.Remark,
                     SupplierShortName = supplierInfo.SupplierShortName,
                     SupplierUser = supplierInfo.SupplierUser,
-                    SupplierTel = supplierInfo.SupplierTel,
-                    EligibleCertificate = SupplierLatestTwoPurchase.FirstOrDefault().PurchaseDate.Trim().ToDate().ToString()
+                    SupplierTel = supplierInfo.SupplierTel
                 });
             });
             return QualifiedSupplierInfo.ToList();
         }
-        /// <summary>
-        /// 获取供应商信息表
-        /// </summary>
-        /// <param name="yearMoth">年份格式yyyyMM</param>
-        /// <returns></returns>
-        public  List<SuppliersInfoModel> GetSupplierInformationListBy(string startYearMonth,string endYearMonth)
-        {
-            List<SuppliersInfoModel> SupplierInfoList = new List<SuppliersInfoModel>();
-            //从ERP中得到此年中所有供应商Id号
-            var supplierList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(startYearMonth, endYearMonth);
-
-            if (supplierList == null || supplierList.Count <= 0) return null;
-            supplierList.ForEach(supplierId =>
-            {
-                SupplierInfoList.Add(GetSuppplierInfoBy(supplierId));
-            });
-            return SupplierInfoList;
-        }
-        /// <summary>
         /// 获取供应商信息
         /// </summary>
         /// <param name="supplierId"></param>
@@ -182,8 +162,28 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         }
 
 
-        #region   internal
 
+
+        #region   internal
+        /// <summary>
+        /// 获取供应商信息表
+        /// </summary>
+        /// <param name="yearMoth">年份格式yyyyMM</param>
+        /// <returns></returns>
+        List<SuppliersInfoModel> GetSupplierInformationListBy(string startYearMonth, string endYearMonth)
+        {
+            List<SuppliersInfoModel> SupplierInfoList = new List<SuppliersInfoModel>();
+            //从ERP中得到此年中所有供应商Id号
+            var supplierList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(startYearMonth, endYearMonth);
+
+            if (supplierList == null || supplierList.Count <= 0) return null;
+            supplierList.ForEach(supplierId =>
+            {
+                SupplierInfoList.Add(GetSuppplierInfoBy(supplierId));
+            });
+            return SupplierInfoList;
+        }
+        /// <summary>
         /// <summary>
         /// 批量保存供应商信息
         /// </summary>
@@ -193,15 +193,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             return SupplierCrudFactory.SuppliersInfoCrud.SavaSupplierInfoList(modelList);
         }
-        /// <summary>
-        /// 批量保存合格供应商清册
-        /// </summary>
-        /// <param name="modelList"></param>
-        /// <returns></returns>
-        OpResult SavaQualifiedSupplierInfoList(List<EligibleSuppliersModel> modelList)
-        {
-            return SupplierCrudFactory.EligibleSupplierCrud.SavaEligibleSuppliersList(modelList);
-        }
+       
         /// <summary>
         /// 更新并保存供应商信息
         /// </summary>
@@ -251,6 +243,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             };
         }
         #endregion
+    }
+
+
+    public class PurSuppliersSeasonAuditManger
+    {
+
     }
 
 }

@@ -25,12 +25,12 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
         [TestMethod]
         public void SupplierInfoTest()
         {
-            var supplierInfos = PurchaseService.PurSupplierManager.GetSupplierInformationListBy("201511","201611");
-            if(supplierInfos!=null ||supplierInfos.Count >0)
-            {
-                //var tem = PurchaseService.PurSupplierManager.SaveSupplierInfoList(supplierInfos);
-                //if (!tem.Result) { Assert.Fail(); }
-            }
+            //var supplierInfos = PurchaseService.PurSupplierManager.GetSupplierInformationListBy("201511","201611");
+            //if(supplierInfos!=null ||supplierInfos.Count >0)
+            //{
+            //    //var tem = PurchaseService.PurSupplierManager.SaveSupplierInfoList(supplierInfos);
+            //    //if (!tem.Result) { Assert.Fail(); }
+            //}
         }
 
 

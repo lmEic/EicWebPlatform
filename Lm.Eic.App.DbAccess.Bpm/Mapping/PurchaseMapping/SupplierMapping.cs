@@ -8,20 +8,7 @@ using Lm.Eic.App.DomainModel.Bpm.Purchase;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
 {
-    /// <summary>
-    /// 符合条件的供应商清单表
-    /// Pur_EligibleSupplierTable
-    /// </summary>
-    public class EligibleSuppliersModelMapping : EntityTypeConfiguration<EligibleSuppliersModel>
-{
-    public EligibleSuppliersModelMapping()
-    { 
-        this.HasKey(t => t.Id_key);
-        this.Property(t => t.Id_key ).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-        this.ToTable("Pur_EligibleSuppliersTable");
-    }
-}
- 
+
    /// <summary>
   ///供应商合格证书
   /// Pur_SupplierEligibleCertificate_Mapping
@@ -55,7 +42,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
     ///供应商季度审计总览表
     /// Pur_SupplieSeasonAuditTable_Mapping
     /// </summary>
-    public class SuppliersSeasonAuditMapping : EntityTypeConfiguration<SupplieSeasonAuditModel>
+    public class SuppliersSeasonAuditMapping : EntityTypeConfiguration<SupplierSeasonAuditModel>
   {
       public SuppliersSeasonAuditMapping()
       {
@@ -64,4 +51,21 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
           this.ToTable("Pur_SuppliersSeasonAuditTable");
       }
   }
+
+    /// <summary>
+    /// 供应商季度审计实地辅导计划/执行表
+    /// </summary>
+
+    public class SuppliersSeasonAuditTutorMapping : EntityTypeConfiguration<SupplierSeasonAuditTutorModel>
+    {
+                                                                   
+         
+        public SuppliersSeasonAuditTutorMapping()
+        {
+            this.HasKey(t => t.Id_key);
+            this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Pur_SupplierSeasonToturInfo");
+        }
+   
+    }
 }

@@ -53,19 +53,19 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         //供应商信息
         public DbSet<SuppliersInfoModel> SupplierInfo { set; get; }
         //季度考核总览表
-        public DbSet<SupplieSeasonAuditModel> SupplieSeasonAudit { set; get; }
+        public DbSet<SupplierSeasonAuditModel> SupplieSeasonAudit { set; get; }
        
         
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            //设备管理
             modelBuilder.Configurations.Add(new EquipmentModelMapping());
             modelBuilder.Configurations.Add(new EquipmentCheckModelMapping());
             modelBuilder.Configurations.Add(new EquipmentMaintenanceModelMapping());
             modelBuilder.Configurations.Add(new EquipmentDiscardRecordModelMapping());
             modelBuilder.Configurations.Add(new EquipmentRepairedRecordModelMapping());
-
+            //日报管理
             modelBuilder.Configurations.Add(new DailyReportModelMapping());
             modelBuilder.Configurations.Add(new DailyReportTempModelMapping());
             modelBuilder.Configurations.Add(new ProductFlowModelMapping());
@@ -75,15 +75,16 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
 
             modelBuilder.Configurations.Add(new DReportsOrderModelMapping());
+
             
-            //合格供应商清册
-            modelBuilder.Configurations.Add(new EligibleSuppliersModelMapping());
-            //供应商证书信息
-            modelBuilder.Configurations.Add(new SuppliersQualifiedCertificateMapping());
             //供应商信息
             modelBuilder.Configurations.Add(new SuppliersInfoMapping());
+            //供应商证书信息
+            modelBuilder.Configurations.Add(new SuppliersQualifiedCertificateMapping());
             //季度考核总览表
             modelBuilder.Configurations.Add(new SuppliersSeasonAuditMapping());
+            //季度考核 实地辅导计划/执行表
+            modelBuilder.Configurations.Add(new SuppliersSeasonAuditTutorMapping());
         }
     }
 
