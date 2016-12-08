@@ -22,6 +22,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             Database.SetInitializer<BpmDbContext>(null);
         }
 
+
+        #region 设备管理
         public DbSet<EquipmentModel> Equipment { get; set; }
         public DbSet<EquipmentCheckRecordModel> EquipmentCheck { get; set; }
 
@@ -30,7 +32,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         public DbSet<EquipmentDiscardRecordModel> EquipmentDiscard { get; set; }
 
         public DbSet<EquipmentRepairedRecordModel> EquipmentRepaired { get; set; }
+        #endregion
 
+
+        #region 日报管理
         public DbSet<DailyReportModel> DailyReports { get; set; }
 
         public DbSet<DailyReportTempModel> DailyReportsTemp { get; set; }
@@ -38,52 +43,79 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         public DbSet<MachineModel> Machine { get; set; }
 
         public DbSet<NonProductionReasonModel> NonProduction { get; set; }
+        public DbSet<DReportsOrderModel> DReportOrder { get; set; }
 
         public DbSet<ProductFlowModel> ProductFlow { get; set; }
 
+        #endregion
+
+
+        #region  物料看板
         public DbSet<MaterialSpecBoardModel> MaterialSpecBoard { get; set; }
 
+        #endregion
 
 
-        public DbSet<DReportsOrderModel> DReportOrder { get; set; }
-        //合格供应商清册
-        public DbSet<EligibleSuppliersModel> QualifiedSupplier { set; get; }
-        //供应商证书信息
-        public DbSet<SuppliersQualifiedCertificateModel> SupplierEligible { set; get; }
+        #region  供应商管理
+
         //供应商信息
         public DbSet<SuppliersInfoModel> SupplierInfo { set; get; }
+        //供应商证书信息
+        public DbSet<SuppliersQualifiedCertificateModel> SupplierEligible { set; get; }
+     
         //季度考核总览表
-        public DbSet<SupplieSeasonAuditModel> SupplieSeasonAudit { set; get; }
-       
-        
+        public DbSet<SupplierSeasonAuditModel> SupplieSeasonAudit { set; get; }
+        //季度考核 实地辅导计划/执行表
+        public DbSet<SupplierSeasonAuditTutorModel> SupplierSeasonAuditTutor { set; get; }
+
+        #endregion
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+           
+            #region 设备管理
             modelBuilder.Configurations.Add(new EquipmentModelMapping());
             modelBuilder.Configurations.Add(new EquipmentCheckModelMapping());
             modelBuilder.Configurations.Add(new EquipmentMaintenanceModelMapping());
             modelBuilder.Configurations.Add(new EquipmentDiscardRecordModelMapping());
             modelBuilder.Configurations.Add(new EquipmentRepairedRecordModelMapping());
 
+            #endregion
+
+
+
+            #region 日报管理
+            //日报表
             modelBuilder.Configurations.Add(new DailyReportModelMapping());
+            //临时日报表
             modelBuilder.Configurations.Add(new DailyReportTempModelMapping());
+            //工艺流程表
             modelBuilder.Configurations.Add(new ProductFlowModelMapping());
+            //机台信息
             modelBuilder.Configurations.Add(new MachineModelMapping());
+            //非生产工时表
             modelBuilder.Configurations.Add(new NonProductionModelMapping());
-
-            modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
-
+            //非生产工时工单表
             modelBuilder.Configurations.Add(new DReportsOrderModelMapping());
+            #endregion
+           
             
-            //合格供应商清册
-            modelBuilder.Configurations.Add(new EligibleSuppliersModelMapping());
-            //供应商证书信息
-            modelBuilder.Configurations.Add(new SuppliersQualifiedCertificateMapping());
+            #region  物料看板
+            modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
+            #endregion
+
+
+
+            #region  供应商管理
             //供应商信息
             modelBuilder.Configurations.Add(new SuppliersInfoMapping());
+            //供应商证书信息
+            modelBuilder.Configurations.Add(new SuppliersQualifiedCertificateMapping());
             //季度考核总览表
             modelBuilder.Configurations.Add(new SuppliersSeasonAuditMapping());
+            //季度考核 实地辅导计划/执行表
+            modelBuilder.Configurations.Add(new SuppliersSeasonAuditTutorMapping());
+            #endregion
         }
     }
 

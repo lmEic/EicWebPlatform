@@ -28,22 +28,20 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 }
             }
         }
-
+       /// <summary>
+       /// 删除文档
+       /// </summary>
+       /// <param name="FileDocumentationName"></param>
+       /// <returns></returns>
         public static bool DeleteFileDocumentation(this string FileDocumentationName)
         {
             try
             {
-                if (FileDocumentationName.ExistFile())
-                {
                     File.Delete(FileDocumentationName);
                     return true;
-                }
-                return false;
-
             }
             catch (Exception ex)
             {
-                return false;
                 throw new Exception(ex.InnerException.Message);
             }
         }

@@ -20,11 +20,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="yearMoth">年份格式yyyyMM</param>
         /// <returns></returns>
-        public List<EligibleSuppliersModel> FindQualifiedSupplierList(string yearMoth)
+        public List<EligibleSuppliersModel> FindQualifiedSupplierList(string endYearMonth)
         {
             List<EligibleSuppliersModel> QualifiedSupplierInfo = new List<EligibleSuppliersModel>();
+            string startYearMonth = "201501";
             //获取供应商信息
-            var supplierInfoList = GetSupplierInformationListBy(yearMoth);
+            var supplierInfoList = GetSupplierInformationListBy(startYearMonth, endYearMonth);
 
             if (supplierInfoList == null || supplierInfoList.Count <= 0) return QualifiedSupplierInfo;
 
@@ -32,7 +33,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             {
                 //从ERP中得到最新二次采购信息
                 var SupplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierInfo.SupplierId);
-
+                // 获取供应商证书列表
+                var SuppliersQualifiedCertificate = GetSupplierQualifiedCertificateListBy(supplierInfo.SupplierId);
                 QualifiedSupplierInfo.Add(new EligibleSuppliersModel
                 {
                     LastPurchaseDate = SupplierLatestTwoPurchase.FirstOrDefault().PurchaseDate.Trim().ToDate(),
@@ -49,31 +51,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     Remark = supplierInfo.Remark,
                     SupplierShortName = supplierInfo.SupplierShortName,
                     SupplierUser = supplierInfo.SupplierUser,
-                    SupplierTel = supplierInfo.SupplierTel,
-                    EligibleCertificate = SupplierLatestTwoPurchase.FirstOrDefault().PurchaseDate.Trim().ToDate().ToString()
+                    SupplierTel = supplierInfo.SupplierTel
                 });
             });
             return QualifiedSupplierInfo.ToList();
         }
-
-        /// <summary>
-        /// 获取供应商信息表
-        /// </summary>
-        /// <param name="yearMoth">年份格式yyyyMM</param>
-        /// <returns></returns>
-        public  List<SuppliersInfoModel> GetSupplierInformationListBy(string yearMoth)
-        {
-            List<SuppliersInfoModel> SupplierInfoList = new List<SuppliersInfoModel>();
-            //从ERP中得到此年中所有供应商Id号
-            var supplierList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(yearMoth);
-            if (supplierList == null || supplierList.Count <= 0) return null;
-            supplierList.ForEach(supplierId =>
-            {
-                SupplierInfoList.Add(GetSuppplierInfoBy(supplierId));
-            });
-            return SupplierInfoList;
-        }
-        /// <summary>
         /// 获取供应商信息
         /// </summary>
         /// <param name="supplierId"></param>
@@ -90,26 +72,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
-       
-        /// <summary>
-        /// 批量保存供应商信息
-        /// </summary>
-        /// <param name="modelList"></param>
-        /// <returns></returns>
-        public OpResult SaveSupplierInfoList(List<SuppliersInfoModel> modelList)
-        {
-            return SupplierCrudFactory.SuppliersInfoCrud.SavaSupplierInfoList(modelList);
-        }
-        /// <summary>
-        /// 批量保存合格供应商清册
-        /// </summary>
-        /// <param name="modelList"></param>
-        /// <returns></returns>
-        public OpResult SavaQualifiedSupplierInfoList(List<EligibleSuppliersModel> modelList)
-        {
-            return SupplierCrudFactory.EligibleSupplierCrud.SavaEligibleSuppliersList(modelList);
-        }
-
         /// <summary>
         /// 保存编辑的供应商证书信息
         /// </summary>
@@ -118,7 +80,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public OpResult SavaEditSpplierCertificate(List<InPutSupplieCertificateInfoModel> modelList)
         {
             //判断列表是否为空
-            if (modelList == null || modelList.Count <= 0) return new OpResult("数据列表不能为空",true);
+            if (modelList == null || modelList.Count <= 0) return new OpResult("数据列表不能为空");
             var model = modelList[0];
             //通过SupplierId得到供应商信息
             var supplierInfoModel = GetErpSuppplierInfoBy(model.SupplierId);
@@ -166,14 +128,29 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public OpResult DelEditSpplierCertificate(SuppliersQualifiedCertificateModel model, string rootPath)
         {
-            if (model == null || model.FilePath == string.Empty)  return new OpResult("此文档实体路经不能空");
-            if (rootPath == null || rootPath == string.Empty) return new OpResult("此根路经发生错误");
-            var fileDocumentPath = rootPath + model.FilePath.Replace("/", @"\"); 
-            if (fileDocumentPath.DeleteFileDocumentation())
+            try
             {
-                return SupplierCrudFactory.SupplierQualifiedCertificateCrud.DeleteSupplierCertificate(model);
+                OpResult result = OpResult.SetResult("数据操作失败!");
+                if (model == null || model.FilePath == string.Empty) return new  OpResult("此文档实体路经不能空");
+
+                if (rootPath == null || rootPath == string.Empty) return  new OpResult("此根路经发生错误");
+
+                var fileDocumentPath = rootPath + model.FilePath.Replace("/", @"\");
+                if(! fileDocumentPath.ExistFile())
+                     result= new OpResult("此" + fileDocumentPath + "文档不存在或路经不对");
+                else
+                {
+                    if (fileDocumentPath.DeleteFileDocumentation())
+                        result = SupplierCrudFactory.SupplierQualifiedCertificateCrud.DeleteSupplierCertificate(model);
+                }
+               
+                return result;
             }
-            else return new OpResult("此" + fileDocumentPath+"文档不存在或路经不对");
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+
         }
         /// <summary>
         ///获取供应商证书列表
@@ -186,9 +163,38 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         }
 
 
+
+
         #region   internal
+        /// <summary>
+        /// 获取供应商信息表
+        /// </summary>
+        /// <param name="yearMoth">年份格式yyyyMM</param>
+        /// <returns></returns>
+        List<SuppliersInfoModel> GetSupplierInformationListBy(string startYearMonth, string endYearMonth)
+        {
+            List<SuppliersInfoModel> SupplierInfoList = new List<SuppliersInfoModel>();
+            //从ERP中得到此年中所有供应商Id号
+            var supplierList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(startYearMonth, endYearMonth);
 
-
+            if (supplierList == null || supplierList.Count <= 0) return null;
+            supplierList.ForEach(supplierId =>
+            {
+                SupplierInfoList.Add(GetSuppplierInfoBy(supplierId));
+            });
+            return SupplierInfoList;
+        }
+        /// <summary>
+        /// <summary>
+        /// 批量保存供应商信息
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        OpResult SaveSupplierInfoList(List<SuppliersInfoModel> modelList)
+        {
+            return SupplierCrudFactory.SuppliersInfoCrud.SavaSupplierInfoList(modelList);
+        }
+       
         /// <summary>
         /// 更新并保存供应商信息
         /// </summary>
@@ -238,6 +244,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             };
         }
         #endregion
+    }
+
+
+    public class PurSuppliersSeasonAuditManger
+    {
+
     }
 
 }
