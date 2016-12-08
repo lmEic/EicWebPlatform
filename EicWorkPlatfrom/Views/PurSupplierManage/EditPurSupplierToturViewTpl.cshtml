@@ -1,0 +1,94 @@
+﻿<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="min-width:890px;">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4>
+                    <i class="fa fa-bell-o"></i>
+                    {{title}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr class="info"><td>证书列表</td></tr>
+                            </thead>
+                            <tbody cg-busy="{promise:searchPromise}">
+                                <tr ng-repeat="item in vmManager.certificateDatas track by $index">
+                                    <td>
+                                        {{item.CertificateFileName}}
+                                        <span class="btn btn-danger btn-xs pull-right" ng-click="vmManager.removeCertificateFile(item)"><i class="fa fa-remove"></i></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-9">
+                        <form role="form" name="formPurchase" novalidate class="form-horizontal">
+                            <label>类别信息</label>
+                            <span class="label label-primary pull-right">供应商编号：【{{vm.SupplierId}}】</span>
+                            <div class="h-split"></div>
+                            <div class="form-group">
+                                <label for="purchaseType" class="col-md-2 control-label">采购类别</label>
+                                <div class="col-md-4">
+                                    <input name="purchaseType" class="form-control" ng-model="vm.PurchaseType" ng-show="true" required />
+                                    <div class="error-messages" ng-messages="formPurchase.purchaseType.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">采购类别不能为空</small>
+                                    </div>
+                                </div>
+
+                                <label for="supplierProperty" class="col-md-2 control-label">供应商类别</label>
+                                <div class="col-md-4">
+                                    <input name="supplierProperty" class="form-control" ng-model="vm.SupplierProperty" ng-show="true" required />
+                                    <div class="error-messages" ng-messages="formPurchase.supplierProperty.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">供应商类别不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <label>证书信息</label>
+                            <div class="h-split"></div>
+                            <div class="form-group" ng-repeat="fileItem in vmManager.fileList track by $index">
+                                <div class="col-md-3">
+                                    <input type="text" name="eligibleCertificate" class="form-control" ng-model="fileItem.EligibleCertificate" placeholder="输入证书名称" />
+                                    <div class="error-messages" ng-messages="formPurchase.eligibleCertificate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">证书名称不能为空</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="date" name="dateOfCertificate" class="form-control" ng-model="fileItem.DateOfCertificate" placeholder="获取证书日期" />
+                                    <div class="error-messages" ng-messages="formPurchase.dateOfCertificate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">证书日期不能为空</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <label for="drawing">文件名称：</label>
+                                        </div>
+                                        <input type="file" name="file" class="form-control" onchange="angular.element(this).scope().selectFile(this)" ng-click="vmManager.getFile(fileItem)" />
+                                        <div class="input-group-addon" cg-busy="{promise:uploadPromise}">
+                                            <span class="label label-primary" ng-click="vmManager.addFile(fileItem)" ng-show="fileItem.adding">
+                                                <i class="fa fa-plus-square"></i>
+                                            </span>
+                                            <span class="label label-success" ng-show="fileItem.uploadSuccess">
+                                                <i class="fa fa-check-square"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
+                <button type="button" class="btn btn-primary" ng-click="savePurSupplierCertificateDatas(formPurchase.$valid)"><i class="fa fa-save"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>

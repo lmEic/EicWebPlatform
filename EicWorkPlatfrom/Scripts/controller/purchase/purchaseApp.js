@@ -11,12 +11,21 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
     $stateProvider.state('purSupplierInput', {
         templateUrl: supplierUrlPrefix + 'PurSupplierInput'
     })
-
-    $stateProvider.state('buildQualifiedSupplierInventory', {
-        templateUrl: supplierUrlPrefix + 'BuildQualifiedSupplierInventory'
+    //供应商证书管理
+    $stateProvider.state('supplierCertificateManage', {
+        templateUrl: supplierUrlPrefix + 'SupplierCertificateManage'
     })
+    //供应商考核管理
     .state('supplierEvaluationManage', {
         templateUrl: supplierUrlPrefix + 'SupplierEvaluationManage'
+    })
+    //供应商辅导管理
+    .state('supplierToturManage', {
+        templateUrl: supplierUrlPrefix + 'SupplierToturManage'
+    })
+     //供应稽核评分
+    .state('supplierAuditToGrade', {
+        templateUrl: supplierUrlPrefix + 'SupplierAuditToGrade'
     })
 })
 

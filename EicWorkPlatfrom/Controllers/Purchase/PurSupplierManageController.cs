@@ -33,7 +33,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// 建立合格供应商清册
         /// </summary>
         /// <returns></returns>
-        public ActionResult BuildQualifiedSupplierInventory()
+        public ActionResult SupplierCertificateManage()
         {
             return View();
         }
@@ -162,6 +162,29 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             var datas = 0;//待添加
 
             return Json(datas);
+        }
+        #endregion
+
+        #region SupplierToturManage
+        public ActionResult SupplierToturManage()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 编辑供应商辅导信息模板
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ActionResult EditPurSupplierToturViewTpl()
+        {
+            return View();
+        }
+        #endregion
+
+        #region SupplierAuditToGrade
+        public ActionResult SupplierAuditToGrade()
+        {
+            return View();
         }
         #endregion
     }

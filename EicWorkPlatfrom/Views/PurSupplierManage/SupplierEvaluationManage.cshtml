@@ -6,7 +6,7 @@
         <div class="row">
             <div class="pull-left" style="width:40%;">
                 <div cg-busy="{promise:promise}">
-                    <span yl-quarter-button></span>
+                    <span yl-quarter-button data-yearquarter="vmManager.yearQuarter"></span>
                     <button class="btn btn-success" ng-click="vmManager.getProductFlowDatails()">
                         <i class="fa fa-search"></i>载入
                     </button>
@@ -62,14 +62,14 @@
                             <div class="form-group">
                                 <label for="qualityCheck" class="col-md-2 control-label">品质</label>
                                 <div class="col-md-4">
-                                    <input name="qualityCheck" class="form-control" ng-model="vm.QualityCheck" required />
+                                    <input name="qualityCheck" type="number" class="form-control" ng-model="vm.QualityCheck" required />
                                     <div class="error-messages" ng-messages="formAudit.qualityCheck.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">品质不能为空</small>
                                     </div>
                                 </div>
                                 <label for="auditPrice" class="col-md-2 control-label">价格</label>
                                 <div class="col-md-4">
-                                    <input name="auditPrice" class="form-control" ng-model="vm.AuditPrice" required />
+                                    <input name="auditPrice" type="number" class="form-control" ng-model="vm.AuditPrice" required />
                                     <div class="error-messages" ng-messages="formAudit.auditPrice.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">价格不能为空</small>
                                     </div>
@@ -78,14 +78,14 @@
                             <div class="form-group">
                                 <label for="deliveryDate" class="col-md-2 control-label">交期</label>
                                 <div class="col-md-4">
-                                    <input name="deliveryDate" class="form-control" ng-model="vm.DeliveryDate" required />
+                                    <input name="deliveryDate" type="number" class="form-control" ng-model="vm.DeliveryDate" required />
                                     <div class="error-messages" ng-messages="formAudit.deliveryDate.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">交期不能为空</small>
                                     </div>
                                 </div>
                                 <label for="actionLiven" class="col-md-2 control-label">配合度</label>
                                 <div class="col-md-4">
-                                    <input name="actionLiven" class="form-control" ng-model="vm.ActionLiven" required />
+                                    <input name="actionLiven" type="number" class="form-control" ng-model="vm.ActionLiven" required />
                                     <div class="error-messages" ng-messages="formAudit.actionLiven.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">配合度不能为空</small>
                                     </div>
@@ -95,7 +95,7 @@
                             <div class="form-group">
                                 <label for="hSFGrade" class="col-md-2 control-label">HSF能力</label>
                                 <div class="col-md-4">
-                                    <input name="hSFGrade" class="form-control" ng-model="vm.HSFGrade" required />
+                                    <input name="hSFGrade" type="number" class="form-control" ng-model="vm.HSFGrade" required />
                                     <div class="error-messages" ng-messages="formAudit.hSFGrade.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">HSF能力不能为空</small>
                                     </div>
