@@ -17,114 +17,45 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// <summary>
     /// 供应商Curd管理工厂
     /// </summary>
- internal class SupplierCrudFactory
+    internal class SupplierCrudFactory
     {
-       /// <summary>
-       /// 合格供应商清册CRUD
-       /// </summary>
-       public static EligibleSupplierCrud EligibleSupplierCrud
+
+        /// <summary>
+        /// 供应商合格文件CRUD
+        /// </summary>
+        public static SupplierQualifiedCertificateCrud SupplierQualifiedCertificateCrud
         {
-            get { return OBulider.BuildInstance<EligibleSupplierCrud>(); }
-        }     
-       /// <summary>
-       /// 供应商合格文件CRUD
-       /// </summary>
-      public static SupplierQualifiedCertificateCrud SupplierQualifiedCertificateCrud
-      {
-          get { return OBulider.BuildInstance<SupplierQualifiedCertificateCrud>(); }
-      }
-       /// <summary>
-       /// 供应商信息
-       /// </summary>
-       public static SuppliersInfoCrud SuppliersInfoCrud
-      {
-          get { return OBulider.BuildInstance<SuppliersInfoCrud>();}
-      }
-      /// <summary>
-       /// 供应商季度审计考核表
-      /// </summary>
-       public static SuppliersSeasonAuditCrud  SuppliersSeasonAuditCrud
-       {
-           get { return OBulider.BuildInstance<SuppliersSeasonAuditCrud>(); }
-       }
-    }
-
- /// <summary>
- /// 合格供应商清册Curd
- /// </summary>
- public class EligibleSupplierCrud : CrudBase<EligibleSuppliersModel, IEligibleSupplierRepository>
- {
-     public EligibleSupplierCrud()
-         : base(new EligibleSupplierRepository(), "合格供应商录入")
-     { }
-
-     /// 
-     /// </summary>
-     /// <param name="model"></param>
-     /// <returns></returns>
-     protected override void AddCrudOpItems()
-     { 
-
-     }
-     /// <summary>
-     /// / 添加一条合格供应商的记录
-     /// </summary>
-     /// <param name="model"></param>
-     /// <returns></returns>
-     public OpResult SavaEligibleSupplier(EligibleSuppliersModel model)
-     {
-         ///判断产品品号是否存在
-         try
-         {
-             model.OpSign = OpMode.Add;
-             SetFixFieldValue(model);
-             return irep.Insert(model).ToOpResult_Add(OpContext);
-         }
-         catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
-
-     }
-    /// <summary>
-     /// 批量保存供应商的记录
-    /// </summary>
-    /// <param name="modelList"></param>
-    /// <returns></returns>
-    public OpResult SavaEligibleSuppliersList(List<EligibleSuppliersModel> modelList)
-    {
-        try
-        {
-            DateTime date = DateTime.Now.ToDate();
-            SetFixFieldValue(modelList, OpMode.Add, m =>
-            {
-                m.OpDate = date;
-                //需要添加附加答条件
-            });
-
-            if (!modelList.IsNullOrEmpty())
-                return OpResult.SetResult("供应商的列表不能为空！ 保存失败");
-            return irep.Insert(modelList).ToOpResult_Add(OpContext);
+            get { return OBulider.BuildInstance<SupplierQualifiedCertificateCrud>(); }
         }
-        catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        /// <summary>
+        /// 供应商信息
+        /// </summary>
+        public static SuppliersInfoCrud SuppliersInfoCrud
+        {
+            get { return OBulider.BuildInstance<SuppliersInfoCrud>(); }
+        }
+        /// <summary>
+        /// 供应商季度审计考核表
+        /// </summary>
+        public static SuppliersSeasonAuditCrud SuppliersSeasonAuditCrud
+        {
+            get { return OBulider.BuildInstance<SuppliersSeasonAuditCrud>(); }
+        }
+
+        /// <summary>
+        /// 季度审计实地辅导计划/执行
+        /// </summary>
+        public static SuppliersSeasonAuditTutorCrud SuppliersSeasonAuditTutorCrud
+        {
+            get { return OBulider.BuildInstance<SuppliersSeasonAuditTutorCrud>(); }
+        }
     }
-     /// <summary>
-     /// 获取供应商合格的列表
-     /// </summary>
-    /// <param name="supplierId">供应商ID</param>
-     /// <returns></returns>
-     public List<EligibleSuppliersModel> GetEligibleSupplierListBy(string suppliersId)
-     {
-         try
-         {
-             return irep.Entities.Where(m => m.SupplierId == suppliersId).ToList();
-         }
-         catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
-     }
 
-
- }
-  /// <summary>
- /// 供应商合格证书Curd
-  /// </summary>
- public class SupplierQualifiedCertificateCrud:CrudBase <SuppliersQualifiedCertificateModel,ISupplierQualifiedCertificateRepository >
+    
+    /// <summary>
+    /// 供应商合格证书Curd
+    /// </summary>
+    public class SupplierQualifiedCertificateCrud:CrudBase <SuppliersQualifiedCertificateModel,ISupplierQualifiedCertificateRepository >
   {
       public SupplierQualifiedCertificateCrud():base(new SupplierQualifiedCertifcateRepository() ,"供应商合格文件录入")
       {}
@@ -211,8 +142,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
           catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
       }
   }
-
-
     /// <summary>
     /// 供应商信息Curd
     /// </summary>
@@ -324,22 +253,41 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       }
 }
 
-/// <summary>
- /// 供应商季度审查表Curd
-/// </summary>
- public class SuppliersSeasonAuditCrud:CrudBase <SupplieSeasonAuditModel ,ISupplierSeasonAuditRepository>
- {
-     public SuppliersSeasonAuditCrud()
-         : base(new SupplierSeasonAuditRepository(), "供应商季度审计考核表")
-     { }
-     /// </summary>
-     /// <param name="model"></param>
-     /// <returns></returns>
-     protected override void AddCrudOpItems()
-     {
-        
-     }
-     
- }
+
+
+
+    /// <summary>
+    /// 供应商季度审查表Curd
+    /// </summary>
+    public class SuppliersSeasonAuditCrud : CrudBase<SupplierSeasonAuditModel, ISupplierSeasonAuditRepository>
+    {
+        public SuppliersSeasonAuditCrud()
+            : base(new SupplierSeasonAuditRepository(), "供应商季度审计考核表")
+        { }
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        protected override void AddCrudOpItems()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    /// <summary>
+    /// 季度考核实地辅导计划/执行Crud
+    /// </summary>
+
+    public class SuppliersSeasonAuditTutorCrud:CrudBase<SupplierSeasonAuditTutorModel,ISupplierSeasonAuditTutorRepository>
+    {
+        public SuppliersSeasonAuditTutorCrud() : base(new SupplierSeasonAuditTutorRepository(), "季度考核实地辅导计划/执行")
+        { }
+
+        protected override void AddCrudOpItems()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
 
 }

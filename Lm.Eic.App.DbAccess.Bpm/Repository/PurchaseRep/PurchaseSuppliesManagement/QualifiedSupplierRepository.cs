@@ -9,16 +9,7 @@ using System.Text;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement
 {
-  /// <summary>
-  ///合格供应商
-  /// </summary>
-    public interface IEligibleSupplierRepository : IRepository<EligibleSuppliersModel> { }
-  /// <summary>
-  ///合格供应商
-  /// </summary>
-    public class EligibleSupplierRepository : BpmRepositoryBase<EligibleSuppliersModel>, IEligibleSupplierRepository
-    { }
-    /// <summary>
+   /// <summary>
    /// 供应商合格文件
     /// </summary>
   public interface ISupplierQualifiedCertificateRepository : IRepository<SuppliersQualifiedCertificateModel> { }
@@ -35,11 +26,18 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagem
   { }
 
 
-/// <summary>
-  /// 供应商考核表
-/// </summary>
-  public interface ISupplierSeasonAuditRepository : IRepository<SupplieSeasonAuditModel> { }
+    /// <summary>
+    ///  供应商考核表
+    /// </summary>
+    public interface ISupplierSeasonAuditRepository : IRepository<SupplierSeasonAuditModel> { }
+    public class SupplierSeasonAuditRepository:BpmRepositoryBase<SupplierSeasonAuditModel>,ISupplierSeasonAuditRepository
+    { }
 
-  public class SupplierSeasonAuditRepository:BpmRepositoryBase<SupplieSeasonAuditModel>,ISupplierSeasonAuditRepository
+
+    /// <summary>
+    ///   供应商考核实地辅导计划/执行表
+    /// </summary>
+    public interface ISupplierSeasonAuditTutorRepository : IRepository<SupplierSeasonAuditTutorModel> { }
+    public class SupplierSeasonAuditTutorRepository:BpmRepositoryBase <SupplierSeasonAuditTutorModel>, ISupplierSeasonAuditTutorRepository
     { }
 }
