@@ -13,6 +13,9 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.LmProMasterDailyReort
 {
+    /// <summary>
+    /// 制三部日报表
+    /// </summary>
     public class LmProDailyReportCrud : CrudBase<WipProductCompleteInputDataModel, ILmProDailyReportRepository>
     {
         public LmProDailyReportCrud() : base(new LmProDailyReportRepository(), "制三部日报表")
