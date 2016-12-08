@@ -121,7 +121,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <param name="entity"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult DelPurSupplierCertificateFile(SuppliersQualifiedCertificateModel entity)
+        public JsonResult DelPurSupplierCertificateFile(SupplierQualifiedCertificateModel entity)
         {
         
             var rootPath = HttpContext.Request.PhysicalApplicationPath;

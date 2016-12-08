@@ -49,13 +49,21 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             get { return OBulider.BuildInstance<SuppliersSeasonAuditTutorCrud>(); }
         }
+
+        /// <summary>
+        /// 供应商自评复评明细表 
+        /// </summary>
+        public static SupplierGradeInfoCrud SupplierGradeInfoCrud
+        {
+            get { return OBulider.BuildInstance<SupplierGradeInfoCrud>(); }
+        }
     }
 
     
     /// <summary>
     /// 供应商合格证书Curd
     /// </summary>
-    public class SupplierQualifiedCertificateCrud:CrudBase <SuppliersQualifiedCertificateModel,ISupplierQualifiedCertificateRepository >
+    public class SupplierQualifiedCertificateCrud:CrudBase <SupplierQualifiedCertificateModel,ISupplierQualifiedCertificateRepository >
   {
       public SupplierQualifiedCertificateCrud():base(new SupplierQualifiedCertifcateRepository() ,"供应商合格文件录入")
       {}
@@ -73,7 +81,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// </summary>
       /// <param name="model"></param>
       /// <returns></returns>
-      public OpResult SavaSupplierEligible(SuppliersQualifiedCertificateModel model)
+      public OpResult SavaSupplierEligible(SupplierQualifiedCertificateModel model)
       {
           try
           {
@@ -85,7 +93,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
       }
 
-        public OpResult DeleteSupplierCertificate(SuppliersQualifiedCertificateModel model)
+        public OpResult DeleteSupplierCertificate(SupplierQualifiedCertificateModel model)
         {
             try
             {
@@ -98,7 +106,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
      /// </summary>
      /// <param name="modelList"></param>
      /// <returns></returns>
-      public OpResult SavaSupplierEligibleList(List<SuppliersQualifiedCertificateModel> modelList)
+      public OpResult SavaSupplierEligibleList(List<SupplierQualifiedCertificateModel> modelList)
       {
       
           try
@@ -133,7 +141,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
      /// </summary>
      /// <param name="supplierId"></param>
      /// <returns></returns>
-        public List<SuppliersQualifiedCertificateModel> GetQualifiedCertificateListBy(string supplierId)
+        public List<SupplierQualifiedCertificateModel> GetQualifiedCertificateListBy(string supplierId)
       {
           try
           {
@@ -145,7 +153,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// <summary>
     /// 供应商信息Curd
     /// </summary>
-    public class SuppliersInfoCrud : CrudBase<SuppliersInfoModel, ISupplierInfoRepository>
+    public class SuppliersInfoCrud : CrudBase<SupplierInfoModel, ISupplierInfoRepository>
     {
 
         public SuppliersInfoCrud()
@@ -178,7 +186,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// </summary>
       /// <param name="modelList"></param>
       /// <returns></returns>
-      public OpResult SavaSupplierInfoList(List<SuppliersInfoModel> modelList)
+      public OpResult SavaSupplierInfoList(List<SupplierInfoModel> modelList)
       {
           try
           {
@@ -204,7 +212,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// </summary>
       /// <param name="model></param>
       /// <returns></returns>
-      OpResult AddSupplierInfo(SuppliersInfoModel model)
+      OpResult AddSupplierInfo(SupplierInfoModel model)
       {
 
           ///判断产品品号是否存在
@@ -221,7 +229,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
       }
 
-      OpResult EidtSupplierInfo(SuppliersInfoModel model)
+      OpResult EidtSupplierInfo(SupplierInfoModel model)
       {
           if (irep.IsExist(m => m.Id_key  == model.Id_key ))
           {
@@ -233,7 +241,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
       }
 
-      OpResult DeleteSupplierInfo(SuppliersInfoModel model)
+      OpResult DeleteSupplierInfo(SupplierInfoModel model)
       {
           return irep.Delete (model).ToOpResult_Add("删除成功", model.Id_key);
       }
@@ -243,7 +251,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// </summary>
       /// <param name="supplierId">供应商ID</param>
       /// <returns></returns>
-      public SuppliersInfoModel GetSupplierInfoBy(string supplierId)
+      public SupplierInfoModel GetSupplierInfoBy(string supplierId)
       {
           try
           {
@@ -289,5 +297,18 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         }
     }
 
+
+    /// <summary>
+    /// 供应商自评复评明细表 Crud
+    /// </summary>
+    public class SupplierGradeInfoCrud : CrudBase<SupplierGradeInfoModel,ISupplierGradeInfoRepository>
+    {
+        public SupplierGradeInfoCrud() : base(new SupplierGradeInfoRepository(), "供应商自评复评明细表 ")
+        { }
+        protected override void AddCrudOpItems()
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 }
