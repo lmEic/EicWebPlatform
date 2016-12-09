@@ -17,6 +17,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     {
         #region 供应商证书表
         List<EligibleSuppliersModel> QualifiedSupplierInfo = null;
+        
         /// <summary>
         /// 从ERP中获取年份合格供应商清册表
         /// </summary>
@@ -36,10 +37,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             {
                 //从ERP中得到最新二次采购信息
                 var SupplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierInfo.SupplierId);
-                // 获取供应商证书列表
-                var SuppliersQualifiedCertificate = GetSupplierQualifiedCertificateListBy(supplierInfo.SupplierId);
-
-
+                // 获取供应商证书字典
+                var certificateDictionary = CertificateDictionary(supplierInfo.SupplierId);
                 QualifiedSupplierInfo.Add(new EligibleSuppliersModel
                 {
                     LastPurchaseDate = SupplierLatestTwoPurchase[0].PurchaseDate.Trim().ToDate(),
@@ -57,23 +56,24 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     SupplierShortName = supplierInfo.SupplierShortName,
                     SupplierUser = supplierInfo.SupplierUser,
                     SupplierTel = supplierInfo.SupplierTel,
-
-                    EnvironmentalInvestigation ="",
-                    HonestCommitment="",
-                    HSF_Guarantee="",
-                    ISO14001="",
-                    ISO9001="",
-                    NotUseChildLabor="",
-                    PCN_Protocol="",
-                    QualityAssuranceProtocol="",
-                    REACH_Guarantee="",
-                    SupplierBaseDocument="",
-                    SupplierComment="",
-                    SVHC_Guarantee="",
+                    EnvironmentalInvestigation = certificateDictionary["供应商环境调查表"],
+                    HonestCommitment = certificateDictionary["廉洁承诺书"],
+                    HSF_Guarantee= certificateDictionary["HSF保证书"],
+                    ISO14001= certificateDictionary["ISO14001"],
+                    ISO9001= certificateDictionary["ISO9001"],
+                    NotUseChildLabor= certificateDictionary["不使用童工申明"],
+                    PCN_Protocol= certificateDictionary["PCN协议"],
+                    QualityAssuranceProtocol= certificateDictionary["质量保证协议"],
+                    REACH_Guarantee= certificateDictionary["REACH保证书"],
+                    SupplierBaseDocument= certificateDictionary["供应商基本资料表"],
+                    SupplierComment= certificateDictionary["供应商评鉴表"],
+                    SVHC_Guarantee= certificateDictionary["SVHC调查表"],
                 });
             });
             return QualifiedSupplierInfo.ToList();
         }
+
+      
         /// 获取供应商信息
         /// </summary>
         /// <param name="supplierId"></param>
@@ -322,6 +322,41 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 SupplierTel = erpSupplierInfo.Tel,
                 PayCondition = erpSupplierInfo.PayCondition
             };
+        }
+
+        /// <summary>
+        /// 得到所需的证书字典
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        Dictionary<string, string> CertificateDictionary(string supplierId)
+        {
+            Dictionary<string, string> certificateDictionary = new Dictionary<string, string>();
+            certificateDictionary.Add("供应商环境调查表", string.Empty);
+            certificateDictionary.Add("供应商基本资料表", string.Empty);
+            certificateDictionary.Add("供应商评鉴表", string.Empty);
+            certificateDictionary.Add("不使用童工申明", string.Empty);
+            certificateDictionary.Add("PCN协议", string.Empty);
+            certificateDictionary.Add("廉洁承诺书", string.Empty);
+            certificateDictionary.Add("质量保证协议", string.Empty);
+            certificateDictionary.Add("HSF保证书", string.Empty);
+            certificateDictionary.Add("REACH保证书", string.Empty);
+            certificateDictionary.Add("SVHC调查表", string.Empty);
+            certificateDictionary.Add("ISO14001", string.Empty);
+            certificateDictionary.Add("ISO9001", string.Empty);
+
+            var SuppliersQualifiedCertificate = GetSupplierQualifiedCertificateListBy(supplierId);
+            if (SuppliersQualifiedCertificate == null || SuppliersQualifiedCertificate.Count > 0)
+            {
+                SuppliersQualifiedCertificate.ForEach(e =>
+               {
+                   if (certificateDictionary.ContainsKey(e.EligibleCertificate))
+                   {
+                       certificateDictionary[e.EligibleCertificate] = e.DateOfCertificate.ToShortDateString();
+                   }
+               });
+            }
+            return certificateDictionary;
         }
 
         #endregion
