@@ -17,7 +17,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     {
         #region 供应商证书表
         List<EligibleSuppliersModel> QualifiedSupplierInfo = null;
-        
+        //缓存合格供应商清册表
+        Dictionary<string, EligibleSuppliersModel> eligibleSuppliersModelKey = new Dictionary<string, EligibleSuppliersModel>();
+
         /// <summary>
         /// 从ERP中获取年份合格供应商清册表
         /// </summary>
@@ -26,7 +28,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public List<EligibleSuppliersModel> GetQualifiedSupplierList(string endYearMonth)
         {
             QualifiedSupplierInfo = new List<EligibleSuppliersModel>();
-           
+            EligibleSuppliersModel model = null;
             string startYearMonth = (int.Parse(endYearMonth) - 100).ToString  ();
             //获取供应商信息
             var supplierInfoList = GetSupplierInformationListBy(startYearMonth, endYearMonth);
@@ -35,45 +37,22 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
             supplierInfoList.ForEach(supplierInfo =>
             {
-                //从ERP中得到最新二次采购信息
-                var SupplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierInfo.SupplierId);
-                // 获取供应商证书字典
-                var certificateDictionary = CertificateDictionary(supplierInfo.SupplierId);
-                QualifiedSupplierInfo.Add(new EligibleSuppliersModel
+                model = new EligibleSuppliersModel();
+                if (eligibleSuppliersModelKey.ContainsKey(supplierInfo.SupplierId))
                 {
-                    LastPurchaseDate = SupplierLatestTwoPurchase[0].PurchaseDate.Trim().ToDate(),
-                    UpperPurchaseDate = SupplierLatestTwoPurchase[1].PurchaseDate.Trim().ToDate(),
-                    PurchaseUser = SupplierLatestTwoPurchase[0].PurchasePerson,
-                    SupplierId = supplierInfo.SupplierId,
-                    SupplierProperty = supplierInfo.SupplierProperty,
-                    PurchaseType = supplierInfo.PurchaseType,
-                    SupplierEmail = supplierInfo.SupplierEmail,
-                    SupplierAddress = supplierInfo.SupplierAddress,
-                    BillAddress = supplierInfo.BillAddress,
-                    SupplierFaxNo = supplierInfo.SupplierFaxNo,
-                    SupplierName = supplierInfo.SupplierName,
-                    Remark = supplierInfo.Remark,
-                    SupplierShortName = supplierInfo.SupplierShortName,
-                    SupplierUser = supplierInfo.SupplierUser,
-                    SupplierTel = supplierInfo.SupplierTel,
-                    EnvironmentalInvestigation = certificateDictionary["供应商环境调查表"],
-                    HonestCommitment = certificateDictionary["廉洁承诺书"],
-                    HSF_Guarantee= certificateDictionary["HSF保证书"],
-                    ISO14001= certificateDictionary["ISO14001"],
-                    ISO9001= certificateDictionary["ISO9001"],
-                    NotUseChildLabor= certificateDictionary["不使用童工申明"],
-                    PCN_Protocol= certificateDictionary["PCN协议"],
-                    QualityAssuranceProtocol= certificateDictionary["质量保证协议"],
-                    REACH_Guarantee= certificateDictionary["REACH保证书"],
-                    SupplierBaseDocument= certificateDictionary["供应商基本资料表"],
-                    SupplierComment= certificateDictionary["供应商评鉴表"],
-                    SVHC_Guarantee= certificateDictionary["SVHC调查表"],
-                });
+                    model = eligibleSuppliersModelKey[supplierInfo.SupplierId];
+                }
+                else
+                {
+                    model = getEligibleSuppliersModel(supplierInfo);
+                    eligibleSuppliersModelKey.Add(supplierInfo.SupplierId, model);
+                }
+
+                QualifiedSupplierInfo.Add(model);
             });
             return QualifiedSupplierInfo.ToList();
         }
 
-      
         /// 获取供应商信息
         /// </summary>
         /// <param name="supplierId"></param>
@@ -359,8 +338,46 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return certificateDictionary;
         }
 
-        #endregion
 
+        EligibleSuppliersModel getEligibleSuppliersModel(SupplierInfoModel supplierInfo)
+        {
+            //从ERP中得到最新二次采购信息
+            var SupplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierInfo.SupplierId);
+            // 获取供应商证书字典
+            var certificateDictionary = CertificateDictionary(supplierInfo.SupplierId);
+            return new EligibleSuppliersModel
+            {
+                LastPurchaseDate = SupplierLatestTwoPurchase[0].PurchaseDate.Trim().ToDate(),
+                UpperPurchaseDate = SupplierLatestTwoPurchase[1].PurchaseDate.Trim().ToDate(),
+                PurchaseUser = SupplierLatestTwoPurchase[0].PurchasePerson,
+                SupplierId = supplierInfo.SupplierId,
+                SupplierProperty = supplierInfo.SupplierProperty,
+                PurchaseType = supplierInfo.PurchaseType,
+                SupplierEmail = supplierInfo.SupplierEmail,
+                SupplierAddress = supplierInfo.SupplierAddress,
+                BillAddress = supplierInfo.BillAddress,
+                SupplierFaxNo = supplierInfo.SupplierFaxNo,
+                SupplierName = supplierInfo.SupplierName,
+                Remark = supplierInfo.Remark,
+                SupplierShortName = supplierInfo.SupplierShortName,
+                SupplierUser = supplierInfo.SupplierUser,
+                SupplierTel = supplierInfo.SupplierTel,
+                EnvironmentalInvestigation = certificateDictionary["供应商环境调查表"],
+                HonestCommitment = certificateDictionary["廉洁承诺书"],
+                HSF_Guarantee = certificateDictionary["HSF保证书"],
+                ISO14001 = certificateDictionary["ISO14001"],
+                ISO9001 = certificateDictionary["ISO9001"],
+                NotUseChildLabor = certificateDictionary["不使用童工申明"],
+                PCN_Protocol = certificateDictionary["PCN协议"],
+                QualityAssuranceProtocol = certificateDictionary["质量保证协议"],
+                REACH_Guarantee = certificateDictionary["REACH保证书"],
+                SupplierBaseDocument = certificateDictionary["供应商基本资料表"],
+                SupplierComment = certificateDictionary["供应商评鉴表"],
+                SVHC_Guarantee = certificateDictionary["SVHC调查表"],
+            };
+        } 
+
+        #endregion
 
 
         #region 季度考核
