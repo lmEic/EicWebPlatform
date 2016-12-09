@@ -440,6 +440,27 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             return stoHeaders;
         }
 
+        /// <summary>
+        /// 得到进货供应商Id
+        /// </summary>
+        /// <param name="startDate">进货时间</param>
+        /// <param name="endDate">进货时间</param>
+        /// <returns></returns>
+        public List<string> GetStockSupplierId(string  startDate, string  endDate)
+        {
+            List<string> SupplierIdlist = new List<string>();
+            string whereSql = string.Format(" WHERE  (TG001 = '341' OR TG001 = '343') AND (TG003 >= '{0}')AND ( TG003 <= '{1}')", startDate, endDate);
+            var modelList = FindStoHeaderBy(whereSql);
+            if(modelList!=null&& modelList.Count >0)
+            {
+                modelList.ForEach(e =>
+                {
+                    if (!SupplierIdlist.Contains(e.Supplier))
+                    { SupplierIdlist.Add(e.Supplier); };
+                });
+            }
+            return SupplierIdlist;
+        }
         #endregion StockHeader
 
         //-----------------StockBody---------------------------------

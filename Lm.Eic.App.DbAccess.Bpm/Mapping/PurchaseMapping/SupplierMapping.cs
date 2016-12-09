@@ -50,7 +50,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
       {
           this.HasKey(t => t.Id_key);
           this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-          this.ToTable("Pur_SuppliersSeasonAuditTable");
+          this.ToTable("Pur_SuppliersSeasonAuditInfo");
       }
   }
 

@@ -432,14 +432,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _substitutionsupplierid = value; }
             get { return _substitutionsupplierid; }
         }
-        private int _seasonnum;
+        private string  _seasonDatenum;
         /// <summary>
         ///第几季度
         /// </summary>
-        public int SeasonNum
+        public string  SeasonDateNum
         {
-            set { _seasonnum = value; }
-            get { return _seasonnum; }
+            set { _seasonDatenum = value; }
+            get { return _seasonDatenum; }
+        }
+
+        private string _parameterKey;
+        /// <summary>
+        /// 关键字
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterKey = value; }
+            get { return _parameterKey; }
         }
         private string _remark;
         /// <summary>

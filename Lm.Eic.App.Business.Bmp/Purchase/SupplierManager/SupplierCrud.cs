@@ -277,7 +277,30 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         protected override void AddCrudOpItems()
         {
-            throw new NotImplementedException();
+            this.AddOpItem(OpMode.Add, AddSupplierSeasonAuditInfo);
+            this.AddOpItem(OpMode.Edit, EditSupplierSeasonAuditInfo);
+            this.AddOpItem(OpMode.Delete, DelteSupplierSeasonAuditInfo);
+        }
+        public SupplierSeasonAuditModel GetSupplierSeasonAuditInfo(string supplierId, string seasonDateNum)
+        {
+             var  modelList= this.irep.Entities.Where(e => e.SupplierId == supplierId && e.SeasonDateNum == seasonDateNum).ToList();
+            if (modelList == null || modelList.Count() <= 0) return null;
+            return modelList[0];
+        }
+
+         OpResult AddSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
+        {
+            SetFixFieldValue(model);
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+         OpResult DelteSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
+        {
+            return irep.Delete(model).ToOpResult_Add(OpContext);
+        }
+
+        OpResult EditSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
+        {
+            return irep.Update(e => e.Id_key == model.Id_key, model).ToOpResult_Add(OpContext); ;
         }
 
     }
@@ -295,6 +318,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             throw new NotImplementedException();
         }
+
+    
     }
 
 

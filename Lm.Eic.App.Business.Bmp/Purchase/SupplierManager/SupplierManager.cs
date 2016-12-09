@@ -15,18 +15,19 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
     public class PurSupplierManager
     {
+        #region 供应商证书表
         List<EligibleSuppliersModel> QualifiedSupplierInfo = null;
         /// <summary>
         /// 从ERP中获取年份合格供应商清册表
         /// </summary>
         /// <param name="yearMoth">年份格式yyyyMM</param>
         /// <returns></returns>
-        public List<EligibleSuppliersModel> FindQualifiedSupplierList(string endYearMonth)
+        public List<EligibleSuppliersModel> GetQualifiedSupplierList(string endYearMonth)
         {
             QualifiedSupplierInfo = new List<EligibleSuppliersModel>();
            
             string startYearMonth = (int.Parse(endYearMonth) - 100).ToString  ();
-            //获取ERP供应商信息
+            //获取供应商信息
             var supplierInfoList = GetSupplierInformationListBy(startYearMonth, endYearMonth);
 
             if (supplierInfoList == null || supplierInfoList.Count <= 0) return QualifiedSupplierInfo;
@@ -179,10 +180,71 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId);
         }
 
+        #endregion
 
+        #region 季度考核表
+
+        /// <summary>
+        /// 加载ERP厂商季度考核列表
+        /// </summary>
+        /// <param name="seasonDateNum">Year-Season</param>
+        /// <returns></returns>
+        public List<SupplierSeasonAuditModel> GetSeasonSupplierList(string seasonDateNum)
+        {
+            string stardate = string.Empty ;
+            string enddate = string.Empty ;
+            //处理季度数
+            getseasonNum(seasonDateNum, out stardate, out enddate);
+
+            List<SupplierSeasonAuditModel> supplierSeasonAuditModelList = new List<SupplierSeasonAuditModel>();
+            //从ERP中得到季度进货厂商ID
+            var getSeasonSupplierList = PurchaseDbManager.StockDb.GetStockSupplierId(stardate, enddate);
+            if (getSeasonSupplierList == null || getSeasonSupplierList.Count <= 0) return supplierSeasonAuditModelList;
+            getSeasonSupplierList.ForEach(e =>
+            {
+                supplierSeasonAuditModelList.Add(getSupplierSeasonAuditModel(e, seasonDateNum));
+            });
+            return supplierSeasonAuditModelList;
+
+        }
+
+
+        /// <summary>
+        /// 获得厂商季度考核信息
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <param name="seasonDateNum"></param>
+        /// <returns></returns>
+        public SupplierSeasonAuditModel getSupplierSeasonAuditModel(string supplierId, string seasonDateNum)
+        {
+
+            SupplierSeasonAuditModel supplierSeasonAuditInfo = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditInfo(supplierId, seasonDateNum);
+            if (supplierSeasonAuditInfo != null) return supplierSeasonAuditInfo;
+            var supplierInfo = GetSuppplierInfoBy(supplierId);
+            supplierSeasonAuditInfo = new SupplierSeasonAuditModel()
+            {
+                SupplierId = supplierInfo.SupplierId,
+                SupplierName = supplierInfo.SupplierName,
+                SeasonDateNum = seasonDateNum
+            };
+            return supplierSeasonAuditInfo;
+        }
+        public OpResult SaveSupplierSeasonAudit(SupplierSeasonAuditModel model)
+        {
+            if (model.Id_key >= 0)
+              model.OpSign = "edit";
+            else model.OpSign = "add";
+            return SupplierCrudFactory.SuppliersSeasonAuditCrud.Store(model);
+        }
+
+
+
+        #endregion
 
 
         #region   internal
+
+        #region 供应商证书  
         /// <summary>
         /// 获取供应商信息表
         /// </summary>
@@ -262,17 +324,55 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             };
         }
 
-
-
-       
-
         #endregion
+
+
+
+        #region 季度考核
+        /// <summary>
+        /// 处理 年度季度格式 Year-Season
+        /// </summary>
+        /// <param name="seasonDateNum"></param>
+        /// <param name="stardate"></param>
+        /// <param name="enddate"></param>
+        void getseasonNum(string seasonDateNum, out String stardate, out string enddate)
+        {
+            try
+            {
+                string[] yearNum = seasonDateNum.Split('-');
+                int DateNum = int.Parse(yearNum[1]);
+                string year = yearNum[0];
+                switch (DateNum)
+                {
+                    case 1:
+                        stardate = year + "0101";
+                        enddate = year + "0331";
+                        break;
+                    case 2:
+                        stardate = year + "0401";
+                        enddate = year + "0630";
+                        break;
+                    case 3:
+                        stardate = "0701";
+                        enddate = "0931";
+                        break;
+                    case 4:
+                        stardate = year + "1001";
+                        enddate = year + "1231";
+                        break;
+                    default:
+                        stardate = "20160101";
+                        enddate = "20160331";
+                        break;
+                }
+
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+
+        }
+        #endregion
+
     }
 
-
-    public class PurSuppliersSeasonAuditManger
-    {
-
-    }
-
+    #endregion
 }
