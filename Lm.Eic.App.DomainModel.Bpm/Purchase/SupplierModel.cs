@@ -13,7 +13,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     /// 供应商合格证书
     /// SuppliersQualifiedCertificate
     /// </summary>
-    public class SuppliersQualifiedCertificateModel
+    public class SupplierQualifiedCertificateModel
     {
         #region Model
         private string _supplierid;
@@ -131,7 +131,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     /// 供应商信息表
     /// SuppliersInfo
     /// </summary>
-    public class SuppliersInfoModel
+    public class SupplierInfoModel
     {
         #region Model
         private string _supplierid;
@@ -432,14 +432,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _substitutionsupplierid = value; }
             get { return _substitutionsupplierid; }
         }
-        private int _seasonnum;
+        private string  _seasonDatenum;
         /// <summary>
         ///第几季度
         /// </summary>
-        public int SeasonNum
+        public string  SeasonDateNum
         {
-            set { _seasonnum = value; }
-            get { return _seasonnum; }
+            set { _seasonDatenum = value; }
+            get { return _seasonDatenum; }
+        }
+
+        private string _parameterKey;
+        /// <summary>
+        /// 关键字
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterKey = value; }
+            get { return _parameterKey; }
         }
         private string _remark;
         /// <summary>
@@ -743,6 +753,141 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     }
 
 
+
+    /// <summary>
+    /// 供应商自评复评明细表 
+    /// </summary>
+    public class SupplierGradeInfoModel
+    {
+        #region Model
+        private string _supplierid;
+        /// <summary>
+        ///供应商编号
+        /// </summary>
+        public string SupplierId
+        {
+            set { _supplierid = value; }
+            get { return _supplierid; }
+        }
+        private string _suppliername;
+        /// <summary>
+        ///供应商名称
+        /// </summary>
+        public string SupplierName
+        {
+            set { _suppliername = value; }
+            get { return _suppliername; }
+        }
+        private string _supplierproperty;
+        /// <summary>
+        ///供应商类别
+        /// </summary>
+        public string SupplierProperty
+        {
+            set { _supplierproperty = value; }
+            get { return _supplierproperty; }
+        }
+        private string _purchasetype;
+        /// <summary>
+        ///采购类别
+        /// </summary>
+        public string PurchaseType
+        {
+            set { _purchasetype = value; }
+            get { return _purchasetype; }
+        }
+        private string _purchasematerial;
+        /// <summary>
+        ///采购料件
+        /// </summary>
+        public string PurchaseMaterial
+        {
+            set { _purchasematerial = value; }
+            get { return _purchasematerial; }
+        }
+        private string _supgradetype;
+        /// <summary>
+        ///评分类别
+        /// </summary>
+        public string SupGradeType
+        {
+            set { _supgradetype = value; }
+            get { return _supgradetype; }
+        }
+        private double _firstgradescore;
+        /// <summary>
+        ///首评分数
+        /// </summary>
+        public double FirstGradeScore
+        {
+            set { _firstgradescore = value; }
+            get { return _firstgradescore; }
+        }
+        private DateTime _firstgradedate;
+        /// <summary>
+        ///首评日期
+        /// </summary>
+        public DateTime FirstGradeDate
+        {
+            set { _firstgradedate = value; }
+            get { return _firstgradedate; }
+        }
+        private double _secondgradescore;
+        /// <summary>
+        ///复评分数
+        /// </summary>
+        public double SecondGradeScore
+        {
+            set { _secondgradescore = value; }
+            get { return _secondgradescore; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标志
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
     #endregion
 
 

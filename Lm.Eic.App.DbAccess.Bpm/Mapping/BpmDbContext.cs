@@ -59,14 +59,16 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         #region  供应商管理
 
         //供应商信息
-        public DbSet<SuppliersInfoModel> SupplierInfo { set; get; }
+        public DbSet<SupplierInfoModel> SupplierInfo { set; get; }
         //供应商证书信息
-        public DbSet<SuppliersQualifiedCertificateModel> SupplierEligible { set; get; }
+        public DbSet<SupplierQualifiedCertificateModel> SupplierEligible { set; get; }
      
         //季度考核总览表
         public DbSet<SupplierSeasonAuditModel> SupplieSeasonAudit { set; get; }
         //季度考核 实地辅导计划/执行表
         public DbSet<SupplierSeasonAuditTutorModel> SupplierSeasonAuditTutor { set; get; }
+        //供应商自评复评明细表 
+        public DbSet<SupplierGradeInfoModel> SupplierGradeInfo { set; get; }
 
         #endregion
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -108,13 +110,15 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
             #region  供应商管理
             //供应商信息
-            modelBuilder.Configurations.Add(new SuppliersInfoMapping());
+            modelBuilder.Configurations.Add(new SupplierInfoMapping());
             //供应商证书信息
-            modelBuilder.Configurations.Add(new SuppliersQualifiedCertificateMapping());
+            modelBuilder.Configurations.Add(new SupplierQualifiedCertificateMapping());
             //季度考核总览表
-            modelBuilder.Configurations.Add(new SuppliersSeasonAuditMapping());
+            modelBuilder.Configurations.Add(new SupplierSeasonAuditMapping());
             //季度考核 实地辅导计划/执行表
-            modelBuilder.Configurations.Add(new SuppliersSeasonAuditTutorMapping());
+            modelBuilder.Configurations.Add(new SupplierSeasonAuditTutorMapping());
+            //供应商自评复评明细表 
+            modelBuilder.Configurations.Add(new SupplierGradeInfoMapping());
             #endregion
         }
     }

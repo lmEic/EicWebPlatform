@@ -45,7 +45,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public ContentResult GetPurQualifiedSupplierListBy(string yearStr)
         {
-            var datas = PurchaseService.PurSupplierManager.FindQualifiedSupplierList(yearStr);
+            var datas = PurchaseService.PurSupplierManager.GetQualifiedSupplierList(yearStr);
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -121,7 +121,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <param name="entity"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult DelPurSupplierCertificateFile(SuppliersQualifiedCertificateModel entity)
+        public JsonResult DelPurSupplierCertificateFile(SupplierQualifiedCertificateModel entity)
         {
         
             var rootPath = HttpContext.Request.PhysicalApplicationPath;
@@ -147,7 +147,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult GetAuditSupplierList(string season)
         {
-            var datas = 0;//待添加
+            var datas = PurchaseService.PurSupplierManager.GetSeasonSupplierList(season);
 
             return Json(datas);
         }
@@ -159,7 +159,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult SaveAuditSupplierInfo(SupplierSeasonAuditModel entity)
         {
-            var datas = 0;//待添加
+            var datas = PurchaseService.PurSupplierManager.SaveSupplierSeasonAudit(entity);
 
             return Json(datas);
         }
