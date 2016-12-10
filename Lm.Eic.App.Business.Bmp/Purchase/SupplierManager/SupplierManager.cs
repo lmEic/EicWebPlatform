@@ -395,9 +395,14 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
-                string[] yearNum = seasonDateNum.Split('-');
-                int DateNum = int.Parse(yearNum[1]);
-                string year = yearNum[0];
+                if (seasonDateNum == string.Empty || seasonDateNum.Length < 6)
+                {
+                    stardate = string.Empty;
+                    enddate = string.Empty;
+                    return;
+                }
+                string year= seasonDateNum.Substring(0,4);
+                int DateNum = int.Parse(seasonDateNum.Substring(4, 2));
                 switch (DateNum)
                 {
                     case 1:
@@ -409,16 +414,16 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                         enddate = year + "0630";
                         break;
                     case 3:
-                        stardate = "0701";
-                        enddate = "0931";
+                        stardate = year + "0701";
+                        enddate = year + "0931";
                         break;
                     case 4:
                         stardate = year + "1001";
                         enddate = year + "1231";
                         break;
                     default:
-                        stardate = "20160101";
-                        enddate = "20160331";
+                        stardate = string.Empty;
+                        enddate = string.Empty;
                         break;
                 }
 
