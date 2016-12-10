@@ -161,6 +161,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         #endregion
 
+       
+        
         #region 季度考核表
 
         /// <summary>
@@ -221,6 +223,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         #endregion
 
 
+      
+        
         #region   internal
 
         #region 供应商证书  
