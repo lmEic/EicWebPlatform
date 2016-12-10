@@ -30,7 +30,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
 
         #region PurQualifiedSupplier
         /// <summary>
-        /// 建立合格供应商清册
+        /// 供应商证书管理
         /// </summary>
         /// <returns></returns>
         public ActionResult SupplierCertificateManage()
@@ -43,9 +43,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <param name="yearStr">年份</param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetPurQualifiedSupplierListBy(string yearStr)
+        public ContentResult GetPurQualifiedSupplierListBy(string yearMonth)
         {
-            var datas = PurchaseService.PurSupplierManager.GetQualifiedSupplierList(yearStr);
+            var datas = PurchaseService.PurSupplierManager.GetQualifiedSupplierList(yearMonth);
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -145,9 +145,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <param name="season"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetAuditSupplierList(string season)
+        public JsonResult GetAuditSupplierList(string yearSeason)
         {
-            var datas = PurchaseService.PurSupplierManager.GetSeasonSupplierList(season);
+            var datas = PurchaseService.PurSupplierManager.GetSeasonSupplierList(yearSeason);
 
             return Json(datas);
         }

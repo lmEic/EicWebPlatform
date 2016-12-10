@@ -29,7 +29,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             QualifiedSupplierInfo = new List<EligibleSuppliersModel>();
             EligibleSuppliersModel model = null;
-            string startYearMonth = (int.Parse(endYearMonth) - 100).ToString  ();
+            string startYearMonth = (int.Parse(endYearMonth)-100).ToString();
             //获取供应商信息
             var supplierInfoList = GetSupplierInformationListBy(startYearMonth, endYearMonth);
 
