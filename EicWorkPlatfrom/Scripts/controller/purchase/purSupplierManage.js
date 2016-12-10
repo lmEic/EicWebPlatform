@@ -17,11 +17,11 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
         });
     };
     //根据年份获取合格供应商清单
-    purDb.getPurQualifiedSupplierListBy = function (yearStr)
+    purDb.getPurQualifiedSupplierListBy = function (yearMonth)
     {
         var url = purUrlPrefix + 'GetPurQualifiedSupplierListBy';
         return ajaxService.getData(url, {
-            yearStr: yearStr,
+            yearMonth: yearMonth,
         });
     };
     ///上传供应商证书文件
@@ -56,7 +56,7 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     purDb.getAuditSupplierList = function (season) {
         var url = purUrlPrefix + 'GetAuditSupplierList';
         return ajaxService.getData(url, {
-            season: season,
+            yearSeason: season,
         });
     };
     //保存考核供应商信息
@@ -117,7 +117,7 @@ purchaseModule.controller('purSupplierInputCtrl', function ($scope, supplierData
     $scope.vmManager = vmManager;
 });
 
-//生成合格供应商清单
+//供应商证书管理
 purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService,$modal) {
 
     var item = {
