@@ -433,8 +433,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         }
         #endregion
-
     }
-
     #endregion
 }
