@@ -388,13 +388,14 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <summary>
         /// 处理 年度季度格式 Year-Season
         /// </summary>
-        /// <param name="seasonDateNum"></param>
+        /// <param name="seasonDateNum">格式yyyyMM</param>
         /// <param name="stardate"></param>
         /// <param name="enddate"></param>
         void getseasonNum(string seasonDateNum, out String stardate, out string enddate)
         {
             try
             {
+                //
                 if (seasonDateNum == string.Empty || seasonDateNum.Length < 6)
                 {
                     stardate = string.Empty;
