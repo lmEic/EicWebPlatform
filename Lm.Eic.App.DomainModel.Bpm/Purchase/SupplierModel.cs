@@ -324,14 +324,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _supplierid = value; }
             get { return _supplierid; }
         }
-        private string _suppliername;
+        private string _supplierShortName;
+        /// <summary>
+        ///供应商名称
+        /// </summary>
+        public string SupplierShortName
+        {
+            set { _supplierShortName = value; }
+            get { return _supplierShortName; }
+        }
+        private string _supplierName;
         /// <summary>
         ///供应商名称
         /// </summary>
         public string SupplierName
         {
-            set { _suppliername = value; }
-            get { return _suppliername; }
+            set { _supplierName = value; }
+            get { return _supplierName; }
         }
         private double _qualitycheck;
         /// <summary>

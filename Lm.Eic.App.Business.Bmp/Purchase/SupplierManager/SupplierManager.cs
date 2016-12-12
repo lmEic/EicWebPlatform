@@ -205,6 +205,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             supplierSeasonAuditInfo = new SupplierSeasonAuditModel()
             {
                 SupplierId = supplierInfo.SupplierId,
+                SupplierShortName = supplierInfo.SupplierShortName,
                 SupplierName = supplierInfo.SupplierName,
                 SeasonDateNum = seasonDateNum
             };
