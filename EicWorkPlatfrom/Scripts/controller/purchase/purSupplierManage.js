@@ -301,6 +301,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
     var item = {
         SupplierId: 'D10069',
         SupplierShortName: '双溪橡胶',
+        SupplierName: '双溪橡胶有限公司',
         QualityCheck: null,
         AuditPrice: null,
         DeliveryDate: null,
@@ -324,7 +325,8 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
 
     ///供应商考核视图模型
    var uiVM=$scope.vm = {
-        SupplierId: null,
+       SupplierId: null,
+        SupplierShortName:null,
         SupplierName: null,
         QualityCheck: null,
         AuditPrice: null,

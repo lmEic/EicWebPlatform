@@ -148,7 +148,6 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public JsonResult GetAuditSupplierList(string yearSeason)
         {
             var datas = PurchaseService.PurSupplierManager.GetSeasonSupplierList(yearSeason);
-
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
