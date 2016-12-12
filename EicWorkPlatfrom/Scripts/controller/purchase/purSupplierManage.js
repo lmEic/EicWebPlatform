@@ -342,25 +342,39 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         OpPserson: null,
         OpDate: null,
         Optime: null,
-        OpSign: null,
+        OpSign: 'add',
         Id_key: null,
     }
    
    var initVm = _.clone(uiVM);
 
+    //操作部分
+    var operate = $scope.operate = leeDataHandler.dataOperate;
+    //数据操作
+    var crud = leeDataHandler.dataOperate;
 
-    var vmManager = {
-        activeTab: 'initTab',
-    };
-    $scope.vmManager = vmManager;
-    var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    operate.saveAll = function (isValid) { };
-    operate.refresh = function () { };
+    operate.save = function (isValid) {
+        crud.add(operate, isValid, function () {
+            $scope.promise = supplierDataOpService.saveAuditSupplierInfo($scope.vm).then(function (opResult) {
+                crud.handleSuccessResult(operate, opResult, function () {
+                    vmManager.init();
+                });
+            })
+        })
+    };
+    operate.refresh = function () {
+        crud.refresh(operate, function () {
+            vmManager.init();
+        })
+    };
 
 
     //视图管理器
     var vmManager = $scope.vmManager = {
+        init: function () {
+            $scope.vm = uiVM = _.clone(initVm);
+        },
         editDatas: [item],
         yearQuarter:'',
         //获取要考核的供应商数据列表
@@ -377,7 +391,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         },
     };
 
-    var operate = $scope.operate = leeDataHandler.dataOperate;
+   
 });
 //供应商辅导管理
 purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierDataOpService, $modal) {

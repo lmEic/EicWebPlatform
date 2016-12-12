@@ -149,7 +149,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             var datas = PurchaseService.PurSupplierManager.GetSeasonSupplierList(yearSeason);
 
-            return Json(datas);
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 保存供应商季度考核数据

@@ -46,7 +46,7 @@ var leeDataHandler = (function () {
             (function () {
                 setTimeout(function () {
                     opstatus.msgDisplay = false;
-                }, 100);
+                }, 2000);
             })();
             if (customFn !== undefined)
                 customFn();
@@ -76,7 +76,7 @@ var leeDataHandler = (function () {
             {
                 cancelfn();
             }
-        }
+        },
     };
 
    
