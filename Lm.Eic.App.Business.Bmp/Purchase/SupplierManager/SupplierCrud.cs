@@ -281,16 +281,16 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             this.AddOpItem(OpMode.Edit, EditSupplierSeasonAuditInfo);
             this.AddOpItem(OpMode.Delete, DelteSupplierSeasonAuditInfo);
         }
-        public SupplierSeasonAuditModel GetSupplierSeasonAuditInfo(string supplierId, string seasonDateNum)
+        public SupplierSeasonAuditModel GetSupplierSeasonAuditInfo(string parameterKey)
         {
-             var  modelList= this.irep.Entities.Where(e => e.SupplierId == supplierId && e.SeasonDateNum == seasonDateNum).ToList();
-            if (modelList == null || modelList.Count() <= 0) return null;
+            var modelList = this.irep.Entities.Where(e => e.ParameterKey == parameterKey).ToList();
+            if (modelList == null || modelList.Count == 0) return null;
             return modelList[0];
         }
 
          OpResult AddSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
         {
-            SetFixFieldValue(model);
+            model.ParameterKey = model.SupplierId.Trim () + "&&" + model.SeasonDateNum;
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
          OpResult DelteSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
@@ -300,9 +300,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         OpResult EditSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
         {
-            return irep.Update(e => e.Id_key == model.Id_key, model).ToOpResult_Add(OpContext); ;
+            return irep.Update(e => e.ParameterKey  == model.ParameterKey , model).ToOpResult_Add(OpContext); ;
         }
 
+        public bool IsExist(string parameterKey)
+        {
+            return irep.IsExist(e => e.ParameterKey == parameterKey);
+        }
     }
 
     /// <summary>

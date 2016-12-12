@@ -487,23 +487,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _opdate = value; }
             get { return _opdate; }
         }
-        private DateTime _optime;
+        private DateTime _opTime;
         /// <summary>
         ///操作时间
         /// </summary>
-        public DateTime Optime
+        public DateTime OpTime
         {
-            set { _optime = value; }
-            get { return _optime; }
+            set { _opTime = value; }
+            get { return _opTime; }
         }
-        private string _opsign;
+        private string _opSign;
         /// <summary>
         ///操作标识
         /// </summary>
         public string OpSign
         {
-            set { _opsign = value; }
-            get { return _opsign; }
+            set { _opSign = value; }
+            get { return _opSign; }
         }
         private decimal _id_key;
         /// <summary>

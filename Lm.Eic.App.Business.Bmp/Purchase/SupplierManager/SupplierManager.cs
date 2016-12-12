@@ -10,7 +10,7 @@ using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
-
+using Lm.Eic.Uti.Common.YleeExtension.Validation;
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
     public class PurSupplierManager
@@ -172,11 +172,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public List<SupplierSeasonAuditModel> GetSeasonSupplierList(string seasonDateNum)
         {
-            string stardate = string.Empty ;
-            string enddate = string.Empty ;
+            string stardate = string.Empty, enddate = string.Empty;
             //处理季度数
-            getseasonNum(seasonDateNum, out stardate, out enddate);
-
+            seasonDateNum.SeasonNumConvertStartDateAndEndDate(out stardate, out enddate);
             List<SupplierSeasonAuditModel> supplierSeasonAuditModelList = new List<SupplierSeasonAuditModel>();
             //从ERP中得到季度进货厂商ID
             var getSeasonSupplierList = PurchaseDbManager.StockDb.GetStockSupplierId(stardate, enddate);
@@ -199,7 +197,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public SupplierSeasonAuditModel getSupplierSeasonAuditModel(string supplierId, string seasonDateNum)
         {
 
-            SupplierSeasonAuditModel supplierSeasonAuditInfo = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditInfo(supplierId, seasonDateNum);
+            SupplierSeasonAuditModel supplierSeasonAuditInfo = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditInfo(supplierId.Trim ()+"&&"+seasonDateNum);
             if (supplierSeasonAuditInfo != null) return supplierSeasonAuditInfo;
             var supplierInfo = GetSuppplierInfoBy(supplierId);
             supplierSeasonAuditInfo = new SupplierSeasonAuditModel()
@@ -211,9 +209,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             };
             return supplierSeasonAuditInfo;
         }
-        public OpResult SaveSupplierSeasonAudit(SupplierSeasonAuditModel model)
+        public OpResult SaveAuditSupplierInfo(SupplierSeasonAuditModel model)
         {
-            if (model.Id_key >= 0)
+            if (SupplierCrudFactory.SuppliersSeasonAuditCrud.IsExist(model.ParameterKey))
               model.OpSign = "edit";
             else model.OpSign = "add";
             return SupplierCrudFactory.SuppliersSeasonAuditCrud.Store(model);
@@ -383,57 +381,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         } 
 
         #endregion
-
-
-        #region 季度考核
-        /// <summary>
-        /// 处理 年度季度格式 Year-Season
-        /// </summary>
-        /// <param name="seasonDateNum">格式yyyyMM</param>
-        /// <param name="stardate"></param>
-        /// <param name="enddate"></param>
-        void getseasonNum(string seasonDateNum, out String stardate, out string enddate)
-        {
-            try
-            {
-                //
-                if (seasonDateNum == string.Empty || seasonDateNum.Length < 6)
-                {
-                    stardate = string.Empty;
-                    enddate = string.Empty;
-                    return;
-                }
-                string year= seasonDateNum.Substring(0,4);
-                int DateNum = int.Parse(seasonDateNum.Substring(4, 2));
-                switch (DateNum)
-                {
-                    case 1:
-                        stardate = year + "0101";
-                        enddate = year + "0331";
-                        break;
-                    case 2:
-                        stardate = year + "0401";
-                        enddate = year + "0630";
-                        break;
-                    case 3:
-                        stardate = year + "0701";
-                        enddate = year + "0931";
-                        break;
-                    case 4:
-                        stardate = year + "1001";
-                        enddate = year + "1231";
-                        break;
-                    default:
-                        stardate = string.Empty;
-                        enddate = string.Empty;
-                        break;
-                }
-
-            }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
-
-        }
-        #endregion
+       
     }
     #endregion
 }
