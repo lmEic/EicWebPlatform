@@ -148,7 +148,6 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public JsonResult GetAuditSupplierList(string yearSeason)
         {
             var datas = PurchaseService.PurSupplierManager.GetSeasonSupplierList(yearSeason);
-
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -170,6 +169,15 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             return View();
         }
+
+        [NoAuthenCheck]
+        public ActionResult GetWaittingTourSupplier(string yearQuarter)
+        {
+            var datas = 0;
+
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+
         /// <summary>
         /// 编辑供应商辅导信息模板
         /// </summary>

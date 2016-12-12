@@ -65,7 +65,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
 
             scope.selectQuarter = function (q) {
                 scope.currentQuarter = q;
-                scope.yearmonth = getCurrentQuarter();
+                scope.yearquarter = getCurrentQuarter();
             };
 
             scope.upYear = function () {

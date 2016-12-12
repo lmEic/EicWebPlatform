@@ -67,6 +67,15 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
         });
     };
 
+    //-------------------------供应商辅导管理-------------------------------------
+    //获取要辅导的供应商数据
+    purDb.getWaittingTourSupplier = function (yearQuarter) {
+        var url = purUrlPrefix + 'GetWaittingTourSupplier';
+        return ajaxService.getData(url, {
+            yearQuarter: yearQuarter,
+        });
+    };
+
     return purDb;
 });
 
@@ -349,7 +358,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
    var initVm = _.clone(uiVM);
 
     //操作部分
-    var operate = $scope.operate = leeDataHandler.dataOperate;
+    var operate = $scope.operate =Object.create(leeDataHandler.dataOperate);
     //数据操作
     var crud = leeDataHandler.dataOperate;
 
@@ -446,23 +455,13 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
     var initVm = _.clone(uiVM);
 
 
-    var vmManager = {
-        activeTab: 'initTab',
-    };
-    $scope.vmManager = vmManager;
-    var operate = Object.create(leeDataHandler.operateStatus);
-    $scope.operate = operate;
-    operate.saveAll = function (isValid) { };
-    operate.refresh = function () { };
-
-
     //视图管理器
     var vmManager = $scope.vmManager = {
         editDatas: [item],
         yearQuarter: '',
         //获取要考核的供应商数据列表
-        getAuditSupplierDatas: function () {
-            $scope.promise = supplierDataOpService.getAuditSupplierList(vmManager.yearQuarter).then(function (datas) {
+        getWaittingTourSupplier: function () {
+            $scope.searchPromise = supplierDataOpService.getWaittingTourSupplier(vmManager.yearQuarter).then(function (datas) {
                 vmManager.editDatas = datas;
             });
         },
@@ -474,7 +473,13 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         },
     };
 
-    var operate = $scope.operate = leeDataHandler.dataOperate;
+
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveAll = function (isValid) { };
+    operate.refresh = function () { };
+
+
 });
 //供应商稽核评分
 purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplierDataOpService, $modal) {
