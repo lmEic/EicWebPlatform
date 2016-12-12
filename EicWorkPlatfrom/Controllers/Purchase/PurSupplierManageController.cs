@@ -156,9 +156,10 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <param name="entity"></param>
         /// <returns></returns>
         [NoAuthenCheck]
+        ///SaveAuditSupplierInfo
         public JsonResult SaveAuditSupplierInfo(SupplierSeasonAuditModel entity)
         {
-            var datas = PurchaseService.PurSupplierManager.SaveSupplierSeasonAudit(entity);
+            var datas = PurchaseService.PurSupplierManager.SaveAuditSupplierInfo(entity);
 
             return Json(datas);
         }

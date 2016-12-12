@@ -324,14 +324,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _supplierid = value; }
             get { return _supplierid; }
         }
-        private string _suppliername;
+        private string _supplierShortName;
+        /// <summary>
+        ///供应商名称
+        /// </summary>
+        public string SupplierShortName
+        {
+            set { _supplierShortName = value; }
+            get { return _supplierShortName; }
+        }
+        private string _supplierName;
         /// <summary>
         ///供应商名称
         /// </summary>
         public string SupplierName
         {
-            set { _suppliername = value; }
-            get { return _suppliername; }
+            set { _supplierName = value; }
+            get { return _supplierName; }
         }
         private double _qualitycheck;
         /// <summary>
@@ -478,23 +487,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _opdate = value; }
             get { return _opdate; }
         }
-        private DateTime _optime;
+        private DateTime _opTime;
         /// <summary>
         ///操作时间
         /// </summary>
-        public DateTime Optime
+        public DateTime OpTime
         {
-            set { _optime = value; }
-            get { return _optime; }
+            set { _opTime = value; }
+            get { return _opTime; }
         }
-        private string _opsign;
+        private string _opSign;
         /// <summary>
         ///操作标识
         /// </summary>
         public string OpSign
         {
-            set { _opsign = value; }
-            get { return _opsign; }
+            set { _opSign = value; }
+            get { return _opSign; }
         }
         private decimal _id_key;
         /// <summary>
