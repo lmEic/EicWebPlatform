@@ -188,6 +188,17 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             return View();
         }
+        /// <summary>
+        /// 保存供应商辅导信息
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SavePurSupTourInfo(SupplierSeasonAuditTutorModel entity)
+        {
+            var opResult = 1;
+            return Json(opResult);
+        }
         #endregion
 
         #region SupplierAuditToGrade

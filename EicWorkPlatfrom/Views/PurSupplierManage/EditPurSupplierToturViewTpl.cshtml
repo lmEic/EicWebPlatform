@@ -1,6 +1,6 @@
 ﻿<div class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
-        <div class="modal-content" style="min-width:890px;">
+        <div class="modal-content" style="min-width:690px;">
             <div class="modal-header" ng-show="title">
                 <button type="button" class="close" ng-click="$hide()">&times;</button>
                 <h4>
@@ -9,85 +9,66 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-3">
-                        <table class="table table-bordered table-condensed">
-                            <thead>
-                                <tr class="info"><td>证书列表</td></tr>
-                            </thead>
-                            <tbody cg-busy="{promise:searchPromise}">
-                                <tr ng-repeat="item in vmManager.certificateDatas track by $index">
-                                    <td>
-                                        {{item.CertificateFileName}}
-                                        <span class="btn btn-danger btn-xs pull-right" ng-click="vmManager.removeCertificateFile(item)"><i class="fa fa-remove"></i></span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-9">
-                        <form role="form" name="formPurchase" novalidate class="form-horizontal">
-                            <label>类别信息</label>
-                            <span class="label label-primary pull-right">供应商编号：【{{vm.SupplierId}}】</span>
-                            <div class="h-split"></div>
-                            <div class="form-group">
-                                <label for="purchaseType" class="col-md-2 control-label">采购类别</label>
-                                <div class="col-md-4">
-                                    <input name="purchaseType" class="form-control" ng-model="vm.PurchaseType" ng-show="true" required />
-                                    <div class="error-messages" ng-messages="formPurchase.purchaseType.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">采购类别不能为空</small>
-                                    </div>
-                                </div>
-
-                                <label for="supplierProperty" class="col-md-2 control-label">供应商类别</label>
-                                <div class="col-md-4">
-                                    <input name="supplierProperty" class="form-control" ng-model="vm.SupplierProperty" ng-show="true" required />
-                                    <div class="error-messages" ng-messages="formPurchase.supplierProperty.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">供应商类别不能为空</small>
-                                    </div>
+                <form role="form" name="formSupTour" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="planToturDate" class="col-md-3 control-label">计划辅导日期</label>
+                            <div class="col-md-4">
+                                <input name="planToturDate" type="date" class="form-control" ng-model="vm.PlanToturDate" format-date />
+                                @*<div class="error-messages" ng-messages="formSupTour.planToturDate.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">计划辅导日期不能为空</small>
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="planToturContent" class="col-md-3 control-label">计划辅导内容</label>
+                            <div class="col-md-9">
+                                <textarea name="planToturContent" rows="2" class="form-control" ng-model="vm.PlanToturContent" required />
+                                <div class="error-messages" ng-messages="formSupTour.planToturContent.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">计划辅导内容不能为空</small>
                                 </div>
                             </div>
-                            <label>证书信息</label>
-                            <div class="h-split"></div>
-                            <div class="form-group" ng-repeat="fileItem in vmManager.fileList track by $index">
-                                <div class="col-md-3">
-                                    <input type="text" name="eligibleCertificate" class="form-control" ng-model="fileItem.EligibleCertificate" placeholder="输入证书名称" />
-                                    <div class="error-messages" ng-messages="formPurchase.eligibleCertificate.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">证书名称不能为空</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="date" name="dateOfCertificate" class="form-control" ng-model="fileItem.DateOfCertificate" placeholder="获取证书日期" />
-                                    <div class="error-messages" ng-messages="formPurchase.dateOfCertificate.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">证书日期不能为空</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <label for="drawing">文件名称：</label>
-                                        </div>
-                                        <input type="file" name="file" class="form-control" onchange="angular.element(this).scope().selectFile(this)" ng-click="vmManager.getFile(fileItem)" />
-                                        <div class="input-group-addon" cg-busy="{promise:uploadPromise}">
-                                            <span class="label label-primary" ng-click="vmManager.addFile(fileItem)" ng-show="fileItem.adding">
-                                                <i class="fa fa-plus-square"></i>
-                                            </span>
-                                            <span class="label label-success" ng-show="fileItem.uploadSuccess">
-                                                <i class="fa fa-check-square"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-
+                        </div>
+                        <div class="form-group" ng-if="vm.PlanToturContent">
+                            <label for="actionToturDate" class="col-md-3 control-label">实际辅导日期</label>
+                            <div class="col-md-4">
+                                <input name="actionToturDate" type="date" class="form-control" format-date ng-model="vm.ActionToturDate"/>
+                                @*<div class="error-messages" ng-messages="formSupTour.actionToturDate.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">实际辅导日期不能为空</small>
+                                </div>*@
                             </div>
-                        </form>
-                    </div>
-                </div>
+                        </div>
+                        <div class="form-group" ng-if="vm.PlanToturContent">
+                            <label for="actionToturContent" class="col-md-3 control-label">实际辅导内容</label>
+                            <div class="col-md-9">
+                                <textarea name="actionToturContent" rows="2" class="form-control" ng-model="vm.ActionToturContent"/>
+                                @*<div class="error-messages" ng-messages="formSupTour.actionToturContent.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">实际辅导内容不能为空</small>
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="vm.PlanToturContent">
+                            <label for="toturResult" class="col-md-3 control-label">辅导结果</label>
+                            <div class="col-md-9">
+                                <textarea name="toturResult" rows="2" class="form-control" ng-model="vm.ToturResult"/>
+                                @*<div class="error-messages" ng-messages="formSupTour.toturResult.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">辅导结果不能为空</small>
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="remark" class="col-md-3 control-label">备注</label>
+                            <div class="col-md-9">
+                                <textarea name="remark" rows="2" class="form-control" ng-model="vm.Remark" required />
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
-                <button type="button" class="btn btn-primary" ng-click="savePurSupplierCertificateDatas(formPurchase.$valid)"><i class="fa fa-save"></i>确定</button>
+                <button type="button" class="btn btn-primary" ng-click="operate.savePurSupplierCertificateDatas(formSupTour.$valid)"><i class="fa fa-save"></i>确定</button>
             </div>
         </div>
     </div>

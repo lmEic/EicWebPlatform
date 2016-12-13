@@ -161,10 +161,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         #endregion
 
-       
-        
         #region 季度考核表
-
         /// <summary>
         /// 加载ERP厂商季度考核列表
         /// </summary>
@@ -186,7 +183,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return supplierSeasonAuditModelList;
 
         }
-
 
         /// <summary>
         /// 获得厂商季度考核信息
@@ -212,18 +208,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public OpResult SaveAuditSupplierInfo(SupplierSeasonAuditModel model)
         {
             if (SupplierCrudFactory.SuppliersSeasonAuditCrud.IsExist(model.ParameterKey))
-              model.OpSign = "edit";
+                model.OpSign = "edit";
             else model.OpSign = "add";
             return SupplierCrudFactory.SuppliersSeasonAuditCrud.Store(model);
         }
-
-
-
         #endregion
 
 
-      
-        
         #region   internal
 
         #region 供应商证书  

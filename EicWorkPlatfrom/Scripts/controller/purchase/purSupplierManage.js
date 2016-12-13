@@ -75,55 +75,14 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
             yearQuarter: yearQuarter,
         });
     };
-
-    return purDb;
-});
-
-//供应商信息录入
-purchaseModule.controller('purSupplierInputCtrl', function ($scope, supplierDataOpService, $state) {
-
-    var uiVM = {
-        SupplierId:null,
-        PurchaseType:null,
-        SupplierProperty:null,
-        SupplierShortName:null,
-        SupplierName:null,
-        PurchaseUser:null,
-        SupplierTel:null,
-        SupplierUser:null,
-        SupplierFaxNo:null,
-        SupplierEmail:null,
-        SupplierAddress:null,
-        BillAddress:null,
-        PayCondition:null,
-        Remark:null,
-        OpPerson:null,
-        OpSign:null,
-        OpDate:null,
-        OpTime:null,
-        Id_key:null,
-    }
-
-    $scope.vm = uiVM;
-
-    //视图管理器
-    var vmManager = {
-        SupplierId:null,
-
-        //mIndex ==1 回车调用  否则直接调用
-        getErpSuppplierInfoBy: function ($event, mthIndex) {
-            if (mthIndex === 1 && $event.keyCode !== 13) return;
-            if (vmManager.SupplierId === null || vmManager.SupplierId === undefined || vmManager.SupplierId.length < 6) return;
-            $scope.searchPromise = supplierDataOpService.getErpSuppplierInfoBy(vmManager.SupplierId).then(function (data) {
-                if (data !== null) {
-                    leeHelper.copyVm(data, uiVM);
-                } else {
-                    leeHelper.clearVM(uiVM, null);
-                }
-            })
-        }
+    ///保存供应商辅导信息
+    purDb.savePurSupTourInfo = function (entity) {
+        var url = purUrlPrefix + 'SavePurSupTourInfo';
+        return ajaxService.postData(url, {
+            entity: entity,
+        });
     };
-    $scope.vmManager = vmManager;
+    return purDb;
 });
 
 //供应商证书管理
@@ -367,8 +326,10 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
     $scope.operate = operate;
     operate.save = function (isValid) {
         crud.add(operate, isValid, function () {
+            uiVM.TotalCheckScore = uiVM.QualityCheck * 0.3 + uiVM.AuditPrice * 0.2 + uiVM.DeliveryDate * 0.15 + uiVM.ActionLiven * 0.15 + uiVM.HSFGrade * 0.2;
             $scope.promise = supplierDataOpService.saveAuditSupplierInfo($scope.vm).then(function (opResult) {
                 crud.handleSuccessResult(operate, opResult, function () {
+                    leeHelper.copyVm($scope.vm, vmManager.editItem);
                     vmManager.init();
                 });
             })
@@ -398,7 +359,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         displayEditForm:false,
         editSupplierAuditData: function (item) {
             vmManager.displayEditForm = true;
-            vmManager.editItem = $scope.vm = item;
+            vmManager.editItem = $scope.vm = uiVM = item;
         },
     };
 
@@ -409,19 +370,26 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
     var item = {
         SupplierId: 'D10069',
         SupplierShortName: '双溪橡胶',
+        SupplierName: null,
         QualityCheck: null,
         AuditPrice: null,
         DeliveryDate: null,
         ActionLiven: null,
         HSFGrade: null,
-        TotalCheckScore: 0,
+        TotalCheckScore: null,
         CheckLevel: null,
         RewardsWay: null,
         MaterialGrade: null,
         ManagerRisk: null,
-        SubstitutionSupplierId: null,
         SeasonNum: 0,
+        PlanToturDate: '2016-12-12',
+        PlanToturContent: 'hhassdf',
+        ActionToturDate: null,
+        ActionToturContent: null,
+        ToturResult: null,
+        QualityCheckProperty: null,
         Remark: null,
+        YearMonth: null,
         OpPserson: null,
         OpDate: null,
         Optime: null,
@@ -430,8 +398,9 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         isEditting: false,
     };
 
-    ///供应商考核视图模型
+    ///供应商辅导视图模型
     var uiVM = $scope.vm = {
+        SuppilerShortName: null,
         SupplierId: null,
         SupplierName: null,
         QualityCheck: null,
@@ -444,9 +413,15 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         RewardsWay: null,
         MaterialGrade: null,
         ManagerRisk: null,
-        SubstitutionSupplierId: null,
         SeasonNum: 0,
+        PlanToturDate: '2016-12-12',
+        PlanToturContent: '',
+        ActionToturDate: null,
+        ActionToturContent: null,
+        ToturResult: null,
+        QualityCheckProperty: null,
         Remark: null,
+        YearMonth: null,
         OpPserson: null,
         OpDate: null,
         Optime: null,
@@ -471,8 +446,31 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         displayEditForm: false,
         editSupplierToturInfo: function (item) {
             vmManager.displayEditForm = true;
-            vmManager.editItem = $scope.vm = item;
+            vmManager.editItem = item;
+            vmManager.supTourEditModal.$promise.then(vmManager.supTourEditModal.show);
         },
+        supTourEditModal: $modal({
+            title: '供应商辅导信息编辑', content: '',
+            templateUrl: leeHelper.controllers.supplierManage + '/EditPurSupplierToturViewTpl/',
+            controller: function ($scope) {
+                var editItem = $scope.vm = vmManager.editItem;
+                var crud = leeDataHandler.dataOperate;
+                var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
+                //保存供应商辅导信息
+                operate.savePurSupplierCertificateDatas = function (isValid) {
+                    crud.add(operate, isValid, function () {
+                        supplierDataOpService.savePurSupTourInfo($scope.vm).then(function (opResult) {
+                            if (opResult) {
+                                vmManager.editItem = $scope.vm;
+                                vmManager.supTourEditModal.$promise.then(vmManager.supTourEditModal.hide);
+                            }
+                        })
+                    })
+                };
+
+            },
+            show:false,
+        })
     };
 
 
