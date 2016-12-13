@@ -19,21 +19,25 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public List<SupplierSeasonTutorModel> GetWaittingTourSupplier(string seasonDateNum)
         {
             List<SupplierSeasonTutorModel> waittingTourSupplierList = new List<SupplierSeasonTutorModel>();
-            List<SupplierSeasonAuditModel> auditNewModelLsit = new List<SupplierSeasonAuditModel>();
             //得到低于80分的所以供应商
             var auditModelLsit = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetlimitScoreSupplierAuditInfo(seasonDateNum, 80);
             if (auditModelLsit != null && auditModelLsit.Count > 0)
             {
-                auditModelLsit.ForEach(m =>
+             auditModelLsit.ForEach(m =>
                 {
                     if (SupplierCrudFactory.SuppliersSeasonTutorCrud.IsExist(m.ParameterKey))
-                    { waittingTourSupplierList.Add(SupplierCrudFactory.SuppliersSeasonTutorCrud.GetSupplierSeasonTutorModelBy(m.ParameterKey)); }
+                    {
+                      waittingTourSupplierList.Add(SupplierCrudFactory.SuppliersSeasonTutorCrud.GetSupplierSeasonTutorModelBy(m.ParameterKey));
+                    }
                     else
-                    { auditNewModelLsit.Add(m); }
+                    {
+                        waittingTourSupplierList.Add(GetlimitScoreSupplierTutorModelTo(m));
+                    }
                 });
             }
-            return waittingTourSupplierList.Union(OOMaper.Mapper<SupplierSeasonAuditModel, SupplierSeasonTutorModel>(auditNewModelLsit).ToList()).ToList();
+            return waittingTourSupplierList;
         }
+
         /// <summary>
         /// 保存供应商辅导\计划管理
         /// </summary>
@@ -46,5 +50,59 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             else model.OpSign = "add";
             return SupplierCrudFactory.SuppliersSeasonTutorCrud.Store(model);
         }
+        #region  Internet
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        SupplierSeasonTutorModel GetlimitScoreSupplierTutorModelTo(SupplierSeasonAuditModel m)
+        {
+            SupplierSeasonTutorModel model = null;
+            if (m != null)
+            {
+                model = supplierSeasonAuditModelTo(m);
+                model.QualityCheckProperty = "考核低于80";
+
+            }
+            return model;
+        }
+
+        SupplierSeasonTutorModel supplierSeasonAuditModelTo(SupplierSeasonAuditModel m)
+        {
+            try
+            {
+                return new SupplierSeasonTutorModel
+                {
+                    //SupplierId, SupplierShortName, SupplierName, QualityCheck, AuditPrice, DeliveryDate, ActionLiven,
+                    //HSFGrade, TotalCheckScore, CheckLevel, RewardsWay, MaterialGrade, ManagerRisk, SubstitutionSupplierId,
+                    //SeasonDateNum, ParameterKey,
+                    SupplierId = m.SupplierId,
+                    SupplierName = m.SupplierName,
+                    SuppilerShortName = m.SupplierShortName,
+                    QualityCheck = m.QualityCheck,
+                    AuditPrice = m.AuditPrice,
+                    DeliveryDate = m.DeliveryDate,
+                    ActionLiven = m.ActionLiven,
+                    HSFGrade = m.HSFGrade,
+                    TotalCheckScore = m.TotalCheckScore,
+                    CheckLevel = m.CheckLevel,
+                    RewardsWay = m.RewardsWay,
+                    ManagerRisk = m.ManagerRisk,
+                    MaterialGrade = m.MaterialGrade,
+                    SeasonNum = m.SeasonDateNum,
+                    ParameterKey = m.ParameterKey
+                };
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+          
+        }
+        #endregion
     }
+
+
 }
