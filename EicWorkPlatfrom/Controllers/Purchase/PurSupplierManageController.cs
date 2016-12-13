@@ -44,7 +44,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public ContentResult GetPurQualifiedSupplierListBy(string yearMonth)
         {
-            var datas = PurchaseService.PurSupplierManager.GetQualifiedSupplierList(yearMonth);
+            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetQualifiedSupplierList(yearMonth);
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -55,7 +55,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public ContentResult GetErpSuppplierInfoBy(string supplierId)
         {
-            var datas = PurchaseService.PurSupplierManager.GetSuppplierInfoBy(supplierId);
+            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetSuppplierInfoBy(supplierId);
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -98,7 +98,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult StorePurSupplierCertificateInfo(List<InPutSupplieCertificateInfoModel> certificateDatas)
         {
-            var opResult = PurchaseService.PurSupplierManager.SavaEditSpplierCertificate(certificateDatas);
+            var opResult = PurchaseService.PurSupplierManager.SupplierCertificateManager.SavaEditSpplierCertificate(certificateDatas);
             return Json(opResult);
         }
 
@@ -111,7 +111,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
 
         public ContentResult GetSupplierQualifiedCertificateListBy(string supplierId)
         {
-            var datas = PurchaseService.PurSupplierManager.GetSupplierQualifiedCertificateListBy(supplierId);
+            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetSupplierQualifiedCertificateListBy(supplierId);
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -125,7 +125,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         
             var rootPath = HttpContext.Request.PhysicalApplicationPath;
 
-            var datas = PurchaseService.PurSupplierManager.DelEditSpplierCertificate(entity, rootPath);
+            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.DelEditSpplierCertificate(entity, rootPath);
 
             
 
@@ -146,7 +146,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult GetAuditSupplierList(string yearSeason)
         {
-            var datas = PurchaseService.PurSupplierManager.GetSeasonSupplierList(yearSeason);
+            var datas = PurchaseService.PurSupplierManager.SupplierAuditManager.GetSeasonSupplierList(yearSeason);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -158,7 +158,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         ///SaveAuditSupplierInfo
         public JsonResult SaveAuditSupplierInfo(SupplierSeasonAuditModel entity)
         {
-            var datas = PurchaseService.PurSupplierManager.SaveAuditSupplierInfo(entity);
+            var datas = PurchaseService.PurSupplierManager.SupplierAuditManager.SaveAuditSupplierInfo(entity);
 
             return Json(datas);
         }
@@ -169,11 +169,15 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             return View();
         }
-
+        /// <summary>
+        /// 供应商辅导计划
+        /// </summary>
+        /// <param name="yearQuarter"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public ActionResult GetWaittingTourSupplier(string yearQuarter)
         {
-            var datas = 0;
+            var datas = PurchaseService.PurSupplierManager.SupplierTutorManger.GetWaittingTourSupplier(yearQuarter);
 
             return Json(datas, JsonRequestBehavior.AllowGet);
         }

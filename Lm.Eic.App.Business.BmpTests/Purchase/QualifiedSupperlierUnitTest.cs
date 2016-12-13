@@ -12,7 +12,7 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
         [TestMethod]
         public void QualifiedSupplierTest()
         {
-            var mm = PurchaseService.PurSupplierManager.GetQualifiedSupplierList("2016");
+            var mm = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetQualifiedSupplierList("2016");
            
            if (mm!=null ||mm.Count >0)
             {
@@ -49,19 +49,19 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
             };
             var modellist = new List<InPutSupplieCertificateInfoModel>();
             modellist.Add(model);
-            var tem = PurchaseService.PurSupplierManager.SavaEditSpplierCertificate(modellist);
+            var tem = PurchaseService.PurSupplierManager.SupplierCertificateManager.SavaEditSpplierCertificate(modellist);
             if (!tem.Result) { Assert.Fail(); }
 
         }
         [TestMethod]
         public void GetSupplierQualifiedCertificateList()
         {
-            var datas = PurchaseService.PurSupplierManager.GetSupplierQualifiedCertificateListBy("D04004");
+            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetSupplierQualifiedCertificateListBy("D04004");
             if (datas==null ) { Assert.Fail(); }
         }
         public void SuppliersSeasonAuditInfo()
         {
-            var datas = PurchaseService.PurSupplierManager.GetSeasonSupplierList("2016-1");
+            var datas = PurchaseService.PurSupplierManager.SupplierAuditManager.GetSeasonSupplierList("201601");
             if (datas == null) { Assert.Fail(); }
         }
     }
