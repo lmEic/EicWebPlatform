@@ -89,6 +89,13 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
             yearQuarter: yearQuarter,
         });
     };
+    ///保存供应商评分数据
+    purDb.savePurSupGradeInfo = function (entity) {
+        var url = purUrlPrefix + 'SavePurSupGradeData';
+        return ajaxService.postData(url, {
+            entity: entity,
+        });
+    };
     return purDb;
 });
 
@@ -389,11 +396,11 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         MaterialGrade: null,
         ManagerRisk: null,
         SeasonNum: 0,
-        PlanToturDate: '2016-12-12',
-        PlanToturContent: 'hhassdf',
-        ActionToturDate: null,
-        ActionToturContent: null,
-        ToturResult: null,
+        PlanTutorDate: '2016-12-12',
+        PlanTutorContent: 'hhassdf',
+        ActionTutorDate: null,
+        ActionTutorContent: null,
+        TutorResult: null,
         QualityCheckProperty: null,
         Remark: null,
         YearMonth: null,
@@ -421,11 +428,11 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         MaterialGrade: null,
         ManagerRisk: null,
         SeasonNum: 0,
-        PlanToturDate: '2016-12-12',
-        PlanToturContent: '',
-        ActionToturDate: null,
-        ActionToturContent: null,
-        ToturResult: null,
+        PlanTutorDate: '2016-12-12',
+        PlanTutorContent: 'hhassdf',
+        ActionTutorDate: null,
+        ActionTutorContent: null,
+        TutorResult: null,
         QualityCheckProperty: null,
         Remark: null,
         YearMonth: null,
@@ -460,11 +467,12 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
             title: '供应商辅导信息编辑', content: '',
             templateUrl: leeHelper.controllers.supplierManage + '/EditPurSupplierToturViewTpl/',
             controller: function ($scope) {
+                $scope.edittingItem = _.clone(vmManager.editItem);
                 var editItem = $scope.vm = vmManager.editItem;
                 var crud = leeDataHandler.dataOperate;
                 var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
                 //保存供应商辅导信息
-                operate.savePurSupplierCertificateDatas = function (isValid) {
+                operate.savePurSupTurDatas = function (isValid) {
                     crud.add(operate, isValid, function () {
                         supplierDataOpService.savePurSupTourInfo($scope.vm).then(function (opResult) {
                             if (opResult) {
@@ -544,7 +552,6 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
     var vmManager = $scope.vmManager = {
         editDatas: [item],
         yearQuarter: '',
-        gradeTypes: [{}, {}, {}],
         //获取要考核的供应商数据列表
         getSupGradeInfo: function () {
             $scope.promise = supplierDataOpService.getPurSupGradeInfo(vmManager.yearQuarter).then(function (datas) {
@@ -561,24 +568,26 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
             templateUrl: leeHelper.controllers.supplierManage + '/EditPurSupAuditToGradeTpl/',
             controller: function ($scope) {
                 var editItem = $scope.vm = vmManager.editItem;
-                //var crud = leeDataHandler.dataOperate;
-                //var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
-                ////保存供应商辅导信息
-                //operate.savePurSupplierCertificateDatas = function (isValid) {
-                //    crud.add(operate, isValid, function () {
-                //        supplierDataOpService.savePurSupTourInfo($scope.vm).then(function (opResult) {
-                //            if (opResult) {
-                //                vmManager.editItem = $scope.vm;
-                //                vmManager.supTourEditModal.$promise.then(vmManager.supTourEditModal.hide);
-                //            }
-                //        })
-                //    })
-                //};
+                $scope.gradeTypes = [{ id: '供应商系统稽核评估', text: '供应商系统稽核评估' },
+                                    { id: '供应商产品无有害物质系统稽核评估', text: '供应商产品无有害物质系统稽核评估' },
+                                    { id: '系统评估表-针对小供应商', text: '系统评估表-针对小供应商' }];
+
+                var crud = leeDataHandler.dataOperate;
+                var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
+                //保存供应商辅导信息
+                operate.savePurSupGradeDatas = function (isValid) {
+                    crud.add(operate, isValid, function () {
+                        supplierDataOpService.savePurSupGradeInfo($scope.vm).then(function (opResult) {
+                            if (opResult) {
+                                vmManager.editItem = $scope.vm;
+                                vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.hide);
+                            }
+                        })
+                    })
+                };
             },
             show: false,
         })
     };
-
-    
 });
 
