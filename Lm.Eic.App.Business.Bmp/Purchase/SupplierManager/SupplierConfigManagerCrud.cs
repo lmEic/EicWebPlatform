@@ -332,14 +332,18 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             this.AddOpItem(OpMode.Add, AddSupplierSeasonAuditTutorInfo);
             this.AddOpItem(OpMode.Edit, EditSupplierSeasonAuditTutorInfo);
         }
-
+        /// <summary>
+        /// 通过parameterKey得到Model
+        /// </summary>
+        /// <param name="parameterKey"></param>
+        /// <returns></returns>
         public SupplierSeasonTutorModel GetSupplierSeasonTutorModelBy(string parameterKey)
         {
             return irep.Entities.Where(e => e.ParameterKey == parameterKey).ToList().FirstOrDefault();
         }
 
         /// <summary>
-        /// 
+        /// 添加季度辅导
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -349,7 +353,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
         /// <summary>
-        /// 
+        /// 编辑保存季度辅导
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
