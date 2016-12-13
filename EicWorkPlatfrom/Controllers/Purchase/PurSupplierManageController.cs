@@ -199,7 +199,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult SavePurSupTourInfo(SupplierSeasonTutorModel entity)
         {
-            var opResult = 1;
+            var opResult = PurchaseService.PurSupplierManager.SupplierTutorManger.SaveSupplierTutorModel(entity);
             return Json(opResult);
         }
         #endregion
