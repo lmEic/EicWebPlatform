@@ -82,6 +82,13 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
             entity: entity,
         });
     };
+    //-------------------------供应商评分管理-------------------------------------
+    purDb.getPurSupGradeInfo = function (yearQuarter) {
+        var url = purUrlPrefix + 'GetPurSupGradeInfo';
+        return ajaxService.getData(url, {
+            yearQuarter: yearQuarter,
+        });
+    };
     return purDb;
 });
 
@@ -485,24 +492,19 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
 purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplierDataOpService, $modal) {
     var item = {
         SupplierId: 'D10069',
-        SupplierShortName: '双溪橡胶',
-        QualityCheck: null,
-        AuditPrice: null,
-        DeliveryDate: null,
-        ActionLiven: null,
-        HSFGrade: null,
-        TotalCheckScore: 0,
-        CheckLevel: null,
-        RewardsWay: null,
-        MaterialGrade: null,
-        ManagerRisk: null,
-        SubstitutionSupplierId: null,
-        SeasonNum: 0,
-        Remark: null,
-        OpPserson: null,
-        OpDate: null,
-        Optime: null,
+        SupplierName: '双溪橡胶',
+        SupplierProperty: null,
+        PurchaseType: null,
+        PurchaseMaterial: null,
+        LastPurchaseDate: null,
+        SupGradeType: null,
+        FirstGradeScore: null,
+        FirstGradeDate: null,
+        SecondGradeScore: null,
+        OpPerson: null,
         OpSign: null,
+        OpDate: null,
+        OpTime: null,
         Id_key: null,
         isEditting: false,
     };
@@ -533,35 +535,50 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
 
     var initVm = _.clone(uiVM);
 
-
-    var vmManager = {
-        activeTab: 'initTab',
-    };
-    $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.saveAll = function (isValid) { };
     operate.refresh = function () { };
 
-
     //视图管理器
     var vmManager = $scope.vmManager = {
         editDatas: [item],
         yearQuarter: '',
+        gradeTypes: [{}, {}, {}],
         //获取要考核的供应商数据列表
-        getAuditSupplierDatas: function () {
-            $scope.promise = supplierDataOpService.getAuditSupplierList(vmManager.yearQuarter).then(function (datas) {
+        getSupGradeInfo: function () {
+            $scope.promise = supplierDataOpService.getPurSupGradeInfo(vmManager.yearQuarter).then(function (datas) {
                 vmManager.editDatas = datas;
             });
         },
         editItem: null,
-        displayEditForm: false,
-        editSupplierAuditData: function (item) {
-            vmManager.displayEditForm = true;
+        editSupGradeInfo: function (item) {
             vmManager.editItem = $scope.vm = item;
+            vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.show);
         },
+        supGradeEditModal: $modal({
+            title: '新增供应商评分信息', content: '',
+            templateUrl: leeHelper.controllers.supplierManage + '/EditPurSupAuditToGradeTpl/',
+            controller: function ($scope) {
+                var editItem = $scope.vm = vmManager.editItem;
+                //var crud = leeDataHandler.dataOperate;
+                //var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
+                ////保存供应商辅导信息
+                //operate.savePurSupplierCertificateDatas = function (isValid) {
+                //    crud.add(operate, isValid, function () {
+                //        supplierDataOpService.savePurSupTourInfo($scope.vm).then(function (opResult) {
+                //            if (opResult) {
+                //                vmManager.editItem = $scope.vm;
+                //                vmManager.supTourEditModal.$promise.then(vmManager.supTourEditModal.hide);
+                //            }
+                //        })
+                //    })
+                //};
+            },
+            show: false,
+        })
     };
 
-    var operate = $scope.operate = leeDataHandler.dataOperate;
+    
 });
 

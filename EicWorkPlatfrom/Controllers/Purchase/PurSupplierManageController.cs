@@ -205,6 +205,27 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             return View();
         }
+        /// <summary>
+        /// 编辑供应商考评分数模板
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ActionResult EditPurSupAuditToGradeTpl()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 获取要评分的供应商信息列表
+        /// </summary>
+        /// <param name="yearQuarter"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetPurSupGradeInfo(string yearQuarter)
+        {
+            var datas = 0;
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         #endregion
     }
 }
