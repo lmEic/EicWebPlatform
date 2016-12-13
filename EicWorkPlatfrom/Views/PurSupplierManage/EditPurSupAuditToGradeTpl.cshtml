@@ -25,9 +25,9 @@
                         <div class="form-group">
                             <label for="supGradeType" class="col-md-2 control-label">评分类别</label>
                             <div class="col-md-4">
-                                <button type="button" class="btn btn-default" ng-model="vm.SupGradeType" data-html="1" 
-                                        data-toggle="true" bs-options="icon.value as icon.label for icon in icons" bs-select>
-                                    Action <span class="caret"></span>
+                                <button type="button" class="btn btn-default" ng-model="vm.SupGradeType" data-html="1" data-placeholder="评分类别"
+                                        data-toggle="true" bs-options="grade.id as grade.text for grade in gradeTypes" bs-select>
+                                    评分类别 <span class="caret"></span>
                                 </button>
                                 <input name="supGradeType" class="form-control" ng-model="vm.SupGradeType" required  ng-show="false"/>
                                 <div class="error-messages" ng-messages="formSupGrade.supGradeType.$error" ng-show="operate.showValidation">

@@ -197,7 +197,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <param name="entity"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult SavePurSupTourInfo(SupplierSeasonAuditTutorModel entity)
+        public JsonResult SavePurSupTourInfo(SupplierSeasonTutorModel entity)
         {
             var opResult = 1;
             return Json(opResult);
@@ -229,6 +229,17 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             var datas = 0;
             return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 保存供应商评分数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SavePurSupGradeData(SupplierGradeInfoModel entity)
+        {
+            var opResult = 1;
+            return Json(opResult);
         }
         #endregion
     }
