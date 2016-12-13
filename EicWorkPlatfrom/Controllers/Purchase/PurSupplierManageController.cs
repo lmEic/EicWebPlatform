@@ -13,7 +13,6 @@ namespace EicWorkPlatfrom.Controllers.Purchase
     {
         //
         // GET: /PurSupplierManage/
-
         public ActionResult Index()
         {
             return View();
