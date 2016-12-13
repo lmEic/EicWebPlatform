@@ -37,8 +37,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagem
     /// <summary>
     ///   供应商考核实地辅导计划/执行表
     /// </summary>
-    public interface ISupplierSeasonAuditTutorRepository : IRepository<SupplierSeasonAuditTutorModel> { }
-    public class SupplierSeasonAuditTutorRepository:BpmRepositoryBase <SupplierSeasonAuditTutorModel>, ISupplierSeasonAuditTutorRepository
+    public interface ISupplierSeasonAuditTutorRepository : IRepository<SupplierSeasonTutorModel> { }
+    public class SupplierSeasonAuditTutorRepository:BpmRepositoryBase <SupplierSeasonTutorModel>, ISupplierSeasonAuditTutorRepository
     { }
 
 

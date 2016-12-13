@@ -66,7 +66,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         //季度考核总览表
         public DbSet<SupplierSeasonAuditModel> SupplieSeasonAudit { set; get; }
         //季度考核 实地辅导计划/执行表
-        public DbSet<SupplierSeasonAuditTutorModel> SupplierSeasonAuditTutor { set; get; }
+        public DbSet<SupplierSeasonTutorModel> SupplierSeasonAuditTutor { set; get; }
         //供应商自评复评明细表 
         public DbSet<SupplierGradeInfoModel> SupplierGradeInfo { set; get; }
 
@@ -116,7 +116,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             //季度考核总览表
             modelBuilder.Configurations.Add(new SupplierSeasonAuditMapping());
             //季度考核 实地辅导计划/执行表
-            modelBuilder.Configurations.Add(new SupplierSeasonAuditTutorMapping());
+            modelBuilder.Configurations.Add(new SupplierSeasonTutorMapping());
             //供应商自评复评明细表 
             modelBuilder.Configurations.Add(new SupplierGradeInfoMapping());
             #endregion

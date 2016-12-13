@@ -34,9 +34,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase
         /// <summary>
         /// 供应商管理
         /// </summary>
-        public static PurSupplierManager PurSupplierManager
+        public static PurSupplierConfigManager PurSupplierManager
         {
-            get { return OBulider.BuildInstance<PurSupplierManager>(); }
+            get { return OBulider.BuildInstance<PurSupplierConfigManager>(); }
         }
       
     }

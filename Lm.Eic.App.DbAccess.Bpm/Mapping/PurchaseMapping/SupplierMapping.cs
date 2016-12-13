@@ -58,13 +58,13 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
     /// 供应商季度审计实地辅导计划/执行表
     /// </summary>
 
-    public class SupplierSeasonAuditTutorMapping : EntityTypeConfiguration<SupplierSeasonAuditTutorModel>
+    public class SupplierSeasonTutorMapping : EntityTypeConfiguration<SupplierSeasonTutorModel>
     {
-        public SupplierSeasonAuditTutorMapping()
+        public SupplierSeasonTutorMapping()
         {
             this.HasKey(t => t.Id_key);
             this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Pur_SupplierSeasonToturInfo");
+            this.ToTable("Pur_SupplierSeasonTutorInfo");
         }
     }
 

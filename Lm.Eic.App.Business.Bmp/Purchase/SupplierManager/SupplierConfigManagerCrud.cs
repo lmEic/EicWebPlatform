@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Lm.Eic.App.Erp.Bussiness.PurchaseManage;
 using Lm.Eic.App.DomainModel.Bpm.Purchase;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeDbHandler;
@@ -45,9 +43,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <summary>
         /// 季度审计实地辅导计划/执行
         /// </summary>
-        public static SuppliersSeasonAuditTutorCrud SuppliersSeasonAuditTutorCrud
+        public static SuppliersSeasonTutorCrud SuppliersSeasonTutorCrud
         {
-            get { return OBulider.BuildInstance<SuppliersSeasonAuditTutorCrud>(); }
+            get { return OBulider.BuildInstance<SuppliersSeasonTutorCrud>(); }
         }
 
         /// <summary>
@@ -260,10 +258,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
           catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
       }
 }
-
-
-
-
     /// <summary>
     /// 供应商季度审查表Curd
     /// </summary>
@@ -281,6 +275,21 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             this.AddOpItem(OpMode.Edit, EditSupplierSeasonAuditInfo);
             this.AddOpItem(OpMode.Delete, DelteSupplierSeasonAuditInfo);
         }
+        /// <summary>
+        /// 得到限制总分内供应商信息
+        /// </summary>
+        /// <param name="seasonDateNum">季度</param>
+        /// <param name="limitScore">限制的分数线</param>
+        /// <returns></returns>
+        public List<SupplierSeasonAuditModel> GetlimitScoreSupplierAuditInfo(string seasonDateNum, double limitScore)
+        {
+            return this.irep.Entities.Where(e => e.TotalCheckScore < limitScore && e.SeasonDateNum == seasonDateNum).ToList();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameterKey"></param>
+        /// <returns></returns>
         public SupplierSeasonAuditModel GetSupplierSeasonAuditInfo(string parameterKey)
         {
             var modelList = this.irep.Entities.Where(e => e.ParameterKey == parameterKey).ToList();
@@ -313,17 +322,50 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// 季度考核实地辅导计划/执行Crud
     /// </summary>
 
-    public class SuppliersSeasonAuditTutorCrud:CrudBase<SupplierSeasonAuditTutorModel,ISupplierSeasonAuditTutorRepository>
+    public class SuppliersSeasonTutorCrud:CrudBase<SupplierSeasonTutorModel,ISupplierSeasonAuditTutorRepository>
     {
-        public SuppliersSeasonAuditTutorCrud() : base(new SupplierSeasonAuditTutorRepository(), "季度考核实地辅导计划/执行")
+        public SuppliersSeasonTutorCrud() : base(new SupplierSeasonAuditTutorRepository(), "季度考核实地辅导计划/执行")
         { }
 
         protected override void AddCrudOpItems()
         {
-            throw new NotImplementedException();
+            this.AddOpItem(OpMode.Add, AddSupplierSeasonAuditTutorInfo);
+            this.AddOpItem(OpMode.Edit, EditSupplierSeasonAuditTutorInfo);
         }
 
-    
+        public SupplierSeasonTutorModel GetSupplierSeasonTutorModelBy(string parameterKey)
+        {
+            return irep.Entities.Where(e => e.ParameterKey == parameterKey).ToList().FirstOrDefault();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        OpResult AddSupplierSeasonAuditTutorInfo(SupplierSeasonTutorModel model)
+        {
+            model.ParameterKey = model.SupplierId.Trim() + "&&" + model.SeasonNum ;
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        OpResult EditSupplierSeasonAuditTutorInfo(SupplierSeasonTutorModel model)
+        {
+            return irep.Update(e => e.ParameterKey == model.ParameterKey, model).ToOpResult_Add(OpContext); ;
+        }
+        /// <summary>
+        /// 是否存在
+        /// </summary>
+        /// <param name="parameterKey"></param>
+        /// <returns></returns>
+        public bool IsExist(string parameterKey)
+        {
+            return irep.IsExist(e => e.ParameterKey == parameterKey);
+        }
     }
 
 
