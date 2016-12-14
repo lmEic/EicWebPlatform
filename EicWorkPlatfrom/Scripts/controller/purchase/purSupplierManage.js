@@ -96,6 +96,14 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
             entity: entity,
         });
     };
+    ///获取供应商数据列表
+    purDb.getPurSupplierDataList = function (supplierId, dataType) {
+        var url =purUrlPrefix  + 'GetPurSupplierDataList';
+        return ajaxService.getData(url, {
+            supplierId: supplierId,
+            dataType: dataType,
+        });
+    };
     return purDb;
 });
 
@@ -448,6 +456,7 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
 
     //视图管理器
     var vmManager = $scope.vmManager = {
+        supplierId:null,
         editDatas: [item],
         yearQuarter: '',
         //获取要考核的供应商数据列表
@@ -462,6 +471,12 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
             vmManager.displayEditForm = true;
             vmManager.editItem = item;
             vmManager.supTourEditModal.$promise.then(vmManager.supTourEditModal.show);
+        },
+        ///根据供应商编号查询供应商辅导数据信息
+        searchBySupplierId: function (dataType) {
+            vmManager.editDatas = supplierDataOpService.getPurSupplierDataList(vmManager.supplierId, dataType).then(function (datas) {
+                vmManager.editDatas = datas;
+            });
         },
         supTourEditModal: $modal({
             title: '供应商辅导信息编辑', content: '',
@@ -550,8 +565,15 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
 
     //视图管理器
     var vmManager = $scope.vmManager = {
+        supplierId:'',
         editDatas: [item],
         yearQuarter: '',
+        ///根据供应商编号查询供应商辅导数据信息
+        searchBySupplierId: function (dataType) {
+            vmManager.editDatas = supplierDataOpService.getPurSupplierDataList(vmManager.supplierId, dataType).then(function (datas) {
+                vmManager.editDatas = datas;
+            });
+        },
         //获取要考核的供应商数据列表
         getSupGradeInfo: function () {
             $scope.promise = supplierDataOpService.getPurSupGradeInfo(vmManager.yearQuarter).then(function (datas) {
