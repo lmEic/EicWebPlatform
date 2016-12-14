@@ -67,6 +67,19 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             return View();
         }
+
+        /// <summary>
+        /// 获取采购供应商用户数据列表
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <param name="dataType"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetPurSupplierDataList(string supplierId, string dataType)
+        {
+            var datas = 0;
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         /// <summary>
         /// 上传采购供应商证书文件
         /// </summary>

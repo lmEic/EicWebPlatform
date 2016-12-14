@@ -3,11 +3,19 @@
         <h6 class="panel-title">供应商辅导管理</h6>
     </div>
     <div class="panel-body">
-        <form class="form-inline" role="search">
-            <span yl-quarter-button data-yearquarter="vmManager.yearQuarter"></span>
-            <button type="button" class="btn btn-default" ng-click="vmManager.getWaittingTourSupplier()"><i class="fa fa-search"></i> 载入</button>
-            @*<a class="btn btn-success"><i class="fa fa-file-excel-o"></i> 导出Excel</a>*@
-        </form>
+        <nav class="nav">
+            <form class="navbar-form navbar-left">
+                <span yl-quarter-button data-yearquarter="vmManager.searchQuarter"></span>
+                <button type="button" class="btn btn-default" ng-click="vmManager.getWaittingTourSupplier()"><i class="fa fa-search"></i> 载入</button>
+                @*<a class="btn btn-success"><i class="fa fa-file-excel-o"></i> 导出Excel</a>*@
+            </form>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="vmManager.supplierId" placeholder="输入供应商编号">
+                </div>
+                <button type="submit" class="btn btn-default" ng-click="vmManager.searchBySupplierId('tutor')"><i class="fa fa-search"></i></button>
+            </form>
+        </nav>
         <div class="h-split"></div>
         <div class="well" cg-busy="{promise:searchPromise}">
             <div class="table-responsive">
