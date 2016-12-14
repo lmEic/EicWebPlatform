@@ -228,6 +228,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public JsonResult GetPurSupGradeInfo(string yearQuarter)
         {
             var datas = 0;
+        
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
