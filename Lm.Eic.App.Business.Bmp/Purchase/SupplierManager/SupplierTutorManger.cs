@@ -62,7 +62,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             if (m != null)
             {
                 model = supplierSeasonAuditModelTo(m);
-                model.QualityCheckProperty = "考核低于80";
+                model.QualityCheckCategory = "考核低于80";
 
             }
             return model;

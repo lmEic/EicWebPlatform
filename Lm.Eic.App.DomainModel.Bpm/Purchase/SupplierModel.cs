@@ -550,14 +550,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _suppliername = value; }
             get { return _suppliername; }
         }
-        private string _qualitycheckproperty;
+        private string _qualityCheckCategory;
         /// <summary>
         ///辅导属性（性品质异常、考核分低）
         /// </summary>
-        public string QualityCheckProperty
+        public string QualityCheckCategory
         {
-            set { _qualitycheckproperty = value; }
-            get { return _qualitycheckproperty; }
+            set { _qualityCheckCategory = value; }
+            get { return _qualityCheckCategory; }
         }
         private double _qualitycheck;
         /// <summary>

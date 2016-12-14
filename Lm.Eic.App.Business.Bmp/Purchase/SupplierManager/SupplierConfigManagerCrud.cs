@@ -350,6 +350,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         OpResult AddSupplierSeasonAuditTutorInfo(SupplierSeasonTutorModel model)
         {
             model.ParameterKey = model.SupplierId.Trim() + "&&" + model.SeasonNum ;
+            model.YearMonth = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString();
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
         /// <summary>
