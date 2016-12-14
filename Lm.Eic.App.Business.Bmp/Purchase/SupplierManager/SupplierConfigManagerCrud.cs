@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Lm.Eic.App.Erp.Bussiness.PurchaseManage;
 using Lm.Eic.App.DomainModel.Bpm.Purchase;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeDbHandler;
@@ -45,9 +43,17 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <summary>
         /// 季度审计实地辅导计划/执行
         /// </summary>
-        public static SuppliersSeasonAuditTutorCrud SuppliersSeasonAuditTutorCrud
+        public static SuppliersSeasonTutorCrud SuppliersSeasonTutorCrud
         {
-            get { return OBulider.BuildInstance<SuppliersSeasonAuditTutorCrud>(); }
+            get { return OBulider.BuildInstance<SuppliersSeasonTutorCrud>(); }
+        }
+
+        /// <summary>
+        /// 供应商自评复评明细表 
+        /// </summary>
+        public static SupplierGradeInfoCrud SupplierGradeInfoCrud
+        {
+            get { return OBulider.BuildInstance<SupplierGradeInfoCrud>(); }
         }
     }
 
@@ -55,7 +61,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// <summary>
     /// 供应商合格证书Curd
     /// </summary>
-    public class SupplierQualifiedCertificateCrud:CrudBase <SuppliersQualifiedCertificateModel,ISupplierQualifiedCertificateRepository >
+    public class SupplierQualifiedCertificateCrud:CrudBase <SupplierQualifiedCertificateModel,ISupplierQualifiedCertificateRepository >
   {
       public SupplierQualifiedCertificateCrud():base(new SupplierQualifiedCertifcateRepository() ,"供应商合格文件录入")
       {}
@@ -73,7 +79,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// </summary>
       /// <param name="model"></param>
       /// <returns></returns>
-      public OpResult SavaSupplierEligible(SuppliersQualifiedCertificateModel model)
+      public OpResult SavaSupplierEligible(SupplierQualifiedCertificateModel model)
       {
           try
           {
@@ -85,7 +91,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
       }
 
-        public OpResult DeleteSupplierCertificate(SuppliersQualifiedCertificateModel model)
+        public OpResult DeleteSupplierCertificate(SupplierQualifiedCertificateModel model)
         {
             try
             {
@@ -98,7 +104,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
      /// </summary>
      /// <param name="modelList"></param>
      /// <returns></returns>
-      public OpResult SavaSupplierEligibleList(List<SuppliersQualifiedCertificateModel> modelList)
+      public OpResult SavaSupplierEligibleList(List<SupplierQualifiedCertificateModel> modelList)
       {
       
           try
@@ -133,7 +139,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
      /// </summary>
      /// <param name="supplierId"></param>
      /// <returns></returns>
-        public List<SuppliersQualifiedCertificateModel> GetQualifiedCertificateListBy(string supplierId)
+        public List<SupplierQualifiedCertificateModel> GetQualifiedCertificateListBy(string supplierId)
       {
           try
           {
@@ -145,7 +151,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// <summary>
     /// 供应商信息Curd
     /// </summary>
-    public class SuppliersInfoCrud : CrudBase<SuppliersInfoModel, ISupplierInfoRepository>
+    public class SuppliersInfoCrud : CrudBase<SupplierInfoModel, ISupplierInfoRepository>
     {
 
         public SuppliersInfoCrud()
@@ -178,7 +184,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// </summary>
       /// <param name="modelList"></param>
       /// <returns></returns>
-      public OpResult SavaSupplierInfoList(List<SuppliersInfoModel> modelList)
+      public OpResult SavaSupplierInfoList(List<SupplierInfoModel> modelList)
       {
           try
           {
@@ -204,7 +210,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// </summary>
       /// <param name="model></param>
       /// <returns></returns>
-      OpResult AddSupplierInfo(SuppliersInfoModel model)
+      OpResult AddSupplierInfo(SupplierInfoModel model)
       {
 
           ///判断产品品号是否存在
@@ -221,7 +227,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
       }
 
-      OpResult EidtSupplierInfo(SuppliersInfoModel model)
+      OpResult EidtSupplierInfo(SupplierInfoModel model)
       {
           if (irep.IsExist(m => m.Id_key  == model.Id_key ))
           {
@@ -233,7 +239,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
       }
 
-      OpResult DeleteSupplierInfo(SuppliersInfoModel model)
+      OpResult DeleteSupplierInfo(SupplierInfoModel model)
       {
           return irep.Delete (model).ToOpResult_Add("删除成功", model.Id_key);
       }
@@ -243,7 +249,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
       /// </summary>
       /// <param name="supplierId">供应商ID</param>
       /// <returns></returns>
-      public SuppliersInfoModel GetSupplierInfoBy(string supplierId)
+      public SupplierInfoModel GetSupplierInfoBy(string supplierId)
       {
           try
           {
@@ -252,10 +258,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
           catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
       }
 }
-
-
-
-
     /// <summary>
     /// 供应商季度审查表Curd
     /// </summary>
@@ -269,25 +271,120 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         protected override void AddCrudOpItems()
         {
-            throw new NotImplementedException();
+            this.AddOpItem(OpMode.Add, AddSupplierSeasonAuditInfo);
+            this.AddOpItem(OpMode.Edit, EditSupplierSeasonAuditInfo);
+            this.AddOpItem(OpMode.Delete, DelteSupplierSeasonAuditInfo);
+        }
+        /// <summary>
+        /// 得到限制总分内供应商信息
+        /// </summary>
+        /// <param name="seasonDateNum">季度</param>
+        /// <param name="limitScore">限制的分数线</param>
+        /// <returns></returns>
+        public List<SupplierSeasonAuditModel> GetlimitScoreSupplierAuditInfo(string seasonDateNum, double limitScore)
+        {
+            return this.irep.Entities.Where(e => e.TotalCheckScore < limitScore && e.SeasonDateNum == seasonDateNum).ToList();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameterKey"></param>
+        /// <returns></returns>
+        public SupplierSeasonAuditModel GetSupplierSeasonAuditInfo(string parameterKey)
+        {
+            var modelList = this.irep.Entities.Where(e => e.ParameterKey == parameterKey).ToList();
+            if (modelList == null || modelList.Count == 0) return null;
+            return modelList[0];
         }
 
+         OpResult AddSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
+        {
+            model.ParameterKey = model.SupplierId.Trim () + "&&" + model.SeasonDateNum;
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+         OpResult DelteSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
+        {
+            return irep.Delete(model).ToOpResult_Add(OpContext);
+        }
+
+        OpResult EditSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
+        {
+            return irep.Update(e => e.ParameterKey  == model.ParameterKey , model).ToOpResult_Add(OpContext); ;
+        }
+
+        public bool IsExist(string parameterKey)
+        {
+            return irep.IsExist(e => e.ParameterKey == parameterKey);
+        }
     }
 
     /// <summary>
     /// 季度考核实地辅导计划/执行Crud
     /// </summary>
 
-    public class SuppliersSeasonAuditTutorCrud:CrudBase<SupplierSeasonAuditTutorModel,ISupplierSeasonAuditTutorRepository>
+    public class SuppliersSeasonTutorCrud:CrudBase<SupplierSeasonTutorModel,ISupplierSeasonAuditTutorRepository>
     {
-        public SuppliersSeasonAuditTutorCrud() : base(new SupplierSeasonAuditTutorRepository(), "季度考核实地辅导计划/执行")
+        public SuppliersSeasonTutorCrud() : base(new SupplierSeasonAuditTutorRepository(), "季度考核实地辅导计划/执行")
         { }
 
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddSupplierSeasonAuditTutorInfo);
+            this.AddOpItem(OpMode.Edit, EditSupplierSeasonAuditTutorInfo);
+        }
+        /// <summary>
+        /// 通过parameterKey得到Model
+        /// </summary>
+        /// <param name="parameterKey"></param>
+        /// <returns></returns>
+        public SupplierSeasonTutorModel GetSupplierSeasonTutorModelBy(string parameterKey)
+        {
+            return irep.Entities.Where(e => e.ParameterKey == parameterKey).ToList().FirstOrDefault();
+        }
+
+        /// <summary>
+        /// 添加季度辅导
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        OpResult AddSupplierSeasonAuditTutorInfo(SupplierSeasonTutorModel model)
+        {
+            model.ParameterKey = model.SupplierId.Trim() + "&&" + model.SeasonNum ;
+            model.YearMonth = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString();
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+        /// <summary>
+        /// 编辑保存季度辅导
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        OpResult EditSupplierSeasonAuditTutorInfo(SupplierSeasonTutorModel model)
+        {
+            return irep.Update(e => e.ParameterKey == model.ParameterKey, model).ToOpResult_Add(OpContext); ;
+        }
+        /// <summary>
+        /// 是否存在
+        /// </summary>
+        /// <param name="parameterKey"></param>
+        /// <returns></returns>
+        public bool IsExist(string parameterKey)
+        {
+            return irep.IsExist(e => e.ParameterKey == parameterKey);
+        }
+    }
+
+
+    /// <summary>
+    /// 供应商自评复评明细表 Crud
+    /// </summary>
+    public class SupplierGradeInfoCrud : CrudBase<SupplierGradeInfoModel,ISupplierGradeInfoRepository>
+    {
+        public SupplierGradeInfoCrud() : base(new SupplierGradeInfoRepository(), "供应商自评复评明细表 ")
+        { }
         protected override void AddCrudOpItems()
         {
             throw new NotImplementedException();
         }
     }
-
 
 }

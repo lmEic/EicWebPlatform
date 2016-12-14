@@ -54,23 +54,27 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             scope.currentYear = mydate.getFullYear();
             //当前月份
             var cmonth = mydate.getMonth();
+
+            var getCurrentQuarter = function () {
+                return scope.currentYear.toString() + "0" + scope.currentQuarter.toString();
+            };
             //当前季度
             scope.currentQuarter =parseInt(Math.floor(cmonth % 3 == 0) ? (cmonth / 3) : (cmonth / 3 + 1));
 
-            scope.yearquarter = scope.currentYear + scope.currentQuarter;
+            scope.yearquarter = getCurrentQuarter();
 
             scope.selectQuarter = function (q) {
                 scope.currentQuarter = q;
-                scope.yearmonth = scope.currentYear + scope.currentQuarter;
+                scope.yearquarter = getCurrentQuarter();
             };
 
             scope.upYear = function () {
                 scope.currentYear += 1;
-                scope.yearquarter = scope.currentYear + scope.currentQuarter;
+                scope.yearquarter = getCurrentQuarter();
             };
             scope.downYear = function () {
                 scope.currentYear -= 1;
-                scope.yearquarter = scope.currentYear + scope.currentQuarter;
+                scope.yearquarter = getCurrentQuarter();
             };
         }
     };

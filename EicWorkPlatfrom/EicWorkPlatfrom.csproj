@@ -1308,6 +1308,7 @@
     <Content Include="Views\PurSupplierManage\SupplierToturManage.cshtml" />
     <Content Include="Views\PurSupplierManage\SupplierAuditToGrade.cshtml" />
     <Content Include="Views\PurSupplierManage\EditPurSupplierToturViewTpl.cshtml" />
+    <Content Include="Views\PurSupplierManage\EditPurSupAuditToGradeTpl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

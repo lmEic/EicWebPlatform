@@ -17,11 +17,11 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
         });
     };
     //根据年份获取合格供应商清单
-    purDb.getPurQualifiedSupplierListBy = function (yearStr)
+    purDb.getPurQualifiedSupplierListBy = function (yearMonth)
     {
         var url = purUrlPrefix + 'GetPurQualifiedSupplierListBy';
         return ajaxService.getData(url, {
-            yearStr: yearStr,
+            yearMonth: yearMonth,
         });
     };
     ///上传供应商证书文件
@@ -56,7 +56,7 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     purDb.getAuditSupplierList = function (season) {
         var url = purUrlPrefix + 'GetAuditSupplierList';
         return ajaxService.getData(url, {
-            season: season,
+            yearSeason: season,
         });
     };
     //保存考核供应商信息
@@ -67,57 +67,39 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
         });
     };
 
+    //-------------------------供应商辅导管理-------------------------------------
+    //获取要辅导的供应商数据
+    purDb.getWaittingTourSupplier = function (yearQuarter) {
+        var url = purUrlPrefix + 'GetWaittingTourSupplier';
+        return ajaxService.getData(url, {
+            yearQuarter: yearQuarter,
+        });
+    };
+    ///保存供应商辅导信息
+    purDb.savePurSupTourInfo = function (entity) {
+        var url = purUrlPrefix + 'SavePurSupTourInfo';
+        return ajaxService.postData(url, {
+            entity: entity,
+        });
+    };
+    //-------------------------供应商评分管理-------------------------------------
+    purDb.getPurSupGradeInfo = function (yearQuarter) {
+        var url = purUrlPrefix + 'GetPurSupGradeInfo';
+        return ajaxService.getData(url, {
+            yearQuarter: yearQuarter,
+        });
+    };
+    ///保存供应商评分数据
+    purDb.savePurSupGradeInfo = function (entity) {
+        var url = purUrlPrefix + 'SavePurSupGradeData';
+        return ajaxService.postData(url, {
+            entity: entity,
+        });
+    };
     return purDb;
 });
 
-//供应商信息录入
-purchaseModule.controller('purSupplierInputCtrl', function ($scope, supplierDataOpService, $state) {
-
-    var uiVM = {
-        SupplierId:null,
-        PurchaseType:null,
-        SupplierProperty:null,
-        SupplierShortName:null,
-        SupplierName:null,
-        PurchaseUser:null,
-        SupplierTel:null,
-        SupplierUser:null,
-        SupplierFaxNo:null,
-        SupplierEmail:null,
-        SupplierAddress:null,
-        BillAddress:null,
-        PayCondition:null,
-        Remark:null,
-        OpPerson:null,
-        OpSign:null,
-        OpDate:null,
-        OpTime:null,
-        Id_key:null,
-    }
-
-    $scope.vm = uiVM;
-
-    //视图管理器
-    var vmManager = {
-        SupplierId:null,
-
-        //mIndex ==1 回车调用  否则直接调用
-        getErpSuppplierInfoBy: function ($event, mthIndex) {
-            if (mthIndex === 1 && $event.keyCode !== 13) return;
-            if (vmManager.SupplierId === null || vmManager.SupplierId === undefined || vmManager.SupplierId.length < 6) return;
-            $scope.searchPromise = supplierDataOpService.getErpSuppplierInfoBy(vmManager.SupplierId).then(function (data) {
-                if (data !== null) {
-                    leeHelper.copyVm(data, uiVM);
-                } else {
-                    leeHelper.clearVM(uiVM, null);
-                }
-            })
-        }
-    };
-    $scope.vmManager = vmManager;
-});
-
-//生成合格供应商清单
+//供应商证书管理
 purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService,$modal) {
 
     var item = {
@@ -301,6 +283,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
     var item = {
         SupplierId: 'D10069',
         SupplierShortName: '双溪橡胶',
+        SupplierName: '双溪橡胶有限公司',
         QualityCheck: null,
         AuditPrice: null,
         DeliveryDate: null,
@@ -324,7 +307,8 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
 
     ///供应商考核视图模型
    var uiVM=$scope.vm = {
-        SupplierId: null,
+       SupplierId: null,
+        SupplierShortName:null,
         SupplierName: null,
         QualityCheck: null,
         AuditPrice: null,
@@ -342,25 +326,41 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         OpPserson: null,
         OpDate: null,
         Optime: null,
-        OpSign: null,
+        OpSign: 'add',
         Id_key: null,
     }
    
    var initVm = _.clone(uiVM);
 
+    //操作部分
+    var operate = $scope.operate =Object.create(leeDataHandler.dataOperate);
+    //数据操作
+    var crud = leeDataHandler.dataOperate;
 
-    var vmManager = {
-        activeTab: 'initTab',
-    };
-    $scope.vmManager = vmManager;
-    var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    operate.saveAll = function (isValid) { };
-    operate.refresh = function () { };
+    operate.save = function (isValid) {
+        crud.add(operate, isValid, function () {
+            uiVM.TotalCheckScore = uiVM.QualityCheck * 0.3 + uiVM.AuditPrice * 0.2 + uiVM.DeliveryDate * 0.15 + uiVM.ActionLiven * 0.15 + uiVM.HSFGrade * 0.2;
+            $scope.promise = supplierDataOpService.saveAuditSupplierInfo($scope.vm).then(function (opResult) {
+                crud.handleSuccessResult(operate, opResult, function () {
+                    leeHelper.copyVm($scope.vm, vmManager.editItem);
+                    vmManager.init();
+                });
+            })
+        })
+    };
+    operate.refresh = function () {
+        crud.refresh(operate, function () {
+            vmManager.init();
+        })
+    };
 
 
     //视图管理器
     var vmManager = $scope.vmManager = {
+        init: function () {
+            $scope.vm = uiVM = _.clone(initVm);
+        },
         editDatas: [item],
         yearQuarter:'',
         //获取要考核的供应商数据列表
@@ -373,30 +373,37 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         displayEditForm:false,
         editSupplierAuditData: function (item) {
             vmManager.displayEditForm = true;
-            vmManager.editItem = $scope.vm = item;
+            vmManager.editItem = $scope.vm = uiVM = item;
         },
     };
 
-    var operate = $scope.operate = leeDataHandler.dataOperate;
+   
 });
 //供应商辅导管理
 purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierDataOpService, $modal) {
     var item = {
         SupplierId: 'D10069',
         SupplierShortName: '双溪橡胶',
+        SupplierName: null,
         QualityCheck: null,
         AuditPrice: null,
         DeliveryDate: null,
         ActionLiven: null,
         HSFGrade: null,
-        TotalCheckScore: 0,
+        TotalCheckScore: null,
         CheckLevel: null,
         RewardsWay: null,
         MaterialGrade: null,
         ManagerRisk: null,
-        SubstitutionSupplierId: null,
         SeasonNum: 0,
+        PlanTutorDate: '2016-12-12',
+        PlanTutorContent: 'hhassdf',
+        ActionTutorDate: null,
+        ActionTutorContent: null,
+        TutorResult: null,
+        QualityCheckProperty: null,
         Remark: null,
+        YearMonth: null,
         OpPserson: null,
         OpDate: null,
         Optime: null,
@@ -405,8 +412,9 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         isEditting: false,
     };
 
-    ///供应商考核视图模型
+    ///供应商辅导视图模型
     var uiVM = $scope.vm = {
+        SuppilerShortName: null,
         SupplierId: null,
         SupplierName: null,
         QualityCheck: null,
@@ -419,9 +427,15 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         RewardsWay: null,
         MaterialGrade: null,
         ManagerRisk: null,
-        SubstitutionSupplierId: null,
         SeasonNum: 0,
+        PlanTutorDate: '2016-12-12',
+        PlanTutorContent: 'hhassdf',
+        ActionTutorDate: null,
+        ActionTutorContent: null,
+        TutorResult: null,
+        QualityCheckProperty: null,
         Remark: null,
+        YearMonth: null,
         OpPserson: null,
         OpDate: null,
         Optime: null,
@@ -432,23 +446,13 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
     var initVm = _.clone(uiVM);
 
 
-    var vmManager = {
-        activeTab: 'initTab',
-    };
-    $scope.vmManager = vmManager;
-    var operate = Object.create(leeDataHandler.operateStatus);
-    $scope.operate = operate;
-    operate.saveAll = function (isValid) { };
-    operate.refresh = function () { };
-
-
     //视图管理器
     var vmManager = $scope.vmManager = {
         editDatas: [item],
         yearQuarter: '',
         //获取要考核的供应商数据列表
-        getAuditSupplierDatas: function () {
-            $scope.promise = supplierDataOpService.getAuditSupplierList(vmManager.yearQuarter).then(function (datas) {
+        getWaittingTourSupplier: function () {
+            $scope.searchPromise = supplierDataOpService.getWaittingTourSupplier(vmManager.yearQuarter).then(function (datas) {
                 vmManager.editDatas = datas;
             });
         },
@@ -456,34 +460,59 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         displayEditForm: false,
         editSupplierToturInfo: function (item) {
             vmManager.displayEditForm = true;
-            vmManager.editItem = $scope.vm = item;
+            vmManager.editItem = item;
+            vmManager.supTourEditModal.$promise.then(vmManager.supTourEditModal.show);
         },
+        supTourEditModal: $modal({
+            title: '供应商辅导信息编辑', content: '',
+            templateUrl: leeHelper.controllers.supplierManage + '/EditPurSupplierToturViewTpl/',
+            controller: function ($scope) {
+                $scope.edittingItem = _.clone(vmManager.editItem);
+                var editItem = $scope.vm = vmManager.editItem;
+                var crud = leeDataHandler.dataOperate;
+                var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
+                //保存供应商辅导信息
+                operate.savePurSupTurDatas = function (isValid) {
+                    crud.add(operate, isValid, function () {
+                        supplierDataOpService.savePurSupTourInfo($scope.vm).then(function (opResult) {
+                            if (opResult) {
+                                vmManager.editItem = $scope.vm;
+                                vmManager.supTourEditModal.$promise.then(vmManager.supTourEditModal.hide);
+                            }
+                        })
+                    })
+                };
+
+            },
+            show:false,
+        })
     };
 
-    var operate = $scope.operate = leeDataHandler.dataOperate;
+
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveAll = function (isValid) { };
+    operate.refresh = function () { };
+
+
 });
 //供应商稽核评分
 purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplierDataOpService, $modal) {
     var item = {
         SupplierId: 'D10069',
-        SupplierShortName: '双溪橡胶',
-        QualityCheck: null,
-        AuditPrice: null,
-        DeliveryDate: null,
-        ActionLiven: null,
-        HSFGrade: null,
-        TotalCheckScore: 0,
-        CheckLevel: null,
-        RewardsWay: null,
-        MaterialGrade: null,
-        ManagerRisk: null,
-        SubstitutionSupplierId: null,
-        SeasonNum: 0,
-        Remark: null,
-        OpPserson: null,
-        OpDate: null,
-        Optime: null,
+        SupplierName: '双溪橡胶',
+        SupplierProperty: null,
+        PurchaseType: null,
+        PurchaseMaterial: null,
+        LastPurchaseDate: null,
+        SupGradeType: null,
+        FirstGradeScore: null,
+        FirstGradeDate: null,
+        SecondGradeScore: null,
+        OpPerson: null,
         OpSign: null,
+        OpDate: null,
+        OpTime: null,
         Id_key: null,
         isEditting: false,
     };
@@ -514,35 +543,51 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
 
     var initVm = _.clone(uiVM);
 
-
-    var vmManager = {
-        activeTab: 'initTab',
-    };
-    $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.saveAll = function (isValid) { };
     operate.refresh = function () { };
-
 
     //视图管理器
     var vmManager = $scope.vmManager = {
         editDatas: [item],
         yearQuarter: '',
         //获取要考核的供应商数据列表
-        getAuditSupplierDatas: function () {
-            $scope.promise = supplierDataOpService.getAuditSupplierList(vmManager.yearQuarter).then(function (datas) {
+        getSupGradeInfo: function () {
+            $scope.promise = supplierDataOpService.getPurSupGradeInfo(vmManager.yearQuarter).then(function (datas) {
                 vmManager.editDatas = datas;
             });
         },
         editItem: null,
-        displayEditForm: false,
-        editSupplierAuditData: function (item) {
-            vmManager.displayEditForm = true;
+        editSupGradeInfo: function (item) {
             vmManager.editItem = $scope.vm = item;
+            vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.show);
         },
-    };
+        supGradeEditModal: $modal({
+            title: '新增供应商评分信息', content: '',
+            templateUrl: leeHelper.controllers.supplierManage + '/EditPurSupAuditToGradeTpl/',
+            controller: function ($scope) {
+                var editItem = $scope.vm = vmManager.editItem;
+                $scope.gradeTypes = [{ id: '供应商系统稽核评估', text: '供应商系统稽核评估' },
+                                    { id: '供应商产品无有害物质系统稽核评估', text: '供应商产品无有害物质系统稽核评估' },
+                                    { id: '系统评估表-针对小供应商', text: '系统评估表-针对小供应商' }];
 
-    var operate = $scope.operate = leeDataHandler.dataOperate;
+                var crud = leeDataHandler.dataOperate;
+                var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
+                //保存供应商辅导信息
+                operate.savePurSupGradeDatas = function (isValid) {
+                    crud.add(operate, isValid, function () {
+                        supplierDataOpService.savePurSupGradeInfo($scope.vm).then(function (opResult) {
+                            if (opResult) {
+                                vmManager.editItem = $scope.vm;
+                                vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.hide);
+                            }
+                        })
+                    })
+                };
+            },
+            show: false,
+        })
+    };
 });
 

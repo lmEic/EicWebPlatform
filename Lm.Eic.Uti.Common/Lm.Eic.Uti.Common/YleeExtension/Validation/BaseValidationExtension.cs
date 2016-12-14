@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System;
+
 
 namespace Lm.Eic.Uti.Common.YleeExtension.Validation
 {
@@ -17,7 +19,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
         {
             return string.IsNullOrEmpty(s);
         }
-
+        
         /// <summary>
         /// 字符串是否为数字
         /// </summary>
@@ -101,6 +103,66 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
                     return false;
             }
             return true;
+        }
+
+
+        /// <summary>
+        /// 年度、季度格式yyyyMM 转为时间段
+        /// </summary>
+        /// <param name="seasonDateNum">格式yyyyMM</param>
+        /// <param name="stardate">格式yyyyMMdd</param>
+        /// <param name="enddate">格式yyyyMMdd</param>
+        public static void SeasonNumConvertStartDateAndEndDate(this string seasonDateNum, out string  stardate, out string enddate)
+        {
+            try
+            {
+
+                string year = string.Empty ;
+                int DateNum = 0;
+                //
+                if (seasonDateNum == string.Empty)
+                {
+                    stardate = string.Empty;
+                    enddate = string.Empty;
+                    return;
+                }
+                if (seasonDateNum.Length != 6)
+                {
+                    DateNum = int.Parse(seasonDateNum.Substring(seasonDateNum.Length - 1, 1));
+                    year =DateTime.Now .Year .ToString() ;
+                }
+                else
+                {
+                    year = seasonDateNum.Substring(0, 4);
+                    DateNum = int.Parse(seasonDateNum.Substring(4, 2));
+                }
+                switch (DateNum)
+                {
+                    case 1:
+                        stardate = year + "0101";
+                        enddate = year + "0331";
+                        break;
+                    case 2:
+                        stardate = year + "0401";
+                        enddate = year + "0630";
+                        break;
+                    case 3:
+                        stardate = year + "0701";
+                        enddate = year + "0931";
+                        break;
+                    case 4:
+                        stardate = year + "1001";
+                        enddate = year + "1231";
+                        break;
+                    default:
+                        stardate = string.Empty;
+                        enddate = string.Empty;
+                        break;
+                }
+
+            }
+            catch (System.Exception ex) { throw new System.Exception(ex.InnerException.Message); }
+
         }
         #endregion List
     }

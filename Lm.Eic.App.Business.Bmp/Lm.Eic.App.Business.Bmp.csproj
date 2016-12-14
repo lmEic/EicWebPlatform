@@ -99,8 +99,12 @@
     <Compile Include="Purchase\PurchaseService.cs" />
     <Compile Include="Purchase\RequisitionManager.cs" />
     <Compile Include="Purchase\StockManager.cs" />
-    <Compile Include="Purchase\SupplierManager\SupplierCrud.cs" />
-    <Compile Include="Purchase\SupplierManager\SupplierManager.cs" />
+    <Compile Include="Purchase\SupplierManager\SupplierAuditManager.cs" />
+    <Compile Include="Purchase\SupplierManager\SupplierTutorManger.cs" />
+    <Compile Include="Purchase\SupplierManager\SupplierCertificateManager.cs" />
+    <Compile Include="Purchase\SupplierManager\SupplierConfigManagerCrud.cs" />
+    <Compile Include="Purchase\SupplierManager\SupplierConfigManager.cs" />
+    <Compile Include="Purchase\SupplierManager\SuppliersGradeManager.cs" />
     <Compile Include="Quantity\QuantityMangerFactory.cs" />
     <Compile Include="Quantity\QuantityServices.cs" />
     <Compile Include="Quantity\SampleManager\IPQCSample\IPQCSampleItems..cs" />

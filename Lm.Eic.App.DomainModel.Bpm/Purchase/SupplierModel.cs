@@ -13,7 +13,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     /// 供应商合格证书
     /// SuppliersQualifiedCertificate
     /// </summary>
-    public class SuppliersQualifiedCertificateModel
+    public class SupplierQualifiedCertificateModel
     {
         #region Model
         private string _supplierid;
@@ -131,7 +131,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     /// 供应商信息表
     /// SuppliersInfo
     /// </summary>
-    public class SuppliersInfoModel
+    public class SupplierInfoModel
     {
         #region Model
         private string _supplierid;
@@ -324,9 +324,18 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _supplierid = value; }
             get { return _supplierid; }
         }
+        private string _suppliershortname;
+        /// <summary>
+        ///供应商简称
+        /// </summary>
+        public string SupplierShortName
+        {
+            set { _suppliershortname = value; }
+            get { return _suppliershortname; }
+        }
         private string _suppliername;
         /// <summary>
-        ///供应商名称
+        ///供应商名称名
         /// </summary>
         public string SupplierName
         {
@@ -335,7 +344,224 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private double _qualitycheck;
         /// <summary>
-        ///品质
+        ///质量考核分
+        /// </summary>
+        public double QualityCheck
+        {
+            set { _qualitycheck = value; }
+            get { return _qualitycheck; }
+        }
+        private double _auditprice;
+        /// <summary>
+        ///价格考核分
+        /// </summary>
+        public double AuditPrice
+        {
+            set { _auditprice = value; }
+            get { return _auditprice; }
+        }
+        private double _deliverydate;
+        /// <summary>
+        ///交期考核分
+        /// </summary>
+        public double DeliveryDate
+        {
+            set { _deliverydate = value; }
+            get { return _deliverydate; }
+        }
+        private double _actionliven;
+        /// <summary>
+        ///配合度考核分
+        /// </summary>
+        public double ActionLiven
+        {
+            set { _actionliven = value; }
+            get { return _actionliven; }
+        }
+        private double _hsfgrade;
+        /// <summary>
+        ///HSF能力考核等级分
+        /// </summary>
+        public double HSFGrade
+        {
+            set { _hsfgrade = value; }
+            get { return _hsfgrade; }
+        }
+        private double _totalcheckscore;
+        /// <summary>
+        ///考核总分
+        /// </summary>
+        public double TotalCheckScore
+        {
+            set { _totalcheckscore = value; }
+            get { return _totalcheckscore; }
+        }
+        private string _checklevel;
+        /// <summary>
+        ///考核级别
+        /// </summary>
+        public string CheckLevel
+        {
+            set { _checklevel = value; }
+            get { return _checklevel; }
+        }
+        private string _rewardsway;
+        /// <summary>
+        ///奖惩方式
+        /// </summary>
+        public string RewardsWay
+        {
+            set { _rewardsway = value; }
+            get { return _rewardsway; }
+        }
+        private string _materialgrade;
+        /// <summary>
+        ///供应商风险等级
+        /// </summary>
+        public string MaterialGrade
+        {
+            set { _materialgrade = value; }
+            get { return _materialgrade; }
+        }
+        private string _managerrisk;
+        /// <summary>
+        ///供应商管理风险
+        /// </summary>
+        public string ManagerRisk
+        {
+            set { _managerrisk = value; }
+            get { return _managerrisk; }
+        }
+        private string _substitutionsupplierid;
+        /// <summary>
+        ///替代厂商
+        /// </summary>
+        public string SubstitutionSupplierId
+        {
+            set { _substitutionsupplierid = value; }
+            get { return _substitutionsupplierid; }
+        }
+        private string _seasondatenum;
+        /// <summary>
+        ///第几季度
+        /// </summary>
+        public string SeasonDateNum
+        {
+            set { _seasondatenum = value; }
+            get { return _seasondatenum; }
+        }
+        private string _parameterkey;
+        /// <summary>
+        ///关键字
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterkey = value; }
+            get { return _parameterkey; }
+        }
+        private string _remark;
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string Remark
+        {
+            set { _remark = value; }
+            get { return _remark; }
+        }
+        private string _oppserson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPserson
+        {
+            set { _oppserson = value; }
+            get { return _oppserson; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
+
+
+    /// <summary>
+    ///品质考核——实地辅导计划/执行表
+    /// </summary>
+    public class SupplierSeasonTutorModel
+    {
+        #region Model
+        private string _supplierid;
+        /// <summary>
+        ///供应商Id
+        /// </summary>
+        public string SupplierId
+        {
+            set { _supplierid = value; }
+            get { return _supplierid; }
+        }
+        private string _suppilershortname;
+        /// <summary>
+        ///供应商简称
+        /// </summary>
+        public string SuppilerShortName
+        {
+            set { _suppilershortname = value; }
+            get { return _suppilershortname; }
+        }
+        private string _suppliername;
+        /// <summary>
+        ///供应商全称
+        /// </summary>
+        public string SupplierName
+        {
+            set { _suppliername = value; }
+            get { return _suppliername; }
+        }
+        private string _qualityCheckCategory;
+        /// <summary>
+        ///辅导属性（性品质异常、考核分低）
+        /// </summary>
+        public string QualityCheckCategory
+        {
+            set { _qualityCheckCategory = value; }
+            get { return _qualityCheckCategory; }
+        }
+        private double _qualitycheck;
+        /// <summary>
+        ///质量考核
         /// </summary>
         public double QualityCheck
         {
@@ -389,197 +615,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _checklevel;
         /// <summary>
-        ///考核等级
-        /// </summary>
-        public string CheckLevel
-        {
-            set { _checklevel = value; }
-            get { return _checklevel; }
-        }
-        private string _rewardsway;
-        /// <summary>
-        ///奖惩方式
-        /// </summary>
-        public string RewardsWay
-        {
-            set { _rewardsway = value; }
-            get { return _rewardsway; }
-        }
-        private string _materialgrade;
-        /// <summary>
-        ///供应商风险等级
-        /// </summary>
-        public string MaterialGrade
-        {
-            set { _materialgrade = value; }
-            get { return _materialgrade; }
-        }
-        private string _managerrisk;
-        /// <summary>
-        ///供应商管理风险
-        /// </summary>
-        public string ManagerRisk
-        {
-            set { _managerrisk = value; }
-            get { return _managerrisk; }
-        }
-        private string _substitutionsupplierid;
-        /// <summary>
-        ///替代厂商
-        /// </summary>
-        public string SubstitutionSupplierId
-        {
-            set { _substitutionsupplierid = value; }
-            get { return _substitutionsupplierid; }
-        }
-        private int _seasonnum;
-        /// <summary>
-        ///第几季度
-        /// </summary>
-        public int SeasonNum
-        {
-            set { _seasonnum = value; }
-            get { return _seasonnum; }
-        }
-        private string _remark;
-        /// <summary>
-        ///备注
-        /// </summary>
-        public string Remark
-        {
-            set { _remark = value; }
-            get { return _remark; }
-        }
-        private string _oppserson;
-        /// <summary>
-        ///操作人
-        /// </summary>
-        public string OpPserson
-        {
-            set { _oppserson = value; }
-            get { return _oppserson; }
-        }
-        private DateTime _opdate;
-        /// <summary>
-        ///操作日期
-        /// </summary>
-        public DateTime OpDate
-        {
-            set { _opdate = value; }
-            get { return _opdate; }
-        }
-        private DateTime _optime;
-        /// <summary>
-        ///操作时间
-        /// </summary>
-        public DateTime Optime
-        {
-            set { _optime = value; }
-            get { return _optime; }
-        }
-        private string _opsign;
-        /// <summary>
-        ///操作标识
-        /// </summary>
-        public string OpSign
-        {
-            set { _opsign = value; }
-            get { return _opsign; }
-        }
-        private decimal _id_key;
-        /// <summary>
-        ///自增键
-        /// </summary>
-        public decimal Id_key
-        {
-            set { _id_key = value; }
-            get { return _id_key; }
-        }
-        #endregion Model
-    }
-
-
-    /// <summary>
-    ///品质考核——实地辅导计划/执行表
-    /// </summary>
-    public class SupplierSeasonAuditTutorModel
-    {
-        #region Model
-        private string _supplierid;
-        /// <summary>
-        ///供应商编号
-        /// </summary>
-        public string SupplierId
-        {
-            set { _supplierid = value; }
-            get { return _supplierid; }
-        }
-        private string _suppliername;
-        /// <summary>
-        ///供应商名称
-        /// </summary>
-        public string SupplierName
-        {
-            set { _suppliername = value; }
-            get { return _suppliername; }
-        }
-        private double _qualitycheck;
-        /// <summary>
-        ///品质考核
-        /// </summary>
-        public double QualityCheck
-        {
-            set { _qualitycheck = value; }
-            get { return _qualitycheck; }
-        }
-        private double _auditprice;
-        /// <summary>
-        ///价格考核
-        /// </summary>
-        public double AuditPrice
-        {
-            set { _auditprice = value; }
-            get { return _auditprice; }
-        }
-        private double _deliverydate;
-        /// <summary>
-        ///交期考核
-        /// </summary>
-        public double DeliveryDate
-        {
-            set { _deliverydate = value; }
-            get { return _deliverydate; }
-        }
-        private double _actionliven;
-        /// <summary>
-        ///配合度考核
-        /// </summary>
-        public double ActionLiven
-        {
-            set { _actionliven = value; }
-            get { return _actionliven; }
-        }
-        private double _hsfgrade;
-        /// <summary>
-        ///HSF等级考核
-        /// </summary>
-        public double HSFGrade
-        {
-            set { _hsfgrade = value; }
-            get { return _hsfgrade; }
-        }
-        private double _totalcheckscore;
-        /// <summary>
-        ///总分考核
-        /// </summary>
-        public double TotalCheckScore
-        {
-            set { _totalcheckscore = value; }
-            get { return _totalcheckscore; }
-        }
-        private string _checklevel;
-        /// <summary>
-        ///等级评分
+        ///等级
         /// </summary>
         public string CheckLevel
         {
@@ -613,68 +649,77 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _managerrisk = value; }
             get { return _managerrisk; }
         }
-        private int _seasonnum;
+        private string _seasonnum;
         /// <summary>
-        ///季度考核总分
+        ///年季度
         /// </summary>
-        public int SeasonNum
+        public string SeasonNum
         {
             set { _seasonnum = value; }
             get { return _seasonnum; }
         }
-        private string _plantoturdate;
+        private string _parameterkey;
         /// <summary>
-        ///计划辅导日期
+        ///关键字
         /// </summary>
-        public string PlanToturDate
+        public string ParameterKey
         {
-            set { _plantoturdate = value; }
-            get { return _plantoturdate; }
+            set { _parameterkey = value; }
+            get { return _parameterkey; }
         }
-        private string _plantoturcontent;
+        private string _plantutordate;
         /// <summary>
-        ///计划辅导内容
+        ///预计辅导、实地稽核时间
         /// </summary>
-        public string PlanToturContent
+        public string PlanTutorDate
         {
-            set { _plantoturcontent = value; }
-            get { return _plantoturcontent; }
+            set { _plantutordate = value; }
+            get { return _plantutordate; }
         }
-        private string _actiontoturdate;
+        private string _plantutorcontent;
         /// <summary>
-        ///实际辅导日期
+        ///预计辅导、实地稽核内容
         /// </summary>
-        public string ActionToturDate
+        public string PlanTutorContent
         {
-            set { _actiontoturdate = value; }
-            get { return _actiontoturdate; }
+            set { _plantutorcontent = value; }
+            get { return _plantutorcontent; }
         }
-        private string _actiontoturcontent;
+        private string _actiontutordate;
         /// <summary>
-        ///实际辅导内容
+        ///实地 辅导、实地稽核时间
         /// </summary>
-        public string ActionToturContent
+        public string ActionTutorDate
         {
-            set { _actiontoturcontent = value; }
-            get { return _actiontoturcontent; }
+            set { _actiontutordate = value; }
+            get { return _actiontutordate; }
         }
-        private string _toturresult;
+        private string _actiontutorcontent;
         /// <summary>
-        ///辅导结果
+        ///实地辅导、实地稽核内容
         /// </summary>
-        public string ToturResult
+        public string ActionTutorContent
         {
-            set { _toturresult = value; }
-            get { return _toturresult; }
+            set { _actiontutorcontent = value; }
+            get { return _actiontutorcontent; }
         }
-        private string _qualitycheckproperty;
+        private string _tutorresult;
         /// <summary>
-        ///品质考核属性
+        ///结案状况
         /// </summary>
-        public string QualityCheckProperty
+        public string TutorResult
         {
-            set { _qualitycheckproperty = value; }
-            get { return _qualitycheckproperty; }
+            set { _tutorresult = value; }
+            get { return _tutorresult; }
+        }
+        private string _yearmonth;
+        /// <summary>
+        ///年/月
+        /// </summary>
+        public string YearMonth
+        {
+            set { _yearmonth = value; }
+            get { return _yearmonth; }
         }
         private string _remark;
         /// <summary>
@@ -684,15 +729,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         {
             set { _remark = value; }
             get { return _remark; }
-        }
-        private string _yearmonth;
-        /// <summary>
-        ///年月份
-        /// </summary>
-        public string YearMonth
-        {
-            set { _yearmonth = value; }
-            get { return _yearmonth; }
         }
         private string _oppserson;
         /// <summary>
@@ -716,14 +752,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         /// <summary>
         ///操作时间
         /// </summary>
-        public DateTime Optime
+        public DateTime OpTime
         {
             set { _optime = value; }
             get { return _optime; }
         }
         private string _opsign;
         /// <summary>
-        ///操作标志
+        ///操作标识
         /// </summary>
         public string OpSign
         {
@@ -743,10 +779,151 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     }
 
 
+
+    /// <summary>
+    /// 供应商自评复评明细表 
+    /// </summary>
+    public class SupplierGradeInfoModel
+    {
+        #region Model
+        private string _supplierid;
+        /// <summary>
+        ///供应商编号
+        /// </summary>
+        public string SupplierId
+        {
+            set { _supplierid = value; }
+            get { return _supplierid; }
+        }
+        private string _suppliername;
+        /// <summary>
+        ///供应商名称
+        /// </summary>
+        public string SupplierName
+        {
+            set { _suppliername = value; }
+            get { return _suppliername; }
+        }
+        private string _supplierproperty;
+        /// <summary>
+        ///供应商类别
+        /// </summary>
+        public string SupplierProperty
+        {
+            set { _supplierproperty = value; }
+            get { return _supplierproperty; }
+        }
+        private string _purchasetype;
+        /// <summary>
+        ///采购类别
+        /// </summary>
+        public string PurchaseType
+        {
+            set { _purchasetype = value; }
+            get { return _purchasetype; }
+        }
+        private string _purchasematerial;
+        /// <summary>
+        ///采购料件
+        /// </summary>
+        public string PurchaseMaterial
+        {
+            set { _purchasematerial = value; }
+            get { return _purchasematerial; }
+        }
+        private DateTime _lastpurchasedate;
+        /// <summary>
+        ///上次采购日期
+        /// </summary>
+        public DateTime LastPurchaseDate
+        {
+            set { _lastpurchasedate = value; }
+            get { return _lastpurchasedate; }
+        }
+        private string _supgradetype;
+        /// <summary>
+        ///评分类别
+        /// </summary>
+        public string SupGradeType
+        {
+            set { _supgradetype = value; }
+            get { return _supgradetype; }
+        }
+        private double _firstgradescore;
+        /// <summary>
+        ///首评分数
+        /// </summary>
+        public double FirstGradeScore
+        {
+            set { _firstgradescore = value; }
+            get { return _firstgradescore; }
+        }
+        private DateTime _firstgradedate;
+        /// <summary>
+        ///首评日期
+        /// </summary>
+        public DateTime FirstGradeDate
+        {
+            set { _firstgradedate = value; }
+            get { return _firstgradedate; }
+        }
+        private double _secondgradescore;
+        /// <summary>
+        ///复评分数
+        /// </summary>
+        public double SecondGradeScore
+        {
+            set { _secondgradescore = value; }
+            get { return _secondgradescore; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标志
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
     #endregion
-
-
-
 
     #region  展示模型
     /// <summary>

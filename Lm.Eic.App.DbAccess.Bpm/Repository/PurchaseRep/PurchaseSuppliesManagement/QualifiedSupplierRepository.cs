@@ -12,8 +12,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagem
    /// <summary>
    /// 供应商合格文件
     /// </summary>
-  public interface ISupplierQualifiedCertificateRepository : IRepository<SuppliersQualifiedCertificateModel> { }
-  public class SupplierQualifiedCertifcateRepository : BpmRepositoryBase<SuppliersQualifiedCertificateModel>, ISupplierQualifiedCertificateRepository
+  public interface ISupplierQualifiedCertificateRepository : IRepository<SupplierQualifiedCertificateModel> { }
+  public class SupplierQualifiedCertifcateRepository : BpmRepositoryBase<SupplierQualifiedCertificateModel>, ISupplierQualifiedCertificateRepository
     { }
 
 
@@ -21,8 +21,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagem
   /// <summary>
   /// 供应商信息
   /// </summary>
-  public interface ISupplierInfoRepository : IRepository<SuppliersInfoModel> { }
-  public class SupplierInfoRepository : BpmRepositoryBase<SuppliersInfoModel>, ISupplierInfoRepository 
+  public interface ISupplierInfoRepository : IRepository<SupplierInfoModel> { }
+  public class SupplierInfoRepository : BpmRepositoryBase<SupplierInfoModel>, ISupplierInfoRepository 
   { }
 
 
@@ -37,7 +37,15 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagem
     /// <summary>
     ///   供应商考核实地辅导计划/执行表
     /// </summary>
-    public interface ISupplierSeasonAuditTutorRepository : IRepository<SupplierSeasonAuditTutorModel> { }
-    public class SupplierSeasonAuditTutorRepository:BpmRepositoryBase <SupplierSeasonAuditTutorModel>, ISupplierSeasonAuditTutorRepository
+    public interface ISupplierSeasonAuditTutorRepository : IRepository<SupplierSeasonTutorModel> { }
+    public class SupplierSeasonAuditTutorRepository:BpmRepositoryBase <SupplierSeasonTutorModel>, ISupplierSeasonAuditTutorRepository
+    { }
+
+
+    /// <summary>
+    /// 供应商自评复评明细表 
+    /// </summary>
+    public interface ISupplierGradeInfoRepository:IRepository<SupplierGradeInfoModel> { }
+    public class SupplierGradeInfoRepository: BpmRepositoryBase<SupplierGradeInfoModel>, ISupplierGradeInfoRepository
     { }
 }
