@@ -219,7 +219,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 orderDetails = MocService.OrderManage.GetOrderDetails(orderId);
 
             if (orderDetails == null)
-                orderDetails = DailyReportConfigCrudFactory.DailyOrderConfigCrud.GetOrderDetails(orderId);
+                orderDetails = DailyReportCrudFactory.DailyOrderCrud.GetOrderDetails(orderId);
 
             if (orderDetails != null)
                 _orderDetailsList.Add(orderDetails);

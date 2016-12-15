@@ -14,36 +14,45 @@ using System.Text;
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 {
 
-    internal class DailyReportConfigCrudFactory
+    internal class DailyReportCrudFactory
     {
         /// <summary>
         ///工序管理
         /// </summary>
-        public static ProductFlowConfigCrud ProductFlowConfigCrud
-        { get { return OBulider.BuildInstance<ProductFlowConfigCrud>(); } }
+        public static ProductFlowCrud ProductFlowCrud
+        { get { return OBulider.BuildInstance<ProductFlowCrud>(); } }
 
         /// <summary>
         /// 机台
         /// </summary>
-        public static MachineConfigCrud MachineConfigCrud
+        public static MachineCrud MachineCrud
         {
-            get { return OBulider.BuildInstance<MachineConfigCrud>(); }
+            get { return OBulider.BuildInstance<MachineCrud>(); }
         }
 
         /// <summary>
         /// 非生产原因
         /// </summary>
-        public static NonProductionReasonConfigCrud NonProductionReasonConfigCrud
+        public static NonProductionReasonCrud NonProductionReasonCrud
         {
-            get { return OBulider.BuildInstance<NonProductionReasonConfigCrud>(); }
+            get { return OBulider.BuildInstance<NonProductionReasonCrud>(); }
         }
 
         /// <summary>
         /// 工单信息
         /// </summary>
-        public static DailyOrderConfigCrud DailyOrderConfigCrud
+        public static DailyOrderCrud DailyOrderCrud
         {
-            get { return OBulider.BuildInstance<DailyOrderConfigCrud>(); }
+            get { return OBulider.BuildInstance<DailyOrderCrud>(); }
+        }
+        /// <summary>
+        /// 出勤信息
+        /// </summary>
+
+        public static ReportsAttendenceCrud ReportsAttendenceCrud
+        {
+
+            get { return OBulider.BuildInstance<ReportsAttendenceCrud>(); }
         }
     }
 
@@ -51,9 +60,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 工序CRUD
     /// </summary>
-    internal class ProductFlowConfigCrud : CrudBase<ProductFlowModel, IProductFlowRepositoryRepository>
+    internal class ProductFlowCrud : CrudBase<ProductFlowModel, IProductFlowRepositoryRepository>
     {
-        public ProductFlowConfigCrud() : base(new ProductFlowRepositoryRepository(), "工艺")
+        public ProductFlowCrud() : base(new ProductFlowRepositoryRepository(), "工艺")
         { }
 
         #region Store
@@ -180,7 +189,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                             var orderDetails = MocService.OrderManage.GetOrderDetails(qryDto.OrderId);
 
                             if (orderDetails == null)
-                                orderDetails = DailyReportConfigCrudFactory.DailyOrderConfigCrud.GetOrderDetails(qryDto.OrderId);
+                                orderDetails = DailyReportCrudFactory.DailyOrderCrud.GetOrderDetails(qryDto.OrderId);
 
                             if (orderDetails != null)
                                 qryDto.ProductName = orderDetails.ProductName;
@@ -225,9 +234,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 机台CRUD
     /// </summary>
-    internal class MachineConfigCrud : CrudBase<MachineModel, IMachineRepositoryRepository>
+    internal class MachineCrud : CrudBase<MachineModel, IMachineRepositoryRepository>
     {
-        public MachineConfigCrud() : base(new MachineRepositoryRepository(), "机台管理")
+        public MachineCrud() : base(new MachineRepositoryRepository(), "机台管理")
         {
         }
 
@@ -272,9 +281,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 非生产原因CRUD
     /// </summary>
-    internal class NonProductionReasonConfigCrud : CrudBase<NonProductionReasonModel, INonProductionReasonModelRepository>
+    internal class NonProductionReasonCrud : CrudBase<NonProductionReasonModel, INonProductionReasonModelRepository>
     {
-        public NonProductionReasonConfigCrud() : base(new NonProductionReasonModelRepository(), "非生产原因")
+        public NonProductionReasonCrud() : base(new NonProductionReasonModelRepository(), "非生产原因")
         {
         }
 
@@ -319,9 +328,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 工单CRUD
     /// </summary>
-    internal class DailyOrderConfigCrud : CrudBase<DReportsOrderModel, IDReportsOrderModelRepository>
+    internal class DailyOrderCrud : CrudBase<DReportsOrderModel, IDReportsOrderModelRepository>
     {
-        public DailyOrderConfigCrud() : base(new DReportsOrderModelRepository(), "工单配置")
+        public DailyOrderCrud() : base(new DReportsOrderModelRepository(), "工单配置")
         {
         }
 
@@ -360,6 +369,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             catch (Exception) {throw new NotImplementedException();}
         }
 
+    }
+
+
+    internal class ReportsAttendenceCrud : CrudBase<ReportsAttendenceModel, IReportsAttendenceModelRepository>
+    {
+        public ReportsAttendenceCrud():base (new ReportsAttendenceModelRepository(),"日报出勤人员时数表")
+        { }
+        protected override void AddCrudOpItems()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
