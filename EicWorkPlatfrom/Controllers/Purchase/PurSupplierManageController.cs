@@ -240,7 +240,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult GetPurSupGradeInfo(string yearQuarter)
         {
-            var datas = 0;
+            var datas = PurchaseService.PurSupplierManager.SuppliersGradeManager.GetPurSupGradeInfoBy(yearQuarter);
         
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
@@ -252,7 +252,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult SavePurSupGradeData(SupplierGradeInfoModel entity)
         {
-            var opResult = 1;
+            var opResult = PurchaseService.PurSupplierManager.SuppliersGradeManager.SavePurSupGradeData(entity);
             return Json(opResult);
         }
         #endregion

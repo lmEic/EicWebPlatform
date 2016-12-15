@@ -46,6 +46,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         public DbSet<DReportsOrderModel> DReportOrder { get; set; }
 
         public DbSet<ProductFlowModel> ProductFlow { get; set; }
+        public DbSet <ReportsAttendenceModel> ReportsAttendence { get; set; }
 
         #endregion
 
@@ -99,6 +100,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new NonProductionModelMapping());
             //非生产工时工单表
             modelBuilder.Configurations.Add(new DReportsOrderModelMapping());
+            //出勤人员表
+            modelBuilder.Configurations.Add(new ReportsAttendenceModelMapping ());
             #endregion
            
             

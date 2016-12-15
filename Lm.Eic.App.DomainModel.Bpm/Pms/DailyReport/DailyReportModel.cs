@@ -1300,6 +1300,117 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         #endregion Model
     }
 
+
+   /// <summary>
+   /// 日报出勤时数表
+   /// </summary>
+    public class ReportsAttendenceModel
+    {
+
+        #region Model
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department { get; set; }
+        /// <summary>
+        ///站别
+        /// </summary>
+        public string AttendenceStation { get; set; }
+        /// <summary>
+        ///应到人数
+        /// </summary>
+        public int ShouldAttendenceUserCount { get; set; }
+        /// <summary>
+        ///应到时数
+        /// </summary>
+        public double ShouldAttendenceHours { get; set; }
+        /// <summary>
+        ///请假人数
+        /// </summary>
+        public int AskLeaveUserCount { get; set; }
+        /// <summary>
+        ///请假时数
+        /// </summary>
+        public double AskLeaveHours { get; set; }
+        /// <summary>
+        ///旷工人数
+        /// </summary>
+        public int HaveLeaveUserCount { get; set; }
+        /// <summary>
+        ///旷工时数
+        /// </summary>
+        public double HaveLeaveHours { get; set; }
+        /// <summary>
+        ///援出人数
+        /// </summary>
+        public int SupportOutUserCount { get; set; }
+        /// <summary>
+        ///援出时数
+        /// </summary>
+        public double SupportOutHours { get; set; }
+        /// <summary>
+        ///实到人数
+        /// </summary>
+        public int RealityWorkingUserCount { get; set; }
+        /// <summary>
+        ///实到时数
+        /// </summary>
+        public double RealityWorkingHours { get; set; }
+        /// <summary>
+        ///新人员数
+        /// </summary>
+        public int InNewWorkerCount { get; set; }
+        /// <summary>
+        ///新人员时数
+        /// </summary>
+        public double InNewworkerHours { get; set; }
+        /// <summary>
+        ///援入人数
+        /// </summary>
+        public int SupportInUserCount { get; set; }
+        /// <summary>
+        ///援入时数
+        /// </summary>
+        public double SupportInHours { get; set; }
+        /// <summary>
+        ///加班人数
+        /// </summary>
+        public int OverWorkUserCount { get; set; }
+        /// <summary>
+        ///加班时数
+        /// </summary>
+        public double OverWorkHours { get; set; }
+        /// <summary>
+        ///出勤总时数
+        /// </summary>
+        public double AttendenceTotalHours { get; set; }
+        /// <summary>
+        ///报表日期
+        /// </summary>
+        public DateTime ReportDate { get; set; }
+        /// <summary>
+        ///操作人员
+        /// </summary>
+        public string OpPerson { get; set; }
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate { get; set; }
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime { get; set; }
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign { get; set; }
+        /// <summary>
+        ///自增键 
+        /// </summary>
+        public decimal Id_key { get; set; }
+        #endregion Model
+    }
+
     #endregion
 
 

@@ -39,36 +39,14 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             get { return OBulider.BuildInstance<SupplierTutorManger>(); }
         }
+        /// <summary>
+        /// 供应商稽核评分管理
+        /// </summary>
+        public SuppliersGradeManager SuppliersGradeManager
+        {
+            get { return OBulider.BuildInstance<SuppliersGradeManager>(); }
+        }
     }
-    /// <summary>
-    /// 内部配置管理
-    /// </summary>
-    internal class PursupplierManagerFactory
-    {
-        /// <summary>
-        /// 供应商证书管理
-        /// </summary>
-        public static SupplierCertificateManager SupplierCertificateManager
-        {
-            get { return OBulider.BuildInstance<SupplierCertificateManager>(); }
-        }
-        /// <summary>
-        /// 供应商考核管理
-        /// </summary>
-        public static SupplierAuditManager SupplierAuditManager
-        {
-            get { return OBulider.BuildInstance<SupplierAuditManager>(); }
-        }
-        /// <summary>
-        /// 供应商辅导管理
-        /// </summary>
-        public static SupplierTutorManger SupplierTutorManger
-        {
-            get { return OBulider.BuildInstance<SupplierTutorManger>(); }
-        }
-
-    }
-
 
 
 }

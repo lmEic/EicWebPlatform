@@ -3,9 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Lm.Eic.App.DomainModel.Bpm.Purchase;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
+    internal class  TutorManagerFactory
+    {
+        /// <summary>
+        /// 供应商辅导管理
+        /// </summary>
+        public static SupplierTutorManger SupplierTutorManger
+        {
+            get { return OBulider.BuildInstance<SupplierTutorManger>(); }
+        }
+    }
     /// <summary>
     /// 供应商辅导\计划管理
     /// </summary>
@@ -62,7 +73,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             if (m != null)
             {
                 model = supplierSeasonAuditModelTo(m);
-                model.QualityCheckCategory = "考核低于80";
+                model.TutorCategory = "考核低于80";
 
             }
             return model;

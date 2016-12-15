@@ -88,5 +88,19 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
             this.ToTable("Pms_DReportsOrder");
         }
     }
+    /// <summary>
+    /// Pms_DReportsAttendence
+    /// </summary>
+
+    public class ReportsAttendenceModelMapping : EntityTypeConfiguration<ReportsAttendenceModel>
+    {
+        public ReportsAttendenceModelMapping()
+        {
+            this.HasKey(t => t.Id_key );
+            this.Property(t => t.Id_key ).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Pms_DReportsAttendence");
+        }
+    }
+
 
 }

@@ -20,24 +20,24 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <summary>
         /// 产品工艺设置
         /// </summary>
-        public ProductFlowConfig ProductFlowSetter
+        public ProductFlowManager ProductFlowSetter
         {
-            get { return OBulider.BuildInstance<ProductFlowConfig>(); }
+            get { return OBulider.BuildInstance<ProductFlowManager>(); }
         }
         /// <summary>
         /// 机台设置
         /// </summary>
-        public MachineConfig MachineSetter
+        public MachineManager MachineSetter
         {
-            get { return OBulider.BuildInstance<MachineConfig>(); }
+            get { return OBulider.BuildInstance<MachineManager>(); }
         }
 
         /// <summary>
         /// 非生产原因设置
         /// </summary>
-        public NonProductionReasonConfig NonProductionReasonSetter
+        public NonProductionReasonManager NonProductionReasonSetter
         {
-            get { return OBulider.BuildInstance<NonProductionReasonConfig>(); }
+            get { return OBulider.BuildInstance<NonProductionReasonManager>(); }
         }
         /// <summary>
         /// 
@@ -51,7 +51,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 产品工艺管理器
     /// </summary>
-    public class ProductFlowConfig
+    public class ProductFlowManager
     {
         #region Find
 
@@ -62,11 +62,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string departemant)
         {
-            return DailyReportConfigCrudFactory.ProductFlowConfigCrud.GetProductFlowOverviewListBy(departemant);
+            return DailyReportCrudFactory.ProductFlowCrud.GetProductFlowOverviewListBy(departemant);
         }
         public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string departemant ,string ProductName)
         {
-            return DailyReportConfigCrudFactory.ProductFlowConfigCrud.GetProductFlowOverviewListBy(departemant, ProductName);
+            return DailyReportCrudFactory.ProductFlowCrud.GetProductFlowOverviewListBy(departemant, ProductName);
         }
         /// <summary>
         /// 获取产品工艺总览
@@ -75,7 +75,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public  ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
-            return DailyReportConfigCrudFactory.ProductFlowConfigCrud.GetProductFlowOverviewBy(dto);
+            return DailyReportCrudFactory.ProductFlowCrud.GetProductFlowOverviewBy(dto);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<ProductFlowModel> GetProductFlowListBy(QueryDailyReportDto dto)
         {
-            return DailyReportConfigCrudFactory.ProductFlowConfigCrud.FindBy(dto);
+            return DailyReportCrudFactory.ProductFlowCrud.FindBy(dto);
         }
 
     
@@ -137,8 +137,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             //先依据部门和品名进行数据库清除 然后批量添加进数据库
             if (modelList.Count > 0)
             {
-                DailyReportConfigCrudFactory.ProductFlowConfigCrud.DeleteProductFlowModelBy(modelList[0].Department, modelList[0].ProductName);
-                return DailyReportConfigCrudFactory.ProductFlowConfigCrud.AddProductFlowModelList(modelList);
+                DailyReportCrudFactory.ProductFlowCrud.DeleteProductFlowModelBy(modelList[0].Department, modelList[0].ProductName);
+                return DailyReportCrudFactory.ProductFlowCrud.AddProductFlowModelList(modelList);
             }
             else
             {
@@ -152,7 +152,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 机台配置管理器
     /// </summary>
-    public class MachineConfig
+    public class MachineManager
     {
         /// <summary>
         /// 获取机台列表
@@ -161,7 +161,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<MachineModel> GetMachineListBy(string department)
         {
-            return DailyReportConfigCrudFactory.MachineConfigCrud.GetMachineListBy(department);
+            return DailyReportCrudFactory.MachineCrud.GetMachineListBy(department);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public OpResult AddMachineRecord(MachineModel model)
         {
-            return DailyReportConfigCrudFactory.MachineConfigCrud.AddMachineRecord(model);
+            return DailyReportCrudFactory.MachineCrud.AddMachineRecord(model);
         }
       
     }
@@ -179,7 +179,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 非生产原因管理器
     /// </summary>
-    public class NonProductionReasonConfig
+    public class NonProductionReasonManager
     {
         /// <summary>
         /// 获取非生产原因列表
@@ -188,7 +188,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<NonProductionReasonModel> GetNonProductionReasonListBy(string department)
         {
-            return DailyReportConfigCrudFactory.NonProductionReasonConfigCrud.GetNonProductionListBy(department);
+            return DailyReportCrudFactory.NonProductionReasonCrud.GetNonProductionListBy(department);
         }
 
         /// <summary>
@@ -198,9 +198,20 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public OpResult AddNonProductionRecord(NonProductionReasonModel model)
         {
-            return DailyReportConfigCrudFactory.NonProductionReasonConfigCrud.AddNonProductionRecord(model);
+            return DailyReportCrudFactory.NonProductionReasonCrud.AddNonProductionRecord(model);
         }
 
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+
+    public class ReportAttendenceManager
+    {
+        public OpResult SaveReportAttendenceEntity(ReportsAttendenceModel entity)
+        {
+            return DailyReportCrudFactory.ReportsAttendenceCrud.Store(entity);
+        }
     }
 
 
