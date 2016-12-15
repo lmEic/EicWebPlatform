@@ -220,7 +220,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public List<WipProductCompleteInputDataModel> getProdcutCompleteInPutDailyRrportList(string productDatestring)
         {
             DateTime productDate = Convert.ToDateTime(productDatestring);
-            return DailyReportConfigCrudFactory.LmProDailyReportCrud.getProdcutCompleteInPutDailyRrportList(productDate);
+            return DailyReportCrudFactory.LmProDailyReportCrud.getProdcutCompleteInPutDailyRrportList(productDate);
         }
     }
 
