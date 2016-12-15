@@ -27,12 +27,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string yearQuarter)
         {
 
-            return SupplierCrudFactory.SupplierGradeInfoCrud.GetPurSupGradeInfoBy("2016");
+            return SupplierCrudFactory.SupplierGradeInfoCrud.GetPurSupGradeInfoBy(yearQuarter);
         }
 
         public OpResult SavePurSupGradeData(SupplierGradeInfoModel entity)
         {
-            if (SupplierCrudFactory.SupplierGradeInfoCrud.IsExist(entity.ParameterKey  ))
+            entity.GradeYear = entity.FirstGradeDate.Year.ToString();
+            entity.ParameterKey = entity.SupplierId + "&" + entity.GradeYear + "&" + entity.SupGradeType;
+
+            if (SupplierCrudFactory.SupplierGradeInfoCrud.IsExist(entity.ParameterKey))
                 entity.OpSign = "edit";
             else entity.OpSign = "add";
       

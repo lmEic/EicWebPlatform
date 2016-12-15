@@ -390,11 +390,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         OpResult AddSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
-          
-            entity.GradeYear = entity.FirstGradeDate.Year.ToString();
-            entity.ParameterKey = entity.SupplierId + "&" + entity.GradeYear + "&" + entity.SupGradeType;
-
-
             entity.LastPurchaseDate = DateTime.Now.Date;
             entity.PurchaseType = "主要";
             entity.PurchaseMaterial = "主要111";
