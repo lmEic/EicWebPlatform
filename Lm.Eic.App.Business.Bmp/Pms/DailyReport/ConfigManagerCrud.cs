@@ -380,6 +380,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             throw new NotImplementedException();
         }
+        OpResult AddReportAttendence(ReportsAttendenceModel entity)
+        {
+            return irep.Insert(entity).ToOpResult(OpContext);
+        }
+
+        OpResult EditReportAttendece(ReportsAttendenceModel entity)
+        {
+            return irep.Update(e => e.Department == entity.Department
+                                     &&e.ReportDate==entity .ReportDate ,
+                                     entity).ToOpResult(OpContext);
+        }
     }
 
 }
