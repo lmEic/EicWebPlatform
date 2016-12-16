@@ -211,7 +211,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public OpResult SaveReportAttendenceEntity(ReportsAttendenceModel entity)
         {
 
-
+            if (DailyReportCrudFactory.ReportsAttendenceCrud.IsExist(entity))
+            {
+                entity.OpSign = "edit";
+            }
+            else entity.OpSign = "add";
             return DailyReportCrudFactory.ReportsAttendenceCrud.Store(entity);
         }
     }
