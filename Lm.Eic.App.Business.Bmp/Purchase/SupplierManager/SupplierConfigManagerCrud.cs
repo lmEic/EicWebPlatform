@@ -49,7 +49,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         }
 
         /// <summary>
-        /// 供应商自评复评明细表 
+        /// 供应商自评复评明细表Crud
         /// </summary>
         public static SupplierGradeInfoCrud SupplierGradeInfoCrud
         {
@@ -383,7 +383,43 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         { }
         protected override void AddCrudOpItems()
         {
-            throw new NotImplementedException();
+            this.AddOpItem(OpMode.Add, AddSupplierGradeInfo);
+            this.AddOpItem(OpMode.Edit, EditSupplierGradeInfo);
+        }
+
+
+        OpResult AddSupplierGradeInfo(SupplierGradeInfoModel entity)
+        {
+            entity.LastPurchaseDate = DateTime.Now.Date;
+            entity.PurchaseType = "主要";
+            entity.PurchaseMaterial = "主要111";
+            entity.SupplierProperty = "mmmm";
+
+            return irep.Insert(entity).ToOpResult_Add(OpContext);
+        }
+
+        public List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string gradeYear)
+        {
+            return irep.Entities.Where(e => e.GradeYear == gradeYear).ToList();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        OpResult EditSupplierGradeInfo(SupplierGradeInfoModel entity)
+        {
+            return irep.Update(e => e.SupplierId == entity.SupplierId, entity).ToOpResult_Add(OpContext); ;
+        }
+
+        /// <summary>
+        /// 是否存在
+        /// </summary>
+        /// <param name="parameterKey"></param>
+        /// <returns></returns>
+        public bool IsExist(string parameterKey)
+        {
+            return irep.IsExist(e => e.ParameterKey == parameterKey);
         }
     }
 

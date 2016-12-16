@@ -9,13 +9,24 @@ using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
+    internal class CertificateManagerFactory
+    {
+        /// <summary>
+        /// 供应商考核管理
+        /// </summary>
+        public static SupplierCertificateManager SupplierCertificateManager
+        {
+            get { return OBulider.BuildInstance<SupplierCertificateManager>(); }
+        }
+    }
  /// <summary>
  /// 供应商证书管理
  /// </summary>
-  public  class SupplierCertificateManager
+    public  class SupplierCertificateManager
     {
         List<EligibleSuppliersModel> QualifiedSupplierInfo = null;
         //缓存合格供应商清册表

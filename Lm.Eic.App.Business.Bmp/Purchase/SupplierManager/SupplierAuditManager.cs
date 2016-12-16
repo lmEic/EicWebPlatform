@@ -14,6 +14,18 @@ using Lm.Eic.Uti.Common.YleeExtension.Validation;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
+ internal class SupplierAuditManagerFactory
+    {
+        /// <summary>
+        /// 供应商证书管理
+        /// </summary>
+        public static SupplierCertificateManager SupplierCertificateManager
+        {
+            get { return OBulider.BuildInstance<SupplierCertificateManager>(); }
+        }
+    }
+
+
    /// <summary>
    /// 供应商考核管理
    /// </summary>
@@ -54,7 +66,7 @@ public     class SupplierAuditManager
         {
             SupplierSeasonAuditModel supplierSeasonAuditInfo = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditInfo(supplierId.Trim() + "&&" + seasonDateNum);
             if (supplierSeasonAuditInfo != null) return supplierSeasonAuditInfo;
-            var supplierInfo = PursupplierManagerFactory.SupplierCertificateManager.GetSuppplierInfoBy(supplierId);
+            var supplierInfo = CertificateManagerFactory.SupplierCertificateManager.GetSuppplierInfoBy(supplierId);
             supplierSeasonAuditInfo = new SupplierSeasonAuditModel()
             {
                 SupplierId = supplierInfo.SupplierId,

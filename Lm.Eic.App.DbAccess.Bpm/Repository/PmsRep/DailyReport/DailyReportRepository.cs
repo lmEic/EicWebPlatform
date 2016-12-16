@@ -197,5 +197,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     public class DReportsOrderModelRepository : BpmRepositoryBase<DReportsOrderModel>, IDReportsOrderModelRepository
     { }
 
-
+    public interface IReportsAttendenceModelRepository:IRepository<ReportsAttendenceModel> { }
+    /// <summary>
+    /// 日报表出勤信息仓储
+    /// </summary>
+    public class ReportsAttendenceModelRepository:BpmRepositoryBase <ReportsAttendenceModel>, IReportsAttendenceModelRepository
+    { }
 }

@@ -126,7 +126,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         #endregion Model
     }
-
     /// <summary>
     /// 供应商信息表
     /// SuppliersInfo
@@ -307,7 +306,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         #endregion Model
     }
-
     /// <summary>
     /// 季度审查总览表
     /// SuppliersSeasonAuditTable
@@ -515,8 +513,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         #endregion Model
     }
-
-
     /// <summary>
     ///品质考核——实地辅导计划/执行表
     /// </summary>
@@ -543,21 +539,12 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _suppliername;
         /// <summary>
-        ///供应商全称
+        ///供应商名称
         /// </summary>
         public string SupplierName
         {
             set { _suppliername = value; }
             get { return _suppliername; }
-        }
-        private string _qualityCheckCategory;
-        /// <summary>
-        ///辅导属性（性品质异常、考核分低）
-        /// </summary>
-        public string QualityCheckCategory
-        {
-            set { _qualityCheckCategory = value; }
-            get { return _qualityCheckCategory; }
         }
         private double _qualitycheck;
         /// <summary>
@@ -570,7 +557,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private double _auditprice;
         /// <summary>
-        ///价格
+        ///价格考核
         /// </summary>
         public double AuditPrice
         {
@@ -579,7 +566,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private double _deliverydate;
         /// <summary>
-        ///交期
+        ///交期考核
         /// </summary>
         public double DeliveryDate
         {
@@ -588,7 +575,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private double _actionliven;
         /// <summary>
-        ///配合度
+        ///配合度考核
         /// </summary>
         public double ActionLiven
         {
@@ -606,7 +593,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private double _totalcheckscore;
         /// <summary>
-        ///总分
+        ///考核总分
         /// </summary>
         public double TotalCheckScore
         {
@@ -615,7 +602,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _checklevel;
         /// <summary>
-        ///等级
+        ///等级考核
         /// </summary>
         public string CheckLevel
         {
@@ -651,12 +638,66 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _seasonnum;
         /// <summary>
-        ///年季度
+        ///季度
         /// </summary>
         public string SeasonNum
         {
             set { _seasonnum = value; }
             get { return _seasonnum; }
+        }
+        private string _plantutordate;
+        /// <summary>
+        ///计划辅导日期
+        /// </summary>
+        public string PlanTutorDate
+        {
+            set { _plantutordate = value; }
+            get { return _plantutordate; }
+        }
+        private string _plantutorcontent;
+        /// <summary>
+        ///计划辅导内容
+        /// </summary>
+        public string PlanTutorContent
+        {
+            set { _plantutorcontent = value; }
+            get { return _plantutorcontent; }
+        }
+        private string _actiontutordate;
+        /// <summary>
+        ///实地辅导日期
+        /// </summary>
+        public string ActionTutorDate
+        {
+            set { _actiontutordate = value; }
+            get { return _actiontutordate; }
+        }
+        private string _actiontutorcontent;
+        /// <summary>
+        ///实地辅导内容
+        /// </summary>
+        public string ActionTutorContent
+        {
+            set { _actiontutorcontent = value; }
+            get { return _actiontutorcontent; }
+        }
+        private string _tutorresult;
+        /// <summary>
+        ///辅导结果
+        /// </summary>
+        public string TutorResult
+        {
+            set { _tutorresult = value; }
+            get { return _tutorresult; }
+        }
+        private string _tutorcategory;
+        /// <summary>
+        ///辅导类别
+        /// </summary>
+        public string TutorCategory
+        {
+            set { _tutorcategory = value; }
+            get { return _tutorcategory; }
         }
         private string _parameterkey;
         /// <summary>
@@ -667,60 +708,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _parameterkey = value; }
             get { return _parameterkey; }
         }
-        private string _plantutordate;
-        /// <summary>
-        ///预计辅导、实地稽核时间
-        /// </summary>
-        public string PlanTutorDate
-        {
-            set { _plantutordate = value; }
-            get { return _plantutordate; }
-        }
-        private string _plantutorcontent;
-        /// <summary>
-        ///预计辅导、实地稽核内容
-        /// </summary>
-        public string PlanTutorContent
-        {
-            set { _plantutorcontent = value; }
-            get { return _plantutorcontent; }
-        }
-        private string _actiontutordate;
-        /// <summary>
-        ///实地 辅导、实地稽核时间
-        /// </summary>
-        public string ActionTutorDate
-        {
-            set { _actiontutordate = value; }
-            get { return _actiontutordate; }
-        }
-        private string _actiontutorcontent;
-        /// <summary>
-        ///实地辅导、实地稽核内容
-        /// </summary>
-        public string ActionTutorContent
-        {
-            set { _actiontutorcontent = value; }
-            get { return _actiontutorcontent; }
-        }
-        private string _tutorresult;
-        /// <summary>
-        ///结案状况
-        /// </summary>
-        public string TutorResult
-        {
-            set { _tutorresult = value; }
-            get { return _tutorresult; }
-        }
-        private string _yearmonth;
-        /// <summary>
-        ///年/月
-        /// </summary>
-        public string YearMonth
-        {
-            set { _yearmonth = value; }
-            get { return _yearmonth; }
-        }
         private string _remark;
         /// <summary>
         ///备注
@@ -729,6 +716,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         {
             set { _remark = value; }
             get { return _remark; }
+        }
+        private string _yearmonth;
+        /// <summary>
+        ///年月
+        /// </summary>
+        public string YearMonth
+        {
+            set { _yearmonth = value; }
+            get { return _yearmonth; }
         }
         private string _oppserson;
         /// <summary>
@@ -777,9 +773,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         #endregion Model
     }
-
-
-
     /// <summary>
     /// 供应商自评复评明细表 
     /// </summary>
@@ -875,6 +868,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         {
             set { _secondgradescore = value; }
             get { return _secondgradescore; }
+        }
+        private string _parameterkey;
+        /// <summary>
+        ///关建字
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterkey = value; }
+            get { return _parameterkey; }
+        }
+        private string _gradeyear;
+        /// <summary>
+        ///评估年限
+        /// </summary>
+        public string GradeYear
+        {
+            set { _gradeyear = value; }
+            get { return _gradeyear; }
         }
         private string _opperson;
         /// <summary>
