@@ -49,8 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mapping\LightMasterMesMapping\OpticalMesDbContext.cs" />
-    <Compile Include="Mapping\LightMasterMesMapping\MesDailyReportMapping.cs" />
+    <Compile Include="Mapping\LmMesMapping\OpticalMesDbContext.cs" />
+    <Compile Include="Mapping\LmMesMapping\MesDailyReportMapping.cs" />
     <Compile Include="Mapping\PmsMapping\BoardManagment\MaterialSpecBoardMapping.cs" />
     <Compile Include="Mapping\BpmDbContext.cs" />
     <Compile Include="Mapping\AstMapping\EquipmentMapping.cs" />

@@ -1,4 +1,5 @@
-﻿using Lm.Eic.Uti.Common.YleeObjectBuilder;
+﻿using Lm.Eic.App.Business.Bmp.Pms.DailyReport.LmProMasterDailyReort;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             get { return OBulider.BuildInstance<ConfigManager>(); }
         }
-
+        public static LmProDailyReportManager LmProDailyReportManager
+        {
+            get { return OBulider.BuildInstance<LmProDailyReportManager>(); }
+        }
     }
 }
