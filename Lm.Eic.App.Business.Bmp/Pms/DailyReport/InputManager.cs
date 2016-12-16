@@ -106,7 +106,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                   new FileFieldMapping ("InputHours","投入時數"),
                   new FileFieldMapping ("AttendanceHours","出勤時數"),
                   new FileFieldMapping ("NonProductionHours","非生产時數"),
-                  new FileFieldMapping ("NonProductionHours","非生产時數") ,
                   new FileFieldMapping ("EquipmentEifficiency","稼动率" )
                 };
         /// <summary>
