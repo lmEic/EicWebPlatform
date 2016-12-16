@@ -40,11 +40,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             get { return OBulider.BuildInstance<NonProductionReasonManager>(); }
         }
         /// <summary>
-        /// 
+        /// 出勤管理设置
         /// </summary>
-        public LmMesDailyReportConfig LmProDailyReportData
+        public ReportAttendenceManager ReportAttendenceManager
         {
-            get { return OBulider.BuildInstance<LmMesDailyReportConfig>(); }
+            get { return OBulider.BuildInstance<ReportAttendenceManager>(); }
         }
     }
 
@@ -210,17 +210,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     {
         public OpResult SaveReportAttendenceEntity(ReportsAttendenceModel entity)
         {
+
+            if (DailyReportCrudFactory.ReportsAttendenceCrud.IsExist(entity))
+            {
+                entity.OpSign = "edit";
+            }
+            else entity.OpSign = "add";
             return DailyReportCrudFactory.ReportsAttendenceCrud.Store(entity);
-        }
-    }
-
-
-    public class LmMesDailyReportConfig
-    {
-        public List<WipProductCompleteInputDataModel> getProdcutCompleteInPutDailyRrportList(string productDatestring)
-        {
-            DateTime productDate = Convert.ToDateTime(productDatestring);
-            return DailyReportCrudFactory.LmProDailyReportCrud.getProdcutCompleteInPutDailyRrportList(productDate);
         }
     }
 
