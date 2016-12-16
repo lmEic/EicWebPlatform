@@ -5,6 +5,7 @@ using System.Data.Entity.ModelConfiguration;
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
 {
     /// <summary>
+    /// 生产日报表
     ///DailyReportModelMapping
     /// </summary>
     public class DailyReportModelMapping : EntityTypeConfiguration<DailyReportModel>
@@ -18,6 +19,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
     }
 
     /// <summary>
+    /// 生产日报临时表
     ///DailyReportTempModelMapping
     /// </summary>
     public class DailyReportTempModelMapping : EntityTypeConfiguration<DailyReportTempModel>
@@ -31,6 +33,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
     }
 
     /// <summary>
+    /// 生产工艺流程
     ///ProductFlowModelMapping
     /// </summary>
     public class ProductFlowModelMapping : EntityTypeConfiguration<ProductFlowModel>
@@ -44,6 +47,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
     }
 
     /// <summary>
+    /// 机器资料
     ///MachineModel
     /// </summary>
     public class MachineModelMapping : EntityTypeConfiguration<MachineModel>
@@ -57,6 +61,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
     }
 
     /// <summary>
+    /// 非生产定义表
     ///NonProductionModel
     /// </summary>
     public class NonProductionModelMapping : EntityTypeConfiguration<NonProductionReasonModel>
@@ -71,6 +76,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
 
 
     /// <summary>
+    /// 物料工单（针对非生产工单所做的表单）
     ///DReportsOrderModel
     /// </summary>
     public class DReportsOrderModelMapping : EntityTypeConfiguration<DReportsOrderModel>
