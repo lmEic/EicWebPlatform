@@ -370,10 +370,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
     }
 
 
-   /// <summary>
-   /// 标准工时表
-   /// </summary>
-   public class WipProductPUH
+    /// <summary>
+    /// 标准工时表
+    /// </summary>
+    public class WipProductPUH
     {
         #region Model
         private string _bigproductstation;

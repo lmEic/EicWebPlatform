@@ -89,7 +89,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport
         }
     }
     /// <summary>
-    /// Pms_DReportsAttendence
+    /// 日报表出勤统计
     /// </summary>
 
     public class ReportsAttendenceModelMapping : EntityTypeConfiguration<ReportsAttendenceModel>
