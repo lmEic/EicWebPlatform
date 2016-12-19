@@ -34,9 +34,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.LmProMasterDailyReort
         }
         public List<WipProductCompleteInputDataModel> getProdcutCompleteInPutDailyRrportList(DateTime productDate)
         {
-        
-            DateTime   convertProductDate = productDate.ToDate();
-            return irep.Entities.Where(e => e.ProductDate == convertProductDate).ToList();
+            return irep.Entities.Where(e => e.ProductDate == productDate).ToList();
         }
     }
 }
