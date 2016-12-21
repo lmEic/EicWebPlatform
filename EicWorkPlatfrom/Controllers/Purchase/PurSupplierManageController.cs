@@ -240,7 +240,8 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult GetPurSupGradeInfo(string yearQuarter)
         {
-            var datas = PurchaseService.PurSupplierManager.SuppliersGradeManager.GetPurSupGradeInfoBy(yearQuarter);
+            string year = yearQuarter.Substring(0, yearQuarter.Length - 2);
+            var datas = PurchaseService.PurSupplierManager.SuppliersGradeManager.GetPurSupGradeInfoBy(year);
         
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
