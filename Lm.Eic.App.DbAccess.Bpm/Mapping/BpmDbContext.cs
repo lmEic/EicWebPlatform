@@ -12,6 +12,7 @@ using System.Data.Entity;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 {
+
     /// <summary>
     /// 设备管理数据库
     /// </summary>
@@ -162,4 +163,5 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             }
         }
     }
+
 }

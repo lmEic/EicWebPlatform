@@ -1,6 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
 {
@@ -85,11 +85,56 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
             #endregion
         }
 
-
-
+        [TestMethod()]
+        /// <summary>
+        /// 测试制三部导出日报信息表
+        /// </summary>
         public void getLMproductDialyReportListByTest ()
         {
             var tem = DailyReportService.LmProDailyReportManager.GetLmProDailyRrportList("2016-11-30".ToDate ());
+        }
+
+
+        public void test()
+        {
+            byte[] crcData = new byte[3];
+            crcData[0] = 0xFF;
+            crcData[1] = 0xFF;
+
+            var mm = CRC8(0xFF, crcData);
+         }
+        public byte CRC8(byte crcPoly, byte[] crcData)
+        {
+            byte poly = crcPoly;
+            byte crcResult = 0xFF;
+            byte byteCRCTemp = 0x00;
+            byte[] data = new byte[crcData.Length + 1];
+            crcData.CopyTo(data, 0);
+            data[crcData.Length] = 0x00;
+
+            byteCRCTemp = (data[0]);
+            for (int i = 1; i < data.Length; i++)
+            {
+                byte tempData = data[i];
+                int j = 0;
+                while (j < 8)
+                {
+                    j += 1;
+                    byte moveOutBit = (byte)(byteCRCTemp & 0x80);
+                    byteCRCTemp <<= 1;
+                    byteCRCTemp |= (byte)(tempData >> 7);
+                    tempData <<= 1;
+                    if (moveOutBit == 0x80)//最高位为1，移出跟Poly的最高位消掉  
+                    {
+                        byteCRCTemp = (byte)(byteCRCTemp ^ crcPoly);
+                    }
+                }
+            }
+
+            crcResult &= byteCRCTemp;
+
+            return (byte)(crcResult ^ 0xFF);
+
         }
     }
 }
