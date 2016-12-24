@@ -12,7 +12,8 @@ namespace Lm.Eic.App.Business.BmpTests.Erp
 
         public void MS589ProductTypeMonitorTest()
              {
-                var mmm= CopService.OrderManageManager .GetMS589ProductTypeMonitor();
+                //var mmm= CopService.OrderManageManager .GetMS589ProductTypeMonitor();
+            var mmmmm = CopService.OrderManageManager.GetProductTypeMonitorInfoBy("138155-475-01");
              }
          public void TestExportExcel()
             {

@@ -225,7 +225,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
             if (orderDetails != null)
                 _orderDetailsList.Add(orderDetails);
-
             return orderDetails;
         }
     }
