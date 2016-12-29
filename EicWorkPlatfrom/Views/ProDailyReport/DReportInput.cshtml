@@ -4,7 +4,7 @@
     </div>
     <div class="panel-body">
         <div cg-busy="{promise:promise}">
-             部门<label class="label label-default">{{vmManager.department}}</label>
+            部门<label class="label label-default">{{vmManager.department}}</label>
             <button class="btn btn-sm btn-default"
                     data-title="选择部门名称"
                     data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
@@ -13,7 +13,7 @@
                 <i class="fa fa-sitemap"></i>
             </button>
             <label>录入日期</label>
-            <input type="date" ng-model="vmManager.InputDate" format-date/>
+            <input type="date" ng-model="vmManager.InputDate" format-date />
             <button class="btn btn-sm btn-warning" title="载入模板" ng-click="vmManager.getReportInputDataTemplate()"><i class="fa fa-download"></i>载入模板</button>
             <button type="button" class="btn btn-sm btn-default" ng-model="vmManager.inputMode"
                     data-html="1" data-multiple="0" ng-change="vmManager.selectInputMode()"
@@ -27,7 +27,7 @@
                 <span class="pull-right">
                     <a class="btn btn-sm btn-success" title="导出" ng-href="{{ vmManager.exportToExcel()}}"><i class="fa fa-file-excel-o"></i>导出</a>
                     <button class="btn btn-sm btn-info" title="出勤编辑" ng-click="vmManager.showWorkerAttendBoardView()"><i class="fa fa-paperclip"></i>出勤编辑</button>
-                    <button type="button" class="btn btn-sm btn-primary" 
+                    <button type="button" class="btn btn-sm btn-primary"
                             data-animation="am-flip-x"
                             bs-dropdown aria-haspopup="true" aria-expanded="false">
                         <span class="fa fa-desktop">看板工具</span>
@@ -93,7 +93,7 @@
                     </colgroup>
                     @*备注信息*@
                     <colgroup>
-                        <col width="70"/>
+                        <col width="70" />
                     </colgroup>
                     @*效率信息*@
                     <colgroup ng-if="tbl.colVisible">
@@ -161,7 +161,7 @@
                             <td class="text-center info"><span>出勤时数</span></td>
                             <td class="text-center info"><span>设置时数</span></td>
                             <td class="text-center info"><span>投入工时</span></td>
-                           
+
                             <td class="text-center info"><span>非生产时数</span></td>
                             <td class="text-center info"><span>生产时数</span></td>
                             <td class="text-center info"><span>非生产原因</span></td>
@@ -178,7 +178,7 @@
                             <td class="text-center text-danger">
                                 <span ng-click="vmManager.removeRow(item)" title="点击我将会删除本行数据"><i class="fa fa-remove"></i></span>
                             </td>
-                            
+
                             @*工单信息*@
                             <td title="工单号" ng-dblclick="vmManager.editCell(item,'OrderId',true)">
                                 <span ng-hide="item.editting">{{item.OrderId}}</span>
@@ -424,7 +424,7 @@
                                 <input ng-model="vm.InputHours" ng-mouseleave="vmManager.endEditCell(item,'InputHours',false)"
                                        style="width:75px;" ng-if="item.edittingInputHoursMode" />
                             </td>
-                         
+
                             <td title="非生产工时" ng-dblclick="vmManager.editCell(item,'NonProductionHours',false)">
                                 <span ng-hide="item.pheditting">{{item.NonProductionHours}}</span>
                                 <input ng-model="vm.NonProductionHours" ng-keydown="vmManager.inputNonProductionHours($event,item)"
@@ -466,7 +466,7 @@
                 </table>
             </div>
         </div>
-        
+
         <div pageslide ps-open="vmManager.dReportSumerizeViewDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px">
                 <div>
@@ -651,7 +651,7 @@
                         </tfoot>
                     </table>
                 </div>
-                   
+
                 <div class="table-responsive" style="min-height:430px;max-height:435px;overflow-y:auto" ng-if="!vmManager.displayMachineSumerizeBoard">
                     <table class="table table-bordered table-condensed table-hover" style="table-layout:fixed;">
                         @*工单信息*@
@@ -813,11 +813,11 @@
             </div>
         </div>
 
-        <div pageslide ps-open="vmManager.proFlowBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
+        @*<div pageslide ps-open="vmManager.proFlowBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
 
             </div>
-        </div>
+        </div>*@
 
         <div pageslide ps-open="vmManager.workerAttendBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
@@ -834,15 +834,15 @@
                 <div class="h-split"></div>
                 <div class="table-responsive">
                     <table class="table table-condensed table-bordered table-hover">
-                        <colgroup>
-                            <col width="100" />
-                            <col width="70" />
-                            <col width="70" />
-                            <col width="70" />
-                        </colgroup>
+                        @*<colgroup>
+                            <col width="90" />
+                            <col width="90" />
+                            <col width="120" />
+                            <col width="120" />
+                        </colgroup>*@
                         <tbody>
                             <tr>
-                                <td rowspan="4" class="text-center info" style="padding:3.5em 0.5em">出勤状况</td>
+                                <td rowspan="4" class="text-center info" style="vertical-align:middle;">出勤状况</td>
                                 <td rowspan="2" class="warning"></td>
                                 <td colspan="6" class="text-center info">本单位职工</td>
                                 <td colspan="4" class="text-center info">援入</td>
@@ -866,44 +866,20 @@
                             <tr>
                                 <td class="text-center info">人数</td>
 
-                                <td>
-                                    <input type="number" class="cellwidth" />
-                                </td>
-                                <td>
-                                    <input type="number" class="cellwidth" />
-                                </td>
-                                <td>
-                                    <input type="number" class="cellwidth" />
-                                </td>
-                                <td>
-                                    <input type="number" class="cellwidth" />
-                                </td>
-                                <td>
-                                    <input type="number" class="cellwidth" />
-                                </td>
-                                <td>
-                                    <input type="number" class="cellwidth" />
-                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                                <td>
-                                    <input type="number" class="cellwidth" />
-                                </td>
-                                <td>
-                                    <input type="number" class="cellwidth" />
-                                </td>
-                                <td>
-                                    <input type="number" class="cellwidth" />
-                                </td>
-                                <td>
-                                    <input type="number" class="cellwidth" />
-                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                                <td>
-                                    <input type="number" class="cellwidth" />
-                                </td>
-                                <td>
-                                    <input type="number" class="cellwidth" />
-                                </td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td class="text-center info">时数</td>
@@ -951,6 +927,9 @@
                 </div>
             </div>
         </div>
+
+
+
 
         <div pageslide ps-open="vmManager.personBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
@@ -1053,9 +1032,12 @@
             </div>
         </div>
 
+
+
+
         <div pageslide ps-open="vmManager.orderIdBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
-              
+
             </div>
         </div>
     </div>
