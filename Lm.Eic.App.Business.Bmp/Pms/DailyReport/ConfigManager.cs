@@ -39,6 +39,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             get { return OBulider.BuildInstance<NonProductionReasonManager>(); }
         }
+        /// <summary>
+        /// 出勤管理设置
+        /// </summary>
+        public ReportAttendenceManager ReportAttendenceManager
+        {
+            get { return OBulider.BuildInstance<ReportAttendenceManager>(); }
+        }
     }
 
     /// <summary>
@@ -203,6 +210,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     {
         public OpResult SaveReportAttendenceEntity(ReportsAttendenceModel entity)
         {
+
+            if (DailyReportCrudFactory.ReportsAttendenceCrud.IsExist(entity))
+            {
+                entity.OpSign = "edit";
+            }
+            else entity.OpSign = "add";
             return DailyReportCrudFactory.ReportsAttendenceCrud.Store(entity);
         }
     }

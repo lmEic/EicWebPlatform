@@ -1,6 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
 {
@@ -84,5 +84,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
             }
             #endregion
         }
+
+        [TestMethod()]
+        /// <summary>
+        /// 测试制三部导出日报信息表
+        /// </summary>
+        public void getLMproductDialyReportListByTest ()
+        {
+            var tem = DailyReportService.LmProDailyReportManager.GetLmProDailyRrportList("2016-11-30".ToDate ());
+        }
+
+
     }
 }

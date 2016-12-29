@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
 namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
 {
     public class QueryDailyReportDto

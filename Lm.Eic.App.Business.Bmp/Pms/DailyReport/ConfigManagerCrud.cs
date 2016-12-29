@@ -6,6 +6,7 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.App.Business.Bmp.Pms.DailyReport.LmProMasterDailyReort;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
 
             get { return OBulider.BuildInstance<ReportsAttendenceCrud>(); }
+        }
+
+        /// <summary>
+        /// 制三部日报表CRUD
+        /// </summary>
+        public static LmProDailyReportCrud LmProDailyReportCrud
+        {
+            get { return OBulider.BuildInstance<LmProDailyReportCrud>(); }
         }
     }
 
@@ -378,8 +387,33 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         { }
         protected override void AddCrudOpItems()
         {
-            throw new NotImplementedException();
+            AddOpItem(OpMode.Add, AddReportAttendence);
+            AddOpItem(OpMode.Edit, EditReportAttendece);
+
+        }
+        OpResult AddReportAttendence(ReportsAttendenceModel entity)
+        {
+            return irep.Insert(entity).ToOpResult(OpContext);
+        }
+
+        OpResult EditReportAttendece(ReportsAttendenceModel entity)
+        {
+            return irep.Update(e => e.Department == entity.Department
+                                     &&e.ReportDate==entity .ReportDate
+                                     &&e.AttendenceStation==entity.AttendenceStation ,
+                                     entity).ToOpResult(OpContext);
+        }
+        public bool IsExist(ReportsAttendenceModel entity)
+        {
+            return irep.IsExist(e => e.Department == entity.Department
+                                   && e.ReportDate == entity.ReportDate
+                                   && e.AttendenceStation == entity.AttendenceStation);
         }
     }
+
+
+
+
+ 
 
 }
