@@ -413,6 +413,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         //显示编辑作业人员出勤工时面板
         showWorkerAttendBoardView: function () {
             vmManager.workerAttendBoardDisplay = true;
+            
         },
         getReportInputDataTemplate: function () {
             vmManager.editDatas = [];
@@ -1278,5 +1279,5 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         }
     };
     $scope.focus = focusSetter;
-
+    $scope.visible = true;
 });
