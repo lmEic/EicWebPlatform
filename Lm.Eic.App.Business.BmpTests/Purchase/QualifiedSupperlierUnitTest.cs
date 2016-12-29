@@ -64,5 +64,6 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
             var datas = PurchaseService.PurSupplierManager.SupplierAuditManager.GetSeasonSupplierList("201601");
             if (datas == null) { Assert.Fail(); }
         }
+
     }
 }
