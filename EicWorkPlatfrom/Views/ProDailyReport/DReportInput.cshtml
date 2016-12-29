@@ -821,71 +821,130 @@
 
         <div pageslide ps-open="vmManager.workerAttendBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
+                <div class="nav">
+                    <label>类别：</label>
+                    <button type="button" class="btn btn-xs btn-primary" ng-model="vmManager.attendanceReportType" data-html="1" data-placeholder="机台"
+                            data-multiple="0" data-animation="am-flip-x" bs-options="item.id as item.text for item in vmManager.attendanceReportTypes" bs-select>
+                        机台 <span class="caret"></span>
+                    </button>
+
+                    <a href="#" ng-click="vmManager.displayMachineSumerizeBoard=false;" class="pull-right"><span class="label label-success">取消</span></a>
+                    <a href="#" ng-click="vmManager.attendanceReportType='机台';" class="pull-right"><span class="label label-primary">编辑</span></a>
+                </div>
+                <div class="h-split"></div>
                 <div class="table-responsive">
                     <table class="table table-condensed table-bordered table-hover">
-                        @*<colgroup>
-                            <col width="90" />
-                            <col width="90" />
-                            <col width="120" />
-                            <col width="120" />
-                        </colgroup>*@
+                        <colgroup>
+                            <col width="100" />
+                            <col width="70" />
+                            <col width="70" />
+                            <col width="70" />
+                        </colgroup>
                         <tbody>
                             <tr>
                                 <td rowspan="4" class="text-center info" style="padding:3.5em 0.5em">出勤状况</td>
                                 <td rowspan="2" class="warning"></td>
-                                <td colspan="6" class="text-center">本单位职工</td>
-                                <td colspan="4" class="text-center">援入</td>
-                                <td rowspan="2" class="text-center">加班</td>
-                                <td rowspan="2" class="text-center">总投入</td>
+                                <td colspan="6" class="text-center info">本单位职工</td>
+                                <td colspan="4" class="text-center info">援入</td>
+                                <td rowspan="2" class="text-center info" style="padding:2.0em 0.5em">加班</td>
+                                <td rowspan="2" class="text-center info" style="padding:2.0em 0.5em">总投入</td>
                             </tr>
                             <tr>
-                                <td class="text-center">应到</td>
-                                <td class="text-center">请假</td>
-                                <td class="text-center">旷工</td>
-                                <td class="text-center">援出</td>
-                                <td class="text-center">实到</td>
-                                <td class="text-center">新员</td>
+                                <td class="text-center info">应到</td>
+                                <td class="text-center info">请假</td>
+                                <td class="text-center info">旷工</td>
+                                <td class="text-center info">援出</td>
+                                <td class="text-center info">实到</td>
+                                <td class="text-center info">新员</td>
 
-                                <td class="text-center">应到</td>
-                                <td class="text-center">实到</td>
-                                <td class="text-center">请假</td>
-                                <td class="text-center">旷工</td>
+                                <td class="text-center info">应到</td>
+                                <td class="text-center info">实到</td>
+                                <td class="text-center info">请假</td>
+                                <td class="text-center info">旷工</td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="text-center info">人数</td>
+
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
                             </tr>
                             <tr>
-                                <td class="text-center">人数</td>
+                                <td class="text-center info">时数</td>
 
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
 
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">时数</td>
-
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
+                                <td>
+                                    <input type="number" class="cellwidth" />
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -1005,3 +1064,8 @@
 
     </div>
 </div>
+<style>
+    .cellwidth {
+        width:60px;
+    }
+</style>

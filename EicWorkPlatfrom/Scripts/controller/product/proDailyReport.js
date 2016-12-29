@@ -1210,6 +1210,10 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             vmManager.sumerizeMachineDatas(dReportDatas);
             vmManager.sumerizeFlowDatas(dReportDatas);
         },
+        //出勤报表类型
+        attendanceReportTypes: [{ id: 1, text: '机台' }, { id: 2, text: '工艺' }],
+
+        attendanceReportType:'',
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
