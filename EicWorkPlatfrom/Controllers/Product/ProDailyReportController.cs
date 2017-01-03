@@ -223,5 +223,25 @@ namespace EicWorkPlatfrom.Controllers.Product
             return Json(result);
         }
         #endregion
+
+
+
+
+        #region   日报考勤数据处理
+
+        /// <summary>
+        /// 保存出勤数据
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>d
+        public JsonResult SaveReportsAttendenceDatas(ReportsAttendenceModel entity)
+        {
+            var result = DailyReportService.InputManager.ReportAttendenceManager.SaveReportAttendenceEntity(entity);
+            return Json(result);
+        }
+
+
+
+        #endregion
     }
 }

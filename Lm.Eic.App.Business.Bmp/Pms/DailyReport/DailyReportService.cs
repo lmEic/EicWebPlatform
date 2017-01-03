@@ -24,6 +24,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             get { return OBulider.BuildInstance<ConfigManager>(); }
         }
+
+
+       
+        /// <summary>
+        /// 制三部日报管理器
+        /// </summary>
         public static LmProDailyReportManager LmProDailyReportManager
         {
             get { return OBulider.BuildInstance<LmProDailyReportManager>(); }

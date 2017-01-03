@@ -28,6 +28,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             get { return OBulider.BuildInstance<DailyReportInputManager>(); }
         }
 
+        /// <summary>
+        /// 日报出勤输入管理器
+        /// </summary>
+        public ReportAttendenceManager ReportAttendenceManager
+        {
+            get { return OBulider.BuildInstance<ReportAttendenceManager>(); }
+        }
     }
 
     /// <summary>

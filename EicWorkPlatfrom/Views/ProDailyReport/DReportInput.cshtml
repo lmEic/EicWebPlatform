@@ -814,10 +814,10 @@
         </div>
 
         @*<div pageslide ps-open="vmManager.proFlowBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
-            <div style="padding:10px;overflow-y:auto">
+                <div style="padding:10px;overflow-y:auto">
 
-            </div>
-        </div>*@
+                </div>
+            </div>*@
 
         <div pageslide ps-open="vmManager.workerAttendBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
@@ -829,17 +829,20 @@
                     </button>
 
                     <a href="#" ng-click="vmManager.displayMachineSumerizeBoard=false;" class="pull-right"><span class="label label-success">取消</span></a>
-                    <a href="#" ng-click="vmManager.attendanceReportType='机台';" class="pull-right"><span class="label label-primary">编辑</span></a>
+                    <a href="#" ng-click="vmManager.attendanceReportType='机台';" class="pull-right">
+                        <span class="label label-primary" ng-hide="vmManager.workerAttendBoardVisible" ng-click="attendBoard.edit()">编辑</span>
+                        <span class="label label-primary" ng-show="vmManager.workerAttendBoardVisible" ng-click="attendBoard.save()">保存</span>
+                    </a>
                 </div>
                 <div class="h-split"></div>
                 <div class="table-responsive">
                     <table class="table table-condensed table-bordered table-hover">
                         @*<colgroup>
-                            <col width="90" />
-                            <col width="90" />
-                            <col width="120" />
-                            <col width="120" />
-                        </colgroup>*@
+                                <col width="90" />
+                                <col width="90" />
+                                <col width="120" />
+                                <col width="120" />
+                            </colgroup>*@
                         <tbody>
                             <tr>
                                 <td rowspan="4" class="text-center info" style="vertical-align:middle;">出勤状况</td>
@@ -862,64 +865,97 @@
                                 <td class="text-center info">请假</td>
                                 <td class="text-center info">旷工</td>
                             </tr>
-                            
+
                             <tr>
                                 <td class="text-center info">人数</td>
 
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <span ng-hide="vmManager.workerAttendBoardVisible">{{vmManager.workerAttendanceVM.ShouldAttendenceUserCount}}</span>
+                                    <input type="text" class="form-control" value="" ng-model="vmManager.workerAttendanceVM.ShouldAttendenceUserCount" ng-show="vmManager.workerAttendBoardVisible" />
+                                </td>
+                                <td>
+                                    <span ng-hide="vmManager.workerAttendBoardVisible">{{vmManager.workerAttendanceVM.AskLeaveUserCount}}</span>
+                                    <input type="text" class="form-control" value="" ng-model="vmManager.workerAttendanceVM.AskLeaveUserCount" ng-show="vmManager.workerAttendBoardVisible" />
+                                </td>
+                                <td>
+                                    <span ng-hide="vmManager.workerAttendBoardVisible">{{vmManager.workerAttendanceVM.HaveLeaveUserCount}}</span>
+                                    <input type="text" class="form-control" value="" ng-model="vmManager.workerAttendanceVM.HaveLeaveUserCount" ng-show="vmManager.workerAttendBoardVisible" />
+                                </td>
+                                <td>
+                                    <span ng-hide="vmManager.workerAttendBoardVisible">{{vmManager.workerAttendanceVM.SupportOutUserCount}}</span>
+                                    <input type="text" class="form-control" value="" ng-model="vmManager.workerAttendanceVM.SupportOutUserCount" ng-show="vmManager.workerAttendBoardVisible" />
+                                </td>
+                                <td>
+                                    <span ng-hide="vmManager.workerAttendBoardVisible">{{vmManager.workerAttendanceVM.RealityWorkingUserCount}}</span>
+                                    <input type="text" class="form-control" value="" ng-model="vmManager.workerAttendanceVM.RealityWorkingUserCount" ng-show="vmManager.workerAttendBoardVisible" />
+                                </td>
+                                <td>
+                                    <span ng-hide="vmManager.workerAttendBoardVisible">{{vmManager.workerAttendanceVM.InNewWorkerCount}}</span>
+                                    <input type="text" class="form-control" value="" ng-model="vmManager.workerAttendanceVM.InNewWorkerCount" ng-show="vmManager.workerAttendBoardVisible" />
+                                </td>
+                                <td>
+                                    <span ng-hide="vmManager.workerAttendBoardVisible">{{vmManager.workerAttendanceVM.SupportInUserCount}}</span>
+                                    <input type="text" class="form-control" value="" ng-model="vmManager.workerAttendanceVM.SupportInUserCount" ng-show="vmManager.workerAttendBoardVisible" />
+                                </td>
+                                <td>
+                                    <span ng-hide="vmManager.workerAttendBoardVisible">{{vmManager.workerAttendanceVM.outActuallyArrived}}</span>
+                                    <input type="text" class="form-control" value="" ng-model="vmManager.workerAttendanceVM.outActuallyArrived" ng-show="vmManager.workerAttendBoardVisible" />
+                                </td>
+                                <td>
+                                    <span ng-hide="vmManager.workerAttendBoardVisible">{{vmManager.workerAttendanceVM.outLeaveWork}}</span>
+                                    <input type="text" class="form-control" value="" ng-model="vmManager.workerAttendanceVM.outLeaveWork" ng-show="vmManager.workerAttendBoardVisible" />
+                                </td>
+                                <td>
+                                    <span ng-hide="vmManager.workerAttendBoardVisible">{{vmManager.workerAttendanceVM.outAbsentWork}}</span>
+                                    <input type="text" class="form-control" value="" ng-model="vmManager.workerAttendanceVM.outAbsentWork" ng-show="vmManager.workerAttendBoardVisible" />
+                                </td>
+                                <td>
+                                    <span ng-hide="vmManager.workerAttendBoardVisible">{{vmManager.workerAttendanceVM.OverWorkUserCount}}</span>
+                                    <input type="text" class="form-control" value="" ng-model="vmManager.workerAttendanceVM.OverWorkUserCount" ng-show="vmManager.workerAttendBoardVisible" />
+                                </td>
+                                <td>
+                                    <span ng-hide="vmManager.workerAttendBoardVisible">{{vmManager.workerAttendanceVM.AttendenceTotalHours}}</span>
+                                    <input type="text" class="form-control" value="" ng-model="vmManager.workerAttendanceVM.AttendenceTotalHours" ng-show="vmManager.workerAttendBoardVisible" />
+                                </td>
                             </tr>
                             <tr>
                                 <td class="text-center info">时数</td>
 
                                 <td>
-                                    <input type="number" class="cellwidth" />
+                                   {{vmManager.workerAttendanceVM.ShouldAttendenceUserCount*8}} 
                                 </td>
                                 <td>
-                                    <input type="number" class="cellwidth" />
+                                    {{vmManager.workerAttendanceVM.AskLeaveUserCount*8}}
                                 </td>
                                 <td>
-                                    <input type="number" class="cellwidth" />
+                                    {{vmManager.workerAttendanceVM.HaveLeaveUserCount*8}}
                                 </td>
                                 <td>
-                                    <input type="number" class="cellwidth" />
+                                    {{vmManager.workerAttendanceVM.SupportOutUserCount*8}}
                                 </td>
                                 <td>
-                                    <input type="number" class="cellwidth" />
+                                    {{vmManager.workerAttendanceVM.RealityWorkingUserCount*8}}
                                 </td>
                                 <td>
-                                    <input type="number" class="cellwidth" />
-                                </td>
-
-                                <td>
-                                    <input type="number" class="cellwidth" />
+                                    {{vmManager.workerAttendanceVM.InNewWorkerCount*8}}
                                 </td>
                                 <td>
-                                    <input type="number" class="cellwidth" />
+                                    {{vmManager.workerAttendanceVM.SupportInUserCount*8}}
                                 </td>
                                 <td>
-                                    <input type="number" class="cellwidth" />
+                                    {{vmManager.workerAttendanceVM.outActuallyArrived*8}}
                                 </td>
                                 <td>
-                                    <input type="number" class="cellwidth" />
+                                   {{vmManager.workerAttendanceVM.outLeaveWork*8}}
                                 </td>
                                 <td>
-                                    <input type="number" class="cellwidth" />
+                                   {{vmManager.workerAttendanceVM.outAbsentWork*8}}
                                 </td>
                                 <td>
-                                    <input type="number" class="cellwidth" />
+                                    {{vmManager.workerAttendanceVM.OverWorkUserCount*8}}
+                                </td>
+                                <td>
+                                    {{vmManager.workerAttendanceVM.AttendenceTotalHours*8}}
                                 </td>
                             </tr>
                         </tbody>
@@ -1048,6 +1084,6 @@
 </div>
 <style>
     .cellwidth {
-        width:60px;
+        width: 60px;
     }
 </style>
