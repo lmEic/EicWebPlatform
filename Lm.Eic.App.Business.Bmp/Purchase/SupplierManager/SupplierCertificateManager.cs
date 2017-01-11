@@ -10,6 +10,7 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using System.IO;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
@@ -62,8 +63,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
                 QualifiedSupplierInfo.Add(model);
             });
-            return QualifiedSupplierInfo.ToList();
+            return QualifiedSupplierInfo.OrderBy(e => e.SupplierId).ToList();
         }
+
+
 
         /// 获取供应商信息
         /// </summary>
@@ -171,12 +174,29 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId);
         }
 
-        
+
+        /// <summary>
+        /// 生成合格供应商清单
+        /// </summary>
+        /// <returns></returns>
+        public MemoryStream BuildQualifiedSupplierInfoList()
+        {
+            try
+            {
+                if (QualifiedSupplierInfo == null || QualifiedSupplierInfo.Count < 0) return null;
+                 var dataGroupping = QualifiedSupplierInfo.GetGroupList<EligibleSuppliersModel>("");
+                 return dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(null);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
 
 
-     #region   internal
+        #region   internal
 
-      
+
         /// <summary>
         /// 获取供应商信息表
         /// </summary>
@@ -291,7 +311,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return certificateDictionary;
         }
 
-
+        /// <summary>
+        ///通过供应商信息得到证书信息
+        /// </summary>
+        /// <param name="supplierInfo"></param>
+        /// <returns></returns>
         EligibleSuppliersModel getEligibleSuppliersModel(SupplierInfoModel supplierInfo)
         {
             //从ERP中得到最新二次采购信息

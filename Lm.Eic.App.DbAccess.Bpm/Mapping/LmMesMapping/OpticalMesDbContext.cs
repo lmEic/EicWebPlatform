@@ -21,11 +21,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.LmMapping
         /// </summary>
         public DbSet<WipProductCompleteInputDataModel> WipProductCompleteInputData { get; set; }
 
-        
+
 
         #endregion dbset
 
-        protected override void OnModelCreating (DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 

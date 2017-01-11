@@ -18,36 +18,41 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
   {
       #region 常量字符
       /// <summary>
-      /// 全检工单单别
+      ///
       /// </summary>
-     private  const string AllCheckCategory = "523";
-      /// <summary>
-      /// 现场成品仓标识
-      /// </summary>
-     private const string localeFinishedSign = "D05";
-      /// <summary>
-      /// 来料工单标识
-      /// </summary>
-     private const string IncomingmaterialSign = "C03";
-      /// <summary>
-      ///保税标识
-      /// </summary>
-     private const string FreeTradeSign = "B03";
-      /// <summary>
-      /// 已完工字段
-      /// </summary>
-     private const string HaveFinishSign = "已完工";
-      /// <summary>
-      /// 指定完工字段
-      /// </summary>
-     private const string SpecifiedFinishSign = "指定完工";
-      #endregion
-     /// <summary>
-      /// 获得一个产品型号对应的订单与工单的对比参数
-      /// </summary>
-      /// <param name="containsProductTypeOrProductSpecify">包含产品名字和规格</param>
-      /// <returns></returns>
-     public  ProductTypeMonitorModel GetProductTypeMonitorInfoBy(string containsProductTypeOrProductSpecify)
+     const string
+            // 全检工单单别
+            AllCheckCategory = "523",
+            // 现场成品仓标识
+            localeFinishedSign = "D05" ,
+            // 来料工单标识
+            IncomingmaterialSign = "C03",
+            ///保税标识  
+            FreeTradeSign = "B03",
+            // 已完工字段
+            HaveFinishSign = "已完工",
+            // 指定完工字段
+            SpecifiedFinishSign = "指定完工";
+        List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                 new FileFieldMapping ("Number","项次") ,
+                  new FileFieldMapping ("ProductType","品名") ,
+                  new FileFieldMapping ("ProductSpecify","规格") ,
+                  new FileFieldMapping ("SumCount","汇总") ,
+                  new FileFieldMapping ("OrderCount","工单数量")  ,
+                  new FileFieldMapping ("LocaleFinishedCount","现场成品仓") ,
+                  new FileFieldMapping ("FreeTradeInHouseCount","库存成品"),
+                  new FileFieldMapping ("AllCheckOrderCount","全检工单"),
+                  new FileFieldMapping ("PutInMaterialCount","来料成品"),
+                  new FileFieldMapping ("DifferenceCount","差异"),
+                  new FileFieldMapping ("More","备注")
+                };
+        #endregion
+        /// <summary>
+        /// 获得一个产品型号对应的订单与工单的对比参数
+        /// </summary>
+        /// <param name="containsProductTypeOrProductSpecify">包含产品名字和规格</param>
+        /// <returns></returns>
+        public  ProductTypeMonitorModel GetProductTypeMonitorInfoBy(string containsProductTypeOrProductSpecify)
      {
         #region 业务订单
          double localeFinishedCount, freeTradeInHouseCount, putInMaterialCount, orderCount = 0, allCheckOrderCount = 0, sumCount = 0;
@@ -88,61 +93,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
               DifferenceCount = localeFinishedCount + freeTradeInHouseCount + putInMaterialCount + allCheckOrderCount + orderCount - sumCount
           };
      }
-      /// <summary>
-      /// 输出成品仓信息数量
-      /// </summary>
-      /// <param name="containsProductTypeOrProductSpecify"></param>
-      /// <param name="localeFinishedCount"></param>
-      /// <param name="freeTradeInHouseCount"></param>
-      /// <param name="putInMaterialCount"></param
-      /// 
-     private void OutProductInStoreConct(string containsProductTypeOrProductSpecify, out double localeFinishedCount, out double freeTradeInHouseCount, out double putInMaterialCount)
-     {
-         try
-         {
-             var ProductInStoreInfoList = GetProductInStoreInfoBy(containsProductTypeOrProductSpecify);
-             if (ProductInStoreInfoList != null || ProductInStoreInfoList.Count > 0)
-             {
-                 localeFinishedCount = ProductInStoreInfoList.FindAll(f => f.StroeId == localeFinishedSign).ToList().Sum(m => m.InStroeNumber);
-                 freeTradeInHouseCount = ProductInStoreInfoList.FindAll(f => f.StroeId == FreeTradeSign).ToList().Sum(m => m.InStroeNumber);
-                 putInMaterialCount = ProductInStoreInfoList.FindAll(f => f.StroeId == IncomingmaterialSign).ToList().Sum(m => m.InStroeNumber);
-             }
-             else
-             { localeFinishedCount = 0; freeTradeInHouseCount = 0; putInMaterialCount = 0; }
-         }
-         catch (Exception ex)
-         {
-             throw new Exception(ex.InnerException.Message);
-         }
-     }
-      
-      /// <summary>
-      /// 输出未完工信息数量
-      /// </summary>
-      /// <param name="containsProductTypeOrProductSpecify"></param>
-      /// <param name="orderCount"></param>
-      /// <param name="allCheckOrderCount"></param>
-      private void OutunfinishedOrderConct(string containsProductTypeOrProductSpecify, out double orderCount, out double allCheckOrderCount)
-      {
-          allCheckOrderCount = 0; orderCount = 0;
-          var unfinishedOrderList = GetAllProductOrderList(containsProductTypeOrProductSpecify).
-                                 FindAll(e => !(e.OrderFinishStatus == HaveFinishSign || e.OrderFinishStatus == SpecifiedFinishSign));
-          if (unfinishedOrderList == null || unfinishedOrderList.Count <= 0)
-              return;
-          //不包括全检工单的工单
-          var UnallCheckCategoryList = unfinishedOrderList.FindAll(f => !f.OrderId.Contains(AllCheckCategory));
-          if (UnallCheckCategoryList != null && UnallCheckCategoryList.Count > 0)
-          {
-              orderCount = UnallCheckCategoryList.Sum(f => f.Count) - UnallCheckCategoryList.Sum(f => f.InStoreCount);
-          }
-          //包括全检工单的工单
-          var allCheckCategoryList = unfinishedOrderList.FindAll(f => f.OrderId.Contains(AllCheckCategory));
-          if (allCheckCategoryList != null && allCheckCategoryList.Count > 0)
-          {
-              allCheckOrderCount = allCheckCategoryList.Sum(f => f.Count) - allCheckCategoryList.Sum(f => f.InStoreCount);
-          }
 
-      }
       /// <summary>
       /// 得到制三部的 订单与工单的对比参数
       /// </summary>
@@ -154,7 +105,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
               List<ProductTypeMonitorModel> typeMonitorModelList = new List<ProductTypeMonitorModel>();
               //获取MES的产品型号
               var mesPortype = CopOrderCrudFactory.CopOrderManageDb.MesProductTypeList();
-            
+
               if (mesPortype == null || mesPortype.Count <= 0) return typeMonitorModelList;
                 mesPortype.ForEach(e =>
                  {
@@ -169,19 +120,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
               throw new Exception(ex.InnerException.Message);
           }
       }
-      List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
-                 new FileFieldMapping ("Number","项次") ,
-                  new FileFieldMapping ("ProductType","品名") ,
-                  new FileFieldMapping ("ProductSpecify","规格") ,
-                  new FileFieldMapping ("SumCount","汇总") ,
-                  new FileFieldMapping ("OrderCount","工单数量")  ,
-                  new FileFieldMapping ("LocaleFinishedCount","现场成品仓") ,
-                  new FileFieldMapping ("FreeTradeInHouseCount","库存成品"),
-                  new FileFieldMapping ("AllCheckOrderCount","全检工单"),
-                  new FileFieldMapping ("PutInMaterialCount","来料成品"),
-                  new FileFieldMapping ("DifferenceCount","差异"),
-                  new FileFieldMapping ("More","备注")
-                };
+
       /// <summary>
       /// 生成EXCEL表格
       /// </summary>
@@ -274,6 +213,63 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
           return productIDList;
       }
 
-      #endregion
+
+        /// <summary>
+        /// 输出成品仓信息数量
+        /// </summary>
+        /// <param name="containsProductTypeOrProductSpecify"></param>
+        /// <param name="localeFinishedCount"></param>
+        /// <param name="freeTradeInHouseCount"></param>
+        /// <param name="putInMaterialCount"></param
+        /// 
+        private void OutProductInStoreConct(string containsProductTypeOrProductSpecify, out double localeFinishedCount, out double freeTradeInHouseCount, out double putInMaterialCount)
+        {
+            try
+            {
+                var ProductInStoreInfoList = GetProductInStoreInfoBy(containsProductTypeOrProductSpecify);
+                if (ProductInStoreInfoList != null || ProductInStoreInfoList.Count > 0)
+                {
+                    localeFinishedCount = ProductInStoreInfoList.FindAll(f => f.StroeId == localeFinishedSign).ToList().Sum(m => m.InStroeNumber);
+                    freeTradeInHouseCount = ProductInStoreInfoList.FindAll(f => f.StroeId == FreeTradeSign).ToList().Sum(m => m.InStroeNumber);
+                    putInMaterialCount = ProductInStoreInfoList.FindAll(f => f.StroeId == IncomingmaterialSign).ToList().Sum(m => m.InStroeNumber);
+                }
+                else
+                { localeFinishedCount = 0; freeTradeInHouseCount = 0; putInMaterialCount = 0; }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+
+        /// <summary>
+        /// 输出未完工信息数量
+        /// </summary>
+        /// <param name="containsProductTypeOrProductSpecify"></param>
+        /// <param name="orderCount"></param>
+        /// <param name="allCheckOrderCount"></param>
+        private void OutunfinishedOrderConct(string containsProductTypeOrProductSpecify, out double orderCount, out double allCheckOrderCount)
+        {
+            allCheckOrderCount = 0; orderCount = 0;
+            var unfinishedOrderList = GetAllProductOrderList(containsProductTypeOrProductSpecify).
+                                   FindAll(e => !(e.OrderFinishStatus == HaveFinishSign || e.OrderFinishStatus == SpecifiedFinishSign));
+            if (unfinishedOrderList == null || unfinishedOrderList.Count <= 0)
+                return;
+            //不包括全检工单的工单
+            var UnallCheckCategoryList = unfinishedOrderList.FindAll(f => !f.OrderId.Contains(AllCheckCategory));
+            if (UnallCheckCategoryList != null && UnallCheckCategoryList.Count > 0)
+            {
+                orderCount = UnallCheckCategoryList.Sum(f => f.Count) - UnallCheckCategoryList.Sum(f => f.InStoreCount);
+            }
+            //包括全检工单的工单
+            var allCheckCategoryList = unfinishedOrderList.FindAll(f => f.OrderId.Contains(AllCheckCategory));
+            if (allCheckCategoryList != null && allCheckCategoryList.Count > 0)
+            {
+                allCheckOrderCount = allCheckCategoryList.Sum(f => f.Count) - allCheckCategoryList.Sum(f => f.InStoreCount);
+            }
+
+        }
+
+        #endregion
     }
 }

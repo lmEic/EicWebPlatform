@@ -46,8 +46,6 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datas =  CopService.OrderManageManager.GetMS589ProductTypeMonitor();
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-
-
         [NoAuthenCheck]
         public FileResult CreateProductTypeMonitoList()
         {

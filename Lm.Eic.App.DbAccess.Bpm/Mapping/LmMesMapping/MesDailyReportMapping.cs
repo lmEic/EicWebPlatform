@@ -8,7 +8,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.LmMapping
 
         public ProductCompleteInputDataMapping()
         {
-           
+
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Wip_ProductCompleteInputData");
