@@ -24,6 +24,19 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
             yearMonth: yearMonth,
         });
     };
+
+    ////////////////////////////////////
+    //        导出得到EXCEL            //
+    //                                //
+    ////////////////////////////////////
+    purDb.CreateQualifiedSupplierInfoList = function (data)
+    {
+        var url = purUrlPrefix + 'CreateQualifiedSupplierInfoList';
+        return ajaxService.getData(url, {
+           data :data 
+        });
+    };
+
     ///上传供应商证书文件
     purDb.uploadPurSupplierCertificateFile = function (file) {
         var url = purUrlPrefix + 'UploadPurSupplierCertificateFile';
@@ -180,9 +193,16 @@ null,
         searchYear: new Date().getFullYear(),
         datasets: [],
         datasource:[item],
+
         getPurQualifiedSupplier: function () {
             $scope.searchPromise = supplierDataOpService.getPurQualifiedSupplierListBy(vmManager.searchYear).then(function (datas) {
                 vmManager.datasource = datas;
+            });
+        },
+
+        CreateQualifiedSupplierList: function () {
+            $scope.searchPromise = supplierDataOpService.CreateQualifiedSupplierInfoList(vmManager.datasource).then(function () {
+                
             });
         },
         supplierCertificateEditModal: $modal({

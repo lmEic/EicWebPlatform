@@ -1242,6 +1242,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         }
     };
     $scope.vmManager = vmManager;
+
     var attendBoard = Object.create(leeDataHandler.operateStatus);
     $scope.attendBoard = attendBoard;
     attendBoard.edit = function () {
@@ -1251,6 +1252,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         if(vmManager.InputDate != null){
             vmManager.workerAttendBoardVisible = false;
             vmManager.workerAttendanceVM.ReportDate = vmManager.InputDate;
+            vmManager.workerAttendanceVM.Department = vmManager.department;
+            vmManager.workerAttendanceVM.AttendenceStation="机台";
             $scope.promise = dReportDataOpService.saveReportsAttendenceDatas(vmManager.workerAttendanceVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
                 vmManager.workerAttendanceVM = [];
