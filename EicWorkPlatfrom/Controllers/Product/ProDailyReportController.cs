@@ -241,6 +241,18 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
 
 
+        /// <summary>
+        /// 获取考勤数据模板
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetReportsAttendence(string department, DateTime dailyReportDate)
+        {
+            
+            var datas = DailyReportService.InputManager.ReportAttendenceManager.GetReportsAttendence(department, dailyReportDate);
+            return DateJsonResult(datas);
+        }
 
         #endregion
     }

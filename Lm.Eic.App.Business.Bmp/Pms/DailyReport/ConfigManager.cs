@@ -1,6 +1,7 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.App.Erp.Bussiness.MocManage;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
@@ -214,6 +215,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             }
             else entity.OpSign = "add";
             return DailyReportCrudFactory.ReportsAttendenceCrud.Store(entity);
+        }
+        /// <summary>
+        /// 得到当天的出勤数据
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="dailyReportDate"></param>
+        /// <returns></returns>
+        public List<ReportsAttendenceModel> GetReportsAttendence(string department, DateTime dailyReportDate)
+        {
+            DateTime dailyDate = dailyReportDate.ToDate();
+            return  DailyReportCrudFactory.ReportsAttendenceCrud.GetReportsAttendence(department, dailyDate);
         }
     }
 
