@@ -91,6 +91,7 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
 });
 //标准工时设定
 productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpService, dataDicConfigTreeSet, connDataOpService, $modal) {
+    
     ///工艺标准工时视图模型
     var uiVM = {
         Department: null,
@@ -272,6 +273,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
 //日报录入
 productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService,$modal) {
     ///日报录入视图模型
+   
     var uiVM = {
         Department: null,
         DailyReportDate: null,
@@ -422,7 +424,6 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         //显示编辑作业人员出勤工时面板
         showWorkerAttendBoardView: function () {
             vmManager.workerAttendBoardDisplay = true;
-
         },
         getReportInputDataTemplate: function () {
             vmManager.editDatas = [];
@@ -1216,57 +1217,52 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         //出勤报表类型
         attendanceReportTypes: [{ id: 1, text: '机台' }, { id: 2, text: '工艺' }],
         ///作业人员出勤数据模型
-        workerAttendBoardVisible: false,
-
-        workerAttendanceVM: {
-            Department: null,
-            AttendenceStation: null,
-            ShouldAttendenceUserCount: 0,
-            ShouldAttendenceHours: null,
-            AskLeaveUserCount: 0,
-            AskLeaveHours: null,
-            HaveLeaveUserCount: 0,
-            HaveLeaveHours: null,
-            SupportOutUserCount: 0,
-            SupportOutHours: null,
-            RealityWorkingUserCount: 0,
-            RealityWorkingHours: null,
-            InNewWorkerCount: 0,
-            InNewworkerHours: null,
-            SupportInUserCount: 0,
-            SupportInHours: null,
-            OverWorkUserCount: 0,
-            OverWorkHours: null,
-            AttendenceTotalHours: null,
-            ReportDate:null
-        }
+       
     };
     $scope.vmManager = vmManager;
 
-    var attendBoard = Object.create(leeDataHandler.operateStatus);
-    $scope.attendBoard = attendBoard;
-    attendBoard.edit = function () {
-        vmManager.workerAttendBoardVisible = true;
+    //013935创建日报考勤模
+    var workerAttendanceVM = {
+        workerAttendBoardVisible: false,
+        Department:null,
+        AttendenceStation:null,
+        ShouldAttendenceUserCount:null,
+        ShouldAttendenceHours: null,
+        AskLeaveUserCount: null,
+        AskLeaveHours: null,
+        HaveLeaveUserCount: null,
+        HaveLeaveHours: null,
+        SupportOutUserCount: null,
+        SupportOutHours: null,
+        RealityWorkingUserCount: null,
+        RealityWorkingHours: null,
+        InNewWorkerCount: null,
+        InNewWorkerHours: null,
+        SupportInShoutAbsentCount: null,
+        SupportInShoutAbsentHours: null,
+        SupportInRealityWorkingCount: null,
+        SupportInRealityWorkingHours: null,
+        SupportInAskLeaveCount: null,
+        SupportInAskLeaveHours: null,
+        SupportInHaveLeaveCount: null,
+        SupportInHaveLeaveHours: null,
+        OverWorkUserCount: null,
+        OverWorkHours: null,
+        AttendenceTotalCount: null,
+        AttendenceTotalHours: null,
+        ReportDate:null,
+        OpPerson:null,
+        OpDate:null,
+        OpTime:null,
+        OpSign:null,
+        Id_key: null,
     }
-    attendBoard.save = function () {
-        if(vmManager.InputDate != null){
-            vmManager.workerAttendBoardVisible = false;
-            vmManager.workerAttendanceVM.ReportDate = vmManager.InputDate;
-            vmManager.workerAttendanceVM.Department = vmManager.department;
-            vmManager.workerAttendanceVM.AttendenceStation="机台";
-            $scope.promise = dReportDataOpService.saveReportsAttendenceDatas(vmManager.workerAttendanceVM).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
-                vmManager.workerAttendanceVM = [];
-            })
-        } else {
-            alert("请选择日期");
-        }
-        
-    }
-
+     
+    $scope.workerAttendanceVM = workerAttendanceVM;
+    
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    //保存日报录入数据
+    //保存日报录入数据并发送给后台
     operate.save = function () {
         if (vmManager.editDatas.length > 0)
         {
@@ -1278,6 +1274,37 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             });
         }
     };
+
+    //013935编辑日报考勤数据
+    operate.editWorkerAttendanceVM = function () {
+        workerAttendanceVM.workerAttendBoardVisible = true;
+    }
+    //013935保存日报考勤数据并发送给后台
+    operate.saveWorkerAttendanceVM = function () {
+        if (workerAttendanceVM.ReportDate != null) {
+            workerAttendanceVM.workerAttendBoardVisible = false;
+            workerAttendanceVM.ShouldAttendenceHours = workerAttendanceVM.ShouldAttendenceUserCount * 8;
+            workerAttendanceVM.AskLeaveHours = workerAttendanceVM.AskLeaveUserCount * 8;
+            workerAttendanceVM.HaveLeaveHours = workerAttendanceVM.HaveLeaveUserCount * 8;
+            workerAttendanceVM.SupportOutHours = workerAttendanceVM.SupportOutUserCount * 8;
+            workerAttendanceVM.RealityWorkingHours = workerAttendanceVM.RealityWorkingUserCount * 8;
+            workerAttendanceVM.InNewWorkerHours = workerAttendanceVM.InNewWorkerCount * 8;
+            workerAttendanceVM.SupportInShoutAbsentHours = workerAttendanceVM.SupportInShoutAbsentCount * 8;
+            workerAttendanceVM.SupportInRealityWorkingHours = workerAttendanceVM.SupportInRealityWorkingCount * 8;
+            workerAttendanceVM.SupportInAskLeaveHours = workerAttendanceVM.SupportInAskLeaveCount * 8;
+            workerAttendanceVM.SupportInHaveLeaveHours = workerAttendanceVM.SupportInHaveLeaveCount * 8;
+            workerAttendanceVM.OverWorkHours = workerAttendanceVM.OverWorkUserCount * 8;
+            workerAttendanceVM.AttendenceTotalHours = workerAttendanceVM.AttendenceTotalCount * 8;
+            workerAttendanceVM.Department = vmManager.department;
+            $scope.promise = dReportDataOpService.saveReportsAttendenceDatas(workerAttendanceVM).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
+                workerAttendanceVM = [];
+            })
+        } else {
+            alert("请选择日期");
+        }
+
+    }
     //审核确认日报录入数据
     operate.audit = function () {
         $scope.promise = dReportDataOpService.auditDailyReport(vmManager.department,vmManager.InputDate).then(function (opresult) {
@@ -1301,7 +1328,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     });
 
     $scope.ztree = departmentTreeSet;
-
+    
     //焦点设置器
     var focusSetter = {
         orderIdFocus:false,
@@ -1316,6 +1343,20 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         attendanceHoursFocus: false,
         nonProductHoursFocus: false,
         nonProductReasonCodeFocus: false,
+
+        //013935新增考勤焦点
+        ShouldAttendenceUserCountFocus: false,
+        AskLeaveUserCountFoucs: false,
+        HaveLeaveUserCountFocus: false,
+        SupportOutUserCountFocus: false,
+        RealityWorkingUserCountFocus: false,
+        InNewWorkerCountFocus: false,
+        SupportInShoutAbsentCount: false,
+        SupportInRealityWorkingCountFocus: false,
+        SupportInAskLeaveCountFocus: false,
+        SupportInHaveLeaveCountFocus: false,
+        OverWorkUserCountFocus: false,
+        AttendenceTotalCountFocus: false,
         //移动焦点到指定对象
         moveFocusTo: function ($event, elPreName,elNextName) {
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {
@@ -1327,7 +1368,13 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         },
         doWhenKeyDown: function ($event, fn) {
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) { fn(); }
+        },
+        //013935考勤回车事件
+        changeEnter : function ($event, elPreName, elNextName) {
+            focusSetter.moveFocusTo($event, elPreName, elNextName)
         }
+
     };
     $scope.focus = focusSetter;
+    
 });

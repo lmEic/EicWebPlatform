@@ -1301,114 +1301,302 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
     }
 
 
-   /// <summary>
-   /// 日报出勤时数表
-   /// </summary>
+    /// <summary>
+    /// 日报出勤时数表
+    /// </summary>
     public class ReportsAttendenceModel
     {
-
         #region Model
+        private string _department;
         /// <summary>
         ///部门
         /// </summary>
-        public string Department { get; set; }
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _attendencestation;
         /// <summary>
         ///站别
         /// </summary>
-        public string AttendenceStation { get; set; }
+        public string AttendenceStation
+        {
+            set { _attendencestation = value; }
+            get { return _attendencestation; }
+        }
+        private int _shouldattendenceusercount;
         /// <summary>
         ///应到人数
         /// </summary>
-        public int ShouldAttendenceUserCount { get; set; }
+        public int ShouldAttendenceUserCount
+        {
+            set { _shouldattendenceusercount = value; }
+            get { return _shouldattendenceusercount; }
+        }
+        private double _shouldattendencehours;
         /// <summary>
-        ///应到时数
+        ///应到人员时数
         /// </summary>
-        public double ShouldAttendenceHours { get; set; }
+        public double ShouldAttendenceHours
+        {
+            set { _shouldattendencehours = value; }
+            get { return _shouldattendencehours; }
+        }
+        private int _askleaveusercount;
         /// <summary>
         ///请假人数
         /// </summary>
-        public int AskLeaveUserCount { get; set; }
+        public int AskLeaveUserCount
+        {
+            set { _askleaveusercount = value; }
+            get { return _askleaveusercount; }
+        }
+        private double _askleavehours;
         /// <summary>
-        ///请假时数
+        ///请假人员时数
         /// </summary>
-        public double AskLeaveHours { get; set; }
+        public double AskLeaveHours
+        {
+            set { _askleavehours = value; }
+            get { return _askleavehours; }
+        }
+        private int _haveleaveusercount;
         /// <summary>
         ///旷工人数
         /// </summary>
-        public int HaveLeaveUserCount { get; set; }
+        public int HaveLeaveUserCount
+        {
+            set { _haveleaveusercount = value; }
+            get { return _haveleaveusercount; }
+        }
+        private double _haveleavehours;
         /// <summary>
-        ///旷工时数
+        ///旷工人员时数
         /// </summary>
-        public double HaveLeaveHours { get; set; }
+        public double HaveLeaveHours
+        {
+            set { _haveleavehours = value; }
+            get { return _haveleavehours; }
+        }
+        private int _supportoutusercount;
         /// <summary>
         ///援出人数
         /// </summary>
-        public int SupportOutUserCount { get; set; }
+        public int SupportOutUserCount
+        {
+            set { _supportoutusercount = value; }
+            get { return _supportoutusercount; }
+        }
+        private double _supportouthours;
         /// <summary>
-        ///援出时数
+        ///援出人员时数
         /// </summary>
-        public double SupportOutHours { get; set; }
+        public double SupportOutHours
+        {
+            set { _supportouthours = value; }
+            get { return _supportouthours; }
+        }
+        private int _realityworkingusercount;
         /// <summary>
         ///实到人数
         /// </summary>
-        public int RealityWorkingUserCount { get; set; }
+        public int RealityWorkingUserCount
+        {
+            set { _realityworkingusercount = value; }
+            get { return _realityworkingusercount; }
+        }
+        private double _realityworkinghours;
         /// <summary>
-        ///实到时数
+        ///实到人员时数
         /// </summary>
-        public double RealityWorkingHours { get; set; }
+        public double RealityWorkingHours
+        {
+            set { _realityworkinghours = value; }
+            get { return _realityworkinghours; }
+        }
+        private int _innewworkercount;
         /// <summary>
-        ///新人员数
+        ///新进人数
         /// </summary>
-        public int InNewWorkerCount { get; set; }
+        public int InNewWorkerCount
+        {
+            set { _innewworkercount = value; }
+            get { return _innewworkercount; }
+        }
+        private double _innewworkerhours;
         /// <summary>
-        ///新人员时数
+        ///新时人员时数
         /// </summary>
-        public double InNewworkerHours { get; set; }
+        public double InNewWorkerHours
+        {
+            set { _innewworkerhours = value; }
+            get { return _innewworkerhours; }
+        }
+        private int _supportinshoutabsentcount;
         /// <summary>
-        ///援入人数
+        ///援入应到人数
         /// </summary>
-        public int SupportInUserCount { get; set; }
+        public int SupportInShoutAbsentCount
+        {
+            set { _supportinshoutabsentcount = value; }
+            get { return _supportinshoutabsentcount; }
+        }
+        private double _supportinshoutabsenthours;
         /// <summary>
-        ///援入时数
+        ///援入应到时数
         /// </summary>
-        public double SupportInHours { get; set; }
+        public double SupportInShoutAbsentHours
+        {
+            set { _supportinshoutabsenthours = value; }
+            get { return _supportinshoutabsenthours; }
+        }
+        private int _supportinrealityworkingcount;
+        /// <summary>
+        ///援入实到人数
+        /// </summary>
+        public int SupportInRealityWorkingCount
+        {
+            set { _supportinrealityworkingcount = value; }
+            get { return _supportinrealityworkingcount; }
+        }
+        private double _supportinrealityworkinghours;
+        /// <summary>
+        ///援入实到时数
+        /// </summary>
+        public double SupportInRealityWorkingHours
+        {
+            set { _supportinrealityworkinghours = value; }
+            get { return _supportinrealityworkinghours; }
+        }
+        private int _supportinaskleavecount;
+        /// <summary>
+        ///援入请假人数
+        /// </summary>
+        public int SupportInAskLeaveCount
+        {
+            set { _supportinaskleavecount = value; }
+            get { return _supportinaskleavecount; }
+        }
+        private double _supportinaskleavehours;
+        /// <summary>
+        ///援入请假时数
+        /// </summary>
+        public double SupportInAskLeaveHours
+        {
+            set { _supportinaskleavehours = value; }
+            get { return _supportinaskleavehours; }
+        }
+        private int _supportinhaveleavecount;
+        /// <summary>
+        ///援入旷工人数
+        /// </summary>
+        public int SupportInHaveLeaveCount
+        {
+            set { _supportinhaveleavecount = value; }
+            get { return _supportinhaveleavecount; }
+        }
+        private double _supportinhaveleavehours;
+        /// <summary>
+        ///援入旷工时数
+        /// </summary>
+        public double SupportInHaveLeaveHours
+        {
+            set { _supportinhaveleavehours = value; }
+            get { return _supportinhaveleavehours; }
+        }
+        private int _overworkusercount;
         /// <summary>
         ///加班人数
         /// </summary>
-        public int OverWorkUserCount { get; set; }
+        public int OverWorkUserCount
+        {
+            set { _overworkusercount = value; }
+            get { return _overworkusercount; }
+        }
+        private double _overworkhours;
         /// <summary>
         ///加班时数
         /// </summary>
-        public double OverWorkHours { get; set; }
+        public double OverWorkHours
+        {
+            set { _overworkhours = value; }
+            get { return _overworkhours; }
+        }
+        private int _attendencetotalcount;
+        /// <summary>
+        ///出勤总人数
+        /// </summary>
+        public int AttendenceTotalCount
+        {
+            set { _attendencetotalcount = value; }
+            get { return _attendencetotalcount; }
+        }
+        private double _attendencetotalhours;
         /// <summary>
         ///出勤总时数
         /// </summary>
-        public double AttendenceTotalHours { get; set; }
-        /// <summary>
-        ///报表日期
-        /// </summary>
-        public DateTime ReportDate { get; set; }
-        /// <summary>
-        ///操作人员
-        /// </summary>
-        public string OpPerson { get; set; }
+        public double AttendenceTotalHours
+        {
+            set { _attendencetotalhours = value; }
+            get { return _attendencetotalhours; }
+        }
+        private DateTime _reportdate;
         /// <summary>
         ///操作日期
         /// </summary>
-        public DateTime OpDate { get; set; }
+        public DateTime ReportDate
+        {
+            set { _reportdate = value; }
+            get { return _reportdate; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
         /// <summary>
         ///操作时间
         /// </summary>
-        public DateTime OpTime { get; set; }
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private string _opsign;
         /// <summary>
         ///操作标识
         /// </summary>
-        public string OpSign { get; set; }
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private decimal _id_key;
         /// <summary>
-        ///自增键 
+        ///自增键
         /// </summary>
-        public decimal Id_key { get; set; }
+        public decimal Id_key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
         #endregion Model
+
     }
 
     #endregion

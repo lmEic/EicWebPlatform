@@ -42,7 +42,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         public List<AttendanceDataModel> LoadAttendDataInToday(string department,DateTime qryDate)
         {
             var qdate = qryDate.ToDate();
-            return this.currentMonthAttendDataHandler.LoadAttendDataInToday(department,qdate);
+            //return this.currentMonthAttendDataHandler.LoadAttendDataInToday(department,qdate);
+            return new List<AttendanceDataModel>();
         }
 
         /// <summary>
