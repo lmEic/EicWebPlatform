@@ -409,6 +409,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                                    && e.ReportDate == entity.ReportDate
                                    && e.AttendenceStation == entity.AttendenceStation);
         }
+        /// <summary>
+        /// 得到部门的所有出勤数据
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public List<ReportsAttendenceModel> GetReportsAttendence(string department, DateTime reportDate, string attendenceStation)
+        {
+            return irep.Entities.Where(e => e.Department == department && e.ReportDate == reportDate && e.AttendenceStation == attendenceStation).ToList();
+        }
     }
 
 
