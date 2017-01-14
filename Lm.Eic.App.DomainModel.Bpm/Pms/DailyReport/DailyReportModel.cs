@@ -1336,7 +1336,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private double _shouldattendencehours;
         /// <summary>
-        ///应到出勤时数
+        ///应到人员时数
         /// </summary>
         public double ShouldAttendenceHours
         {
@@ -1354,7 +1354,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private double _askleavehours;
         /// <summary>
-        ///请假时数
+        ///请假人员时数
         /// </summary>
         public double AskLeaveHours
         {
@@ -1372,7 +1372,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private double _haveleavehours;
         /// <summary>
-        ///旷工时数
+        ///旷工人员时数
         /// </summary>
         public double HaveLeaveHours
         {
@@ -1390,7 +1390,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private double _supportouthours;
         /// <summary>
-        ///援出时数
+        ///援出人员时数
         /// </summary>
         public double SupportOutHours
         {
@@ -1408,7 +1408,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private double _realityworkinghours;
         /// <summary>
-        ///实到时数
+        ///实到人员时数
         /// </summary>
         public double RealityWorkingHours
         {
@@ -1417,7 +1417,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private int _innewworkercount;
         /// <summary>
-        ///新进人员人数
+        ///新进人数
         /// </summary>
         public int InNewWorkerCount
         {
@@ -1426,7 +1426,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private double _innewworkerhours;
         /// <summary>
-        ///新进人员
+        ///新时人员时数
         /// </summary>
         public double InNewWorkerHours
         {
@@ -1487,14 +1487,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
             set { _supportinaskleavehours = value; }
             get { return _supportinaskleavehours; }
         }
-        private int _supportinhaveleaveconnt;
+        private int _supportinhaveleavecount;
         /// <summary>
         ///援入旷工人数
         /// </summary>
-        public int SupportInHaveLeaveConnt
+        public int SupportInHaveLeaveCount
         {
-            set { _supportinhaveleaveconnt = value; }
-            get { return _supportinhaveleaveconnt; }
+            set { _supportinhaveleavecount = value; }
+            get { return _supportinhaveleavecount; }
         }
         private double _supportinhaveleavehours;
         /// <summary>
@@ -1507,7 +1507,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private int _overworkusercount;
         /// <summary>
-        ///加班人员人数
+        ///加班人数
         /// </summary>
         public int OverWorkUserCount
         {
@@ -1525,7 +1525,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private int _attendencetotalcount;
         /// <summary>
-        ///出勤总投入人数
+        ///出勤总人数
         /// </summary>
         public int AttendenceTotalCount
         {
@@ -1534,7 +1534,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private double _attendencetotalhours;
         /// <summary>
-        ///实际总投入时数
+        ///出勤总时数
         /// </summary>
         public double AttendenceTotalHours
         {
@@ -1543,7 +1543,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private DateTime _reportdate;
         /// <summary>
-        ///日报日期
+        ///操作日期
         /// </summary>
         public DateTime ReportDate
         {
@@ -1552,7 +1552,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport
         }
         private string _opperson;
         /// <summary>
-        ///操作人员
+        ///操作人
         /// </summary>
         public string OpPerson
         {
