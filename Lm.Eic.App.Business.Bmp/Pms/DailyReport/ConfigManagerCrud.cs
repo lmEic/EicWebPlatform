@@ -424,9 +424,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public List<ReportsAttendenceModel> GetReportsAttendence(string department, DateTime reportDate, string attendenceStation)
+        public ReportsAttendenceModel GetReportsAttendence(string department, string attendenceStation, DateTime reportDate)
         {
-            return irep.Entities.Where(e => e.Department == department && e.ReportDate == reportDate && e.AttendenceStation == attendenceStation).ToList();
+            return irep.Entities.Where(e => e.Department == department && e.ReportDate == reportDate && e.AttendenceStation == attendenceStation).ToList().FirstOrDefault ();
         }
     }
 
