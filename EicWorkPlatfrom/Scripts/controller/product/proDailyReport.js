@@ -1257,7 +1257,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         opSign:null,
         id_key: null,
     }
-     
+    var initworkerAttendanceVM = _.clone(workerAttendanceVM);
     $scope.workerAttendanceVM = workerAttendanceVM;
     
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -1296,6 +1296,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             workerAttendanceVM.overWorkHours = workerAttendanceVM.overWorkUserCount * 8;
             workerAttendanceVM.attendenceTotalHours = workerAttendanceVM.attendenceTotalCount * 8;
             workerAttendanceVM.department = vmManager.department;
+            workerAttendanceVM = initworkerAttendanceVM;
             $scope.promise = dReportDataOpService.saveReportsAttendenceDatas(workerAttendanceVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
             })
