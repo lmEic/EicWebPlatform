@@ -1295,7 +1295,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             workerAttendanceVM.SupportInHaveLeaveHours = workerAttendanceVM.SupportInHaveLeaveCount * 8;
             workerAttendanceVM.OverWorkHours = workerAttendanceVM.OverWorkUserCount * 8;
             workerAttendanceVM.AttendenceTotalHours = workerAttendanceVM.AttendenceTotalCount * 8;
-            console.log(workerAttendanceVM);
+            workerAttendanceVM.Department = vmManager.department;
             $scope.promise = dReportDataOpService.saveReportsAttendenceDatas(workerAttendanceVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
                 workerAttendanceVM = [];
@@ -1343,6 +1343,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         attendanceHoursFocus: false,
         nonProductHoursFocus: false,
         nonProductReasonCodeFocus: false,
+
+        //013935新增考勤焦点
         ShouldAttendenceUserCountFocus: false,
         AskLeaveUserCountFoucs: false,
         HaveLeaveUserCountFocus: false,
@@ -1367,9 +1369,11 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         doWhenKeyDown: function ($event, fn) {
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) { fn(); }
         },
+        //013935考勤回车事件
         changeEnter : function ($event, elPreName, elNextName) {
             focusSetter.moveFocusTo($event, elPreName, elNextName)
         }
+
     };
     $scope.focus = focusSetter;
     
