@@ -19,7 +19,8 @@ productModule.factory('mocDataOpService', function (ajaxService) {
         });
     };
 
-    ///获取设备校验清单
+    ///获取校验清
+
     mocDataOp.getProductTypeMonitor = function (department) {
         var url = mocUrlPrefix + 'GetMS589ProductTypeMonitor';
         return ajaxService.getData(url, {

@@ -48,6 +48,16 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             return DateJsonResult(datas);
         }
         /// <summary>
+        /// 导出合格供应商EXCEl表清册
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult CreateQualifiedSupplierInfoList()
+        {
+            var ds = PurchaseService.PurSupplierManager.SupplierCertificateManager.BuildQualifiedSupplierInfoList();
+            return this.ExportToExcel(ds, "合格供应商清单", "合格供应商");
+        }
+        /// <summary>
         /// 获取合格供应商信息
         /// </summary>
         /// <param name="supplierId">供应商编号</param>
@@ -127,6 +137,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetSupplierQualifiedCertificateListBy(supplierId);
             return DateJsonResult(datas);
         }
+     
         /// <summary>
         /// 删除供应商证书文件
         /// </summary>
