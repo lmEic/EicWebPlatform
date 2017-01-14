@@ -222,10 +222,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <param name="department"></param>
         /// <param name="dailyReportDate"></param>
         /// <returns></returns>
-        public List<ReportsAttendenceModel> GetReportsAttendence(string department, DateTime dailyReportDate)
+        public List<ReportsAttendenceModel> GetReportsAttendence(string department, DateTime dailyReportDate, string attendenceStation)
         {
             DateTime dailyDate = dailyReportDate.ToDate();
-            return  DailyReportCrudFactory.ReportsAttendenceCrud.GetReportsAttendence(department, dailyDate);
+            return  DailyReportCrudFactory.ReportsAttendenceCrud.GetReportsAttendence(department, dailyDate, attendenceStation);
         }
     }
 

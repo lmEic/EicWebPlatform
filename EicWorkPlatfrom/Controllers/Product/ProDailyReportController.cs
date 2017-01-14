@@ -239,18 +239,16 @@ namespace EicWorkPlatfrom.Controllers.Product
             var result = DailyReportService.InputManager.ReportAttendenceManager.SaveReportAttendenceEntity(entity);
             return Json(result);
         }
-
-
         /// <summary>
         /// 获取考勤数据模板
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetReportsAttendence(string department, DateTime dailyReportDate)
+        public ContentResult GetReportsAttendence(string department, DateTime dailyReportDate, string attendenceStation)
         {
-            
-            var datas = DailyReportService.InputManager.ReportAttendenceManager.GetReportsAttendence(department, dailyReportDate);
+
+            var datas = DailyReportService.InputManager.ReportAttendenceManager.GetReportsAttendence(department, dailyReportDate, attendenceStation);
             return DateJsonResult(datas);
         }
 
