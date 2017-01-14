@@ -1296,6 +1296,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             workerAttendanceVM.OverWorkHours = workerAttendanceVM.OverWorkUserCount * 8;
             workerAttendanceVM.AttendenceTotalHours = workerAttendanceVM.AttendenceTotalCount * 8;
             workerAttendanceVM.Department = vmManager.department;
+            console.log(workerAttendanceVM);
             $scope.promise = dReportDataOpService.saveReportsAttendenceDatas(workerAttendanceVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
                 workerAttendanceVM = [];
