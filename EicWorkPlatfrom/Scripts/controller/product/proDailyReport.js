@@ -1224,38 +1224,38 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     //013935创建日报考勤模
     var workerAttendanceVM = {
         workerAttendBoardVisible: false,
-        Department:null,
-        AttendenceStation:null,
-        ShouldAttendenceUserCount:null,
-        ShouldAttendenceHours: null,
-        AskLeaveUserCount: null,
-        AskLeaveHours: null,
-        HaveLeaveUserCount: null,
-        HaveLeaveHours: null,
-        SupportOutUserCount: null,
-        SupportOutHours: null,
-        RealityWorkingUserCount: null,
-        RealityWorkingHours: null,
-        InNewWorkerCount: null,
-        InNewWorkerHours: null,
-        SupportInShoutAbsentCount: null,
-        SupportInShoutAbsentHours: null,
-        SupportInRealityWorkingCount: null,
-        SupportInRealityWorkingHours: null,
-        SupportInAskLeaveCount: null,
-        SupportInAskLeaveHours: null,
-        SupportInHaveLeaveCount: null,
-        SupportInHaveLeaveHours: null,
-        OverWorkUserCount: null,
-        OverWorkHours: null,
-        AttendenceTotalCount: null,
-        AttendenceTotalHours: null,
-        ReportDate:null,
-        OpPerson:null,
-        OpDate:null,
-        OpTime:null,
-        OpSign:null,
-        Id_key: null,
+        department:null,
+        attendenceStation:"机台",
+        shouldAttendenceUserCount:null,
+        shouldAttendenceHours: null,
+        askLeaveUserCount: null,
+        askLeaveHours: null,
+        haveLeaveUserCount: null,
+        haveLeaveHours: null,
+        supportOutUserCount: null,
+        supportOutHours: null,
+        realityWorkingUserCount: null,
+        realityWorkingHours: null,
+        inNewWorkerCount: null,
+        inNewWorkerHours: null,
+        supportInShoutAbsentCount: null,
+        supportInShoutAbsentHours: null,
+        supportInRealityWorkingCount: null,
+        supportInRealityWorkingHours: null,
+        supportInAskLeaveCount: null,
+        supportInAskLeaveHours: null,
+        supportInHaveLeaveCount: null,
+        supportInHaveLeaveHours: null,
+        overWorkUserCount: null,
+        overWorkHours: null,
+        attendenceTotalCount: null,
+        attendenceTotalHours: null,
+        reportDate:null,
+        opPerson:null,
+        opDate:null,
+        opTime:null,
+        opSign:null,
+        id_key: null,
     }
      
     $scope.workerAttendanceVM = workerAttendanceVM;
@@ -1281,25 +1281,23 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     }
     //013935保存日报考勤数据并发送给后台
     operate.saveWorkerAttendanceVM = function () {
-        if (workerAttendanceVM.ReportDate != null) {
+        if (workerAttendanceVM.reportDate != null) {
             workerAttendanceVM.workerAttendBoardVisible = false;
-            workerAttendanceVM.ShouldAttendenceHours = workerAttendanceVM.ShouldAttendenceUserCount * 8;
-            workerAttendanceVM.AskLeaveHours = workerAttendanceVM.AskLeaveUserCount * 8;
-            workerAttendanceVM.HaveLeaveHours = workerAttendanceVM.HaveLeaveUserCount * 8;
-            workerAttendanceVM.SupportOutHours = workerAttendanceVM.SupportOutUserCount * 8;
-            workerAttendanceVM.RealityWorkingHours = workerAttendanceVM.RealityWorkingUserCount * 8;
-            workerAttendanceVM.InNewWorkerHours = workerAttendanceVM.InNewWorkerCount * 8;
-            workerAttendanceVM.SupportInShoutAbsentHours = workerAttendanceVM.SupportInShoutAbsentCount * 8;
-            workerAttendanceVM.SupportInRealityWorkingHours = workerAttendanceVM.SupportInRealityWorkingCount * 8;
-            workerAttendanceVM.SupportInAskLeaveHours = workerAttendanceVM.SupportInAskLeaveCount * 8;
-            workerAttendanceVM.SupportInHaveLeaveHours = workerAttendanceVM.SupportInHaveLeaveCount * 8;
-            workerAttendanceVM.OverWorkHours = workerAttendanceVM.OverWorkUserCount * 8;
-            workerAttendanceVM.AttendenceTotalHours = workerAttendanceVM.AttendenceTotalCount * 8;
-            workerAttendanceVM.Department = vmManager.department;
-            console.log(workerAttendanceVM);
+            workerAttendanceVM.shouldAttendenceHours = workerAttendanceVM.shouldAttendenceUserCount * 8;
+            workerAttendanceVM.askLeaveHours = workerAttendanceVM.askLeaveUserCount * 8;
+            workerAttendanceVM.haveLeaveHours = workerAttendanceVM.haveLeaveUserCount * 8;
+            workerAttendanceVM.supportOutHours = workerAttendanceVM.supportOutUserCount * 8;
+            workerAttendanceVM.realityWorkingHours = workerAttendanceVM.realityWorkingUserCount * 8;
+            workerAttendanceVM.inNewWorkerHours = workerAttendanceVM.inNewWorkerCount * 8;
+            workerAttendanceVM.supportInShoutAbsentHours = workerAttendanceVM.supportInShoutAbsentCount * 8;
+            workerAttendanceVM.supportInRealityWorkingHours = workerAttendanceVM.supportInRealityWorkingCount * 8;
+            workerAttendanceVM.supportInAskLeaveHours = workerAttendanceVM.supportInAskLeaveCount * 8;
+            workerAttendanceVM.supportInHaveLeaveHours = workerAttendanceVM.supportInHaveLeaveCount * 8;
+            workerAttendanceVM.overWorkHours = workerAttendanceVM.overWorkUserCount * 8;
+            workerAttendanceVM.attendenceTotalHours = workerAttendanceVM.attendenceTotalCount * 8;
+            workerAttendanceVM.department = vmManager.department;
             $scope.promise = dReportDataOpService.saveReportsAttendenceDatas(workerAttendanceVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
-                workerAttendanceVM = [];
             })
         } else {
             alert("请选择日期");
@@ -1346,18 +1344,18 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         nonProductReasonCodeFocus: false,
 
         //013935新增考勤焦点
-        ShouldAttendenceUserCountFocus: false,
-        AskLeaveUserCountFoucs: false,
-        HaveLeaveUserCountFocus: false,
-        SupportOutUserCountFocus: false,
-        RealityWorkingUserCountFocus: false,
-        InNewWorkerCountFocus: false,
-        SupportInShoutAbsentCount: false,
-        SupportInRealityWorkingCountFocus: false,
-        SupportInAskLeaveCountFocus: false,
-        SupportInHaveLeaveCountFocus: false,
-        OverWorkUserCountFocus: false,
-        AttendenceTotalCountFocus: false,
+        shouldAttendenceUserCountFocus: false,
+        askLeaveUserCountFoucs: false,
+        haveLeaveUserCountFocus: false,
+        supportOutUserCountFocus: false,
+        realityWorkingUserCountFocus: false,
+        inNewWorkerCountFocus: false,
+        supportInShoutAbsentCount: false,
+        supportInRealityWorkingCountFocus: false,
+        supportInAskLeaveCountFocus: false,
+        supportInHaveLeaveCountFocus: false,
+        overWorkUserCountFocus: false,
+        attendenceTotalCountFocus: false,
         //移动焦点到指定对象
         moveFocusTo: function ($event, elPreName,elNextName) {
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {
