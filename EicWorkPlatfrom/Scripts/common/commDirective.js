@@ -337,7 +337,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             var dom = element[0];
             scope.$watch('trigger', function (value) {
                 if (value === true) {
-                    $timeout(function () {
+                    $timeout(function () {  
                         dom.focus();
                         scope.trigger = false;
                     }, scope.$eval(attrs.focusDelay) || 0);
