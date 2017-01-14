@@ -393,14 +393,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
         OpResult AddReportAttendence(ReportsAttendenceModel entity)
         {
-            return irep.Insert(entity).ToOpResult(OpContext + "保存操作失败", OpContext + "保存操作成功"); ;
+            return irep.Insert(entity).ToOpResult(OpContext + "保存操作成功", OpContext + "保存操作失败"); 
         }
 
         OpResult EditReportAttendece(ReportsAttendenceModel entity)
         {
             entity.Id_key = GetIdkeyBy(entity);
             return irep.Update(e => e.Id_key == entity.Id_key,
-                                     entity).ToOpResult(OpContext + "修改操作失败", OpContext + "修改操作成功");
+                                     entity).ToOpResult(OpContext + "修改操作成功", OpContext + "修改操作失败");
         }
         public bool IsExist(ReportsAttendenceModel entity)
         {
