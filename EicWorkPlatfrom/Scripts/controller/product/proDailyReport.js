@@ -1224,7 +1224,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     //013935创建日报考勤模
     var workerAttendanceVM = {
         workerAttendBoardVisible: false,
-        department:null,
+        department: "生技课",
         attendenceStation:"机台",
         shouldAttendenceUserCount:null,
         shouldAttendenceHours: null,
