@@ -148,8 +148,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                     {
                         string classType = worker.ClassType;
                         string department = worker.Department;
-                        //中间时间
-                        DateTime dayMiddleTime = new DateTime(qryDate.Year, qryDate.Month, qryDate.Day, 12, 0, 0);
+
                         int len = attendDataPerWorker.Count;
                         for (int i = 0; i < len; i++)
                         {
@@ -159,12 +158,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                             if (currentAttendData == null)
                             {
                                 //则初始化考勤数据
-                                record += InitAttendData(attendance, worker, dayMiddleTime, attendance.SlodCardTime, out currentAttendData);
+                                record += InitAttendData(attendance, worker,attendance.SlodCardTime, out currentAttendData);
                             }
                             else
                             {
                                 //反之则合并数据
-                                record += MergeAttendTime(currentAttendData, dayMiddleTime, attendance.SlodCardTime);
+                                record += MergeAttendTime(currentAttendData,attendance.SlodCardTime);
                             }
                         }
                         if (record == len)//如果处理记录与目标数量一致则进行备份数据
@@ -217,17 +216,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <param name="currentAttendData"></param>
         /// <param name="slodCardTime"></param>
         /// <returns></returns>
-        private int MergeAttendTime(AttendSlodFingerDataCurrentMonthModel currentAttendData, DateTime dayMiddelTime, DateTime slodCardTime)
+        private int MergeAttendTime(AttendSlodFingerDataCurrentMonthModel currentAttendData, DateTime slodCardTime)
         {
             int record = 0;
             //若请假流程在前，则会先有考勤数据记录，但没有考勤时间，所以从刷卡时间1开始填写
             currentAttendData.SlotCardTime = ConcatSlotCardTime(currentAttendData.SlotCardTime, slodCardTime);
-
-            if (slodCardTime <= dayMiddelTime)
+            if (currentAttendData.SlotCardTime1 == null || currentAttendData.SlotCardTime1.Length == 0)
             {
                 record = UpdateSlotCardTime1(currentAttendData, slodCardTime, currentAttendData.SlotCardTime);
             }
-            else
+            else 
             {
                 record = UpdateSlotCardTime2(currentAttendData, slodCardTime, currentAttendData.SlotCardTime);
             }
@@ -263,9 +261,24 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <param name="worker"></param>
         /// <param name="slodCardTime"></param>
         /// <returns></returns>
-        private int InitAttendData(AttendFingerPrintDataInTimeModel attendTimeMdl, ArWorkerInfo worker, DateTime dayMiddelTime, DateTime slodCardTime,out AttendSlodFingerDataCurrentMonthModel initMdl)
+        private int InitAttendData(AttendFingerPrintDataInTimeModel attendTimeMdl, ArWorkerInfo worker, DateTime slodCardTime,out AttendSlodFingerDataCurrentMonthModel initMdl)
         {
             initMdl = null;
+            int record = 0;
+            var mdl = CreateAttendDataModel(attendTimeMdl, worker, slodCardTime);
+            mdl.SlotCardTime1 = slodCardTime.ToDateTimeStr();
+            record = irep.Insert(mdl);
+            if (record == 1)
+            {
+                initMdl = CreateAttendDataModel(attendTimeMdl, worker, slodCardTime);
+                initMdl.Id_Key = mdl.Id_Key;
+                initMdl.SlotCardTime1 = mdl.SlotCardTime1;
+            }
+            return record;
+        }
+
+        private AttendSlodFingerDataCurrentMonthModel CreateAttendDataModel(AttendFingerPrintDataInTimeModel attendTimeMdl, ArWorkerInfo worker, DateTime slodCardTime)
+        {
             var mdl = new AttendSlodFingerDataCurrentMonthModel()
             {
                 AttendanceDate = attendTimeMdl.SlodCardDate,
@@ -285,16 +298,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 OpSign = "init",
                 OpPerson = "system",
             };
-            if (slodCardTime <= dayMiddelTime)
-            {
-                mdl.SlotCardTime1 = slodCardTime.ToDateTimeStr();
-            }
-            else
-            {
-                mdl.SlotCardTime2 = slodCardTime.ToDateTimeStr();
-            }
-            initMdl = mdl;
-            return irep.Insert(mdl);
+            return mdl;
         }
 
         #endregion handle attend method
