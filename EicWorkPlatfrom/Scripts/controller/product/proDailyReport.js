@@ -1289,10 +1289,9 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         if($scope.workerAttendanceVM.ReportDate == null){
             alert("请选择日期")
         } else {
-            $scope.promise = dReportDataOpService.getWorkerAttendanceData(vmManager.department,workerAttendanceVM.AttendenceStation ,workerAttendanceVM.ReportDate).then(function (datas) {
+            $scope.promise = dReportDataOpService.getWorkerAttendanceData($scope.vmManager.department, $scope.workerAttendanceVM.AttendenceStation, $scope.workerAttendanceVM.ReportDate).then(function (datas) {
+                console.log($scope.workerAttendanceVM.ReportDate);
                 $scope.workerAttendanceVM = datas;
-                $scope.workerAttendanceVM.ReportDate = workerAttendanceVM.ReportDate;
-            
             }); 
         }
         
@@ -1318,14 +1317,13 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             $scope.workerAttendanceVM.SupportInHaveLeaveHours = $scope.workerAttendanceVM.SupportInHaveLeaveCount * 8;
             $scope.workerAttendanceVM.OverWorkHours = $scope.workerAttendanceVM.OverWorkUserCount * 8;
             $scope.workerAttendanceVM.AttendenceTotalHours = $scope.workerAttendanceVM.AttendenceTotalCount * 8;
-            $scope.workerAttendanceVM.Department = vmManager.department;
+            $scope.workerAttendanceVM.Department = $scope.vmManager.department;
             $scope.promise = dReportDataOpService.saveReportsAttendenceDatas($scope.workerAttendanceVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
             })
         } else {
             alert("请选择日期");
         }
-
     }
     //审核确认日报录入数据
     operate.audit = function () {
