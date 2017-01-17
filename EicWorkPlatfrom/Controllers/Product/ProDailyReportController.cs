@@ -245,11 +245,10 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <param name="department"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetWorkerAttendanceData(string department, string attendenceStation, DateTime dailyReportDate )
+        public JsonResult GetWorkerAttendanceData(string department, string attendenceStation, DateTime reportDate)
         {
-
-            var data = DailyReportService.InputManager.ReportAttendenceManager.GetReportsAttendence(department, attendenceStation, dailyReportDate);
-            return DateJsonResult(data);
+            var datas = DailyReportService.InputManager.ReportAttendenceManager.GetReportsAttendence(department, attendenceStation, reportDate);
+            return Json(datas,JsonRequestBehavior.AllowGet);
         }
 
         #endregion

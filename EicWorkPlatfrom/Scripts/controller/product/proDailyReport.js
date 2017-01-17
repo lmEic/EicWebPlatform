@@ -88,9 +88,9 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
         });
     };
     //013935获取日报考勤数据
-    reportDataOp.getWorkerAttendanceData = function (department, reportDate, attendenceStation) {
+    reportDataOp.getWorkerAttendanceData = function (department, attendenceStation, reportDate) {
         var url = urlPrefix + 'GetWorkerAttendanceData';
-        return ajaxService.postData(url, {
+        return ajaxService.getData(url, {
             department: department,
             reportDate: reportDate,
             attendenceStation: attendenceStation
@@ -1232,43 +1232,43 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
 
     //013935创建日报考勤模
     var workerAttendanceVM = {
-        workerAttendBoardVisible: false,
-        department: "成型课",
-        attendenceStation:"机台",
-        shouldAttendenceUserCount:null,
-        shouldAttendenceHours: null,
-        askLeaveUserCount: null,
-        askLeaveHours: null,
-        haveLeaveUserCount: null,
-        haveLeaveHours: null,
-        supportOutUserCount: null,
-        supportOutHours: null,
-        realityWorkingUserCount: null,
-        realityWorkingHours: null,
-        inNewWorkerCount: null,
-        inNewWorkerHours: null,
-        supportInShoutAbsentCount: null,
-        supportInShoutAbsentHours: null,
-        supportInRealityWorkingCount: null,
-        supportInRealityWorkingHours: null,
-        supportInAskLeaveCount: null,
-        supportInAskLeaveHours: null,
-        supportInHaveLeaveCount: null,
-        supportInHaveLeaveHours: null,
-        overWorkUserCount: null,
-        overWorkHours: null,
-        attendenceTotalCount: null,
-        attendenceTotalHours: null,
-        reportDate:null,
-        opPerson:null,
-        opDate:null,
-        opTime:null,
-        opSign:null,
-        id_key: null,
+        WorkerAttendBoardVisible: false,
+        Department: "成型课",
+        AttendenceStation:"机台",
+        ShouldAttendenceUserCount:null,
+        ShouldAttendenceHours: null,
+        AskLeaveUserCount: null,
+        AskLeaveHours: null,
+        HaveLeaveUserCount: null,
+        HaveLeaveHours: null,
+        SupportOutUserCount: null,
+        SupportOutHours: null,
+        RealityWorkingUserCount: null,
+        RealityWorkingHours: null,
+        InNewWorkerCount: null,
+        InNewWorkerHours: null,
+        SupportInShoutAbsentCount: null,
+        SupportInShoutAbsentHours: null,
+        SupportInRealityWorkingCount: null,
+        SupportInRealityWorkingHours: null,
+        SupportInAskLeaveCount: null,
+        SupportInAskLeaveHours: null,
+        SupportInHaveLeaveCount: null,
+        SupportInHaveLeaveHours: null,
+        OverWorkUserCount: null,
+        OverWorkHours: null,
+        AttendenceTotalCount: null,
+        AttendenceTotalHours: null,
+        ReportDate:null,
+        OpPerson:null,
+        OpDate:null,
+        OpTime:null,
+        OpSign:null,
+        Id_key: null,
     }
     var initworkerAttendanceVM = _.clone(workerAttendanceVM);
     $scope.workerAttendanceVM = workerAttendanceVM;
-    
+
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     //保存日报录入数据并发送给后台
@@ -1286,34 +1286,40 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
 
     //013935查询日报考勤数据
     operate.referWorkerAttendanceVM = function () {
-        $scope.promise = dReportDataOpService.getWorkerAttendanceData(vmManager.department, vmManager.InputDate,"机台").then(function (datas) {
-            $scope.workerAttendanceVM = datas;
-        });
+        if($scope.workerAttendanceVM.ReportDate == null){
+            alert("请选择日期")
+        } else {
+            $scope.promise = dReportDataOpService.getWorkerAttendanceData(vmManager.department,workerAttendanceVM.AttendenceStation ,workerAttendanceVM.ReportDate).then(function (datas) {
+                $scope.workerAttendanceVM = datas;
+                $scope.workerAttendanceVM.ReportDate = workerAttendanceVM.ReportDate;
+            
+            }); 
+        }
+        
     }
     //013935编辑日报考勤数据
     operate.editWorkerAttendanceVM = function () {
-        workerAttendanceVM.workerAttendBoardVisible = true;
+        $scope.workerAttendanceVM.WorkerAttendBoardVisible = true;
     }
 
     //013935保存日报考勤数据并发送给后台
     operate.saveWorkerAttendanceVM = function () {
-        if (workerAttendanceVM.reportDate != null) {
-            workerAttendanceVM.workerAttendBoardVisible = false;
-            workerAttendanceVM.shouldAttendenceHours = workerAttendanceVM.shouldAttendenceUserCount * 8;
-            workerAttendanceVM.askLeaveHours = workerAttendanceVM.askLeaveUserCount * 8;
-            workerAttendanceVM.haveLeaveHours = workerAttendanceVM.haveLeaveUserCount * 8;
-            workerAttendanceVM.supportOutHours = workerAttendanceVM.supportOutUserCount * 8;
-            workerAttendanceVM.realityWorkingHours = workerAttendanceVM.realityWorkingUserCount * 8;
-            workerAttendanceVM.inNewWorkerHours = workerAttendanceVM.inNewWorkerCount * 8;
-            workerAttendanceVM.supportInShoutAbsentHours = workerAttendanceVM.supportInShoutAbsentCount * 8;
-            workerAttendanceVM.supportInRealityWorkingHours = workerAttendanceVM.supportInRealityWorkingCount * 8;
-            workerAttendanceVM.supportInAskLeaveHours = workerAttendanceVM.supportInAskLeaveCount * 8;
-            workerAttendanceVM.supportInHaveLeaveHours = workerAttendanceVM.supportInHaveLeaveCount * 8;
-            workerAttendanceVM.overWorkHours = workerAttendanceVM.overWorkUserCount * 8;
-            workerAttendanceVM.attendenceTotalHours = workerAttendanceVM.attendenceTotalCount * 8;
-            workerAttendanceVM.department = vmManager.department;
-            $scope.workerAttendanceVM = initworkerAttendanceVM;
-            $scope.promise = dReportDataOpService.saveReportsAttendenceDatas(workerAttendanceVM).then(function (opresult) {
+        if ($scope.workerAttendanceVM.ReportDate != null) {
+            $scope.workerAttendanceVM.WorkerAttendBoardVisible = false;
+            $scope.workerAttendanceVM.ShouldAttendenceHours = $scope.workerAttendanceVM.ShouldAttendenceUserCount * 8;
+            $scope.workerAttendanceVM.AskLeaveHours = $scope.workerAttendanceVM.AskLeaveUserCount * 8;
+            $scope.workerAttendanceVM.HaveLeaveHours = $scope.workerAttendanceVM.HaveLeaveUserCount * 8;
+            $scope.workerAttendanceVM.SupportOutHours = $scope.workerAttendanceVM.SupportOutUserCount * 8;
+            $scope.workerAttendanceVM.RealityWorkingHours = $scope.workerAttendanceVM.RealityWorkingUserCount * 8;
+            $scope.workerAttendanceVM.InNewWorkerHours = $scope.workerAttendanceVM.InNewWorkerCount * 8;
+            $scope.workerAttendanceVM.SupportInShoutAbsentHours = $scope.workerAttendanceVM.SupportInShoutAbsentCount * 8;
+            $scope.workerAttendanceVM.SupportInRealityWorkingHours = $scope.workerAttendanceVM.SupportInRealityWorkingCount * 8;
+            $scope.workerAttendanceVM.SupportInAskLeaveHours = $scope.workerAttendanceVM.SupportInAskLeaveCount * 8;
+            $scope.workerAttendanceVM.SupportInHaveLeaveHours = $scope.workerAttendanceVM.SupportInHaveLeaveCount * 8;
+            $scope.workerAttendanceVM.OverWorkHours = $scope.workerAttendanceVM.OverWorkUserCount * 8;
+            $scope.workerAttendanceVM.AttendenceTotalHours = $scope.workerAttendanceVM.AttendenceTotalCount * 8;
+            $scope.workerAttendanceVM.Department = vmManager.department;
+            $scope.promise = dReportDataOpService.saveReportsAttendenceDatas($scope.workerAttendanceVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
             })
         } else {
