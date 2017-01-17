@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Lm.Eic.App.Business.Bmp.Hrm.Attendance;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance.Tests
 {
@@ -10,7 +11,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance.Tests
         [TestMethod()]
         public void TransimitAttendDatasTest()
         {
-            handler.TransimitAttendDatas();
+            handler.TransimitAttendDatas(System.DateTime.Now);
             Assert.Fail();
         }
 

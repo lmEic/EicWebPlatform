@@ -116,8 +116,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             OpResult result = OpResult.SetResult("持久化数据操作失败!");
             string opSign = "default";
-
-            //存储报废记录
             if (entity == null)
                 return OpResult.SetResult(string.Format("{0}不能为null！",OpContext));
             try
@@ -125,12 +123,12 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 //基本属性赋值
                 if (entity == null) return OpResult.SetResult("entity can't set null!");
                 SetFixFieldValue(entity);
+
                 //取得操作方法
                 PropertyInfo pi = IsHasProperty(entity, "OpSign");
                 if (pi == null)
                     return OpResult.SetResult("操作方法不能为空！");
                 opSign = pi.GetValue(entity, null) as string;
-
                 //是否包含指定的方法
                 if (!crudOpDics.ContainsKey(opSign))
                     AddCrudOpItems();
@@ -158,10 +156,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             OpResult result = null;
             if (entity == null) return OpResult.SetResult("entity can't set null!");
-            var optimePi = IsHasProperty(entity, "OpTime");
-            if (optimePi != null) optimePi.SetValue(entity, DateTime.Now.ToDateTime(),null);
-            var opDatePi = IsHasProperty(entity, "OpDate");
-            if (opDatePi != null) opDatePi.SetValue(entity, DateTime.Now.ToDate(), null);
+            SetFixFieldValue(entity);
             try
             {
                 result=storeHandler(entity);

@@ -189,4 +189,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
           
         }
     }
+
+    /// <summary>
+    ///忘记录入员工持久化模型
+    /// </summary>
+    public interface IArchivesForgetInputWorkerRepositoryRepository : IRepository<ArchivesForgetInputWorkerModel> { }
+    /// <summary>
+    ///忘记录入员工持久化模型
+    /// </summary>
+    public class ArchivesForgetInputWorkerRepositoryRepository : HrmRepositoryBase<ArchivesForgetInputWorkerModel>, IArchivesForgetInputWorkerRepositoryRepository
+    { }
 }
