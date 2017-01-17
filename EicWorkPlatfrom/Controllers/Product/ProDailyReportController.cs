@@ -245,7 +245,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <param name="department"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetReportsAttendence(string department, string attendenceStation, DateTime dailyReportDate )
+        public ContentResult GetWorkerAttendanceData(string department, string attendenceStation, DateTime dailyReportDate )
         {
 
             var data = DailyReportService.InputManager.ReportAttendenceManager.GetReportsAttendence(department, attendenceStation, dailyReportDate);

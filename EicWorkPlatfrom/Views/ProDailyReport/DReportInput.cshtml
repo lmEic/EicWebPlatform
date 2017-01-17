@@ -832,11 +832,12 @@
                     </button>
                     <label>  日期:</label>
                     <input type="date" ng-model="workerAttendanceVM.reportDate" format-date class="ng-pristine ng-valid ng-touched"/>
+                    <button type="button" class="btn btn-warning btn-sm" ng-click="operate.referWorkerAttendanceVM()">查询</button>
                     <a href="#" ng-click="vmManager.workerAttendBoardDisplay=false;workerAttendanceVM.workerAttendBoardVisible = false;" class="pull-right">
                         <span class="label label-success">取消</span>
                     </a>
                     <a href="#" class="pull-right">
-                        <span class="label label-primary" ng-hide="workerAttendanceVM.workerAttendBoardVisible" ng-click=" operate.editWorkerAttendanceVM()">编辑</span>
+                        <span class="label label-primary" ng-hide="workerAttendanceVM.workerAttendBoardVisible" ng-click="operate.editWorkerAttendanceVM()">编辑</span>
                         <span class="label label-primary" ng-show="workerAttendanceVM.workerAttendBoardVisible" ng-click="operate.saveWorkerAttendanceVM()">保存</span>
                     </a>
                 </div>

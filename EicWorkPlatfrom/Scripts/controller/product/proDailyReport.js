@@ -87,6 +87,15 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             dailyReportDate: dailyReportDate
         });
     };
+    //013935获取日报考勤数据
+    reportDataOp.getWorkerAttendanceData = function (department, reportDate, attendenceStation) {
+        var url = urlPrefix + 'GetWorkerAttendanceData';
+        return ajaxService.postData(url, {
+            department: department,
+            reportDate: reportDate,
+            attendenceStation: attendenceStation
+        })
+    }
     return reportDataOp;
 });
 //标准工时设定
@@ -1224,7 +1233,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     //013935创建日报考勤模
     var workerAttendanceVM = {
         workerAttendBoardVisible: false,
-        department: "生技课",
+        department: "成型课",
         attendenceStation:"机台",
         shouldAttendenceUserCount:null,
         shouldAttendenceHours: null,
@@ -1275,10 +1284,17 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         }
     };
 
+    //013935查询日报考勤数据
+    operate.referWorkerAttendanceVM = function () {
+        $scope.promise = dReportDataOpService.getWorkerAttendanceData(vmManager.department, vmManager.InputDate,"机台").then(function (datas) {
+            $scope.workerAttendanceVM = datas;
+        });
+    }
     //013935编辑日报考勤数据
     operate.editWorkerAttendanceVM = function () {
         workerAttendanceVM.workerAttendBoardVisible = true;
     }
+
     //013935保存日报考勤数据并发送给后台
     operate.saveWorkerAttendanceVM = function () {
         if (workerAttendanceVM.reportDate != null) {
@@ -1296,7 +1312,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             workerAttendanceVM.overWorkHours = workerAttendanceVM.overWorkUserCount * 8;
             workerAttendanceVM.attendenceTotalHours = workerAttendanceVM.attendenceTotalCount * 8;
             workerAttendanceVM.department = vmManager.department;
-            workerAttendanceVM = initworkerAttendanceVM;
+            $scope.workerAttendanceVM = initworkerAttendanceVM;
             $scope.promise = dReportDataOpService.saveReportsAttendenceDatas(workerAttendanceVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
             })
