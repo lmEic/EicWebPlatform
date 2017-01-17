@@ -87,6 +87,15 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             dailyReportDate: dailyReportDate
         });
     };
+    //013935获取日报考勤数据
+    reportDataOp.getWorkerAttendanceData = function (department, attendenceStation, reportDate) {
+        var url = urlPrefix + 'GetWorkerAttendanceData';
+        return ajaxService.getData(url, {
+            department: department,
+            reportDate: reportDate,
+            attendenceStation: attendenceStation
+        })
+    }
     return reportDataOp;
 });
 //标准工时设定
@@ -1223,9 +1232,9 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
 
     //013935创建日报考勤模
     var workerAttendanceVM = {
-        workerAttendBoardVisible: false,
-        Department:null,
-        AttendenceStation:null,
+        WorkerAttendBoardVisible: false,
+        Department: "成型课",
+        AttendenceStation:"机台",
         ShouldAttendenceUserCount:null,
         ShouldAttendenceHours: null,
         AskLeaveUserCount: null,
@@ -1257,9 +1266,9 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         OpSign:null,
         Id_key: null,
     }
-     
+    var initworkerAttendanceVM = _.clone(workerAttendanceVM);
     $scope.workerAttendanceVM = workerAttendanceVM;
-    
+
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     //保存日报录入数据并发送给后台
@@ -1275,30 +1284,43 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         }
     };
 
+    //013935查询日报考勤数据
+    operate.referWorkerAttendanceVM = function () {
+        if($scope.workerAttendanceVM.ReportDate == null){
+            alert("请选择日期")
+        } else {
+            $scope.promise = dReportDataOpService.getWorkerAttendanceData(vmManager.department,workerAttendanceVM.AttendenceStation ,workerAttendanceVM.ReportDate).then(function (datas) {
+                $scope.workerAttendanceVM = datas;
+                $scope.workerAttendanceVM.ReportDate = workerAttendanceVM.ReportDate;
+            
+            }); 
+        }
+        
+    }
     //013935编辑日报考勤数据
     operate.editWorkerAttendanceVM = function () {
-        workerAttendanceVM.workerAttendBoardVisible = true;
+        $scope.workerAttendanceVM.WorkerAttendBoardVisible = true;
     }
+
     //013935保存日报考勤数据并发送给后台
     operate.saveWorkerAttendanceVM = function () {
-        if (workerAttendanceVM.ReportDate != null) {
-            workerAttendanceVM.workerAttendBoardVisible = false;
-            workerAttendanceVM.ShouldAttendenceHours = workerAttendanceVM.ShouldAttendenceUserCount * 8;
-            workerAttendanceVM.AskLeaveHours = workerAttendanceVM.AskLeaveUserCount * 8;
-            workerAttendanceVM.HaveLeaveHours = workerAttendanceVM.HaveLeaveUserCount * 8;
-            workerAttendanceVM.SupportOutHours = workerAttendanceVM.SupportOutUserCount * 8;
-            workerAttendanceVM.RealityWorkingHours = workerAttendanceVM.RealityWorkingUserCount * 8;
-            workerAttendanceVM.InNewWorkerHours = workerAttendanceVM.InNewWorkerCount * 8;
-            workerAttendanceVM.SupportInShoutAbsentHours = workerAttendanceVM.SupportInShoutAbsentCount * 8;
-            workerAttendanceVM.SupportInRealityWorkingHours = workerAttendanceVM.SupportInRealityWorkingCount * 8;
-            workerAttendanceVM.SupportInAskLeaveHours = workerAttendanceVM.SupportInAskLeaveCount * 8;
-            workerAttendanceVM.SupportInHaveLeaveHours = workerAttendanceVM.SupportInHaveLeaveCount * 8;
-            workerAttendanceVM.OverWorkHours = workerAttendanceVM.OverWorkUserCount * 8;
-            workerAttendanceVM.AttendenceTotalHours = workerAttendanceVM.AttendenceTotalCount * 8;
-            console.log(workerAttendanceVM);
-            $scope.promise = dReportDataOpService.saveReportsAttendenceDatas(workerAttendanceVM).then(function (opresult) {
+        if ($scope.workerAttendanceVM.ReportDate != null) {
+            $scope.workerAttendanceVM.WorkerAttendBoardVisible = false;
+            $scope.workerAttendanceVM.ShouldAttendenceHours = $scope.workerAttendanceVM.ShouldAttendenceUserCount * 8;
+            $scope.workerAttendanceVM.AskLeaveHours = $scope.workerAttendanceVM.AskLeaveUserCount * 8;
+            $scope.workerAttendanceVM.HaveLeaveHours = $scope.workerAttendanceVM.HaveLeaveUserCount * 8;
+            $scope.workerAttendanceVM.SupportOutHours = $scope.workerAttendanceVM.SupportOutUserCount * 8;
+            $scope.workerAttendanceVM.RealityWorkingHours = $scope.workerAttendanceVM.RealityWorkingUserCount * 8;
+            $scope.workerAttendanceVM.InNewWorkerHours = $scope.workerAttendanceVM.InNewWorkerCount * 8;
+            $scope.workerAttendanceVM.SupportInShoutAbsentHours = $scope.workerAttendanceVM.SupportInShoutAbsentCount * 8;
+            $scope.workerAttendanceVM.SupportInRealityWorkingHours = $scope.workerAttendanceVM.SupportInRealityWorkingCount * 8;
+            $scope.workerAttendanceVM.SupportInAskLeaveHours = $scope.workerAttendanceVM.SupportInAskLeaveCount * 8;
+            $scope.workerAttendanceVM.SupportInHaveLeaveHours = $scope.workerAttendanceVM.SupportInHaveLeaveCount * 8;
+            $scope.workerAttendanceVM.OverWorkHours = $scope.workerAttendanceVM.OverWorkUserCount * 8;
+            $scope.workerAttendanceVM.AttendenceTotalHours = $scope.workerAttendanceVM.AttendenceTotalCount * 8;
+            $scope.workerAttendanceVM.Department = vmManager.department;
+            $scope.promise = dReportDataOpService.saveReportsAttendenceDatas($scope.workerAttendanceVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
-                workerAttendanceVM = [];
             })
         } else {
             alert("请选择日期");
@@ -1344,19 +1366,19 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         nonProductHoursFocus: false,
         nonProductReasonCodeFocus: false,
 
-
-        ShouldAttendenceUserCountFocus: false,
-        AskLeaveUserCountFoucs: false,
-        HaveLeaveUserCountFocus: false,
-        SupportOutUserCountFocus: false,
-        RealityWorkingUserCountFocus: false,
-        InNewWorkerCountFocus: false,
-        SupportInShoutAbsentCount: false,
-        SupportInRealityWorkingCountFocus: false,
-        SupportInAskLeaveCountFocus: false,
-        SupportInHaveLeaveCountFocus: false,
-        OverWorkUserCountFocus: false,
-        AttendenceTotalCountFocus: false,
+        //013935新增考勤焦点
+        shouldAttendenceUserCountFocus: false,
+        askLeaveUserCountFoucs: false,
+        haveLeaveUserCountFocus: false,
+        supportOutUserCountFocus: false,
+        realityWorkingUserCountFocus: false,
+        inNewWorkerCountFocus: false,
+        supportInShoutAbsentCount: false,
+        supportInRealityWorkingCountFocus: false,
+        supportInAskLeaveCountFocus: false,
+        supportInHaveLeaveCountFocus: false,
+        overWorkUserCountFocus: false,
+        attendenceTotalCountFocus: false,
         //移动焦点到指定对象
         moveFocusTo: function ($event, elPreName,elNextName) {
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {
@@ -1369,9 +1391,11 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         doWhenKeyDown: function ($event, fn) {
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) { fn(); }
         },
+        //013935考勤回车事件
         changeEnter : function ($event, elPreName, elNextName) {
             focusSetter.moveFocusTo($event, elPreName, elNextName)
         }
+
     };
     $scope.focus = focusSetter;
     

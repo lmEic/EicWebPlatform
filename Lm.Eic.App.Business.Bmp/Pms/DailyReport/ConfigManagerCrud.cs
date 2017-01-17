@@ -393,21 +393,40 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
         OpResult AddReportAttendence(ReportsAttendenceModel entity)
         {
-            return irep.Insert(entity).ToOpResult(OpContext);
+            return irep.Insert(entity).ToOpResult(OpContext + "保存操作成功", OpContext + "保存操作失败"); 
         }
 
         OpResult EditReportAttendece(ReportsAttendenceModel entity)
         {
-            return irep.Update(e => e.Department == entity.Department
-                                     &&e.ReportDate==entity .ReportDate
-                                     &&e.AttendenceStation==entity.AttendenceStation ,
-                                     entity).ToOpResult(OpContext);
+            entity.Id_key = GetIdkeyBy(entity);
+            return irep.Update(e => e.Id_key == entity.Id_key,
+                                     entity).ToOpResult(OpContext + "修改操作成功", OpContext + "修改操作失败");
         }
         public bool IsExist(ReportsAttendenceModel entity)
         {
             return irep.IsExist(e => e.Department == entity.Department
                                    && e.ReportDate == entity.ReportDate
                                    && e.AttendenceStation == entity.AttendenceStation);
+        }
+        private decimal GetIdkeyBy(ReportsAttendenceModel entity)
+        {
+            if (entity.Id_key == 0)
+            {
+                return irep.Entities.Where(e => e.Department == entity.Department
+                                       && e.ReportDate == entity.ReportDate
+                                       && e.AttendenceStation == entity.AttendenceStation).Select(e => e.Id_key).ToList().FirstOrDefault();
+            }
+            else return entity.Id_key;
+        }
+
+        /// <summary>
+        /// 得到部门的所有出勤数据
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public ReportsAttendenceModel GetReportsAttendence(string department, string attendenceStation, DateTime reportDate)
+        {
+            return irep.Entities.Where(e => e.Department == department && e.ReportDate == reportDate && e.AttendenceStation == attendenceStation).ToList().FirstOrDefault ();
         }
     }
 
