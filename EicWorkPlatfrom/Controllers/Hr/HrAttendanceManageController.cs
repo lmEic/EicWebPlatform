@@ -50,9 +50,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="department"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetAttendanceDatasOfToday(string department,DateTime qryDate)
+        public ContentResult GetAttendanceDatasOfToday(DateTime qryDate)
         {
-            var datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(department,qryDate);
+            var datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(qryDate);
             return DateJsonResult(datas);
         }
 

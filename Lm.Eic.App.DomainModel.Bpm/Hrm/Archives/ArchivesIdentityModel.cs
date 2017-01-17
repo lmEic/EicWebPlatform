@@ -2199,4 +2199,53 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         }
         #endregion Model
     }
+
+    /// <summary>
+    ///忘记录入作业员信息模型
+    /// </summary>
+    [Serializable]
+    public partial class ArchivesForgetInputWorkerModel
+    {
+        public ArchivesForgetInputWorkerModel()
+        { }
+        #region Model
+        private string _workerid;
+        /// <summary>
+        ///作业工号
+        /// </summary>
+        public string WorkerId
+        {
+            set { _workerid = value; }
+            get { return _workerid; }
+        }
+        private string _workername;
+        /// <summary>
+        ///作业姓名
+        /// </summary>
+        public string WorkerName
+        {
+            set { _workername = value; }
+            get { return _workername; }
+        }
+        private string _memo;
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string Memo
+        {
+            set { _memo = value; }
+            get { return _memo; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
+
 }

@@ -16,6 +16,7 @@ using System.Linq;
 using System.Xml;
 using System.IO;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.Uti.Common.YleeDbHandler;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
@@ -25,8 +26,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     public class ArchivesManager : ArchiveBase
     {
         private IArchivesEmployeeIdentityRepository irep = null;
-
-
 
         #region property
         /// <summary>
@@ -439,7 +438,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             string sqlWhere = "";
             if (searchMode == 0)
-            { }
+            {
+                sqlWhere = "WorkingStatus='在职'";
+            }
             else if (searchMode == 1)
             {
                 sqlWhere = string.Format("Department='{0}' And WorkingStatus='在职'", qryDto.Department);
@@ -591,8 +592,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         #endregion method
     }
-
-  
 
     internal static class ArchiveEntityMapper
     {
@@ -904,5 +903,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 }
             }
         }
+    }
+
+
+    public class ForgetInputWorkerCrud:CrudBase<ArchivesForgetInputWorkerModel,IArchivesForgetInputWorkerRepositoryRepository>
+    {
+
+        public ForgetInputWorkerCrud()
+            : base(new ArchivesForgetInputWorkerRepositoryRepository(), "忘记录入人员信息")
+        { }
+
+        protected override void AddCrudOpItems()
+        {
+            throw new NotImplementedException();
+        }
+
+       
     }
 }

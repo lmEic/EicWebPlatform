@@ -838,12 +838,6 @@
                 <div class="h-split"></div>
                 <div class="table-responsive">
                         <table class="table table-condensed table-bordered table-hover" style="table-layout:fixed">
-                            @*<colgroup>
-                <col width="90" />
-                <col width="90" />
-                <col width="120" />
-                <col width="120" />
-            </colgroup>*@
                             <tbody>
                                 <tr>
                                     <td rowspan="4" class="text-center info" style="vertical-align:middle;">出勤状况</td>
@@ -903,7 +897,11 @@
                                     </td>
                                     <td>
                                         <span ng-hide="workerAttendanceVM.workerAttendBoardVisible">{{workerAttendanceVM.SupportInAskLeaveCount}}</span>
-                                        <input type="text" style="width:70px" ng-model="workerAttendanceVM.SupportInAskLeaveCount" ng-show="workerAttendanceVM.workerAttendBoardVisible" ng-keydown="focus.changeEnter($event,'SupportInAskLeaveCountFocus', 'SupportInHaveLeaveCountFocus')" focus-setter focus-if="focus.SupportInAskLeaveCountFocus"/>
+                                        <input type="text" style="width:70px" 
+                                               ng-model="workerAttendanceVM.SupportInAskLeaveCount" 
+                                               ng-show="workerAttendanceVM.workerAttendBoardVisible"
+                                                ng-keydown="focus.changeEnter($event,'SupportInAskLeaveCountFocus', 'SupportInHaveLeaveCountFocus')" 
+                                               focus-setter focus-if="focus.SupportInAskLeaveCountFocus"/>
                                     </td>
                                     <td>
                                         <span ng-hide="workerAttendanceVM.workerAttendBoardVisible">{{workerAttendanceVM.SupportInHaveLeaveCount}}</span>
@@ -962,10 +960,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
         <div pageslide ps-open="vmManager.personBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
                 <div class="pull-left" style="width:29%;">
@@ -1066,10 +1060,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
         <div pageslide ps-open="vmManager.orderIdBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
 

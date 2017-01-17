@@ -1343,6 +1343,8 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         attendanceHoursFocus: false,
         nonProductHoursFocus: false,
         nonProductReasonCodeFocus: false,
+
+
         ShouldAttendenceUserCountFocus: false,
         AskLeaveUserCountFoucs: false,
         HaveLeaveUserCountFocus: false,

@@ -93,11 +93,10 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         });
     };
 
-    //获取部门的当天的考勤数据信息
-    hr.getAttendanceDatasOfToday = function (department,qryDate) {
+    //获取当天的考勤数据信息
+    hr.getAttendanceDatasOfToday = function (qryDate) {
         var url = attendUrl + "GetAttendanceDatasOfToday";
         return ajaxService.getData(url, {
-            department: department,
             qryDate:qryDate
         });
     };
@@ -421,7 +420,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
 
     operate.loadData = function () {
         vmManager.init();
-        $scope.promise = hrDataOpService.getAttendanceDatasOfToday(qryDto.Department,qryDto.AttendanceDate).then(function (datas) {
+        $scope.promise = hrDataOpService.getAttendanceDatasOfToday(qryDto.AttendanceDate).then(function (datas) {
             vmManager.dataSource = datas;
             vmManager.dataSets = _.clone(vmManager.dataSource);
         });
