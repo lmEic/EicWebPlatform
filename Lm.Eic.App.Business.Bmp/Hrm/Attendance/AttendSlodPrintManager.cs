@@ -43,6 +43,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             var qdate = qryDate.ToDate();
             return this.currentMonthAttendDataHandler.LoadAttendDataInToday(qdate);
         }
+        public List<AttendanceDataModel> LoadAttendDataInToday(DateTime qryDate,string department)
+        {
+            var qdate = qryDate.ToDate();
+            return this.currentMonthAttendDataHandler.LoadAttendDataInToday(qdate,department);
+        }
+        public List<AttendanceDataModel> LoadAttendDatasBy(string workerId)
+        {
+            return this.currentMonthAttendDataHandler.LoadAttendDatasBy(workerId);
+            
+        }
 
         /// <summary>
         /// 自动处理异常数据
@@ -114,14 +124,22 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             }
             return this.irep.LoadAttendDataOfToday(qryDate);
         }
-
+        public List<AttendanceDataModel> LoadAttendDataInToday(DateTime qryDate,string department)
+        {
+            DateTime qdate=qryDate.ToDate();
+            return this.irep.LoadAttendDataByDepartment(qdate, department);
+        }
+        public List<AttendanceDataModel> LoadAttendDatasBy(string workerId)
+        {
+            return this.irep.LoadAttendDataBy(workerId);
+        }
         /// <summary>
         /// 将实时考勤数据转移至本月数据表中
         /// </summary>
         /// <returns></returns>
         public OpResult TransimitAttendDatas(DateTime qryDate)
         {
-            qryDate = new DateTime(2017, 1, 11);
+            //qryDate = new DateTime(2017, 1, 11);
             int record = 0;
             //实时考勤数据 && e.WorkerId == "604505"
             var datasInTime = this.fingerPrintDataInTime.FingPrintDatas.FindAll(e => e.SlodCardDate == qryDate);

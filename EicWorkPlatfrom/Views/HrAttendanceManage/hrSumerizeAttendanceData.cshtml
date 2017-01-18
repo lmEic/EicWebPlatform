@@ -1,4 +1,4 @@
-﻿<div class="row" ng-controller="attendInTodayCtrl">
+﻿<div class="row" ng-controller="hrSumerizeAttendanceDataCtrl">
     <div class="col-md-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -14,7 +14,7 @@
                                     <input type="date" ng-model="vm.AttendanceDate" format-date class="form-control" />
                                 </div>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-info" ng-click="operate.loadData()"><i class="fa fa-cloud-download"></i>载入考勤数据</button>
+                                    <button type="button" class="btn btn-info" ng-click="operate.loadData(0)"><i class="fa fa-cloud-download"></i>载入考勤数据</button>
                                     <a class="btn btn-success" href="@Url.Action("","")"><i class="fa fa-file-excel-o"></i>导出</a>
                                 </div>
                             </form>
@@ -32,16 +32,16 @@
                                                 选择部门
                                             </button>
                                         </div>
-                                        <input type="text" readonly placeholder="部门" ng-model="vm.DepartmentText" class="form-control" />
+                                        <input type="text" readonly placeholder="部门" ng-model="vm.Department" class="form-control" />
                                         <div class="input-group-btn">
-                                            <button type="button" class="btn btn-primary" ng-click="operate.loadData()"><i class="fa fa-search"></i></button>
+                                            <button type="button" class="btn btn-primary" ng-click="operate.loadData(1)"><i class="fa fa-search"></i></button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" placeholder="输入工号按回车键" ng-model="vm.WorkerId" class="form-control" />
+                            <input type="text" placeholder="输入工号按回车键" ng-model="vm.WorkerId" ng-keypress="vmManager.getAttendanceDatas($event)" class="form-control" />
                         </div>
                     </div>
                 </div>

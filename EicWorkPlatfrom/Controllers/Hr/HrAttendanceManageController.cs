@@ -39,7 +39,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// 今日考勤
         /// </summary>
         /// <returns></returns>
-        public ActionResult HrAttendInToday()
+        public ActionResult HrSumerizeAttendanceData()
         {
             return View();
         }
@@ -50,9 +50,15 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="department"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetAttendanceDatasOfToday(DateTime qryDate)
+        public ContentResult GetAttendanceDatas(DateTime qryDate,string department,string workerId,int mode)
         {
-            var datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(qryDate);
+            List<AttendanceDataModel> datas=new List<AttendanceDataModel> ();
+            if (mode == 0)
+                datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(qryDate);
+            else if (mode == 1)
+                datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(qryDate, department);
+            else if (mode == 2)
+                datas = AttendanceService.AttendSlodPrintManager.LoadAttendDatasBy(workerId);
             return DateJsonResult(datas);
         }
 

@@ -49,8 +49,8 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
      .state('hrClassTypeManage', {
          templateUrl: 'HrAttendanceManage/HrClassTypeManage',
      })
-     .state('hrAttendInToday', {
-         templateUrl: 'HrAttendanceManage/HrAttendInToday',
+     .state('hrSumerizeAttendanceData', {
+         templateUrl: 'HrAttendanceManage/HrSumerizeAttendanceData',
      })
      .state('hrAskLeaveManage', {
          templateUrl: 'HrAttendanceManage/HrAskLeaveManage',
@@ -94,10 +94,13 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     };
 
     //获取当天的考勤数据信息
-    hr.getAttendanceDatasOfToday = function (qryDate) {
-        var url = attendUrl + "GetAttendanceDatasOfToday";
+    hr.getAttendanceDatas = function (qryDate, department, workerId, mode) {
+        var url = attendUrl + 'GetAttendanceDatas';
         return ajaxService.getData(url, {
-            qryDate:qryDate
+            qryDate: qryDate,
+            department: department,
+            workerId: workerId,
+            mode: mode,
         });
     };
 
@@ -366,61 +369,40 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         departmentTreeSet.setTreeDataset(datas);
     });
 })
-//今日考勤
-.controller('attendInTodayCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService) {
+//汇总考勤数据
+.controller('hrSumerizeAttendanceDataCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService) {
     var qryDto = {
         Department: '部门',
         DepartmentText: '部门',
-        ClassType: '白班',
+        WorkerId: '',
         AttendanceDate:new Date(),
     };
     $scope.vm = qryDto;
 
 
     var vmManager = {
-        classTypes: [{ name: '白班', text: '白班' }, { name: '晚班', text: '晚班' }, { name: '', text: 'All' }, ],
         dataSets: [],
         dataSource: [],
-        filterWorkerId: '',
-        filterClassType: '',
-        filterByWorkerId: function () {
-            var datas = _.clone(vmManager.dataSource);
-            if (vmManager.filterWorkerId.length >= 6) {
-                vmManager.dataSets = _.where(datas, { WorkerId: vmManager.filterWorkerId });
-            }
-            else {
-                vmManager.dataSets = datas;
-            }
-        },
-        filterByClassType: function () {
-            var datas = _.clone(vmManager.dataSource);
-            if (vmManager.filterClassType !== "") {
-                vmManager.dataSets = _.where(datas, { ClassType: vmManager.filterClassType });
-            }
-            else {
-                vmManager.dataSets = datas;
-            }
-        },
-        detailsDisplay: false,
         init: function () {
             vmManager.dataSets = [];
             vmManager.dataSource = [];
         },
-        msgModal: $modal({
-            title: '信息提示',
-            content: '请先选择要转班人员的数据！',
-            templateUrl: leeHelper.modalTplUrl.msgModalUrl,
-            show: false
-        }),
+        getAttendanceDatas: function ($event) {
+            if ($event.keyCode === 13)
+            {
+                if (qryDto.WorkerId.length === 0) return;
+                operate.loadData(2);
+            }
+        }
     };
 
     $scope.vmManager = vmManager;
 
     var operate = Object.create(leeDataHandler.operateStatus);
 
-    operate.loadData = function () {
+    operate.loadData = function (mode) {
         vmManager.init();
-        $scope.promise = hrDataOpService.getAttendanceDatasOfToday(qryDto.AttendanceDate).then(function (datas) {
+        $scope.promise = hrDataOpService.getAttendanceDatas(qryDto.AttendanceDate,qryDto.Department,qryDto.WorkerId,mode).then(function (datas) {
             vmManager.dataSource = datas;
             vmManager.dataSets = _.clone(vmManager.dataSource);
         });

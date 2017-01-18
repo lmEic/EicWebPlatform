@@ -1262,7 +1262,7 @@
     <Content Include="Views\HR\TelEditSelectTpl.cshtml" />
     <Content Include="Views\HrArchivesManage\HrPrintCard.cshtml" />
     <Content Include="Views\HrAttendanceManage\HrClassTypeManage.cshtml" />
-    <Content Include="Views\HrAttendanceManage\HrAttendInToday.cshtml" />
+    <Content Include="Views\HrAttendanceManage\HrSumerizeAttendanceData.cshtml" />
     <Content Include="Views\HrAttendanceManage\HrAskLeaveManage.cshtml" />
     <Content Include="Views\HrAttendanceManage\HrHandleException.cshtml" />
     <Content Include="Views\HR\AskLeaveEditSelectTpl.cshtml" />
