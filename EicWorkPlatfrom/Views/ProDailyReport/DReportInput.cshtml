@@ -823,7 +823,7 @@
             <div style="padding:10px;overflow-y:auto">
                 <div class="nav">
                     <label>类别：</label>
-                    <button type="button" class="btn btn-xs btn-primary" ng-model="workerAttendanceVM.attendenceStation" data-html="1" data-placeholder="机台"
+                    <button type="button" class="btn btn-xs btn-primary" ng-model="vmManager.attendenceStation" data-html="1" data-placeholder="机台"
                             data-multiple="0" 
                             data-animation="am-flip-x" 
                             bs-options="item.text as item.text for item in vmManager.attendanceReportTypes" 
@@ -831,7 +831,7 @@
                         机台 <span class="caret"></span>
                     </button>
                     <label>  日期:</label>
-                    <input type="date" ng-model="workerAttendanceVM.ReportDate" format-date class="ng-pristine ng-valid ng-touched"/>
+                    <input type="date" ng-model="vmManager.InputDate" format-date class="ng-pristine ng-valid ng-touched"/>
                     <button type="button" class="btn btn-warning btn-sm" ng-click="operate.referWorkerAttendanceVM()">查询</button>
                     <a href="#" ng-click="vmManager.workerAttendBoardDisplay=false;workerAttendanceVM.WorkerAttendBoardVisible = false;" class="pull-right">
                         <span class="label label-success">取消</span>
