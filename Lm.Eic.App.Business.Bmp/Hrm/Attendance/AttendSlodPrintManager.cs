@@ -3,9 +3,11 @@ using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -43,6 +45,25 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             var qdate = qryDate.ToDate();
             return this.currentMonthAttendDataHandler.LoadAttendDataInToday(qdate);
         }
+        List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                 new FileFieldMapping ("Number","项次") ,
+                  new FileFieldMapping ("WorkerId","工号") ,
+                  new FileFieldMapping ("WokrerName","姓名") ,
+                  new FileFieldMapping ("Department","部门") ,
+                  new FileFieldMapping ("ClassType","班别") ,
+                  new FileFieldMapping ("AttendanceDate","刷卡日期") ,
+                  new FileFieldMapping ("SlotCardTime1","第一次时间") ,
+                  new FileFieldMapping ("SlotCardTime2","第一次时间") ,
+                  new FileFieldMapping ("SlotCardTime","刷卡时间") ,
+                };
+        public MemoryStream BuildAttendanceDataBy(DateTime qryDate)
+        {
+           
+            var datas = LoadAttendDataInToday(qryDate);
+
+            var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");
+            return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping);
+        }
         public List<AttendanceDataModel> LoadAttendDataInToday(DateTime qryDate,string department)
         {
             var qdate = qryDate.ToDate();
@@ -53,6 +74,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             return this.currentMonthAttendDataHandler.LoadAttendDatasBy(workerId);
             
         }
+        
 
         /// <summary>
         /// 自动处理异常数据

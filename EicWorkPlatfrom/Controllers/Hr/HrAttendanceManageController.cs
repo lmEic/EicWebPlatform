@@ -68,9 +68,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <returns></returns>
         [NoAuthenCheck]
 
-        public FileResult ExoportAttendanceDatasToExcel(List<AttendanceDataModel> entitys)
+        public FileResult ExoportAttendanceDatasToExcel(DateTime qryDate)
         {
-            var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataMonitoList(entitys);
+            var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(qryDate);
             return this.ExportToExcel(ms, "考勤数据", "考勤数据");
         }
         /// <summary>

@@ -26,8 +26,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance.Tests
       public void BuildExcelDateTest()
         {
             DateTime qryDate = Convert.ToDateTime("2017-01-03");
-            var datas= AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(qryDate);
-            var tem = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataMonitoList(datas);
+            var tem = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(qryDate);
             #region 输出到Excel
             string path = @"E:\\IQC.xls";
             using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
