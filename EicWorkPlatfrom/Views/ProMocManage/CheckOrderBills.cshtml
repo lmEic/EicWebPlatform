@@ -36,9 +36,9 @@
                             <th>备注</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody  style="white-space:nowrap;overflow:hidden;">
                         <tr ng-repeat="item in vmManager.dataSource track by $index">
-                            <td>{{item.ProductType}}</td>
+                            <td >{{item.ProductType}}</td>
                             <td>{{item.ProductSpecify}}</td>
                             <td>{{item.SumCount}}</td>
                             <td>{{item.OrderCount}}</td>
