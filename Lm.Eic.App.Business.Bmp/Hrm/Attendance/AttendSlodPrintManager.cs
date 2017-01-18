@@ -60,11 +60,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// 生成EXCEL表格
         /// </summary>
         /// <returns></returns>
-        public MemoryStream BuildAttendanceDataMonitoList(List<AttendanceDataModel> DataS)
+        public MemoryStream BuildAttendanceDataMonitoList(List<AttendanceDataModel> dataS)
         {
             try
             {
-                var GroupdataGroupping = DataS.GetGroupList<AttendanceDataModel>("考勤数据");
+                var GroupdataGroupping = dataS.GetGroupList<AttendanceDataModel>("考勤数据");
                 return GroupdataGroupping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping);
             }
             catch (Exception ex)
