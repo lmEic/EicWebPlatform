@@ -45,10 +45,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             var qdate = qryDate.ToDate();
             return this.currentMonthAttendDataHandler.LoadAttendDataInToday(qdate);
         }
-        List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+      
+        public MemoryStream BuildAttendanceDataBy(DateTime qryDate)
+        {
+            List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
                  new FileFieldMapping ("Number","项次") ,
                   new FileFieldMapping ("WorkerId","工号") ,
-                  new FileFieldMapping ("WokrerName","姓名") ,
+                  new FileFieldMapping ("WorkerName","姓名") ,
                   new FileFieldMapping ("Department","部门") ,
                   new FileFieldMapping ("ClassType","班别") ,
                   new FileFieldMapping ("AttendanceDate","刷卡日期") ,
@@ -56,8 +59,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                   new FileFieldMapping ("SlotCardTime2","第一次时间") ,
                   new FileFieldMapping ("SlotCardTime","刷卡时间") ,
                 };
-        public MemoryStream BuildAttendanceDataBy(DateTime qryDate)
-        {
             var datas = LoadAttendDataInToday(qryDate);
             var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");
             return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping);
