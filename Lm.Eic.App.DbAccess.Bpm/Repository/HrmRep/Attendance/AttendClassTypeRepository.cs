@@ -68,6 +68,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
     public interface IAttendSlodFingerDataCurrentMonthRepository : IRepository<AttendSlodFingerDataCurrentMonthModel>
     {
         List<AttendanceDataModel> LoadAttendDataOfToday(DateTime qryDate);
+        List<AttendanceDataModel> LoadAttendDataByDepartment(DateTime qryDate, string department);
+        List<AttendanceDataModel> LoadAttendDataBy(string workerId);
     }
 
     /// <summary>
@@ -83,6 +85,20 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
         public List<AttendanceDataModel> LoadAttendDataOfToday(DateTime qryDate)
         {
             string sqlText = string.Format("SELECT WorkerId, WorkerName, Department, ClassType, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth where AttendanceDate='{0}'",qryDate);
+            return DbHelper.Hrm.LoadEntities<AttendanceDataModel>(sqlText);
+        }
+
+
+        public List<AttendanceDataModel> LoadAttendDataByDepartment(DateTime qryDate, string department)
+        {
+            string sqlText = string.Format("SELECT WorkerId, WorkerName, Department, ClassType, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth where AttendanceDate='{0}' And Department='{1}'", qryDate,department);
+            return DbHelper.Hrm.LoadEntities<AttendanceDataModel>(sqlText);
+        }
+
+
+        public List<AttendanceDataModel> LoadAttendDataBy(string workerId)
+        {
+            string sqlText = string.Format("SELECT WorkerId, WorkerName, Department, ClassType, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth where WorkerId='{0}'", workerId);
             return DbHelper.Hrm.LoadEntities<AttendanceDataModel>(sqlText);
         }
     }

@@ -3,11 +3,9 @@ using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -45,32 +43,15 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             var qdate = qryDate.ToDate();
             return this.currentMonthAttendDataHandler.LoadAttendDataInToday(qdate);
         }
-        List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
-                 new FileFieldMapping ("Number","项次"),
-                 new FileFieldMapping ("WorkerId","工号") ,
-                 new FileFieldMapping ("WorkerName","姓名") ,
-                 new FileFieldMapping ("Department","部门") ,
-                 new FileFieldMapping ("ClassType","班别") ,
-                 new FileFieldMapping ("AttendanceDate","刷卡日期") ,
-                 new FileFieldMapping ("SlotCardTime1","第一次时间") ,
-                 new FileFieldMapping ("SlotCardTime2","第二次时间") ,
-                 new FileFieldMapping ("SlotCardTime","刷卡时间") ,
-                };
-        /// <summary>
-        /// 生成EXCEL表格
-        /// </summary>
-        /// <returns></returns>
-        public MemoryStream BuildAttendanceDataMonitoList(List<AttendanceDataModel> dataS)
+        public List<AttendanceDataModel> LoadAttendDataInToday(DateTime qryDate,string department)
         {
-            try
-            {
-                var GroupdataGroupping = dataS.GetGroupList<AttendanceDataModel>("考勤数据");
-                return GroupdataGroupping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
+            var qdate = qryDate.ToDate();
+            return this.currentMonthAttendDataHandler.LoadAttendDataInToday(qdate,department);
+        }
+        public List<AttendanceDataModel> LoadAttendDatasBy(string workerId)
+        {
+            return this.currentMonthAttendDataHandler.LoadAttendDatasBy(workerId);
+            
         }
 
         /// <summary>
@@ -139,19 +120,26 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         {
             if (this.fingerPrintDataInTime.IsExsitAttendData)
             {
-              //实时考勤转移至本月数据表中
                 TransimitAttendDatas(qryDate);
             }
             return this.irep.LoadAttendDataOfToday(qryDate);
         }
-
+        public List<AttendanceDataModel> LoadAttendDataInToday(DateTime qryDate,string department)
+        {
+            DateTime qdate=qryDate.ToDate();
+            return this.irep.LoadAttendDataByDepartment(qdate, department);
+        }
+        public List<AttendanceDataModel> LoadAttendDatasBy(string workerId)
+        {
+            return this.irep.LoadAttendDataBy(workerId);
+        }
         /// <summary>
         /// 将实时考勤数据转移至本月数据表中
         /// </summary>
         /// <returns></returns>
         public OpResult TransimitAttendDatas(DateTime qryDate)
         {
-            qryDate = new DateTime(2017, 1, 11);
+            //qryDate = new DateTime(2017, 1, 11);
             int record = 0;
             //实时考勤数据 && e.WorkerId == "604505"
             var datasInTime = this.fingerPrintDataInTime.FingPrintDatas.FindAll(e => e.SlodCardDate == qryDate);
