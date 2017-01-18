@@ -55,7 +55,17 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(qryDate);
             return DateJsonResult(datas);
         }
+        /// <summary>
+        /// 导出当前日期考勤记录
+        /// </summary>
+        /// <param name="qryDate"></param>
+        /// <returns></returns>
 
+        public FileResult BuildAttendanceDatasOfTodayList(List<AttendanceDataModel> entitys)
+        {
+            var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataMonitoList(entitys);
+            return this.ExportToExcel(ms, "考勤数据", "考勤数据");
+        }
         /// <summary>
         /// 请假管理
         /// </summary>

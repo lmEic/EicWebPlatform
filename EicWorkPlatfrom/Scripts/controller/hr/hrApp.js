@@ -100,7 +100,15 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             qryDate:qryDate
         });
     };
-
+    ///////////////////////////////////////////////////////////////////////////////
+    //导出EXCEl数据
+     hr.buildAttendanceDatasOfTodayList = function (entitys) {
+        var url = attendUrl + "BuildAttendanceDatasOfTodayList";
+        return ajaxService.postData(url, {
+            entitys:entitys
+        });
+    };
+    ///////////////////////////////////////////////////////////////////////////////////
     //获取某人的当月请假数据
     hr.getAskLeaveDataAbout = function (workerId,yearMonth) {
         var url = attendUrl + "GetAskLeaveDataAbout";
@@ -424,8 +432,8 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             vmManager.dataSource = datas;
             vmManager.dataSets = _.clone(vmManager.dataSource);
         });
-
     };
+
 
     operate.preview = function () {
         vmManager.detailsDisplay = !vmManager.detailsDisplay;
