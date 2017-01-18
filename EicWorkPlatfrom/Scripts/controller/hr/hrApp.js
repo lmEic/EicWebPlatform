@@ -434,8 +434,8 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         departmentTreeSet.setTreeDataset(datas);
     });
 })
-//班别设置管理
-.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService) {
+//请假设置管理
+.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService, hrArchivesDataOpService) {
     ///视图模型
     var uiVM = {
         WorkerId: null,
@@ -545,7 +545,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     
  
     operate.search = function () {
-        $scope.workerPromise = hrDataOpService.getEmployeeByWorkerIds(vmManager.workerIdList, 0).then(function (data) {
+        $scope.workerPromise = hrArchivesDataOpService.getEmployeeByWorkerIds(vmManager.workerIdList, 0).then(function (data) {
             angular.forEach(data, function (item) {
                 var queryItem = _.find(vmManager.changeDatas, { WorkerId: item.WorkerId });
                 if (queryItem !== undefined) {
