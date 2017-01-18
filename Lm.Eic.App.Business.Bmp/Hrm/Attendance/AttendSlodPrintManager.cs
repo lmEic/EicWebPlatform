@@ -139,7 +139,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         {
             if (this.fingerPrintDataInTime.IsExsitAttendData)
             {
-                //实时考勤转移至本月数据表中
+              //实时考勤转移至本月数据表中
                 TransimitAttendDatas(qryDate);
             }
             return this.irep.LoadAttendDataOfToday(qryDate);
