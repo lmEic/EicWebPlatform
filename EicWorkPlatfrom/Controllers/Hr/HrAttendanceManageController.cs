@@ -34,7 +34,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var result = AttendanceService.ClassTypeSetter.SetClassType(classTypes, OnLineUser.UserName);
             return Json(result);
         }
-
         /// <summary>
         /// 今日考勤
         /// </summary>
@@ -43,7 +42,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
-
         /// <summary>
         /// 获取今日的考勤数据
         /// </summary>
@@ -61,17 +59,17 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 datas = AttendanceService.AttendSlodPrintManager.LoadAttendDatasBy(workerId);
             return DateJsonResult(datas);
         }
-        ///// <summary>
-        ///// 导出当前日期考勤记录
-        ///// </summary>
-        ///// <param name="qryDate"></param>
-        ///// <returns></returns>
-
-        //public FileResult AttendanceDatasToExcel(List<AttendanceDataModel> entitys)
-        //{
-        //    var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataMonitoList(entitys);
-        //    return this.ExportToExcel(ms, "考勤数据", "考勤数据");
-        //}
+        /// <summary>
+        /// 导出当前日期考勤记录
+        /// </summary>
+        /// <param name="qryDate"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult ExoportAttendanceDatasToExcel(DateTime qryDate)
+        {
+            var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(qryDate);
+            return this.ExportToExcel(ms, "考勤数据", "考勤数据");
+        }
         /// <summary>
         /// 请假管理
         /// </summary>

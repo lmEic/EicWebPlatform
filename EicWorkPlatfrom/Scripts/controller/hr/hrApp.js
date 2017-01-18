@@ -103,14 +103,6 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             mode: mode,
         });
     };
-    ///////////////////////////////////////////////////////////////////////////////
-    //导出EXCEl数据
-     hr.attendanceDatasToExcel = function (entitys) {
-        var url = attendUrl + "AttendanceDatasToExcel";
-        return ajaxService.postData(url, {
-            entitys:entitys
-        });
-    };
     ///////////////////////////////////////////////////////////////////////////////////
     //获取某人的当月请假数据
     hr.getAskLeaveDataAbout = function (workerId,yearMonth) {
@@ -415,7 +407,10 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             vmManager.dataSets = _.clone(vmManager.dataSource);
         });
     };
+    /////
 
+
+    ////
 
     operate.preview = function () {
         vmManager.detailsDisplay = !vmManager.detailsDisplay;
