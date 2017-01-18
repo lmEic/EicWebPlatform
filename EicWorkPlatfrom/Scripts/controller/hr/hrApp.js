@@ -393,7 +393,12 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
                 if (qryDto.WorkerId.length === 0) return;
                 operate.loadData(2);
             }
-        }
+        },
+        //导出到Excel
+        exportToExcel: function () {
+            var url = "HrAttendanceManage/ExoportAttendanceDatasToExcel/?qryDate=" + qryDto.AttendanceDate;
+            return url;
+        },
     };
 
     $scope.vmManager = vmManager;
