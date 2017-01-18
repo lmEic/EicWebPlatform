@@ -58,9 +58,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 };
         public MemoryStream BuildAttendanceDataBy(DateTime qryDate)
         {
-           
             var datas = LoadAttendDataInToday(qryDate);
-
             var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");
             return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping);
         }
