@@ -70,6 +70,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
         List<AttendanceDataModel> LoadAttendDataOfToday(DateTime qryDate);
         List<AttendanceDataModel> LoadAttendDataByDepartment(DateTime qryDate, string department);
         List<AttendanceDataModel> LoadAttendDataBy(string workerId);
+
+
+        List<AttendSlodFingerDataCurrentMonthModel> loaddatas(string d);
     }
 
     /// <summary>
@@ -100,6 +103,13 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
         {
             string sqlText = string.Format("SELECT WorkerId, WorkerName, Department, ClassType, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth where WorkerId='{0}'", workerId);
             return DbHelper.Hrm.LoadEntities<AttendanceDataModel>(sqlText);
+        }
+
+
+        public List<AttendSlodFingerDataCurrentMonthModel> loaddatas(string d)
+        {
+            string sqlText = string.Format("SELECT  *  FROM  Attendance_SlodFingerDataCurrentMonth  WHERE   (AttendanceDate = '{0}') AND (SlotCardTime2 LIKE '2017-01-11%')",d);
+            return DbHelper.Hrm.LoadEntities<AttendSlodFingerDataCurrentMonthModel>(sqlText);
         }
     }
 }

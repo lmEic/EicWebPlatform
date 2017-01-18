@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h6 class="panel-title"><i class="fa fa-desktop">今日考勤</i></h6>
+                <h6 class="panel-title"><i class="fa fa-sun-o">汇总考勤数据</i></h6>
             </div>
             <div class="panel-body" cg-busy="{promise:promise}">
                 <div class="well">
@@ -15,7 +15,7 @@
                                 </div>
                                 <div class="form-group">
                                     <button type="button" class="btn btn-info" ng-click="operate.loadData(0)"><i class="fa fa-cloud-download"></i>载入考勤数据</button>
-                                    <a class="btn btn-success" href="@Url.Action("","")"><i class="fa fa-file-excel-o"></i>导出</a>
+                                    <a class="btn btn-sm btn-success" title="导出" ng-href="{{ vmManager.exportToExcel()}}"><i class="fa fa-file-excel-o"></i>导出</a>
                                 </div>
                             </form>
                         </div>

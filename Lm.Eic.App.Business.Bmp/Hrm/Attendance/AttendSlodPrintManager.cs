@@ -129,6 +129,24 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
 
         #region method
 
+        public void tu()
+        {
+            string myday = "2017-01-10 ";
+            var datas = this.irep.loaddatas(myday);
+            
+            if (datas != null && datas.Count > 0)
+            {
+                datas.ForEach(m => {
+                    string s1 =m.SlotCardTime1==null?"": myday + m.SlotCardTime1.Substring(11, 8);
+                    string s2 = m.SlotCardTime2 == null ? "" : myday + m.SlotCardTime2.Substring(11, 8);
+                    var sfs = m.SlotCardTime.Split(',').ToList();
+                    sfs.Sort();
+                    string sd = sfs[0] + "," + sfs[sfs.Count - 1];
+                    this.irep.Update(e => e.Id_Key == m.Id_Key, u => new AttendSlodFingerDataCurrentMonthModel { SlotCardTime1 = s1, SlotCardTime2 = s2, SlotCardTime = sd });
+                });
+            }
+        }
+
         #region handle attend method
 
         /// <summary>
