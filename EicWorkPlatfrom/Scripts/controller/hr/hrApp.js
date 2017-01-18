@@ -102,8 +102,8 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     };
     ///////////////////////////////////////////////////////////////////////////////
     //导出EXCEl数据
-     hr.buildAttendanceDatasOfTodayList = function (entitys) {
-        var url = attendUrl + "BuildAttendanceDatasOfTodayList";
+     hr.attendanceDatasToExcel = function (entitys) {
+        var url = attendUrl + "AttendanceDatasToExcel";
         return ajaxService.postData(url, {
             entitys:entitys
         });

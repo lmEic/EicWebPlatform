@@ -61,7 +61,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="qryDate"></param>
         /// <returns></returns>
 
-        public FileResult BuildAttendanceDatasOfTodayList(List<AttendanceDataModel> entitys)
+        public FileResult AttendanceDatasToExcel(List<AttendanceDataModel> entitys)
         {
             var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataMonitoList(entitys);
             return this.ExportToExcel(ms, "考勤数据", "考勤数据");
