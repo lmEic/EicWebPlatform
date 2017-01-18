@@ -34,7 +34,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var result = AttendanceService.ClassTypeSetter.SetClassType(classTypes, OnLineUser.UserName);
             return Json(result);
         }
-
         /// <summary>
         /// 今日考勤
         /// </summary>
@@ -43,7 +42,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
-
         /// <summary>
         /// 获取今日的考勤数据
         /// </summary>
@@ -67,7 +65,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="qryDate"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-
         public FileResult ExoportAttendanceDatasToExcel(DateTime qryDate)
         {
             var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(qryDate);
