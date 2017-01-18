@@ -54,7 +54,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                  new FileFieldMapping ("AttendanceDate","刷卡日期") ,
                  new FileFieldMapping ("SlotCardTime1","第一次时间") ,
                  new FileFieldMapping ("SlotCardTime2","第二次时间") ,
-                 new FileFieldMapping ("Number","SlotCardTime") ,
+                 new FileFieldMapping ("SlotCardTime","刷卡时间") ,
                 };
         /// <summary>
         /// 生成EXCEL表格
