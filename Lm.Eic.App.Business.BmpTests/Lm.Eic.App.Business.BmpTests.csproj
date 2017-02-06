@@ -63,7 +63,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -75,6 +77,7 @@
     <Compile Include="Hrm\Archives\ArchivesManagerTests.cs" />
     <Compile Include="Hrm\Attendance\AttendSlodFingerDataCurrentMonthHandlerTests.cs" />
     <Compile Include="Hrm\GeneralAffairs\UnitTest1.cs" />
+    <Compile Include="Pms\AttendanceMachineTest\UnitTest1.cs" />
     <Compile Include="Pms\BoardManagmentTest\BoardManagmentUnitTest.cs" />
     <Compile Include="Pms\DailyReport\DailyReportInputManagerTests.cs" />
     <Compile Include="Pms\DailyReport\ProductFlowConfigTests.cs" />
@@ -90,6 +93,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Lm.Eic.App.Business.Attendance\Lm.Eic.App.Business.Attendance.csproj">
+      <Project>{95fe66b6-3bbe-460c-9912-c2915c6edb57}</Project>
+      <Name>Lm.Eic.App.Business.Attendance</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Lm.Eic.App.Business.Bmp\Lm.Eic.App.Business.Bmp.csproj">
       <Project>{1862d746-c559-415f-b220-0c5dc1250f2f}</Project>
       <Name>Lm.Eic.App.Business.Bmp</Name>
