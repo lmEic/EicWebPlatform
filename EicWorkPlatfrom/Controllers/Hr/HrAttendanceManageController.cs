@@ -68,7 +68,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public FileResult ExoportAttendanceDatasToExcel(DateTime qryDate)
         {
             var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(qryDate);
-            return this.ExportToExcel(ms,  qryDate.ToShortDateString(), "考勤数据");
+            return this.ExportToExcel(ms, "考勤数据", "考勤数据("+ qryDate.ToShortDateString()+")");
         }
         /// <summary>
         /// 请假管理
