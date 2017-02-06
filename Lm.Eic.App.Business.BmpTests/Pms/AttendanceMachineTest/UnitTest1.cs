@@ -14,9 +14,9 @@ namespace Lm.Eic.App.Business.BmpTests.Pms.AttendanceTest
   
         public void TestMethod1()
         {
-            AttendanceBusiness ddd = new AttendanceBusiness();
+            AttendanceBusiness attendance = new AttendanceBusiness();
             string msg = string.Empty;
-            ddd.OpenConnent("192.168.0.24", 1, out msg);
+            attendance.OpenConnent("192.168.0.24", 1, out msg);
             if (msg == string.Empty) { Assert.Fail(); }
         }
        
