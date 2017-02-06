@@ -46,7 +46,7 @@ namespace Lm.Eic.App.Business.Attendance
         /// </summary>
         /// <param name="ip"></param>
         /// <returns></returns>
-        public bool PingIPAdress(string ip)
+       private  bool PingIPAdress(string ip)
         {
             System.Net.NetworkInformation.Ping p = new System.Net.NetworkInformation.Ping();
             System.Net.NetworkInformation.PingOptions options = new System.Net.NetworkInformation.PingOptions();
@@ -63,12 +63,12 @@ namespace Lm.Eic.App.Business.Attendance
 
 
         /// <summary>
-        /// 
+        /// 收集考勤数据
         /// </summary>
-        /// <param name="sourceMachineNumber"></param>
+        /// <param name="sourceMachineNumber">采集的考勤机ID</param>
         /// <param name="sourceDataTablestructure">数据源结构</param>
         /// <returns></returns>
-        private DataTable GetNewAddEnrollSourceData(int sourceMachineNumber, DataTable sourceDataTablestructure)
+       public  DataTable GetNewAddEnrollSourceData(int sourceMachineNumber, DataTable sourceDataTablestructure)
         {
 
             DataTable dbEnrollTble = sourceDataTablestructure;
@@ -182,7 +182,6 @@ namespace Lm.Eic.App.Business.Attendance
             AttendanceMachineDll.EnableDevice(sourceMachineNumber, 1); // 1 : true
             return dbEnrollTble;
         }
-
 
         /// <summary>
         /// 处理采集的数据
