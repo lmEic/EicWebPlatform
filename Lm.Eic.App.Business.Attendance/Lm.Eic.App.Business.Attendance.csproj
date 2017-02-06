@@ -45,7 +45,6 @@
     <Compile Include="AttendanceBusiness.cs" />
     <Compile Include="AttendanceMachineDll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="System\Windows.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="GEN_FONT.dll">
