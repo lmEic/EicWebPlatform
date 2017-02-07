@@ -5,9 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Lm.Eic.App.Business.Attendance
-{
+{ 
+    /// <summary>
+    /// delld
+    /// </summary>
     public	class AttendanceMachineDll
 	{
 
@@ -92,36 +97,38 @@ namespace Lm.Eic.App.Business.Attendance
 
 		[DllImport("SBXPCDLL.dll", CallingConvention = CallingConvention.Winapi)]
 		static extern byte _GetEnrollData1(Int32 dwMachineNumber, Int32 dwEnrollNumber, Int32 dwBackupNumber, IntPtr dwMachinePrivilege, ref IntPtr dwEnrollData, IntPtr dwPassWord);
-
-		public static bool GetEnrollData1(Int32 dwMachineNumber, Int32 dwEnrollNumber, Int32 dwBackupNumber, out Int32 dwMachinePrivilege, IntPtr dwEnrollData, out Int32 dwPassWord)
+       
+        public static bool GetEnrollData1(Int32 dwMachineNumber, Int32 dwEnrollNumber, Int32 dwBackupNumber, out Int32 dwMachinePrivilege, IntPtr dwEnrollData, out Int32 dwPassWord)
 		{
 			dwMachinePrivilege = 0;
 			dwPassWord = 0;
 
 			byte[] privilege = new byte[4];
 			byte[] password = new byte[4];
-			GCHandle gh_privilege = GCHandle.Alloc(privilege, GCHandleType.Pinned);
-			GCHandle gh_password = GCHandle.Alloc(password, GCHandleType.Pinned);
 
-			try
+            GCHandle gh_privilege = GCHandle.Alloc(privilege, GCHandleType.Pinned);
+            GCHandle gh_password = GCHandle.Alloc(password, GCHandleType.Pinned);
+           
+            try
 			{
-				IntPtr addr_privilege = gh_privilege.AddrOfPinnedObject();
-				IntPtr addr_password = gh_password.AddrOfPinnedObject();
+                IntPtr addr_privilege = gh_privilege.AddrOfPinnedObject();
+                IntPtr addr_password = gh_password.AddrOfPinnedObject();
+                byte ret = _GetEnrollData1(dwMachineNumber,
+                                           dwEnrollNumber,
+                                           dwBackupNumber,
+                                           addr_privilege,
+                                      ref dwEnrollData,
+                                          addr_password);
+                dwMachinePrivilege = new BinaryReader(new MemoryStream(privilege)).ReadInt32();
+                dwPassWord = new BinaryReader(new MemoryStream(password)).ReadInt32();
 
-				byte ret = _GetEnrollData1(dwMachineNumber, dwEnrollNumber,
-										dwBackupNumber,
-										addr_privilege,
-										ref dwEnrollData,
-										addr_password);
-
-				 dwMachinePrivilege = new BinaryReader(new MemoryStream(privilege)).ReadInt32();
-				 dwPassWord = new BinaryReader(new MemoryStream(password)).ReadInt32();
-
-				return ret > 0;
+                return ret > 0;
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				return false;
+                return false;
+                throw new Exception(ex.InnerException.Message);
+              
 			}
 			finally
 			{
@@ -2117,7 +2124,9 @@ namespace Lm.Eic.App.Business.Attendance
 	}
 
 
-
+    /// <summary>
+    /// 返回错误信息
+    /// </summary>
     public static class AttendanceMachineDoMessage
     {
 
@@ -2294,6 +2303,150 @@ namespace Lm.Eic.App.Business.Attendance
                     FS.Dispose();
                 }
             }
+        }
+    }
+
+
+    //数据库联结
+    public class SQLEnrollData
+    {
+        string mDataPath;
+        public static SQLEnrollData DataModule;
+
+        private static SqlConnection GetConnection()
+        {
+            return (new SqlConnection("Data Source=192.168.0.165;Initial Catalog=datEnrollDat;Persist Security Info=True;User ID=sa;Password=lm2011;MultipleActiveResultSets=True"));
+        }
+
+        public  DataSet GetEnrollDatas()
+        {
+            return this._GetEnrollDatas("EnrollNumber");
+        }
+
+        public static DataTable GetEnrollDatas(int machineNumber)
+        {
+            SqlConnection conn = GetConnection();
+            try
+            {
+                DataSet ds = new DataSet();
+                string sql = "select * from tblEnroll where  EMachineNumber =" + machineNumber + "     order   by EnrollNumber ";
+                SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                try
+                {
+                    da.Fill(ds, "tblEnroll");
+                }
+                finally
+                {
+                    da.Dispose();
+                }
+                return ds.Tables["tblEnroll"];
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+        }
+
+
+        private DataSet _GetEnrollDatas(string sortfield)
+        {
+            SqlConnection conn = GetConnection();
+            try
+            {
+                DataSet ds = new DataSet();
+                string sql = "select * from tblEnroll order by " + sortfield;
+                SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                try
+                {
+                    da.Fill(ds, "tblEnroll");
+                }
+                finally
+                {
+                    da.Dispose();
+                }
+                return ds;
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+        }
+        //删除
+        public DataSet DeleteDB()
+        {
+            SqlConnection conn = GetConnection();
+
+            try
+            {
+                string sql = "Select * from tblEnroll";
+                SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                DataSet ds = new DataSet();
+                try
+                {
+                    da.Fill(ds, "tblEnroll");
+
+                    foreach (DataRow dbRow in ds.Tables[0].Rows)
+                    {
+                        dbRow.Delete();
+                    }
+                }
+                finally
+                {
+                    da.Dispose();
+                }
+                return ds;
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+        }
+        //保存
+        public void SaveEnrolls(DataTable dt)
+        {
+
+            SqlConnection conn = GetConnection();
+
+            try
+            {
+                DataSet ds = new DataSet();
+
+                ds.Tables.Add(dt.Copy());
+
+                string sql = "select * from tblEnroll";
+                SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                SqlCommandBuilder cb = new SqlCommandBuilder(da);
+
+                try
+                {
+                    da.InsertCommand = cb.GetInsertCommand(true);
+                    if (ds.HasChanges())
+                    {
+                        da.Update(ds, "tblEnroll");
+                        ds.AcceptChanges();
+                    }
+                }
+                finally
+                {
+                    cb.Dispose();
+                    da.Dispose();
+                }
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+            }
+
+        }
+
+        public void New(string sDatapath)
+        {
+            this.mDataPath = sDatapath;
+            SQLEnrollData.DataModule = this;
         }
     }
 }

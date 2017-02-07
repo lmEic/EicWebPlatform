@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
+
 
 namespace Lm.Eic.App.Business.Attendance
 {
@@ -68,10 +67,10 @@ namespace Lm.Eic.App.Business.Attendance
         /// <param name="sourceMachineNumber">采集的考勤机ID</param>
         /// <param name="sourceDataTablestructure">数据源结构</param>
         /// <returns></returns>
-       public  DataTable GetNewAddEnrollSourceData(int sourceMachineNumber, DataTable sourceDataTablestructure)
+       public  DataTable GetNewAddEnrollSourceData(int sourceMachineNumber)
         {
 
-            DataTable dbEnrollTble = sourceDataTablestructure;
+            DataTable dbEnrollTble = SQLEnrollData.GetEnrollDatas(sourceMachineNumber); ;
 
             int[] gTemplngEnrollDataInt = new int[6917];
             Byte[] gbytEnrollDataInt = new Byte[34585];
@@ -175,7 +174,7 @@ namespace Lm.Eic.App.Business.Attendance
             //dsChange = dsEnrollDatas.GetChanges();
             //保存到数据库中
 
-            //SQLEnrollData.DataModule.SaveEnrolls(dbEnrollTble);
+            SQLEnrollData.DataModule.SaveEnrolls(dbEnrollTble);
 
 
             //Application.DoEvents();
