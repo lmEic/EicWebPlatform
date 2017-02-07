@@ -78,10 +78,12 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     };
 
     //获取部门的班别信息
-    hr.getClassTypeDatas = function (department) {
-        var url = attendUrl + "GetClassTypeDatas";
+    hr.getClassTypeDatas = function (department, workerId, classType) {
+        var url = attendUrl + 'GetClassTypeDatas';
         return ajaxService.getData(url, {
             department: department,
+            workerId: workerId,
+            classType: classType,
         });
     };
 
@@ -223,8 +225,8 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
 //班别设置管理
 .controller('attendClassTypeSetCtrl', function ($scope, $modal,hrDataOpService,dataDicConfigTreeSet,connDataOpService) {
     var qryDto = {
-        Department: '部门',
-        DepartmentText: '部门',
+        Department:null,
+        DepartmentText:null,
         DateFrom: null,
         DateTo: null,
         ClassType:'白班'
@@ -247,31 +249,28 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         isSelect: false,
         selectedCls:''
     }
-
-
     var vmManager = {
         classTypes: [{ name: '白班', text: '白班' }, { name: '晚班', text: '晚班' }, { name: '', text: 'All' }, ],
         dataSets: [],
         dataSource:[],
         filterWorkerId: '',
         filterClassType:'',
-        filterByWorkerId: function () {
-            var datas = _.clone(vmManager.dataSource);
-            if (vmManager.filterWorkerId.length >= 6) {
-                vmManager.dataSets = _.where(datas, { WorkerId: vmManager.filterWorkerId });
-            }
-            else {
-                vmManager.dataSets = datas;
+        filterByWorkerId: function ($event) {
+            if ($event.keyCode === 13) {
+                if (qryDto.Department === null || vmManager.filterWorkerId === null)
+                {
+                    alert("必须选择部门，作业工号不能为空！");
+                    return;
+                }
+                vmManager.loadClassTypeDatas(qryDto.Department, vmManager.filterWorkerId, null);
             }
         },
         filterByClassType: function () {
-            var datas = _.clone(vmManager.dataSource);
-            if (vmManager.filterClassType!=="") {
-                vmManager.dataSets = _.where(datas, { ClassType: vmManager.filterClassType });
+            if (qryDto.Department === null || vmManager.filterClassType === null) {
+                alert("必须选择部门，班别不能为空！");
+                return;
             }
-            else {
-                vmManager.dataSets = datas;
-            }
+            vmManager.loadClassTypeDatas(qryDto.Department, null, vmManager.filterClassType);
         },
         detailsDisplay: false,
         selectedWorkers: [],
@@ -295,22 +294,24 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
                 operate.addWorkerToList(item);
             });
         },
+        loadClassTypeDatas: function (department, workerId, classType) {
+            vmManager.dataSource = [];
+            $scope.classTypePromise = hrDataOpService.getClassTypeDatas(qryDto.Department, workerId, classType).then(function (datas) {
+                angular.forEach(datas, function (item) {
+                    var dataItem = _.clone(uiVM);
+                    leeHelper.copyVm(item, dataItem);
+                    vmManager.dataSource.push(dataItem);
+                })
+                vmManager.dataSets = _.clone(vmManager.dataSource);
+            });
+        }
     };
    
     $scope.vmManager = vmManager;
-
     var operate = Object.create(leeDataHandler.operateStatus);
     operate.loadData = function () {
         vmManager.init();
-        $scope.classTypePromise = hrDataOpService.getClassTypeDatas(qryDto.Department).then(function (datas) {
-            angular.forEach(datas, function (item) {
-                var dataItem = _.clone(uiVM);
-                leeHelper.copyVm(item, dataItem);
-                vmManager.dataSource.push(dataItem);
-            })
-            vmManager.dataSets = _.clone(vmManager.dataSource);
-        });
-
+        vmManager.loadClassTypeDatas(qryDto.Department, null, null);
     };
 
     operate.preview = function () {
@@ -399,6 +400,12 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             var url = "HrAttendanceManage/ExoportAttendanceDatasToExcel/?qryDate=" + qryDto.AttendanceDate;
             return url;
         },
+        yearMonth:'',
+        //导出到Excel
+        exportYearMonthDatasToExcel: function () {
+            var url = "HrAttendanceManage/ExoportAttendanceMonthDatasToExcel/?yearMonth=" + vmManager.yearMonth;
+            return url;
+        },
     };
 
     $scope.vmManager = vmManager;
@@ -436,6 +443,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
 })
 //请假设置管理
 .controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService, hrArchivesDataOpService) {
+  
     ///视图模型
     var uiVM = {
         WorkerId: null,
@@ -449,8 +457,8 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         LeaveMemo:null,
         StartLeaveDate: null,
         EndLeaveDate: null,
-        LeaveTimeRegionStart: null,
-        LeaveTimeRegionEnd: null,
+        LeaveTimeRegionStart:null, 
+        LeaveTimeRegionEnd:null,
         DepartmentText: null,
         OpSign: null,
         ClassType: null,
@@ -586,8 +594,8 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
                         LeaveMemo: null,
                         StartLeaveDate: null,
                         EndLeaveDate: null,
-                        LeaveTimeRegionStart: null,
-                        LeaveTimeRegionEnd: null,
+                        LeaveTimeRegionStart:null,
+                        LeaveTimeRegionEnd:null,
                         DepartmentText: null,
                         ClassType: null,
                         id: 0

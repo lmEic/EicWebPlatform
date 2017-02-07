@@ -436,6 +436,19 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
 
         #endregion Model
     }
+    /// <summary>
+    /// 考勤数据查询Dto
+    /// </summary>
+    public partial class AttendanceDataQueryDto
+    {
+        public int SearchMode { get; set; }
+        public DateTime AttendanceDate { get; set; }
+        public string Department { get; set; }
+
+        public string WorkerId { get; set; }
+
+        public string YearMonth { get; set; }
+    }
 
     /// <summary>
     ///实时刷卡数据模型

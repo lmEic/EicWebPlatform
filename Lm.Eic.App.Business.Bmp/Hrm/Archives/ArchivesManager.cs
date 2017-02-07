@@ -426,7 +426,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         #region find data method
         /// <summary>
-        /// 查询部门信息
+        /// 查询人员信息信息
         /// </summary>
         /// <param name="qryDto"></param>
         /// <param name="searchMode">

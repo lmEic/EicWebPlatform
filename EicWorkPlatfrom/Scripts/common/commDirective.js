@@ -12,6 +12,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         },
         link: function (scope, element, attrs) {
             scope.months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+            scope.titleVisible = true;
             var mydate = new Date();
             scope.currentYear = mydate.getFullYear();
 
