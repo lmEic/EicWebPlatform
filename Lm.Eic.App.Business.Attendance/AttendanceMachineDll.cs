@@ -9,14 +9,12 @@ using System.Data.SqlClient;
 using System.Data;
 
 namespace Lm.Eic.App.Business.Attendance
-{ 
+{
     /// <summary>
-    /// delld
+    /// 调用 SBXPCDLL.dll
     /// </summary>
-    public	class AttendanceMachineDll
+    public class AttendanceMachineDll
 	{
-
-        
 		[DllImport("SBXPCDLL.dll", CallingConvention = CallingConvention.Winapi)]
 		static extern void _DotNET();
 		public static void DotNET()
@@ -2307,7 +2305,10 @@ namespace Lm.Eic.App.Business.Attendance
     }
 
 
-    //数据库联结
+
+    /// <summary>
+    /// 数据库联结
+    /// </summary>
     public class SQLEnrollData
     {
         string mDataPath;
