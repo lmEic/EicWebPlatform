@@ -63,16 +63,18 @@
                             <label for="leaveTimeRegionStart" class="col-md-2 control-label">请假时段</label>
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <input name="leaveTimeRegionStart" type="text" class="form-control" bs-timepicker data-time-format="HH:mm"
-                                           ng-model="vm.LeaveTimeRegionStart" required data-arrow-behavior="picker" data-format-time />
+                                    <input name="leaveTimeRegionStart" type="text" class="form-control" size="8" bs-timepicker data-time-format="HH:mm"
+                                           ng-model="vm.LeaveTimeRegionStart" data-length="1" data-minute-step="1" data-format-time
+                                           required data-arrow-behavior="picker" />
                                     <div class="error-messages" ng-messages="modalForm.leaveTimeRegionStart.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">请假时段不能为空</small>
                                     </div>
                                     <div class="input-group-addon">
                                         <label>-</label>
                                     </div>
-                                    <input name="leaveTimeRegionEnd" type="text" class="form-control" bs-timepicker data-time-format="HH:mm"
-                                           ng-model="vm.LeaveTimeRegionEnd" required data-arrow-behavior="picker" data-format-time />
+                                    <input name="leaveTimeRegionEnd" type="text" class="form-control" size="8" data-length="1" data-minute-step="1"
+                                           bs-timepicker data-time-format="HH:mm" data-format-time
+                                           ng-model="vm.LeaveTimeRegionEnd" required data-arrow-behavior="picker" />
                                     <div class="error-messages" ng-messages="modalForm.leaveTimeRegionEnd.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">请假时段不能为空</small>
                                     </div>

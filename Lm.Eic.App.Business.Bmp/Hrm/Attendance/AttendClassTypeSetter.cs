@@ -26,10 +26,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
 
         #endregion constructure
 
-
-
         #region method
-
         /// <summary>
         /// 初始化班别信息
         /// </summary>
@@ -45,23 +42,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             record = this.irep.Insert(entity);
             return record;
         }
-
         /// <summary>
         /// 根据部门载入班别信息
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public List<AttendClassTypeModel> LoadDatasBy(string department)
+        public List<AttendClassTypeModel> LoadDatasBy(string department, string workerId = null, string classType = null)
         {
             List<AttendClassTypeModel> getDatas = new List<AttendClassTypeModel>();
             try
             {
-                QueryWorkersDto qry = new QueryWorkersDto() { Department = department };
+                QueryWorkersDto qry = new QueryWorkersDto() { Department = department, WorkerId = workerId };
                 //在档案中载入部门数据
-                List<ArWorkerInfo> workers = ArchiveService.ArchivesManager.FindWorkers(qry, 1);
+                List<ArWorkerInfo> workers = workerId == null ? ArchiveService.ArchivesManager.FindWorkers(qry, 1) : ArchiveService.ArchivesManager.FindWorkers(qry, 2);
                 //在班别设置中载入部门班别数据信息
-                List<AttendClassTypeModel> classTypes = this.irep.Entities.Where(e => e.Department == department).OrderBy(w => w.WorkerId).ToList();
-
+                List<AttendClassTypeModel> classTypes = GetClassTypeDatas(department, workerId, classType);
                 AttendClassTypeModel mdl = null;
                 //合并数据
                 workers.ForEach(w =>
@@ -102,8 +97,29 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             {
                 throw new Exception(ex.Message);
             }
-
+            getDatas = getDatas.OrderBy(e => e.WorkerId).ToList();
             return getDatas;
+        }
+        private List<AttendClassTypeModel> GetClassTypeDatas(string department, string workerId, string classType)
+        {
+            List<AttendClassTypeModel> classTypes = null;
+            //若有工号值则按照工号进行查询
+            if (workerId != null)
+            {
+                classTypes = this.irep.Entities.Where(e => e.WorkerId == workerId).OrderBy(w => w.WorkerId).ToList();
+            }
+            else
+            {
+                if (classType == null)
+                {
+                    classTypes = this.irep.Entities.Where(e => e.Department == department).OrderBy(w => w.WorkerId).ToList();
+                }
+                else
+                {
+                    classTypes = this.irep.Entities.Where(e => e.Department == department && e.ClassType == classType).OrderBy(w => w.WorkerId).ToList();
+                }
+            }
+            return classTypes;
         }
 
         /// <summary>

@@ -22,9 +22,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
         }
 
         [NoAuthenCheck]
-        public ContentResult GetClassTypeDatas(string department)
+        public ContentResult GetClassTypeDatas(string department,string workerId,string classType)
         {
-            var datas = AttendanceService.ClassTypeSetter.LoadDatasBy(department);
+            var datas = AttendanceService.ClassTypeSetter.LoadDatasBy(department,workerId,classType);
             return DateJsonResult(datas);
         }
 
@@ -68,7 +68,13 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public FileResult ExoportAttendanceDatasToExcel(DateTime qryDate)
         {
             var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(qryDate);
-            return this.ExportToExcel(ms, "考勤数据", "考勤数据("+ qryDate.ToShortDateString()+")");
+            return this.ExportToExcel(ms, qryDate.ToShortDateString(), "考勤数据-" + qryDate.ToShortDateString());
+        }
+        [NoAuthenCheck]
+        public FileResult ExoportAttendanceMonthDatasToExcel(string yearMonth)
+        {
+            var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(yearMonth);
+            return this.ExportToExcel(ms, yearMonth, "考勤数据-" +yearMonth);
         }
         /// <summary>
         /// 请假管理

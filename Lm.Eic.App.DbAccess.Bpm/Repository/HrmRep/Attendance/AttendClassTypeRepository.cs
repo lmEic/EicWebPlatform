@@ -67,10 +67,16 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
     /// </summary>
     public interface IAttendSlodFingerDataCurrentMonthRepository : IRepository<AttendSlodFingerDataCurrentMonthModel>
     {
-        List<AttendanceDataModel> LoadAttendDataOfToday(DateTime qryDate);
-        List<AttendanceDataModel> LoadAttendDataByDepartment(DateTime qryDate, string department);
-        List<AttendanceDataModel> LoadAttendDataBy(string workerId);
-
+        /// <summary>
+        /// searchMode:
+        /// 0:按考勤日期查询
+        /// 1:按考勤日期与部门查询
+        /// 2:按工号查询
+        /// 3:按年月份查询
+        /// </summary>
+        /// <param name="qryDto"></param>
+        /// <returns></returns>
+        List<AttendanceDataModel> LoadAttendanceDatasBy(AttendanceDataQueryDto qryDto);
 
         List<AttendSlodFingerDataCurrentMonthModel> loaddatas(string d);
     }
@@ -80,36 +86,35 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
     /// </summary>
     public class AttendSlodFingerDataCurrentMonthRepository : HrmRepositoryBase<AttendSlodFingerDataCurrentMonthModel>, IAttendSlodFingerDataCurrentMonthRepository
     {
-        /// <summary>
-        /// 载入当天考勤数据
-        /// </summary>
-        /// <param name="department"></param>
-        /// <returns></returns>
-        public List<AttendanceDataModel> LoadAttendDataOfToday(DateTime qryDate)
-        {
-            string sqlText = string.Format("SELECT WorkerId, WorkerName, Department, ClassType, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth where AttendanceDate='{0}'",qryDate);
-            return DbHelper.Hrm.LoadEntities<AttendanceDataModel>(sqlText);
-        }
-
-
-        public List<AttendanceDataModel> LoadAttendDataByDepartment(DateTime qryDate, string department)
-        {
-            string sqlText = string.Format("SELECT WorkerId, WorkerName, Department, ClassType, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth where AttendanceDate='{0}' And Department='{1}'", qryDate,department);
-            return DbHelper.Hrm.LoadEntities<AttendanceDataModel>(sqlText);
-        }
-
-
-        public List<AttendanceDataModel> LoadAttendDataBy(string workerId)
-        {
-            string sqlText = string.Format("SELECT WorkerId, WorkerName, Department, ClassType, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth where WorkerId='{0}'", workerId);
-            return DbHelper.Hrm.LoadEntities<AttendanceDataModel>(sqlText);
-        }
-
-
+        private const string loadAttendDataSql = "SELECT WorkerId, WorkerName, Department, ClassType, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth";
+       
         public List<AttendSlodFingerDataCurrentMonthModel> loaddatas(string d)
         {
             string sqlText = string.Format("SELECT  *  FROM  Attendance_SlodFingerDataCurrentMonth  WHERE   (AttendanceDate = '{0}') AND (SlotCardTime2 LIKE '2017-01-11%')",d);
             return DbHelper.Hrm.LoadEntities<AttendSlodFingerDataCurrentMonthModel>(sqlText);
+        }
+        public List<AttendanceDataModel> LoadAttendanceDatasBy(AttendanceDataQueryDto qryDto)
+        {
+            StringBuilder sqlText = new StringBuilder();
+            sqlText.Append(loadAttendDataSql);
+            if (qryDto.SearchMode == 0)
+            {
+                sqlText.AppendFormat(" where AttendanceDate='{0}'", qryDto.AttendanceDate);
+            }
+            else if (qryDto.SearchMode == 1)
+            {
+                sqlText.AppendFormat(" where AttendanceDate='{0}' And Department='{1}'", qryDto.AttendanceDate,qryDto.Department);
+            }
+            else if (qryDto.SearchMode == 2)
+            {
+                sqlText.AppendFormat(" where WorkerId='{0}'", qryDto.WorkerId);
+            }
+            else if (qryDto.SearchMode == 3)
+            {
+                sqlText.AppendFormat(" where YearMonth='{0}'", qryDto.YearMonth);
+            }
+            sqlText.Append(" order by AttendanceDate");
+            return DbHelper.Hrm.LoadEntities<AttendanceDataModel>(sqlText.ToString());
         }
     }
 }
