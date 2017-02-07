@@ -91,7 +91,7 @@ var leeDataHandler = (function () {
             }
         },
         //获取登录用户信息,本地有存储，则返回用户对象，
-        //没有，这返回null
+        //没有，则返回null
         getLoginedUser: function () {
             var loginedUser = {
                 //账号

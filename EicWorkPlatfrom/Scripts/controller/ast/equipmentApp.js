@@ -1036,7 +1036,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         },
 
         searchedWorkers: [],
-
         isSingle: true,//是否搜寻到的是单个人
 
         getWorkerInfo: function () {
@@ -1078,6 +1077,16 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                     }
                 });
             }
+        },
+
+        //013935查询设备维修
+        getAstRepairDatas: function () {
+            alert(1);
+            vmManager.editDatas = [];
+            console.log(1);
+            $scope.searchPromise = astDataopService.getEquipmentArchivesBy(vmManager.inputDate, vmManager.assetNum).then(function (datas) {
+                vmManager.editDatas = datas;
+            });
         }
     };
 
@@ -1095,7 +1104,38 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             });
         });
     };
+    //013935创建设备维修编辑模态框
+    operate.editModal = $modal({
+        title: "操作窗口",
+        templateUrl: leeHelper.controllers.equipment + '/EditEquipmentRepairTpl/',
+        //controller: function ($scope) {
+        //    $scope.vm = uiVM;
+        //    $scope.vmManager = vmManager;
+        //    $scope.ztree = departmentTreeSet;
+        //    var op = Object.create(leeDataHandler.operateStatus);
+        //    $scope.operate = op;
 
+        //    $scope.save = function (isValid) {
+        //        uiVM.OpSign = 'edit';
+        //        leeDataHandler.dataOperate.add(op, isValid, function () {
+        //            astDataopService.saveEquipmentRecord($scope.vm).then(function (opresult) {
+        //                var item = _.find(vmManager.editDatas, { Id_Key: uiVM.Id_Key });
+        //                if (angular.isDefined(item)) {
+        //                    leeHelper.copyVm(uiVM, item);
+        //                    vmManager.init();
+        //                    operate.editModal.$promise.then(operate.editModal.hide);
+        //                }
+        //            });
+        //        });
+        //    };
+        //},
+        show: false
+    });
+
+    operate.editItem = function (item) {
+        uiVM = _.clone(item);
+        operate.editModal.$promise.then(operate.editModal.show);
+    };
 
 });
 
