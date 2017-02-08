@@ -45,9 +45,11 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
     };
 
     ///获取档案数据
-    hrArchive.getWorkerArchives = function (searchMode) {
+    hrArchive.getWorkerArchives = function (startRegistedDate, endRegistedDate, searchMode) {
         var url = archiveUrlPrefix + 'GetWorkerArchives';
         return ajaxService.getData(url, {
+            startRegistedDate: startRegistedDate,
+            endRegistedDate: endRegistedDate,
             searchMode: searchMode,
         });
     };
@@ -337,19 +339,24 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
             archiveInput.navigateTo(5);
         },
         datasets: [],
-        datasource:[],
+        datasource: [],
         //获取档案数据
         getWorkerArchiveDatas: function (searchMode)
         {
             archiveInput.datasets = [];
             archiveInput.datasource = [];
-            $scope.searchPromise = hrArchivesDataOpService.getWorkerArchives(searchMode).then(function (datas) {
+            $scope.searchPromise = hrArchivesDataOpService.getWorkerArchives(archiveInput.startRegistedDate, archiveInput.endRegistedDate, searchMode).then(function (datas) {
                 archiveInput.datasource = datas;
             });
         },
         exportToExcel: function () {
             return "HrArchivesManage/BuildWorkerArchivesList/";
-        }
+        },
+        //查询报到日期
+        startRegistedDate: new Date(),
+        //查询报到截止日期
+        endRegistedDate:new Date(),
+
     }
     $scope.configPromise = hrArchivesDataOpService.getArchiveConfigDatas().then(function (datas) {
         

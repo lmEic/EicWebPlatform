@@ -44,13 +44,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance.Tests
             //{ Assert.Fail(); }
         }
 
-      [TestMethod()]
-      public void tuTest()
-      {
-          handler.tu();
-          Assert.Fail();
-      }
-            
+      
            
     }
 }
