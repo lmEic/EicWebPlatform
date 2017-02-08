@@ -1,6 +1,7 @@
 ﻿/// <reference path="../../common/eloam.js" />
 /// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
+
 angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', "pageslide-directive"])
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
@@ -188,6 +189,21 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             assetNumber: assetNumber
         });
     };
+
+    //013935根据财产编号查询设备
+    ast.getEquipmentRepairAssetNumberDatas = function (assetNumber) {
+        var url = astUrlPrefix + 'GetEquipmentRepairAssetNumberDatas';
+        return ajaxService.getData(url, {
+            assetNumber:assstNumber
+        })
+    }
+    //013935根据表单编号查询设备
+    ast.getEquipmentRepairFormIdDatas = function (FormId) {
+        var url = astUrlPrefix + 'getEquipmentRepairFormIdDatas';
+        return ajaxService.getData(url, {
+            FormId: FormId
+        })
+    }
 
     return ast;
 })
@@ -435,6 +451,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 })
 ///设备档案登记
 .controller('astArchiveInputCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
+    
     ///设备档案模型
     var uiVM = {
         AssetNumber: null,
@@ -1004,6 +1021,9 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
 ///录入设备维修单
 .controller('astInputRepairedRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
+    $scope.test = function () {
+        console.log(1);
+    };
     ///设备档案模型
     var uiVM = {
         FormId: null,
@@ -1037,6 +1057,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
         searchedWorkers: [],
         isSingle: true,//是否搜寻到的是单个人
+
+        checkTypes: [{ id: 0, text: '已修复' }, { id: 1, text: '未修复' }],
 
         getWorkerInfo: function () {
             if (uiVM.RepairedUser === undefined) return;
@@ -1079,15 +1101,21 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             }
         },
 
-        //013935查询设备维修
-        getAstRepairDatas: function () {
-            alert(1);
+        //013935财产编号查询
+        getEquipmentRepairAssetNumberDatas: function () {
             vmManager.editDatas = [];
-            console.log(1);
-            $scope.searchPromise = astDataopService.getEquipmentArchivesBy(vmManager.inputDate, vmManager.assetNum).then(function (datas) {
+            $scope.searchPromise = astDataopService.getEquipmentRepairAssetNumberDatas(vmManager.assetNumber).then(function (datas) {
                 vmManager.editDatas = datas;
             });
-        }
+        },
+        //013935表单编号查询
+        getEquipmentRepairFromIdDatas: function () {
+            vmManager.editDatas = [];
+            $scope.searchPromise = astDataopService.getEquipmentRepairFromIdDatas(vmManager.formId).then(function (datas) {
+                vmManager.editDatas = datas;
+            });
+        },
+
     };
 
     $scope.vmManager = vmManager;
@@ -1129,14 +1157,22 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         //        });
         //    };
         //},
+        controller: function ($scope) {
+            $scope.vmManager = vmManager;
+            $scope.save = function (isVaild) {
+                
+            }
+        },
         show: false
     });
+    operate.refresh = function () {
 
+    }
     operate.editItem = function (item) {
         uiVM = _.clone(item);
         operate.editModal.$promise.then(operate.editModal.show);
     };
-
+    
 });
 
 

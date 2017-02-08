@@ -186,18 +186,18 @@
                         <form class="form-inline" novalidate>
                             <div class="form-group">
                                 <label for="assetNum">财产编号</label>
-                                <input name="assetNum" type="text" class="form-control" ng-model="vmManager.assetNum" required />
+                                <input name="assetNum" type="text" class="form-control" ng-model="vmManager.assetNumber" required />
                             </div>
-                            <span class="btn btn-primary" ng-click="vmManager.getAstRepairDatas()"><i class="fa fa-search"></i>查询</span>
+                            <span class="btn btn-primary" ng-click="vmManager.getEquipmentRepairAssetNumberDatas()"><i class="fa fa-search"></i>查询</span>
                         </form>
                     </div>
                     <div class="col-md-6">
                         <form class="form-inline" novalidate>
                             <div class="form-group">
-                                <label for="assetNum">表单编号</label>
-                                <input name="assetNum" type="text" class="form-control" ng-model="vmManager.assetNum" required />
+                                <label for="formId">表单编号</label>
+                                <input name="formId" type="text" class="form-control" ng-model="vmManager.formId" required />
                             </div>
-                            <span class="btn btn-primary" ng-click="vmManager.getAstRepairDatas()"><i class="fa fa-search"></i>查询</span>
+                            <span class="btn btn-primary" ng-click="vmManager.getEquipmentRepairFormIdDatas()"><i class="fa fa-search"></i>查询</span>
                         </form>
                     </div>
                 </div>
@@ -218,23 +218,8 @@
                                 <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>
-                                    <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
-                                        修改
-                                    </button>
-                                </td>
-                            </tr>
-                            @*<tr ng-repeat="item in vmManager.editDatas track by $index">
+                        <tbody>                            
+                            <tr ng-repeat="item in vmManager.editDatas track by $index">
                                 <td>{{item.FormId}}</td>
                                 <td>{{item.AssetNumber}}</td>
                                 <td>{{item.FilingDate}}</td>
@@ -248,7 +233,7 @@
                                         修改
                                     </button>
                                 </td>
-                            </tr>*@
+                            </tr>
                         </tbody>
                     </table>
                 </div>
