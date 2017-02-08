@@ -30,7 +30,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+        
         #region Ast EquipmentInfo View
         /// <summary>
         /// 生成校验清单
@@ -299,7 +299,10 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+        public ActionResult EditEquipmentRepairTpl()
+        {
+            return View();
+        }
 
         /// <summary>
         /// 保存维修数据

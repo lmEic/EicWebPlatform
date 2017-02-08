@@ -13,15 +13,14 @@
     <link href="@Url.Content("~/Content/bootwatch/cerulean.bootstrap.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/font-awesome/css/font-awesome.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/main.css")" type="text/css" rel="stylesheet" />
-
     <link href="@Url.Content("~/Content/login/login.css")" type="text/css" rel="stylesheet" />
 </head>
 <body>
    
-
+       
     <div class="container" ng-controller="loginCtrl">
         <style>
-            .login-form:before {
+            .login-form:before {           
                 content: "";
                 position: absolute;
                 top: -50px;
@@ -34,7 +33,7 @@
                 background-size: cover;
                 border-radius: 50px;
             }
-        </style>
+        </style>   
         <div class="row navigationBg">
             <div class="col-md-6">
             </div>
@@ -54,7 +53,7 @@
                                     <small ng-message="required">用户名不能为空</small>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
 
                         <div class="form-group login-inputpassword">
                             <label class="control-label col-sm-3" for="password">用户密码:</label>
