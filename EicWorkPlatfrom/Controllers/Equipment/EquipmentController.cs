@@ -30,7 +30,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+        
         #region Ast EquipmentInfo View
         /// <summary>
         /// 生成校验清单
@@ -299,7 +299,10 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+        public ActionResult EditEquipmentRepairTpl()
+        {
+            return View();
+        }
 
         /// <summary>
         /// 保存维修数据
@@ -336,7 +339,31 @@ namespace EicWorkPlatfrom.Controllers
             var datas = AstService.EquipmentManager.RepairedManager.GetEquipmentRepairedOverView();
             return DateJsonResult(datas);
         }
+        /// <summary>
+        /// 获取设备维修查询记录
+        /// </summary>
+        /// <param name="assetNumber"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetEquipmentRepairAssetNumberDatas(string assetNumber)
+        {
 
+            var datas = AstService.EquipmentManager.RepairedManager.GetEquipmentRepairedRecordBy(assetNumber);
+            return DateJsonResult(datas);
+
+        }
+        /// <summary>
+        ///  获取设备维修表单
+        /// </summary>
+        /// <param name="formId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetEquipmentRepairFormIdDatas(string formId)
+        {
+
+            var datas = AstService.EquipmentManager.RepairedManager.GetEquipmentRepairedRecordFormBy(formId);
+            return DateJsonResult(datas);
+        }
         #endregion
 
 

@@ -1,0 +1,101 @@
+﻿
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4>
+                    <i class="fa fa-bell-o"></i>
+                    {{title}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel">
+                    <form role="form" name="formEquipmentRepair" novalidate class="form-horizontal">
+                        <fieldset>
+                            <legend>基本信息</legend>
+                            <div class="form-group">
+                                <label for="assetNumber" class="col-md-2 control-label">财产编号</label>
+                                <div class="col-md-4">
+                                    <input name="assetNumber" class="form-control" ng-model="vm.AssetNumber" readonly required />
+                                    <div class="error-messages" ng-messages="formEquipmentRepair.assetNumber.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">财产编号不能为空</small>
+                                    </div>
+                                </div>
+
+                                <label for="formId" class="col-md-2 control-label">表单编号</label>
+                                <div class="col-md-4">
+                                    <input name="formId" class="form-control" ng-model="vm.FormId" readonly required />
+                                    <div class="error-messages" ng-messages="formEquipmentRepair.formId.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">表单编号不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="filingDate" class="col-md-2 control-label">报修日期</label>
+                                <div class="col-md-4">
+                                    <input name="filingDate" type="date" class="form-control" ng-model="vm.FilingDate" format-date required />
+                                    <div class="error-messages" ng-messages="formEquipmentRepair.filingDate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">报修日期不能为空</small>
+                                    </div>
+                                </div>
+
+                                <label for="finishDate" class="col-md-2 control-label">完成日期</label>
+                                <div class="col-md-4">
+                                    <input name="finishDate" type="date" class="form-control" ng-model="vm.FinishDate" format-date required />
+                                    <div class="error-messages" ng-messages="formEquipmentRepair.finishDate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">完成日期不能为空</small>
+                                    </div>
+                                </div>
+                            </div>      
+
+                            <div class="form-group">
+                                <label for="safekeepUser" class="col-md-2 control-label">维修人</label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input name="safekeepUser" class="form-control" data-ensure-user-exist
+                                               ng-change="vmManager.getWorkerInfo()"
+                                               placeholder="输入工号或姓名" ng-model="vm.SafekeepUser" required />
+                                        <div class="error-messages" ng-messages="formEquipmentRepair.safekeepUser.$error" ng-if="formEquipmentRepair.safekeepUser.$touched">
+                                            <small ng-message="checkingUserExist">该用户名不存在...</small>
+                                        </div>
+                                        <div class="error-messages" ng-messages="formEquipmentRepair.safekeepUser.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">维修人不能为空</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <label  class="col-md-2 control-label">维修结果</label>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-default" ng-model="vm.RepairedResult" data-html="1" data-multiple="0"
+                                            data-animation="am-flip-x" data-placeholder="已修复"
+                                            bs-options="item.text as item.text for item in vmManager.checkTypes" bs-select>
+                                        <span class="caret"></span>
+                                    </button >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="faultDescription" class="col-md-2 control-label">故障描述</label>
+                                <div class="col-md-12">
+                                    <textarea name="faultDescription" rows="3" class="form-control" ng-model="vm.FaultDescription" />
+                                </div>
+
+                                <label for="solution" class="col-md-2 control-label">解决办法</label>
+                                <div class="col-md-12">
+                                    <textarea name="solution" rows="3" class="form-control" ng-model="vm.Solution" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
+                <button type="button" class="btn btn-primary" ng-click="save(formEquipmentRepair.$valid)"><i class="fa fa-save"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>

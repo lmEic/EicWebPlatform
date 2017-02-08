@@ -38,6 +38,16 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return CrudFactory.EquipmentRepairedRecordCrud.GetEquipmentRepairedRecordBy(assetNumber);
         }
+
+        /// <summary>
+        /// 获取设备维修记录
+        /// </summary>
+        /// <param name="assetNumber">财产编号</param>
+        /// <returns></returns>
+        public List<EquipmentRepairedRecordModel> GetEquipmentRepairedRecordFormBy(string FormId)
+        {
+            return CrudFactory.EquipmentRepairedRecordCrud.GetEquipmentRepairedRecordFormIdBy(FormId);
+        }
         /// <summary>
         /// 获取设备维修总览表
         /// </summary>
