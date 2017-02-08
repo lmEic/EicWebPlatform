@@ -697,7 +697,12 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             return data;
 
         }
+        public List<EquipmentRepairedRecordModel> GetEquipmentRepairedRecordFormIdBy(string formdId)
+        {
+            var data = irep.Entities.Where(m => m.FormId == formdId).ToList();
+            return data;
 
+        }
         /// <summary>
         /// 获取设备维修总览表
         /// </summary>
