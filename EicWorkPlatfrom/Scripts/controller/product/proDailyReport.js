@@ -1293,7 +1293,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             alert("请选择日期")
         } else {
             $scope.promise = dReportDataOpService.getWorkerAttendanceData($scope.vmManager.department, $scope.vmManager.attendenceStation, $scope.vmManager.InputDate).then(function (datas) {
-                if (datas == null) {
+                if (!datas) {
                     $scope.workerAttendanceVM = initworkerAttendanceVM;
                 } else {
                     $scope.workerAttendanceVM = datas;
