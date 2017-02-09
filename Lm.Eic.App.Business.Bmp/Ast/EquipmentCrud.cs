@@ -688,7 +688,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
 
         /// <summary>
-        /// 添加一条设备维修申请记录
+        /// 修改一条设备维修申请记录
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
