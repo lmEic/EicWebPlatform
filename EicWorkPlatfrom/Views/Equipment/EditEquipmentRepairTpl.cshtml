@@ -11,7 +11,7 @@
             </div>
             <div class="modal-body">
                 <div class="panel">
-                    <form role="form" name="formEquipmentRepair" novalidate class="form-horizontal">
+                    <form role="form" name="formEquipment" novalidate class="form-horizontal">
                         <fieldset>
                             <legend>基本信息</legend>
                             <div class="form-group">
@@ -56,7 +56,7 @@
                                     <div class="input-group">
                                         <input name="safekeepUser" class="form-control" data-ensure-user-exist
                                                ng-change="vmManager.getWorkerInfo()"
-                                               placeholder="输入工号或姓名" ng-model="vm.SafekeepUser" required />
+                                               placeholder="输入工号或姓名" ng-model="vm.RepairedUser" required />
                                         <div class="error-messages" ng-messages="formEquipmentRepair.safekeepUser.$error" ng-if="formEquipmentRepair.safekeepUser.$touched">
                                             <small ng-message="checkingUserExist">该用户名不存在...</small>
                                         </div>
@@ -94,7 +94,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
-                <button type="button" class="btn btn-primary" ng-click="save(formEquipmentRepair.$valid)"><i class="fa fa-save"></i>确定</button>
+                <button type="button" class="btn btn-primary" ng-click="save(formEquipment.$valid)"><i class="fa fa-save"></i>确定</button>
             </div>
         </div>
     </div>
