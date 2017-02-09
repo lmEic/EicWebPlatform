@@ -54,7 +54,7 @@
                                 <label for="safekeepUser" class="col-md-2 control-label">维修人</label>
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <input name="safekeepUser" class="form-control" data-ensure-user-exist
+                                        <input name="RepairedUser" class="form-control" data-ensure-user-exist
                                                ng-change="vmManager.getWorkerInfo()"
                                                placeholder="输入工号或姓名" ng-model="vm.RepairedUser" required />
                                         <div class="error-messages" ng-messages="formEquipmentRepair.safekeepUser.$error" ng-if="formEquipmentRepair.safekeepUser.$touched">
@@ -68,11 +68,7 @@
 
                                 <label  class="col-md-2 control-label">维修结果</label>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-default" ng-model="vm.RepairedResult" data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="已修复"
-                                            bs-options="item.text as item.text for item in vmManager.checkTypes" bs-select>
-                                        <span class="caret"></span>
-                                    </button >
+                                    <input name="RepairedResult" class="form-control" ng-model="vm.RepairedResult"/>
                                 </div>
                             </div>
 
