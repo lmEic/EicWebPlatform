@@ -149,25 +149,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         #endregion constructure
 
         #region method
-
-        public void tu()
-        {
-            string myday = "2017-01-10 ";
-            var datas = this.irep.loaddatas(myday);
-            
-            if (datas != null && datas.Count > 0)
-            {
-                datas.ForEach(m => {
-                    string s1 =m.SlotCardTime1==null?"": myday + m.SlotCardTime1.Substring(11, 8);
-                    string s2 = m.SlotCardTime2 == null ? "" : myday + m.SlotCardTime2.Substring(11, 8);
-                    var sfs = m.SlotCardTime.Split(',').ToList();
-                    sfs.Sort();
-                    string sd = sfs[0] + "," + sfs[sfs.Count - 1];
-                    this.irep.Update(e => e.Id_Key == m.Id_Key, u => new AttendSlodFingerDataCurrentMonthModel { SlotCardTime1 = s1, SlotCardTime2 = s2, SlotCardTime = sd });
-                });
-            }
-        }
-
         #region handle attend method
         /// <summary>
         /// searchMode:
@@ -252,7 +233,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                             else
                             {
                                 //反之则合并数据
-                                record += MergeAttendTime(currentAttendData,attendance.SlodCardTime);
+                                record += MergeAttendTime(currentAttendData, attendance.SlodCardTime);
                             }
                         }
                         if (record == len)//如果处理记录与目标数量一致则进行备份数据
@@ -352,11 +333,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             if (ctimes.Count >= 2)
             {
                 ctimes.Sort();
+                string cardTimeStr = currentAttendData.AttendanceDate.ToDateStr() + " " + ctimes[ctimes.Count - 1];
                 return irep.Update(f => f.Id_Key == currentAttendData.Id_Key, u => new AttendSlodFingerDataCurrentMonthModel
                 {
-                    //重新调整刷卡时间1，刷卡时间2
-                    SlotCardTime1 = ctimes[0],
-                    SlotCardTime2 = ctimes[ctimes.Count - 1],
+                    //重新调整刷卡时间2
+                    //SlotCardTime1 = ctimes[0],
+                    SlotCardTime2 = cardTimeStr,
                     SlotCardTime = currentAttendData.SlotCardTime == null || currentAttendData.SlotCardTime.Length == 0 ? slodCardTime.ToString("HH:mm") : cardtime,
 
                 });
@@ -880,6 +862,24 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         }
 
         #endregion method
+
+        public void tu()
+        {
+            var datas = this.irep.loaddatas();
+            datas.ForEach(d => {
+                if (!this.irep.IsExist(e => e.WorkerId == d.WorkerId && e.SlodCardDate == d.SlodCardDate && e.SlodCardTime == d.SlodCardTime))
+                {
+                    if (this.irep.Insert(d) == 1)
+                    {
+                        this.irep.deleteLibData(d.SlodCardTime, d.WorkerId);
+                    }
+                }
+                else
+                {
+                    this.irep.deleteLibData(d.SlodCardTime, d.WorkerId);
+                }
+            });
+        }
     }
 
     public class AttendAskLeaveManager

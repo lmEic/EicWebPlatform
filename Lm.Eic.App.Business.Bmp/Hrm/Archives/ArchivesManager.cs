@@ -439,7 +439,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             string sqlWhere = "";
             if (searchMode == 0)
             {
-                sqlWhere = "WorkingStatus='在职'";
+                //sqlWhere = "WorkingStatus='在职'";
             }
             else if (searchMode == 1)
             {
@@ -495,7 +495,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     case 5://职工属性
                         WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkerIdType.StartsWith(qryDto.WorkerIdType)).ToList();
                         return WorkerArchivesInfoList;
-
                     case 0: //在职全部人员
                         WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith("在职")).ToList();
                         return WorkerArchivesInfoList;
@@ -510,26 +509,47 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         }
 
-        public MemoryStream BuildWorkerArchivesInfoList()
+        public MemoryStream BuildWorkerArchivesInfoList(List<ArchivesEmployeeIdentityModel> exportDatas)
         {
-            //IdentityID, WorkerId, WorkerIdNumType, WorkerIdType, Name, CardID, Organizetion, Department, 
-            // DepartmentChangeRecord, Post, PostNature, PostType, PostChangeRecord, Sex, Birthday, Address, Nation, 
-            // SignGovernment, LimitedDate, NewAddress, PoliticalStatus, NativePlace, RegisteredPermanent, MarryStatus
-            //BirthMonth, IdentityExpirationDate, PersonalPicture, SchoolName, MajorName, Education, FamilyPhone, TelPhone
-            //CertificateName, WorkingStatus, RegistedDate,
+            List<FileFieldMapping> fieldmappping = CreateFieldMapping();
+            var dataTableGrouping = exportDatas.GetGroupList<ArchivesEmployeeIdentityModel>("");
+            return dataTableGrouping.ExportToExcelMultiSheets<ArchivesEmployeeIdentityModel>(fieldmappping);
+        }
+        private List<FileFieldMapping> CreateFieldMapping()
+        {
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
-                 new FileFieldMapping ("Number","项次") ,
+                  new FileFieldMapping ("Number","项次") ,
                   new FileFieldMapping ("IdentityID","身份证号码")  ,
                   new FileFieldMapping ("WorkerId","作业工号") ,
                   new FileFieldMapping ("WorkerIdType","工号类型") ,
                   new FileFieldMapping ("Name","姓名")  ,
                   new FileFieldMapping ("Department","部门"),
                   new FileFieldMapping ("Post","岗位"),
-                  new FileFieldMapping ("PostType","岗位性质")
+                  new FileFieldMapping ("PostType","岗位性质"),
+                  new FileFieldMapping ("IdentityID","岗位类别")  ,
+                  new FileFieldMapping ("Sex","性别") ,
+                  new FileFieldMapping ("Birthday","出生日期") ,
+                  new FileFieldMapping ("Address","家庭住址")  ,
+                  new FileFieldMapping ("Nation","民族"),
+                  new FileFieldMapping ("SignGovernment","签证机构"),
+                  new FileFieldMapping ("LimitedDate","有效日期"),
+                  new FileFieldMapping ("NewAddress","新址")  ,
+                  new FileFieldMapping ("PoliticalStatus","政治面貌") ,
+                  new FileFieldMapping ("NativePlace","居住地") ,
+                  new FileFieldMapping ("RegisteredPermanent","籍贯")  ,
+                  new FileFieldMapping ("MarryStatus","婚否"),
+                  new FileFieldMapping ("BirthMonth","出生年月"),
+                  new FileFieldMapping ("IdentityExpirationDate","身份证过期日期"),
+                  new FileFieldMapping ("SchoolName","学校名称")  ,
+                  new FileFieldMapping ("MajorName","专业名称") ,
+                  new FileFieldMapping ("Education","学历") ,
+                  new FileFieldMapping ("FamilyPhone","家庭电话")  ,
+                  new FileFieldMapping ("TelPhone","手机号码"),
+                  new FileFieldMapping ("WorkingStatus","在职状态"),
+                  new FileFieldMapping ("RegistedDate","报道日期"),
+                  new FileFieldMapping ("ClassType","班别")
                 };
-
-            var dataTableGrouping = WorkerArchivesInfoList.GetGroupList<ArchivesEmployeeIdentityModel>("SafekeepDepartment");
-            return dataTableGrouping.ExportToExcelMultiSheets<ArchivesEmployeeIdentityModel>(fieldmappping);
+            return fieldmappping;
         }
         #endregion find data method
     }

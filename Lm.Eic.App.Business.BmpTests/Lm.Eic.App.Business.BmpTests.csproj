@@ -76,6 +76,7 @@
     <Compile Include="Ast\EquipmentManagerTests.cs" />
     <Compile Include="Erp\ProductTypeMonitorTest.cs" />
     <Compile Include="Hrm\Archives\ArchivesManagerTests.cs" />
+    <Compile Include="Hrm\Attendance\AttendFingerPrintDataInTimeHandlerTests.cs" />
     <Compile Include="Hrm\Attendance\AttendSlodFingerDataCurrentMonthHandlerTests.cs" />
     <Compile Include="Hrm\GeneralAffairs\UnitTest1.cs" />
     <Compile Include="Pms\AttendanceMachineTest\UnitTest1.cs" />

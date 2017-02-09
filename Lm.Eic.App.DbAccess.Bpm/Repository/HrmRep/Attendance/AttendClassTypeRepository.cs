@@ -27,6 +27,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
 
         int StoreNoIdentityWorkerInfo(AttendFingerPrintDataInTimeModel entity);
 
+      
+        List<AttendFingerPrintDataInTimeModel> loaddatas();
+
+        int deleteLibData(DateTime t, string workerId);
     }
 
     /// <summary>
@@ -47,6 +51,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
             return DbHelper.Hrm.ExecuteNonQuery(sb.ToString());
         }
 
+        public List<AttendFingerPrintDataInTimeModel> loaddatas()
+        {
+            List<AttendFingerPrintDataInTimeModel> datas = DbHelper.Hrm.LoadEntities<AttendFingerPrintDataInTimeModel>("SELECT   WorkerId, WorkerName, CardID, CardType, SlodCardTime, SlodCardDate  FROM Attendance_FingerPrintDataInTimeLib");
+            return datas;
+        }
         /// <summary>
         /// 存储没有档案信息人员数据
         /// </summary>
@@ -59,6 +68,12 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
             sb.AppendFormat(" values ('{0}',", entity.WorkerId);
             sb.AppendFormat("'{0}')", entity.WorkerName);
             return DbHelper.Hrm.ExecuteNonQuery(sb.ToString());
+        }
+
+
+        public int deleteLibData(DateTime t, string workerId)
+        {
+            return DbHelper.Hrm.ExecuteNonQuery(string.Format("delete from Attendance_FingerPrintDataInTimeLib where WorkerId='{0}' AND SlodCardTime='{1}'", workerId, t));
         }
     }
 
@@ -78,7 +93,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
         /// <returns></returns>
         List<AttendanceDataModel> LoadAttendanceDatasBy(AttendanceDataQueryDto qryDto);
 
-        List<AttendSlodFingerDataCurrentMonthModel> loaddatas(string d);
+        
     }
 
     /// <summary>
@@ -87,12 +102,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
     public class AttendSlodFingerDataCurrentMonthRepository : HrmRepositoryBase<AttendSlodFingerDataCurrentMonthModel>, IAttendSlodFingerDataCurrentMonthRepository
     {
         private const string loadAttendDataSql = "SELECT WorkerId, WorkerName, Department, ClassType, AttendanceDate, CardID, CardType,WeekDay,SlotCardTime1,SlotCardTime2,SlotCardTime from Attendance_SlodFingerDataCurrentMonth";
-       
-        public List<AttendSlodFingerDataCurrentMonthModel> loaddatas(string d)
-        {
-            string sqlText = string.Format("SELECT  *  FROM  Attendance_SlodFingerDataCurrentMonth  WHERE   (AttendanceDate = '{0}') AND (SlotCardTime2 LIKE '2017-01-11%')",d);
-            return DbHelper.Hrm.LoadEntities<AttendSlodFingerDataCurrentMonthModel>(sqlText);
-        }
         public List<AttendanceDataModel> LoadAttendanceDatasBy(AttendanceDataQueryDto qryDto)
         {
             StringBuilder sqlText = new StringBuilder();
