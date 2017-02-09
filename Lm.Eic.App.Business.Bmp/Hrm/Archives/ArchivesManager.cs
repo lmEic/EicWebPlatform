@@ -530,7 +530,34 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                   new FileFieldMapping ("Name","姓名")  ,
                   new FileFieldMapping ("Department","部门"),
                   new FileFieldMapping ("Post","岗位"),
-                  new FileFieldMapping ("PostType","岗位性质")
+                  new FileFieldMapping ("PostType","岗位性质"),
+
+                  new FileFieldMapping ("IdentityID","岗位类别")  ,
+                  new FileFieldMapping ("Sex","性别") ,
+                  new FileFieldMapping ("Birthday","出生日期") ,
+                  new FileFieldMapping ("Address","家庭住址")  ,
+                  new FileFieldMapping ("Nation","民族"),
+                  new FileFieldMapping ("SignGovernment","签证机构"),
+                  new FileFieldMapping ("LimitedDate","有效日期"),
+
+                  new FileFieldMapping ("NewAddress","新址")  ,
+                  new FileFieldMapping ("PoliticalStatus","政治面貌") ,
+                  new FileFieldMapping ("NativePlace","居住地") ,
+                  new FileFieldMapping ("RegisteredPermanent","籍贯")  ,
+                  new FileFieldMapping ("MarryStatus","婚否"),
+                  new FileFieldMapping ("BirthMonth","出生年月"),
+                  new FileFieldMapping ("IdentityExpirationDate","身份证过期日期"),
+
+                  new FileFieldMapping ("SchoolName","学校名称")  ,
+                  new FileFieldMapping ("MajorName","专业名称") ,
+                  new FileFieldMapping ("Education","学历") ,
+                  new FileFieldMapping ("FamilyPhone","家庭电话")  ,
+                  new FileFieldMapping ("TelPhone","手机号码"),
+                  new FileFieldMapping ("WorkingStatus","在职状态"),
+
+                  new FileFieldMapping ("RegistedDate","报道日期"),
+                  new FileFieldMapping ("ClassType","班别")
+
                 };
             return fieldmappping;
         }
