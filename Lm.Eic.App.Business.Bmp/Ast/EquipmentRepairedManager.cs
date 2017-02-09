@@ -25,7 +25,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public OpResult AddEquipmentRepairedRecord(EquipmentRepairedRecordModel model)
         {
-            model.OpSign = OpMode.Add;
+           
             return CrudFactory.EquipmentRepairedRecordCrud.Store(model);
         }
 

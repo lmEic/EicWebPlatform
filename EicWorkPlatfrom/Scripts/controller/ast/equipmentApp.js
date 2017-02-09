@@ -204,7 +204,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             formId: formId
         })
     }
-
+    
     return ast;
 })
 .controller('moduleNavCtrl', function ($scope, navDataService, $state) {
@@ -1021,9 +1021,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
 ///录入设备维修单
 .controller('astInputRepairedRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
-    $scope.test = function () {
-        console.log(1);
-    };
+    
+    
     ///设备档案模型
     var uiVM = {
         FormId: null,
@@ -1048,7 +1047,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     //视图管理器
     var vmManager = {
-
+        activeTab: 'initTab',
         init: function () {
             uiVM.OpSign = 'add';
             leeHelper.clearVM(uiVM);
@@ -1110,13 +1109,9 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         },
         //013935表单编号查询
         getEquipmentRepairItemData: function () {
-            console.log(1);
             vmManager.editDatas = [];
             $scope.searchPromise = astDataopService.getEquipmentRepairFormIdDatas(vmManager.formId).then(function (datas) {
                 vmManager.editDatas = datas;
-                console.log(2);
-
-
             });
         },
 
@@ -1140,43 +1135,49 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     operate.editModal = $modal({
         title: "操作窗口",
         templateUrl: leeHelper.controllers.equipment + '/EditEquipmentRepairTpl/',
-        //controller: function ($scope) {
-        //    $scope.vm = uiVM;
-        //    $scope.vmManager = vmManager;
-        //    $scope.ztree = departmentTreeSet;
-        //    var op = Object.create(leeDataHandler.operateStatus);
-        //    $scope.operate = op;
-
-        //    $scope.save = function (isValid) {
-        //        uiVM.OpSign = 'edit';
-        //        leeDataHandler.dataOperate.add(op, isValid, function () {
-        //            astDataopService.saveEquipmentRecord($scope.vm).then(function (opresult) {
-        //                var item = _.find(vmManager.editDatas, { Id_Key: uiVM.Id_Key });
-        //                if (angular.isDefined(item)) {
-        //                    leeHelper.copyVm(uiVM, item);
-        //                    vmManager.init();
-        //                    operate.editModal.$promise.then(operate.editModal.hide);
-        //                }
-        //            });
-        //        });
-        //    };
-        //},
         controller: function ($scope) {
+            $scope.vm = uiVM;
             $scope.vmManager = vmManager;
-            $scope.save = function (isVaild) {
-                
+            $scope.ztree = departmentTreeSet;
+            var op = Object.create(leeDataHandler.operateStatus);
+            $scope.operate = op;
+
+            $scope.editSave = function (value) {
+                uiVM.OpSign = 'edit';
+                leeDataHandler.dataOperate.add(op, value, function () {
+                    astDataopService.storeAstRepairedData($scope.vm).then(function (opresult) {
+                        var item = _.find(vmManager.editDatas, { Id_Key: uiVM.Id_Key });
+                        if (angular.isDefined(item)) {
+                            leeHelper.copyVm(uiVM, item);
+                            vmManager.init();
+                            operate.editModal.$promise.then(operate.editModal.hide);
+                        }
+                    });
+                })
             }
         },
         show: false
     });
     operate.refresh = function () {
-
-    }
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.init();
+        });
+    };
     operate.editItem = function (item) {
         uiVM = _.clone(item);
         operate.editModal.$promise.then(operate.editModal.show);
     };
-    
+    var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
+    departmentTreeSet.bindNodeToVm = function () {
+        var dto = _.clone(departmentTreeSet.treeNode.vm);
+        uiVM.SafekeepDepartment = dto.DataNodeText;
+    };
+    $scope.ztree = departmentTreeSet;
+
+    $scope.promise = astDataopService.getAstInputConfigDatas().then(function (data) {
+        vmManager.departments = data.departments;
+        departmentTreeSet.setTreeDataset(vmManager.departments);
+    });
 });
 
 
