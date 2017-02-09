@@ -674,6 +674,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddEquipmentRepairedRecord);
+            this.AddOpItem(OpMode.Edit, EditEquipmentRepairedRecord);
         }
 
         /// <summary>
@@ -686,6 +687,15 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
+        /// <summary>
+        /// 添加一条设备维修申请记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult EditEquipmentRepairedRecord(EquipmentRepairedRecordModel model)
+        {
+            return irep.Update(u=>u.Id_Key==model.Id_Key,model).ToOpResult_Add(OpContext);
+        }
         /// <summary>
         /// 获取设备维修记录
         /// </summary>

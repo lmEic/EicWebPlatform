@@ -204,14 +204,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             formId: formId
         })
     }
-    //013935保存设备维修编辑
-    ast.saveEquipmentRepair = function (equipment) {
-        var url = astUrlPrefix + "SaveEquipmentRepair";
-        return ajaxService.postData(url, {
-            equipment:equipment 
-        })
-
-    }
+    
     return ast;
 })
 .controller('moduleNavCtrl', function ($scope, navDataService, $state) {
@@ -1116,13 +1109,9 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         },
         //013935表单编号查询
         getEquipmentRepairItemData: function () {
-            console.log(1);
             vmManager.editDatas = [];
             $scope.searchPromise = astDataopService.getEquipmentRepairFormIdDatas(vmManager.formId).then(function (datas) {
                 vmManager.editDatas = datas;
-                console.log(2);
-
-
             });
         },
 
@@ -1153,10 +1142,10 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             var op = Object.create(leeDataHandler.operateStatus);
             $scope.operate = op;
 
-            $scope.save = function (value) {
+            $scope.editSave = function (value) {
                 uiVM.OpSign = 'edit';
                 leeDataHandler.dataOperate.add(op, value, function () {
-                    astDataopService.saveEquipmentRepair($scope.vm).then(function (opresult) {
+                    astDataopService.storeAstRepairedData($scope.vm).then(function (opresult) {
                         var item = _.find(vmManager.editDatas, { Id_Key: uiVM.Id_Key });
                         if (angular.isDefined(item)) {
                             leeHelper.copyVm(uiVM, item);
