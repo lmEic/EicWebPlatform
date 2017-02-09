@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="AttendanceBusiness.cs" />
     <Compile Include="AttendanceMachineDll.cs" />
+    <Compile Include="AttendanceUpdateServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

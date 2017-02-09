@@ -124,7 +124,7 @@ namespace Lm.Eic.App.Business.Attendance
 			}
 			catch (Exception ex)
 			{
-                return false;
+                //return false;
                 throw new Exception(ex.InnerException.Message);
               
 			}
