@@ -8,6 +8,9 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>光圣科技企业信息化平台</title>
+    <style>
+      
+    </style>
     <link rel="shortcut icon" href="@Url.Content("~/Content/login/lmlogo.png")" />
     <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/bootwatch/cerulean.bootstrap.min.css")" type="text/css" rel="stylesheet" />
@@ -65,6 +68,7 @@
     </header>
 
     <main class="container-fluid" ng-controller="layoutCtrl">
+               
         <div class="row" ng-cloak>
             <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-show="navLayout.navViewSwitch">
                 <div class="bs-callout bs-callout-info">
@@ -76,7 +80,37 @@
                             <span class="badge" ng-click="navLayout.switchView()" title="点击折叠导航面板" style="cursor:pointer"><i class="fa fa-hand-o-left"></i></span>
                         </span>
                     </h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-bordered" style="table-layout:fixed;" >
+                                <caption class="text-center" style="background:pink;" >二月行事历</caption>
+                                <thead>
+                                    <tr class="info">
+                                        <th>周</th>
+                                        <th>Su</th>
+                                        <th>Mo</th>
+                                        <th>Tu</th>
+                                        <th>We</th>
+                                        <th>Th</th>
+                                        <th>Fi</th>
+                                        <th>Sa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="week in weeks">
+                                        <td>{{week}}</td>
+                                        <td ng-repeat="dates in calendarDatas" ng-show="dates.week=={{week}}" >
+                                            {{dates.dates}}
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                  
+                    </div>
                 </div>
+                
                 @*<div class="panel panel-default">
                     <div class="panel-body">
                        
