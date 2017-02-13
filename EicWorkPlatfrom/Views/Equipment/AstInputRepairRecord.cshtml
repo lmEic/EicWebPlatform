@@ -182,23 +182,16 @@
         <div bs-pane data-title="设备维修编辑" data-name="editTab">
             <div class="well">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <form class="form-inline" novalidate>
                             <div class="form-group">
                                 <label for="assetNum">财产编号</label>
                                 <input name="assetNum" type="text" class="form-control" ng-model="vmManager.assetNumber" required />
-                            </div>
-                            <span class="btn btn-primary" ng-click="vmManager.getEquipmentRepairAssetNumberDatas()"><i class="fa fa-search"></i>查询</span>
-                        </form>
-                    </div>
-                    <div class="col-md-6">
-                        <form class="form-inline" novalidate>
-                            <div class="form-group">
-                                <label for="formId">表单编号</label>
+                                <label for="formId">&nbsp;&nbsp;&nbsp;&nbsp;表单编号</label>
                                 <input name="formId" type="text" class="form-control" ng-model="vmManager.formId" required />
+                                <span class="btn btn-primary" ng-click="vmManager.getEquipmentRepairDatas(vmManager.assetNumber,vmManager.formId)"><i class="fa fa-search"></i>查询</span>
                             </div>
-                            <span class="btn btn-primary" ng-click="vmManager.getEquipmentRepairItemData()"><i class="fa fa-search"></i>查询</span>
-                        </form>
+                      </form>
                     </div>
                 </div>
             </div>

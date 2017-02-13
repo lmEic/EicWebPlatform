@@ -346,7 +346,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
                 angular.forEach(vmManager.selectedWorkers, function (item) {
                     leeHelper.copyVm(qryDto, item);
                 });
-                hrDataOpService.saveClassTypeDatas(vmManager.selectedWorkers).then(function (opResult) {
+                $scope.doPromise=hrDataOpService.saveClassTypeDatas(vmManager.selectedWorkers).then(function (opResult) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
                         vmManager.init();
                     })

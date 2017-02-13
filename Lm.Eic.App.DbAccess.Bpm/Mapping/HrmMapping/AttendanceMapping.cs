@@ -16,7 +16,18 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             this.ToTable("Attendance_ClassType");
         }
     }
-
+    /// <summary>
+    ///AttendanceClassTypeDetailModel
+    /// </summary>
+    public class AttendClassTypeDetailModelMapping : EntityTypeConfiguration<AttendClassTypeDetailModel>
+    {
+        public AttendClassTypeDetailModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Attendance_ClassTypeDetail");
+        }
+    }
     /// <summary>
     ///AttendFingerPrintDataInTimeModel
     /// </summary>

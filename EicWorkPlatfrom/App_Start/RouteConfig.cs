@@ -40,7 +40,7 @@ namespace EicWorkPlatfrom
             }
             else
             {
-                //Product
+                //Product 
                 //EicSystemManage
                 //Equipment
                 //HR
@@ -48,7 +48,7 @@ namespace EicWorkPlatfrom
                 routes.MapRoute(
                              name: "Default",
                              url: "{controller}/{action}/{id}",
-                             defaults: new { controller = "Equipment", action = "Index", id = UrlParameter.Optional }
+                             defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
                          );
             } 
         }

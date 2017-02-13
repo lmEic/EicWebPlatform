@@ -191,17 +191,18 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     };
 
     //013935根据财产编号查询设备
-    ast.getEquipmentRepairAssetNumberDatas = function (assetNumber) {
-        var url = astUrlPrefix + 'GetEquipmentRepairAssetNumberDatas';
-        return ajaxService.getData(url, {
-            assetNumber:assetNumber
-        })
-    }
+    //ast.getEquipmentRepairAssetNumberDatas = function (assetNumber，formId) {
+    //    var url = astUrlPrefix + 'GetEquipmentRepairAssetNumberDatas';
+    //    return ajaxService.getData(url, {
+    //        assetNumber:assetNumber
+    //    })
+    //}
     //013935根据表单编号查询设备
-    ast.getEquipmentRepairFormIdDatas = function (formId) {
+    ast.getEquipmentRepairFormIdDatas = function (assetNumber,formId) {
         var url = astUrlPrefix + 'GetEquipmentRepairFormIdDatas';
         return ajaxService.getData(url, {
-            formId: formId
+            formId: formId,
+             assetNumber:assetNumber
         })
     }
     
@@ -1100,17 +1101,10 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             }
         },
 
-        //013935财产编号查询
-        getEquipmentRepairAssetNumberDatas: function () {
+        //013935设备维修编辑查询
+        getEquipmentRepairDatas: function () {
             vmManager.editDatas = [];
-            $scope.searchPromise = astDataopService.getEquipmentRepairAssetNumberDatas(vmManager.assetNumber).then(function (datas) {
-                vmManager.editDatas = datas;
-            });
-        },
-        //013935表单编号查询
-        getEquipmentRepairItemData: function () {
-            vmManager.editDatas = [];
-            $scope.searchPromise = astDataopService.getEquipmentRepairFormIdDatas(vmManager.formId).then(function (datas) {
+            $scope.searchPromise = astDataopService.getEquipmentRepairFormIdDatas(vmManager.assetNumber,vmManager.formId).then(function (datas) {
                 vmManager.editDatas = datas;
             });
         },

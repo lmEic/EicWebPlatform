@@ -1,4 +1,5 @@
-﻿using Lm.Eic.Framework.Authenticate.Model;
+﻿using Lm.Eic.Framework.Authenticate.Business;
+using Lm.Eic.Framework.Authenticate.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -30,7 +31,18 @@ namespace EicWorkPlatfrom.Controllers
             }
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nowYear"></param>
+        /// <param name="nowMonth"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetCalendarDatas(string nowYear,string nowMonth)
+        {
+            var datas = AuthenService.CalendarManager.GetCalendarDatas(nowYear, nowMonth);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         /// <summary>
         /// 获取模块导航列表
         /// </summary>
@@ -41,5 +53,6 @@ namespace EicWorkPlatfrom.Controllers
             var datas = GetMenuNavModules(moduleText, cacheKey);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+        
     }
 }

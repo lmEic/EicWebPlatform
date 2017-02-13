@@ -52,7 +52,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         /// <summary>
         /// 班别设置信息
         /// </summary>
-        public DbSet<AttendClassTypeModel> AttendClassType { get; set; }
+        public DbSet<AttendClassTypeDetailModel> AttendClassType { get; set; }
 
         /// <summary>
         /// 实时刷卡数据
@@ -89,6 +89,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
 
             //考勤模块
             modelBuilder.Configurations.Add(new AttendClassTypeModelMapping());
+            modelBuilder.Configurations.Add(new AttendClassTypeDetailModelMapping());
             modelBuilder.Configurations.Add(new AttendSlodFingerDataCurrentMonthModelMapping());
             modelBuilder.Configurations.Add(new AttendFingerPrintDataInTimeModelMapping());
 

@@ -339,29 +339,17 @@ namespace EicWorkPlatfrom.Controllers
             var datas = AstService.EquipmentManager.RepairedManager.GetEquipmentRepairedOverView();
             return DateJsonResult(datas);
         }
-        /// <summary>
-        /// 获取设备维修查询记录
-        /// </summary>
-        /// <param name="assetNumber"></param>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public ContentResult GetEquipmentRepairAssetNumberDatas(string assetNumber)
-        {
-
-            var datas = AstService.EquipmentManager.RepairedManager.GetEquipmentRepairedRecordBy(assetNumber);
-            return DateJsonResult(datas);
-
-        }
+      
         /// <summary>
         ///  获取设备维修表单
         /// </summary>
         /// <param name="formId"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetEquipmentRepairFormIdDatas(string formId)
+        public ContentResult GetEquipmentRepairFormIdDatas(string assetNumber,string formId)
         {
 
-            var datas = AstService.EquipmentManager.RepairedManager.GetEquipmentRepairedRecordFormBy(formId);
+            var datas = AstService.EquipmentManager.RepairedManager.GetEquipmentRepairedRecordFormBy(assetNumber, formId);
             return DateJsonResult(datas);
         }
         #endregion
