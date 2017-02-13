@@ -131,9 +131,10 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     };
 
     //自动检测考勤异常数据
-    hr.autoCheckExceptionSlotData = function () {
+    hr.autoCheckExceptionSlotData = function (yearMonth) {
         var url = attendUrl + "AutoCheckExceptionSlotData";
         return ajaxService.postData(url, {
+            yearMonth: yearMonth,
         });
     };
 
@@ -747,10 +748,11 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         //异常数据集
         dataItems: [],
         //选定的项
-        selectedItem:null,
+        selectedItem: null,
+        yearMonth:'',
         autoCheckExceptionData: function () {
             vmManager.dataItems = [];
-            $scope.handlePromise = hrDataOpService.autoCheckExceptionSlotData().then(function (datas) {
+            $scope.handlePromise = hrDataOpService.autoCheckExceptionSlotData(vmManager.yearMonth).then(function (datas) {
                 angular.forEach(datas, function (item) {
                     var dataItem = _.clone(uiVM);
                     leeHelper.copyVm(item, dataItem);
