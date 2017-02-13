@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Business\AuditManager.cs" />
     <Compile Include="Business\AuthenService.cs" />
+    <Compile Include="Business\CalendarManager.cs" />
     <Compile Include="Business\ModuleManager.cs" />
     <Compile Include="Business\RoleManager.cs" />
     <Compile Include="Business\UserManager.cs" />
