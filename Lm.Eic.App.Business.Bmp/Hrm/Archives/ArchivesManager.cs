@@ -202,15 +202,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             return record;
         }
 
-        private AttendClassTypeModel CreateClassTypeModel(ArchivesEmployeeIdentityModel empIdentityMdl)
+        private AttendClassTypeDetailModel CreateClassTypeModel(ArchivesEmployeeIdentityModel empIdentityMdl)
         {
-            return new AttendClassTypeModel
+            return new AttendClassTypeDetailModel
             {
                 WorkerId = empIdentityMdl.WorkerId,
                 ClassType = empIdentityMdl.ClassType,
                 WorkerName = empIdentityMdl.Name,
-                DateFrom = DateTime.Now.ToDate(),
-                DateTo = DateTime.Now.AddMonths(1),
+                DateAt = empIdentityMdl.RegistedDate,
                 Department = empIdentityMdl.Department,
                 IsAlwaysDay = "是",
                 OpDate = DateTime.Now.ToDate(),

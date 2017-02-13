@@ -12,12 +12,23 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
     ///班别设置持久化层
     /// </summary>
     public interface IAttendClassTypeRepository : IRepository<AttendClassTypeModel> { }
-
     /// <summary>
     ///班别设置持久化层
     /// </summary>
     public class AttendClassTypeRepository : HrmRepositoryBase<AttendClassTypeModel>, IAttendClassTypeRepository
     { }
+
+    /// <summary>
+    ///班次数据持久化层
+    /// </summary>
+    public interface IAttendClassTypeDetailRepository : IRepository<AttendClassTypeDetailModel> { }
+    /// <summary>
+    ///班次数据持久化层
+    /// </summary>
+    public class AttendClassTypeDetailRepository : HrmRepositoryBase<AttendClassTypeDetailModel>, IAttendClassTypeDetailRepository
+    { }
+
+  
 
     /// <summary>
     ///实时刷卡数据持久化层
@@ -92,8 +103,13 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
         /// <param name="qryDto"></param>
         /// <returns></returns>
         List<AttendanceDataModel> LoadAttendanceDatasBy(AttendanceDataQueryDto qryDto);
-
-        
+        /// <summary>
+        /// 修改班次信息
+        /// </summary>
+        /// <param name="classType"></param>
+        /// <param name="slodCardDate"></param>
+        /// <returns></returns>
+        int UpdateClassTypeInfo(string classType, DateTime slodCardDate);
     }
 
     /// <summary>
@@ -124,6 +140,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
             }
             sqlText.Append(" order by AttendanceDate");
             return DbHelper.Hrm.LoadEntities<AttendanceDataModel>(sqlText.ToString());
+        }
+
+
+        public int UpdateClassTypeInfo(string classType, DateTime slodCardDate)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("Update Attendance_SlodFingerDataCurrentMonth set ClassType='{0}' where AttendanceDate='{1}'", classType, slodCardDate);
+            return DbHelper.Hrm.ExecuteNonQuery(sb.ToString());
         }
     }
 }
