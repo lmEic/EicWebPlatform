@@ -150,7 +150,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [HttpPost]
         public ContentResult AutoCheckExceptionSlotData(string yearMonth)
         {
-            var datas = AttendanceService.AttendSlodPrintManager.AutoCheckExceptionSlotData();
+            var datas = AttendanceService.AttendSlodPrintManager.AutoCheckExceptionSlotData(yearMonth);
             return DateJsonResult(datas);
         }
 

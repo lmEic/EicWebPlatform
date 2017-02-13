@@ -44,9 +44,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// </summary>
         /// <param name="assetNumber">财产编号</param>
         /// <returns></returns>
-        public List<EquipmentRepairedRecordModel> GetEquipmentRepairedRecordFormBy(string FormId)
+        public List<EquipmentRepairedRecordModel> GetEquipmentRepairedRecordFormBy(string assetNumber, string FormId)
         {
-            return CrudFactory.EquipmentRepairedRecordCrud.GetEquipmentRepairedRecordFormIdBy(FormId);
+            return CrudFactory.EquipmentRepairedRecordCrud.GetEquipmentRepairedRecordFormIdBy(assetNumber,FormId);
         }
         /// <summary>
         /// 获取设备维修总览表
