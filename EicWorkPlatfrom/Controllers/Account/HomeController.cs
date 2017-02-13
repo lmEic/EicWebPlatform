@@ -30,7 +30,17 @@ namespace EicWorkPlatfrom.Controllers
             }
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nowYear"></param>
+        /// <param name="nowMonth"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetCalendarDatas(string nowYear,string nowMonth)
+        {
+            return null;
+        }
         /// <summary>
         /// 获取模块导航列表
         /// </summary>
@@ -41,5 +51,6 @@ namespace EicWorkPlatfrom.Controllers
             var datas = GetMenuNavModules(moduleText, cacheKey);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+        
     }
 }

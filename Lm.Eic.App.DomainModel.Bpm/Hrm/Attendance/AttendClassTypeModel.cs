@@ -6,15 +6,21 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
     ///班别设置实体模型
     /// </summary>
     [Serializable]
-    public partial class AttendClassTypeModel
+    public partial class AttendClassTypeDetailModel
     {
-        public AttendClassTypeModel()
+        public AttendClassTypeDetailModel()
         { }
-
         #region Model
-
+        private DateTime _dateat;
+        /// <summary>
+        ///班别日期
+        /// </summary>
+        public DateTime DateAt
+        {
+            set { _dateat = value; }
+            get { return _dateat; }
+        }
         private string _workerid;
-
         /// <summary>
         ///作业工号
         /// </summary>
@@ -23,9 +29,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _workerid = value; }
             get { return _workerid; }
         }
-
         private string _workername;
-
         /// <summary>
         ///姓名
         /// </summary>
@@ -34,9 +38,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _workername = value; }
             get { return _workername; }
         }
-
         private string _department;
-
         /// <summary>
         ///部门
         /// </summary>
@@ -45,9 +47,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _department = value; }
             get { return _department; }
         }
-
         private string _classtype;
-
         /// <summary>
         ///班别
         /// </summary>
@@ -56,9 +56,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _classtype = value; }
             get { return _classtype; }
         }
-
         private string _isalwaysday;
-
         /// <summary>
         ///常白班
         /// </summary>
@@ -67,31 +65,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _isalwaysday = value; }
             get { return _isalwaysday; }
         }
-
-        private DateTime _datefrom;
-
-        /// <summary>
-        ///开始日期
-        /// </summary>
-        public DateTime DateFrom
-        {
-            set { _datefrom = value; }
-            get { return _datefrom; }
-        }
-
-        private DateTime _dateto;
-
-        /// <summary>
-        ///截至日期
-        /// </summary>
-        public DateTime DateTo
-        {
-            set { _dateto = value; }
-            get { return _dateto; }
-        }
-
         private DateTime _opdate;
-
         /// <summary>
         ///操作日期
         /// </summary>
@@ -100,9 +74,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _opdate = value; }
             get { return _opdate; }
         }
-
         private string _opperson;
-
         /// <summary>
         ///操作人
         /// </summary>
@@ -111,9 +83,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _opperson = value; }
             get { return _opperson; }
         }
-
         private string _opsign;
-
         /// <summary>
         ///操作标志
         /// </summary>
@@ -122,9 +92,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _opsign = value; }
             get { return _opsign; }
         }
-
         private decimal _id_key;
-
         /// <summary>
         ///自增键
         /// </summary>
@@ -133,10 +101,118 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _id_key = value; }
             get { return _id_key; }
         }
-
         #endregion Model
     }
-
+    /// <summary>
+    ///班别设置实体模型
+    /// </summary>
+    [Serializable]
+    public partial class AttendClassTypeModel
+    {
+        public AttendClassTypeModel()
+        { }
+        #region Model
+        private DateTime _datefrom;
+        /// <summary>
+        ///班别起始日期
+        /// </summary>
+        public DateTime DateFrom
+        {
+            set { _datefrom = value; }
+            get { return _datefrom; }
+        }
+        private DateTime _dateto;
+        /// <summary>
+        ///班别截止日期
+        /// </summary>
+        public DateTime DateTo
+        {
+            set { _dateto = value; }
+            get { return _dateto; }
+        }
+        private string _workerid;
+        /// <summary>
+        ///作业工号
+        /// </summary>
+        public string WorkerId
+        {
+            set { _workerid = value; }
+            get { return _workerid; }
+        }
+        private string _workername;
+        /// <summary>
+        ///姓名
+        /// </summary>
+        public string WorkerName
+        {
+            set { _workername = value; }
+            get { return _workername; }
+        }
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _classtype;
+        /// <summary>
+        ///班别
+        /// </summary>
+        public string ClassType
+        {
+            set { _classtype = value; }
+            get { return _classtype; }
+        }
+        private string _isalwaysday;
+        /// <summary>
+        ///常白班
+        /// </summary>
+        public string IsAlwaysDay
+        {
+            set { _isalwaysday = value; }
+            get { return _isalwaysday; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标志
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
     /// <summary>
     ///当月刷卡数据模型
     /// </summary>
