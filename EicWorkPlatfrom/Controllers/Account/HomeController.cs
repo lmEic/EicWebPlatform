@@ -1,4 +1,5 @@
-﻿using Lm.Eic.Framework.Authenticate.Model;
+﻿using Lm.Eic.Framework.Authenticate.Business;
+using Lm.Eic.Framework.Authenticate.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -39,7 +40,8 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetCalendarDatas(string nowYear,string nowMonth)
         {
-            return null;
+            var datas = AuthenService.CalendarManager.GetCalendarDatas(nowYear, nowMonth);
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 获取模块导航列表
