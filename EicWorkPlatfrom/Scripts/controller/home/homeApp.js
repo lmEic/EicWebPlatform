@@ -50,6 +50,7 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
     };
     $scope.loadHeadPortrait();
 
+    //013935创建日历视图模型
     var calendarVm = {
         nowYear: null,
         nowMonth: null,
@@ -95,7 +96,8 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
 
     });
     $scope.calendarTipsEdit = function (item) {
-        
+        item.calendarEdit = true;
+        console.log(item)
     }
 })
 .factory('homeDataopService', function (ajaxService) {
