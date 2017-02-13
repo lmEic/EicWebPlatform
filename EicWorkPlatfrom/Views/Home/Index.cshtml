@@ -99,14 +99,12 @@
                                 <tbody>
                                     <tr ng-repeat="week in weeks">
                                         <td>{{week}}</td>
-                                        <td ng-repeat="item in calendarDatas" ng-show="item.week=={{week}}" ng-style="{'background-color':item.color}" title="{{item.tips}}" ng-dblclick="calendarTipsEdit(item)">
+                                        <td style="background:{{item.color}};position:relative;" ng-repeat="item in calendarDatas" ng-show="item.week=={{week}}"   title="{{item.tips}}" ng-dblclick="calendarTipsEdit(item)">
                                             {{item.dates}}
-                                            <div class="row" ng-if="item.calendarEdit">
-                                                <div class="col-lg-12">
-                                                    <textarea rows="3">{{item.tips}}</textarea><br />
-                                                    <button class="btn   btn-success btn-sm">保存</button>
-                                                    <button class="btn btn-default btn-sm">取消</button>
-                                                </div>
+                                            <div ng-if="item.calendarEdit" style="position:absolute;z-index:10;">
+                                                <textarea rows="3">{{item.tips}}</textarea>
+                                                <button type="button" class="btn btn-success btn-sm">保存</button>
+                                                <button type="button" class="btn btn-default btn-sm">取消</button>
                                             </div>
                                         </td>
                                     </tr>
