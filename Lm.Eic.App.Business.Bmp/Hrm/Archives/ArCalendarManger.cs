@@ -4,16 +4,10 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.Framework.Authenticate.Business
+namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
-   public class CalendarManager
+    public  class ArCalendarManger
     {
-
-        public string  GetCalendarDatas(string  nowYear,  string nowMonth)
-        {
-            return null;
-        }
-
         /// <summary>
         /// 获取日期是当月中的第几周
         /// </summary>
@@ -66,7 +60,6 @@ namespace Lm.Eic.Framework.Authenticate.Business
             { weekOfYear -= 1; }
             return weekOfYear;
         }
-
-
     }
+
 }

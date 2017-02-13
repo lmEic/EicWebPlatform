@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mapping\HrmMapping\CalendarsMapping.cs" />
     <Compile Include="Mapping\LmMesMapping\OpticalMesDbContext.cs" />
     <Compile Include="Mapping\LmMesMapping\MesDailyReportMapping.cs" />
     <Compile Include="Mapping\PmsMapping\BoardManagment\MaterialSpecBoardMapping.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Mapping\QuantityMapping\QuantitySampleMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AstRep\EquipmentRepository.cs" />
+    <Compile Include="Repository\HrmRep\Archives\CalendarsRepository.cs" />
     <Compile Include="Repository\PmsRep\BoardManagment\MaterialSpecBoardRepository.cs" />
     <Compile Include="Repository\HrmRep\Archives\ArchivesIdentityRepository.cs" />
     <Compile Include="Repository\HrmRep\Attendance\AttendClassTypeRepository.cs" />
