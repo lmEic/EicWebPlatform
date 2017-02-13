@@ -40,8 +40,8 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetCalendarDatas(string nowYear,string nowMonth)
         {
-            var datas = AuthenService.CalendarManager.GetCalendarDatas(nowYear, nowMonth);
-            return Json(datas, JsonRequestBehavior.AllowGet);
+            //var datas = null;
+            return Json(null, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 获取模块导航列表
