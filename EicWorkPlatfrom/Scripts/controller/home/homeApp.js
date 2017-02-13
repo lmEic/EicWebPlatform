@@ -49,15 +49,21 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         $scope.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
     };
     $scope.loadHeadPortrait();
-    var nowYear = new Date().getFullYear();
-    var nowMonth = new Date().getMonth()+1;
-   
+
+    var calendarVm = {
+        nowYear: null,
+        nowMonth: null,
+        showEdit :false,
+    }
+    $scope.calendarVm = calendarVm;
+    nowYear = new Date().getFullYear();
+    nowMonth = new Date().getMonth() + 1;
     $scope.weeks = [5, 6, 7, 8, 9];
     $scope.calendarDatas = [
         { week: 5 },{ week: 5 },{ week: 5 },
-        { dates: 1, day: 'wed', week: 5 },
-        { dates: 2, day: 'thu', week: 5 },
-        { dates: 3, day: 'fri', week: 5 },
+        { dates: 1, day: 'wed', week: 5 ,color:'#ccc',tips:'1',calendarEdit:false},
+        { dates: 2, day: 'thu', week: 5, color: '#ccc', tips: '2',calendarEdit:false },
+        { dates: 3, day: 'fri', week: 5, color: '#ccc', tips: '3',calendarEdit:false },
         { dates: 4, day: 'sat', week: 5 },
         { dates: 5, day: 'sun', week: 6 },
         { dates: 6, day: 'mon', week: 6 },
@@ -85,16 +91,18 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         { dates: 28, day: 'tue', week: 9, type:'lastDay'},
         { week: 9 }, { week: 9 }, { week: 9 }, { week: 9 }
     ]
-    $scope.promise = homeDataopService.getCalendarDatas(nowYear, nowMonth).then(function (datas) {
-        console.log(2);
-    })
+    $scope.promise = homeDataopService.getCalendarDatas(nowYear,nowMonth).then(function (datas) {
+
+    });
+    $scope.calendarTipsEdit = function (item) {
+        
+    }
 })
 .factory('homeDataopService', function (ajaxService) {
     var home = {};
     var calendarUrl = "/home/";
     home.getCalendarDatas = function (nowYear, nowMonth) {
         var url = calendarUrl + "GetCalendarDatas";
-        console.log(1);
         return ajaxService.getData(url, {
             nowYear: nowYear,
             nowMonth: nowMonth

@@ -91,24 +91,30 @@
                                         <th>Mo</th>
                                         <th>Tu</th>
                                         <th>We</th>
-                                        <th>Th</th>
-                                        <th>Fi</th>
+                                        <th>Th</th>  
+                                        <th>Fr</th>   
                                         <th>Sa</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="week in weeks">
-                                        <td>{{week}}</td>
-                                        <td ng-repeat="dates in calendarDatas" ng-show="dates.week=={{week}}" >
-                                            {{dates.dates}}
+                                    <tr ng-repeat="item in weeks">
+                                        <td>{{item}}</td>
+                                        <td ng-repeat="item in calendarDatas" ng-show="item.week=={{item}}" ng-style="{'background-color':item.color}" title="{{item.tips}}" ng-dblclick="calendarTipsEdit(item)">
+                                            {{item.dates}}
+                                            <div class="row" ng-if="calendarVm.showEdit">
+                                                <div class="col-lg-12">
+                                                    <textarea rows="3">{{item.tips}}</textarea><br />
+                                                    <button class="btn   btn-success btn-sm">保存</button>
+                                                    <button class="btn btn-default btn-sm">取消</button>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
                         </div>
-                  
                     </div>
+                    
                 </div>
                 
                 @*<div class="panel panel-default">
