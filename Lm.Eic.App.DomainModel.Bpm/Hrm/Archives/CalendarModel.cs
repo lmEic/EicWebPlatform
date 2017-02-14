@@ -89,6 +89,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _datecolor = value; }
             get { return _datecolor; }
         }
+        private string _title;
+        /// <summary>
+        ///日志标题
+        /// </summary>
+        public string Title
+        {
+            set { _title = value; }
+            get { return _title; }
+        }
         private string _opperson;
         /// <summary>
         ///操作人
