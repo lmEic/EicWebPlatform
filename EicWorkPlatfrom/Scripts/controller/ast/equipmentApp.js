@@ -1104,8 +1104,10 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         //013935设备维修编辑查询
         getEquipmentRepairDatas: function () {
             vmManager.editDatas = [];
-            $scope.searchPromise = astDataopService.getEquipmentRepairFormIdDatas(vmManager.assetNumber,vmManager.formId).then(function (datas) {
-                vmManager.editDatas = datas;
+            $scope.searchPromise = astDataopService.getEquipmentRepairFormIdDatas(vmManager.assetNumber, vmManager.formId).then(function (datas) {
+                if(datas != null){
+                    vmManager.editDatas = datas;
+                }
             });
         },
 
