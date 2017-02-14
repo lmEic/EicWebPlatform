@@ -22,7 +22,7 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
     }
 })
 //布局控制器
-.controller('layoutCtrl', function ($scope, $http, navDataService, homeDataopService,$model) {
+.controller('layoutCtrl', function ($scope, $http, navDataService, homeDataopService, $modal) {
     var layoutVm = {
         navViewSwitch: true,//左侧视图导航开关
         switchView: function () {
@@ -91,10 +91,30 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
     });
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    operate.editModel = $model({
-        title: "操作窗口",
-        templateUrl: leeHelper.controllers.home + '/EditHomeCalendarTpl/',
-    })
+    operate.editItem = function (item) {
+        layoutVm = _.clone(item);
+        operate.editModal.$promise.then(operate.editModal.show);
+    }
+    operate.editModal = $modal({
+        title: '修改日历信息',
+        content: '',
+        templateUrl:"Home/EditHomeCalendarTpl/",
+        controller: function ($scope) {
+            //$scope.vm = {
+            //    Remarks: null,
+            //};
+            //var op = Object.create(leeDataHandler.operateStatus);
+            //$scope.save = function (isValid) {
+            //    leeDataHandler.dataOperate.add(op, isValid, function () {
+            //        vmManager.edittingRow.Remarks = $scope.vm.Remarks;
+            //        uiVM.Remarks = vmManager.edittingRow.Remarks;
+            //        vmManager.editRemarksModal.$promise.then(vmManager.editRemarksModal.hide);
+            //    });
+            //};  
+            $scope.layoutVm = layoutVm;
+        },
+        show: false,
+    });
 })
 .factory('homeDataopService', function (ajaxService) {
     var home = {};

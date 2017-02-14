@@ -1021,8 +1021,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 })
 
 ///录入设备维修单
-.controller('astInputRepairedRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
-    
+.controller('astInputRepairedRecordCtrl', function ($scope, connDataOpService, astDataopService, $modal) {
     
     ///设备档案模型
     var uiVM = {

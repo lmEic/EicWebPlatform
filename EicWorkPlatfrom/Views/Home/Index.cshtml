@@ -99,7 +99,8 @@
                                 <tbody>
                                     <tr ng-repeat="week in layoutVm.weeks">
                                         <td>{{week}}</td>
-                                        <td style="background:{{item.color}};position:relative;" ng-repeat="item in layoutVm.calendarDatas" ng-show="item.week=={{week}}"   title="{{item.tips}}" ng-dblclick="operate.editModel()">
+                                        <td style="background:{{item.color}};position:relative;" ng-repeat="item in layoutVm.calendarDatas"
+                                             ng-show="item.week=={{week}}"   title="{{item.tips}}" ng-dblclick="operate.editItem(item,week)">
                                             {{item.dates}}
                                         </td>
                                     </tr>
