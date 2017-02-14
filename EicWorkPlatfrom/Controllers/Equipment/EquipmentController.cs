@@ -299,6 +299,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        [NoAuthenCheck]
         public ActionResult EditEquipmentRepairTpl()
         {
             return View();
