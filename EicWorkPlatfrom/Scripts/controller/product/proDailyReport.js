@@ -194,6 +194,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         vmManager.init();
         uiVM.ProductName = vmManager.productName;
         vmManager.editWindowDisplay = true;
+        
     };
     operate.copyAll = function () {
         vmManager.productNameFrom = vmManager.productName;

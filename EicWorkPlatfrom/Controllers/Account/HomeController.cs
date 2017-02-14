@@ -15,7 +15,11 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+        [NoAuthenCheck]
+        public ActionResult EditHomeCalendarTpl()
+        {
+            return View();
+        }
         /// <summary>
         /// 获取模块导航列表
         /// </summary>

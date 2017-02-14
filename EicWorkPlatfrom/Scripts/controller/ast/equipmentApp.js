@@ -1021,8 +1021,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 })
 
 ///录入设备维修单
-.controller('astInputRepairedRecordCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {
-    
+.controller('astInputRepairedRecordCtrl', function ($scope, connDataOpService, astDataopService, $modal) {
     
     ///设备档案模型
     var uiVM = {
@@ -1104,8 +1103,10 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         //013935设备维修编辑查询
         getEquipmentRepairDatas: function () {
             vmManager.editDatas = [];
-            $scope.searchPromise = astDataopService.getEquipmentRepairFormIdDatas(vmManager.assetNumber,vmManager.formId).then(function (datas) {
-                vmManager.editDatas = datas;
+            $scope.searchPromise = astDataopService.getEquipmentRepairFormIdDatas(vmManager.assetNumber, vmManager.formId).then(function (datas) {
+                if(datas != null){
+                    vmManager.editDatas = datas;
+                }
             });
         },
 

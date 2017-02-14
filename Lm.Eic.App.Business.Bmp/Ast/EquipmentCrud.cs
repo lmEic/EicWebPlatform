@@ -709,7 +709,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
         public List<EquipmentRepairedRecordModel> GetEquipmentRepairedRecordFormIdBy(string assetNumber,string formdId)
         {
-            var data = irep.Entities.Where(m => m.FormId == formdId&&m.AssetNumber == assetNumber).ToList();
+            var data = irep.Entities.Where(m => m.FormId == formdId && m.AssetNumber == assetNumber).ToList();
             return data;
 
         }
