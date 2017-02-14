@@ -1,4 +1,5 @@
-﻿using Lm.Eic.Framework.Authenticate.Business;
+﻿using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+using Lm.Eic.Framework.Authenticate.Business;
 using Lm.Eic.Framework.Authenticate.Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +41,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetCalendarDatas(string nowYear,string nowMonth)
         {
-            //var datas = null;
+            var datas =  ArchiveService.ArCalendarManger.GetDateDictionary(nowYear,nowMonth);;
             return Json(null, JsonRequestBehavior.AllowGet);
         }
         /// <summary>

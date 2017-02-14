@@ -8,9 +8,9 @@ using System.Text;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
 {
-    public interface ICalendarsRepositoryRepository : IRepository<CalendarModel>
+    public interface ICalendarsRepository : IRepository<CalendarModel>
     { }
-    public class CalendarsRepository : HrmRepositoryBase<CalendarModel>, ICalendarsRepositoryRepository
+    public class CalendarsRepository : HrmRepositoryBase<CalendarModel>, ICalendarsRepository
     {
     }
 }

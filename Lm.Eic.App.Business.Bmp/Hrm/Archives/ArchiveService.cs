@@ -22,5 +22,17 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 return OBulider.BuildInstance<ProWorkerManager>();
             }
         }
+
+
+        /// <summary>
+        /// 生产行事历管理器
+        /// </summary>
+        public static ArCalendarManger ArCalendarManger
+        {
+            get
+            {
+                return OBulider.BuildInstance<ArCalendarManger>();
+            }
+        }
     }
 }

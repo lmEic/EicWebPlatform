@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
  using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using System;
-
+using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
 {
     [TestClass()]
@@ -54,5 +54,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
             };
             var resulst = ArchiveService.ArchivesManager.WorkerIdChangeManager.StoreWorkerIdChangeInfo(model);
         }
+
+
+        public void test()
+        {
+            var mm = ArchiveService.ArCalendarManger.GetDateDictionary("2017", "2");
+            if (mm==null || mm.Count < 0)
+            {
+                Assert.Fail();
+            }
+          
+        }
     }
-}
+    }
