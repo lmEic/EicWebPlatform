@@ -103,14 +103,12 @@
                                             
                                         </td>
                                         <td style="background:{{item.DateColor}};" ng-repeat="item in layoutVm.calendarDatas"
-                                             ng-show="item.YearWeekNumber=={{week}}"   title="{{item.tips}}" ng-dblclick="operate.editItem(item,week)">
+                                             ng-show="item.YearWeekNumber=={{week}}"   title="{{item.tips}}" ng-dblclick="operate.editItem(item)">
                                             {{item.CalendarDay}}
                                             <br />
                                         <span style="font-size:12px;">元宵</span>
                                         </td>
                                     </tr>
-
-                                    
 
                                 </tbody>
                             </table>
@@ -119,11 +117,6 @@
                     
                 </div>
                 
-                @*<div class="panel panel-default">
-                    <div class="panel-body">
-                       
-                    </div>
-                </div>*@
             </div>
             <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-hide="navLayout.navViewSwitch">
                 <span class="badge" ng-click="navLayout.switchView()" title="点击打开导航面板" style="cursor:pointer"><i class="fa fa-hand-o-right"></i></span>
