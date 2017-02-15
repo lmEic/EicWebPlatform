@@ -7,6 +7,8 @@ using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
@@ -19,15 +21,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             get { return OBulider.BuildInstance<ArcalendarCurd>(); }
         }
-        public Dictionary<int, CalendarModel> GetDateDictionary(int  nowYear, int nowMonth)
+        public List<CalendarModel> GetDateDictionary(int  nowYear, int nowMonth)
         {
-            Dictionary<int, CalendarModel> returnDateDictionary = new Dictionary<int, CalendarModel>();
+            List<CalendarModel> returnDateDictionary = new List<CalendarModel> ();
             var ListModel = ArcalendarCurd. FindCalendarDateListBy(nowYear, nowMonth);
             if (ListModel == null || ListModel.Count <= 0) return returnDateDictionary;
             //得到当月所有日期周次
             var nowMonthWeeksList = ListModel.Select(e => e.NowMothWeekNumber).Distinct().ToList();
             if (nowMonthWeeksList==null|| nowMonthWeeksList.Count <=0) return returnDateDictionary;
-            int i = 0;
             nowMonthWeeksList.ForEach(W =>
             {
                 var models = ListModel.Where(e => e.NowMothWeekNumber == W).ToList();
@@ -39,14 +40,38 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     { models.Insert(InsertIndex, new CalendarModel());}
                 }
                 models.ForEach(e =>
-                {
-                    returnDateDictionary.Add(i, e);
-                    i++;
-                });
+                {returnDateDictionary.Add(e);});
             });
             return returnDateDictionary;
         }
 
+      
+    }
+
+    internal  class ArcalendarCurd : CrudBase<CalendarModel, ICalendarsRepository>
+    {
+        public ArcalendarCurd ():base (new CalendarsRepository(),"行事历")
+        {}
+        protected override void AddCrudOpItems()
+        {
+            AddOpItem(OpMode.Add, AddReportAttendence);
+            AddOpItem(OpMode.Edit, EditReportAttendece);
+        }
+
+        private OpResult EditReportAttendece(CalendarModel model)
+        {
+            return irep.Insert(model).ToOpResult(OpContext + "保存操作成功", OpContext + "保存操作失败");
+        }
+
+        private OpResult AddReportAttendence(CalendarModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CalendarModel> FindCalendarDateListBy(int nowYear, int  nowMonth)
+        {
+            return irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMoth == nowMonth).ToList ();
+        }
         /// <summary>
         /// 获取日期是当月中的第几周
         /// </summary>
@@ -99,21 +124,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             { weekOfYear -= 1; }
             return weekOfYear;
         }
-    }
-
-    internal  class ArcalendarCurd : CrudBase<CalendarModel, ICalendarsRepository>
-    {
-        public ArcalendarCurd ():base (new CalendarsRepository(),"行事历")
-        {}
-        protected override void AddCrudOpItems()
-        {
-           
-        }
-        public List<CalendarModel> FindCalendarDateListBy(int nowYear, int  nowMonth)
-        {
-            return irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMoth == nowMonth).ToList ();
-        }
-
     }
 
        
