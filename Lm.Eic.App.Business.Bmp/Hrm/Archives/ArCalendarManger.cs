@@ -19,49 +19,32 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             get { return OBulider.BuildInstance<ArcalendarCurd>(); }
         }
-        public Dictionary<int, CalendarModel> GetDateDictionary(string nowYear, string nowMonth)
+        public Dictionary<int, CalendarModel> GetDateDictionary(int  nowYear, int nowMonth)
         {
-            Dictionary<int, CalendarModel> retrunDateDictionary = new Dictionary<int, CalendarModel>();
-            int year = Convert.ToInt32(nowYear);
-            int month = Convert.ToInt32(nowMonth);
-            var ListModel = ArcalendarCurd. getDateLiatBy(year, month);
+            Dictionary<int, CalendarModel> returnDateDictionary = new Dictionary<int, CalendarModel>();
+            var ListModel = ArcalendarCurd. FindCalendarDateListBy(nowYear, nowMonth);
+            if (ListModel == null || ListModel.Count <= 0) return returnDateDictionary;
             //得到当月所有日期周次
-            List<int> nowMonthWeeksList = ListModel.Select(e => e.NowMothWeekNumber).Distinct().ToList();
-            //
-            Dictionary<int, List<CalendarModel>> dicCalendarModel = new Dictionary<int, List<CalendarModel>>();
+            var nowMonthWeeksList = ListModel.Select(e => e.NowMothWeekNumber).Distinct().ToList();
+            if (nowMonthWeeksList==null|| nowMonthWeeksList.Count <=0) return returnDateDictionary;
+            int i = 0;
             nowMonthWeeksList.ForEach(W =>
             {
-                List<CalendarModel> models = ListModel.Where(e => e.NowMothWeekNumber == W).ToList();
-                int ii = models.Count;
-                if (ii < 7)
+                var models = ListModel.Where(e => e.NowMothWeekNumber == W).ToList();
+                int modelsCount = models.Count;
+                if (0<modelsCount&&modelsCount < 7)
                 {
-                    if (W == 1)
-                    {
-                        for (int n = 1; n <= 7 - ii; n++)
-                        {
-                            models.Insert(0, new CalendarModel());
-                        }
-                    }
-                    else
-                    {
-                        for (int n = 1; n <= 7 - ii; n++)
-                        {
-                            models.Insert(ii, new CalendarModel());
-                        }
-                    }
+                    int InsertIndex = (W == 1) ? 0 : modelsCount;
+                    for (int n = 1; n <= 7 - modelsCount; n++)
+                    { models.Insert(InsertIndex, new CalendarModel());}
                 }
-                dicCalendarModel.Add(W, models);
-            });
-            int i = 0;
-            foreach (var item in dicCalendarModel)
-            {
-                item.Value.ForEach(e =>
+                models.ForEach(e =>
                 {
-                    retrunDateDictionary.Add(i, e);
+                    returnDateDictionary.Add(i, e);
                     i++;
                 });
-            }
-            return retrunDateDictionary;
+            });
+            return returnDateDictionary;
         }
 
         /// <summary>
@@ -121,59 +104,15 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     internal  class ArcalendarCurd : CrudBase<CalendarModel, ICalendarsRepository>
     {
         public ArcalendarCurd ():base (new CalendarsRepository(),"行事历")
-        {
-
-        }
+        {}
         protected override void AddCrudOpItems()
         {
-            
+           
         }
-        public List<CalendarModel> getDateLiatBy(int nowYear, int  nowMonth)
+        public List<CalendarModel> FindCalendarDateListBy(int nowYear, int  nowMonth)
         {
             return irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMoth == nowMonth).ToList ();
         }
-        public Dictionary<int, CalendarModel> GetDateDictionary(string nowYear, string nowMonth)
-        {
-            Dictionary<int, CalendarModel> retrunDateDictionary = new Dictionary<int, CalendarModel>();
-            var ListModel = irep.Entities.Where(e => e.CalendarYear == Convert.ToInt16(nowYear) && e.CalendarMoth == Convert.ToInt16(nowMonth)).ToList ();
-            //得到当月所有日期周次
-            List<int> nowMonthWeeksList = ListModel.Select(e => e.NowMothWeekNumber).Distinct ().ToList();
-            //
-            Dictionary<int, List<CalendarModel>> dicCalendarModel = new Dictionary<int, List<CalendarModel>>();
-            nowMonthWeeksList.ForEach(W => {
-                List<CalendarModel> models = ListModel.Where(e => e.NowMothWeekNumber == W).ToList();
-                if(models.Count <7)
-                {
-                    if (W== 1)
-                    {
-                        for (int n = 0; n < 7 - models.Count; n++)
-                        {
-                            models.Insert(0, new CalendarModel());
-                        }
-                    }
-                    else
-                    {
-                        for (int n = 0; n < 7 - models.Count; n++)
-                        {
-                            models.Insert(7 - models.Count, new CalendarModel());
-                        }
-                    }
-                }
-                dicCalendarModel.Add(W, models);
-            });
-            int i = 0;
-            foreach (var item in dicCalendarModel)
-            {
-                item.Value.ForEach(e => {
-                    retrunDateDictionary.Add(i, e);
-                    i++;
-                });
-            }
-            return retrunDateDictionary;
-        }
-
-
-      
 
     }
 

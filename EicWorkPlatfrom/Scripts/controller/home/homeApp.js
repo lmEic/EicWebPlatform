@@ -88,6 +88,11 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
 
     //013935创建日历视图模型
     $scope.promise = homeDataopService.getCalendarDatas(layoutVm.nowYear, layoutVm.nowMonth).then(function (datas) {
+        if(datas == null){
+            console.log(1)
+        } else {
+            console.log(2)
+        }
         console.log(datas)
     });
 

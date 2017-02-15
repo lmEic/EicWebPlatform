@@ -43,7 +43,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="nowMonth"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetCalendarDatas(string nowYear,string nowMonth)
+        public JsonResult GetCalendarDatas(int  nowYear,int  nowMonth)
         {
             var datas =  ArchiveService.ArCalendarManger.GetDateDictionary(nowYear,nowMonth);;
             return Json(datas, JsonRequestBehavior.AllowGet);
