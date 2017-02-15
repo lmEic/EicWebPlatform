@@ -71,6 +71,18 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _calendarweek = value; }
             get { return _calendarweek; }
         }
+
+        //ChineseCalendar
+        private string _chineseCalendar;
+        /// <summary>
+        ///农历/节气/节日
+        /// </summary>
+        public string ChineseCalendar
+        {
+            set { _chineseCalendar = value; }
+            get { return _chineseCalendar; }
+        }
+
         private string _dateproperty;
         /// <summary>
         ///日期属性

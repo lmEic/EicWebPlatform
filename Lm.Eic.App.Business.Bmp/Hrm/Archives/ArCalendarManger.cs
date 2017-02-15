@@ -24,6 +24,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public List<CalendarModel> GetDateDictionary(int  nowYear, int nowMonth)
         {
             List<CalendarModel> returnDateDictionary = new List<CalendarModel> ();
+            ChineseCalendar chineseCalendar = null;
             var ListModel = ArcalendarCurd. FindCalendarDateListBy(nowYear, nowMonth);
             if (ListModel == null || ListModel.Count <= 0) return returnDateDictionary;
             //得到当月所有日期周次
@@ -38,10 +39,23 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     int InsertIndex = (W == 1) ? 0 : modelsCount;
                     int yearWeek = models.FirstOrDefault().YearWeekNumber;
                     for (int n = 1; n <= 7 - modelsCount; n++)
-                    { models.Insert(InsertIndex, new CalendarModel() {YearWeekNumber=yearWeek,CalendarDay=string.Empty  });}
+                    { models.Insert(InsertIndex, new CalendarModel() {YearWeekNumber=yearWeek,CalendarDay=string.Empty});}
                 }
                 models.ForEach(e =>
-                {returnDateDictionary.Add(e);});
+                {
+                    if (e.CalendarDay != string.Empty)
+                    {
+                        chineseCalendar = new ChineseCalendar(e.CalendarDate);
+                        e.ChineseCalendar = chineseCalendar.ChineseCalendarHoliday != string.Empty ?
+                            chineseCalendar.ChineseCalendarHoliday :
+                           (chineseCalendar.DateHoliday != string.Empty ?
+                            chineseCalendar.DateHoliday :
+                            (chineseCalendar.ChineseTwentyFourDay != string.Empty ?
+                               chineseCalendar.ChineseTwentyFourDay : chineseCalendar.ChineseDayString));
+                    }
+                   
+                    returnDateDictionary.Add(e);
+                });
             });
             return returnDateDictionary;
         }
@@ -136,8 +150,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     }
 
 
-
-     /// <summary>
+    #region  中国日历处理
+    /// <summary>
     /// 中国日历异常处理
     /// </summary>
     internal class ChineseCalendarException : System.Exception
@@ -153,7 +167,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     /// <remarks>
     /// 本程序使用数据来源于网上的万年历查询，并综合了一些其它数据
     /// </remarks>
-    public class ChineseCalendar
+    public  class ChineseCalendar
     {
         #region 内部结构
         private struct SolarHolidayStruct
@@ -259,16 +273,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         #endregion
 
-        #region 星座名称
-        private static string[] _constellationName = 
-                { 
-                    "白羊座", "金牛座", "双子座", 
-                    "巨蟹座", "狮子座", "处女座", 
-                    "天秤座", "天蝎座", "射手座", 
-                    "摩羯座", "水瓶座", "双鱼座"
-                };
-        #endregion
-
         #region 二十四节气
         private static string[] _lunarHolidayName = 
                     { 
@@ -280,18 +284,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     "立冬", "小雪", "大雪", "冬至"
                     };
         #endregion
-
-        #region 二十八星宿
-        private static string[] _chineseConstellationName =
-            {
-                  //四        五      六         日        一      二      三  
-                "角木蛟","亢金龙","女土蝠","房日兔","心月狐","尾火虎","箕水豹",
-                "斗木獬","牛金牛","氐土貉","虚日鼠","危月燕","室火猪","壁水獝",
-                "奎木狼","娄金狗","胃土彘","昴日鸡","毕月乌","觜火猴","参水猿",
-                "井木犴","鬼金羊","柳土獐","星日马","张月鹿","翼火蛇","轸水蚓" 
-            };
-        #endregion
-
+       
         #region 节气数据
         private static string[] SolarTerm = new string[] { "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "冬至" };
         private static int[] sTermInfo = new int[] { 0, 21208, 42467, 63836, 85337, 107014, 128867, 150921, 173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033, 353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758 };
@@ -300,7 +293,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         #region 农历相关数据
         private static string ganStr = "甲乙丙丁戊己庚辛壬癸";
         private static string zhiStr = "子丑寅卯辰巳午未申酉戌亥";
-        private static string animalStr = "鼠牛虎兔龙蛇马羊猴鸡狗猪";
         private static string nStr1 = "日一二三四五六七八九";
         private static string nStr2 = "初十廿卅";
         private static string[] _monthString =
@@ -312,56 +304,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         #region 按公历计算的节日
         private static SolarHolidayStruct[] sHolidayInfo = new SolarHolidayStruct[]{
             new SolarHolidayStruct(1, 1, 1, "元旦"),
-            new SolarHolidayStruct(2, 2, 0, "世界湿地日"),
-            new SolarHolidayStruct(2, 10, 0, "国际气象节"),
             new SolarHolidayStruct(2, 14, 0, "情人节"),
-            new SolarHolidayStruct(3, 1, 0, "国际海豹日"),
-            new SolarHolidayStruct(3, 5, 0, "学雷锋纪念日"),
             new SolarHolidayStruct(3, 8, 0, "妇女节"), 
-            new SolarHolidayStruct(3, 12, 0, "植树节 孙中山逝世纪念日"), 
-            new SolarHolidayStruct(3, 14, 0, "国际警察日"),
-            new SolarHolidayStruct(3, 15, 0, "消费者权益日"),
-            new SolarHolidayStruct(3, 17, 0, "中国国医节 国际航海日"),
-            new SolarHolidayStruct(3, 21, 0, "世界森林日 消除种族歧视国际日 世界儿歌日"),
-            new SolarHolidayStruct(3, 22, 0, "世界水日"),
-            new SolarHolidayStruct(3, 24, 0, "世界防治结核病日"),
+            new SolarHolidayStruct(3, 12, 0, "植树节"), 
             new SolarHolidayStruct(4, 1, 0, "愚人节"),
-            new SolarHolidayStruct(4, 7, 0, "世界卫生日"),
-            new SolarHolidayStruct(4, 22, 0, "世界地球日"),
-            new SolarHolidayStruct(5, 1, 1, "劳动节"), 
-            new SolarHolidayStruct(5, 2, 1, "劳动节假日"),
-            new SolarHolidayStruct(5, 3, 1, "劳动节假日"),
+            new SolarHolidayStruct(5, 1, 1, "劳动节"),
             new SolarHolidayStruct(5, 4, 0, "青年节"), 
-            new SolarHolidayStruct(5, 8, 0, "世界红十字日"),
-            new SolarHolidayStruct(5, 12, 0, "国际护士节"), 
-            new SolarHolidayStruct(5, 31, 0, "世界无烟日"), 
-            new SolarHolidayStruct(6, 1, 0, "国际儿童节"), 
-            new SolarHolidayStruct(6, 5, 0, "世界环境保护日"),
-            new SolarHolidayStruct(6, 26, 0, "国际禁毒日"),
-            new SolarHolidayStruct(7, 1, 0, "建党节 香港回归纪念 世界建筑日"),
-            new SolarHolidayStruct(7, 11, 0, "世界人口日"),
+            new SolarHolidayStruct(7, 1, 0, "建党节"),
             new SolarHolidayStruct(8, 1, 0, "建军节"), 
-            new SolarHolidayStruct(8, 8, 0, "中国男子节 父亲节"),
-            new SolarHolidayStruct(8, 15, 0, "抗日战争胜利纪念"),
-            new SolarHolidayStruct(9, 9, 0, "  逝世纪念"), 
-            new SolarHolidayStruct(9, 10, 0, "教师节"), 
-            new SolarHolidayStruct(9, 18, 0, "九·一八事变纪念日"),
-            new SolarHolidayStruct(9, 20, 0, "国际爱牙日"),
-            new SolarHolidayStruct(9, 27, 0, "世界旅游日"),
-            new SolarHolidayStruct(9, 28, 0, "孔子诞辰"),
-            new SolarHolidayStruct(10, 1, 1, "国庆节 国际音乐日"),
-            new SolarHolidayStruct(10, 2, 1, "国庆节假日"),
-            new SolarHolidayStruct(10, 3, 1, "国庆节假日"),
-            new SolarHolidayStruct(10, 6, 0, "老人节"), 
-            new SolarHolidayStruct(10, 24, 0, "联合国日"),
-            new SolarHolidayStruct(11, 10, 0, "世界青年节"),
-            new SolarHolidayStruct(11, 12, 0, "孙中山诞辰纪念"), 
-            new SolarHolidayStruct(12, 1, 0, "世界艾滋病日"), 
-            new SolarHolidayStruct(12, 3, 0, "世界残疾人日"), 
-            new SolarHolidayStruct(12, 20, 0, "澳门回归纪念"), 
+            new SolarHolidayStruct(9, 10, 0, "教师节"),
+            new SolarHolidayStruct(10, 1, 1, "国庆节"), 
             new SolarHolidayStruct(12, 24, 0, "平安夜"), 
-            new SolarHolidayStruct(12, 25, 0, "圣诞节"), 
-            new SolarHolidayStruct(12, 26, 0, " 诞辰纪念")
+            new SolarHolidayStruct(12, 25, 0, "圣诞节")
            };
         #endregion
 
@@ -369,31 +323,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         private static LunarHolidayStruct[] lHolidayInfo = new LunarHolidayStruct[]{
             new LunarHolidayStruct(1, 1, 1, "春节"), 
             new LunarHolidayStruct(1, 15, 0, "元宵节"), 
-            new LunarHolidayStruct(5, 5, 0, "端午节"), 
-            new LunarHolidayStruct(7, 7, 0, "七夕情人节"),
-            new LunarHolidayStruct(7, 15, 0, "中元节 盂兰盆节"), 
+            new LunarHolidayStruct(5, 5, 0, "端午节"),
             new LunarHolidayStruct(8, 15, 0, "中秋节"), 
             new LunarHolidayStruct(9, 9, 0, "重阳节"), 
             new LunarHolidayStruct(12, 8, 0, "腊八节"),
-            new LunarHolidayStruct(12, 23, 0, "北方小年(扫房)"),
-            new LunarHolidayStruct(12, 24, 0, "南方小年(掸尘)"),
+            new LunarHolidayStruct(12, 23, 0, "小年"),
             //new LunarHolidayStruct(12, 30, 0, "除夕")  //注意除夕需要其它方法进行计算
         };
         #endregion
-
-        #region 按某月第几个星期几
-        private static WeekHolidayStruct[] wHolidayInfo = new WeekHolidayStruct[]{
-            new WeekHolidayStruct(5, 2, 1, "母亲节"), 
-            new WeekHolidayStruct(5, 3, 1, "全国助残日"), 
-            new WeekHolidayStruct(6, 3, 1, "父亲节"), 
-            new WeekHolidayStruct(9, 3, 3, "国际和平日"), 
-            new WeekHolidayStruct(9, 4, 1, "国际聋人节"), 
-            new WeekHolidayStruct(10, 1, 2, "国际住房日"), 
-            new WeekHolidayStruct(10, 1, 4, "国际减轻自然灾害日"),
-            new WeekHolidayStruct(11, 4, 5, "感恩节")
-        };
-        #endregion
-
         #endregion
 
         #region 构造函数
@@ -915,27 +852,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         }
         #endregion
 
-        #region WeekDayHoliday
-        /// <summary>
-        /// 按某月第几周第几日计算的节日
-        /// </summary>
-        public string WeekDayHoliday
-        {
-            get
-            {
-                string tempStr = "";
-                foreach (WeekHolidayStruct wh in wHolidayInfo)
-                {
-                    if (CompareWeekDayHoliday(_date, wh.Month, wh.WeekAtMonth, wh.WeekDay))
-                    {
-                        tempStr = wh.HolidayName;
-                        break;
-                    }
-                }
-                return tempStr;
-            }
-        }
-        #endregion
+       
 
         #region DateHoliday
         /// <summary>
@@ -1034,25 +951,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             get
             {
                 return DateTime.IsLeapYear(this._date.Year);
-            }
-        }
-        #endregion
-
-        #region ChineseConstellation
-        /// <summary>
-        /// 28星宿计算
-        /// </summary>
-        public string ChineseConstellation
-        {
-            get
-            {
-                int offset = 0;
-                int modStarDay = 0;
-
-                TimeSpan ts = this._date - ChineseConstellationReferDay;
-                offset = ts.Days;
-                modStarDay = offset % 28;
-                return (modStarDay >= 0 ? _chineseConstellationName[modStarDay] : _chineseConstellationName[27 + modStarDay]);
             }
         }
         #endregion
@@ -1305,192 +1203,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         }
         #endregion
         #endregion
-
-        #region 星座
-        #region Constellation
-        /// <summary>
-        /// 计算指定日期的星座序号 
-        /// </summary>
-        /// <returns></returns>
-        public string Constellation
-        {
-            get
-            {
-                int index = 0;
-                int y, m, d;
-                y = _date.Year;
-                m = _date.Month;
-                d = _date.Day;
-                y = m * 100 + d;
-
-                if (((y >= 321) && (y <= 419))) { index = 0; }
-                else if ((y >= 420) && (y <= 520)) { index = 1; }
-                else if ((y >= 521) && (y <= 620)) { index = 2; }
-                else if ((y >= 621) && (y <= 722)) { index = 3; }
-                else if ((y >= 723) && (y <= 822)) { index = 4; }
-                else if ((y >= 823) && (y <= 922)) { index = 5; }
-                else if ((y >= 923) && (y <= 1022)) { index = 6; }
-                else if ((y >= 1023) && (y <= 1121)) { index = 7; }
-                else if ((y >= 1122) && (y <= 1221)) { index = 8; }
-                else if ((y >= 1222) || (y <= 119)) { index = 9; }
-                else if ((y >= 120) && (y <= 218)) { index = 10; }
-                else if ((y >= 219) && (y <= 320)) { index = 11; }
-                else { index = 0; }
-
-                return _constellationName[index];
-            }
-        }
-        #endregion
-        #endregion
-
-        #region 属相
-        #region Animal
-        /// <summary>
-        /// 计算属相的索引，注意虽然属相是以农历年来区别的，但是目前在实际使用中是按公历来计算的
-        /// 鼠年为1,其它类推
-        /// </summary>
-        public int Animal
-        {
-            get
-            {
-                int offset = _date.Year - AnimalStartYear;
-                return (offset % 12) + 1;
-            }
-        }
-        #endregion
-
-        #region AnimalString
-        /// <summary>
-        /// 取属相字符串
-        /// </summary>
-        public string AnimalString
-        {
-            get
-            {
-                int offset = _date.Year - AnimalStartYear; //阳历计算
-                //int offset = this._cYear - AnimalStartYear;　农历计算
-                return animalStr[offset % 12].ToString();
-            }
-        }
-        #endregion
-        #endregion
-
-        #region GanZhiYearString
-        /// <summary>
-        /// 取农历年的干支表示法如 乙丑年
-        /// </summary>
-        public string GanZhiYearString
-        {
-            get
-            {
-                string tempStr;
-                int i = (this._cYear - GanZhiStartYear) % 60; //计算干支
-                tempStr = ganStr[i % 10].ToString() + zhiStr[i % 12].ToString() + "年";
-                return tempStr;
-            }
-        }
-        #endregion
-
-        #region GanZhiMonthString
-        /// <summary>
-        /// 取干支的月表示字符串，注意农历的闰月不记干支
-        /// </summary>
-        public string GanZhiMonthString
-        {
-            get
-            {
-                //每个月的地支总是固定的,而且总是从寅月开始
-                int zhiIndex;
-                string zhi;
-                if (this._cMonth > 10)
-                {
-                    zhiIndex = this._cMonth - 10;
-                }
-                else
-                {
-                    zhiIndex = this._cMonth + 2;
-                }
-                zhi = zhiStr[zhiIndex - 1].ToString();
-
-                //根据当年的干支年的干来计算月干的第一个
-                int ganIndex = 1;
-                string gan;
-                int i = (this._cYear - GanZhiStartYear) % 60; //计算干支
-                switch (i % 10)
-                {
-                    #region ...
-                    case 0: //甲
-                        ganIndex = 3;
-                        break;
-                    case 1: //乙
-                        ganIndex = 5;
-                        break;
-                    case 2: //丙
-                        ganIndex = 7;
-                        break;
-                    case 3: //丁
-                        ganIndex = 9;
-                        break;
-                    case 4: //戊
-                        ganIndex = 1;
-                        break;
-                    case 5: //己
-                        ganIndex = 3;
-                        break;
-                    case 6: //庚
-                        ganIndex = 5;
-                        break;
-                    case 7: //辛
-                        ganIndex = 7;
-                        break;
-                    case 8: //壬
-                        ganIndex = 9;
-                        break;
-                    case 9: //癸
-                        ganIndex = 1;
-                        break;
-                    #endregion
-                }
-                gan = ganStr[(ganIndex + this._cMonth - 2) % 10].ToString();
-
-                return gan + zhi + "月";
-            }
-        }
-        #endregion
-
-        #region GanZhiDayString
-        /// <summary>
-        /// 取干支日表示法
-        /// </summary>
-        public string GanZhiDayString
-        {
-            get
-            {
-                int i, offset;
-                TimeSpan ts = this._date - GanZhiStartDay;
-                offset = ts.Days;
-                i = offset % 60;
-                return ganStr[i % 10].ToString() + zhiStr[i % 12].ToString() + "日";
-            }
-        }
-        #endregion
-
-        #region GanZhiDateString
-        /// <summary>
-        /// 取当前日期的干支表示法如 甲子年乙丑月丙庚日
-        /// </summary>
-        public string GanZhiDateString
-        {
-            get
-            {
-                return GanZhiYearString + GanZhiMonthString + GanZhiDayString;
-            }
-        }
-        #endregion
         #endregion
 
   
     }
-       
+    #endregion
 }
-   
+

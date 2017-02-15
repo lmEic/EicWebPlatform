@@ -61,8 +61,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
 
         public void test()
         {
-            DateTime dt =Convert .ToDateTime ("2017-05-1");
-            ChineseCalendar cc = new ChineseCalendar(dt);
+           
             var ddd = GetChineseDateTime(DateTime.Now.Date);
             var mm = ArchiveService.ArCalendarManger.GetDateDictionary(2017, 2);
             if (mm==null || mm.Count < 0)
