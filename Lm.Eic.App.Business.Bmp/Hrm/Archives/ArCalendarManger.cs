@@ -27,11 +27,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             var ListModel = ArcalendarCurd. FindCalendarDateListBy(nowYear, nowMonth);
             if (ListModel == null || ListModel.Count <= 0) return returnDateDictionary;
             //得到当月所有日期周次
-            var nowMonthWeeksList = ListModel.Select(e => e.NowMothWeekNumber).Distinct().ToList();
+            var nowMonthWeeksList = ListModel.Select(e => e.NowMonthWeekNumber).Distinct().ToList();
             if (nowMonthWeeksList==null|| nowMonthWeeksList.Count <=0) return returnDateDictionary;
             nowMonthWeeksList.ForEach(W =>
             {
-                var models = ListModel.Where(e => e.NowMothWeekNumber == W).ToList();
+                var models = ListModel.Where(e => e.NowMonthWeekNumber == W).ToList();
                 int modelsCount = models.Count;
                 if (0<modelsCount&&modelsCount < 7)
                 {
@@ -44,8 +44,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             });
             return returnDateDictionary;
         }
+        public OpResult store(CalendarModel model)
+        {
+            return ArcalendarCurd.Store(model);
+        }
 
-      
+
     }
 
     internal  class ArcalendarCurd : CrudBase<CalendarModel, ICalendarsRepository>
@@ -60,6 +64,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         private OpResult EditReportAttendece(CalendarModel model)
         {
+            var newModel = new CalendarModel()
+            {
+
+            };
             return irep.Insert(model).ToOpResult(OpContext + "保存操作成功", OpContext + "保存操作失败");
         }
 
@@ -70,7 +78,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         public List<CalendarModel> FindCalendarDateListBy(int nowYear, int  nowMonth)
         {
-            return irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMoth == nowMonth).ToList ();
+            return irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMonth == nowMonth).ToList ();
         }
         /// <summary>
         /// 获取日期是当月中的第几周

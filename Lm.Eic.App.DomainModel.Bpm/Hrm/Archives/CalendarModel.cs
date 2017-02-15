@@ -26,14 +26,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _calendaryear = value; }
             get { return _calendaryear; }
         }
-        private int _calendarmoth;
+        private int _calendarmonth;
         /// <summary>
         ///月份
         /// </summary>
-        public int CalendarMoth
+        public int CalendarMonth
         {
-            set { _calendarmoth = value; }
-            get { return _calendarmoth; }
+            set { _calendarmonth = value; }
+            get { return _calendarmonth; }
         }
         private int _calendarday;
         /// <summary>
@@ -53,14 +53,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _yearweeknumber = value; }
             get { return _yearweeknumber; }
         }
-        private int _nowmothweeknumber;
+        private int _nowmonthweeknumber;
         /// <summary>
         ///当月周次
         /// </summary>
-        public int NowMothWeekNumber
+        public int NowMonthWeekNumber
         {
-            set { _nowmothweeknumber = value; }
-            get { return _nowmothweeknumber; }
+            set { _nowmonthweeknumber = value; }
+            get { return _nowmonthweeknumber; }
         }
         private int _calendarweek;
         /// <summary>
