@@ -75,8 +75,17 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         //],
         //weeks : [5, 6, 7, 8, 9],
     };
+
+    //013935创建视图管理器
+    var vmManager = {
+        getCalendarDatas : function(){
+            
+        }
+    }
+
     $scope.navLayout = layoutVm;
     $scope.layoutVm = layoutVm;
+    $scope.vmManager = vmManager;
     ///个人头像
     $scope.headPortrait = "../Content/login/profilepicture.jpg";
     ///载入个人头像
@@ -86,9 +95,8 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
     };
     $scope.loadHeadPortrait();
 
-    //013935创建日历视图模型
     $scope.promise = homeDataopService.getCalendarDatas(layoutVm.nowYear, layoutVm.nowMonth).then(function (datas) {
-        console.log(datas)
+        
     });
 
     //013935编辑日历模态框
