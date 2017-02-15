@@ -17,23 +17,19 @@
                            <div class="form-group">
                                 <label for="dates" class="col-md-2 control-label">日期</label>
                                 <div class="col-md-4">
-                                    <input name="dates" class="form-control" ng-model="layoutVm.dates" readonly required />
-                                </div>
-                                <label for="weeks" class="col-md-2 control-label">周数</label>
-                                <div class="col-md-4">
-                                    <input name="weeks" class="form-control"  required />
+                                    <input type="date" ng-model="layoutVm.CalendarDate" format-date>
                                 </div>
                            </div>
                            <div class="form-group">
                                 <label for="color" class="col-md-2 control-label">颜色</label>
                                 <div class="col-md-4">
-                                    <input name="color" class="form-control" ng-model="layoutVm.color"  required />
+                                    <input type="text" class="form-control" ng-model="layoutVm.DateColor"  required />
                                 </div>
                            </div>
                            <div class="form-group">
                                 <label for="tips" class="col-md-2 control-label">事项</label>
                                 <div class="col-md-10">
-                                    <textarea name="tips" rows="3" class="form-control" ng-model="layoutVm.tips" required />
+                                    <textarea name="tips" rows="3" class="form-control" ng-model="layoutVm.Title" required />
                                     <div class="error-messages" ng-messages="formEquipment.tips.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">故障描述不能为空</small>
                                     </div>

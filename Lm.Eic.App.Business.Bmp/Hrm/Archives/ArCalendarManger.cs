@@ -36,8 +36,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 if (0<modelsCount&&modelsCount < 7)
                 {
                     int InsertIndex = (W == 1) ? 0 : modelsCount;
+                    int yearWeek = models.FirstOrDefault().YearWeekNumber;
                     for (int n = 1; n <= 7 - modelsCount; n++)
-                    { models.Insert(InsertIndex, new CalendarModel());}
+                    { models.Insert(InsertIndex, new CalendarModel() {YearWeekNumber=yearWeek,CalendarDay=string.Empty  });}
                 }
                 models.ForEach(e =>
                 {returnDateDictionary.Add(e);});
