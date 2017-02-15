@@ -58,7 +58,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
 
         public void test()
         {
-            var mm = ArchiveService.ArCalendarManger.GetDateDictionary("2017", "2");
+            var mm = ArchiveService.ArCalendarManger.GetDateDictionary(2017, 2);
             if (mm==null || mm.Count < 0)
             {
                 Assert.Fail();
