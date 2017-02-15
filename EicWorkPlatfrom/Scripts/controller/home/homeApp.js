@@ -40,6 +40,7 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         navMainSize: '80%',
         nowYear: new Date().getFullYear(),
         nowMonth: new Date().getMonth() + 1,
+        calendarWeeks:[],
         calendarDatas:[],
         //calendarDatas: [
         //{ week: 5 }, { week: 5 }, { week: 5 },
@@ -88,12 +89,18 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
 
     //013935创建日历视图模型
     $scope.promise = homeDataopService.getCalendarDatas(layoutVm.nowYear, layoutVm.nowMonth).then(function (datas) {
-        if(datas == null){
-            console.log(1)
-        } else {
-            console.log(2)
+        layoutVm.calendarDatas = datas;
+        console.log(datas);
+        var week = [];
+        for (var i = 0; i < datas.length; i++) {
+            if (datas[i].YearWeekNumber != 0) {
+                if (week.indexOf(datas[i].YearWeekNumber) == -1) {
+                    week.push(datas[i].YearWeekNumber);
+                }
+            }
         }
-        console.log(datas)
+       
+
     });
 
     //013935编辑日历模态框

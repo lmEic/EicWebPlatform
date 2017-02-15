@@ -46,7 +46,7 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult GetCalendarDatas(int  nowYear,int  nowMonth)
         {
             var datas =  ArchiveService.ArCalendarManger.GetDateDictionary(nowYear,nowMonth);;
-            return Json(11111, JsonRequestBehavior.AllowGet);
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 获取模块导航列表
