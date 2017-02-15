@@ -23,6 +23,18 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
 })
 //布局控制器
 .controller('layoutCtrl', function ($scope, $http, navDataService, homeDataopService, $modal) {
+
+    var uiVM = {
+        CalendarDay:null,
+        CalendarMonth:null,
+        CalendarWeek:null,
+        CalendarYear:null,
+        DateColor:null,
+        DateProperty:null,
+        Title:null,
+        YearWeekNumber:null,
+        NowMonthWeekNumber:null,
+    }
     var layoutVm = {
         navViewSwitch: true,//左侧视图导航开关
         switchView: function () {
@@ -40,14 +52,10 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         navMainSize: '75%',
         nowYear: new Date().getFullYear(),
         nowMonth: new Date().getMonth() + 1,
-        calendarWeeks:[],
-        calendarDatas: [],
-        showCalendar:function(){
-            
-
-        },
-        
+        calendarWeeks: null,
+        calendarDatas: null
     };
+    $scope.vm = uiVM;
     $scope.navLayout = layoutVm;
     $scope.layoutVm = layoutVm;
     ///个人头像
@@ -61,25 +69,24 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
 
     //013935创建日历视图模型
     $scope.promise = homeDataopService.getCalendarDatas(layoutVm.nowYear, layoutVm.nowMonth).then(function (datas) {
-            layoutVm.calendarDatas = datas;
-            console.log(datas);
-            var week = [];
-            for (var i = 0; i < datas.length; i++) {
-                if (datas[i].YearWeekNumber != 0) {
-                    if (week.indexOf(datas[i].YearWeekNumber) == -1) {
-                        week.push(datas[i].YearWeekNumber);
-                    }
+        layoutVm.calendarDatas = datas;
+        var week = [];
+        for (var i = 0; i < datas.length; i++) {
+            if (datas[i].YearWeekNumber != 0) {
+                if (week.indexOf(datas[i].YearWeekNumber) == -1) {
+                    week.push(datas[i].YearWeekNumber);
                 }
             }
-            $scope.layoutVm.calendarWeeks = week;
-            console.log(layoutVm.calendarWeeks)
+        }
+        layoutVm.calendarWeeks = week;
     })
 
     //013935编辑日历模态框
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.editItem = function (item) {
-        layoutVm = _.clone(item);
+        uiVM = _.clone(item);
+        console.log(uiVM);
         operate.editModal.$promise.then(operate.editModal.show);
     }
     operate.editModal = $modal({
@@ -98,7 +105,6 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
             //        vmManager.editRemarksModal.$promise.then(vmManager.editRemarksModal.hide);
             //    });
             //};  
-            $scope.layoutVm = layoutVm;
         },
         show: false,
     });

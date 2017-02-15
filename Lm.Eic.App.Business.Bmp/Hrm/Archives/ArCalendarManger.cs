@@ -72,7 +72,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             return irep.Insert(model).ToOpResult(OpContext + "保存操作成功", OpContext + "保存操作失败");
         }
 
-        private OpResult AddReportAttendence(CalendarModel model)
+        private OpResult AddReportAttendence(CalendarModel model)  
         {
             throw new NotImplementedException();
         }
