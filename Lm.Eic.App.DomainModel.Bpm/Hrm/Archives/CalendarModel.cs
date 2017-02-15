@@ -35,11 +35,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             set { _calendarmonth = value; }
             get { return _calendarmonth; }
         }
-        private int _calendarday;
+        private string _calendarday;
         /// <summary>
         ///天数
         /// </summary>
-        public int CalendarDay
+        public string  CalendarDay
         {
             set { _calendarday = value; }
             get { return _calendarday; }

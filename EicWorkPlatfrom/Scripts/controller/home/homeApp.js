@@ -28,53 +28,25 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         switchView: function () {
             layoutVm.navViewSwitch = !layoutVm.navViewSwitch;
             if (layoutVm.navViewSwitch) {
-                layoutVm.navLeftSize = '20%';
-                layoutVm.navMainSize = '80%';
+                layoutVm.navLeftSize = '25%';
+                layoutVm.navMainSize = '75%';
             }
             else {
                 layoutVm.navLeftSize = '5%';
                 layoutVm.navMainSize = '95%';
             }
         },
-        navLeftSize: '20%',
-        navMainSize: '80%',
+        navLeftSize: '25%',
+        navMainSize: '75%',
         nowYear: new Date().getFullYear(),
         nowMonth: new Date().getMonth() + 1,
         calendarWeeks:[],
-        calendarDatas:[],
-        //calendarDatas: [
-        //{ week: 5 }, { week: 5 }, { week: 5 },
-        //{ dates: 1, day: 'wed', week: 5, color: '#783', tips: '1', calendarEdit: false },
-        //{ dates: 2, day: 'thu', week: 5, color: '#ccc', tips: '2', calendarEdit: false },
-        //{ dates: 3, day: 'fri', week: 5, color: '#213', tips: '3', calendarEdit: false },
-        //{ dates: 4, day: 'sat', week: 5, color: '#ccc', calendarEdit: false },
-        //{ dates: 5, day: 'sun', week: 6, color: '#aaa', calendarEdit: false },
-        //{ dates: 6, day: 'mon', week: 6, color: '#bbb', calendarEdit: false },
-        //{ dates: 7, day: 'tue', week: 6, color: '#167', calendarEdit: false },
-        //{ dates: 8, dat: 'wed', week: 6, color: '#ccc', calendarEdit: false },
-        //{ dates: 9, day: 'thu', week: 6, color: '#ddd', calendarEdit: false },
-        //{ dates: 10, day: 'fri', week: 6, color: '#ccc', calendarEdit: false },
-        //{ dates: 11, day: 'sat', week: 6, color: '#381', calendarEdit: false },
-        //{ dates: 12, day: 'sun', week: 7, color: '#ccc', calendarEdit: false },
-        //{ dates: 13, day: 'mon', week: 7, color: '#ccc', calendarEdit: false },
-        //{ dates: 14, day: 'tue', week: 7, color: '#412', calendarEdit: false },
-        //{ dates: 15, dat: 'wed', week: 7, color: '#ccc', calendarEdit: false },
-        //{ dates: 16, day: 'thu', week: 7, color: '#ccc', calendarEdit: false },
-        //{ dates: 17, day: 'fri', week: 7, color: '#eee', calendarEdit: false },
-        //{ dates: 18, day: 'sat', week: 7, color: '#ccc', calendarEdit: false },
-        //{ dates: 19, day: 'sun', week: 8, color: '#ccc', calendarEdit: false },
-        //{ dates: 20, day: 'mon', week: 8, color: '#ccc', calendarEdit: false },
-        //{ dates: 21, day: 'tue', week: 8, color: '#ccc', calendarEdit: false },
-        //{ dates: 22, dat: 'wed', week: 8, color: '#212', calendarEdit: false },
-        //{ dates: 23, day: 'thu', week: 8, color: '#ccc', calendarEdit: false },
-        //{ dates: 24, day: 'fri', week: 8, color: '#cad', calendarEdit: false },
-        //{ dates: 25, day: 'sat', week: 8, color: '#fff', calendarEdit: false },
-        //{ dates: 26, day: 'sun', week: 9, color: '#ccc', calendarEdit: false },
-        //{ dates: 27, day: 'mon', week: 9, color: '#546', calendarEdit: false },
-        //{ dates: 28, day: 'tue', week: 9, color: '#ccc', calendarEdit: false },
-        //{ week: 9 }, { week: 9 }, { week: 9 }, { week: 9 }
-        //],
-        //weeks : [5, 6, 7, 8, 9],
+        calendarDatas: [],
+        showCalendar:function(){
+            
+
+        },
+        
     };
     $scope.navLayout = layoutVm;
     $scope.layoutVm = layoutVm;
@@ -89,19 +61,19 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
 
     //013935创建日历视图模型
     $scope.promise = homeDataopService.getCalendarDatas(layoutVm.nowYear, layoutVm.nowMonth).then(function (datas) {
-        layoutVm.calendarDatas = datas;
-        console.log(datas);
-        var week = [];
-        for (var i = 0; i < datas.length; i++) {
-            if (datas[i].YearWeekNumber != 0) {
-                if (week.indexOf(datas[i].YearWeekNumber) == -1) {
-                    week.push(datas[i].YearWeekNumber);
+            layoutVm.calendarDatas = datas;
+            console.log(datas);
+            var week = [];
+            for (var i = 0; i < datas.length; i++) {
+                if (datas[i].YearWeekNumber != 0) {
+                    if (week.indexOf(datas[i].YearWeekNumber) == -1) {
+                        week.push(datas[i].YearWeekNumber);
+                    }
                 }
             }
-        }
-       
-
-    });
+            $scope.layoutVm.calendarWeeks = week;
+            console.log(layoutVm.calendarWeeks)
+    })
 
     //013935编辑日历模态框
     var operate = Object.create(leeDataHandler.operateStatus);

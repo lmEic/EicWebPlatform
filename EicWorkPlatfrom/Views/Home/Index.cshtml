@@ -96,14 +96,20 @@
                                         <th>Sa</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @*<tr ng-repeat="week in layoutVm.calendarWeeks">
-                                        <td>{{week}}</td>
-                                        <td style="background:{{item.color}};position:relative;" ng-repeat="item in layoutVm.calendarDatas"
-                                             ng-show="item.week=={{week}}"   title="{{item.tips}}" ng-dblclick="operate.editItem(item,week)">
-                                            {{item.dates}}
+                                <tbody style="text-align:center;">
+                                    <tr ng-repeat="week in layoutVm.calendarWeeks">
+                                        <td>
+                                            {{week}}
+                                            
                                         </td>
-                                    </tr>*@
+                                        <td style="background:{{item.DateColor}};" ng-repeat="item in layoutVm.calendarDatas"
+                                             ng-show="item.YearWeekNumber=={{week}}"   title="{{item.tips}}" ng-dblclick="operate.editItem(item,week)">
+                                            {{item.CalendarDay}}
+                                            <br />
+                                        <span style="font-size:12px;">元宵</span>
+                                        </td>
+                                    </tr>
+
                                     
 
                                 </tbody>
