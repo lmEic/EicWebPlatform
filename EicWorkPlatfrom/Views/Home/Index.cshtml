@@ -100,13 +100,12 @@
                                     <tr ng-repeat="week in layoutVm.calendarWeeks">
                                         <td>
                                             {{week}}
-                                            
                                         </td>
-                                        <td style="background:{{item.DateColor}};" ng-repeat="item in layoutVm.calendarDatas"
-                                             ng-show="item.YearWeekNumber=={{week}}"   title="{{item.tips}}" ng-dblclick="operate.editItem(item)">
+                                        <td style="background:{{item.DateColor}};padding-left:0;padding-right:0;" ng-repeat="item in layoutVm.calendarDatas"
+                                             ng-show="item.YearWeekNumber=={{week}}"  title="{{item.tips}}" ng-dblclick="operate.editItem(item)">
                                             {{item.CalendarDay}}
                                             <br />
-                                        <span style="font-size:12px;">元宵</span>
+                                            <span style="font-size:12px;">{{item.ChinaCalendar}}</span>
                                         </td>
                                     </tr>
 
