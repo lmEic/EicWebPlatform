@@ -86,14 +86,16 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
     $scope.operate = operate;
 
     operate.editItem = function (item) {
-        uiVM = _.clone(item);
-        operate.editModal.$promise.then(operate.editModal.show);
+        if (item.CalendarDay != "") {
+            uiVM = _.clone(item);
+            operate.editModal.$promise.then(operate.editModal.show);
+        }
     }
     operate.editModal = $modal({
         title: '修改日历信息',
         content: '',
         templateUrl:"Home/EditHomeCalendarTpl/",
-        controller: function ($scope) {
+        controller: function ($scope, homeDataopService) {
             $scope.vm = uiVM;
             var vmManager = {
                 calendarColors: [
@@ -103,15 +105,11 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
                     { type: "休假", color: "violet" },
                     { type: "星期六日", color: "red" }],
             };
-            console.log($scope.vm);
             $scope.vmManager = vmManager;
-            var op = Object.create(leeDataHandler.operateStatus);
-            $scope.save = function (isValid) {
-                leeDataHandler.dataOperate.add(op, isValid, function () {
-                    vmManager.edittingRow.Remarks = $scope.vm.Remarks;
-                    uiVM.Remarks = vmManager.edittingRow.Remarks;
-                    vmManager.editRemarksModal.$promise.then(vmManager.editRemarksModal.hide);
-                });
+            $scope.editSave = function () {
+                $scope.promise = homeDataopService.saveEditCalendarDatas($scope.vm).then(function () {
+                    console.log($scope.vm)
+                })
             };  
         },
         show: false,
@@ -132,5 +130,12 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
             nowMonth: nowMonth
         })
     };
+    home.saveEditCalendarDatas = function (vm) {
+        var url = calendarUrl + "SaveEditCalendarDatas";
+        return ajaxService.postData(url, {
+           vm:vm
+        })
+    }
+
     return home;
 })
