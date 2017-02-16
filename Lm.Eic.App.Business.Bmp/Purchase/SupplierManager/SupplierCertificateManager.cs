@@ -29,7 +29,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
  /// </summary>
     public  class SupplierCertificateManager
     {
-        List<EligibleSuppliersModel> QualifiedSupplierInfo = null;
+      
         //缓存合格供应商清册表
         Dictionary<string, EligibleSuppliersModel> eligibleSuppliersModelKey = new Dictionary<string, EligibleSuppliersModel>();
 
@@ -40,7 +40,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public List<EligibleSuppliersModel> GetQualifiedSupplierList(string endYearMonth)
         {
-            QualifiedSupplierInfo = new List<EligibleSuppliersModel>();
+           var QualifiedSupplierInfo = new List<EligibleSuppliersModel>();
             EligibleSuppliersModel model = null;
             string startYearMonth = (int.Parse(endYearMonth)-100).ToString();
             //获取供应商信息
@@ -179,12 +179,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// 生成合格供应商清单
         /// </summary>
         /// <returns></returns>
-        public MemoryStream BuildQualifiedSupplierInfoList()
+        public MemoryStream BuildQualifiedSupplierInfoList(List<EligibleSuppliersModel> datas)
         {
             try
             {
-                if (QualifiedSupplierInfo == null || QualifiedSupplierInfo.Count < 0) return null;
-                 var dataGroupping = QualifiedSupplierInfo.GetGroupList<EligibleSuppliersModel>("");
+                if (datas == null || datas.Count < 0) return null;
+                 var dataGroupping = datas.GetGroupList<EligibleSuppliersModel>("");
                  return dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(null);
             }
             catch (Exception ex)

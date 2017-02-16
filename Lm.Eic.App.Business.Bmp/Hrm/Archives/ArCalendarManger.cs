@@ -12,34 +12,34 @@ using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
-    public   class ArCalendarManger
+    public class ArCalendarManger
     {
         /// <summary>
         /// 
         /// </summary>
-         ArcalendarCurd ArcalendarCurd
+        ArcalendarCurd ArcalendarCurd
         {
             get { return OBulider.BuildInstance<ArcalendarCurd>(); }
         }
-        public List<CalendarModel> GetDateDictionary(int  nowYear, int nowMonth)
+        public List<CalendarModel> GetDateDictionary(int nowYear, int nowMonth)
         {
-            List<CalendarModel> returnDateDictionary = new List<CalendarModel> ();
+            List<CalendarModel> returnDateDictionary = new List<CalendarModel>();
             ChineseCalendar chineseCalendar = null;
-            var ListModel = ArcalendarCurd. FindCalendarDateListBy(nowYear, nowMonth);
+            var ListModel = ArcalendarCurd.FindCalendarDateListBy(nowYear, nowMonth);
             if (ListModel == null || ListModel.Count <= 0) return returnDateDictionary;
             //得到当月所有日期周次
             var nowMonthWeeksList = ListModel.Select(e => e.NowMonthWeekNumber).Distinct().ToList();
-            if (nowMonthWeeksList==null|| nowMonthWeeksList.Count <=0) return returnDateDictionary;
+            if (nowMonthWeeksList == null || nowMonthWeeksList.Count <= 0) return returnDateDictionary;
             nowMonthWeeksList.ForEach(W =>
             {
                 var models = ListModel.Where(e => e.NowMonthWeekNumber == W).ToList();
                 int modelsCount = models.Count;
-                if (0<modelsCount&&modelsCount < 7)
+                if (0 < modelsCount && modelsCount < 7)
                 {
                     int InsertIndex = (W == 1) ? 0 : modelsCount;
                     int yearWeek = models.FirstOrDefault().YearWeekNumber;
                     for (int n = 1; n <= 7 - modelsCount; n++)
-                    { models.Insert(InsertIndex, new CalendarModel() {YearWeekNumber=yearWeek,CalendarDay=string.Empty});}
+                    { models.Insert(InsertIndex, new CalendarModel() { YearWeekNumber = yearWeek, CalendarDay = string.Empty }); }
                 }
                 models.ForEach(e =>
                 {
@@ -53,7 +53,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                             (chineseCalendar.ChineseTwentyFourDay != string.Empty ?
                                chineseCalendar.ChineseTwentyFourDay : chineseCalendar.ChineseDayString));
                     }
-                   
+
                     returnDateDictionary.Add(e);
                 });
             });
@@ -67,10 +67,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
     }
 
-    internal  class ArcalendarCurd : CrudBase<CalendarModel, ICalendarsRepository>
+    internal class ArcalendarCurd : CrudBase<CalendarModel, ICalendarsRepository>
     {
-        public ArcalendarCurd ():base (new CalendarsRepository(),"行事历")
-        {}
+        public ArcalendarCurd()
+            : base(new CalendarsRepository(), "行事历")
+        { }
         protected override void AddCrudOpItems()
         {
             AddOpItem(OpMode.Add, AddReportAttendence);
@@ -86,14 +87,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             return irep.Insert(model).ToOpResult(OpContext + "保存操作成功", OpContext + "保存操作失败");
         }
 
-        private OpResult AddReportAttendence(CalendarModel model)  
+        private OpResult AddReportAttendence(CalendarModel model)
         {
             throw new NotImplementedException();
         }
 
-        public List<CalendarModel> FindCalendarDateListBy(int nowYear, int  nowMonth)
+        public List<CalendarModel> FindCalendarDateListBy(int nowYear, int nowMonth)
         {
-            return irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMonth == nowMonth).ToList ();
+            return irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMonth == nowMonth).ToList();
         }
         /// <summary>
         /// 获取日期是当月中的第几周
@@ -167,7 +168,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     /// <remarks>
     /// 本程序使用数据来源于网上的万年历查询，并综合了一些其它数据
     /// </remarks>
-    public  class ChineseCalendar
+    public class ChineseCalendar
     {
         #region 内部结构
         private struct SolarHolidayStruct
@@ -284,7 +285,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     "立冬", "小雪", "大雪", "冬至"
                     };
         #endregion
-       
+
         #region 节气数据
         private static string[] SolarTerm = new string[] { "小寒", "大寒", "立春", "雨水", "惊蛰", "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至", "小暑", "大暑", "立秋", "处暑", "白露", "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "冬至" };
         private static int[] sTermInfo = new int[] { 0, 21208, 42467, 63836, 85337, 107014, 128867, 150921, 173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033, 353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758 };
@@ -852,7 +853,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         }
         #endregion
 
-       
+
 
         #region DateHoliday
         /// <summary>
@@ -1205,7 +1206,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         #endregion
         #endregion
 
-  
+
     }
     #endregion
 }

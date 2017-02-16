@@ -349,9 +349,6 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
                 archiveInput.datasource = datas;
             });
         },
-        exportToExcel: function () {
-            return "HrArchivesManage/BuildWorkerArchivesList/";
-        },
         //查询报到日期
         startRegistedDate: new Date(),
         //查询报到截止日期
