@@ -449,7 +449,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         public List<string> GetStockSupplierId(string  startDate, string  endDate)
         {
             List<string> SupplierIdlist = new List<string>();
-            string whereSql = string.Format(" WHERE  (TG001 = '341' OR TG001 = '343') AND (TG003 >= '{0}')AND ( TG003 <= '{1}')", startDate, endDate);
+            string whereSql = string.Format(" WHERE  (TG001 = '341' OR TG001 = '343') AND (TG003 >= '{0}')AND ( TG003 <= '{1}')  order by TG005 ", startDate, endDate);
             var modelList = FindStoHeaderBy(whereSql);
             if(modelList!=null&& modelList.Count >0)
             {
