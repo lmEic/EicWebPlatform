@@ -185,12 +185,48 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             {
                 if (datas == null || datas.Count < 0) return null;
                  var dataGroupping = datas.GetGroupList<EligibleSuppliersModel>("");
-                 return dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(null);
+                 return dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(CreateFieldMapping());
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
             }
+        }
+
+        private List<FileFieldMapping> CreateFieldMapping()
+        {
+            List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                new FileFieldMapping ("Number","项次") ,
+                new FileFieldMapping ("SupplierId","供应商Id") ,
+                new FileFieldMapping ("SupplierShortName","供应商简称") ,
+                new FileFieldMapping ("SupplierName","供应商全称") ,
+                new FileFieldMapping ("SupplierProperty","供应商属性") ,
+                new FileFieldMapping ("SupplierTel","供应商电话") ,
+                new FileFieldMapping ("SupplierFaxNo","供应商传真") ,
+                new FileFieldMapping ("SupplierEmail","供应商邮箱") ,
+                new FileFieldMapping ("SupplierAddress","供应商地址") ,
+                new FileFieldMapping ("BillAddress","交货地址") ,
+                new FileFieldMapping ("PurchaseUser","采购人员") ,
+                new FileFieldMapping ("UpperPurchaseDate","上次采购时间") ,
+                new FileFieldMapping ("LastPurchaseDate","最近采购时间") ,
+                new FileFieldMapping ("PurchaseType","采购类型") ,
+                new FileFieldMapping ("Remark","备注") ,
+                new FileFieldMapping ("ISO9001","ISO9001") ,
+                new FileFieldMapping ("ISO14001","ISO14001") ,
+                new FileFieldMapping ("SupplierBaseDocument","供应商基本资料表") ,
+                new FileFieldMapping ("SupplierComment","供应商评鉴表") ,
+                new FileFieldMapping ("NotUseChildLabor","不使用童工申明") ,
+                new FileFieldMapping ("EnvironmentalInvestigation","供应商环境调查表") ,
+                new FileFieldMapping ("HonestCommitment","廉洁承诺书") ,
+                new FileFieldMapping ("PCN_Protocol","PCN协议") ,
+                new FileFieldMapping ("QualityAssuranceProtocol","质量保证协议") ,
+                new FileFieldMapping ("HSF_Guarantee","HSF保证书") ,
+                new FileFieldMapping ("REACH_Guarantee","REACH保证书") ,
+                new FileFieldMapping ("SVHC_Guarantee","SVHC调查表") ,
+                new FileFieldMapping ("REACH_Guarantee","REACH保证书") ,
+                new FileFieldMapping ("SVHC_Guarantee","SVHC调查表") 
+            };
+            return fieldmappping;
         }
 
 

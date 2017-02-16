@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.App.Business.Bmp.Purchase;
 using Lm.Eic.App.DomainModel.Bpm.Purchase;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -183,11 +184,11 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// 供应商考核导出EXcel
         /// </summary>
         /// <returns></returns>
-        public FileResult CreateSupplierSeasonToExcel()
+        public FileResult CreateSupplierEvaluationToExcel()
         {
             var datas = TempData["SupplierSeasonDatas"] as List<SupplierSeasonAuditModel>;
-
-            return null;
+            var ds = PurchaseService.PurSupplierManager.SupplierAuditManager.SupplierSeasonDataStream(datas);
+            return this.ExportToExcel(ds, "供应商考核清单", "供应商考核"); 
         }
         /// <summary>
         /// <summary>
@@ -230,8 +231,8 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public FileResult CreateSupplierTourToExcel()
         {
             var datas = TempData["SupplierTourData"] as List<SupplierSeasonTutorModel>;
-
-            return null;
+            var ds = datas.ExportToExcel("供应商辅导管理");
+            return this.ExportToExcel(ds, "供应商辅导清单", "供应商辅导"); 
         }
         /// <summary>
         /// 编辑供应商辅导信息模板
@@ -291,8 +292,8 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public FileResult CreateSupplierGradeInfoDataToExcel()
         {
             var datas = TempData["SupplierGradeInfoData"] as List<SupplierSeasonTutorModel>;
-
-            return null;
+            var ds = datas.ExportToExcel("供应商考评分模板");
+            return this.ExportToExcel(ds, "供应商考评分数模板清单", "供应商考评分"); ;
         }
         /// <summary>
         /// 保存供应商评分数据

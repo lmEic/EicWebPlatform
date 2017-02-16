@@ -525,7 +525,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                   new FileFieldMapping ("Department","部门"),
                   new FileFieldMapping ("Post","岗位"),
                   new FileFieldMapping ("PostType","岗位性质"),
-                  new FileFieldMapping ("IdentityID","岗位类别")  ,
+                  new FileFieldMapping ("PostNature","岗位类别")  ,
                   new FileFieldMapping ("Sex","性别") ,
                   new FileFieldMapping ("Birthday","出生日期") ,
                   new FileFieldMapping ("Address","家庭住址")  ,
