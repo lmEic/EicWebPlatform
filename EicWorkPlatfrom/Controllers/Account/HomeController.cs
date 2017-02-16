@@ -1,4 +1,5 @@
-﻿using Lm.Eic.Framework.Authenticate.Business;
+﻿using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+using Lm.Eic.Framework.Authenticate.Business;
 using Lm.Eic.Framework.Authenticate.Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,11 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+        [NoAuthenCheck]
+        public ActionResult EditHomeCalendarTpl()
+        {
+            return View();
+        }
         /// <summary>
         /// 获取模块导航列表
         /// </summary>
@@ -38,10 +43,10 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="nowMonth"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetCalendarDatas(string nowYear,string nowMonth)
+        public ContentResult GetCalendarDatas(int  nowYear,int  nowMonth)
         {
-            //var datas = null;
-            return Json(null, JsonRequestBehavior.AllowGet);
+            var datas =  ArchiveService.ArCalendarManger.GetDateDictionary(nowYear,nowMonth);;
+            return DateJsonResult(datas);
         }
         /// <summary>
         /// 获取模块导航列表

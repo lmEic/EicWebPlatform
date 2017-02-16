@@ -82,8 +82,8 @@
                     </h4>
                     <div class="row">
                         <div class="col-md-12">
-                            <table class="table table-bordered" style="table-layout:fixed;" >
-                                <caption class="text-center" style="background:pink;" >二月行事历</caption>
+                            <table class="table table-bordered" style="table-layout:fixed;">
+                                <caption class="text-center" style="background:#d9edf7;font-weight:900;color:black;" >二月行事历</caption>
                                 <thead>
                                     <tr class="info">
                                         <th>周</th>
@@ -96,18 +96,19 @@
                                         <th>Sa</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr ng-repeat="week in weeks">
-                                        <td>{{week}}</td>
-                                        <td style="background:{{item.color}};position:relative;" ng-repeat="item in calendarDatas" ng-show="item.week=={{week}}"   title="{{item.tips}}" ng-dblclick="calendarTipsEdit(item)">
-                                            {{item.dates}}
-                                            <div ng-if="item.calendarEdit" style="position:absolute;z-index:10;">
-                                                <textarea rows="3">{{item.tips}}</textarea>
-                                                <button type="button" class="btn btn-success btn-sm">保存</button>
-                                                <button type="button" class="btn btn-default btn-sm">取消</button>
-                                            </div>
+                                <tbody style="text-align:center;">
+                                    <tr ng-repeat="week in layoutVm.calendarWeeks">
+                                        <td>
+                                            {{week}}
+                                        </td>
+                                        <td style="background:{{item.DateColor}};padding-left:0;padding-right:0;" ng-repeat="item in layoutVm.calendarDatas"
+                                             ng-show="item.YearWeekNumber=={{week}}"  title="{{item.tips}}" ng-dblclick="operate.editItem(item)">
+                                            {{item.CalendarDay}}
+                                            <br />
+                                            <span style="font-size:12px;">{{item.ChinaCalendar}}</span>
                                         </td>
                                     </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -115,11 +116,6 @@
                     
                 </div>
                 
-                @*<div class="panel panel-default">
-                    <div class="panel-body">
-                       
-                    </div>
-                </div>*@
             </div>
             <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-hide="navLayout.navViewSwitch">
                 <span class="badge" ng-click="navLayout.switchView()" title="点击打开导航面板" style="cursor:pointer"><i class="fa fa-hand-o-right"></i></span>

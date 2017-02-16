@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
- using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using System;
+using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+using System.Globalization;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
 {
@@ -19,40 +21,53 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
             }
             Assert.Fail();
         }
-          [TestMethod()]
+        [TestMethod()]
         public void testLeaveOffManager()
         {
             var model = new ArLeaveOfficeModel
             {
-                ID="42092319811109247X",
-                WorkerId="001359",
-                WorkerName ="万晓桥",
-                Department="Eic",
-                LeaveDate=DateTime.Now,
-                LeaveReason="漫漫流量监测",
-                OpPerson ="万晓桥",
-                Post ="操作工",
-                Memo ="测试",
-                OpSign ="add"
+                ID = "42092319811109247X",
+                WorkerId = "001359",
+                WorkerName = "万晓桥",
+                Department = "Eic",
+                LeaveDate = DateTime.Now,
+                LeaveReason = "漫漫流量监测",
+                OpPerson = "万晓桥",
+                Post = "操作工",
+                Memo = "测试",
+                OpSign = "add"
 
             };
-         var Result=   ArchiveService.ArchivesManager.LeaveOffManager.StoreLeaveOffInfo(model);
+            var Result = ArchiveService.ArchivesManager.LeaveOffManager.StoreLeaveOffInfo(model);
         }
 
         public void testWorkerIdChange()
         {
 
-            var model = new WorkerChangedModel {
+            var model = new WorkerChangedModel
+            {
                 OldWorkerId = "881359",
-                NewWorkerId ="001359",
+                NewWorkerId = "001359",
                 WorkerName = "万晓桥",
                 OpSign = "add",
-                OpPerson ="万晓桥"
-                
-              
-                
+                OpPerson = "万晓桥"
+
+
+
             };
             var resulst = ArchiveService.ArchivesManager.WorkerIdChangeManager.StoreWorkerIdChangeInfo(model);
         }
+
+
+        public void test()
+        {
+            var mm = ArchiveService.ArCalendarManger.GetDateDictionary(2017, 2);
+            if (mm == null || mm.Count < 0)
+            {
+                Assert.Fail();
+            }
+        }
+
     }
-}
+       
+ }

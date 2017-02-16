@@ -1,0 +1,56 @@
+﻿
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4>
+                    <i class="fa fa-bell-o"></i>
+                    {{title}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel">
+                   <form class="form-horizontal" name="calendar" role="form" novalidate>
+                       <fieldset>
+                           <legend>基本信息</legend>
+                           <div class="form-group">
+                               <label for="dates" class="col-md-2 control-label">日期</label>
+                               <div class="col-md-4">
+                                   <input type="text"  value="{{vm.CalendarYear+'年'+vm.CalendarMonth+'月'+vm.CalendarDay+'日'}}" class="form-control" readonly>
+                               </div>
+                           </div>
+                           
+                           <div class="form-group">
+                               <label for="color" class="col-md-2 control-label">类别</label>
+                               <div class="col-md-4">
+                                   <button type="button" class="btn btn-default" ng-model="vm.DateProperty"
+                                           data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="修改类别"
+                                           data-bs-options="calendar.color as calendar.type for calendar in vmManager.calendarColors" data-bs-select>
+                                       <span class="caret"></span>
+                                   </button>
+                               </div>
+                           </div>    
+                               
+                           <div class="form-group">
+                                <label for="tips" class="col-md-2 control-label">事项</label>
+                                <div class="col-md-10">
+                                    <textarea name="tips" rows="3" class="form-control" ng-model="vm.Title" required />
+                                    <div class="error-messages" ng-messages="formEquipment.tips.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">事项不能为空</small>
+                                    </div>
+                                </div>
+                           </div>
+                       </fieldset>
+                   </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
+                <button type="button" class="btn btn-primary" ng-click="editSave(calendar.$valid)"><i class="fa fa-save"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+

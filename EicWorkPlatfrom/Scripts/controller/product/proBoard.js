@@ -83,7 +83,7 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
         datasets: [],
         editDatas: [],
         ///获取待审核信息
-        getWaittingCheckInfo: function () {
+        getWaittingCheckInfo:   function () {
             $scope.searchPromise = boardDataOpService.getWaittingAuditBoardList().then(function (datas) {
                 vmManager.editDatas = datas;
             });

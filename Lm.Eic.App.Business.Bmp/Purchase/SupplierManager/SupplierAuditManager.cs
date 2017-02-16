@@ -51,6 +51,7 @@ public     class SupplierAuditManager
             {
                 supplierSeasonAuditModelList.Add(getSupplierSeasonAuditModel(e, seasonDateNum));
             });
+         supplierSeasonAuditModelList.OrderBy(e => e.SupplierId);
             return supplierSeasonAuditModelList;
 
         }

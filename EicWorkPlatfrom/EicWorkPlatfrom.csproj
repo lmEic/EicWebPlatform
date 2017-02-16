@@ -1310,6 +1310,7 @@
     <Content Include="Views\PurSupplierManage\EditPurSupplierToturViewTpl.cshtml" />
     <Content Include="Views\PurSupplierManage\EditPurSupAuditToGradeTpl.cshtml" />
     <Content Include="Views\Equipment\EditEquipmentRepairTpl.cshtml" />
+    <Content Include="Views\Home\EditHomeCalendarTpl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
