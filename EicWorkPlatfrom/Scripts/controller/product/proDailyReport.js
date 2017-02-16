@@ -671,7 +671,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                     leeDataHandler.dataOperate.add(op, isValid, function () {
                         vmManager.edittingRow.Remarks = $scope.vm.Remarks;
                         uiVM.Remarks = vmManager.edittingRow.Remarks;
-                        vmManager.editRemarksModal.$promise.then(vmManager.editRemarksModal.hide);
+                        vmManager.$promise.then(vmManager.editRemarksModal.hide);
                     });
                 };
             },

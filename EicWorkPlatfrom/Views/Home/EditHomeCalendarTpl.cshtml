@@ -17,7 +17,7 @@
                            <div class="form-group">
                                <label for="dates" class="col-md-2 control-label">日期</label>
                                <div class="col-md-4">
-                                   <input type="text"  value="{{vm.CalendarYear+'年'+vm.CalendarMonth+'月'+vm.CalendarDay+'日'}}" class="form-control" readonly>
+                                   <input type="text"  ng-model="vm.CalendarDate" class="form-control" readonly>
                                </div>
                            </div>
                            
@@ -35,10 +35,7 @@
                            <div class="form-group">
                                 <label for="tips" class="col-md-2 control-label">事项</label>
                                 <div class="col-md-10">
-                                    <textarea name="tips" rows="3" class="form-control" ng-model="vm.Title" required />
-                                    <div class="error-messages" ng-messages="formEquipment.tips.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">事项不能为空</small>
-                                    </div>
+                                    <textarea name="tips" rows="3" class="form-control" ng-model="vm.Title"/>
                                 </div>
                            </div>
                        </fieldset>
@@ -48,7 +45,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
-                <button type="button" class="btn btn-primary" ng-click="editSave(calendar.$valid)"><i class="fa fa-save"></i>确定</button>
+                <button type="button" class="btn btn-primary" ng-click="editSave($scope.vm)"><i class="fa fa-save"></i>确定</button>
             </div>
         </div>
     </div>

@@ -141,8 +141,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 AttendClassTypeModel ctMdl = null;
                 entities.ForEach(dto =>
                 {
-                    dto.DateFrom = dto.DateFrom.ToDate();
-                    dto.DateTo = dto.DateTo.ToDate();
+                    dto.DateFrom = dto.DateFrom.AddDays(1).ToDate();
+                    dto.DateTo = dto.DateTo.AddDays(1).ToDate();
                     dto.OpDate = DateTime.Now;
                     dto.IsAlwaysDay = "否";
                     dto.OpPerson = opPerson;

@@ -214,7 +214,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 if (worker != null)
                 {
                     ctmdl=AttendanceService.ClassTypeSetter.GetClassTypeDetailModel(worker.WorkerId,qryDate);
-                    string classType = ctmdl == null ? worker.ClassType : worker.ClassType;
+                    string classType = ctmdl == null ? "白班" : worker.ClassType;
                     string department = worker.Department;
 
                     int len = attendDataPerWorker.Count;
