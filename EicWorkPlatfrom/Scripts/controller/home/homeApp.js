@@ -23,7 +23,6 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
 })
 //布局控制器
 .controller('layoutCtrl', function ($scope, $http, navDataService, homeDataopService, $modal) {
-
     var uiVM = {
         CalendarDay:null,
         CalendarMonth:null,
@@ -35,6 +34,8 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         YearWeekNumber:null,
         NowMonthWeekNumber:null,
     }
+    $scope.vm = uiVM;
+
     var layoutVm = {
         navViewSwitch: true,//左侧视图导航开关
         switchView: function () {
@@ -53,9 +54,8 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         nowYear: new Date().getFullYear(),
         nowMonth: new Date().getMonth() + 1,
         calendarWeeks: null,
-        calendarDatas: null
+        calendarDatas: null,
     };
-    $scope.vm = uiVM;
     $scope.navLayout = layoutVm;
     $scope.layoutVm = layoutVm;
     ///个人头像
@@ -84,9 +84,9 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
     //013935编辑日历模态框
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
+
     operate.editItem = function (item) {
         uiVM = _.clone(item);
-        console.log(uiVM);
         operate.editModal.$promise.then(operate.editModal.show);
     }
     operate.editModal = $modal({
@@ -94,20 +94,33 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         content: '',
         templateUrl:"Home/EditHomeCalendarTpl/",
         controller: function ($scope) {
-            //$scope.vm = {
-            //    Remarks: null,
-            //};
-            //var op = Object.create(leeDataHandler.operateStatus);
-            //$scope.save = function (isValid) {
-            //    leeDataHandler.dataOperate.add(op, isValid, function () {
-            //        vmManager.edittingRow.Remarks = $scope.vm.Remarks;
-            //        uiVM.Remarks = vmManager.edittingRow.Remarks;
-            //        vmManager.editRemarksModal.$promise.then(vmManager.editRemarksModal.hide);
-            //    });
-            //};  
+            $scope.vm = uiVM;
+            var vmManager = {
+                calendarColors: [
+                    { type: "正常", color: "white" },
+                    { type: "法定假日", color: "blue" },
+                    { type: "补班", color: "yellow" },
+                    { type: "休假", color: "violet" },
+                    { type: "星期六日", color: "red" }],
+            };
+            console.log($scope.vm);
+            $scope.vmManager = vmManager;
+            var op = Object.create(leeDataHandler.operateStatus);
+            $scope.save = function (isValid) {
+                leeDataHandler.dataOperate.add(op, isValid, function () {
+                    vmManager.edittingRow.Remarks = $scope.vm.Remarks;
+                    uiVM.Remarks = vmManager.edittingRow.Remarks;
+                    vmManager.editRemarksModal.$promise.then(vmManager.editRemarksModal.hide);
+                });
+            };  
         },
         show: false,
     });
+})
+.controller("calendar", function ($scope, $http, navDataService, homeDataopService, $modal) {
+
+
+
 })
 .factory('homeDataopService', function (ajaxService) {
     var home = {};
