@@ -1,6 +1,7 @@
 ﻿using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using Lm.Eic.Framework.Authenticate.Business;
 using Lm.Eic.Framework.Authenticate.Model;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -58,6 +59,17 @@ namespace EicWorkPlatfrom.Controllers
             var datas = GetMenuNavModules(moduleText, cacheKey);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-        
+        /// <summary>
+        /// 保存行事历
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveCalendarDatas(CalendarModel vm)
+        {
+            var resultstring = ArchiveService.ArCalendarManger.store(vm);
+            return null;
+        }
+
+
     }
 }

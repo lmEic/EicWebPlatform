@@ -59,8 +59,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             });
             return returnDateDictionary;
         }
+
+
+
         public OpResult store(CalendarModel model)
         {
+            model.OpSign = "edit";
             return ArcalendarCurd.Store(model);
         }
 
@@ -80,16 +84,46 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         private OpResult EditReportAttendece(CalendarModel model)
         {
-            var newModel = new CalendarModel()
-            {
-
-            };
-            return irep.Insert(model).ToOpResult(OpContext + "保存操作成功", OpContext + "保存操作失败");
+            return null;
         }
 
         private OpResult AddReportAttendence(CalendarModel model)
         {
-            throw new NotImplementedException();
+            int i = 0;
+            DateTime beginDate = DateTime.Parse("2017-01-01");
+            DateTime endDate = DateTime.Parse("2017-12-31");
+            List<DateTime> adlldate = new List<DateTime>();
+            while (beginDate < endDate)
+            {
+                adlldate.Add(beginDate);
+                beginDate = beginDate.AddDays(1);
+            }
+            adlldate.ForEach(d =>
+            {
+
+                var newModel = new CalendarModel()
+                {
+                    CalendarDate = d,
+                    CalendarDay = d.Day.ToString(),
+                    CalendarMonth = d.Month,
+                    CalendarYear = d.Year,
+                    CalendarWeek = (int)d.DayOfWeek,
+                    NowMonthWeekNumber = GetDateWeekBy(d),
+                    ChineseCalendar = GetchineseCalendar(d),
+                    OpDate = DateTime.Now,
+                    OpSign = "add",
+                    OpTime = DateTime.Now,
+                    Title = "",
+                    DateProperty = "正常",
+                    DateColor = "white",
+                    YearWeekNumber = GetWeekOfYear(d),
+                };
+                i += irep.Insert(newModel);
+            });
+
+            if (i >= 360)
+                return i.ToOpResult(OpContext + "操作成功");
+            else return i.ToOpResult(OpContext + "操作失败");
         }
 
         public List<CalendarModel> FindCalendarDateListBy(int nowYear, int nowMonth)
@@ -148,8 +182,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             { weekOfYear -= 1; }
             return weekOfYear;
         }
-    }
 
+
+        private static string GetchineseCalendar(DateTime date)
+        {
+            ChineseCalendar chineseCalendar = new ChineseCalendar(date);
+            return chineseCalendar.ChineseCalendarHoliday != string.Empty ?
+              chineseCalendar.ChineseCalendarHoliday :
+            (chineseCalendar.DateHoliday != string.Empty ?
+             chineseCalendar.DateHoliday :
+            (chineseCalendar.ChineseTwentyFourDay != string.Empty ?
+             chineseCalendar.ChineseTwentyFourDay : chineseCalendar.ChineseDayString));
+
+        }
+    }
+ 
 
     #region  中国日历处理
     /// <summary>

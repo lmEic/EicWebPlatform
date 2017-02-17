@@ -1,6 +1,25 @@
 ﻿/// <reference path="../../angular.min.js" />
 
 angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
+.factory('homeDataopService', function (ajaxService) {
+    var home = {};
+    var calendarUrl = "/home/";
+    home.getCalendarDatas = function (nowYear,nowMonth) {
+        var url = calendarUrl + "GetCalendarDatas";
+        return ajaxService.getData(url, {
+            nowYear: nowYear,
+            nowMonth: nowMonth
+        })
+    };
+    home.saveEditCalendarDatas = function (vm) {
+        var url = calendarUrl + "SaveCalendarDatas";
+        return ajaxService.postData(url, {
+           vm:vm
+        })
+    }
+
+    return home;
+})
 .controller('moduleNavCtrl', function ($scope,$http,navDataService) {
     var moduleNav = {
         navList:[]
@@ -24,15 +43,21 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
 //布局控制器
 .controller('layoutCtrl', function ($scope, $http, navDataService, homeDataopService, $modal) {
     var uiVM = {
-        CalendarDay:null,
-        CalendarMonth:null,
-        CalendarWeek:null,
-        CalendarYear:null,
-        DateColor:null,
+        CalendarMonth: 0,
+        NowMonthWeekNumber: 0,
+        ChineseCalendar:null,
+        CalendarDate: null,
+        CalendarYear: 0,
+        CalendarDay: null,
+        YearWeekNumber: 0,
+        CalendarWeek:0,
         DateProperty:null,
+        DateColor:null,
         Title:null,
-        YearWeekNumber:null,
-        NowMonthWeekNumber:null,
+        OpSign:null,
+        OpDate:null,
+        OpTime:null,
+        Id_Key:null,  
     }
     $scope.vm = uiVM;
 
@@ -119,23 +144,4 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
 
 
 
-})
-.factory('homeDataopService', function (ajaxService) {
-    var home = {};
-    var calendarUrl = "/home/";
-    home.getCalendarDatas = function (nowYear,nowMonth) {
-        var url = calendarUrl + "GetCalendarDatas";
-        return ajaxService.getData(url, {
-            nowYear: nowYear,
-            nowMonth: nowMonth
-        })
-    };
-    home.saveEditCalendarDatas = function (vm) {
-        var url = calendarUrl + "SaveEditCalendarDatas";
-        return ajaxService.postData(url, {
-           vm:vm
-        })
-    }
-
-    return home;
 })
