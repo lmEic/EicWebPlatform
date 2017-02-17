@@ -431,6 +431,22 @@
                             </div>
                         </div>
                     </div>
+                    <div bs-pane data-title="工号" data-name="qryWorkIdTab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="form-inline" role="form" novalidate>
+                                    <div class="form-group">
+                                        <label class="control-label">请输入工号</label>
+                                        <input type="text" ng-model="archive.workId" class="form-control"/>
+                                    </div>
+                                    <div class="form-control">
+                                        <button class="btn btn-primary"><i class="fa fa-search">查询</button>
+                                        <a class="btn btn-primary" title="导出" href="@"></a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="h-split"></div>
                 <div cg-busy="{promise:searchPromise}">

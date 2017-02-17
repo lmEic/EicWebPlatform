@@ -115,11 +115,6 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         show: false,
     });
 })
-.controller("calendar", function ($scope, $http, navDataService, homeDataopService, $modal) {
-
-
-
-})
 .factory('homeDataopService', function (ajaxService) {
     var home = {};
     var calendarUrl = "/home/";

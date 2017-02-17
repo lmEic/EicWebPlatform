@@ -253,7 +253,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
             vmManager.init();
             vmManager.editWindowDisplay = false;
         });
-    };
+    };   
    
     ///选择文件并导入数据
     $scope.selectFile = function (el) {
@@ -269,7 +269,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
     };
     
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
-    departmentTreeSet.bindNodeToVm = function () {
+    departmentTreeSet.bindNodeToVm = function () {    
         var dto = _.clone(departmentTreeSet.treeNode.vm);
         vmManager.department = dto.DataNodeText;
     };
