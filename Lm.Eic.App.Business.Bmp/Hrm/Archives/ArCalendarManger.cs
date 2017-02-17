@@ -37,7 +37,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 if (0 < modelsCount && modelsCount < 7)
                 {
                     int InsertIndex = (W == 1) ? 0 : modelsCount;
-                    int yearWeek = models.FirstOrDefault().YearWeekNumber;
+                    int yearWeek = models.LastOrDefault().YearWeekNumber;
                     for (int n = 1; n <= 7 - modelsCount; n++)
                     { models.Insert(InsertIndex, new CalendarModel() { YearWeekNumber = yearWeek, CalendarDay = string.Empty }); }
                 }
@@ -84,9 +84,27 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         private OpResult EditReportAttendece(CalendarModel model)
         {
-            return null;
+              model.DateColor = CalendarColor(model.DateProperty);
+              return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
-
+        private  string CalendarColor (string CalendarProty)
+        {
+            switch(CalendarProty)
+            {
+                case "法定假日":
+                    return "#29B8CB";
+                case "补班":
+                    return "yellow";
+                case "休假":
+                    return "violet";
+                case "星期六日":
+                    return "red";
+                case "正常":
+                    return "white";
+                default:
+                    return "white";  
+            }
+        }
         private OpResult AddReportAttendence(CalendarModel model)
         {
             int i = 0;
@@ -98,25 +116,27 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 adlldate.Add(beginDate);
                 beginDate = beginDate.AddDays(1);
             }
+            string calendercolor = string.Empty ;
+
             adlldate.ForEach(d =>
             {
 
-                var newModel = new CalendarModel()
-                {
-                    CalendarDate = d,
-                    CalendarDay = d.Day.ToString(),
-                    CalendarMonth = d.Month,
-                    CalendarYear = d.Year,
-                    CalendarWeek = (int)d.DayOfWeek,
-                    NowMonthWeekNumber = GetDateWeekBy(d),
-                    ChineseCalendar = GetchineseCalendar(d),
-                    OpDate = DateTime.Now,
-                    OpSign = "add",
-                    OpTime = DateTime.Now,
-                    Title = "",
-                    DateProperty = "正常",
-                    DateColor = "white",
-                    YearWeekNumber = GetWeekOfYear(d),
+            var newModel = new CalendarModel()
+            {
+                CalendarDate = d,
+                CalendarDay = d.Day.ToString(),
+                CalendarMonth = d.Month,
+                CalendarYear = d.Year,
+                CalendarWeek = (int)d.DayOfWeek,
+                NowMonthWeekNumber = GetDateWeekBy(d),
+                ChineseCalendar = GetchineseCalendar(d),
+                OpDate = DateTime.Now,
+                OpSign = "add",
+                OpTime = DateTime.Now,
+                Title = "",
+                DateProperty = GetDateProperty((int)d.DayOfWeek),
+                DateColor = "white",
+                YearWeekNumber = GetWeekOfYear(d),
                 };
                 i += irep.Insert(newModel);
             });
@@ -124,6 +144,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             if (i >= 360)
                 return i.ToOpResult(OpContext + "操作成功");
             else return i.ToOpResult(OpContext + "操作失败");
+        }
+
+        private string GetDateProperty(int  CalendarWeek)
+        {
+            if (CalendarWeek == 0 | CalendarWeek == 6)
+                return "星期六日";
+            else return "正常";
         }
 
         public List<CalendarModel> FindCalendarDateListBy(int nowYear, int nowMonth)
