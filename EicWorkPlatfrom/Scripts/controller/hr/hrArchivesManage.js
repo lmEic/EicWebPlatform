@@ -289,7 +289,8 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         //户口
         registeredPermanents: [],
         //婚姻状态
-        marryStatuses: [""],
+        marryStatuses: [],
+        workingStatuses: [],
         departments: [],
         selectDepartment: function () {
             $scope.ztree = departmentTreeSet;
@@ -356,7 +357,6 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
 
     }
     $scope.configPromise = hrArchivesDataOpService.getArchiveConfigDatas().then(function (datas) {
-        
         archiveInput.configDatas = datas;
         archiveInput.workerIdCategories = createDataSource(datas, 'WorkerIdCategory', '工号类别');
         archiveInput.politicalStatus = createDataSource(datas, 'PoliticalStatus', "政治面貌");
@@ -364,9 +364,11 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         archiveInput.marryStatuses = createDataSource(datas, 'MarryStatus', "婚否");
         archiveInput.postNatures = createDataSource(datas, 'PostNature', "岗位性质");
         archiveInput.qulifacations = createDataSource(datas, 'QulificationType', "学历类型");
-
         archiveInput.departments = _.where(datas, { AboutCategory: "HrDepartmentSet" });
         archiveInput.posts = _.where(datas, { AboutCategory: "PostInfo" });
+
+        //013935
+        archiveInput.workingStatuses = createDataSource(datas, 'WorkingStatus', "在职状态");
     });
 
     var createDataSource = function (datas,category,parentNodeText) {

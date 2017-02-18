@@ -428,7 +428,7 @@
                                     </div>
                                     <div class="form-group">
                                         <button class="btn btn-primary" ng-click="archive.getWorkerArchiveDatas(3)"><i class="fa fa-search"></i>查询</button>
-                                        <a class="btn btn-success" title="导出"  href="@Url.Action("BuildWorkerArchivesList", "HrArchivesManage")"><i class="fa fa-file-excel-o"></i>导出</a>
+                                        <a class="btn btn-success" title="导出" href="@Url.Action("BuildWorkerArchivesList", "HrArchivesManage")"><i class="fa fa-file-excel-o"></i>导出</a>
                                     </div>
                                 </form>
                             </div>
@@ -442,7 +442,7 @@
                                 <form class="form-inline" role="form" novalidate>
                                     <div class="form-group">
                                         <label class="control-label">请输入工号</label>
-                                        <input type="text" ng-model="archive.workerId" class="form-control"/>
+                                        <input type="text" ng-model="archive.workerId" class="form-control" />
                                     </div>
                                     <div class="form-group">
                                         <button class="btn btn-primary"><i class="fa fa-search">查询</i></button>
@@ -487,6 +487,9 @@
                                     <div class="form-group">
                                         <label class="control-label">出生日期</label>
                                         <input type="date" ng-model="archive.birthday" format-date class="form-control" />
+                                        <div class="error-messages" ng-messages="employeeIdentityForm.studyDateFrom.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">起始日期不能为空</small>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <button class="btn btn-primary" ng-click="archive.getBirthdayDatas()"><i class="fa fa-search"></i>查询</button>
@@ -522,21 +525,21 @@
                     </div>
 
                     @*按在职状态查询*@
-                    <div bs-pane data-title="在职状况" data-name="workStatus">
+                    <div bs-pane data-title="在职状况" data-name="workingStatus">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="input-group">
                                     <div class="input-group-addon">
-                                        <label for="workStatus">在职否</label>
+                                        <label for="workingStatus">在职否</label>
                                     </div>
                                     <div class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-model="archive.workStatus"
+                                        <button type="button" class="btn btn-default" ng-model="archive.workingStatus"
                                                 data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="在职状态"
                                                 data-bs-options="ws.name as ws.text for ws in archive.workStatuses" data-bs-select>
                                             在职状态<span class="caret"></span>
                                         </button>
-                                        <input name="marryStatus" class="form-control" ng-model="archive.workStatus" ng-show="false" required />
-                                        <div class="error-messages" ng-messages="employeeIdentityForm.workStatus.$error" ng-show="operate.showValidation">
+                                        <input name="marryStatus" class="form-control" ng-model="archive.workingStatus" ng-show="false" required />
+                                        <div class="error-messages" ng-messages="employeeIdentityForm.workingStatus.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">在职状态不能为空</small>
                                         </div>
                                     </div>
@@ -545,7 +548,8 @@
                         </div>
                     </div>
 
-                </div>
+                </div>       
+                
                 <div class="h-split"></div>
                 <div cg-busy="{promise:searchPromise}">
                     <div class="table-responsive">

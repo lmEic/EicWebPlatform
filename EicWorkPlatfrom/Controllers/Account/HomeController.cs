@@ -44,7 +44,6 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
-
         #region  行事历
         [NoAuthenCheck]
         public ActionResult EditHomeCalendarTpl()
