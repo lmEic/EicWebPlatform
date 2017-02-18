@@ -11,7 +11,7 @@
             </div>
             <div class="modal-body">
                 <div class="panel">
-                   <form class="form-horizontal" name="calendar" role="form" novalidate>
+                   <form class="form-horizontal" name="formCalendar" role="form" novalidate>
                        <fieldset>
                            <legend>基本信息</legend>
                            <div class="form-group">
@@ -26,7 +26,7 @@
                                <div class="col-md-4">
                                    <button type="button" class="btn btn-default" ng-model="vm.DateProperty"
                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="修改类别"
-                                           data-bs-options="calendar.type as calendar.type for calendar in vmManager.calendarColors" data-bs-select>
+                                           data-bs-options="calendar.type as calendar.type for calendar in vmEditManager.calendarColors" data-bs-select>
                                        <span class="caret"></span>
                                    </button>
                                </div>
@@ -45,7 +45,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
-                <button type="button" class="btn btn-primary" ng-click="editSave($scope.vm)"><i class="fa fa-save"></i>确定</button>
+                <button type="button" class="btn btn-primary" ng-click="editSave(formCalendar.$valid)"><i class="fa fa-save"></i>确定</button>
             </div>
         </div>
     </div>
