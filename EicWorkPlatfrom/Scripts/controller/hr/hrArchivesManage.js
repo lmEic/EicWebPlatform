@@ -289,7 +289,7 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         //户口
         registeredPermanents: [],
         //婚姻状态
-        marryStatuses: [],
+        marryStatuses: [""],
         departments: [],
         selectDepartment: function () {
             $scope.ztree = departmentTreeSet;
