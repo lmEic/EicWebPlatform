@@ -21,7 +21,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             get { return OBulider.BuildInstance<ArcalendarCurd>(); }
         }
-        public List<CalendarModel> GetDateDictionary(int nowYear, int nowMonth)
+        public  List<CalendarModel> GetDateDictionary(int nowYear, int nowMonth)
         {
             List<CalendarModel> returnDateDictionary = new List<CalendarModel>();
             ChineseCalendar chineseCalendar = null;
