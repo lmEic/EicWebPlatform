@@ -10,18 +10,13 @@ namespace EicWorkPlatfrom.Controllers
 {
     public class HomeController : EicBaseController
     {
-        #region 导航
         //
         // GET: /Home/
         public ActionResult Index()
         {
             return View();
         }
-        [NoAuthenCheck]
-        public ActionResult EditHomeCalendarTpl()
-        {
-            return View();
-        }
+        
         /// <summary>
         /// 获取模块导航列表
         /// </summary>
@@ -38,7 +33,6 @@ namespace EicWorkPlatfrom.Controllers
             }
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-       
         /// <summary>
         /// 获取模块导航列表
         /// </summary>
@@ -49,11 +43,16 @@ namespace EicWorkPlatfrom.Controllers
             var datas = GetMenuNavModules(moduleText, cacheKey);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-        #endregion
+
 
         #region  行事历
+        [NoAuthenCheck]
+        public ActionResult EditHomeCalendarTpl()
+        {
+            return View();
+        }
         /// <summary>
-        /// 
+        /// 得到行事历数据
         /// </summary>
         /// <param name="nowYear"></param>
         /// <param name="nowMonth"></param>
@@ -72,7 +71,7 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult SaveCalendarDatas(CalendarModel vm)
         {
             var result = ArchiveService.ArCalendarManger.store(vm);
-            return Json(result); ;
+            return Json(result);
         }
         #endregion
 
