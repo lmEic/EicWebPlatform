@@ -158,6 +158,16 @@ namespace EicWorkPlatfrom.Controllers.Hr
             TempData["archiveDatas"] = data;
             return DateJsonResult(data);
         }
+        public ContentResult GetWorkerArchivesby(string query, int searchMode)
+        {
+            var data = ArchiveService.ArchivesManager.FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto
+            {
+               
+                SearchMode = searchMode
+            }); //待填写
+            TempData["archiveDatas"] = data;
+            return DateJsonResult(data);
+        }
 
         [NoAuthenCheck]
         public FileResult BuildWorkerArchivesList()
