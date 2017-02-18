@@ -10,6 +10,7 @@ namespace EicWorkPlatfrom.Controllers
 {
     public class HomeController : EicBaseController
     {
+        #region 导航
         //
         // GET: /Home/
         public ActionResult Index()
@@ -37,18 +38,7 @@ namespace EicWorkPlatfrom.Controllers
             }
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="nowYear"></param>
-        /// <param name="nowMonth"></param>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public ContentResult GetCalendarDatas(int  nowYear,int  nowMonth)
-        {
-            var datas =  ArchiveService.ArCalendarManger.GetDateDictionary(nowYear,nowMonth);;
-            return DateJsonResult(datas);
-        }
+       
         /// <summary>
         /// 获取模块导航列表
         /// </summary>
@@ -59,6 +49,21 @@ namespace EicWorkPlatfrom.Controllers
             var datas = GetMenuNavModules(moduleText, cacheKey);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+        #endregion
+
+        #region  行事历
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nowYear"></param>
+        /// <param name="nowMonth"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetCalendarDatas(int nowYear, int nowMonth)
+        {
+            var datas = ArchiveService.ArCalendarManger.GetDateDictionary(nowYear, nowMonth); ;
+            return DateJsonResult(datas);
+        }
         /// <summary>
         /// 保存行事历
         /// </summary>
@@ -66,10 +71,10 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult SaveCalendarDatas(CalendarModel vm)
         {
-            var resultstring = ArchiveService.ArCalendarManger.store(vm);
-            return null;
+            var result = ArchiveService.ArCalendarManger.store(vm);
+            return Json(result); ;
         }
-
+        #endregion
 
     }
 }

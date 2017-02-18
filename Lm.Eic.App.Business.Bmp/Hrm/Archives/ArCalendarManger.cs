@@ -37,7 +37,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 if (0 < modelsCount && modelsCount < 7)
                 {
                     int InsertIndex = (W == 1) ? 0 : modelsCount;
-                    int yearWeek = models.LastOrDefault().YearWeekNumber;
+                    int yearWeek = models.FirstOrDefault().YearWeekNumber;
                     for (int n = 1; n <= 7 - modelsCount; n++)
                     { models.Insert(InsertIndex, new CalendarModel() { YearWeekNumber = yearWeek, CalendarDay = string.Empty }); }
                 }
@@ -64,7 +64,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         public OpResult store(CalendarModel model)
         {
-            model.OpSign = "edit";
+              model.OpSign = "edit";
             return ArcalendarCurd.Store(model);
         }
 
@@ -105,45 +105,62 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     return "white";  
             }
         }
+        /// <summary>
+        /// 添加一年行事历
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private OpResult AddReportAttendence(CalendarModel model)
         {
-            int i = 0;
-            DateTime beginDate = DateTime.Parse("2017-01-01");
-            DateTime endDate = DateTime.Parse("2017-12-31");
-            List<DateTime> adlldate = new List<DateTime>();
-            while (beginDate < endDate)
+            try
             {
-                adlldate.Add(beginDate);
-                beginDate = beginDate.AddDays(1);
+                int i = 0;
+                string year = model.CalendarYear.ToString("0000");
+                if (irep.IsExist(e => e.CalendarYear == model.CalendarYear))
+                    return OpResult.SetResult(year + "年行事历已经存在");
+                DateTime beginDate = DateTime.Parse(year + "-01-01");
+                DateTime endDate = DateTime.Parse(year + "-12-31");
+                List<DateTime> adlldate = new List<DateTime>();
+                while (beginDate <= endDate)
+                {
+                    adlldate.Add(beginDate);
+                    beginDate = beginDate.AddDays(1);
+                }
+                string calendercolor = string.Empty;
+
+                adlldate.ForEach(d =>
+                {
+                    string dateProperty = GetDateProperty((int)d.DayOfWeek);
+                    var newModel = new CalendarModel()
+                    {
+                        CalendarDate = d,
+                        CalendarDay = d.Day.ToString(),
+                        CalendarMonth = d.Month,
+                        CalendarYear = d.Year,
+                        CalendarWeek = (int)d.DayOfWeek,
+                        NowMonthWeekNumber = GetDateWeekBy(d),
+                        ChineseCalendar = GetchineseCalendar(d),
+                        Title = "",
+                        DateProperty = dateProperty,
+                        DateColor = CalendarColor(dateProperty),
+                        YearWeekNumber = GetWeekOfYear(d, true),
+                        OpDate = DateTime.Now.Date,
+                        OpSign = "add",
+                        OpTime = DateTime.Now
+                    };
+                    i += irep.Insert(newModel);
+                });
+
+                if (i == 365)
+                    return i.ToOpResult(OpContext + "一年日行事历操作成功");
+                else return i.ToOpResult(OpContext + (365 - i) + "天" + "操作失败");
             }
-            string calendercolor = string.Empty ;
-
-            adlldate.ForEach(d =>
+            catch (Exception)
             {
 
-            var newModel = new CalendarModel()
-            {
-                CalendarDate = d,
-                CalendarDay = d.Day.ToString(),
-                CalendarMonth = d.Month,
-                CalendarYear = d.Year,
-                CalendarWeek = (int)d.DayOfWeek,
-                NowMonthWeekNumber = GetDateWeekBy(d),
-                ChineseCalendar = GetchineseCalendar(d),
-                OpDate = DateTime.Now,
-                OpSign = "add",
-                OpTime = DateTime.Now,
-                Title = "",
-                DateProperty = GetDateProperty((int)d.DayOfWeek),
-                DateColor = "white",
-                YearWeekNumber = GetWeekOfYear(d),
-                };
-                i += irep.Insert(newModel);
-            });
-
-            if (i >= 360)
-                return i.ToOpResult(OpContext + "操作成功");
-            else return i.ToOpResult(OpContext + "操作失败");
+                throw;
+            }
+          
         }
 
         private string GetDateProperty(int  CalendarWeek)
@@ -197,17 +214,25 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// 获取日期是全年中的第几周
         /// </summary>
         /// <param name="dt"></param>
+        /// <param name="sundayFirstDay">星期天是否本周第一天</param>
         /// <returns></returns>
 
-        private static int GetWeekOfYear(DateTime dt)
+       public  int GetWeekOfYear(DateTime dt ,bool sundayFirstDay)
         {
-            GregorianCalendar gc = new GregorianCalendar();
-            int weekOfYear = gc.GetWeekOfYear(dt, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
-            DateTime NewYearsDay = new DateTime(dt.Year, 1, 1);
-            //如果元旦那天刚好是星期天 没全年周次减1
-            if ((int)NewYearsDay.DayOfWeek == 0)
-            { weekOfYear -= 1; }
-            return weekOfYear;
+            try
+            {
+                GregorianCalendar gc = new GregorianCalendar();
+                if (sundayFirstDay)
+                    return gc.GetWeekOfYear(dt, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
+                else return gc.GetWeekOfYear(dt, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+            }
+            catch (Exception )
+            {
+
+                throw;
+            }
+          
+           
         }
 
 
