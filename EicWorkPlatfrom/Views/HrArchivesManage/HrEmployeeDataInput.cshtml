@@ -4,7 +4,7 @@
     </div>
     <div class="panel-body">
         <div bs-tabs bs-active-pane="archive.activeTab">
-            <div bs-pane data-title="档案登记" data-name="inputTab">
+               <div bs-pane data-title="档案登记" data-name="inputTab">
                 <div class="row">
                     <div class="col-md-10">
                         <form role="form" name="employeeIdentityForm" novalidate class="form-horizontal">
@@ -461,10 +461,10 @@
                                     <div class="form-group">
                                         <label>部门</label>
                                         <button class="btn btn-default" style="margin-bottom:6px;" ng-click="archive.selectDepartment()"
-                                            data-title="选择部门名称"
+                                            data-title="选择部门名称" ng-model="employeeIdentity.Department"
                                             data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
                                             data-animation="am-flip-x" data-auto-close="1"
-                                            data-bs-popover ng-model="archive.department">
+                                            data-bs-popover>
                                         选择部门名称
                                             <span class="label label-warning" ng-hide="vm.DepartmentText===null"><strong>{{vm.DepartmentText}}</strong></span>
                                         </button>
@@ -521,7 +521,6 @@
                             </div>
                         </div>
                     </div>
-
                     @*按在职状态查询*@
                     <div bs-pane data-title="在职状况" data-name="workingStatus">
                         <div class="row">
@@ -531,7 +530,7 @@
                                         <label class="control-label">在职否</label>
                                         <button type="button" class="btn btn-default" ng-model="archive.workingStatus"
                                                 data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="在职状态"
-                                                data-bs-options="ws.name as ws.text for ws in archive.workStatuses" data-bs-select>
+                                                data-bs-options="ws.name as ws.text for ws in archive.workingStatuses" data-bs-select>
                                             在职状态<span class="caret"></span>
                                         </button>
                                             <div class="form-group">
