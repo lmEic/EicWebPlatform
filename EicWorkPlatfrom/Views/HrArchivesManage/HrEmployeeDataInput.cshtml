@@ -405,12 +405,15 @@
             </div>
             <div bs-pane data-title="档案查询" data-name="queryTab">
                 <div bs-tabs bs-active-pane="archive.queryActiveTab">
+                    @*全部查询*@
                     <div bs-pane data-title="全部" data-name="qryAllTab">
                         <div>
                             <button class="btn btn-sm btn-primary" ng-click="archive.getWorkerArchiveDatas(0)"><i class="fa fa-search"></i>查询</button>
-                            <a class="btn btn-sm btn-success" ng-href="{{archive.exportToExcel()}}"><i class="fa fa-file-excel-o"></i>导出</a>
+                            <a class="btn btn-sm btn-success" href="@Url.Action("BuildWorkerArchivesList", "HrArchivesManage")"><i class="fa fa-file-excel-o"></i>导出</a>
                         </div>
                     </div>
+
+                    @*按报到日期查询*@
                     <div bs-pane data-title="报到日期" data-name="qryRegistedDateTab">
                         <div class="row">
                             <div class="col-md-12">
@@ -425,13 +428,125 @@
                                     </div>
                                     <div class="form-group">
                                         <button class="btn btn-primary" ng-click="archive.getWorkerArchiveDatas(3)"><i class="fa fa-search"></i>查询</button>
-                                        <a class="btn btn-success" title="导出" ng-href="{{ archive.exportToExcel()}}"><i class="fa fa-file-excel-o"></i>导出</a>
+                                        <a class="btn btn-success" title="导出" href="@Url.Action("BuildWorkerArchivesList", "HrArchivesManage")"><i class="fa fa-file-excel-o"></i>导出</a>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
-                </div>
+
+                    @*按工号查询*@
+                    <div bs-pane data-title="工号" data-name="qryWorkIdTab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="form-inline" role="form" novalidate>
+                                    <div class="form-group">
+                                        <label class="control-label">请输入工号</label>
+                                        <input type="text" ng-model="archive.workerId" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" ng-click="archive.getWorkerArchiveDatas(1)"><i class="fa fa-search">查询</i></button>
+                                        <a class="btn btn-success" title="导出" href="@Url.Action("BuildWorkerArchivesList","HrArchivesManage")"><i class="fa fa-file-excel-o"></i>导出</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*按部门查询*@
+                    <div bs-pane data-title="部门" data-name="qryDepartmentTab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="form-inline" role="form" novalidate>
+                                    <div class="form-group">
+                                        <label>部门</label>
+                                        <button class="btn btn-default" style="margin-bottom:6px;" ng-click="archive.selectDepartment()"
+                                            data-title="选择部门名称"
+                                            data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
+                                            data-animation="am-flip-x" data-auto-close="1"
+                                            data-bs-popover ng-model="archive.department">
+                                        选择部门名称
+                                            <span class="label label-warning" ng-hide="vm.DepartmentText===null"><strong>{{vm.DepartmentText}}</strong></span>
+                                        </button>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" ng-click="archive.getWorkerArchiveDatas(2)"><i class="fa fa-search">查询</i></button>
+                                        <a class="btn btn-success" title="导出" href="@Url.Action("BuildWorkerArchivesList","HrArchivesManage")"><i class="fa fa-file-excel-o"></i>导出</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*按出生年月查询*@
+                    <div bs-pane data-title="出生年月" data-name="qryBirthdayTab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="form-inline" role="form" novalidate>
+                                    <div class="form-group">
+                                        <label class="control-label">出生年月</label>
+                                        <input type="text" ng-model="archive.birthday" class="form-control" placeholder="格式为199501"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" ng-click="archive.getWorkerArchiveDatas(6)"><i class="fa fa-search"></i>查询</button>
+                                        <a class="btn btn-success" title="导出" href="@Url.Action("BuildWorkerArchivesList", "HrArchivesManage")"><i class="fa fa-file-excel-o"></i>导出</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*按婚姻状况查询*@
+                    <div bs-pane data-title="婚姻状况" data-name="marryStatus">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="form-inline" role="form">
+                                    <div class="form-group">
+                                         <div class="input-group">
+                                                <label for="marryStatus">婚否</label>
+                                                <button type="button" class="btn btn-default" ng-model="archive.marryStatus"
+                                                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择婚否"
+                                                        data-bs-options="ms.name as ms.text for ms in archive.marryStatuses" data-bs-select>
+                                                    选择婚否<span class="caret"></span>
+                                                </button>
+                                                <input name="marryStatus" class="form-control" ng-model="archive.marryStatus" ng-show="false" required />
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="btn btn-primary" ng-click="archive.getWorkerArchiveDatas(7)"><i class="fa fa-search"></i>查询</button>
+                                                <a class="btn btn-success" title="导出" href="@Url.Action("BuildWorkerArchivesList", "HrArchivesManage")"><i class="fa fa-file-excel-o"></i>导出</a>
+                                            </div>
+                                      </div>
+                                </form>
+                               
+                            </div>
+                        </div>
+                    </div>
+
+                    @*按在职状态查询*@
+                    <div bs-pane data-title="在职状况" data-name="workingStatus">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form class="form-inline" role="form" novalidate>
+                                    <div class="form-group">
+                                        <label class="control-label">在职否</label>
+                                        <button type="button" class="btn btn-default" ng-model="archive.workingStatus"
+                                                data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="在职状态"
+                                                data-bs-options="ws.name as ws.text for ws in archive.workStatuses" data-bs-select>
+                                            在职状态<span class="caret"></span>
+                                        </button>
+                                            <div class="form-group">
+                                            <button class="btn btn-primary" ng-click="archive.getWorkerArchiveDatas(8)"><i class="fa fa-search"></i>查询</button>
+                                            <a class="btn btn-success" title="导出" href="@Url.Action("BuildWorkerArchivesList", "HrArchivesManage")"><i class="fa fa-file-excel-o"></i>导出</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>       
+                
                 <div class="h-split"></div>
                 <div cg-busy="{promise:searchPromise}">
                     <div class="table-responsive">

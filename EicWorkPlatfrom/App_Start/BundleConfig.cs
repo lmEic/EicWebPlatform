@@ -10,7 +10,6 @@ namespace EicWorkPlatfrom
                 "~/Scripts/jquery-2.1.4.js",
                 "~/Content/bootstrap/dist/js/bootstrap.min.js"));
 
-
             bundles.Add(new ScriptBundle("~/bundles/angularJs").Include(
                          "~/Content/print/print.min.js",
                          "~/Content/pdfmaker/pdfmake.min.js",

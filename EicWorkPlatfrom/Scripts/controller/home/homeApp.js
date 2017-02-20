@@ -1,6 +1,27 @@
-﻿/// <reference path="../../angular.min.js" />
+﻿/// <reference path="../../common/angulee.js" />
+/// <reference path="../../angular.min.js" />
+/// <reference path="D:\EICWebPlatForm\EicWebPlatform\EicWorkPlatfrom\Content/underscore/underscore.js" />
 
 angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
+.factory('homeDataopService', function (ajaxService) {
+    var home = {};
+    var calendarUrl = "/home/";
+    home.getCalendarDatas = function (nowYear,nowMonth) {
+        var url = calendarUrl + "GetCalendarDatas";
+        return ajaxService.getData(url, {
+            nowYear: nowYear,
+            nowMonth: nowMonth
+        })
+    };
+    home.saveCalendarDatas = function (vm) {
+        var url = calendarUrl + "SaveCalendarDatas";
+        return ajaxService.postData(url, {
+           vm:vm
+        })
+    }
+
+    return home;
+})
 .controller('moduleNavCtrl', function ($scope,$http,navDataService) {
     var moduleNav = {
         navList:[]
@@ -22,20 +43,7 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
     }
 })
 //布局控制器
-.controller('layoutCtrl', function ($scope, $http, navDataService, homeDataopService, $modal) {
-    var uiVM = {
-        CalendarDay:null,
-        CalendarMonth:null,
-        CalendarWeek:null,
-        CalendarYear:null,
-        DateColor:null,
-        DateProperty:null,
-        Title:null,
-        YearWeekNumber:null,
-        NowMonthWeekNumber:null,
-    }
-    $scope.vm = uiVM;
-
+.controller('layoutCtrl', function ($scope, $http, navDataService, $modal) {
     var layoutVm = {
         navViewSwitch: true,//左侧视图导航开关
         switchView: function () {
@@ -51,13 +59,8 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         },
         navLeftSize: '25%',
         navMainSize: '75%',
-        nowYear: new Date().getFullYear(),
-        nowMonth: new Date().getMonth() + 1,
-        calendarWeeks: null,
-        calendarDatas: null,
     };
     $scope.navLayout = layoutVm;
-    $scope.layoutVm = layoutVm;
     ///个人头像
     $scope.headPortrait = "../Content/login/profilepicture.jpg";
     ///载入个人头像
@@ -66,71 +69,119 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         $scope.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
     };
     $scope.loadHeadPortrait();
+})
+//日历控制器
+.controller('calendarManageCtrl', function ($scope, homeDataopService, $modal) {
 
-    //013935创建日历视图模型
-    $scope.promise = homeDataopService.getCalendarDatas(layoutVm.nowYear, layoutVm.nowMonth).then(function (datas) {
-        layoutVm.calendarDatas = datas;
-        var week = [];
-        for (var i = 0; i < datas.length; i++) {
-            if (datas[i].YearWeekNumber != 0) {
-                if (week.indexOf(datas[i].YearWeekNumber) == -1) {
-                    week.push(datas[i].YearWeekNumber);
+    //013935创建视图模型
+    var uiVM = {
+        CalendarMonth: 0,
+        NowMonthWeekNumber: 0,
+        ChineseCalendar: null,
+        CalendarDate: null,
+        CalendarYear: 0,
+        CalendarDay: null,
+        YearWeekNumber: 0,
+        CalendarWeek: 0,
+        DateProperty: null,
+        DateColor: null,
+        Title: null,
+        OpSign: null,
+        OpDate: null,
+        OpTime: null,
+        Id_Key: null,
+    }
+    //013935创建视图管理器
+    var vmManager = {
+        nowYear: new Date().getFullYear(),
+        nowMonth: new Date().getMonth() + 1,
+        calendarWeeks: null,
+        calendarDatas: null,
+        //013935获取日历数据
+        loadCalendarDatas: function () {
+            if (window.localStorage) {
+                if (localStorage.getItem("calendarDatas") == null) {
+                    $scope.promise = homeDataopService.getCalendarDatas(vmManager.nowYear, vmManager.nowMonth).then(function (datas) {
+                        var calendarStr = JSON.stringify(datas);
+                        localStorage.setItem("calendarDatas", calendarStr);
+                        vmManager.calendarDatas = datas;
+                        var week = [];
+                        for (var i = 0; i < datas.length; i++) {
+                            if (datas[i].YearWeekNumber != 0) {
+                                if (week.indexOf(datas[i].YearWeekNumber) == -1) {
+                                    week.push(datas[i].YearWeekNumber);
+                                }
+                            }
+                        }
+                        vmManager.calendarWeeks = week;
+                    })
+                } else {
+                        var datas = JSON.parse(localStorage.getItem("calendarDatas"));
+                        vmManager.calendarDatas = datas;
+                        var week = [];
+                        for (var i = 0; i < datas.length; i++) {
+                            if (datas[i].YearWeekNumber != 0) {
+                                if (week.indexOf(datas[i].YearWeekNumber) == -1) {
+                                    week.push(datas[i].YearWeekNumber);
+                                }
+                            }
+                        }
+                    vmManager.calendarWeeks = week;
                 }
             }
-        }
-        layoutVm.calendarWeeks = week;
-    })
+        },
+        //013935双击显示模态框
+        editItem: function (item) {
+            if (item.CalendarDay != "") {
+                uiVM = _.clone(item);
+                vmManager.editModal.$promise.then(vmManager.editModal.show);
+            }
+        },
+        editModal: $modal({
+            title: '修改日历信息',
+            content: '',
+            templateUrl:"Home/EditHomeCalendarTpl/",
+            controller: function ($scope, homeDataopService) {
+                $scope.vm = uiVM;
+                $scope.vmManager = vmManager;
+                var op = Object.create(leeDataHandler.operateStatus);
+                op.vm = uiVM;
+                $scope.operate = op;
 
-    //013935编辑日历模态框
+                var vmEditManager = {
+                    calendarColors: [
+                        { type: "正常", color: "white" },
+                        { type: "法定假日", color: "#29B8CB" },
+                        { type: "补班", color: "yellow" },
+                        { type: "休假", color: "violet" },
+                        { type: "星期六日", color: "red" }],
+                };
+                $scope.vmEditManager = vmEditManager;
+                $scope.editSave = function () {
+                    uiVM.OpSign = 'edit';
+                    $scope.promise = homeDataopService.saveCalendarDatas($scope.vm).then(function () {
+                        
+                        var selItemColor = _.find(vmEditManager.calendarColors, { type: uiVM.DateProperty });
+                        if (selItemColor !== undefined)
+                        {
+                            var selectedItem = _.find(vmManager.calendarDatas, { CalendarDate: $scope.vm.CalendarDate });
+                            if (selectedItem != null);
+                            selectedItem.DateColor = $scope.vm.DateColor = selItemColor.color;
+                            selectedItem.DateProperty = $scope.vm.DateProperty = selItemColor.type;
+                            selectedItem.Title = $scope.vm.Title;
+                        }
+                        var calendarStr = JSON.stringify(vmManager.calendarDatas);
+                        localStorage.setItem("calendarDatas", calendarStr);
+                        vmManager.editModal.$promise.then(vmManager.editModal.hide);
+                    })
+                };
+            },
+            show: false,
+        }),
+    };
+    $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 
-    operate.editItem = function (item) {
-        uiVM = _.clone(item);
-        operate.editModal.$promise.then(operate.editModal.show);
-    }
-    operate.editModal = $modal({
-        title: '修改日历信息',
-        content: '',
-        templateUrl:"Home/EditHomeCalendarTpl/",
-        controller: function ($scope) {
-            $scope.vm = uiVM;
-            var vmManager = {
-                calendarColors: [
-                    { type: "正常", color: "white" },
-                    { type: "法定假日", color: "blue" },
-                    { type: "补班", color: "yellow" },
-                    { type: "休假", color: "violet" },
-                    { type: "星期六日", color: "red" }],
-            };
-            console.log($scope.vm);
-            $scope.vmManager = vmManager;
-            var op = Object.create(leeDataHandler.operateStatus);
-            $scope.save = function (isValid) {
-                leeDataHandler.dataOperate.add(op, isValid, function () {
-                    vmManager.edittingRow.Remarks = $scope.vm.Remarks;
-                    uiVM.Remarks = vmManager.edittingRow.Remarks;
-                    vmManager.editRemarksModal.$promise.then(vmManager.editRemarksModal.hide);
-                });
-            };  
-        },
-        show: false,
-    });
-})
-.controller("calendar", function ($scope, $http, navDataService, homeDataopService, $modal) {
-
-
-
-})
-.factory('homeDataopService', function (ajaxService) {
-    var home = {};
-    var calendarUrl = "/home/";
-    home.getCalendarDatas = function (nowYear,nowMonth) {
-        var url = calendarUrl + "GetCalendarDatas";
-        return ajaxService.getData(url, {
-            nowYear: nowYear,
-            nowMonth: nowMonth
-        })
-    };
-    return home;
+    vmManager.loadCalendarDatas();
 })

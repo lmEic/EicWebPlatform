@@ -11,6 +11,7 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
+using System.IO;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
@@ -90,7 +91,43 @@ public     class SupplierAuditManager
             return SupplierCrudFactory.SuppliersSeasonAuditCrud.Store(model);
         }
 
-
+        public MemoryStream SupplierSeasonDataStream(List<SupplierSeasonAuditModel> datas)
+        {
+            try
+            {
+                if (datas == null || datas.Count < 0) return null;
+                //
+                var dataGroupping = datas.GetGroupList<SupplierSeasonAuditModel>("");
+                return dataGroupping.ExportToExcelMultiSheets<SupplierSeasonAuditModel>(CreateFieldMapping());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+        private List<FileFieldMapping> CreateFieldMapping()
+        {
+            List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                new FileFieldMapping ("Number","项次") ,
+                new FileFieldMapping ("SupplierId","供应商Id") ,
+                new FileFieldMapping ("SupplierShortName","供应商简称") ,
+                new FileFieldMapping ("SupplierName","供应商名称名") ,
+                new FileFieldMapping ("QualityCheck","质量考核分") ,
+                new FileFieldMapping ("AuditPrice","价格考核分") ,
+                new FileFieldMapping ("DeliveryDate","交期考核分") ,
+                new FileFieldMapping ("ActionLiven","配合度考核分") ,
+                new FileFieldMapping ("HSFGrade","HSF能力考核等级分") ,
+                new FileFieldMapping ("TotalCheckScore","考核总分") ,
+                new FileFieldMapping ("CheckLevel","考核级别") ,
+                new FileFieldMapping ("RewardsWay","奖惩方式") ,
+                new FileFieldMapping ("MaterialGrade","供应商风险等级") ,
+                new FileFieldMapping ("ManagerRisk","供应商管理风险") ,
+                new FileFieldMapping ("SubstitutionSupplierId","替代厂商") ,
+                new FileFieldMapping ("SeasonDateNum","第几季度") ,
+                new FileFieldMapping ("Remark","备注") 
+            };
+            return fieldmappping;
+        }
 
         #endregion
     }

@@ -468,6 +468,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// 3：依入职时间段查询
         /// 4：直接/间接
         /// 5：职工属性
+        /// 6：出生年月
+        /// 7：婚姻状况
+        /// 8：在职状况
         /// <returns></returns>
         public List<ArchivesEmployeeIdentityModel> FindWorkerArchivesInfoBy(QueryWorkerArchivesDto qryDto)
         {
@@ -493,6 +496,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                         return WorkerArchivesInfoList;
                     case 5://职工属性
                         WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkerIdType.StartsWith(qryDto.WorkerIdType)).ToList();
+                        return WorkerArchivesInfoList;
+      
+                    case 6://出生年月
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.BirthMonth.StartsWith(qryDto.BirthMonth)).ToList();
+                        return WorkerArchivesInfoList;
+                    case 7://婚姻状况
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.MarryStatus.StartsWith(qryDto.MarryStatus)).ToList();
+                        return WorkerArchivesInfoList;
+                    case 8: //在职状态
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith(qryDto.WorkingStatus)).ToList();
                         return WorkerArchivesInfoList;
                     case 0: //在职全部人员
                         WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith("在职")).ToList();
@@ -525,7 +538,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                   new FileFieldMapping ("Department","部门"),
                   new FileFieldMapping ("Post","岗位"),
                   new FileFieldMapping ("PostType","岗位性质"),
-                  new FileFieldMapping ("IdentityID","岗位类别")  ,
+                  new FileFieldMapping ("PostNature","岗位类别")  ,
                   new FileFieldMapping ("Sex","性别") ,
                   new FileFieldMapping ("Birthday","出生日期") ,
                   new FileFieldMapping ("Address","家庭住址")  ,
