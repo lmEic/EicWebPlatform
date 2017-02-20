@@ -310,7 +310,7 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         registeredPermanents: [],
         //婚姻状态
         marryStatuses: [],
-        //在职状态
+        //013935在职状态
         workingStatuses: [],
         departments: [],
         selectDepartment: function () {
@@ -372,7 +372,7 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
                 archiveInput.startRegistedDate,
                 archiveInput.endRegistedDate,
                 archiveInput.workerId,
-                archiveInput.department,
+                employeeIdentity.Department,
                 archiveInput.birthday,
                 archiveInput.marryStatus,
                 archiveInput.workingStatus,
@@ -390,18 +390,15 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
     }
     $scope.configPromise = hrArchivesDataOpService.getArchiveConfigDatas().then(function (datas) {
         archiveInput.configDatas = datas;
-        console.log(datas)
         archiveInput.workerIdCategories = createDataSource(datas, 'WorkerIdCategory', '工号类别');
         archiveInput.politicalStatus = createDataSource(datas, 'PoliticalStatus', "政治面貌");
         archiveInput.registeredPermanents = createDataSource(datas, 'PermanentResidence', "户籍");
         archiveInput.marryStatuses = createDataSource(datas, 'MarryStatus', "婚否");
+        archiveInput.workingStatuses = createDataSource(datas, 'WorkingStatus', "在职状态");
         archiveInput.postNatures = createDataSource(datas, 'PostNature', "岗位性质");
         archiveInput.qulifacations = createDataSource(datas, 'QulificationType', "学历类型");
         archiveInput.departments = _.where(datas, { AboutCategory: "HrDepartmentSet" });
         archiveInput.posts = _.where(datas, { AboutCategory: "PostInfo" });
-
-        //013935
-        archiveInput.workingStatuses = createDataSource(datas, 'WorkingStatus', "在职状态");
     });
 
     var createDataSource = function (datas,category,parentNodeText) {

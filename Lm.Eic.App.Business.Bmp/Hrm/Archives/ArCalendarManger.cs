@@ -123,11 +123,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 List<DateTime> adlldate = new List<DateTime>();
                 while (beginDate <= endDate)
                 {
-                    adlldate.Add(beginDate);
+                    adlldate.Add(beginDate); 
                     beginDate = beginDate.AddDays(1);
                 }
-                string calendercolor = string.Empty;
-
                 adlldate.ForEach(d =>
                 {
                     string dateProperty = GetDateProperty((int)d.DayOfWeek);
