@@ -354,7 +354,6 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         startRegistedDate: new Date(),
         //查询报到截止日期
         endRegistedDate:new Date(),
-
     }
     $scope.configPromise = hrArchivesDataOpService.getArchiveConfigDatas().then(function (datas) {
         archiveInput.configDatas = datas;
