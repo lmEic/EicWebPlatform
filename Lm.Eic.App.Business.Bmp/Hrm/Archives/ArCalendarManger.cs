@@ -64,7 +64,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         public OpResult store(CalendarModel model)
         {
-              model.OpSign = "add";
+              model.OpSign = "edit";
             return ArcalendarCurd.Store(model);
         }
 
@@ -123,12 +123,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 List<DateTime> adlldate = new List<DateTime>();
                 while (beginDate <= endDate)
                 {
-                    if (irep.IsExist(e => e.CalendarDate != beginDate))
-                   { adlldate.Add(beginDate); }
+                    adlldate.Add(beginDate); 
                     beginDate = beginDate.AddDays(1);
                 }
-                string calendercolor = string.Empty;
-
                 adlldate.ForEach(d =>
                 {
                     string dateProperty = GetDateProperty((int)d.DayOfWeek);
