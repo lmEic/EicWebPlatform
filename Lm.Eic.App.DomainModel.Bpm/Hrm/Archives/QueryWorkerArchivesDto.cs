@@ -14,13 +14,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         {
 
         }
-        /// <summary>
-        /// 查询字符串
-        /// </summary>
-        public string Querystring
-        {
-            get; set;
-        }
+       
          string _Department;
         /// <summary>
         /// 部门名称
@@ -132,6 +126,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             }
         }
 
+       public  string WorkingStatus
+        {
+            set;get;
+        }
 
 
         private string _MarryStatus;

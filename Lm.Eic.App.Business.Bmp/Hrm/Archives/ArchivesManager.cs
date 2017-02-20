@@ -470,6 +470,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// 5：职工属性
         /// 6：出生年月
         /// 7：婚姻状况
+        /// 8：在职状况
         /// <returns></returns>
         public List<ArchivesEmployeeIdentityModel> FindWorkerArchivesInfoBy(QueryWorkerArchivesDto qryDto)
         {
@@ -502,6 +503,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                         return WorkerArchivesInfoList;
                     case 7://婚姻状况
                         WorkerArchivesInfoList = irep.Entities.Where(m => m.MarryStatus.StartsWith(qryDto.MarryStatus)).ToList();
+                        return WorkerArchivesInfoList;
+                    case 8: //在职状态
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith(qryDto.WorkingStatus)).ToList();
                         return WorkerArchivesInfoList;
                     case 0: //在职全部人员
                         WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith("在职")).ToList();

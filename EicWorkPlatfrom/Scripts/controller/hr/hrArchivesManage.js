@@ -45,15 +45,35 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
     };
 
     ///获取档案数据
-    hrArchive.getWorkerArchives = function (startRegistedDate, endRegistedDate, searchMode) {
+    hrArchive.getWorkerArchives = function (
+        startRegistedDate,
+        endRegistedDate,
+        workerId,
+        department,
+        birthday,
+        marryStatus,
+        workingStatus,
+        searchMode) {
         var url = archiveUrlPrefix + 'GetWorkerArchives';
         return ajaxService.getData(url, {
             startRegistedDate: startRegistedDate,
             endRegistedDate: endRegistedDate,
+            workerId: workerId,
+            department : department,
+            birthday : birthday,
+            marryStatus : marryStatus,
+            workingStatus : workingStatus,
             searchMode: searchMode,
         });
     };
-
+        ///获取档案数据
+    //hrArchive.getWorkerIdArchives = function (workerId, searchMode) {
+    //    var url = archiveUrlPrefix + 'GetWorkerIdArchives';
+    //    return ajaxService.getData(url, {
+    //        workerId:workerId,
+    //        searchMode: searchMode,
+    //    });
+    //};
     //获取该工号列表的所有人员信息
     //mode:0为部门或岗位信息
     //1:为学习信息;2：为联系方式信息
@@ -290,6 +310,7 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         registeredPermanents: [],
         //婚姻状态
         marryStatuses: [],
+        //在职状态
         workingStatuses: [],
         departments: [],
         selectDepartment: function () {
@@ -342,22 +363,34 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         datasets: [],
         datasource: [],
         //获取档案数据
+
         getWorkerArchiveDatas: function (searchMode)
         {
             archiveInput.datasets = [];
             archiveInput.datasource = [];
-            $scope.searchPromise = hrArchivesDataOpService.getWorkerArchives(archiveInput.startRegistedDate, archiveInput.endRegistedDate, searchMode).then(function (datas) {
-                archiveInput.datasource = datas;
+            $scope.searchPromise = hrArchivesDataOpService.getWorkerArchives(
+                archiveInput.startRegistedDate,
+                archiveInput.endRegistedDate,
+                archiveInput.workerId,
+                archiveInput.department,
+                archiveInput.birthday,
+                archiveInput.marryStatus,
+                archiveInput.workingStatus,
+                searchMode).then(function (datas) {
+                    archiveInput.datasource = datas;
             });
         },
-        //查询报到日期
+        
         startRegistedDate: new Date(),
         //查询报到截止日期
-        endRegistedDate:new Date(),
+        endRegistedDate: new Date(),
+
+
 
     }
     $scope.configPromise = hrArchivesDataOpService.getArchiveConfigDatas().then(function (datas) {
         archiveInput.configDatas = datas;
+        console.log(datas)
         archiveInput.workerIdCategories = createDataSource(datas, 'WorkerIdCategory', '工号类别');
         archiveInput.politicalStatus = createDataSource(datas, 'PoliticalStatus', "政治面貌");
         archiveInput.registeredPermanents = createDataSource(datas, 'PermanentResidence', "户籍");

@@ -147,28 +147,40 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="searchMode"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetWorkerArchives(DateTime startRegistedDate, DateTime endRegistedDate, int searchMode)
+        public ContentResult GetWorkerArchives(
+            DateTime startRegistedDate,
+            DateTime endRegistedDate,
+            string workerId,
+            string department,
+            string birthday,
+            string marryStatus,
+            string workingStatus,
+            int searchMode)
         {
-            var data = ArchiveService.ArchivesManager.FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto
+             var data = ArchiveService.ArchivesManager.FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto
             {
                 RegistedDateStart = startRegistedDate,
                 RegistedDateEnd = endRegistedDate,
+                WorkerId = workerId,
+                Department = department,
+                BirthMonth = birthday,
+                MarryStatus = marryStatus,
+                WorkingStatus = workingStatus,
                 SearchMode = searchMode
-            }); //待填写
+            }); 
             TempData["archiveDatas"] = data;
             return DateJsonResult(data);
         }
-        public ContentResult GetWorkerArchivesby(string query, int searchMode)
+        public ContentResult GetWorkerIdArchives(string workerId, int searchMode)
         {
             var data = ArchiveService.ArchivesManager.FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto
             {
-               
+                WorkerId = workerId,
                 SearchMode = searchMode
-            }); //待填写
+            });
             TempData["archiveDatas"] = data;
             return DateJsonResult(data);
         }
-
         [NoAuthenCheck]
         public FileResult BuildWorkerArchivesList()
         {
