@@ -194,6 +194,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             var dayAttendDatas = this.irep.Entities.Where(e => e.AttendanceDate == qryDate);
             //获取所有人员信息到内存中
             var workers = ArchiveService.ArchivesManager.FindWorkers();
+            var departmentManager = new ArDepartmentManager();
             //中间时间
             DateTime middleTime = new DateTime(qryDate.Year, qryDate.Month, qryDate.Day, 13, 0, 0);
             //处理实时考勤数据
@@ -215,7 +216,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 {
                     ctmdl=AttendanceService.ClassTypeSetter.GetClassTypeDetailModel(worker.WorkerId,qryDate);
                     string classType = ctmdl == null ? "白班" : worker.ClassType;
-                    string department = worker.Department;
+                    string department = departmentManager.GetDepartmentText(worker.Department);
 
                     int len = attendDataPerWorker.Count;
                     for (int i = 0; i < len; i++)
