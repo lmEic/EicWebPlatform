@@ -93,10 +93,16 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
     }
     //013935创建视图管理器
     var vmManager = {
+       
         nowYear: new Date().getFullYear(),
         nowMonth: new Date().getMonth() + 1,
         calendarWeeks: null,
         calendarDatas: null,
+
+        calendarViewSwitch:true,
+        calendarView: function(){
+            vmManager.calendarViewSwitch = !vmManager.calendarViewSwitch;
+        },
         //013935获取日历数据
         loadCalendarDatas: function () {
             if (window.localStorage) {

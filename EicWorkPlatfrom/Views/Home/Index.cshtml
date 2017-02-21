@@ -80,53 +80,68 @@
                             <span class="badge" ng-click="navLayout.switchView()" title="点击折叠导航面板" style="cursor:pointer"><i class="fa fa-hand-o-left"></i></span>
                         </span>
                     </h4>
-                    <div class="row" style="font-size:12px;color:black;"　 ng-controller="calendarManageCtrl">
+                    <div class="row" style="font-size:12px;color:black;padding-top:0px;" ng-controller="calendarManageCtrl">
                         <div class="col-md-12">
-                            <table class="table table-bordered" style="table-layout:fixed;margin-bottom:5px;" cg-busy="{promise:promise}">
-                                <caption class="text-center" style="background:#d9edf7;font-weight:900;color:black;" >{{vmManager.nowMonth}}月行事历</caption>
-                                <thead>
-                                    <tr>
-                                        <th>Week</th>
-                                        <th>Sun</th>
-                                        <th>Mon</th>
-                                        <th>Tue</th>
-                                        <th>Wed</th>
-                                        <th>Thu</th>  
-                                        <th>Fri</th>   
-                                        <th>Sat</th>
-                                    </tr>
-                                </thead>
-                                <tbody style="text-align:center;">
-                                    <tr ng-repeat="week in vmManager.calendarWeeks">
-                                        <td  style="background:#d9edf7;">
-                                            {{week}}
-                                        </td>
-                                        <td  style="background-color:{{item.DateColor}};padding-left:0;padding-right:0;"
-                                             ng-repeat="item in vmManager.calendarDatas"  ng-show="item.YearWeekNumber=={{week}}" 
-                                             title="{{item.Title}}" ng-dblclick="vmManager.editItem(item)">
-                                            {{item.CalendarDay}}
-                                            <br />
-                                            <span style="font-size:12px;">{{item.ChineseCalendar}}</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="col-md-3" style="background:#29B8CB;border:1px solid black;">
-                                法定假日
+                            <div  style="position:relative;">
+                                <h5 class="text-center" style="background:#d9edf7;font-weight:900;color:black;line-height:30px;">
+                                    {{vmManager.nowMonth}}月行事历
+                                </h5>
+                                <span class="pull-right" style="position:absolute;right:0px;top:4px;z-index:10;">
+                                    <button type="button" ng-class="vmManager.calendarViewSwitch!==false?'btn btn-xs btn-defulat':'btn btn-xs btn-success'"
+                                            ng-model="vmManager.calendarViewSwitch" bs-checkbox ng-click="vmManager.calendarView()">
+                                        <i ng-class="vmManager.calendarViewSwitch===false?'fa fa-caret-square-o-down':'fa fa-caret-square-o-up'"></i>
+                                        <span ng-show="vmManager.calendarViewSwitch===false">展开</span>
+                                        <span ng-show="vmManager.calendarViewSwitch">折叠</span>
+                                    </button>
+                                </span>
                             </div>
-                            <div class="col-md-2" style="background:yellow;border:1px solid black;">
-                                补班
+                            <div  ng-show="vmManager.calendarViewSwitch">
+                                <table class="table table-bordered" style="table-layout:fixed;margin-bottom:5px;" cg-busy="{promise:promise}">
+                                    
+                                    <thead>
+                                        <tr>
+                                            <th>Week</th>
+                                            <th>Sun</th>
+                                            <th>Mon</th>
+                                            <th>Tue</th>
+                                            <th>Wed</th>
+                                            <th>Thu</th>
+                                            <th>Fri</th>
+                                            <th>Sat</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="text-align:center;">
+                                        <tr ng-repeat="week in vmManager.calendarWeeks">
+                                            <td style="background:#d9edf7;">
+                                                {{week}}
+                                            </td>
+                                            <td style="background-color:{{item.DateColor}};padding-left:0;padding-right:0;"
+                                                ng-repeat="item in vmManager.calendarDatas" ng-show="item.YearWeekNumber=={{week}}"
+                                                title="{{item.Title}}" ng-dblclick="vmManager.editItem(item)">
+                                                {{item.CalendarDay}}
+                                                <br />
+                                                <span style="font-size:12px;">{{item.ChineseCalendar}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="col-md-3" style="background:#29B8CB;border:1px solid black;">
+                                    法定假日
+                                </div>
+                                <div class="col-md-2" style="background:yellow;border:1px solid black;">
+                                    补班
+                                </div>
+                                <div class="col-md-2" style="background:violet;border:1px solid black;">
+                                    休假
+                                </div>
+                                <div class="col-md-3" style="background:red;border:1px solid black;">
+                                    星期六日
+                                </div>
+                                <div class="col-md-2" style="background:#d9edf7;border:1px solid black;">
+                                    周数
+                                </div>
                             </div>
-                            <div class="col-md-2" style="background:violet;border:1px solid black;">
-                                休假
                             </div>
-                            <div class="col-md-3" style="background:red;border:1px solid black;">
-                                星期六日
-                            </div>
-                            <div class="col-md-2" style="background:#d9edf7;border:1px solid black;">
-                                周数
-                            </div>
-                        </div>
 
                     </div>
                 </div>
