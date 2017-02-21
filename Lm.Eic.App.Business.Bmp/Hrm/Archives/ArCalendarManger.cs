@@ -24,7 +24,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public  List<CalendarModel> GetDateDictionary(int nowYear, int nowMonth)
         {
             List<CalendarModel> returnDateDictionary = new List<CalendarModel>();
-            ChineseCalendar chineseCalendar = null;
             var ListModel = ArcalendarCurd.FindCalendarDateListBy(nowYear, nowMonth);
             if (ListModel == null || ListModel.Count <= 0) return returnDateDictionary;
             //得到当月所有日期周次
@@ -44,16 +43,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 models.ForEach(e =>
                 {
                     if (e.CalendarDay != string.Empty)
-                    {
-                        chineseCalendar = new ChineseCalendar(e.CalendarDate);
-                        e.ChineseCalendar = chineseCalendar.ChineseCalendarHoliday != string.Empty ?
-                            chineseCalendar.ChineseCalendarHoliday :
-                           (chineseCalendar.DateHoliday != string.Empty ?
-                            chineseCalendar.DateHoliday :
-                            (chineseCalendar.ChineseTwentyFourDay != string.Empty ?
-                               chineseCalendar.ChineseTwentyFourDay : chineseCalendar.ChineseDayString));
-                    }
-
+                    { e.ChineseCalendar = new ChineseCalendar(e.CalendarDate).ChineseDayString;}
                     returnDateDictionary.Add(e);
                 });
             });
@@ -235,14 +225,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         private static string GetchineseCalendar(DateTime date)
         {
-            ChineseCalendar chineseCalendar = new ChineseCalendar(date);
-            return chineseCalendar.ChineseCalendarHoliday != string.Empty ?
-              chineseCalendar.ChineseCalendarHoliday :
-            (chineseCalendar.DateHoliday != string.Empty ?
-             chineseCalendar.DateHoliday :
-            (chineseCalendar.ChineseTwentyFourDay != string.Empty ?
-             chineseCalendar.ChineseTwentyFourDay : chineseCalendar.ChineseDayString));
-
+            return new ChineseCalendar(date).ChineseDayString;
         }
     }
  
@@ -1109,23 +1092,33 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             get
             {
+                string chineseDayString = string.Empty;
                 switch (this._cDay)
                 {
-                   
                     case 0:
-                        return "";
+                        return chineseDayString;
                     case 1:
-                        return _monthString[this._cMonth];
+                        chineseDayString = _monthString[this._cMonth];
+                        break ;
                     case 10:
-                        return "初十";
+                        chineseDayString =  "初十";
+                        break;
                     case 20:
-                        return "二十";
+                        chineseDayString = "二十";
+                        break;
                     case 30:
-                        return "三十";
+                        chineseDayString = "三十";
+                        break;
                     default:
-                        return nStr2[(int)(_cDay / 10)].ToString() + nStr1[_cDay % 10].ToString();
-
+                        chineseDayString = nStr2[(int)(_cDay / 10)].ToString() + nStr1[_cDay % 10].ToString();
+                        break;
                 }
+                //如果有（公历，农历）节日，显示节日，如有二十四节气，显示节气
+                chineseDayString = ChineseCalendarHoliday != string.Empty ?
+                           ChineseCalendarHoliday:(DateHoliday!= string.Empty ?
+                           DateHoliday:(ChineseTwentyFourDay!= string.Empty ?
+                           ChineseTwentyFourDay : chineseDayString));
+                return chineseDayString;
             }
         }
         #endregion
