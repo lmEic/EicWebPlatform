@@ -151,6 +151,8 @@
     <Compile Include="Controllers\Product\ProMocManageController.cs" />
     <Compile Include="Controllers\Product\ProBoardController.cs" />
     <Compile Include="Controllers\Purchase\PurSupplierManageController.cs" />
+    <Compile Include="Controllers\Quantity\QuaInspectionManageController.cs" />
+    <Compile Include="Controllers\Quantity\QuantityController.cs" />
     <Compile Include="Controllers\SystemManage\EicSystemManageController.cs" />
     <Compile Include="Controllers\Equipment\EquipmentController.cs" />
     <Compile Include="Controllers\FinanceController.cs" />
@@ -158,7 +160,7 @@
     <Compile Include="Controllers\Hr\HrArchivesManageController.cs" />
     <Compile Include="Controllers\Hr\HrAttendanceManageController.cs" />
     <Compile Include="Controllers\Hr\HRController.cs" />
-    <Compile Include="Controllers\CommonTplController.cs" />
+    <Compile Include="Controllers\CommonCtrl\CommonTplController.cs" />
     <Compile Include="Controllers\Product\ProDailyReportController.cs" />
     <Compile Include="Controllers\Product\ProductController.cs" />
     <Compile Include="Controllers\Product\ProEmployeeController.cs" />
@@ -392,6 +394,8 @@
     <Content Include="Scripts\controller\product\proDailyReport.js" />
     <Content Include="Scripts\controller\product\proMocManage.js" />
     <Content Include="Scripts\controller\purchase\purSupplierManage.js" />
+    <Content Include="Scripts\controller\quantity\quaInspectionManage.js" />
+    <Content Include="Scripts\controller\quantity\quantityApp.js" />
     <Content Include="Scripts\controller\sysmanage\sysAccountManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysItilManage.js" />
     <Content Include="Scripts\controller\masterProduct\mpconfigApp.js" />
@@ -1311,6 +1315,7 @@
     <Content Include="Views\PurSupplierManage\EditPurSupAuditToGradeTpl.cshtml" />
     <Content Include="Views\Equipment\EditEquipmentRepairTpl.cshtml" />
     <Content Include="Views\Home\EditHomeCalendarTpl.cshtml" />
+    <Content Include="Views\Quantity\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
