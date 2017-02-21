@@ -120,7 +120,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             this.identityManager = new ArIdentityInfoManager();
             this._StudyManager = new ArStudyManager();
             this._TelManager = new ArTelManager();
-            this._DepartmentMananger = new ArDepartmentManager();
+            this._DepartmentMananger = new ArDepartmentManager();  
             this._PostManager = new ArPostManager();
             this.WorkerArchivesInfoList = new List<ArchivesEmployeeIdentityModel>();
         }
