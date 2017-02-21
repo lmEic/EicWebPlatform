@@ -45,10 +45,11 @@ namespace EicWorkPlatfrom
                 //Equipment
                 //HR
                 //Purchase
+                //Quantity
                 routes.MapRoute(
                              name: "Default",
                              url: "{controller}/{action}/{id}",
-                             defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                             defaults: new { controller = "Quantity", action = "Index", id = UrlParameter.Optional }
                          );
             } 
         }

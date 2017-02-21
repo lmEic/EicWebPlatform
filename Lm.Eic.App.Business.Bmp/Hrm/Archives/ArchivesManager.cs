@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 using System.IO;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeDbHandler;
@@ -695,24 +696,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
             if (root is XmlElement)
             {
-                if (root.Attributes.Count > 0)
+                var areaNodes = root.ChildNodes;
+                foreach (XmlNode anode in areaNodes)
                 {
-                    
-                    if (root.Attributes["code"].Value.Equals(areaCode))
+                    if (anode.Attributes["code"].Value == areaCode)
                     {
-                        result = root.Attributes["name"].Value;
-                        return result;
+                        result = anode.Attributes["name"].Value;
+                        break;
                     }
-                }
-
-                if (root.HasChildNodes)
-                {
-                    result = GetAreaName(root.FirstChild, areaCode);
-                }
-
-                if (root.NextSibling != null) 
-                {
-                    result = GetAreaName(root.NextSibling, areaCode);
                 }
             }
 
