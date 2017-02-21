@@ -1317,6 +1317,7 @@
     <Content Include="Views\Equipment\EditEquipmentRepairTpl.cshtml" />
     <Content Include="Views\Home\EditHomeCalendarTpl.cshtml" />
     <Content Include="Views\Quantity\Index.cshtml" />
+    <Content Include="Views\QuaInspectionManage\IqcInspectionItemConfiguration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

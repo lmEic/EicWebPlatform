@@ -16,5 +16,16 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        #region IQC
+        /// <summary>
+        /// IQC检验项目配置
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult IqcInspectionItemConfiguration()
+        {
+            return View();
+        }
+        #endregion
+
     }
 }

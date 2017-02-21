@@ -5,19 +5,19 @@ angular.module('bpm.quantityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimat
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
-    //看板Url前缀
-    var boardUrlPrefix = leeHelper.controllers.productBoard + "/";
+    //检验项目Url前缀
+    var inspectionUrlPrefix = leeHelper.controllers.quaInspectionManage + "/";
     ////报表Url前缀
     //var reportUrlPrefix = leeHelper.controllers.dailyReport + "/";
 
     ////工单Url前缀
     //var mocUrlPrefix = leeHelper.controllers.mocManage + "/";
 
-    //--------------生产日报-------------------------
-    //$stateProvider.state('dReportHoursSet', {
-    //    //标准工时设定
-    //    templateUrl: reportUrlPrefix + 'DReportHoursSet',
-    //})
+    //--------------检验项目管理-------------------------
+    $stateProvider.state('iqcInspectionItemConfiguration', {
+        //标准工时设定
+        templateUrl: inspectionUrlPrefix + 'IqcInspectionItemConfiguration',
+    })
     //.state('dReportInput', {
     //    //日报录入
     //    templateUrl: reportUrlPrefix + 'DReportInput',
