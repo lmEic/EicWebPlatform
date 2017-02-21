@@ -140,7 +140,7 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         editModal: $modal({
             title: '修改日历信息',
             content: '',
-            templateUrl:"Home/EditHomeCalendarTpl/",
+            templateUrl:"/Home/EditHomeCalendarTpl/",
             controller: function ($scope, homeDataopService) {
                 $scope.vm = uiVM;
                 $scope.vmManager = vmManager;
@@ -166,9 +166,11 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
                         {
                             var selectedItem = _.find(vmManager.calendarDatas, { CalendarDate: $scope.vm.CalendarDate });
                             if (selectedItem != null);
-                            selectedItem.DateColor = $scope.vm.DateColor = selItemColor.color;
-                            selectedItem.DateProperty = $scope.vm.DateProperty = selItemColor.type;
-                            selectedItem.Title = $scope.vm.Title;
+                            {
+                                selectedItem.DateColor = $scope.vm.DateColor = selItemColor.color;
+                                selectedItem.DateProperty = $scope.vm.DateProperty = selItemColor.type;
+                                selectedItem.Title = $scope.vm.Title;
+                            }
                         }
                         var calendarStr = JSON.stringify(vmManager.calendarDatas);
                         localStorage.setItem("calendarDatas", calendarStr);

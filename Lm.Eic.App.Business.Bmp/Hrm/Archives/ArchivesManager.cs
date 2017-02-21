@@ -183,10 +183,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 record = this.irep.Delete(e => e.IdentityID == empIdentityMdl.IdentityID);
                 if (record <= 0) return record;
             }
-            record = this.irep.Insert(empIdentityMdl);
-            return record;
-            
-
+            return this.irep.Insert(empIdentityMdl);
         }
         private int AddEmployee(int record, ArchivesEmployeeIdentityModel empIdentityMdl, ArStudyModel studyMdl, ArTelModel telMdl)
         {
