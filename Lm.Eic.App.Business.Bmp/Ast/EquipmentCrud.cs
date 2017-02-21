@@ -92,7 +92,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依据财产编号查询
-                        return irep.Entities.Where(m => m.AssetNumber==qryDto.AssetNumber).ToList();
+                        return irep.Entities.Where(m => m.AssetNumber.Contains(qryDto.AssetNumber)).ToList();
 
                     case 2: //依据保管部门查询
                         return irep.Entities.Where(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();

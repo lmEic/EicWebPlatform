@@ -72,4 +72,4 @@ namespace EicWorkPlatfrom.Controllers.hr
             return View();
         }
     }
-}
+}     
