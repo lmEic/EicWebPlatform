@@ -63,8 +63,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
 
         public OpResult store(CalendarModel model)
-        {
-              model.OpSign = "edit";
+        { 
             return ArcalendarCurd.Store(model);
         }
 
@@ -1112,8 +1111,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             {
                 switch (this._cDay)
                 {
+                   
                     case 0:
                         return "";
+                    case 1:
+                        return _monthString[this._cMonth];
                     case 10:
                         return "初十";
                     case 20:
