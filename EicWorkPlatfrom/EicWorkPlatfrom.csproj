@@ -1318,6 +1318,7 @@
     <Content Include="Views\Home\EditHomeCalendarTpl.cshtml" />
     <Content Include="Views\Quality\Index.cshtml" />
     <Content Include="Views\QuaInspectionManage\IqcInspectionItemConfiguration.cshtml" />
+    <Content Include="Views\QuaInspectionManage\InspectionDataGatheringOfIQC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
