@@ -88,7 +88,17 @@
                             </div>
                         </div>
                     </fieldset>
+                    <div class="alert alert-info">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-4">
+                                <button class="btn btn-primary" ng-click="operate.save(formProductFlow.$valid)"><i class="fa fa-save"></i>保存</button>
+                                <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                <span yl-operatemsg-board></span>
+                            </div>
+                        </div>
+                    </div>
                 </form>
+
             </div>
 
             <div class="pull-left" style="width:55%;">
