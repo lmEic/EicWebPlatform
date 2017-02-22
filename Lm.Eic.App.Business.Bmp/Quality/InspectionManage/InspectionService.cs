@@ -9,7 +9,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
   /// <summary>
   /// 进料检验管理服务接口
   /// </summary>
-  public class IqcInspectionService
+  public class InspectionService
     {
         /// <summary>
         /// 进料检验项目配置器

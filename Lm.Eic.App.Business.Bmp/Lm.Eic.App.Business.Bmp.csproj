@@ -109,7 +109,7 @@
     <Compile Include="Purchase\SupplierManager\SuppliersGradeManager.cs" />
     <Compile Include="Quality\InspectionManage\IqcInspectionDataGather.cs" />
     <Compile Include="Quality\InspectionManage\IqcInspectionItemConfigurator.cs" />
-    <Compile Include="Quality\InspectionManage\IqcInspectionService.cs" />
+    <Compile Include="Quality\InspectionManage\InspectionService.cs" />
     <Compile Include="Quality\QualityService.cs" />
     <Compile Include="Quality\QuantityMangerFactory.cs" />
     <Compile Include="Quality\SampleManager\IPQCSample\IPQCSampleItems..cs" />
