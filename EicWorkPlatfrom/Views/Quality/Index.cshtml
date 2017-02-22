@@ -2,7 +2,7 @@
     Layout = null;
 }
 <!DOCTYPE html>
-<html ng-app="bpm.quantityApp">
+<html ng-app="bpm.qualityApp">
 <head>
     <meta http-equiv="Content-Type" />
     <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1,user-scalable=no" />
@@ -62,8 +62,8 @@
                                 <ol class="rounded-list">
                                     <li>
                                         <a data-ui-sref-active="active" data-ui-sref="iqcInspectionItemConfiguration" style="cursor:pointer">检验项目配置</a>
-                                        @*<a data-ui-sref-active="active" data-ui-sref="hrLeaveOffManage" style="cursor:pointer">离职管理</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="hrChangeWorkerId" style="cursor:pointer">变更工号</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="inspectionDataGatheringOfIQC" style="cursor:pointer">进料检验数据采集</a>
+                                        @*<a data-ui-sref-active="active" data-ui-sref="hrChangeWorkerId" style="cursor:pointer">变更工号</a>
                                         <a data-ui-sref-active="active" data-ui-sref="hrPrintCard" style="cursor:pointer">厂牌打印</a>
                                         <a data-ui-sref-active="active" data-ui-sref="hrClassTypeManage" style="cursor:pointer">班别管理</a>
                                         <a data-ui-sref-active="active" data-ui-sref="hrSumerizeAttendanceData" style="cursor:pointer">汇总考勤数据</a>
@@ -92,7 +92,7 @@
     <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
     <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/masterProduct/mpConfigApp.js")"></script>
-    <script src="@Url.Content("~/Scripts/controller/quantity/quantityApp.js")"></script>
-    <script src="@Url.Content("~/Scripts/controller/quantity/quaInspectionManage.js")"></script>
+    <script src="@Url.Content("~/Scripts/controller/quality/qualityApp.js")"></script>
+    <script src="@Url.Content("~/Scripts/controller/quality/quaInspectionManage.js")"></script>
 </body>
 </html>
