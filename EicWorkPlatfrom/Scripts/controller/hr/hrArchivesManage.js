@@ -66,14 +66,6 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
             searchMode: searchMode,
         });
     };
-        ///获取档案数据
-    //hrArchive.getWorkerIdArchives = function (workerId, searchMode) {
-    //    var url = archiveUrlPrefix + 'GetWorkerIdArchives';
-    //    return ajaxService.getData(url, {
-    //        workerId:workerId,
-    //        searchMode: searchMode,
-    //    });
-    //};
     //获取该工号列表的所有人员信息
     //mode:0为部门或岗位信息
     //1:为学习信息;2：为联系方式信息

@@ -178,7 +178,11 @@ var leeHelper = (function () {
         //采购管理
         purchaseManage: 'Purchase',
         //采购供应商管理
-        supplierManage:'PurSupplierManage',
+        supplierManage: 'PurSupplierManage',
+        //质量管理控制器
+        quantity: 'Quantity',
+        //质量抽样检验控制器
+        quaInspectionManage: 'QuaInspectionManage'
     };
     return {
         ///控制器名称
