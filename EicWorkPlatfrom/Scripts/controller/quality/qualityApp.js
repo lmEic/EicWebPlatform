@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 
-angular.module('bpm.quantityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', "pageslide-directive"])
+angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', "pageslide-directive"])
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
@@ -35,7 +35,7 @@ angular.module('bpm.quantityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimat
     //    templateUrl: mocUrlPrefix + 'CheckOrderBills'
     //})
 })
-.factory('quantityDataService', function (ajaxService) {
+.factory('qualityDataService', function (ajaxService) {
     var dataAccess = {};
     //var urlPrefix = '/ProEmployee/'
 

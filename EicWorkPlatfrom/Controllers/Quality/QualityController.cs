@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace EicWorkPlatfrom.Controllers
 {
-    public class QuantityController : EicBaseController
+    public class QualityController : EicBaseController
     {
         //
         // GET: /Quantity/

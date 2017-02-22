@@ -395,8 +395,8 @@
     <Content Include="Scripts\controller\product\proDailyReport.js" />
     <Content Include="Scripts\controller\product\proMocManage.js" />
     <Content Include="Scripts\controller\purchase\purSupplierManage.js" />
-    <Content Include="Scripts\controller\quantity\quaInspectionManage.js" />
-    <Content Include="Scripts\controller\quantity\quantityApp.js" />
+    <Content Include="Scripts\controller\quality\quaInspectionManage.js" />
+    <Content Include="Scripts\controller\quality\qualityApp.js" />
     <Content Include="Scripts\controller\sysmanage\sysAccountManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysItilManage.js" />
     <Content Include="Scripts\controller\masterProduct\mpconfigApp.js" />
@@ -1316,7 +1316,7 @@
     <Content Include="Views\PurSupplierManage\EditPurSupAuditToGradeTpl.cshtml" />
     <Content Include="Views\Equipment\EditEquipmentRepairTpl.cshtml" />
     <Content Include="Views\Home\EditHomeCalendarTpl.cshtml" />
-    <Content Include="Views\Quantity\Index.cshtml" />
+    <Content Include="Views\Quality\Index.cshtml" />
     <Content Include="Views\QuaInspectionManage\IqcInspectionItemConfiguration.cshtml" />
     <Content Include="Views\QuaInspectionManage\InspectionDataGatheringOfIQC.cshtml" />
   </ItemGroup>
