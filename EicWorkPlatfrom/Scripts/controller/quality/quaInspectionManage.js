@@ -1,4 +1,4 @@
-﻿var quarityModule = angular.module('bpm.quantityApp');
+﻿var quarityModule = angular.module('bpm.qualityApp');
 quarityModule.factory("quarityDataOpService", function (ajaxService) {
     var quarity = {};
     var quarityUrlPrefix = "";

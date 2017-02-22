@@ -180,7 +180,7 @@ var leeHelper = (function () {
         //采购供应商管理
         supplierManage: 'PurSupplierManage',
         //质量管理控制器
-        quantity: 'Quantity',
+        quantity: 'Quality',
         //质量抽样检验控制器
         quaInspectionManage: 'QuaInspectionManage'
     };
