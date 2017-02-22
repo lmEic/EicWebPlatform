@@ -15,13 +15,13 @@ angular.module('bpm.quantityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimat
 
     //--------------检验项目管理-------------------------
     $stateProvider.state('iqcInspectionItemConfiguration', {
-        //标准工时设定
+        //IQC检验项目配置
         templateUrl: inspectionUrlPrefix + 'IqcInspectionItemConfiguration',
     })
-    //.state('dReportInput', {
-    //    //日报录入
-    //    templateUrl: reportUrlPrefix + 'DReportInput',
-    //})
+    .state('inspectionDataGatheringOfIQC', {
+        //日报录入
+        templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfIQC',
+    })
     ////--------------人员管理--------------------------
     //.state('registWorkerInfo', {
     //    templateUrl: 'ProEmployee/RegistWorkerInfo'

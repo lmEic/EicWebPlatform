@@ -107,14 +107,17 @@
     <Compile Include="Purchase\SupplierManager\SupplierConfigManagerCrud.cs" />
     <Compile Include="Purchase\SupplierManager\SupplierConfigManager.cs" />
     <Compile Include="Purchase\SupplierManager\SuppliersGradeManager.cs" />
-    <Compile Include="Quantity\QuantityMangerFactory.cs" />
-    <Compile Include="Quantity\QuantityServices.cs" />
-    <Compile Include="Quantity\SampleManager\IPQCSample\IPQCSampleItems..cs" />
-    <Compile Include="Quantity\SampleManager\SampleManger.cs" />
-    <Compile Include="Quantity\SampleManager\SampleCrud.cs" />
-    <Compile Include="Quantity\SampleManager\SampleItermRules\SampleItermRulesManger.cs" />
-    <Compile Include="Quantity\SampleManager\SampleIqcManager.cs" />
-    <Compile Include="Quantity\SupperManager\SupperManager.cs" />
+    <Compile Include="Quality\InspectionManage\IqcInspectionDataGather.cs" />
+    <Compile Include="Quality\InspectionManage\IqcInspectionItemConfigurator.cs" />
+    <Compile Include="Quality\InspectionManage\IqcInspectionService.cs" />
+    <Compile Include="Quality\QualityService.cs" />
+    <Compile Include="Quality\QuantityMangerFactory.cs" />
+    <Compile Include="Quality\SampleManager\IPQCSample\IPQCSampleItems..cs" />
+    <Compile Include="Quality\SampleManager\SampleManger.cs" />
+    <Compile Include="Quality\SampleManager\SampleCrud.cs" />
+    <Compile Include="Quality\SampleManager\SampleItermRules\SampleItermRulesManger.cs" />
+    <Compile Include="Quality\SampleManager\SampleIqcManager.cs" />
+    <Compile Include="Quality\SupperManager\SupperManager.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
