@@ -61,6 +61,7 @@
     <Compile Include="Mapping\HrmMapping\HrmDbContext.cs" />
     <Compile Include="Mapping\PmsMapping\DailyReport\DailyReportMapping.cs" />
     <Compile Include="Mapping\PurchaseMapping\SupplierMapping.cs" />
+    <Compile Include="Mapping\QmsMapping\QmsInspectionMapping.cs" />
     <Compile Include="Mapping\QuantityMapping\QuantityDbContext.cs" />
     <Compile Include="Mapping\QuantityMapping\QuantitySampleMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Repository\PmsRep\DailyReport\DailyReportRepository.cs" />
     <Compile Include="Repository\PmsRep\DailyReport\LmMesDailyReportRepository.cs" />
     <Compile Include="Repository\PurchaseRep\PurchaseSuppliesManagement\QualifiedSupplierRepository.cs" />
+    <Compile Include="Repository\QmsRep\QmsInspectionReposity.cs" />
     <Compile Include="Repository\QuantityRep\SampleReposity.cs" />
   </ItemGroup>
   <ItemGroup>

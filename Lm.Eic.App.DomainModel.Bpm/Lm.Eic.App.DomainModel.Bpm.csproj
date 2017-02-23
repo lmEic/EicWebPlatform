@@ -53,6 +53,7 @@
     <Compile Include="Pms\DailyReport\QueryDailyReportDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchase\SupplierModel.cs" />
+    <Compile Include="Qms\InspectionoModel.cs" />
     <Compile Include="Quanity\QuantitySampleRecordModel.cs" />
     <Compile Include="Hrm\GeneralAffairs\WorkClothesManageModel.cs" />
   </ItemGroup>

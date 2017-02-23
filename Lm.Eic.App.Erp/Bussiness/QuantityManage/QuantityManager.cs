@@ -8,9 +8,9 @@ namespace Lm.Eic.App.Erp.Bussiness.QuantityManage
         /// <summary>
         /// 质量管理访问接口
         /// </summary>
-      public static MaterialSampleDb QuantityPurchseDb
+      public static OrderIdInspectionDb QuantityPurchseDb
       {
-          get { return OBulider.BuildInstance<MaterialSampleDb>(); }
+          get { return OBulider.BuildInstance<OrderIdInspectionDb>(); }
       }
 
     }
