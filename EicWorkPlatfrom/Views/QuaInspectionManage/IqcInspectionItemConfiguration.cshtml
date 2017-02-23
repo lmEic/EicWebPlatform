@@ -8,35 +8,35 @@
             <div>
                 <labnel>品号</labnel>
                 <input type="text" placeholder="按品号查询" />
-                <button class="btn-sm btn-success">导出</button>
+                <button class="btn-sm btn-success">查询</button>
             </div>
             <div class="h-split"></div>
             @*ERP信息*@
-            <div class="table-responsive">
-                <table class="table table-hover">
-                   <thead>
-                       <tr>
-                           <th>品名</th>
-                           <th>规格</th>
-                           <th>数量</th>
-                           <th>测ROHS</th>
-                           <th>膜厚</th>
-                           <th>供应商</th>
-                           <th>图号</th>
-                           <th>检验方式</th>
-                           <th>检验时间</th>
-                       </tr>
-                   </thead>
-                   <tbody>
-                       <tr>
-                           <td>啊实打实的</td><td>啊实打实的</td><td>啊实打实的</td><td>啊实打实的</td>
-                           <td>啊实打实的</td><td>啊实打实的</td><td>啊实打实的</td><td>啊实打实的</td><td>啊实打实的</td>
-                       </tr>
-                   </tbody>
-                </table>
-            </div>
-            <div class="h-split"></div>
             <div class="pull-left" style="width:45%;background:#eee;padding:10px;">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>品名</th>
+                                <th>供应商</th>
+                                <th>图号</th>
+                                <th>规格</th>
+                                <th>检验方式</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>啊实的</td>
+                                <td>啊实啊是大飒飒大苏打上的</td>
+                                <td>啊实的</td>
+                                <td>打实的</td>
+                                <td>打实的</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="h-split"></div>
+
                 <form role="form" name="iqcInspectionItemForm" class="form-horizontal" novalidate onkeypress="if (event.keyCode == 13) return false;">
                     <fieldset>
                         <div class="form-group">
@@ -56,14 +56,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-2 control-label">检验项目</label>
+                            <label class="col-md-2 control-label">检验水平</label>
                             <div class="col-md-4">
                                 <input type="text" class="form-control" required name="produceNumber" />
                                 <div class="error-messages" ng-messages="iqcInspectionItemForm.produceNumber.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">检验项目不能为空</small>
+                                    <small ng-message="required">检验水平不能为空</small>
                                 </div>
                             </div>
-                            <label class="col-md-2 control-label">规格值</label>
+                            <label class="col-md-2 control-label">AHQ</label>
                             <div class="col-md-4">
                                 <input type="text" class="form-control" required name="produceNumber" />
                                 <div class="error-messages" ng-messages="iqcInspectionItemForm.produceNumber.$error" ng-show="operate.showValidation">
@@ -72,18 +72,18 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-2 control-label">检验项目</label>
+                            <label class="col-md-2 control-label">检验方法</label>
                             <div class="col-md-4">
                                 <input type="text" class="form-control" required name="produceNumber" />
                                 <div class="error-messages" ng-messages="iqcInspectionItemForm.produceNumber.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">检验项目不能为空</small>
+                                    <small ng-message="required">检验方法不能为空</small>
                                 </div>
                             </div>
-                            <label class="col-md-2 control-label">规格值</label>
+                            <label class="col-md-2 control-label">量具编号</label>
                             <div class="col-md-4">
                                 <input type="text" class="form-control" required name="produceNumber" />
                                 <div class="error-messages" ng-messages="iqcInspectionItemForm.produceNumber.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">规格值不能为空</small>
+                                    <small ng-message="required">量具编号不能为空</small>
                                 </div>
                             </div>
                         </div>
@@ -101,8 +101,10 @@
 
             </div>
 
-            <div class="pull-left" style="width:55%;">
-                
+            <div class="pull-left" style="width:55%;border-left:4px solid #046278">
+                <p>数据显示</p>
+                <p>数据显示</p>
+                <p>数据显示</p>
             </div>
 
         </div>

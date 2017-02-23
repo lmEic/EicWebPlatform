@@ -25,6 +25,11 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
+        public ActionResult InspectionDataGatheringOfIQC()
+        {
+            return View();
+        }
         #endregion
 
     }
