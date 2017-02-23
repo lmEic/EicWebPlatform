@@ -1,8 +1,19 @@
 ﻿var quarityModule = angular.module('bpm.qualityApp');
 quarityModule.factory("quarityDataOpService", function (ajaxService) {
     var quarity = {};
-    var quarityUrlPrefix = " ";
-    quarity.get
+    var quarityUrl = "/quaInspectionManage/";
+    quarity.getMaterialDatas = function () {
+        var url = quarityUrl + "GetMaterialDatas";
+        return ajaxService.getData(url, function (materialId) {
+            materialId: materialId
+        })
+    };
+    quarity.postQualityDatas = function () {
+        var url = quarityUrl + "PostQualityDatas";
+        return ajaxService.postData(url, function (vm) {
+            vm:vm
+        })
+    }
     return quarity;
 })
 quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataOpService) {
@@ -21,13 +32,78 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
         OpPerson: null,
         OpDate: null,
         OpTime: null,
-        OpSign: null,
-        Id_key: null,
+        OpSign: "add",
+        Id_key: 0,
     }
     $scope.vm = uiVM;
+    var initVM = _.clone(uiVM);
     var vmManager = {
+        materialDatas: [],
+        dataSource: [],
+        dataSets: [],
+        delItem:null,
         init: function () {
-            leeHelper.clearVM(uiVM);
+            if (uiVM.OpSign === 'add') {
+                leeHelper.clearVM(uiVM, ["MaterialId","Id_key"]);
+            }
+            else {
+                uiVM = _.clone(initVM);
+            }
+            uiVM.OpSign = 'add';
+            $scope.vm = uiVM;
+
+        },
+
+        //013935根据品号查询
+        getMaterialDatas: function () {
+            $scope.searchPromise = quarityDataOpService.getMaterialDatas(vm.MaterialId).then(function (datas) {
+                vmManager.materialDatas = datas;
+            });
+        },
+
+        //013935点击表格显示对应的表单
+        selectQualityItem: function (item) {
+            uiVM = _.clone(item);
+            uiVM.OpSign = "edit";
+            $scope.vm = uiVM;
+        },
+
+        //013935删除表格
+        deleteItem:function(item){
+            vmManager.delItem = item;
+            leeHelper.remove(vmManager.dataSets, vmManager.delItem);
         }
+    } 
+    $scope.vmManager = vmManager;
+
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+
+    operate.save = function (isValid) {
+        var modelVM = _.clone(uiVM);
+        if (uiVM.OpSign == 'add') {
+            uiVM.Id_key += 1;
+            leeDataHandler.dataOperate.add(operate, isValid, function () {
+                //quarityDataOpService.postQualityDatas($scope.vm).then(function () {
+                    vmManager.dataSets.push(modelVM);
+
+                //})
+            })
+        } else {
+            var item = _.find(vmManager.dataSets, { Id_key: uiVM.Id_key });
+            if (angular.isDefined(item)) {
+                leeDataHandler.dataOperate.add(operate, isValid, function () {
+                    //quarityDataOpService.postQualityDatas($scope.vm).then(function () {
+                        leeHelper.copyVm(uiVM, item);
+                    //})
+                })
+               
+            }
+        }
+        vmManager.init();
+        
+    };
+    operate.refresh = function () {
+        vmManager.init();
     }
 })
