@@ -155,14 +155,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Qms
                 set { _materialid = value; }
                 get { return _materialid; }
             }
-            private string _inspectionterm;
+        private string _inspectionItem;
             /// <summary>
             ///检验项目
             /// </summary>
-            public string Inspectionterm
-            {
-                set { _inspectionterm = value; }
-                get { return _inspectionterm; }
+            public string InspectionItem
+        {
+            set { _inspectionItem = value; }
+                get { return _inspectionItem; }
             }
             private int _inspectiontermnumber;
             /// <summary>
@@ -292,11 +292,83 @@ namespace Lm.Eic.App.DomainModel.Bpm.Qms
             }
             #endregion Model
         }
+    public class IqcInspectionItemConfigShowModel
+    {
+
+        public IqcInspectionItemConfigShowModel()
+        { }
+        #region Model
+        /// <summary>
+        ///物料料号
+        /// </summary>
+        public string MaterialId { get; set; }
+
 
         /// <summary>
-        /// IQC单据检验
+        /// 品名 MB002
         /// </summary>
-        public class IqcInspectionMasterModel
+        public string MaterailName { get; set; }
+        /// <summary>
+        /// 规格 MB003
+        /// </summary>
+        public string MaterialSpecify { get; set; }
+      
+       
+        /// <summary>
+        /// 产品图号 MB029
+        /// </summary>
+        public string MaterialrawID { get; set; }
+        /// <summary>
+        /// 物料属于部门 TM068
+        /// </summary>
+        public string MaterialBelongDepartment
+        { get; set; }
+        /// <summary>
+        ///检验项目
+        /// </summary>
+        public string InspectionItem { get; set; }
+        /// <summary>
+        ///检验项目次序
+        /// </summary>
+        public int InspectiontermNumber { get; set; }
+        /// <summary>
+        ///规格上限
+        /// </summary>
+        public double SizeUSL { get; set; }
+        /// <summary>
+        ///规格下限
+        /// </summary>
+        public double SizeLSL { get; set; }
+        /// <summary>
+        ///规格备注
+        /// </summary>
+        public string SizeMemo { get; set; }
+        /// <summary>
+        ///设备编号
+        /// </summary>
+        public string EquipmentID { get; set; }
+        /// <summary>
+        ///检验方法
+        /// </summary>
+        public string InspectionMethod { get; set; }
+        /// <summary>
+        ///检验方式
+        /// </summary>
+        public string InspectionMode { get; set; }
+        /// <summary>
+        ///检验水平
+        /// </summary>
+        public string InspectionLevel { get; set; }
+        /// <summary>
+        ///检验AQL
+        /// </summary>
+        public string InspectionAQL { get; set; }
+        #endregion Model
+    }
+    /// <summary>
+    /// IQC单据检验
+    /// </summary>
+    public class IqcInspectionMasterModel
         {
             public IqcInspectionMasterModel()
             { }
@@ -469,7 +541,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Qms
         /// <summary>
         /// IQC单据检验项目
         /// </summary>
-        public class IqcInspectionDetailModel
+     public class IqcInspectionDetailModel
         {
             public IqcInspectionDetailModel()
             { }

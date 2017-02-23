@@ -157,21 +157,21 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
     /// <summary>
     ///  产品物料信息
      /// </summary>
-    public class ProductModel  
+    public class ProductMaterailModel  
    {
         
        /// <summary>
        /// 品号 MB001
        /// </summary>
-       public string ProductID { get; set; }
+       public string ProductMaterailId { get; set; }
        /// <summary>
        /// 品名 MB002
        /// </summary>
-       public string ProductName { get; set; }
+       public string MaterailName { get; set; }
        /// <summary>
        /// 规格 MB003
        /// </summary>
-       public string ProductSpecify { get; set; }
+       public string MaterialSpecify { get; set; }
        /// <summary>
        /// 单位名称 MB004
        /// </summary>
@@ -183,11 +183,11 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
        /// <summary>
        /// 产品图号 MB029
        /// </summary>
-       public string ProductDrawID { get; set; }
+       public string MaterialrawID { get; set; }
         /// <summary>
         /// 物料属于部门 TM068
         /// </summary>
-       public string ProductBelongDepartment
+       public string MaterialBelongDepartment
        { get; set; }
        /// <summary>
        /// 备注 TM028
