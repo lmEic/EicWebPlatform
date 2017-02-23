@@ -110,6 +110,7 @@
     <Compile Include="Qms\InspectionManage\InspectionService.cs" />
     <Compile Include="Qms\InspectionManage\IqcInspectionDataGather.cs" />
     <Compile Include="Qms\InspectionManage\IqcInspectionItemConfigurator.cs" />
+    <Compile Include="Qms\InspectionManage\IqcInspectionManagerCrud.cs" />
     <Compile Include="Quality\QualityService.cs" />
     <Compile Include="Quality\QuantityMangerFactory.cs" />
     <Compile Include="Quality\SampleManager\IPQCSample\IPQCSampleItems..cs" />
