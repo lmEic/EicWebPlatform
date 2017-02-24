@@ -8,10 +8,10 @@ quarityModule.factory("quarityDataOpService", function (ajaxService) {
             materialId: materialId
         })
     };
-    quarity.saveInspectionItemconfig = function (dataSets) {
+    quarity.saveInspectionItemconfig = function (uiVM) {
         var url = quarityUrl + "SaveInspectionItemconfig";
         return ajaxService.postData(url, {
-            dataSets:dataSets
+            uiVM: uiVM
         })
     }
     return quarity;
@@ -74,24 +74,22 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
             });
         },
 
-        //013935点击表格显示对应的表单
-        selectQualityItem: function (item) {
-            uiVM = item;
-            uiVM.OpSign = "edit";
-            $scope.vm = uiVM;
-        },
         //013935删除表格
         deleteItem:function(item){
             vmManager.delItem = item;
             leeHelper.remove(vmManager.dataSets, vmManager.delItem);
         },
+
+        //013935编辑表格
+        editItem:function(item){
+            uiVM = item;
+            uiVM.OpSign = "edit";
+            $scope.vm = uiVM;
+        },
         //013935批量保存
-        savsAll: function(){
-            quarityDataOpService.saveInspectionItemconfig(vmManager.dataSets).then(function () {
-                vmManager.dataSets = [];
-                vmManager.init();
-            })
-        }
+        save: function () {
+           
+        }  
     } 
     $scope.vmManager = vmManager;
 
@@ -102,7 +100,11 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
         var modelVM = _.clone(uiVM);
         if (uiVM.OpSign == 'add') {
             leeDataHandler.dataOperate.add(operate, isValid, function () {
-                vmManager.dataSets.push(modelVM);
+                leeHelper.setUserData(uiVM);
+                quarityDataOpService.saveInspectionItemconfig(modelVM).then(function (datas) {
+                    vmManager.dataSets.push(datas);
+                })
+                modelVM = [];
             })
         } else {
             var item = _.find(vmManager.dataSets, { Id_key: uiVM.Id_key });

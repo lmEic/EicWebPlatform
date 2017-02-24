@@ -87,7 +87,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
 
         /// <summary>
-        /// 查询 1.依据财产编号查询
+        /// 查询 
+        /// 1.依据财产编号查询
+        /// 2: //依据财产编号精确查询
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>

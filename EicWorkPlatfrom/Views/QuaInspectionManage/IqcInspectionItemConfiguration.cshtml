@@ -7,10 +7,11 @@
             @*品号查询*@
             <div>
                 <labnel>品号</labnel>
-                <input type="text" placeholder="按品号查询" ng-model="vm.MaterialId" />
-
+                <input type="text" placeholder="按品号查询" ng-model="vm.MaterialId"/>
                 <button class="btn-sm btn-success" ng-click="vmManager.getMaterialDatas()">查询</button>
-                <button class="btn-sm btn-warning pull-right" ng-click="vmManager.saveAll()">批量保存</button>
+                <a href="javascript:void(0);" class="btn btn-sm btn-info file" title="从Excel中导入数据">
+                    <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)">
+                </a>
             </div>
             <div class="h-split"></div>
             @*ERP信息*@
@@ -77,13 +78,16 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-2 control-label">检验水平</label>
+
+
+                                <label class="col-md-2 control-label">规格说明</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" required name="inspectionLevel" ng-model="vm.InspectionLevel" />
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.inspectionLevel.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">检验水平不能为空</small>
+                                    <input type="text" class="form-control" required name="sizeMemo" ng-model="vm.SizeMemo" />
+                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.sizeMemo.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">规格说明不能为空</small>
                                     </div>
                                 </div>
+                                
                                 <label class="col-md-2 control-label">AQL</label>
                                 <div class="col-md-4">
                                     <input type="text" class="form-control" required name="inspectionAQL" ng-model="vm.InspectionAQL" />
@@ -93,15 +97,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-2 control-label">规格说明</label>
+                                <label class="col-md-2 control-label">检验水平</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" required name="sizeMemo" ng-model="vm.SizeMemo" />
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.sizeMemo.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">规格说明不能为空</small>
+                                    <input type="text" class="form-control" required name="inspectionLevel" ng-model="vm.InspectionLevel" />
+                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.inspectionLevel.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">检验水平不能为空</small>
                                     </div>
                                 </div>
-
-
 
                                 <label class="col-md-2 control-label">量具编号</label>
                                 <div class="col-md-4">
@@ -135,7 +137,7 @@
                 </div>
 
                 <div class="pull-left" style="width:55%;border-left:4px solid #046278;min-height:392px;">
-                    <div class="table-responsive">
+                    <div class="table-responsive" cg-busy="{promise:searchPromise}">
                         <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
@@ -149,7 +151,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in vmManager.dataSets track by $index" cg-busy="{promise:searchPromise}" ng-click="vmManager.selectQualityItem(item)">
+                                <tr ng-repeat="item in vmManager.dataSets track by $index" >
                                     <td>{{item.MaterialId}}</td>
                                     <td>{{item.InspectionItem}}</td>
                                     <td>{{item.SizeMemo}}</td>
@@ -157,6 +159,9 @@
                                     <td>{{item.InspectionAQL}}</td>
                                     <td>{{item.InspectionMethod}}</td>
                                     <td style="cursor:pointer;">
+                                        <button class="btn btn-xs btn-info" ng-click="vmManager.editItem(item)" title="编辑">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
                                         <button class="btn btn-xs btn-danger" ng-click="vmManager.deleteItem(item)" title="删除">
                                             <i class="fa fa-remove"></i>
                                         </button>

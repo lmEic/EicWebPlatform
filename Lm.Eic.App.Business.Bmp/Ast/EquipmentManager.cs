@@ -73,7 +73,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 assetNumber_4 = equipmentType == "生产设备" ? "9" : "0";
 
                 string temAssetNumber = string.Format("{0}{1}{2}", assetNumber_1, assetNumber_2_3, assetNumber_4);
-                var temEntitylist = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = temAssetNumber, SearchMode = 1 });
+                var temEntitylist = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = temAssetNumber, SearchMode = 7 });
 
                 if (temEntitylist != null && temEntitylist.Count > 0)
                 {
