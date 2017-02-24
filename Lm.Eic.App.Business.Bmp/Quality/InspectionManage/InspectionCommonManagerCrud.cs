@@ -8,7 +8,7 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 
-namespace Lm.Eic.App.Business.Bmp.Qms.InspectionManage
+namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     /// <summary>
     /// 检验方式配置

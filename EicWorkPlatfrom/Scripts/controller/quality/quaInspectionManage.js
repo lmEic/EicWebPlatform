@@ -2,22 +2,29 @@
 quarityModule.factory("quarityDataOpService", function (ajaxService) {
     var quarity = {};
     var quarityUrl = "/quaInspectionManage/";
-    quarity.getMaterialDatas = function () {
+    quarity.getMaterialDatas = function (materialId) {
         var url = quarityUrl + "GetMaterialDatas";
-        return ajaxService.getData(url, function (materialId) {
+        return ajaxService.getData(url,  {
             materialId: materialId
         })
     };
     quarity.postQualityDatas = function () {
         var url = quarityUrl + "PostQualityDatas";
-        return ajaxService.postData(url, function (vm) {
-            vm:vm
+        return ajaxService.postData(url, {
+            
         })
     }
     return quarity;
 })
 quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataOpService) {
     var uiVM = {
+        //表头变量
+        MaterialName:null,
+        MaterialBelongDepartment:null,
+        MaterialSpecify:null,
+        MaterialrawID:null,
+
+        //表单变量
         MaterialId: null,
         Inspectionterm: null,
         InspectiontermNumber: 0,
@@ -56,8 +63,9 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
 
         //013935根据品号查询
         getMaterialDatas: function () {
-            $scope.searchPromise = quarityDataOpService.getMaterialDatas(vm.MaterialId).then(function (datas) {
-                vmManager.materialDatas = datas;
+            $scope.searchPromise = quarityDataOpService.getMaterialDatas($scope.vm.MaterialId).then(function (datas) {
+                console.log(datas);
+                $scope.vm = datas[0];
             });
         },
 

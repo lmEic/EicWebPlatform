@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.App.Business.Bmp.Qms.InspectionManage
+namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
   
     /// <summary>
@@ -15,14 +15,14 @@ namespace Lm.Eic.App.Business.Bmp.Qms.InspectionManage
         /// <summary>
         /// 进料检验项目配置器
         /// </summary>
-        public IqcInspectionItemConfigurator InspectionItemConfigurator
+        public static  IqcInspectionItemConfigurator InspectionItemConfigurator
         {
             get { return OBulider.BuildInstance<IqcInspectionItemConfigurator>(); }
         }
         /// <summary>
         /// 进料检验项目数据采集器
         /// </summary>
-        public IqcInspectionDataGather InspectionDataGather
+        public static  IqcInspectionDataGather InspectionDataGather
         {
             get { return OBulider.BuildInstance<IqcInspectionDataGather>(); }
         }
