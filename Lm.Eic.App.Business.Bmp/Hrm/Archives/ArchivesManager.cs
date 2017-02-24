@@ -145,19 +145,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 ArchivesEmployeeIdentityModel empIdentityMdl = new ArchivesEmployeeIdentityModel();
                 ArStudyModel studyMdl = null;
                 ArTelModel telMdl = null;
+                ArPostChangeLibModel postMdl = null;
+                ArDepartmentChangeLibModel departmentMdl = null;
                 //得到身份证的信息
                 if (!ArchiveEntityMapper.GetIdentityDataFrom(dto.IdentityID, empIdentityMdl, this.identityManager))
                     return OpResult.SetResult("没有找到此身份证号的信息！", true);
 
                 ArchiveEntityMapper.GetEmployeeDataFrom(dto, empIdentityMdl);
-                ArchiveEntityMapper.GetDepartmentDataFrom(dto, empIdentityMdl);
-                ArchiveEntityMapper.GetPostDataFrom(dto, empIdentityMdl);
+                ArchiveEntityMapper.GetDepartmentDataFrom(dto, empIdentityMdl,out departmentMdl);
+                ArchiveEntityMapper.GetPostDataFrom(dto, empIdentityMdl,out postMdl);
                 ArchiveEntityMapper.GetStudyDataFrom(dto, empIdentityMdl, out studyMdl);
                 ArchiveEntityMapper.GetTelDataFrom(dto, empIdentityMdl, out telMdl);
 
                 if (opSign == "add")
                 {
-                    record = AddEmployee(record, empIdentityMdl, studyMdl, telMdl);
+                    record = AddEmployee(record, empIdentityMdl, studyMdl, telMdl,postMdl,departmentMdl);
                 }
                 else if (opSign == "edit")
                 {
@@ -186,17 +188,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             return this.irep.Insert(empIdentityMdl);
         }
-        private int AddEmployee(int record, ArchivesEmployeeIdentityModel empIdentityMdl, ArStudyModel studyMdl, ArTelModel telMdl)
+        private int AddEmployee(int record, ArchivesEmployeeIdentityModel empIdentityMdl, ArStudyModel studyMdl, ArTelModel telMdl,ArPostChangeLibModel postMdl,ArDepartmentChangeLibModel departmentMdl)
         {
-          
              record = this.UpdataEMployee(empIdentityMdl);
             ////处理外部逻辑
             ////1.处理学习信息存储
              StudyManager.Insert(studyMdl);
             ////2.处理联系方式信息
              TelManager.Insert(telMdl);
-            //3.初始化班别信息
-             AttendanceService.ClassTypeSetter.InitClassType(CreateClassTypeModel(empIdentityMdl));
+            //3.初始化岗位信息
+            PostManager.InitPost(postMdl);
+            //4.初始化部门信息
+            this.DepartmentMananger.InitDepartment(departmentMdl);
+            //5.初始化班别信息
+            AttendanceService.ClassTypeSetter.InitClassType(CreateClassTypeModel(empIdentityMdl));
             return record;
         }
 
@@ -220,9 +225,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             ArStudyModel oldStudyMdl = null;
             ArTelModel oldTelMdl = null;
+            ArDepartmentChangeLibModel departmentMdl = null;
+            ArPostChangeLibModel postMdl = null;
             ArchivesEmployeeIdentityModel oldEmpIdentityMdl = new ArchivesEmployeeIdentityModel();
             ArchiveEntityMapper.GetStudyDataFrom(dto, oldEmpIdentityMdl, out oldStudyMdl);
             ArchiveEntityMapper.GetTelDataFrom(dto, oldEmpIdentityMdl, out oldTelMdl);
+            ArchiveEntityMapper.GetDepartmentDataFrom(dto, oldEmpIdentityMdl, out departmentMdl);
+            ArchiveEntityMapper.GetPostDataFrom(dto, oldEmpIdentityMdl, out postMdl);
 
             ////添加修改逻辑
             record = this.irep.Update(u => u.Id_Key == dto.Id_Key, empIdentityMdl);
@@ -231,6 +240,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             record += StudyManager.Edit(studyMdl, oldStudyMdl);
             ////2.修改联系方式信息存储
             record += TelManager.Edit(telMdl, oldTelMdl);
+            ////3.修改部门信息存储
+            record += this.DepartmentMananger.Edit(departmentMdl);
+            ////4.修改岗位信息存储
+            record += this.PostManager.Edit(postMdl);
             return record;
         }
 
@@ -751,11 +764,23 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// </summary>
         /// <param name="dto"></param>
         /// <param name="entity"></param>
-        internal static void GetDepartmentDataFrom(ArchivesEmployeeIdentityDto dto, ArchivesEmployeeIdentityModel entity)
+        internal static void GetDepartmentDataFrom(ArchivesEmployeeIdentityDto dto, ArchivesEmployeeIdentityModel entity,out ArDepartmentChangeLibModel departmentEntity)
         {
             entity.Organizetion = dto.Organizetion;
             entity.Department = dto.Department;
             entity.DepartmentChangeRecord = 0;
+
+            departmentEntity = new ArDepartmentChangeLibModel()
+            {
+                AssignDate = DateTime.Now.ToDate(),
+                WorkerId = dto.WorkerId,
+                WorkerName = dto.Name,
+                InStatus = "In",
+                NowDepartment = dto.Department,
+                OldDepartment = dto.Department,
+                OpPerson = dto.OpPerson,
+                OpSign = "Init"
+            };
         }
 
         /// <summary>
@@ -763,11 +788,25 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// </summary>
         /// <param name="dto"></param>
         /// <param name="entity"></param>
-        internal static void GetPostDataFrom(ArchivesEmployeeIdentityDto dto, ArchivesEmployeeIdentityModel entity)
+        internal static void GetPostDataFrom(ArchivesEmployeeIdentityDto dto, ArchivesEmployeeIdentityModel entity,out ArPostChangeLibModel postEntity)
         {
             entity.PostNature = dto.PostNature;
             entity.PostChangeRecord = 0;
             entity.Post = dto.Post;
+
+            postEntity = new ArPostChangeLibModel()
+            {
+                WorkerId = dto.WorkerId,
+                WorkerName = dto.Name,
+                AssignDate = DateTime.Now.ToDate(),
+                InStatus = "In",
+                NowPost = dto.Post,
+                OldPost = dto.Post,
+                PostNature = dto.PostNature,
+                PostType = "默认",
+                OpPerson = dto.OpPerson,
+                OpSign = "Init"
+            };
         }
 
         /// <summary>
