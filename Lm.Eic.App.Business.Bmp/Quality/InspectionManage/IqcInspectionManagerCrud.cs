@@ -93,13 +93,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
-                SetFixFieldValue(modelList, OpMode.Add);
+               
                 modelList.ToList().ForEach((m) => {
+                    if (IsExistInspectionConfigItem(m.MaterialId,m.InspectionItem))
+                    {
+                        m.OpSign = "edit";
+                    }
                     SetFixFieldValue(m);
                 });
-
-           
-
                return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
             catch (Exception ex)
