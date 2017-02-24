@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
+
 namespace EicWorkPlatfrom.Controllers
 {
     public class QuaInspectionManageController : EicBaseController
@@ -36,6 +38,17 @@ namespace EicWorkPlatfrom.Controllers
         {
             var datas = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigBy(materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 保存数据
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveInspectionItemconfig(List<IqcInspectionItemConfigModel> dataSets) 
+        {
+            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(dataSets);
+           return Json(opResult);
         }
         #endregion
 

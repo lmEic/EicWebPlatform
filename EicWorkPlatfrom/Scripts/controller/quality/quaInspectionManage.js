@@ -8,10 +8,10 @@ quarityModule.factory("quarityDataOpService", function (ajaxService) {
             materialId: materialId
         })
     };
-    quarity.postQualityDatas = function () {
-        var url = quarityUrl + "PostQualityDatas";
+    quarity.saveInspectionItemconfig = function (dataSets) {
+        var url = quarityUrl + "SaveInspectionItemconfig";
         return ajaxService.postData(url, {
-            
+            dataSets:dataSets
         })
     }
     return quarity;
@@ -80,16 +80,14 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
             uiVM.OpSign = "edit";
             $scope.vm = uiVM;
         },
-
         //013935删除表格
         deleteItem:function(item){
             vmManager.delItem = item;
             leeHelper.remove(vmManager.dataSets, vmManager.delItem);
         },
-
         //013935批量保存
         savsAll: function(){
-            quarityDataOpService.postQualityDatas(vmManager.dataSets).then(function () {
+            quarityDataOpService.saveInspectionItemconfig(vmManager.dataSets).then(function () {
                 vmManager.dataSets = [];
                 vmManager.init();
             })
