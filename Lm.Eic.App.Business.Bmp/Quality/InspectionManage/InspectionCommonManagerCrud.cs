@@ -7,6 +7,7 @@ using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
@@ -26,19 +27,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             this.AddOpItem(OpMode.Delete, DeleteInspectionModeConfig);
         }
 
-        private OpResult DeleteInspectionModeConfig(InspectionModeConfigModel arg)
+        private OpResult DeleteInspectionModeConfig(InspectionModeConfigModel model)
         {
-            throw new NotImplementedException();
+            return irep.Delete(e => e.Id_Key == model.Id_Key ).ToOpResult_Delete(OpContext);
         }
 
-        private OpResult EidtInspectionModeConfig(InspectionModeConfigModel arg)
+        private OpResult EidtInspectionModeConfig(InspectionModeConfigModel model)
         {
-            throw new NotImplementedException();
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
-        private OpResult AddInspectionModeConfig(InspectionModeConfigModel arg)
+        private OpResult AddInspectionModeConfig(InspectionModeConfigModel model)
         {
-            throw new NotImplementedException();
+            return irep.Insert(model).ToOpResult_Add(OpContext);
         }
     }
 }

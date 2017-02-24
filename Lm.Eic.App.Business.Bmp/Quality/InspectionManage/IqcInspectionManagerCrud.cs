@@ -61,13 +61,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult DeleteInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
-           
-            throw new NotImplementedException();
+
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
         private OpResult EidtInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
-            throw new NotImplementedException();
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
         private OpResult AddInspectionItemConfig(IqcInspectionItemConfigModel model)
@@ -82,25 +82,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<IqcInspectionItemConfigModel> FindIqcInspectionItemConfigsBy(string materialId)
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
-        }
-
-        /// <summary>
-        /// 添加列表到数据库中
-        /// </summary>
-        /// <param name="modelList">工序列表</param>
-        /// <returns></returns>
-        public OpResult AddInspectionItemConfigList(List<IqcInspectionItemConfigModel> modelList)
-        {
-            try
-            {
-                SetFixFieldValue(modelList, OpMode.Add);
-               
-                return irep.Insert(modelList).ToOpResult_Add(OpContext);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
         }
     }
 
@@ -123,19 +104,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             this.AddOpItem(OpMode.Delete, DeleteIqcInspectionMaster);
         }
 
-        private OpResult DeleteIqcInspectionMaster(IqcInspectionMasterModel arg)
+        private OpResult DeleteIqcInspectionMaster(IqcInspectionMasterModel model)
         {
-            throw new NotImplementedException();
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        private OpResult EidtIqcInspectionMaster(IqcInspectionMasterModel arg)
+        private OpResult EidtIqcInspectionMaster(IqcInspectionMasterModel model)
         {
-            throw new NotImplementedException();
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
-        private OpResult AddIqcInspectionMaster(IqcInspectionMasterModel arg)
+        private OpResult AddIqcInspectionMaster(IqcInspectionMasterModel model)
         {
-            throw new NotImplementedException();
+            return irep.Insert(model).ToOpResult_Add(OpContext);
         }
     }
 
@@ -156,19 +137,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             this.AddOpItem(OpMode.Delete, DeleteIqcInspectionDetail);
         }
 
-        private OpResult DeleteIqcInspectionDetail(IqcInspectionDetailModel arg)
+        private OpResult DeleteIqcInspectionDetail(IqcInspectionDetailModel model)
         {
-            throw new NotImplementedException();
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        private OpResult EidtIqcInspectionDetail(IqcInspectionDetailModel arg)
+        private OpResult EidtIqcInspectionDetail(IqcInspectionDetailModel model)
         {
-            throw new NotImplementedException();
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
-        private OpResult AddIqcInspectionDetail(IqcInspectionDetailModel arg)
+        private OpResult AddIqcInspectionDetail(IqcInspectionDetailModel model)
         {
-            throw new NotImplementedException();
+            return irep.Insert(model).ToOpResult_Add(OpContext);
         }
     }
 
