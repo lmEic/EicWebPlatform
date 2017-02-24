@@ -94,8 +94,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             try
             {
                 SetFixFieldValue(modelList, OpMode.Add);
-               
-                return irep.Insert(modelList).ToOpResult_Add(OpContext);
+                modelList.ToList().ForEach((m) => {
+                    SetFixFieldValue(m);
+                });
+
+           
+
+               return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
             catch (Exception ex)
             {
