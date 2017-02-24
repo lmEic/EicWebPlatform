@@ -61,13 +61,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult DeleteInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
-           
-            throw new NotImplementedException();
+
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
         private OpResult EidtInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
-            throw new NotImplementedException();
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
         private OpResult AddInspectionItemConfig(IqcInspectionItemConfigModel model)
@@ -93,15 +93,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
-               
+
                 modelList.ToList().ForEach((m) => {
-                    if (IsExistInspectionConfigItem(m.MaterialId,m.InspectionItem))
+                    if (IsExistInspectionConfigItem(m.MaterialId, m.InspectionItem))
                     {
-                        m.OpSign = "edit";
+                        m.OpSign = "delete";
                     }
                     SetFixFieldValue(m);
+                    this.Store(m);
                 });
-               return irep.Insert(modelList).ToOpResult_Add(OpContext);
+                SetFixFieldValue(modelList, OpMode.Add);
+                return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
             catch (Exception ex)
             {
