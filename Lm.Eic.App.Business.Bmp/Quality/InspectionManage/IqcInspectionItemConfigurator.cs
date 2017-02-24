@@ -25,8 +25,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             var retunListModel = new List<IqcInspectionItemConfigShowModel>();
             var materialIdInfo = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
             if (materialIdInfo == null) return retunListModel;
-                var ItemConfigShowModel = new IqcInspectionItemConfigShowModel()
+            var ItemConfigShowModel = new IqcInspectionItemConfigShowModel()
             {
+                MaterialId = materialId,
                 MaterailName = materialIdInfo.MaterailName,
                 MaterialSpecify = materialIdInfo.MaterialSpecify,
                 MaterialrawID = materialIdInfo.MaterialrawID,
@@ -46,6 +47,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                retunListModel.Add(
                    new IqcInspectionItemConfigShowModel()
                    {
+                       MaterialId = materialId,
                        MaterailName = materialIdInfo.MaterailName,
                        MaterialSpecify = materialIdInfo.MaterialSpecify,
                        MaterialrawID = materialIdInfo.MaterialrawID,
@@ -57,7 +59,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                        InspectionMode = m.InspectionMode,
                        InspectionMethod = m.InspectionMethod,
                        InspectiontermNumber = m.InspectiontermNumber,
-                       MaterialId = materialId,
+                    
                        SizeLSL = m.SizeLSL,
                        SizeUSL = m.SizeUSL,
                        SizeMemo = m.SizeMemo
