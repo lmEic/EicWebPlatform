@@ -7,10 +7,11 @@
             @*品号查询*@
             <div>
                 <labnel>品号</labnel>
-                <input type="text" placeholder="按品号查询" ng-model="vm.MaterialId" />
-
+                <input type="text" placeholder="按品号查询" ng-model="vm.MaterialId"/>
                 <button class="btn-sm btn-success" ng-click="vmManager.getMaterialDatas()">查询</button>
-                <button class="btn-sm btn-warning pull-right" ng-click="vmManager.saveAll()">批量保存</button>
+                <a href="javascript:void(0);" class="btn btn-sm btn-info file" title="从Excel中导入数据">
+                    <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)">
+                </a>
             </div>
             <div class="h-split"></div>
             @*ERP信息*@
