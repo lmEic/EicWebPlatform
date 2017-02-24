@@ -8,25 +8,19 @@ quarityModule.factory("quarityDataOpService", function (ajaxService) {
             materialId: materialId
         })
     };
-    quarity.postQualityDatas = function () {
-        var url = quarityUrl + "PostQualityDatas";
+    quarity.saveInspectionItemconfig = function (dataSets) {
+        var url = quarityUrl + "SaveInspectionItemconfig";
         return ajaxService.postData(url, {
-            
+            dataSets:dataSets
         })
     }
     return quarity;
 })
 quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataOpService) {
     var uiVM = {
-        //表头变量
-        MaterialName:null,
-        MaterialBelongDepartment:null,
-        MaterialSpecify:null,
-        MaterialrawID:null,
-
         //表单变量
         MaterialId: null,
-        Inspectionterm: null,
+        InspectionItem: null,
         InspectiontermNumber: 0,
         SizeUSL: null,
         SizeLSL: null,
@@ -42,11 +36,19 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
         OpSign: "add",
         Id_key: 0,
     }
+    //表头变量
+    var tableVM = {
+        MaterialName: null,
+        MaterialBelongDepartment: null,
+        MaterialSpecify: null,
+        MaterialrawID: null,
+    }
+    $scope.tableVm = tableVM;
     $scope.vm = uiVM;
     var initVM = _.clone(uiVM);
     var vmManager = {
         materialDatas: [],
-        dataSource: [],
+        //dataSource: [],
         dataSets: [],
         delItem:null,
         init: function () {
@@ -64,22 +66,31 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
         //013935根据品号查询
         getMaterialDatas: function () {
             $scope.searchPromise = quarityDataOpService.getMaterialDatas($scope.vm.MaterialId).then(function (datas) {
-                console.log(datas);
-                $scope.vm = datas[0];
+                if (datas != null) {
+                    console.log(datas)
+                    $scope.tableVm = datas.ProductMaterailModel;
+                    vmManager.dataSets = datas.InspectionItemConfigModelList;
+                }
             });
         },
 
         //013935点击表格显示对应的表单
         selectQualityItem: function (item) {
-            uiVM = _.clone(item);
+            uiVM = item;
             uiVM.OpSign = "edit";
             $scope.vm = uiVM;
         },
-
         //013935删除表格
         deleteItem:function(item){
             vmManager.delItem = item;
             leeHelper.remove(vmManager.dataSets, vmManager.delItem);
+        },
+        //013935批量保存
+        savsAll: function(){
+            quarityDataOpService.saveInspectionItemconfig(vmManager.dataSets).then(function () {
+                vmManager.dataSets = [];
+                vmManager.init();
+            })
         }
     } 
     $scope.vmManager = vmManager;
@@ -90,12 +101,8 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
     operate.save = function (isValid) {
         var modelVM = _.clone(uiVM);
         if (uiVM.OpSign == 'add') {
-            uiVM.Id_key += 1;
             leeDataHandler.dataOperate.add(operate, isValid, function () {
-                //quarityDataOpService.postQualityDatas($scope.vm).then(function () {
-                    vmManager.dataSets.push(modelVM);
-
-                //})
+                vmManager.dataSets.push(modelVM);
             })
         } else {
             var item = _.find(vmManager.dataSets, { Id_key: uiVM.Id_key });

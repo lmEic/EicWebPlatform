@@ -1,5 +1,5 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep;
-using Lm.Eic.App.DomainModel.Bpm.Qms;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
@@ -82,6 +82,25 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<IqcInspectionItemConfigModel> FindIqcInspectionItemConfigsBy(string materialId)
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
+        }
+
+        /// <summary>
+        /// 添加列表到数据库中
+        /// </summary>
+        /// <param name="modelList">工序列表</param>
+        /// <returns></returns>
+        public OpResult AddInspectionItemConfigList(List<IqcInspectionItemConfigModel> modelList)
+        {
+            try
+            {
+                SetFixFieldValue(modelList, OpMode.Add);
+               
+                return irep.Insert(modelList).ToOpResult_Add(OpContext);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
         }
     }
 

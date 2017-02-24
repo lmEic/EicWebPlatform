@@ -10,7 +10,7 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Data.Entity;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping;
-using Lm.Eic.App.DomainModel.Bpm.Qms;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 {

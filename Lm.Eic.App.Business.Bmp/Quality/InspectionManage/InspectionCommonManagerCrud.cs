@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep;
-using Lm.Eic.App.DomainModel.Bpm.Qms;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
-using  Lm.Eic.App.DomainModel.Bpm.Qms;
+using  Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
 {
