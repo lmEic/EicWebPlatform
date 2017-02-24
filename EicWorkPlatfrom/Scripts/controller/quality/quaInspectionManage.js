@@ -74,19 +74,25 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
             });
         },
 
-        //013935点击表格显示对应的表单
+        
         selectQualityItem: function (item) {
-            uiVM = item;
-            uiVM.OpSign = "edit";
-            $scope.vm = uiVM;
+           
         },
         //013935删除表格
         deleteItem:function(item){
             vmManager.delItem = item;
             leeHelper.remove(vmManager.dataSets, vmManager.delItem);
         },
+
+        //013935编辑表格
+        editItem:function(item){
+            uiVM = item;
+            uiVM.OpSign = "edit";
+            $scope.vm = uiVM;
+        },
         //013935批量保存
-        savsAll: function(){
+        saveAll: function () {
+            console.log(1);
             quarityDataOpService.saveInspectionItemconfig(vmManager.dataSets).then(function () {
                 vmManager.dataSets = [];
                 vmManager.init();
