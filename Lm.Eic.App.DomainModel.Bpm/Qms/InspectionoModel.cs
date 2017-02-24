@@ -136,174 +136,177 @@ namespace Lm.Eic.App.DomainModel.Bpm.Qms
         }
 
 
-        #region IQC
-        /// <summary>
-        /// IQC物料检验配置文件
-        /// </summary>
-        public class IqcInspectionItemConfigModel
-        {
+    #region IQC
+    /// <summary>
+    /// IQC物料检验配置文件
+    /// </summary>
+    public class IqcInspectionItemConfigModel
+    {
 
-            public IqcInspectionItemConfigModel()
-            { }
-            #region Model
-            private string _materialid;
-            /// <summary>
-            ///物料料号
-            /// </summary>
-            public string MaterialId
-            {
-                set { _materialid = value; }
-                get { return _materialid; }
-            }
-        private string _inspectionItem;
-            /// <summary>
-            ///检验项目
-            /// </summary>
-            public string InspectionItem
+        public IqcInspectionItemConfigModel()
+        { }
+        #region Model
+        private string _materialid;
+        /// <summary>
+        ///物料料号
+        /// </summary>
+        public string MaterialId
         {
-            set { _inspectionItem = value; }
-                get { return _inspectionItem; }
-            }
-            private int _inspectiontermnumber;
-            /// <summary>
-            ///检验项目次序
-            /// </summary>
-            public int InspectiontermNumber
-            {
-                set { _inspectiontermnumber = value; }
-                get { return _inspectiontermnumber; }
-            }
-            private double _sizeusl;
-            /// <summary>
-            ///规格上限
-            /// </summary>
-            public double SizeUSL
-            {
-                set { _sizeusl = value; }
-                get { return _sizeusl; }
-            }
-            private double _sizelsl;
-            /// <summary>
-            ///规格下限
-            /// </summary>
-            public double SizeLSL
-            {
-                set { _sizelsl = value; }
-                get { return _sizelsl; }
-            }
-            private string _sizememo;
-            /// <summary>
-            ///规格备注
-            /// </summary>
-            public string SizeMemo
-            {
-                set { _sizememo = value; }
-                get { return _sizememo; }
-            }
-            private string _equipmentid;
-            /// <summary>
-            ///设备编号
-            /// </summary>
-            public string EquipmentID
-            {
-                set { _equipmentid = value; }
-                get { return _equipmentid; }
-            }
-            private string _inspectionmethod;
-            /// <summary>
-            ///检验方法
-            /// </summary>
-            public string InspectionMethod
-            {
-                set { _inspectionmethod = value; }
-                get { return _inspectionmethod; }
-            }
-            private string _inspectionmode;
-            /// <summary>
-            ///检验方式
-            /// </summary>
-            public string InspectionMode
-            {
-                set { _inspectionmode = value; }
-                get { return _inspectionmode; }
-            }
-            private string _inspectionlevel;
-            /// <summary>
-            ///检验水平
-            /// </summary>
-            public string InspectionLevel
-            {
-                set { _inspectionlevel = value; }
-                get { return _inspectionlevel; }
-            }
-            private string _inspectionaql;
-            /// <summary>
-            ///检验AQL
-            /// </summary>
-            public string InspectionAQL
-            {
-                set { _inspectionaql = value; }
-                get { return _inspectionaql; }
-            }
-            private string _opperson;
-            /// <summary>
-            ///操作人
-            /// </summary>
-            public string OpPerson
-            {
-                set { _opperson = value; }
-                get { return _opperson; }
-            }
-            private DateTime _opdate;
-            /// <summary>
-            ///操作日期
-            /// </summary>
-            public DateTime OpDate
-            {
-                set { _opdate = value; }
-                get { return _opdate; }
-            }
-            private DateTime _optime;
-            /// <summary>
-            ///操作时间
-            /// </summary>
-            public DateTime OpTime
-            {
-                set { _optime = value; }
-                get { return _optime; }
-            }
-            private string _opsign;
-            /// <summary>
-            ///操作标志
-            /// </summary>
-            public string OpSign
-            {
-                set { _opsign = value; }
-                get { return _opsign; }
-            }
-            private decimal _id_Key;
-            /// <summary>
-            ///自增键
-            /// </summary>
-            public decimal Id_Key
-            {
-                set { _id_Key = value; }
-                get { return _id_Key; }
-            }
-            #endregion Model
+            set { _materialid = value; }
+            get { return _materialid; }
         }
+        private string _inspectionitem;
+        /// <summary>
+        ///物料检验项目
+        /// </summary>
+        public string InspectionItem
+        {
+            set { _inspectionitem = value; }
+            get { return _inspectionitem; }
+        }
+        private int _inspectiontermnumber;
+        /// <summary>
+        ///检验项目的次序
+        /// </summary>
+        public int InspectiontermNumber
+        {
+            set { _inspectiontermnumber = value; }
+            get { return _inspectiontermnumber; }
+        }
+        private double _sizeusl;
+        /// <summary>
+        ///规格上限
+        /// </summary>
+        public double SizeUSL
+        {
+            set { _sizeusl = value; }
+            get { return _sizeusl; }
+        }
+        private double _sizelsl;
+        /// <summary>
+        ///规格上限
+        /// </summary>
+        public double SizeLSL
+        {
+            set { _sizelsl = value; }
+            get { return _sizelsl; }
+        }
+        private string _sizememo;
+        /// <summary>
+        ///规格说明
+        /// </summary>
+        public string SizeMemo
+        {
+            set { _sizememo = value; }
+            get { return _sizememo; }
+        }
+        private string _equipmentid;
+        /// <summary>
+        ///量具编号
+        /// </summary>
+        public string EquipmentID
+        {
+            set { _equipmentid = value; }
+            get { return _equipmentid; }
+        }
+        private string _inspectionmethod;
+        /// <summary>
+        ///检验方法
+        /// </summary>
+        public string InspectionMethod
+        {
+            set { _inspectionmethod = value; }
+            get { return _inspectionmethod; }
+        }
+        private string _sipinspectionstandard;
+        /// <summary>
+        ///SIP检验规范
+        /// </summary>
+        public string SIPInspectionStandard
+        {
+            set { _sipinspectionstandard = value; }
+            get { return _sipinspectionstandard; }
+        }
+        private string _inspectionmode;
+        /// <summary>
+        ///检验方式
+        /// </summary>
+        public string InspectionMode
+        {
+            set { _inspectionmode = value; }
+            get { return _inspectionmode; }
+        }
+        private string _inspectionlevel;
+        /// <summary>
+        ///检验水平
+        /// </summary>
+        public string InspectionLevel
+        {
+            set { _inspectionlevel = value; }
+            get { return _inspectionlevel; }
+        }
+        private string _inspectionaql;
+        /// <summary>
+        ///检验AQL值
+        /// </summary>
+        public string InspectionAQL
+        {
+            set { _inspectionaql = value; }
+            get { return _inspectionaql; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
     public class IqcInspectionItemConfigShowModel
     {
 
         public IqcInspectionItemConfigShowModel()
         { }
         #region Model
-        /// <summary>
-        ///物料料号
-        /// </summary>
-        public string MaterialId { get; set; }
-
-
         /// <summary>
         /// 品名 MB002
         /// </summary>
@@ -324,11 +327,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Qms
         public string MaterialBelongDepartment
         { get; set; }
         /// <summary>
-        ///检验项目
+        ///物料料号
+        /// </summary>
+        public string MaterialId { get; set; }
+        /// <summary>
+        ///物料检验项目
         /// </summary>
         public string InspectionItem { get; set; }
         /// <summary>
-        ///检验项目次序
+        ///检验项目的次序
         /// </summary>
         public int InspectiontermNumber { get; set; }
         /// <summary>
@@ -336,21 +343,25 @@ namespace Lm.Eic.App.DomainModel.Bpm.Qms
         /// </summary>
         public double SizeUSL { get; set; }
         /// <summary>
-        ///规格下限
+        ///规格上限
         /// </summary>
         public double SizeLSL { get; set; }
         /// <summary>
-        ///规格备注
+        ///规格说明
         /// </summary>
         public string SizeMemo { get; set; }
         /// <summary>
-        ///设备编号
+        ///量具编号
         /// </summary>
         public string EquipmentID { get; set; }
         /// <summary>
         ///检验方法
         /// </summary>
         public string InspectionMethod { get; set; }
+        /// <summary>
+        ///SIP检验规范
+        /// </summary>
+        public string SIPInspectionStandard { get; set; }
         /// <summary>
         ///检验方式
         /// </summary>
@@ -360,9 +371,30 @@ namespace Lm.Eic.App.DomainModel.Bpm.Qms
         /// </summary>
         public string InspectionLevel { get; set; }
         /// <summary>
-        ///检验AQL
+        ///检验AQL值
         /// </summary>
         public string InspectionAQL { get; set; }
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson { get; set; }
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate { get; set; }
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime { get; set; }
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign { get; set; }
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key { get; set; }
+
         #endregion Model
     }
     /// <summary>

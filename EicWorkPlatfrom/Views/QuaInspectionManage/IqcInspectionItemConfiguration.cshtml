@@ -10,6 +10,7 @@
                 <input type="text" placeholder="按品号查询" ng-model="vm.MaterialId" />
 
                 <button class="btn-sm btn-success" ng-click="vmManager.getMaterialDatas()">查询</button>
+                <button class="btn-sm btn-warning pull-right" ng-click="vmManager.saveAll()">批量保存</button>
             </div>
             <div class="h-split"></div>
             @*ERP信息*@
@@ -48,8 +49,8 @@
 
                                 <label class="col-md-2 control-label">检验项目</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" required name="inspectionterm" ng-model="vm.Inspectionterm" />
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.inspectionterm.$error" ng-show="operate.showValidation">
+                                    <input type="text" class="form-control" required name="inspectionItem" ng-model="vm.InspectionItem" />
+                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.inspectionItem.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">检验项目不能为空</small>
                                     </div>
                                 </div>
@@ -136,7 +137,7 @@
 
                 <div class="pull-left" style="width:55%;border-left:4px solid #046278;">
                     <div class="table-responsive">
-                        <table class="table table-hover table-striped" style="table-layout:fixed;">
+                        <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th>品号</th>
@@ -151,7 +152,7 @@
                             <tbody>
                                 <tr ng-repeat="item in vmManager.dataSets track by $index" cg-busy="{promise:searchPromise}" ng-click="vmManager.selectQualityItem(item)">
                                     <td>{{item.MaterialId}}</td>
-                                    <td>{{item.Inspectionterm}}</td>
+                                    <td>{{item.InspectionItem}}</td>
                                     <td>{{item.SizeMemo}}</td>
                                     <td>{{item.InspectionLevel}}</td>
                                     <td>{{item.InspectionAQL}}</td>
@@ -164,6 +165,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                       
                     </div>
                 </div>
             </div>

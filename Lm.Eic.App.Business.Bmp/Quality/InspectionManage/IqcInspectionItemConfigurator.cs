@@ -51,7 +51,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                        MaterailName = materialIdInfo.MaterailName,
                        MaterialSpecify = materialIdInfo.MaterialSpecify,
                        MaterialrawID = materialIdInfo.MaterialrawID,
-                       MaterialBelongDepartment = materialIdInfo.MaterialBelongDepartment,
+                       MaterialBelongDepartment = materialIdInfo.MaterialBelongDepartment + "/" + m.SIPInspectionStandard,
                        EquipmentID = m.EquipmentID,
                        InspectionAQL = m.InspectionAQL,
                        InspectionItem = m.InspectionItem,
@@ -59,10 +59,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                        InspectionMode = m.InspectionMode,
                        InspectionMethod = m.InspectionMethod,
                        InspectiontermNumber = m.InspectiontermNumber,
-                    
                        SizeLSL = m.SizeLSL,
                        SizeUSL = m.SizeUSL,
-                       SizeMemo = m.SizeMemo
+                       SizeMemo = m.SizeMemo,
+                       SIPInspectionStandard=m.SIPInspectionStandard,
+                       OpDate=m.OpDate,
+                       OpPerson=m.OpPerson ,
+                       OpTime=m.OpTime ,
+                       Id_Key=m.Id_Key 
                    });
            });}
             
