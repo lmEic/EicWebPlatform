@@ -1,7 +1,7 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.App.Erp.Bussiness.QmsManage;
 using Lm.Eic.App.Erp.Domain.QuantityModel;
-
+using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     public class IqcInspectionItemConfigurator
     {
         /// <summary>
-        /// 
+        /// 物料号查询检验项目
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
@@ -28,6 +28,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault(),
                 InspectionItemConfigModelList = IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigsBy(materialId)
             };
+        }
+        /// <summary>
+        /// 批量保存
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        public OpResult SaveIqcInspectionItemConfig(List<IqcInspectionItemConfigModel> modelList)
+        {
+           return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.AddInspectionItemConfigList(modelList);
         }
     }
   
