@@ -87,7 +87,8 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
         //013935批量保存
         savsAll: function(){
             quarityDataOpService.postQualityDatas(vmManager.dataSets).then(function () {
-
+                vmManager.dataSets = [];
+                vmManager.init();
             })
         }
     } 

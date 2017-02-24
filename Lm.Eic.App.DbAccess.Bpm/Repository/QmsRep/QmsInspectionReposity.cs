@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Lm.Eic.App.DbAccess.Bpm.Mapping;
 using Lm.Eic.Uti.Common.YleeDbHandler;
-using Lm.Eic.App.DomainModel.Bpm.Qms;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
 namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
 {
     public interface IInspectionModeConfigRepository : IRepository<InspectionModeConfigModel> { }

@@ -4,6 +4,7 @@ using System.Linq;
 using Lm.Eic.App.Erp.Domain.QuantityModel;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using System.Data;
 using Lm.Eic.App.Erp.DbAccess.PurchaseManageDb;
 

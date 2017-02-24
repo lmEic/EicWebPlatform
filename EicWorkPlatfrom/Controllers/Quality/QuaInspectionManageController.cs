@@ -25,11 +25,12 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+        [NoAuthenCheck]
         public ActionResult InspectionDataGatheringOfIQC()
         {
             return View();
         }
+        [NoAuthenCheck]
 
         public JsonResult GetMaterialDatas(string materialId)
         {

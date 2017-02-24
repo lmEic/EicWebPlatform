@@ -1,5 +1,5 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep;
-using Lm.Eic.App.DomainModel.Bpm.Qms;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
