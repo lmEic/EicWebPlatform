@@ -83,33 +83,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
         }
-
-        /// <summary>
-        /// 添加列表到数据库中
-        /// </summary>
-        /// <param name="modelList">工序列表</param>
-        /// <returns></returns>
-        public OpResult AddInspectionItemConfigList(List<IqcInspectionItemConfigModel> modelList)
-        {
-            try
-            {
-
-                modelList.ToList().ForEach((m) => {
-                    if (IsExistInspectionConfigItem(m.MaterialId, m.InspectionItem))
-                    {
-                        m.OpSign = "delete";
-                    }
-                    SetFixFieldValue(m);
-                    this.Store(m);
-                });
-                SetFixFieldValue(modelList, OpMode.Add);
-                return irep.Insert(modelList).ToOpResult_Add(OpContext);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
     }
 
 
