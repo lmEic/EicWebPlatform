@@ -13,6 +13,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
 {
     public class HrArchivesManageController : EicBaseController
     {
+        #region View Tpl
+
+        
         //
         // GET: /HrArchivesManage/
         public ActionResult Index()
@@ -53,6 +56,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
+        #endregion
         /// <summary>
         /// 办理离职数据
         /// </summary>
@@ -196,14 +200,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [HttpPost]
         public JsonResult ChangeDepartment(List<ArDepartmentChangeLibModel> changeDepartments)
         {
-            if (changeDepartments != null && changeDepartments.Count > 0)
-            {
-                changeDepartments.ForEach(d =>
-                {
-                    d.AssignDate = DateTime.Now.ToDate();
-                    d.OpPerson = this.OnLineUser.UserName;
-                });
-            }
             var result = ArchiveService.ArchivesManager.ChangeDepartment(changeDepartments);
             return Json(result);
         }
@@ -216,14 +212,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [HttpPost]
         public JsonResult ChangePost(List<ArPostChangeLibModel> changePosts)
         {
-            if (changePosts != null && changePosts.Count > 0)
-            {
-                changePosts.ForEach(d =>
-                {
-                    d.AssignDate = DateTime.Now.ToDate();
-                    d.OpPerson = this.OnLineUser.UserName;
-                });
-            }
             var result = ArchiveService.ArchivesManager.ChangePost(changePosts);
             return Json(result);
         }
