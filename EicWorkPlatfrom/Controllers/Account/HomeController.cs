@@ -45,7 +45,6 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         #region  行事历
-        [NoAuthenCheck]
         public ActionResult EditHomeCalendarTpl()
         {
             return View();

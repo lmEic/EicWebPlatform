@@ -89,6 +89,7 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         OpSign: null,
         OpDate: null,
         OpTime: null,
+        OpPerson:null,
         Id_Key: null,
     }
     //013935创建视图管理器
@@ -164,6 +165,9 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
                 };
                 $scope.vmEditManager = vmEditManager;
                 $scope.editSave = function () {
+                    var user = leeDataHandler.dataStorage.getLoginedUser();
+                    if (user !== null)
+                        uiVM.OpPerson = user.userName;
                     uiVM.OpSign = 'edit';
                     $scope.promise = homeDataopService.saveCalendarDatas($scope.vm).then(function () {
                         
