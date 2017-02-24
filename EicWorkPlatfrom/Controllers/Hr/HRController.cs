@@ -21,7 +21,15 @@ namespace EicWorkPlatfrom.Controllers.hr
         {
             return View();
         }
-
+        /// <summary>
+        /// 部门选择视图模板
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ActionResult DepartmentChangeSelectTpl()
+        {
+            return View();
+        }
         /// <summary>
         /// 学习信息编辑模板
         /// </summary>

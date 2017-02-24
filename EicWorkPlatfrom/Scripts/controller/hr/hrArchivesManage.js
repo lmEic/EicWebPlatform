@@ -499,6 +499,7 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
 hrModule.controller('arDepartmentChangeCtrl', function ($scope,hrArchivesDataOpService, dataDicConfigTreeSet, connDataOpService) {
     //视图管理器
     var vmManager = {
+        assignDate:new Date(),
         opSign:'edit',
         opDescription:'修改为：',
         configDatas:[],
@@ -574,11 +575,12 @@ hrModule.controller('arDepartmentChangeCtrl', function ($scope,hrArchivesDataOpS
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentEditTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
         var treeNodeVm = _.clone(departmentTreeSet.treeNode.vm);
+        vmManager.current.AssignDate = vmManager.assignDate;
         vmManager.current.NowDepartmentText = treeNodeVm.DataNodeText;
         vmManager.current.NowDepartment = treeNodeVm.DataNodeName;
         vmManager.current.opDescription = _.clone(vmManager.opDescription);
         vmManager.current.OpSign = _.clone(vmManager.opSign);
-       
+        leeHelper.setUserData(vmManager.current);
     };
 
     $scope.ztree = departmentTreeSet;
@@ -601,6 +603,8 @@ hrModule.controller('arPostChangeCtrl', function ($scope, hrArchivesDataOpServic
 
     //视图管理器
     var vmManager = {
+        //变动日期
+        assignDate: new Date(),
         postNatures: [{ name: '直接', text: '直接' }, { name: '间接', text: '间接' }],
         postNature: null,
         opSign: 'edit',
@@ -679,8 +683,10 @@ hrModule.controller('arPostChangeCtrl', function ($scope, hrArchivesDataOpServic
         vmManager.current.NowPost = treeNodeVm.DataNodeText;
         vmManager.current.PostType = treeNodeVm.ParentDataNodeText;
         vmManager.current.PostNature = vmManager.postNature;
+        vmManager.current.AssignDate = vmManager.assignDate;
         vmManager.current.opDescription = _.clone(vmManager.opDescription);
         vmManager.current.OpSign = _.clone(vmManager.opSign);
+        leeHelper.setUserData(vmManager.current);
     };
 
     $scope.ztree = postTreeSet;

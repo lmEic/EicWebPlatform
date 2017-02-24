@@ -165,9 +165,7 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
                 };
                 $scope.vmEditManager = vmEditManager;
                 $scope.editSave = function () {
-                    var user = leeDataHandler.dataStorage.getLoginedUser();
-                    if (user !== null)
-                        uiVM.OpPerson = user.userName;
+                    leeHelper.setUserData(uiVM);
                     uiVM.OpSign = 'edit';
                     $scope.promise = homeDataopService.saveCalendarDatas($scope.vm).then(function () {
                         

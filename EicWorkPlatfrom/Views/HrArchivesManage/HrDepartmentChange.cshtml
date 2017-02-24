@@ -46,7 +46,7 @@
                                     <td ng-show="dep.OpCmdVisible">
                                         <button class="btn btn-xs btn-primary" style="margin-bottom:6px;" ng-click="operate.edit(dep)"
                                                 title="选择部门信息"
-                                                data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
+                                                data-template-url="@Url.Action("DepartmentChangeSelectTpl", "HR")"
                                                 data-animation="am-flip-x" data-auto-close="1"
                                                 data-bs-popover>
                                             修改
@@ -54,7 +54,7 @@
                                         <br />
                                         <button class="btn btn-xs btn-warning" ng-click="operate.change(dep)"
                                                 title="选择部门信息"
-                                                data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
+                                                data-template-url="@Url.Action("DepartmentChangeSelectTpl", "HR")"
                                                 data-animation="am-flip-x" data-auto-close="1"
                                                 data-bs-popover>
                                             调动

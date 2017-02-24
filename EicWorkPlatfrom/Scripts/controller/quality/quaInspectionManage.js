@@ -18,12 +18,6 @@ quarityModule.factory("quarityDataOpService", function (ajaxService) {
 })
 quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataOpService) {
     var uiVM = {
-        //表头变量
-        MaterialName:null,
-        MaterialBelongDepartment:null,
-        MaterialSpecify:null,
-        MaterialrawID:null,
-
         //表单变量
         MaterialId: null,
         InspectionItem: null,
@@ -42,6 +36,14 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
         OpSign: "add",
         Id_key: 0,
     }
+    //表头变量
+    var tableVM = {
+        MaterialName: null,
+        MaterialBelongDepartment: null,
+        MaterialSpecify: null,
+        MaterialrawID: null,
+    }
+    $scope.tableVm = tableVM;
     $scope.vm = uiVM;
     var initVM = _.clone(uiVM);
     var vmManager = {
@@ -64,9 +66,10 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
         //013935根据品号查询
         getMaterialDatas: function () {
             $scope.searchPromise = quarityDataOpService.getMaterialDatas($scope.vm.MaterialId).then(function (datas) {
-                if(datas != null){
-                    vmManager.dataSets = datas;
+                if (datas != null) {
                     console.log(datas)
+                    $scope.tableVm = datas.ProductMaterailModel;
+                    vmManager.dataSets = datas.InspectionItemConfigModelList;
                 }
             });
         },
