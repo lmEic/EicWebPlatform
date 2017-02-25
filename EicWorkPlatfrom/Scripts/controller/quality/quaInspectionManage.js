@@ -27,6 +27,10 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
         })
        
     }
+    quality.importIqcInspectionItemConfigDatas = function (file) {
+        var url = qualityUrl + 'ImportIqcInspectionItemConfigDatas';
+        return ajaxService.uploadFile(url, file);
+    }
 
     return quality;
 })
@@ -95,17 +99,19 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityDataO
             });
         }
     }
-    //$scope.selectFile = function (el) {
-    //    var files = el.files;
-    //    if (files.length > 0) {
-    //        var file = files[0];
-    //        var fd = new FormData();
-    //        fd.append('file', file);
-    //        dReportDataOpService.importProductFlowTemplateFile(fd).then(function (datas) {
-    //            vmManager.editDatas = datas;
-    //        });
-    //    }
-    //};
+
+    //013935导入excel
+    $scope.selectFile = function (el) {
+        var files = el.files;
+        if (files.length > 0) {
+            var file = files[0];
+            var fd = new FormData();
+            fd.append('file', file);
+            qualityDataOpService.importIqcInspectionItemConfigDatas(fd).then(function (datas) {
+                vmManager.dataSets = datas;
+            });
+        }
+    };
     $scope.vmManager = vmManager;
 
     var operate = Object.create(leeDataHandler.operateStatus);
