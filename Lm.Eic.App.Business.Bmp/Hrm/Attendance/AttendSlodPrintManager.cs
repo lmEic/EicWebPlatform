@@ -546,18 +546,37 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// </summary>
         public List<AttendSlodFingerDataCurrentMonthModel> AutoHandleExceptionSlotData(string yearMonth)
         {
-            AttendClassTypeSetter classTypeSetter = new AttendClassTypeSetter();
-            //var workers = ArchiveService.ArchivesManager.FindWorkers();//这里修改为从考勤数据中提取
-            //一天的中间时间
-            DateTime dayMiddleTime;
-            Dictionary<string, string> dicClassTypes = new Dictionary<string, string>();
+            List<AttendSlodFingerDataCurrentMonthModel> attendExceptionSlodDatas = new List<AttendSlodFingerDataCurrentMonthModel>();
+            string[] dfields = yearMonth.Split('-');
+            if (dfields.Length != 2) return attendExceptionSlodDatas;
+            int year = dfields[0].Trim().ToInt(), month = dfields[1].Trim().ToInt();
             //考勤数据中没有处理过异常的数据集
             List<AttendSlodFingerDataCurrentMonthModel> attendSlotDatas = this.irep.Entities.Where(e => e.HandleSlotExceptionStatus == 0 && e.YearMonth == yearMonth).ToList();
-            if (attendSlotDatas == null || attendSlotDatas.Count == 0) return null;
-            string workerId;//工号
+            if (attendSlotDatas == null || attendSlotDatas.Count == 0) return attendExceptionSlodDatas;
+            //本月考勤中所有员工列表
+            List<string> workerIdList = attendSlotDatas.Select(e => e.WorkerId).Distinct().ToList();
+
+            AttendClassTypeSetter classTypeSetter = new AttendClassTypeSetter();
+            //获取本月份的日期天数
+            int daysInMonths = DateTime.DaysInMonth(year,month);
+
+            Dictionary<string, string> dicClassTypes = new Dictionary<string, string>();
+            //一天的中间时间
+            DateTime dayMiddleTime;
+            DateTime currentDay;
+            //string workerId;//工号
             string classType;//班别
             string slotExceptionType = string.Empty;//刷卡异常类别
             AttendClassTypeDetailModel ctdMdl = null;
+            workerIdList.ForEach(workerId => {
+                //遍历该作业员本月份每天的考勤数据
+                for (int dayIndex = 1; dayIndex < daysInMonths; dayIndex++)
+                {
+                    currentDay = new DateTime();
+                }
+            });
+
+
             //遍历循环处理
             attendSlotDatas.ForEach(attendSd =>
             {
