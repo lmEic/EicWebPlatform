@@ -30,7 +30,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             };
         }
         /// <summary>
-        /// 批量保存
+        /// 增删改
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
