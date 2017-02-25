@@ -1,27 +1,45 @@
-﻿var quarityModule = angular.module('bpm.qualityApp');
-quarityModule.factory("quarityDataOpService", function (ajaxService) {
-    var quarity = {};
-    var quarityUrl = "/quaInspectionManage/";
-    quarity.getMaterialDatas = function (materialId) {
-        var url = quarityUrl + "GetMaterialDatas";
+﻿var qualityModule = angular.module('bpm.qualityApp');
+qualityModule.factory("qualityDataOpService", function (ajaxService) {
+    var quality = {};
+    var qualityUrl = "/quaInspectionManage/";
+    quality.getMaterialDatas = function (materialId) {
+        var url = qualityUrl + "GetMaterialDatas";
         return ajaxService.getData(url,  {
             materialId: materialId
         })
     };
-    quarity.saveInspectionItemconfig = function (uiVM) {
-        var url = quarityUrl + "SaveInspectionItemconfig";
+    quality.saveInspectionItemconfig = function (modelVM) {
+        var url = qualityUrl + "SaveInspectionItemconfig";
         return ajaxService.postData(url, {
-            uiVM: uiVM
+            modelVM: modelVM
         })
     }
-    return quarity;
+    quality.deleteMaterialDatas = function (item) {
+        var url = qualityUrl + "DeleteMaterialDatas";
+        return ajaxService.postData(url, {
+            item: item
+        })
+    }
+    quality.getInspectionIndex = function (materialId) {
+        var url = qualityUrl + "GetInspectionIndex";
+        return ajaxService.postData(url, {
+            materialId: materialId
+        })
+       
+    }
+    quality.importIqcInspectionItemConfigDatas = function (file) {
+        var url = qualityUrl + 'ImportIqcInspectionItemConfigDatas';
+        return ajaxService.uploadFile(url, file);
+    }
+
+    return quality;
 })
-quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataOpService) {
+qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityDataOpService) {
     var uiVM = {
         //表单变量
         MaterialId: null,
         InspectionItem: null,
-        InspectiontermNumber: 0,
+        InspectionItemIndex: null,
         SizeUSL: null,
         SizeLSL: null,
         SizeMemo: null,
@@ -48,7 +66,8 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
     var initVM = _.clone(uiVM);
     var vmManager = {
         materialDatas: [],
-        //dataSource: [],
+        inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
+        dataSource: [],
         dataSets: [],
         delItem:null,
         init: function () {
@@ -65,61 +84,79 @@ quarityModule.controller("iqcInspectionItemCtrl", function ($scope, quarityDataO
 
         //013935根据品号查询
         getMaterialDatas: function () {
-            $scope.searchPromise = quarityDataOpService.getMaterialDatas($scope.vm.MaterialId).then(function (datas) {
+            $scope.searchPromise = qualityDataOpService.getMaterialDatas($scope.vm.MaterialId).then(function (datas) {
                 if (datas != null) {
-                    console.log(datas)
                     $scope.tableVm = datas.ProductMaterailModel;
                     vmManager.dataSets = datas.InspectionItemConfigModelList;
                 }
             });
         },
+        getInspectionIndex: function () {
+            $scope.searchPromise = qualityDataOpService.getInspectionIndex($scope.vm.MaterialId).then(function (indexInt) {
+                if (indexInt!= null) {
+                    $scope.vm.InspectionItemIndex = indexInt;
+                }
+            });
+        }
+    }
 
-        //013935删除表格
-        deleteItem:function(item){
-            vmManager.delItem = item;
-            leeHelper.remove(vmManager.dataSets, vmManager.delItem);
-        },
-
-        //013935编辑表格
-        editItem:function(item){
-            uiVM = item;
-            uiVM.OpSign = "edit";
-            $scope.vm = uiVM;
-        },
-        //013935批量保存
-        save: function () {
-           
-        }  
-    } 
+    //013935导入excel
+    $scope.selectFile = function (el) {
+        var files = el.files;
+        if (files.length > 0) {
+            var file = files[0];
+            var fd = new FormData();
+            fd.append('file', file);
+            qualityDataOpService.importIqcInspectionItemConfigDatas(fd).then(function (datas) {
+                vmManager.dataSets = datas;
+            });
+        }
+    };
     $scope.vmManager = vmManager;
 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-
+    //013935保存
     operate.save = function (isValid) {
         var modelVM = _.clone(uiVM);
-        if (uiVM.OpSign == 'add') {
-            leeDataHandler.dataOperate.add(operate, isValid, function () {
-                leeHelper.setUserData(uiVM);
-                quarityDataOpService.saveInspectionItemconfig(modelVM).then(function (datas) {
-                    vmManager.dataSets.push(datas);
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            leeHelper.setUserData(uiVM);
+            if (uiVM.OpSign === "add") {
+                qualityDataOpService.saveInspectionItemconfig(modelVM).then(function (datas) {
+                    if (datas.Result) {
+                        vmManager.dataSets.push(modelVM);
+                    }
                 })
-                modelVM = [];
-            })
-        } else {
-            var item = _.find(vmManager.dataSets, { Id_key: uiVM.Id_key });
-            if (angular.isDefined(item)) {
-                leeDataHandler.dataOperate.add(operate, isValid, function () {
-                    //quarityDataOpService.postQualityDatas($scope.vm).then(function () {
-                        leeHelper.copyVm(uiVM, item);
-                    //})
+            } else {
+                qualityDataOpService.saveInspectionItemconfig(modelVM).then(function (datas) {
+
                 })
-               
             }
-        }
-        vmManager.init();
-        
+            vmManager.init();
+        })
     };
+        
+    operate.editItem = function(item){
+        uiVM = item;
+        uiVM.OpSign = "edit";
+        $scope.vm = uiVM;
+    };
+
+
+    operate.deleteItem = function (item) {
+        uiVM = item;
+        uiVM.OpSign = "delete";
+        $scope.vm = uiVM;
+        $scope.searchPromise = qualityDataOpService.saveInspectionItemconfig(item).then(function (datas) {
+            if (datas.Result) {
+                vmManager.delItem = item;
+                leeHelper.remove(vmManager.dataSets, vmManager.delItem);
+            }
+        });
+        vmManager.init();
+    }
+
+
     operate.refresh = function () {
         vmManager.init();
     }
