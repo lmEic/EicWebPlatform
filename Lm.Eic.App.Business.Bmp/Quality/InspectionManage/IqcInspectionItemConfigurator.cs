@@ -41,11 +41,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult SaveIqcInspectionItemConfigList(List<IqcInspectionItemConfigModel> modelList)
+        public OpResult SaveIqcInspectionItemConfig(List<IqcInspectionItemConfigModel> modelList)
         {
-
-          
-
             return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.AddInspectionItemConfiList(modelList);
         }
 

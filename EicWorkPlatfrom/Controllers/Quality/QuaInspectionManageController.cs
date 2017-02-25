@@ -70,7 +70,8 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult SaveAllMaterialDatas(List<IqcInspectionItemConfigModel> dataSets)
         {
-            return null;
+            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(dataSets);
+            return Json(opResult);
         }
         /// <summary>
         /// 导入EXCEL数据到IQC物料检验配置
@@ -91,7 +92,7 @@ namespace EicWorkPlatfrom.Controllers
                     datas = InspectionService.InspectionItemConfigurator.ImportProductFlowListBy(fileName);
                     if (datas != null && datas.Count > 0)
                     //批量保存数据
-                    { var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfigList(datas); }
+                    { var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(datas); }
                    
                     System.IO.File.Delete(fileName);
                 }
