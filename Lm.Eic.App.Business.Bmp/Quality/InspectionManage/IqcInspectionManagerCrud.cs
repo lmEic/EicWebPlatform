@@ -81,7 +81,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
         public List<IqcInspectionItemConfigModel> FindIqcInspectionItemConfigsBy(string materialId)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
+            var listmodel = irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
+          
+            return listmodel;
         }
     }
 
