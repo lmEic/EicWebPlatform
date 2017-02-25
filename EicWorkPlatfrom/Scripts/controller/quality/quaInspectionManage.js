@@ -64,7 +64,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityDataO
     var vmManager = {
         materialDatas: [],
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
-        //dataSource: [],
+        dataSource: [],
         dataSets: [],
         delItem:null,
         init: function () {
@@ -95,7 +95,18 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityDataO
                 }
             });
         }
-    } 
+    }
+    //$scope.selectFile = function (el) {
+    //    var files = el.files;
+    //    if (files.length > 0) {
+    //        var file = files[0];
+    //        var fd = new FormData();
+    //        fd.append('file', file);
+    //        dReportDataOpService.importProductFlowTemplateFile(fd).then(function (datas) {
+    //            vmManager.editDatas = datas;
+    //        });
+    //    }
+    //};
     $scope.vmManager = vmManager;
 
     var operate = Object.create(leeDataHandler.operateStatus);
