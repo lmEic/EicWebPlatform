@@ -99,7 +99,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             SetFixFieldValue(modelList, OpMode.Add);
             //如果存在 就修改   然后从列表中剔除 最后批量加入 （册除就直接册除）
-            modelList.ForEach((m) =>
+            modelList.ForEach(m =>
             {
                 if (IsExistInspectionConfigItem(m.MaterialId,m.InspectionItem))
                 {
