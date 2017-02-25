@@ -164,14 +164,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionitem = value; }
             get { return _inspectionitem; }
         }
-        private int _inspectiontermnumber;
+        private int _inspectionItemIndex;
         /// <summary>
         ///检验项目的次序
         /// </summary>
-        public int InspectiontermNumber
+        public int InspectionItemIndex
         {
-            set { _inspectiontermnumber = value; }
-            get { return _inspectiontermnumber; }
+            set { _inspectionItemIndex = value; }
+            get { return _inspectionItemIndex; }
         }
         private double _sizeusl;
         /// <summary>
