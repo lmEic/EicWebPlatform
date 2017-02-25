@@ -83,7 +83,21 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
         }
+        public OpResult AddInspectionItemConfiList(List<IqcInspectionItemConfigModel> modelList)
+        {
+            SetFixFieldValue(modelList, OpMode.Add);
+            //如果存在剔除
+            modelList.ForEach((m) =>
+            {
+                if (IsExistInspectionConfigItem(m.MaterialId,m.InspectionItem))
+                {
+                    modelList.Remove(m);
+                }
+            });
+            return irep.Insert(modelList).ToOpResult_Add(OpContext);
 
+           
+        }
         public int GetInspectionIndex(string materialId)
         {
             var listEntities = FindIqcInspectionItemConfigsBy(materialId);

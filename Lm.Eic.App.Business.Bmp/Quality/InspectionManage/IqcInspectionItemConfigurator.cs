@@ -40,6 +40,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.Store(model);
         }
+        public OpResult SaveIqcInspectionItemConfigList(List<IqcInspectionItemConfigModel> modelList)
+        {
+            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.AddInspectionItemConfiList(modelList);
+        }
 
 
         public int  GetInspectionIndex (string materialId)
