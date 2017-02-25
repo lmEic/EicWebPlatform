@@ -120,7 +120,7 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
         //013935保存所有数据
         saveAll: function () {
             $scope.searchPromise = qualityDataOpService.saveAll(vmManager.dataSets).then(function () {
-                
+                vmManager.dataSets = [];
             });
         }
     }
