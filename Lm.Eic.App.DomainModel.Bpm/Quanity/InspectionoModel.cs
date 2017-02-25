@@ -686,112 +686,112 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
     }
 
-    public class IqcInspectionItemConfigShowModel
-    {
+    //public class IqcInspectionItemConfigShowModel
+    //{
 
-        public IqcInspectionItemConfigShowModel()
-        {
-            this.InspectionItemConfigModelList = new List<IqcInspectionItemConfigModel>();
-            this.ProductMaterailModel = new Quanity.ProductMaterailModel();
-        }
-        #region Model
-        /// <summary>
-        /// 检验物料料号单头
-        /// </summary>
-        public ProductMaterailModel ProductMaterailModel { set; get; }
+    //    //public IqcInspectionItemConfigShowModel()
+    //    //{
+    //    //    this.InspectionItemConfigModelList = new List<IqcInspectionItemConfigModel>();
+    //    //    this.ProductMaterailModel = new Quanity.ProductMaterailModel();
+    //    //}
+    //    //#region Model
+    //    ///// <summary>
+    //    ///// 检验物料料号单头
+    //    ///// </summary>
+    //    //public ProductMaterailModel ProductMaterailModel { set; get; }
 
-        /// <summary>
-        /// 检验物料料号单身
-        /// </summary>
-        public List<IqcInspectionItemConfigModel> InspectionItemConfigModelList { set; get; }
+    //    ///// <summary>
+    //    ///// 检验物料料号单身
+    //    ///// </summary>
+    //    //public List<IqcInspectionItemConfigModel> InspectionItemConfigModelList { set; get; }
 
 
-        ///// <summary>
-        ///// 品名 MB002
-        ///// </summary>
-        //public string MaterailName { get; set; }
-        ///// <summary>
-        ///// 规格 MB003
-        ///// </summary>
-        //public string MaterialSpecify { get; set; }
-        ///// <summary>
-        ///// 产品图号 MB029
-        ///// </summary>
-        //public string MaterialrawID { get; set; }
-        ///// <summary>
-        ///// 物料属于部门 TM068
-        ///// </summary>
-        //public string MaterialBelongDepartment
-        //{ get; set; }
-        ///// <summary>
-        /////物料料号
-        ///// </summary>
-        //public string MaterialId { get; set; }
-        ///// <summary>
-        /////物料检验项目
-        ///// </summary>
-        //public string InspectionItem { get; set; }
-        ///// <summary>
-        /////检验项目的次序
-        ///// </summary>
-        //public int InspectiontermNumber { get; set; }
-        ///// <summary>
-        /////规格上限
-        ///// </summary>
-        //public double SizeUSL { get; set; }
-        ///// <summary>
-        /////规格上限
-        ///// </summary>
-        //public double SizeLSL { get; set; }
-        ///// <summary>
-        /////规格说明
-        ///// </summary>
-        //public string SizeMemo { get; set; }
-        ///// <summary>
-        /////量具编号
-        ///// </summary>
-        //public string EquipmentID { get; set; }
-        ///// <summary>
-        /////检验方法
-        ///// </summary>
-        //public string InspectionMethod { get; set; }
-        ///// <summary>
-        /////SIP检验规范
-        ///// </summary>
-        //public string SIPInspectionStandard { get; set; }
-        ///// <summary>
-        /////检验方式
-        ///// </summary>
-        //public string InspectionMode { get; set; }
-        ///// <summary>
-        /////检验水平
-        ///// </summary>
-        //public string InspectionLevel { get; set; }
-        ///// <summary>
-        /////检验AQL值
-        ///// </summary>
-        //public string InspectionAQL { get; set; }
-        ///// <summary>
-        /////操作人
-        ///// </summary>
-        //public string OpPerson { get; set; }
-        ///// <summary>
-        /////操作日期
-        ///// </summary>
-        //public DateTime OpDate { get; set; }
-        ///// <summary>
-        /////操作时间
-        ///// </summary>
-        //public DateTime OpTime { get; set; }
-        ///// <summary>
-        /////操作标识
-        ///// </summary>
-        //public string OpSign { get; set; }
-        ///// <summary>
-        /////自增键
-        ///// </summary>
-        //public decimal Id_Key { get; set; }
+    //    ///// <summary>
+    //    ///// 品名 MB002
+    //    ///// </summary>
+    //    //public string MaterailName { get; set; }
+    //    ///// <summary>
+    //    ///// 规格 MB003
+    //    ///// </summary>
+    //    //public string MaterialSpecify { get; set; }
+    //    ///// <summary>
+    //    ///// 产品图号 MB029
+    //    ///// </summary>
+    //    //public string MaterialrawID { get; set; }
+    //    ///// <summary>
+    //    ///// 物料属于部门 TM068
+    //    ///// </summary>
+    //    //public string MaterialBelongDepartment
+    //    //{ get; set; }
+    //    ///// <summary>
+    //    /////物料料号
+    //    ///// </summary>
+    //    //public string MaterialId { get; set; }
+    //    ///// <summary>
+    //    /////物料检验项目
+    //    ///// </summary>
+    //    //public string InspectionItem { get; set; }
+    //    ///// <summary>
+    //    /////检验项目的次序
+    //    ///// </summary>
+    //    //public int InspectiontermNumber { get; set; }
+    //    ///// <summary>
+    //    /////规格上限
+    //    ///// </summary>
+    //    //public double SizeUSL { get; set; }
+    //    ///// <summary>
+    //    /////规格上限
+    //    ///// </summary>
+    //    //public double SizeLSL { get; set; }
+    //    ///// <summary>
+    //    /////规格说明
+    //    ///// </summary>
+    //    //public string SizeMemo { get; set; }
+    //    ///// <summary>
+    //    /////量具编号
+    //    ///// </summary>
+    //    //public string EquipmentID { get; set; }
+    //    ///// <summary>
+    //    /////检验方法
+    //    ///// </summary>
+    //    //public string InspectionMethod { get; set; }
+    //    ///// <summary>
+    //    /////SIP检验规范
+    //    ///// </summary>
+    //    //public string SIPInspectionStandard { get; set; }
+    //    ///// <summary>
+    //    /////检验方式
+    //    ///// </summary>
+    //    //public string InspectionMode { get; set; }
+    //    ///// <summary>
+    //    /////检验水平
+    //    ///// </summary>
+    //    //public string InspectionLevel { get; set; }
+    //    ///// <summary>
+    //    /////检验AQL值
+    //    ///// </summary>
+    //    //public string InspectionAQL { get; set; }
+    //    ///// <summary>
+    //    /////操作人
+    //    ///// </summary>
+    //    //public string OpPerson { get; set; }
+    //    ///// <summary>
+    //    /////操作日期
+    //    ///// </summary>
+    //    //public DateTime OpDate { get; set; }
+    //    ///// <summary>
+    //    /////操作时间
+    //    ///// </summary>
+    //    //public DateTime OpTime { get; set; }
+    //    ///// <summary>
+    //    /////操作标识
+    //    ///// </summary>
+    //    //public string OpSign { get; set; }
+    //    ///// <summary>
+    //    /////自增键
+    //    ///// </summary>
+    //    //public decimal Id_Key { get; set; }
 
-        #endregion Model
-    }
+    //    #endregion Model
+    //}
 }
