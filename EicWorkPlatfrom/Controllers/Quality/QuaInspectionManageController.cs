@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using System.IO;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -52,11 +53,46 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         // GetInspectionIndex
-
+        [NoAuthenCheck]
         public JsonResult GetInspectionIndex(string materialId)
         {
             var opResult = InspectionService.InspectionItemConfigurator.GetInspectionIndex(materialId);
             return Json(opResult);
+        }
+        /// <summary>
+        /// 导入EXCEL数据到IQC物料检验配置
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult ImportIqcInspectionItemConfigDatas(HttpPostedFileBase file)
+        {
+            List<IqcInspectionItemConfigModel> datas = null;
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    ///待加入验证文件名称逻辑:
+                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
+                    file.SaveAs(fileName);
+                    datas = InspectionService.InspectionItemConfigurator.ImportProductFlowListBy(fileName);
+                    System.IO.File.Delete(fileName);
+                }
+            }
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 载入IQC物料检验配置模板
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult LoadIqcInspectionItemConfigFile()
+        {
+            string filePath = @"E:\各部门日报格式\IQC物料检验配置数据表.xls";
+            MemoryStream ms = InspectionService.InspectionItemConfigurator.GetIqcInspectionItemConfigTemplate(filePath);
+            return this.ExportToExcel(ms, "IQC物料检验配置模板", "IQC物料检验配置模板");
+            //return null;
         }
         #endregion
 
