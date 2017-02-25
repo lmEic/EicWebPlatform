@@ -45,7 +45,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="modelList"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult SaveInspectionItemconfig(List<IqcInspectionItemConfigModel> dataSets) 
+        public JsonResult SaveInspectionItemconfig(IqcInspectionItemConfigModel dataSets) 
         {
             var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(dataSets);
            return Json(opResult);
