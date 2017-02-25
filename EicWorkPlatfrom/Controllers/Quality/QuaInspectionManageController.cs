@@ -67,7 +67,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult ImportIqcInspectionItemConfigDatas(HttpPostedFileBase file)
         {
-            List<IqcInspectionItemConfigModel> datas = null;
+            IqcInspectionItemConfigShowModel datas = null;
             if (file != null)
             {
                 if (file.ContentLength > 0)
@@ -75,7 +75,12 @@ namespace EicWorkPlatfrom.Controllers
                     ///待加入验证文件名称逻辑:
                     string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
                     file.SaveAs(fileName);
-                    datas = InspectionService.InspectionItemConfigurator.ImportProductFlowListBy(fileName);
+                    var listDatas = InspectionService.InspectionItemConfigurator.ImportProductFlowListBy(fileName);
+                    var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfigList(listDatas);
+                    if (opResult.Result)
+                    {
+                        datas=  new IqcInspectionItemConfigShowModel() { InspectionItemConfigModelList = listDatas };
+                    }
                     System.IO.File.Delete(fileName);
                 }
             }
