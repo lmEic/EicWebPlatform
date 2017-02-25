@@ -46,9 +46,9 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="modelList"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult SaveInspectionItemconfig(IqcInspectionItemConfigModel modelVM) 
+        public JsonResult DeleteMaterialDatas(IqcInspectionItemConfigModel entity) 
         {
-            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(modelVM);
+            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(entity);
            return Json(opResult);
         }
 
@@ -58,6 +58,16 @@ namespace EicWorkPlatfrom.Controllers
         {
             var opResult = InspectionService.InspectionItemConfigurator.GetInspectionIndex(materialId);
             return Json(opResult);
+        }
+        /// <summary>
+        /// 批量保存
+        /// </summary>
+        /// <param name="dataSets"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveAllMaterialDatas(List<IqcInspectionItemConfigModel> dataSets)
+        {
+            return null;
         }
         /// <summary>
         /// 导入EXCEL数据到IQC物料检验配置
