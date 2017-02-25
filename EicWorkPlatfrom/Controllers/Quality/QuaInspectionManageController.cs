@@ -50,6 +50,14 @@ namespace EicWorkPlatfrom.Controllers
             var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(modelVM);
            return Json(opResult);
         }
+
+        // GetInspectionIndex
+
+        public JsonResult GetInspectionIndex(string materialId, string inspectionItem)
+        {
+            var opResult =1;
+            return Json(opResult);
+        }
         #endregion
 
     }

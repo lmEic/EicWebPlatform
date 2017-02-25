@@ -20,6 +20,14 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
             item: item
         })
     }
+    quality.getInspectionIndex = function (materialId, inspectionItem) {
+        var url = qualityUrl + "GetInspectionIndex";
+        return ajaxService.postData(url, {
+            materialId: materialId,
+            inspectionItem:inspectionItem
+        })
+       
+    }
 
     return quality;
 })
@@ -80,6 +88,13 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityDataO
                 }
             });
         },
+        getInspectionIndex: function () {
+            $scope.searchPromise = qualityDataOpService.getInspectionIndex($scope.vm.MaterialId, $scope.vm.InspectionItem).then(function (datas) {
+                if (datas != null) {
+                    $scope.vm.InspectionItemIndex = datas;
+                }
+            });
+        }
     } 
     $scope.vmManager = vmManager;
 
