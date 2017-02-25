@@ -101,9 +101,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <summary>
         /// 自动处理异常数据
         /// </summary>
-        public List<AttendSlodFingerDataCurrentMonthModel> AutoCheckExceptionSlotData()
+        public List<AttendSlodFingerDataCurrentMonthModel> AutoCheckExceptionSlotData(string yearMonth)
         {
-            return this.currentMonthAttendDataHandler.AutoHandleExceptionSlotData();
+            return this.currentMonthAttendDataHandler.AutoHandleExceptionSlotData(yearMonth);
         }
         /// <summary>
         /// 载入异常考勤数据
@@ -194,6 +194,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             var dayAttendDatas = this.irep.Entities.Where(e => e.AttendanceDate == qryDate);
             //获取所有人员信息到内存中
             var workers = ArchiveService.ArchivesManager.FindWorkers();
+            var departmentManager = new ArDepartmentManager();
             //中间时间
             DateTime middleTime = new DateTime(qryDate.Year, qryDate.Month, qryDate.Day, 13, 0, 0);
             //处理实时考勤数据
@@ -214,8 +215,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 if (worker != null)
                 {
                     ctmdl=AttendanceService.ClassTypeSetter.GetClassTypeDetailModel(worker.WorkerId,qryDate);
-                    string classType = ctmdl == null ? worker.ClassType : worker.ClassType;
-                    string department = worker.Department;
+                    string classType = ctmdl == null ? "白班" : worker.ClassType;
+                    string department = departmentManager.GetDepartmentText(worker.Department);
 
                     int len = attendDataPerWorker.Count;
                     for (int i = 0; i < len; i++)
@@ -541,76 +542,91 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         }
 
         /// <summary>
-        /// 自动处理异常数据
         /// 返回有异常的数据
         /// </summary>
-        public List<AttendSlodFingerDataCurrentMonthModel> AutoHandleExceptionSlotData()
+        public List<AttendSlodFingerDataCurrentMonthModel> AutoHandleExceptionSlotData(string yearMonth)
         {
-            var workers = ArchiveService.ArchivesManager.FindWorkers();
+            AttendClassTypeSetter classTypeSetter = new AttendClassTypeSetter();
+            //var workers = ArchiveService.ArchivesManager.FindWorkers();//这里修改为从考勤数据中提取
             //一天的中间时间
             DateTime dayMiddleTime;
-            DateTime qryDate = DateTime.Now.AddDays(-1);
             Dictionary<string, string> dicClassTypes = new Dictionary<string, string>();
             //考勤数据中没有处理过异常的数据集
-            List<AttendSlodFingerDataCurrentMonthModel> attendSlotDatas = this.irep.Entities.Where(e => e.HandleSlotExceptionStatus == 0 && e.AttendanceDate <= qryDate).ToList();
-            if (attendSlotDatas != null && attendSlotDatas.Count > 0)
+            List<AttendSlodFingerDataCurrentMonthModel> attendSlotDatas = this.irep.Entities.Where(e => e.HandleSlotExceptionStatus == 0 && e.YearMonth == yearMonth).ToList();
+            if (attendSlotDatas == null || attendSlotDatas.Count == 0) return null;
+            string workerId;//工号
+            string classType;//班别
+            string slotExceptionType = string.Empty;//刷卡异常类别
+            AttendClassTypeDetailModel ctdMdl = null;
+            //遍历循环处理
+            attendSlotDatas.ForEach(attendSd =>
             {
-                string workerId;//工号
-                string classType;//班别
-                string slotExceptionType = string.Empty;//刷卡异常类别
-                attendSlotDatas.ForEach(attendSd =>
+                ctdMdl = classTypeSetter.GetClassTypeDetailModel(attendSd.WorkerId, attendSd.AttendanceDate);
+                workerId = attendSd.WorkerId;
+                //刷卡异常类型
+                slotExceptionType = string.Empty;
+                classType = attendSd.ClassType;
+                //时间点
+                int hour = classType == "白班" ? 12 : 24;
+                int day = attendSd.AttendanceDate.Day;
+                int year = attendSd.AttendanceDate.Year;
+                int month = attendSd.AttendanceDate.Month;
+                //中间时间
+                dayMiddleTime = new DateTime(year, month, day, hour, 0, 0);
+                string slotCardTime = attendSd.SlotCardTime;//刷卡时间
+                if (slotCardTime == null || slotCardTime.Length < 5)
                 {
-                    workerId = attendSd.WorkerId;
-                    slotExceptionType = string.Empty;
-                    classType = GetClassTypeOf(workers, ref dicClassTypes, workerId);
-                    //时间点
-                    int hour = classType == "白班" ? 12 : 24;
-                    int day = attendSd.AttendanceDate.Day;
-                    int year = attendSd.AttendanceDate.Year;
-                    int month = attendSd.AttendanceDate.Month;
-
-                    dayMiddleTime = new DateTime(year, month, day, hour, 0, 0);
-                    string slotCardTime = attendSd.SlotCardTime;//刷卡时间
-                    if (slotCardTime == null || slotCardTime.Length < 5)
+                    if (attendSd.LeaveMark == 0)//如果有请假的话，则不做旷工标志处理
+                        MergeSlotExceptionType(ref slotExceptionType, "旷工");//标志异常考勤信息为旷工
+                }
+                else
+                {
+                    if (attendSd.SlotCardTime1 == null || attendSd.SlotCardTime2 == null)//刷卡时间不完整的情况分析
                     {
-                        if (attendSd.LeaveMark == 0)//如果有请假的话，则不做旷工标志处理
-                            MergeSlotExceptionType(ref slotExceptionType, "旷工");
-                    }
+                        if (attendSd.LeaveMark == 0)
+                            MergeSlotExceptionType(ref slotExceptionType, "漏刷卡");
+                        else
+                            MergeSlotExceptionType(ref slotExceptionType, "请假漏刷");
+                    } //继续分析刷卡时间都全面的情况
                     else
                     {
-                        if (attendSd.SlotCardTime1 == null || attendSd.SlotCardTime2 == null)
-                        {
-                            if (attendSd.LeaveMark == 0)
-                                MergeSlotExceptionType(ref slotExceptionType, "漏刷卡");
-                            else
-                                MergeSlotExceptionType(ref slotExceptionType, "请假漏刷");
-                        } //继续分析刷卡时间都全面的情况
-                        else
-                        {
-                            AnalogSlotCardTime(ref slotExceptionType, dayMiddleTime, classType, day, year, month, slotCardTime);
-                        }
+                        //在都完整的情况下，分析考勤异常情况
+                        AnalogSlotCardTime(ref slotExceptionType, dayMiddleTime, classType, day, year, month, slotCardTime);
                     }
-                    attendSd.SlotExceptionType = slotExceptionType;
-                    attendSd.SlotExceptionMark = slotExceptionType != null && slotExceptionType.Length >= 2 ? 1 : 0;
-                    attendSd.HandleSlotExceptionStatus = attendSd.SlotExceptionMark == 1 ? 1 : -1;//若有异常，则状态为1，没有异常则状态为-1代表已经检测过
-                    //同步到数据库中
-                    this.irep.Update(f => f.WorkerId == attendSd.WorkerId && f.AttendanceDate == attendSd.AttendanceDate, u => new AttendSlodFingerDataCurrentMonthModel
-                    {
-                        HandleSlotExceptionStatus = attendSd.HandleSlotExceptionStatus,
-                        SlotExceptionType = slotExceptionType,
-                        SlotExceptionMark = attendSd.SlotExceptionMark
-                    });
+                }
+                attendSd.SlotExceptionType = slotExceptionType;
+                attendSd.SlotExceptionMark = slotExceptionType != null && slotExceptionType.Length >= 2 ? 1 : 0;
+                attendSd.HandleSlotExceptionStatus = attendSd.SlotExceptionMark == 1 ? 1 : -1;//若有异常，则状态为1，没有异常则状态为-1代表已经检测过
+                //同步到数据库中
+                this.irep.Update(f => f.WorkerId == attendSd.WorkerId && f.AttendanceDate == attendSd.AttendanceDate, u => new AttendSlodFingerDataCurrentMonthModel
+                {
+                    HandleSlotExceptionStatus = attendSd.HandleSlotExceptionStatus,
+                    SlotExceptionType = slotExceptionType,
+                    SlotExceptionMark = attendSd.SlotExceptionMark
                 });
-            }
+            });
             return attendSlotDatas.Where(e => e.HandleSlotExceptionStatus == 1).OrderBy(o => o.AttendanceDate).ToList();
         }
-
+        /// <summary>
+        /// 合并异常类型信息
+        /// </summary>
+        /// <param name="slotExceptionType"></param>
+        /// <param name="exceptionType"></param>
         private void MergeSlotExceptionType(ref string slotExceptionType, string exceptionType)
         {
             if (!slotExceptionType.Contains(exceptionType))
                 slotExceptionType = slotExceptionType.Length == 0 ? exceptionType : slotExceptionType + "," + exceptionType;
         }
-
+        /// <summary>
+        /// 分析刷卡时间
+        /// </summary>
+        /// <param name="slotExceptionType"></param>
+        /// <param name="dayMiddleTime"></param>
+        /// <param name="classType"></param>
+        /// <param name="day"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <param name="slotCardTime"></param>
         private void AnalogSlotCardTime(ref string slotExceptionType, DateTime dayMiddleTime, string classType, int day, int year, int month, string slotCardTime)
         {
             string exceptionType = slotExceptionType;
@@ -625,21 +641,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 slotTimes.ToList().ForEach(st =>
                 {
                     string[] ttimes = st.Split(':');
-                    if (ttimes != null && ttimes.Length == 2)
+                    if (ttimes != null && ttimes.Length == 2)//分析刷卡具体时间
                     {
                         int h = ttimes[0].ToInt();
                         int m = ttimes[1].ToInt();
                         //组合当前刷卡时间
                         DateTime currentTime = new DateTime(year, month, day, h, m, 0);
-                        //白班迟到时间区间
-                        DateTime dayAmstand = new DateTime(year, month, day, 7, 50, 0);
+                        //白班迟到时间区间7:51--7:55
+                        DateTime dayAmstand = new DateTime(year, month, day, 7, 50, 0);//上班时间
                         DateTime dayAmstart = new DateTime(year, month, day, 7, 51, 0);
                         DateTime dayAmend = new DateTime(year, month, day, 7, 55, 0);
-                        //晚班迟到时间区间
+                        //晚班迟到时间区间19:51--19:55
                         DateTime dayPmstart = new DateTime(year, month, day, 19, 51, 0);
                         DateTime dayPmend = new DateTime(year, month, day, 19, 55, 0);
                         DateTime dayPmstand = new DateTime(year, month, day, 19, 50, 0);
-
                         if (classType == "白班")
                         {
                             AnalogDayAttendData(ref exceptionType, dayMiddleTime, currentTime, dayAmstart, dayAmend);
@@ -653,7 +668,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             }
             slotExceptionType = exceptionType;
         }
-
+        /// <summary>
+        /// 分析处理晚班数据
+        /// </summary>
+        /// <param name="slotExceptionType"></param>
+        /// <param name="dayMiddleTime"></param>
+        /// <param name="currentTime"></param>
+        /// <param name="dayPmstart"></param>
+        /// <param name="dayPmend"></param>
         private void AnalogNightAttendData(ref string slotExceptionType, DateTime dayMiddleTime, DateTime currentTime, DateTime dayPmstart, DateTime dayPmend)
         {
             if (currentTime > dayPmstart && currentTime < dayPmend)
@@ -665,7 +687,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 MergeSlotExceptionType(ref slotExceptionType, "旷工");
             }
         }
-
+        /// <summary>
+        /// 分析处理白天数据
+        /// </summary>
+        /// <param name="slotExceptionType"></param>
+        /// <param name="dayMiddleTime"></param>
+        /// <param name="currentTime"></param>
+        /// <param name="dayAmstart"></param>
+        /// <param name="dayAmend"></param>
         private void AnalogDayAttendData(ref string slotExceptionType, DateTime dayMiddleTime, DateTime currentTime, DateTime dayAmstart, DateTime dayAmend)
         {
             if (currentTime > dayAmstart && currentTime < dayAmend)

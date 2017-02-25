@@ -202,7 +202,7 @@ null,
 
         CreateQualifiedSupplierList: function () {
             $scope.searchPromise = supplierDataOpService.CreateQualifiedSupplierInfoList(vmManager.datasource).then(function () {
-                
+                console.log(vmManager.datasources)
             });
         },
         supplierCertificateEditModal: $modal({

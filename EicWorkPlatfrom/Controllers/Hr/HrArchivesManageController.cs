@@ -13,6 +13,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
 {
     public class HrArchivesManageController : EicBaseController
     {
+        #region View Tpl
+
+        
         //
         // GET: /HrArchivesManage/
         public ActionResult Index()
@@ -53,6 +56,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
+        #endregion
         /// <summary>
         /// 办理离职数据
         /// </summary>
@@ -147,18 +151,40 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="searchMode"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetWorkerArchives(DateTime startRegistedDate, DateTime endRegistedDate, int searchMode)
+        public ContentResult GetWorkerArchives(
+            DateTime startRegistedDate,
+            DateTime endRegistedDate,
+            string workerId,
+            string department,
+            string birthday,
+            string marryStatus,
+            string workingStatus,
+            int searchMode)
         {
-            var data = ArchiveService.ArchivesManager.FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto
+             var data = ArchiveService.ArchivesManager.FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto
             {
                 RegistedDateStart = startRegistedDate,
                 RegistedDateEnd = endRegistedDate,
+                WorkerId = workerId,
+                Department = department,
+                BirthMonth = birthday,
+                MarryStatus = marryStatus,
+                WorkingStatus = workingStatus,
                 SearchMode = searchMode
-            }); //待填写
+            }); 
             TempData["archiveDatas"] = data;
             return DateJsonResult(data);
         }
-
+        public ContentResult GetWorkerIdArchives(string workerId, int searchMode)
+        {
+            var data = ArchiveService.ArchivesManager.FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto
+            {
+                WorkerId = workerId,
+                SearchMode = searchMode
+            });
+            TempData["archiveDatas"] = data;
+            return DateJsonResult(data);
+        }
         [NoAuthenCheck]
         public FileResult BuildWorkerArchivesList()
         {
@@ -174,14 +200,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [HttpPost]
         public JsonResult ChangeDepartment(List<ArDepartmentChangeLibModel> changeDepartments)
         {
-            if (changeDepartments != null && changeDepartments.Count > 0)
-            {
-                changeDepartments.ForEach(d =>
-                {
-                    d.AssignDate = DateTime.Now.ToDate();
-                    d.OpPerson = this.OnLineUser.UserName;
-                });
-            }
             var result = ArchiveService.ArchivesManager.ChangeDepartment(changeDepartments);
             return Json(result);
         }
@@ -194,14 +212,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [HttpPost]
         public JsonResult ChangePost(List<ArPostChangeLibModel> changePosts)
         {
-            if (changePosts != null && changePosts.Count > 0)
-            {
-                changePosts.ForEach(d =>
-                {
-                    d.AssignDate = DateTime.Now.ToDate();
-                    d.OpPerson = this.OnLineUser.UserName;
-                });
-            }
             var result = ArchiveService.ArchivesManager.ChangePost(changePosts);
             return Json(result);
         }

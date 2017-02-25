@@ -9,6 +9,8 @@ using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Data.Entity;
+using Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 {
@@ -72,7 +74,18 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         //供应商自评复评明细表 
         public DbSet<SupplierGradeInfoModel> SupplierGradeInfo { set; get; }
 
+
+
+
         #endregion
+
+        #region  质理管理
+        public DbSet<InspectionModeConfigModel> InspectionModeConfig { set; get; }
+        public DbSet<IqcInspectionItemConfigModel> IqcInspectionItemConfig { set; get; }
+        public DbSet<IqcInspectionMasterModel> IqcInspectionMaster { set; get; }
+        public DbSet<IqcInspectionDetailModel> IqcInspectionDetail { set; get; }
+        #endregion
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -123,6 +136,21 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new SupplierSeasonTutorMapping());
             //供应商自评复评明细表 
             modelBuilder.Configurations.Add(new SupplierGradeInfoMapping());
+            #endregion
+
+
+
+            #region 质量管理
+
+
+            modelBuilder.Configurations.Add(new InspectionModeConfigMapping());
+            modelBuilder.Configurations.Add(new IqcInspectionItemConfigMapping());
+            modelBuilder.Configurations.Add(new IqcInspectionMasterMapping());
+            modelBuilder.Configurations.Add(new IqcInspectionDetailMapping());
+
+
+
+
             #endregion
         }
     }

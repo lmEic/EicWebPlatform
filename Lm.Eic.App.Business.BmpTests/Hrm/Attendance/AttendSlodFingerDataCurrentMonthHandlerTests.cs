@@ -19,7 +19,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance.Tests
         [TestMethod()]
         public void AutoHandleExceptionSlotDataTest()
         {
-            handler.AutoHandleExceptionSlotData();
+          //  handler.AutoHandleExceptionSlotData();
             Assert.Fail();
         }
 

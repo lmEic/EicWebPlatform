@@ -49,13 +49,6 @@ namespace Lm.Eic.Framework.Authenticate.Business
         {
             get { return OBulider.BuildInstance<AuditManager>(); }
         }
-        /// <summary>
-        /// 载入日历管理器
-        /// </summary>
-        public static CalendarManager CalendarManager
-        {
-            get { return OBulider.BuildInstance<CalendarManager>(); }
-        }
     }
 
     /// <summary>

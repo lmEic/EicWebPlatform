@@ -237,7 +237,10 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ContentResult GetAstMaintenanceListByAssetNumber(string assetNumber)
         {
-            var datas = AstService.EquipmentManager.MaintenanceManager.FindBy(new QueryEquipmentDto() { AssetNumber = assetNumber, SearchMode = 1 });
+            var datas = AstService.EquipmentManager.MaintenanceManager.FindBy(
+                new QueryEquipmentDto() {
+                    AssetNumber = assetNumber,
+                    SearchMode = 1 });
             return DateJsonResult(datas);
         }
 
@@ -299,6 +302,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        [NoAuthenCheck]
         public ActionResult EditEquipmentRepairTpl()
         {
             return View();

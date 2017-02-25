@@ -154,45 +154,5 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
 
         #endregion
     }
-    /// <summary>
-    ///  产品物料信息
-     /// </summary>
-    public class ProductModel  
-   {
-        
-       /// <summary>
-       /// 品号 MB001
-       /// </summary>
-       public string ProductID { get; set; }
-       /// <summary>
-       /// 品名 MB002
-       /// </summary>
-       public string ProductName { get; set; }
-       /// <summary>
-       /// 规格 MB003
-       /// </summary>
-       public string ProductSpecify { get; set; }
-       /// <summary>
-       /// 单位名称 MB004
-       /// </summary>
-       public string  UnitedName { get; set; }
-        /// <summary>
-        /// 单位计量 MB015
-        /// </summary>
-       public string UniteCount { get;set; }
-       /// <summary>
-       /// 产品图号 MB029
-       /// </summary>
-       public string ProductDrawID { get; set; }
-        /// <summary>
-        /// 物料属于部门 TM068
-        /// </summary>
-       public string ProductBelongDepartment
-       { get; set; }
-       /// <summary>
-       /// 备注 TM028
-       /// </summary>
-       public string Memo { get; set; }
-
-   }
+   
 }

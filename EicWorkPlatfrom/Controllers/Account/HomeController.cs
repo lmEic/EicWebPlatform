@@ -1,5 +1,7 @@
-﻿using Lm.Eic.Framework.Authenticate.Business;
+﻿using Lm.Eic.App.Business.Bmp.Hrm.Archives;
+using Lm.Eic.Framework.Authenticate.Business;
 using Lm.Eic.Framework.Authenticate.Model;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -14,7 +16,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+        
         /// <summary>
         /// 获取模块导航列表
         /// </summary>
@@ -32,18 +34,6 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="nowYear"></param>
-        /// <param name="nowMonth"></param>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult GetCalendarDatas(string nowYear,string nowMonth)
-        {
-            var datas = AuthenService.CalendarManager.GetCalendarDatas(nowYear, nowMonth);
-            return Json(datas, JsonRequestBehavior.AllowGet);
-        }
-        /// <summary>
         /// 获取模块导航列表
         /// </summary>
         /// <returns></returns>
@@ -53,6 +43,35 @@ namespace EicWorkPlatfrom.Controllers
             var datas = GetMenuNavModules(moduleText, cacheKey);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-        
+
+        #region  行事历
+        public ActionResult EditHomeCalendarTpl()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 得到行事历数据
+        /// </summary>
+        /// <param name="nowYear"></param>
+        /// <param name="nowMonth"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetCalendarDatas(int nowYear, int nowMonth)
+        {
+            var datas = ArchiveService.ArCalendarManger.GetDateDictionary(nowYear, nowMonth); ;
+            return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// 保存行事历
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveCalendarDatas(CalendarModel vm)
+        {
+            var result = ArchiveService.ArCalendarManger.store(vm);
+            return Json(result);
+        }
+        #endregion
+
     }
 }

@@ -69,6 +69,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         /// 离职人员信息
         /// </summary>
         public DbSet<ArLeaveOfficeModel> ArWorkerLeaveOfficeInfo { get; set; }
+        /// <summary>
+        /// 行事历列表
+        /// </summary>
+        public DbSet<CalendarModel> Calendarlist{ set; get; }
 
         #endregion dbset
 
@@ -97,6 +101,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             modelBuilder.Configurations.Add(new WorkClothesManageModelMapping());
             //工号变更
             modelBuilder.Configurations.Add(new ArWorkerIdChangedMapping());
+            //
+            modelBuilder.Configurations.Add(new CalendarsMapping());
         }
     }
 

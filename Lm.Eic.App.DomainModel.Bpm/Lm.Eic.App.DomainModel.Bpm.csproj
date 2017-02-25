@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Ast\EquipmentModel.cs" />
     <Compile Include="Ast\QueryEquipmentDto.cs" />
+    <Compile Include="Hrm\Archives\CalendarModel.cs" />
     <Compile Include="Hrm\Archives\QueryWorkerArchivesDto.cs" />
     <Compile Include="Pms\BoardManagment\MaterialSpecBoardModel.cs" />
     <Compile Include="Hrm\Archives\ArchivesIdentityModel.cs" />
@@ -52,7 +53,8 @@
     <Compile Include="Pms\DailyReport\QueryDailyReportDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchase\SupplierModel.cs" />
-    <Compile Include="Quanity\QuantitySampleRecordModel.cs" />
+    <Compile Include="Quanity\InspectionoModel.cs" />
+    <Compile Include="Quanity555\QuantitySampleRecordModel.cs" />
     <Compile Include="Hrm\GeneralAffairs\WorkClothesManageModel.cs" />
   </ItemGroup>
   <ItemGroup>

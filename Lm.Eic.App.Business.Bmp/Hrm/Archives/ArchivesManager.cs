@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 using System.IO;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeDbHandler;
@@ -120,7 +121,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             this.identityManager = new ArIdentityInfoManager();
             this._StudyManager = new ArStudyManager();
             this._TelManager = new ArTelManager();
-            this._DepartmentMananger = new ArDepartmentManager();
+            this._DepartmentMananger = new ArDepartmentManager();  
             this._PostManager = new ArPostManager();
             this.WorkerArchivesInfoList = new List<ArchivesEmployeeIdentityModel>();
         }
@@ -144,19 +145,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 ArchivesEmployeeIdentityModel empIdentityMdl = new ArchivesEmployeeIdentityModel();
                 ArStudyModel studyMdl = null;
                 ArTelModel telMdl = null;
+                ArPostChangeLibModel postMdl = null;
+                ArDepartmentChangeLibModel departmentMdl = null;
                 //得到身份证的信息
                 if (!ArchiveEntityMapper.GetIdentityDataFrom(dto.IdentityID, empIdentityMdl, this.identityManager))
                     return OpResult.SetResult("没有找到此身份证号的信息！", true);
 
                 ArchiveEntityMapper.GetEmployeeDataFrom(dto, empIdentityMdl);
-                ArchiveEntityMapper.GetDepartmentDataFrom(dto, empIdentityMdl);
-                ArchiveEntityMapper.GetPostDataFrom(dto, empIdentityMdl);
+                ArchiveEntityMapper.GetDepartmentDataFrom(dto, empIdentityMdl,out departmentMdl);
+                ArchiveEntityMapper.GetPostDataFrom(dto, empIdentityMdl,out postMdl);
                 ArchiveEntityMapper.GetStudyDataFrom(dto, empIdentityMdl, out studyMdl);
                 ArchiveEntityMapper.GetTelDataFrom(dto, empIdentityMdl, out telMdl);
 
                 if (opSign == "add")
                 {
-                    record = AddEmployee(record, empIdentityMdl, studyMdl, telMdl);
+                    record = AddEmployee(record, empIdentityMdl, studyMdl, telMdl,postMdl,departmentMdl);
                 }
                 else if (opSign == "edit")
                 {
@@ -183,22 +186,22 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 record = this.irep.Delete(e => e.IdentityID == empIdentityMdl.IdentityID);
                 if (record <= 0) return record;
             }
-            record = this.irep.Insert(empIdentityMdl);
-            return record;
-            
-
+            return this.irep.Insert(empIdentityMdl);
         }
-        private int AddEmployee(int record, ArchivesEmployeeIdentityModel empIdentityMdl, ArStudyModel studyMdl, ArTelModel telMdl)
+        private int AddEmployee(int record, ArchivesEmployeeIdentityModel empIdentityMdl, ArStudyModel studyMdl, ArTelModel telMdl,ArPostChangeLibModel postMdl,ArDepartmentChangeLibModel departmentMdl)
         {
-          
              record = this.UpdataEMployee(empIdentityMdl);
             ////处理外部逻辑
             ////1.处理学习信息存储
              StudyManager.Insert(studyMdl);
             ////2.处理联系方式信息
              TelManager.Insert(telMdl);
-            //3.初始化班别信息
-             AttendanceService.ClassTypeSetter.InitClassType(CreateClassTypeModel(empIdentityMdl));
+            //3.初始化岗位信息
+            PostManager.InitPost(postMdl);
+            //4.初始化部门信息
+            this.DepartmentMananger.InitDepartment(departmentMdl);
+            //5.初始化班别信息
+            AttendanceService.ClassTypeSetter.InitClassType(CreateClassTypeModel(empIdentityMdl));
             return record;
         }
 
@@ -222,9 +225,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             ArStudyModel oldStudyMdl = null;
             ArTelModel oldTelMdl = null;
+            ArDepartmentChangeLibModel departmentMdl = null;
+            ArPostChangeLibModel postMdl = null;
             ArchivesEmployeeIdentityModel oldEmpIdentityMdl = new ArchivesEmployeeIdentityModel();
             ArchiveEntityMapper.GetStudyDataFrom(dto, oldEmpIdentityMdl, out oldStudyMdl);
             ArchiveEntityMapper.GetTelDataFrom(dto, oldEmpIdentityMdl, out oldTelMdl);
+            ArchiveEntityMapper.GetDepartmentDataFrom(dto, oldEmpIdentityMdl, out departmentMdl);
+            ArchiveEntityMapper.GetPostDataFrom(dto, oldEmpIdentityMdl, out postMdl);
 
             ////添加修改逻辑
             record = this.irep.Update(u => u.Id_Key == dto.Id_Key, empIdentityMdl);
@@ -233,6 +240,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             record += StudyManager.Edit(studyMdl, oldStudyMdl);
             ////2.修改联系方式信息存储
             record += TelManager.Edit(telMdl, oldTelMdl);
+            ////3.修改部门信息存储
+            record += this.DepartmentMananger.Edit(departmentMdl);
+            ////4.修改岗位信息存储
+            record += this.PostManager.Edit(postMdl);
             return record;
         }
 
@@ -468,6 +479,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// 3：依入职时间段查询
         /// 4：直接/间接
         /// 5：职工属性
+        /// 6：出生年月
+        /// 7：婚姻状况
+        /// 8：在职状况
         /// <returns></returns>
         public List<ArchivesEmployeeIdentityModel> FindWorkerArchivesInfoBy(QueryWorkerArchivesDto qryDto)
         {
@@ -493,6 +507,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                         return WorkerArchivesInfoList;
                     case 5://职工属性
                         WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkerIdType.StartsWith(qryDto.WorkerIdType)).ToList();
+                        return WorkerArchivesInfoList;
+      
+                    case 6://出生年月
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.BirthMonth.StartsWith(qryDto.BirthMonth)).ToList();
+                        return WorkerArchivesInfoList;
+                    case 7://婚姻状况
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.MarryStatus.StartsWith(qryDto.MarryStatus)).ToList();
+                        return WorkerArchivesInfoList;
+                    case 8: //在职状态
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith(qryDto.WorkingStatus)).ToList();
                         return WorkerArchivesInfoList;
                     case 0: //在职全部人员
                         WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith("在职")).ToList();
@@ -525,7 +549,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                   new FileFieldMapping ("Department","部门"),
                   new FileFieldMapping ("Post","岗位"),
                   new FileFieldMapping ("PostType","岗位性质"),
-                  new FileFieldMapping ("IdentityID","岗位类别")  ,
+                  new FileFieldMapping ("PostNature","岗位类别")  ,
                   new FileFieldMapping ("Sex","性别") ,
                   new FileFieldMapping ("Birthday","出生日期") ,
                   new FileFieldMapping ("Address","家庭住址")  ,
@@ -685,24 +709,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
             if (root is XmlElement)
             {
-                if (root.Attributes.Count > 0)
+                var areaNodes = root.ChildNodes;
+                foreach (XmlNode anode in areaNodes)
                 {
-                    
-                    if (root.Attributes["code"].Value.Equals(areaCode))
+                    if (anode.Attributes["code"].Value == areaCode)
                     {
-                        result = root.Attributes["name"].Value;
-                        return result;
+                        result = anode.Attributes["name"].Value;
+                        break;
                     }
-                }
-
-                if (root.HasChildNodes)
-                {
-                    result = GetAreaName(root.FirstChild, areaCode);
-                }
-
-                if (root.NextSibling != null) 
-                {
-                    result = GetAreaName(root.NextSibling, areaCode);
                 }
             }
 
@@ -750,11 +764,23 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// </summary>
         /// <param name="dto"></param>
         /// <param name="entity"></param>
-        internal static void GetDepartmentDataFrom(ArchivesEmployeeIdentityDto dto, ArchivesEmployeeIdentityModel entity)
+        internal static void GetDepartmentDataFrom(ArchivesEmployeeIdentityDto dto, ArchivesEmployeeIdentityModel entity,out ArDepartmentChangeLibModel departmentEntity)
         {
             entity.Organizetion = dto.Organizetion;
             entity.Department = dto.Department;
             entity.DepartmentChangeRecord = 0;
+
+            departmentEntity = new ArDepartmentChangeLibModel()
+            {
+                AssignDate = DateTime.Now.ToDate(),
+                WorkerId = dto.WorkerId,
+                WorkerName = dto.Name,
+                InStatus = "In",
+                NowDepartment = dto.Department,
+                OldDepartment = dto.Department,
+                OpPerson = dto.OpPerson,
+                OpSign = "Init"
+            };
         }
 
         /// <summary>
@@ -762,11 +788,25 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// </summary>
         /// <param name="dto"></param>
         /// <param name="entity"></param>
-        internal static void GetPostDataFrom(ArchivesEmployeeIdentityDto dto, ArchivesEmployeeIdentityModel entity)
+        internal static void GetPostDataFrom(ArchivesEmployeeIdentityDto dto, ArchivesEmployeeIdentityModel entity,out ArPostChangeLibModel postEntity)
         {
             entity.PostNature = dto.PostNature;
             entity.PostChangeRecord = 0;
             entity.Post = dto.Post;
+
+            postEntity = new ArPostChangeLibModel()
+            {
+                WorkerId = dto.WorkerId,
+                WorkerName = dto.Name,
+                AssignDate = DateTime.Now.ToDate(),
+                InStatus = "In",
+                NowPost = dto.Post,
+                OldPost = dto.Post,
+                PostNature = dto.PostNature,
+                PostType = "默认",
+                OpPerson = dto.OpPerson,
+                OpSign = "Init"
+            };
         }
 
         /// <summary>

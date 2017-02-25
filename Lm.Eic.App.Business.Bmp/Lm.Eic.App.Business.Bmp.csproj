@@ -66,6 +66,7 @@
     <Compile Include="Ast\EquipmentMaintenanceManager.cs" />
     <Compile Include="Ast\EquipmentManager.cs" />
     <Compile Include="Ast\EquipmentRepairedManager.cs" />
+    <Compile Include="Hrm\Archives\ArCalendarManger.cs" />
     <Compile Include="Hrm\Archives\ArLeaveOfficeManager.cs" />
     <Compile Include="Hrm\Archives\ArWorkerIdChangeManager.cs" />
     <Compile Include="Pms\BoardManagment\BoardBase.cs" />
@@ -106,14 +107,19 @@
     <Compile Include="Purchase\SupplierManager\SupplierConfigManagerCrud.cs" />
     <Compile Include="Purchase\SupplierManager\SupplierConfigManager.cs" />
     <Compile Include="Purchase\SupplierManager\SuppliersGradeManager.cs" />
-    <Compile Include="Quantity\QuantityMangerFactory.cs" />
-    <Compile Include="Quantity\QuantityServices.cs" />
-    <Compile Include="Quantity\SampleManager\IPQCSample\IPQCSampleItems..cs" />
-    <Compile Include="Quantity\SampleManager\SampleManger.cs" />
-    <Compile Include="Quantity\SampleManager\SampleCrud.cs" />
-    <Compile Include="Quantity\SampleManager\SampleItermRules\SampleItermRulesManger.cs" />
-    <Compile Include="Quantity\SampleManager\SampleIqcManager.cs" />
-    <Compile Include="Quantity\SupperManager\SupperManager.cs" />
+    <Compile Include="Quality\InspectionManage\InspectionCommonManagerCrud.cs" />
+    <Compile Include="Quality\InspectionManage\InspectionService.cs" />
+    <Compile Include="Quality\InspectionManage\IqcInspectionDataGather.cs" />
+    <Compile Include="Quality\InspectionManage\IqcInspectionItemConfigurator.cs" />
+    <Compile Include="Quality\InspectionManage\IqcInspectionManagerCrud.cs" />
+    <Compile Include="Quality555\QualityService.cs" />
+    <Compile Include="Quality555\QuantityMangerFactory.cs" />
+    <Compile Include="Quality555\SampleManager\IPQCSample\IPQCSampleItems..cs" />
+    <Compile Include="Quality555\SampleManager\SampleManger.cs" />
+    <Compile Include="Quality555\SampleManager\SampleCrud.cs" />
+    <Compile Include="Quality555\SampleManager\SampleItermRules\SampleItermRulesManger.cs" />
+    <Compile Include="Quality555\SampleManager\SampleIqcManager.cs" />
+    <Compile Include="Quality555\SupperManager\SupperManager.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

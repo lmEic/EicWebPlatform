@@ -4,67 +4,20 @@ using System.Linq;
 using Lm.Eic.App.Erp.Domain.QuantityModel;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using System.Data;
+using Lm.Eic.App.Erp.DbAccess.PurchaseManageDb;
 
 namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
 {
-
-
-    /// <summary>
-    /// ERP中由料号得到物料相关信息
-    /// </summary>
-    public class PorductInfoDb
+    public class OrderIdInspectionDb
     {
-
-        private string GetPorductSqlFields()
+        StockDb StockDb = null;
+        MaterialInfoDb PorductInfoS = null;
+        public OrderIdInspectionDb ()
         {
-            return "Select MB001,MB002,MB003,MB004,MB015,MB029,MB068,MB028  from  INVMB ";
-        }
-        /// <summary>
-        ///  由数据给Model赋值
-        /// </summary>
-        /// <param name="dr">DataTable的一行</param>
-        /// <param name="model"></param>
-        private void MapProductRowAndModel(DataRow dr, ProductModel model)
-        {
-            model.ProductID = dr["MB001"].ToString();
-            model.ProductName = dr["MB002"].ToString();
-            model.ProductSpecify = dr["MB003"].ToString();
-            model.UnitedName = dr["MB004"].ToString();
-            model.UniteCount = dr["MB015"].ToString();
-            model.ProductDrawID = dr["MB029"].ToString();
-            model.ProductBelongDepartment = dr["MB068"].ToString();
-            model.Memo = dr["MB028"].ToString();
-        }
-
-       /// <summary>
-       /// 由物料料号得到物料所有相关信息
-       /// </summary>
-       /// <param name="marteial">料号</param>
-       /// <returns></returns>
-        public List<ProductModel> GetProductInfoBy(string marteial)
-        {
-            string sqlWhere = string.Format(" where MB001='{0}'", marteial.Trim() );
-            return ErpDbAccessHelper.FindDataBy<ProductModel>(GetPorductSqlFields(), sqlWhere, (dr, m) =>
-            {
-                this.MapProductRowAndModel(dr, m);
-            });
-        }
-
-        /// <summary>
-    }
-  
-    
-    
-    
-    public class MaterialSampleDb
-    {
-        PurchaseManageDb.StockDb StockDb = null;
-        PorductInfoDb PorductInfoS = null;
-        public MaterialSampleDb ()
-        {
-            PorductInfoS = new PorductInfoDb();
-            StockDb = new PurchaseManageDb.StockDb();
+            PorductInfoS = new MaterialInfoDb();
+            StockDb = new StockDb();
         }
         /// <summary>  
         ///  由单子 得到单别 单号   (单别为 591 110 (341 342 343 344)和制令单)
@@ -96,10 +49,10 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 Material = new MaterialModel()
                 {
                     ProduceNumber = s.StockCount,
-                    ProductDrawID = PorductInfo.ProductDrawID,
-                    ProductName = PorductInfo.ProductName,
-                    ProductStandard = PorductInfo.ProductSpecify,
-                    ProductID = PorductInfo.ProductID,
+                    ProductDrawID = PorductInfo.MaterialrawID,
+                    ProductName = PorductInfo.MaterailName,
+                    ProductStandard = PorductInfo.MaterialSpecify,
+                    ProductID = PorductInfo.ProductMaterailId,
                     ProductSupplier = SupplierID,
                     ProduceInDate = DateTime.ParseExact(InMaterialDate, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture),
                     Category = category,
@@ -109,6 +62,8 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             }
             return Materials;
         }
+      
+        
         #region     私有方法
         /// <summary>
         /// 所有进货单
@@ -212,10 +167,10 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                        Material = new MaterialModel()
                        {
                          ProduceNumber = ProduceNumber,
-                         ProductDrawID = PorductInfo.ProductDrawID ,
-                         ProductName = PorductInfo .ProductName,
-                         ProductStandard = PorductInfo.ProductSpecify,
-                         ProductID = PorductInfo.ProductID,
+                         ProductDrawID = PorductInfo.MaterialrawID ,
+                         ProductName = PorductInfo .MaterailName,
+                         ProductStandard = PorductInfo.MaterialSpecify,
+                         ProductID = PorductInfo.ProductMaterailId,
                          ProductSupplier = SupplierID,
                          ProduceInDate =  DateTime.ParseExact(InMaterialDate , "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture),
                          Category = category,
@@ -269,7 +224,50 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         }
         #endregion   私有方法
     }
-  
 
-    
+
+    /// <summary>
+    /// ERP中由料号得到物料相关信息
+    /// </summary>
+   public  class MaterialInfoDb
+    {
+
+        private string GetPorductSqlFields()
+        {
+            return "Select MB001,MB002,MB003,MB004,MB015,MB029,MB068,MB028  from  INVMB ";
+        }
+        /// <summary>
+        ///  由数据给Model赋值
+        /// </summary>
+        /// <param name="dr">DataTable的一行</param>
+        /// <param name="model"></param>
+        private void MapProductRowAndModel(DataRow dr, ProductMaterailModel model)
+        {
+            model.ProductMaterailId = dr["MB001"].ToString();
+            model.MaterailName = dr["MB002"].ToString();
+            model.MaterialSpecify = dr["MB003"].ToString();
+            model.UnitedName = dr["MB004"].ToString();
+            model.UniteCount = dr["MB015"].ToString();
+            model.MaterialrawID = dr["MB029"].ToString();
+            model.MaterialBelongDepartment = dr["MB068"].ToString();
+            model.Memo = dr["MB028"].ToString();
+        }
+
+        /// <summary>
+        /// 由物料料号得到物料所有相关信息
+        /// </summary>
+        /// <param name="marteial">料号</param>
+        /// <returns></returns>
+        public List<ProductMaterailModel> GetProductInfoBy(string marteial)
+        {
+            string sqlWhere = string.Format(" where MB001='{0}'", marteial.Trim());
+            return ErpDbAccessHelper.FindDataBy<ProductMaterailModel>(GetPorductSqlFields(), sqlWhere, (dr, m) =>
+            {
+                this.MapProductRowAndModel(dr, m);
+            });
+        }
+
+        /// <summary>
+    }
+
 }

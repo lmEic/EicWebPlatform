@@ -22,8 +22,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         #endregion constructure
 
-
-
         #region method
 
         /// <summary>

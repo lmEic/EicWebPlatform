@@ -194,6 +194,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         vmManager.init();
         uiVM.ProductName = vmManager.productName;
         vmManager.editWindowDisplay = true;
+        
     };
     operate.copyAll = function () {
         vmManager.productNameFrom = vmManager.productName;
@@ -252,7 +253,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
             vmManager.init();
             vmManager.editWindowDisplay = false;
         });
-    };
+    };   
    
     ///选择文件并导入数据
     $scope.selectFile = function (el) {
@@ -268,7 +269,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
     };
     
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
-    departmentTreeSet.bindNodeToVm = function () {
+    departmentTreeSet.bindNodeToVm = function () {    
         var dto = _.clone(departmentTreeSet.treeNode.vm);
         vmManager.department = dto.DataNodeText;
     };
@@ -670,7 +671,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                     leeDataHandler.dataOperate.add(op, isValid, function () {
                         vmManager.edittingRow.Remarks = $scope.vm.Remarks;
                         uiVM.Remarks = vmManager.edittingRow.Remarks;
-                        vmManager.editRemarksModal.$promise.then(vmManager.editRemarksModal.hide);
+                        vmManager.$promise.then(vmManager.editRemarksModal.hide);
                     });
                 };
             },

@@ -80,8 +80,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         #region Find
 
         /// <summary>
-        /// 查询 1.依据财产编号查询 2.依据保管部门查询 3.依据录入日期查询
-        /// 4.依据录入日期查询待校验设备 5.依据录入日期查询待保养设备 6.生成设备总览表
+        /// 查询 
+        /// 1.依据财产编号(包含)查询 
+        /// 2.依据保管部门查询 
+        /// 3.依据录入日期查询
+        /// 4.依据录入日期查询待校验设备 
+        /// 5.依据录入日期查询待保养设备 
+        /// 6.生成设备总览表
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
@@ -93,7 +98,6 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 {
                     case 1: //依据财产编号查询
                         return irep.Entities.Where(m => m.AssetNumber==qryDto.AssetNumber).ToList();
-
                     case 2: //依据保管部门查询
                         return irep.Entities.Where(m => m.SafekeepDepartment.StartsWith(qryDto.Department)).ToList();
 
@@ -110,7 +114,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
                     case 6: //查询所有在使用待设备 生成设备总览表
                         return irep.Entities.Where(m => m.IsScrapped == "否").ToList();
-
+                    case 7: //依据财产编号查询
+                        return irep.Entities.Where(m => m.AssetNumber.StartsWith( qryDto.AssetNumber)).ToList();
                     default:
                         return new List<EquipmentModel>();
                 }
@@ -306,7 +311,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         #region FindBy
 
         /// <summary>
-        /// 查询 1.依据财产编号查询
+        /// 查询 
+        /// 1.依据财产编号查询
+        /// 2: //依据财产编号精确查询
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
@@ -318,6 +325,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 {
                     case 1: //依据财产编号查询
                         return irep.Entities.Where(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
+                    case 2: //依据财产编号精确查询
+                        return irep.Entities.Where(m => m.AssetNumber==qryDto.AssetNumber).ToList();
 
                     default: return null;
                 }
@@ -440,7 +449,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         #region FindBy
 
         /// <summary>
-        /// 查询 1.依据财产编号查询
+        /// 查询
+        /// 1.依据财产编号查询
+        /// 2.依据财产编号精确查询
         /// </summary>
         /// <param name="qryDto">设备查询数据传输对象 </param>
         /// <returns></returns>
@@ -452,6 +463,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 {
                     case 1: //依据财产编号查询
                         return irep.Entities.Where(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
+                    case 2: //依据财产编号精确查询
+                        return irep.Entities.Where(m => m.AssetNumber==qryDto.AssetNumber).ToList();
 
                     default: return null;
                 }
@@ -709,7 +722,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
         public List<EquipmentRepairedRecordModel> GetEquipmentRepairedRecordFormIdBy(string assetNumber,string formdId)
         {
-            var data = irep.Entities.Where(m => m.FormId == formdId&&m.AssetNumber == assetNumber).ToList();
+            var data = irep.Entities.Where(m => m.FormId == formdId && m.AssetNumber == assetNumber).ToList();
             return data;
 
         }
