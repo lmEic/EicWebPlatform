@@ -53,9 +53,9 @@ namespace EicWorkPlatfrom.Controllers
 
         // GetInspectionIndex
 
-        public JsonResult GetInspectionIndex(string materialId, string inspectionItem)
+        public JsonResult GetInspectionIndex(string materialId)
         {
-            var opResult =1;
+            var opResult = InspectionService.InspectionItemConfigurator.GetInspectionIndex(materialId);
             return Json(opResult);
         }
         #endregion
