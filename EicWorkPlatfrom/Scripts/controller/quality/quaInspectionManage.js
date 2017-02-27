@@ -26,10 +26,10 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
     }
 
     //013935保存所有项
-    quality.saveAll = function (dataSets) {
+    quality.saveAll = function (dataSource) {
         var url = qualityUrl + 'SaveAllMaterialDatas';
         return ajaxService.postData(url, {
-            dataSets: dataSets
+            dataSource: dataSource
         })
     }
 
@@ -87,6 +87,14 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
         dataSource: [],
         dataSets: [],
+        copyWindowDisplay: false,
+        editWindowWidth: '100%',
+
+        materialId: null,
+        materialIdForm: null,
+        materialIdTo: null,
+        copyDataSets:[],
+
         delItem: null,
         init: function () {
             if (uiVM.OpSign === 'add') {
@@ -105,7 +113,7 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
             $scope.searchPromise = qualityDataOpService.getMaterialDatas($scope.vm.MaterialId).then(function (datas) {
                 if (datas != null) {
                     $scope.tableVm = datas.ProductMaterailModel;
-                    vmManager.dataSets = datas.InspectionItemConfigModelList;
+                    vmManager.dataSource = datas.InspectionItemConfigModelList;
                 }
             });
         },
@@ -117,12 +125,7 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
                 }
             });
         },
-        //013935保存所有数据
-        saveAll: function () {
-            $scope.searchPromise = qualityDataOpService.saveAll(vmManager.dataSets).then(function () {
-                vmManager.dataSets = [];
-            });
-        }
+        
     }
 
     //013935导入excel
@@ -133,7 +136,7 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
             var fd = new FormData();
             fd.append('file', file);
             qualityDataOpService.importIqcInspectionItemConfigDatas(fd).then(function (datas) {
-                vmManager.dataSets = datas;
+                vmManager.dataSource = datas;
             });
         }
     };
@@ -147,7 +150,7 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             leeHelper.setUserData(uiVM);
             if (uiVM.OpSign === "add") {
-                vmManager.dataSets.push(modelVM);
+                vmManager.dataSource.push(modelVM);
                 //qualityDataOpService.saveInspectionItemconfig(modelVM).then(function (datas) {
                 //    if (datas.Result) {
                         
@@ -176,7 +179,7 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
         $scope.vm = uiVM;
         
         $scope.searchPromise = qualityDataOpService.deleteMaterialDatas(entity).then(function (datas) {
-            leeHelper.remove(vmManager.dataSets, entity);
+            leeHelper.remove(vmManager.dataSource, entity);
             //if (datas.Result) {
             //    vmManager.delItem = entity;
                 
@@ -187,6 +190,32 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
 
     operate.refresh = function () {
         vmManager.init();
+    }
+
+    //013935保存所有数据
+    operate.saveAll = function ( ){
+        $scope.searchPromise = qualityDataOpService.saveAll(vmManager.dataSource).then(function (opresult) {
+            if (opresult.Result) {
+                vmManager.dataSource = [];
+            }
+        });
+    }
+
+    operate.copyAll = function () {
+        vmManager.materialIdForm = $scope.vm.MaterialId;
+        vmManager.copyWindowDisplay = true;
+    }
+
+    operate.copyConfirm = function () {
+        angular.forEach(vmManager.dataSource, function (item) {
+            item.MaterialId = vmManager.materialIdTo;
+            vmManager.copyDataSets.push(item);
+            vmManager.dataSource = vmManager.copyDataSets;
+        });
+        vmManager.copyDataSets = [];
+        $scope.vm.MaterialId = vmManager.materialIdTo;
+        vmManager.materialIdTo = null;
+
     }
 })
 
@@ -245,7 +274,7 @@ qualityModule.controller("inspectionDataGatherCtrl", function ($scope, qualityDa
             $scope.searchPromise = qualityDataOpService.getMaterialDatas($scope.vm.MaterialId).then(function (datas) {
                 if (datas != null) {
                     $scope.tableVm = datas.ProductMaterailModel;
-                    vmManager.dataSets = datas.InspectionItemConfigModelList;
+                    vmManager.dataSource = datas.InspectionItemConfigModelList;
                 }
             });
         },
@@ -266,7 +295,7 @@ qualityModule.controller("inspectionDataGatherCtrl", function ($scope, qualityDa
             var fd = new FormData();
             fd.append('file', file);
             qualityDataOpService.importIqcInspectionItemConfigDatas(fd).then(function (datas) {
-                vmManager.dataSets = datas;
+                vmManager.dataSource = datas;
             });
         }
     };
@@ -282,7 +311,7 @@ qualityModule.controller("inspectionDataGatherCtrl", function ($scope, qualityDa
             if (uiVM.OpSign === "add") {
                 qualityDataOpService.saveInspectionItemconfig(modelVM).then(function (datas) {
                     if (datas.Result) {
-                        vmManager.dataSets.push(modelVM);
+                        vmManager.dataSource.push(modelVM);
                     }
                 })
             } else {
@@ -308,7 +337,7 @@ qualityModule.controller("inspectionDataGatherCtrl", function ($scope, qualityDa
         $scope.searchPromise = qualityDataOpService.saveInspectionItemconfig(item).then(function (datas) {
             if (datas.Result) {
                 vmManager.delItem = item;
-                leeHelper.remove(vmManager.dataSets, vmManager.delItem);
+                leeHelper.remove(vmManager.dataSource, vmManager.delItem);
             }
         });
         vmManager.init();

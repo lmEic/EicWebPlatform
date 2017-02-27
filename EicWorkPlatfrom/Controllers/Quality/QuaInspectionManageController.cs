@@ -65,12 +65,12 @@ namespace EicWorkPlatfrom.Controllers
         /// <summary>
         /// 批量保存
         /// </summary>
-        /// <param name="dataSets"></param>
+        /// <param name="dataSource"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult SaveAllMaterialDatas(List<IqcInspectionItemConfigModel> dataSets)
+        public JsonResult SaveAllMaterialDatas(List<IqcInspectionItemConfigModel> dataSource)
         {
-            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(dataSets);
+            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(dataSource);
             return Json(opResult);
         }
         /// <summary>

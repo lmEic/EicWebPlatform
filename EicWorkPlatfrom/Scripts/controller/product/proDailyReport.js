@@ -151,6 +151,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
             vmManager.productName = item.ProductName;
             $scope.searchPromise = dReportDataOpService.getProductFlowList(vmManager.department,vmManager.productName,"",2).then(function (datas) {
                 vmManager.editDatas = datas;
+                console.log(vmManager.editDatas)
             });
         },
         // 模糊查找
@@ -196,7 +197,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         vmManager.editWindowDisplay = true;
         
     };
-    operate.copyAll = function () {
+    operate.productNameFrom = function () {
         vmManager.productNameFrom = vmManager.productName;
         vmManager.copyWindowDisplay = true;
     };

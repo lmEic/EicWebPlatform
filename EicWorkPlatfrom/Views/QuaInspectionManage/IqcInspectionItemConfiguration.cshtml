@@ -13,7 +13,8 @@
                     <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
                 </a>
 
-                <button type="button" class="btn-sm btn-warning pull-right" ng-click="vmManager.saveAll()">批量保存</button>
+                <button type="button" class="btn-sm btn-warning pull-right" ng-click="operate.saveAll()">批量保存</button>
+                <button type="button" class="btn-sm btn-success pull-right" ng-click="operate.copyAll()">批量复制</button>
             </div>
             <div class="h-split"></div>
             @*ERP信息*@
@@ -37,7 +38,7 @@
             </div>
 
             <div style="background:#eee;overflow:hidden;">
-                <div class="pull-left" style="width:45%;padding:10px;">
+                <div class="pull-left" style="width:45%;padding:10px;" id="copyWindow">
                     <form role="form" name="iqcInspectionItemForm" class="form-horizontal" novalidate onkeypress="if (event.keyCode == 13) return false;">
                         <fieldset>
                             <div class="form-group">
@@ -155,7 +156,6 @@
                                 </div>
                             </div>
                         </fieldset>
-
                     </form>
                     <div class="alert alert-info">
                         <div class="row">
@@ -171,6 +171,19 @@
                         </div>
                     </div>
                 </div>
+                <div pageslide ps-open="vmManager.copyWindowDisplay" ps-side="right"  ps-speed="0.25" ps-container='copyWindow' ps-size="{{vmManager.editWindowWidth}}">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <span>
+                                        <i class="fa fa-hand-o-right"></i>
+                                        <input readonly placeholder="要复制的产品品号" ng-model="vmManager.materialIdForm" style="color:black" /><i class="fa fa-arrows-h"></i>
+                                        <input placeholder="待生成的产品品号" ng-model="vmManager.materialIdTo" style="color:black" />
+                                        <span class="btn btn-xs btn-default" ng-click="operate.copyConfirm()"><i class="fa fa-copy"></i>复制</span>
+                                    </span>
+                                </div>
+                            </div>
+                </div>
+
 
                 <div class="pull-left" style="width:55%;border-left:4px solid #046278;min-height:392px;">
                     <div class="table-responsive" cg-busy="{promise:searchPromise}">
@@ -188,7 +201,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in vmManager.dataSets track by $index">
+                                <tr ng-repeat="item in vmManager.dataSource track by $index">
                                     <td>{{item.InspectionItemIndex}}</td>
                                     <td>{{item.MaterialId}}</td>
                                     <td>{{item.InspectionItem}}</td>
@@ -207,11 +220,12 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div ng-if="vmManager.dataSource.length>0"
+                             yl-pagination data-dataset="vmManager.dataSets"
+                             data-datasource="vmManager.dataSource">
+                        </div>
                     </div>
-                    <div ng-if="vmManager.dataSets.length>0"
-                         yl-pagination data-dataset="vmManager.dataSource"
-                         data-datasource="vmManager.dataSets">
-                    </div>
+                    
                 </div>
             </div>
 
