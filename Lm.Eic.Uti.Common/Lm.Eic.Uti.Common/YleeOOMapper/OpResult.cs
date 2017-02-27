@@ -18,6 +18,20 @@
             }
         }
 
+        private int recordCount=0;
+
+        /// <summary>
+        /// 操作结果信息
+        /// </summary>
+        public int RecordCount
+        {
+            get
+            {
+                return recordCount;
+            }
+        }
+
+
         private bool result = false;
 
         /// <summary>
@@ -58,6 +72,7 @@
         {
             this.result = record > 0;
             this.message = successMessage;
+            this.recordCount = record;
             if (!result)
                 this.message = falseMessage;
         }

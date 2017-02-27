@@ -61,19 +61,31 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult DeleteInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
-
-            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+            OpResult opResult = OpResult.SetResult(OpContext);
+            opResult= irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+            opResult.Attach = model;
+            return opResult;
         }
 
         private OpResult EidtInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
-            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+            OpResult opResult = OpResult.SetResult(OpContext);
+            opResult= irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+            opResult.Attach = model;
+            return opResult;
         }
 
         private OpResult AddInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+
+            OpResult opResult = OpResult.SetResult(OpContext);
+            opResult= irep.Insert(model).ToOpResult_Add(OpContext);
+            opResult.Attach = model;
+            return opResult;
         }
+
+
+
 
         public bool IsExistInspectionConfigItem(string materialId, string inspectionItem)
         {
@@ -86,15 +98,21 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public OpResult AddInspectionItemConfiList(List<IqcInspectionItemConfigModel> modelList)
         {
             SetFixFieldValue(modelList, OpMode.Add);
-            //如果存在剔除
-            modelList.ForEach((m) =>
+            //如果存在 就修改   然后从列表中剔除 最后批量加入 （册除就直接册除）
+            modelList.ForEach(m =>
             {
                 if (IsExistInspectionConfigItem(m.MaterialId,m.InspectionItem))
                 {
+                    m.OpSign = "Eidt";
+                    this.Store(m);
                     modelList.Remove(m);
                 }
             });
-            return irep.Insert(modelList).ToOpResult_Add(OpContext);
+            OpResult opResult = OpResult.SetResult("未执行任何操作！");
+            opResult = irep.Insert(modelList).ToOpResult_Add(OpContext);
+            opResult.Attach = modelList;
+
+            return opResult;
 
            
         }

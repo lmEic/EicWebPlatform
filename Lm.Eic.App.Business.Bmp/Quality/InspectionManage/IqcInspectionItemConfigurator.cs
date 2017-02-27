@@ -23,13 +23,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="materialId"></param>
         /// <returns></returns>
 
-        public IqcInspectionItemConfigShowModel GetIqcspectionItemConfigBy(string materialId)
+        public List<IqcInspectionItemConfigModel> GetIqcspectionItemConfigBy(string materialId)
         {
-            return new IqcInspectionItemConfigShowModel()
-            {
-                ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault(),
-                InspectionItemConfigModelList = IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigsBy(materialId)
-            };
+          return  IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigsBy(materialId); 
         }
         /// <summary>
         /// 增删改
@@ -40,7 +36,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.Store(model);
         }
-        public OpResult SaveIqcInspectionItemConfigList(List<IqcInspectionItemConfigModel> modelList)
+        /// <summary>
+        /// 批量添加数据
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        public OpResult SaveIqcInspectionItemConfig(List<IqcInspectionItemConfigModel> modelList)
         {
             return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.AddInspectionItemConfiList(modelList);
         }

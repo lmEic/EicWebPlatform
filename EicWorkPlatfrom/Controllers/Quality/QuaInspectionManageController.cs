@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using System.IO;
+using Lm.Eic.App.Erp.Bussiness.QmsManage;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -37,15 +38,10 @@ namespace EicWorkPlatfrom.Controllers
 
         public JsonResult GetMaterialDatas(string materialId)
         {
-            var datas = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigBy(materialId);
-            //1.查询配置项目 
-            int i = 1;
-
-            //2.查询ERP里面的规格信息
-            int m = 2;
-
-            var data = new { i = i, m = m };
-            return Json(data, JsonRequestBehavior.AllowGet);
+            var InspectionItemConfigModelList = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigBy(materialId);
+            var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
+            var datas= new {ProductMaterailModel, InspectionItemConfigModelList };
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 保存数据
@@ -53,9 +49,9 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="modelList"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult SaveInspectionItemconfig(IqcInspectionItemConfigModel modelVM) 
+        public JsonResult DeleteMaterialDatas(IqcInspectionItemConfigModel entity) 
         {
-            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(modelVM);
+            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(entity);
            return Json(opResult);
         }
 
@@ -67,6 +63,17 @@ namespace EicWorkPlatfrom.Controllers
             return Json(opResult);
         }
         /// <summary>
+        /// 批量保存
+        /// </summary>
+        /// <param name="dataSets"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveAllMaterialDatas(List<IqcInspectionItemConfigModel> dataSets)
+        {
+            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(dataSets);
+            return Json(opResult);
+        }
+        /// <summary>
         /// 导入EXCEL数据到IQC物料检验配置
         /// </summary>
         /// <param name="file"></param>
@@ -74,7 +81,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult ImportIqcInspectionItemConfigDatas(HttpPostedFileBase file)
         {
-            IqcInspectionItemConfigShowModel datas = null;
+            List<IqcInspectionItemConfigModel> datas = null;
             if (file != null)
             {
                 if (file.ContentLength > 0)
@@ -82,15 +89,15 @@ namespace EicWorkPlatfrom.Controllers
                     ///待加入验证文件名称逻辑:
                     string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
                     file.SaveAs(fileName);
-                    var listDatas = InspectionService.InspectionItemConfigurator.ImportProductFlowListBy(fileName);
-                    var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfigList(listDatas);
-                    if (opResult.Result)
-                    {
-                        datas=  new IqcInspectionItemConfigShowModel() { InspectionItemConfigModelList = listDatas };
-                    }
+                    datas = InspectionService.InspectionItemConfigurator.ImportProductFlowListBy(fileName);
+                    if (datas != null && datas.Count > 0)
+                    //批量保存数据
+                    { var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(datas); }
+                   
                     System.IO.File.Delete(fileName);
                 }
             }
+           
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
