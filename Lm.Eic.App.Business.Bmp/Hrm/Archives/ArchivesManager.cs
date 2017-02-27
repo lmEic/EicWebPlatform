@@ -574,6 +574,21 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 };
             return fieldmappping;
         }
+        /// <summary>
+        /// 获取出勤人员信息
+        /// </summary>
+        /// <returns></returns>
+        public List<LeaveOfficeMapEntity> GetAttendWorkers()
+        {
+            var datas = this.irep.GetAttendWorkers();
+            if (datas != null && datas.Count > 0)
+            {
+                datas.ForEach(d => {
+                    d.Department = this.DepartmentMananger.GetDepartmentText(d.Department);
+                });
+            }
+            return datas;
+        }
         #endregion find data method
     }
 

@@ -38,7 +38,14 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult GetMaterialDatas(string materialId)
         {
             var datas = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigBy(materialId);
-            return Json(datas, JsonRequestBehavior.AllowGet);
+            //1.查询配置项目 
+            int i = 1;
+
+            //2.查询ERP里面的规格信息
+            int m = 2;
+
+            var data = new { i = i, m = m };
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 保存数据
