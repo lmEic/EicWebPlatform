@@ -89,7 +89,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         public bool IsExistInspectionConfigItem(string materialId, string inspectionItem)
         {
-            return irep.IsExist(e => e.MaterialId == materialId && e.InspectionItem == inspectionItem);
+            return this.irep.IsExist(e => e.MaterialId == materialId && e.InspectionItem == inspectionItem);
         }
         public List<IqcInspectionItemConfigModel> FindIqcInspectionItemConfigsBy(string materialId)
         {
@@ -97,21 +97,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
         public OpResult AddInspectionItemConfiList(List<IqcInspectionItemConfigModel> modelList)
         {
+            OpResult opResult = OpResult.SetResult("未执行任何操作！");
             SetFixFieldValue(modelList, OpMode.Add);
+            int i = 0;
             //如果存在 就修改   然后从列表中剔除 最后批量加入 （册除就直接册除）
             modelList.ForEach(m =>
             {
-                if (IsExistInspectionConfigItem(m.MaterialId,m.InspectionItem))
+                if (IsExistInspectionConfigItem(m.MaterialId, m.InspectionItem))
                 {
-                    m.OpSign = "Eidt";
-                    this.Store(m);
-                    modelList.Remove(m);
+                    m.OpSign = "edit";
                 }
+                opResult = this.Store(m);
+                if (opResult.Result)
+                i =i + opResult.RecordCount ;
             });
-            OpResult opResult = OpResult.SetResult("未执行任何操作！");
-            opResult = irep.Insert(modelList).ToOpResult_Add(OpContext);
-            opResult.Attach = modelList;
-
+            opResult = i.ToOpResult(OpContext);
+            if (i == modelList.Count)   opResult.Attach = modelList;
             return opResult;
 
            

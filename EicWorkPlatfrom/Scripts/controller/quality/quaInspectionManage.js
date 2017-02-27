@@ -102,6 +102,7 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
 
         //013935根据品号查询
         getMaterialDatas: function () {
+            $scope.tableVm = [];
             $scope.searchPromise = qualityDataOpService.getMaterialDatas($scope.vm.MaterialId).then(function (datas) {
                 if (datas != null) {
                     $scope.tableVm = datas.ProductMaterailModel;
@@ -120,6 +121,7 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
         //013935保存所有数据
         saveAll: function () {
             $scope.searchPromise = qualityDataOpService.saveAll(vmManager.dataSets).then(function () {
+                console.log(vmManager.dataSets);
                 vmManager.dataSets = [];
             });
         }
