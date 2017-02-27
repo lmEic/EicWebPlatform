@@ -521,6 +521,8 @@ hrModule.controller('arDepartmentChangeCtrl', function ($scope,hrArchivesDataOpS
                         NowDepartmentText:null,
                         opDescription: null,
                         OpSign: null,
+                        OpPerson: null,
+                        AssignDate: null,
                         OpCmdVisible:false,
                     };
                     vmManager.changeDatas.push(item);
@@ -626,6 +628,8 @@ hrModule.controller('arPostChangeCtrl', function ($scope, hrArchivesDataOpServic
                         NowPost: null,
                         opDescription: null,
                         OpSign: null,
+                        OpPerson: null,
+                        AssignDate:null,
                         OpCmdVisible: false,
                     };
                     vmManager.changeDatas.push(item);

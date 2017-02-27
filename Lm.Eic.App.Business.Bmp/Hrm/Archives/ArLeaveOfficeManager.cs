@@ -31,9 +31,17 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             return this.crud.Store(entity);
         }
+        /// <summary>
+        /// 获取某时间段的离职人员信息
+        /// </summary>
+        /// <param name="dtStart"></param>
+        /// <param name="dtEnd"></param>
+        /// <returns></returns>
+        public List<LeaveOfficeMapEntity> GetLeavedWorkers(DateTime dtStart, DateTime dtEnd)
+        {
+            return this.crud.GetLeavedWorkers(dtStart, dtEnd);
+        }
     }
-
-   
     public class ArleaveOfficeCrud: CrudBase<ArLeaveOfficeModel, IArWorkerLeaveOfficeRepository>
     {
         public ArleaveOfficeCrud()
@@ -46,12 +54,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         private OpResult AddWorkerleaveOfficeInfo(ArLeaveOfficeModel entity)
         {
+            entity.LeaveDate = entity.LeaveDate.ToDate();
             int record = this.irep.Insert(entity);
             if (record > 0)
             {
                 return this.irep.ChangeWorkingStatus("离职", entity.WorkerId).ToOpResult("离职操作成功", "离职存保成功,状态更变失败");
             }
             else return OpResult.SetResult("离职存保失败", true);
+        }
+
+        public List<LeaveOfficeMapEntity> GetLeavedWorkers(DateTime dtStart, DateTime dtEnd)
+        {
+            return this.irep.GetLeavedWorkers(dtStart, dtEnd);
         }
     }
 }
