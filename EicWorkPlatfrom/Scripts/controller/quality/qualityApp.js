@@ -18,8 +18,13 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
         //IQC检验项目配置
         templateUrl: inspectionUrlPrefix + 'IqcInspectionItemConfiguration',
     })
+     //IQC检验方式配置
+    .state('iqcInspectionIModeConfiguration', {
+         //Iqc检验项目数据采集
+        templateUrl: inspectionUrlPrefix + 'IqcInspectionIModeConfiguration',
+     })
     .state('inspectionDataGatheringOfIQC', {
-        //日报录入
+        //Iqc检验项目数据采集
         templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfIQC',
     })
     ////--------------人员管理--------------------------

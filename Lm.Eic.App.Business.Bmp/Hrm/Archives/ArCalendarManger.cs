@@ -56,8 +56,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         { 
             return ArcalendarCurd.Store(model);
         }
-
-
     }
 
     internal class ArcalendarCurd : CrudBase<CalendarModel, ICalendarsRepository>

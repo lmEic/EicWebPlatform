@@ -15,6 +15,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
         string CreateWorkerId(string workerIdNumType);
 
         List<ArWorkerInfo> GetWorkerInfos(string whereAppend = "");
+
+        List<LeaveOfficeMapEntity> GetAttendWorkers();
     }
 
     /// <summary>
@@ -49,6 +51,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
             if (whereAppend != "")
                 sql = sql + " where " + whereAppend;
             return DbHelper.Hrm.LoadEntities<ArWorkerInfo>(sql);
+        }
+        /// <summary>
+        /// 获取出勤人员的信息
+        /// </summary>
+        /// <returns></returns>
+        public List<LeaveOfficeMapEntity> GetAttendWorkers()
+        {
+            return DbHelper.Hrm.LoadEntities<LeaveOfficeMapEntity>("Select WorkerId,Name as WorkerName,Department,RegistedDate as LeaveDate from Archives_EmployeeIdentityInfo where WorkingStatus='在职'");
         }
     }
 
@@ -134,6 +144,13 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
     public interface IArWorkerLeaveOfficeRepository : IRepository<ArLeaveOfficeModel>
     {
         int ChangeWorkingStatus(string workingStatus, string workerId);
+        /// <summary>
+        /// 载入离职人员数据，用来考勤处理用
+        /// </summary>
+        /// <param name="dtStart"></param>
+        /// <param name="dtEnd"></param>
+        /// <returns></returns>
+        List<LeaveOfficeMapEntity> GetLeavedWorkers(DateTime dtStart, DateTime dtEnd);
     }
     public class ArWorkerLeaveOfficeRepository : HrmRepositoryBase<ArLeaveOfficeModel>, IArWorkerLeaveOfficeRepository
     {
@@ -141,6 +158,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
         {
             string sqlText = string.Format("UPDATE  Archives_EmployeeIdentityInfo SET  WorkingStatus ='{0}' WHERE   (WorkerId = '{1}')", workingStatus, workerId);
             return DbHelper.Hrm.ExecuteNonQuery(sqlText);
+        }
+        public List<LeaveOfficeMapEntity> GetLeavedWorkers(DateTime dtStart, DateTime dtEnd)
+        {
+            return DbHelper.Hrm.LoadEntities<LeaveOfficeMapEntity>(
+                string.Format("Select WorkerId,WorkerName, Department,LeaveDate from Archives_LeaveOffice where LeaveDate>='{0}' and LeaveDate<='{1}'", dtStart, dtEnd));
         }
     }
 
