@@ -53,17 +53,17 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
 
 
     //013935删除单项
-    quality.deleteInspectionData = function () {
+    quality.deleteInspectionData = function (item) {
         var url = qualityUrl + "DeleteInspectionData";
         return ajaxService.getData(url, {
-            
+            item:item
         })
     }
     //013935保存单项
-    quality.saveInspectionModeData = function (Items) {
+    quality.saveInspectionModeData = function (item) {
         var url = qualityUrl + "SaveInspectionModeData";
         return ajaxService.postData(url, {
-
+            item:item
         })
     }
     
@@ -240,9 +240,9 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
 
 
 //iqc检验方式配置模块
-qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpService) {
+qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpService,$modal) {
     var uiVM = {
-        InspectionMode:null,
+        InspectionMode:"正常",
         InspectionLevel:null,
         InspectionAQL:null,
         StartNumber:0,
@@ -265,7 +265,17 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
             uiVM = _.clone(initVM);
             $scope.vm = uiVM;
         },
+        inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
+        delModalWindow: $modal({
+            title: "删除提示",
+            content: "确认删除此信息吗？",
+            templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
+            show: false,
+            controller: function ($scope) {
 
+            }
+           
+        })
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -276,7 +286,7 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
         var dataItem = _.clone(uiVM);
         if(uiVM.OpSign==="add"){
             leeDataHandler.dataOperate.add(operate, isValid, function () {
-                qualityDataOpService.saveInspectionModeData(data).then(function(opresult){
+                qualityDataOpService.saveInspectionModeData($scope.vm).then(function(opresult){
                     if(opresult.Result){
                         vmManager.editDatas.push(dataItem);
                     }
@@ -284,7 +294,7 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
             });
         } else {
             leeDataHandler.dataOperate.add(operate, isValid, function () {
-                qualityDataOpService.saveInspectionModeData(data).then(function (opresult) {
+                qualityDataOpService.saveInspectionModeData($scope.vm).then(function (opresult) {
                     if(opresult.Result){
                         var item = _.find(vmManager.editDatas, { Id_Key: uiVM.Id_Key });
                         item = uiVM = $scope.vm;
@@ -300,18 +310,18 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
         });
     };
     //编辑单项
-    operate.editItem = function (data) {
-        data.OpSign = "edit";
-        $scope.vm =uiVM = _.clone(data);
-
+    operate.editItem = function (item) {
+        item.OpSign = "edit";
+        $scope.vm = uiVM = _.clone(item);
     }
     //删除单项
-    operate.deleteItem = function (data) {
-        data.OpSign = 'delete';
-        qualityDataOpService.saveInspectionModeData(data).then(function (opresult) {
-            if(opresult.Result){
-                leeHelper.remove(vmManager.editDatas, data)
-            }
-        })
+    operate.deleteItem = function (item) {
+        vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.show)
+        //data.OpSign = 'delete';
+        //qualityDataOpService.saveInspectionModeData(data).then(function (opresult) {
+        //    if(opresult.Result){
+        //        leeHelper.remove(vmManager.editDatas, data)
+        //    }
+        //})
     }
 })
