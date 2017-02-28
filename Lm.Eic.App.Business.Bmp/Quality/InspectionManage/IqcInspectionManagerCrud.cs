@@ -11,9 +11,6 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
-
-
-
     #region  IQC  IQC物料检验配置
     /// <summary>
     /// IQC物料检验配置
@@ -160,6 +157,4 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     }
 
     #endregion
-
-
 }
