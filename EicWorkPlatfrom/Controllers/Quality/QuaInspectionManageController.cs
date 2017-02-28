@@ -39,7 +39,7 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult GetIqcspectionItemConfigDatas(string materialId)
         {
-            var InspectionItemConfigModelList = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigBy(materialId);
+            var InspectionItemConfigModelList = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigDatasBy(materialId);
             var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
             var datas= new {ProductMaterailModel, InspectionItemConfigModelList };
             return Json(datas, JsonRequestBehavior.AllowGet);
@@ -53,26 +53,18 @@ namespace EicWorkPlatfrom.Controllers
         [HttpPost]
         public JsonResult DeleteIqlInspectionConfigItem(IqcInspectionItemConfigModel configItem) 
         {
-            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(configItem);
+            var opResult = InspectionService.InspectionItemConfigurator.StoreIqcInspectionItemConfig(configItem);
            return Json(opResult);
-        }
-
-        // GetInspectionIndex
-        [NoAuthenCheck]
-        public JsonResult GetInspectionIndex(string materialId)
-        {
-            var opResult = InspectionService.InspectionItemConfigurator.GetInspectionIndex(materialId);
-            return Json(opResult);
         }
         /// <summary>
         /// 批量保存IQC进料检验项目配置数据
         /// </summary>
-        /// <param name="dataSource"></param>
+        /// <param name="iqcInspectionConfigItems"></param>
         /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult SaveIqcInspectionItemConfigDatas(List<IqcInspectionItemConfigModel> iqcInspectionConfigItems)
         {
-            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(iqcInspectionConfigItems);
+            var opResult = InspectionService.InspectionItemConfigurator.StoreIqcInspectionItemConfig(iqcInspectionConfigItems);
             return Json(opResult);
         }
         /// <summary>
@@ -94,7 +86,7 @@ namespace EicWorkPlatfrom.Controllers
                     datas = InspectionService.InspectionItemConfigurator.ImportProductFlowListBy(fileName);
                     if (datas != null && datas.Count > 0)
                     //批量保存数据
-                    { var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(datas); }
+                    { var opResult = InspectionService.InspectionItemConfigurator.StoreIqcInspectionItemConfig(datas); }
                    
                     System.IO.File.Delete(fileName);
                 }
