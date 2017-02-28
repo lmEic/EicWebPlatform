@@ -40,11 +40,30 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
     //        modelVM: modelVM
     //    })
     //}
+
     //013935删除单项
     quality.deleteMaterialDatas = function (entity) {
         var url = qualityUrl + "DeleteMaterialDatas";
         return ajaxService.postData(url, {
             entity: entity
+        })
+    }
+    //////////////////检验方式配置模块//////////////////
+    ////////////////////////////////////////////////////
+
+
+    //013935删除单项
+    quality.deleteInspectionData = function () {
+        var url = qualityUrl + "DeleteInspectionData";
+        return ajaxService.getData(url, {
+            
+        })
+    }
+    //013935保存单项
+    quality.saveInspectionModeData = function () {
+        var url = qualityUrl + "SaveInspectionModeData";
+        return ajaxService.postData(url, {
+
         })
     }
     
@@ -220,131 +239,79 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
 })
 
 
-//进料检验数据采集模块
-qualityModule.controller("inspectionDataGatherCtrl", function ($scope, qualityDataOpService) {
+//iqc检验方式配置模块
+qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpService) {
     var uiVM = {
-        //表单变量
-        MaterialId: null,
-        InspectionItem: null,
-        InspectionItemIndex: null,
-        SizeUSL: null,
-        SizeLSL: null,
-        SizeMemo: null,
-        EquipmentID: null,
-        InspectionMethod: null,
-        InspectionMode: null,
-        InspectionLevel: null,
-        InspectionAQL: null,
-        OpPerson: null,
-        OpDate: null,
-        OpTime: null,
-        OpSign: "add",
-        Id_key: 0,
+        InspectionMode:null,
+        InspectionLevel:null,
+        InspectionAQL:null,
+        StartNumber:0,
+        EndNumber:0,
+        InspectionCount:0,
+        AcceptCount:0,
+        RefuseCount:0,
+        OpPerson:null,
+        OpDate:null,
+        OpTime:null,
+        OpSign:"add",
+        Id_Key:null,
     }
-    //表头变量
-    var tableVM = {
-        MaterialName: null,
-        MaterialBelongDepartment: null,
-        MaterialSpecify: null,
-        MaterialrawID: null,
-    }
-    $scope.tableVm = tableVM;
     $scope.vm = uiVM;
     var initVM = _.clone(uiVM);
     var vmManager = {
-        materialDatas: [],
-        inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
-        dataSource: [],
-        dataSets: [],
-        delItem:null,
+        editDatas:[],
+        datasets: [],
         init: function () {
-            if (uiVM.OpSign === 'add') {
-                leeHelper.clearVM(uiVM, ["MaterialId","Id_key"]);
-            }
-            else {
-                uiVM = _.clone(initVM);
-            }
-            uiVM.OpSign = 'add';
+            uiVM = _.clone(initVM);
             $scope.vm = uiVM;
-
         },
 
-        //013935根据品号查询
-        getMaterialDatas: function () {
-            $scope.searchPromise = qualityDataOpService.getMaterialDatas($scope.vm.MaterialId).then(function (datas) {
-                if (datas != null) {
-                    $scope.tableVm = datas.ProductMaterailModel;
-                    vmManager.dataSource = datas.InspectionItemConfigModelList;
-                }
-            });
-        },
-        getInspectionIndex: function () {
-            $scope.searchPromise = qualityDataOpService.getInspectionIndex($scope.vm.MaterialId).then(function (indexInt) {
-                if (indexInt!= null) {
-                    $scope.vm.InspectionItemIndex = indexInt;
-                }
-            });
-        }
-    }
-
-    //013935导入excel
-    $scope.selectFile = function (el) {
-        var files = el.files;
-        if (files.length > 0) {
-            var file = files[0];
-            var fd = new FormData();
-            fd.append('file', file);
-            qualityDataOpService.importIqcInspectionItemConfigDatas(fd).then(function (datas) {
-                vmManager.dataSource = datas;
-            });
-        }
     };
     $scope.vmManager = vmManager;
-
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    //013935保存
+    //保存单项
     operate.save = function (isValid) {
-        var modelVM = _.clone(uiVM);
-        leeDataHandler.dataOperate.add(operate, isValid, function () {
-            leeHelper.setUserData(uiVM);
-            if (uiVM.OpSign === "add") {
-                qualityDataOpService.saveInspectionItemconfig(modelVM).then(function (datas) {
-                    if (datas.Result) {
-                        vmManager.dataSource.push(modelVM);
+        leeHelper.setUserData(uiVM);
+        var dataItem = _.clone(uiVM);
+        if(uiVM.OpSign==="add"){
+            leeDataHandler.dataOperate.add(operate, isValid, function () {
+                qualityDataOpService.saveInspectionModeData(data).then(function(opresult){
+                    if(opresult.Result){
+                        vmManager.editDatas.push(dataItem);
                     }
                 })
-            } else {
-                qualityDataOpService.saveInspectionItemconfig(modelVM).then(function (datas) {
-
+            });
+        } else {
+            leeDataHandler.dataOperate.add(operate, isValid, function () {
+                qualityDataOpService.saveInspectionModeData(data).then(function (opresult) {
+                    if(opresult.Result){
+                        var item = _.find(vmManager.editDatas, { Id_Key: uiVM.Id_Key });
+                        item = uiVM = $scope.vm;
+                    }
                 })
-            }
-            vmManager.init();
-        })
+            });
+        }
     };
-        
-    operate.editItem = function(item){
-        uiVM = item;
-        uiVM.OpSign = "edit";
-        $scope.vm = uiVM;
-    };
-
-
-    operate.deleteItem = function (item) {
-        uiVM = item;
-        uiVM.OpSign = "delete";
-        $scope.vm = uiVM;
-        $scope.searchPromise = qualityDataOpService.saveInspectionItemconfig(item).then(function (datas) {
-            if (datas.Result) {
-                vmManager.delItem = item;
-                leeHelper.remove(vmManager.dataSource, vmManager.delItem);
-            }
-        });
-        vmManager.init();
-    }
-
-
+    //取消刷新
     operate.refresh = function () {
-        vmManager.init();
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.init();
+        });
+    };
+    //编辑单项
+    operate.editItem = function (data) {
+        data.OpSign = "edit";
+        $scope.vm =uiVM = _.clone(data);
+
+    }
+    //删除单项
+    operate.deleteItem = function (data) {
+        data.OpSign = 'delete';
+        qualityDataOpService.saveInspectionModeData(data).then(function (opresult) {
+            if(opresult.Result){
+                leeHelper.remove(vmManager.editDatas, data)
+            }
+        })
     }
 })
