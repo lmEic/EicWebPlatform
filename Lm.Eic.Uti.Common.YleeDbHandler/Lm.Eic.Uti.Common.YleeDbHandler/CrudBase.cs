@@ -63,6 +63,10 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             return this.PersistentDatas(model);
         }
+        public virtual OpResult Store(TEntity model, bool isNeedEntity)
+        {
+            return this.PersistentDatas(model, isNeedEntity);
+        }
         /// <summary>
         /// 设定固定字段值
         /// </summary>

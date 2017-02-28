@@ -96,7 +96,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 i =i + opResult.RecordCount ;
             });
             opResult = i.ToOpResult(OpContext);
-            if (i == modelList.Count)   opResult.Attach = modelList;
+            if (i == modelList.Count)   opResult.Entity= modelList;
             return opResult;
 
            

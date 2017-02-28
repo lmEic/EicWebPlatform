@@ -28,13 +28,13 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
     }
 
    
-    ////013935删除IQC进料检验配置项数据
-    //quality.deleteIqlInspectionConfigItem = function (configItem) {
-    //    var url = quaInspectionManageUrl + "DeleteIqlInspectionConfigItem";
-    //    return ajaxService.postData(url, {
-    //        configItem: configItem
-    //    })
-    //}
+    //013935删除IQC进料检验配置项数据
+    quality.deleteIqlInspectionConfigItem = function (configItem) {
+        var url = quaInspectionManageUrl + "DeleteIqlInspectionConfigItem";
+        return ajaxService.postData(url, {
+            configItem: configItem
+        })
+    }
     //处理检验方式配置数据
     quality.storeIqcInspectionModeData = function (iqcInspectionModeItem) {
         var url = quaInspectionManageUrl + "StoreIqcInspectionModeData";

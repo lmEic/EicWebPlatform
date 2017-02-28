@@ -45,7 +45,7 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 删除进料检验配置数据
+        /// 删除进料检验配置数据 deleteIqlInspectionConfigItem
         /// </summary>
         /// <param name="configItem"></param>
         /// <returns></returns>
