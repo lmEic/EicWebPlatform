@@ -14,7 +14,8 @@ namespace EicWorkPlatfrom.Controllers
     {
         //
         // GET: /QuaInspectionManage/
-
+       
+        
         public ActionResult Index()
         {
             return View();
@@ -35,8 +36,8 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         [NoAuthenCheck]
-
-        public JsonResult GetMaterialDatas(string materialId)
+        [HttpGet]
+        public JsonResult GetIqcspectionItemConfigDatas(string materialId)
         {
             var InspectionItemConfigModelList = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigBy(materialId);
             var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
@@ -44,14 +45,15 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 保存数据
+        /// 删除进料检验配置数据
         /// </summary>
-        /// <param name="modelList"></param>
+        /// <param name="configItem"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult DeleteMaterialDatas(IqcInspectionItemConfigModel entity) 
+        [HttpPost]
+        public JsonResult DeleteIqlInspectionConfigItem(IqcInspectionItemConfigModel configItem) 
         {
-            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(entity);
+            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(configItem);
            return Json(opResult);
         }
 
@@ -63,14 +65,14 @@ namespace EicWorkPlatfrom.Controllers
             return Json(opResult);
         }
         /// <summary>
-        /// 批量保存
+        /// 批量保存IQC进料检验项目配置数据
         /// </summary>
         /// <param name="dataSource"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult SaveAllMaterialDatas(List<IqcInspectionItemConfigModel> dataSource)
+        public JsonResult SaveIqcInspectionItemConfigDatas(List<IqcInspectionItemConfigModel> iqcInspectionConfigItems)
         {
-            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(dataSource);
+            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(iqcInspectionConfigItems);
             return Json(opResult);
         }
         /// <summary>

@@ -45,13 +45,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.AddInspectionItemConfiList(modelList);
         }
-
-
-        public int  GetInspectionIndex (string materialId)
-        {
-            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.GetInspectionIndex(materialId);
-        }
-
         /// <summary>
         /// 导入IQC 检验配置文件
         /// </summary>
