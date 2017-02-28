@@ -54,16 +54,16 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
 
     //删除iqc检验方式配置模块的数据
     quality.delIqcInspectionModeData = function (item) {
-        var url = qualityUrl + "DeleteInspectionData";
+        var url = qualityUrl + "StoreInspectionModeData";
         return ajaxService.postData(url, {
-            item:item
+            dataModel:dataModel
         })
     }
     //保存iqc检验方式配置模块的数据
-    quality.saveIqcInspectionModeData = function (item) {
-        var url = qualityUrl + "SaveInspectionModeData";
+    quality.saveIqcInspectionModeData = function (dataModel) {
+        var url = qualityUrl + "StoreInspectionModeData";
         return ajaxService.postData(url, {
-            item:item
+            dataModel:dataModel
         })
     }
     
