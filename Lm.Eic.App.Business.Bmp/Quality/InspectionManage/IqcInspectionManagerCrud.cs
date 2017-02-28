@@ -89,12 +89,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
            
         }
-        public int GetInspectionIndex(string materialId)
-        {
-            var listEntities = FindIqcInspectionItemConfigsBy(materialId);
-            if (listEntities == null || listEntities.Count <= 0) return 0;
-            return listEntities.Select(e => e.InspectionItemIndex).Max()+1;
-        }
     }
 
 
