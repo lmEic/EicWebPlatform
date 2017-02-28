@@ -113,6 +113,11 @@ namespace EicWorkPlatfrom.Controllers
             return this.ExportToExcel(ms, "IQC物料检验配置模板", "IQC物料检验配置模板");
             //return null;
         }
+        
+        public ActionResult IqcInspectionModeConfiguration()
+        {
+            return View();
+        }
         #endregion
 
     }

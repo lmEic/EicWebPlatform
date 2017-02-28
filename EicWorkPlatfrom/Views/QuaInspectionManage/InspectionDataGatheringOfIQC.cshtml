@@ -4,36 +4,6 @@
     </div>
     <div class="panel-body">
         <div class="row">
-            @*品号查询*@
-            <div>
-                <labnel>品号</labnel>
-                <input type="text" placeholder="按品号查询" ng-model="vm.MaterialId" />
-                <button class="btn-sm btn-success" ng-click="vmManager.getMaterialDatas()">查询</button>
-                <a href="javascript:void(0);" class="btn btn-sm btn-info file" title="从Excel中导入数据">
-                    <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
-                </a>
-            </div>
-            <div class="h-split"></div>
-            @*ERP信息*@
-            <div class="row">
-                <div class="col-md-2">
-                    <label>品名:</label>
-                    <span title="{{tableVm.MaterailName}}">{{tableVm.MaterailName}}</span>
-                </div>
-                <div class="col-md-3">
-                    <label>品名规格:</label>
-                    <span title="{{tableVm.MaterialSpecify}}">{{tableVm.MaterialSpecify}}</span>
-                </div>
-                <div class="col-md-2">
-                    <label>供应商:</label>
-                    <span style="font-weight:100;" title="{{tableVm.MaterialBelongDepartment}}">{{tableVm.MaterialBelongDepartment}}</span>
-                </div>
-                <div class="col-md-2">
-                    <label>图号:</label>
-                    <span title="{{tableVm.MaterialrawID}}">{{tableVm.MaterialrawID}}</span>
-                </div>
-            </div>
-
             <div style="background:#eee;overflow:hidden;">
                 <div class="pull-left" style="width:45%;padding:10px;">
                     <form role="form" name="iqcInspectionItemForm" class="form-horizontal" novalidate onkeypress="if (event.keyCode == 13) return false;">
