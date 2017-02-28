@@ -46,6 +46,10 @@
         /// 对象的键值
         /// </summary>
         public decimal Id_Key { get; set; }
+        /// <summary>
+        /// 编辑之后的实体对象
+        /// </summary>
+        public object Entity { get; set; }
 
         public OpResult(string successMessage, bool result)
         {

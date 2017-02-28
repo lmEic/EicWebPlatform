@@ -34,7 +34,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult StoreIqcInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
-           return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.Store(model);
+           return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.Store(model,true);
         }
         
         /// <summary>
@@ -91,7 +91,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
        public OpResult  StoreInspectionModeConfig (InspectionModeConfigModel  model)
         {
-            return IqcInspectionManagerCrudFactory.InspectionModeConfigCrud.Store(model);
+            return IqcInspectionManagerCrudFactory.InspectionModeConfigCrud.Store(model,true);
         }
     }
   
