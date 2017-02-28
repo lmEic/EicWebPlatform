@@ -11,7 +11,9 @@ using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
-
+    /// <summary>
+    /// IQC 检验管理工厂
+    /// </summary>
     internal class IqcInspectionManagerCrudFactory
     {
         /// <summary>
@@ -43,8 +45,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             get { return OBulider.BuildInstance<IqcInspectionDetailCrud>(); }
         }
     }
+   
+    
     /// <summary>
-    /// 检验方式配置
+    /// 检验方式配置CRUD
     /// </summary>
     internal class InspectionModeConfigCrud : CrudBase<InspectionModeConfigModel, IInspectionModeConfigRepository>
     {
@@ -61,29 +65,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult DeleteInspectionModeConfig(InspectionModeConfigModel model)
         {
-            OpResult opResult = OpResult.SetResult(OpContext);
-            opResult = irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
-            opResult.Attach = model;
-            return opResult;
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
         private OpResult EidtInspectionModeConfig(InspectionModeConfigModel model)
         {
-            OpResult opResult = OpResult.SetResult(OpContext);
-            opResult= irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
-            opResult.Attach = model;
-            return opResult;
-           
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
         private OpResult AddInspectionModeConfig(InspectionModeConfigModel model)
         {
-
-            OpResult opResult = OpResult.SetResult(OpContext);
-            opResult = irep.Insert(model).ToOpResult_Add(OpContext);
-            opResult.Attach = model;
-            return opResult;
-       
+            return irep.Insert(model).ToOpResult_Add(OpContext);
         }
     }
 }

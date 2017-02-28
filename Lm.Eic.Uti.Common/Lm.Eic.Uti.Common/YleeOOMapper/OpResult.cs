@@ -21,7 +21,7 @@
         private int recordCount=0;
 
         /// <summary>
-        /// 操作结果信息
+        /// 操作结果返回数量
         /// </summary>
         public int RecordCount
         {
