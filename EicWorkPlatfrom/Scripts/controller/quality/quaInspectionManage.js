@@ -13,6 +13,13 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
             materialId: materialId
         })
     };
+    ///数据库中是否存在此物料料号
+   quality.checkIqcspectionItemConfigMaterialId = function (materialId) {
+       var url = quaInspectionManageUrl + "CheckIqcspectionItemConfigMaterialId";
+        return ajaxService.getData(url,  {
+            materialId: materialId
+        })
+    };
     //013935从excel中IQC进料检验配置项数据
     quality.importIqcInspectionItemConfigDatas = function (file) {
         var url = quaInspectionManageUrl + 'ImportIqcInspectionItemConfigDatas';
@@ -44,7 +51,7 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
 })
 
 //iqc检验项目配置模块
-qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpService,$modal) {
+qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityDataOpService,$modal) {
     var uiVM = {
         //表单变量
         MaterialId: null,
@@ -83,7 +90,7 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
         delItem: null,
         init: function () {
             if (uiVM.OpSign === 'add') {
-                leeHelper.clearVM(uiVM, ["MaterialId", "Id_key"]);
+                leeHelper.clearVM(uiVM, ["MaterialId"]);
             }
             else {
                 uiVM = _.clone(initVM);
@@ -117,9 +124,18 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
         },
         //批量复制
         copyAll: function () {
-            angular.forEach(vmManager.dataSource, function (item) {
-                item.MaterialId = vmManager.targetMaterialId;
-            });
+            qualityDataOpService.checkIqcspectionItemConfigMaterialId(vmManager.targetMaterialId).then(function (opresult) {
+                if (opresult.Result) {
+                   alert(vmManager.targetMaterialId+"已经存在")
+                } else {
+                    angular.forEach(vmManager.dataSource, function (item) {
+                        item.Id_key = null;
+                        item.MaterialId = vmManager.targetMaterialId;
+                    });
+                }
+
+            })
+            
         },
         delItem:null,
         delModal:$modal({
@@ -144,7 +160,7 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
             show: false,
         }),
     }
-       
+
     //013935导入excel
     $scope.selectFile = function (el) {
         var files = el.files;
@@ -197,13 +213,15 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
             if (opresult.Result) {
                 vmManager.dataSource = [];
                 vmManager.dataSets = [];
+                vmManager.targetMaterialId = null;
+                vmManager.copyLotWindowDisplay = false;
             }
         });
     }
 })
 
 //检验方式配置模块
-qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpService, $modal) {
+qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityDataOpService, $modal) {
     var uiVM = {
         InspectionMode: "正常",
         InspectionLevel: null,
@@ -298,8 +316,7 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
         vmManager.deleteModalWindow.$promise.then(vmManager.deleteModalWindow.show)
     }
 })
-
-//进料检验数据采集模块
-qualityModule.controller("iqcInspectionDataGather", function ($scope, qualityDataOpService, $modal) {
+///iqc数据采集控制器
+qualityModule.controller("iqcDataGatheringCtrl", function ($scope) {
 
 })

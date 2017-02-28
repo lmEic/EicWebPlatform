@@ -35,6 +35,11 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         [HttpGet]
         public JsonResult GetIqcspectionItemConfigDatas(string materialId)
@@ -43,6 +48,19 @@ namespace EicWorkPlatfrom.Controllers
             var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
             var datas= new {ProductMaterailModel, InspectionItemConfigModelList };
             return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 在数据库中是否存在此料号
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        [HttpGet]
+        public JsonResult CheckIqcspectionItemConfigMaterialId(string materialId)
+        {
+            var result = InspectionService.InspectionItemConfigurator.CheckInspectionConfigMaterId(materialId);
+            return Json(result,JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 删除进料检验配置数据 deleteIqlInspectionConfigItem

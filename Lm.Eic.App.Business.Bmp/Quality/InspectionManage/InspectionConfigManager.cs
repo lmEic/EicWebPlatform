@@ -26,7 +26,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
           return  IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId); 
         }
-
+        /// <summary>
+        ///  在数据库中是否存在此料号
+        /// </summary>
+        /// <param name="materailId"></param>
+        /// <returns></returns>
+        public OpResult CheckInspectionConfigMaterId(string materailId)
+        {
+            bool  isexixt=   IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.IsExistInspectionConfigmaterailId(materailId);
+            OpResult opResult = OpResult.SetResult("", false );
+            if (isexixt) opResult = OpResult.SetResult("此物料料号已经存在", true);
+            return opResult;
+        }
         /// <summary>
         /// 增删改 IQC检验项目
         /// </summary>
