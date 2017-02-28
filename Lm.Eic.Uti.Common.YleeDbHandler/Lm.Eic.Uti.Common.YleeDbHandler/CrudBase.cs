@@ -136,6 +136,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 if (!crudOpDics.ContainsKey(opSign))
                     return OpResult.SetResult(string.Format("未找到{0}的实现函数", opSign));
                 result = (crudOpDics[opSign])(entity);
+                if (result.Result) result.Attach = entity;
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
             return result;
