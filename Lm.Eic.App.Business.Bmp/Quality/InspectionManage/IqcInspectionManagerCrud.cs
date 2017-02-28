@@ -77,7 +77,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult AddInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
-
             OpResult opResult = OpResult.SetResult(OpContext);
             opResult= irep.Insert(model).ToOpResult_Add(OpContext);
             opResult.Attach = model;
@@ -100,13 +99,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             OpResult opResult = OpResult.SetResult("未执行任何操作！");
             SetFixFieldValue(modelList, OpMode.Add);
             int i = 0;
-            //如果存在 就修改   然后从列表中剔除 最后批量加入 （册除就直接册除）
+            //如果存在 就修改   
             modelList.ForEach(m =>
             {
                 if (IsExistInspectionConfigItem(m.MaterialId, m.InspectionItem))
-                {
-                    m.OpSign = "edit";
-                }
+                { m.OpSign = "edit";}
                 opResult = this.Store(m);
                 if (opResult.Result)
                 i =i + opResult.RecordCount ;
