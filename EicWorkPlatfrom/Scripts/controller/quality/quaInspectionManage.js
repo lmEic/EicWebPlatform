@@ -28,18 +28,18 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
     }
 
    
-    //013935删除IQC进料检验配置项数据
-    quality.deleteIqlInspectionConfigItem = function (configItem) {
-        var url = quaInspectionManageUrl + "DeleteIqlInspectionConfigItem";
+    ////013935删除IQC进料检验配置项数据
+    //quality.deleteIqlInspectionConfigItem = function (configItem) {
+    //    var url = quaInspectionManageUrl + "DeleteIqlInspectionConfigItem";
+    //    return ajaxService.postData(url, {
+    //        configItem: configItem
+    //    })
+    //}
+    //处理检验方式配置数据
+    quality.storeIqcInspectionModeData = function (iqcInspectionModeItem) {
+        var url = quaInspectionManageUrl + "StoreIqcInspectionModeData";
         return ajaxService.postData(url, {
-            configItem: configItem
-        })
-    }
-    //处理IQC检验方式配置数据
-    quality.storeIqcInspectionModeData = function (item) {
-        var url = quaInspectionManageUrl + "SaveInspectionModeData";
-        return ajaxService.postData(url, {
-            item: item
+            iqcInspectionModeItem: iqcInspectionModeItem
         })
     }
     return quality;
@@ -200,7 +200,7 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
     }
 })
 
-//iqc检验方式配置模块
+//检验方式配置模块
 qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpService, $modal) {
     var uiVM = {
         InspectionMode: "正常",
@@ -236,7 +236,7 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
             controller: function ($scope) {
                 $scope.confirmDelete = function () {
                     vmManager.deleteItem.OpSign = "delete";
-                    qualityDataOpService.dealIqcInspectionModeData(vmManager.deleteItem).then(function (opresult) {
+                    qualityDataOpService.storeIqcInspectionModeData(vmManager.deleteItem).then(function (opresult) {
                         if (opresult.Result) {
                             leeHelper.remove(vmManager.editDatas, vmManager.deleteItem);
                             vmManager.deleteModalWindow.$promise.then(vmManager.deleteModalWindow.hide);
@@ -257,8 +257,8 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
             qualityDataOpService.storeIqcInspectionModeData($scope.vm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
-                        if (dataItem.OpSign == "add") {
-                            leeHelper.copyVm(opresult.Attach, uiVM);
+                        leeHelper.copyVm(opresult.Attach, uiVM);
+                        if (uiVM.OpSign == "add") {
                             vmManager.editDatas.push(uiVM);
                         }
                         else {

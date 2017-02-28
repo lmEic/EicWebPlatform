@@ -108,13 +108,17 @@ namespace EicWorkPlatfrom.Controllers
             //return null;
         }
         #endregion
-        #region
+        #region 
         public ActionResult IqcInspectionModeConfiguration()
         {
             return View();
         }
-
-
+        [NoAuthenCheck]
+        public JsonResult StoreIqcInspectionModeData(InspectionModeConfigModel iqcInspectionModeItem)
+        {
+            var opResult = InspectionService.InspectionModeConfigManager.StoreInspectionModeConfig(iqcInspectionModeItem);
+            return Json(opResult);
+        }
 
 
 
