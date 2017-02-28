@@ -60,7 +60,7 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
         })
     }
     //013935保存单项
-    quality.saveInspectionModeData = function () {
+    quality.saveInspectionModeData = function (Items) {
         var url = qualityUrl + "SaveInspectionModeData";
         return ajaxService.postData(url, {
 

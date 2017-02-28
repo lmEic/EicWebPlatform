@@ -44,11 +44,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     }
 
 
-    #region  IQC
+    #region  IQC  IQC物料检验配置
     /// <summary>
     /// IQC物料检验配置
     /// </summary>
-    public  class InspectionItemConfigCrud : CrudBase<IqcInspectionItemConfigModel, IIqcInspectionItemConfigRepository>
+    public class InspectionItemConfigCrud : CrudBase<IqcInspectionItemConfigModel, IIqcInspectionItemConfigRepository>
     {
         public InspectionItemConfigCrud():base(new IqcInspectionItemConfigRepository (),"IQC物料检验配置")
             { }

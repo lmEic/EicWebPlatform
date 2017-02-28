@@ -15,9 +15,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <summary>
         /// 进料检验项目配置器
         /// </summary>
-        public static  IqcInspectionItemConfigurator InspectionItemConfigurator
+        public static  IqcInspectionItemConfigManager InspectionItemConfigurator
         {
-            get { return OBulider.BuildInstance<IqcInspectionItemConfigurator>(); }
+            get { return OBulider.BuildInstance<IqcInspectionItemConfigManager>(); }
         }
         /// <summary>
         /// 进料检验项目数据采集器

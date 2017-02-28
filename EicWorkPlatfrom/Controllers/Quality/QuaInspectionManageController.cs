@@ -20,7 +20,7 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
-        #region IQC
+        #region   IQC检验项目配置
         /// <summary>
         /// IQC检验项目配置
         /// </summary>
@@ -113,10 +113,26 @@ namespace EicWorkPlatfrom.Controllers
             return this.ExportToExcel(ms, "IQC物料检验配置模板", "IQC物料检验配置模板");
             //return null;
         }
+        #endregion
+       
         
+        #region  检验方式配置
+
         public ActionResult IqcInspectionModeConfiguration()
         {
             return View();
+        }
+
+
+        /// <summary>
+        /// 保存检验方式数据
+        /// </summary>
+        /// <param name="datas">数据</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveInspectionModeData(List<InspectionModeConfigModel> datas)
+        {
+            return null;
         }
         #endregion
 

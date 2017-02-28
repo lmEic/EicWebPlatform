@@ -15,7 +15,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     /// <summary>
     /// IQC 进料检验配置器
     /// </summary>
-    public class IqcInspectionItemConfigurator
+    public class IqcInspectionItemConfigManager
     {
         /// <summary>
         /// 物料号查询检验项目
@@ -82,6 +82,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public System.IO.MemoryStream GetIqcInspectionItemConfigTemplate(string documentPath)
         {
             return FileOperationExtension.GetMemoryStream(documentPath);
+        }
+    }
+
+
+    /// <summary>
+    /// 检验方式
+    /// </summary>
+
+    public class InspectionModeConfigManager
+    {
+        /// <summary>
+        /// 保存数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+       public OpResult  SaveInspectionModeConfig (InspectionModeConfigModel  model)
+        {
+            return IqcInspectionManagerCrudFactory.InspectionModeConfigCrud.Store(model);
         }
     }
   
