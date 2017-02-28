@@ -22,11 +22,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-
         public List<IqcInspectionItemConfigModel> GetIqcspectionItemConfigBy(string materialId)
         {
           return  IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigsBy(materialId); 
         }
+        
         /// <summary>
         /// 增删改
         /// </summary>
@@ -36,6 +36,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.Store(model);
         }
+        
         /// <summary>
         /// 批量添加数据
         /// </summary>
@@ -46,7 +47,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.AddInspectionItemConfiList(modelList);
         }
 
-
+        /// <summary>
+        /// 得到最大序号
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
         public int  GetInspectionIndex (string materialId)
         {
             return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.GetInspectionIndex(materialId);
