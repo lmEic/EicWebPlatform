@@ -2,26 +2,17 @@
 /// <reference path="../../angular.min.js" />
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/underscore/underscore-min.js" />
 var qualityModule = angular.module('bpm.qualityApp');
-//工厂
+//数据访问工厂
 qualityModule.factory("qualityDataOpService", function (ajaxService) {
     var quality = {};
     var quaInspectionManageUrl = "/quaInspectionManage/";
-    //013935获取数据
+    //013935获取IQC进料检验项目配置数据
     quality.GetIqcspectionItemConfigDatas = function (materialId) {
         var url = quaInspectionManageUrl + "GetIqcspectionItemConfigDatas";
         return ajaxService.getData(url,  {
             materialId: materialId
         })
     };
-    //013935获取最大序号
-    quality.getInspectionIndex = function (materialId) {
-        var url = quaInspectionManageUrl + "GetInspectionIndex";
-        return ajaxService.postData(url, {
-            materialId: materialId
-        })
-
-    }
-
     //013935从excel中IQC进料检验配置项数据
     quality.importIqcInspectionItemConfigDatas = function (file) {
         var url = quaInspectionManageUrl + 'ImportIqcInspectionItemConfigDatas';
@@ -44,7 +35,13 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
             configItem: configItem
         })
     }
-    
+    //处理IQC检验方式配置数据
+    quality.storeIqcInspectionModeData = function (item) {
+        var url = quaInspectionManageUrl + "SaveInspectionModeData";
+        return ajaxService.postData(url, {
+            item: item
+        })
+    }
     return quality;
 })
 
@@ -224,7 +221,7 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
     var initVM = _.clone(uiVM);
     var vmManager = {
         editDatas: [],
-        datasets: [],
+        dataSets: [],
         deleteItem: null,
         init: function () {
             uiVM = _.clone(initVM);
@@ -256,39 +253,36 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
     //保存iqc检验方式模块的数据
     operate.saveIqcInspectionModeData = function (isValid) {
         leeHelper.setUserData(uiVM);
-        var dataItem = _.clone(uiVM);
-        if (uiVM.OpSign === "add") {
-            leeDataHandler.dataOperate.add(operate, isValid, function () {
-                qualityDataOpService.dealIqcInspectionModeData($scope.vm).then(function (opresult) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            qualityDataOpService.storeIqcInspectionModeData($scope.vm).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
-                        vmManager.editDatas.push(dataItem);
+                        if (dataItem.OpSign == "add") {
+                            leeHelper.copyVm(opresult.Attach, uiVM);
+                            vmManager.editDatas.push(uiVM);
+                        }
+                        else {
+                            var item = _.find(vmManager.editDatas, { Id_Key: uiVM.Id_Key });
+                            leeHelper.copyVm(uiVM, item);
+                        }
                     }
                 })
-            });
-        } else {
-            leeDataHandler.dataOperate.add(operate, isValid, function () {
-                qualityDataOpService.dealIqcInspectionModeData($scope.vm).then(function (opresult) {
-                    if (opresult.Result) {
-                        var item = _.find(vmManager.editDatas, { Id_Key: uiVM.Id_Key });
-                        item = uiVM = $scope.vm;
-                    }
-                })
-            });
-        }
+            })
+        });
     };
     //刷新iqc检验方式模块的数据
-    operate.refreshIqcInspectionModeData = function () {
+    operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
             vmManager.init();
         });
     };
     //编辑iqc检验方式模块的数据
-    operate.editIqcInspectionModeData = function (item) {
+    operate.editItem = function (item) {
         item.OpSign = "edit";
         $scope.vm = uiVM = _.clone(item);
     }
     //删除iqc检验方式模块的数据
-    operate.deleteIqcInspectionModeData = function (item) {
+    operate.deleteItem = function (item) {
         vmManager.deleteItem = item;
         vmManager.deleteModalWindow.$promise.then(vmManager.deleteModalWindow.show)
     }
