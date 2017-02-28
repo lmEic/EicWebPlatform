@@ -57,15 +57,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
         /// <summary>
-        /// 是否存在 物料号中的 项目
+        /// 在数据库中是否存在此料号
         /// </summary>
         /// <param name="materialId"></param>
-        /// <param name="inspectionItem"></param>
         /// <returns></returns>
 
-        public bool IsExistInspectionConfigItem(string materialId, string inspectionItem)
+        public bool IsExistInspectionConfigmaterailId(string materailId)
         {
-            return this.irep.IsExist(e => e.MaterialId == materialId && e.InspectionItem == inspectionItem);
+            return this.irep.IsExist(e => e.MaterialId == materailId);
         }
         /// <summary>
         /// 查询IQC物料检验配置数据
@@ -89,8 +88,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             //如果存在 就修改   
             modelList.ForEach(m =>
             {
-                if (IsExistInspectionConfigItem(m.MaterialId, m.InspectionItem))
+                if (this.irep.IsExist (e=>e.Id_Key ==m.Id_Key))
                 { m.OpSign = "edit";}
+
+
                 opResult = this.Store(m);
                 if (opResult.Result)
                 i =i + opResult.RecordCount ;
