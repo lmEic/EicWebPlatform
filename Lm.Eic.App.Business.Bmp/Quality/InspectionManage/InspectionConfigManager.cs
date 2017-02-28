@@ -22,9 +22,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<IqcInspectionItemConfigModel> GetIqcspectionItemConfigBy(string materialId)
+        public List<IqcInspectionItemConfigModel> GetIqcspectionItemConfigDatasBy(string materialId)
         {
-          return  IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigsBy(materialId); 
+          return  IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId); 
         }
 
         /// <summary>
@@ -47,15 +47,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.StoreInspectionItemConfiList(modelList);
         }
 
-        /// <summary>
-        /// 得到最大序号
-        /// </summary>
-        /// <param name="materialId"></param>
-        /// <returns></returns>
-        public int  GetInspectionIndexBy(string materialId)
-        {
-            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.GetInspectionIndex(materialId);
-        }
+      
 
         /// <summary>
         /// 导入IQC 检验配置文件

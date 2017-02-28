@@ -60,7 +60,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return this.irep.IsExist(e => e.MaterialId == materialId && e.InspectionItem == inspectionItem);
         }
-        public List<IqcInspectionItemConfigModel> FindIqcInspectionItemConfigsBy(string materialId)
+        public List<IqcInspectionItemConfigModel> FindIqcInspectionItemConfigDatasBy(string materialId)
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
         }
@@ -88,12 +88,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return opResult;
 
            
-        }
-        public int GetInspectionIndex(string materialId)
-        {
-            var listEntities = FindIqcInspectionItemConfigsBy(materialId);
-            if (listEntities == null || listEntities.Count <= 0) return 0;
-            return listEntities.Select(e => e.InspectionItemIndex).Max()+1;
         }
     }
 

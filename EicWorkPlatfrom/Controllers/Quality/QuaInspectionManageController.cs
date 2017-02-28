@@ -14,13 +14,14 @@ namespace EicWorkPlatfrom.Controllers
     {
         //
         // GET: /QuaInspectionManage/
-
+       
+        
         public ActionResult Index()
         {
             return View();
         }
 
-        #region   IQC检验项目配置
+        #region IQC
         /// <summary>
         /// IQC检验项目配置
         /// </summary>
@@ -35,46 +36,35 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         [NoAuthenCheck]
-
-        public JsonResult GetMaterialDatas(string materialId)
+        [HttpGet]
+        public JsonResult GetIqcspectionItemConfigDatas(string materialId)
         {
-            var InspectionItemConfigModelList = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigBy(materialId);
+            var InspectionItemConfigModelList = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigDatasBy(materialId);
             var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
             var datas= new {ProductMaterailModel, InspectionItemConfigModelList };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 保存单个IQC检验项目配置数据
+        /// 删除进料检验配置数据
         /// </summary>
-        /// <param name="">entity</param>
+        /// <param name="configItem"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult DeleteMaterialDatas(IqcInspectionItemConfigModel entity) 
+        [HttpPost]
+        public JsonResult DeleteIqlInspectionConfigItem(IqcInspectionItemConfigModel configItem) 
         {
-            var opResult = InspectionService.InspectionItemConfigurator.StoreIqcInspectionItemConfig(entity);
+            var opResult = InspectionService.InspectionItemConfigurator.StoreIqcInspectionItemConfig(configItem);
            return Json(opResult);
         }
-
         /// <summary>
-        /// 得到IQC检验项目配置序号最大数
+        /// 批量保存IQC进料检验项目配置数据
         /// </summary>
-        /// <param name="materialId">物料料号</param>
+        /// <param name="iqcInspectionConfigItems"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetInspectionIndex(string materialId)
+        public JsonResult SaveIqcInspectionItemConfigDatas(List<IqcInspectionItemConfigModel> iqcInspectionConfigItems)
         {
-            var opResult = InspectionService.InspectionItemConfigurator.GetInspectionIndexBy(materialId);
-            return Json(opResult);
-        }
-        /// <summary>
-        /// 批量保存IQC检验项目配置数据
-        /// </summary>
-        /// <param name="dataSource">批量数据源</param>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult SaveAllMaterialDatas(List<IqcInspectionItemConfigModel> dataSource)
-        {
-            var opResult = InspectionService.InspectionItemConfigurator.StoreIqcInspectionItemConfig(dataSource);
+            var opResult = InspectionService.InspectionItemConfigurator.StoreIqcInspectionItemConfig(iqcInspectionConfigItems);
             return Json(opResult);
         }
         /// <summary>
@@ -115,28 +105,12 @@ namespace EicWorkPlatfrom.Controllers
             string filePath = @"E:\各部门日报格式\IQC物料检验配置数据表.xls";
             MemoryStream ms = InspectionService.InspectionItemConfigurator.GetIqcInspectionItemConfigTemplate(filePath);
             return this.ExportToExcel(ms, "IQC物料检验配置模板", "IQC物料检验配置模板");
+            //return null;
         }
-        #endregion
-       
         
-        #region  检验方式配置
-
         public ActionResult IqcInspectionModeConfiguration()
         {
             return View();
-        }
-
-
-        /// <summary>
-        /// 保存检验方式数据
-        /// </summary>
-        /// <param name="dataModel">数据</param>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult StoreInspectionModeData(InspectionModeConfigModel dataModel)
-        {
-            var result = InspectionService.InspectionModeConfigManager.StoreInspectionModeConfig(dataModel);
-            return Json(result);
         }
         #endregion
 
