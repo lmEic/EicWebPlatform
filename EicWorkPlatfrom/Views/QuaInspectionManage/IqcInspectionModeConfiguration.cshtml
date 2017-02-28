@@ -12,10 +12,12 @@
                             <div class="form-group">
                                 <label for="inspectionMode" class="col-md-2 control-label">检验方式</label>
                                 <div class="col-md-4">
-                                    <input name="inspectionMode" class="form-control" ng-model="vm.InspectionMode" required />
-                                    <div class="error-messages" ng-messages="inspectionModeForm.inspectionMode.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">检验方式不能为空</small>
-                                    </div>
+                                    <button type="button" class="btn  btn-default" ng-model="vm.InspectionMode"
+                                            data-html="1" data-multiple="0"
+                                            data-animation="am-flip-x" data-placeholder="正常"
+                                            bs-options="item.id as item.text for item in vmManager.inspectionMode" bs-select>
+                                        <span class="caret"></span>
+                                    </button>
                                 </div>
 
                                 <label for="inspectionLevel" class="col-md-2 control-label">检验水平</label>
