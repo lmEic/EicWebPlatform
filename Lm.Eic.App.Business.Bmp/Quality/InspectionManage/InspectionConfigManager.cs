@@ -13,38 +13,50 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
 
     /// <summary>
-    /// IQC 进料检验配置器
+    /// IQC 进料检验的配置  管理器
     /// </summary>
-    public class IqcInspectionItemConfigurator
+    public class IqcInspectionItemConfigManager
     {
         /// <summary>
         /// 物料号查询检验项目
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-
         public List<IqcInspectionItemConfigModel> GetIqcspectionItemConfigBy(string materialId)
         {
           return  IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigsBy(materialId); 
         }
+
         /// <summary>
-        /// 增删改
+        /// 增删改 IQC检验项目
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult SaveIqcInspectionItemConfig(IqcInspectionItemConfigModel model)
+        public OpResult StoreIqcInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.Store(model);
         }
+        
         /// <summary>
         /// 批量添加数据
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult SaveIqcInspectionItemConfig(List<IqcInspectionItemConfigModel> modelList)
+        public OpResult StoreIqcInspectionItemConfig(List<IqcInspectionItemConfigModel> modelList)
         {
-            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.AddInspectionItemConfiList(modelList);
+            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.StoreInspectionItemConfiList(modelList);
         }
+
+        /// <summary>
+        /// 得到最大序号
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        public int  GetInspectionIndexBy(string materialId)
+        {
+            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.GetInspectionIndex(materialId);
+        }
+
         /// <summary>
         /// 导入IQC 检验配置文件
         /// </summary>
@@ -70,6 +82,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public System.IO.MemoryStream GetIqcInspectionItemConfigTemplate(string documentPath)
         {
             return FileOperationExtension.GetMemoryStream(documentPath);
+        }
+    }
+
+
+    /// <summary>
+    ///  检验方式的配置 管理器
+    /// </summary>
+
+    public class InspectionModeConfigManager
+    {
+        /// <summary>
+        /// 存储  检验方式配置数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+       public OpResult  StoreInspectionModeConfig (InspectionModeConfigModel  model)
+        {
+            return IqcInspectionManagerCrudFactory.InspectionModeConfigCrud.Store(model);
         }
     }
   

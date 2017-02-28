@@ -118,7 +118,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             /// <summary>
             ///操作标识
             /// </summary>
-            public string OPSign
+            public string OpSign
             {
                 set { _opsign = value; }
                 get { return _opsign; }
