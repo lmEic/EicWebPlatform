@@ -18,6 +18,20 @@
             }
         }
 
+        private int recordCount=0;
+
+        /// <summary>
+        /// 操作结果返回数量
+        /// </summary>
+        public int RecordCount
+        {
+            get
+            {
+                return recordCount;
+            }
+        }
+
+
         private bool result = false;
 
         /// <summary>
@@ -32,6 +46,10 @@
         /// 对象的键值
         /// </summary>
         public decimal Id_Key { get; set; }
+        /// <summary>
+        /// 编辑之后的实体对象
+        /// </summary>
+        public object Entity { get; set; }
 
         public OpResult(string successMessage, bool result)
         {
@@ -58,6 +76,7 @@
         {
             this.result = record > 0;
             this.message = successMessage;
+            this.recordCount = record;
             if (!result)
                 this.message = falseMessage;
         }

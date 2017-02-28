@@ -63,6 +63,10 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             return this.PersistentDatas(model);
         }
+        public virtual OpResult Store(TEntity model, bool isNeedEntity)
+        {
+            return this.PersistentDatas(model, isNeedEntity);
+        }
         /// <summary>
         /// 设定固定字段值
         /// </summary>
@@ -106,29 +110,25 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             });
         }
 
-       
+
         /// <summary>
         /// 持久化数据
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        protected OpResult PersistentDatas(TEntity entity)
+        protected OpResult PersistentDatas(TEntity entity, bool isNeedEntity = false)
         {
             OpResult result = OpResult.SetResult("持久化数据操作失败!");
             string opSign = "default";
             if (entity == null)
-                return OpResult.SetResult(string.Format("{0}不能为null！",OpContext));
+                return OpResult.SetResult(string.Format("{0}不能为null！", OpContext));
             try
             {
-                //基本属性赋值
-                if (entity == null) return OpResult.SetResult("entity can't set null!");
                 SetFixFieldValue(entity);
-
                 //取得操作方法
                 PropertyInfo pi = IsHasProperty(entity, "OpSign");
-                if (pi == null)
-                    return OpResult.SetResult("操作方法不能为空！");
-                opSign = pi.GetValue(entity, null) as string;
+                if (pi != null)
+                    opSign = pi.GetValue(entity, null) as string;
                 //是否包含指定的方法
                 if (!crudOpDics.ContainsKey(opSign))
                     AddCrudOpItems();
@@ -136,6 +136,16 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 if (!crudOpDics.ContainsKey(opSign))
                     return OpResult.SetResult(string.Format("未找到{0}的实现函数", opSign));
                 result = (crudOpDics[opSign])(entity);
+
+                if (isNeedEntity)
+                    result.Entity = entity;
+                //取得操作方法
+                PropertyInfo piIdKey = IsHasProperty(entity, "Id_Key");
+                if (piIdKey == null)
+                {
+                    string idKey = piIdKey.GetValue(entity, null) as string;
+                    result.Id_Key = idKey.ToDeciaml();
+                }
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
             return result;
@@ -152,7 +162,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             PropertyInfo pi= type.GetProperties().ToList().FirstOrDefault(e => e.Name == propertyName);
             return pi;
         }
-        protected OpResult StoreEntity(TEntity entity,Func<TEntity,OpResult> storeHandler)
+        protected OpResult StoreEntity(TEntity entity,Func<TEntity,OpResult> storeHandler,bool isNeedEntity=false)
         {
             OpResult result = null;
             if (entity == null) return OpResult.SetResult("entity can't set null!");
@@ -160,6 +170,15 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             try
             {
                 result=storeHandler(entity);
+                if (isNeedEntity)
+                    result.Entity = entity;
+                //取得操作方法
+                PropertyInfo piIdKey = IsHasProperty(entity, "Id_Key");
+                if (piIdKey == null)
+                {
+                    string idKey = piIdKey.GetValue(entity, null) as string;
+                    result.Id_Key = idKey.ToDeciaml();
+                }
             }
             catch (Exception ex)
             {

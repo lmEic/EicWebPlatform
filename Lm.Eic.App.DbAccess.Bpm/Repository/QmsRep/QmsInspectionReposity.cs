@@ -7,15 +7,27 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
 {
-    public interface IInspectionModeConfigRepository : IRepository<InspectionModeConfigModel> { }
+    public interface IInspectionModeConfigRepository : IRepository<InspectionModeConfigModel>
+    {
+       
+    }
     public class InspectionModeConfigRepository : BpmRepositoryBase<InspectionModeConfigModel>, IInspectionModeConfigRepository
-    { }
+    {
+     
+
+        
+    }
 
     #region IQC
 
-    public interface IIqcInspectionItemConfigRepository : IRepository<IqcInspectionItemConfigModel> { }
+    public interface IIqcInspectionItemConfigRepository : IRepository<IqcInspectionItemConfigModel>
+    {
+       
+    }
     public class IqcInspectionItemConfigRepository : BpmRepositoryBase<IqcInspectionItemConfigModel>, IIqcInspectionItemConfigRepository
-    { }
+    {
+     
+    }
 
     public interface IIqcInspectionMasterRepository : IRepository<IqcInspectionMasterModel> { }
     public class IqcInspectionMasterRepository : BpmRepositoryBase<IqcInspectionMasterModel>, IIqcInspectionMasterRepository

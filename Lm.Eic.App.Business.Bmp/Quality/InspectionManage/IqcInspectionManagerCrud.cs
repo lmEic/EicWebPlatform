@@ -11,44 +11,11 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
- internal  class IqcInspectionManagerCrudFactory
-    {
-        /// <summary>
-        /// 检验方式配置CRUD
-        /// </summary>
-        public static InspectionModeConfigCrud InspectionModeConfigCrud
-        {
-            get { return OBulider.BuildInstance<InspectionModeConfigCrud>(); }
-        }
-        /// <summary>
-        /// IQC物料检验配置CRUD
-        /// </summary>
-        public static InspectionItemConfigCrud InspectionItemConfigCrud
-        {
-            get { return OBulider.BuildInstance<InspectionItemConfigCrud>(); }
-        }
-        /// <summary>
-        /// 物料检验项次CRUD
-        /// </summary>
-        public static IqcInspectionMasterCrud IqcInspectionMasterCrud
-        {
-            get { return OBulider.BuildInstance<IqcInspectionMasterCrud>(); }
-        }
-        /// <summary>
-        ///  物料检验项次数据CRUD
-        /// </summary>
-        public static IqcInspectionDetailCrud IqcInspectionDetailCrud
-        {
-            get { return OBulider.BuildInstance<IqcInspectionDetailCrud>(); }
-        }
-    }
-
-
-    #region  IQC
+    #region  IQC  IQC物料检验配置
     /// <summary>
     /// IQC物料检验配置
     /// </summary>
-    public  class InspectionItemConfigCrud : CrudBase<IqcInspectionItemConfigModel, IIqcInspectionItemConfigRepository>
+    public class InspectionItemConfigCrud : CrudBase<IqcInspectionItemConfigModel, IIqcInspectionItemConfigRepository>
     {
         public InspectionItemConfigCrud():base(new IqcInspectionItemConfigRepository (),"IQC物料检验配置")
             { }
@@ -58,30 +25,82 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             this.AddOpItem(OpMode.Edit, EidtInspectionItemConfig);
             this.AddOpItem(OpMode.Delete, DeleteInspectionItemConfig);
         }
-
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private OpResult DeleteInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
-
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
-
+        /// <summary>
+        /// 编辑
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private OpResult EidtInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
+
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
-
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private OpResult AddInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
+          
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
-        public bool IsExistInspectionConfigItem(string materialId, string inspectionItem)
+
+        /// <summary>
+        /// 在数据库中是否存在此料号
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+
+        public bool IsExistInspectionConfigmaterailId(string materailId)
         {
-            return irep.IsExist(e => e.MaterialId == materialId && e.InspectionItem == inspectionItem);
+            return this.irep.IsExist(e => e.MaterialId == materailId);
         }
-        public List<IqcInspectionItemConfigModel> FindIqcInspectionItemConfigsBy(string materialId)
+        /// <summary>
+        /// 查询IQC物料检验配置数据
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        public List<IqcInspectionItemConfigModel> FindIqcInspectionItemConfigDatasBy(string materialId)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
+            return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
+        }
+        /// <summary>
+        /// 批量保存 IQC检验项目数据
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        public OpResult StoreInspectionItemConfiList(List<IqcInspectionItemConfigModel> modelList)
+        {
+            OpResult opResult = OpResult.SetResult("未执行任何操作！");
+            SetFixFieldValue(modelList, OpMode.Add);
+            int i = 0;
+            //如果存在 就修改   
+            modelList.ForEach(m =>
+            {
+                if (this.irep.IsExist (e=>e.Id_Key ==m.Id_Key))
+                { m.OpSign = "edit";}
+
+
+                opResult = this.Store(m);
+                if (opResult.Result)
+                i =i + opResult.RecordCount ;
+            });
+            opResult = i.ToOpResult(OpContext);
+            if (i == modelList.Count)   opResult.Entity= modelList;
+            return opResult;
+
+           
         }
     }
 
@@ -89,7 +108,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
     /// <summary>
-    /// 物料检验项次
+    /// 进料检验单（ERP）  物料检验项次
     /// </summary>
     internal class IqcInspectionMasterCrud : CrudBase<IqcInspectionMasterModel, IIqcInspectionMasterRepository>
     {
@@ -122,7 +141,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
     /// <summary>
-    /// 物料检验项次数据
+    ///进料检验单（ERP） 物料检验项次录入数据
     /// </summary>
     internal class IqcInspectionDetailCrud : CrudBase<IqcInspectionDetailModel, IIqcInspectionDetailRepository>
     {
@@ -154,6 +173,4 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     }
 
     #endregion
-
-
 }

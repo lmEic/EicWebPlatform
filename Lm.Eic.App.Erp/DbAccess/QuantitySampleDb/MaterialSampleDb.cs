@@ -260,6 +260,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         /// <returns></returns>
         public List<ProductMaterailModel> GetProductInfoBy(string marteial)
         {
+            if (marteial == null || marteial == string.Empty) return new List<ProductMaterailModel>();
             string sqlWhere = string.Format(" where MB001='{0}'", marteial.Trim());
             return ErpDbAccessHelper.FindDataBy<ProductMaterailModel>(GetPorductSqlFields(), sqlWhere, (dr, m) =>
             {

@@ -84,10 +84,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                         OpPerson = changeEntity.OpPerson
                     });
                 }
-            }
-            if (changeEntity.OpSign == "change")
-            {
-                if (Posts != null && Posts.Count > 0)
+                else if (changeEntity.OpSign == "change")
                 {
                     changeRecord = Posts.Count;
                     Posts.ForEach(d =>
@@ -97,11 +94,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                             InStatus = "Out"
                         });
                     });
+                    changeEntity.InStatus = "In";
+                    record = this.irep.Insert(changeEntity);
+                    changeRecord = changeRecord + record;
                 }
-                changeEntity.InStatus = "In";
-                record = this.irep.Insert(changeEntity);
-                changeRecord = changeRecord + record;
             }
+          
             return record;
         }
 

@@ -2116,7 +2116,19 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
         }
         #endregion Model
     }
+    /// <summary>
+    /// 离职人员映射模型
+    /// </summary>
+    public partial class LeaveOfficeMapEntity
+    {
+        public string WorkerId { get; set; }
 
+        public string WorkerName { get; set; }
+
+        public string Department { get; set; }
+
+        public DateTime LeaveDate { get; set; }
+    }
     /// <summary>
     /// 工号变更模型
     /// </summary>
