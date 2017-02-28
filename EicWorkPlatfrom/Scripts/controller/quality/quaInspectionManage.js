@@ -51,7 +51,7 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
 })
 
 //iqc检验项目配置模块
-qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpService,$modal) {
+qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityDataOpService,$modal) {
     var uiVM = {
         //表单变量
         MaterialId: null,
@@ -221,7 +221,7 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
 })
 
 //检验方式配置模块
-qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpService, $modal) {
+qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityDataOpService, $modal) {
     var uiVM = {
         InspectionMode: "正常",
         InspectionLevel: null,
@@ -315,4 +315,8 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
         vmManager.deleteItem = item;
         vmManager.deleteModalWindow.$promise.then(vmManager.deleteModalWindow.show)
     }
+})
+///iqc数据采集控制器
+qualityModule.controller("iqcDataGatheringCtrl", function ($scope) {
+
 })
