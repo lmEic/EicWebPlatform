@@ -84,8 +84,8 @@
                     <div class="alert alert-info">
                         <div class="row">
                             <div class="col-md-8 col-md-offset-4">
-                                <button class="btn btn-primary" ng-click="operate.save(inspectionModeForm.$valid)"><i class="fa fa-save"></i>保存</button>
-                                <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                <button class="btn btn-primary" ng-click="operate.saveIqcInspectionModeData(inspectionModeForm.$valid)"><i class="fa fa-save"></i>保存</button>
+                                <button class="btn btn-default" ng-click="operate.refreshIqcInspectionModeData()"><i class="fa fa-undo"></i>取消</button>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-5 col-md-offset-3">
@@ -123,10 +123,10 @@
                                         <td>{{item.RefuseCount}}</td>
                                         <td>{{item.InspectionSize}}</td>
                                         <td>
-                                            <button class="btn btn-xs btn-info" ng-click="operate.editItem(item)" title="编辑">
+                                            <button class="btn btn-xs btn-info" ng-click="operate.editIqcInspectionModeData(item)" title="编辑">
                                                 <i class="fa fa-edit"></i>
                                             </button>
-                                            <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item)" title="删除">
+                                            <button class="btn btn-xs btn-danger" ng-click="operate.delIqcInspectionModeData(item)" title="删除">
                                                 <i class="fa fa-remove"></i>
                                             </button>
                                         </td>

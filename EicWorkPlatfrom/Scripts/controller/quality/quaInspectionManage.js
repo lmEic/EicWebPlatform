@@ -1,9 +1,9 @@
 ﻿var qualityModule = angular.module('bpm.qualityApp');
-//工厂
+//建立工厂
 qualityModule.factory("qualityDataOpService", function (ajaxService) {
     var quality = {};
     var qualityUrl = "/quaInspectionManage/";
-    //013935获取数据
+    //获取iqc检验项目数据
     quality.getMaterialDatas = function (materialId) {
         var url = qualityUrl + "GetMaterialDatas";
         return ajaxService.getData(url,  {
@@ -33,7 +33,7 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
         })
     }
 
-    //013935保存单项
+    //
     //quality.saveInspectionItemconfig = function (modelVM) {
     //    var url = qualityUrl + "SaveInspectionItemconfig";
     //    return ajaxService.postData(url, {
@@ -52,15 +52,15 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
     ////////////////////////////////////////////////////
 
 
-    //013935删除单项
-    quality.deleteInspectionData = function (item) {
+    //删除iqc检验方式配置模块的数据
+    quality.delIqcInspectionModeData = function (item) {
         var url = qualityUrl + "DeleteInspectionData";
-        return ajaxService.getData(url, {
+        return ajaxService.postData(url, {
             item:item
         })
     }
-    //013935保存单项
-    quality.saveInspectionModeData = function (item) {
+    //保存iqc检验方式配置模块的数据
+    quality.saveIqcInspectionModeData = function (item) {
         var url = qualityUrl + "SaveInspectionModeData";
         return ajaxService.postData(url, {
             item:item
@@ -261,6 +261,7 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
     var vmManager = {
         editDatas:[],
         datasets: [],
+        delItem:null,
         init: function () {
             uiVM = _.clone(initVM);
             $scope.vm = uiVM;
@@ -272,7 +273,14 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
             templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
             show: false,
             controller: function ($scope) {
-
+                $scope.confirmDelete = function () {
+                    qualityDataOpService.delIqcInspectionModeData(item).then(function (opresult) {
+                        if (opresult.Result) {
+                            leeHelper.remove(vmManager.editDatas, vmManager.delItem);
+                            vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.hide);
+                        }
+                    })
+                }
             }
            
         })
@@ -280,8 +288,8 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    //保存单项
-    operate.save = function (isValid) {
+    //保存iqc检验方式模块的数据
+    operate.saveIqcInspectionModeData = function (isValid) {
         leeHelper.setUserData(uiVM);
         var dataItem = _.clone(uiVM);
         if(uiVM.OpSign==="add"){
@@ -303,25 +311,20 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
             });
         }
     };
-    //取消刷新
-    operate.refresh = function () {
+    //刷新iqc检验方式模块的数据
+    operate.refreshIqcInspectionModeData = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
             vmManager.init();
         });
     };
-    //编辑单项
-    operate.editItem = function (item) {
+    //编辑iqc检验方式模块的数据
+    operate.editIqcInspectionModeData = function (item) {
         item.OpSign = "edit";
         $scope.vm = uiVM = _.clone(item);
     }
-    //删除单项
-    operate.deleteItem = function (item) {
+    //删除iqc检验方式模块的数据
+    operate.delIqcInspectionModeData = function (item) {
+        vmManager.delItem = item;
         vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.show)
-        //data.OpSign = 'delete';
-        //qualityDataOpService.saveInspectionModeData(data).then(function (opresult) {
-        //    if(opresult.Result){
-        //        leeHelper.remove(vmManager.editDatas, data)
-        //    }
-        //})
     }
 })
