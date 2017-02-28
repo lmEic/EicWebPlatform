@@ -144,7 +144,7 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
             show: false,
         }),
     }
-
+       
     //013935导入excel
     $scope.selectFile = function (el) {
         var files = el.files;
@@ -297,4 +297,9 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
         vmManager.deleteItem = item;
         vmManager.deleteModalWindow.$promise.then(vmManager.deleteModalWindow.show)
     }
+})
+
+//进料检验数据采集模块
+qualityModule.controller("iqcInspectionDataGather", function ($scope, qualityDataOpService, $modal) {
+
 })
