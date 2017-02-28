@@ -213,6 +213,8 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
             if (opresult.Result) {
                 vmManager.dataSource = [];
                 vmManager.dataSets = [];
+                vmManager.targetMaterialId = null;
+                vmManager.copyLotWindowDisplay = false;
             }
         });
     }
