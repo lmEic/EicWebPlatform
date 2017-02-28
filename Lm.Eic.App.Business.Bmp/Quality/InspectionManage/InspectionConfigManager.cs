@@ -13,7 +13,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
 
     /// <summary>
-    /// IQC 进料检验配置器
+    /// IQC 进料检验的配置  管理器
     /// </summary>
     public class IqcInspectionItemConfigManager
     {
@@ -26,13 +26,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
           return  IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigsBy(materialId); 
         }
-        
+
         /// <summary>
-        /// 增删改
+        /// 增删改 IQC检验项目
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult SaveIqcInspectionItemConfig(IqcInspectionItemConfigModel model)
+        public OpResult StoreIqcInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.Store(model);
         }
@@ -42,9 +42,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult SaveIqcInspectionItemConfig(List<IqcInspectionItemConfigModel> modelList)
+        public OpResult StoreIqcInspectionItemConfig(List<IqcInspectionItemConfigModel> modelList)
         {
-            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.AddInspectionItemConfiList(modelList);
+            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.StoreInspectionItemConfiList(modelList);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public int  GetInspectionIndex (string materialId)
+        public int  GetInspectionIndexBy(string materialId)
         {
             return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.GetInspectionIndex(materialId);
         }
@@ -87,17 +87,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
     /// <summary>
-    /// 检验方式
+    ///  检验方式的配置 管理器
     /// </summary>
 
     public class InspectionModeConfigManager
     {
         /// <summary>
-        /// 保存数据
+        /// 存储  检验方式配置数据
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-       public OpResult  SaveInspectionModeConfig (InspectionModeConfigModel  model)
+       public OpResult  StoreInspectionModeConfig (InspectionModeConfigModel  model)
         {
             return IqcInspectionManagerCrudFactory.InspectionModeConfigCrud.Store(model);
         }

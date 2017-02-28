@@ -11,37 +11,7 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
- internal  class IqcInspectionManagerCrudFactory
-    {
-        /// <summary>
-        /// 检验方式配置CRUD
-        /// </summary>
-        public static InspectionModeConfigCrud InspectionModeConfigCrud
-        {
-            get { return OBulider.BuildInstance<InspectionModeConfigCrud>(); }
-        }
-        /// <summary>
-        /// IQC物料检验配置CRUD
-        /// </summary>
-        public static InspectionItemConfigCrud InspectionItemConfigCrud
-        {
-            get { return OBulider.BuildInstance<InspectionItemConfigCrud>(); }
-        }
-        /// <summary>
-        /// 物料检验项次CRUD
-        /// </summary>
-        public static IqcInspectionMasterCrud IqcInspectionMasterCrud
-        {
-            get { return OBulider.BuildInstance<IqcInspectionMasterCrud>(); }
-        }
-        /// <summary>
-        ///  物料检验项次数据CRUD
-        /// </summary>
-        public static IqcInspectionDetailCrud IqcInspectionDetailCrud
-        {
-            get { return OBulider.BuildInstance<IqcInspectionDetailCrud>(); }
-        }
-    }
+
 
 
     #region  IQC  IQC物料检验配置
@@ -94,7 +64,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
         }
-        public OpResult AddInspectionItemConfiList(List<IqcInspectionItemConfigModel> modelList)
+        /// <summary>
+        /// 批量保存 IQC检验项目数据
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        public OpResult StoreInspectionItemConfiList(List<IqcInspectionItemConfigModel> modelList)
         {
             OpResult opResult = OpResult.SetResult("未执行任何操作！");
             SetFixFieldValue(modelList, OpMode.Add);

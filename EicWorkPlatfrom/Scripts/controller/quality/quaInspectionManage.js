@@ -53,17 +53,17 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
 
 
     //013935删除单项
-    quality.deleteInspectionData = function (item) {
-        var url = qualityUrl + "DeleteInspectionData";
-        return ajaxService.getData(url, {
-            item:item
-        })
-    }
+    //quality.deleteInspectionData = function (item) {
+    //    var url = qualityUrl + "DeleteInspectionModeData";
+    //    return ajaxService.getData(url, {
+    //        item:item
+    //    })
+    //}
     //013935保存单项
-    quality.saveInspectionModeData = function (item) {
-        var url = qualityUrl + "SaveInspectionModeData";
+    quality.saveInspectionModeData = function (dataModel) {
+        var url = qualityUrl + "StoreInspectionModeData";
         return ajaxService.postData(url, {
-            item:item
+            dataModel:dataModel
         })
     }
     

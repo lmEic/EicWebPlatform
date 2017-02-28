@@ -20,6 +20,7 @@
                                     </button>
                                 </div>
 
+                                
                                 <label for="inspectionLevel" class="col-md-2 control-label">检验水平</label>
                                 <div class="col-md-4">
                                     <input name="inspectionLevel" class="form-control" ng-model="vm.InspectionLevel" required />
@@ -29,6 +30,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="inspectionSize" class="col-md-2 control-label">规格</label>
+                                <div class="col-md-4">
+                                    <input name="inspectionAQL" class="form-control" ng-model="vm.InspectionAQL" required />
+                                    <div class="error-messages" ng-messages="inspectionModeForm.inspectionAQL.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">规格不能为空</small>
+                                    </div>
+                                </div>
+
+
                                 <label for="startNumber" class="col-md-2 control-label">起始值</label>
                                 <div class="col-md-4">
                                     <input type="number" name="startNumber" class="form-control" ng-model="vm.StartNumber" required />
@@ -37,6 +47,9 @@
                                     </div>
                                 </div>
 
+                                
+                            </div>
+                            <div class="form-group">
                                 <label for="endNumber" class="col-md-2 control-label">结束值</label>
                                 <div class="col-md-4">
                                     <input type="number" name="endNumber" class="form-control" ng-model="vm.EndNumber" required />
@@ -44,8 +57,7 @@
                                         <small ng-message="required">结束值不能为空</small>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
+
                                 <label for="inspectionCount" class="col-md-2 control-label">检验数量</label>
                                 <div class="col-md-4">
                                     <input type="number" name="inspectionCount" class="form-control" ng-model="vm.InspectionCount" required />
@@ -53,6 +65,9 @@
                                         <small ng-message="required">检验数量不能为空</small>
                                     </div>
                                 </div>
+                                
+                            </div>
+                            <div class="form-group">
                                 <label for="acceptCount" class="col-md-2 control-label">接受数量</label>
                                 <div class="col-md-4">
                                     <input type="number" name="acceptCount" class="form-control" ng-model="vm.AcceptCount" required />
@@ -60,8 +75,7 @@
                                         <small ng-message="required">接受数量不能为空</small>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
+
                                 <label for="refuseCount" class="col-md-2 control-label">拒收数量</label>
                                 <div class="col-md-4">
                                     <input type="number" name="refuseCount" class="form-control" ng-model="vm.RefuseCount" required />
@@ -69,13 +83,7 @@
                                         <small ng-message="required">拒收数量不能为空</small>
                                     </div>
                                 </div>
-                                <label for="inspectionSize" class="col-md-2 control-label">规格</label>
-                                <div class="col-md-4">
-                                    <input name="inspectionSize" class="form-control" ng-model="vm.Inspection" required />
-                                    <div class="error-messages" ng-messages="inspectionModeForm.inspectionSize.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">规格不能为空</small>
-                                    </div>
-                                </div>
+                                
                             </div>
                         </fieldset>
                         <hr />

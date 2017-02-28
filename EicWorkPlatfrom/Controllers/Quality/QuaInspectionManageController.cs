@@ -44,33 +44,37 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 保存数据
+        /// 保存单个IQC检验项目配置数据
         /// </summary>
-        /// <param name="modelList"></param>
+        /// <param name="">entity</param>
         /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult DeleteMaterialDatas(IqcInspectionItemConfigModel entity) 
         {
-            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(entity);
+            var opResult = InspectionService.InspectionItemConfigurator.StoreIqcInspectionItemConfig(entity);
            return Json(opResult);
         }
 
-        // GetInspectionIndex
+        /// <summary>
+        /// 得到IQC检验项目配置序号最大数
+        /// </summary>
+        /// <param name="materialId">物料料号</param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult GetInspectionIndex(string materialId)
         {
-            var opResult = InspectionService.InspectionItemConfigurator.GetInspectionIndex(materialId);
+            var opResult = InspectionService.InspectionItemConfigurator.GetInspectionIndexBy(materialId);
             return Json(opResult);
         }
         /// <summary>
-        /// 批量保存
+        /// 批量保存IQC检验项目配置数据
         /// </summary>
-        /// <param name="dataSource"></param>
+        /// <param name="dataSource">批量数据源</param>
         /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult SaveAllMaterialDatas(List<IqcInspectionItemConfigModel> dataSource)
         {
-            var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(dataSource);
+            var opResult = InspectionService.InspectionItemConfigurator.StoreIqcInspectionItemConfig(dataSource);
             return Json(opResult);
         }
         /// <summary>
@@ -92,7 +96,7 @@ namespace EicWorkPlatfrom.Controllers
                     datas = InspectionService.InspectionItemConfigurator.ImportProductFlowListBy(fileName);
                     if (datas != null && datas.Count > 0)
                     //批量保存数据
-                    { var opResult = InspectionService.InspectionItemConfigurator.SaveIqcInspectionItemConfig(datas); }
+                    { var opResult = InspectionService.InspectionItemConfigurator.StoreIqcInspectionItemConfig(datas); }
                    
                     System.IO.File.Delete(fileName);
                 }
@@ -111,7 +115,6 @@ namespace EicWorkPlatfrom.Controllers
             string filePath = @"E:\各部门日报格式\IQC物料检验配置数据表.xls";
             MemoryStream ms = InspectionService.InspectionItemConfigurator.GetIqcInspectionItemConfigTemplate(filePath);
             return this.ExportToExcel(ms, "IQC物料检验配置模板", "IQC物料检验配置模板");
-            //return null;
         }
         #endregion
        
@@ -127,12 +130,13 @@ namespace EicWorkPlatfrom.Controllers
         /// <summary>
         /// 保存检验方式数据
         /// </summary>
-        /// <param name="datas">数据</param>
+        /// <param name="dataModel">数据</param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult SaveInspectionModeData(List<InspectionModeConfigModel> datas)
+        public JsonResult StoreInspectionModeData(InspectionModeConfigModel dataModel)
         {
-            return null;
+            var result = InspectionService.InspectionModeConfigManager.StoreInspectionModeConfig(dataModel);
+            return Json(result);
         }
         #endregion
 
