@@ -108,6 +108,7 @@ namespace EicWorkPlatfrom.Controllers
             //return null;
         }
         #endregion
+
         #region 
         public ActionResult IqcInspectionModeConfiguration()
         {

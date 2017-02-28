@@ -26,15 +26,13 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
             iqcInspectionConfigItems: iqcInspectionConfigItems
         })
     }
+    quality.deleteIqlInspectionConfigItem = function (configItem) {
+        var url = quaInspectionManageUrl + 'DeleteIqlInspectionConfigItem';
+        return ajaxService.postData(url, {
+            configItem: configItem,
+        });
+    };
 
-   
-    ////013935删除IQC进料检验配置项数据
-    //quality.deleteIqlInspectionConfigItem = function (configItem) {
-    //    var url = quaInspectionManageUrl + "DeleteIqlInspectionConfigItem";
-    //    return ajaxService.postData(url, {
-    //        configItem: configItem
-    //    })
-    //}
     //处理检验方式配置数据
     quality.storeIqcInspectionModeData = function (iqcInspectionModeItem) {
         var url = quaInspectionManageUrl + "StoreIqcInspectionModeData";
@@ -133,8 +131,10 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
                     $scope.opPromise = qualityDataOpService.deleteIqlInspectionConfigItem(vmManager.delItem).then(function (opresult) {
                         leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                             if (opresult.Result) {
-                                leeHelper.remove(vmManager.dataSource, vmManager.delItem);
                                 leeHelper.remove(vmManager.dataSets, vmManager.delItem);
+                                var ds = _.clone(vmManager.dataSource);
+                                leeHelper.remove(ds, vmManager.delItem);
+                                vmManager.dataSource = ds;  
                                 vmManager.delModal.$promise.then(vmManager.delModal.hide);
                             }
                         });
@@ -167,7 +167,9 @@ qualityModule.controller("iqcInspectionItem", function ($scope, qualityDataOpSer
         var dataItem = _.clone(uiVM);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             if (uiVM.OpSign === "add") {
-                vmManager.dataSource.push(dataItem);
+                var ds = _.clone(vmManager.dataSource);
+                ds.push(dataItem);
+                vmManager.dataSource = ds;
             }
             operate.refresh();
         })
@@ -220,8 +222,8 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
     $scope.vm = uiVM;
     var initVM = _.clone(uiVM);
     var vmManager = {
-        editDatas: [],
         dataSets: [],
+        dataSource:[],
         deleteItem: null,
         init: function () {
             uiVM = _.clone(initVM);
@@ -237,12 +239,17 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
                 $scope.confirmDelete = function () {
                     vmManager.deleteItem.OpSign = "delete";
                     qualityDataOpService.storeIqcInspectionModeData(vmManager.deleteItem).then(function (opresult) {
-                        if (opresult.Result) {
-                            leeHelper.remove(vmManager.editDatas, vmManager.deleteItem);
-                            vmManager.deleteModalWindow.$promise.then(vmManager.deleteModalWindow.hide);
-                        }
-                    })
-                }
+                        leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                            if (opresult.Result) {
+                                leeHelper.remove(vmManager.dataSets, vmManager.deleteItem);
+                                var ds = _.clone(vmManager.dataSource);
+                                leeHelper.remove(ds, vmManager.deleteItem);
+                                vmManager.dataSource = ds;
+                                vmManager.deleteModalWindow.$promise.then(vmManager.deleteModalWindow.hide);
+                            }
+                        });
+                    }
+                )}
             }
 
         })
@@ -257,14 +264,17 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
             qualityDataOpService.storeIqcInspectionModeData($scope.vm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
-                        leeHelper.copyVm(opresult.Attach, uiVM);
                         if (uiVM.OpSign == "add") {
-                            vmManager.editDatas.push(uiVM);
+                            leeHelper.copyVm(opresult.Attach, uiVM);
+                            var ds = _.clone(vmManager.dataSource);
+                            ds.push(uiVM);
+                            vmManager.dataSource = ds;
                         }
                         else {
-                            var item = _.find(vmManager.editDatas, { Id_Key: uiVM.Id_Key });
+                            var item = _.find(vmManager.dataSource, { Id_Key: uiVM.Id_Key });
                             leeHelper.copyVm(uiVM, item);
                         }
+                        vmManager.init();
                     }
                 })
             })
@@ -274,6 +284,7 @@ qualityModule.controller("iqcInspectionMode", function ($scope, qualityDataOpSer
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
             vmManager.init();
+            operate.refresh();
         });
     };
     //编辑iqc检验方式模块的数据
