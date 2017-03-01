@@ -1,19 +1,67 @@
-﻿<div class="panel panel-primary" ng-controller="iqcInspectionDataGather">
+﻿<div class="panel panel-primary" ng-controller="iqcDataGatheringCtrl">
     <div class="panel-heading">
         <h6 class="panel-title"> 进料检验数据采集</h6>
     </div>
     <div class="panel-body">
         <div class="row">
-            <input type="text" ng-model="vm.materialId" placeholder="请输入品号" />
-            <button class="btn btn-success btn-sm" type="button">查询</button>
-        </div>
-        <div class="row">
-            <div class="well">
-                <div class="pull-left" style="width:10%;background:yellow;">
-                    
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="输入工单号查询">
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
                 </div>
-                <div class="pull-left" style="width:10%;background:red;">2</div>
-                <div class="pull-right" style="width:80%;background:green;">3</div>
+            </div>
+        </div>
+        
+        <div class="h-split"></div>
+        <div class="row clearfix">
+            <div class="clo-md-12 column">
+                <div class="col-md-4">
+                    <p>
+                        <label>供应商:</label>
+                        成勋公司
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <p>
+                        <label>供应商:</label>
+                        成勋公司
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <p>
+                        <label>供应商:</label>
+                        成勋公司
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="well clearfix">
+                <div class="pull-left col-md-3" cg-busy="{promise:promise}">
+                    <label>品号列表</label>
+                    <div class="list-group" >
+                        <a class="list-group-item"
+                           ng-repeat="item in vmManager.materialIdDatas" 
+                           ng-class="{'active':item===vmManager.currentMaterialIdItem}"
+                           ng-dblclick="vmManager.selectMaterialIdItem(item)">
+                        {{item.materialId}}
+                        </a>
+                    </div>
+                </div>
+                <div class="pull-left col-md-3" cg-busy="{promise:promise}">
+                    <label>检验项目列表</label>
+                    <div class="list-group">
+                        <a class="list-group-item"
+                           ng-repeat="item in vmManager.inspectionItemDatas"
+                           ng-class="{'active':item===vmManager.currentInspectionItem,'list-group-item-success':item.isDone}"
+                           ng-dblclick="vmManager.seleceInspectionItem(item)">
+                            {{item.materialId}}
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
