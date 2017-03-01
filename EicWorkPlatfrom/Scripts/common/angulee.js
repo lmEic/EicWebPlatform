@@ -79,8 +79,6 @@ var leeDataHandler = (function () {
         },
     };
 
-   
-
     ///数据存储
     var leeDataStorage = {
         ///存储登录用户信息
