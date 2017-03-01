@@ -5,135 +5,135 @@ using System.Text;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 {
-  
 
+
+    /// <summary>
+    /// 检验方式配置文件
+    /// </summary>
+    public class InspectionModeConfigModel
+    {
+        public InspectionModeConfigModel()
+        { }
+        #region Model
+        private string _inspectionmode;
         /// <summary>
-        /// 检验方式配置文件
+        ///检测方式
         /// </summary>
-        public class InspectionModeConfigModel
+        public string InspectionMode
         {
-            public InspectionModeConfigModel()
-            { }
-            #region Model
-            private string _inspectionmode;
-            /// <summary>
-            ///检测方式
-            /// </summary>
-            public string InspectionMode
-            {
-                set { _inspectionmode = value; }
-                get { return _inspectionmode; }
-            }
-            private string _inspectionlevel;
-            /// <summary>
-            ///检测水平
-            /// </summary>
-            public string InspectionLevel
-            {
-                set { _inspectionlevel = value; }
-                get { return _inspectionlevel; }
-            }
-            private string _inspectionaql;
-            /// <summary>
-            ///AQL值
-            /// </summary>
-            public string InspectionAQL
-            {
-                set { _inspectionaql = value; }
-                get { return _inspectionaql; }
-            }
-            private int _startnumber;
-            /// <summary>
-            ///起始值
-            /// </summary>
-            public int StartNumber
-            {
-                set { _startnumber = value; }
-                get { return _startnumber; }
-            }
-            private int _endnumber;
-            /// <summary>
-            ///结束值
-            /// </summary>
-            public int EndNumber
-            {
-                set { _endnumber = value; }
-                get { return _endnumber; }
-            }
-            private int _inspectioncount;
-            /// <summary>
-            ///检验数量
-            /// </summary>
-            public int InspectionCount
-            {
-                set { _inspectioncount = value; }
-                get { return _inspectioncount; }
-            }
-            private int _acceptcount;
-            /// <summary>
-            ///接授数量
-            /// </summary>
-            public int AcceptCount
-            {
-                set { _acceptcount = value; }
-                get { return _acceptcount; }
-            }
-            private int _refusecount;
-            /// <summary>
-            ///拒收数量
-            /// </summary>
-            public int RefuseCount
-            {
-                set { _refusecount = value; }
-                get { return _refusecount; }
-            }
-            private string _opperson;
-            /// <summary>
-            ///操作人
-            /// </summary>
-            public string OpPerson
-            {
-                set { _opperson = value; }
-                get { return _opperson; }
-            }
-            private DateTime _opdate;
-            /// <summary>
-            ///操作日期
-            /// </summary>
-            public DateTime OpDate
-            {
-                set { _opdate = value; }
-                get { return _opdate; }
-            }
-            private DateTime _optime;
-            /// <summary>
-            ///操作时间
-            /// </summary>
-            public DateTime OpTime
-            {
-                set { _optime = value; }
-                get { return _optime; }
-            }
-            private string _opsign;
-            /// <summary>
-            ///操作标识
-            /// </summary>
-            public string OpSign
-            {
-                set { _opsign = value; }
-                get { return _opsign; }
-            }
-            private decimal _id_Key;
-            /// <summary>
-            ///自增建
-            /// </summary>
-            public decimal Id_Key
-            {
-                set { _id_Key = value; }
-                get { return _id_Key; }
-            }
-            #endregion Model
+            set { _inspectionmode = value; }
+            get { return _inspectionmode; }
         }
+        private string _inspectionlevel;
+        /// <summary>
+        ///检测水平
+        /// </summary>
+        public string InspectionLevel
+        {
+            set { _inspectionlevel = value; }
+            get { return _inspectionlevel; }
+        }
+        private string _inspectionaql;
+        /// <summary>
+        ///AQL值
+        /// </summary>
+        public string InspectionAQL
+        {
+            set { _inspectionaql = value; }
+            get { return _inspectionaql; }
+        }
+        private int _startnumber;
+        /// <summary>
+        ///起始值
+        /// </summary>
+        public int StartNumber
+        {
+            set { _startnumber = value; }
+            get { return _startnumber; }
+        }
+        private int _endnumber;
+        /// <summary>
+        ///结束值
+        /// </summary>
+        public int EndNumber
+        {
+            set { _endnumber = value; }
+            get { return _endnumber; }
+        }
+        private int _inspectioncount;
+        /// <summary>
+        ///检验数量
+        /// </summary>
+        public int InspectionCount
+        {
+            set { _inspectioncount = value; }
+            get { return _inspectioncount; }
+        }
+        private int _acceptcount;
+        /// <summary>
+        ///接授数量
+        /// </summary>
+        public int AcceptCount
+        {
+            set { _acceptcount = value; }
+            get { return _acceptcount; }
+        }
+        private int _refusecount;
+        /// <summary>
+        ///拒收数量
+        /// </summary>
+        public int RefuseCount
+        {
+            set { _refusecount = value; }
+            get { return _refusecount; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private decimal _id_Key;
+        /// <summary>
+        ///自增建
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_Key = value; }
+            get { return _id_Key; }
+        }
+        #endregion Model
+    }
 
 
     #region IQC
@@ -686,112 +686,5 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
     }
 
-    //public class IqcInspectionItemConfigShowModel
-    //{
-
-    //    //public IqcInspectionItemConfigShowModel()
-    //    //{
-    //    //    this.InspectionItemConfigModelList = new List<IqcInspectionItemConfigModel>();
-    //    //    this.ProductMaterailModel = new Quanity.ProductMaterailModel();
-    //    //}
-    //    //#region Model
-    //    ///// <summary>
-    //    ///// 检验物料料号单头
-    //    ///// </summary>
-    //    //public ProductMaterailModel ProductMaterailModel { set; get; }
-
-    //    ///// <summary>
-    //    ///// 检验物料料号单身
-    //    ///// </summary>
-    //    //public List<IqcInspectionItemConfigModel> InspectionItemConfigModelList { set; get; }
-
-
-    //    ///// <summary>
-    //    ///// 品名 MB002
-    //    ///// </summary>
-    //    //public string MaterailName { get; set; }
-    //    ///// <summary>
-    //    ///// 规格 MB003
-    //    ///// </summary>
-    //    //public string MaterialSpecify { get; set; }
-    //    ///// <summary>
-    //    ///// 产品图号 MB029
-    //    ///// </summary>
-    //    //public string MaterialrawID { get; set; }
-    //    ///// <summary>
-    //    ///// 物料属于部门 TM068
-    //    ///// </summary>
-    //    //public string MaterialBelongDepartment
-    //    //{ get; set; }
-    //    ///// <summary>
-    //    /////物料料号
-    //    ///// </summary>
-    //    //public string MaterialId { get; set; }
-    //    ///// <summary>
-    //    /////物料检验项目
-    //    ///// </summary>
-    //    //public string InspectionItem { get; set; }
-    //    ///// <summary>
-    //    /////检验项目的次序
-    //    ///// </summary>
-    //    //public int InspectiontermNumber { get; set; }
-    //    ///// <summary>
-    //    /////规格上限
-    //    ///// </summary>
-    //    //public double SizeUSL { get; set; }
-    //    ///// <summary>
-    //    /////规格上限
-    //    ///// </summary>
-    //    //public double SizeLSL { get; set; }
-    //    ///// <summary>
-    //    /////规格说明
-    //    ///// </summary>
-    //    //public string SizeMemo { get; set; }
-    //    ///// <summary>
-    //    /////量具编号
-    //    ///// </summary>
-    //    //public string EquipmentID { get; set; }
-    //    ///// <summary>
-    //    /////检验方法
-    //    ///// </summary>
-    //    //public string InspectionMethod { get; set; }
-    //    ///// <summary>
-    //    /////SIP检验规范
-    //    ///// </summary>
-    //    //public string SIPInspectionStandard { get; set; }
-    //    ///// <summary>
-    //    /////检验方式
-    //    ///// </summary>
-    //    //public string InspectionMode { get; set; }
-    //    ///// <summary>
-    //    /////检验水平
-    //    ///// </summary>
-    //    //public string InspectionLevel { get; set; }
-    //    ///// <summary>
-    //    /////检验AQL值
-    //    ///// </summary>
-    //    //public string InspectionAQL { get; set; }
-    //    ///// <summary>
-    //    /////操作人
-    //    ///// </summary>
-    //    //public string OpPerson { get; set; }
-    //    ///// <summary>
-    //    /////操作日期
-    //    ///// </summary>
-    //    //public DateTime OpDate { get; set; }
-    //    ///// <summary>
-    //    /////操作时间
-    //    ///// </summary>
-    //    //public DateTime OpTime { get; set; }
-    //    ///// <summary>
-    //    /////操作标识
-    //    ///// </summary>
-    //    //public string OpSign { get; set; }
-    //    ///// <summary>
-    //    /////自增键
-    //    ///// </summary>
-    //    //public decimal Id_Key { get; set; }
-
-    //    #endregion Model
-    //}
+   
 }

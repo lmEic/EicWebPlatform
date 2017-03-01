@@ -150,7 +150,7 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
         /// <summary>
         /// 进料数量 
         /// </summary>
-        public Int64  ProduceNumber { get; set; }
+        public double  ProduceNumber { get; set; }
 
         #endregion
     }
