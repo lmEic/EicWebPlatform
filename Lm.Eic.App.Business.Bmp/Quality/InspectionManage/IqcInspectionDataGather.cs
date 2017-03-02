@@ -32,20 +32,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId">ERP单号</param>
         /// <param name="sampleMaterialId">物料料号</param>
         /// <returns></returns>
-        public IqcInspectionItemConfigModel GetIqcInspectionItemParameterBy(string sampleMaterialId,string inspectionItem)
+        public IqcInspectionItemConfigModel GetIIqcInspectionItemConfigDataBy(string sampleMaterialId,string inspectionItem)
         {
             return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigDatasBy(sampleMaterialId).FirstOrDefault(e => e.InspectionItem == inspectionItem);
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sampleMaterialId"></param>
-        /// <param name="inspectionItem"></param>
-        /// <returns></returns>
-        public InspectionItemParameterModel GetInspectionItemAllInfo(int inMaterialCount, string sampleMaterialId, string inspectionItem)
-        {
-            var mm = GetIqcInspectionItemParameterBy(sampleMaterialId, inspectionItem);
-            return new InspectionItemParameterModel(mm, inMaterialCount);
         }
         /// <summary>
         /// 存储Iqc检验数据
@@ -63,101 +52,33 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return IqcInspectionManagerCrudFactory.IqcInspectionMasterCrud.Store(model, true);
         }
-    }
-
-
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class InspectionItemParameterModel
-    {
-        public InspectionItemParameterModel(IqcInspectionItemConfigModel iqcInspectionItemConfig, int inMaterialCount)
-        {
-            this.IqcInspectionItemConfig = iqcInspectionItemConfig;
-            this._inMaterialCount = inMaterialCount;
-            getInspectionAcceptRefuseCountBy();
-        }
-        private Int64 _inMaterialCount;
-        public Int64 InMaterialCount
-        {
-            get { return _inMaterialCount; }
-        }
         /// <summary>
-        ///检验项目配置
+        /// 由检验项目得到检验方式模块
         /// </summary>
-        public IqcInspectionItemConfigModel IqcInspectionItemConfig
-        {
-            set; get;
-        }
-        double _inspectionCount = 0;
-        /// <summary>
-        /// 需要检验的数量
-        /// </summary>
-        public double InspectionCount
-        {
-            get
-            {
-                return _inspectionCount;
-            }
-        }
-        double _acceptCount = 0;
-        /// <summary>
-        /// 检验接受的数量
-        /// </summary>
-        public double AcceptCount
-        {
-            get
-            {
-                return _acceptCount;
-            }
-        }
-        double _refuseCount = 0;
-        /// <summary>
-        /// 所收的数量
-        /// </summary>
-        public double RefuseCount
-        {
-            get
-            {
-                return _refuseCount;
-            }
-        }
-        /// <summary>
-        /// 得到 抽验数量，接收数量，拒受数量
-        /// </summary>
-        /// <param name="inspectionMode">抽样方式</param>
-        /// <param name="inspectionLevel">水平</param>
-        /// <param name="inspectionAQL">规格</param>
-        /// <param name="inMaterialCount">物料的总数量</param>
+        /// <param name="iqcInspectionItemConfig"></param>
+        /// <param name="inMaterialCount"></param>
         /// <returns></returns>
-        private void getInspectionAcceptRefuseCountBy()
+        public InspectionModeConfigModel GetInspectionModeConfigDataBy(IqcInspectionItemConfigModel iqcInspectionItemConfig, int inMaterialCount)
         {
             var maxs = new List<Int64>(); var mins = new List<Int64>();
             double maxNumber; double minNumber;
-            if (IqcInspectionItemConfig == null) return;
+            if (iqcInspectionItemConfig == null) return new InspectionModeConfigModel(); ;
             var models = IqcInspectionManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(
-                IqcInspectionItemConfig.InspectionMode,
-                IqcInspectionItemConfig.InspectionLevel,
-                IqcInspectionItemConfig.InspectionAQL);
+                iqcInspectionItemConfig.InspectionMode,
+                iqcInspectionItemConfig.InspectionLevel,
+                iqcInspectionItemConfig.InspectionAQL);
             models.ForEach(e =>
             { maxs.Add(e.EndNumber); mins.Add(e.StartNumber); });
             if (maxs.Count > 0)
-                maxNumber = GetMaxNumber(maxs, _inMaterialCount);
+                maxNumber = GetMaxNumber(maxs, inMaterialCount);
             else
                 maxNumber = 0;
             if (mins.Count > 0)
-                minNumber = GetMinNumber(mins, _inMaterialCount);
+                minNumber = GetMinNumber(mins, inMaterialCount);
             else
                 minNumber = 0;
-            var model = models.Where(e => e.StartNumber == minNumber && e.EndNumber == maxNumber).ToList().FirstOrDefault();
+            return models.Where(e => e.StartNumber == minNumber && e.EndNumber == maxNumber).ToList().FirstOrDefault();
             // InspectionCount, AcceptCount, RefuseCount,
-            if (model == null) return;
-            _inspectionCount= model.InspectionCount;
-            _acceptCount=model.AcceptCount;
-            _refuseCount = model.RefuseCount;
-
         }
         private Int64 GetMaxNumber(List<Int64> maxNumbers, Int64 number)
         {
@@ -194,6 +115,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
             return IntMinNumbers.Max();
         }
-
     }
+
 }

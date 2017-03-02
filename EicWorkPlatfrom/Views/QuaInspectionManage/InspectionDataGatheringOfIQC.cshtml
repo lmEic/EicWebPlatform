@@ -12,11 +12,6 @@
                     </span>
                 </div>
             </div>
-        </div>
-        
-        <div class="h-split"></div>
-
-        <div class="row">
             <div class="col-md-4">
                 <p>
                     <label>工单号:</label>
@@ -25,34 +20,37 @@
             </div>
             <div class="col-md-4">
                 <p>
+                    <label>数量:</label>
+                    {{vmManager.currentMaterialIdItem.ProduceNumber}}
+                </p>
+            </div>
+        </div>
+        
+        <div class="h-split"></div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <p>
                     <label>品名:</label>
                     {{vmManager.currentMaterialIdItem.ProductName}}
                 </p>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <p>
                     <label>规格:</label>
                     {{vmManager.currentMaterialIdItem.ProductStandard}}
                 </p>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <p>
                     <label>供应商:</label>
                     {{vmManager.currentMaterialIdItem.ProductSupplier}}
                 </p>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <p>
                     <label>图号:</label>
                     {{vmManager.currentMaterialIdItem.ProductDrawID}}
-                </p>
-            </div>
-            <div class="col-md-4">
-                <p>
-                    <label>数量:</label>
-                    {{vmManager.currentMaterialIdItem.ProduceNumber}}
                 </p>
             </div>
         </div>
