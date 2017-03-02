@@ -47,20 +47,31 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             iqcInspectionModeItem: iqcInspectionModeItem
         })
     }
-    //进料检验数据采集模块获得品号数据
-    quality.getInspectionDataGatherMaterialIdDatas = function(orderId){
-        var url = quaInspectionManageUrl + "GetInspectionDataGatherMaterialIdDatas";
-        return ajaxService.getData(url,{
+
+
+    quality.getInspectionDataGatherMaterialIdDatas = function (orderId) {
+        var url = quaInspectionManageUrl + "GetIqcMaterialInfoDatas";
+        return ajaxService.getData(url, {
             orderId: orderId
         })
     }
-    //进料检验数据采集模块获得检验项目数据
-    quality.getInspectionDataGatherInspectionItemDatas = function(materialId){
-        var url = quaInspectionManageUrl + "GetInspectionDataGatherInspectionItemDatas";
-        return ajaxService.getData(url,{
-            materialId:materialId
+    //iqc进料检验数据采集模块获得检验项目数据
+    quality.getInspectionDataGatherInspectionItemDatas = function (materialId) {
+        var url = quaInspectionManageUrl + "GetIqcInspectionItemConfigDatas";
+        return ajaxService.getData(url, {
+            materialId: materialId
         })
     }
+    //iqc进料检验数据采集模块获取所有数据
+    quality.getInspectionAllConfigInfo = function (inMaterialCount, materialId, inspectionItem) {
+        var url = quaInspectionManageUrl + "GetIqcInspectionItemAllInfo";
+        return ajaxService.getData(url, {
+            inMaterialCount: inMaterialCount,
+            materialId: materialId,
+            inspectionItem: inspectionItem
+        })
+    }
+
     //保存进料检验采集的数据
     quality.saveIqcInspectionGetherDatas = function (iqcGatherDataModel) {
         var url = quaInspectionManageUrl + 'SaveIqcInspectionGetherDatas';
@@ -341,22 +352,32 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
 ///iqc数据采集控制器
 qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService) {
     var vmManager = {
+        orderId: null,
         currentMaterialIdItem: null,
         currentInspectionItem: null,
         materialIdDatas: [],
         inspectionItemDatas: [],
-        boxItem: [],
         getMaterialDatas: function () {
-            qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas($scope.vm.OrderId).then(function (materialIdDatas) {
+            qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
                 vmManager.materialIdDatas = materialIdDatas;
             });
         },
         selectMaterialIdItem: function (item) {
+            vmManager.currentMaterialIdItem = item;
             qualityInspectionDataOpService.getInspectionDataGatherInspectionItemDatas(item.ProductID).then(function (inspectionItemDatas) {
                 vmManager.inspectionItemDatas = inspectionItemDatas;
             });
+        },
+        selectInspectionItem: function (item) {
+            vmManager.currentInspectionItem = item;
+            qualityInspectionDataOpService.getInspectionAllConfigInfo(vmManager.currentMaterialIdItem.ProduceNumber, vmManager.currentMaterialIdItem.ProductID, vmManager.currentInspectionItem.InspectionItem).then(function (datas) {
+                console.log(datas)
+                vmManager.currentInspectionItem = datas;
+
+            });
         }
-    };
+
+    }
     $scope.vmManager = vmManager;
 
 })

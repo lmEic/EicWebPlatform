@@ -58,7 +58,7 @@
         </div>
         <div class="h-split"></div>
         <div class="row clearfix" >
-               <div class="col-md-2 pull-left">
+               <div class="col-md-2">
                    <div class="bs-callout bs-callout-info">
                        <p>
                            <i class="fa fa-list-ul">品号列表</i>
@@ -82,50 +82,53 @@
                    </div>
                </div>
 
-               <div class="col-md-10 pull-right  bs-callout bs-callout-info well" style="min-height:500px;">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <span>
-                                <label>检验项目:</label>
-                                {{vmManager.currentInspectionItem.IqcInspectionItemConfig.InspectionItem}}
-                            </span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>
-                                <label>规格值:</label>
-                                {{vmManager.currentInspectionItem.IqcInspectionItemConfig.SizeMemo}}
-                            </span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>
-                                <label>检验水平:</label>
-                                {{vmManager.currentInspectionItem.IqcInspectionItemConfig.InspectionLevel}}{{vmManager.currentInspectionItem.IqcInspectionItemConfig.InspectionAQL}}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <span>
-                                <label>抽样方案:</label>
-                                {{vmManager.currentInspectionItem.InspectionCount}}{{vmManager.currentInspectionItem.AcceptCount}}{{vmManager.currentInspectionItem.RefuseCount}}
-                            </span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>
-                                <label>检验方法:</label>
-                                {{vmManager.currentInspectionItem.IqcInspectionItemConfig.InspectionMethod}}
-                            </span>
-                        </div>
-                        <div class="col-md-4">
-                            <span>
-                                <label>量具编号:</label>
-                                {{vmManager.currentInspectionItem.IqcInspectionItemConfig.EquipmentID}}
-                            </span>
-                        </div>
-                    </div>
-                   <div class="h-split"></div>
-
-
+               <div class="col-md-10">
+                   <div class="bs-callout bs-callout-info" style="min-height:500px;">
+                       <div class="well">
+                           <div class="row">
+                               <div class="col-md-4">
+                                   <span>
+                                       <label>检验项目:</label>
+                                       {{vmManager.currentInspectionItem.IqcInspectionItemConfig.InspectionItem}}
+                                   </span>
+                               </div>
+                               <div class="col-md-4">
+                                   <span>
+                                       <label>规格值:</label>
+                                       {{vmManager.currentInspectionItem.IqcInspectionItemConfig.SizeMemo}}
+                                   </span>
+                               </div>
+                               <div class="col-md-4">
+                                   <span>
+                                       <label>检验水平:</label>
+                                       {{vmManager.currentInspectionItem.IqcInspectionItemConfig.InspectionLevel}}{{vmManager.currentInspectionItem.IqcInspectionItemConfig.InspectionAQL}}
+                                   </span>
+                               </div>
+                           </div>
+                           <div class="row">
+                               <div class="col-md-4">
+                                   <span>
+                                       <label>抽样方案:</label>
+                                       {{vmManager.currentInspectionItem.InspectionCount}}{{vmManager.currentInspectionItem.AcceptCount}}{{vmManager.currentInspectionItem.RefuseCount}}
+                                   </span>
+                               </div>
+                               <div class="col-md-4">
+                                   <span>
+                                       <label>检验方法:</label>
+                                       {{vmManager.currentInspectionItem.IqcInspectionItemConfig.InspectionMethod}}
+                                   </span>
+                               </div>
+                               <div class="col-md-4">
+                                   <span>
+                                       <label>量具编号:</label>
+                                       {{vmManager.currentInspectionItem.IqcInspectionItemConfig.EquipmentID}}
+                                   </span>
+                               </div>
+                           </div>
+                       </div>
+                       @*<div class="well"></div>*@
+                   </div>
+                  
                </div>
            </div>
     </div>
