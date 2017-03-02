@@ -53,24 +53,24 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
 
     //iqc进料检验数据采集模块获得品号数据
     quality.getInspectionDataGatherMaterialIdDatas = function(orderId){
-        var url = quaInspectionManageUrl + "GetInspectionDataGatherMaterialIdDatas";
+        var url = quaInspectionManageUrl + "GetIqcMaterialInfoDatas";
         return ajaxService.getData(url,{
             orderId: orderId
         })
     }
     //iqc进料检验数据采集模块获得检验项目数据
     quality.getInspectionDataGatherInspectionItemDatas = function(materialId){
-        var url = quaInspectionManageUrl + "GetInspectionDataGatherInspectionItemDatas";
+        var url = quaInspectionManageUrl + "GetIqcInspectionItemConfigDatas";
         return ajaxService.getData(url,{
             materialId:materialId
         })
     }
     //iqc进料检验数据采集模块获取所有数据
-    quality.getInspectionAllConfigInfo = function (produceNumber, productID, inspectionItem) {
-        var url = quaInspectionManageUrl + "GetInspectionAllConfigInfo";
+    quality.getInspectionAllConfigInfo = function (inMaterialCount, materialId,inspectionItem) {
+        var url = quaInspectionManageUrl + "GetIqcInspectionItemAllInfo";
         return ajaxService.getData(url, {
-            produceNumber: produceNumber,
-            productID: productID,
+            inMaterialCount: inMaterialCount,
+            materialId: materialId,
             inspectionItem: inspectionItem
         })
     }

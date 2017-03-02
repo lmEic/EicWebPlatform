@@ -186,6 +186,11 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         #endregion
-
+        #region FQC检验项目数据采集
+        public ActionResult InspectionDataGatheringOfFQC()
+        {
+            return View();
+        }
+        #endregion
     }
 }
