@@ -338,14 +338,17 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityDataOp
         currentInspectionItem: null,
         materialIdDatas: [],
         inspectionItemDatas: [],
-        boxItem:[],
+        nowItem:null,
         getMaterialDatas: function () {
-        qualityDataOpService.getInspectionDataGatherMaterialIdDatas($scope.vm.OrderId).then(function (materialIdDatas) {
+            qualityDataOpService.getInspectionDataGatherMaterialIdDatas($scope.vm.OrderId).then(function (materialIdDatas) {
+                console.log(materialIdDatas)
                 vmManager.materialIdDatas = materialIdDatas;
             });
         },
+
         selectMaterialIdItem: function (item) {
-            qualityDataOpService.getInspectionDataGatherInspectionItemDatas(item).then(function (inspectionItemDatas) {
+            qualityDataOpService.getInspectionDataGatherInspectionItemDatas(item.ProductID).then(function (inspectionItemDatas) {
+                console.log(inspectionItemDatas)
                 vmManager.inspectionItemDatas = inspectionItemDatas;
             });
         }       
