@@ -75,6 +75,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
         }
+      
         /// <summary>
         /// 批量保存 IQC检验项目数据
         /// </summary>

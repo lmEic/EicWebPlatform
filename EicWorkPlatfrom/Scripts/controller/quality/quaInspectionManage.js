@@ -47,6 +47,20 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
             iqcInspectionModeItem: iqcInspectionModeItem
         })
     }
+    //进料检验数据采集模块获得品号数据
+    quality.getInspectionDataGatherMaterialIdDatas = function(materialId){
+        var url = quaInspectionManageUrl + "GetInspectionDataGatherMaterialIdDatas";
+        return ajaxService.getData(url,{
+            materialId:materialId
+        })
+    }
+    //进料检验数据采集模块获得检验项目数据
+    quality.getInspectionDataGatherInspectionItemDatas = function(materialId){
+        var url = quaInspectionManageUrl + "GetInspectionDataGatherInspectionItemDatas";
+        return ajaxService.getData(url,{
+            materialId:materialId
+        })
+    }
     return quality;
 })
 
@@ -316,8 +330,50 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityDataO
         vmManager.deleteModalWindow.$promise.then(vmManager.deleteModalWindow.show)
     }
 })
+
 ///iqc数据采集控制器
-qualityModule.controller("iqcDataGatheringCtrl", function ($scope) {
+qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityDataOpService) {
+    var vmManager = {
+        currentMaterialIdItem: null,
+        currentInspectionItem: null,
+        materialIdDatas: [
+            {materialId:1111111111111,isActive:false,isDone:false},
+            {materialId:222222222222,isActive:false,isDone:false},
+            {materialId:3333333333333,isActive:false,isDone:false},
+            {materialId:444444444444,isActive:false,isDone:false},
+            {materialId:5555555555555,isActive:false,isDone:false},
+            {materialId:666666666666666,isActive:false,isDone:false},
+            {materialId:7777777777777,isActive:false,isDone:false},
+            {materialId:999999999999,isActive:false,isDone:false},
+            {materialId:8888888888888,isActive:false,isDone:false},
+        ],
+        inspectionItemDatas: [
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+        ],
+        selectMaterialIdItem: function (item) {
+            vmManager.currentMaterialIdItem = item;
+            qualityDataOpService.getInspectionDataGatherMaterialIdDatas(materialId).then(materialIdDatas, function () {
+                vmManager.materialIdDatas = materialIdDatas;
+            });
+        },
+        seleceInspectionItem: function (item) {
+            vmManager.currentInspectionItem = item;
+            qualityDataOpService.getInspectionDataGatherInspectionItemDatas(materialId).then(inspectionItemDatas, function () {
+                vmManager.inspectionItemDatas = inspectionItemDatas;
+            });
+        },
+
+        
+    }
+    $scope.vmManager = vmManager;
 
 })
 ///fqc数据采集控制器

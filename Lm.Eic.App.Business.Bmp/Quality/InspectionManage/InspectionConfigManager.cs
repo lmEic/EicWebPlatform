@@ -13,6 +13,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
 
     /// <summary>
+    ///  检验方式的配置 管理器
+    /// </summary>
+    public class InspectionModeConfigManager
+    {
+        /// <summary>
+        /// 存储  检验方式配置数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult StoreInspectionModeConfig(InspectionModeConfigModel model)
+        {
+            return IqcInspectionManagerCrudFactory.InspectionModeConfigCrud.Store(model, true);
+        }
+    }
+
+    /// <summary>
     /// IQC 进料检验的配置  管理器
     /// </summary>
     public class IqcInspectionItemConfigManager
@@ -31,7 +47,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materailId"></param>
         /// <returns></returns>
-        public OpResult CheckInspectionConfigMaterId(string materailId)
+        public OpResult IsExistInspectionConfigMaterId(string materailId)
         {
             bool  isexixt=   IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.IsExistInspectionConfigmaterailId(materailId);
             OpResult opResult = OpResult.SetResult("", false );
@@ -89,21 +105,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     }
 
 
-    /// <summary>
-    ///  检验方式的配置 管理器
-    /// </summary>
 
-    public class InspectionModeConfigManager
-    {
-        /// <summary>
-        /// 存储  检验方式配置数据
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-       public OpResult  StoreInspectionModeConfig (InspectionModeConfigModel  model)
-        {
-            return IqcInspectionManagerCrudFactory.InspectionModeConfigCrud.Store(model,true);
-        }
-    }
   
 }
