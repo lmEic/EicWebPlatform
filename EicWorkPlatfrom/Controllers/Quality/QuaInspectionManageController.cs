@@ -30,11 +30,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-        [NoAuthenCheck]
-        public ActionResult InspectionDataGatheringOfIQC()
-        {
-            return View();
-        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -127,7 +123,7 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
-        #region 
+        #region  检验方式
         public ActionResult IqcInspectionModeConfiguration()
         {
             return View();
@@ -141,6 +137,35 @@ namespace EicWorkPlatfrom.Controllers
 
 
 
+
+        #endregion
+
+
+        #region  检验项目数据收集
+
+        [NoAuthenCheck]
+        public ActionResult InspectionDataGatheringOfIQC()
+        {
+            return View();
+        }
+        [NoAuthenCheck]
+        public JsonResult GetInspectionDataGatherMaterialIdDatas(string orderId)
+        {
+            var datas = InspectionService.InspectionDataGather.GetPuroductSupplierInfo(orderId);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult GetInspectionDataGatherInspectionItemDatas (string materialId)
+        {
+            var datas = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigDatasBy(materialId);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult GetInspectionItemParameterBy(string materialId,string inspectionItem)
+        {
+            var datas = InspectionService.InspectionDataGather.GetInspectionItemParameterBy(materialId,inspectionItem);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
 
         #endregion
 

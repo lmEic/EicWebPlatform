@@ -6,9 +6,9 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="输入工单号查询">
+                    <input type="text" class="form-control" placeholder="输入工单号查询" ng-model="vm.OrderId">
                     <span class="input-group-btn">
-                        <button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                        <button class="btn btn-info" type="button" ng-click="vmManager.getMaterialIdDatas()"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
                 </div>
             </div>
@@ -47,18 +47,18 @@
                            ng-repeat="item in vmManager.materialIdDatas" 
                            ng-class="{'active':item===vmManager.currentMaterialIdItem}"
                            ng-dblclick="vmManager.selectMaterialIdItem(item)">
-                        {{item.materialId}}
+                        {{item.ProductID}}
                         </a>
                     </div>
                 </div>
-                <div class="pull-left col-md-3" cg-busy="{promise:promise}">
+                <div class="pull-left col-md-2" cg-busy="{promise:promise}">
                     <label>检验项目列表</label>
                     <div class="list-group">
                         <a class="list-group-item"
                            ng-repeat="item in vmManager.inspectionItemDatas"
                            ng-class="{'active':item===vmManager.currentInspectionItem,'list-group-item-success':item.isDone}"
                            ng-dblclick="vmManager.seleceInspectionItem(item)">
-                            {{item.materialId}}
+                            {{item.InspectionItem}}
                         </a>
                     </div>
                 </div>
