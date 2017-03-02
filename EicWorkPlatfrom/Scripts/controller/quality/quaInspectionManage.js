@@ -48,10 +48,10 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
         })
     }
     //进料检验数据采集模块获得品号数据
-    quality.getInspectionDataGatherMaterialIdDatas = function(materialId){
+    quality.getInspectionDataGatherMaterialIdDatas = function(orderId){
         var url = quaInspectionManageUrl + "GetInspectionDataGatherMaterialIdDatas";
         return ajaxService.getData(url,{
-            materialId:materialId
+            orderId: orderId
         })
     }
     //进料检验数据采集模块获得检验项目数据
@@ -343,42 +343,19 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityDataOp
     var vmManager = {
         currentMaterialIdItem: null,
         currentInspectionItem: null,
-        materialIdDatas: [
-            {materialId:1111111111111,isActive:false,isDone:false},
-            {materialId:222222222222,isActive:false,isDone:false},
-            {materialId:3333333333333,isActive:false,isDone:false},
-            {materialId:444444444444,isActive:false,isDone:false},
-            {materialId:5555555555555,isActive:false,isDone:false},
-            {materialId:666666666666666,isActive:false,isDone:false},
-            {materialId:7777777777777,isActive:false,isDone:false},
-            {materialId:999999999999,isActive:false,isDone:false},
-            {materialId:8888888888888,isActive:false,isDone:false},
-        ],
-        inspectionItemDatas: [
-            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
-            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
-            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
-            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
-            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
-            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
-            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
-            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
-            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
-        ],
-        selectMaterialIdItem: function (item) {
-            vmManager.currentMaterialIdItem = item;
-            qualityDataOpService.getInspectionDataGatherMaterialIdDatas(materialId).then(materialIdDatas, function () {
+        materialIdDatas: [],
+        inspectionItemDatas: [],
+        boxItem:[],
+        getMaterialDatas: function () {
+        qualityDataOpService.getInspectionDataGatherMaterialIdDatas($scope.vm.OrderId).then(function (materialIdDatas) {
                 vmManager.materialIdDatas = materialIdDatas;
             });
         },
-        seleceInspectionItem: function (item) {
-            vmManager.currentInspectionItem = item;
-            qualityDataOpService.getInspectionDataGatherInspectionItemDatas(materialId).then(inspectionItemDatas, function () {
+        selectMaterialIdItem: function (item) {
+            qualityDataOpService.getInspectionDataGatherInspectionItemDatas(item).then(function (inspectionItemDatas) {
                 vmManager.inspectionItemDatas = inspectionItemDatas;
             });
-        },
-
-        
+        }       
     }
     $scope.vmManager = vmManager;
 
