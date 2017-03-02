@@ -283,10 +283,10 @@
     }
 
 .bs-callout-info {
-    border-left-color: #1b809e;
+   border-left-color: #1b809e;
 }
 
-    .bs-callout-info h4 {
+.bs-callout-info h4 {
         color: #1b809e;
     }
 
@@ -304,7 +304,7 @@
     position: relative;
 }
 
-    .error-messages.ng-active:after {
+.error-messages.ng-active:after {
         position: absolute;
         top: -10px;
         content: "";
@@ -319,19 +319,19 @@
     margin-top: 1px;
 }
 
-    .page-list .pagination span {
+.page-list .pagination span {
         cursor: pointer;
     }
 
-    .page-list .pagination .separate span {
+ .page-list .pagination .separate span {
         cursor: default;
         border-top: none;
         border-bottom: none;
     }
 
-        .page-list .pagination .separate span:hover {
+ .page-list .pagination .separate span:hover {
             background: none;
-        }
+  }
 
 .page-list .page-total {
     float: right;
@@ -347,7 +347,7 @@ ol {
     text-shadow: 0 1px 0 rgba(255,255,255,.5);
 }
 
-    ol ol {
+ ol ol {
         margin: 0 0 0 1.7em; /* 给二级列表增加一定的左边距*/
     }
 /*rounded shaped numbers*/
@@ -370,12 +370,12 @@ ol {
     transition: all 0.3s ease-out;
 }
 
-    .rounded-list a:hover {
+.rounded-list a:hover {
         background: #2D2D30;
         color: #F1F1F1;
     }
 
-  .rounded-list a:hover::before {
+.rounded-list a:hover::before {
             /*悬停时旋转编码*/
             -moz-transform: rotate(360deg);
             -webkit-transform: rotate(360deg);
@@ -384,7 +384,7 @@ ol {
             transform: rotate(360deg);
         }
 
-    .rounded-list a::before {
+.rounded-list a::before {
         content: counter(li);
         counter-increment: li;
         position: absolute;
@@ -471,6 +471,15 @@ body.ng-pageslide-body-closed::before {
     opacity: 0;
 }
 .file:hover {
-    border-color: #78C3F3;
-    text-decoration: none;
+        border-color: #78C3F3;
+        text-decoration: none;
+}
+/*-----------------文本框输入获得焦点--------------------*/
+ input:focus {
+       background-image: linear-gradient(to top, #3ee43e 0%,#27e640 8%,white 10%, white 100%);
+       border-radius:3px;
+ }
+ /*-----------------文本框验证失败背景色--------------------*/
+.invalidInputBg {
+    background-image: linear-gradient(to right,#fb2a0d 0%, #fff 25%,#fff 75%,#fb2a0d 100%);
 }

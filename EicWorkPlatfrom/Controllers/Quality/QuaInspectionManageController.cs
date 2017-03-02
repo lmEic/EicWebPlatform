@@ -127,7 +127,7 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
-        #region 
+        #region IQC检验方式配置
         public ActionResult IqcInspectionModeConfiguration()
         {
             return View();
@@ -142,6 +142,13 @@ namespace EicWorkPlatfrom.Controllers
 
 
 
+        #endregion
+
+        #region FQC数据采集
+        public ActionResult InspectionDataGatheringOfFQC()
+        {
+            return View();
+        }
         #endregion
 
     }
