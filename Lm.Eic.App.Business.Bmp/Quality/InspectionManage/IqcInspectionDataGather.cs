@@ -23,15 +23,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<MaterialModel> GetPuroductSupplierInfo(string orderId)
         {
-            return QuantityDBManager.QuantityPurchseDb.FindMaterialBy(orderId);
+            return QualityDBManager.OrderIdInpectionDb.FindMaterialBy(orderId);
         }
+        
         /// <summary>
         /// 得到IQC物料料号得到相应的规格参数 
         /// </summary>
         /// <param name="orderId">ERP单号</param>
         /// <param name="sampleMaterialId">物料料号</param>
         /// <returns></returns>
-        public IqcInspectionItemConfigModel GetInspectionItemParameterBy(string sampleMaterialId,string inspectionItem)
+        public IqcInspectionItemConfigModel GetIqcInspectionItemParameterBy(string sampleMaterialId,string inspectionItem)
         {
             return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigDatasBy(sampleMaterialId).FirstOrDefault(e => e.InspectionItem == inspectionItem);
         }
@@ -41,9 +42,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="sampleMaterialId"></param>
         /// <param name="inspectionItem"></param>
         /// <returns></returns>
-        public InspectionItemParameterModel GetInspectionItemParameterModel(string orderId, string sampleMaterialId, string inspectionItem)
+        public InspectionItemParameterModel GetInspectionItemAllInfo(int inMaterialCount, string sampleMaterialId, string inspectionItem)
         {
-            return null;
+            var mm = GetIqcInspectionItemParameterBy(sampleMaterialId, inspectionItem);
+            return new InspectionItemParameterModel(mm, inMaterialCount);
         }
         /// <summary>
         /// 存储Iqc检验数据
