@@ -6,9 +6,9 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="输入工单号查询">
+                    <input type="text" class="form-control" placeholder="输入工单号查询" ng-model="vm.OrderId">
                     <span class="input-group-btn">
-                        <button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                        <button class="btn btn-info" type="button" ng-click="vmManager.getMaterialDatas()"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
                 </div>
             </div>
@@ -41,18 +41,27 @@
 
        <div class="row clearfix" >
                <div class="col-md-2 pull-left">
+                   <div class="bs-callout bs-callout-info">
+                       <p>
+                           <i class="fa fa-chevron-down">品号列表</i>
+                       </p>
+                   </div>
                    <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
                        <div class="panel panel-default" ng-repeat="item in vmManager.materialIdDatas">
-                           <div class="panel-heading" role="tab" ng-dblclick="vmManager.selectMaterialIdItem(item)">
+                           <div class="panel-heading" role="tab" ng-click="vmManager.selectMaterialIdItem(item)" >
                                <a bs-collapse-toggle style="cursor:pointer;color:#000">
-                                   {{item.materialId}}
+                                   {{item.ProductID}}
                                </a>
                            </div>
-                           <div class="panel-collapse list-group" role="tabpanel" bs-collapse-target>
-                               <a class="panel-body list-group-item" ng-repeat="item in vmManager.inspectionItemDatas"
-                                  ng-class="{'active':item===vmManager.currentMaterialIdItem}"
+                           <div class="panel-collapse list-group" role="tabpanel" bs-collapse-target style="padding-left:15px;"> 
+                               <div class="bs-callout bs-callout-info">
+                                   <span>
+                                       <i class="fa fa-chevron-down">检验项目列表</i>
+                                   </span>
+                               </div>
+                               <a class="panel-body list-group-item " ng-repeat="item in vmManager.inspectionItemDatas"
                                   ng-dblclick="vmManager.selectMaterialIdItem(item)">
-                                   {{item.materialId}}
+                                   {{item.InspectionItem}}
                                </a>
                            </div>
                        </div>
