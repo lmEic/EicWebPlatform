@@ -384,7 +384,10 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 console.log(datas);
                 vmManager.iqcInspectionItemAllInfo = datas;
             });
-        }
+        },
+        //数据集合
+        dataList: [],
+        inputDatas: [],
 
     }
     $scope.vmManager = vmManager;
