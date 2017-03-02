@@ -141,13 +141,17 @@ namespace EicWorkPlatfrom.Controllers
         #endregion
 
 
-        #region  检验项目数据收集
-
-        [NoAuthenCheck]
+        #region  Iqc检验项目数据收集
+        
         public ActionResult InspectionDataGatheringOfIQC()
         {
             return View();
         }
+        /// <summary>
+        /// 根据工单获取Iqc数据采集的产品品号列表
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult GetInspectionDataGatherMaterialIdDatas(string orderId)
         {
@@ -160,6 +164,7 @@ namespace EicWorkPlatfrom.Controllers
             var datas = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigDatasBy(materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+
         [NoAuthenCheck]
         public JsonResult GetInspectionItemParameterBy(string materialId,string inspectionItem)
         {
@@ -167,7 +172,25 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// 保存Iqc采集数据
+        /// </summary>
+        /// <param name="iqcGatherDataModel"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveIqcInspectionGetherDatas(IqcInspectionDetailModel iqcGatherDataModel)
+        {
+            var opresult = 0;
+
+            return Json(opresult);
+        }
         #endregion
 
+        #region FQC检验项目数据采集
+        public ActionResult InspectionDataGatheringOfFQC()
+        {
+            return View();
+        }
+        #endregion
     }
 }
