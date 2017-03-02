@@ -61,6 +61,12 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
             materialId:materialId
         })
     }
+    quality.getInspectionAllConfigInfo = function () {
+        var url = quaInspectionManageUrl + "GetInspectionAllConfigInfo";
+        return ajaxService.getData(url, {
+
+        })
+    }
     return quality;
 })
 
@@ -333,22 +339,31 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityDataO
 
 ///iqc数据采集控制器
 qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityDataOpService) {
+
     var vmManager = {
+        orderId:null,
         currentMaterialIdItem: null,
         currentInspectionItem: null,
         materialIdDatas: [],
         inspectionItemDatas: [],
-        boxItem:[],
         getMaterialDatas: function () {
-        qualityDataOpService.getInspectionDataGatherMaterialIdDatas($scope.vm.OrderId).then(function (materialIdDatas) {
+            qualityDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
                 vmManager.materialIdDatas = materialIdDatas;
             });
         },
         selectMaterialIdItem: function (item) {
-            qualityDataOpService.getInspectionDataGatherInspectionItemDatas(item).then(function (inspectionItemDatas) {
+            vmManager.currentMaterialIdItem = item;
+            qualityDataOpService.getInspectionDataGatherInspectionItemDatas(item.ProductID).then(function (inspectionItemDatas) {
                 vmManager.inspectionItemDatas = inspectionItemDatas;
             });
-        }       
+        } ,
+        selectInspectionItem: function (item) {
+            vmManager.currentInspectionItem = item;
+            qualityDataOpService.getInspectionAllConfigInfo(vmManager.currentMaterialIdItem.ProduceNumber,vmManager.currentMaterialIdItem.ProductID, vmManager.currentInspectionItem.InspectionItem).then(function () {
+                
+            });
+        }
+
     }
     $scope.vmManager = vmManager;
 

@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="输入工单号查询" ng-model="vm.OrderId">
+                    <input type="text" class="form-control" placeholder="输入工单号查询" ng-model="vmManager.orderId">
                     <span class="input-group-btn">
                         <button class="btn btn-info" type="button" ng-click="vmManager.getMaterialDatas()"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
@@ -15,32 +15,37 @@
         </div>
         
         <div class="h-split"></div>
-        
 
         <div class="row clearfix">
             <div class="clo-md-12 column">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <p>
-                        <label>供应商:</label>
-                        成勋公司
+                        <label>工单号:</label>
+                        {{vmManager.currentMaterialIdItem.OrderID}}
                     </p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <p>
-                        <label>供应商:</label>
-                        成勋公司
+                        <label>产品名:</label>
+                        {{vmManager.currentMaterialIdItem.ProductName}}
                     </p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <p>
+                        <label>产品数量:</label>
+                        {{vmManager.currentMaterialIdItem.ProduceNumber}}
+                    </p>
+                </div>
+                <div class="col-md-3">
                     <p>
                         <label>供应商:</label>
-                        成勋公司
+                        {{vmManager.currentMaterialIdItem.ProductSupplier}}
                     </p>
                 </div>
             </div>
         </div>
-
-       <div class="row clearfix" >
+        <div class="h-split"></div>
+        <div class="row clearfix" >
                <div class="col-md-2 pull-left">
                    <div class="bs-callout bs-callout-info">
                        <p>
@@ -54,22 +59,47 @@
                                    {{item.ProductID}}
                                </a>
                            </div>
-                           <div class="panel-collapse list-group" role="tabpanel" bs-collapse-target style="padding-left:15px;"> 
-                               <div class="bs-callout bs-callout-info">
-                                   <span>
-                                       <i class="fa fa-chevron-down">检验项目列表</i>
-                                   </span>
-                               </div>
-                               <a class="panel-body list-group-item " ng-repeat="item in vmManager.inspectionItemDatas"
-                                  ng-dblclick="vmManager.selectMaterialIdItem(item)">
+                           <div class="panel-collapse list-group " role="tabpanel" bs-collapse-target> 
+                               <a class="panel-body list-group-item" ng-repeat="item in vmManager.inspectionItemDatas"
+                                  ng-class="{'active':item===vmManager.currentInspectionItem}"
+                                  ng-click="vmManager.selectInspectionItem(item)">
                                    {{item.InspectionItem}}
                                </a>
                            </div>
                        </div>
                    </div>
                </div>
-               <div class="col-md-10 pull-right  bs-callout bs-callout-info well" style="min-height:500px;">
 
+
+               <div class="col-md-10 pull-right  bs-callout bs-callout-info well" style="min-height:500px;">
+                   <div class="row clearfix">
+                       <div class="clo-md-12 column">
+                           <div class="col-md-3">
+                               <p>
+                                   <label>工单号:</label>
+                                   {{vmManager.currentMaterialIdItem.OrderID}}
+                               </p>
+                           </div>
+                           <div class="col-md-3">
+                               <p>
+                                   <label>产品名:</label>
+                                   {{vmManager.currentMaterialIdItem.ProductName}}
+                               </p>
+                           </div>
+                           <div class="col-md-3">
+                               <p>
+                                   <label>产品数量:</label>
+                                   {{vmManager.currentMaterialIdItem.ProduceNumber}}
+                               </p>
+                           </div>
+                           <div class="col-md-3">
+                               <p>
+                                   <label>供应商:</label>
+                                   {{vmManager.currentMaterialIdItem.ProductSupplier}}
+                               </p>
+                           </div>
+                       </div>
+                   </div>
                </div>
            </div>
     </div>

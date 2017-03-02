@@ -160,6 +160,7 @@ namespace EicWorkPlatfrom.Controllers
             var datas = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigDatasBy(materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+
         [NoAuthenCheck]
         public JsonResult GetInspectionItemParameterBy(string materialId,string inspectionItem)
         {
