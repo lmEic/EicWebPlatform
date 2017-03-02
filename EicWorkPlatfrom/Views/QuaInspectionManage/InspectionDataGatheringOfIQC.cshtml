@@ -16,40 +16,52 @@
         
         <div class="h-split"></div>
 
-        <div class="row clearfix">
-            <div class="clo-md-12 column">
-                <div class="col-md-3">
-                    <p>
-                        <label>工单号:</label>
-                        {{vmManager.currentMaterialIdItem.OrderID}}
-                    </p>
-                </div>
-                <div class="col-md-3">
-                    <p>
-                        <label>产品名:</label>
-                        {{vmManager.currentMaterialIdItem.ProductName}}
-                    </p>
-                </div>
-                <div class="col-md-3">
-                    <p>
-                        <label>产品数量:</label>
-                        {{vmManager.currentMaterialIdItem.ProduceNumber}}
-                    </p>
-                </div>
-                <div class="col-md-3">
-                    <p>
-                        <label>供应商:</label>
-                        {{vmManager.currentMaterialIdItem.ProductSupplier}}
-                    </p>
-                </div>
+        <div class="row">
+            <div class="col-md-4">
+                <p>
+                    <label>工单号:</label>
+                    {{vmManager.currentMaterialIdItem.OrderID}}
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p>
+                    <label>品名:</label>
+                    {{vmManager.currentMaterialIdItem.ProductName}}
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p>
+                    <label>规格:</label>
+                    {{vmManager.currentMaterialIdItem.ProductStandard}}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <p>
+                    <label>供应商:</label>
+                    {{vmManager.currentMaterialIdItem.ProductSupplier}}
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p>
+                    <label>图号:</label>
+                    {{vmManager.currentMaterialIdItem.ProductDrawID}}
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p>
+                    <label>数量:</label>
+                    {{vmManager.currentMaterialIdItem.ProduceNumber}}
+                </p>
             </div>
         </div>
         <div class="h-split"></div>
         <div class="row clearfix" >
-               <div class="col-md-2 pull-left">
+               <div class="col-md-2">
                    <div class="bs-callout bs-callout-info">
                        <p>
-                           <i class="fa fa-chevron-down">品号列表</i>
+                           <i class="fa fa-list-ul">品号列表</i>
                        </p>
                    </div>
                    <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
@@ -70,63 +82,53 @@
                    </div>
                </div>
 
-
-               <div class="col-md-10 pull-right  bs-callout bs-callout-info well" style="min-height:500px;">
-                   <div class="row clearfix">
-                       <div class="clo-md-12 column">
-                           <div class="col-md-3">
-                               <span>
-                                   <label>品名:</label>
-                                   {{vmManager.currentMaterialIdItem.OrderID}}
-                               </span>
+               <div class="col-md-10">
+                   <div class="bs-callout bs-callout-info" style="min-height:500px;">
+                       <div class="well">
+                           <div class="row">
+                               <div class="col-md-4">
+                                   <span>
+                                       <label>检验项目:</label>
+                                       {{vmManager.currentInspectionItem.IqcInspectionItemConfig.InspectionItem}}
+                                   </span>
+                               </div>
+                               <div class="col-md-4">
+                                   <span>
+                                       <label>规格值:</label>
+                                       {{vmManager.currentInspectionItem.IqcInspectionItemConfig.SizeMemo}}
+                                   </span>
+                               </div>
+                               <div class="col-md-4">
+                                   <span>
+                                       <label>检验水平:</label>
+                                       {{vmManager.currentInspectionItem.IqcInspectionItemConfig.InspectionLevel}}{{vmManager.currentInspectionItem.IqcInspectionItemConfig.InspectionAQL}}
+                                   </span>
+                               </div>
                            </div>
-                           <div class="col-md-3">
-                               <span>
-                                   <label>规格:</label>
-                                   {{vmManager.currentMaterialIdItem.ProductName}}
-                               </span>
-                           </div>
-                           <div class="col-md-3">
-                               <span>
-                                   <label>图号:</label>
-                                   {{vmManager.currentMaterialIdItem.ProduceNumber}}
-                               </span>
-                           </div>
-                           <div class="col-md-3">
-                               <span>
-                                   <label>检验方式:</label>
-                                   {{vmManager.currentMaterialIdItem.ProductSupplier}}
-                               </span>
-                           </div>
-                           <div class="col-md-3">
-                               <span>
-                                   <label>规格上限:</label>
-                                   {{vmManager.currentMaterialIdItem.ProduceNumber}}
-                               </span>
-                           </div>
-                           <div class="col-md-3">
-                               <span>
-                                   <label>规格下限:</label>
-                                   {{vmManager.currentMaterialIdItem.ProductSupplier}}
-                               </span>
-                           </div>
-                           <div class="col-md-3">
-                               <span>
-                                   <label>数量:</label>
-                                   {{vmManager.currentMaterialIdItem.ProduceNumber}}
-                               </span>
-                           </div>
-                           <div class="col-md-3">
-                               <span>
-                                   <label>检验方式:</label>
-                                   {{vmManager.currentMaterialIdItem.ProductSupplier}}
-                               </span>
+                           <div class="row">
+                               <div class="col-md-4">
+                                   <span>
+                                       <label>抽样方案:</label>
+                                       {{vmManager.currentInspectionItem.InspectionCount}}{{vmManager.currentInspectionItem.AcceptCount}}{{vmManager.currentInspectionItem.RefuseCount}}
+                                   </span>
+                               </div>
+                               <div class="col-md-4">
+                                   <span>
+                                       <label>检验方法:</label>
+                                       {{vmManager.currentInspectionItem.IqcInspectionItemConfig.InspectionMethod}}
+                                   </span>
+                               </div>
+                               <div class="col-md-4">
+                                   <span>
+                                       <label>量具编号:</label>
+                                       {{vmManager.currentInspectionItem.IqcInspectionItemConfig.EquipmentID}}
+                                   </span>
+                               </div>
                            </div>
                        </div>
+                       @*<div class="well"></div>*@
                    </div>
-                   <div class="h-split"></div>
-
-
+                  
                </div>
            </div>
     </div>
