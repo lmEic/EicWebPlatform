@@ -61,6 +61,13 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
             materialId:materialId
         })
     }
+    //保存进料检验采集的数据
+    quality.saveIqcInspectionGetherDatas = function (iqcGatherDataModel) {
+        var url = quaInspectionManageUrl + 'SaveIqcInspectionGetherDatas';
+        return ajaxService.postData(url, {
+            iqcGatherDataModel: iqcGatherDataModel,
+        });
+    };
     return quality;
 })
 
@@ -378,6 +385,28 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityDataOp
 })
 ///fqc数据采集控制器
 qualityModule.controller("fqcDataGatheringCtrl", function ($scope) {
+    ///IQC检验采集数据视图模型
+    var uiVM = {
+        OrderId: null,
+        MaterialId: null,
+        MaterialCount: null,
+        InprectionItem: null,
+        InspectionCount: null,
+        InspectionAcceptCount: null,
+        InspectionRefuseCount: null,
+        InspectionItemDatas: null,
+        InsprectionItemSatus: null,
+        InsprectionItemResult: null,
+        InsprectionDate: null,
+        Memo: null,
+        OpPerson: null,
+        OpDate: null,
+        OpTime: null,
+        OpSign: null,
+        Id_Key: null,
+    }
+    $scope.vm = uiVM;
+    
     var vmManager = $scope.vmManager = {
         //数据集合
         dataList: [],
@@ -399,6 +428,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope) {
                     if (col !== undefined)
                     {
                         vmManager.dataList.push(item.indata);
+                        
                         col.focus = true;
                     }
                 }
@@ -409,4 +439,17 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope) {
             vmManager.inputDatas = leeHelper.createDataInputs(vmManager.totalCount, 5);
         },
     };
+
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    //保存Iqc采集数据
+    operate.saveIqcGatherDatas = function () {
+        var doneCount = vmManager.dataList.length;
+        var leftCount = vmManager.totalCount - doneCount;
+        //数据列表字符串
+        var dataStr = { datas: vmManager.dataList.join(","), done: doneCount, left: leftCount };
+        uiVM.InspectionItemDatas = dataStr;
+
+    };
+    operate.refresh = function () { };
 })
