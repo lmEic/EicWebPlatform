@@ -227,7 +227,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
         /// <returns></returns>
         public List<MaterialModel> GetPuroductSupplierInfo(string orderId)
         {
-            return   QuantityDBManager.QuantityPurchseDb.FindMaterialBy(orderId);
+            return   QualityDBManager.OrderIdInpectionDb.FindMaterialBy(orderId);
         }
         /// <summary>
         /// 得到当年年始到目前为止物料抽样批次
