@@ -78,7 +78,6 @@ var leeDataHandler = (function () {
             }
         },
     };
-
     ///数据存储
     var leeDataStorage = {
         ///存储登录用户信息
@@ -344,7 +343,50 @@ var leeHelper = (function () {
                 //return _(arrToSort).sortBy(function (a) { return -a[strObjPropertyName] });
                 return _.sortBy(arrToSort, strObjPropertyName).reverse();
             }
+        },
+        //根据总数量和列数量创建输入数据源
+        createDataInputs: function (totalCount/*总数量*/, colCount/*列数量*/) {
+        var inputDatas = [];
+        var id = 0;
+        var modData = totalCount % colCount;
+        var rows =parseInt(totalCount / colCount);
+        var rowItem, colItem;
+        for (var rowIndex = 1; rowIndex <= rows; rowIndex++) {
+            rowItem = { rowId: rowIndex,cols:[]};
+            for (var colIndex = 1; colIndex <= colCount; colIndex++) {
+                id += 1;
+                colItem = { index: id, rowId: rowIndex, colId: colIndex, indata: null, focus: false, nextColId: colIndex + 1, result:true };
+                if (colIndex == colCount)
+                {
+                    colItem.rowId += 1;
+                    colItem.nextColId = 1;
+                }
+                if (id == totalCount)
+                {
+                    colItem.nextColId = "last";
+                }
+                rowItem.cols.push(colItem);
+            }
+            if (rowIndex == rows)
+            {
+                rowIndex = rows + 1;
+            }
+            inputDatas.push(rowItem);
         }
+        //添加余数部分数据
+        rowItem = { rowId: rows + 1, cols: [] };
+        for (var colIndex = 1; colIndex <= modData; colIndex++) {
+            id += 1;
+            colItem = { index: id, rowId: rowItem.rowId, colId: colIndex, indata: null, focus: false, nextColId: colIndex + 1,result:true };
+            if (colIndex == modData)
+            {
+                colItem.nextColId = "last";
+            }
+            rowItem.cols.push(colItem);
+        }
+        inputDatas.push(rowItem);
+        return inputDatas;
+    },
     }
 })();
 ///zTree 助手
