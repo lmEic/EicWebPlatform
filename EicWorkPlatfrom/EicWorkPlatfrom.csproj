@@ -1322,6 +1322,7 @@
     <Content Include="Views\HR\DepartmentChangeSelectTpl.cshtml" />
     <Content Include="Views\QuaInspectionManage\IqcInspectionModeConfiguration.cshtml" />
     <Content Include="Views\QuaInspectionManage\InspectionDataGatheringOfFQC.cshtml" />
+    <Content Include="Views\QuaInspectionManage\InspectionFormManage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
