@@ -686,5 +686,4 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
     }
 
-   
 }

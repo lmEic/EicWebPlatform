@@ -31,9 +31,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId">ERP单号</param>
         /// <param name="sampleMaterialId">物料料号</param>
         /// <returns></returns>
-        public IqcInspectionItemConfigModel GetPringSampleItemBy(string sampleMaterialId,string inspectionItem)
+        public IqcInspectionItemConfigModel GetInspectionItemParameterBy(string sampleMaterialId,string inspectionItem)
         {
             return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigDatasBy(sampleMaterialId).FirstOrDefault(e => e.InspectionItem == inspectionItem);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sampleMaterialId"></param>
+        /// <param name="inspectionItem"></param>
+        /// <returns></returns>
+        public InspectionItemParameterModel GetInspectionItemParameterModel(string orderId, string sampleMaterialId, string inspectionItem)
+        {
+            return null;
         }
         /// <summary>
         /// 存储Iqc检验数据
@@ -43,9 +53,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return IqcInspectionManagerCrudFactory.IqcInspectionDetailCrud.Store(model,true);
         }
-
-
-
         /// <summary>
         /// 存储Iqc检验项次
         /// </summary>
@@ -53,6 +60,67 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public OpResult StoreIqcInspectionMasterModel(IqcInspectionMasterModel model)
         {
             return IqcInspectionManagerCrudFactory.IqcInspectionMasterCrud.Store(model, true);
+        }
+    }
+
+
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class InspectionItemParameterModel
+    {
+        public InspectionItemParameterModel(IqcInspectionItemConfigModel iqcInspectionItemConfig, int inMaterialCount)
+        {
+            this.IqcInspectionItemConfig = iqcInspectionItemConfig;
+            this._inMaterialCount = inMaterialCount;
+            getInspectionAcceptRefuseCountBy();
+        }
+        private Int64 _inMaterialCount;
+        public Int64 InMaterialCount
+        {
+            get { return _inMaterialCount; }
+        }
+        /// <summary>
+        ///检验项目配置
+        /// </summary>
+        public IqcInspectionItemConfigModel IqcInspectionItemConfig
+        {
+            set; get;
+        }
+        double _inspectionCount = 0;
+        /// <summary>
+        /// 需要检验的数量
+        /// </summary>
+        public double InspectionCount
+        {
+            get
+            {
+                return _inspectionCount;
+            }
+        }
+        double _acceptCount = 0;
+        /// <summary>
+        /// 检验接受的数量
+        /// </summary>
+        public double AcceptCount
+        {
+            get
+            {
+                return _acceptCount;
+            }
+        }
+        double _refuseCount = 0;
+        /// <summary>
+        /// 所收的数量
+        /// </summary>
+        public double RefuseCount
+        {
+            get
+            {
+                return _refuseCount;
+            }
         }
         /// <summary>
         /// 得到 抽验数量，接收数量，拒受数量
@@ -62,29 +130,32 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="inspectionAQL">规格</param>
         /// <param name="inMaterialCount">物料的总数量</param>
         /// <returns></returns>
-        public Dictionary <string, int> getInspectionAcceptRefuseCountBy(string inspectionMode, string inspectionLevel, string inspectionAQL, int inMaterialCount)
+        private void getInspectionAcceptRefuseCountBy()
         {
             var maxs = new List<Int64>(); var mins = new List<Int64>();
             double maxNumber; double minNumber;
-            Dictionary<string, int> retrunDic = new Dictionary<string, int>();
-           var models = IqcInspectionManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode, inspectionLevel, inspectionAQL);
+            if (IqcInspectionItemConfig == null) return;
+            var models = IqcInspectionManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(
+                IqcInspectionItemConfig.InspectionMode,
+                IqcInspectionItemConfig.InspectionLevel,
+                IqcInspectionItemConfig.InspectionAQL);
             models.ForEach(e =>
             { maxs.Add(e.EndNumber); mins.Add(e.StartNumber); });
             if (maxs.Count > 0)
-                maxNumber = GetMaxNumber(maxs, inMaterialCount);
+                maxNumber = GetMaxNumber(maxs, _inMaterialCount);
             else
                 maxNumber = 0;
             if (mins.Count > 0)
-                minNumber = GetMinNumber(mins, inMaterialCount);
+                minNumber = GetMinNumber(mins, _inMaterialCount);
             else
                 minNumber = 0;
-           var model= models.Where(e => e.StartNumber == minNumber && e.EndNumber == maxNumber).ToList().FirstOrDefault();
+            var model = models.Where(e => e.StartNumber == minNumber && e.EndNumber == maxNumber).ToList().FirstOrDefault();
             // InspectionCount, AcceptCount, RefuseCount,
-            if (model == null) return null;
-            retrunDic.Add("inspectionCount", model.InspectionCount);
-            retrunDic.Add("acceptCount", model.AcceptCount);
-            retrunDic.Add("refuseCount", model.RefuseCount);
-            return retrunDic;
+            if (model == null) return;
+            _inspectionCount= model.InspectionCount;
+            _acceptCount=model.AcceptCount;
+            _refuseCount = model.RefuseCount;
+
         }
         private Int64 GetMaxNumber(List<Int64> maxNumbers, Int64 number)
         {
@@ -93,7 +164,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 if (max != -1)
                 {
-                  
+
                     if (max >= number)
                     {
                         IntMaxNumbers.Add(max);
@@ -111,7 +182,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 if (min != -1)
                 {
-                    
+
                     if (min <= mumber)
                     {
                         IntMinNumbers.Add(min);
@@ -121,5 +192,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
             return IntMinNumbers.Max();
         }
+
     }
 }

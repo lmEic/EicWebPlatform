@@ -43,27 +43,10 @@
        <div class="row clearfix" >
                <div class="col-md-2 pull-left">
                    <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
-                       <div class="panel panel-default">
-                           <div class="panel-heading" role="tab">
+                       <div class="panel panel-default" ng-repeat="item in vmManager.materialIdDatas">
+                           <div class="panel-heading" role="tab" ng-dblclick="vmManager.selectMaterialIdItem(item)">
                                <a bs-collapse-toggle style="cursor:pointer;color:#000">
-                                   品号列表
-                               </a>
-                           </div>
-                           <div class="panel-collapse list-group" role="tabpanel" bs-collapse-target>
-                               <a class="panel-body list-group-item" ng-repeat="item in vmManager.materialIdDatas"
-                                  ng-class="{'active':item===vmManager.currentMaterialIdItem}"
-                                  ng-dblclick="vmManager.selectMaterialIdItem(item)">
                                    {{item.materialId}}
-                               </a>
-                           </div>
-                           
-                       </div>
-                   </div>
-                   <div class="panel-group" ng-model="panels.activePane" role="tablist" aria-multiselectable="true" bs-collapse>
-                       <div class="panel panel-default">
-                           <div class="panel-heading" role="tab">
-                               <a bs-collapse-toggle style="cursor:pointer;color:#000;">
-                                   项目列表
                                </a>
                            </div>
                            <div class="panel-collapse list-group" role="tabpanel" bs-collapse-target>

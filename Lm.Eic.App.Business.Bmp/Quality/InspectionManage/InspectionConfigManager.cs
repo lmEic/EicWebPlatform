@@ -42,6 +42,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
           return  IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId); 
         }
+
+      
+
         /// <summary>
         ///  在数据库中是否存在此料号
         /// </summary>
