@@ -320,3 +320,37 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityDataO
 qualityModule.controller("iqcDataGatheringCtrl", function ($scope) {
 
 })
+///fqc数据采集控制器
+qualityModule.controller("fqcDataGatheringCtrl", function ($scope) {
+    var vmManager = $scope.vmManager = {
+        //数据集合
+        dataList: [],
+        inputDatas:[],
+        dataInputKeyDown: function (item, $event) {
+            if ($event.keyCode === 13)
+            {
+                item.focus = false;
+                if (item.nextColId === "last")
+                {
+                    vmManager.dataList.push(item.indata);
+                    alert(vmManager.dataList.join(","));
+                    return;
+                }
+                var row = _.find(vmManager.inputDatas, { rowId: item.rowId });
+                if (row !== undefined)
+                {
+                    var col = _.find(row.cols, { colId: item.nextColId });
+                    if (col !== undefined)
+                    {
+                        vmManager.dataList.push(item.indata);
+                        col.focus = true;
+                    }
+                }
+            }
+        },
+        totalCount:null,
+        createDatas: function () {
+            vmManager.inputDatas = leeHelper.createDataInputs(vmManager.totalCount, 5);
+        },
+    };
+})
