@@ -41,9 +41,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="sampleMaterialId"></param>
         /// <param name="inspectionItem"></param>
         /// <returns></returns>
-        public InspectionItemParameterModel GetInspectionItemParameterModel(string orderId, string sampleMaterialId, string inspectionItem)
+        public InspectionItemParameterModel GetInspectionItemParameterModel(int inMaterialCount, string sampleMaterialId, string inspectionItem)
         {
-            return null;
+            var mm = GetInspectionItemParameterBy(sampleMaterialId, inspectionItem);
+            return new InspectionItemParameterModel(mm, inMaterialCount);
         }
         /// <summary>
         /// 存储Iqc检验数据

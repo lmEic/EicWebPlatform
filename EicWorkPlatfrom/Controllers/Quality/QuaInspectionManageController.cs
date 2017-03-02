@@ -149,19 +149,19 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         [NoAuthenCheck]
-        public JsonResult GetInspectionDataGatherMaterialIdDatas(string orderId)
+        public JsonResult GetIqcMaterialInfoDatas(string orderId)
         {
             var datas = InspectionService.InspectionDataGather.GetPuroductSupplierInfo(orderId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
-        public JsonResult GetInspectionDataGatherInspectionItemDatas (string materialId)
+        public JsonResult GetIqcInspectionItemConfigDatas (string materialId)
         {
             var datas = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigDatasBy(materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
-        public JsonResult GetInspectionItemParameterBy(string materialId,string inspectionItem)
+        public JsonResult GetIqcInspectionItemData(string materialId,string inspectionItem)
         {
             var datas = InspectionService.InspectionDataGather.GetInspectionItemParameterBy(materialId,inspectionItem);
             return Json(datas, JsonRequestBehavior.AllowGet);
