@@ -155,12 +155,14 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 {
                     foreach (DataRow dr in DT.Rows)
                     {
-                        long ProduceNumber = 0;
+                        double  ProduceNumber = 0;
+                        string materialId = dr["料号"].ToString();
                         //  SELECT  Sum(TH007) AS 数量 FROM  PURTH   WHERE   (TH001= '" + category + "') AND (TH002 = '" + code + "') AND (TH004='"; ;
-                        DataTable dtSum = DbHelper.Erp.LoadTable(dtSqlSum + dr["料号"].ToString() + "')");
+                        DataTable dtSum = DbHelper.Erp.LoadTable(dtSqlSum + materialId + "')");
                         if (dtSum.Rows.Count > 0)
                         {
-                            ProduceNumber =Convert .ToInt64( dtSum.Rows[0]["数量"].ToString().Trim());
+                            ProduceNumber = dtSum.Rows[0]["数量"].ToString().Trim().ToDouble ();
+                            
                         }
                        
                        var PorductInfo= PorductInfoS.GetProductInfoBy(dr["料号"].ToString()).FirstOrDefault ();

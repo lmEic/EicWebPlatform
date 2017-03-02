@@ -59,7 +59,7 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult CheckIqcspectionItemConfigMaterialId(string materialId)
         {
-            var result = InspectionService.InspectionItemConfigurator.CheckInspectionConfigMaterId(materialId);
+            var result = InspectionService.InspectionItemConfigurator.IsExistInspectionConfigMaterId(materialId);
             return Json(result,JsonRequestBehavior.AllowGet);
         }
         /// <summary>
