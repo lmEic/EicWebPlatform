@@ -181,7 +181,10 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetIqcInspectionItemAllInfo(int inMaterialCount, string materialId,string inspectionItem)
         {
-            var datas = InspectionService.InspectionDataGather.GetInspectionItemAllInfo(inMaterialCount,materialId,inspectionItem);
+
+            var iqcInspectionItemParameterData = InspectionService.InspectionDataGather.GetIIqcInspectionItemConfigDataBy(materialId, inspectionItem);
+            var inspectionModeConfigData = InspectionService.InspectionDataGather.GetInspectionModeConfigDataBy(iqcInspectionItemParameterData, inMaterialCount);
+            var datas = new { iqcInspectionItemParameterData, inspectionModeConfigData };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 

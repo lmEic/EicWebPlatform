@@ -376,7 +376,8 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityDataOp
         },
         selectInspectionItem: function (item) {
             vmManager.currentInspectionItem = item;
-            qualityDataOpService.getInspectionAllConfigInfo(vmManager.currentMaterialIdItem.ProduceNumber, vmManager.currentMaterialIdItem.ProductID, vmManager.currentInspectionItem.InspectionItem).then(function () {
+            qualityDataOpService.getInspectionAllConfigInfo(vmManager.currentMaterialIdItem.ProduceNumber, vmManager.currentMaterialIdItem.ProductID, vmManager.currentInspectionItem.InspectionItem).then(function (datas) {
+                console.log(datas);
 
             });
         }
