@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.App.Erp.Domain.QuantityModel;
 using System.IO;
 using Lm.Eic.App.Erp.Bussiness.QmsManage;
 
@@ -148,22 +149,39 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 由单号得到物料所有信息
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult GetIqcMaterialInfoDatas(string orderId)
         {
             var datas = InspectionService.InspectionDataGather.GetPuroductSupplierInfo(orderId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 由料号得到检验配置数据
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetIqcInspectionItemConfigDatas (string materialId)
+        public JsonResult GetIqcInspectionItemConfigDatas(string materialId)
         {
             var datas = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigDatasBy(materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 得到检验项目的所有信息
+        /// </summary>
+        /// <param name="inMaterialCount">进料数量</param>
+        /// <param name="materialId">料号</param>
+        /// <param name="inspectionItem">检验项</param>
+        /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetIqcInspectionItemData(string materialId,string inspectionItem)
+        public JsonResult GetIqcInspectionItemAllInfo(int inMaterialCount, string materialId,string inspectionItem)
         {
-            var datas = InspectionService.InspectionDataGather.GetInspectionItemParameterBy(materialId,inspectionItem);
+            var datas = InspectionService.InspectionDataGather.GetInspectionItemAllInfo(inMaterialCount,materialId,inspectionItem);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 

@@ -47,18 +47,31 @@ qualityModule.factory("qualityDataOpService", function (ajaxService) {
             iqcInspectionModeItem: iqcInspectionModeItem
         })
     }
+
+
     //进料检验数据采集模块获得品号数据
     quality.getInspectionDataGatherMaterialIdDatas = function(orderId){
-        var url = quaInspectionManageUrl + "GetInspectionDataGatherMaterialIdDatas";
+        var url = quaInspectionManageUrl + "GetIqcMaterialInfoDatas";
         return ajaxService.getData(url,{
             orderId: orderId
         })
     }
     //进料检验数据采集模块获得检验项目数据
     quality.getInspectionDataGatherInspectionItemDatas = function(materialId){
-        var url = quaInspectionManageUrl + "GetInspectionDataGatherInspectionItemDatas";
+        var url = quaInspectionManageUrl + "GetIqcInspectionItemConfigDatas";
         return ajaxService.getData(url,{
-            materialId:materialId
+           materialId:materialId
+        })
+    }
+
+
+
+    //GetIqcInspectionItemAllInfo
+
+       quality.getInspectionDataGatherInspectionItemAllInfoDatas = function(materialId){
+        var url = quaInspectionManageUrl + "GetIqcInspectionItemAllInfo";
+        return ajaxService.getData(url,{
+           materialId:materialId
         })
     }
     return quality;
@@ -345,10 +358,11 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityDataOp
             });
         },
         selectMaterialIdItem: function (item) {
-            qualityDataOpService.getInspectionDataGatherInspectionItemDatas(item).then(function (inspectionItemDatas) {
+            qualityDataOpService.getInspectionDataGatherInspectionItemDatas(item.ProductID).then(function (inspectionItemDatas) {
                 vmManager.inspectionItemDatas = inspectionItemDatas;
             });
-        }       
+        }
+        
     }
     $scope.vmManager = vmManager;
 
