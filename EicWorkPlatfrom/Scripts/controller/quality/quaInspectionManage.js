@@ -348,15 +348,15 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityDataOp
             {materialId:8888888888888,isActive:false,isDone:false},
         ],
         inspectionItemDatas: [
-            { materialId: 1111111111111, isActive: false, isDone: false },
-            { materialId: 222222222222, isActive: false, isDone: false },
-            { materialId: 3333333333333, isActive: false, isDone: false },
-            { materialId: 444444444444, isActive: false, isDone: false },
-            { materialId: 5555555555555, isActive: false, isDone: false },
-            { materialId: 666666666666666, isActive: false, isDone: false },
-            { materialId: 7777777777777, isActive: false, isDone: false },
-            { materialId: 999999999999, isActive: false, isDone: false },
-            { materialId: 8888888888888, isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
+            { materialId: "aaaaaaaaaaaaa", isActive: false, isDone: false },
         ],
         selectMaterialIdItem: function (item) {
             vmManager.currentMaterialIdItem = item;
@@ -374,6 +374,5 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityDataOp
         
     }
     $scope.vmManager = vmManager;
-   
 
 })
