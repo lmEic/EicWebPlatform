@@ -355,12 +355,22 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         orderId: null,
         currentMaterialIdItem: null,
         currentInspectionItem: null,
+        iqcInspectionItemAllInfo:null,
         materialIdDatas: [],
         inspectionItemDatas: [],
+        searchMaterialIdKeyDown:function($event){
+            if ($event.keyCode === 13) {
+                vmManager.getMaterialDatas();
+            }
+        },
         getMaterialDatas: function () {
-            qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
-                vmManager.materialIdDatas = materialIdDatas;
-            });
+            if (vmManager.orderId) {
+                qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
+                    vmManager.materialIdDatas = materialIdDatas;
+                    vmManager.orderId = null;
+                });
+            }
+            
         },
         selectMaterialIdItem: function (item) {
             vmManager.currentMaterialIdItem = item;
@@ -371,9 +381,8 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         selectInspectionItem: function (item) {
             vmManager.currentInspectionItem = item;
             qualityInspectionDataOpService.getInspectionAllConfigInfo(vmManager.currentMaterialIdItem.ProduceNumber, vmManager.currentMaterialIdItem.ProductID, vmManager.currentInspectionItem.InspectionItem).then(function (datas) {
-                console.log(datas)
-                vmManager.currentInspectionItem = datas;
-
+                console.log(datas);
+                vmManager.iqcInspectionItemAllInfo = datas;
             });
         }
 
