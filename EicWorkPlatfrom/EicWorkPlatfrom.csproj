@@ -1322,8 +1322,9 @@
     <Content Include="Views\HR\DepartmentChangeSelectTpl.cshtml" />
     <Content Include="Views\QuaInspectionManage\IqcInspectionModeConfiguration.cshtml" />
     <Content Include="Views\QuaInspectionManage\InspectionDataGatheringOfFQC.cshtml" />
-    <Content Include="Views\QuaInspectionManage\InspectionFormManage.cshtml" />
     <Content Include="Views\QuaInspectionManage\InspectionFormManageOfIqc.cshtml" />
+    <Content Include="Views\CommonTpl\DateRangeTpl.cshtml" />
+    <Content Include="Views\QuaInspectionManage\InspectionFormManageOfFqc.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -470,3 +470,13 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspect
     };
     operate.refresh = function () { };
 })
+///iql检验单管理
+qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService) {
+    var vmManager = $scope.vmManager = {
+        dateFrom: null,
+        dateTo: null,
+        editDatas: [],
+        selectedFormStatus:null,
+        formStatuses: [{ label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
+    };
+})
