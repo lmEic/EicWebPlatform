@@ -56,10 +56,11 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     }
     //iqc进料检验数据采集模块获得检验项目数据
-    quality.getInspectionDataGatherInspectionItemDatas = function (materialId) {
+    quality.getInspectionDataGatherInspectionItemDatas = function (orderId,materialId) {
         var url = quaInspectionManageUrl + "GetIqcInspectionItemConfigDatas";
         return ajaxService.getData(url, {
-            materialId: materialId
+            materialId: materialId,
+            orderId:orderId
         })
     }
     //iqc进料检验数据采集模块获取所有数据
@@ -364,7 +365,8 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         },
         selectMaterialIdItem: function (item) {
             vmManager.currentMaterialIdItem = item;
-            qualityInspectionDataOpService.getInspectionDataGatherInspectionItemDatas(item.ProductID).then(function (inspectionItemDatas) {
+            console.log(vmManager.orderId);
+            qualityInspectionDataOpService.getInspectionDataGatherInspectionItemDatas(vmManager.orderId,item.ProductID).then(function (inspectionItemDatas) {
                 vmManager.inspectionItemDatas = inspectionItemDatas;
             });
         },
