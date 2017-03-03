@@ -71,9 +71,12 @@
                            </div>
                            <div class="panel-collapse list-group " role="tabpanel" bs-collapse-target> 
                                <a class="panel-body list-group-item" ng-repeat="item in vmManager.inspectionItemDatas"
-                                  ng-class="{'active':item===vmManager.currentInspectionItem}"
+                                  ng-class="{'active':item===vmManager.currentInspectionItem,
+                                  'list-group-item-success':item.isFinished,
+                                  'list-group-item-danger':!item.isFinished}"
                                   ng-click="vmManager.selectInspectionItem(item)">
                                    {{item.InspectionItem}}
+                                   <span class="badge" ng-if="!item.isFinished">{{item.enterNumber}}</span>
                                </a>
                            </div>
                        </div>
