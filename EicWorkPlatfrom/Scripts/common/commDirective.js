@@ -116,6 +116,21 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             }
         };
 })
+.directive('ylDateRange', function () {
+    return {
+        restrict: 'EA',
+        templateUrl: '/CommonTpl/DateRangeTpl',
+        replace: false,
+        scope: {
+            dateFrom: '=',//起始日期
+            dateTo: '='//结束日期
+        },
+        link: function (scope, element, attrs) {
+            scope.dateFrom = new Date;
+            scope.dateTo = new Date();
+        }
+    };
+})
 .directive('ensureUserExist', function (connDataOpService) {
     return {
         require: '^ngModel',

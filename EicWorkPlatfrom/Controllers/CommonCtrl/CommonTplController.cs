@@ -78,5 +78,14 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 日期时间段模板
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ActionResult DateRangeTpl()
+        {
+            return View();
+        }
     }
 }

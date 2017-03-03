@@ -31,6 +31,14 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
          //Fqc检验项目数据采集
          templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfFQC',
     })
+    .state('inspectionFormManageOfIqc', {
+         //iqc检验单管理
+        templateUrl: inspectionUrlPrefix + 'InspectionFormManageOfIqc',
+    })
+    .state('inspectionFormManageOfFqc', {
+        //iqc检验单管理
+        templateUrl: inspectionUrlPrefix + 'InspectionFormManageOfFqc',
+    })
     ////--------------人员管理--------------------------
     //.state('registWorkerInfo', {
     //    templateUrl: 'ProEmployee/RegistWorkerInfo'
