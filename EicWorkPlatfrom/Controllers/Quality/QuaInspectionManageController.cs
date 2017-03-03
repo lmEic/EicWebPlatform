@@ -141,7 +141,7 @@ namespace EicWorkPlatfrom.Controllers
 
         #endregion
 
-
+        #region 检验数据采集
         #region  检验项目数据收集
 
         [NoAuthenCheck]
@@ -196,12 +196,26 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         #endregion
+        #endregion
 
         #region 检验单管理
-        public ActionResult InspectionFormManage()
+        #region iqc检验单管理
+        public ActionResult InspectionFormManageOfIqc()
         {
             return View();
         }
+        #endregion
+
+        #region fqc检验单管理
+        /// <summary>
+        /// Fqc检验单管理
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult InspectionFormManageOfFqc()
+        {
+            return View();
+        }
+        #endregion
         #endregion
     }
 }
