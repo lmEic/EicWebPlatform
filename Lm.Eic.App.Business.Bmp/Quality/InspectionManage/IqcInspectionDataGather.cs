@@ -59,14 +59,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         };
                         if (inspectionModeConfigModelData!=null )
                         {
-                            model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
-                            model.InspectionAQL = inspectionModeConfigModelData.InspectionAQL;
                             model.InspectionMode = inspectionModeConfigModelData.InspectionMode;
                             model.InspectionLevel = inspectionModeConfigModelData.InspectionLevel;
+                            model.InspectionAQL = inspectionModeConfigModelData.InspectionAQL;
+                            model.InspectionCount = inspectionModeConfigModelData.InspectionCount;
+                            model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
                             model.RefuseCount = inspectionModeConfigModelData.RefuseCount;
                             //需要录入的数据个数 暂时为抽样的数量
                             model.NeedFinishDataNumber = inspectionModeConfigModelData.InspectionCount;
-                            model.InspectionCount = inspectionModeConfigModelData.InspectionCount;
                         }
                         if (iqcHaveInspectionData != null)
                         {
@@ -77,7 +77,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         }
                         returnList.Add(model);
                     });
-           
             return returnList;
         }
 
