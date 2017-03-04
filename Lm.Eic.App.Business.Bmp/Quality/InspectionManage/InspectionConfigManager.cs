@@ -42,8 +42,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
           return  IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId); 
         }
-
-      
+        /// <summary>
+        /// 由单号 料号 得到IQC物料检验
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        public List<IqcInspectionMasterModel> GetIqcInspectionMasterModelListBy(string orderId,string materialId)
+        {
+            return IqcInspectionManagerCrudFactory.IqcInspectionMasterCrud.GetIqcInspectionMasterModelList(orderId, materialId);
+        }
 
         /// <summary>
         ///  在数据库中是否存在此料号

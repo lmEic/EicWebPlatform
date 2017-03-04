@@ -387,9 +387,12 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         //按物料品号获取检验项目信息
         selectMaterialIdItem: function (item) {
             vmManager.currentMaterialIdItem = item;
+            console.log(item);
             var datas = _.find(vmManager.cacheDatas, { key: item.ProductID, type: 'materialData' });
             if (datas === undefined) {
-                qualityInspectionDataOpService.getInspectionDataGatherInspectionItemDatas(vmManager.orderId, item.ProductID).then(function (inspectionItemDatas) {
+                qualityInspectionDataOpService.getInspectionDataGatherInspectionItemDatas(item.OrderID, item.ProductID).then(function (inspectionItemDatas) {
+                    console.log(inspectionItemDatas);
+
                     vmManager.inspectionItemDatas = inspectionItemDatas;
                     datas = { key: item.ProductID, type: 'materialData', dataSource: inspectionItemDatas };
                     vmManager.cacheDatas.push(datas);

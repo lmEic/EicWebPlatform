@@ -25,7 +25,7 @@
                 </p>
             </div>
         </div>
-        
+
         <div class="h-split"></div>
 
         <div class="row">
@@ -55,88 +55,89 @@
             </div>
         </div>
         <div class="h-split"></div>
-        <div class="row clearfix" >
-               <div class="col-md-2">
-                   <div class="bs-callout bs-callout-info">
-                       <p>
-                           <i class="fa fa-list-ul">品号列表</i>
-                       </p>
-                   </div>
-                   <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
-                       <div class="panel panel-default" ng-repeat="item in vmManager.materialIdDatas">
-                           <div class="panel-heading" role="tab" ng-click="vmManager.selectMaterialIdItem(item)" >
-                               <a bs-collapse-toggle style="cursor:pointer;color:#000">
-                                   {{item.ProductID}}
-                               </a>
-                           </div>
-                           <div class="panel-collapse list-group " role="tabpanel" bs-collapse-target> 
-                               <a class="panel-body list-group-item" ng-repeat="item in vmManager.inspectionItemDatas"
-                                  ng-class="{'active':item===vmManager.currentInspectionItem,
-                                  'list-group-item-success':item.isFinished,
-                                  'list-group-item-danger':!item.isFinished}"
-                                  ng-click="vmManager.selectInspectionItem(item)">
-                                   {{item.InspectionItem}}
-                                   <span class="badge" ng-if="!item.isFinished">{{item.enterNumber}}</span>
-                               </a>
-                           </div>
-                       </div>
-                   </div>
-               </div>
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <div class="bs-callout bs-callout-info">
+                    <p>
+                        <i class="fa fa-list-ul">品号列表</i>
+                    </p>
+                </div>
+                <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
+                    <div class="panel panel-default" ng-repeat="item in vmManager.materialIdDatas">
+                        <div class="panel-heading" role="tab" ng-click="vmManager.selectMaterialIdItem(item)">
+                            <a bs-collapse-toggle style="cursor:pointer;color:#000">
+                                {{item.ProductID}}
+                            </a>
+                        </div>
+                        <div class="panel-collapse list-group " role="tabpanel" bs-collapse-target>
+                            <a class="panel-body list-group-item" ng-repeat="item in vmManager.inspectionItemDatas"
+                               ng-class="{'active':item===vmManager.currentInspectionItem}"
+                               ng-click="vmManager.selectInspectionItem(item)">
+                                {{item.InspectionItem}}
+                                <i class="fa fa-check pull-right" ng-show="item.NeedFinishDataNumber===item.HaveFinishDataNumber" ng-class="{'badge-success':item.NeedFinishDataNumber===item.HaveFinishDataNumber}"></i>
+                                <span class="pull-right" ng-class="{true: 'badge-info', false: 'badge-fail'}[item.InsptecitonItemIsFinished]">
+                                    {{item.NeedFinishDataNumber}}/{{item.HaveFinishDataNumber}}
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-               <div class="col-md-10">
-                   <div class="bs-callout bs-callout-info" style="min-height:500px;">
-                       <div class="well">
-                           <div class="row">
-                               <div class="col-md-4">
-                                   <span>
-                                       <label>检验项目:</label>
-                                       {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionItem}}
-                                   </span>
-                               </div>
-                               <div class="col-md-4">
-                                   <span>
-                                       <label>规格值:</label>
-                                       {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.SizeMemo}}
-                                   </span>
-                               </div>
-                               <div class="col-md-4">
-                                   <span>
-                                       <label>检验水平:</label>
-                                       {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionLevel}}
-                                       <span ng-if="vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionAQL">  AQL=</span>
-                                       {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionAQL}}
-                                   </span>
-                               </div>
-                           </div>
-                           <div class="row">
-                               <div class="col-md-4">
-                                   <span>
-                                       <label>抽样方案:</label>
-                                       {{vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.InspectionCount}}
-                                       <span ng-if="vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.InspectionCount">/</span>
-                                       {{vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.InspectionCount}}
-                                       <span ng-if="vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.RefuseCount">/</span>
-                                       {{vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.RefuseCount}}
-                                   </span>
-                               </div>
-                               <div class="col-md-4">
-                                   <span>
-                                       <label>检验方法:</label>
-                                       {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionMethod}}
-                                   </span>
-                               </div>
-                               <div class="col-md-4">
-                                   <span>
-                                       <label>量具编号:</label>
-                                       {{vmManager.iqcInspectionItemAllInfo.IqcInspectionItemConfig.EquipmentID}}
-                                   </span>
-                               </div>
-                           </div>
-                       </div>
-                   </div>
-                  
-               </div>
-           </div>
+            <div class="col-md-10">
+                <div class="bs-callout bs-callout-info" style="min-height:500px;">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>
+                                    <label>检验项目:</label>
+                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionItem}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>规格值:</label>
+                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.SizeMemo}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>检验水平:</label>
+                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionLevel}}
+                                    <span ng-if="vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionAQL">  AQL=</span>
+                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionAQL}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>
+                                    <label>抽样方案:</label>
+                                    {{vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.InspectionCount}}
+                                    <span ng-if="vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.InspectionCount">/</span>
+                                    {{vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.InspectionCount}}
+                                    <span ng-if="vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.RefuseCount">/</span>
+                                    {{vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.RefuseCount}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>检验方法:</label>
+                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionMethod}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>量具编号:</label>
+                                    {{vmManager.iqcInspectionItemAllInfo.IqcInspectionItemConfig.EquipmentID}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
 
