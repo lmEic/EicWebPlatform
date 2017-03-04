@@ -17,7 +17,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     public class IqcInspectionDataGather
     {
         /// <summary>
-        /// 得到总表信息
+        /// IQC检验项目所有的信息
         /// </summary>
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
