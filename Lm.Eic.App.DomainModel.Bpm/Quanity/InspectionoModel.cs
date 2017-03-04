@@ -699,11 +699,31 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         ///检验项目
         /// </summary>
-        public string InSpecitonItem { get; set; }
+        public string InspectionItem { get; set; }
         /// <summary>
-        ///检验数量
+        ///检验方式
         /// </summary>
-        public double InspectionCount { get; set; }
+        public string InspectionMode { get; set; }
+        /// <summary>
+        ///检验水平
+        /// </summary>
+        public string InspectionLevel { get; set; }
+        /// <summary>
+        ///检验AQL值
+        /// </summary>
+        public string InspectionAQL { get; set; }
+        /// <summary>
+        ///检验数
+        /// </summary>
+        public int InspectionCount { get; set; }
+        /// <summary>
+        ///接授数
+        /// </summary>
+        public int AcceptCount { get; set; }
+        /// <summary>
+        ///拒授数
+        /// </summary>
+        public int RefuseCount { get; set; }
         /// <summary>
         /// 规格上限
         /// </summary>
@@ -712,16 +732,30 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///下限
         /// </summary>
         public double SizeLSL { set; get; }
+
+        /// <summary>
+        ///规格值 说明
+        /// </summary>
+        public string SizeMemo {set; get; }
         /// <summary>
         ///检验所有数据
         /// </summary>
         public string InspectionItemDatas { get; set; }
+
+        /// <summary>
+        /// 需要完成数据数量
+        /// </summary>
+        public int NeedFinishDataNumber { set; get; }
         /// <summary>
         /// 已经完成数据数量
         /// </summary>
-        public int HaveFinishDataCount { set; get; }
+        public int HaveFinishDataNumber { set; get; }
         /// <summary>
-        ///此项的检验状态
+        /// 检验结果Ok 还是Ng  初始值为空
+        /// </summary>
+        public string InspectionItemResult { get; set; }
+        /// <summary>
+        ///此项的检验状态(完成True，未完成False)
         /// </summary>
         public bool InsptecitonItemIsFinished { get; set; }
       
