@@ -738,7 +738,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// </summary>
         public string SizeMemo {set; get; }
         /// <summary>
-        ///检验所有数据
+        ///检验所有所得的数据
         /// </summary>
         public string InspectionItemDatas { get; set; }
 

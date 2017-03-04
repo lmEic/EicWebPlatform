@@ -36,7 +36,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                        var inspectionModeConfigModelData = GetInspectionModeConfigDataBy(m, orderMaterialInfo.ProduceNumber);
                         ///得到已经检验的数据
                        var  iqcHaveInspectionData = InspectionService.InspectionDataGather.GetIqcInspectionDetailModelBy(orderId, m.MaterialId, m.InspectionItem);
-                       var model = new IqcInspectionItemDataSummaryLabelModel()
+                        ///初始化 综合模块
+                        var model = new IqcInspectionItemDataSummaryLabelModel()
                         {
                             OrderId = orderId,
                             MaterialId = m.MaterialId,
@@ -44,18 +45,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                             SizeLSL = m.SizeLSL,
                             SizeUSL = m.SizeUSL,
                             SizeMemo=m.SizeMemo,
-                            AcceptCount= 0,
                             InspectionAQL = string.Empty ,
                             InspectionMode = string.Empty,
                             InspectionLevel = string.Empty,
+                            InspectionCount = 0,
+                            AcceptCount = 0,
                             RefuseCount = 0,
-                            NeedFinishDataNumber =0,
-                            InspectionCount= 0,
                             InspectionItemDatas = string.Empty,
                             InsptecitonItemIsFinished = false,
+                            NeedFinishDataNumber = 0,
                             HaveFinishDataNumber =0,
                             InspectionItemResult=string.Empty 
-                          
                         };
                         if (inspectionModeConfigModelData!=null )
                         {
@@ -73,10 +73,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                             model.InspectionItemDatas = iqcHaveInspectionData.InspectionItemDatas;
                             model.InspectionItemResult = iqcHaveInspectionData.InsprectionItemResult;
                             model.InsptecitonItemIsFinished = true;
-                            if (iqcHaveInspectionData.InspectionItemDatas != string.Empty)
-                            { model.HaveFinishDataNumber= iqcHaveInspectionData.InspectionItemDatas.Length; }
+                            model.HaveFinishDataNumber= GetHaveFinishDataNumber(iqcHaveInspectionData.InspectionItemDatas); 
                         }
-                     
                         returnList.Add(model);
                     });
            
@@ -84,7 +82,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
 
-
+        private int GetHaveFinishDataNumber(string inspectionDatas)
+        {
+            if ((!inspectionDatas.Contains(",") )|| inspectionDatas == string.Empty || inspectionDatas == null) return 0;
+            string[] mm = inspectionDatas.Split(',');
+            return mm.Count();
+        }
         /// <summary>
         /// 得到抽样物料信息
         /// </summary>
