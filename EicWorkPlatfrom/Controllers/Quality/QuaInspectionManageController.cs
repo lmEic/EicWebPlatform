@@ -204,14 +204,14 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         /// <summary>
-        /// 根据单据状态获得检验单数据
-        /// </summary>
+        /// 根据单据状态获得检验单数据  
+        /// </summary>  selectedFormStatus,dateFrom,dateTo
         /// <returns></returns>
 
         [NoAuthenCheck]
-        public JsonResult GetInspectionFormManageOfIqcDatas(string formStatus,DateTime  startTime,DateTime endTime)
+        public JsonResult GetInspectionFormManageOfIqcDatas(string selectedFormStatus, DateTime dateFrom, DateTime dateTo)
         {
-            var datas = InspectionService.InspectionFormManager.GetInspectionFormManagerListBy(formStatus, startTime,endTime);
+            var datas = InspectionService.InspectionFormManager.GetInspectionFormManagerListBy(selectedFormStatus, dateFrom, dateTo);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 

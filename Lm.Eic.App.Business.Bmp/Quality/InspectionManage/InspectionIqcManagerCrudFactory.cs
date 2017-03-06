@@ -228,8 +228,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     internal class InspectionIqcDetailCrud : CrudBase<InspectionIqcDetailModel, IIqcInspectionDetailRepository>
     {
        public InspectionIqcDetailCrud() : base(new IqcInspectionDetailRepository(), "物料检验项次数据")
-        {
-        }
+        {}
 
         protected override void AddCrudOpItems()
         {
