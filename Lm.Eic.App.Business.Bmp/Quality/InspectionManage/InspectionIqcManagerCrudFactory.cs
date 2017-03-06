@@ -221,6 +221,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.OrderId == orderId && e.MaterialId == materialId).ToList();
         }
+        internal bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
+        {
+            return irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId);
+        }
         /// <summary>
         /// 
         /// </summary>
