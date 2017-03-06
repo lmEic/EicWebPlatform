@@ -204,7 +204,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         ///检验工具编号
         /// </summary>
-        public string EquipmentID
+        public string EquipmentId
         {
             set { _equipmentid = value; }
             get { return _equipmentid; }
@@ -519,6 +519,17 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionItem = value; }
             get { return _inspectionItem; }
         }
+        private string _equipmentId;
+        /// <summary>
+        ///  量具财产编号
+        /// </summary>
+        public string EquipmentId
+        {
+            set { _equipmentId = value ; }
+            get { return _equipmentId; }
+        }
+
+
         private double _inspectioncount;
         /// <summary>
         ///检验数量
