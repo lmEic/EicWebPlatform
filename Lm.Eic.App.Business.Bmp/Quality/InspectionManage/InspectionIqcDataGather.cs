@@ -42,6 +42,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                             OrderId = orderId,
                             MaterialId = m.MaterialId,
                             InspectionItem = m.InspectionItem,
+                            EquipmentId=m.EquipmentId,
                             SizeLSL = m.SizeLSL,
                             SizeUSL = m.SizeUSL,
                             SizeMemo=m.SizeMemo,
@@ -72,6 +73,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         {
                             model.InspectionItemDatas = iqcHaveInspectionData.InspectionItemDatas;
                             model.InspectionItemResult = iqcHaveInspectionData.InspectionItemResult;
+                            model.EquipmentId = iqcHaveInspectionData.EquipmentId;
                             model.InsptecitonItemIsFinished = true;
                             model.HaveFinishDataNumber= GetHaveFinishDataNumber(iqcHaveInspectionData.InspectionItemDatas); 
                         }

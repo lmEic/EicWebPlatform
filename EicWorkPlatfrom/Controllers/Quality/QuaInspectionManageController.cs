@@ -130,16 +130,17 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 存储  检验方式配置
+        /// </summary>
+        /// <param name="inspectionModeConfigEntity"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult StoreIqcInspectionModeData(InspectionModeConfigModel iqcInspectionModeItem)
+        public JsonResult StoreInspectionModeConfigData(InspectionModeConfigModel inspectionModeConfigEntity)
         {
-            var opResult = InspectionService.ConfigManager.ModeConfigManager.StoreInspectionModeConfig(iqcInspectionModeItem);
+            var opResult = InspectionService.ConfigManager.ModeConfigManager.StoreInspectionModeConfig(inspectionModeConfigEntity);
             return Json(opResult);
         }
-
-
-
-
         #endregion
 
 
@@ -194,14 +195,14 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         /// <summary>
-        /// 根据单据状态获得检验单数据
-        /// </summary>
+        /// 根据单据状态获得检验单数据  
+        /// </summary>  selectedFormStatus,dateFrom,dateTo
         /// <returns></returns>
 
         [NoAuthenCheck]
-        public JsonResult GetInspectionFormManageOfIqcDatas(string formStatus,DateTime  startTime,DateTime endTime)
+        public JsonResult GetInspectionFormManageOfIqcDatas(string selectedFormStatus, DateTime dateFrom, DateTime dateTo)
         {
-            var datas = InspectionService.InspectionFormManager.GetInspectionFormManagerListBy(formStatus, startTime,endTime);
+            var datas = InspectionService.InspectionFormManager.GetInspectionFormManagerListBy(selectedFormStatus, dateFrom, dateTo);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
