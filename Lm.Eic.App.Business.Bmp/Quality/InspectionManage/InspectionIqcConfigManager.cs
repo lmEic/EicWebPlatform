@@ -11,7 +11,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
 
     /// <summary>
-    /// IQC 进料检验的配置  管理器
+    /// IQC 进料检验项目的配置  管理器
     /// </summary>
     public class InspectionIqcItemConfigManager
     {

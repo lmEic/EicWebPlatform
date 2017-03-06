@@ -48,9 +48,4 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.Store(model, true);
         }
     }
-
-
-
-
-  
 }
