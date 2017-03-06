@@ -15,7 +15,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     /// <summary>
     /// IQC进料检验单管理
     /// </summary>
-    public class IqcInspectionFormManager
+    public class InspectionIqcFormManager
     {
         /// <summary>
         /// 得到IQC检验表单信息 
