@@ -1,4 +1,4 @@
-﻿body > .row {
+﻿  body > .row {
     width: 100%;
 }
 
@@ -483,3 +483,49 @@ body.ng-pageslide-body-closed::before {
 .invalidInputBg {
     background-image: linear-gradient(to right,#fb2a0d 0%, #fff 25%,#fff 75%,#fb2a0d 100%);
 }
+ /*-----------------提示框--------------------*/
+ .badge-info{
+    float:right;
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    line-height: 1;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-align: center;
+    background-color: #2fa4e7;
+    border-radius: 10px;
+}
+.badge-fail{
+    float:right;
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    line-height: 1;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-align: center;
+    background-color:#d9534f;
+    border-radius: 10px;
+ }
+.badge-success{
+    float:right;
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    line-height: 1;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-align: center;
+    background-color:#5cb85c;
+    border-radius: 10px;
+ }
