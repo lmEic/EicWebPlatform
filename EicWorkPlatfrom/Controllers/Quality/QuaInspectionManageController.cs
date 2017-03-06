@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.App.Erp.Domain.QuantityModel;
 using System.IO;
 using Lm.Eic.App.Erp.Bussiness.QmsManage;
 
@@ -30,11 +31,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-        [NoAuthenCheck]
-        public ActionResult InspectionDataGatheringOfIQC()
-        {
-            return View();
-        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -59,7 +56,7 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult CheckIqcspectionItemConfigMaterialId(string materialId)
         {
-            var result = InspectionService.InspectionItemConfigurator.CheckInspectionConfigMaterId(materialId);
+            var result = InspectionService.InspectionItemConfigurator.IsExistInspectionConfigMaterId(materialId);
             return Json(result,JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -127,7 +124,7 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
-        #region 
+        #region  检验方式
         public ActionResult IqcInspectionModeConfiguration()
         {
             return View();
@@ -142,6 +139,79 @@ namespace EicWorkPlatfrom.Controllers
 
 
 
+        #endregion
+
+
+      
+        #region  检验项目数据收集
+
+        [NoAuthenCheck]
+        public ActionResult InspectionDataGatheringOfIQC()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 由单号得到物料所有信息
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetIqcMaterialInfoDatas(string orderId)
+        {
+            var datas = InspectionService.InspectionDataGather.GetPuroductSupplierInfo(orderId);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 由料号得到检验配置数据
+        /// <param name="materialId">料号</param>
+        /// <param name="orderId">单号</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetIqcInspectionItemConfigDatas(string orderId,string materialId)
+        {
+            var datas = InspectionService.InspectionDataGather.GetIqcInspectionItemDataSummaryLabelList(orderId, materialId);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 得到检验项目的所有信息
+        /// </summary>
+        /// <param name="inMaterialCount">进料数量</param>
+        /// <param name="materialId">料号</param>
+        /// <param name="inspectionItem">检验项</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetIqcInspectionItemAllInfo(int inMaterialCount, string materialId,string inspectionItem)
+        {
+
+            var iqcInspectionItemParameterData = InspectionService.InspectionDataGather.GetIqcInspectionItemConfigDataBy(materialId, inspectionItem);
+            var inspectionModeConfigData = InspectionService.InspectionDataGather.GetInspectionModeConfigDataBy(iqcInspectionItemParameterData, inMaterialCount);
+            var datas = new { iqcInspectionItemParameterData, inspectionModeConfigData };
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+
+
+        #region 检验单管理
+        #region iqc检验单管理
+        [NoAuthenCheck]
+        public ActionResult InspectionFormManageOfIqc()
+        {
+            return View();
+        }
+        #endregion
+
+        #region fqc检验单管理
+        /// <summary>
+        /// Fqc检验单管理
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult InspectionFormManageOfFqc()
+        {
+            return View();
+        }
+        #endregion
         #endregion
 
     }

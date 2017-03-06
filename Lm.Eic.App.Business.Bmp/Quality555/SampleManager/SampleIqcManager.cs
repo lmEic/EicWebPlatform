@@ -101,7 +101,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
                
                  foreach (var f in SampleItem)
                  {
-                     var mm = SampleManger.SampleRuleTableManger.getSampleNumberBy(f.CheckWay, f.CheckLevel, f.Grade, productInfo.ProduceNumber);
+                    //productInfo.ProduceNumber
+                    var mm = SampleManger.SampleRuleTableManger.getSampleNumberBy(f.CheckWay, f.CheckLevel, f.Grade, 0);
                      if (f.SampleItem.Contains("盐雾"))
                      {
                          if (!JudgeYwTest(productInfo.ProductID, productInfo.ProduceInDate))
@@ -160,7 +161,8 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
                 if (SampleMaterialParmaterS == null || SampleMaterialParmaterS.Count() == 0) return null;
                 foreach (var Parmater in SampleMaterialParmaterS)
                 {
-                    var SampleNumber = SampleManger.SampleRuleTableManger.getSampleNumberBy(Parmater.CheckWay, Parmater.CheckLevel, Parmater.Grade, productInfo.ProduceNumber);
+                    // productInfo.ProduceNumber
+                    var SampleNumber = SampleManger.SampleRuleTableManger.getSampleNumberBy(Parmater.CheckWay, Parmater.CheckLevel, Parmater.Grade, 0);
                     string ProductName = productInfo.ProductName;
                     if (!(JudgeMaterialTwoYearIsRecord(Parmater.SampleMaterial)))
                     {    //如果第一次检验抽样数理加大一倍
@@ -225,7 +227,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
         /// <returns></returns>
         public List<MaterialModel> GetPuroductSupplierInfo(string orderId)
         {
-            return   QuantityDBManager.QuantityPurchseDb.FindMaterialBy(orderId);
+            return   QualityDBManager.OrderIdInpectionDb.FindMaterialBy(orderId);
         }
         /// <summary>
         /// 得到当年年始到目前为止物料抽样批次

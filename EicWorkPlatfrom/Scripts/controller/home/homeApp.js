@@ -106,10 +106,13 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         },
         //013935获取日历数据
         loadCalendarDatas: function () {
+
             if (window.localStorage) {
-                if (localStorage.getItem("calendarDatas") == null) {
+                if (localStorage.getItem("calendarDatas") == null || localStorage.getItem("nowMonth") != vmManager.nowMonth || localStorage.getItem("nowYear") != vmManager.nowYear) {
                     $scope.promise = homeDataopService.getCalendarDatas(vmManager.nowYear, vmManager.nowMonth).then(function (datas) {
                         var calendarStr = JSON.stringify(datas);
+                        localStorage.setItem("nowYear", vmManager.nowYear);
+                        localStorage.setItem("nowMonth", vmManager.nowMonth);
                         localStorage.setItem("calendarDatas", calendarStr);
                         vmManager.calendarDatas = datas;
                         var week = [];

@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
-    #region  IQC  IQC物料检验配置
+    #region  IQC  IQC物料检验配置 Crud
     /// <summary>
     /// IQC物料检验配置
     /// </summary>
@@ -75,6 +75,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
         }
+      
         /// <summary>
         /// 批量保存 IQC检验项目数据
         /// </summary>
@@ -103,8 +104,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
            
         }
     }
-
-
 
 
     /// <summary>
@@ -136,6 +135,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private OpResult AddIqcInspectionMaster(IqcInspectionMasterModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+        public List<IqcInspectionMasterModel> GetIqcInspectionMasterModelList(string orderId,string materialId)
+        {
+            
+          
+            return irep.Entities.Where(e => e.OrderId == orderId&&e.MaterialId ==materialId).ToList();
         }
     }
 
@@ -169,6 +174,21 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private OpResult AddIqcInspectionDetail(IqcInspectionDetailModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+        /// <summary>
+        /// 由单号和料号得到所有检验项目的数据
+        /// </summary>
+        /// <param name="orderid">单号</param>
+        /// <param name="materialId">料号</param>
+        /// <returns></returns>
+        public List<IqcInspectionDetailModel> GetIqcInspectionDetailModelListBy(string orderid, string materialId)
+        { 
+            return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId).ToList();;
+        }
+
+        public IqcInspectionDetailModel GetIqcInspectionDetailModelBy(string orderid, string materialId,string inspectionItem)
+        {
+            return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId && e.InspecitonItem == inspectionItem).ToList().FirstOrDefault(); ;
         }
     }
 

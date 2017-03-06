@@ -1,0 +1,47 @@
+﻿<div ng-controller="fqcDataGatheringCtrl">
+    <h1>FQC数据采集</h1>
+    <div class="well">
+        <label>输入数据采集个数</label>
+        <input ng-model="vmManager.totalCount"/>
+        <button class="btn btn-primary" ng-click="vmManager.createDatas()">生成</button>
+    </div>
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th ng-repeat="header in vmManager.inputDatas[0].cols">
+                    <label class="label label-info">{{header.colId}}</label>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in vmManager.inputDatas">
+                <td ng-repeat="col in row.cols">
+                    <input ng-model="col.indata" ng-class="{'invalidInputBg':!col.result,'':col.result}"
+                            focus-setter focus-if="col.focus"  ng-keydown="vmManager.dataInputKeyDown(col,$event)"/>
+                    <label class="label label-success">Data{{$index+1}}{{col.colId}}</label>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <button class="btn btn-warning">保存数据</button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <div class="well">
+        <div class="row">
+            <div class="col-md-6">
+                <code>
+                    {{vmManager.inputDatas|json}}
+                </code>
+            </div>
+            <div class="col-md-6">
+                <code>
+                    {{vmManager.dataList|json}}
+                </code>
+            </div>
+        </div>
+    </div>
+</div>

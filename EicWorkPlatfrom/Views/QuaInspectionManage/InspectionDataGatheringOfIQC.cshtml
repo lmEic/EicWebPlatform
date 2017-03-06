@@ -1,188 +1,142 @@
-﻿<div class="panel panel-primary" ng-controller="inspectionDataGatherCtrl">
+﻿<div class="panel panel-primary" ng-controller="iqcDataGatheringCtrl">
     <div class="panel-heading">
         <h6 class="panel-title"> 进料检验数据采集</h6>
     </div>
     <div class="panel-body">
         <div class="row">
-            <div style="background:#eee;overflow:hidden;">
-                <div class="pull-left" style="width:45%;padding:10px;">
-                    <form role="form" name="iqcInspectionItemForm" class="form-horizontal" novalidate onkeypress="if (event.keyCode == 13) return false;">
-                        <fieldset>
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">品号</label>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" required name="materialId" ng-model="vm.MaterialId" value="{{vm.MaterialId}}" />
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.materialId.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">品号不能为空</small>
-                                    </div>
-                                </div>
-                                <label class="col-md-2" controle-label>检验方式</label>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn  btn-default" ng-model="vm.InspectionMode"
-                                            data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="正常"
-                                            bs-options="item.id as item.text for item in vmManager.inspectionMode" bs-select>
-                                        <span class="caret"></span>
-                                    </button>
-                                </div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="输入工单号查询" ng-model="vmManager.orderId" ng-keydown="vmManager.searchMaterialIdKeyDown($event)">
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" ng-click="vmManager.getMaterialDatas()"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-2 col-md-offset-5">
+                <p>
+                    <label>工单号:</label>
+                    {{vmManager.currentMaterialIdItem.OrderID}}
+                </p>
+            </div>
+            <div class="col-md-2">
+                <p>
+                    <label>数量:</label>
+                    {{vmManager.currentMaterialIdItem.ProduceNumber}}
+                </p>
+            </div>
+        </div>
 
-                            </div>
+        <div class="h-split"></div>
 
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">检验项目</label>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" required name="inspectionItem" ng-model="vm.InspectionItem" ng-blur="vmManager.getInspectionIndex()" />
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.inspectionItem.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">检验项目不能为空</small>
-                                    </div>
-                                </div>
+        <div class="row">
+            <div class="col-md-3">
+                <p>
+                    <label>品名:</label>
+                    {{vmManager.currentMaterialIdItem.ProductName}}
+                </p>
+            </div>
+            <div class="col-md-4">
+                <p>
+                    <label>规格:</label>
+                    {{vmManager.currentMaterialIdItem.ProductStandard}}
+                </p>
+            </div>
+            <div class="col-md-3">
+                <p>
+                    <label>供应商:</label>
+                    {{vmManager.currentMaterialIdItem.ProductSupplier}}
+                </p>
+            </div>
+            <div class="col-md-2">
+                <p>
+                    <label>图号:</label>
+                    {{vmManager.currentMaterialIdItem.ProductDrawID}}
+                </p>
+            </div>
+        </div>
+        <div class="h-split"></div>
+        <div class="row clearfix">
+            <div class="col-md-2">
+                <div class="bs-callout bs-callout-info">
+                    <p>
+                        <i class="fa fa-list-ul">品号列表</i>
+                    </p>
+                </div>
+                <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
+                    <div class="panel panel-default" ng-repeat="item in vmManager.materialIdDatas">
+                        <div class="panel-heading" role="tab" ng-click="vmManager.selectMaterialIdItem(item)">
+                            <a bs-collapse-toggle style="cursor:pointer;color:#000">
+                                {{item.ProductID}}
+                            </a>
+                        </div>
+                        <div class="panel-collapse list-group " role="tabpanel" bs-collapse-target>
+                            <a class="panel-body list-group-item" ng-repeat="item in vmManager.inspectionItemDatas"
+                               ng-class="{'active':item===vmManager.currentInspectionItem}"
+                               ng-click="vmManager.selectInspectionItem(item)">
+                                {{item.InspectionItem}}
+                                <i class="fa fa-check pull-right" ng-show="item.NeedFinishDataNumber===item.HaveFinishDataNumber" ng-class="{'badge-success':item.NeedFinishDataNumber===item.HaveFinishDataNumber}"></i>
+                                <span class="pull-right" ng-class="{true: 'badge-info', false: 'badge-fail'}[item.InsptecitonItemIsFinished]">
+                                    {{item.NeedFinishDataNumber}}/{{item.HaveFinishDataNumber}}
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-
-                                <label class="col-md-2 control-label">检验工序</label>
-                                <div class="col-md-4">
-                                    <input type="number" class="form-control" required name="inspectionItemIndex" ng-model="vm.InspectionItemIndex" />
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.inspectionItemIndex.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">规格上限不能为空</small>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">规格上限</label>
-                                <div class="col-md-4">
-                                    <input type="number" class="form-control" required name="sizeUSL" ng-model="vm.SizeUSL" />
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.sizeUSL.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">规格上限不能为空</small>
-                                    </div>
-                                </div>
-
-                                <label class="col-md-2 control-label">规格下限</label>
-                                <div class="col-md-4">
-                                    <input type="number" class="form-control" required name="sizeLSL" ng-model="vm.SizeLSL" />
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.sizeLSL.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">规格下限不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">规格说明</label>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" required name="sizeMemo" ng-model="vm.SizeMemo" />
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.sizeMemo.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">规格说明不能为空</small>
-                                    </div>
-                                </div>
-                                <label class="col-md-2 control-label">检验水平</label>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" required name="inspectionLevel" ng-model="vm.InspectionLevel" />
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.inspectionLevel.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">检验水平不能为空</small>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">AQL</label>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" required name="inspectionAQL" ng-model="vm.InspectionAQL" />
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.inspectionAQL.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">规格值不能为空</small>
-                                    </div>
-                                </div>
-
-                                <label class="col-md-2 control-label">检验规范</label>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" required name="SIPInspectionStandard" ng-model="vm.SIPInspectionStandard" />
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.SIPInspectionStandard.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">规格值不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">检验方法</label>
-                                <div class="col-md-10">
-                                    <textarea required name="inspectionMethod" ng-model="vm.InspectionMethod" class="form-control" rows="2" style="resize:none;"></textarea>
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.inspectionMethod.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">检验方法不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">量具编号</label>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" required name="equipmentID" ng-model="vm.EquipmentID" />
-                                    <div class="error-messages" ng-messages="iqcInspectionItemForm.equipmentID.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">量具编号不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-
-                    </form>
-                    <div class="alert alert-info">
+            <div class="col-md-10">
+                <div class="bs-callout bs-callout-info" style="min-height:500px;">
+                    <div class="well">
                         <div class="row">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button class="btn btn-primary" ng-click="operate.save(iqcInspectionItemForm.$valid)"><i class="fa fa-save"></i>保存</button>
-                                <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>检验项目:</label>
+                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionItem}}
+                                </span>
                             </div>
-                            <div class="form-group">
-                                <div class="col-md-5 col-md-offset-3">
-                                    <div yl-operatemsg-board></div>
-                                </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>规格值:</label>
+                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.SizeMemo}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>检验水平:</label>
+                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionLevel}}
+                                    <span ng-if="vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionAQL">  AQL=</span>
+                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionAQL}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>
+                                    <label>抽样方案:</label>
+                                    {{vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.InspectionCount}}
+                                    <span ng-if="vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.InspectionCount">/</span>
+                                    {{vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.InspectionCount}}
+                                    <span ng-if="vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.RefuseCount">/</span>
+                                    {{vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.RefuseCount}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>检验方法:</label>
+                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionMethod}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>量具编号:</label>
+                                    {{vmManager.iqcInspectionItemAllInfo.IqcInspectionItemConfig.EquipmentID}}
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="pull-left" style="width:55%;border-left:4px solid #046278;min-height:392px;">
-                    <div class="table-responsive" cg-busy="{promise:searchPromise}">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th>工序</th>
-                                    <th>品号</th>
-                                    <th>检验项目</th>
-                                    <th>规格说明</th>
-                                    <th>检验水平</th>
-                                    <th>AQL</th>
-                                    <th>检验方法</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="item in vmManager.dataSets track by $index">
-                                    <td>{{item.InspectionItemIndex}}</td>
-                                    <td>{{item.MaterialId}}</td>
-                                    <td>{{item.InspectionItem}}</td>
-                                    <td>{{item.SizeMemo}}</td>
-                                    <td>{{item.InspectionLevel}}</td>
-                                    <td>{{item.InspectionAQL}}</td>
-                                    <td>{{item.InspectionMethod}}</td>
-                                    <td style="cursor:pointer;">
-                                        <button class="btn btn-xs btn-info" ng-click="operate.editItem(item)" title="编辑">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item)" title="删除">
-                                            <i class="fa fa-remove"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div ng-if="vmManager.dataSets.length>0"
-                         yl-pagination data-dataset="vmManager.dataSource"
-                         data-datasource="vmManager.dataSets">
-                    </div>
-                </div>
             </div>
-
         </div>
     </div>
 
