@@ -80,7 +80,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return returnList;
         }
 
-
+        /// <summary>
+        /// 分像数据
+        /// </summary>
+        /// <param name="inspectionDatas"></param>
+        /// <returns></returns>
         private int GetHaveFinishDataNumber(string inspectionDatas)
         {
             if ((!inspectionDatas.Contains(",") )|| inspectionDatas == string.Empty || inspectionDatas == null) return 0;
