@@ -158,11 +158,11 @@
                                         <small ng-message="required">进货数量不能为空</small>
                                     </div>
                                 </div>
-                                <label class="col-md-1 control-label">检测方式:</label>
+                                <label class="col-md-1 control-label">检测日期:</label>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control" name="inspectionMode" ng-model="vm.InspectionMode" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.inspectionMode.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">检测方式不能为空</small>
+                                    <input type="text" class="form-control" name="finishDate" ng-model="vm.FinishDate" required />
+                                    <div class="error-messages" ng-messages="inspectionFormManage.finishDate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">检测日期不能为空</small>
                                     </div>
                                 </div>
                             </div>
@@ -174,7 +174,6 @@
                                         <small ng-message="required">规格不能为空</small>
                                     </div>
                                 </div>
-                                
                                 <label class="col-md-1 control-label">检测项目:</label>
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="materialCount" ng-model="vm.InspectionItems" required />
@@ -182,11 +181,11 @@
                                         <small ng-message="required">检测项目不能为空</small>
                                     </div>
                                 </div>
-                                <label class="col-md-1 control-label">检测日期:</label>
+                                <label class="col-md-1 control-label">检测方式:</label>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control" name="finishDate" ng-model="vm.FinishDate" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.finishDate.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">检测日期不能为空</small>
+                                    <input type="text" class="form-control" name="inspectionMode" ng-model="vm.InspectionMode" required />
+                                    <div class="error-messages" ng-messages="inspectionFormManage.inspectionMode.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">检测方式不能为空</small>
                                     </div>
                                 </div>
                             </div>
