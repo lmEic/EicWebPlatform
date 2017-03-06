@@ -80,6 +80,15 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             iqcGatherDataModel: iqcGatherDataModel,
         });
     };
+
+    /////////////////////////////iqc检验单管理模块/////////////////////////
+    //iqc检验单管理模块获取表单数据
+    quality.getDevelopModules = function (selectedFormStatus) {
+        var url = quaInspectionManageUrl + 'GetInspectionFormManageOfIqcModules';
+        return ajaxService.getData(url, {
+            selectedFormStatus: selectedFormStatus
+        })
+    };
     return quality;
 })
 
@@ -504,13 +513,71 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspect
     };
     operate.refresh = function () { };
 })
-///iql检验单管理
-qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService) {
+
+
+///iqc检验单管理
+qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
+    var uiVM = {
+            OrderId:null,
+            MaterialId: null,
+            MaterialName: null,
+            MaterialSpec: null,
+            MaterialSupplier: null,
+            MaterialInDate: null,
+            MaterialDrawId: null,
+            MaterialCount: null,
+            InspectionMode: null,
+            InspctionResult: null,
+            InspectionStatus: null,
+            InspectionItems: null,
+            FinishDat: null
+        };
+    $scope.vm = uiVM;
     var vmManager = $scope.vmManager = {
         dateFrom: null,
         dateTo: null,
         editDatas: [],
         selectedFormStatus:null,
         formStatuses: [{ label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
+        editWindowWidth: "100%",
+        isShowEditWindow: false,
+        currentItem:null,
+        showItemWindow: function (item) {
+            vmManager.currentItem = item;
+            $scope.vm = vmManager.currentItem;
+            vmManager.isShowEditWindow = !vmManager.isShowEditWindow;
+        },
+        showCheckModal: function () {
+            vmManager.checkModal.$promise.then(vmManager.checkModal.show);
+        },
+
+        checkModal: $modal({
+            title: "审核提示",
+            content: "亲~您确定要审核吗",
+            templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
+            controller: function ($scope) {
+                $scope.confirmDelete = function (item) {
+                    
+                }
+            },
+            show:false,
+        }),
+        //载入检验表单数据
+        getDevelopModules: function () {
+            qualityInspectionDataOpService.getDevelopModules(vmManager.selectedFormStatus).then(function (editDatas) {
+                vmManager.editDatas = editDatas;
+            })
+        }
+        
     };
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.save = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            qualityInspectionDataOpService.saveInspectionFormManageOfIqc($scope.vm).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
+
+            })
+        })
+    }
 })

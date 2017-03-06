@@ -193,10 +193,9 @@ namespace EicWorkPlatfrom.Controllers
 
 
 
-       
-
         #region 检验单管理
         #region iqc检验单管理
+        [NoAuthenCheck]
         public ActionResult InspectionFormManageOfIqc()
         {
             return View();
