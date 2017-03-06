@@ -71,7 +71,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         if (iqcHaveInspectionData != null)
                         {
                             model.InspectionItemDatas = iqcHaveInspectionData.InspectionItemDatas;
-                            model.InspectionItemResult = iqcHaveInspectionData.InsprectionItemResult;
+                            model.InspectionItemResult = iqcHaveInspectionData.InspectionItemResult;
                             model.InsptecitonItemIsFinished = true;
                             model.HaveFinishDataNumber= GetHaveFinishDataNumber(iqcHaveInspectionData.InspectionItemDatas); 
                         }
