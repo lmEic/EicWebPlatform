@@ -130,16 +130,17 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 存储  检验方式配置
+        /// </summary>
+        /// <param name="inspectionModeConfigEntity"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult StoreIqcInspectionModeData(InspectionModeConfigModel iqcInspectionModeItem)
+        public JsonResult StoreInspectionModeConfigData(InspectionModeConfigModel inspectionModeConfigEntity)
         {
-            var opResult = InspectionService.ConfigManager.ModeConfigManager.StoreInspectionModeConfig(iqcInspectionModeItem);
+            var opResult = InspectionService.ConfigManager.ModeConfigManager.StoreInspectionModeConfig(inspectionModeConfigEntity);
             return Json(opResult);
         }
-
-
-
-
         #endregion
 
 

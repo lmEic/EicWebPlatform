@@ -41,10 +41,10 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     };
 
     //处理检验方式配置数据
-    quality.storeIqcInspectionModeData = function (iqcInspectionModeItem) {
-        var url = quaInspectionManageUrl + "StoreIqcInspectionModeData";
+    quality.storeInspectionModeConfigData = function (inspectionModeConfigEntity) {
+        var url = quaInspectionManageUrl + "StoreInspectionModeConfigData";
         return ajaxService.postData(url, {
-            iqcInspectionModeItem: iqcInspectionModeItem
+            inspectionModeConfigEntity: inspectionModeConfigEntity
         })
     }
 
@@ -300,7 +300,7 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
             controller: function ($scope) {
                 $scope.confirmDelete = function () {
                     vmManager.deleteItem.OpSign = "delete";
-                    qualityInspectionDataOpService.storeIqcInspectionModeData(vmManager.deleteItem).then(function (opresult) {
+                    qualityInspectionDataOpService.storeInspectionModeConfigData(vmManager.deleteItem).then(function (opresult) {
                         leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                             if (opresult.Result) {
                                 leeHelper.remove(vmManager.dataSets, vmManager.deleteItem);

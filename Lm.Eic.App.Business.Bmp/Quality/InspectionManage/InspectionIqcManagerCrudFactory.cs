@@ -214,9 +214,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
         internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelList(string orderId, string materialId)
         {
-
-
             return irep.Entities.Where(e => e.OrderId == orderId && e.MaterialId == materialId).ToList();
+        }
+
+        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelList(string inspectionStatus, DateTime  startTime,DateTime endTime)
+        {
+            return irep.Entities.Where(e => e.InspectionStatus == inspectionStatus && e.MaterialInDate >= startTime && e.MaterialInDate <= endTime).ToList();
         }
     }
     /// <summary>
