@@ -63,16 +63,6 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             materialId: materialId
         })
     }
-    //iqc进料检验数据采集模块获取所有数据
-    quality.getInspectionAllConfigInfo = function (inMaterialCount, materialId, inspectionItem) {
-        var url = quaInspectionManageUrl + "GetIqcInspectionItemAllInfo";
-        return ajaxService.getData(url, {
-            inMaterialCount: inMaterialCount,
-            materialId: materialId,
-            inspectionItem: inspectionItem
-        })
-    }
-
     //保存进料检验采集的数据
     quality.saveIqcInspectionGetherDatas = function (iqcGatherDataModel) {
         var url = quaInspectionManageUrl + 'SaveIqcInspectionGetherDatas';
@@ -404,7 +394,10 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             console.log(item);
             vmManager.currentInspectionItem = item;
             vmManager.dataList = item.InspectionItemDatas === null ? null : item.InspectionItemDatas.split(',');
-            vmManager.inputDatas = leeHelper.createDataInputs(item.InspectionCount, 5, vmManager.dataList);
+            vmManager.inputDatas = leeHelper.createDataInputs(item.InspectionCount, 5, vmManager.dataList, function (itemdata) {
+                itemdata.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, itemdata.indata);
+            });
+            console.log(vmManager.inputDatas);
         },
         //数据集合
         dataList: [],
@@ -414,7 +407,6 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 item.focus = false;
                 if (item.nextColId === "last") {
                     vmManager.dataList.push(item.indata);
-                    alert(vmManager.dataList.join(","));
                     return;
                 }
                 var row = _.find(vmManager.inputDatas, { rowId: item.rowId });
@@ -422,6 +414,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                     var col = _.find(row.cols, { colId: item.nextColId });
                     if (col !== undefined) {
                         //判定Item的值
+                        item.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, item.indata);
                         vmManager.dataList.push({ data: item.indata, result: item.result });
                         col.focus = true;
                     }

@@ -347,7 +347,8 @@ var leeHelper = (function () {
         ///根据总数量和列数量创建输入数据源
         ///totalCount：总数量,colCount:列数量
         ///defaultDatas:默认传入的数据列表
-        createDataInputs: function (totalCount, colCount,defaultDatas) {
+        ///handler：处理句柄
+        createDataInputs: function (totalCount, colCount,defaultDatas,handler) {
         var inputDatas = [];
         var id = 0;
         var modData = totalCount % colCount;
@@ -364,6 +365,8 @@ var leeHelper = (function () {
                     if (id <= len)
                     {
                         colItem.indata = defaultDatas[id - 1];
+                        if (_.isFunction(handler) && colItem.indata != null)
+                            handler(colItem);
                     }
                 }
                 if (colIndex == colCount)
@@ -397,6 +400,8 @@ var leeHelper = (function () {
                 var len = defaultDatas.length + 1;
                 if (id <= len) {
                     colItem.indata = defaultDatas[id - 1];
+                    if (_.isFunction(handler) && colItem.indata != null)
+                        handler(colItem);
                 }
             }
             rowItem.cols.push(colItem);
