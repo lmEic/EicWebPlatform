@@ -20,9 +20,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<IqcInspectionItemConfigModel> GetIqcspectionItemConfigDatasBy(string materialId)
+        public List<InspectionIqCItemConfigModel> GetIqcspectionItemConfigDatasBy(string materialId)
         {
-            return InspectionIqcManagerCrudFactory.InspectionIqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
+            return InspectionIqcManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
         }
         /// <summary>
         /// 由单号 料号 得到IQC物料检验
@@ -30,9 +30,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<IqcInspectionMasterModel> GetIqcInspectionMasterModelListBy(string orderId, string materialId)
+        public List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy(string orderId, string materialId)
         {
-            return InspectionIqcManagerCrudFactory.IqcInspectionMasterCrud.GetIqcInspectionMasterModelList(orderId, materialId);
+            return InspectionIqcManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelList(orderId, materialId);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult IsExistInspectionConfigMaterId(string materailId)
         {
-            bool isexixt = InspectionIqcManagerCrudFactory.InspectionIqcItemConfigCrud.IsExistInspectionConfigmaterailId(materailId);
+            bool isexixt = InspectionIqcManagerCrudFactory.IqcItemConfigCrud.IsExistInspectionConfigmaterailId(materailId);
             OpResult opResult = OpResult.SetResult("", false);
             if (isexixt) opResult = OpResult.SetResult("此物料料号已经存在", true);
             return opResult;
@@ -52,9 +52,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult StoreIqcInspectionItemConfig(IqcInspectionItemConfigModel model)
+        public OpResult StoreIqcInspectionItemConfig(InspectionIqCItemConfigModel model)
         {
-            return InspectionIqcManagerCrudFactory.InspectionIqcItemConfigCrud.Store(model, true);
+            return InspectionIqcManagerCrudFactory.IqcItemConfigCrud.Store(model, true);
         }
 
         /// <summary>
@@ -62,9 +62,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult StoreIqcInspectionItemConfig(List<IqcInspectionItemConfigModel> modelList)
+        public OpResult StoreIqcInspectionItemConfig(List<InspectionIqCItemConfigModel> modelList)
         {
-            return InspectionIqcManagerCrudFactory.InspectionIqcItemConfigCrud.StoreInspectionItemConfiList(modelList);
+            return InspectionIqcManagerCrudFactory.IqcItemConfigCrud.StoreInspectionItemConfiList(modelList);
         }
 
 
@@ -74,10 +74,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="documentPatch">Excel文档路径</param>
         /// <returns></returns>
-        public List<IqcInspectionItemConfigModel> ImportProductFlowListBy(string documentPatch)
+        public List<InspectionIqCItemConfigModel> ImportProductFlowListBy(string documentPatch)
         {
             StringBuilder errorStr = new StringBuilder();
-            var listEntity = ExcelHelper.ExcelToEntityList<IqcInspectionItemConfigModel>(documentPatch, out errorStr);
+            var listEntity = ExcelHelper.ExcelToEntityList<InspectionIqCItemConfigModel>(documentPatch, out errorStr);
             string errorStoreFilePath = @"C:\ExcelToEntity\ErrorStr.txt";
             if (errorStr.ToString() != string.Empty)
             {

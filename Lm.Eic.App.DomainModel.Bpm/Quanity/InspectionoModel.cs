@@ -140,10 +140,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// IQC物料检验配置文件
     /// </summary>
-    public class IqcInspectionItemConfigModel
+    public class InspectionIqCItemConfigModel
     {
 
-        public IqcInspectionItemConfigModel()
+        public InspectionIqCItemConfigModel()
         { }
         #region Model
         private string _materialid;
@@ -305,9 +305,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// IQC单据检验
     /// </summary>
-    public class IqcInspectionMasterModel
+    public class InspectionIqcMasterModel
     {
-        public IqcInspectionMasterModel()
+        public InspectionIqcMasterModel()
         { }
         #region Model
         private string _orderid;
@@ -478,9 +478,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// IQC单据检验项目
     /// </summary>
-    public class IqcInspectionDetailModel
+    public class InspectionIqcDetailModel
     {
-        public IqcInspectionDetailModel()
+        public InspectionIqcDetailModel()
         { }
         #region Model
         private string _orderid;
@@ -555,32 +555,32 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionitemdatas = value; }
             get { return _inspectionitemdatas; }
         }
-        private string _insprectionitemsatus;
+        private string _inspectionitemsatus;
         /// <summary>
         ///检验状态
         /// </summary>
-        public string InsprectionItemSatus
+        public string InspectionItemSatus
         {
-            set { _insprectionitemsatus = value; }
-            get { return _insprectionitemsatus; }
+            set { _inspectionitemsatus = value; }
+            get { return _inspectionitemsatus; }
         }
-        private string _insprectionitemresult;
+        private string _inspectionitemresult;
         /// <summary>
         ///检验结果
         /// </summary>
-        public string InsprectionItemResult
+        public string InspectionItemResult
         {
-            set { _insprectionitemresult = value; }
-            get { return _insprectionitemresult; }
+            set { _inspectionitemresult = value; }
+            get { return _inspectionitemresult; }
         }
-        private DateTime _insprectiondate;
+        private DateTime _inspectiondate;
         /// <summary>
         ///检验日期
         /// </summary>
-        public DateTime InsprectionDate
+        public DateTime InspectionDate
         {
-            set { _insprectiondate = value; }
-            get { return _insprectiondate; }
+            set { _inspectiondate = value; }
+            get { return _inspectiondate; }
         }
         private string _memo;
         /// <summary>
@@ -685,7 +685,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
 
 
-    public class IqcInspectionItemDataSummaryLabelModel
+    public class InspectionIqcItemDataSummaryLabelModel
     {
         #region Model
         /// <summary>

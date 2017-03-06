@@ -20,13 +20,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <summary>
         /// 得到IQC检验表单信息 
         /// </summary>
-        /// <param name="ss"></param>
+        /// <param name="inspectionStatus"></param>
         /// <param name="startTime"></param>
         /// <param name="endTime"></param>
         /// <returns></returns>
-        public List<IqcInspectionMasterModel> GetInspectionFormManagerListBy(string ss,DateTime startTime,DateTime endTime)
+        public List<InspectionIqcMasterModel> GetInspectionFormManagerListBy(string inspectionStatus, DateTime startTime,DateTime endTime)
         {
-            return null;
+            return InspectionIqcManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelList(inspectionStatus,startTime,endTime);
         }
     }
 

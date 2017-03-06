@@ -91,21 +91,21 @@
                             <div class="col-md-4">
                                 <span>
                                     <label>检验项目:</label>
-                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionItem}}
+                                    {{vmManager.currentInspectionItem.InspectionItem}}
                                 </span>
                             </div>
                             <div class="col-md-4">
                                 <span>
                                     <label>规格值:</label>
-                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.SizeMemo}}
+                                    {{vmManager.currentInspectionItem.SizeMemo}}
                                 </span>
                             </div>
                             <div class="col-md-4">
                                 <span>
                                     <label>检验水平:</label>
-                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionLevel}}
-                                    <span ng-if="vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionAQL">  AQL=</span>
-                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionAQL}}
+                                    {{vmManager.currentInspectionItem.InspectionLevel}}
+                                    <span ng-if="vmManager.currentInspectionItem.InspectionAQL">  AQL=</span>
+                                    {{vmManager.currentInspectionItem.InspectionAQL}}
                                 </span>
                             </div>
                         </div>
@@ -113,17 +113,17 @@
                             <div class="col-md-4">
                                 <span>
                                     <label>抽样方案:</label>
-                                    {{vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.InspectionCount}}
-                                    <span ng-if="vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.InspectionCount">/</span>
-                                    {{vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.InspectionCount}}
-                                    <span ng-if="vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.RefuseCount">/</span>
-                                    {{vmManager.iqcInspectionItemAllInfo.inspectionModeConfigData.RefuseCount}}
+                                    {{vmManager.currentInspectionItem.InspectionCount}}
+                                    <span ng-if="vmManager.currentInspectionItem.InspectionCount">/</span>
+                                    {{vmManager.currentInspectionItem.InspectionCount}}
+                                    <span ng-if="vmManager.currentInspectionItem.RefuseCount">/</span>
+                                    {{vmManager.currentInspectionItem.RefuseCount}}
                                 </span>
                             </div>
                             <div class="col-md-4">
                                 <span>
                                     <label>检验方法:</label>
-                                    {{vmManager.iqcInspectionItemAllInfo.iqcInspectionItemParameterData.InspectionMethod}}
+                                    {{vmManager.currentInspectionItem.InspectionMode}}
                                 </span>
                             </div>
                             <div class="col-md-4">
@@ -134,8 +134,37 @@
                             </div>
                         </div>
                     </div>
+                    <div class="well">
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th ng-repeat="header in vmManager.inputDatas[0].cols">
+                                        <label class="label label-info">Data{{header.colId}}</label>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in vmManager.inputDatas">
+                                    <td ng-repeat="col in row.cols">
+                                        <span ng-show="vmManager.currentInspectionItem.InspectionItemResult==='OK'">
+                                            {{col.indata}}
+                                        </span>
+                                        <input ng-model="col.indata" ng-hide="vmManager.currentInspectionItem.InspectionItemResult==='OK'"
+                                                ng-class="{'invalidInputBg':!col.result,'':col.result}"
+                                               focus-setter focus-if="col.focus" ng-keydown="vmManager.dataInputKeyDown(col,$event)" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-warning">保存数据</button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
