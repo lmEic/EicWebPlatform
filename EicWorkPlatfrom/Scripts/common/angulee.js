@@ -346,7 +346,8 @@ var leeHelper = (function () {
         },
         ///根据总数量和列数量创建输入数据源
         ///totalCount：总数量,colCount:列数量
-        createDataInputs: function (totalCount, colCount) {
+        ///defaultDatas:默认传入的数据列表
+        createDataInputs: function (totalCount, colCount,defaultDatas) {
         var inputDatas = [];
         var id = 0;
         var modData = totalCount % colCount;
@@ -356,7 +357,15 @@ var leeHelper = (function () {
             rowItem = { rowId: rowIndex,cols:[]};
             for (var colIndex = 1; colIndex <= colCount; colIndex++) {
                 id += 1;
-                colItem = { index: id, rowId: rowIndex, colId: colIndex, indata: null, focus: false, nextColId: colIndex + 1, result:true };
+                colItem = { index: id, rowId: rowIndex, colId: colIndex, indata: null, focus: false, nextColId: colIndex + 1, result: true };
+                if (_.isArray(defaultDatas))//检测传入的数据是否是数组
+                {
+                    var len = defaultDatas.length + 1;
+                    if (id <= len)
+                    {
+                        colItem.indata = defaultDatas[id - 1];
+                    }
+                }
                 if (colIndex == colCount)
                 {
                     colItem.rowId += 1;
@@ -382,6 +391,13 @@ var leeHelper = (function () {
             if (colIndex == modData)
             {
                 colItem.nextColId = "last";
+            }
+            if (_.isArray(defaultDatas))//检测传入的数据是否是数组
+            {
+                var len = defaultDatas.length + 1;
+                if (id <= len) {
+                    colItem.indata = defaultDatas[id - 1];
+                }
             }
             rowItem.cols.push(colItem);
         }

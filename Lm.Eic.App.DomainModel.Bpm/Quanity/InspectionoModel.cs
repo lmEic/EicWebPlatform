@@ -564,23 +564,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionitemsatus = value; }
             get { return _inspectionitemsatus; }
         }
-        private string _inspectionitemResult;
+        private string _inspectionitemresult;
         /// <summary>
         ///检验结果
         /// </summary>
         public string InspectionItemResult
         {
-            set { _inspectionitemResult = value; }
-            get { return _inspectionitemResult; }
+            set { _inspectionitemresult = value; }
+            get { return _inspectionitemresult; }
         }
-        private DateTime _inspectionDate;
+        private DateTime _inspectiondate;
         /// <summary>
         ///检验日期
         /// </summary>
         public DateTime InspectionDate
         {
-            set { _inspectionDate = value; }
-            get { return _inspectionDate; }
+            set { _inspectiondate = value; }
+            get { return _inspectiondate; }
         }
         private string _memo;
         /// <summary>
@@ -700,10 +700,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///检验项目
         /// </summary>
         public string InspectionItem { get; set; }
-        /// <summary>
-        /// 检验量具的财产编号
-        /// </summary>
-        public string EquipmentId { get; set; }
         /// <summary>
         ///检验方式
         /// </summary>

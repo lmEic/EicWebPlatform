@@ -170,7 +170,8 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         /// </summary>
         [NoAuthenCheck]
-        public JsonResult GetIqcInspectionItemConfigDatas(string orderId,string materialId)
+        [HttpGet]
+        public JsonResult GetIqcInspectionItemDataSummaryLabelList(string orderId,string materialId)
         {
             var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionItemDataSummaryLabelList(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);

@@ -56,8 +56,8 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     }
     //iqc进料检验数据采集模块获得检验项目数据
-    quality.getInspectionDataGatherInspectionItemDatas = function (orderId,materialId) {
-        var url = quaInspectionManageUrl + "GetIqcInspectionItemConfigDatas";
+    quality.getIqcInspectionItemDataSummaryLabelList = function (orderId, materialId) {
+        var url = quaInspectionManageUrl + "GetIqcInspectionItemDataSummaryLabelList";
         return ajaxService.getData(url, {
             orderId:orderId,
             materialId: materialId
@@ -367,9 +367,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         orderId: null,
         currentMaterialIdItem: null,
         currentInspectionItem: null,
-        iqcInspectionItemAllInfo:null,
         materialIdDatas: [],
-        inspectionItemDatas: [],
         //缓存数据
         cacheDatas:[],
         searchMaterialIdKeyDown: function ($event) {
@@ -389,14 +387,11 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         //按物料品号获取检验项目信息
         selectMaterialIdItem: function (item) {
             vmManager.currentMaterialIdItem = item;
-            console.log(item);
-            var datas = _.find(vmManager.cacheDatas, { key: item.ProductID, type: 'materialData' });
+            var datas = _.find(vmManager.cacheDatas, { key: item.ProductID});
             if (datas === undefined) {
-                qualityInspectionDataOpService.getInspectionDataGatherInspectionItemDatas(item.OrderID, item.ProductID).then(function (inspectionItemDatas) {
-                    console.log(inspectionItemDatas);
-
+                qualityInspectionDataOpService.getIqcInspectionItemDataSummaryLabelList(item.OrderID, item.ProductID).then(function (inspectionItemDatas) {
                     vmManager.inspectionItemDatas = inspectionItemDatas;
-                    datas = { key: item.ProductID, type: 'materialData', dataSource: inspectionItemDatas };
+                    datas = { key: item.ProductID, dataSource: inspectionItemDatas };
                     vmManager.cacheDatas.push(datas);
                 });
             }
@@ -406,24 +401,33 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         },
         //点击检验项目获取所有项目信息
         selectInspectionItem: function (item) {
+            console.log(item);
             vmManager.currentInspectionItem = item;
-            var key = vmManager.currentMaterialIdItem.ProductID + "-" + item.InprectionItem;
-            var datas = _.find(vmManager.cacheDatas, { key:key, type: "inspectionItemData" });
-            if (datas === undefined) {
-                qualityInspectionDataOpService.getInspectionAllConfigInfo(vmManager.currentMaterialIdItem.ProduceNumber, vmManager.currentMaterialIdItem.ProductID, vmManager.currentInspectionItem.InspectionItem).then(function (iqcInspectionItemAllInfos) {
-                    vmManager.iqcInspectionItemAllInfo = iqcInspectionItemAllInfos;
-                    datas = {key:key,type:"inspectionItemData",dataSource:iqcInspectionItemAllInfos}
-                });
-            } else {
-                vmManager.iqcInspectionItemAllInfo = datas.dataSource;
-            }
-            
-            
+            vmManager.dataList = item.InspectionItemDatas === null ? null : item.InspectionItemDatas.split(',');
+            vmManager.inputDatas = leeHelper.createDataInputs(item.InspectionCount, 5, vmManager.dataList);
         },
         //数据集合
         dataList: [],
         inputDatas: [],
-
+        dataInputKeyDown: function (item, $event) {
+            if ($event.keyCode === 13) {
+                item.focus = false;
+                if (item.nextColId === "last") {
+                    vmManager.dataList.push(item.indata);
+                    alert(vmManager.dataList.join(","));
+                    return;
+                }
+                var row = _.find(vmManager.inputDatas, { rowId: item.rowId });
+                if (row !== undefined) {
+                    var col = _.find(row.cols, { colId: item.nextColId });
+                    if (col !== undefined) {
+                        //判定Item的值
+                        vmManager.dataList.push({ data: item.indata, result: item.result });
+                        col.focus = true;
+                    }
+                }
+            }
+        },
     }
     $scope.vmManager = vmManager;
 
