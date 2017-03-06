@@ -200,6 +200,18 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 根据单据状态获得检验单数据
+        /// </summary>
+        /// <returns></returns>
+
+        [NoAuthenCheck]
+        public JsonResult GetInspectionFormManageOfIqcDatas(string formStatus,DateTime  startTime,DateTime endTime)
+        {
+            var datas = InspectionService.InspectionFormManager.GetInspectionFormManagerListBy(formStatus, startTime,endTime);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
 
         #region fqc检验单管理

@@ -17,7 +17,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     public class IqcInspectionDataGather
     {
         /// <summary>
-        /// 得到总表信息
+        /// IQC检验项目所有的信息
         /// </summary>
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
@@ -59,14 +59,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         };
                         if (inspectionModeConfigModelData!=null )
                         {
-                            model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
-                            model.InspectionAQL = inspectionModeConfigModelData.InspectionAQL;
                             model.InspectionMode = inspectionModeConfigModelData.InspectionMode;
                             model.InspectionLevel = inspectionModeConfigModelData.InspectionLevel;
+                            model.InspectionAQL = inspectionModeConfigModelData.InspectionAQL;
+                            model.InspectionCount = inspectionModeConfigModelData.InspectionCount;
+                            model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
                             model.RefuseCount = inspectionModeConfigModelData.RefuseCount;
                             //需要录入的数据个数 暂时为抽样的数量
                             model.NeedFinishDataNumber = inspectionModeConfigModelData.InspectionCount;
-                            model.InspectionCount = inspectionModeConfigModelData.InspectionCount;
                         }
                         if (iqcHaveInspectionData != null)
                         {
@@ -77,11 +77,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         }
                         returnList.Add(model);
                     });
-           
             return returnList;
         }
 
-
+        /// <summary>
+        /// 分像数据
+        /// </summary>
+        /// <param name="inspectionDatas"></param>
+        /// <returns></returns>
         private int GetHaveFinishDataNumber(string inspectionDatas)
         {
             if ((!inspectionDatas.Contains(",") )|| inspectionDatas == string.Empty || inspectionDatas == null) return 0;
@@ -193,5 +196,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return IntMinNumbers.Max();
         }
     }
+
+ 
 
 }
