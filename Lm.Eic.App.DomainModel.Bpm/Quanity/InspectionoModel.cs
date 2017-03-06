@@ -140,10 +140,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// IQC物料检验配置文件
     /// </summary>
-    public class IqcInspectionItemConfigModel
+    public class InspectionIqCItemConfigModel
     {
 
-        public IqcInspectionItemConfigModel()
+        public InspectionIqCItemConfigModel()
         { }
         #region Model
         private string _materialid;
@@ -305,9 +305,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// IQC单据检验
     /// </summary>
-    public class IqcInspectionMasterModel
+    public class InspectionIqcMasterModel
     {
-        public IqcInspectionMasterModel()
+        public InspectionIqcMasterModel()
         { }
         #region Model
         private string _orderid;
@@ -478,9 +478,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// IQC单据检验项目
     /// </summary>
-    public class IqcInspectionDetailModel
+    public class InspectionIqcDetailModel
     {
-        public IqcInspectionDetailModel()
+        public InspectionIqcDetailModel()
         { }
         #region Model
         private string _orderid;
@@ -685,7 +685,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
 
 
-    public class IqcInspectionItemDataSummaryLabelModel
+    public class InspectionIqcItemDataSummaryLabelModel
     {
         #region Model
         /// <summary>

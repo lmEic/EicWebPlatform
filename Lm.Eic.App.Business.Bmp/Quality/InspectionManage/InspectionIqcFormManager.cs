@@ -24,7 +24,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="startTime"></param>
         /// <param name="endTime"></param>
         /// <returns></returns>
-        public List<IqcInspectionMasterModel> GetInspectionFormManagerListBy(string ss,DateTime startTime,DateTime endTime)
+        public List<InspectionIqcMasterModel> GetInspectionFormManagerListBy(string ss,DateTime startTime,DateTime endTime)
         {
             return null;
         }
