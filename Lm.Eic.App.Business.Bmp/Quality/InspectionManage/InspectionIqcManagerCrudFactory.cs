@@ -1,24 +1,59 @@
-﻿using Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep;
-using Lm.Eic.App.DomainModel.Bpm.Quanity;
-using Lm.Eic.Uti.Common.YleeDbHandler;
-using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-using Lm.Eic.Uti.Common.YleeObjectBuilder;
-using Lm.Eic.Uti.Common.YleeOOMapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.Uti.Common.YleeDbHandler;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
+    /// <summary>
+    /// IQC 检验管理工厂
+    /// </summary>
+    internal class InspectionIqcManagerCrudFactory
+    {
+        /// <summary>
+        /// 检验方式配置CRUD
+        /// </summary>
+        public static InspectionModeConfigCrud InspectionModeConfigCrud
+        {
+            get { return OBulider.BuildInstance<InspectionModeConfigCrud>(); }
+        }
+        /// <summary>
+        /// IQC物料检验配置CRUD
+        /// </summary>
+        public static InspectionIqcItemConfigCrud InspectionIqcItemConfigCrud
+        {
+            get { return OBulider.BuildInstance<InspectionIqcItemConfigCrud>(); }
+        }
+        /// <summary>
+        /// 物料检验项次CRUD
+        /// </summary>
+        public static IqcInspectionMasterCrud IqcInspectionMasterCrud
+        {
+            get { return OBulider.BuildInstance<IqcInspectionMasterCrud>(); }
+        }
+        /// <summary>
+        ///  物料检验项次数据CRUD
+        /// </summary>
+        public static IqcInspectionDetailCrud IqcInspectionDetailCrud
+        {
+            get { return OBulider.BuildInstance<IqcInspectionDetailCrud>(); }
+        }
+    }
+
     #region  IQC  IQC物料检验配置 Crud
     /// <summary>
     /// IQC物料检验配置
     /// </summary>
-    public class InspectionItemConfigCrud : CrudBase<IqcInspectionItemConfigModel, IIqcInspectionItemConfigRepository>
+    public class InspectionIqcItemConfigCrud : CrudBase<IqcInspectionItemConfigModel, IIqcInspectionItemConfigRepository>
     {
-        public InspectionItemConfigCrud():base(new IqcInspectionItemConfigRepository (),"IQC物料检验配置")
-            { }
+        public InspectionIqcItemConfigCrud() : base(new IqcInspectionItemConfigRepository(), "IQC物料检验配置")
+        { }
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddInspectionItemConfig);
@@ -51,7 +86,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private OpResult AddInspectionItemConfig(IqcInspectionItemConfigModel model)
         {
-          
+
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
@@ -75,7 +110,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
         }
-      
+
         /// <summary>
         /// 批量保存 IQC检验项目数据
         /// </summary>
@@ -89,22 +124,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             //如果存在 就修改   
             modelList.ForEach(m =>
             {
-                if (this.irep.IsExist (e=>e.Id_Key ==m.Id_Key))
-                { m.OpSign = "edit";}
+                if (this.irep.IsExist(e => e.Id_Key == m.Id_Key))
+                { m.OpSign = "edit"; }
 
 
                 opResult = this.Store(m);
                 if (opResult.Result)
-                i =i + opResult.RecordCount ;
+                    i = i + opResult.RecordCount;
             });
             opResult = i.ToOpResult(OpContext);
-            if (i == modelList.Count)   opResult.Entity= modelList;
+            if (i == modelList.Count) opResult.Entity = modelList;
             return opResult;
 
-           
+
         }
     }
-
+    #endregion
 
     /// <summary>
     /// 进料检验单（ERP）  物料检验项次
@@ -136,15 +171,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-        public List<IqcInspectionMasterModel> GetIqcInspectionMasterModelList(string orderId,string materialId)
+        public List<IqcInspectionMasterModel> GetIqcInspectionMasterModelList(string orderId, string materialId)
         {
-            
-          
-            return irep.Entities.Where(e => e.OrderId == orderId&&e.MaterialId ==materialId).ToList();
+
+
+            return irep.Entities.Where(e => e.OrderId == orderId && e.MaterialId == materialId).ToList();
         }
     }
-
-
     /// <summary>
     ///进料检验单（ERP） 物料检验项次录入数据
     /// </summary>
@@ -182,15 +215,50 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="materialId">料号</param>
         /// <returns></returns>
         public List<IqcInspectionDetailModel> GetIqcInspectionDetailModelListBy(string orderid, string materialId)
-        { 
-            return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId).ToList();;
+        {
+            return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId).ToList(); ;
         }
 
-        public IqcInspectionDetailModel GetIqcInspectionDetailModelBy(string orderid, string materialId,string inspectionItem)
+        public IqcInspectionDetailModel GetIqcInspectionDetailModelBy(string orderid, string materialId, string inspectionItem)
         {
             return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId && e.InspecitonItem == inspectionItem).ToList().FirstOrDefault(); ;
         }
     }
 
-    #endregion
+    /// <summary>
+    /// 检验方式配置CRUD
+    /// </summary>
+    internal class InspectionModeConfigCrud : CrudBase<InspectionModeConfigModel, IInspectionModeConfigRepository>
+    {
+        public InspectionModeConfigCrud() : base(new InspectionModeConfigRepository(), "检验方式配置")
+        {
+        }
+
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddInspectionModeConfig);
+            this.AddOpItem(OpMode.Edit, EidtInspectionModeConfig);
+            this.AddOpItem(OpMode.Delete, DeleteInspectionModeConfig);
+        }
+
+        private OpResult DeleteInspectionModeConfig(InspectionModeConfigModel model)
+        {
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+        }
+
+        private OpResult EidtInspectionModeConfig(InspectionModeConfigModel model)
+        {
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+
+        private OpResult AddInspectionModeConfig(InspectionModeConfigModel model)
+        {
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+        public List<InspectionModeConfigModel> GetInspectionStartEndNumberBy(string inspectionMode,string inspectionLevel,string inspectionAQL)
+        {
+            return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel && e.InspectionAQL == inspectionAQL).OrderBy (e=>e.StartNumber).ToList();
+        }
+        
+    }
 }

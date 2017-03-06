@@ -132,7 +132,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreIqcInspectionModeData(InspectionModeConfigModel iqcInspectionModeItem)
         {
-            var opResult = InspectionService.InspectionModeConfigManager.StoreInspectionModeConfig(iqcInspectionModeItem);
+            var opResult = InspectionService.ConfigManager.ModeConfigManager.StoreInspectionModeConfig(iqcInspectionModeItem);
             return Json(opResult);
         }
 
@@ -166,6 +166,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="materialId">料号</param>
         /// <param name="orderId">单号</param>
         /// <returns></returns>
+        /// </summary>
         [NoAuthenCheck]
         public JsonResult GetIqcInspectionItemConfigDatas(string orderId,string materialId)
         {
