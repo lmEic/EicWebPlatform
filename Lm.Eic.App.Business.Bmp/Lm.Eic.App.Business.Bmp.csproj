@@ -111,6 +111,7 @@
     <Compile Include="Quality\InspectionManage\InspectionService.cs" />
     <Compile Include="Quality\InspectionManage\IqcInspectionDataGather.cs" />
     <Compile Include="Quality\InspectionManage\InspectionConfigManager.cs" />
+    <Compile Include="Quality\InspectionManage\IqcInspectionFormManager.cs" />
     <Compile Include="Quality\InspectionManage\IqcInspectionManagerCrud.cs" />
     <Compile Include="Quality555\QualityService.cs" />
     <Compile Include="Quality555\QuantityMangerFactory.cs" />
@@ -164,6 +165,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
