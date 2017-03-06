@@ -149,8 +149,9 @@
                                         <span ng-show="vmManager.currentInspectionItem.InspectionItemResult==='OK'">
                                             {{col.indata}}
                                         </span>
-                                        <input ng-model="col.indata" ng-hide="vmManager.currentInspectionItem.InspectionItemResult==='OK'"
-                                                ng-class="{'invalidInputBg':!col.result,'':col.result}"
+                                        <input ng-model="col.indata" style="text-align:center" ng-hide="vmManager.currentInspectionItem.InspectionItemResult==='OK'"
+                                                ng-class="{'invalidInputBg':!col.result,'':col.result}" 
+                                               title="规格上限:{{vmManager.currentInspectionItem.SizeUSL}} 规格下限:{{vmManager.currentInspectionItem.SizeLSL}}"
                                                focus-setter focus-if="col.focus" ng-keydown="vmManager.dataInputKeyDown(col,$event)" />
                                     </td>
                                 </tr>
