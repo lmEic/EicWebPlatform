@@ -197,7 +197,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             this.AddOpItem(OpMode.Edit, EidtIqcInspectionMaster);
             this.AddOpItem(OpMode.Delete, DeleteIqcInspectionMaster);
         }
-
         private OpResult DeleteIqcInspectionMaster(InspectionIqcMasterModel model)
         {
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
@@ -212,12 +211,25 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelList(string orderId, string materialId)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy(string orderId, string materialId)
         {
             return irep.Entities.Where(e => e.OrderId == orderId && e.MaterialId == materialId).ToList();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inspectionStatus"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
 
-        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelList(string inspectionStatus, DateTime  startTime,DateTime endTime)
+        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy(string inspectionStatus, DateTime  startTime,DateTime endTime)
         {
             return irep.Entities.Where(e => e.InspectionStatus == inspectionStatus && e.MaterialInDate >= startTime && e.MaterialInDate <= endTime).ToList();
         }
