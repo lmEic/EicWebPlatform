@@ -33,9 +33,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <summary>
         /// 进料检验项目数据采集器
         /// </summary>
-        public static  IqcInspectionDataGather InspectionDataGather
+        public static  InspectionIqcDataGather InspectionDataGather
         {
-            get { return OBulider.BuildInstance<IqcInspectionDataGather>(); }
+            get { return OBulider.BuildInstance<InspectionIqcDataGather>(); }
         }
 
 
