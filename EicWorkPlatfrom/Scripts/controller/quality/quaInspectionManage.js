@@ -486,8 +486,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspect
             result = result && item.result;
         });
         //数据列表字符串
-        var dataStr = { datas:dataList.join(","), done: doneCount, left: leftCount };
-        uiVM.InspectionItemDatas = dataStr;
+        uiVM.InspectionItemDatas = dataList.join(",");
         uiVM.InsprectionItemResult = result ? "PASS" : "FAIL";
 
 
