@@ -83,8 +83,8 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 
     /////////////////////////////iqc检验单管理模块/////////////////////////
     //iqc检验单管理模块获取表单数据
-    quality.getDevelopModules = function (selectedFormStatus) {
-        var url = quaInspectionManageUrl + 'GetInspectionFormManageOfIqcModules';
+    quality.getInspectionFormManageOfIqcDatas = function (selectedFormStatus) {
+        var url = quaInspectionManageUrl + 'GetInspectionFormManageOfIqcDatas';
         return ajaxService.getData(url, {
             selectedFormStatus: selectedFormStatus
         })
@@ -563,7 +563,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         }),
         //载入检验表单数据
         getDevelopModules: function () {
-            qualityInspectionDataOpService.getDevelopModules(vmManager.selectedFormStatus).then(function (editDatas) {
+            qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(vmManager.selectedFormStatus).then(function (editDatas) {
                 vmManager.editDatas = editDatas;
             })
         }
