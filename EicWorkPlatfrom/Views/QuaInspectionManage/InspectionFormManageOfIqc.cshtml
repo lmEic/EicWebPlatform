@@ -50,24 +50,24 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in vmManager.editDatas track by $index">
-                        <td>{{item.OrderId}}</td>
-                        <td>{{item.MaterialId}}</td>
-                        <td>{{item.MaterialName}}</td>
-                        <td>{{item.MaterialSpec}}</td>
-                        <td>{{item.MaterialSupplier}}</td>
-                        <td>{{item.MaterialInDate}}</td>
-                        <td>{{item.MaterialDrawId}}</td>
-                        <td>{{item.MaterialCount}}</td>
-                        <td>{{item.InspectionMode}}</td>
-                        <td>{{item.InspctionResult}}</td>
-                        <td>{{item.InspectionStatus}}</td>
-                        <td>{{item.InspectionItems}}</td>
-                        <td>{{item.FinishDate}}</td>
-                        <td>
+                                <td>{{item.OrderId}}</td>
+                                <td>{{item.MaterialId}}</td>
+                                <td>{{item.MaterialName}}</td>
+                                <td>{{item.MaterialSpec}}</td>
+                                <td>{{item.MaterialSupplier}}</td>
+                                <td>{{item.MaterialInDate}}</td>
+                                <td>{{item.MaterialDrawId}}</td>
+                                <td>{{item.MaterialCount}}</td>
+                                <td>{{item.InspectionMode}}</td>
+                                <td>{{item.InspctionResult}}</td>
+                                <td>{{item.InspectionStatus}}</td>
+                                <td>{{item.InspectionItems}}</td>
+                                <td>{{item.FinishDate}}</td>
+                                <td>
                                     <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.showItemWindow()">明细</button>
                                     <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal()">审核</button>
                                 </td>
-                    </tr>
+                            </tr>
                           
                         </tbody>
                     </table>
