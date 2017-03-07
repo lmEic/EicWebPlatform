@@ -414,10 +414,10 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             vmManager.currentInspectionItem = item;
 
             item.InspectionCount = 7;
-
-            vmManager.dataList = item.InspectionItemDatas === null ? null : item.InspectionItemDatas.split(',');
-            vmManager.inputDatas = leeHelper.createDataInputs(item.InspectionCount, 5, vmManager.dataList, function (itemdata) {
+            var dataList = item.InspectionItemDatas === null ? null : item.InspectionItemDatas.split(',');
+            vmManager.inputDatas = leeHelper.createDataInputs(item.InspectionCount, 5, dataList, function (itemdata) {
                 itemdata.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, itemdata.indata);
+                vmManager.dataList.push({ data: itemdata.indata, result: itemdata.result });
             });
         },
         //数据集合
@@ -462,7 +462,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
     $scope.operate = operate;
     //保存Iqc采集数据
     operate.saveIqcGatherDatas = function () {
-        var dataItem = vmManager.selectInspectionItem;
+        var dataItem = vmManager.currentInspectionItem;
         var dataList = [], result = true;
         //获取数据及判定结果
         angular.forEach(vmManager.dataList, function (item) {
@@ -476,7 +476,6 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             if (opResult.Result) {
                 //更新界面检测项目列表
                 vmManager.updateInspectionItemList();
-                leeHelper.clearVM(uiVM);
                 vmManager.inputDatas = [];
                 vmManager.dataList = [];
                 //切换到下一项
