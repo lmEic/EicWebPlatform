@@ -166,6 +166,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return InspectionIqcManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelBy(orderId, materailId, inspecitonItem);
         }
+        public List<InspectionIqcDetailModel> GetIqcInspectionDetailModelBy(string orderId, string materailId)
+        {
+            return InspectionIqcManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelBy(orderId, materailId);
+        }
         /// <summary>
         /// 存储Iqc检验数据
         /// </summary>

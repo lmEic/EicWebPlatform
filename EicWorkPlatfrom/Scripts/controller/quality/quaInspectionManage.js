@@ -606,10 +606,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         isShowEditWindow: false,
         currentItem:null,
         showItemWindow: function () {
-            vmManager.isShowEditWindow = !vmManager.isShowEditWindow;
-        },
-        showCheckModal: function () {
-            vmManager.checkModal.$promise.then(vmManager.checkModal.show);
+            
         },
         checkModal: $modal({
             title: "审核提示",
@@ -625,13 +622,16 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         //获取检验表单主数据
         getMasterDatas: function () {
             qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
+                
                 vmManager.editDatas = editDatas;
             })
         },
         //获取详细数据
         getDetailDatas:function(item){
-            qualityInspectionDataOpService.getInspectionFormDetailDatas(item.OrderId, item.MaterialId).then(function (detailDatas) {
-                vmManager.detailDatas = detailDatas;
+            qualityInspectionDataOpService.getInspectionFormDetailDatas(item.OrderId, item.MaterialId).then(function (datas) {
+                console.log(datas);
+                vmManager.isShowEditWindow = !vmManager.isShowEditWindow;
+                vmManager.detailDatas = datas;
             })
         },
         //返回

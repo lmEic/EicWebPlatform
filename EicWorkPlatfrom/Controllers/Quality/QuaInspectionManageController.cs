@@ -206,6 +206,11 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetInspectionFormDetailDatas(string orderId, string materialId)
+        {
+            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionDetailModelBy(orderId, materialId);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region fqc检验单管理
