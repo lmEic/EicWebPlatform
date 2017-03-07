@@ -178,10 +178,11 @@ namespace EicWorkPlatfrom.Controllers
         }
         [NoAuthenCheck]
         [HttpPost]
-        public JsonResult StoreIqcInspectionGatherDatas(InspectionIqcDetailModel iqcGatherDataModel)
+        public JsonResult StoreIqcInspectionGatherDatas(InspectionIqcItemDataSummaryLabelModel gatherData)
         {
-            var Opresult = InspectionService.DataGatherManager.IqcDataGather.StoreIqcInspectionDetailModel(iqcGatherDataModel);
-            return Json(Opresult);
+
+            var opResult= InspectionService.DataGatherManager.IqcDataGather.StoreIqcInspectionItemDataSummary(gatherData);
+            return Json(opResult);
         }
         #endregion
 
@@ -206,6 +207,11 @@ namespace EicWorkPlatfrom.Controllers
             return DateJsonResult(datas);
         }
 
+        public JsonResult GetInspectionFormDetailDatas(string orderId, string materialId)
+        {
+            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionDetailModelBy(orderId, materialId);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region fqc检验单管理

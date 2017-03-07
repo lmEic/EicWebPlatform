@@ -43,6 +43,7 @@ namespace Lm.Eic.App.Erp.DbAccess
 
         public static IDModel DecomposeID(string ID)
         {
+            if (!ID.Contains("-")) return new IDModel();
             string[] fileds = ID.Split('-');
             return new IDModel() { Code = fileds[1].Trim(), Category = fileds[0].Trim() };
         }
