@@ -716,7 +716,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///料号
         /// </summary>
         public string MaterialId { get; set; }
-
+        /// <summary>
+        /// 物料进货日期
+        /// </summary>
+        public DateTime  MaterialInDate { set; get; }
         /// <summary>
         /// 测量量具财产编号
         /// </summary>
