@@ -65,7 +65,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     }
     //保存进料检验采集的数据
     quality.saveIqcInspectionGetherDatas = function (iqcGatherDataModel) {
-        var url = quaInspectionManageUrl + 'SaveIqcInspectionGetherDatas';
+        var url = quaInspectionManageUrl + 'StoreIqcInspectionGatherDatas';
         return ajaxService.postData(url, {
             iqcGatherDataModel: iqcGatherDataModel,
         });

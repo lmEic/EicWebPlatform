@@ -178,9 +178,9 @@ namespace EicWorkPlatfrom.Controllers
         }
         [NoAuthenCheck]
         [HttpPost]
-        public JsonResult StoreIqcInspectionGatherDatas(InspectionIqcDetailModel gatherData)
+        public JsonResult StoreIqcInspectionGatherDatas(InspectionIqcDetailModel iqcGatherDataModel)
         {
-            var Opresult = InspectionService .DataGatherManager .IqcDataGather .StoreIqcInspectionDetailModel(gatherData);
+            var Opresult = InspectionService.DataGatherManager.IqcDataGather.StoreIqcInspectionDetailModel(iqcGatherDataModel);
             return Json(Opresult);
         }
         #endregion
