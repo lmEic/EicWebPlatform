@@ -494,7 +494,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
        //数据列表字符串
         uiVM.InspectionItemDatas = dataList.join(",");
         uiVM.InspectionItemResult = result ? "OK" : "NG";
-        $scope.opPromise = qualityInspectionDataOpService.storeIqcInspectionGatherDatas.then(function (opResult) {
+        $scope.opPromise = qualityInspectionDataOpService.storeIqcInspectionGatherDatas(uiVM).then(function (opResult) {
             if (opResult.Result) {
                 //更新界面检测项目列表
                 vmManager.updateInspectionItemList();
