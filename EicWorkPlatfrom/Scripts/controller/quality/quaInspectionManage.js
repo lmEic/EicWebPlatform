@@ -430,7 +430,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                     vmManager.dataList.push({ data: item.indata, result: item.result });
             }
             else {
-                dataInputItem.indata=item.indata;
+                dataInputItem.data=item.indata;
                 dataInputItem.result=item.result;
             }
         },
