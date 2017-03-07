@@ -69,14 +69,14 @@
                                 {{item.productId}}
                             </a>
                         </div>
-                        <div class="panel-collapse list-group " role="tabpanel" bs-collapse-target>
+                        <div class="panel-collapse list-group " role="tabpanel" bs-collapse-target cg-busy="{promise:searchPromise}">
                             <a class="panel-body list-group-item" ng-repeat="inspectionItem in item.inspectionItemDatas"
                                ng-class="{'active':inspectionItem===vmManager.currentInspectionItem}"
                                ng-click="vmManager.selectInspectionItem(inspectionItem)">
                                 {{inspectionItem.InspectionItem}}
                                 <span class="pull-right">
                                     <i class="fa fa-check badge-success" title="结果判定标志" ng-show="inspectionItem.InspectionItemResult==='OK' && inspectionItem.InsptecitonItemIsFinished===true"></i>
-                                    <i class="fa fa-close badge-fail" title="结果判定标志" ng-show="inspectionItem.InspectionItemResult==='NG' && inspectionItem.InsptecitonItemIsFinished==false"></i>
+                                    <i class="fa fa-close badge-fail" title="结果判定标志" ng-show="inspectionItem.InspectionItemResult==='NG' && inspectionItem.InsptecitonItemIsFinished==true"></i>
                                 </span>
                                 <span class="pull-right" title="数量显示标志" ng-class="{true: 'badge-info', false: 'badge-fail'}[inspectionItem.NeedFinishDataNumber===inspectionItem.HaveFinishDataNumber]">
                                     {{inspectionItem.NeedFinishDataNumber}}/{{inspectionItem.HaveFinishDataNumber}}
@@ -163,7 +163,7 @@
                             <tfoot>
                                 <tr>
                                     <td>
-                                        <button class="btn btn-warning">保存数据</button>
+                                        <button class="btn btn-warning" ng-click="operate.saveIqcGatherDatas()">保存数据</button>
                                     </td>
                                 </tr>
                             </tfoot>
