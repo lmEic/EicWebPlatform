@@ -186,7 +186,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             InspectionIqcDetailModel datailModel = new InspectionIqcDetailModel()
             {
                 OrderId = model.OrderId,
+               
                 EquipmentId = model.EquipmentId,
+                MaterialCount = model.MaterialInCount ,
                 InspecitonItem = model.InspectionItem,
                 InspectionAcceptCount = model.AcceptCount,
                 InspectionCount = model.InspectionCount,
@@ -195,7 +197,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionItemDatas = model.InspectionItemDatas,
                 InspectionItemResult = model.InspectionItemResult,
                 InspectionItemSatus = model.InsptecitonItemIsFinished.ToString(),
-                MaterialCount=model.HaveFinishDataNumber,
                 MaterialId=model.MaterialId,
                 MaterialInDate=model.MaterialInDate,
                 OpSign = "add",
