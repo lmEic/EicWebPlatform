@@ -73,10 +73,10 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 
     /////////////////////////////iqc检验单管理模块/////////////////////////
     //iqc检验单管理模块获取表单主数据  
-    quality.getInspectionFormManageOfIqcDatas = function (selectedFormStatus,dateFrom,dateTo) {
+    quality.getInspectionFormManageOfIqcDatas = function (formStatus, dateFrom, dateTo) {
         var url = quaInspectionManageUrl + 'GetInspectionFormManageOfIqcDatas';
         return ajaxService.getData(url, {
-            selectedFormStatus: selectedFormStatus,
+            formStatus: formStatus,
             dateFrom:dateFrom,
             dateTo:dateTo
         })
@@ -90,7 +90,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     }
 
-    return quality;
+    return quality;     
 })
 
 //iqc检验项目配置模块
@@ -596,11 +596,14 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspect
 
 ///iqc检验单管理
 qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
+    var inspectionFormTable = $scope.inspectionFormTable = {
+
+    }
     var vmManager = $scope.vmManager = {
         dateFrom: null,
         dateTo: null,
         editDatas: [],
-        selectedFormStatus:null,
+        selectedFormStatus: null,
         formStatuses: [{ label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
         editWindowWidth: "100%",
         isShowEditWindow: false,
@@ -624,14 +627,18 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         }),
         //获取检验表单主数据
         getMasterDatas: function () {
-            qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
-                vmManager.editDatas = editDatas;
+             $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
+                
+                 vmManager.editDatas = editDatas;
+
             })
         },
         //获取详细数据
         getDetailDatas:function(item){
             qualityInspectionDataOpService.getInspectionFormDetailDatas(item.OrderId, item.MaterialId).then(function (detailDatas) {
+                console.log(detailDatas);
                 vmManager.detailDatas = detailDatas;
+                
             })
         },
         //返回

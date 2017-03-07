@@ -200,10 +200,10 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
 
         [NoAuthenCheck]
-        public JsonResult GetInspectionFormManageOfIqcDatas(string selectedFormStatus, DateTime dateFrom, DateTime dateTo)
+        public ContentResult GetInspectionFormManageOfIqcDatas(string formStatus, DateTime dateFrom, DateTime dateTo)
         {
-            var datas = InspectionService.InspectionFormManager.GetInspectionFormManagerListBy(selectedFormStatus, dateFrom, dateTo);
-            return Json(datas, JsonRequestBehavior.AllowGet);
+            var datas = InspectionService.InspectionFormManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
+            return DateJsonResult(datas);
         }
 
         #endregion
