@@ -384,7 +384,6 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                     })
                     vmManager.orderId = null;
                 });
-                console.log(vmManager.panelDataSource);
             }
         },
         //按物料品号获取检验项目信息
@@ -392,7 +391,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             vmManager.currentMaterialIdItem = item;
             var datas = _.find(vmManager.cacheDatas, { key: item.ProductID});
             if (datas === undefined) {
-                qualityInspectionDataOpService.getIqcInspectionItemDataSummaryLabelList(item.OrderID, item.ProductID).then(function (inspectionItemDatas) {
+               $scope.searchPromise=qualityInspectionDataOpService.getIqcInspectionItemDataSummaryLabelList(item.OrderID, item.ProductID).then(function (inspectionItemDatas) {
                     datas = { key: item.ProductID, dataSource: inspectionItemDatas };
                     vmManager.cacheDatas.push(datas);
                     var dataItems = _.find(vmManager.panelDataSource, { productId: item.ProductID });
@@ -410,26 +409,34 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         },
         //点击检验项目获取所有项目信息
         selectInspectionItem: function (item) {
-            console.log(item);
             vmManager.currentInspectionItem = item;
-
-            item.InspectionCount = 7;
             var dataList = item.InspectionItemDatas === null ? null : item.InspectionItemDatas.split(',');
-            vmManager.inputDatas = leeHelper.createDataInputs(item.InspectionCount, 5, dataList, function (itemdata) {
+            vmManager.inputDatas = leeHelper.createDataInputs(item.NeedFinishDataNumber, 5, dataList, function (itemdata) {
                 itemdata.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, itemdata.indata);
-                vmManager.dataList.push({ data: itemdata.indata, result: itemdata.result });
+                vmManager.dataList.push({index:itemdata.index, data: itemdata.indata, result: itemdata.result });
             });
         },
         //数据集合
         dataList: [],
         inputDatas: [],
+        //设置输入数据项
+        setInputData(item){
+            //判定Item的值
+            item.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, item.indata);
+            var dataInputItem = _.find(vmManager.dataList, { index: item.index });
+            if (dataInputItem === undefined) {
+                if (vmManager.dataList.length < vmManager.currentInspectionItem.NeedFinishDataNumber)
+                    vmManager.dataList.push({ data: item.indata, result: item.result });
+            }
+            else {
+                dataInputItem.indata=item.indata;
+                dataInputItem.result=item.result;
+            }
+        },
         dataInputKeyDown: function (item, $event) {
             if ($event.keyCode === 13) {
                 item.focus = false;
-                //判定Item的值
-                item.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, item.indata);
-                vmManager.dataList.push({ data: item.indata, result: item.result });
-
+                vmManager.setInputData(item);
                 var row = _.find(vmManager.inputDatas, { rowId: item.rowId });
                 if (row !== undefined) {
                     var col = _.find(row.cols, { colId: item.nextColId });
@@ -449,9 +456,9 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             if (materialItem !== undefined) {
                 var dataItem = _.find(materialItem.dataSource, { InspectionItem: vmManager.currentInspectionItem.InspectionItem });
                 if (dataItem !== undefined) {
-                    dataItem.HaveFinishDataNumber = 32;//vmManager.dataList.length;
-                    dataItem.InspectionItemResult = 'OK';
-                    dataItem.InsptecitonItemIsFinished = true;
+                    dataItem.HaveFinishDataNumber = vmManager.dataList.length;//vmManager.dataList.length;
+                    dataItem.InspectionItemResult = editItem.InspectionItemResult;
+                    dataItem.InsptecitonItemIsFinished = editItem.InsptecitonItemIsFinished;
                 }
             }
         },
@@ -472,10 +479,12 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
        //数据列表字符串
         dataItem.InspectionItemDatas = dataList.join(",");
         dataItem.InspectionItemResult = result ? "OK" : "NG";
+        dataItem.InsptecitonItemIsFinished = true;
+        console.log(dataItem);
         $scope.opPromise = qualityInspectionDataOpService.storeIqcInspectionGatherDatas(dataItem).then(function (opResult) {
             if (opResult.Result) {
                 //更新界面检测项目列表
-                vmManager.updateInspectionItemList();
+                vmManager.updateInspectionItemList(dataItem);
                 vmManager.inputDatas = [];
                 vmManager.dataList = [];
                 //切换到下一项
