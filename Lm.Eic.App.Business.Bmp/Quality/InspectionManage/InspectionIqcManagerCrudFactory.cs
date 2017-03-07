@@ -197,7 +197,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             this.AddOpItem(OpMode.Edit, EidtIqcInspectionMaster);
             this.AddOpItem(OpMode.Delete, DeleteIqcInspectionMaster);
         }
-
         private OpResult DeleteIqcInspectionMaster(InspectionIqcMasterModel model)
         {
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
@@ -212,15 +211,33 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelList(string orderId, string materialId)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy(string orderId, string materialId)
         {
             return irep.Entities.Where(e => e.OrderId == orderId && e.MaterialId == materialId).ToList();
         }
+        internal bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
+        {
+            return irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inspectionStatus"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
 
-        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelList(string inspectionStatus, DateTime  startTime,DateTime endTime)
+        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy(string inspectionStatus, DateTime  startTime,DateTime endTime)
         {
             return irep.Entities.Where(e => e.InspectionStatus == inspectionStatus && e.MaterialInDate >= startTime && e.MaterialInDate <= endTime).ToList();
         }
+       
     }
     /// <summary>
     ///进料检验单（ERP） 物料检验项次录入数据
@@ -265,6 +282,38 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         internal InspectionIqcDetailModel GetIqcInspectionDetailModelBy(string orderid, string materialId, string inspectionItem)
         {
             return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId && e.InspecitonItem == inspectionItem).ToList().FirstOrDefault(); ;
+        }
+
+
+        /// <summary>
+        ///  判定是否需要测试 盐雾测试
+        /// </summary>
+        /// <param name="materialId">物料料号</param>
+        /// <param name="materialInDate">当前物料进料日期</param>
+        /// <returns></returns>
+        internal bool JudgeYwTest(string materialId, DateTime materialInDate)
+        {
+            bool ratuenValue = true;
+            //调出此物料所有打印记录项
+            var inspectionItemsRecords = irep.Entities.Where(e => e.MaterialId == materialId).Distinct();
+            //如果第一次打印 
+            if (inspectionItemsRecords == null | inspectionItemsRecords.Count() <= 0) return true;
+
+            // 进料日期后退30天 抽测打印记录
+            var inspectionItemsMonthRecord = (from t in inspectionItemsRecords
+                                              where t.MaterialInDate >= (materialInDate.AddDays(-30))
+                                                    & t.MaterialInDate <= materialInDate
+                                              select t.MaterialId).Distinct();
+            //没有 测
+            if (inspectionItemsMonthRecord == null | inspectionItemsMonthRecord.Count() <= 0) return true;
+            // 有  每项中是否有测过  盐雾测试
+            foreach (var n in inspectionItemsMonthRecord)
+            {
+                if (n.Contains("盐雾")) { ratuenValue = false; break; }
+            }
+            return ratuenValue;
+
+
         }
     }
 

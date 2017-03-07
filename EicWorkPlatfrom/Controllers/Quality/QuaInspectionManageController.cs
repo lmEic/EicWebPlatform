@@ -57,7 +57,7 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult CheckIqcspectionItemConfigMaterialId(string materialId)
         {
-            var result = InspectionService.ConfigManager.IqcItemConfigManager.IsExistInspectionConfigMaterId(materialId);
+            var result = InspectionService.ConfigManager.IqcItemConfigManager.IsExistInspectionConfigMaterailId(materialId);
             return Json(result,JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -173,14 +173,14 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult GetIqcInspectionItemDataSummaryLabelList(string orderId,string materialId)
         {
-            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionItemDataSummaryLabelList(orderId, materialId);
+            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
         [HttpPost]
-        public JsonResult StoreIqcInspectionGatherDatas(InspectionIqcDetailModel gatherData)
+        public JsonResult StoreIqcInspectionGatherDatas(InspectionIqcDetailModel iqcGatherDataModel)
         {
-            var Opresult = 0;
+            var Opresult = InspectionService.DataGatherManager.IqcDataGather.StoreIqcInspectionDetailModel(iqcGatherDataModel);
             return Json(Opresult);
         }
         #endregion
