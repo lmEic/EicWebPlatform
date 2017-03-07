@@ -26,7 +26,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionIqcMasterModel> GetInspectionFormManagerListBy(string inspectionStatus, DateTime startTime,DateTime endTime)
         {
-            return InspectionIqcManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelList(inspectionStatus,startTime,endTime);
+            return InspectionIqcManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(inspectionStatus,startTime,endTime);
         }
     }
 

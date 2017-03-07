@@ -57,7 +57,7 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult CheckIqcspectionItemConfigMaterialId(string materialId)
         {
-            var result = InspectionService.ConfigManager.IqcItemConfigManager.IsExistInspectionConfigMaterId(materialId);
+            var result = InspectionService.ConfigManager.IqcItemConfigManager.IsExistInspectionConfigMaterailId(materialId);
             return Json(result,JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -173,26 +173,16 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult GetIqcInspectionItemDataSummaryLabelList(string orderId,string materialId)
         {
-            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionItemDataSummaryLabelList(orderId, materialId);
+            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-        /// <summary>
-        /// 得到检验项目的所有信息
-        /// </summary>
-        /// <param name="inMaterialCount">进料数量</param>
-        /// <param name="materialId">料号</param>
-        /// <param name="inspectionItem">检验项</param>
-        /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetIqcInspectionItemAllInfo(int inMaterialCount, string materialId,string inspectionItem)
+        [HttpPost]
+        public JsonResult StoreIqcInspectionGatherDatas(InspectionIqcDetailModel iqcGatherDataModel)
         {
-
-            var iqcInspectionItemParameterData = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionItemConfigDataBy(materialId, inspectionItem);
-            var inspectionModeConfigData = InspectionService.DataGatherManager.IqcDataGather.GetInspectionModeConfigDataBy(iqcInspectionItemParameterData, inMaterialCount);
-            var datas = new { iqcInspectionItemParameterData, inspectionModeConfigData };
-            return Json(datas, JsonRequestBehavior.AllowGet);
+            var Opresult = InspectionService.DataGatherManager.IqcDataGather.StoreIqcInspectionDetailModel(iqcGatherDataModel);
+            return Json(Opresult);
         }
-
         #endregion
 
 

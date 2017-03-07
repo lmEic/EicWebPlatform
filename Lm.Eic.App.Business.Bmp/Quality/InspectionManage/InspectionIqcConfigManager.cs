@@ -32,7 +32,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy(string orderId, string materialId)
         {
-            return InspectionIqcManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelList(orderId, materialId);
+            return InspectionIqcManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(orderId, materialId);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materailId"></param>
         /// <returns></returns>
-        public OpResult IsExistInspectionConfigMaterId(string materailId)
+        public OpResult IsExistInspectionConfigMaterailId(string materailId)
         {
             bool isexixt = InspectionIqcManagerCrudFactory.IqcItemConfigCrud.IsExistInspectionConfigmaterailId(materailId);
             OpResult opResult = OpResult.SetResult("", false);
