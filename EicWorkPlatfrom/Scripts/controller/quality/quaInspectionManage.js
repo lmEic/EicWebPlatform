@@ -82,7 +82,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     };
 
     /////////////////////////////iqc检验单管理模块/////////////////////////
-    //iqc检验单管理模块获取表单数据  
+    //iqc检验单管理模块获取表单主数据  
     quality.getInspectionFormManageOfIqcDatas = function (selectedFormStatus,dateFrom,dateTo) {
         var url = quaInspectionManageUrl + 'GetInspectionFormManageOfIqcDatas';
         return ajaxService.getData(url, {
@@ -91,6 +91,15 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             dateTo:dateTo
         })
     };
+    //iqc检验单管理模块获取详细数据
+    quality.getInspectionFormDetailDatas = function (orderId, materialId) {
+        var url = quaInspectionManageUrl + "GetInspectionFormDetailDatas";
+        return ajaxService.getData(url, {
+            orderId: orderId,
+            materialId: materialId
+        })
+    }
+
     return quality;
 })
 
@@ -245,7 +254,6 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
         vmManager.delItem = item;
         vmManager.delModal.$promise.then(vmManager.delModal.show);
     }
-
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
             vmManager.init();
@@ -522,22 +530,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspect
 
 ///iqc检验单管理
 qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
-    var uiVM = {
-            OrderId:null,
-            MaterialId: null,
-            MaterialName: null,
-            MaterialSpec: null,
-            MaterialSupplier: null,
-            MaterialInDate: null,
-            MaterialDrawId: null,
-            MaterialCount: null,
-            InspectionMode: null,
-            InspctionResult: null,
-            InspectionStatus: null,
-            InspectionItems: null,
-            FinishDat: null,
-        };
-    $scope.vm = uiVM;
     var vmManager = $scope.vmManager = {
         dateFrom: null,
         dateTo: null,
@@ -547,15 +539,12 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         editWindowWidth: "100%",
         isShowEditWindow: false,
         currentItem:null,
-        showItemWindow: function (item) {
-            vmManager.currentItem = item;
-            $scope.vm = vmManager.currentItem;
+        showItemWindow: function () {
             vmManager.isShowEditWindow = !vmManager.isShowEditWindow;
         },
         showCheckModal: function () {
             vmManager.checkModal.$promise.then(vmManager.checkModal.show);
         },
-
         checkModal: $modal({
             title: "审核提示",
             content: "亲~您确定要审核吗",
@@ -567,23 +556,24 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             },
             show:false,
         }),
-        //载入检验表单数据
-        getDevelopModules: function () {
+        //获取检验表单主数据
+        getMasterDatas: function () {
             qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
-                
                 vmManager.editDatas = editDatas;
             })
+        },
+        //获取详细数据
+        getDetailDatas:function(item){
+            qualityInspectionDataOpService.getInspectionFormDetailDatas(item.OrderId, item.MaterialId).then(function (detailDatas) {
+                vmManager.detailDatas = detailDatas;
+            })
+        },
+        //返回
+        refresh: function () {
+            vmManager.isShowEditWindow = false;
         }
-        
     };
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    operate.save = function (isValid) {
-        leeDataHandler.dataOperate.add(operate, isValid, function () {
-            qualityInspectionDataOpService.saveInspectionFormManageOfIqc($scope.vm).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
-
-            })
-        })
-    }
+   
 })
