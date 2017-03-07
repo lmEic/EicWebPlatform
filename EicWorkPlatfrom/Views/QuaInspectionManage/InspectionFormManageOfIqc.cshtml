@@ -20,7 +20,7 @@
                                 <span class="caret"></span>
                             </button>
                         </div>
-                        <span class="btn btn-primary" ng-click="vmManager.getDevelopModules()"><i class="fa fa-search"></i>查询</span>
+                        <span class="btn btn-primary" ng-click="vmManager.getMasterDatas()"><i class="fa fa-search"></i>查询</span>
                         <span yl-operatemsg-board></span>
                     </form>
                 </div>
@@ -29,7 +29,7 @@
         <div class="well" cg-busy="{promise:searchPromise}">
             <div class="row" >
                 <div class="table-responsive"  id="editWindow"  style="min-height:500px;">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover" style="table-layout:fixed;word-break: break-all; text-wrap:none;">
                         <thead>
                             <tr class="info">
                                 <th>单号</th>
@@ -43,145 +43,132 @@
                                 <th>检测方式</th>
                                 <th>检测结果</th>
                                 <th>检测状态</th>
-                                <th>检测项目列表</th>
+                                <th>检测项目</th>
                                 <th>检测日期</th>
                                 <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in vmManager.editDatas track by $index">
-                        <td>{{item.OrderId}}</td>
-                        <td>{{item.MaterialId}}</td>
-                        <td>{{item.MaterialName}}</td>
-                        <td>{{item.MaterialSpec}}</td>
-                        <td>{{item.MaterialSupplier}}</td>
-                        <td>{{item.MaterialInDate}}</td>
-                        <td>{{item.MaterialDrawId}}</td>
-                        <td>{{item.MaterialCount}}</td>
-                        <td>{{item.InspectionMode}}</td>
-                        <td>{{item.InspctionResult}}</td>
-                        <td>{{item.InspectionStatus}}</td>
-                        <td>{{item.InspectionItems}}</td>
-                        <td>{{item.FinishDate}}</td>
-                        <td>
-                                    <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.showItemWindow()">明细</button>
-                                    <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal()">审核</button>
+                                <td style="overflow:hidden;">{{item.OrderId}}</td>
+                                <td>{{item.MaterialId}}</td>
+                                <td>{{item.MaterialName}}</td>
+                                <td>{{item.MaterialSpec}}</td>
+                                <td>{{item.MaterialSupplier}}</td>
+                                <td>{{item.MaterialInDate}}</td>
+                                <td>{{item.MaterialDrawId}}</td>
+                                <td>{{item.MaterialCount}}</td>
+                                <td>{{item.InspectionMode}}</td>
+                                <td>{{item.InspctionResult}}</td>
+                                <td>{{item.InspectionStatus}}</td>
+                                <td>{{item.InspectionItems}}</td>
+                                <td>{{item.FinishDate}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.showItemWindow(item)">明细</button>
+                                    <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)">审核</button>
                                 </td>
-                    </tr>
+                            </tr>
                           
                         </tbody>
                     </table>
                 </div>
             </div>
             <div pageslide ps-open="vmManager.isShowEditWindow" ps-side="right" ps-size="{{vmManager.editWindowWidth}}" ps-speed="0.25" ps-container='editWindow'>
-                <div style="padding:10px;">
-                    <form role="form" name="inspectionFormManage" novalidate onkeypress="if (event.keyCode === 13) return false;" class="form-horizontal">
-                        <fieldset>
-                            <div class="form-group">
-                                <label class="col-md-1 control-label">单号:</label>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" name="orderId" ng-model="vm.OrderId" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.orderId.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">单号不能为空</small>
-                                    </div>
-                                </div>
-                                <label class="col-md-1 control-label">料号:</label>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" name="materialId" ng-model="vm.MaterialId" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.materialId.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">料号不能为空</small>
-                                    </div>
-                                </div>
-                                <label class="col-md-1 control-label">检测结果:</label>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" name="inspectionItems" ng-model="vm.InspctionResult" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.inspectionItems.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">检测结果不能为空</small>
-                                    </div>
-                                </div>
+                <div class="row">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>
+                                    <label>品名:</label>
+                                    {{item.InspectionItem}}
+                                </span>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-1 control-label">品名:</label>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" name="materialName" ng-model="vm.MaterialName" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.materialName.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">品名不能为空</small>
-                                    </div>
-                                </div>
-                                <label class="col-md-1 control-label">供应商:</label>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" name="materialSupplier" ng-model="vm.MaterialSupplier" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.materialSupplier.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">供应商不能为空</small>
-                                    </div>
-                                </div>
-                                
-                                <label class="col-md-1 control-label">进货日期:</label>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" name="materialInDate" ng-model="vm.MaterialInDate" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.materialInDate.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">进货日期不能为空</small>
-                                    </div>
-                                </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>规格:</label>
+                                    {{item.SizeMemo}}
+                                </span>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-1 control-label">图号:</label>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" name="materialDrawId" ng-model="vm.MaterialDrawId" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.materialDrawId.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">图号不能为空</small>
-                                    </div>
-                                </div>
-                                <label class="col-md-1 control-label">进货数量:</label>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" name="materialCount" ng-model="vm.MaterialCount" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.materialCount.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">进货数量不能为空</small>
-                                    </div>
-                                </div>
-                                <label class="col-md-1 control-label">检测方式:</label>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" name="inspectionMode" ng-model="vm.InspectionMode" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.inspectionMode.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">检测方式不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-1 control-label">规格:</label>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" name="materialSpec" ng-model="vm.MaterialSpec" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.materialSpec.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">规格不能为空</small>
-                                    </div>
-                                </div>
-                                
-                                <label class="col-md-1 control-label">检测项目:</label>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" name="materialCount" ng-model="vm.InspectionItems" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.materialCount.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">检测项目不能为空</small>
-                                    </div>
-                                </div>
-                                <label class="col-md-1 control-label">检测日期:</label>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" name="finishDate" ng-model="vm.FinishDate" required />
-                                    <div class="error-messages" ng-messages="inspectionFormManage.finishDate.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">检测日期不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <div class="alert alert-info">
-                            <div class="row">
-                                <div class="col-md-5 col-md-offset-5">
-                                    <button class="btn btn-primary" ng-click="operate.save(inspectionFormManage.$valid)"><i class="fa fa-save"></i>保存</button>
-                                    <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
-                                    <span yl-operatemsg-board></span>
-                                </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>数量:</label>
+                                    {{item.InspectionLevel}}
+                                </span>
                             </div>
                         </div>
-                    </form>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>
+                                    <label>供应商:</label>
+                                    {{item.InspectionSupplier}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>图号/检验规范:</label>
+                                    {{item.InspectionMode}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>检验方式:</label>
+                                    {{item.EquipmentID}}
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-6 pull-left">
+                        <div class="table-responsive">
+                            <table class="table table-responsive table-striped table-hover">
+                                <thead>
+                                    <tr class="info">
+                                        <th>检验项目</th>
+                                        <th>规格值</th>
+                                        <th>检验水平</th>
+                                        <th>抽样方案</th>
+                                        <th>检验方法</th>
+                                        <th>量具编号</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in vmManager.formDatas track by $index">
+                                        <td>{{item.InspectionItem}}</td>
+                                        <td>{{item.InspectionSize}}</td>
+                                        <td>{{item.InspectionLever}}</td>
+                                        <td>{{item.InspectionMode}}</td>
+                                        <td>{{item.InspectionSolution}}</td>
+                                        <td>{{item.InspectionId}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <div class="table-responsive">
+                            <table class="table table-responsive table-striped table-hover">
+                                <thead>
+                                    <tr class="info">
+                                        <th class="info text-center">记录值</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in vmManager.recordDatas track by $index">
+                                        <td>{{item}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row col-md-offset-5">
+                        <button class="btn btn-success" type="button"><i class="fa fa-file-text"></i>导出</button>
+                        <button class="btn btn-warning" type="button" ng-click="vmManager.showCheckModal()"><i class="fa fa-gears" ></i>审核</button>
+                        <button class="btn btn-default" type="button" ng-click="vmManager.refresh()"><i class="fa fa-reply"></i>返回</button>
+                    </div>
                 </div>
             </div>
         </div>

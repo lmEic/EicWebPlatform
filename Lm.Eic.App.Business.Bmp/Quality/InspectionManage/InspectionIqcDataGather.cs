@@ -25,18 +25,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionIqcItemDataSummaryLabelModel> GetIqcInspectionItemDataSummaryLabelListBy(string orderId, string materialId)
         {
             List<InspectionIqcItemDataSummaryLabelModel> returnList = new List<InspectionIqcItemDataSummaryLabelModel>();
-           
             var iqcNeedInspectionsItemdatas = InspectionIqcManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
-            if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0) return returnList;
-            List<DateTime> finishDateList = new List<DateTime>();
+            if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0)
+                return returnList;
+            var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault(e => e.ProductID == materialId);
+            if (orderMaterialInfo == null) return returnList;
+            double produceNumber = orderMaterialInfo.ProduceNumber;
 
-            MaterialModel orderMaterialInfo = new MaterialModel();
-            NewMethod(orderId, materialId, finishDateList, out orderMaterialInfo);
+            /// 需是判断是放宽还是加严 
+            string inspectionMode = "正常";
+
             string inspectionItems = string.Empty;
+            List<DateTime> finishDateList = new List<DateTime>();
             iqcNeedInspectionsItemdatas.ForEach(m =>
             {
                 ///得到检验方法数据
-                var inspectionModeConfigModelData = GetInspectionModeConfigDataBy(m, orderMaterialInfo.ProduceNumber);
+                var inspectionModeConfigModelData = GetInspectionModeConfigDataBy(m, produceNumber, inspectionMode);
                 ///得到已经检验的数据  
                 var iqcHaveInspectionData = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionDetailModelBy(orderId, m.MaterialId, m.InspectionItem);
                 ///初始化 综合模块
@@ -88,16 +92,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
                 returnList.Add(model);
             });
-           
+            StoreIqcInspectionMasterModel(orderId, materialId, inspectionItems, inspectionMode, finishDateList, out produceNumber);
             return returnList;
         }
 
-        private OpResult NewMethod(string orderId, string materialId, List<DateTime> finishDateList, out MaterialModel orderMaterialInfo)
+        private OpResult StoreIqcInspectionMasterModel(string orderId, string materialId, string inspectionItems, string inspectionMode, List<DateTime> finishDateList, out double produceNumber)
         {
-            string inspectionItems = string.Empty;
-            string inspectionMode = "正常";
-            orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault(e => e.ProductID == materialId);
-            if (orderMaterialInfo == null) return null;
+            produceNumber = 0;
+           var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault(e => e.ProductID == materialId);
+            if (orderMaterialInfo == null)
+            { return null; }
+            produceNumber = orderMaterialInfo.ProduceNumber;
+
             InspectionIqcMasterModel MasterModel = new InspectionIqcMasterModel()
             {
                 OrderId = orderId,
@@ -186,15 +192,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="iqcInspectionItemConfig"></param>
         /// <param name="inMaterialCount"></param>
         /// <returns></returns>
-        public InspectionModeConfigModel GetInspectionModeConfigDataBy(InspectionIqCItemConfigModel iqcInspectionItemConfig, double inMaterialCount)
+        public InspectionModeConfigModel GetInspectionModeConfigDataBy(InspectionIqCItemConfigModel iqcInspectionItemConfig, double inMaterialCount, string inspectionMode="正常")
         {
             var maxs = new List<Int64>(); var mins = new List<Int64>();
             double maxNumber; double minNumber;
             if (iqcInspectionItemConfig == null) return new InspectionModeConfigModel(); ;
             var models = InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(
-                iqcInspectionItemConfig.InspectionMode,
+                inspectionMode,
                 iqcInspectionItemConfig.InspectionLevel,
-                iqcInspectionItemConfig.InspectionAQL);
+                iqcInspectionItemConfig.InspectionAQL).ToList();
             models.ForEach(e =>
             { maxs.Add(e.EndNumber); mins.Add(e.StartNumber); });
             if (maxs.Count > 0)
@@ -205,7 +211,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 minNumber = GetMinNumber(mins, inMaterialCount);
             else
                 minNumber = 0;
-            return models.Where(e => e.StartNumber == minNumber && e.EndNumber == maxNumber).ToList().FirstOrDefault();
+            var model= models.FirstOrDefault(e => e.StartNumber == minNumber && e.EndNumber == maxNumber);
+            if (model != null) model.InspectionMode = inspectionMode;
+            return model;
+
             // InspectionCount, AcceptCount, RefuseCount,
         }
         private Int64 GetMaxNumber(List<Int64> maxNumbers, double number)
