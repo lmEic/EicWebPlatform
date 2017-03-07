@@ -491,6 +491,8 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 //更新界面检测项目列表
                 vmManager.updateInspectionItemList();
                 leeHelper.clearVM(uiVM);
+                vmManager.inputDatas = [];
+                vmManager.dataList = [];
                 //切换到下一项
             }
         });
