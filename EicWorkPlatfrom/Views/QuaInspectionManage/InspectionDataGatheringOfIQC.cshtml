@@ -132,7 +132,8 @@
                             <div class="col-md-4">
                                 <span>
                                     <label>量具编号:</label>
-                                    {{vmManager.iqcInspectionItemAllInfo.IqcInspectionItemConfig.EquipmentID}}
+                                    <span ng-show="vmManager.currentInspectionItem.EquipmentID">{{vmManager.currentInspectionItem.EquipmentID}}</span>
+                                    <input placeholder="输入量具编号" ng-model="vmManager.currentInspectionItem.EquipmentID" type="text"/>
                                 </span>
                             </div>
                         </div>
