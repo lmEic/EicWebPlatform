@@ -209,7 +209,7 @@ namespace EicWorkPlatfrom.Controllers
 
         public JsonResult GetInspectionFormDetailDatas(string orderId, string materialId)
         {
-            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionDetailModelBy(orderId, materialId);
+            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         #endregion

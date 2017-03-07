@@ -73,10 +73,10 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 
     /////////////////////////////iqc检验单管理模块/////////////////////////
     //iqc检验单管理模块获取表单数据  
-    quality.getInspectionFormManageOfIqcDatas = function (selectedFormStatus,dateFrom,dateTo) {
+    quality.getInspectionFormManageOfIqcDatas = function (formStatus, dateFrom, dateTo) {
         var url = quaInspectionManageUrl + 'GetInspectionFormManageOfIqcDatas';
         return ajaxService.getData(url, {
-            selectedFormStatus: selectedFormStatus,
+            formStatus: formStatus,
             dateFrom:dateFrom,
             dateTo:dateTo
         })
@@ -583,50 +583,59 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspect
 
 ///iqc检验单管理
 qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
+    var inspectionFormTable = $scope.inspectionFormTable = {
+
+    }
     var vmManager = $scope.vmManager = {
         dateFrom: null,
         dateTo: null,
         editDatas: [],
-        selectedFormStatus:null,
+        selectedFormStatus: null,
         formStatuses: [{ label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
         editWindowWidth: "100%",
-        isShowEditWindow: false,
-        currentItem:null,
-        showItemWindow: function () {
-            
-        },
+        isShowDetailWindow: false,
+        currentItem: null,
+        detailDatas: [],
+        //模态框
         checkModal: $modal({
             title: "审核提示",
             content: "亲~您确定要审核吗",
             templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
             controller: function ($scope) {
                 $scope.confirmDelete = function (item) {
-                    
+
                 }
             },
-            show:false,
+            show: false,
         }),
         //获取检验表单主数据
         getMasterDatas: function () {
-            qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
-                
+            $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
                 vmManager.editDatas = editDatas;
+
             })
         },
+        //审核
+        showCheckModal: function () {
+            vmManager.checkModal.$promise.then(vmManager.checkModal.show);
+
+        },
         //获取详细数据
-        getDetailDatas:function(item){
+        getDetailDatas: function (item) {
             qualityInspectionDataOpService.getInspectionFormDetailDatas(item.OrderId, item.MaterialId).then(function (datas) {
+                vmManager.currentItem = item;
+                vmManager.isShowDetailWindow = !vmManager.isShowDetailWindow;
                 console.log(datas);
-                vmManager.isShowEditWindow = !vmManager.isShowEditWindow;
                 vmManager.detailDatas = datas;
+
             })
         },
         //返回
         refresh: function () {
-            vmManager.isShowEditWindow = false;
+            vmManager.isShowDetailWindow = false;
         }
     };
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-   
+
 })
