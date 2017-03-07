@@ -283,7 +283,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId && e.InspecitonItem == inspectionItem).ToList().FirstOrDefault(); ;
         }
-
+        internal List< InspectionIqcDetailModel> GetIqcInspectionDetailModelBy(string orderid, string materialId)
+        {
+            return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId ).ToList() ;
+        }
 
         /// <summary>
         ///  判定是否需要测试 盐雾测试
