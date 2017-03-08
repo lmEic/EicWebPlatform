@@ -267,7 +267,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// 存储Iqc检验项次主要数据
         /// </summary>
         /// <returns></returns>
-        private OpResult StoreIqcInspectionMasterModel(InspectionIqcMasterModel model)
+        public OpResult StoreIqcInspectionMasterModel(InspectionIqcMasterModel model)
         {
             return InspectionIqcManagerCrudFactory.IqcMasterCrud.Store(model, true);
         }

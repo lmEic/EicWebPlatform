@@ -6,49 +6,64 @@ var qualityModule = angular.module('bpm.qualityApp');
 qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     var quality = {};
     var quaInspectionManageUrl = "/quaInspectionManage/";
-    //013935获取IQC进料检验项目配置数据
-    quality.GetIqcspectionItemConfigDatas = function (materialId) {
+    ////////////////////////////////////////  iqc检验项目配置模块///////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //iqc检验项目配置模块 物料查询
+    quality.getIqcspectionItemConfigDatas = function (materialId) {
         var url = quaInspectionManageUrl + "GetIqcspectionItemConfigDatas";
         return ajaxService.getData(url,  {
             materialId: materialId
         })
     };
-    ///数据库中是否存在此物料料号
+    ///iqc检验项目配置模块 物料复制时是否存在
    quality.checkIqcspectionItemConfigMaterialId = function (materialId) {
        var url = quaInspectionManageUrl + "CheckIqcspectionItemConfigMaterialId";
         return ajaxService.getData(url,  {
             materialId: materialId
         })
     };
-    //013935从excel中IQC进料检验配置项数据
+    //iqc检验项目配置模块  导入Excel
     quality.importIqcInspectionItemConfigDatas = function (file) {
         var url = quaInspectionManageUrl + 'ImportIqcInspectionItemConfigDatas';
         return ajaxService.uploadFile(url, file);
     }
 
-    //013935保存IQC进料检验配置项数据
+    //iqc检验项目配置模块  保存
     quality.saveIqcInspectionItemConfigDatas = function (iqcInspectionConfigItems) {
         var url = quaInspectionManageUrl + 'SaveIqcInspectionItemConfigDatas';
         return ajaxService.postData(url, {
             iqcInspectionConfigItems: iqcInspectionConfigItems
         })
     }
+    // iqc检验项目配置模块 删除
     quality.deleteIqlInspectionConfigItem = function (configItem) {
         var url = quaInspectionManageUrl + 'DeleteIqlInspectionConfigItem';
         return ajaxService.postData(url, {
             configItem: configItem,
         });
     };
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //处理检验方式配置数据
-    quality.storeInspectionModeConfigData = function (inspectionModeConfigEntity) {
+
+
+
+
+
+    ////////////////////////////////////////////////检验方式配置模块////////////////////////////////////
+    //处理'检验方式'配置数据  storeIqcInspectionModeData
+    quality.storeIqcInspectionModeData = function (inspectionModeConfigEntity) {
         var url = quaInspectionManageUrl + "StoreInspectionModeConfigData";
         return ajaxService.postData(url, {
             inspectionModeConfigEntity: inspectionModeConfigEntity
         })
     }
+    ////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+    ////////////////////////////////////////////iqc数据采集控制器////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
     quality.getInspectionDataGatherMaterialIdDatas = function (orderId) {
         var url = quaInspectionManageUrl + "GetIqcMaterialInfoDatas";
         return ajaxService.getData(url, {
@@ -70,8 +85,11 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
            gatherData: gatherData,
         });
     };
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     /////////////////////////////iqc检验单管理模块/////////////////////////
+    //////////////////////////////////////////////////////////////////////
     //iqc检验单管理模块获取表单数据  
     quality.getInspectionFormManageOfIqcDatas = function (formStatus, dateFrom, dateTo) {
         var url = quaInspectionManageUrl + 'GetInspectionFormManageOfIqcDatas';
@@ -97,6 +115,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     }
     return quality;
+    ///////////////////////////////////////////////////////////////////////////////////////
 })
 
 //iqc检验项目配置模块
@@ -150,7 +169,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
 
         //013935根据品号查询
         getConfigDatas: function () {
-            $scope.searchPromise = qualityInspectionDataOpService.GetIqcspectionItemConfigDatas($scope.vm.MaterialId).then(function (datas) {
+            $scope.searchPromise = qualityInspectionDataOpService.getIqcspectionItemConfigDatas($scope.vm.MaterialId).then(function (datas) {
                 if (datas != null) {
                     $scope.tableVm = datas.ProductMaterailModel;
                     vmManager.dataSource = datas.InspectionItemConfigModelList;
