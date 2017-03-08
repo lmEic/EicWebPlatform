@@ -288,7 +288,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     }
 })
 
-//检验方式配置模块
+//iqc检验方式配置模块
 qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
     var uiVM = {
         InspectionMode: "正常",
@@ -324,7 +324,7 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
             controller: function ($scope) {
                 $scope.confirmDelete = function () {
                     vmManager.deleteItem.OpSign = "delete";
-                    qualityInspectionDataOpService.storeInspectionModeConfigData(vmManager.deleteItem).then(function (opresult) {
+                    qualityInspectionDataOpService.storeIqcInspectionModeData(vmManager.deleteItem).then(function (opresult) {
                         leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                             if (opresult.Result) {
                                 leeHelper.remove(vmManager.dataSets, vmManager.deleteItem);
@@ -351,7 +351,7 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
                         if (uiVM.OpSign == "add") {
-                            leeHelper.copyVm(opresult.Attach, uiVM);
+                            leeHelper.copyVm(opresult.Entity, uiVM);
                             var ds = _.clone(vmManager.dataSource);
                             ds.push(uiVM);
                             vmManager.dataSource = ds;
