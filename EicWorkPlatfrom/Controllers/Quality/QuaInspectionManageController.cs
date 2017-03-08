@@ -180,7 +180,6 @@ namespace EicWorkPlatfrom.Controllers
         [HttpPost]
         public JsonResult StoreIqcInspectionGatherDatas(InspectionIqcItemDataSummaryLabelModel gatherData)
         {
-
             var opResult= InspectionService.DataGatherManager.IqcDataGather.StoreIqcInspectionItemDataSummary(gatherData);
             return Json(opResult);
         }
