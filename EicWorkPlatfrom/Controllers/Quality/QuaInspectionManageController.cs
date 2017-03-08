@@ -206,11 +206,17 @@ namespace EicWorkPlatfrom.Controllers
             var datas = InspectionService.InspectionFormManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
             return DateJsonResult(datas);
         }
-
+        [NoAuthenCheck]
         public JsonResult GetInspectionFormDetailDatas(string orderId, string materialId)
         {
             var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult PostInspectionFormManageCheckedData(InspectionIqcMasterModel model)
+        {
+            var opResult = InspectionService.DataGatherManager .IqcDataGather .StoreIqcInspectionMasterModel (model);
+            return Json(opResult);
         }
         #endregion
 

@@ -63,7 +63,7 @@
                                     <td>{{item.FinishDate}}</td>
                                     <td>
                                         <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getDetailDatas(item)">明细</button>
-                                        <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)">审核</button>
+                                        <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)" ng-show="item.InspectionStatus!=='已审核'">审核</button>
                                     </td>
                                 </tr>
 
@@ -73,80 +73,82 @@
                 </div>
         </div>
         <div pageslide ps-open="vmManager.isShowDetailWindow" ps-side="right" ps-size="{{vmManager.editWindowWidth}}" ps-speed="0.25" ps-container='editWindow'>
-            <div class="row">
-                <div class="col-md-4">
-                    <span>
-                        <label>品名:</label>
-                        {{vmManager.currentItem.MaterialName}}
-                    </span>
+            <div class="well">
+                <div class="row">
+                    <div class="col-md-4">
+                        <span>
+                            <label>品名:</label>
+                            {{vmManager.currentItem.MaterialName}}
+                        </span>
+                    </div>
+                    <div class="col-md-4">
+                        <span>
+                            <label>规格:</label>
+                            {{vmManager.currentItem.MaterialSpec}}
+                        </span>
+                    </div>
+                    <div class="col-md-4">
+                        <span>
+                            <label>数量:</label>
+                            {{vmManager.currentItem.MaterialCount}}
+                        </span>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <span>
-                        <label>规格:</label>
-                        {{vmManager.currentItem.MaterialSpec}}
-                    </span>
-                </div>
-                <div class="col-md-4">
-                    <span>
-                        <label>数量:</label>
-                        {{vmManager.currentItem.MaterialCount}}
-                    </span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <span>
-                        <label>供应商:</label>
-                        {{vmManager.currentItem.MaterialSupplier}}
-                    </span>
-                </div>
-                <div class="col-md-4">
-                    <span>
-                        <label>图号/检验规范:</label>
-                        {{vmManager.currentItem.MaterialDrawId}}
-                    </span>
-                </div>
-                <div class="col-md-4">
-                    <span>
-                        <label>检验方式:</label>
-                        {{vmManager.currentItem.InspectionMode}}
-                    </span>
-                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <span>
+                            <label>供应商:</label>
+                            {{vmManager.currentItem.MaterialSupplier}}
+                        </span>
+                    </div>
+                    <div class="col-md-4">
+                        <span>
+                            <label>图号/检验规范:</label>
+                            {{vmManager.currentItem.MaterialDrawId}}
+                        </span>
+                    </div>
+                    <div class="col-md-4">
+                        <span>
+                            <label>检验方式:</label>
+                            {{vmManager.currentItem.InspectionMode}}
+                        </span>
+                    </div>
 
-            </div>
-            <div class="table-responsive">
-                <table class="table table-responsive table-striped table-hover">
-                    <thead>
-                        <tr class="info">
-                            <th>检验项目</th>
-                            <th>规格值</th>
-                            <th>检验水平</th>
-                            <th>抽样方案</th>
-                            <th>检验方法</th>
-                            <th>量具编号</th>
-                            <th>记录值</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="item in vmManager.detailDatas track by $index">
-                            <td>{{item.InspectionItem}}</td>
-                            <td>{{item.SizeMemo}}</td>
-                            <td>{{item.InspectionLevel}}</td>
-                            <td>{{item.InspectionMode}}</td>
-                            <td>{{item.InspectionSolution}}</td>
-                            <td>{{item.EquipmentId}}</td>
-                            <td>
-                                {{item.InspectionItemDatas}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="row">
-                <div class="col-md-offset-5">
-                    <button class="btn btn-success" type="button"><i class="fa fa-file-text"></i>导出</button>
-                    <button class="btn btn-warning" type="button" ng-click="vmManager.showCheckModal()"><i class="fa fa-gears"></i>审核</button>
-                    <button class="btn btn-default" type="button" ng-click="vmManager.refresh()"><i class="fa fa-reply"></i>返回</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-responsive table-striped table-hover">
+                        <thead>
+                            <tr class="info">
+                                <th>检验项目</th>
+                                <th>规格值</th>
+                                <th>检验水平</th>
+                                <th>抽样方案</th>
+                                <th>检验方法</th>
+                                <th>量具编号</th>
+                                <th>记录值</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.detailDatas track by $index">
+                                <td>{{item.InspectionItem}}</td>
+                                <td>{{item.SizeMemo}}</td>
+                                <td>{{item.InspectionLevel}}</td>
+                                <td>{{item.InspectionMode}}</td>
+                                <td>{{item.InspectionSolution}}</td>
+                                <td>{{item.EquipmentId}}</td>
+                                <td>
+                                    {{item.InspectionItemDatas}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-5">
+                        <button class="btn btn-success" type="button"><i class="fa fa-file-text"></i>导出</button>
+                        <button class="btn btn-warning" type="button" ng-click="vmManager.showCheckModal()" ng-show="vmManager.currentItem.InspectionStatus!=='已审核'"><i class="fa fa-gears"></i>审核</button>
+                        <button class="btn btn-default" type="button" ng-click="vmManager.refresh()"><i class="fa fa-reply"></i>返回</button>
+                    </div>
                 </div>
             </div>
         </div>
