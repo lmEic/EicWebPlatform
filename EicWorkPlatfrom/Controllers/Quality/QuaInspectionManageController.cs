@@ -173,7 +173,7 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult GetIqcInspectionItemDataSummaryLabelList(string orderId,string materialId)
         {
-            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
+            var datas = InspectionService.DataGatherManager.IqcDataGather.BuildingIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
@@ -181,7 +181,7 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult StoreIqcInspectionGatherDatas(InspectionIqcItemDataSummaryLabelModel gatherData)
         {
 
-            var opResult= InspectionService.DataGatherManager.IqcDataGather.StoreIqcInspectionItemDataSummary(gatherData);
+            var opResult= InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcDetailModelForm(gatherData);
             return Json(opResult);
         }
         #endregion
@@ -209,7 +209,7 @@ namespace EicWorkPlatfrom.Controllers
 
         public JsonResult GetInspectionFormDetailDatas(string orderId, string materialId)
         {
-            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionDetailModelBy(orderId, materialId);
+            var datas = InspectionService.DataGatherManager.IqcDataGather.FindIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         #endregion

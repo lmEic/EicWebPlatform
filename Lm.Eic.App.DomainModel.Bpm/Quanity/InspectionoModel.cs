@@ -721,7 +721,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// </summary>
         public DateTime  MaterialInDate { set; get; }
         /// <summary>
-        /// 物料进货日期
+        /// 物料进货数量
         /// </summary>
         public double   MaterialInCount { set; get; }
         /// <summary>
@@ -732,6 +732,12 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///检验项目
         /// </summary>
         public string InspectionItem { get; set; }
+
+
+        /// <summary>
+        ///检验方法
+        /// </summary>
+        public string InspectionMethod{ set; get;}
         /// <summary>
         ///检验方式
         /// </summary>
