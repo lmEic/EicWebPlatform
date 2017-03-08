@@ -73,10 +73,10 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 
     /////////////////////////////iqc检验单管理模块/////////////////////////
     //iqc检验单管理模块获取表单数据  
-    quality.getInspectionFormManageOfIqcDatas = function (selectedFormStatus,dateFrom,dateTo) {
+    quality.getInspectionFormManageOfIqcDatas = function (formStatus, dateFrom, dateTo) {
         var url = quaInspectionManageUrl + 'GetInspectionFormManageOfIqcDatas';
         return ajaxService.getData(url, {
-            selectedFormStatus: selectedFormStatus,
+            formStatus: formStatus,
             dateFrom:dateFrom,
             dateTo:dateTo
         })
@@ -87,6 +87,13 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         return ajaxService.getData(url, {
             orderId: orderId,
             materialId: materialId
+        })
+    }
+    //iqc检验单管理模块发送审核数据
+    quality.postInspectionFormManageCheckedData = function (model) {
+        var url = quaInspectionManageUrl + "PostInspectionFormManageCheckedData";
+        return ajaxService.postData(url, {
+            model:model
         })
     }
     return quality;
@@ -583,50 +590,66 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspect
 
 ///iqc检验单管理
 qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
+
     var vmManager = $scope.vmManager = {
         dateFrom: null,
         dateTo: null,
         editDatas: [],
-        selectedFormStatus:null,
+        selectedFormStatus: null,
         formStatuses: [{ label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
         editWindowWidth: "100%",
-        isShowEditWindow: false,
-        currentItem:null,
-        showItemWindow: function () {
-            
-        },
+        isShowDetailWindow: false,
+        currentItem: null,
+        detailDatas: [],
+        //模态框
         checkModal: $modal({
             title: "审核提示",
             content: "亲~您确定要审核吗",
             templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
             controller: function ($scope) {
-                $scope.confirmDelete = function (item) {
+                $scope.confirmDelete = function () {
+                    vmManager.currentItem.InspectionStatus = "已审核";
+                    vmManager.currentItem.OpSign = "edit";
                     
+                    qualityInspectionDataOpService.postInspectionFormManageCheckedData(vmManager.currentItem).then(function (opresult) {
+                       
+                            if (opresult.Result) {
+                                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                                    vmManager.checkModal.$promise.then(vmManager.checkModal.hide);
+                                });
+                            }
+                       
+                    })
                 }
             },
-            show:false,
+            show: false,
         }),
         //获取检验表单主数据
         getMasterDatas: function () {
-            qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
-                
+            $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
                 vmManager.editDatas = editDatas;
             })
         },
+        //审核
+        showCheckModal: function (item) {
+            if (item)  vmManager.currentItem = item;
+            vmManager.checkModal.$promise.then(vmManager.checkModal.show);
+        },
         //获取详细数据
-        getDetailDatas:function(item){
+        getDetailDatas: function (item) {
+            vmManager.currentItem = item;
             qualityInspectionDataOpService.getInspectionFormDetailDatas(item.OrderId, item.MaterialId).then(function (datas) {
-                console.log(datas);
-                vmManager.isShowEditWindow = !vmManager.isShowEditWindow;
+                vmManager.isShowDetailWindow = true;
                 vmManager.detailDatas = datas;
+
             })
         },
         //返回
         refresh: function () {
-            vmManager.isShowEditWindow = false;
+            vmManager.isShowDetailWindow = false;
         }
     };
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-   
+
 })
