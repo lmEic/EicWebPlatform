@@ -21,9 +21,9 @@
                 </div>
                 <div class="form-group">
                     <label>AQL:</label>
-                    <input type="text" class="form-control" ng-model="vmManager.inspectionAQL"/>
+                    <input type="text" class="form-control" ng-model="vmManager.inspectionAQL" ng-keydown="vmManager.onEnterDown($event)"/>
                 </div>
-                <button type="button" class="btn btn-success " ng-click="vmManager.getInspectionModeDatas"><i class="fa fa-search">查询</i></button>
+                <button type="button" class="btn btn-success " ng-click="vmManager.getInspectionModeDatas()" ><i class="fa fa-search">查询</i></button>
             </form>
             <div class="h-split"></div>
         </div>

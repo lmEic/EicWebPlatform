@@ -141,10 +141,23 @@ namespace EicWorkPlatfrom.Controllers
             var opResult = InspectionService.ConfigManager.ModeConfigManager.StoreInspectionModeConfig(inspectionModeConfigEntity);
             return Json(opResult);
         }
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="inspectionMode"></param>
+        /// <param name="inspectionLevel"></param>
+        /// <param name="inspectionAQL"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetIqcInspectionModeDatas(string inspectionMode, string inspectionLevel, string inspectionAQL)
+        {
+            var datas = InspectionService.ConfigManager.ModeConfigManager.GetInInspectionModeConfigModelList(inspectionMode, inspectionLevel, inspectionAQL);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
 
-      
+
         #region  检验项目数据收集
 
         [NoAuthenCheck]
