@@ -628,7 +628,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspect
 })
 
 ///iqc检验单管理
-qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
+qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService, $modal,$alert) {
     var vmManager = $scope.vmManager = {
         dateFrom: null,
         dateTo: null,
@@ -640,7 +640,10 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         detailDatas: [],
         InspectionItemDatasArr: [],
         dataSource: [],
-        dataSets:[],
+        dataSets: [],
+        isShowTips: false,
+        //数据超过100条提示框
+        showTips: $alert({  content: '亲~查询数量太多，只能显示100条信息哟', placement: 'top', type: 'info', show: false, type: "danger", duration: "3" ,container:'.tipBox'}),
         //模态框
         checkModal: $modal({
             title: "审核提示",
@@ -665,6 +668,9 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         //获取检验表单主数据
         getMasterDatas: function () {
             $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
+                if (editDatas.length >= 100) {
+                    vmManager.showTips.$promise.then(vmManager.showTips.show);
+                }
                 vmManager.dataSource = editDatas;
                 vmManager.dataSets = editDatas;
             })
