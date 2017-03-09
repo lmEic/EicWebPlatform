@@ -35,11 +35,11 @@
                                     <th>单号</th>
                                     <th>料号</th>
                                     <th>供应商</th>
-                                    <th>进货日期</th>
+                                    <th>检测项目</th>
                                     <th>图号</th>
                                     <th>进货数量</th>
                                     <th>检测状态</th>
-                                    <th>检测项目</th>
+                                    <th>进货日期</th>
                                     <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                 </tr>
                             </thead>
@@ -58,7 +58,7 @@
                                             {{item.InspectionStatus}}
                                         </span>
                                     </td>
-                                    <td>{{item.FinishDate}}</td>
+                                    <td>{{item.MaterialInDate}}</td>
                                     <td>
                                         <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getDetailDatas(item)">明细</button>
                                         <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)" ng-show="item.InspectionStatus!=='已审核'">审核</button>

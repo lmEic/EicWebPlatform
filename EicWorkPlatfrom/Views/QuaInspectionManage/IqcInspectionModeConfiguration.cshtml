@@ -5,7 +5,7 @@
 
     <div class="panel-body">
         <div class="row">
-            <form class="form form-inline" cg-busy="{promise:searchPromise}">
+            <form class="form form-inline">
                 <div class="form-group">
                     <label>检验方式:</label>
                     <button type="button" class="btn  btn-default" ng-model="vmManager.inspectionMode"
@@ -29,7 +29,7 @@
         </div>
         <div class="row">
             <div class="well" style="overflow:hidden;">
-                <div class="pull-left" style="width:45%;padding:10px;" cg-busy="{promise:searchPromise}">
+                <div class="pull-left" style="width:45%;padding:10px;">
                     <form role="form" name="inspectionModeForm" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                         <fieldset>
                             <div class="form-group">
