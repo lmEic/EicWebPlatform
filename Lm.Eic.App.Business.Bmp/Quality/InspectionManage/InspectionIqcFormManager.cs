@@ -82,7 +82,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         InspectionIqcMasterModel MaterialModelToInspectionIqcMasterModel(MaterialModel model)
         {
-            return model == null ? (new InspectionIqcMasterModel()
+            return model != null ? (new InspectionIqcMasterModel()
             {
                 OrderId = model.OrderID,
                 MaterialName = model.ProductName,
