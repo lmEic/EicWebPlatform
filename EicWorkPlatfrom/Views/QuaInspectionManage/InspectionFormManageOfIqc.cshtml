@@ -60,8 +60,8 @@
                                     </td>
                                     <td>{{item.MaterialInDate}}</td>
                                     <td>
-                                        <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getDetailDatas(item)">明细</button>
-                                        <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)" ng-show="item.InspectionStatus!=='已审核'">审核</button>
+                                        <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getDetailDatas(item)" ng-show="item.InspectionStatus !== '未完成'">明细</button>
+                                        <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)" ng-show="item.InspectionStatus === '未审核'">审核</button>
                                     </td>
                                 </tr>
 

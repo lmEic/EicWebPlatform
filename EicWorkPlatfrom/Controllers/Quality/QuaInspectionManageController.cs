@@ -156,8 +156,6 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
-
-
         #region  检验项目数据收集
 
         [NoAuthenCheck]
@@ -198,8 +196,6 @@ namespace EicWorkPlatfrom.Controllers
             return Json(opResult);
         }
         #endregion
-
-
 
         #region 检验单管理
         #region iqc检验单管理
