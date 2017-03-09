@@ -336,6 +336,7 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
         getInspectionModeDatas: function () {
             $scope.searchPromise = qualityInspectionDataOpService.getIqcInspectionModeDatas($scope.vmManager.inspectionMode, $scope.vmManager.inspectionLevel, $scope.vmManager.inspectionAQL).then(function (datas) {
                 vmManager.dataSource = datas;
+                vmManager.dataSets = datas;
             })
         },
         deleteModalWindow: $modal({
