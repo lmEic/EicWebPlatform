@@ -20,6 +20,18 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
             this.ToTable("Qms_InspectionModeConfig");
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    public class InspectionModeSwithConfigMapping : EntityTypeConfiguration<InspectionModeSwithConfigModel>
+    {
+        public InspectionModeSwithConfigMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_InspectionModeSwithConfig");
+        }
+    }
 
     #region  IQC
     /// <summary>

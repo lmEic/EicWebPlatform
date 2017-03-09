@@ -606,7 +606,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspect
     operate.refresh = function () { };
 })
 
-
 ///iqc检验单管理
 qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
 

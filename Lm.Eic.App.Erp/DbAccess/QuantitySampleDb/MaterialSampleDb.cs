@@ -29,6 +29,17 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             return GetMaterialIdBy(idm.Category, idm.Code);
         }
 
+        public List<MaterialModel> FindErpAllMasterilBy(DateTime searchStartDate, DateTime searchEndDate)
+        {
+
+            List<MaterialModel> masterialAllinfo = new List<MaterialModel>();
+            List<string> allOrderId = GetAllMaterialOrderId(searchStartDate, searchEndDate);
+            if(allOrderId==null ||allOrderId.Count <=0) return masterialAllinfo;
+            allOrderId.ForEach(e => {
+                masterialAllinfo.AddRange(FindMaterialBy(e));
+            });
+            return masterialAllinfo;
+        }
         /// <summary>
         /// 得到进货物料  341 342 343 344
         /// </summary>
@@ -62,8 +73,59 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             }
             return Materials;
         }
-      
-        
+
+
+        /// <summary>
+        /// 得到所有进货单单号
+        /// </summary>
+        /// <param name="searchStartDate"></param>
+        /// <param name="searchEndDate"></param>
+        /// <returns></returns>
+        public List<string> GetAllMaterialOrderId(DateTime searchStartDate, DateTime searchEndDate)
+        {
+            List<string> OrderId = new List<string>();
+            string Startsql591 = string.Empty;
+            string Startsql110 = string.Empty;
+            string Startsql34 = string.Empty;
+            string startDateStr = searchStartDate.ToDateTimeShortStr() ;
+            string endDateStr = searchEndDate.ToDateTimeShortStr();
+            if (startDateStr != string.Empty || endDateStr != string.Empty)
+            {
+                Startsql591 = "AND(TH029 >= '" + startDateStr + "') AND(TH029 <= '" + endDateStr + "')";
+                Startsql110 = "AND(TA014 >= '" + startDateStr + "') AND(TA014 <= '" + endDateStr + "')";
+                Startsql34 = "AND(TG014 >= '" + startDateStr + "') AND(TG014 <= '" + endDateStr + "')";
+            }
+            DataTable dt34 = DbHelper.Erp.LoadTable("SELECT TG001,TG002   FROM PURTG  WHERE (TG001 = '341' OR TG001 = '343')" + Startsql34);
+            if (dt34.Rows.Count > 0)
+            {
+                foreach (DataRow dt in dt34.Rows)
+                {
+                    OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
+                }
+
+            }
+            DataTable dt591 = DbHelper.Erp.LoadTable("SELECT  TH001,TH002  FROM  MOCTH  WHERE (TH001 = '591')" + Startsql591);
+            if (dt591.Rows.Count > 0)
+            {
+                foreach (DataRow dt in dt591.Rows)
+                {
+                    OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
+                }
+
+            }
+            DataTable dt110 = DbHelper.Erp.LoadTable("SELECT TA001,TA002   FROM  INVTA  WHERE  (TA001 = '110')" + Startsql110);
+            if (dt110.Rows.Count > 0)
+            {
+                foreach (DataRow dt in dt110.Rows)
+                {
+                    OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
+                }
+            }
+
+            return OrderId;
+
+        }
+
         #region     私有方法
         /// <summary>
         /// 所有进货单
@@ -224,6 +286,8 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             }
             return Materials;
         }
+
+       
         #endregion   私有方法
     }
 
@@ -269,6 +333,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 this.MapProductRowAndModel(dr, m);
             });
         }
+
 
         /// <summary>
     }
