@@ -1,4 +1,5 @@
-﻿/// <reference path="../../common/angulee.js" />
+﻿
+/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/underscore/underscore-min.js" />
 var qualityModule = angular.module('bpm.qualityApp');
@@ -51,11 +52,20 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 
 
     ////////////////////////////////////////////////检验方式配置模块////////////////////////////////////
-    //处理'检验方式'配置数据  storeIqcInspectionModeData
+    //处理'检验方式'配置数据  
     quality.storeIqcInspectionModeData = function (inspectionModeConfigEntity) {
         var url = quaInspectionManageUrl + "StoreInspectionModeConfigData";
         return ajaxService.postData(url, {
             inspectionModeConfigEntity: inspectionModeConfigEntity
+        })
+    }
+    //获取“检验方式配置数据”
+    quality.getIqcInspectionModeDatas = function (inspectionMode, inspectionLevel, inspectionAQL) {
+        var url = quaInspectionManageUrl + "GetIqcInspectionModeDatas";
+        return ajaxService.getData(url, {
+            inspectionMode: inspectionMode,
+            inspectionLevel: inspectionLevel,
+            inspectionAQL: inspectionAQL
         })
     }
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -308,6 +318,9 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
     $scope.vm = uiVM;
     var initVM = _.clone(uiVM);
     var vmManager = {
+        inspectionMode: null,
+        inspectionLevel: null,
+        inspectionAQL:null,
         dataSets: [],
         dataSource:[],
         deleteItem: null,
@@ -316,6 +329,11 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
             $scope.vm = uiVM;
         },
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
+        getInspectionModeDatas:function(){
+            $scope.searchPromise = qualityInspectionDataOpService.getIqcInspectionModeDatas($scope.vmManager.inspectionLevel, $scope.vmManager.inspectionLevel, $scope.vmManager.inspectionAQL).then(function (datas) {
+                vmManager.dataSource = datas;
+            })
+        },
         deleteModalWindow: $modal({
             title: "删除提示",
             content: "确认删除此信息吗？",
@@ -606,10 +624,8 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspect
     operate.refresh = function () { };
 })
 
-
 ///iqc检验单管理
 qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
-
     var vmManager = $scope.vmManager = {
         dateFrom: null,
         dateTo: null,
@@ -620,6 +636,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         isShowDetailWindow: false,
         currentItem: null,
         detailDatas: [],
+        InspectionItemDatasArr: [],
         //模态框
         checkModal: $modal({
             title: "审核提示",
@@ -629,9 +646,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                 $scope.confirmDelete = function () {
                     vmManager.currentItem.InspectionStatus = "已审核";
                     vmManager.currentItem.OpSign = "edit";
-                    
                     qualityInspectionDataOpService.postInspectionFormManageCheckedData(vmManager.currentItem).then(function (opresult) {
-                       
                             if (opresult.Result) {
                                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                                     vmManager.checkModal.$promise.then(vmManager.checkModal.hide);
@@ -659,8 +674,11 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             vmManager.currentItem = item;
             qualityInspectionDataOpService.getInspectionFormDetailDatas(item.OrderId, item.MaterialId).then(function (datas) {
                 vmManager.isShowDetailWindow = true;
+                angular.forEach(datas, function (item) {
+                    var dataItems=item.InspectionItemDatas.split(",");
+                    item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
+                })
                 vmManager.detailDatas = datas;
-
             })
         },
         //返回
@@ -670,5 +688,4 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
     };
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-
 })
