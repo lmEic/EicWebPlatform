@@ -24,6 +24,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             get { return OBulider.BuildInstance<InspectionModeConfigCrud>(); }
         }
 
+        /// <summary>
+        /// 检验方式配置CRUD
+        /// </summary>
+        public static InspectionModeSwithConfigCrud InspectionModeSwithConfigCrud
+        {
+            get { return OBulider.BuildInstance<InspectionModeSwithConfigCrud>(); }
+        }
+
         #region IQC Crud
         /// <summary>
         /// IQC物料检验配置CRUD
@@ -86,6 +94,37 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel && e.InspectionAQL == inspectionAQL).OrderBy(e => e.StartNumber).ToList();
         }
 
+    }
+    /// <summary>
+    /// 检验方式转换配置CRUD
+    /// </summary>
+
+    internal class  InspectionModeSwithConfigCrud:CrudBase<InspectionModeSwithConfigModel, IInspectionModeSwithConfigRepository>
+    {
+        public InspectionModeSwithConfigCrud() : base(new InspectionModeSwithConfigRepository(), "检验方式转换")
+        { }
+
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddInspectionModeSwithConfig);
+            this.AddOpItem(OpMode.Edit, EidtInspectionModeSwithConfig);
+            this.AddOpItem(OpMode.Delete, DeleteInspectionModeSwithConfig);
+        }
+
+        private OpResult DeleteInspectionModeSwithConfig(InspectionModeSwithConfigModel model)
+        {
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+        }
+
+        private OpResult EidtInspectionModeSwithConfig(InspectionModeSwithConfigModel model)
+        {
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+
+        private OpResult AddInspectionModeSwithConfig(InspectionModeSwithConfigModel model)
+        {
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
     }
 
     #region  IQC  IQC物料检验配置 Crud

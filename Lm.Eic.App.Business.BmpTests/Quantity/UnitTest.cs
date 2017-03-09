@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
+using System;
 
 namespace Lm.Eic.App.Business.BmpTests.Quantity
 {
@@ -11,8 +12,12 @@ namespace Lm.Eic.App.Business.BmpTests.Quantity
         {
             //var n = QuantityService.IQCSampleItemsRecordManager.GetSamplePrintItemBy("32AAP00001200RM");
             //  /// 测工单从ERP中得到物料信息
-             //var m= InspectionService.InspectionDataGather.GetInspectionItemAllInfo(111, "24KAR99997060RM", "IL 1550");
-            // var mm =QuantityServices. SampleManger.SampleItemsIqcRecordManager.GetPringSampleItemBy("591-1607032", "32AAP00001200RM");
+
+
+            DateTime statDate = DateTime.Now .Date ;
+            DateTime endDate = DateTime.Now.Date;
+             var m= InspectionService.DataGatherManager.IqcDataGather.GetOrderIdList(statDate, endDate);
+             //var mm =QuantityServices. SampleManger.SampleItemsIqcRecordManager.GetPringSampleItemBy("591-1607032", "32AAP00001200RM");
             // var ms = QuantityServices.SampleManger.MaterialSampleItemsManager.GetMaterilalSampleItemBy("32AAP00001200RM");
             // System.IO.MemoryStream stream= QuantityServices. SampleManger.SampleItemsIqcRecordManager.ExportPrintToExcel(mm);
             //#region 输出到Excel
