@@ -5,6 +5,29 @@
 
     <div class="panel-body">
         <div class="row">
+            <form class="form form-inline">
+                <div class="form-group">
+                    <label>检验方式:</label>
+                    <button type="button" class="btn  btn-default" ng-model="vmManager.inspectionMode"
+                            data-html="1" data-multiple="0"
+                            data-animation="am-flip-x" data-placeholder="正常"
+                            bs-options="item.id as item.text for item in vmManager.inspectionModeArr" bs-select>
+                        <span class="caret"></span>
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label>检验水平:</label>
+                    <input type="text" class="form-control"  ng-model="vmManager.inspectionLevel"/>
+                </div>
+                <div class="form-group">
+                    <label>AQL:</label>
+                    <input type="text" class="form-control" ng-model="vmManager.inspectionAQL"/>
+                </div>
+                <button type="button" class="btn btn-success " ng-click="vmManager.getInspectionModeDatas"><i class="fa fa-search">查询</i></button>
+            </form>
+            <div class="h-split"></div>
+        </div>
+        <div class="row">
             <div class="well" style="overflow:hidden;">
                 <div class="pull-left" style="width:45%;padding:10px;">
                     <form role="form" name="inspectionModeForm" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
@@ -15,12 +38,11 @@
                                     <button type="button" class="btn  btn-default" ng-model="vm.InspectionMode"
                                             data-html="1" data-multiple="0"
                                             data-animation="am-flip-x" data-placeholder="正常"
-                                            bs-options="item.id as item.text for item in vmManager.inspectionMode" bs-select>
+                                            bs-options="item.id as item.text for item in vmManager.inspectionModeArr" bs-select>
                                         <span class="caret"></span>
                                     </button>
                                 </div>
 
-                                
                                 <label for="inspectionLevel" class="col-md-2 control-label">检验水平</label>
                                 <div class="col-md-4">
                                     <input name="inspectionLevel" class="form-control" ng-model="vm.InspectionLevel" required />

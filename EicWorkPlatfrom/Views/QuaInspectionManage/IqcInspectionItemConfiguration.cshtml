@@ -4,22 +4,28 @@
     </div>
     <div class="panel-body">
         <div class="row">
-            @*品号查询*@
-            <div>
-                <label>品号</label>
-                <input type="text" placeholder="按品号查询" ng-model="vm.MaterialId" />
-                <button class="btn-sm btn-success" ng-click="vmManager.getConfigDatas()" type="button">查询</button>
-                <a href="javascript:void(0);" class="btn btn-sm btn-info file" title="从Excel中导入数据">
-                    <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
-                </a>
-                <span class="pull-right" ng-show="vmManager.copyLotWindowDisplay">
-                    <input readonly placeholder="原始产品品号" ng-model="vm.MaterialId"/>
-                    <i class="fa fa-arrows-h"></i>
-                    <input placeholder="新的产品品号" ng-model="vmManager.targetMaterialId"/>
-                    <span class="btn btn-sm btn-primary" ng-click="vmManager.copyAll()"><i class="fa fa-copy"></i>复制</span>
-                </span>
-                <button type="button" class="btn-sm btn-success pull-right" ng-click="vmManager.showCopyLotWindow()">批量复制</button>
-            </div>
+            <form class="form form-inline">
+                <fieldset>
+                    <div class="form-group">
+                        <label>检验方式:</label>
+                        <button type="button" class="btn  btn-default" ng-model="vm.InspectionMode"
+                                data-html="1" data-multiple="0"
+                                data-animation="am-flip-x" data-placeholder="正常"
+                                bs-options="item.id as item.text for item in vmManager.inspectionMode" bs-select>
+                            <span class="caret"></span>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>检验水平:</label>
+                        <input type="text" class="form-control" />
+                        
+                    </div>
+                    <div class="form-group">
+                        <label>AQL:</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                </fieldset>
+            </form>
             <div class="h-split"></div>
         </div>
         @*ERP信息*@
