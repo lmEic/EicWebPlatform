@@ -632,14 +632,15 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
     var vmManager = $scope.vmManager = {
         dateFrom: null,
         dateTo: null,
-        editDatas: [],
-        selectedFormStatus: null,
+        selectedFormStatus: "未完成",
         formStatuses: [{ label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
         editWindowWidth: "100%",
         isShowDetailWindow: false,
         currentItem: null,
         detailDatas: [],
         InspectionItemDatasArr: [],
+        dataSource: [],
+        dataSets:[],
         //模态框
         checkModal: $modal({
             title: "审核提示",
@@ -664,7 +665,8 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         //获取检验表单主数据
         getMasterDatas: function () {
             $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
-                vmManager.editDatas = editDatas;
+                vmManager.dataSource = editDatas;
+                vmManager.dataSets = editDatas;
             })
         },
         //审核

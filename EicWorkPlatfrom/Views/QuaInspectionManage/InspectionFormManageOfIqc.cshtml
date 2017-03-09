@@ -44,7 +44,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in vmManager.editDatas track by $index">
+                                <tr ng-repeat="item in vmManager.dataSets track by $index">
                                     <td>{{item.OrderId}}</td>
                                     <td style="white-space:nowrap;">
                                         <span title="品名:{{item.MaterialName}} 规格:{{item.MaterialSpec}}">{{item.MaterialId}}</span>
@@ -67,6 +67,10 @@
 
                             </tbody>
                         </table>
+                        <div ng-if="vmManager.dataSource.length>0"
+                             yl-pagination data-dataset="vmManager.dataSets"
+                             data-datasource="vmManager.dataSource">
+                        </div>
                     </div>
                 </div>
         </div>
@@ -157,11 +161,12 @@
                 </div>
                 <div class="row">
                     <div class="col-md-offset-5">
-                        <button class="btn btn-warning" type="button" ng-click="vmManager.showCheckModal()" ng-show="vmManager.currentItem.InspectionStatus!=='已审核'"><i class="fa  fa-eyedropper"></i>审核</button>
+                        <button class="btn btn-warning" type="button" ng-click="vmManager.showCheckModal()" ng-show="vmManager.currentItem.InspectionStatus==='未审核'"><i class="fa  fa-eyedropper"></i>审核</button>
                         <button class="btn btn-success" type="button"><i class="fa fa-file-text"></i>导出</button>
                         <button class="btn btn-default" type="button" ng-click="vmManager.refresh()"><i class="fa fa-reply"></i>返回</button>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>
