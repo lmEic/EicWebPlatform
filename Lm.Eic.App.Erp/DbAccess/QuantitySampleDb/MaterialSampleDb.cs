@@ -81,7 +81,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         /// <param name="searchStartDate"></param>
         /// <param name="searchEndDate"></param>
         /// <returns></returns>
-        public List<string> GetAllMaterialOrderId(DateTime searchStartDate, DateTime searchEndDate)
+        private  List<string> GetAllMaterialOrderId(DateTime searchStartDate, DateTime searchEndDate)
         {
             List<string> OrderId = new List<string>();
             string Startsql591 = string.Empty;
