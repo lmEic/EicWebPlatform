@@ -328,7 +328,7 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
             uiVM = _.clone(initVM);
             $scope.vm = uiVM;
         },
-        inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
+        inspectionModeArr: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
         getInspectionModeDatas:function(){
             $scope.searchPromise = qualityInspectionDataOpService.getIqcInspectionModeDatas($scope.vmManager.inspectionLevel, $scope.vmManager.inspectionLevel, $scope.vmManager.inspectionAQL).then(function (datas) {
                 vmManager.dataSource = datas;
