@@ -258,9 +258,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy(string orderId, string materialId)
+        internal InspectionIqcMasterModel  GetIqcInspectionMasterModelListBy(string orderId, string materialId)
         {
-            return irep.Entities.Where(e => e.OrderId == orderId && e.MaterialId == materialId).ToList();
+            return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.MaterialId == materialId);
         }
         internal bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
         {
@@ -278,8 +278,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.InspectionStatus == inspectionStatus && e.MaterialInDate >= startTime && e.MaterialInDate <= endTime).ToList();
         }
-       
-    }
+        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy( DateTime startTime, DateTime endTime)
+        {
+            DateTime starttime = startTime.ToDate();
+            DateTime endtime = startTime.ToDate();
+            return irep.Entities.Where(e => e.MaterialInDate >= starttime && e.MaterialInDate <= endtime).ToList();
+        }
+    } 
     /// <summary>
     ///进料检验单（ERP） 物料检验项次录入数据
     /// </summary>

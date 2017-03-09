@@ -30,7 +30,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy(string orderId, string materialId)
+        public InspectionIqcMasterModel GetIqcInspectionMasterModelListBy(string orderId, string materialId)
         {
             return InspectionIqcManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(orderId, materialId);
         }
