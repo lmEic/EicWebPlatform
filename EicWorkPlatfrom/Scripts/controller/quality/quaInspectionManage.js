@@ -661,6 +661,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                 vmManager.isShowDetailWindow = true;
                 vmManager.detailDatas = datas;
 
+                
             })
         },
         //返回
