@@ -84,6 +84,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         public DbSet<InspectionIqCItemConfigModel> IqcInspectionItemConfig { set; get; }
         public DbSet<InspectionIqcMasterModel> IqcInspectionMaster { set; get; }
         public DbSet<InspectionIqcDetailModel> IqcInspectionDetail { set; get; }
+        public DbSet<InspectionModeSwithConfigModel> InspectionModeSwithConfig { set; get; }
         #endregion
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -147,7 +148,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new IqcInspectionItemConfigMapping());
             modelBuilder.Configurations.Add(new IqcInspectionMasterMapping());
             modelBuilder.Configurations.Add(new IqcInspectionDetailMapping());
-
+            modelBuilder.Configurations.Add(new InspectionModeSwithConfigMapping());
 
 
 

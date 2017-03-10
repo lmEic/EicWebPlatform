@@ -125,6 +125,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
+        /// <summary>
+        /// 得到转换参数
+        /// </summary>
+        /// <param name="swithCategory"></param>
+        /// <param name="currentStatus"></param>
+        /// <returns></returns>
+
+        internal List<InspectionModeSwithConfigModel> GetInspectionModeSwithConfiglistBy(string swithCategory, string currentStatus)
+        {
+            return irep.Entities.Where(e => e.SwithCategory == swithCategory && e.CurrentStatus == currentStatus ).ToList();
+        }
     }
 
     #region  IQC  IQC物料检验配置 Crud
@@ -320,9 +331,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderid">单号</param>
         /// <param name="materialId">料号</param>
         /// <returns></returns>
-        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailModelListBy(string orderid, string materialId)
+        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailModelListBy(string materialId, string inspectionItem)
         {
-            return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId).ToList(); ;
+            return irep.Entities.Where(e => e.InspecitonItem == inspectionItem && e.MaterialId == materialId).ToList(); ;
         }
 
         internal InspectionIqcDetailModel GetIqcInspectionDetailModelBy(string orderid, string materialId, string inspectionItem)

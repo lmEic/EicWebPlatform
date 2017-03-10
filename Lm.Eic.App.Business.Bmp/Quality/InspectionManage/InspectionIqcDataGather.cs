@@ -83,7 +83,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 ///得到检验方法数据
                 var inspectionModeConfigModelData = GetInspectionModeConfigDataBy(m, produceNumber);
                 ///得到已经检验的数据  
-                var iqcHaveInspectionData = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionDetailModelBy(orderId, materialId, m.InspectionItem);
+                var iqcHaveInspectionData = GetIqcInspectionDetailModelBy(orderId, materialId, m.InspectionItem);
                 ///初始化 综合模块
                 var model = new InspectionIqcItemDataSummaryLabelModel()
                 {
@@ -122,8 +122,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     //需要录入的数据个数 暂时为抽样的数量
                     model.NeedFinishDataNumber = inspectionModeConfigModelData.InspectionCount;
                 }
-
-
                 if (iqcHaveInspectionData != null)
                 {
                     model.InspectionItemDatas = iqcHaveInspectionData.InspectionItemDatas;
@@ -162,14 +160,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             /// GeneralToBroadenSampleNumber
             ///GeneralToBroadenAcceptNumber
             ///
+            /// 
+            /// 
+            ///1,通过料号 和 抽检验项目  得到当前的最后一次抽检的状态
+            ///2，通当前状态 得到抽样规则 抽样批量  拒受数
+            ///3，比较 对比
+            ///4，返回一个 转换的状态
             ///
             ///
-            ///
-            ///
-            
-            
-            
-             
+
+            var DetailModeList = GetIqcDetailModeListlBy(materialId, InspecitonItem).OrderByDescending (e=>e.MaterialInDate).ToList();
+            if (DetailModeList == null || DetailModeList.Count < 0) return "正常";
+            var currentStatus = DetailModeList.Last().InspectionMode;
+            var modeSwithParameterList = InspectionIqcManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy("IQC", currentStatus);
+
             /// 放宽 BroadenToTighten  加严 Tighten  正常 General
             return "正常";
         }
@@ -299,6 +303,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
        private  List<InspectionIqcDetailModel> GetIqcInspectionDetailModeListlBy(string orderId, string materailId)
         {
             return InspectionIqcManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelBy(orderId, materailId);
+        }
+        private List<InspectionIqcDetailModel> GetIqcDetailModeListlBy(string materailId, string inspecitonItem)
+        {
+            return InspectionIqcManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelListBy(materailId, inspecitonItem);
         }
         /// <summary>
         ///  存储Iqc检验详细数据
