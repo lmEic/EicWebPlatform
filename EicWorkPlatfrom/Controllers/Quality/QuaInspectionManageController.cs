@@ -156,6 +156,8 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
+
+      
         #region  检验项目数据收集
 
         [NoAuthenCheck]
