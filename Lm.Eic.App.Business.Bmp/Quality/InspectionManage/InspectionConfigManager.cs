@@ -47,5 +47,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.Store(model, true);
         }
+        public List<InspectionModeConfigModel> GetInInspectionModeConfigModelList(string inspectionMode, string inspectionLevel, string inspectionAQL)
+        {
+            return InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode,  inspectionLevel,  inspectionAQL);
+        }
     }
 }

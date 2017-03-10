@@ -28,7 +28,24 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             var idm = ErpDbAccessHelper.DecomposeID(id);
             return GetMaterialIdBy(idm.Category, idm.Code);
         }
+        /// <summary>
+        ///找到ERP中所有的进货单的物料信息（数量不超过100）
+        /// </summary>
+        /// <param name="searchStartDate"></param>
+        /// <param name="searchEndDate"></param>
+        /// <returns></returns>
+        public List<MaterialModel> FindErpAllMasterilBy(DateTime searchStartDate, DateTime searchEndDate)
+        {
 
+            List<MaterialModel> masterialAllinfo = new List<MaterialModel>();
+            List<string> allOrderId = GetAllMaterialOrderId(searchStartDate, searchEndDate);
+            if(allOrderId==null ||allOrderId.Count <=0) return masterialAllinfo;
+            allOrderId.ForEach(e => {
+                if (masterialAllinfo.Count<200)
+                masterialAllinfo.AddRange(FindMaterialBy(e));
+            });
+            return masterialAllinfo;
+        }
         /// <summary>
         /// 得到进货物料  341 342 343 344
         /// </summary>
@@ -62,8 +79,76 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             }
             return Materials;
         }
-      
-        
+
+
+        /// <summary>
+        /// 得到所有进货单单号  数量不要超过（100）
+        /// </summary>
+        /// <param name="searchStartDate"></param>
+        /// <param name="searchEndDate"></param>
+        /// <returns></returns>
+        private  List<string> GetAllMaterialOrderId(DateTime searchStartDate, DateTime searchEndDate)
+        {
+            List<string> eeturnOrderList = new List<string>();
+            if (searchEndDate >= searchStartDate)
+            {
+                eeturnOrderList = GetAllMaterialOrderBy(searchEndDate);
+                for (int i = 1; i <= (searchEndDate - searchStartDate).Days; i++)
+                {
+                    DateTime spanDate = searchEndDate.AddDays(-i);
+                    if (eeturnOrderList.Count <= 100)
+                        eeturnOrderList.AddRange(GetAllMaterialOrderBy(spanDate));
+                    else break;
+
+                }
+            }
+            return eeturnOrderList;
+
+        }
+
+        private List<string> GetAllMaterialOrderBy(DateTime searchDate)
+        {
+            List<string> OrderId = new List<string>();
+            string Startsql591 = string.Empty;
+            string Startsql110 = string.Empty;
+            string Startsql34 = string.Empty;
+            string startDateStr = searchDate.ToDateTimeShortStr();
+            if (startDateStr != string.Empty )
+            {
+                Startsql591 = "AND (TH029 = '" + startDateStr + "')";
+                Startsql110 = "AND (TA014 = '" + startDateStr + "')";
+                Startsql34 = "AND (TG014 = '" + startDateStr + "')";
+            }
+            DataTable dt34 = DbHelper.Erp.LoadTable("SELECT TG001,TG002   FROM PURTG  WHERE (TG001 = '341' OR TG001 = '343')" + Startsql34);
+            if (dt34.Rows.Count > 0)
+            {
+                foreach (DataRow dt in dt34.Rows)
+                {
+                    OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
+                }
+
+            }
+            DataTable dt591 = DbHelper.Erp.LoadTable("SELECT  TH001,TH002  FROM  MOCTH  WHERE (TH001 = '591')" + Startsql591);
+            if (dt591.Rows.Count > 0)
+            {
+                foreach (DataRow dt in dt591.Rows)
+                {
+                    OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
+                }
+
+            }
+            DataTable dt110 = DbHelper.Erp.LoadTable("SELECT TA001,TA002   FROM  INVTA  WHERE  (TA001 = '110')" + Startsql110);
+            if (dt110.Rows.Count > 0)
+            {
+                foreach (DataRow dt in dt110.Rows)
+                {
+                    OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
+                }
+            }
+
+            return OrderId;
+        }
+
         #region     私有方法
         /// <summary>
         /// 所有进货单
@@ -224,6 +309,8 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             }
             return Materials;
         }
+
+       
         #endregion   私有方法
     }
 
@@ -269,6 +356,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 this.MapProductRowAndModel(dr, m);
             });
         }
+
 
         /// <summary>
     }

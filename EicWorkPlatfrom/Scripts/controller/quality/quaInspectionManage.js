@@ -1,4 +1,5 @@
-﻿/// <reference path="../../common/angulee.js" />
+﻿
+/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/underscore/underscore-min.js" />
 var qualityModule = angular.module('bpm.qualityApp');
@@ -51,11 +52,20 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 
 
     ////////////////////////////////////////////////检验方式配置模块////////////////////////////////////
-    //处理'检验方式'配置数据  storeIqcInspectionModeData
+    //处理'检验方式'配置数据  
     quality.storeIqcInspectionModeData = function (inspectionModeConfigEntity) {
         var url = quaInspectionManageUrl + "StoreInspectionModeConfigData";
         return ajaxService.postData(url, {
             inspectionModeConfigEntity: inspectionModeConfigEntity
+        })
+    }
+    //获取“检验方式配置数据”
+    quality.getIqcInspectionModeDatas = function (inspectionMode, inspectionLevel, inspectionAQL) {
+        var url = quaInspectionManageUrl + "GetIqcInspectionModeDatas";
+        return ajaxService.getData(url, {
+            inspectionMode: inspectionMode,
+            inspectionLevel: inspectionLevel,
+            inspectionAQL: inspectionAQL
         })
     }
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -203,7 +213,6 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
                 }
 
             })
-            
         },
         delItem:null,
         delModal:$modal({
@@ -308,6 +317,9 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
     $scope.vm = uiVM;
     var initVM = _.clone(uiVM);
     var vmManager = {
+        inspectionMode: "正常",
+        inspectionLevel: null,
+        inspectionAQL:null,
         dataSets: [],
         dataSource:[],
         deleteItem: null,
@@ -315,7 +327,18 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
             uiVM = _.clone(initVM);
             $scope.vm = uiVM;
         },
-        inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
+        inspectionModeArr: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
+        onEnterDown: function ($event) {
+            if ($event.keyCode === 13) {
+                vmManager.getInspectionModeDatas();
+            } 
+        },
+        getInspectionModeDatas: function () {
+            $scope.searchPromise = qualityInspectionDataOpService.getIqcInspectionModeDatas($scope.vmManager.inspectionMode, $scope.vmManager.inspectionLevel, $scope.vmManager.inspectionAQL).then(function (datas) {
+                vmManager.dataSource = datas;
+                vmManager.dataSets = datas;
+            })
+        },
         deleteModalWindow: $modal({
             title: "删除提示",
             content: "确认删除此信息吗？",
@@ -370,7 +393,6 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
             vmManager.init();
-            operate.refresh();
         });
     };
     //编辑iqc检验方式模块的数据
@@ -399,7 +421,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 vmManager.getMaterialDatas();
             }
         },
-        //按工单获取物料品号信息
+        //按工单获取物料品号信息#modal
         getMaterialDatas: function () {
             if (vmManager.orderId) {
                 vmManager.panelDataSource = [];
@@ -507,7 +529,6 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         dataItem.InspectionItemDatas = dataList.join(",");
         dataItem.InspectionItemResult = result ? "OK" : "NG";
         dataItem.InsptecitonItemIsFinished = true;
-        console.log(dataItem);
         $scope.opPromise = qualityInspectionDataOpService.storeIqcInspectionGatherDatas(dataItem).then(function (opResult) {
             if (opResult.Result) {
                 //更新界面检测项目列表
@@ -606,20 +627,23 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspect
     operate.refresh = function () { };
 })
 
-
 ///iqc检验单管理
-qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
-
+qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService, $modal,$alert) {
     var vmManager = $scope.vmManager = {
         dateFrom: null,
         dateTo: null,
-        editDatas: [],
-        selectedFormStatus: null,
-        formStatuses: [{ label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
+        selectedFormStatus: "全部",
+        formStatuses: [{ label: "全部", value: "全部" },{ label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
         editWindowWidth: "100%",
         isShowDetailWindow: false,
         currentItem: null,
         detailDatas: [],
+        InspectionItemDatasArr: [],
+        dataSource: [],
+        dataSets: [],
+        isShowTips: false,
+        //数据超过100条提示框
+        showTips: $alert({  content: '亲~查询数量太多，只能显示100条信息哟', placement: 'top', type: 'info', show: false, type: "danger", duration: "3" ,container:'.tipBox'}),
         //模态框
         checkModal: $modal({
             title: "审核提示",
@@ -629,9 +653,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                 $scope.confirmDelete = function () {
                     vmManager.currentItem.InspectionStatus = "已审核";
                     vmManager.currentItem.OpSign = "edit";
-                    
                     qualityInspectionDataOpService.postInspectionFormManageCheckedData(vmManager.currentItem).then(function (opresult) {
-                       
                             if (opresult.Result) {
                                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                                     vmManager.checkModal.$promise.then(vmManager.checkModal.hide);
@@ -646,7 +668,11 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         //获取检验表单主数据
         getMasterDatas: function () {
             $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
-                vmManager.editDatas = editDatas;
+                if (editDatas.length >= 100) {
+                    vmManager.showTips.$promise.then(vmManager.showTips.show);
+                }
+                vmManager.dataSource = editDatas;
+                vmManager.dataSets = editDatas;
             })
         },
         //审核
@@ -659,9 +685,11 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             vmManager.currentItem = item;
             qualityInspectionDataOpService.getInspectionFormDetailDatas(item.OrderId, item.MaterialId).then(function (datas) {
                 vmManager.isShowDetailWindow = true;
+                angular.forEach(datas, function (item) {
+                    var dataItems = item.InspectionItemDatas.split(",");
+                    item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
+                })
                 vmManager.detailDatas = datas;
-
-                
             })
         },
         //返回
@@ -671,5 +699,4 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
     };
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-
 })

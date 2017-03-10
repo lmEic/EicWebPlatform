@@ -18,6 +18,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
         
     }
 
+    public interface IInspectionModeSwithConfigRepository : IRepository<InspectionModeSwithConfigModel>
+    {
+
+    }
+    public class InspectionModeSwithConfigRepository : BpmRepositoryBase<InspectionModeSwithConfigModel>, IInspectionModeSwithConfigRepository
+    {
+    }
+
     #region IQC
 
     public interface IIqcInspectionItemConfigRepository : IRepository<InspectionIqCItemConfigModel>

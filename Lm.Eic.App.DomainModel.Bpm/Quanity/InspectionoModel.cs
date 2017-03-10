@@ -134,7 +134,98 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+    /// <summary>
+    ///  检验方式转换配置文件
+    /// </summary>
+    public class InspectionModeSwithConfigModel
+    {
+        public InspectionModeSwithConfigModel()
+        { }
+        #region Model
+        private string _swithcategory;
+        /// <summary>
+        ///类别
+        /// </summary>
+        public string SwithCategory
+        {
+            set { _swithcategory = value; }
+            get { return _swithcategory; }
+        }
+        private string _swithproperty;
+        /// <summary>
+        ///属性
+        /// </summary>
+        public string SwithProperty
+        {
+            set { _swithproperty = value; }
+            get { return _swithproperty; }
+        }
+        private int _swithvaule;
+        /// <summary>
+        ///值
+        /// </summary>
+        public int SwithVaule
+        {
+            set { _swithvaule = value; }
+            get { return _swithvaule; }
+        }
+        private string _swithmore;
+        /// <summary>
+        ///说明备注
+        /// </summary>
+        public string SwithMore
+        {
+            set { _swithmore = value; }
+            get { return _swithmore; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
 
+    }
 
     #region IQC
     /// <summary>

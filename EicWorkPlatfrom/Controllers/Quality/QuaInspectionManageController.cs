@@ -141,13 +141,18 @@ namespace EicWorkPlatfrom.Controllers
             var opResult = InspectionService.ConfigManager.ModeConfigManager.StoreInspectionModeConfig(inspectionModeConfigEntity);
             return Json(opResult);
         }
-        #endregion
-
-
-        #region 检验方式转换配置
-        public ActionResult InspectionModeSwitchConfiguration()
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="inspectionMode"></param>
+        /// <param name="inspectionLevel"></param>
+        /// <param name="inspectionAQL"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetIqcInspectionModeDatas(string inspectionMode, string inspectionLevel, string inspectionAQL)
         {
-            return View();
+            var datas = InspectionService.ConfigManager.ModeConfigManager.GetInInspectionModeConfigModelList(inspectionMode, inspectionLevel, inspectionAQL);
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         #endregion
 
@@ -191,8 +196,6 @@ namespace EicWorkPlatfrom.Controllers
             return Json(opResult);
         }
         #endregion
-
-
 
         #region 检验单管理
         #region iqc检验单管理

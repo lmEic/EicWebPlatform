@@ -1118,6 +1118,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.operate = operate;
     //存储
     operate.saveAll = function (isValid) {
+        uiVM.OpSign='add';
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             astDataopService.storeAstRepairedData(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
