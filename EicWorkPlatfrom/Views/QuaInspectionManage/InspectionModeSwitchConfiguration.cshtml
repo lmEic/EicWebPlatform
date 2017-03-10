@@ -1,1 +1,247 @@
-﻿<h1>检验方式转换配置</h1>
+﻿
+<style>
+    .first {
+				font-size: 60px;
+				height: 300px;
+				background: -moz-linear-gradient(top, #ccffcc, #339933);
+				background: -o-linear-gradient(top, #ccffcc, #339933);
+				background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ccffcc), to(#339933));
+				border: 3px solid black;
+                word-break:break-all;
+                word-wrap:break-word;
+			}
+			.second {
+                text-align:center;
+				font-size: 60px;
+				height: 300px;
+				line-height: 300px;
+				border: 3px solid black;
+				background: -moz-linear-gradient(top, #ffffcc, #ff9966, #ffffcc);
+				background: -o-linear-gradient(top, #ffffcc, #ff9966, #ffffcc);
+				background: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #ffffcc), color-stop(0.5, #ff9966), color-stop(1, #ffffcc));
+			}
+			.third {
+				font-size: 60px;
+				height: 300px;
+				background: -moz-linear-gradient(top, #ffff00, #ff0000);
+				background: -o-linear-gradient(top, #ffff00, #ff0000);
+				background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffff00), to(#ff0000));
+				border: 3px solid black;
+			}
+			
+			.fa-arrow-right {
+				color:#ff3300 ;
+			}
+			
+			.fa-arrow-left {
+				color:green ;
+			}
+			
+			.arrow_tr {
+				height: 80px;
+			}
+			
+			.arrow_td {
+				background: pink;
+			}
+			
+			.triangleBox_right {
+				background: #ff6633;
+				height: 40px;
+                margin-top:13px;
+				position: relative;
+			}
+			.triangleBox_left {
+				background: green;
+				height: 40px;
+                margin-top:13px;
+				position: relative;
+			}
+			.triangle_right {
+				position: absolute;
+				right: -80px;
+				top: -20px;
+				width: 0;
+				height: 0;
+				border-width: 40px;
+				border-style: solid dashed dashed dashed;
+				border-color: transparent transparent transparent #ff6633;
+			}
+			
+			.triangle_left {
+				position: absolute;
+				left: -80px;
+				top: -20px;
+				width: 0;
+				height: 0;
+				border-width: 40px;
+				border-style: solid dashed dashed dashed;
+				border-color: transparent green transparent transparent;
+			}
+</style>
+
+<div class="row">
+    <div class="col-md-1 first">放宽</div>
+    <div class="col-md-4">
+        <div class="table-responsive">
+            <table class="table" style="overflow: hidden;">
+                <tr>
+                    <td>
+                        <span><i class=" fa fa-arrow-right"></i></span>
+                    </td>
+                    <td>
+                        <label>抽取批量数:</label>
+                    </td>
+                    <td>
+                        <input style="width:150px;" type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                    </td>
+                    <td>
+                        <span><i class=" fa fa-arrow-right"></i></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span><i class=" fa fa-arrow-right"></i></span>
+                    </td>
+                    <td>
+                        <label>接受数量:</label>
+                    </td>
+                    <td>
+                        <input style="width:150px;" type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                    </td>
+                    <td>
+                        <span><i class=" fa fa-arrow-right"></i></span>
+                    </td>
+                </tr>
+                <tr class="arrow_tr">
+                    <td></td>
+                    <td colspan="2">
+                        <div class="triangleBox_right">
+                            <span class="triangle_right"></span>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr class="arrow_tr">
+                    <td></td>
+                    <td colspan="2">
+                        <div class="triangleBox_left">
+                            <span class="triangle_left"></span>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span><i class=" fa fa-arrow-left"></i></span>
+                    </td>
+                    <td>
+                        <label>接受数量:</label>
+                    </td>
+                    <td>
+                        <input style="width:150px;" type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                    </td>
+                    <td>
+                        <span><i class=" fa fa-arrow-left"></i></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span><i class=" fa fa-arrow-left"></i></span>
+                    </td>
+                    <td>
+                        <label for="">抽取批量数:</label>
+                    </td>
+                    <td>
+                        <input style="width:150px;" type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                    </td>
+                    <td>
+                        <span><i class=" fa fa-arrow-left"></i></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-2 second">正常</div>
+    <div class="col-md-4">
+        <div class="table-responsive">
+            <table class="table" style="overflow: hidden;">
+                <tr>
+                    <td>
+                        <span><i class=" fa fa-arrow-right"></i></span>
+                    </td>
+                    <td>
+                        <label>抽取批量数:</label>
+                    </td>
+                    <td>
+                        <input style="width:150px;" type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                    </td>
+                    <td>
+                        <span><i class=" fa fa-arrow-right"></i></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span><i class=" fa fa-arrow-right"></i></span>
+                    </td>
+                    <td>
+                        <label>接受数量:</label>
+                    </td>
+                    <td>
+                        <input style="width:150px;" type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                    </td>
+                    <td>
+                        <span><i class=" fa fa-arrow-right"></i></span>
+                    </td>
+                </tr>
+                <tr class="arrow_tr">
+                    <td></td>
+                    <td colspan="2">
+                        <div class="triangleBox_right">
+                            <span class="triangle_right"></span>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr class="arrow_tr">
+                    <td></td>
+                    <td colspan="2">
+                        <div class="triangleBox_left">
+                            <span class="triangle_left"></span>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span><i class=" fa fa-arrow-left"></i></span>
+                    </td>
+                    <td>
+                        <label>接受数量:</label>
+                    </td>
+                    <td>
+                        <input style="width:150px;" type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                    </td>
+                    <td>
+                        <span><i class=" fa fa-arrow-left"></i></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span><i class=" fa fa-arrow-left"></i></span>
+                    </td>
+                    <td>
+                        <label for="">抽取批量数:</label>
+                    </td>
+                    <td>
+                        <input style="width:150px;" type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                    </td>
+                    <td>
+                        <span><i class=" fa fa-arrow-left"></i></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-1 third">加严</div>
+</div>

@@ -659,7 +659,6 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                                     vmManager.checkModal.$promise.then(vmManager.checkModal.hide);
                                 });
                             }
-                       
                     })
                 }
             },
