@@ -161,7 +161,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             /// 正常到宽
             /// GeneralToBroadenSampleNumber
             ///GeneralToBroadenAcceptNumber
-            /// 
+            ///
+            ///
+            ///
+            ///
+            ///
+            
+            
+            
+             
             /// 放宽 BroadenToTighten  加严 Tighten  正常 General
             return "正常";
         }
@@ -319,25 +327,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
        private InspectionModeConfigModel GetInspectionModeConfigDataBy(InspectionIqCItemConfigModel iqcInspectionItemConfig, double inMaterialCount)
         {
-
-           string  inspectionMode = GetJudgeInspectionMode(iqcInspectionItemConfig.MaterialId, iqcInspectionItemConfig.InspectionItem);
-            var maxs = new List<Int64>(); var mins = new List<Int64>();
-            double maxNumber; double minNumber;
-            if (iqcInspectionItemConfig == null) return new InspectionModeConfigModel(); ;
+            if (iqcInspectionItemConfig == null) return new InspectionModeConfigModel();
+            string  inspectionMode = GetJudgeInspectionMode(iqcInspectionItemConfig.MaterialId, iqcInspectionItemConfig.InspectionItem);
+            var maxs = new List<Int64>();
+            var mins = new List<Int64>();
+            double maxNumber=0;
+            double minNumber=0;
+          
             var models = InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(
                 inspectionMode,
                 iqcInspectionItemConfig.InspectionLevel,
                 iqcInspectionItemConfig.InspectionAQL).ToList();
-            models.ForEach(e =>
-            { maxs.Add(e.EndNumber); mins.Add(e.StartNumber); });
+            models.ForEach(e => { maxs.Add(e.EndNumber); mins.Add(e.StartNumber); });
             if (maxs.Count > 0)
                 maxNumber = GetMaxNumber(maxs, inMaterialCount);
-            else
-                maxNumber = 0;
+          
             if (mins.Count > 0)
                 minNumber = GetMinNumber(mins, inMaterialCount);
-            else
-                minNumber = 0;
+          
             var model= models.FirstOrDefault(e => e.StartNumber == minNumber && e.EndNumber == maxNumber);
             if (model != null)
             {
