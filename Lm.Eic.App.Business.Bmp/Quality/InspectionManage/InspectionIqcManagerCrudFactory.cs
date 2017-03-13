@@ -91,7 +91,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         public List<InspectionModeConfigModel> GetInspectionStartEndNumberBy(string inspectionMode, string inspectionLevel, string inspectionAQL)
         {
-            return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel && e.InspectionAQL == inspectionAQL).OrderBy(e => e.StartNumber).ToList();
+            if ((inspectionLevel == null || inspectionLevel==String.Empty )&&(inspectionAQL == null || inspectionAQL == string.Empty))
+              return irep.Entities.Where(e => e.InspectionMode == inspectionMode).OrderBy(e => e.StartNumber).ToList();
+            if (inspectionAQL == null || inspectionAQL==string.Empty)
+                return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel).OrderBy(e => e.StartNumber).ToList();
+           else  return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel && e.InspectionAQL == inspectionAQL).OrderBy(e => e.StartNumber).ToList();
         }
 
     }
