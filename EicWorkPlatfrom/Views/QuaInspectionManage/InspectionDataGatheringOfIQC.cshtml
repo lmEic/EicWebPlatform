@@ -56,7 +56,7 @@
         </div>
         <div class="h-split"></div>
         <div class="row clearfix">
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="bs-callout bs-callout-info">
                     <p>
                         <i class="fa fa-list-ul">品号列表</i>
@@ -87,7 +87,7 @@
                 </div>
             </div>
 
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <div class="bs-callout bs-callout-info" style="min-height:500px;">
                     <div class="well">
                         <div class="row">
@@ -159,10 +159,10 @@
                                     </td>
                                 </tr>
                             </tbody>
-                            <tfoot>
+                            <tfoot ng-hide="vmManager.currentInspectionItem.InspectionItemResult==='OK'" ng-cloak>
                                 <tr>
                                     <td>
-                                        <button class="btn btn-warning" ng-click="operate.saveIqcGatherDatas()">保存数据</button>
+                                        <button class="btn btn-warning"  ng-click="operate.saveIqcGatherDatas()">保存数据</button>
                                     </td>
                                 </tr>
                             </tfoot>

@@ -130,6 +130,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        
         /// <summary>
         /// 存储  检验方式配置
         /// </summary>
@@ -155,6 +156,15 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         #endregion
+
+        #region  检验方式转换配置
+        [NoAuthenCheck]
+        public ActionResult InspectionModeSwitchConfiguration()
+        {
+            return View();
+        }
+        #endregion
+
 
         #region  检验项目数据收集
 
