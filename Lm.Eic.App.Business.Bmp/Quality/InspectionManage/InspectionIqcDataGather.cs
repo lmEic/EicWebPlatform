@@ -95,6 +95,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialInCount= produceNumber,
                     ///检验方法
                     InspectionMethod=m.InspectionMethod ,
+                    //数据采集类型
+                    InspectionDataGatherType=m.InspectionDataGatherType ,
                     SizeLSL = m.SizeLSL,
                     SizeUSL = m.SizeUSL,
                     SizeMemo = m.SizeMemo,
