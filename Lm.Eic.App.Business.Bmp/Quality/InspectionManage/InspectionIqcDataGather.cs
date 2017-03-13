@@ -83,7 +83,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 ///得到检验方法数据
                 var inspectionModeConfigModelData = GetInspectionModeConfigDataBy(m, produceNumber);
                 ///得到已经检验的数据  
-                var iqcHaveInspectionData = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionDetailModelBy(orderId, materialId, m.InspectionItem);
+                var iqcHaveInspectionData = GetIqcInspectionDetailModelBy(orderId, materialId, m.InspectionItem);
                 ///初始化 综合模块
                 var model = new InspectionIqcItemDataSummaryLabelModel()
                 {
@@ -122,8 +122,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     //需要录入的数据个数 暂时为抽样的数量
                     model.NeedFinishDataNumber = inspectionModeConfigModelData.InspectionCount;
                 }
-
-
                 if (iqcHaveInspectionData != null)
                 {
                     model.InspectionItemDatas = iqcHaveInspectionData.InspectionItemDatas;
@@ -149,29 +147,41 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private string GetJudgeInspectionMode(string materialId ,string  InspecitonItem)
         {
-            /// 宽到正常
-            ///BroadenToGeneralSampleNumber
-            ///BroadenToGeneralAcceptNumber
-            /// 正常到严
-            /// GeneralToTightenSampleNumber
-            /// GeneralToTightenAcceptNumber
-            /// 严到正常
-            /// TightenToGeneralSampleNumber
-            /// TightenToGeneralAcceptNumber
-            /// 正常到宽
-            /// GeneralToBroadenSampleNumber
-            ///GeneralToBroadenAcceptNumber
-            ///
-            ///
-            ///
-            ///
-            ///
-            
-            
-            
-             
-            /// 放宽 BroadenToTighten  加严 Tighten  正常 General
-            return "正常";
+            ///3，比较 对比
+            ///4，返回一个 转换的状态
+            ///1,通过料号 和 抽检验项目  得到当前的最后一次抽检的状态
+            string retrunstirng = "正常";
+            var DetailModeList = GetIqcDetailModeListlBy(materialId, InspecitonItem).OrderByDescending(e => e.MaterialInDate).Take(100).ToList();
+            if (DetailModeList == null || DetailModeList.Count <= 0) return retrunstirng;
+            var currentStatus = DetailModeList.Last().InspectionMode;
+            ///2，通当前状态 得到抽样规则 抽样批量  拒受数
+            var modeSwithParameterList = InspectionIqcManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy("IQC", currentStatus);
+             if(modeSwithParameterList==null || modeSwithParameterList.Count <=0) return retrunstirng;
+            int sampleNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwithProperty == "SampleNumber").Select(e => e.SwithVaule).Min();
+            int AcceptNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwithProperty == "AcceptNumber").Select(e => e.SwithVaule).Max();
+            int sampleNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwithProperty == "SampleNumber").Select(e => e.SwithVaule).Max();
+            int AcceptNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwithProperty == "AcceptNumber").Select(e => e.SwithVaule).Min();
+            var getNumber = DetailModeList.Take(sampleNumberVauleMax).Count(e => e.InspectionItemResult == "NG");
+            switch (currentStatus)
+            {
+                case "加严":
+                    retrunstirng=(getNumber >= AcceptNumberVauleMin) ? "正常" : currentStatus;
+                    break;
+                case "放宽":
+                    retrunstirng = (getNumber <= AcceptNumberVauleMin) ? "正常" : currentStatus;
+                    break;
+                case "正常":
+                    if (getNumber <= AcceptNumberVauleMin) retrunstirng = "放宽";
+                    else
+                    { ///加严的数量
+                        int getTheNumber = DetailModeList.Take(sampleNumberVauleMin).Count(e => e.InspectionItemResult == "NG");
+                        retrunstirng = (getTheNumber >= AcceptNumberVauleMax) ? "加严" : currentStatus;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return retrunstirng;
         }
         /// 查找IQC检验项目所有的信息
         /// </summary>
@@ -299,6 +309,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
        private  List<InspectionIqcDetailModel> GetIqcInspectionDetailModeListlBy(string orderId, string materailId)
         {
             return InspectionIqcManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelBy(orderId, materailId);
+        }
+        private List<InspectionIqcDetailModel> GetIqcDetailModeListlBy(string materailId, string inspecitonItem)
+        {
+            return InspectionIqcManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelListBy(materailId, inspecitonItem);
         }
         /// <summary>
         ///  存储Iqc检验详细数据

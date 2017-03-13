@@ -142,6 +142,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public InspectionModeSwithConfigModel()
         { }
         #region Model
+        private string _swithmemo;
+        /// <summary>
+        ///转换模式
+        /// </summary>
+        public string SwithMemo
+        {
+            set { _swithmemo = value; }
+            get { return _swithmemo; }
+        }
         private string _swithcategory;
         /// <summary>
         ///类别
@@ -160,6 +169,33 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _swithproperty = value; }
             get { return _swithproperty; }
         }
+        private string _isenable;
+        /// <summary>
+        ///是否启用
+        /// </summary>
+        public string IsEnable
+        {
+            set { _isenable = value; }
+            get { return _isenable; }
+        }
+        private string _currentstatus;
+        /// <summary>
+        ///当前状态
+        /// </summary>
+        public string CurrentStatus
+        {
+            set { _currentstatus = value; }
+            get { return _currentstatus; }
+        }
+        private string _swithsatus;
+        /// <summary>
+        ///转换状态
+        /// </summary>
+        public string SwithSatus
+        {
+            set { _swithsatus = value; }
+            get { return _swithsatus; }
+        }
         private int _swithvaule;
         /// <summary>
         ///值
@@ -168,15 +204,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _swithvaule = value; }
             get { return _swithvaule; }
-        }
-        private string _swithmore;
-        /// <summary>
-        ///说明备注
-        /// </summary>
-        public string SwithMore
-        {
-            set { _swithmore = value; }
-            get { return _swithmore; }
         }
         private string _opperson;
         /// <summary>
@@ -592,6 +619,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _materialid = value; }
             get { return _materialid; }
         }
+
         private string _inspecitonitem;
         /// <summary>
         ///检验项目
@@ -600,6 +628,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _inspecitonitem = value; }
             get { return _inspecitonitem; }
+        }
+        private string _inspectionMode;
+        /// <summary>
+        /// /检验方式
+        /// </summary>
+        public string InspectionMode
+        {
+            set { _inspectionMode = value; }
+            get { return _inspectionMode; }
         }
         private double _materialcount;
         /// <summary>

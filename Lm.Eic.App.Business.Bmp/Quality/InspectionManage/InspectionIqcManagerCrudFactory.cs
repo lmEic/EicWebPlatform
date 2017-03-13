@@ -91,7 +91,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         public List<InspectionModeConfigModel> GetInspectionStartEndNumberBy(string inspectionMode, string inspectionLevel, string inspectionAQL)
         {
-            return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel && e.InspectionAQL == inspectionAQL).OrderBy(e => e.StartNumber).ToList();
+            if ((inspectionLevel == null || inspectionLevel==String.Empty )&&(inspectionAQL == null || inspectionAQL == string.Empty))
+              return irep.Entities.Where(e => e.InspectionMode == inspectionMode).OrderBy(e => e.StartNumber).ToList();
+            if (inspectionAQL == null || inspectionAQL==string.Empty)
+                return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel).OrderBy(e => e.StartNumber).ToList();
+           else  return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel && e.InspectionAQL == inspectionAQL).OrderBy(e => e.StartNumber).ToList();
         }
 
     }
@@ -124,6 +128,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private OpResult AddInspectionModeSwithConfig(InspectionModeSwithConfigModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+        /// <summary>
+        /// 得到转换参数
+        /// </summary>
+        /// <param name="swithCategory"></param>
+        /// <param name="currentStatus"></param>
+        /// <returns></returns>
+
+        internal List<InspectionModeSwithConfigModel> GetInspectionModeSwithConfiglistBy(string swithCategory, string currentStatus)
+        {
+            return irep.Entities.Where(e => e.SwithCategory == swithCategory && e.CurrentStatus == currentStatus ).ToList();
         }
     }
 
@@ -320,9 +335,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderid">单号</param>
         /// <param name="materialId">料号</param>
         /// <returns></returns>
-        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailModelListBy(string orderid, string materialId)
+        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailModelListBy(string materialId, string inspectionItem)
         {
-            return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId).ToList(); ;
+            return irep.Entities.Where(e => e.InspecitonItem == inspectionItem && e.MaterialId == materialId).ToList(); ;
         }
 
         internal InspectionIqcDetailModel GetIqcInspectionDetailModelBy(string orderid, string materialId, string inspectionItem)
