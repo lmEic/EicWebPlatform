@@ -327,6 +327,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionmethod = value; }
             get { return _inspectionmethod; }
         }
+        private string _inspectiondatagathertype;
+        /// <summary>
+        ///数据采集类型
+        /// </summary>
+        public string InspectionDataGatherType
+        {
+            set { _inspectiondatagathertype = value; }
+            get { return _inspectiondatagathertype; }
+        }
         private string _equipmentid;
         /// <summary>
         ///测量工具
@@ -853,6 +862,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// </summary>
         public double   MaterialInCount { set; get; }
         /// <summary>
+        /// 数据采集类型
+        /// </summary>
+         public string InspectionDataGatherType { set; get; }
+        /// <summary>
         /// 测量量具财产编号
         /// </summary>
         public string EquipmentId { set; get; }
@@ -932,5 +945,58 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public decimal Id_Key{ set;get; }
 
         #endregion Model
+    }
+
+
+    public class InspectionModeSwithConfigSummaryModel
+    {
+       /// <summary>
+       /// 属性
+       /// </summary>
+        public string  SwithCategory{ set; get; }
+        /// <summary>
+        /// 从宽到正常抽检批量数
+        /// </summary>
+
+        public int BroadenToNormalSampleNumber { set; get; }
+        /// <summary>
+        /// 从宽到正常抽检接收数
+        /// </summary>
+        public int BroadenToNormalAcceptNumber { set; get; }
+
+
+
+        /// <summary>
+        /// 从正常到严抽检批量数
+        /// </summary>
+        public int NormalToRestrictSampleNumber { set; get; }
+        /// <summary>
+        /// 从正常到严抽检接收数
+        /// </summary>
+        public int NormalToRestrictAcceptNumber { set; get; }
+
+        /// <summary>
+        /// 从严到正常抽检批量数
+        /// </summary>
+        public int RestrictToNormalSampleNumber { set; get; }
+        /// <summary>
+        /// 从严到正常抽检接受数
+        /// </summary>
+        public int RestrictToNormalAcceptNumber { set; get; }
+
+
+        /// <summary>
+        /// 从正常到宽抽检批量数
+        /// </summary>
+        public int NormalToBroadenSampleNumber { set; get; }
+
+        /// <summary>
+        ///从正常到宽抽检接受数
+        /// </summary>
+        public int NormalToBroadenAcceptNumber { set; get; }
+        /// <summary>
+        ///总的项目是否启用
+        /// </summary>
+        public bool SumIsIsEnable { set; get; }
     }
 }

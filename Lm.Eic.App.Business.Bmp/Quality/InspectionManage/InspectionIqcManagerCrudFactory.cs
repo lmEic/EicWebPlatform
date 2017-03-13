@@ -140,6 +140,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.SwithCategory == swithCategory && e.CurrentStatus == currentStatus ).ToList();
         }
+        /// <summary>
+        /// 保存数库
+        /// </summary>
+        /// <param name="ModelList"></param>
+        /// <returns></returns>
+       internal OpResult StoreModeSwithConfigModelList(List<InspectionModeSwithConfigModel>ModelList)
+        {
+            return null;
+        }
     }
 
     #region  IQC  IQC物料检验配置 Crud
