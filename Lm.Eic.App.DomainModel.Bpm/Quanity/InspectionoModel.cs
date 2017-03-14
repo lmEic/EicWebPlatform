@@ -938,7 +938,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// </summary>
         public bool InsptecitonItemIsFinished { get; set; }
 
-     
+        /// <summary>
+        /// 备注信息
+        /// </summary>
+        public string  Memo { get; set; }
+        /// <summary>
+        /// 操作人
+        /// </summary>
+        public string OpPerson { get; set; }
         /// <summary>
         ///加载的自增健
         /// </summary>

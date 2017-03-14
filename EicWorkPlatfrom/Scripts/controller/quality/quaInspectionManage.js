@@ -567,6 +567,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
              dataItem.HaveFinishDataNumber= dataItem.NeedFinishDataNumber;
         }
         dataItem.InsptecitonItemIsFinished = true;
+        leeHelper.setUserData(dataItem);
         $scope.opPromise = qualityInspectionDataOpService.storeIqcInspectionGatherDatas(dataItem).then(function (opResult) {
             if (opResult.Result) {
                 //更新界面检测项目列表
