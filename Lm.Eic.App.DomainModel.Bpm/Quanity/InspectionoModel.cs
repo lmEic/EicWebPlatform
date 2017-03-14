@@ -948,48 +948,4 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     }
 
 
-    public class InspectionModeSwithConfigSummaryModel
-    {
-       /// <summary>
-       /// 属性
-       /// </summary>
-        public string  SwithCategory{ set; get; }
-        /// <summary>
-        /// 从宽到正常抽检批量数
-        /// </summary>
-        public int BroadenToNormalSampleNumber { set; get; }
-        /// <summary>
-        /// 从宽到正常抽检接收数
-        /// </summary>
-        public int BroadenToNormalAcceptNumber { set; get; }
-        /// <summary>
-        /// 从正常到严抽检批量数
-        /// </summary>
-        public int NormalToRestrictSampleNumber { set; get; }
-        /// <summary>
-        /// 从正常到严抽检接收数
-        /// </summary>
-        public int NormalToRestrictAcceptNumber { set; get; }
-
-        /// <summary>
-        /// 从严到正常抽检批量数
-        /// </summary>
-        public int RestrictToNormalSampleNumber { set; get; }
-        /// <summary>
-        /// 从严到正常抽检接受数
-        /// </summary>
-        public int RestrictToNormalAcceptNumber { set; get; }
-        /// <summary>
-        /// 从正常到宽抽检批量数
-        /// </summary>
-        public int NormalToBroadenSampleNumber { set; get; }
-        /// <summary>
-        ///从正常到宽抽检接受数
-        /// </summary>
-        public int NormalToBroadenAcceptNumber { set; get; }
-        /// <summary>
-        ///总的项目是否启用
-        /// </summary>
-        public bool SumIsIsEnable { set; get; }
-    }
 }
