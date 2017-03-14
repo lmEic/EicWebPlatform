@@ -51,6 +51,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 MaterialId = model.MaterialId,
                 MaterialInDate = model.MaterialInDate,
                 OpSign = "add",
+                Memo = model.Memo,
+                OpPerson = model.OpPerson,
                 Id_Key = model.Id_Key
             };
             return StoreInspectionIqcDetailModel(datailModel);
