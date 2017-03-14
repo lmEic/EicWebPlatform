@@ -957,15 +957,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         /// 从宽到正常抽检批量数
         /// </summary>
-
         public int BroadenToNormalSampleNumber { set; get; }
         /// <summary>
         /// 从宽到正常抽检接收数
         /// </summary>
         public int BroadenToNormalAcceptNumber { set; get; }
-
-
-
         /// <summary>
         /// 从正常到严抽检批量数
         /// </summary>
@@ -983,13 +979,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// 从严到正常抽检接受数
         /// </summary>
         public int RestrictToNormalAcceptNumber { set; get; }
-
-
         /// <summary>
         /// 从正常到宽抽检批量数
         /// </summary>
         public int NormalToBroadenSampleNumber { set; get; }
-
         /// <summary>
         ///从正常到宽抽检接受数
         /// </summary>
