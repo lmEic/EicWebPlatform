@@ -156,7 +156,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="ModelList"></param>
         /// <returns></returns>
-        internal OpResult StoreModeSwithConfigModelList(List<InspectionModeSwitchConfigModel>modelList)
+        internal OpResult StoreModeSwithConfigModelList(string inspectionModeType, List<InspectionModeSwitchConfigModel>modelList)
         {
             OpResult opResult = OpResult.SetResult("未执行任何操作！");
             SetFixFieldValue(modelList, OpMode.Add);
@@ -171,7 +171,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     i = i + opResult.RecordCount;
             });
             opResult = i.ToOpResult(OpContext);
-            if (i == modelList.Count) opResult.Entity = modelList;
+            if (i == modelList.Count)
+            {
+                opResult.Entity = modelList;
+               
+            }
             return opResult;
         }
     }
