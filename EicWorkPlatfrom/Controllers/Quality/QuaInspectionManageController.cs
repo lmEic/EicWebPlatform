@@ -162,6 +162,12 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        [NoAuthenCheck]
+        public JsonResult GetModeSwitchDatas(string inspectionModeType)
+        {
+            var datas = InspectionService.ConfigManager.ModeSwithConfigManager.GetInspectionModeSwithConfig(inspectionModeType);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region  检验项目数据收集
