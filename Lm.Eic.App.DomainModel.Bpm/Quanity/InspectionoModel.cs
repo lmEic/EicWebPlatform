@@ -922,6 +922,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public string InspectionItemDatas { get; set; }
 
         /// <summary>
+        /// 备注说明
+        /// </summary>
+        public string Memo { set; get; }
+
+        /// <summary>
         /// 需要完成数据数量
         /// </summary>
         public int NeedFinishDataNumber { set; get; }
