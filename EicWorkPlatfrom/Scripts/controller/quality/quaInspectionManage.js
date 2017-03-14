@@ -43,14 +43,21 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             configItem: configItem,
         });
     };
-    //检验方式转换配置
+    /////////////////////////////////////////////////////////////
+    //检验方式转换配置获得数据
     quality.getModeSwitchDatas = function (inspectionModeType) {
         var url = quaInspectionManageUrl + "GetModeSwitchDatas";
         return ajaxService.getData(url, {
             inspectionModeType: inspectionModeType
         })
     }
-
+    quality.saveModeSwitchDatas = function (inspectionModeType,switchModeList) {
+        var url = quaInspectionManageUrl + "SaveModeSwitchDatas";
+        return ajaxService.postData(url, {
+            inspectionModeType:inspectionModeType,
+            switchModeList: switchModeList
+        })
+    }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -634,12 +641,12 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
 //检验方式转换配置
 qualityModule.controller("InspectionModeSwitchCtrl", function ($scope, qualityInspectionDataOpService) {
     var vmManager = $scope.vmManager = {
-        switchMode: [],
+        switchModeList: [],
         inspectionModeTypes: [{ name: "IQC", text: "IQC" }, { name: "IQC", text: "FQC" }, { name: "IQC", text: "FIQC" }],
         getModeSwitchDatas: function () {
-            qualityInspectionDataOpService.getModeSwitchDatas($scope.vmManager.inspectionModeType).then(function (datas) {
+            $scope.searchPromise = qualityInspectionDataOpService.getModeSwitchDatas($scope.vmManager.inspectionModeType).then(function (datas) {
                 angular.forEach(datas, function (item) {
-                    vmManager.switchMode.push(item)
+                    vmManager.switchModeList.push(item)
                 })
             })
         }
@@ -648,11 +655,20 @@ qualityModule.controller("InspectionModeSwitchCtrl", function ($scope, qualityIn
     $scope.operate = operate;
     operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            qualityInspectionDataOpService.saveModeSwitchDatas().then(function () {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-
-                })
+            for (var i = 0; i < vmManager.switchModeList.length; i++) {
+                vmManager.switchModeList[i].SwitchVaule = $scope.vmManager.switchModeList[i].SwitchVaule;
+            }
+            qualityInspectionDataOpService.saveModeSwitchDatas(vmManager.inspectionModeType, vmManager.switchModeList).then(function (opresult) {
+                if (opresult.Result) {
+                    leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
+                    vmManager.switchModeList = [];
+                }
             })
         })
+    }
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.switchModeList = [];
+        });
     }
 })
