@@ -63,121 +63,140 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
     public class InspectionModeSwithConfigManager
     {
-       public OpResult  StroeInspectionModeSwithConfig(List<InspectionModeSwithConfigModel>  modelList)
 
+
+        /// <summary>
+        /// 存储检验方式配置
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        public OpResult StroeInspectionModeSwithConfig(List<InspectionModeSwithConfigModel> modelList)
         {
             return InspectionIqcManagerCrudFactory.InspectionModeSwithConfigCrud.StoreModeSwithConfigModelList(modelList);
         }
-        private List<InspectionModeSwithConfigModel> SummaryrModelToStoreModel(InspectionModeSwithConfigSummaryModel model)
+        /// <summary>
+        /// 得到转换数据
+        /// </summary>
+        /// <param name="swithCategory"></param>
+        /// <returns></returns>
+        public List<InspectionModeSwithConfigModel> GetInspectionModeSwithConfig(string swithCategory)
         {
-           return model == null? new List<InspectionModeSwithConfigModel>() :
-               new List<InspectionModeSwithConfigModel>()
-            {
-                new InspectionModeSwithConfigModel()
-                {
-                    SwithCategory = model.SwithCategory,
-                    IsEnable=model.SumIsIsEnable.ToString(),
-                    SwithVaule = model.BroadenToNormalSampleNumber,
-                    SwithMemo = "宽到正常抽取批量",
-                    CurrentStatus = "放宽",
-                    SwithSatus ="正常",
-                    SwithProperty= "SampleNumber"
-                },
-                new InspectionModeSwithConfigModel()
-                {
-                       SwithCategory = model.SwithCategory,
-                       IsEnable = model.SumIsIsEnable.ToString(),
-                       SwithVaule = model.BroadenToNormalAcceptNumber,
-                       SwithMemo = "宽到正常接受数",
-                       CurrentStatus = "放宽",
-                       SwithSatus = "正常",
-                       SwithProperty = "AcceptNumber"
-                },
-                 new InspectionModeSwithConfigModel()
-                {
-                    SwithCategory = model.SwithCategory,
-                    IsEnable=model.SumIsIsEnable.ToString(),
-                    SwithVaule = model.NormalToRestrictSampleNumber,
-                    SwithMemo = "正常到加严抽取批量",
-                    CurrentStatus = "正常",
-                    SwithSatus ="加严",
-                    SwithProperty= "SampleNumber"
-                },
-                new InspectionModeSwithConfigModel()
-                {
-                       SwithCategory = model.SwithCategory,
-                       IsEnable = model.SumIsIsEnable.ToString(),
-                       SwithVaule = model.NormalToRestrictAcceptNumber,
-                       SwithMemo = "正常到加严接受数",
-                       CurrentStatus = "正常",
-                       SwithSatus = "加严",
-                       SwithProperty = "AcceptNumber"
-                },
-
-                 new InspectionModeSwithConfigModel()
-                {
-                    SwithCategory = model.SwithCategory,
-                    IsEnable=model.SumIsIsEnable.ToString(),
-                    SwithVaule = model.RestrictToNormalSampleNumber,
-                    SwithMemo = "加严到正常抽取批量",
-                    CurrentStatus = "加严",
-                    SwithSatus ="正常",
-                    SwithProperty= "SampleNumber"
-                },
-                new InspectionModeSwithConfigModel()
-                {
-                       SwithCategory = model.SwithCategory,
-                       IsEnable = model.SumIsIsEnable.ToString(),
-                       SwithVaule = model.RestrictToNormalAcceptNumber,
-                       SwithMemo = "加严到正常抽取接受量",
-                       CurrentStatus = "加严",
-                       SwithSatus ="正常",
-                       SwithProperty = "AcceptNumber"
-                },
-                 new InspectionModeSwithConfigModel()
-                {
-                    SwithCategory = model.SwithCategory,
-                    IsEnable=model.SumIsIsEnable.ToString(),
-                    SwithVaule = model.NormalToBroadenSampleNumber,
-                    SwithMemo = "正常到放宽抽取批量",
-                    CurrentStatus = "正常",
-                    SwithSatus ="放宽",
-                    SwithProperty= "SampleNumber"
-                },
-                new InspectionModeSwithConfigModel()
-                {
-                       SwithCategory = model.SwithCategory,
-                       IsEnable = model.SumIsIsEnable.ToString(),
-                       SwithVaule = model.NormalToBroadenAcceptNumber,
-                       SwithMemo = "正常到放宽接受数",
-                        CurrentStatus = "正常",
-                       SwithSatus ="放宽",
-                       SwithProperty = "AcceptNumber"
-                },
-            };
-
-
-           
+            return InspectionIqcManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy(swithCategory);
         }
+        //public OpResult StroeInspectionSwithConfig(InspectionModeSwithConfigSummaryModel model)
+        //{
+        //    return StroeInspectionModeSwithConfig(SummaryrModelToStoreModel(model));
+        //}
+        //private List<InspectionModeSwithConfigModel> SummaryrModelToStoreModel(InspectionModeSwithConfigSummaryModel model)
+        //{
+        //   return model == null? new List<InspectionModeSwithConfigModel>() :
+        //       new List<InspectionModeSwithConfigModel>()
+        //    {
+        //        new InspectionModeSwithConfigModel()
+        //        {
+        //            SwithCategory = model.SwithCategory,
+        //            IsEnable=model.SumIsIsEnable.ToString(),
+        //            SwithVaule = model.BroadenToNormalSampleNumber,
+        //            SwithMemo = "宽到正常抽取批量",
+        //            CurrentStatus = "放宽",
+        //            SwithSatus ="正常",
+        //            SwithProperty= "SampleNumber"
+        //        },
+        //        new InspectionModeSwithConfigModel()
+        //        {
+        //               SwithCategory = model.SwithCategory,
+        //               IsEnable = model.SumIsIsEnable.ToString(),
+        //               SwithVaule = model.BroadenToNormalAcceptNumber,
+        //               SwithMemo = "宽到正常接受数",
+        //               CurrentStatus = "放宽",
+        //               SwithSatus = "正常",
+        //               SwithProperty = "AcceptNumber"
+        //        },
+        //         new InspectionModeSwithConfigModel()
+        //        {
+        //            SwithCategory = model.SwithCategory,
+        //            IsEnable=model.SumIsIsEnable.ToString(),
+        //            SwithVaule = model.NormalToRestrictSampleNumber,
+        //            SwithMemo = "正常到加严抽取批量",
+        //            CurrentStatus = "正常",
+        //            SwithSatus ="加严",
+        //            SwithProperty= "SampleNumber"
+        //        },
+        //        new InspectionModeSwithConfigModel()
+        //        {
+        //               SwithCategory = model.SwithCategory,
+        //               IsEnable = model.SumIsIsEnable.ToString(),
+        //               SwithVaule = model.NormalToRestrictAcceptNumber,
+        //               SwithMemo = "正常到加严接受数",
+        //               CurrentStatus = "正常",
+        //               SwithSatus = "加严",
+        //               SwithProperty = "AcceptNumber"
+        //        },
 
-        private InspectionModeSwithConfigSummaryModel StoreModelToShowModel(List<InspectionModeSwithConfigModel> modelList)
-        {
-            return (modelList == null || modelList.Count <= 0) ? new InspectionModeSwithConfigSummaryModel() :
-            new InspectionModeSwithConfigSummaryModel()
-            {
-                SwithCategory = modelList.FirstOrDefault().SwithProperty,
-                BroadenToNormalAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "放宽" && e.SwithSatus == "正常" && e.SwithProperty == "AcceptNumber").SwithVaule,
-                BroadenToNormalSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "放宽" && e.SwithSatus == "正常" && e.SwithProperty == "SampleNumber").SwithVaule,
-                NormalToRestrictAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "加严" && e.SwithProperty == "AcceptNumber").SwithVaule,
-                NormalToRestrictSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "加严" && e.SwithProperty == "SampleNumber").SwithVaule,
-                RestrictToNormalAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "加严" && e.SwithSatus == "正常" && e.SwithProperty == "AcceptNumber").SwithVaule,
-                RestrictToNormalSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "加严" && e.SwithSatus == "正常" && e.SwithProperty == "SampleNumber").SwithVaule,
-                NormalToBroadenAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "放宽" && e.SwithProperty == "AcceptNumber").SwithVaule,
-                NormalToBroadenSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "放宽" && e.SwithProperty == "SampleNumber").SwithVaule,
-                SumIsIsEnable = Convert.ToBoolean(modelList.FirstOrDefault().IsEnable)
+        //         new InspectionModeSwithConfigModel()
+        //        {
+        //            SwithCategory = model.SwithCategory,
+        //            IsEnable=model.SumIsIsEnable.ToString(),
+        //            SwithVaule = model.RestrictToNormalSampleNumber,
+        //            SwithMemo = "加严到正常抽取批量",
+        //            CurrentStatus = "加严",
+        //            SwithSatus ="正常",
+        //            SwithProperty= "SampleNumber"
+        //        },
+        //        new InspectionModeSwithConfigModel()
+        //        {
+        //               SwithCategory = model.SwithCategory,
+        //               IsEnable = model.SumIsIsEnable.ToString(),
+        //               SwithVaule = model.RestrictToNormalAcceptNumber,
+        //               SwithMemo = "加严到正常抽取接受量",
+        //               CurrentStatus = "加严",
+        //               SwithSatus ="正常",
+        //               SwithProperty = "AcceptNumber"
+        //        },
+        //         new InspectionModeSwithConfigModel()
+        //        {
+        //            SwithCategory = model.SwithCategory,
+        //            IsEnable=model.SumIsIsEnable.ToString(),
+        //            SwithVaule = model.NormalToBroadenSampleNumber,
+        //            SwithMemo = "正常到放宽抽取批量",
+        //            CurrentStatus = "正常",
+        //            SwithSatus ="放宽",
+        //            SwithProperty= "SampleNumber"
+        //        },
+        //        new InspectionModeSwithConfigModel()
+        //        {
+        //               SwithCategory = model.SwithCategory,
+        //               IsEnable = model.SumIsIsEnable.ToString(),
+        //               SwithVaule = model.NormalToBroadenAcceptNumber,
+        //               SwithMemo = "正常到放宽接受数",
+        //                CurrentStatus = "正常",
+        //               SwithSatus ="放宽",
+        //               SwithProperty = "AcceptNumber"
+        //        },
+        //    };
 
-            };
-           
-        }
+
+
+        //}
+
+        //private InspectionModeSwithConfigSummaryModel StoreModelToShowModel(List<InspectionModeSwithConfigModel> modelList)
+        //{
+        //    return (modelList == null || modelList.Count <= 0) ? new InspectionModeSwithConfigSummaryModel() :
+        //    new InspectionModeSwithConfigSummaryModel()
+        //    {
+        //        SwithCategory = modelList.FirstOrDefault().SwithProperty,
+        //        BroadenToNormalAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "放宽" && e.SwithSatus == "正常" && e.SwithProperty == "AcceptNumber").SwithVaule,
+        //        BroadenToNormalSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "放宽" && e.SwithSatus == "正常" && e.SwithProperty == "SampleNumber").SwithVaule,
+        //        NormalToRestrictAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "加严" && e.SwithProperty == "AcceptNumber").SwithVaule,
+        //        NormalToRestrictSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "加严" && e.SwithProperty == "SampleNumber").SwithVaule,
+        //        RestrictToNormalAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "加严" && e.SwithSatus == "正常" && e.SwithProperty == "AcceptNumber").SwithVaule,
+        //        RestrictToNormalSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "加严" && e.SwithSatus == "正常" && e.SwithProperty == "SampleNumber").SwithVaule,
+        //        NormalToBroadenAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "放宽" && e.SwithProperty == "AcceptNumber").SwithVaule,
+        //        NormalToBroadenSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "放宽" && e.SwithProperty == "SampleNumber").SwithVaule,
+        //        SumIsIsEnable = Convert.ToBoolean(modelList.FirstOrDefault().IsEnable)
+
+        //    };
+
+        //}
     }
 }
