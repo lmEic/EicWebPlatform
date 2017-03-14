@@ -26,7 +26,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return QualityDBManager.OrderIdInpectionDb.FindMaterialBy(orderId);
         }
 
-    
+
         /// <summary>
         /// 通过总表 存储Iqc检验详细数据
         /// </summary>
@@ -56,7 +56,35 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return StoreInspectionIqcDetailModel(datailModel);
 
         }
+        /// <summary>
+        /// 加载所有的测试项目
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        private List<InspectionIqCItemConfigModel> getIqcNeedInspectionItemDatas(string materialId,DateTime  materialInDate)
+        {
+            var needInsepctionItem= InspectionIqcManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
+            if (needInsepctionItem == null || needInsepctionItem.Count <= 0) return new List<InspectionIqCItemConfigModel>();
+            foreach (var m in  needInsepctionItem)
+            {
+                if (m.InspectionItem.Contains("盐雾"))
+                {
+                    if (!InspectionIqcManagerCrudFactory.IqcDetailCrud.JudgeYwTest(materialId, materialInDate))
+                        needInsepctionItem.Remove(m);
+                }
+                if (m.InspectionItem.Contains("全尺寸"))
+                {
+                    if (InspectionIqcManagerCrudFactory.IqcDetailCrud.JudgeMaterialTwoYearIsRecord(m.MaterialId))
+                        needInsepctionItem.Remove(m);
+                }
+            }
+            
 
+
+            return needInsepctionItem;
+        }
+
+     
         /// <summary>
         /// 生成IQC检验项目所有的信息
         /// </summary>
@@ -66,12 +94,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionIqcItemDataSummaryLabelModel> BuildingIqcInspectionItemDataSummaryLabelListBy(string orderId, string materialId)
         {
             List<InspectionIqcItemDataSummaryLabelModel> returnList = new List<InspectionIqcItemDataSummaryLabelModel>();
-            var iqcNeedInspectionsItemdatas = InspectionIqcManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
-            if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0)
-                return returnList;
             var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault(e => e.ProductID == materialId);
             if (orderMaterialInfo == null)  return returnList;
-
+            var iqcNeedInspectionsItemdatas = getIqcNeedInspectionItemDatas(materialId, orderMaterialInfo.ProduceInDate);
+            if (iqcNeedInspectionsItemdatas==null || iqcNeedInspectionsItemdatas.Count<=0) return returnList;
             double produceNumber = orderMaterialInfo.ProduceNumber;
             //保存单头数据
             
@@ -140,8 +166,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             StoreIqcInspectionMasterModel(orderMaterialInfo, inspectionModeList.Last(), inspectionItems);
             return returnList;
         }
-
-
         /// <summary>
         /// 判断是否按提正常还
         /// </summary>

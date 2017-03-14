@@ -162,7 +162,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private InspectionModeSwithConfigSummaryModel StoreModelToShowModel(List<InspectionModeSwithConfigModel> modelList)
         {
-            return null;
+            return (modelList == null || modelList.Count <= 0) ? new InspectionModeSwithConfigSummaryModel() :
+            new InspectionModeSwithConfigSummaryModel()
+            {
+                SwithCategory = modelList.FirstOrDefault().SwithProperty,
+                BroadenToNormalAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "放宽" && e.SwithSatus == "正常" && e.SwithProperty == "AcceptNumber").SwithVaule,
+                BroadenToNormalSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "放宽" && e.SwithSatus == "正常" && e.SwithProperty == "SampleNumber").SwithVaule,
+                NormalToRestrictAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "加严" && e.SwithProperty == "AcceptNumber").SwithVaule,
+                NormalToRestrictSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "加严" && e.SwithProperty == "SampleNumber").SwithVaule,
+                RestrictToNormalAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "加严" && e.SwithSatus == "正常" && e.SwithProperty == "AcceptNumber").SwithVaule,
+                RestrictToNormalSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "加严" && e.SwithSatus == "正常" && e.SwithProperty == "SampleNumber").SwithVaule,
+                NormalToBroadenAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "放宽" && e.SwithProperty == "AcceptNumber").SwithVaule,
+                NormalToBroadenSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "放宽" && e.SwithProperty == "SampleNumber").SwithVaule,
+                SumIsIsEnable = Convert.ToBoolean(modelList.FirstOrDefault().IsEnable)
+
+            };
+           
         }
     }
 }

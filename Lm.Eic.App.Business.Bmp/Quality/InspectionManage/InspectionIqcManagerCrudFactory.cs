@@ -388,6 +388,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
         }
+
+
+        /// <summary>
+        ///  判定些物料在二年内是否有录入记录 
+        /// </summary>
+        /// <param name="sampleMaterial">物料料号</param>
+        /// <returns></returns>
+        internal  bool JudgeMaterialTwoYearIsRecord(string sampleMaterial)
+        {
+            var nn = irep.Entities.Where(e => e.MaterialInDate >= DateTime.Now.AddYears(-2));
+            if (nn != null || nn.Count() > 0)
+                return true;
+            else return false;
+        }
     }
 
     #endregion
