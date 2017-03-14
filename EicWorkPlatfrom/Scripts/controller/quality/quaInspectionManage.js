@@ -638,7 +638,9 @@ qualityModule.controller("InspectionModeSwitchCtrl", function ($scope, qualityIn
         inspectionModeTypes: [{ name: "IQC", text: "IQC" }, { name: "IQC", text: "FQC" }, { name: "IQC", text: "FIQC" }],
         getModeSwitchDatas: function () {
             qualityInspectionDataOpService.getModeSwitchDatas($scope.vmManager.inspectionModeType).then(function (datas) {
-                switchMode = datas;
+                angular.forEach(datas, function (item) {
+                    vmManager.switchMode.push(item)
+                })
             })
         }
     }
