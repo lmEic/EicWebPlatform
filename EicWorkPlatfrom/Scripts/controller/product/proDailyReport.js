@@ -248,7 +248,6 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
             }
         });
     };
-    //ng-repeat生成的列表，将所点击的行内信息作为参数item传入，在弹出的模态框上显示，编辑保存后，原先列表里的数据怎么更新？
     //取消编辑
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
