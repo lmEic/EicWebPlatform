@@ -91,227 +91,232 @@
         </h6>
     </div>
     <div class="panel-body">
-        <form class="form form-inline" ng-valid>
-            <div class="form-group">
-                <label>请选择:</label>
-                <button type="button" class="btn  btn-default ng-pristine ng-untouched ng-valid" ng-model="vmManager.inspectionModeType" 
-                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="请选择" 
-                        bs-options="item.text as item.text for item in vmManager.inspectionModeTypes" bs-select="">
-                    <span class="caret"></span>
-                </button>
-                <button class="btn btn-success" ng-click="vmManager.getModeSwitchDatas()">查询</button>
-            </div>
-        </form>
-        <div class="h-split"></div>
-        <form name="modeSwitchForm" novalidate class="form-horizontal" on-keypress="if (event.keyCode === 13) return false;">
-            <div class="row">
-                <div class="col-md-1 first">放宽</div>
-                <div class="col-md-4">
-                    <div class="table-responsive">
-                        <table class="table" style="overflow: hidden;">
-                            <tr>
-                                <td>
-                                    <span><i class="fa fa-arrow-right"></i></span>
-                                </td>
-                                <td>
-                                    <label>抽取批量数:</label>
-                                </td>
-                                <td>
-                                    <input style="width:150px;" ng-model="vmManager.switchMode[0].SwitchVaule" name="broadenToNormalSampleNumber"
-                                           type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
-                                    <div class="error-messages" ng-messages="modeSwitchForm.broadenToNormalSampleNumber.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">值不能为空</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span><i class="fa fa-arrow-right"></i></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span><i class="fa fa-arrow-right"></i></span>
-                                </td>
-                                <td>
-                                    <label>接受数量:</label>
-                                </td>
-                                <td>
-                                    <input style="width:150px;" ng-model="vmManager.switchMode[1].SwitchVaule" name="broadenToNormalAcceptNumber"
-                                           type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
-                                    <div class="error-messages" ng-messages="modeSwitchForm.broadenToNormalAcceptNumber.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">值不能为空</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span><i class="fa fa-arrow-right"></i></span>
-                                </td>
-                            </tr>
-                            <tr class="arrow_tr">
-                                <td></td>
-                                <td colspan="2">
-                                    <div class="triangleBox_right">
-                                        <span class="triangle_right"></span>
-                                    </div>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr class="arrow_tr">
-                                <td></td>
-                                <td colspan="2">
-                                    <div class="triangleBox_left">
-                                        <span class="triangle_left"></span>
-                                    </div>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span><i class="fa fa-arrow-left"></i></span>
-                                </td>
-                                <td>
-                                    <label>接受数量:</label>
-                                </td>
-                                <td>
-                                    <input style="width:150px;" ng-model="vmManager.switchMode[2].SwitchVaule" name="normalToBroadenAcceptNumber"
-                                           type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
-                                    <div class="error-messages" ng-messages="modeSwitchForm.normalToBroadenAcceptNumber.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">值不能为空</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span><i class="fa fa-arrow-left"></i></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span><i class="fa fa-arrow-left"></i></span>
-                                </td>
-                                <td>
-                                    <label for="">抽取批量数:</label>
-                                </td>
-                                <td>
-                                    <input style="width:150px;" ng-model="vmManager.switchMode[3].SwitchVaule" name="normalToBroadenSampleNumber"
-                                           type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
-                                    <div class="error-messages" ng-messages="modeSwitchForm.normalToBroadenSampleNumber.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">值不能为空</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span><i class="fa fa-arrow-left"></i></span>
-                                </td>
-                            </tr>
-                        </table>
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form form-inline" ng-valid>
+                    <div class="form-group">
+                        <label>请选择:</label>
+                        <button type="button" class="btn  btn-default ng-pristine ng-untouched ng-valid" ng-model="vmManager.inspectionModeType"
+                                data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="请选择"
+                                bs-options="item.text as item.text for item in vmManager.inspectionModeTypes" bs-select="">
+                            <span class="caret"></span>
+                        </button>
+                        <button class="btn btn-success" ng-click="vmManager.getModeSwitchDatas()">查询</button>
+                    </div>
+                </form>
+                <div class="h-split"></div>
+                <form name="modeSwitchForm" novalidate class="form-horizontal" on-keypress="if (event.keyCode === 13) return false;">
+                    <div class="row" cg-busy="{promise:searchPromise}">
+                        <div class="col-md-1 first">放宽</div>
+                        <div class="col-md-4">
+                            <div class="table-responsive">
+                                <table class="table" style="overflow: hidden;">
+                                    <tr>
+                                        <td>
+                                            <span><i class="fa fa-arrow-right"></i></span>
+                                        </td>
+                                        <td>
+                                            <label>抽取批量数:</label>
+                                        </td>
+                                        <td>
+                                            <input style="width:150px;" ng-model="vmManager.switchModeList[0].SwitchVaule" name="broadenToNormalSampleNumber"
+                                                   type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                                            <div class="error-messages" ng-messages="modeSwitchForm.broadenToNormalSampleNumber.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">值不能为空</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span><i class="fa fa-arrow-right"></i></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span><i class="fa fa-arrow-right"></i></span>
+                                        </td>
+                                        <td>
+                                            <label>接受数量:</label>
+                                        </td>
+                                        <td>
+                                            <input style="width:150px;" ng-model="vmManager.switchModeList[1].SwitchVaule" name="broadenToNormalAcceptNumber"
+                                                   type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                                            <div class="error-messages" ng-messages="modeSwitchForm.broadenToNormalAcceptNumber.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">值不能为空</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span><i class="fa fa-arrow-right"></i></span>
+                                        </td>
+                                    </tr>
+                                    <tr class="arrow_tr">
+                                        <td></td>
+                                        <td colspan="2">
+                                            <div class="triangleBox_right">
+                                                <span class="triangle_right"></span>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="arrow_tr">
+                                        <td></td>
+                                        <td colspan="2">
+                                            <div class="triangleBox_left">
+                                                <span class="triangle_left"></span>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span><i class="fa fa-arrow-left"></i></span>
+                                        </td>
+                                        <td>
+                                            <label>接受数量:</label>
+                                        </td>
+                                        <td>
+                                            <input style="width:150px;" ng-model="vmManager.switchModeList[2].SwitchVaule" name="normalToBroadenAcceptNumber"
+                                                   type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                                            <div class="error-messages" ng-messages="modeSwitchForm.normalToBroadenAcceptNumber.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">值不能为空</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span><i class="fa fa-arrow-left"></i></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span><i class="fa fa-arrow-left"></i></span>
+                                        </td>
+                                        <td>
+                                            <label for="">抽取批量数:</label>
+                                        </td>
+                                        <td>
+                                            <input style="width:150px;" ng-model="vmManager.switchModeList[3].SwitchVaule" name="normalToBroadenSampleNumber"
+                                                   type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                                            <div class="error-messages" ng-messages="modeSwitchForm.normalToBroadenSampleNumber.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">值不能为空</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span><i class="fa fa-arrow-left"></i></span>
+                                        </td>
+                                    </tr>
+                                </table>
 
+                            </div>
+                        </div>
+                        <div class="col-md-2 second">正常</div>
+                        <div class="col-md-4">
+                            <div class="table-responsive">
+                                <table class="table" style="overflow: hidden;">
+                                    <tr>
+                                        <td>
+                                            <span><i class="fa fa-arrow-right"></i></span>
+                                        </td>
+                                        <td>
+                                            <label>抽取批量数:</label>
+                                        </td>
+                                        <td>
+                                            <input style="width:150px;" ng-model="vmManager.switchModeList[4].SwitchVaule" name="normalToRestrictSampleNumber"
+                                                   type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                                            <div class="error-messages" ng-messages="modeSwitchForm.normalToRestrictSampleNumber.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">值不能为空</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span><i class="fa fa-arrow-right"></i></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span><i class="fa fa-arrow-right"></i></span>
+                                        </td>
+                                        <td>
+                                            <label>接受数量:</label>
+                                        </td>
+                                        <td>
+                                            <input style="width:150px;" ng-model="vmManager.switchModeList[5].SwitchVaule" name="normalToRestrictAcceptNumber"
+                                                   type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                                            <div class="error-messages" ng-messages="modeSwitchForm.normalToRestrictAcceptNumber.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">值不能为空</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span><i class="fa fa-arrow-right"></i></span>
+                                        </td>
+                                    </tr>
+                                    <tr class="arrow_tr">
+                                        <td></td>
+                                        <td colspan="2">
+                                            <div class="triangleBox_right">
+                                                <span class="triangle_right"></span>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="arrow_tr">
+                                        <td></td>
+                                        <td colspan="2">
+                                            <div class="triangleBox_left">
+                                                <span class="triangle_left"></span>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span><i class="fa fa-arrow-left"></i></span>
+                                        </td>
+                                        <td>
+                                            <label>接受数量:</label>
+                                        </td>
+                                        <td>
+                                            <input style="width:150px;" ng-model="vmManager.switchModeList[6].SwitchVaule" name="restrictToNormalAcceptNumber"
+                                                   type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                                            <div class="error-messages" ng-messages="modeSwitchForm.restrictToNormalAcceptNumber.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">值不能为空</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span><i class="fa fa-arrow-left"></i></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span><i class="fa fa-arrow-left"></i></span>
+                                        </td>
+                                        <td>
+                                            <label for="">抽取批量数:</label>
+                                        </td>
+                                        <td>
+                                            <input style="width:150px;" ng-model="vmManager.switchModeList[7].SwitchVaule" name="restrictToNormalSampleNumber"
+                                                   type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
+                                            <div class="error-messages" ng-messages="modeSwitchForm.restrictToNormalSampleNumber.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">值不能为空</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span><i class="fa fa-arrow-left"></i></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-1 third">加严</div>
                     </div>
-                </div>
-                <div class="col-md-2 second">正常</div>
-                <div class="col-md-4">
-                    <div class="table-responsive">
-                        <table class="table" style="overflow: hidden;">
-                            <tr>
-                                <td>
-                                    <span><i class="fa fa-arrow-right"></i></span>
-                                </td>
-                                <td>
-                                    <label>抽取批量数:</label>
-                                </td>
-                                <td>
-                                    <input style="width:150px;" ng-model="vmManager.switchMode[4].SwitchVaule" name="normalToRestrictSampleNumber"
-                                           type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
-                                    <div class="error-messages" ng-messages="modeSwitchForm.normalToRestrictSampleNumber.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">值不能为空</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span><i class="fa fa-arrow-right"></i></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span><i class="fa fa-arrow-right"></i></span>
-                                </td>
-                                <td>
-                                    <label>接受数量:</label>
-                                </td>
-                                <td>
-                                    <input style="width:150px;" ng-model="vmManager.switchMode[5].SwitchVaule" name="normalToRestrictAcceptNumber"
-                                           type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
-                                    <div class="error-messages" ng-messages="modeSwitchForm.normalToRestrictAcceptNumber.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">值不能为空</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span><i class="fa fa-arrow-right"></i></span>
-                                </td>
-                            </tr>
-                            <tr class="arrow_tr">
-                                <td></td>
-                                <td colspan="2">
-                                    <div class="triangleBox_right">
-                                        <span class="triangle_right"></span>
-                                    </div>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr class="arrow_tr">
-                                <td></td>
-                                <td colspan="2">
-                                    <div class="triangleBox_left">
-                                        <span class="triangle_left"></span>
-                                    </div>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span><i class="fa fa-arrow-left"></i></span>
-                                </td>
-                                <td>
-                                    <label>接受数量:</label>
-                                </td>
-                                <td>
-                                    <input style="width:150px;" ng-model="vmManager.switchMode[6].SwitchVaule" name="restrictToNormalAcceptNumber"
-                                           type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
-                                    <div class="error-messages" ng-messages="modeSwitchForm.restrictToNormalAcceptNumber.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">值不能为空</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span><i class="fa fa-arrow-left"></i></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span><i class="fa fa-arrow-left"></i></span>
-                                </td>
-                                <td>
-                                    <label for="">抽取批量数:</label>
-                                </td>
-                                <td>
-                                    <input style="width:150px;" ng-model="vmManager.switchMode[7].SwitchVaule" name="restrictToNormalSampleNumber"
-                                           type="text" onkeyup="if(/\D/.test(this.value)){alert('只能输入0和正整数');this.value='';}">
-                                    <div class="error-messages" ng-messages="modeSwitchForm.restrictToNormalSampleNumber.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">值不能为空</small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span><i class="fa fa-arrow-left"></i></span>
-                                </td>
-                            </tr>
-                        </table>
+                    <div class="alert alert-info">
+                        <div class="row">
+                            <div class="col-md-2 col-md-offset-5">
+                                <button class="btn btn-primary" ng-click="operate.saveAll(modeSwitchForm.$valid)"><i class="fa fa-save"></i>保存</button>
+                                <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                <span yl-operatemsg-board></span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-1 third">加严</div>
+                </form>
             </div>
-            <div class="alert alert-info">
-                <div class="row">
-                    <div class="col-md-2 col-md-offset-5">
-                        <button class="btn btn-primary" ng-click="operate.saveAll(modeSwitchForm.$valid)"><i class="fa fa-save"></i>保存</button>
-                        <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
-                        <span yl-operatemsg-board></span>
-                    </div>
-                </div>
-            </div>
-        </form>
+        </div>
+           
     </div>
     <div class="panel-footer"></div>
 </div>
