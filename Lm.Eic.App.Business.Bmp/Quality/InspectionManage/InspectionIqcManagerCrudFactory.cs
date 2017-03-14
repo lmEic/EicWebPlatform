@@ -138,7 +138,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         internal List<InspectionModeSwithConfigModel> GetInspectionModeSwithConfiglistBy(string swithCategory, string currentStatus)
         {
-            return irep.Entities.Where(e => e.SwithCategory == swithCategory && e.CurrentStatus == currentStatus ).ToList();
+            //return irep.Entities.Where(e => e.SwithCategory == swithCategory && e.CurrentStatus == currentStatus ).ToList();
+            return new List<InspectionModeSwithConfigModel>();
         }
         /// <summary>
         /// 保存数库
