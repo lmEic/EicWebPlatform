@@ -364,7 +364,9 @@ var leeHelper = (function () {
                     var len = defaultDatas.length + 1;
                     if (id <= len)
                     {
-                        colItem.indata = defaultDatas[id - 1];
+                        var idata=defaultDatas[id - 1];
+                        if (idata !== undefined && idata !== "")
+                            colItem.indata = idata;
                         if (_.isFunction(handler) && colItem.indata != null)
                             handler(colItem);
                     }

@@ -51,6 +51,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 MaterialId = model.MaterialId,
                 MaterialInDate = model.MaterialInDate,
                 OpSign = "add",
+                Memo = model.Memo,
+                OpPerson = model.OpPerson,
                 Id_Key = model.Id_Key
             };
             return StoreInspectionIqcDetailModel(datailModel);
@@ -157,6 +159,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     model.EquipmentId = iqcHaveInspectionData.EquipmentId;
                     model.InsptecitonItemIsFinished = true;
                     model.Id_Key = iqcHaveInspectionData.Id_Key;
+                    model.Memo = iqcHaveInspectionData.Memo;
                     model.HaveFinishDataNumber = GetHaveFinishDataNumber(iqcHaveInspectionData.InspectionItemDatas);
                 }
                 inspectionItems +=m.InspectionItem+",";

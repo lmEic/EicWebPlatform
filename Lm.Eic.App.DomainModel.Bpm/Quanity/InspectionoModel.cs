@@ -922,6 +922,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public string InspectionItemDatas { get; set; }
 
         /// <summary>
+        /// 备注说明
+        /// </summary>
+        public string Memo { set; get; }
+
+        /// <summary>
         /// 需要完成数据数量
         /// </summary>
         public int NeedFinishDataNumber { set; get; }
@@ -937,8 +942,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///此项的检验状态(完成True，未完成False)
         /// </summary>
         public bool InsptecitonItemIsFinished { get; set; }
-
-     
+        /// <summary>
+        /// 操作人
+        /// </summary>
+        public string OpPerson { get; set; }
         /// <summary>
         ///加载的自增健
         /// </summary>
