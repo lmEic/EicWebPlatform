@@ -137,16 +137,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     ///  检验方式转换配置文件
     /// </summary>
-    public class InspectionModeSwithConfigModel
+    public class InspectionModeSwitchConfigModel
     {
-        public InspectionModeSwithConfigModel()
+        public InspectionModeSwitchConfigModel()
         { }
         #region Model
         private string _swithmemo;
         /// <summary>
         ///转换模式
         /// </summary>
-        public string SwithMemo
+        public string SwitChMemo
         {
             set { _swithmemo = value; }
             get { return _swithmemo; }
@@ -155,7 +155,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         ///类别
         /// </summary>
-        public string SwithCategory
+        public string SwitchCategory
         {
             set { _swithcategory = value; }
             get { return _swithcategory; }
@@ -164,7 +164,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         ///属性
         /// </summary>
-        public string SwithProperty
+        public string SwitchProperty
         {
             set { _swithproperty = value; }
             get { return _swithproperty; }
@@ -191,7 +191,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         ///转换状态
         /// </summary>
-        public string SwithSatus
+        public string SwitchSatus
         {
             set { _swithsatus = value; }
             get { return _swithsatus; }
@@ -200,7 +200,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         ///值
         /// </summary>
-        public int SwithVaule
+        public int SwitchVaule
         {
             set { _swithvaule = value; }
             get { return _swithvaule; }
