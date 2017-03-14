@@ -18,11 +18,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
         
     }
 
-    public interface IInspectionModeSwithConfigRepository : IRepository<InspectionModeSwithConfigModel>
+    public interface IInspectionModeSwitchConfigRepository : IRepository<InspectionModeSwitchConfigModel>
     {
 
     }
-    public class InspectionModeSwithConfigRepository : BpmRepositoryBase<InspectionModeSwithConfigModel>, IInspectionModeSwithConfigRepository
+    public class InspectionModeSwitchConfigRepository : BpmRepositoryBase<InspectionModeSwitchConfigModel>, IInspectionModeSwitchConfigRepository
     {
     }
 

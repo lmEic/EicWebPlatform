@@ -41,8 +41,9 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult GetIqcspectionItemConfigDatas(string materialId)
         {
-            //var InspectionItemConfigModelList = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigDatasBy(materialId);
+            //添加物料检验项
             var InspectionItemConfigModelList = InspectionService.ConfigManager.IqcItemConfigManager.GetIqcspectionItemConfigDatasBy(materialId);
+            //得到此物料的品名 ，规格 ，供应商，图号
             var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
             var datas= new {ProductMaterailModel, InspectionItemConfigModelList };
             return Json(datas, JsonRequestBehavior.AllowGet);
@@ -160,6 +161,12 @@ namespace EicWorkPlatfrom.Controllers
         public ActionResult InspectionModeSwitchConfiguration()
         {
             return View();
+        }
+        [NoAuthenCheck]
+        public JsonResult GetModeSwitchDatas(string inspectionModeType)
+        {
+            var datas = InspectionService.ConfigManager.ModeSwithConfigManager.GetInspectionModeSwithConfig(inspectionModeType);
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

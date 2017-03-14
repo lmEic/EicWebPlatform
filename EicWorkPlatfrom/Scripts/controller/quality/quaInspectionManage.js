@@ -43,6 +43,14 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             configItem: configItem,
         });
     };
+    //检验方式转换配置
+    quality.getModeSwitchDatas = function (inspectionModeType) {
+        var url = quaInspectionManageUrl + "GetModeSwitchDatas";
+        return ajaxService.getData(url, {
+            inspectionModeType: inspectionModeType
+        })
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -124,6 +132,10 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             model:model
         })
     }
+
+
+
+
     return quality;
     ///////////////////////////////////////////////////////////////////////////////////////
 })
@@ -656,4 +668,30 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
     };
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
+})
+
+//检验方式转换配置
+qualityModule.controller("InspectionModeSwitchCtrl", function ($scope, qualityInspectionDataOpService) {
+    var vmManager = $scope.vmManager = {
+        switchMode: [],
+        inspectionModeTypes: [{ name: "IQC", text: "IQC" }, { name: "IQC", text: "FQC" }, { name: "IQC", text: "FIQC" }],
+        getModeSwitchDatas: function () {
+            qualityInspectionDataOpService.getModeSwitchDatas($scope.vmManager.inspectionModeType).then(function (datas) {
+                angular.forEach(datas, function (item) {
+                    vmManager.switchMode.push(item)
+                })
+            })
+        }
+    }
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveAll = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            qualityInspectionDataOpService.saveModeSwitchDatas().then(function () {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+
+                })
+            })
+        })
+    }
 })

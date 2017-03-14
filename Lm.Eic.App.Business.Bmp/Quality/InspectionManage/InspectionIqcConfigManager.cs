@@ -17,12 +17,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     {
         /// <summary>
         /// 物料号查询检验项目
+        /// （添加测试条件）
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
         public List<InspectionIqCItemConfigModel> GetIqcspectionItemConfigDatasBy(string materialId)
         {
-            return InspectionIqcManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
+
+
+
+           return InspectionIqcManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
         }
         /// <summary>
         /// 由单号 料号 得到IQC物料检验

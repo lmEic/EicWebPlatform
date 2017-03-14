@@ -23,13 +23,13 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
     /// <summary>
     /// 
     /// </summary>
-    public class InspectionModeSwithConfigMapping : EntityTypeConfiguration<InspectionModeSwithConfigModel>
+    public class InspectionModeSwitchConfigMapping : EntityTypeConfiguration<InspectionModeSwitchConfigModel>
     {
-        public InspectionModeSwithConfigMapping()
+        public InspectionModeSwitchConfigMapping()
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Qms_InspectionModeSwithConfig");
+            this.ToTable("Qms_InspectionModeSwitchConfig");
         }
     }
 

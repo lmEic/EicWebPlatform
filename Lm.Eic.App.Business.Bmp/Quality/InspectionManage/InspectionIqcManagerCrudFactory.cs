@@ -103,9 +103,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     /// 检验方式转换配置CRUD
     /// </summary>
 
-    internal class  InspectionModeSwithConfigCrud:CrudBase<InspectionModeSwithConfigModel, IInspectionModeSwithConfigRepository>
+    internal class  InspectionModeSwithConfigCrud:CrudBase<InspectionModeSwitchConfigModel, IInspectionModeSwitchConfigRepository>
     {
-        public InspectionModeSwithConfigCrud() : base(new InspectionModeSwithConfigRepository(), "检验方式转换")
+        public InspectionModeSwithConfigCrud() : base(new InspectionModeSwitchConfigRepository(), "检验方式转换")
         { }
 
         protected override void AddCrudOpItems()
@@ -115,17 +115,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             this.AddOpItem(OpMode.Delete, DeleteInspectionModeSwithConfig);
         }
 
-        private OpResult DeleteInspectionModeSwithConfig(InspectionModeSwithConfigModel model)
+        private OpResult DeleteInspectionModeSwithConfig(InspectionModeSwitchConfigModel model)
         {
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        private OpResult EidtInspectionModeSwithConfig(InspectionModeSwithConfigModel model)
+        private OpResult EidtInspectionModeSwithConfig(InspectionModeSwitchConfigModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
-        private OpResult AddInspectionModeSwithConfig(InspectionModeSwithConfigModel model)
+        private OpResult AddInspectionModeSwithConfig(InspectionModeSwitchConfigModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
@@ -136,19 +136,43 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="currentStatus"></param>
         /// <returns></returns>
 
-        internal List<InspectionModeSwithConfigModel> GetInspectionModeSwithConfiglistBy(string swithCategory, string currentStatus)
+        internal List<InspectionModeSwitchConfigModel> GetInspectionModeSwithConfiglistBy(string swithCategory, string currentStatus)
         {
-            //return irep.Entities.Where(e => e.SwithCategory == swithCategory && e.CurrentStatus == currentStatus ).ToList();
-            return new List<InspectionModeSwithConfigModel>();
+            return irep.Entities.Where(e => e.SwitchCategory == swithCategory && e.CurrentStatus == currentStatus ).ToList();
+        }
+
+        
+        /// <summary>
+        /// 得到转换的参数
+        /// </summary>
+        /// <param name="swithCategory"></param>
+        /// <returns></returns>
+        internal List<InspectionModeSwitchConfigModel> GetInspectionModeSwithConfiglistBy(string swithCategory)
+        {
+            return irep.Entities.Where(e => e.SwitchCategory == swithCategory).ToList();
         }
         /// <summary>
         /// 保存数库
         /// </summary>
         /// <param name="ModelList"></param>
         /// <returns></returns>
-       internal OpResult StoreModeSwithConfigModelList(List<InspectionModeSwithConfigModel>ModelList)
+        internal OpResult StoreModeSwithConfigModelList(List<InspectionModeSwitchConfigModel>modelList)
         {
-            return null;
+            OpResult opResult = OpResult.SetResult("未执行任何操作！");
+            SetFixFieldValue(modelList, OpMode.Add);
+            int i = 0;
+            //如果存在 就修改   
+            modelList.ForEach(m =>
+            {
+                if (this.irep.IsExist(e => e.Id_Key == m.Id_Key))
+                { m.OpSign = "edit"; }
+                opResult = this.Store(m);
+                if (opResult.Result)
+                    i = i + opResult.RecordCount;
+            });
+            opResult = i.ToOpResult(OpContext);
+            if (i == modelList.Count) opResult.Entity = modelList;
+            return opResult;
         }
     }
 
@@ -388,6 +412,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return ratuenValue;
 
 
+        }
+
+
+        /// <summary>
+        ///  判定些物料在二年内是否有录入记录 
+        /// </summary>
+        /// <param name="sampleMaterial">物料料号</param>
+        /// <returns></returns>
+        internal  bool JudgeMaterialTwoYearIsRecord(string sampleMaterial)
+        {
+            var nn = irep.Entities.Where(e => e.MaterialInDate >= DateTime.Now.AddYears(-2));
+            if (nn != null || nn.Count() > 0)
+                return true;
+            else return false;
         }
     }
 
