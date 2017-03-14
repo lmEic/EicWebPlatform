@@ -103,9 +103,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     /// 检验方式转换配置CRUD
     /// </summary>
 
-    internal class  InspectionModeSwithConfigCrud:CrudBase<InspectionModeSwithConfigModel, IInspectionModeSwithConfigRepository>
+    internal class  InspectionModeSwithConfigCrud:CrudBase<InspectionModeSwitchConfigModel, IInspectionModeSwitchConfigRepository>
     {
-        public InspectionModeSwithConfigCrud() : base(new InspectionModeSwithConfigRepository(), "检验方式转换")
+        public InspectionModeSwithConfigCrud() : base(new InspectionModeSwitchConfigRepository(), "检验方式转换")
         { }
 
         protected override void AddCrudOpItems()
@@ -115,17 +115,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             this.AddOpItem(OpMode.Delete, DeleteInspectionModeSwithConfig);
         }
 
-        private OpResult DeleteInspectionModeSwithConfig(InspectionModeSwithConfigModel model)
+        private OpResult DeleteInspectionModeSwithConfig(InspectionModeSwitchConfigModel model)
         {
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        private OpResult EidtInspectionModeSwithConfig(InspectionModeSwithConfigModel model)
+        private OpResult EidtInspectionModeSwithConfig(InspectionModeSwitchConfigModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
-        private OpResult AddInspectionModeSwithConfig(InspectionModeSwithConfigModel model)
+        private OpResult AddInspectionModeSwithConfig(InspectionModeSwitchConfigModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
@@ -136,9 +136,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="currentStatus"></param>
         /// <returns></returns>
 
-        internal List<InspectionModeSwithConfigModel> GetInspectionModeSwithConfiglistBy(string swithCategory, string currentStatus)
+        internal List<InspectionModeSwitchConfigModel> GetInspectionModeSwithConfiglistBy(string swithCategory, string currentStatus)
         {
-            return irep.Entities.Where(e => e.SwithCategory == swithCategory && e.CurrentStatus == currentStatus ).ToList();
+            return irep.Entities.Where(e => e.SwitchCategory == swithCategory && e.CurrentStatus == currentStatus ).ToList();
         }
 
         
@@ -147,16 +147,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="swithCategory"></param>
         /// <returns></returns>
-        internal List<InspectionModeSwithConfigModel> GetInspectionModeSwithConfiglistBy(string swithCategory)
+        internal List<InspectionModeSwitchConfigModel> GetInspectionModeSwithConfiglistBy(string swithCategory)
         {
-            return irep.Entities.Where(e => e.SwithCategory == swithCategory).ToList();
+            return irep.Entities.Where(e => e.SwitchCategory == swithCategory).ToList();
         }
         /// <summary>
         /// 保存数库
         /// </summary>
         /// <param name="ModelList"></param>
         /// <returns></returns>
-        internal OpResult StoreModeSwithConfigModelList(List<InspectionModeSwithConfigModel>modelList)
+        internal OpResult StoreModeSwithConfigModelList(List<InspectionModeSwitchConfigModel>modelList)
         {
             OpResult opResult = OpResult.SetResult("未执行任何操作！");
             SetFixFieldValue(modelList, OpMode.Add);

@@ -70,7 +70,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult StroeInspectionModeSwithConfig(List<InspectionModeSwithConfigModel> modelList)
+        public OpResult StroeInspectionModeSwithConfig(List<InspectionModeSwitchConfigModel> modelList)
         {
             return InspectionIqcManagerCrudFactory.InspectionModeSwithConfigCrud.StoreModeSwithConfigModelList(modelList);
         }
@@ -79,7 +79,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="swithCategory"></param>
         /// <returns></returns>
-        public List<InspectionModeSwithConfigModel> GetInspectionModeSwithConfig(string swithCategory)
+        public List<InspectionModeSwitchConfigModel> GetInspectionModeSwithConfig(string swithCategory)
         {
             return InspectionIqcManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy(swithCategory);
         }

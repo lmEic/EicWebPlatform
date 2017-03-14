@@ -183,10 +183,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             ///2，通当前状态 得到抽样规则 抽样批量  拒受数
             var modeSwithParameterList = InspectionIqcManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy("IQC", currentStatus);
              if(modeSwithParameterList==null || modeSwithParameterList.Count <=0) return retrunstirng;
-            int sampleNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwithProperty == "SampleNumber").Select(e => e.SwithVaule).Min();
-            int AcceptNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwithProperty == "AcceptNumber").Select(e => e.SwithVaule).Max();
-            int sampleNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwithProperty == "SampleNumber").Select(e => e.SwithVaule).Max();
-            int AcceptNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwithProperty == "AcceptNumber").Select(e => e.SwithVaule).Min();
+            int sampleNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwitchProperty == "SampleNumber").Select(e => e.SwitchVaule).Min();
+            int AcceptNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Max();
+            int sampleNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "SampleNumber").Select(e => e.SwitchVaule).Max();
+            int AcceptNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Min();
             var getNumber = DetailModeList.Take(sampleNumberVauleMax).Count(e => e.InspectionItemResult == "NG");
             switch (currentStatus)
             {
