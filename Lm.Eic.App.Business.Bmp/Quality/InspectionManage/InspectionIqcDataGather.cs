@@ -159,6 +159,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     model.EquipmentId = iqcHaveInspectionData.EquipmentId;
                     model.InsptecitonItemIsFinished = true;
                     model.Id_Key = iqcHaveInspectionData.Id_Key;
+                    model.Memo = iqcHaveInspectionData.Memo;
                     model.HaveFinishDataNumber = GetHaveFinishDataNumber(iqcHaveInspectionData.InspectionItemDatas);
                 }
                 inspectionItems +=m.InspectionItem+",";

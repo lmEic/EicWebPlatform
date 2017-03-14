@@ -942,11 +942,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///此项的检验状态(完成True，未完成False)
         /// </summary>
         public bool InsptecitonItemIsFinished { get; set; }
-
-        /// <summary>
-        /// 备注信息
-        /// </summary>
-        public string  Memo { get; set; }
         /// <summary>
         /// 操作人
         /// </summary>
