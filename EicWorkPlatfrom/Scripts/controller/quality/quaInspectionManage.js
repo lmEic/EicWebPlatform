@@ -37,7 +37,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     }
     // iqc检验项目配置模块 删除
-    quality.deleteIqlInspectionConfigItem = function (configItem) {
+    quality.deleteIqlInspectionConfigItem = function (configItem) { 
         var url = quaInspectionManageUrl + 'DeleteIqlInspectionConfigItem';
         return ajaxService.postData(url, {
             configItem: configItem,
