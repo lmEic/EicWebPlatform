@@ -162,6 +162,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
         InspectionMode: null,
         InspectionLevel: null,
         InspectionAQL: null,
+        InspectionDataGatherType: null,
         OpPerson: null,
         OpDate: null,
         OpTime: null,
@@ -180,6 +181,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     var initVM = _.clone(uiVM);
     var vmManager = {
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
+        InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }],
         dataSource: [],
         dataSets: [],
         copyLotWindowDisplay: false,
@@ -681,8 +683,9 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
 qualityModule.controller("InspectionModeSwitchCtrl", function ($scope, qualityInspectionDataOpService) {
     var vmManager = $scope.vmManager = {
         switchModeList: [],
-        inspectionModeTypes: [{ name: "IQC", text: "IQC" }, { name: "IQC", text: "FQC" }, { name: "IQC", text: "FIQC" }],
+        inspectionModeTypes: [{ name: "IQC", text: "IQC" }, { name: "IQC", text: "FQC" }, { name: "IPQC", text: "IPQC" }],
         getModeSwitchDatas: function () {
+            vmManager.switchModeList = [];
             $scope.searchPromise = qualityInspectionDataOpService.getModeSwitchDatas($scope.vmManager.inspectionModeType).then(function (datas) {
                 angular.forEach(datas, function (item) {
                     vmManager.switchModeList.push(item)
@@ -700,7 +703,10 @@ qualityModule.controller("InspectionModeSwitchCtrl", function ($scope, qualityIn
             qualityInspectionDataOpService.saveModeSwitchDatas(vmManager.inspectionModeType, vmManager.switchModeList).then(function (opresult) {
                 if (opresult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
+                    
                     vmManager.switchModeList = [];
+                    console.log(vmManager.switchModeList)
+
                 }
             })
         })
