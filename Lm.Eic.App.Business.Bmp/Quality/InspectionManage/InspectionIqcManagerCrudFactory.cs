@@ -92,9 +92,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionModeConfigModel> GetInspectionStartEndNumberBy(string inspectionMode, string inspectionLevel, string inspectionAQL)
         {
             if ((inspectionLevel == null || inspectionLevel==String.Empty )&&(inspectionAQL == null || inspectionAQL == string.Empty))
-              return irep.Entities.Where(e => e.InspectionMode == inspectionMode).OrderBy(e => e.StartNumber).ToList();
+              return irep.Entities.Where(e => e.InspectionMode == inspectionMode).OrderBy(e => e.InspectionLevel).ToList();
             if (inspectionAQL == null || inspectionAQL==string.Empty)
-                return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel).OrderBy(e => e.StartNumber).ToList();
+                return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel).OrderBy(e => e.InspectionAQL).ToList();
            else  return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel && e.InspectionAQL == inspectionAQL).OrderBy(e => e.StartNumber).ToList();
         }
 
@@ -160,10 +160,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="ModelList"></param>
         /// <returns></returns>
-        internal OpResult StoreModeSwithConfigModelList(string inspectionModeType, List<InspectionModeSwitchConfigModel>modelList)
+        internal OpResult StoreModeSwithConfigModelList(string isEnable, List<InspectionModeSwitchConfigModel>modelList)
         {
             OpResult opResult = OpResult.SetResult("未执行任何操作！");
-            if (!IsExistInspectionModeType(inspectionModeType) && (modelList == null || modelList.Count != 8))
+            if ((modelList == null || modelList.Count != 8)|| !IsExistInspectionModeType(modelList.FirstOrDefault().SwitchCategory))
                 return opResult;
             SetFixFieldValue(modelList, OpMode.Add);
             int i = 0;
@@ -172,6 +172,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 if (this.irep.IsExist(e => e.Id_Key == m.Id_Key))
                 { m.OpSign = "edit"; }
+                m.IsEnable = isEnable;
                 opResult = this.Store(m);
                 if (opResult.Result)
                     i = i + opResult.RecordCount;

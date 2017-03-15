@@ -140,7 +140,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     HaveFinishDataNumber = 0,
                     InspectionItemResult = string.Empty
                 };
-                if (inspectionModeConfigModelData != null)
+                if (inspectionModeConfigModelData != null )
                 {
                     model.InspectionMode = inspectionModeConfigModelData.InspectionMode;
                     model.InspectionLevel = inspectionModeConfigModelData.InspectionLevel;
@@ -385,6 +385,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 inspectionMode,
                 iqcInspectionItemConfig.InspectionLevel,
                 iqcInspectionItemConfig.InspectionAQL).ToList();
+
+            if (models == null || models.Count <= 0) return new InspectionModeConfigModel();
             models.ForEach(e => { maxs.Add(e.EndNumber); mins.Add(e.StartNumber); });
             if (maxs.Count > 0)
                 maxNumber = GetMaxNumber(maxs, inMaterialCount);

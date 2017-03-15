@@ -63,8 +63,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
     public class InspectionModeSwithConfigManager
     {
-
-
         /// <summary>
         /// 存储检验方式配置
         /// </summary>
