@@ -710,7 +710,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                 });
             },
         }
-    })
+})
 //-----------------filter--------------------------------
 .filter('unique', function () {
     return function (data, propertyName) {

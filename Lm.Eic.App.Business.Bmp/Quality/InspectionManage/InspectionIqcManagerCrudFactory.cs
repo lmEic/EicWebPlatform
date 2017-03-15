@@ -151,14 +151,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.SwitchCategory == swithCategory).ToList();
         }
+        internal bool IsExistInspectionModeType(string inspectionModeType)
+        {
+            return irep.IsExist(e => e.SwitchCategory == inspectionModeType);
+        }
         /// <summary>
         /// 保存数库
         /// </summary>
         /// <param name="ModelList"></param>
         /// <returns></returns>
-        internal OpResult StoreModeSwithConfigModelList(List<InspectionModeSwitchConfigModel>modelList)
+        internal OpResult StoreModeSwithConfigModelList(string inspectionModeType, List<InspectionModeSwitchConfigModel>modelList)
         {
             OpResult opResult = OpResult.SetResult("未执行任何操作！");
+            if (!IsExistInspectionModeType(inspectionModeType) && (modelList == null || modelList.Count != 8))
+                return opResult;
             SetFixFieldValue(modelList, OpMode.Add);
             int i = 0;
             //如果存在 就修改   
@@ -170,8 +176,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 if (opResult.Result)
                     i = i + opResult.RecordCount;
             });
-            opResult = i.ToOpResult(OpContext);
-            if (i == modelList.Count) opResult.Entity = modelList;
+            opResult = i.ToOpResult_Eidt (OpContext);
+            if (i == modelList.Count)opResult.Entity = modelList;
             return opResult;
         }
     }

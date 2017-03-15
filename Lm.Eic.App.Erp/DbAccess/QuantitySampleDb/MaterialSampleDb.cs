@@ -162,6 +162,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             string sql = string.Empty ;
             string dtSqlMaterialId =string .Empty ;
             string dtSqlSum = string .Empty ;
+            if (category == null || code == null) return new List<MaterialModel>();
             if (category.Contains("5") & category != "591")
             {
                 return GetMaterials(category, code);

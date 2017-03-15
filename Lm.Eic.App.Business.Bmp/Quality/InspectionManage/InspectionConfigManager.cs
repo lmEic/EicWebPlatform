@@ -72,7 +72,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult StroeInspectionModeSwithConfig(string inspectionModeType,List<InspectionModeSwitchConfigModel> modelList)
         {
-            return InspectionIqcManagerCrudFactory.InspectionModeSwithConfigCrud.StoreModeSwithConfigModelList(modelList);
+            return InspectionIqcManagerCrudFactory.InspectionModeSwithConfigCrud.StoreModeSwithConfigModelList(inspectionModeType, modelList);
         }
         /// <summary>
         /// 得到转换数据
