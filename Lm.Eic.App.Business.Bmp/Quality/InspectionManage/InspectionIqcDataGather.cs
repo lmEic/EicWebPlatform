@@ -231,7 +231,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             var iqcItemConfigdatas = InspectionIqcManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
             if (iqcItemConfigdatas == null || iqcItemConfigdatas.Count <= 0) return returnList;
              iqcHaveInspectionData.ForEach(m =>
-            { 
+            {
                 ///初始化 综合模块
                 var model = new InspectionIqcItemDataSummaryLabelModel()
                 {
@@ -239,23 +239,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialId = materialId,
                     InspectionItem = m.InspecitonItem,
                     EquipmentId = m.EquipmentId,
-                    MaterialInDate =m.MaterialInDate,
-                    MaterialInCount =m.MaterialCount,
+                    MaterialInDate = m.MaterialInDate,
+                    MaterialInCount = m.MaterialCount,
                     SizeLSL = 0,
                     SizeUSL = 0,
-                    SizeMemo = string.Empty ,
+                    SizeMemo = string.Empty,
                     InspectionAQL = string.Empty,
                     InspectionLevel = string.Empty,
                     InspectionCount = Convert.ToInt16(m.InspectionCount),
-                    AcceptCount = 0 ,
+                    AcceptCount = 0,
                     RefuseCount = 0,
                     InspectionItemDatas = m.InspectionItemDatas,
                     InsptecitonItemIsFinished = true,
                     NeedFinishDataNumber = Convert.ToInt16(m.InspectionCount),
                     HaveFinishDataNumber = GetHaveFinishDataNumber(m.InspectionItemDatas),
                     InspectionItemResult = m.InspectionItemResult,
-                    Memo=m.Memo,
-                    InspectionMode="正常",
+                    Memo = m.Memo,
+                    InspectionMethod=string.Empty,
+                    InspectionMode = m.InspectionMode,
                     Id_Key = m.Id_Key,
                 };
                 var iqcItemConfigdata = iqcItemConfigdatas.FirstOrDefault(e => e.InspectionItem == m.InspecitonItem);
@@ -265,7 +266,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     model.SizeUSL = iqcItemConfigdata.SizeUSL;
                     model.SizeMemo = iqcItemConfigdata.SizeMemo;
                     model.InspectionAQL = iqcItemConfigdata.InspectionAQL;
+                    model.InspectionMethod = iqcItemConfigdata.InspectionMethod;
                     model.InspectionLevel = iqcItemConfigdata.InspectionLevel;
+                    //数据采集类型
+                    model.InspectionDataGatherType = iqcItemConfigdata.InspectionDataGatherType;
                 }
                 var inspectionModeConfigModelData = GetInspectionModeConfigDataBy(iqcItemConfigdata, m.MaterialCount);
 
@@ -273,6 +277,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 {
                     model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
                     model.RefuseCount = inspectionModeConfigModelData.RefuseCount;
+                    
                 }
              
                     returnList.Add(model);
