@@ -81,7 +81,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 MaterialSupplier = model.MaterialSupplier,
                 MaterialCount = model.MaterialInCount,
                 MaterialInDate = model.MaterialInDate,
-
                 InspectionMode = model.InspectionMode,
                 InspectionItems = model.InspectionItem,
                 FinishDate = DateTime.Now.Date,
