@@ -378,21 +378,22 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
         },
         //获取检验水平数据
         getInspectionLevelValues: function () {
-            if (vmManager.inspectionLevelValues!==[]) {
-                qualityInspectionDataOpService.getInspectionLevelValues($scope.vm.InspectionMode).then(function (datas) {
-                    angular.forEach(datas, function (item) {
-                        $scope.vmManager.inspectionLevelValues.push(item);
-                    })
-                    console.log($scope.vmManager.inspectionLevelValues);
+            qualityInspectionDataOpService.getInspectionLevelValues($scope.vm.InspectionMode).then(function (datas) {
+                angular.forEach(datas, function (item) {
+                    $scope.vmManager.inspectionLevelValues.push(item);
                 })
-            }
+            })
         },
         //获取AQL数据
         getInspectionAQLValues: function () {
-            if (vmManager.inspectionAQLValues) {
+            if ($scope.vm.InspectionLevel) {
                 qualityInspectionDataOpService.getInspectionAQLValues($scope.vm.InspectionMode, $scope.vm.InspectionLevel).then(function (datas) {
-                    vmManager.AQLValues = datas;
+                    angular.forEach(datas, function (item) {
+                        $scope.vmManager.inspectionAQLValues.push(item);
+                    })
                 })
+            } else {
+                $scope.vmManager.inspectionAQLValues = [];
             }
         },
         getInspectionModeDatas: function () {
