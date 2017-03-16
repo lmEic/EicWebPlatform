@@ -136,13 +136,14 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         /// <param name="inspectionModeConfigEntity"></param>
         /// <returns></returns>
+        ///获取检验水平数据
         [NoAuthenCheck]
         public JsonResult GetInspectionLevelValues(string inspectionMode)
         {
             var data = InspectionService.ConfigManager.ModeConfigManager.GetInspectionModeConfigStrList(inspectionMode);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-
+        ///获取AQL数据
         [NoAuthenCheck]
         public JsonResult GetInspectionAQLValues(string inspectionMode, string inspectionLevel)
         {
