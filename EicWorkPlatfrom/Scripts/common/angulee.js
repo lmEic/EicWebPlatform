@@ -501,3 +501,14 @@ Date.prototype.pattern = function (fmt) {
     }
     return fmt;
 }
+///数组去重方法扩展
+Array.prototype.unique = function () {
+    var n = [this[0]]; //结果数组
+    for (var i = 1; i < this.length; i++) //从第二项开始遍历
+    {
+        //如果当前数组的第i项在当前数组中第一次出现的位置不是i，
+        //那么表示第i项是重复的，忽略掉。否则存入结果数组
+        if (this.indexOf(this[i]) == i) n.push(this[i]);
+    }
+    return n;
+}
