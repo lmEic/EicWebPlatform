@@ -82,6 +82,7 @@
                                     {{inspectionItem.NeedFinishDataNumber}}/{{inspectionItem.HaveFinishDataNumber}}
                                 </span>
                             </a>
+                            
                         </div>
                     </div>
                 </div>
@@ -171,6 +172,9 @@
                         </div>
                     </div>
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='B'">
+                        <h1>文件导入类型</h1>
+                    </div>
+                    <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='C'">
                         <div class="well" ng-show="vmManager.inputDatas.length>0">
                             <table class="table table-bordered table-condensed">
                                 <thead>
@@ -212,7 +216,7 @@
                             </table>
                         </div>
                     </div>
-                    <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='C'">
+                    <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='D'">
                          <div class="well">
                              <form role="form" name="formIqcInspectionDataGather" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                                  <fieldset>
