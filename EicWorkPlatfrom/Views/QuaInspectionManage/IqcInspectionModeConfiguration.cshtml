@@ -43,7 +43,7 @@
                             <label for="inspectionLevel" class="col-md-2 control-label">检验水平</label>
                             <div class="col-md-4">
                                 <input name="inspectionLevel" class="form-control" ng-model="vm.InspectionLevel" required ng-keydown="vmManager.getInspectionLevelValues()"
-                                       bs-options="value for value in vmManager.inspectionLevelValues" placeholder="Enter value" bs-typeahead/>
+                                       bs-options="value for value in vmManager.inspectionLevelValues" limit="8" placeholder="Enter value" bs-typeahead/>
                                 <div class="error-messages" ng-messages="inspectionModeForm.inspectionLevel.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">检验水平不能为空</small>
                                 </div>
@@ -53,7 +53,7 @@
                             <label for="inspectionSize" class="col-md-2 control-label">AQL</label>
                             <div class="col-md-4">
                                 <input type="text" class="form-control" ng-model="vm.InspectionAQL" name="inspectionAQL" required ng-keypress="vmManager.getInspectionAQLValues()"
-                                       bs-options="value for value in vmManager.inspectionAQLValues" placeholder="Enter value" bs-typeahead>
+                                       bs-options="value for value in vmManager.inspectionAQLValues" limit="8" placeholder="Enter value" bs-typeahead>
                                 <div class="error-messages" ng-messages="inspectionModeForm.inspectionAQL.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">AQL不能为空</small>
                                 </div>

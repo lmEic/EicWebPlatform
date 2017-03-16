@@ -144,7 +144,7 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         [NoAuthenCheck]
-        public JsonResult GetInspectionAQLValues(string inspectionAQL)
+        public JsonResult GetInspectionAQLValues(string inspectionAQL,string inspectionLevel)
         {
             var data=new  List<string>(){ "112357155","541372148","81223419","455890426"};
             return Json(data, JsonRequestBehavior.AllowGet);

@@ -76,9 +76,10 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     }
 
     //获取AQL数据
-    quality.getInspectionAQLValues = function (inspectionAQL) {
+    quality.getInspectionAQLValues = function (inspectionAQL, inspectionLevel) {
         var url = quaInspectionManageUrl + "GetInspectionAQLValues";
         return ajaxService.postData(url, {
+            inspectionLevel:inspectionLevel,
             inspectionAQL: inspectionAQL
         })
     }
@@ -386,7 +387,7 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
         //获取AQL数据
         getInspectionAQLValues: function () {
             if (vmManager.inspectionAQLValues) {
-                qualityInspectionDataOpService.getInspectionAQLValues($scope.vm.InspectionAQL).then(function (datas) {
+                qualityInspectionDataOpService.getInspectionAQLValues($scope.vm.InspectionAQL, $scope.vm.InspectionLevel).then(function (datas) {
                     vmManager.AQLValues = datas;
                 })
             }

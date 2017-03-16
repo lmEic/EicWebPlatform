@@ -254,6 +254,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     NeedFinishDataNumber = Convert.ToInt16(m.InspectionCount),
                     HaveFinishDataNumber = GetHaveFinishDataNumber(m.InspectionItemDatas),
                     InspectionItemResult = m.InspectionItemResult,
+                    Memo=m.Memo,
                     InspectionMode="正常",
                     Id_Key = m.Id_Key,
                 };
