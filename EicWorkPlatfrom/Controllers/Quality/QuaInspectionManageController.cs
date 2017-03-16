@@ -225,7 +225,7 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult StoreIqcInspectionGatherDatas(InspectionIqcItemDataSummaryLabelModel gatherData)
         {
 
-            var opResult= InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcDetailModelForm(gatherData);
+            var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcModelForm(gatherData);
             return Json(opResult);
         }
         #endregion

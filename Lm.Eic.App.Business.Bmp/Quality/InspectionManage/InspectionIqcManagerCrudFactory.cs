@@ -318,9 +318,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.MaterialId == materialId);
         }
-        internal bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
+        internal bool IsExistOrderIdAndMaterailId(string orderId, string materialId, string InspectionIqcDetas = null)
         {
-            return irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId);
+            bool returnBool = irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId);
+            if (InspectionIqcDetas != null && InspectionIqcDetas != string.Empty)
+                return irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId && e.InspectionStatus.Contains(InspectionIqcDetas));
+            else return returnBool;
         }
         /// <summary>
         /// 

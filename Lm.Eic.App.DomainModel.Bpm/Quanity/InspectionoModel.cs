@@ -518,14 +518,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionmode = value; }
             get { return _inspectionmode; }
         }
-        private string _inspctionresult;
+        private string _inspectionresult;
         /// <summary>
         ///检测结果
         /// </summary>
-        public string InspctionResult
+        public string InspectionResult
         {
-            set { _inspctionresult = value; }
-            get { return _inspctionresult; }
+            set { _inspectionresult = value; }
+            get { return _inspectionresult; }
         }
         private string _inspectionstatus;
         /// <summary>
@@ -853,6 +853,12 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///料号
         /// </summary>
         public string MaterialId { get; set; }
+        public string MaterialName { set; get;}
+        public string MaterialSpec { set; get; }
+        public string MaterialDrawId { set; get; }
+        public string  MaterialSupplier { set; get; }
+
+        public int InspectionItemSumCount { set; get; }
         /// <summary>
         /// 物料进货日期
         /// </summary>

@@ -93,7 +93,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionStatus = "未完成",
                 MaterialCount = model.ProduceNumber,
                 MaterialInDate = model.ProduceInDate,
-                InspctionResult = string.Empty,
+                InspectionResult = string.Empty,
                 InspectionItems = "还没有抽检",
                 InspectionMode = "正常"
             }) : new InspectionIqcMasterModel();
