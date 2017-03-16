@@ -400,7 +400,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             bool ratuenValue = true;
             //调出此物料所有打印记录项
-            var inspectionItemsRecords = irep.Entities.Where(e => e.MaterialId == materialId).Distinct();
+            var inspectionItemsRecords = irep.Entities.Where(e => e.MaterialId == materialId).Distinct().ToList();
             //如果第一次打印 
             if (inspectionItemsRecords == null | inspectionItemsRecords.Count() <= 0) return true;
 
@@ -408,9 +408,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             var inspectionItemsMonthRecord = (from t in inspectionItemsRecords
                                               where t.MaterialInDate >= (materialInDate.AddDays(-30))
                                                     & t.MaterialInDate <= materialInDate
-                                              select t.MaterialId).Distinct();
+                                              select t.InspecitonItem).Distinct<string>().ToList();
             //没有 测
-            if (inspectionItemsMonthRecord == null | inspectionItemsMonthRecord.Count() <= 0) return true;
+            if (inspectionItemsMonthRecord == null ) return true;
             // 有  每项中是否有测过  盐雾测试
             foreach (var n in inspectionItemsMonthRecord)
             {
@@ -430,7 +430,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         internal  bool JudgeMaterialTwoYearIsRecord(string sampleMaterial)
         {
             var nn = irep.Entities.Where(e => e.MaterialInDate >= DateTime.Now.AddYears(-2));
-            if (nn != null || nn.Count() > 0)
+            if (nn != null && nn.Count() > 0)
                 return true;
             else return false;
         }

@@ -148,7 +148,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     model.InspectionCount = inspectionModeConfigModelData.InspectionCount;
                     model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
                     model.RefuseCount = inspectionModeConfigModelData.RefuseCount;
-                    inspectionModeList.Add(inspectionModeConfigModelData.InspectionMode);
+                 
                     //需要录入的数据个数 暂时为抽样的数量
                     model.NeedFinishDataNumber = inspectionModeConfigModelData.InspectionCount;
                 }
@@ -167,10 +167,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                    else  model.HaveFinishDataNumber = GetHaveFinishDataNumber(iqcHaveInspectionData.InspectionItemDatas);
                 }
                 inspectionItems +=m.InspectionItem+",";
+                if (!inspectionModeList.Contains(model.InspectionMode))
+                inspectionModeList.Add(model.InspectionMode);
                 returnList.Add(model);
             });
             inspectionItems = inspectionItems.Substring(0, inspectionItems.Length -1);
-            StoreIqcInspectionMasterModel(orderMaterialInfo, inspectionModeList.Last(), inspectionItems);
+            StoreIqcInspectionMasterModel(orderMaterialInfo, inspectionModeList.First(), inspectionItems);
             return returnList;
         }
         /// <summary>
@@ -318,6 +320,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private int GetHaveFinishDataNumber(string inspectionDatas)
         {
+            if (inspectionDatas == null) return 0;
             if ((!inspectionDatas.Contains(",") )|| inspectionDatas == string.Empty || inspectionDatas == null) return 0;
             string[] mm = inspectionDatas.Split(',');
             return mm.Count();
