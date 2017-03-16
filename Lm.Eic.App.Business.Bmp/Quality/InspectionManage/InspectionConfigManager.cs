@@ -58,6 +58,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode,  inspectionLevel,  inspectionAQL);
         }
+        public List<string> GetInspectionModeConfigStrList(string inspectionMode, string inspectionLevel)
+        {
+            var listDatas = InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode, inspectionLevel);
+      
+
+            return listDatas.Select(e => e.InspectionAQL).ToList(); 
+        }
+        public List<string> GetInspectionModeConfigStrList(string inspectionMode)
+        {
+            var listDatas = InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode);
+            return listDatas.Select(e => e.InspectionLevel).ToList(); 
+        }
     }
 
 

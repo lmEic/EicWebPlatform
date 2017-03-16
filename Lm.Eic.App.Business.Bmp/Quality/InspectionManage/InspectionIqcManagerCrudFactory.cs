@@ -89,7 +89,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
-        public List<InspectionModeConfigModel> GetInspectionStartEndNumberBy(string inspectionMode, string inspectionLevel, string inspectionAQL)
+        public List<InspectionModeConfigModel> GetInspectionStartEndNumberBy(string inspectionMode, string inspectionLevel=null, string inspectionAQL=null)
         {
             if ((inspectionLevel == null || inspectionLevel==String.Empty )&&(inspectionAQL == null || inspectionAQL == string.Empty))
               return irep.Entities.Where(e => e.InspectionMode == inspectionMode).OrderBy(e => e.InspectionLevel).ToList();
