@@ -37,7 +37,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     }
     // iqc检验项目配置模块 删除
-    quality.deleteIqlInspectionConfigItem = function (configItem) {
+    quality.deleteIqlInspectionConfigItem = function (configItem) { 
         var url = quaInspectionManageUrl + 'DeleteIqlInspectionConfigItem';
         return ajaxService.postData(url, {
             configItem: configItem,
@@ -485,7 +485,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 vmManager.panelDataSource = [];
                 qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
                     angular.forEach(materialIdDatas, function (item) {
-                        var dataItem = { productId: item.ProductID, materialIdItem: item, inspectionItemDatas: [] };
+                        var dataItem = { productId: item.ProductID,productName:item.ProductName,materialIdItem: item, inspectionItemDatas: [] };
                         vmManager.panelDataSource.push(dataItem);
                     })
                     vmManager.orderId = null;
@@ -530,7 +530,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                     vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.result });
                 });
             }
-            else if (dataGatherType === "B") {
+            else if (dataGatherType === "C") {
                 if (dataList.length === 0) {
                     for (var i = 0; i < item.NeedFinishDataNumber; i++) {
                         dataList.push('OK');
@@ -607,7 +607,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
     operate.saveIqcGatherDatas = function () {
         var dataList = [], result = true;
         var dataItem = vmManager.currentInspectionItem;
-        if (dataItem.InspectionDataGatherType === "A" || dataItem.InspectionDataGatherType === "B")
+        if (dataItem.InspectionDataGatherType === "A" || dataItem.InspectionDataGatherType === "C")
         {
             //获取数据及判定结果
             angular.forEach(vmManager.dataList, function (item) {
@@ -619,7 +619,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             dataItem.InspectionItemResult = result ? "OK" : "NG";
             dataItem.HaveFinishDataNumber = vmManager.dataList.length;
         }
-        else if (dataItem.InspectionDataGatherType === "C")
+        else if (dataItem.InspectionDataGatherType === "D")
         {
             dataItem.InspectionItemResult = dataItem.InspectionItemDatas;
              dataItem.HaveFinishDataNumber= dataItem.NeedFinishDataNumber;

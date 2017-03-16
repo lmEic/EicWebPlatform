@@ -33,7 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     return GetErpNotStoreToSqlOrderAndMaterialBy(startTime, endTime);
                 case "全部":
                     return GetERPOrderAndMaterialBy(startTime, endTime);
-                case "未审核" :
+                case "待审核":
                    return InspectionIqcManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(inspectionStatus, startTime, endTime);
                 case "已审核":
                     return InspectionIqcManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(inspectionStatus, startTime, endTime);
