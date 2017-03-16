@@ -379,7 +379,7 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
         //获取检验水平数据
         getInspectionLevelValues: function () {
             if (vmManager.inspectionLevelValues === null) {
-                qualityInspectionDataOpService.getInspectionLevelValues($scope.vm.InspectionLevel).then(function (datas) {
+                qualityInspectionDataOpService.getInspectionLevelValues($scope.vm.InspectionMode).then(function (datas) {
                     $scope.vmManager.inspectionLevelValues = datas;
                 })
             }
@@ -387,7 +387,7 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
         //获取AQL数据
         getInspectionAQLValues: function () {
             if (vmManager.inspectionAQLValues) {
-                qualityInspectionDataOpService.getInspectionAQLValues($scope.vm.InspectionAQL, $scope.vm.InspectionLevel).then(function (datas) {
+                qualityInspectionDataOpService.getInspectionAQLValues($scope.vm.InspectionMode, $scope.vm.InspectionLevel).then(function (datas) {
                     vmManager.AQLValues = datas;
                 })
             }
