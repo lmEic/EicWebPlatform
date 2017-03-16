@@ -137,14 +137,14 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="inspectionModeConfigEntity"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetInspectionLevelValues(string inspectionLevel)
+        public JsonResult GetInspectionLevelValues(string inspectionMode)
         {
             var data = new List<string>() { "112357155", "541372148", "81223419", "455890426" };
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         [NoAuthenCheck]
-        public JsonResult GetInspectionAQLValues(string inspectionAQL,string inspectionLevel)
+        public JsonResult GetInspectionAQLValues(string inspectionMode, string inspectionLevel)
         {
             var data=new  List<string>(){ "112357155","541372148","81223419","455890426"};
             return Json(data, JsonRequestBehavior.AllowGet);
