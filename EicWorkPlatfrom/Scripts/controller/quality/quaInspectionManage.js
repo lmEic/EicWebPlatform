@@ -68,19 +68,19 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 
     ////////////////////////////////////////////////检验方式配置模块////////////////////////////////////
     //获取检验水平数据
-    quality.getInspectionLevelValues = function (inspectionLevel) {
+    quality.getInspectionLevelValues = function (inspectionMode) {
         var url = quaInspectionManageUrl + "GetInspectionLevelValues";
         return ajaxService.postData(url, {
-            inspectionLevel: inspectionLevel
+            inspectionMode: inspectionMode
         })
     }
 
     //获取AQL数据
-    quality.getInspectionAQLValues = function (inspectionAQL, inspectionLevel) {
+    quality.getInspectionAQLValues = function (inspectionMode, inspectionLevel) {
         var url = quaInspectionManageUrl + "GetInspectionAQLValues";
         return ajaxService.postData(url, {
             inspectionLevel:inspectionLevel,
-            inspectionAQL: inspectionAQL
+            inspectionMode: inspectionMode
         })
     }
     
@@ -364,8 +364,8 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
         dataSets: [],
         dataSource:[],
         deleteItem: null,
-        inspectionLevelValues: null,
-        inspectionAQLValues:null,
+        inspectionLevelValues: [],
+        inspectionAQLValues:[],
         init: function () {
             uiVM = _.clone(initVM);
             $scope.vm = uiVM;
@@ -378,9 +378,12 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
         },
         //获取检验水平数据
         getInspectionLevelValues: function () {
-            if (vmManager.inspectionLevelValues === null) {
+            if (vmManager.inspectionLevelValues!==[]) {
                 qualityInspectionDataOpService.getInspectionLevelValues($scope.vm.InspectionMode).then(function (datas) {
-                    $scope.vmManager.inspectionLevelValues = datas;
+                    angular.forEach(datas, function (item) {
+                        $scope.vmManager.inspectionLevelValues.push(item);
+                    })
+                    console.log($scope.vmManager.inspectionLevelValues);
                 })
             }
         },
