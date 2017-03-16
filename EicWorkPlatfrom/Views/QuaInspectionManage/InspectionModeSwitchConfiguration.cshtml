@@ -1,4 +1,5 @@
-﻿<style>
+﻿
+<style>
     .first {
         font-size: 60px;
         height: 300px;
@@ -102,6 +103,11 @@
                             <span class="caret"></span>
                         </button>
                         <button class="btn btn-success" ng-click="vmManager.getModeSwitchDatas()">查询</button>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" ng-model="vmManager.isEnable">启用
+                        </label>
                     </div>
                 </form>
             </div>

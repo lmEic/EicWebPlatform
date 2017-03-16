@@ -67,6 +67,24 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 
 
     ////////////////////////////////////////////////检验方式配置模块////////////////////////////////////
+    //获取检验水平数据
+    quality.getInspectionLevelValues = function (inspectionLevel) {
+        var url = quaInspectionManageUrl + "GetInspectionLevelValues";
+        return ajaxService.postData(url, {
+            inspectionLevel: inspectionLevel
+        })
+    }
+
+    //获取AQL数据
+    quality.getInspectionAQLValues = function (inspectionAQL, inspectionLevel) {
+        var url = quaInspectionManageUrl + "GetInspectionAQLValues";
+        return ajaxService.postData(url, {
+            inspectionLevel:inspectionLevel,
+            inspectionAQL: inspectionAQL
+        })
+    }
+    
+
     //处理'检验方式'配置数据  
     quality.storeIqcInspectionModeData = function (inspectionModeConfigEntity) {
         var url = quaInspectionManageUrl + "StoreInspectionModeConfigData";
@@ -148,7 +166,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 })
 
 //iqc检验项目配置模块
-qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspectionDataOpService,$modal) {
+qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
     var uiVM = {
         //表单变量
         MaterialId: null,
@@ -180,6 +198,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     $scope.vm = uiVM;
     var initVM = _.clone(uiVM);
     var vmManager = {
+        states : ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"],
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
         InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }],
         dataSource: [],
@@ -258,7 +277,6 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
             show: false,
         }),
     }
-
     //013935导入excel
     $scope.selectFile = function (el) {
         var files = el.files;
@@ -320,6 +338,8 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
 
 //iqc检验方式配置模块
 qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
+    $scope.states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Dakota", "North Carolina", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
+
     var uiVM = {
         InspectionMode: "正常",
         InspectionLevel: null,
@@ -344,6 +364,8 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
         dataSets: [],
         dataSource:[],
         deleteItem: null,
+        inspectionLevelValues: null,
+        inspectionAQLValues:null,
         init: function () {
             uiVM = _.clone(initVM);
             $scope.vm = uiVM;
@@ -353,6 +375,22 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
             if ($event.keyCode === 13) {
                 vmManager.getInspectionModeDatas();
             } 
+        },
+        //获取检验水平数据
+        getInspectionLevelValues: function () {
+            if (vmManager.inspectionLevelValues === null) {
+                qualityInspectionDataOpService.getInspectionLevelValues($scope.vm.InspectionLevel).then(function (datas) {
+                    $scope.vmManager.inspectionLevelValues = datas;
+                })
+            }
+        },
+        //获取AQL数据
+        getInspectionAQLValues: function () {
+            if (vmManager.inspectionAQLValues) {
+                qualityInspectionDataOpService.getInspectionAQLValues($scope.vm.InspectionAQL, $scope.vm.InspectionLevel).then(function (datas) {
+                    vmManager.AQLValues = datas;
+                })
+            }
         },
         getInspectionModeDatas: function () {
             $scope.searchPromise = qualityInspectionDataOpService.getIqcInspectionModeDatas($scope.vmManager.inspectionMode, $scope.vmManager.inspectionLevel, $scope.vmManager.inspectionAQL).then(function (datas) {
@@ -682,12 +720,15 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
 //检验方式转换配置
 qualityModule.controller("InspectionModeSwitchCtrl", function ($scope, qualityInspectionDataOpService) {
     var vmManager = $scope.vmManager = {
+        isEnable:false,
         switchModeList: [],
         inspectionModeTypes: [{ name: "IQC", text: "IQC" }, { name: "IQC", text: "FQC" }, { name: "IPQC", text: "IPQC" }],
         getModeSwitchDatas: function () {
+
             vmManager.switchModeList = [];
             $scope.searchPromise = qualityInspectionDataOpService.getModeSwitchDatas($scope.vmManager.inspectionModeType).then(function (datas) {
                 angular.forEach(datas, function (item) {
+                    vmManager.isEnable = Boolean(item.IsEnable.toLowerCase());
                     vmManager.switchModeList.push(item)
                 })
             })
@@ -700,7 +741,7 @@ qualityModule.controller("InspectionModeSwitchCtrl", function ($scope, qualityIn
             for (var i = 0; i < vmManager.switchModeList.length; i++) {
                 vmManager.switchModeList[i].SwitchVaule = $scope.vmManager.switchModeList[i].SwitchVaule;
             }
-            qualityInspectionDataOpService.saveModeSwitchDatas(vmManager.inspectionModeType, vmManager.switchModeList).then(function (opresult) {
+            qualityInspectionDataOpService.saveModeSwitchDatas(vmManager.isEnable, vmManager.switchModeList).then(function (opresult) {
                 if (opresult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
                     
