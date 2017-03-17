@@ -138,7 +138,10 @@
                                                 <img ng-src="{{item.DocumentPath}}" style="width:100px;height:80px;" class="img-rounded" />
                                             </td>
                                             <td>
-                                                <button ng-click="vmManager.showImage(item.DocumentPath)" class="btn btn-xs btn-primary" title="查看"> 查看</button>
+                                                <button yl-image-preview data-src="item.DocumentPath"
+                                                        class="btn btn-xs btn-primary" title="查看">
+                                                    查看
+                                                </button>
                                             </td>
                                         </tr>
                                         <tr>

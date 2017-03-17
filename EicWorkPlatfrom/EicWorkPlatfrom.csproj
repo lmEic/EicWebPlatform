@@ -1326,6 +1326,7 @@
     <Content Include="Views\CommonTpl\DateRangeTpl.cshtml" />
     <Content Include="Views\QuaInspectionManage\InspectionFormManageOfFqc.cshtml" />
     <Content Include="Views\QuaInspectionManage\InspectionModeSwitchConfiguration.cshtml" />
+    <Content Include="Views\QuaInspectionManage\FqcInspectionItemConfiguration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -13,7 +13,7 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     ////工单Url前缀
     //var mocUrlPrefix = leeHelper.controllers.mocManage + "/";
 
-    //--------------检验项目管理-------------------------
+    //--------------IQC检验项目管理-------------------------
     $stateProvider.state('iqcInspectionItemConfiguration', {
         //IQC检验项目配置
         templateUrl: inspectionUrlPrefix + 'IqcInspectionItemConfiguration',
@@ -30,18 +30,25 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
         //Iqc检验项目数据采集
         templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfIQC',
     })
-    .state('inspectionDataGatheringOfFQC', {
-         //Fqc检验项目数据采集
-         templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfFQC',
-    })
     .state('inspectionFormManageOfIqc', {
          //iqc检验单管理
         templateUrl: inspectionUrlPrefix + 'InspectionFormManageOfIqc',
     })
+    //--------------FQC检验项目管理-------------------------
+    .state('fqcInspectionItemConfiguration', {
+        //FQC检验项目配置
+        templateUrl: inspectionUrlPrefix + 'FqcInspectionItemConfiguration',
+    })
+    .state('inspectionDataGatheringOfFQC', {
+        //Fqc检验项目数据采集
+        templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfFQC',
+    })
     .state('inspectionFormManageOfFqc', {
-        //iqc检验单管理
+        //Fqc检验单管理
         templateUrl: inspectionUrlPrefix + 'InspectionFormManageOfFqc',
     })
+   
+
     ////--------------人员管理--------------------------
     //.state('registWorkerInfo', {
     //    templateUrl: 'ProEmployee/RegistWorkerInfo'

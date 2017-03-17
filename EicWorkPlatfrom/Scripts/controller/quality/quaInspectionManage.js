@@ -724,7 +724,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
 })
 
 //检验方式转换配置
-qualityModule.controller("InspectionModeSwitchCtrl", function ($scope, qualityInspectionDataOpService) {
+qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityInspectionDataOpService) {
     var vmManager = $scope.vmManager = {
         isEnable:false,
         switchModeList: [],
