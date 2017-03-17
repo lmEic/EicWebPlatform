@@ -812,7 +812,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     var vmManager = {
         init: function () {
-            uiVM = _.clone(initVm);
+            leeHelper.clearVM(uiVM,['CheckDate','OpSign'])
         },
         datasets: [],
         //验证是否可以保存数据
@@ -941,7 +941,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     var vmManager = {
         init: function () {
-            uiVM = _.clone(initVm);
+            leeHelper.clearVM(uiVM, ['MaintenanceDate','OpSign'])
         },
         datasets: [],
         //验证是否可以保存数据

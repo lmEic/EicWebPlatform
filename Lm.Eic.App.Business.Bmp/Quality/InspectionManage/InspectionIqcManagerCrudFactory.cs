@@ -96,7 +96,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
            return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel && e.InspectionAQL == inspectionAQL).OrderBy(e => e.StartNumber).ToList();
             if ((inspectionMode != null && inspectionMode != string.Empty) && (inspectionLevel != null && inspectionLevel != String.Empty))
                 return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel).OrderBy(e => e.InspectionAQL).ToList();
-        
              else   return irep.Entities.Where(e => e.InspectionMode == inspectionMode).OrderBy(e => e.InspectionLevel).ToList();
           
         }
