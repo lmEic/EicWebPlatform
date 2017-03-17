@@ -697,6 +697,11 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         private OpResult AddEquipmentRepairedRecord(EquipmentRepairedRecordModel model)
         {
+            if (model == null) return new  OpResult("实体不能空");
+            if (irep.IsExist (e=>e.AssetNumber==model.AssetNumber && e.FormId ==model.FormId))
+            {
+                return new OpResult("此编号已存在");
+            }
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
@@ -722,9 +727,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         }
         public List<EquipmentRepairedRecordModel> GetEquipmentRepairedRecordFormIdBy(string assetNumber,string formdId)
         {
-            var data = irep.Entities.Where(m => m.FormId == formdId && m.AssetNumber == assetNumber).ToList();
-            return data;
-
+            return (formdId == string.Empty || formdId == null) ? irep.Entities.Where(m => m.AssetNumber == assetNumber).ToList():
+            irep.Entities.Where(m => m.FormId == formdId && m.AssetNumber == assetNumber).ToList();
         }
         /// <summary>
         /// 获取设备维修总览表

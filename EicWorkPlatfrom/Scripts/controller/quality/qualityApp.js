@@ -20,9 +20,12 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     })
      //IQC检验方式配置
     .state('iqcInspectionModeConfiguration', {
-         //Iqc检验项目数据采集
         templateUrl: inspectionUrlPrefix + 'IqcInspectionModeConfiguration',
-     })
+    })
+     //IQC检验方式转换配置
+    .state('inspectionModeSwitchConfiguration', {
+        templateUrl: inspectionUrlPrefix + 'InspectionModeSwitchConfiguration',
+    })
     .state('inspectionDataGatheringOfIQC', {
         //Iqc检验项目数据采集
         templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfIQC',

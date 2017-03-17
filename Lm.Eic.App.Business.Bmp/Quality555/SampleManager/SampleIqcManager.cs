@@ -272,8 +272,6 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
                         if (n.Contains("盐雾")) { ratuenValue = false ; break; }
                     }
                 return ratuenValue;
-            
-         
         }
 
         /// <summary>

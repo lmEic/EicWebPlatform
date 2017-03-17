@@ -20,13 +20,25 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
             this.ToTable("Qms_InspectionModeConfig");
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    public class InspectionModeSwitchConfigMapping : EntityTypeConfiguration<InspectionModeSwitchConfigModel>
+    {
+        public InspectionModeSwitchConfigMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_InspectionModeSwitchConfig");
+        }
+    }
 
     #region  IQC
     /// <summary>
     /// 
     /// </summary>
 
-    public class IqcInspectionItemConfigMapping : EntityTypeConfiguration<IqcInspectionItemConfigModel>
+    public class IqcInspectionItemConfigMapping : EntityTypeConfiguration<InspectionIqCItemConfigModel>
     {
         public  IqcInspectionItemConfigMapping()
         {
@@ -39,7 +51,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
     /// 
     /// </summary>
 
-    public class IqcInspectionMasterMapping : EntityTypeConfiguration<IqcInspectionMasterModel>
+    public class IqcInspectionMasterMapping : EntityTypeConfiguration<InspectionIqcMasterModel>
     {
         public IqcInspectionMasterMapping()
         {
@@ -52,7 +64,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
     /// 
     /// </summary>
 
-    public class IqcInspectionDetailMapping : EntityTypeConfiguration<IqcInspectionDetailModel>
+    public class IqcInspectionDetailMapping : EntityTypeConfiguration<InspectionIqcDetailModel>
     {
         public IqcInspectionDetailMapping()
         {

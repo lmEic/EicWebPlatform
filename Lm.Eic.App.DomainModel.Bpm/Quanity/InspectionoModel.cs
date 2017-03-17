@@ -134,16 +134,134 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+    /// <summary>
+    ///  检验方式转换配置文件
+    /// </summary>
+    public class InspectionModeSwitchConfigModel
+    {
+        public InspectionModeSwitchConfigModel()
+        { }
+        #region Model
+        private string _swithmemo;
+        /// <summary>
+        ///转换模式
+        /// </summary>
+        public string SwitChMemo
+        {
+            set { _swithmemo = value; }
+            get { return _swithmemo; }
+        }
+        private string _swithcategory;
+        /// <summary>
+        ///类别
+        /// </summary>
+        public string SwitchCategory
+        {
+            set { _swithcategory = value; }
+            get { return _swithcategory; }
+        }
+        private string _swithproperty;
+        /// <summary>
+        ///属性
+        /// </summary>
+        public string SwitchProperty
+        {
+            set { _swithproperty = value; }
+            get { return _swithproperty; }
+        }
+        private string _isenable;
+        /// <summary>
+        ///是否启用
+        /// </summary>
+        public string IsEnable
+        {
+            set { _isenable = value; }
+            get { return _isenable; }
+        }
+        private string _currentstatus;
+        /// <summary>
+        ///当前状态
+        /// </summary>
+        public string CurrentStatus
+        {
+            set { _currentstatus = value; }
+            get { return _currentstatus; }
+        }
+        private string _swithsatus;
+        /// <summary>
+        ///转换状态
+        /// </summary>
+        public string SwitchSatus
+        {
+            set { _swithsatus = value; }
+            get { return _swithsatus; }
+        }
+        private int _swithvaule;
+        /// <summary>
+        ///值
+        /// </summary>
+        public int SwitchVaule
+        {
+            set { _swithvaule = value; }
+            get { return _swithvaule; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
 
+    }
 
     #region IQC
     /// <summary>
     /// IQC物料检验配置文件
     /// </summary>
-    public class IqcInspectionItemConfigModel
+    public class InspectionIqCItemConfigModel
     {
 
-        public IqcInspectionItemConfigModel()
+        public InspectionIqCItemConfigModel()
         { }
         #region Model
         private string _materialid;
@@ -200,15 +318,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _sizememo = value; }
             get { return _sizememo; }
         }
-        private string _equipmentid;
-        /// <summary>
-        ///检验工具编号
-        /// </summary>
-        public string EquipmentID
-        {
-            set { _equipmentid = value; }
-            get { return _equipmentid; }
-        }
         private string _inspectionmethod;
         /// <summary>
         ///检验方法
@@ -217,6 +326,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _inspectionmethod = value; }
             get { return _inspectionmethod; }
+        }
+        private string _inspectiondatagathertype;
+        /// <summary>
+        ///数据采集类型
+        /// </summary>
+        public string InspectionDataGatherType
+        {
+            set { _inspectiondatagathertype = value; }
+            get { return _inspectiondatagathertype; }
+        }
+        private string _equipmentid;
+        /// <summary>
+        ///测量工具
+        /// </summary>
+        public string EquipmentId
+        {
+            set { _equipmentid = value; }
+            get { return _equipmentid; }
         }
         private string _sipinspectionstandard;
         /// <summary>
@@ -305,9 +432,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// IQC单据检验
     /// </summary>
-    public class IqcInspectionMasterModel
+    public class InspectionIqcMasterModel
     {
-        public IqcInspectionMasterModel()
+        public InspectionIqcMasterModel()
         { }
         #region Model
         private string _orderid;
@@ -391,14 +518,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionmode = value; }
             get { return _inspectionmode; }
         }
-        private string _inspctionresult;
+        private string _inspectionresult;
         /// <summary>
         ///检测结果
         /// </summary>
-        public string InspctionResult
+        public string InspectionResult
         {
-            set { _inspctionresult = value; }
-            get { return _inspctionresult; }
+            set { _inspectionresult = value; }
+            get { return _inspectionresult; }
         }
         private string _inspectionstatus;
         /// <summary>
@@ -463,14 +590,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _opsign = value; }
             get { return _opsign; }
         }
-        private decimal _id_Key;
+        private decimal _id_key;
         /// <summary>
         ///自增键
         /// </summary>
         public decimal Id_Key
         {
-            set { _id_Key = value; }
-            get { return _id_Key; }
+            set { _id_key = value; }
+            get { return _id_key; }
         }
         #endregion Model
     }
@@ -478,9 +605,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// IQC单据检验项目
     /// </summary>
-    public class IqcInspectionDetailModel
+    public class InspectionIqcDetailModel
     {
-        public IqcInspectionDetailModel()
+        public InspectionIqcDetailModel()
         { }
         #region Model
         private string _orderid;
@@ -501,23 +628,51 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _materialid = value; }
             get { return _materialid; }
         }
+
+        private string _inspecitonitem;
+        /// <summary>
+        ///检验项目
+        /// </summary>
+        public string InspecitonItem
+        {
+            set { _inspecitonitem = value; }
+            get { return _inspecitonitem; }
+        }
+        private string _inspectionMode;
+        /// <summary>
+        /// /检验方式
+        /// </summary>
+        public string InspectionMode
+        {
+            set { _inspectionMode = value; }
+            get { return _inspectionMode; }
+        }
         private double _materialcount;
         /// <summary>
-        ///进料数量
+        ///物料进货数量
         /// </summary>
         public double MaterialCount
         {
             set { _materialcount = value; }
             get { return _materialcount; }
         }
-        private string _inspectionItem;
+        private DateTime _materialindate;
         /// <summary>
-        ///检验项目
+        ///物料进货日期
         /// </summary>
-        public string InspecitonItem
+        public DateTime MaterialInDate
         {
-            set { _inspectionItem = value; }
-            get { return _inspectionItem; }
+            set { _materialindate = value; }
+            get { return _materialindate; }
+        }
+        private string _equipmentid;
+        /// <summary>
+        ///量测工个财产编号
+        /// </summary>
+        public string EquipmentId
+        {
+            set { _equipmentid = value; }
+            get { return _equipmentid; }
         }
         private double _inspectioncount;
         /// <summary>
@@ -530,7 +685,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private double _inspectionacceptcount;
         /// <summary>
-        ///接授数量
+        ///接受数量
         /// </summary>
         public double InspectionAcceptCount
         {
@@ -539,7 +694,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private double _inspectionrefusecount;
         /// <summary>
-        ///拒收数量
+        ///拒受数量
         /// </summary>
         public double InspectionRefuseCount
         {
@@ -548,39 +703,39 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _inspectionitemdatas;
         /// <summary>
-        ///检验所有数据
+        ///检验记录数据
         /// </summary>
         public string InspectionItemDatas
         {
             set { _inspectionitemdatas = value; }
             get { return _inspectionitemdatas; }
         }
-        private string _insprectionitemsatus;
+        private string _inspectionitemsatus;
         /// <summary>
-        ///检验状态
+        ///检验项记录状态
         /// </summary>
-        public string InsprectionItemSatus
+        public string InspectionItemSatus
         {
-            set { _insprectionitemsatus = value; }
-            get { return _insprectionitemsatus; }
+            set { _inspectionitemsatus = value; }
+            get { return _inspectionitemsatus; }
         }
-        private string _insprectionitemresult;
+        private string _inspectionitemresult;
         /// <summary>
-        ///检验结果
+        ///检验项最后结果
         /// </summary>
-        public string InsprectionItemResult
+        public string InspectionItemResult
         {
-            set { _insprectionitemresult = value; }
-            get { return _insprectionitemresult; }
+            set { _inspectionitemresult = value; }
+            get { return _inspectionitemresult; }
         }
-        private DateTime _insprectiondate;
+        private DateTime _inspectiondate;
         /// <summary>
-        ///检验日期
+        ///检验的日期
         /// </summary>
-        public DateTime InsprectionDate
+        public DateTime InspectionDate
         {
-            set { _insprectiondate = value; }
-            get { return _insprectiondate; }
+            set { _inspectiondate = value; }
+            get { return _inspectiondate; }
         }
         private string _memo;
         /// <summary>
@@ -593,7 +748,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _opperson;
         /// <summary>
-        ///操作人员
+        ///操作人
         /// </summary>
         public string OpPerson
         {
@@ -641,6 +796,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
     #endregion
 
+
+
     /// <summary>
     ///  产品物料信息
     /// </summary>
@@ -685,7 +842,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
 
 
-    public class IqcInspectionItemDataSummaryLabelModel
+    public class InspectionIqcItemDataSummaryLabelModel
     {
         #region Model
         /// <summary>
@@ -696,10 +853,38 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///料号
         /// </summary>
         public string MaterialId { get; set; }
+        public string MaterialName { set; get;}
+        public string MaterialSpec { set; get; }
+        public string MaterialDrawId { set; get; }
+        public string  MaterialSupplier { set; get; }
+
+        public int InspectionItemSumCount { set; get; }
+        /// <summary>
+        /// 物料进货日期
+        /// </summary>
+        public DateTime  MaterialInDate { set; get; }
+        /// <summary>
+        /// 物料进货数量
+        /// </summary>
+        public double   MaterialInCount { set; get; }
+        /// <summary>
+        /// 数据采集类型
+        /// </summary>
+         public string InspectionDataGatherType { set; get; }
+        /// <summary>
+        /// 测量量具财产编号
+        /// </summary>
+        public string EquipmentId { set; get; }
         /// <summary>
         ///检验项目
         /// </summary>
         public string InspectionItem { get; set; }
+
+
+        /// <summary>
+        ///检验方法
+        /// </summary>
+        public string InspectionMethod{ set; get;}
         /// <summary>
         ///检验方式
         /// </summary>
@@ -743,6 +928,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public string InspectionItemDatas { get; set; }
 
         /// <summary>
+        /// 备注说明
+        /// </summary>
+        public string Memo { set; get; }
+
+        /// <summary>
         /// 需要完成数据数量
         /// </summary>
         public int NeedFinishDataNumber { set; get; }
@@ -758,7 +948,17 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///此项的检验状态(完成True，未完成False)
         /// </summary>
         public bool InsptecitonItemIsFinished { get; set; }
-      
+        /// <summary>
+        /// 操作人
+        /// </summary>
+        public string OpPerson { get; set; }
+        /// <summary>
+        ///加载的自增健
+        /// </summary>
+        public decimal Id_Key{ set;get; }
+
         #endregion Model
     }
+
+
 }

@@ -55,6 +55,17 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         }
 
         /// <summary>
+        /// 转换为yyyyMMdd 字符串
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static string ToDateTimeShortStr(this DateTime dt)
+        {
+            return dt.ToString("yyyyMMdd");
+        }
+
+
+        /// <summary>
         /// 获取给定日期所在当年的周数
         /// </summary>
         /// <param name="giveDay"></param>

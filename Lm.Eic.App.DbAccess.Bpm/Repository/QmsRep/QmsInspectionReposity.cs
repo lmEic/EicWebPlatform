@@ -18,23 +18,31 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
         
     }
 
+    public interface IInspectionModeSwitchConfigRepository : IRepository<InspectionModeSwitchConfigModel>
+    {
+
+    }
+    public class InspectionModeSwitchConfigRepository : BpmRepositoryBase<InspectionModeSwitchConfigModel>, IInspectionModeSwitchConfigRepository
+    {
+    }
+
     #region IQC
 
-    public interface IIqcInspectionItemConfigRepository : IRepository<IqcInspectionItemConfigModel>
+    public interface IIqcInspectionItemConfigRepository : IRepository<InspectionIqCItemConfigModel>
     {
        
     }
-    public class IqcInspectionItemConfigRepository : BpmRepositoryBase<IqcInspectionItemConfigModel>, IIqcInspectionItemConfigRepository
+    public class IqcInspectionItemConfigRepository : BpmRepositoryBase<InspectionIqCItemConfigModel>, IIqcInspectionItemConfigRepository
     {
      
     }
 
-    public interface IIqcInspectionMasterRepository : IRepository<IqcInspectionMasterModel> { }
-    public class IqcInspectionMasterRepository : BpmRepositoryBase<IqcInspectionMasterModel>, IIqcInspectionMasterRepository
+    public interface IIqcInspectionMasterRepository : IRepository<InspectionIqcMasterModel> { }
+    public class IqcInspectionMasterRepository : BpmRepositoryBase<InspectionIqcMasterModel>, IIqcInspectionMasterRepository
     { }
 
-    public interface IIqcInspectionDetailRepository : IRepository<IqcInspectionDetailModel> { }
-    public class IqcInspectionDetailRepository : BpmRepositoryBase<IqcInspectionDetailModel>, IIqcInspectionDetailRepository
+    public interface IIqcInspectionDetailRepository : IRepository<InspectionIqcDetailModel> { }
+    public class IqcInspectionDetailRepository : BpmRepositoryBase<InspectionIqcDetailModel>, IIqcInspectionDetailRepository
     { }
     #endregion
 }

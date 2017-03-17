@@ -346,7 +346,9 @@ var leeHelper = (function () {
         },
         ///根据总数量和列数量创建输入数据源
         ///totalCount：总数量,colCount:列数量
-        createDataInputs: function (totalCount, colCount) {
+        ///defaultDatas:默认传入的数据列表
+        ///handler：处理句柄
+        createDataInputs: function (totalCount, colCount,defaultDatas,handler) {
         var inputDatas = [];
         var id = 0;
         var modData = totalCount % colCount;
@@ -356,7 +358,19 @@ var leeHelper = (function () {
             rowItem = { rowId: rowIndex,cols:[]};
             for (var colIndex = 1; colIndex <= colCount; colIndex++) {
                 id += 1;
-                colItem = { index: id, rowId: rowIndex, colId: colIndex, indata: null, focus: false, nextColId: colIndex + 1, result:true };
+                colItem = { index: id, rowId: rowIndex, colId: colIndex, indata: null, focus: false, nextColId: colIndex + 1, result: true };
+                if (_.isArray(defaultDatas))//检测传入的数据是否是数组
+                {
+                    var len = defaultDatas.length + 1;
+                    if (id <= len)
+                    {
+                        var idata=defaultDatas[id - 1];
+                        if (idata !== undefined && idata !== "")
+                            colItem.indata = idata;
+                        if (_.isFunction(handler) && colItem.indata != null)
+                            handler(colItem);
+                    }
+                }
                 if (colIndex == colCount)
                 {
                     colItem.rowId += 1;
@@ -382,6 +396,15 @@ var leeHelper = (function () {
             if (colIndex == modData)
             {
                 colItem.nextColId = "last";
+            }
+            if (_.isArray(defaultDatas))//检测传入的数据是否是数组
+            {
+                var len = defaultDatas.length + 1;
+                if (id <= len) {
+                    colItem.indata = defaultDatas[id - 1];
+                    if (_.isFunction(handler) && colItem.indata != null)
+                        handler(colItem);
+                }
             }
             rowItem.cols.push(colItem);
         }
@@ -477,4 +500,15 @@ Date.prototype.pattern = function (fmt) {
         }
     }
     return fmt;
+}
+///数组去重方法扩展
+Array.prototype.unique = function () {
+    var n = [this[0]]; //结果数组
+    for (var i = 1; i < this.length; i++) //从第二项开始遍历
+    {
+        //如果当前数组的第i项在当前数组中第一次出现的位置不是i，
+        //那么表示第i项是重复的，忽略掉。否则存入结果数组
+        if (this.indexOf(this[i]) == i) n.push(this[i]);
+    }
+    return n;
 }

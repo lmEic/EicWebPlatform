@@ -12,30 +12,34 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     /// </summary>
     public class InspectionService
     {
+        /// <summary>
+        ///检验配置管理器
+        /// </summary>
+        public static InspectionConfigurationManager ConfigManager
+        {
+            get { return OBulider.BuildInstance<InspectionConfigurationManager>(); }
+        }
+
 
         /// <summary>
-        ///检验方法配置管理
+        ///数据采集管理器
         /// </summary>
-        public static InspectionModeConfigManager InspectionModeConfigManager
+        public static InsepctionDataGatherManager DataGatherManager
         {
-            get { return OBulider.BuildInstance<InspectionModeConfigManager>(); }
+            get { return OBulider.BuildInstance<InsepctionDataGatherManager>(); }
+        }
+
+
+        ///<summary>
+        ///进料检验单管理模块
+        ///<summary>
+        public static InspectionIqcFormManager InspectionFormManager
+        {
+            get { return OBulider.BuildInstance<InspectionIqcFormManager>(); }
         }
 
 
 
-        /// <summary>
-        /// 进料检验项目配置器
-        /// </summary>
-        public static IqcInspectionItemConfigManager InspectionItemConfigurator
-        {
-            get { return OBulider.BuildInstance<IqcInspectionItemConfigManager>(); }
-        }
-        /// <summary>
-        /// 进料检验项目数据采集器
-        /// </summary>
-        public static  IqcInspectionDataGather InspectionDataGather
-        {
-            get { return OBulider.BuildInstance<IqcInspectionDataGather>(); }
-        }
+      
     }
 }

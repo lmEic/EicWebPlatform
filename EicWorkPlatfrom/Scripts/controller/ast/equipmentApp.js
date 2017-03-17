@@ -812,7 +812,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     var vmManager = {
         init: function () {
-            uiVM = _.clone(initVm);
+            leeHelper.clearVM(uiVM, ['CheckDate', 'OpSign','AssetNumber']);
         },
         datasets: [],
         //验证是否可以保存数据
@@ -941,7 +941,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     var vmManager = {
         init: function () {
-            uiVM = _.clone(initVm);
+            leeHelper.clearVM(uiVM, ['OpSign', 'MaintenanceDate', 'AssetNumber'])
         },
         datasets: [],
         //验证是否可以保存数据
@@ -1118,6 +1118,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.operate = operate;
     //存储
     operate.saveAll = function (isValid) {
+        uiVM.OpSign='add';
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             astDataopService.storeAstRepairedData(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {

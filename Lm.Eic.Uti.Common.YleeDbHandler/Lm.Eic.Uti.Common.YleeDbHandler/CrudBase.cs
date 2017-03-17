@@ -109,7 +109,18 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 setFixFieldMethod(m);
             });
         }
-
+        private void BindEntityToOpResult(bool isNeedEntity, OpResult result, TEntity entity)
+        {
+            if (isNeedEntity)
+                result.Entity = entity;
+            //取得操作方法
+            PropertyInfo piIdKey = IsHasProperty(entity, "Id_Key");
+            if (piIdKey == null)
+            {
+                string idKey = piIdKey.GetValue(entity, null) as string;
+                result.Id_Key = idKey.ToDeciaml();
+            }
+        }
 
         /// <summary>
         /// 持久化数据
@@ -136,16 +147,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 if (!crudOpDics.ContainsKey(opSign))
                     return OpResult.SetResult(string.Format("未找到{0}的实现函数", opSign));
                 result = (crudOpDics[opSign])(entity);
-
-                if (isNeedEntity)
-                    result.Entity = entity;
-                //取得操作方法
-                PropertyInfo piIdKey = IsHasProperty(entity, "Id_Key");
-                if (piIdKey == null)
-                {
-                    string idKey = piIdKey.GetValue(entity, null) as string;
-                    result.Id_Key = idKey.ToDeciaml();
-                }
+                BindEntityToOpResult(isNeedEntity, result, entity);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
             return result;
@@ -170,15 +172,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             try
             {
                 result=storeHandler(entity);
-                if (isNeedEntity)
-                    result.Entity = entity;
-                //取得操作方法
-                PropertyInfo piIdKey = IsHasProperty(entity, "Id_Key");
-                if (piIdKey == null)
-                {
-                    string idKey = piIdKey.GetValue(entity, null) as string;
-                    result.Id_Key = idKey.ToDeciaml();
-                }
+                BindEntityToOpResult(isNeedEntity, result, entity);
             }
             catch (Exception ex)
             {

@@ -15,14 +15,14 @@ namespace EicWorkPlatfrom.Controllers
     {
         //
         // GET: /QuaInspectionManage/
-       
-        
+
+
         public ActionResult Index()
         {
             return View();
         }
 
-        #region IQC 检验项目配置
+        #region 检验配置
         /// <summary>
         /// IQC检验项目配置
         /// </summary>
@@ -41,9 +41,11 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult GetIqcspectionItemConfigDatas(string materialId)
         {
-            var InspectionItemConfigModelList = InspectionService.InspectionItemConfigurator.GetIqcspectionItemConfigDatasBy(materialId);
+            //添加物料检验项
+            var InspectionItemConfigModelList = InspectionService.ConfigManager.IqcItemConfigManager.GetIqcspectionItemConfigDatasBy(materialId);
+            //得到此物料的品名 ，规格 ，供应商，图号
             var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
-            var datas= new {ProductMaterailModel, InspectionItemConfigModelList };
+            var datas = new { ProductMaterailModel, InspectionItemConfigModelList };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
@@ -56,8 +58,8 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult CheckIqcspectionItemConfigMaterialId(string materialId)
         {
-            var result = InspectionService.InspectionItemConfigurator.IsExistInspectionConfigMaterId(materialId);
-            return Json(result,JsonRequestBehavior.AllowGet);
+            var result = InspectionService.ConfigManager.IqcItemConfigManager.IsExistInspectionConfigMaterailId(materialId);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 删除进料检验配置数据 deleteIqlInspectionConfigItem
@@ -66,10 +68,10 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         [NoAuthenCheck]
         [HttpPost]
-        public JsonResult DeleteIqlInspectionConfigItem(IqcInspectionItemConfigModel configItem) 
+        public JsonResult DeleteIqlInspectionConfigItem(InspectionIqCItemConfigModel configItem)
         {
-            var opResult = InspectionService.InspectionItemConfigurator.StoreIqcInspectionItemConfig(configItem);
-           return Json(opResult);
+            var opResult = InspectionService.ConfigManager.IqcItemConfigManager.StoreIqcInspectionItemConfig(configItem);
+            return Json(opResult);
         }
         /// <summary>
         /// 批量保存IQC进料检验项目配置数据
@@ -77,9 +79,9 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="iqcInspectionConfigItems"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult SaveIqcInspectionItemConfigDatas(List<IqcInspectionItemConfigModel> iqcInspectionConfigItems)
+        public JsonResult SaveIqcInspectionItemConfigDatas(List<InspectionIqCItemConfigModel> iqcInspectionConfigItems)
         {
-            var opResult = InspectionService.InspectionItemConfigurator.StoreIqcInspectionItemConfig(iqcInspectionConfigItems);
+            var opResult = InspectionService.ConfigManager.IqcItemConfigManager.StoreIqcInspectionItemConfig(iqcInspectionConfigItems);
             return Json(opResult);
         }
         /// <summary>
@@ -90,7 +92,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult ImportIqcInspectionItemConfigDatas(HttpPostedFileBase file)
         {
-            List<IqcInspectionItemConfigModel> datas = null;
+            List<InspectionIqCItemConfigModel> datas = null;
             if (file != null)
             {
                 if (file.ContentLength > 0)
@@ -98,15 +100,15 @@ namespace EicWorkPlatfrom.Controllers
                     ///待加入验证文件名称逻辑:
                     string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
                     file.SaveAs(fileName);
-                    datas = InspectionService.InspectionItemConfigurator.ImportProductFlowListBy(fileName);
+                    datas = InspectionService.ConfigManager.IqcItemConfigManager.ImportProductFlowListBy(fileName);
                     if (datas != null && datas.Count > 0)
                     //批量保存数据
-                    { var opResult = InspectionService.InspectionItemConfigurator.StoreIqcInspectionItemConfig(datas); }
-                   
+                    { var opResult = InspectionService.ConfigManager.IqcItemConfigManager.StoreIqcInspectionItemConfig(datas); }
+
                     System.IO.File.Delete(fileName);
                 }
             }
-           
+
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
@@ -118,7 +120,7 @@ namespace EicWorkPlatfrom.Controllers
         public FileResult LoadIqcInspectionItemConfigFile()
         {
             string filePath = @"E:\各部门日报格式\IQC物料检验配置数据表.xls";
-            MemoryStream ms = InspectionService.InspectionItemConfigurator.GetIqcInspectionItemConfigTemplate(filePath);
+            MemoryStream ms = InspectionService.ConfigManager.IqcItemConfigManager.GetIqcInspectionItemConfigTemplate(filePath);
             return this.ExportToExcel(ms, "IQC物料检验配置模板", "IQC物料检验配置模板");
             //return null;
         }
@@ -129,20 +131,65 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 存储  检验方式配置
+        /// </summary>
+        /// <param name="inspectionModeConfigEntity"></param>
+        /// <returns></returns>
+        ///获取检验水平数据
         [NoAuthenCheck]
-        public JsonResult StoreIqcInspectionModeData(InspectionModeConfigModel iqcInspectionModeItem)
+        public JsonResult GetInspectionLevelValues(string inspectionMode)
         {
-            var opResult = InspectionService.InspectionModeConfigManager.StoreInspectionModeConfig(iqcInspectionModeItem);
+            var data = InspectionService.ConfigManager.ModeConfigManager.GetInspectionModeConfigStrList(inspectionMode);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        ///获取AQL数据
+        [NoAuthenCheck]
+        public JsonResult GetInspectionAQLValues(string inspectionMode, string inspectionLevel)
+        {
+            var data = InspectionService.ConfigManager.ModeConfigManager.GetInspectionModeConfigStrList(inspectionMode, inspectionLevel);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult StoreInspectionModeConfigData(InspectionModeConfigModel inspectionModeConfigEntity)
+        {
+            var opResult = InspectionService.ConfigManager.ModeConfigManager.StoreInspectionModeConfig(inspectionModeConfigEntity);
             return Json(opResult);
         }
-
-
-
-
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="inspectionMode"></param>
+        /// <param name="inspectionLevel"></param>
+        /// <param name="inspectionAQL"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetIqcInspectionModeDatas(string inspectionMode, string inspectionLevel, string inspectionAQL)
+        {
+            var datas = InspectionService.ConfigManager.ModeConfigManager.GetInInspectionModeConfigModelList(inspectionMode, inspectionLevel, inspectionAQL);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
+        #region 检验方式转换配置
+        public ActionResult InspectionModeSwitchConfiguration()
+        {
+            return View();
+        }
+        [NoAuthenCheck]
+        public JsonResult GetModeSwitchDatas(string inspectionModeType)
+        {
+            var datas = InspectionService.ConfigManager.ModeSwithConfigManager.GetInspectionModeSwithConfig(inspectionModeType);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult SaveModeSwitchDatas(string inspectionModeType,List<InspectionModeSwitchConfigModel> switchModeList)
+        {
+            var opResult = InspectionService.ConfigManager.ModeSwithConfigManager.StroeInspectionModeSwithConfig(inspectionModeType,switchModeList);
+            return Json(opResult);
+        }
+        #endregion
 
-      
         #region  检验项目数据收集
 
         [NoAuthenCheck]
@@ -158,7 +205,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetIqcMaterialInfoDatas(string orderId)
         {
-            var datas = InspectionService.InspectionDataGather.GetPuroductSupplierInfo(orderId);
+            var datas = InspectionService.DataGatherManager.IqcDataGather.GetPuroductSupplierInfo(orderId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -166,32 +213,23 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="materialId">料号</param>
         /// <param name="orderId">单号</param>
         /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult GetIqcInspectionItemConfigDatas(string orderId,string materialId)
-        {
-            var datas = InspectionService.InspectionDataGather.GetIqcInspectionItemDataSummaryLabelList(orderId, materialId);
-            return Json(datas, JsonRequestBehavior.AllowGet);
-        }
-        /// <summary>
-        /// 得到检验项目的所有信息
         /// </summary>
-        /// <param name="inMaterialCount">进料数量</param>
-        /// <param name="materialId">料号</param>
-        /// <param name="inspectionItem">检验项</param>
-        /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetIqcInspectionItemAllInfo(int inMaterialCount, string materialId,string inspectionItem)
+        [HttpGet]
+        public JsonResult GetIqcInspectionItemDataSummaryLabelList(string orderId,string materialId)
         {
-
-            var iqcInspectionItemParameterData = InspectionService.InspectionDataGather.GetIqcInspectionItemConfigDataBy(materialId, inspectionItem);
-            var inspectionModeConfigData = InspectionService.InspectionDataGather.GetInspectionModeConfigDataBy(iqcInspectionItemParameterData, inMaterialCount);
-            var datas = new { iqcInspectionItemParameterData, inspectionModeConfigData };
+            var datas = InspectionService.DataGatherManager.IqcDataGather.BuildingIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+        [NoAuthenCheck]
+        [HttpPost]
+        public JsonResult StoreIqcInspectionGatherDatas(InspectionIqcItemDataSummaryLabelModel gatherData)
+        {
 
+            var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcModelForm(gatherData);
+            return Json(opResult);
+        }
         #endregion
-
-
 
         #region 检验单管理
         #region iqc检验单管理
@@ -199,6 +237,29 @@ namespace EicWorkPlatfrom.Controllers
         public ActionResult InspectionFormManageOfIqc()
         {
             return View();
+        }
+        /// <summary>
+        /// 根据单据状态获得检验单数据  
+        /// </summary>  selectedFormStatus,dateFrom,dateTo
+        /// <returns></returns>
+
+        [NoAuthenCheck]
+        public ContentResult GetInspectionFormManageOfIqcDatas(string formStatus, DateTime dateFrom, DateTime dateTo)
+        {
+            var datas = InspectionService.InspectionFormManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
+            return DateJsonResult(datas);
+        }
+        [NoAuthenCheck]
+        public JsonResult GetInspectionFormDetailDatas(string orderId, string materialId)
+        {
+            var datas = InspectionService.DataGatherManager.IqcDataGather.FindIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult PostInspectionFormManageCheckedData(InspectionIqcMasterModel model)
+        {
+            var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreIqcInspectionMasterModel (model);
+            return Json(opResult);
         }
         #endregion
 

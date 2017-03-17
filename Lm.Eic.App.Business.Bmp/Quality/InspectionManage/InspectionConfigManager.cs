@@ -3,6 +3,7 @@ using Lm.Eic.App.Erp.Bussiness.QmsManage;
 using Lm.Eic.App.Erp.Domain.QuantityModel;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,36 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
+    /// <summary>
+    /// 检验配置管理器
+    /// </summary>
+    public class InspectionConfigurationManager
+    {
+        /// <summary>
+        ///检验方式配置管理器
+        /// </summary>
+        public InspectionModeConfigManager ModeConfigManager
+        {
+            get { return OBulider.BuildInstance<InspectionModeConfigManager>(); }
+        }
+        /// <summary>
+        /// 检验方式转换配置管理器
+        /// </summary>
+        public InspectionModeSwithConfigManager ModeSwithConfigManager
+        {
+            get { return OBulider.BuildInstance<InspectionModeSwithConfigManager>(); }
+        }
+        /// <summary>
+        ///Iqc检验项目配置管理器
+        /// </summary>
+        public InspectionIqcItemConfigManager IqcItemConfigManager
+        {
+            get { return OBulider.BuildInstance<InspectionIqcItemConfigManager>(); }
+        }
+    }
 
     /// <summary>
-    ///  检验方式的配置 管理器
+    ///  检验方式的配置管理器
     /// </summary>
     public class InspectionModeConfigManager
     {
@@ -24,91 +52,161 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult StoreInspectionModeConfig(InspectionModeConfigModel model)
         {
-            return IqcInspectionManagerCrudFactory.InspectionModeConfigCrud.Store(model, true);
+            return InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.Store(model, true);
+        }
+        public List<InspectionModeConfigModel> GetInInspectionModeConfigModelList(string inspectionMode, string inspectionLevel, string inspectionAQL)
+        {
+            return InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode,  inspectionLevel,  inspectionAQL);
+        }
+        public List<string> GetInspectionModeConfigStrList(string inspectionMode, string inspectionLevel)
+        {
+            var listDatas = InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode, inspectionLevel);
+      
+
+            return listDatas.Select(e => e.InspectionAQL).Distinct().ToList(); 
+        }
+        public List<string> GetInspectionModeConfigStrList(string inspectionMode)
+        {
+            var listDatas = InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode);
+            return listDatas.Select(e => e.InspectionLevel).Distinct().ToList(); 
         }
     }
 
-    /// <summary>
-    /// IQC 进料检验的配置  管理器
-    /// </summary>
-    public class IqcInspectionItemConfigManager
+
+    public class InspectionModeSwithConfigManager
     {
         /// <summary>
-        /// 物料号查询检验项目
+        /// 存储检验方式配置
         /// </summary>
-        /// <param name="materialId"></param>
+        /// <param name="modelList"></param>
         /// <returns></returns>
-        public List<IqcInspectionItemConfigModel> GetIqcspectionItemConfigDatasBy(string materialId)
+        public OpResult StroeInspectionModeSwithConfig(string inspectionModeType,List<InspectionModeSwitchConfigModel> modelList)
         {
-          return  IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId); 
+            return InspectionIqcManagerCrudFactory.InspectionModeSwithConfigCrud.StoreModeSwithConfigModelList(inspectionModeType, modelList);
         }
         /// <summary>
-        /// 由单号 料号 得到IQC物料检验
+        /// 得到转换数据
         /// </summary>
-        /// <param name="orderId"></param>
-        /// <param name="materialId"></param>
+        /// <param name="swithCategory"></param>
         /// <returns></returns>
-        public List<IqcInspectionMasterModel> GetIqcInspectionMasterModelListBy(string orderId,string materialId)
+        public List<InspectionModeSwitchConfigModel> GetInspectionModeSwithConfig(string swithCategory)
         {
-            return IqcInspectionManagerCrudFactory.IqcInspectionMasterCrud.GetIqcInspectionMasterModelList(orderId, materialId);
+            return InspectionIqcManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy(swithCategory);
         }
+        //public OpResult StroeInspectionSwithConfig(InspectionModeSwithConfigSummaryModel model)
+        //{
+        //    return StroeInspectionModeSwithConfig(SummaryrModelToStoreModel(model));
+        //}
+        //private List<InspectionModeSwithConfigModel> SummaryrModelToStoreModel(InspectionModeSwithConfigSummaryModel model)
+        //{
+        //   return model == null? new List<InspectionModeSwithConfigModel>() :
+        //       new List<InspectionModeSwithConfigModel>()
+        //    {
+        //        new InspectionModeSwithConfigModel()
+        //        {
+        //            SwithCategory = model.SwithCategory,
+        //            IsEnable=model.SumIsIsEnable.ToString(),
+        //            SwithVaule = model.BroadenToNormalSampleNumber,
+        //            SwithMemo = "宽到正常抽取批量",
+        //            CurrentStatus = "放宽",
+        //            SwithSatus ="正常",
+        //            SwithProperty= "SampleNumber"
+        //        },
+        //        new InspectionModeSwithConfigModel()
+        //        {
+        //               SwithCategory = model.SwithCategory,
+        //               IsEnable = model.SumIsIsEnable.ToString(),
+        //               SwithVaule = model.BroadenToNormalAcceptNumber,
+        //               SwithMemo = "宽到正常接受数",
+        //               CurrentStatus = "放宽",
+        //               SwithSatus = "正常",
+        //               SwithProperty = "AcceptNumber"
+        //        },
+        //         new InspectionModeSwithConfigModel()
+        //        {
+        //            SwithCategory = model.SwithCategory,
+        //            IsEnable=model.SumIsIsEnable.ToString(),
+        //            SwithVaule = model.NormalToRestrictSampleNumber,
+        //            SwithMemo = "正常到加严抽取批量",
+        //            CurrentStatus = "正常",
+        //            SwithSatus ="加严",
+        //            SwithProperty= "SampleNumber"
+        //        },
+        //        new InspectionModeSwithConfigModel()
+        //        {
+        //               SwithCategory = model.SwithCategory,
+        //               IsEnable = model.SumIsIsEnable.ToString(),
+        //               SwithVaule = model.NormalToRestrictAcceptNumber,
+        //               SwithMemo = "正常到加严接受数",
+        //               CurrentStatus = "正常",
+        //               SwithSatus = "加严",
+        //               SwithProperty = "AcceptNumber"
+        //        },
 
-        /// <summary>
-        ///  在数据库中是否存在此料号
-        /// </summary>
-        /// <param name="materailId"></param>
-        /// <returns></returns>
-        public OpResult IsExistInspectionConfigMaterId(string materailId)
-        {
-            bool  isexixt=   IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.IsExistInspectionConfigmaterailId(materailId);
-            OpResult opResult = OpResult.SetResult("", false );
-            if (isexixt) opResult = OpResult.SetResult("此物料料号已经存在", true);
-            return opResult;
-        }
-        /// <summary>
-        /// 增删改 IQC检验项目
-        /// </summary>
-        /// <param name="modelList"></param>
-        /// <returns></returns>
-        public OpResult StoreIqcInspectionItemConfig(IqcInspectionItemConfigModel model)
-        {
-           return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.Store(model,true);
-        }
-        
-        /// <summary>
-        /// 批量添加数据
-        /// </summary>
-        /// <param name="modelList"></param>
-        /// <returns></returns>
-        public OpResult StoreIqcInspectionItemConfig(List<IqcInspectionItemConfigModel> modelList)
-        {
-            return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.StoreInspectionItemConfiList(modelList);
-        }
-        /// <summary>
-        /// 导入IQC 检验配置文件
-        /// </summary>
-        /// <param name="documentPatch">Excel文档路径</param>
-        /// <returns></returns>
-        public List<IqcInspectionItemConfigModel> ImportProductFlowListBy(string documentPatch)
-        {
-            StringBuilder errorStr = new StringBuilder();
-            var listEntity = ExcelHelper.ExcelToEntityList<IqcInspectionItemConfigModel>(documentPatch, out errorStr);
-            string errorStoreFilePath = @"C:\ExcelToEntity\ErrorStr.txt";
-            if (errorStr.ToString() != string.Empty)
-            {
-                errorStoreFilePath.CreateFile(errorStr.ToString());
-            }
-            return listEntity;
-        }
-        /// <summary>
-        /// 获取工序Excel模板
-        /// </summary>
-        /// <param name="documentPath"></param>
-        /// <returns></returns>
-        public System.IO.MemoryStream GetIqcInspectionItemConfigTemplate(string documentPath)
-        {
-            return FileOperationExtension.GetMemoryStream(documentPath);
-        }
+        //         new InspectionModeSwithConfigModel()
+        //        {
+        //            SwithCategory = model.SwithCategory,
+        //            IsEnable=model.SumIsIsEnable.ToString(),
+        //            SwithVaule = model.RestrictToNormalSampleNumber,
+        //            SwithMemo = "加严到正常抽取批量",
+        //            CurrentStatus = "加严",
+        //            SwithSatus ="正常",
+        //            SwithProperty= "SampleNumber"
+        //        },
+        //        new InspectionModeSwithConfigModel()
+        //        {
+        //               SwithCategory = model.SwithCategory,
+        //               IsEnable = model.SumIsIsEnable.ToString(),
+        //               SwithVaule = model.RestrictToNormalAcceptNumber,
+        //               SwithMemo = "加严到正常抽取接受量",
+        //               CurrentStatus = "加严",
+        //               SwithSatus ="正常",
+        //               SwithProperty = "AcceptNumber"
+        //        },
+        //         new InspectionModeSwithConfigModel()
+        //        {
+        //            SwithCategory = model.SwithCategory,
+        //            IsEnable=model.SumIsIsEnable.ToString(),
+        //            SwithVaule = model.NormalToBroadenSampleNumber,
+        //            SwithMemo = "正常到放宽抽取批量",
+        //            CurrentStatus = "正常",
+        //            SwithSatus ="放宽",
+        //            SwithProperty= "SampleNumber"
+        //        },
+        //        new InspectionModeSwithConfigModel()
+        //        {
+        //               SwithCategory = model.SwithCategory,
+        //               IsEnable = model.SumIsIsEnable.ToString(),
+        //               SwithVaule = model.NormalToBroadenAcceptNumber,
+        //               SwithMemo = "正常到放宽接受数",
+        //                CurrentStatus = "正常",
+        //               SwithSatus ="放宽",
+        //               SwithProperty = "AcceptNumber"
+        //        },
+        //    };
+
+
+
+        //}
+
+        //private InspectionModeSwithConfigSummaryModel StoreModelToShowModel(List<InspectionModeSwithConfigModel> modelList)
+        //{
+        //    return (modelList == null || modelList.Count <= 0) ? new InspectionModeSwithConfigSummaryModel() :
+        //    new InspectionModeSwithConfigSummaryModel()
+        //    {
+        //        SwithCategory = modelList.FirstOrDefault().SwithProperty,
+        //        BroadenToNormalAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "放宽" && e.SwithSatus == "正常" && e.SwithProperty == "AcceptNumber").SwithVaule,
+        //        BroadenToNormalSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "放宽" && e.SwithSatus == "正常" && e.SwithProperty == "SampleNumber").SwithVaule,
+        //        NormalToRestrictAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "加严" && e.SwithProperty == "AcceptNumber").SwithVaule,
+        //        NormalToRestrictSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "加严" && e.SwithProperty == "SampleNumber").SwithVaule,
+        //        RestrictToNormalAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "加严" && e.SwithSatus == "正常" && e.SwithProperty == "AcceptNumber").SwithVaule,
+        //        RestrictToNormalSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "加严" && e.SwithSatus == "正常" && e.SwithProperty == "SampleNumber").SwithVaule,
+        //        NormalToBroadenAcceptNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "放宽" && e.SwithProperty == "AcceptNumber").SwithVaule,
+        //        NormalToBroadenSampleNumber = modelList.FirstOrDefault(e => e.CurrentStatus == "正常" && e.SwithSatus == "放宽" && e.SwithProperty == "SampleNumber").SwithVaule,
+        //        SumIsIsEnable = Convert.ToBoolean(modelList.FirstOrDefault().IsEnable)
+
+        //    };
+
+        //}
     }
-  
 }
