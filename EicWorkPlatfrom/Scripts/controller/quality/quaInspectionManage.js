@@ -672,6 +672,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
             controller: function ($scope) {
                 $scope.confirmDelete = function () {
+                    leeHelper.setUserData(vmManager.currentItem);
                     vmManager.currentItem.InspectionStatus = "已审核";
                     vmManager.currentItem.OpSign = "edit";
                     qualityInspectionDataOpService.postInspectionFormManageCheckedData(vmManager.currentItem).then(function (opresult) {
@@ -741,6 +742,7 @@ qualityModule.controller("InspectionModeSwitchCtrl", function ($scope, qualityIn
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.saveAll = function (isValid) {
+        leeHelper.setUserData();
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             for (var i = 0; i < vmManager.switchModeList.length; i++) {
                 vmManager.switchModeList[i].SwitchVaule = $scope.vmManager.switchModeList[i].SwitchVaule;

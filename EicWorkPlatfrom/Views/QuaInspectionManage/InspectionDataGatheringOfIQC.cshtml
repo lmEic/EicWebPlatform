@@ -139,7 +139,7 @@
                         </div>
                     </div>
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='A'">
-                        <div class="well" ng-show="vmManager.inputDatas.length>0">
+                        <div class="well" ng-show="vmManager.inputDatas.length>0" style="overflow:hidden;">
                             <table class="table table-bordered table-condensed">
                                 <thead>
                                     <tr>
@@ -154,7 +154,7 @@
                                             <span ng-show="vmManager.currentInspectionItem.InspectionItemResult==='OK'">
                                                 {{col.indata}}
                                             </span>
-                                            <input ng-model="col.indata" style="text-align:center" ng-hide="vmManager.currentInspectionItem.InspectionItemResult==='OK'"
+                                            <input ng-model="col.indata" style="text-align:center;width:120px;" ng-hide="vmManager.currentInspectionItem.InspectionItemResult==='OK'"
                                                    ng-class="{'invalidInputBg':!col.result,'':col.result}"
                                                    title="规格上限:{{vmManager.currentInspectionItem.SizeUSL}} 规格下限:{{vmManager.currentInspectionItem.SizeLSL}}"
                                                    focus-setter focus-if="col.focus" ng-keydown="vmManager.dataInputKeyDown(col,$event)" />
