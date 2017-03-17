@@ -70,7 +70,7 @@
                             </a>
                         </div>
                         <div class="panel-collapse list-group " role="tabpanel" bs-collapse-target cg-busy="{promise:searchPromise}">
-                            <a class="panel-body list-group-item" ng-repeat="inspectionItem in item.inspectionItemDatas"
+                            <a class="panel-body list-group-item" ng-repeat="inspectionItem in item.dataSets"
                                ng-class="{'active':inspectionItem===vmManager.currentInspectionItem}"
                                ng-click="vmManager.selectInspectionItem(inspectionItem)">
                                 {{inspectionItem.InspectionItem}}
@@ -82,7 +82,10 @@
                                     {{inspectionItem.NeedFinishDataNumber}}/{{inspectionItem.HaveFinishDataNumber}}
                                 </span>
                             </a>
-                            
+                            <div ng-if="item.inspectionItemDatas.length>0"
+                                 yl-pagination data-dataset="item.dataSets"
+                                 data-datasource="item.inspectionItemDatas">
+                            </div>
                         </div>
                     </div>
                 </div>

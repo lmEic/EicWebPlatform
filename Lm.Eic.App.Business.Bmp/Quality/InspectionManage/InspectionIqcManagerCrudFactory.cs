@@ -91,11 +91,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         public List<InspectionModeConfigModel> GetInspectionStartEndNumberBy(string inspectionMode, string inspectionLevel=null, string inspectionAQL=null)
         {
-            if ((inspectionLevel == null || inspectionLevel==String.Empty )&&(inspectionAQL == null || inspectionAQL == string.Empty))
-              return irep.Entities.Where(e => e.InspectionMode == inspectionMode).OrderBy(e => e.InspectionLevel).ToList();
-            if (inspectionAQL == null || inspectionAQL==string.Empty)
+           if ((inspectionMode != null && inspectionMode != string.Empty)&&(inspectionLevel != null && inspectionLevel!=String.Empty )&&(inspectionAQL != null && inspectionAQL != string.Empty))
+
+           return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel && e.InspectionAQL == inspectionAQL).OrderBy(e => e.StartNumber).ToList();
+            if ((inspectionMode != null && inspectionMode != string.Empty) && (inspectionLevel != null && inspectionLevel != String.Empty))
                 return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel).OrderBy(e => e.InspectionAQL).ToList();
-           else  return irep.Entities.Where(e => e.InspectionMode == inspectionMode && e.InspectionLevel == inspectionLevel && e.InspectionAQL == inspectionAQL).OrderBy(e => e.StartNumber).ToList();
+             else   return irep.Entities.Where(e => e.InspectionMode == inspectionMode).OrderBy(e => e.InspectionLevel).ToList();
+          
         }
 
     }
