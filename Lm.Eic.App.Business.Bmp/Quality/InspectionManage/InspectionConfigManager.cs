@@ -84,9 +84,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return IqcInspectionManagerCrudFactory.InspectionItemConfigCrud.StoreInspectionItemConfiList(modelList);
         }
-
-      
-
         /// <summary>
         /// 导入IQC 检验配置文件
         /// </summary>
@@ -103,7 +100,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
             return listEntity;
         }
-
         /// <summary>
         /// 获取工序Excel模板
         /// </summary>
@@ -114,8 +110,5 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return FileOperationExtension.GetMemoryStream(documentPath);
         }
     }
-
-
-
   
 }
