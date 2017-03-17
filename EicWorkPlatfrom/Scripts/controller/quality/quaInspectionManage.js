@@ -490,7 +490,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 vmManager.panelDataSource = [];
                 qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
                     angular.forEach(materialIdDatas, function (item) {
-                        var dataItem = { productId: item.ProductID,productName:item.ProductName,materialIdItem: item, inspectionItemDatas: [] };
+                        var dataItem = { productId: item.ProductID,productName:item.ProductName,materialIdItem: item, inspectionItemDatas: [],dataSets:[] };
                         vmManager.panelDataSource.push(dataItem);
                     })
                     vmManager.orderId = null;
@@ -508,6 +508,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                     var dataItems = _.find(vmManager.panelDataSource, { productId: item.ProductID });
                     if (dataItems !== undefined) {
                         dataItems.inspectionItemDatas = inspectionItemDatas;
+                        dataItems.dataSets = inspectionItemDatas;
                     }
                 });
             }
