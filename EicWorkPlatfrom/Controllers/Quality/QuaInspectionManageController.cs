@@ -290,7 +290,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult PostInspectionFormManageCheckedData(InspectionIqcMasterModel model)
         {
-            var opResult = InspectionService.InspectionFormManager.IqcFromManager.StoreIqcInspectionMasterModel (model);
+            var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel (model);
             return Json(opResult);
         }
         #endregion

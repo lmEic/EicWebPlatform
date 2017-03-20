@@ -44,10 +44,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
         /// <summary>
-        /// 存储Iqc检验项次主要数据
+        ///审核主表数据
         /// </summary>
         /// <returns></returns>
-        public OpResult StoreIqcInspectionMasterModel(InspectionIqcMasterModel model)
+        public OpResult AuditIqcInspectionMasterModel(InspectionIqcMasterModel model)
         {
             if (model == null) return null;
 
