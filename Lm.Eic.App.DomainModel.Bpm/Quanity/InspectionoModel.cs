@@ -710,14 +710,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionitemdatas = value; }
             get { return _inspectionitemdatas; }
         }
-        private string _inspectionitemsatus;
+        private string _inspectionitemstatus;
         /// <summary>
         ///检验项记录状态
         /// </summary>
-        public string InspectionItemSatus
+        public string InspectionItemStatus
         {
-            set { _inspectionitemsatus = value; }
-            get { return _inspectionitemsatus; }
+            set { _inspectionitemstatus = value; }
+            get { return _inspectionitemstatus; }
         }
         private string _inspectionitemresult;
         /// <summary>
@@ -727,6 +727,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _inspectionitemresult = value; }
             get { return _inspectionitemresult; }
+        }
+        private double _inspectionngcount;
+        /// <summary>
+        ///检验数量
+        /// </summary>
+        public double InspectionNGCount
+        {
+            set { _inspectionngcount = value; }
+            get { return _inspectionngcount; }
         }
         private DateTime _inspectiondate;
         /// <summary>
