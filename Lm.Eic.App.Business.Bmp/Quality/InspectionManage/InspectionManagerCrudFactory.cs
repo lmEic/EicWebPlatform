@@ -301,7 +301,30 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult EidtIqcInspectionMaster(InspectionIqcMasterModel model)
         {
+           
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+        /// <summary>
+        /// 更新详细列表
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="materialId"></param>
+        /// <param name="inspectionStatus"></param>
+        /// <returns></returns>
+        internal OpResult UpAuditDetailData(string orderId,string  materialId, string inspectionStatus)
+        {
+            return irep.UpAuditDetailData(orderId, materialId, inspectionStatus).ToOpResult_Eidt(OpContext);
+        }
+        /// <summary>
+        /// 更新主列表
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="materialId"></param>
+        /// <param name="inspectionStatus"></param>
+        /// <returns></returns>
+        internal OpResult UpAuditMaterData(string orderId, string materialId, string inspectionStatus)
+        {
+            return irep.UpAuditMaterData(orderId, materialId, inspectionStatus).ToOpResult_Eidt(OpContext);
         }
 
         private OpResult AddIqcInspectionMaster(InspectionIqcMasterModel model)
