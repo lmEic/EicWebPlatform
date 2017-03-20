@@ -13,7 +13,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
     /// </summary>
     public class InspectionModeConfigMapping : EntityTypeConfiguration<InspectionModeConfigModel>
     {
-        public  InspectionModeConfigMapping()
+        public InspectionModeConfigMapping()
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
@@ -40,7 +40,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
 
     public class IqcInspectionItemConfigMapping : EntityTypeConfiguration<InspectionIqCItemConfigModel>
     {
-        public  IqcInspectionItemConfigMapping()
+        public IqcInspectionItemConfigMapping()
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
@@ -55,7 +55,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
     {
         public IqcInspectionMasterMapping()
         {
-            this.HasKey(t => t.Id_Key );
+            this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Qms_IqcInspectionMaster");
         }
@@ -68,11 +68,25 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
     {
         public IqcInspectionDetailMapping()
         {
-            this.HasKey(t => t.Id_Key );
+            this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Qms_IqcInspectionDetail");
         }
 
+    }
+    #endregion
+
+
+
+    #region  FQC
+    public class FqcInspectionItemConfigMapping :  EntityTypeConfiguration<InspectionFqcItemConfigModel>
+    {
+        public FqcInspectionItemConfigMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_FqcInspectionItemConfig");
+        }
     }
     #endregion
 }

@@ -33,9 +33,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         ///<summary>
         ///进料检验单管理模块
         ///<summary>
-        public static InspectionIqcFormManager InspectionFormManager
+        public static InspectionFormManager InspectionFormManager
         {
-            get { return OBulider.BuildInstance<InspectionIqcFormManager>(); }
+            get { return OBulider.BuildInstance<InspectionFormManager>(); }
         }
 
 

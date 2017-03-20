@@ -26,6 +26,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
     {
     }
 
+
+
+
     #region IQC
 
     public interface IIqcInspectionItemConfigRepository : IRepository<InspectionIqCItemConfigModel>
@@ -37,12 +40,43 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
      
     }
 
-    public interface IIqcInspectionMasterRepository : IRepository<InspectionIqcMasterModel> { }
+    public interface IIqcInspectionMasterRepository : IRepository<InspectionIqcMasterModel>
+    {
+        int UpAuditMaterData(string orderId, string materialId,string upAuditData);
+        int UpAuditDetailData(string orderId, string materialId, string upAuditData);
+
+
+    }
     public class IqcInspectionMasterRepository : BpmRepositoryBase<InspectionIqcMasterModel>, IIqcInspectionMasterRepository
-    { }
+    {
+        public int UpAuditDetailData(string orderId, string materialId, string inspectionItemStatus)
+        {
+            string upDetailsql = string.Format("Update   Qms_IqcInspectionDetail   Set  InspectionItemStatus='{0}'  Where OrderId='{1}' and  MaterialId='{2}'", inspectionItemStatus, orderId, materialId);
+            return DbHelper.Bpm.ExecuteNonQuery(upDetailsql);
+        }
+
+        public int  UpAuditMaterData(string orderId, string materialId,string upAduitData)
+        {
+            string upMaterSql = string.Format("Update   Qms_IqcInspectionMaster   Set InspectionStatus='{0}'  Where OrderId='{1}' and  MaterialId='{2}'", upAduitData, orderId, materialId);
+            return DbHelper.Bpm.ExecuteNonQuery(upMaterSql);
+        }
+    }
 
     public interface IIqcInspectionDetailRepository : IRepository<InspectionIqcDetailModel> { }
     public class IqcInspectionDetailRepository : BpmRepositoryBase<InspectionIqcDetailModel>, IIqcInspectionDetailRepository
     { }
     #endregion
+
+    #region  FQC
+
+    public interface IFqcInspectionItemConfigRepository : IRepository<InspectionFqcItemConfigModel> { }
+
+    public class FqcInspectionItemConfigRepository : BpmRepositoryBase<InspectionFqcItemConfigModel>, IFqcInspectionItemConfigRepository
+    {
+
+    }
+    #endregion
+
+
+
 }
