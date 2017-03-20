@@ -711,6 +711,33 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             },
         }
 })
+//--------------------------checkbox-------------------------------------
+.directive('ylCheckbox', function () {
+    return {
+        //restrict: "EA",
+        //replace: false,
+        //templateUrl: '/CommonTpl/CheckboxTpl',
+        //scope: true,
+        //link: function (scope, element, attr) {
+        //    scope.showCheckbox = false;
+        //    scope.selected = function () {
+        //        scope.showCheckbox = false;
+
+        //        };
+        //    scope.unselected = function(){
+        //        scope.showCheckbox = true;
+
+        //    }
+        //}
+        restrict: 'EA',
+        templateUrl: '/CommonTpl/ToggleButtonTpl',
+        replace: false,
+        scope: true,
+        link: function (scope, element, attrs) {
+
+        }
+    }
+})
 //-----------------filter--------------------------------
 .filter('unique', function () {
     return function (data, propertyName) {
