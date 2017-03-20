@@ -728,11 +728,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionitemresult = value; }
             get { return _inspectionitemresult; }
         }
-        private double _inspectionngcount;
+        private double? _inspectionngcount;
         /// <summary>
         ///检验数量
         /// </summary>
-        public double InspectionNGCount
+        public double? InspectionNGCount
         {
             set { _inspectionngcount = value; }
             get { return _inspectionngcount; }

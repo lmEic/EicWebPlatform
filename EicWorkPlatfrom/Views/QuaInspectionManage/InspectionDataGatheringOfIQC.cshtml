@@ -259,8 +259,8 @@
                                      <div class="form-group">
                                          <label for="ngCount" class="col-md-2 control-label">NG数量</label>
                                          <div class="col-md-4">
-                                             <input name="memo" rows="3" ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'"
-                                                       placeholder="输入状况描述结果"
+                                             <input name="ngCount" type="number" ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'"
+                                                       placeholder="输入NG数量"
                                                        class="form-control" ng-model="vmManager.currentInspectionItem.InspectionNGCount" />
                                              <p ng-show="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
                                                  {{vmManager.currentInspectionItem.InspectionNGCount}}

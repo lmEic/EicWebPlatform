@@ -54,7 +54,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionDate = DateTime.Now,
                 InspectionItemDatas = model.InspectionItemDatas,
                 InspectionItemResult = model.InspectionItemResult,
-                InspectionItemSatus = model.InsptecitonItemIsFinished.ToString(),
+                InspectionItemStatus = model.InsptecitonItemIsFinished.ToString(),
                 MaterialId = model.MaterialId,
                 MaterialInDate = model.MaterialInDate,
                 OpSign = "add",
