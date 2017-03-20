@@ -252,9 +252,22 @@
                                                        class="form-control" ng-model="vmManager.currentInspectionItem.Memo"/>
                                              <p ng-show="vmManager.currentInspectionItem.InspectionItemResult==='OK'">
                                                  {{vmManager.currentInspectionItem.Memo}}
+                                                 <hr />
                                              </p>
                                          </div>
                                      </div>
+                                     @*<div class="form-group">
+                                         <label for="ngCount" class="col-md-2 control-label">NG数量</label>
+                                         <div class="col-md-4">
+                                             <input name="memo" rows="3" ng-hide="vmManager.currentInspectionItem.InspectionItemResult==='OK'"
+                                                       placeholder="输入状况描述结果"
+                                                       class="form-control" ng-model="vmManager.currentInspectionItem.Memo" />
+                                             <p ng-show="vmManager.currentInspectionItem.InspectionItemResult==='OK'">
+                                                 {{vmManager.currentInspectionItem.Memo}}
+                                                 <hr />
+                                             </p>
+                                         </div>
+                                     </div>*@
                                  </fieldset>
                                  <hr />
                                  <div class="alert alert-info" ng-hide="vmManager.currentInspectionItem.InspectionItemResult==='OK'">
