@@ -278,7 +278,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ContentResult GetInspectionFormManageOfIqcDatas(string formStatus, DateTime dateFrom, DateTime dateTo)
         {
-            var datas = InspectionService.InspectionFormManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
+            var datas = InspectionService.InspectionFormManager.IqcFromManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
             return DateJsonResult(datas);
         }
         [NoAuthenCheck]
