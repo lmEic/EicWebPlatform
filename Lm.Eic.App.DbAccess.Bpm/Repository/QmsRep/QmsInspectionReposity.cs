@@ -31,11 +31,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
 
     #region IQC
 
-    public interface IIqcInspectionItemConfigRepository : IRepository<InspectionIqCItemConfigModel>
+    public interface IIqcInspectionItemConfigRepository : IRepository<InspectionIqcItemConfigModel>
     {
        
     }
-    public class IqcInspectionItemConfigRepository : BpmRepositoryBase<InspectionIqCItemConfigModel>, IIqcInspectionItemConfigRepository
+    public class IqcInspectionItemConfigRepository : BpmRepositoryBase<InspectionIqcItemConfigModel>, IIqcInspectionItemConfigRepository
     {
      
     }

@@ -107,10 +107,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        private List<InspectionIqCItemConfigModel> getIqcNeedInspectionItemDatas(string materialId, DateTime materialInDate)
+        private List<InspectionIqcItemConfigModel> getIqcNeedInspectionItemDatas(string materialId, DateTime materialInDate)
         {
             var needInsepctionItems = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
-            if (needInsepctionItems == null || needInsepctionItems.Count <= 0) return new List<InspectionIqCItemConfigModel>();
+            if (needInsepctionItems == null || needInsepctionItems.Count <= 0) return new List<InspectionIqcItemConfigModel>();
             needInsepctionItems.ForEach(m =>
             {
 
@@ -371,7 +371,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="iqcInspectionItemConfig"></param>
         /// <param name="inMaterialCount"></param>
         /// <returns></returns>
-        private InspectionModeConfigModel GetInspectionModeConfigDataBy(InspectionIqCItemConfigModel iqcInspectionItemConfig, double inMaterialCount)
+        private InspectionModeConfigModel GetInspectionModeConfigDataBy(InspectionIqcItemConfigModel iqcInspectionItemConfig, double inMaterialCount)
         {
             if (iqcInspectionItemConfig == null) return new InspectionModeConfigModel();
             string inspectionMode = GetJudgeInspectionMode(iqcInspectionItemConfig.MaterialId, iqcInspectionItemConfig.InspectionItem);

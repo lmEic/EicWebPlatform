@@ -303,10 +303,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// IQC物料检验配置文件
     /// </summary>
-    public class InspectionIqCItemConfigModel
+    public class InspectionIqcItemConfigModel
     {
 
-        public InspectionIqCItemConfigModel()
+        public InspectionIqcItemConfigModel()
         { }
         #region Model
         private string _materialid;

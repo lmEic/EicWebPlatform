@@ -38,7 +38,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
     /// 
     /// </summary>
 
-    public class IqcInspectionItemConfigMapping : EntityTypeConfiguration<InspectionIqCItemConfigModel>
+    public class IqcInspectionItemConfigMapping : EntityTypeConfiguration<InspectionIqcItemConfigModel>
     {
         public IqcInspectionItemConfigMapping()
         {

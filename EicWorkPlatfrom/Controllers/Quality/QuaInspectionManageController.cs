@@ -70,7 +70,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         [NoAuthenCheck]
         [HttpPost]
-        public JsonResult DeleteIqlInspectionConfigItem(InspectionIqCItemConfigModel configItem)
+        public JsonResult DeleteIqlInspectionConfigItem(InspectionIqcItemConfigModel configItem)
         {
             var opResult = InspectionService.ConfigManager.IqcItemConfigManager.StoreIqcInspectionItemConfig(configItem);
             return Json(opResult);
@@ -81,7 +81,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="iqcInspectionConfigItems"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult SaveIqcInspectionItemConfigDatas(List<InspectionIqCItemConfigModel> iqcInspectionConfigItems)
+        public JsonResult SaveIqcInspectionItemConfigDatas(List<InspectionIqcItemConfigModel> iqcInspectionConfigItems)
         {
             var opResult = InspectionService.ConfigManager.IqcItemConfigManager.StoreIqcInspectionItemConfig(iqcInspectionConfigItems);
             return Json(opResult);
@@ -94,7 +94,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult ImportIqcInspectionItemConfigDatas(HttpPostedFileBase file)
         {
-            List<InspectionIqCItemConfigModel> datas = null;
+            List<InspectionIqcItemConfigModel> datas = null;
             if (file != null)
             {
                 if (file.ContentLength > 0)

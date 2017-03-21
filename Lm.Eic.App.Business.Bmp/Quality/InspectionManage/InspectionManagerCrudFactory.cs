@@ -55,6 +55,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             get { return OBulider.BuildInstance<InspectionIqcDetailCrud>(); }
         }
         #endregion
+
+
+        #region  FQC CRUD
+
+
+        public static InspectionFqcItemConfigCrud FqcItemConfigCrud
+        {
+            get { return OBulider.BuildInstance<InspectionFqcItemConfigCrud>(); }
+        }
+
+        #endregion
     }
     /// <summary>
     /// 检验方式配置CRUD
@@ -187,7 +198,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     /// <summary>
     /// IQC物料检验配置
     /// </summary>
-    internal class InspectionIqcItemConfigCrud : CrudBase<InspectionIqCItemConfigModel, IIqcInspectionItemConfigRepository>
+    internal class InspectionIqcItemConfigCrud : CrudBase<InspectionIqcItemConfigModel, IIqcInspectionItemConfigRepository>
     {
         public InspectionIqcItemConfigCrud() : base(new IqcInspectionItemConfigRepository(), "IQC物料检验配置")
         { }
@@ -202,7 +213,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult DeleteInspectionItemConfig(InspectionIqCItemConfigModel model)
+        private OpResult DeleteInspectionItemConfig(InspectionIqcItemConfigModel model)
         {
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
@@ -211,7 +222,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult EidtInspectionItemConfig(InspectionIqCItemConfigModel model)
+        private OpResult EidtInspectionItemConfig(InspectionIqcItemConfigModel model)
         {
 
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
@@ -221,7 +232,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult AddInspectionItemConfig(InspectionIqCItemConfigModel model)
+        private OpResult AddInspectionItemConfig(InspectionIqcItemConfigModel model)
         {
 
             return irep.Insert(model).ToOpResult_Add(OpContext);
@@ -243,7 +254,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<InspectionIqCItemConfigModel> FindIqcInspectionItemConfigDatasBy(string materialId)
+        public List<InspectionIqcItemConfigModel> FindIqcInspectionItemConfigDatasBy(string materialId)
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
         }
@@ -254,7 +265,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        internal OpResult StoreInspectionItemConfiList(List<InspectionIqCItemConfigModel> modelList)
+        internal OpResult StoreInspectionItemConfiList(List<InspectionIqcItemConfigModel> modelList)
         {
             OpResult opResult = OpResult.SetResult("未执行任何操作！");
             SetFixFieldValue(modelList, OpMode.Add);
@@ -467,7 +478,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     #endregion
 
 
-    #region  FQC检验配置管理
+    #region  FQC检验配置管理 Crud
 
     internal class InspectionFqcItemConfigCrud : CrudBase<InspectionFqcItemConfigModel, IFqcInspectionItemConfigRepository>
     {
@@ -504,7 +515,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
         }
-
+        public bool IsExistFqcConfigmaterailId(string materailId)
+        {
+            return irep.IsExist(e => e.MaterialId == materailId);
+        }
     }
 
 
