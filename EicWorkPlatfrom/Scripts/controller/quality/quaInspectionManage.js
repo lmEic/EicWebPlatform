@@ -679,7 +679,175 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
 
 ///fqc数据采集控制器
 qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspectionDataOpService) {
-    
+    var vmManager = {
+        opPersonInfo:{},
+        orderId: null,
+        currentMaterialIdItem: null,
+        currentInspectionItem: null,
+        panelDataSource: [],
+        //缓存数据
+        cacheDatas: [],
+        searchMaterialIdKeyDown: function ($event) {
+            if ($event.keyCode === 13) {
+                vmManager.getMaterialDatas();
+            }
+        },
+        //按工单获取物料品号信息#modal
+        getMaterialDatas: function () {
+            if (vmManager.orderId) {
+                vmManager.panelDataSource = [];
+                qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
+                    angular.forEach(materialIdDatas, function (item) {
+                        var dataItem = { productId: item.ProductID, productName: item.ProductName, materialIdItem: item, inspectionItemDatas: [], dataSets: [] };
+                        vmManager.panelDataSource.push(dataItem);
+                    })
+                    vmManager.orderId = null;
+                });
+            }
+        },
+        //按物料品号获取检验项目信息
+        selectMaterialIdItem: function (item) {
+            vmManager.currentMaterialIdItem = item;
+            var datas = _.find(vmManager.cacheDatas, { key: item.ProductID });
+            if (datas === undefined) {
+                $scope.searchPromise = qualityInspectionDataOpService.getIqcInspectionItemDataSummaryLabelList(item.OrderID, item.ProductID).then(function (inspectionItemDatas) {
+                    datas = { key: item.ProductID, dataSource: inspectionItemDatas };
+                    vmManager.cacheDatas.push(datas);
+                    var dataItems = _.find(vmManager.panelDataSource, { productId: item.ProductID });
+                    if (dataItems !== undefined) {
+                        dataItems.inspectionItemDatas = inspectionItemDatas;
+                        dataItems.dataSets = inspectionItemDatas;
+                    }
+                });
+            }
+            else {
+                var dataItems = _.find(vmManager.panelDataSource, { productId: item.ProductID });
+                if (dataItems !== undefined) {
+                    dataItems.inspectionItemDatas = datas.dataSource;
+                }
+            }
+        },
+        //点击检验项目获取所有项目信息
+        selectInspectionItem: function (item) {
+            vmManager.currentInspectionItem = item;
+            //vmManager.currentInspectionItem.InspectionDataGatherType = 'C';
+            vmManager.dataList = [];
+            var dataGatherType = vmManager.currentInspectionItem.InspectionDataGatherType;
+            vmManager.createGataherDataUi(dataGatherType, item);
+        },
+        ///根据采集方式创建数据采集窗口
+        createGataherDataUi: function (dataGatherType, item) {
+            var dataList = item.InspectionItemDatas === null || item.InspectionItemDatas === "" ? [] : item.InspectionItemDatas.split(',');
+            if (dataGatherType === "A") {
+                vmManager.inputDatas = leeHelper.createDataInputs(item.NeedFinishDataNumber, 5, dataList, function (itemdata) {
+                    itemdata.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, itemdata.indata);
+                    vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.result });
+                });
+            }
+            else if (dataGatherType === "C") {
+                if (dataList.length === 0) {
+                    for (var i = 0; i < item.NeedFinishDataNumber; i++) {
+                        dataList.push('OK');
+                    }
+                }
+                vmManager.inputDatas = leeHelper.createDataInputs(item.NeedFinishDataNumber, 5, dataList, function (itemdata) {
+                    vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.indata === "OK" ? true : false });
+                });
+            }
+
+        },
+        setItemResult: function (item) {
+            item.indata = item.indata === "OK" ? "NG" : "OK";
+            item.result = item.indata === "OK" ? true : false;
+            var dataInputItem = _.find(vmManager.dataList, { index: item.index });
+            if (dataInputItem !== undefined) {
+                dataInputItem.data = item.indata;
+                dataInputItem.result = item.result;
+            }
+        },
+        //数据集合
+        dataList: [],
+        inputDatas: [],
+        //设置输入数据项
+        setInputData(item) {
+            //判定Item的值
+            item.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, item.indata);
+            var dataInputItem = _.find(vmManager.dataList, { index: item.index });
+            if (dataInputItem === undefined) {
+                if (vmManager.dataList.length < vmManager.currentInspectionItem.NeedFinishDataNumber)
+                    vmManager.dataList.push({ data: item.indata, result: item.result });
+            }
+            else {
+                dataInputItem.data = item.indata;
+                dataInputItem.result = item.result;
+            }
+        },
+        dataInputKeyDown: function (item, $event) {
+            if ($event.keyCode === 13) {
+                item.focus = false;
+                vmManager.setInputData(item);
+                var row = _.find(vmManager.inputDatas, { rowId: item.rowId });
+                if (row !== undefined) {
+                    var col = _.find(row.cols, { colId: item.nextColId });
+                    if (col !== undefined) {
+                        col.focus = true;//设置下一个焦点
+                    }
+                }
+                if (item.nextColId === "last") {
+                    //保存数据
+                    operate.saveIqcGatherDatas();
+                }
+            }
+        },
+        //更新检测项目列表
+        updateInspectionItemList: function (editItem) {
+            var materialItem = _.find(vmManager.cacheDatas, { key: vmManager.currentMaterialIdItem.ProductID });
+            if (materialItem !== undefined) {
+                var dataItem = _.find(materialItem.dataSource, { InspectionItem: vmManager.currentInspectionItem.InspectionItem });
+                if (dataItem !== undefined) {
+                    dataItem.HaveFinishDataNumber = editItem.HaveFinishDataNumber;//vmManager.dataList.length;
+                    dataItem.InspectionItemResult = editItem.InspectionItemResult;
+                    dataItem.InspectionItemDatas = editItem.InspectionItemDatas;
+                    dataItem.InsptecitonItemIsFinished = editItem.InsptecitonItemIsFinished;
+                }
+            }
+        },
+    }
+    $scope.vmManager = vmManager;
+
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    //保存Iqc采集数据
+    operate.saveIqcGatherDatas = function () {
+        var dataList = [], result = true;
+        var dataItem = vmManager.currentInspectionItem;
+        if (dataItem.InspectionDataGatherType === "A" || dataItem.InspectionDataGatherType === "C") {
+            //获取数据及判定结果
+            angular.forEach(vmManager.dataList, function (item) {
+                dataList.push(item.data);
+                result = result && item.result;
+            });
+            //数据列表字符串
+            dataItem.InspectionItemDatas = dataList.join(",");
+            dataItem.InspectionItemResult = result ? "OK" : "NG";
+            dataItem.HaveFinishDataNumber = vmManager.dataList.length;
+        }
+        else if (dataItem.InspectionDataGatherType === "D") {
+            dataItem.InspectionItemResult = dataItem.InspectionItemDatas;
+            dataItem.HaveFinishDataNumber = dataItem.NeedFinishDataNumber;
+        }
+        dataItem.InsptecitonItemIsFinished = true;
+        leeHelper.setUserData(dataItem);
+        $scope.opPromise = qualityInspectionDataOpService.storeIqcInspectionGatherDatas(dataItem).then(function (opResult) {
+            if (opResult.Result) {
+                //更新界面检测项目列表
+                vmManager.updateInspectionItemList(dataItem);
+                vmManager.inputDatas = [];
+                vmManager.dataList = [];
+                //切换到下一项
+            }
+        });
+    };
 })
 
 ///iqc检验单管理

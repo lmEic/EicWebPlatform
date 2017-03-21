@@ -279,7 +279,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ContentResult GetInspectionFormManageOfIqcDatas(string formStatus, DateTime dateFrom, DateTime dateTo)
         {
-            var datas = InspectionService.InspectionFormManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
+            var datas = InspectionService.InspectionFormManager.IqcFromManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
             return DateJsonResult(datas);
         }
         [NoAuthenCheck]
@@ -291,7 +291,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult PostInspectionFormManageCheckedData(InspectionIqcMasterModel model)
         {
-            var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreIqcInspectionMasterModel (model);
+            var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel (model);
             return Json(opResult);
         }
         #endregion

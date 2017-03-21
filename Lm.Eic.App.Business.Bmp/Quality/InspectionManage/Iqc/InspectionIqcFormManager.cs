@@ -34,28 +34,38 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 case "全部":
                     return GetERPOrderAndMaterialBy(startTime, endTime);
                 case "待审核":
-                   return InspectionIqcManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(inspectionStatus, startTime, endTime);
+                   return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(inspectionStatus, startTime, endTime);
                 case "已审核":
-                    return InspectionIqcManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(inspectionStatus, startTime, endTime);
+                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(inspectionStatus, startTime, endTime);
                 default:
                     return new List<InspectionIqcMasterModel>();   
             }
           
         }
 
+        /// <summary>
+        ///审核主表数据
+        /// </summary>
+        /// <returns></returns>
+        public OpResult AuditIqcInspectionMasterModel(InspectionIqcMasterModel model)
+        {
+            if (model == null) return null;
 
+            var retrunResult = InspectionManagerCrudFactory.IqcMasterCrud.Store(model, true);
+            if (retrunResult.Result)
+                return InspectionManagerCrudFactory.IqcMasterCrud.UpAuditDetailData(model.OrderId, model.MaterialId, "Done");
 
-
-
+            else return retrunResult;
+        }
         List<InspectionIqcMasterModel> GetERPOrderAndMaterialBy(DateTime startTime, DateTime endTime)
         {
             List<InspectionIqcMasterModel> retrunList = new List<InspectionIqcMasterModel>();
             var OrderIdList = GetOrderIdList(startTime  ,endTime );
             if (OrderIdList == null || OrderIdList.Count <= 0)return  retrunList;
             OrderIdList.ForEach(e => {
-                if (InspectionIqcManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(e.OrderID, e.ProductID))
+                if (InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(e.OrderID, e.ProductID))
                 {
-                    retrunList.Add(InspectionIqcManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(e.OrderID, e.ProductID));
+                    retrunList.Add(InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(e.OrderID, e.ProductID));
                 }
                 else
                 {
@@ -72,7 +82,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (OrderIdList == null || OrderIdList.Count <= 0) return retrunList;
             OrderIdList.ForEach(e =>
             {
-                if (!InspectionIqcManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(e.OrderID, e.ProductID))
+                if (!InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(e.OrderID, e.ProductID))
                 {
                     retrunList.Add(MaterialModelToInspectionIqcMasterModel(e));
                 }

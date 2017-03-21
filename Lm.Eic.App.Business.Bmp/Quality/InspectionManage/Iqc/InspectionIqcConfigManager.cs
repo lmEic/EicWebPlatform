@@ -23,10 +23,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionIqCItemConfigModel> GetIqcspectionItemConfigDatasBy(string materialId)
         {
-
-
-
-           return InspectionIqcManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
+           return InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
         }
         /// <summary>
         /// 由单号 料号 得到IQC物料检验
@@ -36,7 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public InspectionIqcMasterModel GetIqcInspectionMasterModelListBy(string orderId, string materialId)
         {
-            return InspectionIqcManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(orderId, materialId);
+            return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(orderId, materialId);
         }
 
         /// <summary>
@@ -46,7 +43,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult IsExistInspectionConfigMaterailId(string materailId)
         {
-            bool isexixt = InspectionIqcManagerCrudFactory.IqcItemConfigCrud.IsExistInspectionConfigmaterailId(materailId);
+            bool isexixt = InspectionManagerCrudFactory.IqcItemConfigCrud.IsExistInspectionConfigmaterailId(materailId);
             OpResult opResult = OpResult.SetResult("", false);
             if (isexixt) opResult = OpResult.SetResult("此物料料号已经存在", true);
             return opResult;
@@ -58,7 +55,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult StoreIqcInspectionItemConfig(InspectionIqCItemConfigModel model)
         {
-            return InspectionIqcManagerCrudFactory.IqcItemConfigCrud.Store(model, true);
+            return InspectionManagerCrudFactory.IqcItemConfigCrud.Store(model, true);
         }
 
         /// <summary>
@@ -68,7 +65,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult StoreIqcInspectionItemConfig(List<InspectionIqCItemConfigModel> modelList)
         {
-            return InspectionIqcManagerCrudFactory.IqcItemConfigCrud.StoreInspectionItemConfiList(modelList);
+            return InspectionManagerCrudFactory.IqcItemConfigCrud.StoreInspectionItemConfiList(modelList);
         }
 
 
