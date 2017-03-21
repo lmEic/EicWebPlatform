@@ -1,2 +1,305 @@
-﻿<h1>FQC检验项目配置</h1>
-<yl-checkbox></yl-checkbox>
+﻿
+<div class="panel panel-primary" ng-controller="fqcInspectionItemConfigCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title">FQC检验项目配置</h6>
+    </div>
+    <div class="panel-body">
+        @*品号查询*@
+            <form class="form-inline">
+                <div class="form-group">
+                    <yl-checkbox data-content="pig" data-size="small"></yl-checkbox>
+                    <label>品号</label>
+                    <input type="text" placeholder="按品号查询" ng-model="vm.MaterialId" class="form-control" />
+                    <button class="btn-sm btn btn-success" ng-click="vmManager.getConfigDatas()" type="button">查询</button>
+                    <div href="javascript:void(0);" role="button" class="btn btn-info file" title="从Excel中导入数据">
+                        <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+                    </div>
+                    <span class="pull-right" ng-show="vmManager.copyLotWindowDisplay">
+                        <input readonly placeholder="原始产品品号" ng-model="vm.MaterialId" />
+                        <i class="fa fa-arrows-h"></i>
+                        <input placeholder="新的产品品号" ng-model="vmManager.targetMaterialId" />
+                        <span class="btn-sm btn  btn-primary" ng-click="vmManager.copyAll()"><i class="fa fa-copy"></i>复制</span>
+                    </span>
+                </div>
+                <button type="button" class="btn btn-sm  btn-success pull-right" ng-click="vmManager.showCopyLotWindow()">批量复制</button>
+            </form>
+        <div class="h-split"></div>
+        @*ERP信息*@
+        <div class="row">
+            <div class="col-md-2">
+                <label>品名:</label>
+                <span title="{{tableVm.MaterailName}}">{{tableVm.MaterailName}}</span>
+            </div>
+            <div class="col-md-3">
+                <label>品名规格:</label>
+                <span title="{{tableVm.MaterialSpecify}}">{{tableVm.MaterialSpecify}}</span>
+            </div>
+            <div class="col-md-2">
+                <label>供应商:</label>
+                <span style="font-weight:100;" title="{{tableVm.MaterialBelongDepartment}}">{{tableVm.MaterialBelongDepartment}}</span>
+            </div>
+            <div class="col-md-2">
+                <label>图号:</label>
+                <span title="{{tableVm.MaterialrawID}}">{{tableVm.MaterialrawID}}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="pull-left" style="width:45%;padding:10px;">
+                <div class="well">
+                    <form role="form" name="fqcInspectionForm" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="materialId" class="col-md-2 control-label">料号</label>
+                                <div class="col-md-4">
+                                    <input name="materialId" class="form-control" ng-model="fqcInspectionForm.MaterialId" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.materialId.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">料号不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="productDepartment" class="col-md-2 control-label">生产部门</label>
+                                <div class="col-md-4">
+                                    <input name="productDepartment" class="form-control" ng-model="fqcInspectionForm.ProductDepartment" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.productDepartment.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">生产部门不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="inspectionItem" class="col-md-2 control-label">检验项目</label>
+                                <div class="col-md-4">
+                                    <input name="inspectionItem" class="form-control" ng-model="fqcInspectionForm.InspectionItem" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.inspectionItem.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">检验项目不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="inspectionItemIndex" class="col-md-2 control-label">检验序次</label>
+                                <div class="col-md-4">
+                                    <input name="inspectionItemIndex" class="form-control" ng-model="fqcInspectionForm.InspectionItemIndex" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.inspectionItemIndex.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">检验序次不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="sizeUSL" class="col-md-2 control-label">上限</label>
+                                <div class="col-md-4">
+                                    <input name="sizeUSL" class="form-control" ng-model="fqcInspectionForm.SizeUSL" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.sizeUSL.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">上限不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="sizeLSL" class="col-md-2 control-label">下限</label>
+                                <div class="col-md-4">
+                                    <input name="sizeLSL" class="form-control" ng-model="fqcInspectionForm.SizeLSL" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.sizeLSL.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">下限不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="primarySecondaryProperty" class="col-md-2 control-label">主次属性</label>
+                                <div class="col-md-4">
+                                    <input name="primarySecondaryProperty" class="form-control" ng-model="fqcInspectionForm.PrimarySecondaryProperty" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.primarySecondaryProperty.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">主次属性不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="sizeMemo" class="col-md-2 control-label">限制说明</label>
+                                <div class="col-md-4">
+                                    <input name="sizeMemo" class="form-control" ng-model="fqcInspectionForm.SizeMemo" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.sizeMemo.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">限制说明不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="inspectionMethod" class="col-md-2 control-label">检验方法</label>
+                                <div class="col-md-4">
+                                    <input name="inspectionMethod" class="form-control" ng-model="fqcInspectionForm.InspectionMethod" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.inspectionMethod.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">检验方法不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="equipmentId" class="col-md-2 control-label">设备编号</label>
+                                <div class="col-md-4">
+                                    <input name="equipmentId" class="form-control" ng-model="fqcInspectionForm.EquipmentId" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.equipmentId.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">设备编号不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inspectionDataGatherType" class="col-md-2 control-label">数据录入方式</label>
+                                <div class="col-md-4">
+                                    <input name="inspectionDataGatherType" class="form-control" ng-model="fqcInspectionForm.InspectionDataGatherType" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.inspectionDataGatherType.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">数据录入方式不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="sIPInspectionStandard" class="col-md-2 control-label">Sip检验规则</label>
+                                <div class="col-md-4">
+                                    <input name="sIPInspectionStandard" class="form-control" ng-model="fqcInspectionForm.SIPInspectionStandard" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.sIPInspectionStandard.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">Sip检验规则不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="inspectionLevel" class="col-md-2 control-label">检验水平</label>
+                                <div class="col-md-4">
+                                    <input name="inspectionLevel" class="form-control" ng-model="fqcInspectionForm.InspectionLevel" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.inspectionLevel.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">检验水平不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="inspectionMode" class="col-md-2 control-label">检验方式</label>
+                                <div class="col-md-4">
+                                    <input name="inspectionMode" class="form-control" ng-model="fqcInspectionForm.InspectionMode" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.inspectionMode.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">检验方式不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="memo" class="col-md-2 control-label">备注</label>
+                                <div class="col-md-4">
+                                    <input name="memo" class="form-control" ng-model="fqcInspectionForm.Memo" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.memo.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">备注不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="inspectionAQL" class="col-md-2 control-label">AQL值</label>
+                                <div class="col-md-4">
+                                    <input name="inspectionAQL" class="form-control" ng-model="fqcInspectionForm.InspectionAQL" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.inspectionAQL.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">AQL值不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="opDate" class="col-md-2 control-label">操作日期</label>
+                                <div class="col-md-4">
+                                    <input name="opDate" class="form-control" ng-model="fqcInspectionForm.OpDate" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.opDate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">操作日期不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="opPerson" class="col-md-2 control-label">操作人</label>
+                                <div class="col-md-4">
+                                    <input name="opPerson" class="form-control" ng-model="fqcInspectionForm.OpPerson" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.opPerson.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">操作人不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="opSign" class="col-md-2 control-label">操作标识</label>
+                                <div class="col-md-4">
+                                    <input name="opSign" class="form-control" ng-model="fqcInspectionForm.OpSign" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.opSign.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">操作标识不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="opTime" class="col-md-2 control-label">操作时间</label>
+                                <div class="col-md-4">
+                                    <input name="opTime" class="form-control" ng-model="fqcInspectionForm.OpTime" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.opTime.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">操作时间不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="id_Key" class="col-md-2 control-label">自增键</label>
+                                <div class="col-md-4">
+                                    <input name="id_Key" class="form-control" ng-model="fqcInspectionForm.Id_Key" required />
+                                    <div class="error-messages" ng-messages="fqcInspectionForm.id_Key.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">自增键不能为空</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                </div>
+                            </div>
+                        </fieldset>
+                        <hr />
+                        <div class="alert alert-info text-center">
+                            <div class="row">
+                                <div>
+                                    <button class="btn btn-primary" ng-click="operate.confirm(fqcInspectionItemForm.$valid)"><i class="fa fa-save"></i>确认</button>
+                                    <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                </div>
+                            </div>
+                            <label class="label label-warning">先点击确认按钮，再点击右边的批量保存按钮，才算保存成功</label>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+            <div class="pull-right" style="width:55%;">
+                <div class="bs-callout bs-callout-info" style="min-height:520px;">
+                    <div class="table-responsive" cg-busy="{promise:searchPromise}">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>工序</th>
+                                    <th>品号</th>
+                                    <th>检验项目</th>
+                                    <th>规格说明</th>
+                                    <th>检验水平</th>
+                                    <th>AQL</th>
+                                    <th>检验方法</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vmManager.dataSets track by $index">
+                                    <td>{{item.InspectionItemIndex}}</td>
+                                    <td>{{item.MaterialId}}</td>
+                                    <td>{{item.InspectionItem}}</td>
+                                    <td>{{item.SizeMemo}}</td>
+                                    <td>{{item.InspectionLevel}}</td>
+                                    <td>{{item.InspectionAQL}}</td>
+                                    <td>{{item.InspectionMethod}}</td>
+                                    <td style="cursor:pointer;">
+                                        <button class="btn btn-xs btn-info" ng-click="operate.editItem(item)" title="编辑">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item)" title="删除">
+                                            <i class="fa fa-remove"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot ng-if="vmManager.dataSource.length>0" cg-busy="{promise:opPromise}">
+                                <tr>
+                                    <td colspan="7">
+                                        <button class="btn btn-success" ng-click="operate.saveAll()">批量保存</button>
+                                        <span yl-operatemsg-board></span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div ng-if="vmManager.dataSource.length>0"
+                             yl-pagination data-dataset="vmManager.dataSets"
+                             data-datasource="vmManager.dataSource">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>

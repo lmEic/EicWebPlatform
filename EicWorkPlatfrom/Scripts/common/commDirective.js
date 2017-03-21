@@ -714,27 +714,44 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
 //--------------------------checkbox-------------------------------------
 .directive('ylCheckbox', function () {
     return {
-        //restrict: "EA",
-        //replace: false,
-        //templateUrl: '/CommonTpl/CheckboxTpl',
-        //scope: true,
-        //link: function (scope, element, attr) {
-        //    scope.showCheckbox = false;
-        //    scope.selected = function () {
-        //        scope.showCheckbox = false;
-
-        //        };
-        //    scope.unselected = function(){
-        //        scope.showCheckbox = true;
-
-        //    }
-        //}
-        restrict: 'EA',
-        templateUrl: '/CommonTpl/ToggleButtonTpl',
+        restrict: "EA",
         replace: false,
-        scope: true,
-        link: function (scope, element, attrs) {
-
+        templateUrl: '/CommonTpl/CheckboxTpl',
+        scope: {
+            content: '@',
+            onChecked: '&',
+            isChecked: '=',
+            size:'@',
+        },
+        link: function (scope, element, attr) {
+            switch (attr.size) {
+                case 'small':
+                    scope.checkedClass = "fa fa-check-square-o";
+                    scope.unCheckedClass = "fa  fa-square-o";
+                    break;
+                case 'middle':
+                    scope.checkedClass = "fa fa-2x fa-check-square-o";
+                    scope.unCheckedClass = "fa fa-2x fa-square-o";
+                    scope.checkedSize = "2em";
+                    break;
+                case 'large':
+                    scope.checkedClass = "fa fa-4x fa-check-square-o";
+                    scope.unCheckedClass = "fa fa-4x fa-square-o";
+                    scope.checkedSize = "3em";
+                    break;
+            }
+            scope.showCheckbox = false;
+            scope.content = attr.content;
+            scope.selected = function () {
+                scope.showCheckbox = false;
+                scope.onChecked();
+                scope.isChecked = true;
+                };
+            scope.unselected = function () {
+                scope.showCheckbox = true;
+                scope.onChecked();
+                scope.isChecked = false;
+            }
         }
     }
 })

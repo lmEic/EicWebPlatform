@@ -1,4 +1,10 @@
 ﻿<span>
-    <i class="fa fa-2x  fa-check-square-o" ng-if={showCheckbox} ng-click="selected()"></i>
-    <i class="fa fa-2x fa-square-o" ng-if={showCheckbox} ng-click="unselected()"></i>
+    <label class="text-success" ng-if=showCheckbox ng-click="selected()" >
+        <i class={{checkedClass}} ></i>
+        <span ng-style="{'fontSize':'{{checkedSize}}'}">{{content}}</span> 
+    </label>
+    <label class="text-info" ng-if=!showCheckbox ng-click="unselected()" >
+        <i class={{unCheckedClass}} ></i>
+        <span ng-style="{'fontSize':'{{checkedSize}}'}">{{content}}</span> 
+    </label>
 </span>
