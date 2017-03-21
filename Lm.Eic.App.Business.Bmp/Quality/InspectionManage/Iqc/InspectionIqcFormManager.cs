@@ -17,6 +17,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     /// </summary>
     public class InspectionIqcFormManager
     {
+      
         /// <summary>
         /// 得到IQC检验表单信息 （数量不超过100）
         /// </summary>
@@ -27,16 +28,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionIqcMasterModel> GetInspectionFormManagerListBy(string inspectionStatus, DateTime startTime,DateTime endTime)
         {
             //查询ERP中所有物料和单号 
+            var list = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(startTime, endTime);
             switch (inspectionStatus)
             {
+                case "待检测":
+                     return GetErpNotStoreToSqlOrderAndMaterialBy(startTime, endTime);
                 case "未完成":
-                    return GetErpNotStoreToSqlOrderAndMaterialBy(startTime, endTime);
+                    return list.Where(e => e.InspectionResult == "未完成").ToList();
                 case "全部":
                     return GetERPOrderAndMaterialBy(startTime, endTime);
                 case "待审核":
-                   return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(inspectionStatus, startTime, endTime);
+                    return list.Where(e => e.InspectionStatus == "待审核").ToList();
                 case "已审核":
-                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(inspectionStatus, startTime, endTime);
+                    return list.Where(e => e.InspectionStatus == "已审核").ToList();
                 default:
                     return new List<InspectionIqcMasterModel>();   
             }
@@ -114,5 +118,5 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
     }
 
-
+   
 }

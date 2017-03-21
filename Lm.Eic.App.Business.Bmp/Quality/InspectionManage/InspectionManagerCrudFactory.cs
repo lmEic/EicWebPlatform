@@ -356,14 +356,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="endTime"></param>
         /// <returns></returns>
 
-        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy(string inspectionStatus, DateTime startTime, DateTime endTime)
+        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy(string inspectionStatus, DateTime startTime, DateTime endTime, string inspectionResult =null )
         {
-            return irep.Entities.Where(e => e.InspectionStatus == inspectionStatus && e.MaterialInDate >= startTime && e.MaterialInDate <= endTime).ToList();
+            if (inspectionResult == null)
+                return irep.Entities.Where(e => e.InspectionStatus == inspectionStatus && e.MaterialInDate >= startTime && e.MaterialInDate <= endTime).ToList();
+            else return irep.Entities.Where(e => e.InspectionStatus == inspectionStatus && e.MaterialInDate >= startTime && e.MaterialInDate <= endTime && e.InspectionResult == inspectionResult).ToList();
         }
         internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy(DateTime startTime, DateTime endTime)
         {
             DateTime starttime = startTime.ToDate();
-            DateTime endtime = startTime.ToDate();
+            DateTime endtime = endTime.ToDate();
             return irep.Entities.Where(e => e.MaterialInDate >= starttime && e.MaterialInDate <= endtime).ToList();
         }
     }
