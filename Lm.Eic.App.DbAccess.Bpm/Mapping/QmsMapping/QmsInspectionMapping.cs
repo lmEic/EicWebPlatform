@@ -88,5 +88,28 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
             this.ToTable("Qms_FqcInspectionItemConfig");
         }
     }
+
+    public class FqcInspectionDetailMapping : EntityTypeConfiguration<InspectionFqcDetailModel>
+    {
+        public FqcInspectionDetailMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_FqcInspectionDetail");
+        }
+
+    }
+
+
+    public class FqcInspectionMasterMapping : EntityTypeConfiguration<InspectionFqcMasterModel>
+    {
+        public FqcInspectionMasterMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_FqcInspectionMaster");
+        }
+
+    }
     #endregion
 }

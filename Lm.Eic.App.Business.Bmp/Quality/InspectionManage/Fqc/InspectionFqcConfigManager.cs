@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
-    public class InspectionFqcItemConfigManager:InspectionManageBase 
+    public class InspectionFqcItemConfigManager 
     {
         public List<InspectionFqcItemConfigModel> GetFqcspectionItemConfigDatasBy(string materialId)
         {
@@ -28,7 +28,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (isexixt) opResult = OpResult.SetResult("此物料料号已经存在", true);
             return opResult;
         }
-
         /// <summary>
         /// 增删改 FQC检验项目
         /// </summary>
