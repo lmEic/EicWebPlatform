@@ -811,16 +811,32 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.checkvm = checkVM;
 
     var vmManager = {
+        isAssetNumerExist:false,
         init: function () {
-            leeHelper.clearVM(uiVM, ['CheckDate', 'OpSign','AssetNumber']);
+            leeHelper.clearVM(uiVM, ['CheckDate', 'OpSign', 'AssetNumber']);
+            vmManager.isAssetNumerExist = false;
         },
         datasets: [],
         //验证是否可以保存数据
         canSave: function () {
+            if (!vmManager.isAssetNumerExist) {
+                var msgModal = $modal({
+                    title: "错误提示:设备财产编号不存在，输入错误！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
+                });
+                msgModal.$promise.then(msgModal.show);
+                return false;
+            }
             ///验证内容
             if (angular.isUndefined(uiVM.AssetNumber) || uiVM.AssetNumber === null || angular.isUndefined(uiVM.CheckDate) || uiVM.CheckDate === null) {
                 var msgModal = $modal({
                     title: "错误提示:校验日期或者财产编号不能为空！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
+                });
+                msgModal.$promise.then(msgModal.show);
+                return false;
+            }
+            if (angular.isUndefined(uiVM.DocumentPath) || uiVM.DocumentPath === null) {
+                var msgModal = $modal({
+                    title: "错误提示:正在上传文件，请等待文件上传成功后再进行保存！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
                 });
                 msgModal.$promise.then(msgModal.show);
                 return false;
@@ -832,6 +848,10 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             $scope.searchPromise = astDataopService.getEquipmentArchivesBy(uiVM.CheckDate, uiVM.AssetNumber, 1).then(function (datas) {
                 if (angular.isArray(datas) && datas.length > 0) {
                     leeHelper.copyVm(datas[0], checkVM);
+                    vmManager.isAssetNumerExist = true;
+                }
+                else {
+                    vmManager.isAssetNumerExist = false;
                 }
             });
         }
@@ -942,14 +962,32 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     var vmManager = {
         init: function () {
             leeHelper.clearVM(uiVM, ['OpSign', 'MaintenanceDate', 'AssetNumber'])
+            vmManager.isAssetNumerExist = false;
         },
         datasets: [],
+        isAssetNumerExist:false,
         //验证是否可以保存数据
         canSave: function () {
+            if (!vmManager.isAssetNumerExist)
+            {
+                var msgModal = $modal({
+                    title: "错误提示:设备财产编号不存在，输入错误！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
+                });
+                msgModal.$promise.then(msgModal.show);
+                return false;
+            }
             ///验证内容
             if (angular.isUndefined(uiVM.AssetNumber) || uiVM.AssetNumber === null || angular.isUndefined(uiVM.MaintenanceDate) || uiVM.MaintenanceDate === null) {
                 var msgModal = $modal({
                     title: "错误提示:设备保养日期或者财产编号不能为空！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
+                });
+                msgModal.$promise.then(msgModal.show);
+                return false;
+            }
+            if (angular.isUndefined(uiVM.DocumentPath) || uiVM.DocumentPath === null)
+            {
+                var msgModal = $modal({
+                    title: "错误提示:正在上传文件，请等待文件上传成功后在进行保存！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
                 });
                 msgModal.$promise.then(msgModal.show);
                 return false;
@@ -961,6 +999,10 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             $scope.searchPromise = astDataopService.getEquipmentArchivesBy(uiVM.MaintenanceDate, uiVM.AssetNumber, 1).then(function (datas) {
                 if (angular.isArray(datas) && datas.length > 0) {
                     leeHelper.copyVm(datas[0], equipmentVM);
+                    vmManager.isAssetNumerExist = true;
+                }
+                else {
+                    vmManager.isAssetNumerExist = false;
                 }
             });
         }

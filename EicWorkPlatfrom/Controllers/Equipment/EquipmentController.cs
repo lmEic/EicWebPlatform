@@ -103,7 +103,14 @@ namespace EicWorkPlatfrom.Controllers
                 AssetNumber = assetId,
                 SearchMode = searchMode
             });
-            return DateJsonResult(datas);
+            if (datas != null && datas.Count > 0)
+            {
+                return DateJsonResult(datas);
+            }
+            else
+            {
+                return Content("0");
+            }
         }
 
         [NoAuthenCheck]
