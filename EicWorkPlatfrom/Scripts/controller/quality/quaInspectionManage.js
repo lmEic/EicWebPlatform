@@ -157,7 +157,41 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             model:model
         })
     }
+    //////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////fqc检验项目配置////////////////////////////////////
+    quality.getfqcInspectionItemConfigDatas = function (materialId) {
+        var url = quaInspectionManageUrl + "GetFqcInspectionItemConfigDatas";
+        return ajaxService.getData(url, {
+            materialId: materialId
+        })
+    };
+    ///fqc检验项目配置模块 物料复制时是否存在
+    quality.checkFqcInspectionItemConfigMaterialId = function (materialId) {
+        var url = quaInspectionManageUrl + "CheckFqcInspectionItemConfigMaterialId";
+        return ajaxService.getData(url, {
+            materialId: materialId
+        })
+    };
+    //fqc检验项目配置模块  导入Excel
+    quality.importfqcInspectionItemConfigDatas = function (file) {
+        var url = quaInspectionManageUrl + 'ImportFqcInspectionItemConfigDatas';
+        return ajaxService.uploadFile(url, file);
+    }
 
+    //fqc检验项目配置模块  保存
+    quality.saveFqcInspectionItemConfigDatas = function (fqcInspectionConfigItems) {
+        var url = quaInspectionManageUrl + 'SaveFqcInspectionItemConfigDatas';
+        return ajaxService.postData(url, {
+            fqcInspectionConfigItems: fqcInspectionConfigItems
+        })
+    }
+    // fqc检验项目配置模块 删除
+    quality.deleteFqcInspectionConfigItem = function (configItem) {
+        var url = quaInspectionManageUrl + 'DeleteFqcInspectionConfigItem';
+        return ajaxService.postData(url, {
+            configItem: configItem,
+        });
+    };
 
 
 
@@ -198,7 +232,6 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     $scope.vm = uiVM;
     var initVM = _.clone(uiVM);
     var vmManager = {
-        states : ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"],
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
         InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }],
         dataSource: [],
@@ -921,7 +954,6 @@ qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityIn
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
                     
                     vmManager.switchModeList = [];
-                    console.log(vmManager.switchModeList)
 
                 }
             })
@@ -930,6 +962,182 @@ qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityIn
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
             vmManager.switchModeList = [];
+        });
+    }
+})
+
+//fqc检验项目配置
+qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualityInspectionDataOpService,$modal) {
+    var uiVM = {
+        MaterialId:null,
+        ProductDepartment:null,
+        InspectionItem:null,
+        InspectionItemIndex:0,
+        SizeUSL:null,
+        SizeLSL:null,
+        SizeMemo:null,
+        PrimarySecondaryProperty:null,
+        EquipmentId:null,
+        InspectionMethod:null,
+        InspectionDataGatherType:null,
+        SIPInspectionStandard:null,
+        InspectionMode:null,
+        InspectionLevel:null,
+        InspectionAQL:null,
+        Memo:null,
+        OpPerson:null,
+        OpDate:null,
+        OpTime:null,
+        OpSign:"add",
+        Id_Key:null,
+    }
+    $scope.vm = uiVM;
+    var tableVM = {
+        MaterialName: null,
+        MaterialBelongDepartment: null,
+        MaterialSpecify: null,
+        MaterialrawID: null,
+    }
+    $scope.tableVm = tableVM;
+    $scope.vm = uiVM;
+    var initVM = _.clone(uiVM);
+    var vmManager = {
+        inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
+        InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }],
+        dataSource: [],
+        dataSets: [],
+        copyLotWindowDisplay: false,
+        targetMaterialId: null,
+        delItem: null,
+        init: function () {
+            if (uiVM.OpSign === 'add') {
+                leeHelper.clearVM(uiVM, ["MaterialId"]);
+            }
+            else {
+                uiVM = _.clone(initVM);
+            }
+            uiVM.OpSign = 'add';
+            $scope.vm = uiVM;
+        },
+
+        //013935根据品号查询
+        getConfigDatas: function () {
+            $scope.searchPromise = qualityInspectionDataOpService.getfqcInspectionItemConfigDatas($scope.vm.MaterialId).then(function (datas) {
+                if (datas != null) {
+                    $scope.tableVm = datas.ProductMaterailModel;
+                    vmManager.dataSource = datas.InspectionItemConfigModelList;
+                }
+            });
+        },
+        //013935获取进料检验项目最大配置工序ID
+        getInspectionIndex: function () {
+            if (vmManager.dataSource.length > 0) {
+                var maxItem = _.max(vmManager.dataSource, function (item) { return item.InspectionItemIndex; });
+                $scope.vm.InspectionItemIndex = maxItem.InspectionItemIndex + 1;
+            }
+            else {
+                $scope.vm.InspectionItemIndex = 0;
+            }
+        },
+        //显示批量复制操作窗口
+        showCopyLotWindow: function () {
+            vmManager.copyLotWindowDisplay = true;
+        },
+        //批量复制
+        copyAll: function () {
+            qualityInspectionDataOpService.checkFqcInspectionItemConfigMaterialId(vmManager.targetMaterialId).then(function (opresult) {
+
+                if (opresult.Result) {
+                    alert(vmManager.targetMaterialId + "已经存在")
+                } else {
+                    angular.forEach(vmManager.dataSource, function (item) {
+                        item.Id_key = null;
+                        item.MaterialId = vmManager.targetMaterialId;
+                    });
+                }
+
+            })
+        },
+        delItem: null,
+        delModal: $modal({
+            title: "删除提示",
+            content: "你确定要删除此数据吗?",
+            templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
+            controller: function ($scope) {
+                $scope.confirmDelete = function () {
+                    $scope.opPromise = qualityInspectionDataOpService.deleteFqcInspectionConfigItem(vmManager.delItem).then(function (opresult) {
+                        leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                            if (opresult.Result) {
+                                leeHelper.remove(vmManager.dataSets, vmManager.delItem);
+                                var ds = _.clone(vmManager.dataSource);
+                                leeHelper.remove(ds, vmManager.delItem);
+                                vmManager.dataSource = ds;
+                                vmManager.delModal.$promise.then(vmManager.delModal.hide);
+                            }
+                        });
+                    });
+                };
+            },
+            show: false,
+        }),
+    }
+    //013935导入excel
+    $scope.selectFile = function (el) {
+        var files = el.files;
+        if (files.length > 0) {
+            var file = files[0];
+            var fd = new FormData();
+            fd.append('file', file);
+            qualityInspectionDataOpService.importfqcInspectionItemConfigDatas(fd).then(function (datas) {
+                vmManager.dataSource = datas;
+            });
+        }
+    };
+    $scope.vmManager = vmManager;
+
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    //013935确认
+    operate.confirm = function (isValid) {
+        leeHelper.setUserData(uiVM);
+        var dataItem = _.clone(uiVM);
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            if (uiVM.OpSign === "add") {
+                var ds = _.clone(vmManager.dataSource);
+                ds.push(dataItem);
+                vmManager.dataSource = ds;
+            }
+            operate.refresh();
+        })
+    };
+    operate.editItem = function (item) {
+        uiVM = item;
+        uiVM.OpSign = "edit";
+        $scope.vm = uiVM;
+    };
+    //删除项
+    operate.deleteItem = function (item) {
+        item.OpSign = "delete";
+        vmManager.delItem = item;
+        vmManager.delModal.$promise.then(vmManager.delModal.show);
+    }
+
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.init();
+        });
+    }
+    //批量保存所有数据
+    operate.saveAll = function () {
+        $scope.opPromise = qualityInspectionDataOpService.saveFqcInspectionItemConfigDatas(vmManager.dataSource).then(function (opresult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                if (opresult.Result) {
+                    vmManager.dataSource = [];
+                    vmManager.dataSets = [];
+                    vmManager.targetMaterialId = null;
+                    vmManager.copyLotWindowDisplay = false;
+                }
+            });
         });
     }
 })

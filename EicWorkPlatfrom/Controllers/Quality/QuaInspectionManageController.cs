@@ -137,7 +137,67 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        [HttpGet]
+        public JsonResult GetFqcInspectionItemConfigDatas(string materialId)
+        {
+            //添加物料检验项
+            //var InspectionItemConfigModelList = InspectionService.ConfigManager.FqcItemConfigManager.GetFqcspectionItemConfigDatasBy(materialId);
+            ////得到此物料的品名 ，规格 ，供应商，图号
+            //var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
+
+            //var datas = new { ProductMaterailModel, InspectionItemConfigModelList };
+            var datas = "1231231231";
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 在数据库中是否存在此料号
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        [HttpGet]
+        public JsonResult CheckFqcInspectionItemConfigMaterialId(string materialId)
+        {
+            var result = "";
+            //var result = InspectionService.ConfigManager.FqcItemConfigManager.IsExistInspectionConfigMaterailId(materialId);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 删除进料检验配置数据 deleteIqlInspectionConfigItem
+        /// </summary>
+        /// <param name="configItem"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        [HttpPost]
+        public JsonResult DeleteFqcInspectionConfigItem(InspectionFqcItemConfigModel configItem)
+        {
+            var opResult = "";
+           // var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(configItem);
+            return Json(opResult);
+        }
+
+        /// <summary>
+        /// 批量保存IQC进料检验项目配置数据
+        /// </summary>
+        /// <param name="fqcInspectionConfigItems"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveFqcInspectionItemConfigDatas(List<InspectionFqcItemConfigModel> fqcInspectionConfigItems)
+        {
+            var opResult = "";
+            //var opResult = InspectionService.ConfigManager.fqcItemConfigManager.StoreFqcInspectionItemConfig(fqcInspectionConfigItems);
+            return Json(opResult);
+        }
+
         #endregion
+
 
         #endregion
 
