@@ -856,7 +856,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         dateFrom: null,
         dateTo: null,
         selectedFormStatus: "全部",
-        formStatuses: [{ label: "全部", value: "全部" },{ label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
+        formStatuses: [{ label: "全部", value: "全部" },{ label: "待检验", value: "待检验" },{ label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
         editWindowWidth: "100%",
         isShowDetailWindow: false,
         currentItem: null,

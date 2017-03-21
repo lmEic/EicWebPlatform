@@ -31,6 +31,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             get { return OBulider.BuildInstance<InspectionModeSwithConfigManager>(); }
         }
+
+
         /// <summary>
         ///Iqc检验项目配置管理器
         /// </summary>
@@ -39,9 +41,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             get { return OBulider.BuildInstance<InspectionIqcItemConfigManager>(); }
         }
         /// <summary>
-        /// /
+        /// FQC检验项目配置管理器
         /// </summary>
-       public  InspectionFqcItemConfigManager FqcItemConfigManager
+        public InspectionFqcItemConfigManager FqcItemConfigManager
         {
             get { return OBulider.BuildInstance<InspectionFqcItemConfigManager>(); }
         }
