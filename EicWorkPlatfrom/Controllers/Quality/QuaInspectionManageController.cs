@@ -333,7 +333,6 @@ namespace EicWorkPlatfrom.Controllers
         /// 根据单据状态获得检验单数据  
         /// </summary>  selectedFormStatus,dateFrom,dateTo
         /// <returns></returns>
-
         [NoAuthenCheck]
         public ContentResult GetInspectionFormManageOfIqcDatas(string formStatus, DateTime dateFrom, DateTime dateTo)
         {
@@ -341,13 +340,13 @@ namespace EicWorkPlatfrom.Controllers
             return DateJsonResult(datas);
         }
         [NoAuthenCheck]
-        public JsonResult GetInspectionFormDetailDatas(string orderId, string materialId)
+        public JsonResult GetInspectionFormDetailOfIqcDatas(string orderId, string materialId)
         {
             var datas = InspectionService.DataGatherManager.IqcDataGather.FindIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
-        public JsonResult PostInspectionFormManageCheckedData(InspectionIqcMasterModel model)
+        public JsonResult PostInspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model)
         {
             var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel (model);
             return Json(opResult);
@@ -363,6 +362,32 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 根据单据状态获得检验单数据  
+        /// </summary>  selectedFormStatus,dateFrom,dateTo
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetInspectionFormManageOfFqcDatas(string formStatus, DateTime dateFrom, DateTime dateTo)
+        {
+            var datas = "";
+           // var datas = InspectionService.InspectionFormManager.IqcFromManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
+            return DateJsonResult(datas);
+        }
+        [NoAuthenCheck]
+        public JsonResult GetInspectionFormDetailOfFqcDatas(string orderId, string materialId)
+        {
+            var datas = "";
+            //var datas = InspectionService.DataGatherManager.IqcDataGather.FindIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult PostInspectionFormManageCheckedOfFqcData(InspectionIqcMasterModel model)
+        {
+            var opResult = "";
+            //var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel(model);
+            return Json(opResult);
+        }
+
         #endregion
         #endregion
 

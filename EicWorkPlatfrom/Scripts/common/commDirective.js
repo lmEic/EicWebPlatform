@@ -721,9 +721,10 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             content: '@',
             onChecked: '&',
             isChecked: '=',
-            size:'@',
         },
         link: function (scope, element, attr) {
+            if (attr.size === undefined || attr.size.length < 1)
+                attr.size = 'small';
             switch (attr.size) {
                 case 'small':
                     scope.checkedClass = "fa fa-check-square-o";
