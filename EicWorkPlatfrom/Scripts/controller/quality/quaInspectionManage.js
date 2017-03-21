@@ -647,6 +647,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
 ///fqc数据采集控制器
 qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspectionDataOpService) {
     var vmManager = {
+        opPersonInfo:{},
         orderId: null,
         currentMaterialIdItem: null,
         currentInspectionItem: null,
