@@ -159,35 +159,35 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     }
     //////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////fqc检验项目配置////////////////////////////////////
-    quality.getfqcspectionItemConfigDatas = function (materialId) {
-        var url = quaInspectionManageUrl + "GetIqcspectionItemConfigDatas";
+    quality.getfqcInspectionItemConfigDatas = function (materialId) {
+        var url = quaInspectionManageUrl + "GetFqcInspectionItemConfigDatas";
         return ajaxService.getData(url, {
             materialId: materialId
         })
     };
     ///fqc检验项目配置模块 物料复制时是否存在
-    quality.checkIqcspectionItemConfigMaterialId = function (materialId) {
-        var url = quaInspectionManageUrl + "CheckIqcspectionItemConfigMaterialId";
+    quality.checkFqcInspectionItemConfigMaterialId = function (materialId) {
+        var url = quaInspectionManageUrl + "CheckFqcInspectionItemConfigMaterialId";
         return ajaxService.getData(url, {
             materialId: materialId
         })
     };
     //fqc检验项目配置模块  导入Excel
     quality.importfqcInspectionItemConfigDatas = function (file) {
-        var url = quaInspectionManageUrl + 'ImportfqcInspectionItemConfigDatas';
+        var url = quaInspectionManageUrl + 'ImportFqcInspectionItemConfigDatas';
         return ajaxService.uploadFile(url, file);
     }
 
     //fqc检验项目配置模块  保存
-    quality.savefqcInspectionItemConfigDatas = function (iqcInspectionConfigItems) {
-        var url = quaInspectionManageUrl + 'SavefqcInspectionItemConfigDatas';
+    quality.saveFqcInspectionItemConfigDatas = function (fqcInspectionConfigItems) {
+        var url = quaInspectionManageUrl + 'SaveFqcInspectionItemConfigDatas';
         return ajaxService.postData(url, {
-            iqcInspectionConfigItems: iqcInspectionConfigItems
+            fqcInspectionConfigItems: fqcInspectionConfigItems
         })
     }
     // fqc检验项目配置模块 删除
-    quality.deletefqlInspectionConfigItem = function (configItem) {
-        var url = quaInspectionManageUrl + 'DeletefqlInspectionConfigItem';
+    quality.deleteFqcInspectionConfigItem = function (configItem) {
+        var url = quaInspectionManageUrl + 'DeleteFqcInspectionConfigItem';
         return ajaxService.postData(url, {
             configItem: configItem,
         });
@@ -954,7 +954,6 @@ qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityIn
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
                     
                     vmManager.switchModeList = [];
-                    console.log(vmManager.switchModeList)
 
                 }
             })
@@ -968,7 +967,7 @@ qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityIn
 })
 
 //fqc检验项目配置
-qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope) {
+qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualityInspectionDataOpService,$modal) {
     var uiVM = {
         MaterialId:null,
         ProductDepartment:null,
@@ -989,7 +988,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope) {
         OpPerson:null,
         OpDate:null,
         OpTime:null,
-        OpSign:null,
+        OpSign:"add",
         Id_Key:null,
     }
     $scope.vm = uiVM;
@@ -1023,7 +1022,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope) {
 
         //013935根据品号查询
         getConfigDatas: function () {
-            $scope.searchPromise = qualityInspectionDataOpService.getfqcspectionItemConfigDatas($scope.vm.MaterialId).then(function (datas) {
+            $scope.searchPromise = qualityInspectionDataOpService.getfqcInspectionItemConfigDatas($scope.vm.MaterialId).then(function (datas) {
                 if (datas != null) {
                     $scope.tableVm = datas.ProductMaterailModel;
                     vmManager.dataSource = datas.InspectionItemConfigModelList;
@@ -1046,7 +1045,8 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope) {
         },
         //批量复制
         copyAll: function () {
-            qualityInspectionDataOpService.checkfqcspectionItemConfigMaterialId(vmManager.targetMaterialId).then(function (opresult) {
+            qualityInspectionDataOpService.checkFqcInspectionItemConfigMaterialId(vmManager.targetMaterialId).then(function (opresult) {
+
                 if (opresult.Result) {
                     alert(vmManager.targetMaterialId + "已经存在")
                 } else {
@@ -1065,7 +1065,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope) {
             templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
             controller: function ($scope) {
                 $scope.confirmDelete = function () {
-                    $scope.opPromise = qualityInspectionDataOpService.deletefqlInspectionConfigItem(vmManager.delItem).then(function (opresult) {
+                    $scope.opPromise = qualityInspectionDataOpService.deleteFqcInspectionConfigItem(vmManager.delItem).then(function (opresult) {
                         leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                             if (opresult.Result) {
                                 leeHelper.remove(vmManager.dataSets, vmManager.delItem);
@@ -1129,13 +1129,15 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope) {
     }
     //批量保存所有数据
     operate.saveAll = function () {
-        $scope.opPromise = qualityInspectionDataOpService.savefqcInspectionItemConfigDatas(vmManager.dataSource).then(function (opresult) {
-            if (opresult.Result) {
-                vmManager.dataSource = [];
-                vmManager.dataSets = [];
-                vmManager.targetMaterialId = null;
-                vmManager.copyLotWindowDisplay = false;
-            }
+        $scope.opPromise = qualityInspectionDataOpService.saveFqcInspectionItemConfigDatas(vmManager.dataSource).then(function (opresult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                if (opresult.Result) {
+                    vmManager.dataSource = [];
+                    vmManager.dataSets = [];
+                    vmManager.targetMaterialId = null;
+                    vmManager.copyLotWindowDisplay = false;
+                }
+            });
         });
     }
 })

@@ -41,7 +41,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <summary>
         /// /
         /// </summary>
-       public  InspectionFqcItemConfigManager FqcIteemConfigManager
+       public  InspectionFqcItemConfigManager FqcItemConfigManager
         {
             get { return OBulider.BuildInstance<InspectionFqcItemConfigManager>(); }
         }
