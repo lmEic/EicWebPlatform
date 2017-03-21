@@ -43,10 +43,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
           
         }
 
+        /// <summary>
+        ///审核主表数据
+        /// </summary>
+        /// <returns></returns>
+        public OpResult AuditIqcInspectionMasterModel(InspectionIqcMasterModel model)
+        {
+            if (model == null) return null;
 
+            var retrunResult = InspectionManagerCrudFactory.IqcMasterCrud.Store(model, true);
+            if (retrunResult.Result)
+                return InspectionManagerCrudFactory.IqcMasterCrud.UpAuditDetailData(model.OrderId, model.MaterialId, "Done");
 
-
-
+            else return retrunResult;
+        }
         List<InspectionIqcMasterModel> GetERPOrderAndMaterialBy(DateTime startTime, DateTime endTime)
         {
             List<InspectionIqcMasterModel> retrunList = new List<InspectionIqcMasterModel>();

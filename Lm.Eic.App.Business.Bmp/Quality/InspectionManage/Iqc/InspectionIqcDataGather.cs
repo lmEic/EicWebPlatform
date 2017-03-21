@@ -100,7 +100,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 }
                 MasterModel.OpSign = "edit";
             }
-            return StoreIqcInspectionMasterModel(MasterModel); ;
+            return InspectionManagerCrudFactory.IqcMasterCrud.Store(MasterModel, true); ;
         }
         /// <summary>
         /// 加载所有的测试项目
@@ -364,14 +364,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
 
-        /// <summary>
-        /// 存储Iqc检验项次主要数据
-        /// </summary>
-        /// <returns></returns>
-        public OpResult StoreIqcInspectionMasterModel(InspectionIqcMasterModel model)
-        {
-            return InspectionManagerCrudFactory.IqcMasterCrud.Store(model, true);
-        }
+      
         /// <summary>
         /// 由检验项目得到检验方式模块
         /// </summary>
