@@ -65,6 +65,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             get { return OBulider.BuildInstance<InspectionFqcItemConfigCrud>(); }
         }
 
+        public static InspectionFqcDatailCrud FqcDetailCrud
+        {
+            get { return OBulider.BuildInstance <InspectionFqcDatailCrud>(); }
+        }
+
+        public static InspectionFqcMasterCrud FqcMasterCrud
+        {
+            get { return OBulider.BuildInstance<InspectionFqcMasterCrud>(); }
+        }
+
         #endregion
     }
     /// <summary>
@@ -486,22 +496,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         { }
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, AddFqcInspectionDetail);
-            this.AddOpItem(OpMode.Edit, EidtFqcInspectionDetail);
-            this.AddOpItem(OpMode.Delete, DeleteFqcInspectionDetail);
+            this.AddOpItem(OpMode.Add, AddFqcInspection);
+            this.AddOpItem(OpMode.Edit, EidtFqcInspection);
+            this.AddOpItem(OpMode.Delete, DeleteFqcInspection);
         }
 
-        private OpResult DeleteFqcInspectionDetail(InspectionFqcItemConfigModel model)
+        private OpResult DeleteFqcInspection(InspectionFqcItemConfigModel model)
         {
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        private OpResult EidtFqcInspectionDetail(InspectionFqcItemConfigModel model)
+        private OpResult EidtFqcInspection(InspectionFqcItemConfigModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
-        private OpResult AddFqcInspectionDetail(InspectionFqcItemConfigModel model)
+        private OpResult AddFqcInspection(InspectionFqcItemConfigModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
@@ -543,6 +553,68 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     }
 
 
+    internal class InspectionFqcDatailCrud : CrudBase<InspectionFqcDetailModel,IFqcInspectionDatailRepository>
+    {
+        public InspectionFqcDatailCrud():base(new FqcInspectionDatailRepository(),"FQC详细表单")
+        { }
+
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddFqcInspectionDetail);
+            this.AddOpItem(OpMode.Edit, EidtFqcInspectionDetail);
+            this.AddOpItem(OpMode.Delete, DeleteFqcInspectionDetail);
+        }
+
+        private OpResult DeleteFqcInspectionDetail(InspectionFqcDetailModel model)
+        {
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+        }
+
+        private OpResult EidtFqcInspectionDetail(InspectionFqcDetailModel model)
+        {
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+
+        private OpResult AddFqcInspectionDetail(InspectionFqcDetailModel model)
+        {
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+
+        public List<InspectionFqcDetailModel> GetFqcInspectionDetailModelListBy(string materialId, string inspecitonItem)
+        {
+            return irep.Entities.Where(e => e.InspecitonItem == inspecitonItem && e.MaterialId == materialId).ToList();
+        }
+    }
+
+
+
+    internal class InspectionFqcMasterCrud : CrudBase<InspectionFqcMasterModel, IFqcInspectionMasterRepository>
+    {
+        public InspectionFqcMasterCrud() : base(new FqcInspectionMasterRepository(), "FQC总表信息")
+        { }
+
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddFqcInspectionMaster);
+            this.AddOpItem(OpMode.Edit, EidtFqcInspectionMaster);
+            this.AddOpItem(OpMode.Delete, DeleteFqcInspectionMaster);
+        }
+
+        private OpResult DeleteFqcInspectionMaster(InspectionFqcMasterModel model)
+        {
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+        }
+
+        private OpResult EidtFqcInspectionMaster(InspectionFqcMasterModel model)
+        {
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+
+        private OpResult AddFqcInspectionMaster(InspectionFqcMasterModel model)
+        {
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+    }
     #endregion
 
 }
