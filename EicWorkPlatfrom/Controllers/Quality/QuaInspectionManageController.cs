@@ -148,12 +148,11 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult GetFqcInspectionItemConfigDatas(string materialId)
         {
             //添加物料检验项
-            //var InspectionItemConfigModelList = InspectionService.ConfigManager.FqcItemConfigManager.GetFqcspectionItemConfigDatasBy(materialId);
-            ////得到此物料的品名 ，规格 ，供应商，图号
-            //var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
+            var InspectionItemConfigModelList = InspectionService.ConfigManager.FqcItemConfigManager.GetFqcspectionItemConfigDatasBy(materialId);
+            //得到此物料的品名 ，规格 ，供应商，图号
+            var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
 
-            //var datas = new { ProductMaterailModel, InspectionItemConfigModelList };
-            var datas = "1231231231";
+            var datas = new { ProductMaterailModel, InspectionItemConfigModelList };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -165,8 +164,8 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult CheckFqcInspectionItemConfigMaterialId(string materialId)
         {
-            var result = "";
-            //var result = InspectionService.ConfigManager.FqcItemConfigManager.IsExistInspectionConfigMaterailId(materialId);
+          
+            var result = InspectionService.ConfigManager.FqcItemConfigManager.IsExistFqcConfigMaterailId(materialId);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -178,8 +177,8 @@ namespace EicWorkPlatfrom.Controllers
         [HttpPost]
         public JsonResult DeleteFqcInspectionConfigItem(InspectionFqcItemConfigModel configItem)
         {
-            var opResult = "";
-           // var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(configItem);
+           
+            var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(configItem);
             return Json(opResult);
         }
 
@@ -191,8 +190,8 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult SaveFqcInspectionItemConfigDatas(List<InspectionFqcItemConfigModel> fqcInspectionConfigItems)
         {
-            var opResult = "";
-            //var opResult = InspectionService.ConfigManager.fqcItemConfigManager.StoreFqcInspectionItemConfig(fqcInspectionConfigItems);
+          
+            var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(fqcInspectionConfigItems);
             return Json(opResult);
         }
 

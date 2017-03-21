@@ -23,7 +23,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
         /// <summary>
-        /// FQC
+        /// FQC 表单管理
         /// </summary>
         public InspectionFqcFormManager FqcFromManager
         {

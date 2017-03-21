@@ -519,6 +519,27 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.IsExist(e => e.MaterialId == materailId);
         }
+        public OpResult StoreFqcItemConfiList(List<InspectionFqcItemConfigModel> modelList)
+        {
+            OpResult opResult = OpResult.SetResult("未执行任何操作！");
+            SetFixFieldValue(modelList, OpMode.Add);
+            int i = 0;
+            //如果存在 就修改   
+            modelList.ForEach(m =>
+            {
+                if (this.irep.IsExist(e => e.Id_Key == m.Id_Key))
+                { m.OpSign = "edit"; }
+
+
+                opResult = this.Store(m);
+                if (opResult.Result)
+                    i = i + opResult.RecordCount;
+            });
+            opResult = i.ToOpResult(OpContext);
+            if (i == modelList.Count) opResult.Entity = modelList;
+            return opResult;
+        }
+
     }
 
 

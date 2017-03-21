@@ -1038,14 +1038,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _sizememo = value; }
             get { return _sizememo; }
         }
-        private string _primarysecondaryproperty;
+        private string _keylevel;
         /// <summary>
-        ///主次属性
+        ///主要次要
         /// </summary>
-        public string PrimarySecondaryProperty
+        public string KeyLevel
         {
-            set { _primarysecondaryproperty = value; }
-            get { return _primarysecondaryproperty; }
+            set { _keylevel = value; }
+            get { return _keylevel; }
         }
         private string _equipmentid;
         /// <summary>

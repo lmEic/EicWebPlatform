@@ -67,38 +67,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             return this.PersistentDatas(model);
         }
 
-        public OpResult StoreFqcItemConfiList(List<TEntity> modelList)
-        {
-            OpResult opResult = OpResult.SetResult("未执行任何操作！");
-            SetFixFieldValue(modelList, OpMode.Add);
-            int i = 0;
-
-           
-            //如果存在 就修改   
-            modelList.ForEach(m =>
-            {
-                var idkeyPi = IsHasProperty(m, "Id_Key");
-                if (idkeyPi != null)
-                {
-
-                }
-
-                var opSignPi = IsHasProperty(m, "OpSign");
-                if (opSignPi != null)
-                    opSignPi.SetValue(m, "edit", null);
-
-                if (this.irep.IsExist(e => e.Id_Key == m.Id_Key))
-                { m.OpSign = "edit"; }
-
-
-                opResult = this.Store(m);
-                if (opResult.Result)
-                    i = i + opResult.RecordCount;
-            });
-            opResult = i.ToOpResult(OpContext);
-            if (i == modelList.Count) opResult.Entity = modelList;
-            return opResult;
-        }
         public virtual OpResult Store(TEntity model, bool isNeedEntity)
         {
             return this.PersistentDatas(model, isNeedEntity);
@@ -130,24 +98,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             });
         }
 
-
-        /// <summary>
-        /// 导入文件
-        /// </summary>
-        /// <param name="documentPatch">Excel文档路径</param>
-        /// <returns></returns>
-        public List<TEntity> ImportProductFlowListBy(string documentPatch)
-        {
-            StringBuilder errorStr = new StringBuilder();
-            var listEntity = ExcelHelper.ExcelToEntityList<TEntity>(documentPatch, out errorStr);
-            string errorStoreFilePath = @"C:\ExcelToEntity\ErrorStr.txt";
-            if (errorStr.ToString() != string.Empty)
-            {
-                errorStoreFilePath.CreateFile(errorStr.ToString());
-            }
-            return listEntity;
-        }
-        /// <summary>
         /// 设置固定字段的值
         /// </summary>
         /// <param name="entityList">列表</param>
