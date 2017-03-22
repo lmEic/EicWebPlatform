@@ -320,16 +320,35 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         /// <summary>
-        /// orderId, materialId
+        /// 获取FQC工单物料信息
         /// </summary>
-        /// <param name="orderid"></param>
-        /// <param name="mastierId"></param>
+        /// <param name="orderId"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetFqcInspectionItemDataSummaryLabelList(string orderId, string materialId)
+        public JsonResult GetFqcOrderInfoDatas(string orderId)
         {
-            var datas = "";
+            var datas = orderId;
+
             return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 创建抽检表单项
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="sampleCount"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult CreateFqcSampleFormItem(string orderId, int sampleCount)
+        {
+            var datas = orderId + sampleCount.ToString();
+
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult StoreFqcSampleItemDatas()
+        {
+            var datas = 0;
+            return Json(datas);
         }
         #endregion
         #endregion

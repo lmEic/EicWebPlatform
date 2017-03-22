@@ -6,10 +6,32 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="输入工单号查询" ng-model="vmManager.orderId" ng-keydown="vmManager.searchMaterialIdKeyDown($event)">
+                    <input type="text" class="form-control" placeholder="输入工单号查询" ng-model="vmManager.orderId" ng-keydown="vmManager.searchFqcOrderInfoKeyDow($event)">
                     <span class="input-group-btn">
-                        <button class="btn btn-info" type="button" ng-click="vmManager.getMaterialDatas()"><span class="glyphicon glyphicon-search"></span></button>
+                        <button class="btn btn-info" type="button" ng-click="vmManager.getFqcOrderInfo()"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="number" class="form-control" placeholder="输入抽样批次数量" ng-model="vmManager.sampleCount">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" ng-click="vmManager.createSampleFormItem()">生成抽样表单</button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-2 col-md-offset-4">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <label>总数量</label>
+                    </div>
+                    <input type="number" class="form-control" readonly ng-model="vmManager.orderId">
+                    <div class="input-group-addon">
+                        已检数量：<label class="label label-success">300</label>
+                    </div>
+                    <div class="input-group-addon">
+                        未检数量：<label class="label label-danger">200</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,9 +53,11 @@
                     {{vmManager.currentMaterialIdItem.ProductStandard}}
                 </p>
             </div>
-            <div class="col-md-2">
-                <label>数量:</label>
-                {{vmManager.currentMaterialIdItem.ProduceNumber}}
+            <div class="col-md-3">
+                <p>
+                    <label>供应商:</label>
+                    {{vmManager.currentMaterialIdItem.ProductSupplier}}
+                </p>
             </div>
         </div>
         <div class="h-split"></div>
@@ -48,14 +72,9 @@
             </div>
             <div class="col-md-2">
                 <label>机台号:</label>
-                @*{{vmManager.opPersonInfo.ClassType}}*@
+                {{vmManager.opPersonInfo.ClassType}}
             </div>
-            <div class="col-md-3">
-                <p>
-                    <label>供应商:</label>
-                    {{vmManager.currentMaterialIdItem.ProductSupplier}}
-                </p>
-            </div>
+           
             <div class="col-md-2">
                 <p>
                     <label>图号:</label>
@@ -68,7 +87,7 @@
             <div class="col-md-3">
                 <div class="bs-callout bs-callout-info">
                     <p>
-                        <i class="fa fa-list-ul">品号列表</i>
+                        <i class="fa fa-list-ul">工单抽检批次列表</i>
                     </p>
                 </div>
                 <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>

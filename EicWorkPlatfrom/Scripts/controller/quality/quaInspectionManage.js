@@ -121,7 +121,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     ////////
 
 
-    ////////////////////////////////////////////iqc数据采集控制器////////////////////////////////////
+    ////////////////////////////////////////////iqc数据采集////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
     quality.getInspectionDataGatherMaterialIdDatas = function (orderId) {
         var url = quaInspectionManageUrl + "GetIqcMaterialInfoDatas";
@@ -144,8 +144,13 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
            gatherData: gatherData,
         });
     };
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////FQC数据采集//////////////////////////////////////////////////
+    quality.getFqcOrderInfoDatas = function (orderId) {
+        var url = quaInspectionManageUrl + 'GetFqcOrderInfoDatas';
+        return ajaxService.getData(url, {
+            orderId: orderId,
+        });
+    };
 
     /////////////////////////////iqc检验单管理模块/////////////////////////
     //////////////////////////////////////////////////////////////////////
@@ -721,22 +726,28 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
 })
 
 ///fqc数据采集控制器
-qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspectionDataOpService) {
+qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService) {
     var vmManager = {
-        opPersonInfo:{},
+        opPersonInfo:{department:'',classType:''},
         orderId: null,
+        //抽样批次数量
+        sampleCount:0,
         currentMaterialIdItem: null,
         currentInspectionItem: null,
         panelDataSource: [],
         //缓存数据
         cacheDatas: [],
-        searchMaterialIdKeyDown: function ($event) {
+        //生成抽样表单项
+        createSampleFormItem: function () {
+
+        },
+        searchFqcOrderInfoKeyDown: function ($event) {
             if ($event.keyCode === 13) {
-                vmManager.getMaterialDatas();
+                vmManager.getFqcOrderInfo();
             }
         },
-        //按工单获取物料品号信息#modal
-        getMaterialDatas: function () {
+        //按工单获取物料品号信息
+        getFqcOrderInfo: function () {
             if (vmManager.orderId) {
                 vmManager.panelDataSource = [];
                 qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
