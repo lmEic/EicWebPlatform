@@ -725,12 +725,12 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         createSampleFormItem: function () {
 
         },
-        searchMaterialIdKeyDown: function ($event) {
+        searchFqcOrderInfoKeyDown: function ($event) {
             if ($event.keyCode === 13) {
-                vmManager.getMaterialDatas();
+                vmManager.getFqcOrderInfo();
             }
         },
-        //按工单获取物料品号信息#modal
+        //按工单获取物料品号信息
         getFqcOrderInfo: function () {
             if (vmManager.orderId) {
                 vmManager.panelDataSource = [];

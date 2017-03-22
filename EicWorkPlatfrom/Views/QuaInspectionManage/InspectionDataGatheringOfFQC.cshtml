@@ -6,9 +6,9 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="输入工单号查询" ng-model="vmManager.orderId" ng-keydown="vmManager.searchMaterialIdKeyDown($event)">
+                    <input type="text" class="form-control" placeholder="输入工单号查询" ng-model="vmManager.orderId" ng-keydown="vmManager.searchFqcOrderInfoKeyDow($event)">
                     <span class="input-group-btn">
-                        <button class="btn btn-info" type="button" ng-click="vmManager.getMaterialDatas()"><span class="glyphicon glyphicon-search"></span></button>
+                        <button class="btn btn-info" type="button" ng-click="vmManager.getFqcOrderInfo()"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
                 </div>
             </div>
@@ -72,7 +72,7 @@
             </div>
             <div class="col-md-2">
                 <label>机台号:</label>
-                @*{{vmManager.opPersonInfo.ClassType}}*@
+                {{vmManager.opPersonInfo.ClassType}}
             </div>
            
             <div class="col-md-2">
@@ -87,7 +87,7 @@
             <div class="col-md-3">
                 <div class="bs-callout bs-callout-info">
                     <p>
-                        <i class="fa fa-list-ul">项目列表</i>
+                        <i class="fa fa-list-ul">工单抽检批次列表</i>
                     </p>
                 </div>
                 <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>

@@ -327,9 +327,29 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetFqcOrderInfoDatas(string orderId)
         {
+            var datas = orderId;
 
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
-        
+        /// <summary>
+        /// 创建抽检表单项
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="sampleCount"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult CreateFqcSampleFormItem(string orderId, int sampleCount)
+        {
+            var datas = orderId + sampleCount.ToString();
+
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult StoreFqcSampleItemDatas()
+        {
+            var datas = 0;
+            return Json(datas);
+        }
         #endregion
         #endregion
 
