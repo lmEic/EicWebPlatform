@@ -327,8 +327,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetFqcOrderInfoDatas(string orderId)
         {
-            var datas = orderId;
-
+            var orderInfo = InspectionService.DataGatherManager.FqcDataGather.FindFqcInspectionFqcOrderIdModel(orderId);
+            var sampledData = InspectionService.DataGatherManager.FqcDataGather.GetFqcMasterInspectionAllOrderIdDatasBy(orderId);
+            var datas = new { orderInfo, sampledData };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
