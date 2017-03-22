@@ -20,7 +20,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
 
-        private List<InspectionFqcMasterModel> GetFqcMasterInspectionAllOrderIdDatasBy(string orderId)
+       public  List<InspectionFqcMasterModel> GetFqcMasterInspectionAllOrderIdDatasBy(string orderId)
         {
             return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(orderId);
         }
@@ -116,16 +116,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             });
             return returnList;
         }
-
-
-        public InspectionFqcInspectionHeaderModel FindFqcInspectionItemDataSummaryLabelList(string orderId)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public InspectionFqcOrderIdModel FindFqcInspectionFqcOrderIdModel(string orderId)
         {
-        
             var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault();
             double haveInspectionSumCount = GetFqcMasterHaveInspectionCountBy(orderId);
             var orderNumberList = GetFqcMasterHaveInspectionOrderNumberBy(orderId);
-            var fqcNeedInspectionsItemdatas = getFqcNeedInspectionItemDatas(orderMaterialInfo.ProductID);
-            InspectionFqcInspectionHeaderModel returnModle = new InspectionFqcInspectionHeaderModel()
+            InspectionFqcOrderIdModel returnModle = new InspectionFqcOrderIdModel()
             {
                 OrderId=orderId,
                 MaterialId= orderMaterialInfo.ProductID,
@@ -136,11 +137,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 MaterialSupplier= orderMaterialInfo.ProductSupplier ,
                 MaterialInDate=orderMaterialInfo.ProduceInDate,
                 HaveInspectionOrderNumbers= orderNumberList,
-                HaveInspectionSumCount = haveInspectionSumCount,
-                FqcItemConfigList = fqcNeedInspectionsItemdatas
+                HaveInspectionSumCount = haveInspectionSumCount
             };
             return returnModle;
         }
+
+        
 
         private double  GetFqcMasterHaveInspectionCountBy(string orderId)
         {

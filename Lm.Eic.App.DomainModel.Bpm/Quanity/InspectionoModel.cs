@@ -1621,11 +1621,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
-    public class InspectionFqcInspectionHeaderModel
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class InspectionFqcOrderIdModel
     {
-        public InspectionFqcInspectionHeaderModel()
+        public InspectionFqcOrderIdModel()
         {
-            FqcItemConfigList = new List<InspectionFqcItemConfigModel>();
+            
         }
             
         #region Model
@@ -1667,9 +1671,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// 已检验的数量列表
         /// </summary>
        public List<double> HaveInspectionOrderNumbers { set; get; }
-
-        public List<InspectionFqcItemConfigModel> FqcItemConfigList { set; get; }
-
         #endregion Model
     }
     #endregion
