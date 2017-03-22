@@ -260,6 +260,17 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 获取FQC工单物料信息
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetFqcOrderInfoDatas(string orderId)
+        {
+
+        }
+        
         #endregion
         #endregion
 
