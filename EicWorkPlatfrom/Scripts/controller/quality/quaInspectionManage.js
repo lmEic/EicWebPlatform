@@ -115,7 +115,12 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             materialId: materialId
         })
     }
-
+      quality.getFqcOrderInfoDatas = function (orderId) {
+        var url = quaInspectionManageUrl + "GetFqcOrderInfoDatas";
+        return ajaxService.getData(url, {
+            orderId: orderId
+        })
+    }
 
 
     ////////
@@ -746,12 +751,13 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 vmManager.getFqcOrderInfo();
             }
         },
-        //按工单获取物料品号信息
+        //按工单获取物料品号信息 已抽数量 OrderNumber
         getFqcOrderInfo: function () {
             if (vmManager.orderId) {
                 vmManager.panelDataSource = [];
-                qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
-                    angular.forEach(materialIdDatas, function (item) {
+                qualityInspectionDataOpService.getFqcOrderInfoDatas(vmManager.orderId).then(function (orderIdInforDatas) {
+                    console.log(orderIdInforDatas);
+                    angular.forEach(orderIdInforDatas, function (item) {
                         var dataItem = { productId: item.ProductID, productName: item.ProductName, materialIdItem: item, inspectionItemDatas: [], dataSets: [] };
                         vmManager.panelDataSource.push(dataItem);
                     })
