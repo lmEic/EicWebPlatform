@@ -87,5 +87,14 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 单选框模板
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ActionResult CheckboxTpl()
+        {
+            return View();
+        }
     }
 }

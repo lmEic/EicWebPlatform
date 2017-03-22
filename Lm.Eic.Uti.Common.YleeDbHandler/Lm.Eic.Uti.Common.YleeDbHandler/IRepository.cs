@@ -127,6 +127,9 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <returns> 符合编号的记录，不存在返回null </returns>
         TEntity GetByKey(object key);
 
+        
+        /// <summary>
+
         /// <summary>
         /// 全部提交
         /// </summary>

@@ -14,7 +14,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     /// <summary>
     /// 进料检验数据采集器
     /// </summary>
-    public class InspectionIqcDataGather
+    public class InspectionIqcDataGather:InspectionDateGatherManageBase 
     { 
         /// <summary>
         /// 得到抽样物料信息
@@ -107,10 +107,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        private List<InspectionIqCItemConfigModel> getIqcNeedInspectionItemDatas(string materialId, DateTime materialInDate)
+        private List<InspectionIqcItemConfigModel> getIqcNeedInspectionItemDatas(string materialId, DateTime materialInDate)
         {
             var needInsepctionItems = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
-            if (needInsepctionItems == null || needInsepctionItems.Count <= 0) return new List<InspectionIqCItemConfigModel>();
+            if (needInsepctionItems == null || needInsepctionItems.Count <= 0) return new List<InspectionIqcItemConfigModel>();
             needInsepctionItems.ForEach(m =>
             {
 
@@ -142,11 +142,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             var iqcNeedInspectionsItemdatas = getIqcNeedInspectionItemDatas(materialId, orderMaterialInfo.ProduceInDate);
             if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0) return returnList;
             int inspectionItemSumCount = iqcNeedInspectionsItemdatas.Count;
+
             //保存单头数据
             iqcNeedInspectionsItemdatas.ForEach(m =>
             {
+                var  inspectionMode = GetJudgeInspectionMode("IQC",m.MaterialId, m.InspectionItem);
                 ///得到检验方法数据
-                var inspectionModeConfigModelData = GetInspectionModeConfigDataBy(m, orderMaterialInfo.ProduceNumber);
+                var inspectionModeConfigModelData =this.GetInspectionModeConfigDataBy(m, orderMaterialInfo.ProduceNumber, inspectionMode);
                 ///得到已经检验的数据  
                 var iqcHaveInspectionData = GetIqcInspectionDetailModelBy(orderId, materialId, m.InspectionItem);
                 ///初始化 综合模块
@@ -220,7 +222,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        private string GetJudgeInspectionMode(string materialId, string InspecitonItem)
+        private string GetJudgeInspectionMode(string InspectionClass, string materialId, string InspecitonItem)
         {
             ///3，比较 对比
             ///4，返回一个 转换的状态
@@ -228,9 +230,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             string retrunstirng = "正常";
             var DetailModeList = GetIqcDetailModeListlBy(materialId, InspecitonItem).OrderByDescending(e => e.MaterialInDate).Take(100).ToList();
             if (DetailModeList == null || DetailModeList.Count <= 0) return retrunstirng;
+         
             var currentStatus = DetailModeList.Last().InspectionMode;
             ///2，通当前状态 得到抽样规则 抽样批量  拒受数
-            var modeSwithParameterList = InspectionManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy("IQC", currentStatus);
+            var modeSwithParameterList = InspectionManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy(InspectionClass, currentStatus);
             if (modeSwithParameterList == null || modeSwithParameterList.Count <= 0) return retrunstirng;
             int sampleNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwitchProperty == "SampleNumber").Select(e => e.SwitchVaule).Min();
             int AcceptNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Max();
@@ -312,7 +315,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     //数据采集类型
                     model.InspectionDataGatherType = iqcItemConfigdata.InspectionDataGatherType;
                }
-               var inspectionModeConfigModelData = GetInspectionModeConfigDataBy(iqcItemConfigdata, m.MaterialCount);
+               //检验方式
+               var  inspectionMode = GetJudgeInspectionMode("IQC",m.MaterialId, m.InspecitonItem);
+
+               var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(iqcItemConfigdata, m.MaterialCount, inspectionMode);
 
                if (inspectionModeConfigModelData != null)
                {
@@ -365,79 +371,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
       
-        /// <summary>
-        /// 由检验项目得到检验方式模块
-        /// </summary>
-        /// <param name="iqcInspectionItemConfig"></param>
-        /// <param name="inMaterialCount"></param>
-        /// <returns></returns>
-        private InspectionModeConfigModel GetInspectionModeConfigDataBy(InspectionIqCItemConfigModel iqcInspectionItemConfig, double inMaterialCount)
-        {
-            if (iqcInspectionItemConfig == null) return new InspectionModeConfigModel();
-            string inspectionMode = GetJudgeInspectionMode(iqcInspectionItemConfig.MaterialId, iqcInspectionItemConfig.InspectionItem);
-            var maxs = new List<Int64>();
-            var mins = new List<Int64>();
-            double maxNumber = 0;
-            double minNumber = 0;
-
-            var models = InspectionManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(
-                inspectionMode,
-                iqcInspectionItemConfig.InspectionLevel,
-                iqcInspectionItemConfig.InspectionAQL).ToList();
-
-            if (models == null || models.Count <= 0) return new InspectionModeConfigModel();
-            models.ForEach(e => { maxs.Add(e.EndNumber); mins.Add(e.StartNumber); });
-            if (maxs.Count > 0)
-                maxNumber = GetMaxNumber(maxs, inMaterialCount);
-
-            if (mins.Count > 0)
-                minNumber = GetMinNumber(mins, inMaterialCount);
-
-            var model = models.FirstOrDefault(e => e.StartNumber == minNumber && e.EndNumber == maxNumber);
-            if (model != null)
-            {
-                model.InspectionMode = inspectionMode;
-                //如果为负数 则全检
-                model.InspectionCount = model.InspectionCount < 0 ? Convert.ToInt32(inMaterialCount) : model.InspectionCount;
-                return model;
-            }
-            else return null;
-            // InspectionCount, AcceptCount, RefuseCount,
-        }
-        private Int64 GetMaxNumber(List<Int64> maxNumbers, double number)
-        {
-            List<Int64> IntMaxNumbers = new List<Int64>();
-            foreach (var max in maxNumbers)
-            {
-                if (max != -1)
-                {
-
-                    if (max >= number)
-                    {
-                        IntMaxNumbers.Add(max);
-                    }
-                }
-            }
-            if (IntMaxNumbers.Count > 0)
-            { return IntMaxNumbers.Min(); }
-            else return -1;
-        }
-        private Int64 GetMinNumber(List<Int64> minNumbers, double mumber)
-        {
-            List<Int64> IntMinNumbers = new List<Int64>();
-            foreach (var min in minNumbers)
-            {
-                if (min != -1)
-                {
-
-                    if (min <= mumber)
-                    {
-                        IntMinNumbers.Add(min);
-                    }
-                }
-                else return -1;
-            }
-            return IntMinNumbers.Max();
-        }
+       
     }
 }

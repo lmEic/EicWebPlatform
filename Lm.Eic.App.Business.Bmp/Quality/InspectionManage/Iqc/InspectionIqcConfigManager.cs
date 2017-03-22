@@ -21,21 +21,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<InspectionIqCItemConfigModel> GetIqcspectionItemConfigDatasBy(string materialId)
+        public List<InspectionIqcItemConfigModel> GetIqcspectionItemConfigDatasBy(string materialId)
         {
            return InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
         }
-        /// <summary>
-        /// 由单号 料号 得到IQC物料检验
-        /// </summary>
-        /// <param name="orderId"></param>
-        /// <param name="materialId"></param>
-        /// <returns></returns>
-        public InspectionIqcMasterModel GetIqcInspectionMasterModelListBy(string orderId, string materialId)
-        {
-            return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(orderId, materialId);
-        }
-
         /// <summary>
         ///  在数据库中是否存在此料号
         /// </summary>
@@ -53,7 +42,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult StoreIqcInspectionItemConfig(InspectionIqCItemConfigModel model)
+        public OpResult StoreIqcInspectionItemConfig(InspectionIqcItemConfigModel model)
         {
             return InspectionManagerCrudFactory.IqcItemConfigCrud.Store(model, true);
         }
@@ -63,7 +52,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult StoreIqcInspectionItemConfig(List<InspectionIqCItemConfigModel> modelList)
+        public OpResult StoreIqcInspectionItemConfig(List<InspectionIqcItemConfigModel> modelList)
         {
             return InspectionManagerCrudFactory.IqcItemConfigCrud.StoreInspectionItemConfiList(modelList);
         }
@@ -75,10 +64,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="documentPatch">Excel文档路径</param>
         /// <returns></returns>
-        public List<InspectionIqCItemConfigModel> ImportProductFlowListBy(string documentPatch)
+        public List<InspectionIqcItemConfigModel> ImportProductFlowListBy(string documentPatch)
         {
             StringBuilder errorStr = new StringBuilder();
-            var listEntity = ExcelHelper.ExcelToEntityList<InspectionIqCItemConfigModel>(documentPatch, out errorStr);
+            var listEntity = ExcelHelper.ExcelToEntityList<InspectionIqcItemConfigModel>(documentPatch, out errorStr);
             string errorStoreFilePath = @"C:\ExcelToEntity\ErrorStr.txt";
             if (errorStr.ToString() != string.Empty)
             {
