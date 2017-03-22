@@ -104,6 +104,22 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     ////////////////////////////////////////////////////////////////////////////////////////
 
 
+    
+    ////////////////////////////////////////////FQC数据采集控制器////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+     //FQC进料检验数据采集模块获得检验项目数据
+    quality.getFqcInspectionItemDataSummaryLabelList = function (orderId, materialId) {
+        var url = quaInspectionManageUrl + "GetFqcInspectionItemDataSummaryLabelList";
+        return ajaxService.getData(url, {
+            orderId:orderId,
+            materialId: materialId
+        })
+    }
+
+
+
+    ////////
+
 
     ////////////////////////////////////////////iqc数据采集控制器////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -737,7 +753,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope,qualityInspect
             vmManager.currentMaterialIdItem = item;
             var datas = _.find(vmManager.cacheDatas, { key: item.ProductID });
             if (datas === undefined) {
-                $scope.searchPromise = qualityInspectionDataOpService.getIqcInspectionItemDataSummaryLabelList(item.OrderID, item.ProductID).then(function (inspectionItemDatas) {
+                $scope.searchPromise = qualityInspectionDataOpService.getFqcInspectionItemDataSummaryLabelList(item.OrderID, item.ProductID).then(function (inspectionItemDatas) {
                     datas = { key: item.ProductID, dataSource: inspectionItemDatas };
                     vmManager.cacheDatas.push(datas);
                     var dataItems = _.find(vmManager.panelDataSource, { productId: item.ProductID });

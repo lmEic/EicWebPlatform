@@ -319,6 +319,18 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// orderId, materialId
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <param name="mastierId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetFqcInspectionItemDataSummaryLabelList(string orderId, string materialId)
+        {
+            var datas = "";
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         #endregion
         #endregion
 

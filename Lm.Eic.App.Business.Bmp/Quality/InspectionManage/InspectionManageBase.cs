@@ -8,20 +8,31 @@ using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep;
+using Lm.Eic.App.Erp.Domain.QuantityModel;
+using Lm.Eic.App.Erp.Bussiness.QuantityManage;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     public  class InspectionDateGatherManageBase
     {
         /// <summary>
+        /// 得到抽样物料信息
+        /// </summary>
+        /// <param name="orderId">ERP单号</param>
+        /// <returns></returns>
+        public List<MaterialModel> GetPuroductSupplierInfo(string orderId)
+        {
+            return QualityDBManager.OrderIdInpectionDb.FindMaterialBy(orderId);
+        }
+        /// <summary>
         /// 由检验项目得到检验方式模块
         /// </summary>
         /// <param name="iqcInspectionItemConfig"></param>
         /// <param name="inMaterialCount"></param>
         /// <returns></returns>
-        public  InspectionModeConfigModel GetInspectionModeConfigDataBy(InspectionIqcItemConfigModel iqcInspectionItemConfig, double inMaterialCount, string inspectionMode = "正常")
+        public InspectionModeConfigModel GetInspectionModeConfigDataBy(string inspectionLevel, string inspectionAQL , double inMaterialCount, string inspectionMode = "正常")
         {
-            if (iqcInspectionItemConfig == null) return new InspectionModeConfigModel();
+            if (inspectionLevel == null) return new InspectionModeConfigModel();
             var maxs = new List<Int64>();
             var mins = new List<Int64>();
             double maxNumber = 0;
@@ -29,8 +40,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
             var models = InspectionManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(
                 inspectionMode,
-                iqcInspectionItemConfig.InspectionLevel,
-                iqcInspectionItemConfig.InspectionAQL).ToList();
+                inspectionLevel,
+                inspectionAQL).ToList();
 
             if (models == null || models.Count <= 0) return new InspectionModeConfigModel();
             models.ForEach(e => { maxs.Add(e.EndNumber); mins.Add(e.StartNumber); });

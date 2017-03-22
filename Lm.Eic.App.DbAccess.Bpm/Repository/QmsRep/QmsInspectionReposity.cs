@@ -81,10 +81,25 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
     { }
 
 
-    public interface IFqcInspectionMasterRepository : IRepository<InspectionFqcMasterModel> { }
+    public interface IFqcInspectionMasterRepository : IRepository<InspectionFqcMasterModel>
+    {
+        int GetOrderNumber(string OrderId);
+        double getorderSumCount(string orderId);
+    }
 
     public class FqcInspectionMasterRepository : BpmRepositoryBase<InspectionFqcMasterModel>, IFqcInspectionMasterRepository
-    { }
+    {
+        public int GetOrderNumber(string Orderid)
+        {
+          
+            throw new NotImplementedException();
+        }
+
+        public double getorderSumCount(string orderId)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     #endregion
 

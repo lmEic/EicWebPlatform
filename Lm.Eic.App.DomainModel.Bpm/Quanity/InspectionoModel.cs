@@ -849,6 +849,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// </summary>
         public string OrderId { get; set; }
         /// <summary>
+        ///序号
+        /// </summary>
+        public int Number { get; set;}
+        /// <summary>
         ///料号
         /// </summary>
         public string MaterialId { get; set; }
@@ -1416,7 +1420,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     {
         public InspectionFqcMasterModel()
         { }
-             #region Model
+        #region Model
         private string _orderid;
         /// <summary>
         ///单号
@@ -1426,16 +1430,150 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _orderid = value; }
             get { return _orderid; }
         }
-        private string _orderidnumber;
+        private int _ordernumber;
         /// <summary>
-        ///单号序次
+        ///单号序号
         /// </summary>
-        public string OrderIdNumber
+        public int OrderNumber
         {
-            set { _orderidnumber = value; }
-            get { return _orderidnumber; }
+            set { _ordernumber = value; }
+            get { return _ordernumber; }
         }
-
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _materialid;
+        /// <summary>
+        ///料号
+        /// </summary>
+        public string MaterialId
+        {
+            set { _materialid = value; }
+            get { return _materialid; }
+        }
+        private string _materialname;
+        /// <summary>
+        ///品名
+        /// </summary>
+        public string MaterialName
+        {
+            set { _materialname = value; }
+            get { return _materialname; }
+        }
+        private string _materialspec;
+        /// <summary>
+        ///规格
+        /// </summary>
+        public string MaterialSpec
+        {
+            set { _materialspec = value; }
+            get { return _materialspec; }
+        }
+        private string _materialsupplier;
+        /// <summary>
+        ///供应商
+        /// </summary>
+        public string MaterialSupplier
+        {
+            set { _materialsupplier = value; }
+            get { return _materialsupplier; }
+        }
+        private DateTime _materialindate;
+        /// <summary>
+        ///生产日期
+        /// </summary>
+        public DateTime MaterialInDate
+        {
+            set { _materialindate = value; }
+            get { return _materialindate; }
+        }
+        private string _materialdrawid;
+        /// <summary>
+        ///图号
+        /// </summary>
+        public string MaterialDrawId
+        {
+            set { _materialdrawid = value; }
+            get { return _materialdrawid; }
+        }
+        private double _materialcount;
+        /// <summary>
+        ///数量
+        /// </summary>
+        public double MaterialCount
+        {
+            set { _materialcount = value; }
+            get { return _materialcount; }
+        }
+        private string _inspectionmode;
+        /// <summary>
+        ///检验方式
+        /// </summary>
+        public string InspectionMode
+        {
+            set { _inspectionmode = value; }
+            get { return _inspectionmode; }
+        }
+        private string _inspectionresult;
+        /// <summary>
+        ///检验结果
+        /// </summary>
+        public string InspectionResult
+        {
+            set { _inspectionresult = value; }
+            get { return _inspectionresult; }
+        }
+        private double _inspectioncount;
+        /// <summary>
+        ///检验数量
+        /// </summary>
+        public double InspectionCount
+        {
+            set { _inspectioncount = value; }
+            get { return _inspectioncount; }
+        }
+        private string _inspectionstatus;
+        /// <summary>
+        ///检验完成状态
+        /// </summary>
+        public string InspectionStatus
+        {
+            set { _inspectionstatus = value; }
+            get { return _inspectionstatus; }
+        }
+        private string _inspectionitems;
+        /// <summary>
+        ///检验所有项目
+        /// </summary>
+        public string InspectionItems
+        {
+            set { _inspectionitems = value; }
+            get { return _inspectionitems; }
+        }
+        private DateTime _finishdate;
+        /// <summary>
+        ///完成日期
+        /// </summary>
+        public DateTime FinishDate
+        {
+            set { _finishdate = value; }
+            get { return _finishdate; }
+        }
+        private string _memo;
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string Memo
+        {
+            set { _memo = value; }
+            get { return _memo; }
+        }
         private string _opperson;
         /// <summary>
         ///操作人
@@ -1474,7 +1612,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private decimal _id_key;
         /// <summary>
-        ///自增键 
+        ///自增键
         /// </summary>
         public decimal Id_Key
         {
@@ -1483,7 +1621,57 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+    public class InspectionFqcInspectionHeaderModel
+    {
+        public InspectionFqcInspectionHeaderModel()
+        {
+            FqcItemConfigList = new List<InspectionFqcItemConfigModel>();
+        }
+            
+        #region Model
+        /// <summary>
+        ///单号
+        /// </summary>
+        public string OrderId { get; set; }
+        /// <summary>
+        ///料号
+        /// </summary>
+        public string MaterialId { get; set; }
+        /// <summary>
+        /// 品名
+        /// </summary>
+        public string MaterialName { set; get; }
+        /// <summary>
+        /// 规格
+        /// </summary>
+        public string MaterialSpec { set; get; }
+        /// <summary>
+        /// 图号
+        /// </summary>
+        public string MaterialDrawId { set; get; }
+        /// <summary>
+        /// 供应商
+        /// </summary>
+        public string MaterialSupplier { set; get; }
+        /// <summary>
+        /// 物料进货数量
+        /// </summary>
+        public double MaterialInCount { set; get; }
+        /// <summary>
+        /// 物料进货日期
+        /// </summary>
+        public DateTime MaterialInDate { set; get; }
 
+        public double HaveInspectionSumCount { set; get; }
+        /// <summary>
+        /// 已检验的数量列表
+        /// </summary>
+       public List<double> HaveInspectionOrderNumbers { set; get; }
+
+        public List<InspectionFqcItemConfigModel> FqcItemConfigList { set; get; }
+
+        #endregion Model
+    }
     #endregion
 
 

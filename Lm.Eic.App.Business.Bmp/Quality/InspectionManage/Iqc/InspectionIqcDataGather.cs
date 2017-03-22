@@ -16,15 +16,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     /// </summary>
     public class InspectionIqcDataGather:InspectionDateGatherManageBase 
     { 
-        /// <summary>
-        /// 得到抽样物料信息
-        /// </summary>
-        /// <param name="orderId">ERP单号</param>
-        /// <returns></returns>
-        public List<MaterialModel> GetPuroductSupplierInfo(string orderId)
-        {
-            return QualityDBManager.OrderIdInpectionDb.FindMaterialBy(orderId);
-        }
+      
 
         public OpResult StoreInspectionIqcModelForm(InspectionIqcItemDataSummaryLabelModel model)
         {
@@ -148,7 +140,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 var  inspectionMode = GetJudgeInspectionMode("IQC",m.MaterialId, m.InspectionItem);
                 ///得到检验方法数据
-                var inspectionModeConfigModelData =this.GetInspectionModeConfigDataBy(m, orderMaterialInfo.ProduceNumber, inspectionMode);
+                var inspectionModeConfigModelData =this.GetInspectionModeConfigDataBy(m.InspectionLevel,m.InspectionAQL, orderMaterialInfo.ProduceNumber, inspectionMode);
                 ///得到已经检验的数据  
                 var iqcHaveInspectionData = GetIqcInspectionDetailModelBy(orderId, materialId, m.InspectionItem);
                 ///初始化 综合模块
@@ -318,7 +310,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                //检验方式
                var  inspectionMode = GetJudgeInspectionMode("IQC",m.MaterialId, m.InspecitonItem);
 
-               var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(iqcItemConfigdata, m.MaterialCount, inspectionMode);
+               var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(iqcItemConfigdata.InspectionLevel, iqcItemConfigdata.InspectionAQL, m.MaterialCount, inspectionMode);
 
                if (inspectionModeConfigModelData != null)
                {
