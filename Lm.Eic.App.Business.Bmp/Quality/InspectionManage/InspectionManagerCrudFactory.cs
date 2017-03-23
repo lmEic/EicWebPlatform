@@ -590,9 +590,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber).ToList();
         }
-        public List<InspectionFqcDetailModel> GetFqcInspectionDetailModelListBy(string orderId, int orderIdNumber, string inspecitonItem)
+        public bool GetFqcInspectionDetailModelBy(string orderId, int orderIdNumber, string inspecitonItem)
         {
-            return irep.Entities.Where(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspecitonItem == inspecitonItem).ToList();
+            return irep.IsExist(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspecitonItem == inspecitonItem);
         }
 
     }
@@ -618,7 +618,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult EidtFqcInspectionMaster(InspectionFqcMasterModel model)
         {
-            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+            var findmodel = irep.Entities.FirstOrDefault(e => e.OrderId == model.OrderId && e.OrderNumber == model.OrderNumber && e.MaterialId == model.MaterialId);
+            model.InspectionItems = findmodel.InspectionItems + "," + model.InspectionItems;
+            return irep.Update(e => e.Id_Key == findmodel.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
         private OpResult AddFqcInspectionMaster(InspectionFqcMasterModel model)
