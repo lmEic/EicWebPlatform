@@ -150,15 +150,22 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         });
     };
     ////////////////////////////////////////////FQC数据采集//////////////////////////////////////////////////
+    //获取FQC工单信息数据
     quality.getFqcOrderInfoDatas = function (orderId) {
         var url = quaInspectionManageUrl + 'GetFqcOrderInfoDatas';
         return ajaxService.getData(url, {
             orderId: orderId,
         });
     };
-
+    //创建FQC抽样表单项目
+    quality.createFqcSampleFormItem = function (orderId, sampleCount) {
+        var url = quaInspectionManageUrl + 'CreateFqcSampleFormItem';
+        return ajaxService.getData(url, {
+            orderId: orderId,
+            sampleCount: sampleCount,
+        });
+    };
     /////////////////////////////iqc检验单管理模块/////////////////////////
-    //////////////////////////////////////////////////////////////////////
     //iqc检验单管理模块获取表单数据  
     quality.getInspectionFormManageOfIqcDatas = function (formStatus, dateFrom, dateTo) {
         var url = quaInspectionManageUrl + 'GetInspectionFormManageOfIqcDatas';
@@ -244,10 +251,6 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             model: model
         })
     }
-
-
-
-
     return quality;
     ///////////////////////////////////////////////////////////////////////////////////////
 })
