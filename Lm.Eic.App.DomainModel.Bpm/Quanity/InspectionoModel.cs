@@ -871,6 +871,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// </summary>
         public double MaterialInCount { set; get; }
         /// <summary>
+        /// 物料抽检此批数量
+        /// </summary>
+       public double  MaterialCount { set; get; }
+        /// <summary>
         /// 数据采集类型
         /// </summary>
         public string InspectionDataGatherType { set; get; }
@@ -1188,11 +1192,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _orderid = value; }
             get { return _orderid; }
         }
-        private string _orderidnumber;
+        private int  _orderidnumber;
         /// <summary>
         ///单号序次
         /// </summary>
-        public string OrderIdNumber
+        public int  OrderIdNumber
         {
             set { _orderidnumber = value; }
             get { return _orderidnumber; }
@@ -1206,6 +1210,13 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _materialid = value; }
             get { return _materialid; }
         }
+        /// <summary>
+        /// 订单总数量
+        /// </summary>
+        public double OrderSumCount
+        {
+            set;get;
+        }
         private string _inspecitonitem;
         /// <summary>
         ///检验项目
@@ -1217,7 +1228,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private double _materialcount;
         /// <summary>
-        ///物料数量
+        ///物料检验批量数
         /// </summary>
         public double MaterialCount
         {
@@ -1658,19 +1669,26 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// </summary>
         public string MaterialSupplier { set; get; }
         /// <summary>
-        /// 物料进货数量
-        /// </summary>
-        public double MaterialInCount { set; get; }
-        /// <summary>
         /// 物料进货日期
         /// </summary>
         public DateTime MaterialInDate { set; get; }
-
+        /// <summary>
+        /// 物料进货数量（及需要检验批量总数）
+        /// </summary>
+        public double MaterialInCount { set; get; }
+        /// <summary>
+        /// 已经检验的批量总数
+        /// </summary>
         public double HaveInspectionSumCount { set; get; }
         /// <summary>
-        /// 已检验的数量列表
+        ///  未检验的批量总数
         /// </summary>
-       public List<double> HaveInspectionOrderNumbers { set; get; }
+        public double NotInspectionSumCount { get { return MaterialInCount - HaveInspectionSumCount; } }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Dictionary<int, string> orderIdNumberStatus { set; get; }
+
         #endregion Model
     }
     #endregion

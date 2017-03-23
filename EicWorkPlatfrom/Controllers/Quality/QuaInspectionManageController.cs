@@ -328,7 +328,7 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult GetFqcOrderInfoDatas(string orderId)
         {
             var orderInfo = InspectionService.DataGatherManager.FqcDataGather.FindFqcInspectionFqcOrderIdModel(orderId);
-            var sampledData = InspectionService.DataGatherManager.FqcDataGather.GetFqcMasterInspectionAllOrderIdDatasBy(orderId);
+            var sampledData = InspectionService.DataGatherManager.FqcDataGather.GetFqcMasterOrderIdDatasBy(orderId);
             var datas = new { orderInfo, sampledData };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
@@ -341,10 +341,28 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult CreateFqcSampleFormItem(string orderId, int sampleCount)
         {
-            var datas = orderId + sampleCount.ToString();
+            var datas = InspectionService.DataGatherManager.FqcDataGather.BuildingFqcInspectionSummaryDataBy(orderId, sampleCount);
 
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 找到已检验中所有检验项目
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="orderIdNumber"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult FindFqcSampleFormItem(string orderId,int orderIdNumber)
+        {
+            var datas = InspectionService.DataGatherManager.FqcDataGather.FindFqcFqcInspectionSummaryDataBy(orderId,orderIdNumber);
+             return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult StoreFqcSampleItemDatas()
         {
