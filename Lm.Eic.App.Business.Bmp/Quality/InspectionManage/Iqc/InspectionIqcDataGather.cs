@@ -130,24 +130,33 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
             var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault(e => e.ProductID == materialId);
-            if (orderMaterialInfo == null) return returnList;
+            if (orderMaterialInfo == null) return new List<InspectionItemDataSummaryLabelModel>(); ;
             var iqcNeedInspectionsItemdatas = getIqcNeedInspectionItemDatas(materialId, orderMaterialInfo.ProduceInDate);
-            if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0) return returnList;
-            int inspectionItemSumCount = iqcNeedInspectionsItemdatas.Count;
-
+            if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0) return new List<InspectionItemDataSummaryLabelModel>(); ;
             //保存单头数据
+           return DoInspectionSummayDatas( orderMaterialInfo, iqcNeedInspectionsItemdatas);
+        }
+        /// <summary>
+        /// 处理数据总表
+        /// </summary>
+        /// <param name="orderMaterialInfo"></param>
+        /// <param name="iqcNeedInspectionsItemdatas"></param>
+        /// <returns></returns>
+        private List<InspectionItemDataSummaryLabelModel>  DoInspectionSummayDatas( MaterialModel orderMaterialInfo, List<InspectionIqcItemConfigModel> iqcNeedInspectionsItemdatas)
+        {
+            List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
             iqcNeedInspectionsItemdatas.ForEach(m =>
             {
-                var  inspectionMode = GetJudgeInspectionMode("IQC",m.MaterialId, m.InspectionItem);
+                var inspectionMode = GetJudgeInspectionMode("IQC", m.MaterialId, m.InspectionItem);
                 ///得到检验方法数据
-                var inspectionModeConfigModelData =this.GetInspectionModeConfigDataBy(m.InspectionLevel,m.InspectionAQL, orderMaterialInfo.ProduceNumber, inspectionMode);
+                var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(m.InspectionLevel, m.InspectionAQL, orderMaterialInfo.ProduceNumber, inspectionMode);
                 ///得到已经检验的数据  
-                var iqcHaveInspectionData = GetIqcInspectionDetailModelBy(orderId, materialId, m.InspectionItem);
+                var iqcHaveInspectionData = GetIqcInspectionDetailModelBy(orderMaterialInfo.OrderID, orderMaterialInfo.ProductID, m.InspectionItem);
                 ///初始化 综合模块
                 var model = new InspectionItemDataSummaryLabelModel()
                 {
-                    OrderId = orderId,
-                    MaterialId = materialId,
+                    OrderId = orderMaterialInfo.OrderID,
+                    MaterialId = orderMaterialInfo.ProductID,
                     InspectionItem = m.InspectionItem,
                     EquipmentId = m.EquipmentId,
                     MaterialInDate = orderMaterialInfo.ProduceInDate,
@@ -156,7 +165,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialSpec = orderMaterialInfo.ProductStandard,
                     MaterialSupplier = orderMaterialInfo.ProductSupplier,
                     MaterialInCount = orderMaterialInfo.ProduceNumber,
-                    InspectionItemSumCount = inspectionItemSumCount,
+                    InspectionItemSumCount = iqcNeedInspectionsItemdatas.Count,
                     InspectionItemStatus = "Doing",
                     ///检验方法
                     InspectionMethod = m.InspectionMethod,
@@ -205,10 +214,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             });
             return returnList;
         }
-        private int DoHaveFinishDataNumber(string inspectionItemResult, string InspectionItemDatas, int needFinishDataNumber)
-        {
-            return (inspectionItemResult == "OK") ? needFinishDataNumber : GetHaveFinishDataNumber(InspectionItemDatas);
-        }
+
         /// <summary>
         /// 判断是否按提正常还
         /// </summary>
@@ -288,7 +294,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                    InspectionItemDatas = m.InspectionItemDatas,
                    InsptecitonItemIsFinished = true,
                    NeedFinishDataNumber = Convert.ToInt16(m.InspectionCount),
-                   HaveFinishDataNumber = GetHaveFinishDataNumber(m.InspectionItemDatas),
+                   HaveFinishDataNumber =this.GetHaveFinishDataNumber(m.InspectionItemDatas),
                    InspectionItemResult = m.InspectionItemResult,
                    Memo = m.Memo,
                    InspectionMethod = string.Empty,
@@ -323,18 +329,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
            });
             return returnList;
         }
-        /// <summary>
-        /// 分解录入数据得到个数
-        /// </summary>
-        /// <param name="inspectionDatas"></param>
-        /// <returns></returns>
-        private int GetHaveFinishDataNumber(string inspectionDatas)
-        {
-            if (inspectionDatas == null) return 0;
-            if ((!inspectionDatas.Contains(",")) || inspectionDatas == string.Empty) return 0;
-            string[] mm = inspectionDatas.Split(',');
-            return mm.Count();
-        }
+
         /// <summary>
         /// 得到副表的详细参数
         /// </summary>

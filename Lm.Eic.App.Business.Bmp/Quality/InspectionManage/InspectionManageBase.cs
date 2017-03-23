@@ -15,12 +15,25 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     public  class InspectionDateGatherManageBase
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="MarterialId"></param>
+        /// <returns></returns>
+
+        private List<InspectionFqcMasterModel> GetFqcMasterModeListlBy(string MarterialId)
+        {
+            return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterListBy(MarterialId);
+        }
+
+      
         /// <summary>
         /// 判断是否按提正常还放宽加严
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        private string GetJudgeInspectionMode(string inspectionClass, string currentStatus, int nGnumber)
+       public string GetJudgeInspectionMode(string inspectionClass, string currentStatus, int nGnumber)
         {
             ///3，比较 对比
             ///4，返回一个 转换的状态
@@ -53,6 +66,30 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return retrunstirng;
         }
 
+
+        /// <summary>
+        /// 得到已经完成的数量
+        /// </summary>
+        /// <param name="inspectionItemResult">完成状态</param>
+        /// <param name="InspectionItemDatas">测试的数据</param>
+        /// <param name="needFinishDataNumber">需完成的数量</param>
+        /// <returns></returns>
+        public  int DoHaveFinishDataNumber(string inspectionItemResult, string InspectionItemDatas, int needFinishDataNumber)
+        {
+            return (inspectionItemResult == "OK") ? needFinishDataNumber : GetHaveFinishDataNumber(InspectionItemDatas);
+        }
+        /// <summary>
+        /// 分解录入数据得到个数
+        /// </summary>
+        /// <param name="inspectionDatas"></param>
+        /// <returns></returns>
+         public int GetHaveFinishDataNumber(string inspectionDatas)
+        {
+            if (inspectionDatas == null) return 0;
+            if ((!inspectionDatas.Contains(",")) || inspectionDatas == string.Empty) return 0;
+            string[] mm = inspectionDatas.Split(',');
+            return mm.Count();
+        }
         /// <summary>
         /// 得到抽样物料信息
         /// </summary>
