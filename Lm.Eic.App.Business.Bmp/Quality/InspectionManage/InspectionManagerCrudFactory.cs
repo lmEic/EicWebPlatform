@@ -580,14 +580,21 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
-        public List<InspectionFqcDetailModel> GetFqcInspectionDetailModelListBy(string orderIdNumber, string inspecitonItem)
-        {
-            return irep.Entities.Where(e => e.InspecitonItem == inspecitonItem && e.OrderIdNumber == orderIdNumber).ToList();
-        }
+
         public List<InspectionFqcDetailModel> GetFqcInspectionDetailModelListBy(string orderId)
         {
             return irep.Entities.Where(e => e.OrderId == orderId).ToList();
         }
+
+        public List<InspectionFqcDetailModel> GetFqcInspectionDetailModelListBy(string orderId, int orderIdNumber)
+        {
+            return irep.Entities.Where(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber).ToList();
+        }
+        public List<InspectionFqcDetailModel> GetFqcInspectionDetailModelListBy(string orderId, int orderIdNumber, string inspecitonItem)
+        {
+            return irep.Entities.Where(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspecitonItem == inspecitonItem).ToList();
+        }
+
     }
 
 
@@ -621,6 +628,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(string orderId)
         {
             return irep.Entities.Where(e => e.OrderId == orderId).ToList();
+        }
+        public List<InspectionFqcMasterModel> GetFqcInspectionMasterListBy(string materialId)
+        {
+            return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
         }
     }
     #endregion
