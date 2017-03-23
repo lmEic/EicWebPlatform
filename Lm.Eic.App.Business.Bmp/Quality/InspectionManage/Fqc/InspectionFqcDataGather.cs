@@ -1,4 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.App.Erp.Domain.QuantityModel;
+using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,34 +49,42 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<InspectionIqcItemDataSummaryLabelModel> BuildingFqcInspectionSummaryDataBy(string orderId, double sampleCount)
+        public List<InspectionItemDataSummaryLabelModel> BuildingFqcInspectionSummaryDataBy(string orderId, double sampleCount)
         {
-            List<InspectionIqcItemDataSummaryLabelModel> returnList = new List<InspectionIqcItemDataSummaryLabelModel>();
+            List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
             ///一个工单 对应一个料号，有工单就是料号
             var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault();
             if (orderMaterialInfo == null) return returnList;
             ///得到需要检验的项目
             var fqcNeedInspectionsItemdatas = getFqcNeedInspectionItemDatas(orderMaterialInfo.ProductID);
             if (fqcNeedInspectionsItemdatas == null || fqcNeedInspectionsItemdatas.Count <= 0) return returnList;
-          
+
             /// Master表中得到序号
-            int  orderIdNumber = 0;
+            int orderIdNumber = 0;
             var FqcHaveInspectionAllOrderiDDatas = GetFqcMasterOrderIdDatasBy(orderId);
             if (FqcHaveInspectionAllOrderiDDatas == null || fqcNeedInspectionsItemdatas.Count <= 0) orderIdNumber = 1;
-            else orderIdNumber = FqcHaveInspectionAllOrderiDDatas.Max(e=>e.OrderNumber);
-           ///保存单头数据
+            else orderIdNumber = FqcHaveInspectionAllOrderiDDatas.Max(e => e.OrderNumber);
+            ///处理数据
+            returnList = DoSummaryDataLabelModel(sampleCount, orderIdNumber, orderMaterialInfo, fqcNeedInspectionsItemdatas);
+            StoreBuildingFqcMaster(orderMaterialInfo, orderId, sampleCount, orderIdNumber);
+            return returnList;
+        }
+
+        private List<InspectionItemDataSummaryLabelModel> DoSummaryDataLabelModel(double sampleCount, int orderIdNumber, MaterialModel orderMaterialInfo, List<InspectionFqcItemConfigModel> fqcNeedInspectionsItemdatas)
+        {
+            List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
             fqcNeedInspectionsItemdatas.ForEach(m =>
             {
                 ///得到检验方式 “正常” “放宽” “加严”
                 var inspectionMode = GetJudgeInspectionMode("FQC", m.MaterialId);
                 ///得到检验方案
                 var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(m.InspectionLevel, m.InspectionAQL, sampleCount, inspectionMode);
-               
+
                 ///初始化 综合模块
-                var model = new InspectionIqcItemDataSummaryLabelModel()
+                var model = new InspectionItemDataSummaryLabelModel()
                 {
-                    OrderId = orderId,
-                    Number= orderIdNumber,
+                    OrderId = orderMaterialInfo.OrderID,
+                    Number = orderIdNumber,
                     MaterialId = orderMaterialInfo.ProductID,
                     MaterialName = orderMaterialInfo.ProductName,
                     MaterialSpec = orderMaterialInfo.ProductStandard,
@@ -82,7 +92,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialDrawId = orderMaterialInfo.ProductDrawID,
                     MaterialInDate = orderMaterialInfo.ProduceInDate,
                     MaterialInCount = orderMaterialInfo.ProduceNumber,
-                    MaterialCount= sampleCount,
+                    MaterialCount = sampleCount,
                     InspectionItem = m.InspectionItem,
                     EquipmentId = m.EquipmentId,
                     InspectionItemStatus = "Doing",
@@ -120,6 +130,33 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             });
             return returnList;
         }
+
+        private OpResult StoreBuildingFqcMaster(MaterialModel orderMaterialInfo, string orderId, double sampleCount, int orderIdNumber)
+        {
+            InspectionFqcMasterModel masterModel = new InspectionFqcMasterModel()
+            {
+                OrderId = orderId,
+                OrderNumber = orderIdNumber,
+                MaterialId = orderMaterialInfo.ProductID,
+                MaterialName = orderMaterialInfo.ProductName,
+                MaterialSpec = orderMaterialInfo.ProductStandard,
+                MaterialDrawId = orderMaterialInfo.ProductDrawID,
+                MaterialSupplier = orderMaterialInfo.ProductSupplier,
+                MaterialCount = orderMaterialInfo.ProduceNumber,
+                MaterialInDate = orderMaterialInfo.ProduceInDate,
+                InspectionMode = "正常",
+                InspectionItems = string.Empty,
+                FinishDate = DateTime.Now.Date,
+                InspectionStatus = "待审核",
+                InspectionResult = "未完成",
+                InspectionCount = sampleCount,
+                Department = string.Empty,
+                OpPerson = "EIC",
+                OpSign = "add"
+            };
+          return  storeInspectionMasterial(masterModel);
+        }
+
         /// <summary>
         /// 得到FQC检验项目所有的信息
         /// </summary>
@@ -127,9 +164,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderIdNumber"></param>
         /// <returns></returns>
 
-        public List<InspectionIqcItemDataSummaryLabelModel> FindFqcFqcInspectionSummaryDataBy(string orderId, int orderIdNumber)
+        public List<InspectionItemDataSummaryLabelModel> FindFqcFqcInspectionSummaryDataBy(string orderId, int orderIdNumber)
         {
-            List<InspectionIqcItemDataSummaryLabelModel> returnList = new List<InspectionIqcItemDataSummaryLabelModel>();
+            List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
             ///一个工单 对应一个料号，有工单就是料号
             var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault();
             if (orderMaterialInfo == null) return returnList;
@@ -143,7 +180,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             fqcHaveInspectionDatas.ForEach(m =>
             {
                 ///初始化 综合模块
-                var model = new InspectionIqcItemDataSummaryLabelModel()
+                var model = new InspectionItemDataSummaryLabelModel()
                 {
                     OrderId = orderId,
                     Number = orderIdNumber,
@@ -201,10 +238,93 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 }
                 returnList.Add(model);
             });
+
+
             return returnList;
         }
 
+        public OpResult StoreFqcDataGather(InspectionItemDataSummaryLabelModel sumModel)
+        {
+            var returnOpResult = new OpResult("数据为空，保存失败", false);
+            if (sumModel == null) return returnOpResult;
+            var masterModel = new InspectionFqcMasterModel();
+            var detailModel = new InspectionFqcDetailModel();
+            SumDataToConvterData(sumModel,out masterModel,out detailModel);
+            if(detailModel==null) return new OpResult("详表数据为空，保存失败", false);
+            returnOpResult =storeInspectionDetial(detailModel);
+            if (!returnOpResult.Result || masterModel == null) return new OpResult("主表数据为空，保存失败", false);
+            returnOpResult = storeInspectionMasterial(masterModel);
+          return returnOpResult;
+        }
+        private void SumDataToConvterData(InspectionItemDataSummaryLabelModel sumModel, out InspectionFqcMasterModel masterModel, out InspectionFqcDetailModel detailModel)
+        {
+            masterModel = new InspectionFqcMasterModel()
+            {
+                OrderId = sumModel.OrderId,
+                OrderNumber= sumModel.Number ,
+                MaterialId = sumModel.MaterialId,
+                MaterialName = sumModel.MaterialName,
+                MaterialSpec = sumModel.MaterialSpec,
+                MaterialDrawId = sumModel.MaterialDrawId,
+                MaterialSupplier = sumModel.MaterialSupplier,
+                MaterialCount = sumModel.MaterialInCount,
+                MaterialInDate = sumModel.MaterialInDate,
+                InspectionMode = sumModel.InspectionMode,
+                InspectionItems = sumModel.InspectionItem,
+                FinishDate = DateTime.Now.Date,
+                InspectionStatus = "待审核",
+                InspectionResult = "未完成",
+                InspectionCount= sumModel.InspectionCount,
+                Department=sumModel.MaterialSupplier,
+                OpPerson=sumModel.OpPerson ,
+                OpSign = "edit"
+            };
 
+            detailModel =  new InspectionFqcDetailModel()
+            {
+                OrderId = sumModel.OrderId,
+                EquipmentId = sumModel.EquipmentId,
+                MaterialCount = sumModel.MaterialInCount,
+                InspecitonItem = sumModel.InspectionItem,
+                InspectionAcceptCount = sumModel.AcceptCount,
+                InspectionCount = sumModel.InspectionCount,
+                InspectionRefuseCount = sumModel.RefuseCount,
+                InspectionDate = DateTime.Now,
+                InspectionItemDatas = sumModel.InspectionItemDatas,
+                InspectionItemResult = sumModel.InspectionItemResult,
+                InspectionItemStatus = sumModel.InspectionItemStatus,
+                MaterialId = sumModel.MaterialId,
+                MaterialInDate = sumModel.MaterialInDate,
+                OpSign = "add",
+                Memo = sumModel.Memo,
+                OpPerson = sumModel.OpPerson,
+                Id_Key = sumModel.Id_Key
+            };
+        }
+
+       /// <summary>
+       /// 存储主表信息
+       /// </summary>
+       /// <param name="model"></param>
+       /// <returns></returns>
+      private  OpResult storeInspectionMasterial(InspectionFqcMasterModel model)
+        {
+            return InspectionManagerCrudFactory.FqcMasterCrud.Store(model);
+        }
+
+        /// <summary>
+        /// 存储副表信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+       private  OpResult storeInspectionDetial(InspectionFqcDetailModel model)
+        {
+            if (InspectionManagerCrudFactory.FqcDetailCrud.GetFqcInspectionDetailModelBy(model.OrderId ,model.OrderIdNumber ,model.InspecitonItem))
+            {
+                model.OpSign = "edit";
+            }
+            return InspectionManagerCrudFactory.FqcDetailCrud.Store(model);
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -229,6 +349,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return returnModle;
         }
 
+
+
+
         private Dictionary<int,string> getdictoanary(string orderId)
         {
             Dictionary<int, string> ddd = new Dictionary<int, string>();
@@ -251,15 +374,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private List<InspectionFqcMasterModel> GetFqcMasterModeListlBy(string MarterialId)
         {
             return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterListBy(MarterialId);
-        }
-
-
-
-
-
-        public int  GetNgNumber(string inspectionClass, string orderIdNumber)
-        {
-            return 0;
         }
 
         /// <summary>

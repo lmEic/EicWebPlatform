@@ -18,7 +18,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     { 
       
 
-        public OpResult StoreInspectionIqcModelForm(InspectionIqcItemDataSummaryLabelModel model)
+        public OpResult StoreInspectionIqcModelForm(InspectionItemDataSummaryLabelModel model)
         {
             var opReulst = new OpResult("数据为空，保存失败", false);
             if (model == null) return opReulst;
@@ -32,7 +32,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult StoreInspectionIqcDetailModelForm(InspectionIqcItemDataSummaryLabelModel model)
+        public OpResult StoreInspectionIqcDetailModelForm(InspectionItemDataSummaryLabelModel model)
         {
             InspectionIqcDetailModel datailModel = new InspectionIqcDetailModel()
             {
@@ -62,7 +62,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
-        private OpResult StoreInspectionIqcMasterModelForm(InspectionIqcItemDataSummaryLabelModel model)
+        private OpResult StoreInspectionIqcMasterModelForm(InspectionItemDataSummaryLabelModel model)
         {
             InspectionIqcMasterModel MasterModel = new InspectionIqcMasterModel()
             {
@@ -126,9 +126,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<InspectionIqcItemDataSummaryLabelModel> BuildingIqcInspectionItemDataSummaryLabelListBy(string orderId, string materialId)
+        public List<InspectionItemDataSummaryLabelModel> BuildingIqcInspectionItemDataSummaryLabelListBy(string orderId, string materialId)
         {
-            List<InspectionIqcItemDataSummaryLabelModel> returnList = new List<InspectionIqcItemDataSummaryLabelModel>();
+            List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
             var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault(e => e.ProductID == materialId);
             if (orderMaterialInfo == null) return returnList;
             var iqcNeedInspectionsItemdatas = getIqcNeedInspectionItemDatas(materialId, orderMaterialInfo.ProduceInDate);
@@ -144,7 +144,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 ///得到已经检验的数据  
                 var iqcHaveInspectionData = GetIqcInspectionDetailModelBy(orderId, materialId, m.InspectionItem);
                 ///初始化 综合模块
-                var model = new InspectionIqcItemDataSummaryLabelModel()
+                var model = new InspectionItemDataSummaryLabelModel()
                 {
                     OrderId = orderId,
                     MaterialId = materialId,
@@ -258,9 +258,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<InspectionIqcItemDataSummaryLabelModel> FindIqcInspectionItemDataSummaryLabelListBy(string orderId, string materialId)
+        public List<InspectionItemDataSummaryLabelModel> FindIqcInspectionItemDataSummaryLabelListBy(string orderId, string materialId)
         {
-            List<InspectionIqcItemDataSummaryLabelModel> returnList = new List<InspectionIqcItemDataSummaryLabelModel>();
+            List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
             var iqcHaveInspectionData = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionDetailModeListlBy(orderId, materialId);
             if (iqcHaveInspectionData == null || iqcHaveInspectionData.Count <= 0) return returnList;
             var iqcItemConfigdatas = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
@@ -268,7 +268,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             iqcHaveInspectionData.ForEach(m =>
            {
                 ///初始化 综合模块
-                var model = new InspectionIqcItemDataSummaryLabelModel()
+                var model = new InspectionItemDataSummaryLabelModel()
                {
                    OrderId = orderId,
                    MaterialId = materialId,

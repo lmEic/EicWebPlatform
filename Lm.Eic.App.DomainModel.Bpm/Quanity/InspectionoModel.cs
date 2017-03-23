@@ -841,7 +841,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
 
 
-    public class InspectionIqcItemDataSummaryLabelModel
+    public class InspectionItemDataSummaryLabelModel
     {
         #region Model
         /// <summary>

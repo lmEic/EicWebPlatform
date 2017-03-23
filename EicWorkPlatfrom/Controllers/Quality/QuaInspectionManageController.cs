@@ -303,7 +303,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         [NoAuthenCheck]
         [HttpPost]
-        public JsonResult StoreIqcInspectionGatherDatas(InspectionIqcItemDataSummaryLabelModel gatherData)
+        public JsonResult StoreIqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
 
             var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcModelForm(gatherData);
@@ -357,16 +357,14 @@ namespace EicWorkPlatfrom.Controllers
             var datas = InspectionService.DataGatherManager.FqcDataGather.FindFqcFqcInspectionSummaryDataBy(orderId,orderIdNumber);
              return Json(datas, JsonRequestBehavior.AllowGet);
         }
-
-
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult StoreFqcSampleItemDatas()
+        public JsonResult StoreFqcSampleItemDatas(InspectionItemDataSummaryLabelModel model)
         {
-            var datas = 0;
+            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(model);
             return Json(datas);
         }
         #endregion
