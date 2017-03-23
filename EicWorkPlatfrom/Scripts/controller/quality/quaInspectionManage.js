@@ -738,6 +738,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
     var vmManager = {
         opPersonInfo:{department:'',classType:''},
         orderId: null,
+        orderInfo:null,
         //抽样批次数量
         sampleCount:0,
         currentMaterialIdItem: null,
@@ -758,10 +759,11 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         getFqcOrderInfo: function () {
             if (vmManager.orderId) {
                 vmManager.panelDataSource = [];
-                qualityInspectionDataOpService.getFqcOrderInfoDatas(vmManager.orderId).then(function (orderIdInforDatas) {
-                    console.log(orderIdInforDatas);
-                    angular.forEach(orderIdInforDatas, function (item) {
-                        var dataItem = { productId: item.ProductID, productName: item.ProductName, materialIdItem: item, inspectionItemDatas: [], dataSets: [] };
+                qualityInspectionDataOpService.getFqcOrderInfoDatas(vmManager.orderId).then(function (datas) {
+                    vmManager.orderInfo = datas.orderInfo;
+                    console.log(datas);
+                    angular.forEach(datas.sampledDatas, function (item) {
+                        var dataItem = { orderId: item.OrderId,orderNum:item.OrderNumber,inspectionStatus:item.InspectionStatus,inspectionItemDatas: [], dataSets: [] };
                         vmManager.panelDataSource.push(dataItem);
                     })
                     vmManager.orderId = null;

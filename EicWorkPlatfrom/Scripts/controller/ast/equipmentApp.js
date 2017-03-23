@@ -817,6 +817,16 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             vmManager.isAssetNumerExist = false;
         },
         datasets: [],
+        isUploadFile: function () {
+            if (angular.isUndefined(uiVM.DocumentPath) || uiVM.DocumentPath === null) {
+                var msgModal = $modal({
+                    title: "错误提示:正在上传文件，请等待文件上传成功后再进行保存！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
+                });
+                msgModal.$promise.then(msgModal.show);
+                return false;
+            }
+            return true;
+        },
         //验证是否可以保存数据
         canSave: function () {
             if (!vmManager.isAssetNumerExist) {
@@ -830,13 +840,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             if (angular.isUndefined(uiVM.AssetNumber) || uiVM.AssetNumber === null || angular.isUndefined(uiVM.CheckDate) || uiVM.CheckDate === null) {
                 var msgModal = $modal({
                     title: "错误提示:校验日期或者财产编号不能为空！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
-                });
-                msgModal.$promise.then(msgModal.show);
-                return false;
-            }
-            if (angular.isUndefined(uiVM.DocumentPath) || uiVM.DocumentPath === null) {
-                var msgModal = $modal({
-                    title: "错误提示:正在上传文件，请等待文件上传成功后再进行保存！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
                 });
                 msgModal.$promise.then(msgModal.show);
                 return false;
@@ -862,6 +865,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     $scope.operate = operate;
     operate.saveAll = function () {
         if (!vmManager.canSave()) return;
+        if (!vmManager.isUploadFile()) return;
         astDataopService.storeInputCheckRecord(uiVM).then(function (opresult) {
             leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                 var checkRecord = opresult.Attach;
@@ -965,7 +969,17 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             vmManager.isAssetNumerExist = false;
         },
         datasets: [],
-        isAssetNumerExist:false,
+        isAssetNumerExist: false,
+        isUploadFile: function () {
+            if (angular.isUndefined(uiVM.DocumentPath) || uiVM.DocumentPath === null) {
+                var msgModal = $modal({
+                    title: "错误提示:正在上传文件，请等待文件上传成功后再进行保存！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
+                });
+                msgModal.$promise.then(msgModal.show);
+                return false;
+            }
+            return true;
+        },
         //验证是否可以保存数据
         canSave: function () {
             if (!vmManager.isAssetNumerExist)
@@ -1035,6 +1049,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         rotateRight: function () { eloam.RotateRight(); },
         saveAsImage: function () {
             if (!vmManager.canSave()) return;
+            if (!vmManager.isUploadFile()) return;
             var loginUser = leeDataHandler.dataStorage.getLoginedUser();
             uiVM.OpPerson = loginUser.userName;
             var day = new Date();
