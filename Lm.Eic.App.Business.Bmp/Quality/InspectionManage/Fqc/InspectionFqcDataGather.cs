@@ -194,12 +194,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 return returnList;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return new List<InspectionItemDataSummaryLabelModel>();
+                throw new Exception (ex.InnerException.Message);
             }
-          
         }
 
         private OpResult StoreBuildingFqcMaster(MaterialModel orderMaterialInfo, string orderId, double sampleCount, int orderIdNumber)

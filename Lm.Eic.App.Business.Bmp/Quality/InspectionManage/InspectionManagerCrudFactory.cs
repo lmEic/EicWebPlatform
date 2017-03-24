@@ -183,24 +183,33 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal OpResult StoreModeSwithConfigModelList(string isEnable, List<InspectionModeSwitchConfigModel> modelList)
         {
-            OpResult opResult = OpResult.SetResult("未执行任何操作！");
-            if ((modelList == null || modelList.Count != 8) || !IsExistInspectionModeType(modelList.FirstOrDefault().SwitchCategory))
-                return opResult;
-            SetFixFieldValue(modelList, OpMode.Add);
-            int i = 0;
-            //如果存在 就修改   
-            modelList.ForEach(m =>
+            try
             {
-                if (this.irep.IsExist(e => e.Id_Key == m.Id_Key))
-                { m.OpSign = "edit"; }
-                m.IsEnable = isEnable;
-                opResult = this.Store(m);
-                if (opResult.Result)
-                    i = i + opResult.RecordCount;
-            });
-            opResult = i.ToOpResult_Eidt(OpContext);
-            if (i == modelList.Count) opResult.Entity = modelList;
-            return opResult;
+                OpResult opResult = OpResult.SetResult("未执行任何操作！");
+                if ((modelList == null || modelList.Count != 8) || !IsExistInspectionModeType(modelList.FirstOrDefault().SwitchCategory))
+                    return opResult;
+                SetFixFieldValue(modelList, OpMode.Add);
+                int i = 0;
+                //如果存在 就修改   
+                modelList.ForEach(m =>
+                {
+                    if (this.irep.IsExist(e => e.Id_Key == m.Id_Key))
+                    { m.OpSign = "edit"; }
+                    m.IsEnable = isEnable;
+                    opResult = this.Store(m);
+                    if (opResult.Result)
+                        i = i + opResult.RecordCount;
+                });
+                opResult = i.ToOpResult_Eidt(OpContext);
+                if (i == modelList.Count) opResult.Entity = modelList;
+                return opResult;
+            }
+            catch (Exception ex)
+            {
+                return OpResult.SetResult("未执行任何操作！");
+                throw new Exception(ex.InnerException.Message); 
+            }
+         
         }
     }
 
