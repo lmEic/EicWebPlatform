@@ -49,14 +49,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 var fqcNeedInspectionsItemdatas = GetFqcNeedInspectionItemDatas(orderMaterialInfo.ProductID);
                 if (fqcNeedInspectionsItemdatas == null || fqcNeedInspectionsItemdatas.Count <= 0) return returnList;
 
-                /// Master表中得到序号
+                /// Master表中得到序号+1
                 int orderIdNumber = 0;
                 var FqcHaveInspectionAllOrderiDDatas = GetFqcMasterOrderIdDatasBy(orderId);
                 if (FqcHaveInspectionAllOrderiDDatas == null || FqcHaveInspectionAllOrderiDDatas.Count <= 0) orderIdNumber = 1;
                 else orderIdNumber = FqcHaveInspectionAllOrderiDDatas.Max(e => e.OrderNumber)+1;
                 ///处理数据
                 returnList = HandleBuildingSummaryDataLabelModel(sampleCount, orderIdNumber, orderMaterialInfo, fqcNeedInspectionsItemdatas);
-                /// 创建详表时 存储主表
+                /// 创建详表时    先存储主表部分信息  到后面存储数据时 更新主表信息
                 StoreBuildingFqcMaster(orderMaterialInfo, orderId, sampleCount, orderIdNumber);
                 return returnList;
             }
@@ -166,7 +166,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     var model = new InspectionItemDataSummaryLabelModel()
                     {
                         OrderId = orderMaterialInfo.OrderID,
-                        Number = orderIdNumber,
+                        OrderIdNumber = orderIdNumber,
                         MaterialId = orderMaterialInfo.ProductID,
                         MaterialName = orderMaterialInfo.ProductName,
                         MaterialSpec = orderMaterialInfo.ProductStandard,
@@ -211,7 +211,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     returnList.Add(model);
                 });
                 return returnList;
-
             }
             catch (Exception ex)
             {
@@ -234,13 +233,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 MaterialCount = orderMaterialInfo.ProduceNumber,
                 MaterialInDate = orderMaterialInfo.ProduceInDate,
                 InspectionMode = "正常",
-                InspectionItems = string.Empty,
                 FinishDate = DateTime.Now.Date,
                 InspectionStatus = "待审核",
                 InspectionResult = "未完成",
                 InspectionCount = sampleCount,
-                Department = string.Empty,
-                OpPerson = "EIC",
                 OpSign = "add"
             };
           return  storeInspectionMasterial(masterModel);
@@ -268,7 +264,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     var model = new InspectionItemDataSummaryLabelModel()
                     {
                         OrderId = orderMaterialInfo.OrderID,
-                        Number = m.OrderIdNumber,
+                        OrderIdNumber = m.OrderIdNumber,
                         MaterialId = orderMaterialInfo.ProductID,
                         MaterialName = orderMaterialInfo.ProductName,
                         MaterialSpec = orderMaterialInfo.ProductStandard,
@@ -337,7 +333,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             masterModel = new InspectionFqcMasterModel()
             {
                 OrderId = sumModel.OrderId,
-                OrderNumber= sumModel.Number ,
+                OrderNumber= sumModel.OrderIdNumber ,
                 MaterialId = sumModel.MaterialId,
                 MaterialName = sumModel.MaterialName,
                 MaterialSpec = sumModel.MaterialSpec,

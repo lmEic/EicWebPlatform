@@ -1566,7 +1566,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         ///序号
         /// </summary>
-        public int Number { get; set; }
+        public int OrderIdNumber { get; set; }
         /// <summary>
         ///料号
         /// </summary>
