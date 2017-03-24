@@ -778,7 +778,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 $scope.searchPromise = qualityInspectionDataOpService.getFqcOrderInfoDatas(vmManager.orderId).then(function (datas) {
                     vmManager.orderInfo = datas.orderInfo;
                     angular.forEach(datas.sampledDatas, function (item) {
-                        var dataItem = { orderId: item.OrderId, orderNum: item.OrderNumber, inspectionStatus: item.InspectionStatus, inspectionItemDatas: [], dataSets: [] };
+                        var dataItem = { orderId: item.OrderId, orderIdNumber: item.OrderIdNumber, inspectionStatus: item.InspectionStatus, inspectionItemDatas: [], dataSets: [] };
                         vmManager.panelDataSource.push(dataItem);
                     })
                     vmManager.orderId = null;
@@ -789,13 +789,13 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         selectOrderSubIdItem: function (item) {
             vmManager.currentOrderSubIdItem = item;
             if (item.inspectionItemDatas.length > 0) return;
-            var key = item.orderId + item.orderNum;
+            var key = item.orderId + item.orderIdNumber;
             var datas = _.find(vmManager.cacheDatas, { key: key });
             if (datas === undefined) {
-                $scope.searchPromise = qualityInspectionDataOpService.getFqcSampleFormItems(item.orderId, item.orderNum).then(function (inspectionItemDatas) {
+                $scope.searchPromise = qualityInspectionDataOpService.getFqcSampleFormItems(item.orderId, item.orderIdNumber).then(function (inspectionItemDatas) {
                     datas = { key: key, dataSource: inspectionItemDatas };
                     vmManager.cacheDatas.push(datas);
-                    var dataItems = _.find(vmManager.panelDataSource, { orderId: item.orderId, orderNum: item.orderNum });
+                    var dataItems = _.find(vmManager.panelDataSource, { orderId: item.orderId, orderIdNumber: item.orderIdNumber });
                     if (dataItems !== undefined) {
                         dataItems.inspectionItemDatas = inspectionItemDatas;
                         dataItems.dataSets = inspectionItemDatas;
