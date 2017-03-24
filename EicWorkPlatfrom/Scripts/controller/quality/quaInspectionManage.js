@@ -757,7 +757,9 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         cacheDatas: [],
         //生成抽样表单项
         createSampleFormItem: function () {
-
+            qualityInspectionDataOpService.createFqcSampleFormItem(vmManager.orderInfo.OrderId, vmManager.sampleCount).then(function (data) {
+                console.log(data);
+            })
         },
         searchFqcOrderInfoKeyDown: function ($event) {
             if ($event.keyCode === 13) {
