@@ -1266,6 +1266,7 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
         //获取检验表单主数据
         getMasterDatas: function () {
             $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormManageOfFqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
+                console.log(editDatas);
                 if (editDatas.length >= 100) {
                     vmManager.showTips.$promise.then(vmManager.showTips.show);
                 }
