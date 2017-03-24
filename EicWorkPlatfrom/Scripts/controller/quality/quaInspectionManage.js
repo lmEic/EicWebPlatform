@@ -107,7 +107,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     
     ////////////////////////////////////////////FQC数据采集控制器////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
-     //FQC进料检验数据采集模块获得检验项目数据
+     //FQC检验数据采集模块获得检验项目数据
     quality.getFqcInspectionItemDataSummaryLabelList = function (orderId, materialId) {
         var url = quaInspectionManageUrl + "GetFqcInspectionItemDataSummaryLabelList";
         return ajaxService.getData(url, {
@@ -123,7 +123,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     }
 
 
-    ////////
+    /////////////////////////////////////////////////////////////////////////////////////////////
 
 
     ////////////////////////////////////////////iqc数据采集////////////////////////////////////
