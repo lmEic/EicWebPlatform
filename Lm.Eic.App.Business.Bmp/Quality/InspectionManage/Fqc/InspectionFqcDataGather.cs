@@ -53,11 +53,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 int orderIdNumber = 0;
                 var FqcHaveInspectionAllOrderiDDatas = GetFqcMasterOrderIdDatasBy(orderId);
                 if (FqcHaveInspectionAllOrderiDDatas == null || FqcHaveInspectionAllOrderiDDatas.Count <= 0) orderIdNumber = 1;
-                else orderIdNumber = FqcHaveInspectionAllOrderiDDatas.Max(e => e.OrderNumber)+1;
+                else orderIdNumber = FqcHaveInspectionAllOrderiDDatas.Max(e => e.OrderIdNumber)+1;
                 ///处理数据
                 returnList = HandleBuildingSummaryDataLabelModel(sampleCount, orderIdNumber, orderMaterialInfo, fqcNeedInspectionsItemdatas);
                 /// 创建详表时    先存储主表部分信息  到后面存储数据时 更新主表信息
                 StoreBuildingFqcMaster(orderMaterialInfo, orderId, sampleCount, orderIdNumber);
+                returnList.ForEach(m => { StoreStartFqcDataGather(m); });
                 return returnList;
             }
             catch (Exception ex)
@@ -119,6 +120,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return returnOpResult;
         }
 
+
+        /// <summary>
+        /// 存储收集数据
+        /// </summary>
+        /// <param name="sumModel"></param>
+        /// <returns></returns>
+       private  OpResult StoreStartFqcDataGather(InspectionItemDataSummaryLabelModel sumModel)
+        {
+            var returnOpResult = new OpResult("数据为空，保存失败", false);
+            if (sumModel == null) return returnOpResult;
+            InspectionFqcDetailModel detailModel = null;
+            ///先排除总表不能为空
+            SumDataToConvterDetailData(sumModel, out detailModel);
+            if (detailModel == null) return new OpResult("表单数据为空，保存失败", false);
+            // 先保存详细表  再更新主表信息
+            return storeInspectionDetial(detailModel);
+          
+        }
 
 
         #endregion
@@ -224,7 +243,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             InspectionFqcMasterModel masterModel = new InspectionFqcMasterModel()
             {
                 OrderId = orderId,
-                OrderNumber = orderIdNumber,
+                OrderIdNumber = orderIdNumber,
                 MaterialId = orderMaterialInfo.ProductID,
                 MaterialName = orderMaterialInfo.ProductName,
                 MaterialSpec = orderMaterialInfo.ProductStandard,
@@ -278,13 +297,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         ///检验方法
                         InspectionMethod = m.InspectionMode,
                         //数据采集类型
-                        InspectionCount = m.InspectionCount,
+                        InspectionCount =(int) m.InspectionCount,
                         InspectionItemDatas = m.InspectionItemDatas,
                         ///需要完成数量 得于 检验数
-                        NeedFinishDataNumber = m.InspectionCount,
+                        NeedFinishDataNumber =(int) m.InspectionCount,
                         InsptecitonItemIsFinished = false,
                         /// 分析已完成的数据的数量
-                        HaveFinishDataNumber = this.DoHaveFinishDataNumber(m.InspectionItemResult, m.InspectionItemDatas, m.InspectionCount),
+                        HaveFinishDataNumber = this.DoHaveFinishDataNumber(m.InspectionItemResult, m.InspectionItemDatas,(int) m.InspectionCount),
                         InspectionItemResult = m.InspectionItemResult,
                     };
                     /// 依据检验项目得到相应的数值
@@ -333,7 +352,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             masterModel = new InspectionFqcMasterModel()
             {
                 OrderId = sumModel.OrderId,
-                OrderNumber= sumModel.OrderIdNumber ,
+                OrderIdNumber= sumModel.OrderIdNumber ,
                 MaterialId = sumModel.MaterialId,
                 MaterialName = sumModel.MaterialName,
                 MaterialSpec = sumModel.MaterialSpec,
@@ -345,16 +364,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionItems = sumModel.InspectionItem,
                 FinishDate = DateTime.Now.Date,
                 InspectionStatus = "待审核",
-                InspectionResult = "未完成",
+                InspectionResult = sumModel.InspectionItemResult,
                 InspectionCount= sumModel.InspectionCount,
                 Department=sumModel.MaterialSupplier,
-                OpPerson=sumModel.OpPerson ,
+                OpPerson=sumModel.OpPerson,
                 OpSign = "edit"
             };
             
             detailModel =  new InspectionFqcDetailModel()
             {
                 OrderId = sumModel.OrderId,
+                OrderIdNumber=sumModel .OrderIdNumber,
                 EquipmentId = sumModel.EquipmentId,
                 MaterialCount = sumModel.MaterialInCount,
                 InspecitonItem = sumModel.InspectionItem,
@@ -367,19 +387,53 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionItemStatus = sumModel.InspectionItemStatus,
                 MaterialId = sumModel.MaterialId,
                 MaterialInDate = sumModel.MaterialInDate,
+                InspectionMode = sumModel.InspectionMode,
                 OpSign = "add",
                 Memo = sumModel.Memo,
                 OpPerson = sumModel.OpPerson,
-                Id_Key = sumModel.Id_Key
+                Id_Key = sumModel.Id_Key,
             };
         }
 
-       /// <summary>
-       /// 存储主表信息
-       /// </summary>
-       /// <param name="model"></param>
-       /// <returns></returns>
-      private  OpResult storeInspectionMasterial(InspectionFqcMasterModel model)
+
+        private void SumDataToConvterDetailData(InspectionItemDataSummaryLabelModel sumModel,  out InspectionFqcDetailModel detailModel)
+        {
+            detailModel = new InspectionFqcDetailModel()
+            {
+                OrderId = sumModel.OrderId,
+                OrderIdNumber = sumModel.OrderIdNumber,
+                EquipmentId = sumModel.EquipmentId,
+                MaterialCount = sumModel.MaterialInCount,
+                InspecitonItem = sumModel.InspectionItem,
+                InspectionAcceptCount = sumModel.AcceptCount,
+                InspectionCount = sumModel.InspectionCount,
+                InspectionRefuseCount = sumModel.RefuseCount,
+                InspectionDate = DateTime.Now,
+                InspectionItemDatas = sumModel.InspectionItemDatas,
+                InspectionItemResult = sumModel.InspectionItemResult,
+                InspectionItemStatus = sumModel.InspectionItemStatus,
+                MaterialId = sumModel.MaterialId,
+                MaterialInDate = sumModel.MaterialInDate,
+                InspectionMode = sumModel.InspectionMode,
+                OpSign = "add",
+                Memo = sumModel.Memo,
+                OpPerson = sumModel.OpPerson,
+                Id_Key = sumModel.Id_Key,
+                ClassType = "初始化",
+                Department = "初始化",
+                InspectionDataTimeRegion = "初始化",
+                InStorageOrderId = "初始化",
+                InspectionNGCount = 0
+
+            };
+        }
+
+        /// <summary>
+        /// 存储主表信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private  OpResult storeInspectionMasterial(InspectionFqcMasterModel model)
         {
             return InspectionManagerCrudFactory.FqcMasterCrud.Store(model);
         }
@@ -391,7 +445,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private OpResult storeInspectionDetial(InspectionFqcDetailModel model)
         {
-            if (InspectionManagerCrudFactory.FqcDetailCrud.GetFqcInspectionDetailModelBy(model.OrderId ,model.OrderIdNumber ,model.InspecitonItem))
+            bool isexist = InspectionManagerCrudFactory.FqcDetailCrud.DetailDataIsexistBy(model.OrderId, model.OrderIdNumber, model.InspecitonItem);
+            if (isexist)
             {
                 model.OpSign = "edit";
             }
@@ -420,6 +475,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             };
             return returnModle;
         }
+
+ 
         /// <summary>
         /// 得到工单数量的完成的状态字典
         /// </summary>
@@ -431,8 +488,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             var listdatas = GetFqcMasterOrderIdDatasBy(orderId);
             if ((listdatas == null || listdatas.Count <= 0)) return ddd;
             listdatas.ForEach(e => {
-                if(ddd.Keys.Contains(e.OrderNumber))
-                ddd.Add(e.OrderNumber, e.InspectionStatus);
+                if(ddd.Keys.Contains(e.OrderIdNumber))
+                ddd.Add(e.OrderIdNumber, e.InspectionStatus);
             });
             return ddd;
         }
