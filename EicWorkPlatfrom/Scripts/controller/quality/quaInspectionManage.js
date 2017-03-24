@@ -770,10 +770,10 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         getFqcOrderInfo: function () {
             if (vmManager.orderId) {
                 vmManager.panelDataSource = [];
-                qualityInspectionDataOpService.getFqcOrderInfoDatas(vmManager.orderId).then(function (datas) {
+                $scope.searchPromise = qualityInspectionDataOpService.getFqcOrderInfoDatas(vmManager.orderId).then(function (datas) {
                     vmManager.orderInfo = datas.orderInfo;
                     angular.forEach(datas.sampledDatas, function (item) {
-                        var dataItem = { orderId: item.OrderId,orderNum:item.OrderNumber,inspectionStatus:item.InspectionStatus,inspectionItemDatas: [], dataSets: [] };
+                        var dataItem = { orderId: item.OrderId, orderNum: item.OrderNumber, inspectionStatus: item.InspectionStatus, inspectionItemDatas: [], dataSets: [] };
                         vmManager.panelDataSource.push(dataItem);
                     })
                     vmManager.orderId = null;

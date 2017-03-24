@@ -91,7 +91,7 @@
                     </p>
                 </div>
                 <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
-                    <div class="panel panel-default" ng-repeat="item in vmManager.panelDataSource">
+                    <div class="panel panel-default" ng-repeat="item in vmManager.panelDataSource" ng-show="vmManager.panelDataSource.length>0">
                         <div class="panel-heading" role="tab" ng-click="vmManager.selectOrderSubIdItem(item)">
                             <a bs-collapse-toggle style="cursor:pointer;color:#000">
                                 {{item.orderId}}-{{item.orderNum}}
@@ -119,6 +119,9 @@
                                  data-datasource="item.inspectionItemDatas">
                             </div>
                         </div>
+                    </div>
+                    <div class="page-header" ng-hide="vmManager.panelDataSource.length>0">
+                        <h4>此工单暂无抽检数据！</h4>
                     </div>
                 </div>
             </div>
