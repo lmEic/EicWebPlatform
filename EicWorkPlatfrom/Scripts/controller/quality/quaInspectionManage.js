@@ -165,6 +165,15 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             sampleCount: sampleCount,
         });
     };
+    //获取FQC抽检表单项目
+    quality.getFqcSampleFormItems = function (orderId, orderIdNumber) {
+        var url = quaInspectionManageUrl + 'GetFqcSampleFormItems';
+        return ajaxService.getData(url, {
+            orderId: orderId,
+            orderIdNumber: orderIdNumber,
+        });
+    };
+
     /////////////////////////////iqc检验单管理模块/////////////////////////
     //iqc检验单管理模块获取表单数据  
     quality.getInspectionFormManageOfIqcDatas = function (formStatus, dateFrom, dateTo) {
@@ -741,7 +750,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         orderInfo:null,
         //抽样批次数量
         sampleCount:0,
-        currentMaterialIdItem: null,
+        currentOrderSubIdItem: null,
         currentInspectionItem: null,
         panelDataSource: [],
         //缓存数据
@@ -761,7 +770,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 vmManager.panelDataSource = [];
                 qualityInspectionDataOpService.getFqcOrderInfoDatas(vmManager.orderId).then(function (datas) {
                     vmManager.orderInfo = datas.orderInfo;
-                    console.log(datas);
                     angular.forEach(datas.sampledDatas, function (item) {
                         var dataItem = { orderId: item.OrderId,orderNum:item.OrderNumber,inspectionStatus:item.InspectionStatus,inspectionItemDatas: [], dataSets: [] };
                         vmManager.panelDataSource.push(dataItem);
@@ -771,14 +779,15 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
             }
         },
         //按物料品号获取检验项目信息
-        selectMaterialIdItem: function (item) {
-            vmManager.currentMaterialIdItem = item;
-            var datas = _.find(vmManager.cacheDatas, { key: item.ProductID });
+        selectOrderSubIdItem: function (item) {
+            vmManager.currentOrderSubIdItem = item;
+            var key = item.orderId + item.orderNum;
+            var datas = _.find(vmManager.cacheDatas, { key: key });
             if (datas === undefined) {
-                $scope.searchPromise = qualityInspectionDataOpService.getFqcInspectionItemDataSummaryLabelList(item.OrderID, item.ProductID).then(function (inspectionItemDatas) {
-                    datas = { key: item.ProductID, dataSource: inspectionItemDatas };
+                $scope.searchPromise = qualityInspectionDataOpService.getFqcSampleFormItems(item.orderId, item.orderNum).then(function (inspectionItemDatas) {
+                    datas = { key: key, dataSource: inspectionItemDatas };
                     vmManager.cacheDatas.push(datas);
-                    var dataItems = _.find(vmManager.panelDataSource, { productId: item.ProductID });
+                    var dataItems = _.find(vmManager.panelDataSource, { orderId: item.orderId, orderNum: item.orderNum });
                     if (dataItems !== undefined) {
                         dataItems.inspectionItemDatas = inspectionItemDatas;
                         dataItems.dataSets = inspectionItemDatas;
@@ -786,7 +795,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 });
             }
             else {
-                var dataItems = _.find(vmManager.panelDataSource, { productId: item.ProductID });
+                var dataItems = _.find(vmManager.panelDataSource, { orderId: item.orderId, orderNum: item.orderNum });
                 if (dataItems !== undefined) {
                     dataItems.inspectionItemDatas = datas.dataSource;
                 }

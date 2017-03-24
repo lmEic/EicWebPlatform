@@ -58,15 +58,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             ///一个工单 对应一个料号，有工单就是料号
             var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault();
             if (orderMaterialInfo == null)
-                return new List<InspectionItemDataSummaryLabelModel>(); ;
+                return new List<InspectionItemDataSummaryLabelModel>(); 
             ///得到需要检验的项目
             var fqcHaveInspectionDatas = GetFqcInspectionDetailModeListlBy(orderId, orderIdNumber);
             if (fqcHaveInspectionDatas == null || fqcHaveInspectionDatas.Count <= 0)
-                return new List<InspectionItemDataSummaryLabelModel>(); ;
+                return new List<InspectionItemDataSummaryLabelModel>(); 
             ///得到需要检验的项目
             var fqcInspectionsItemdatas = getFqcNeedInspectionItemDatas(orderMaterialInfo.ProductID);
             if (fqcInspectionsItemdatas == null || fqcInspectionsItemdatas.Count <= 0)
-                return new List<InspectionItemDataSummaryLabelModel>(); ;
+                return new List<InspectionItemDataSummaryLabelModel>(); 
             return DoFindSummaryDataLabelModel(orderMaterialInfo, fqcHaveInspectionDatas, fqcInspectionsItemdatas);
 
 
@@ -89,9 +89,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             returnOpResult = storeInspectionMasterial(masterModel);
             return returnOpResult;
         }
-
-
-
         #endregion
 
 

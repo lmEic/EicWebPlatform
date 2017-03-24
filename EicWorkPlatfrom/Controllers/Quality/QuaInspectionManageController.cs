@@ -352,7 +352,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="orderIdNumber"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetFqcSampleFormItem(string orderId,int orderIdNumber)
+        public JsonResult GetFqcSampleFormItems(string orderId,int orderIdNumber)
         {
             var datas = InspectionService.DataGatherManager.FqcDataGather.FindFqcFqcInspectionSummaryDataBy(orderId,orderIdNumber);
              return Json(datas, JsonRequestBehavior.AllowGet);
