@@ -5,8 +5,6 @@ using System.Text;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 {
-
-
     /// <summary>
     /// 检验方式配置文件
     /// </summary>
@@ -253,8 +251,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         #endregion Model
 
     }
-
-
     /// <summary>
     ///  产品物料信息
     /// </summary>
@@ -297,9 +293,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
     }
 
-
-
-    #region IQC
+   #region IQC
     /// <summary>
     /// IQC物料检验配置文件
     /// </summary>
@@ -841,141 +835,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
 
 
-    public class InspectionItemDataSummaryLabelModel
-    {
-        #region Model
-        /// <summary>
-        ///单号
-        /// </summary>
-        public string OrderId { get; set; }
-        /// <summary>
-        ///序号
-        /// </summary>
-        public int Number { get; set;}
-        /// <summary>
-        ///料号
-        /// </summary>
-        public string MaterialId { get; set; }
-        public string MaterialName { set; get; }
-        public string MaterialSpec { set; get; }
-        public string MaterialDrawId { set; get; }
-        public string MaterialSupplier { set; get; }
-
-        public int InspectionItemSumCount { set; get; }
-        /// <summary>
-        /// 物料进货日期
-        /// </summary>
-        public DateTime MaterialInDate { set; get; }
-        /// <summary>
-        /// 物料进货数量
-        /// </summary>
-        public double MaterialInCount { set; get; }
-        /// <summary>
-        /// 物料抽检此批数量
-        /// </summary>
-       public double  MaterialCount { set; get; }
-        /// <summary>
-        /// 数据采集类型
-        /// </summary>
-        public string InspectionDataGatherType { set; get; }
-        /// <summary>
-        /// 测量量具财产编号
-        /// </summary>
-        public string EquipmentId { set; get; }
-        /// <summary>
-        ///检验项目
-        /// </summary>
-        public string InspectionItem { get; set; }
-
-
-        /// <summary>
-        ///检验方法
-        /// </summary>
-        public string InspectionMethod { set; get; }
-        /// <summary>
-        ///检验方式
-        /// </summary>
-        public string InspectionMode { get; set; }
-        /// <summary>
-        ///检验水平
-        /// </summary>
-        public string InspectionLevel { get; set; }
-        /// <summary>
-        ///检验AQL值
-        /// </summary>
-        public string InspectionAQL { get; set; }
-        /// <summary>
-        ///检验数
-        /// </summary>
-        public int InspectionCount { get; set; }
-        /// <summary>
-        ///接授数
-        /// </summary>
-        public int AcceptCount { get; set; }
-        /// <summary>
-        ///拒授数
-        /// </summary>
-        public int RefuseCount { get; set; }
-        /// <summary>
-        /// 规格上限
-        /// </summary>
-        public double SizeUSL { get; set; }
-        /// <summary>
-        ///下限
-        /// </summary>
-        public double SizeLSL { set; get; }
-
-        /// <summary>
-        ///规格值 说明
-        /// </summary>
-        public string SizeMemo { set; get; }
-        /// <summary>
-        ///检验所有所得的数据
-        /// </summary>
-        public string InspectionItemDatas { get; set; }
-
-        /// <summary>
-        /// 备注说明
-        /// </summary>
-        public string Memo { set; get; }
-
-        /// <summary>
-        /// 需要完成数据数量
-        /// </summary>
-        public int NeedFinishDataNumber { set; get; }
-        /// <summary>
-        /// 已经完成数据数量
-        /// </summary>
-        public int HaveFinishDataNumber { set; get; }
-        /// <summary>
-        /// 检验结果Ok 还是Ng  初始值为空
-        /// </summary>
-        public string InspectionItemResult { get; set; }
-        /// <summary>
-        /// Doing Done处理状况（初始值为Doing）
-        /// </summary>
-        public string InspectionItemStatus { get; set; }
-        /// <summary>
-        ///此项的检验状态(完成True，未完成False)
-        /// </summary>
-        public bool InsptecitonItemIsFinished { get; set; }
-        /// <summary>
-        /// 操作人
-        /// </summary>
-        public string OpPerson { get; set; }
-        /// <summary>
-        ///加载的自增健
-        /// </summary>
-        public decimal Id_Key { set; get; }
-
-        #endregion Model
-    }
     #endregion
 
 
-
-
-    #region FQC 
+   #region FQC 
     public class InspectionFqcItemConfigModel
     {
         public InspectionFqcItemConfigModel()
@@ -1262,11 +1125,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _equipmentid = value; }
             get { return _equipmentid; }
         }
-        private double _inspectioncount;
+        private int _inspectioncount;
         /// <summary>
         ///检验数量
         /// </summary>
-        public double InspectionCount
+        public int InspectionCount
         {
             set { _inspectioncount = value; }
             get { return _inspectioncount; }
@@ -1634,7 +1497,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     }
 
     /// <summary>
-    /// 
+    /// FQC工单信息模块
     /// </summary>
     public class InspectionFqcOrderIdModel
     {
@@ -1693,9 +1556,135 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     }
     #endregion
 
+    public class InspectionItemDataSummaryLabelModel
+    {
+        #region Model
+        /// <summary>
+        ///单号
+        /// </summary>
+        public string OrderId { get; set; }
+        /// <summary>
+        ///序号
+        /// </summary>
+        public int Number { get; set; }
+        /// <summary>
+        ///料号
+        /// </summary>
+        public string MaterialId { get; set; }
+        public string MaterialName { set; get; }
+        public string MaterialSpec { set; get; }
+        public string MaterialDrawId { set; get; }
+        public string MaterialSupplier { set; get; }
+
+        public int InspectionItemSumCount { set; get; }
+        /// <summary>
+        /// 物料进货日期
+        /// </summary>
+        public DateTime MaterialInDate { set; get; }
+        /// <summary>
+        /// 物料进货数量
+        /// </summary>
+        public double MaterialInCount { set; get; }
+        /// <summary>
+        /// 物料抽检此批数量
+        /// </summary>
+        public double MaterialCount { set; get; }
+        /// <summary>
+        /// 数据采集类型
+        /// </summary>
+        public string InspectionDataGatherType { set; get; }
+        /// <summary>
+        /// 测量量具财产编号
+        /// </summary>
+        public string EquipmentId { set; get; }
+        /// <summary>
+        ///检验项目
+        /// </summary>
+        public string InspectionItem { get; set; }
 
 
+        /// <summary>
+        ///检验方法
+        /// </summary>
+        public string InspectionMethod { set; get; }
+        /// <summary>
+        ///检验方式
+        /// </summary>
+        public string InspectionMode { get; set; }
+        /// <summary>
+        ///检验水平
+        /// </summary>
+        public string InspectionLevel { get; set; }
+        /// <summary>
+        ///检验AQL值
+        /// </summary>
+        public string InspectionAQL { get; set; }
+        /// <summary>
+        ///检验数
+        /// </summary>
+        public int InspectionCount { get; set; }
+        /// <summary>
+        ///接授数
+        /// </summary>
+        public int AcceptCount { get; set; }
+        /// <summary>
+        ///拒授数
+        /// </summary>
+        public int RefuseCount { get; set; }
+        /// <summary>
+        /// 规格上限
+        /// </summary>
+        public double SizeUSL { get; set; }
+        /// <summary>
+        ///下限
+        /// </summary>
+        public double SizeLSL { set; get; }
 
+        /// <summary>
+        ///规格值 说明
+        /// </summary>
+        public string SizeMemo { set; get; }
+        /// <summary>
+        ///检验所有所得的数据
+        /// </summary>
+        public string InspectionItemDatas { get; set; }
+
+        /// <summary>
+        /// 备注说明
+        /// </summary>
+        public string Memo { set; get; }
+
+        /// <summary>
+        /// 需要完成数据数量
+        /// </summary>
+        public int NeedFinishDataNumber { set; get; }
+        /// <summary>
+        /// 已经完成数据数量
+        /// </summary>
+        public int HaveFinishDataNumber { set; get; }
+        /// <summary>
+        /// 检验结果Ok 还是Ng  初始值为空
+        /// </summary>
+        public string InspectionItemResult { get; set; }
+        /// <summary>
+        /// Doing Done处理状况（初始值为Doing）
+        /// </summary>
+        public string InspectionItemStatus { get; set; }
+        /// <summary>
+        ///此项的检验状态(完成True，未完成False)
+        /// </summary>
+        public bool InsptecitonItemIsFinished { get; set; }
+        /// <summary>
+        /// 操作人
+        /// </summary>
+        public string OpPerson { get; set; }
+        /// <summary>
+        ///加载的自增健
+        /// </summary>
+        public decimal Id_Key { set; get; }
+
+        #endregion Model
+    }
 
 
 }
