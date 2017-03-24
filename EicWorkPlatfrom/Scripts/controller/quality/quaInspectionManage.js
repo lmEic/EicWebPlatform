@@ -757,8 +757,13 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         cacheDatas: [],
         //生成抽样表单项
         createSampleFormItem: function () {
-            qualityInspectionDataOpService.createFqcSampleFormItem(vmManager.orderInfo.OrderId, vmManager.sampleCount).then(function (data) {
-                console.log(data);
+            qualityInspectionDataOpService.createFqcSampleFormItem(vmManager.orderInfo.OrderId, vmManager.sampleCount).then(function (inspectionItemDatas) {
+                if (angular.isArray(inspectionItemDatas) && inspectionItemDatas.length > 0)
+                {
+                    var item = inspectionItemDatas[0];
+                    var dataItem = { orderId: item.OrderId, orderNum: item.OrderNumber, inspectionStatus: item.InspectionStatus, inspectionItemDatas: inspectionItemDatas, dataSets: inspectionItemDatas };
+                    vmManager.panelDataSource.push(dataItem);
+                }
             })
         },
         searchFqcOrderInfoKeyDown: function ($event) {
@@ -783,6 +788,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         //按物料品号获取检验项目信息
         selectOrderSubIdItem: function (item) {
             vmManager.currentOrderSubIdItem = item;
+            if (item.inspectionItemDatas.length > 0) return;
             var key = item.orderId + item.orderNum;
             var datas = _.find(vmManager.cacheDatas, { key: key });
             if (datas === undefined) {
