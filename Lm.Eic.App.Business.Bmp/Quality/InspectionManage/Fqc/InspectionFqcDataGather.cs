@@ -52,7 +52,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 /// Master表中得到序号
                 int orderIdNumber = 0;
                 var FqcHaveInspectionAllOrderiDDatas = GetFqcMasterOrderIdDatasBy(orderId);
-                if (FqcHaveInspectionAllOrderiDDatas == null || fqcNeedInspectionsItemdatas.Count <= 0) orderIdNumber = 1;
+                if (FqcHaveInspectionAllOrderiDDatas == null || FqcHaveInspectionAllOrderiDDatas.Count <= 0) orderIdNumber = 1;
                 else orderIdNumber = FqcHaveInspectionAllOrderiDDatas.Max(e => e.OrderNumber)+1;
                 ///处理数据
                 returnList = HandleBuildingSummaryDataLabelModel(sampleCount, orderIdNumber, orderMaterialInfo, fqcNeedInspectionsItemdatas);
