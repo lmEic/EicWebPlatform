@@ -599,9 +599,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber).ToList();
         }
-        public bool GetFqcInspectionDetailModelBy(string orderId, int orderIdNumber, string inspecitonItem)
+        public bool DetailDataIsexistBy(string orderId, int orderIdNumber, string inspecitonItem)
         {
-            return irep.IsExist(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspecitonItem == inspecitonItem);
+            try
+            {
+                return irep.IsExist(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspecitonItem == inspecitonItem);
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw new Exception(ex.InnerException.Message);
+            }
+           
         }
 
     }
@@ -627,7 +636,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult EidtFqcInspectionMaster(InspectionFqcMasterModel model)
         {
-            var findmodel = irep.Entities.FirstOrDefault(e => e.OrderId == model.OrderId && e.OrderNumber == model.OrderNumber && e.MaterialId == model.MaterialId);
+            var findmodel = irep.Entities.FirstOrDefault(e => e.OrderId == model.OrderId && e.OrderIdNumber == model.OrderIdNumber && e.MaterialId == model.MaterialId);
             model.InspectionItems = findmodel.InspectionItems + "," + model.InspectionItems;
             return irep.Update(e => e.Id_Key == findmodel.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -639,6 +648,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(string orderId)
         {
             return irep.Entities.Where(e => e.OrderId == orderId).ToList();
+        }
+
+        public List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(string formStatus, DateTime dateFrom, DateTime dateTo)
+        {
+            return null;
         }
         public List<InspectionFqcMasterModel> GetFqcInspectionMasterListBy(string materialId)
         {

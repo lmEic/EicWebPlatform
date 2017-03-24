@@ -1055,11 +1055,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _orderid = value; }
             get { return _orderid; }
         }
-        private int  _orderidnumber;
+        private int _orderidnumber;
         /// <summary>
         ///单号序次
         /// </summary>
-        public int  OrderIdNumber
+        public int OrderIdNumber
         {
             set { _orderidnumber = value; }
             get { return _orderidnumber; }
@@ -1073,13 +1073,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _materialid = value; }
             get { return _materialid; }
         }
-        /// <summary>
-        /// 订单总数量
-        /// </summary>
-        public double OrderSumCount
-        {
-            set;get;
-        }
         private string _inspecitonitem;
         /// <summary>
         ///检验项目
@@ -1091,7 +1084,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private double _materialcount;
         /// <summary>
-        ///物料检验批量数
+        ///物料数量
         /// </summary>
         public double MaterialCount
         {
@@ -1125,11 +1118,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _equipmentid = value; }
             get { return _equipmentid; }
         }
-        private int _inspectioncount;
+        private double _inspectioncount;
         /// <summary>
         ///检验数量
         /// </summary>
-        public int InspectionCount
+        public double InspectionCount
         {
             set { _inspectioncount = value; }
             get { return _inspectioncount; }
@@ -1304,14 +1297,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _orderid = value; }
             get { return _orderid; }
         }
-        private int _ordernumber;
+        private int _orderidnumber;
         /// <summary>
-        ///单号序号
+        ///单号序次
         /// </summary>
-        public int OrderNumber
+        public int OrderIdNumber
         {
-            set { _ordernumber = value; }
-            get { return _ordernumber; }
+            set { _orderidnumber = value; }
+            get { return _orderidnumber; }
         }
         private string _department;
         /// <summary>
@@ -1360,7 +1353,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private DateTime _materialindate;
         /// <summary>
-        ///生产日期
+        ///进货日期
         /// </summary>
         public DateTime MaterialInDate
         {
@@ -1378,7 +1371,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private double _materialcount;
         /// <summary>
-        ///数量
+        ///订单数量
         /// </summary>
         public double MaterialCount
         {
@@ -1414,7 +1407,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _inspectionstatus;
         /// <summary>
-        ///检验完成状态
+        ///检验状态
         /// </summary>
         public string InspectionStatus
         {
@@ -1423,7 +1416,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _inspectionitems;
         /// <summary>
-        ///检验所有项目
+        ///检验项目
         /// </summary>
         public string InspectionItems
         {

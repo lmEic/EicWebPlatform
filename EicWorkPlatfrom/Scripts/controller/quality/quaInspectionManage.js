@@ -959,7 +959,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                     leeHelper.setUserData(vmManager.currentItem);
                     vmManager.currentItem.InspectionStatus = "已审核";
                     vmManager.currentItem.OpSign = "edit";
-                    qualityInspectionDataOpService.postInspectionFormManageCheckedData(vmManager.currentItem).then(function (opresult) {
+                    qualityInspectionDataOpService.postInspectionFormManageCheckedOfIqcData(vmManager.currentItem).then(function (opresult) {
                             if (opresult.Result) {
                                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                                     vmManager.checkModal.$promise.then(vmManager.checkModal.hide);
@@ -989,6 +989,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         getDetailDatas: function (item) {
             vmManager.currentItem = item;
             qualityInspectionDataOpService.getInspectionFormDetailOfIqcDatas(item.OrderId, item.MaterialId).then(function (datas) {
+                console.log(datas);
                 vmManager.isShowDetailWindow = true;
                 angular.forEach(datas, function (item) {
                     var dataItems = item.InspectionItemDatas.split(",");
