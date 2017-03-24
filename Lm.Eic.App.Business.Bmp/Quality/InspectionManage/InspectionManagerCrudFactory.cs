@@ -658,6 +658,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
         }
+
+        public OpResult UpAuditDetailData(string orderId, int orderIdNumber, string Updatestring)
+        {
+            return irep.UpAuditMaterData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);
+        }
     }
     #endregion
 

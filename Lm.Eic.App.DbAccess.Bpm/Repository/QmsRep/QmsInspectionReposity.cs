@@ -83,21 +83,22 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
 
     public interface IFqcInspectionMasterRepository : IRepository<InspectionFqcMasterModel>
     {
-        int GetOrderNumber(string OrderId);
-        double getorderSumCount(string orderId);
+        int UpAuditMaterData(string orderId, int orderIdNumber, string upAuditData);
+        int UpAuditDetailData(string orderId, int orderIdNumber, string upAuditData);
     }
 
     public class FqcInspectionMasterRepository : BpmRepositoryBase<InspectionFqcMasterModel>, IFqcInspectionMasterRepository
     {
-        public int GetOrderNumber(string Orderid)
+        public int UpAuditDetailData(string orderId, int orderIdNumber, string upAuditData)
         {
-          
-            throw new NotImplementedException();
+            string upDetailsql = string.Format("Update   Qms_FqcInspectionDetail   Set   InspectionItemStatus='{0}'  Where OrderId='{1}' and  OrderIdNumber='{2}'", upAuditData, orderId, orderIdNumber);
+            return DbHelper.Bpm.ExecuteNonQuery(upDetailsql);
         }
 
-        public double getorderSumCount(string orderId)
+        public int UpAuditMaterData(string orderId, int orderIdNumber, string upAuditData)
         {
-            throw new NotImplementedException();
+            string upDetailsql = string.Format("Update   Qms_FqcInspectionMaster   Set  InspectionItemStatus='{0}'  Where OrderId='{1}' and  OrderIdNumber='{2}'", upAuditData, orderId, orderIdNumber);
+            return DbHelper.Bpm.ExecuteNonQuery(upDetailsql);
         }
     }
 
