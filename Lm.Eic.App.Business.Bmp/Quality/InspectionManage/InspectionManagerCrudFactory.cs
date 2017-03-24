@@ -652,7 +652,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         public List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(string formStatus, DateTime dateFrom, DateTime dateTo)
         {
-            return null;
+            return irep.Entities.Where(e => e.InspectionStatus == formStatus && e.MaterialInDate >= dateFrom && e.MaterialInDate <= dateTo).ToList();
         }
         public List<InspectionFqcMasterModel> GetFqcInspectionMasterListBy(string materialId)
         {
