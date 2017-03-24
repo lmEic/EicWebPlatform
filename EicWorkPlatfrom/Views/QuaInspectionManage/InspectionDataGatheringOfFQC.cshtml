@@ -90,7 +90,7 @@
                         <i class="fa fa-list-ul">工单抽检批次列表</i>
                     </p>
                 </div>
-                <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
+                <div class="panel-group" ng-model="panels.activePanel" role="tablist" cg-busy="{promise:searchPromise}" aria-multiselectable="true" bs-collapse>
                     <div class="panel panel-default" ng-repeat="item in vmManager.panelDataSource" ng-show="vmManager.panelDataSource.length>0">
                         <div class="panel-heading" role="tab" ng-click="vmManager.selectOrderSubIdItem(item)">
                             <a bs-collapse-toggle style="cursor:pointer;color:#000">
