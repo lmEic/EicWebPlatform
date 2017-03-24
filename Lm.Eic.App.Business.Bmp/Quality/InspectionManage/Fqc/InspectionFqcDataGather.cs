@@ -28,25 +28,35 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionItemDataSummaryLabelModel> BuildingFqcInspectionSummaryDataBy(string orderId, double sampleCount)
         {
-            List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
-            ///一个工单 对应一个料号，有工单就是料号
-            var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault();
-            if (orderMaterialInfo == null) return returnList;
-            ///得到需要检验的项目
-            var fqcNeedInspectionsItemdatas = GetFqcNeedInspectionItemDatas(orderMaterialInfo.ProductID);
-            if (fqcNeedInspectionsItemdatas == null || fqcNeedInspectionsItemdatas.Count <= 0) return returnList;
+            try
+            {
+                List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
+                ///一个工单 对应一个料号，有工单就是料号
+                var orderMaterialInfoList = GetPuroductSupplierInfo(orderId);
+                if (orderMaterialInfoList == null || orderMaterialInfoList.Count <= 0)
+                    return new List<InspectionItemDataSummaryLabelModel>();
+                var orderMaterialInfo = orderMaterialInfoList[0];
+                ///得到需要检验的项目
+                var fqcNeedInspectionsItemdatas = GetFqcNeedInspectionItemDatas(orderMaterialInfo.ProductID);
+                if (fqcNeedInspectionsItemdatas == null || fqcNeedInspectionsItemdatas.Count <= 0) return returnList;
 
-            /// Master表中得到序号
-            int orderIdNumber = 0;
-            var FqcHaveInspectionAllOrderiDDatas = GetFqcMasterOrderIdDatasBy(orderId);
-            if (FqcHaveInspectionAllOrderiDDatas == null || fqcNeedInspectionsItemdatas.Count <= 0) orderIdNumber = 1;
-            else orderIdNumber = FqcHaveInspectionAllOrderiDDatas.Max(e => e.OrderNumber);
-            ///处理数据
-            returnList = HandleBuildingSummaryDataLabelModel(sampleCount, orderIdNumber, orderMaterialInfo, fqcNeedInspectionsItemdatas);
+                /// Master表中得到序号
+                int orderIdNumber = 0;
+                var FqcHaveInspectionAllOrderiDDatas = GetFqcMasterOrderIdDatasBy(orderId);
+                if (FqcHaveInspectionAllOrderiDDatas == null || fqcNeedInspectionsItemdatas.Count <= 0) orderIdNumber = 1;
+                else orderIdNumber = FqcHaveInspectionAllOrderiDDatas.Max(e => e.OrderNumber);
+                ///处理数据
+                returnList = HandleBuildingSummaryDataLabelModel(sampleCount, orderIdNumber, orderMaterialInfo, fqcNeedInspectionsItemdatas);
+                /// 创建详表时 存储主表
+                StoreBuildingFqcMaster(orderMaterialInfo, orderId, sampleCount, orderIdNumber);
+                return returnList;
+            }
+            catch (Exception ex)
+            {
+                return new List<InspectionItemDataSummaryLabelModel>();
+                throw new Exception(ex.InnerException.Message);
+            }
 
-            /// 创建详表时 存储主表
-            StoreBuildingFqcMaster(orderMaterialInfo, orderId, sampleCount, orderIdNumber);
-            return returnList;
         }
         /// <summary>
         /// 得到FQC检验项目所有的信息
