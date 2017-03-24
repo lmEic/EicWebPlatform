@@ -18,7 +18,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionFqcMasterModel> GetFqcMasterOrderIdDatasBy(string orderId)
         {
-            return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(orderId);
+            try
+            {
+                return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(orderId);
+            }
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
+            
         }
         /// <summary>
         /// 生成FQC检验项目所有的信息
@@ -44,7 +53,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 int orderIdNumber = 0;
                 var FqcHaveInspectionAllOrderiDDatas = GetFqcMasterOrderIdDatasBy(orderId);
                 if (FqcHaveInspectionAllOrderiDDatas == null || fqcNeedInspectionsItemdatas.Count <= 0) orderIdNumber = 1;
-                else orderIdNumber = FqcHaveInspectionAllOrderiDDatas.Max(e => e.OrderNumber);
+                else orderIdNumber = FqcHaveInspectionAllOrderiDDatas.Max(e => e.OrderNumber)+1;
                 ///处理数据
                 returnList = HandleBuildingSummaryDataLabelModel(sampleCount, orderIdNumber, orderMaterialInfo, fqcNeedInspectionsItemdatas);
                 /// 创建详表时 存储主表
