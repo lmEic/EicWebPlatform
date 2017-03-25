@@ -1189,6 +1189,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionrefusecount = value; }
             get { return _inspectionrefusecount; }
         }
+        /// <summary>
+        /// 需录入的数据
+        /// </summary>
+        private int _needPutInDataCount = 1;
+        public int NeedPutInDataCount
+        {
+            set { _needPutInDataCount = value; }
+            get { return _needPutInDataCount; }
+        }
         private string _inspectionitemdatas;
         /// <summary>
         ///检验数据

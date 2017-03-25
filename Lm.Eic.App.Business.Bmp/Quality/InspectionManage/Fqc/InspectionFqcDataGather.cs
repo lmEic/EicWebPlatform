@@ -19,8 +19,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="materialId"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public int FqcNeedInputDataCountBy(string orderId, int orderIdNumber, string materialId, int defaultValue )
+        public int FqcNeedInputDataCountBy(string orderId, int orderIdNumber, string materialId, string InspectionDataGatherType, int defaultValue )
         {
+            if (InspectionDataGatherType == "D") return 1;
             return defaultValue;
         }
         /// <summary>
@@ -251,8 +252,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         SizeLSL = m.SizeLSL,
                         SizeUSL = m.SizeUSL,
                         SizeMemo = m.SizeMemo,
-
-
                         InspectionAQL = string.Empty,
                         InspectionMode = string.Empty,
                         InspectionLevel = string.Empty,
@@ -276,13 +275,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     if (inspectionModeConfigModelData != null)
                     {
                         model.InspectionMode = inspectionModeConfigModelData.InspectionMode;
+                        
                         model.InspectionLevel = inspectionModeConfigModelData.InspectionLevel;
                         model.InspectionAQL = inspectionModeConfigModelData.InspectionAQL;
                         model.InspectionCount = inspectionModeConfigModelData.InspectionCount;
                         model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
                         model.RefuseCount = inspectionModeConfigModelData.RefuseCount;
                         //需要录入的数据个数 暂时为抽样的数量
-                        model.NeedFinishDataNumber = FqcNeedInputDataCountBy(model.OrderId, model.OrderIdNumber, model.MaterialId, inspectionModeConfigModelData.InspectionCount);
+                        model.NeedFinishDataNumber = FqcNeedInputDataCountBy(model.OrderId, model.OrderIdNumber, model.MaterialId, model.InspectionDataGatherType, inspectionModeConfigModelData.InspectionCount);
                     }
                     returnList.Add(model);
                 });
@@ -390,12 +390,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         InspectionItemStatus = m.InspectionItemStatus,
                         ///检验方法
                         InspectionMethod = m.InspectionMethod,
-                        
+                        InspectionMode=string.Empty,
                         //数据采集类型
                         InspectionCount =(int) m.InspectionCount,
                         InspectionItemDatas = m.InspectionItemDatas,
                         ///需要完成数量 得于 检验数
-                        NeedFinishDataNumber =(int) m.InspectionCount,
+                        NeedFinishDataNumber =m.NeedPutInDataCount,
                         InsptecitonItemIsFinished = false,
                         /// 分析已完成的数据的数量
                         HaveFinishDataNumber = this.DoHaveFinishDataNumber(m.InspectionItemResult, m.InspectionItemDatas,(int) m.InspectionCount),
@@ -418,7 +418,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     {
                         ///如果检验方法 不为空 侧不需要赋值
                         if (model.InspectionMode == string.Empty)
-                            model.InspectionMode = inspectionModeConfigModelData.InspectionMode;
+                        model.InspectionMode = inspectionModeConfigModelData.InspectionMode;
                         model.InspectionLevel = inspectionModeConfigModelData.InspectionLevel;
                         model.InspectionAQL = inspectionModeConfigModelData.InspectionAQL;
                         model.InspectionCount = inspectionModeConfigModelData.InspectionCount;
@@ -492,6 +492,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialId = sumModel.MaterialId,
                     MaterialInDate = sumModel.MaterialInDate,
                     InspectionMode = sumModel.InspectionMode,
+                    NeedPutInDataCount=sumModel.NeedFinishDataNumber ,
                     Memo = sumModel.Memo,
                     ClassType = sumModel.ClassType,
                     Department = sumModel.Department,
