@@ -424,8 +424,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetInspectionFormDetailOfFqcDatas(string orderId, string materialId)
         {
+
+            //var datas = InspectionService.DataGatherManager.FqcDataGather.FindIqcInspectionItemDataSummaryLabelListBy(orderId,orderIdNumber);
             var datas = "";
-            //var datas = InspectionService.DataGatherManager.IqcDataGather.FindIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]

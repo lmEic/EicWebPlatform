@@ -16,7 +16,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             //查询ERP中所有物料和单号 
             var list = InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(formStatus, dateFrom, dateTo);
        
-            if (list == null || list.Count <= 0) return new List<InspectionFqcMasterModel>();
             switch (formStatus)
             {
                 case "待检测":
