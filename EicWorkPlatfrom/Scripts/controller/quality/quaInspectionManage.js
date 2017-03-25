@@ -246,11 +246,11 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     };
     //iqc检验单管理模块获取详细数据
-    quality.getInspectionFormDetailOfFqcDatas = function (orderId, materialId) {
+    quality.getInspectionFormDetailOfFqcDatas = function (orderId, orderIdNumber) {
         var url = quaInspectionManageUrl + "GetInspectionFormDetailOfFqcDatas";
         return ajaxService.getData(url, {
             orderId: orderId,
-            materialId: materialId
+            orderIdNumber: orderIdNumber
         })
     }
     //iqc检验单管理模块发送审核数据
@@ -989,7 +989,6 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         getDetailDatas: function (item) {
             vmManager.currentItem = item;
             qualityInspectionDataOpService.getInspectionFormDetailOfIqcDatas(item.OrderId, item.MaterialId).then(function (datas) {
-                console.log(datas);
                 vmManager.isShowDetailWindow = true;
                 angular.forEach(datas, function (item) {
                     var dataItems = item.InspectionItemDatas.split(",");
@@ -1266,12 +1265,12 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
         //获取检验表单主数据
         getMasterDatas: function () {
             $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormManageOfFqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
-                console.log(editDatas);
                 if (editDatas.length >= 100) {
                     vmManager.showTips.$promise.then(vmManager.showTips.show);
                 }
                 vmManager.dataSource = editDatas;
                 vmManager.dataSets = editDatas;
+                console.log(editDatas);
             })
         },
         //审核
@@ -1282,13 +1281,15 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
         //获取详细数据
         getDetailDatas: function (item) {
             vmManager.currentItem = item;
-            qualityInspectionDataOpService.getInspectionFormDetailOfFqcDatas(item.OrderId, item.MaterialId).then(function (datas) {
+            qualityInspectionDataOpService.getInspectionFormDetailOfFqcDatas(item.OrderId, item.OrderIdNumber).then(function (datas) {
                 vmManager.isShowDetailWindow = true;
                 angular.forEach(datas, function (item) {
                     var dataItems = item.InspectionItemDatas.split(",");
                     item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
                 })
                 vmManager.detailDatas = datas;
+              
+                console.log(vmManager.detailDatas);
             })
         },
         //返回

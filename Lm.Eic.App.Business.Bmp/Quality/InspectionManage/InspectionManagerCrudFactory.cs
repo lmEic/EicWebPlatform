@@ -603,7 +603,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
-                return irep.IsExist(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspecitonItem == inspecitonItem);
+                return irep.IsExist(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspectionItem == inspecitonItem);
             }
             catch (Exception ex)
             {
@@ -661,7 +661,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         public OpResult UpAuditDetailData(string orderId, int orderIdNumber, string Updatestring)
         {
-            return irep.UpAuditMaterData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);
+            return irep.UpAuditDetailData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);
         }
     }
     #endregion
