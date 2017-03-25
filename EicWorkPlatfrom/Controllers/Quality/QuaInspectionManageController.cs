@@ -224,6 +224,11 @@ namespace EicWorkPlatfrom.Controllers
             var data = InspectionService.ConfigManager.ModeConfigManager.GetInspectionModeConfigStrList(inspectionMode, inspectionLevel);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 存储配置方式
+        /// </summary>
+        /// <param name="inspectionModeConfigEntity"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult StoreInspectionModeConfigData(InspectionModeConfigModel inspectionModeConfigEntity)
         {
@@ -327,7 +332,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetFqcOrderInfoDatas(string orderId)
         {
-            var orderInfo = InspectionService.DataGatherManager.FqcDataGather.FindFqcInspectionFqcOrderIdModel(orderId);
+            var orderInfo = InspectionService.DataGatherManager.FqcDataGather.GetFqcInspectionFqcOrderIdInfoBy(orderId);
             var sampledDatas = InspectionService.DataGatherManager.FqcDataGather.GetFqcMasterOrderIdDatasBy(orderId);
             var datas = new { orderInfo = orderInfo, sampledDatas = sampledDatas };
             return Json(datas, JsonRequestBehavior.AllowGet);
@@ -422,18 +427,18 @@ namespace EicWorkPlatfrom.Controllers
             return DateJsonResult(datas);
         }
         [NoAuthenCheck]
-        public JsonResult GetInspectionFormDetailOfFqcDatas(string orderId, string materialId)
+        public JsonResult GetInspectionFormDetailOfFqcDatas(string orderId, int orderIdNumber)
         {
 
-            //var datas = InspectionService.DataGatherManager.FqcDataGather.FindIqcInspectionItemDataSummaryLabelListBy(orderId,orderIdNumber);
-            var datas = "";
+            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionDatailListBy(orderId,orderIdNumber);
+            
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
-        public JsonResult PostInspectionFormManageCheckedOfFqcData(InspectionIqcMasterModel model)
+        public JsonResult PostInspectionFormManageCheckedOfFqcData(InspectionFqcMasterModel model)
         {
-            var opResult = "";
-            //var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel(model);
+
+            var opResult = InspectionService.InspectionFormManager.FqcFromManager.AuditFqcInspectionMasterModel(model);
             return Json(opResult);
         }
 

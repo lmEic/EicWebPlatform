@@ -52,6 +52,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 MaterialInDate = model.MaterialInDate,
                 OpSign = "add",
                 Memo = model.Memo,
+                InspectionNGCount= model.InspectionNGCount,
                 OpPerson = model.OpPerson,
                 Id_Key = model.Id_Key
             };
