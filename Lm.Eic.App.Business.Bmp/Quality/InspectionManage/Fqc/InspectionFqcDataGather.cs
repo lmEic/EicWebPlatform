@@ -389,7 +389,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         EquipmentId = m.EquipmentId,
                         InspectionItemStatus = m.InspectionItemStatus,
                         ///检验方法
-                        InspectionMethod = m.InspectionMode,
+                        InspectionMethod = m.InspectionMethod,
+                        
                         //数据采集类型
                         InspectionCount =(int) m.InspectionCount,
                         InspectionItemDatas = m.InspectionItemDatas,
@@ -399,6 +400,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         /// 分析已完成的数据的数量
                         HaveFinishDataNumber = this.DoHaveFinishDataNumber(m.InspectionItemResult, m.InspectionItemDatas,(int) m.InspectionCount),
                         InspectionItemResult = m.InspectionItemResult,
+                        Id_Key=m.Id_Key 
                     };
                     /// 依据检验项目得到相应的数值
                     var InspectionsItemdata = fqcInspectionsItemdatas.FirstOrDefault(e => e.InspectionItem == m.InspectionItem);

@@ -637,8 +637,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private OpResult EidtFqcInspectionMaster(InspectionFqcMasterModel model)
         {
             var findmodel = irep.Entities.FirstOrDefault(e => e.OrderId == model.OrderId && e.OrderIdNumber == model.OrderIdNumber && e.MaterialId == model.MaterialId);
-            model.InspectionItems = findmodel.InspectionItems + "," + model.InspectionItems;
-            return irep.Update(e => e.Id_Key == findmodel.Id_Key, model).ToOpResult_Eidt(OpContext);
+            if (findmodel == null) return new OpResult(OpContext, false); 
+             model.InspectionItems = findmodel.InspectionItems + "," + model.InspectionItems;
+             model.Id_Key = findmodel.Id_Key;
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
         private OpResult AddFqcInspectionMaster(InspectionFqcMasterModel model)
