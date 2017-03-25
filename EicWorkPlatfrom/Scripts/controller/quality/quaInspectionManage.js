@@ -758,11 +758,16 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         //生成抽样表单项
         createSampleFormItem: function () {
             qualityInspectionDataOpService.createFqcSampleFormItem(vmManager.orderInfo.OrderId, vmManager.sampleCount).then(function (inspectionItemDatas) {
+                if (!vmManager.sampleCount)
+                {
+                    alert("抽样批次数量不能为空！")
+                }
                 if (angular.isArray(inspectionItemDatas) && inspectionItemDatas.length > 0)
                 {
                     var item = inspectionItemDatas[0];
-                    var dataItem = { orderId: item.OrderId, orderNum: item.OrderNumber, inspectionStatus: item.InspectionStatus, inspectionItemDatas: inspectionItemDatas, dataSets: inspectionItemDatas };
+                    var dataItem = { orderId: item.OrderId, orderIdNumber: item.OrderIdNumber, inspectionStatus: item.InspectionStatus, inspectionItemDatas: inspectionItemDatas, dataSets: inspectionItemDatas };
                     vmManager.panelDataSource.push(dataItem);
+                    vmManager.sampleCount = 0;
                 }
             })
         },
