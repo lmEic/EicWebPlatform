@@ -1325,7 +1325,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private int _orderidnumber;
         /// <summary>
-        ///单号序次
+        ///单号序次  OrderIdNumber
         /// </summary>
         public int OrderIdNumber
         {
