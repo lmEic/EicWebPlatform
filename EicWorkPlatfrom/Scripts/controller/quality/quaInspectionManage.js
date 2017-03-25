@@ -173,7 +173,12 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             orderIdNumber: orderIdNumber,
         });
     };
-
+    quality.storeFqcInspectionGatherDatas = function (gatherData) {
+        var url = quaInspectionManageUrl + 'StoreFqcInspectionGatherDatas';
+        return ajaxService.postData(url, {
+            gatherData: gatherData,
+        });
+    };
     /////////////////////////////iqc检验单管理模块/////////////////////////
     //iqc检验单管理模块获取表单数据  
     quality.getInspectionFormManageOfIqcDatas = function (formStatus, dateFrom, dateTo) {
@@ -817,7 +822,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         //点击检验项目获取所有项目信息
         selectInspectionItem: function (item) {
             vmManager.currentInspectionItem = item;
-            //vmManager.currentInspectionItem.InspectionDataGatherType = 'C';
             vmManager.dataList = [];
             var dataGatherType = vmManager.currentInspectionItem.InspectionDataGatherType;
             vmManager.createGataherDataUi(dataGatherType, item);
@@ -905,7 +909,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     //保存Iqc采集数据
-    operate.saveIqcGatherDatas = function () {
+    operate.saveGatherDatas = function () {
         var dataList = [], result = true;
         var dataItem = vmManager.currentInspectionItem;
         if (dataItem.InspectionDataGatherType === "A" || dataItem.InspectionDataGatherType === "C") {
@@ -925,7 +929,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         }
         dataItem.InsptecitonItemIsFinished = true;
         leeHelper.setUserData(dataItem);
-        $scope.opPromise = qualityInspectionDataOpService.storeIqcInspectionGatherDatas(dataItem).then(function (opResult) {
+        $scope.opPromise = qualityInspectionDataOpService.storeFqcInspectionGatherDatas(dataItem).then(function (opResult) {
             if (opResult.Result) {
                 //更新界面检测项目列表
                 vmManager.updateInspectionItemList(dataItem);
