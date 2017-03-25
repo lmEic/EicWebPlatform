@@ -155,10 +155,8 @@
                             <div class="col-md-4">
                                 <span>
                                     <label>抽样方案:</label>
-                                    {{vmManager.currentInspectionItem.InspectionCount}}
-                                    <span ng-if="vmManager.currentInspectionItem.AcceptCount!==null">/</span>
-                                    {{vmManager.currentInspectionItem.AcceptCount}}
-                                    <span ng-if="vmManager.currentInspectionItem.RefuseCount!==null">/</span>
+                                    {{vmManager.currentInspectionItem.InspectionCount}}/
+                                    {{vmManager.currentInspectionItem.AcceptCount}}/
                                     {{vmManager.currentInspectionItem.RefuseCount}}
                                 </span>
                             </div>
@@ -305,12 +303,12 @@
                                     </div>
                                 </fieldset>
                                 <hr />
-                                <div class="alert alert-info" ng-hide="vmManager.currentInspectionItem.InspectionItemResult==='OK'">
+                                <div class="alert alert-info" ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
                                     <div class="row">
                                         <div class="col-md-2">
                                         </div>
                                         <div class="col-md-10">
-                                            <button class="btn btn-primary" ng-click="operate.saveIqcGatherDatas()"><i class="fa fa-save"></i>保存数据</button>
+                                            <button class="btn btn-primary" ng-click="operate.saveGatherDatas()"><i class="fa fa-save"></i>保存数据</button>
                                             <span yl-operatemsg-board></span>
                                         </div>
                                     </div>

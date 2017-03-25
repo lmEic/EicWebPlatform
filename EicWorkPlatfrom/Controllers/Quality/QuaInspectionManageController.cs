@@ -367,9 +367,10 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult StoreFqcSampleItemDatas(InspectionItemDataSummaryLabelModel model)
+        public JsonResult StoreFqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
-            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(model);
+
+            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
         }
         #endregion
