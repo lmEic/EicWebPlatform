@@ -1065,12 +1065,30 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private int _orderidnumber;
         /// <summary>
-        ///单号序次
+        ///单号序号
         /// </summary>
         public int OrderIdNumber
         {
             set { _orderidnumber = value; }
             get { return _orderidnumber; }
+        }
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _classtype;
+        /// <summary>
+        ///班别
+        /// </summary>
+        public string ClassType
+        {
+            set { _classtype = value; }
+            get { return _classtype; }
         }
         private string _materialid;
         /// <summary>
@@ -1090,36 +1108,45 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionitem = value; }
             get { return _inspectionitem; }
         }
-        private double _materialcount;
+        private double _orderidcount;
         /// <summary>
-        ///物料数量
+        ///订单总数
         /// </summary>
-        public double MaterialCount
+        public double OrderIdCount
         {
-            set { _materialcount = value; }
-            get { return _materialcount; }
-        }
-        private string _inspectionmode;
-        /// <summary>
-        ///检验方法
-        /// </summary>
-        public string InspectionMode
-        {
-            set { _inspectionmode = value; }
-            get { return _inspectionmode; }
+            set { _orderidcount = value; }
+            get { return _orderidcount; }
         }
         private DateTime _materialindate;
         /// <summary>
-        ///物料日期
+        ///订单生产日期
         /// </summary>
         public DateTime MaterialInDate
         {
             set { _materialindate = value; }
             get { return _materialindate; }
         }
+        private double _materialCount;
+        /// <summary>
+        ///生产批量数
+        /// </summary>
+        public double MaterialCount
+        {
+            set { _materialCount = value; }
+            get { return _materialCount; }
+        }
+        private string _inspectionmethod;
+        /// <summary>
+        ///检验方法
+        /// </summary>
+        public string InspectionMethod
+        {
+            set { _inspectionmethod = value; }
+            get { return _inspectionmethod; }
+        }
         private string _equipmentid;
         /// <summary>
-        ///检验工具财产编号
+        ///检验冶具
         /// </summary>
         public string EquipmentId
         {
@@ -1135,9 +1162,18 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectioncount = value; }
             get { return _inspectioncount; }
         }
+        private string _inspectionmode;
+        /// <summary>
+        ///检验方式
+        /// </summary>
+        public string InspectionMode
+        {
+            set { _inspectionmode = value; }
+            get { return _inspectionmode; }
+        }
         private double _inspectionacceptcount;
         /// <summary>
-        ///接返数量
+        ///接受数量
         /// </summary>
         public double InspectionAcceptCount
         {
@@ -1146,7 +1182,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private double _inspectionrefusecount;
         /// <summary>
-        ///拒受数量
+        ///拒收数量
         /// </summary>
         public double InspectionRefuseCount
         {
@@ -1164,7 +1200,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _inspectionitemstatus;
         /// <summary>
-        ///检验项目状态
+        ///检验状态
         /// </summary>
         public string InspectionItemStatus
         {
@@ -1173,7 +1209,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _inspectionitemresult;
         /// <summary>
-        ///检验项目结果
+        ///项目检验结果
         /// </summary>
         public string InspectionItemResult
         {
@@ -1182,34 +1218,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _inspectiondatatimeregion;
         /// <summary>
-        ///检验项目时间段
+        ///检验时间段
         /// </summary>
         public string InspectionDataTimeRegion
         {
             set { _inspectiondatatimeregion = value; }
             get { return _inspectiondatatimeregion; }
         }
-        private string _classtype;
-        /// <summary>
-        ///班别
-        /// </summary>
-        public string ClassType
-        {
-            set { _classtype = value; }
-            get { return _classtype; }
-        }
-        private string _department;
-        /// <summary>
-        ///部门
-        /// </summary>
-        public string Department
-        {
-            set { _department = value; }
-            get { return _department; }
-        }
         private string _instorageorderid;
         /// <summary>
-        ///入库单号
+        ///入库单
         /// </summary>
         public string InStorageOrderId
         {
@@ -1218,7 +1236,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private double _inspectionngcount;
         /// <summary>
-        ///不良数量
+        ///不良数
         /// </summary>
         public double InspectionNGCount
         {
@@ -1236,7 +1254,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _memo;
         /// <summary>
-        ///说明
+        ///备注
         /// </summary>
         public string Memo
         {
@@ -1281,7 +1299,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private decimal _id_key;
         /// <summary>
-        ///自增键 
+        ///自增键
         /// </summary>
         public decimal Id_Key
         {
@@ -1307,7 +1325,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private int _orderidnumber;
         /// <summary>
-        ///单号序次
+        ///单号序次  OrderIdNumber
         /// </summary>
         public int OrderIdNumber
         {

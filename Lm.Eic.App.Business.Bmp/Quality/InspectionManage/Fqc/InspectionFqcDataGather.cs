@@ -263,7 +263,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         InsptecitonItemIsFinished = false,
                         ClassType="白班",
                         InStorageOrderId="入库单",
-                        InspectionItemSumCount=0,
+                        InspectionItemSumCount =0,
                         InspectionNGCount=0,
                         InspectionDataTimeRegion="录入时间段",
                         Memo="备注",
@@ -384,6 +384,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         MaterialDrawId = orderMaterialInfo.ProductDrawID,
                         MaterialInDate = orderMaterialInfo.ProduceInDate,
                         MaterialInCount = orderMaterialInfo.ProduceNumber,
+                        MaterialCount =m.MaterialCount ,
                         InspectionItem = m.InspectionItem,
                         EquipmentId = m.EquipmentId,
                         InspectionItemStatus = m.InspectionItemStatus,
@@ -454,6 +455,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialSpec = sumModel.MaterialSpec,
                     MaterialDrawId = sumModel.MaterialDrawId,
                     MaterialSupplier = sumModel.MaterialSupplier,
+                    ///订单数量
                     MaterialCount = sumModel.MaterialInCount,
                     MaterialInDate = sumModel.MaterialInDate,
                     InspectionMode = sumModel.InspectionMode,
@@ -461,7 +463,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     FinishDate = DateTime.Now.Date,
                     InspectionStatus = "待审核",
                     InspectionResult = sumModel.InspectionItemResult,
-                    InspectionCount = sumModel.InspectionCount,
+                    ///检验批次数量
+                    InspectionCount = sumModel.MaterialCount ,
                     Department = sumModel.MaterialSupplier,
                     OpPerson = sumModel.OpPerson,
                     OpSign = "edit"
@@ -472,7 +475,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     OrderId = sumModel.OrderId,
                     OrderIdNumber = sumModel.OrderIdNumber,
                     EquipmentId = sumModel.EquipmentId,
-                    MaterialCount = sumModel.MaterialInCount,
+                    OrderIdCount = sumModel.MaterialInCount,
+                    InspectionMethod=sumModel.InspectionMethod,
+                    ///物料批次数量
+                    MaterialCount=sumModel.MaterialCount,
                     InspectionItem = sumModel.InspectionItem,
                     InspectionAcceptCount = sumModel.AcceptCount,
                     InspectionCount = sumModel.InspectionCount,
@@ -515,7 +521,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     OrderId = sumModel.OrderId,
                     OrderIdNumber = sumModel.OrderIdNumber,
                     EquipmentId = sumModel.EquipmentId,
-                    MaterialCount = sumModel.MaterialInCount,
+                    OrderIdCount = sumModel.MaterialInCount,
+                     ///物料批次数量
+                     MaterialCount = sumModel.MaterialCount,
+                    InspectionMethod=sumModel.InspectionMethod,
                     InspectionItem = sumModel.InspectionItem,
                     InspectionAcceptCount = sumModel.AcceptCount,
                     InspectionCount = sumModel.InspectionCount,
