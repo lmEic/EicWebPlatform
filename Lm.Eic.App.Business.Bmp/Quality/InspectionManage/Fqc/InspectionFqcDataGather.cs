@@ -390,16 +390,40 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         InspectionItemStatus = m.InspectionItemStatus,
                         ///检验方法
                         InspectionMethod = m.InspectionMethod,
-                        InspectionMode=string.Empty,
-                        //数据采集类型
-                        InspectionCount =(int) m.InspectionCount,
                         InspectionItemDatas = m.InspectionItemDatas,
                         ///需要完成数量 得于 检验数
                         NeedFinishDataNumber =m.NeedPutInDataCount,
+                        InspectionItemResult = m.InspectionItemResult,
+                        Department = m.Department,
+                        InspectionNGCount = m.InspectionNGCount,
+                        ClassType = m.ClassType,
                         InsptecitonItemIsFinished = false,
                         /// 分析已完成的数据的数量
                         HaveFinishDataNumber = this.DoHaveFinishDataNumber(m.InspectionItemResult, m.InspectionItemDatas,(int) m.InspectionCount),
-                        InspectionItemResult = m.InspectionItemResult,
+
+                       
+                        InStorageOrderId=m.InStorageOrderId,
+                        InspectionItemSumCount=0,
+                        
+                        InspectionDataTimeRegion="",
+
+                        InspectionMode = string.Empty,
+                        InspectionLevel = "1",
+                        InspectionAQL = "1",
+                        //数据采集类型
+                        InspectionCount = 0,
+                        AcceptCount = 0,
+                        RefuseCount = 0,
+
+
+                       
+                        
+                        InspectionDataGatherType = "",
+                        SizeLSL =0,
+                        SizeUSL=0,
+                        SizeMemo="",
+
+                        Memo=m.Memo,
                         Id_Key=m.Id_Key 
                     };
                     /// 依据检验项目得到相应的数值
@@ -425,7 +449,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
                         model.RefuseCount = inspectionModeConfigModelData.RefuseCount;
                         //需要录入的数据个数 暂时为抽样的数量
-                        model.NeedFinishDataNumber = inspectionModeConfigModelData.InspectionCount;
+                        //model.NeedFinishDataNumber = inspectionModeConfigModelData.InspectionCount;
                     }
                     returnList.Add(model);
                 });

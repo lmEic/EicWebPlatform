@@ -1243,11 +1243,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _instorageorderid = value; }
             get { return _instorageorderid; }
         }
-        private double _inspectionngcount;
+        private int  _inspectionngcount;
         /// <summary>
         ///不良数
         /// </summary>
-        public double InspectionNGCount
+        public int InspectionNGCount
         {
             set { _inspectionngcount = value; }
             get { return _inspectionngcount; }
