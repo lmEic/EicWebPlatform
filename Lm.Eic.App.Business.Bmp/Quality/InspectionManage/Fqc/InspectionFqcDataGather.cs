@@ -525,15 +525,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private OpResult storeInspectionDetial(InspectionFqcDetailModel model)
         {
-            var isExistmodel = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailModelBy(model.OrderId, model.OrderIdNumber, model.InspectionItem);
-            if (isExistmodel!=null || model.Id_Key!=0)
-            {
-                model.Id_Key = isExistmodel.Id_Key;
-                string path = isExistmodel.DocumentPath;
-                if(path!=null&&path != string.Empty)
-                path.DeleteFileDocumentation();
-                model.OpSign = OpMode.Edit;
-            }
+            //var isExistmodel = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailModelBy(model.OrderId, model.OrderIdNumber, model.InspectionItem);
+            //if (isExistmodel!=null || model.Id_Key!=0)
+            //{
+            //    model.Id_Key = isExistmodel.Id_Key;
+            //    string path = isExistmodel.DocumentPath;
+            //    if(path!=null&&path != string.Empty)
+            //    path.DeleteFileDocumentation();
+            //    model.OpSign = OpMode.Edit;
+            //}
             return InspectionManagerCrudFactory.FqcDetailCrud.Store(model);
         }
 
