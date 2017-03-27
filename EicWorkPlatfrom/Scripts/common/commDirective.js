@@ -60,7 +60,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                 return scope.currentYear.toString() + "0" + scope.currentQuarter.toString();
             };
             //当前季度
-            scope.currentQuarter =parseInt(Math.floor(cmonth % 3 == 0) ? (cmonth / 3) : (cmonth / 3 + 1));
+            scope.currentQuarter =parseInt(Math.floor(cmonth % 3 === 0) ? (cmonth / 3) : (cmonth / 3 + 1));
 
             scope.yearquarter = getCurrentQuarter();
 
@@ -402,18 +402,19 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             scope.config = config;
             // 变更当前页
             config.changeCurrentPage = function (page) {
-                if (page == '...') {
+                var d;
+                if (page === '...') {
                     return;
                 } else {
                     config.currentPage = page;
                 }
                 if (config.currentPage <= 1) {
-                    var d = _.clone(scope.datasource);
+                     d = _.clone(scope.datasource);
                     scope.dataset = d.splice(0, config.itemsPerPage);
                 }
                 else {
                     var startNumerPages = (config.currentPage - 1) * config.itemsPerPage;
-                    var d = _.clone(scope.datasource);
+                     d = _.clone(scope.datasource);
                     scope.dataset = d.splice(startNumerPages, config.itemsPerPage);
                 }
             };
@@ -494,7 +495,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                 // 定义状态
                 var perPageOptionsStatus;
                 for (var i = 0; i < perPageOptionsLength; i++) {
-                    if (scope.config.perPageOptions[i] == scope.config.itemsPerPage) {
+                    if (scope.config.perPageOptions[i] === scope.config.itemsPerPage) {
                         perPageOptionsStatus = true;
                     }
                 }
@@ -746,12 +747,12 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             scope.selected = function () {
                 scope.showCheckbox = false;
                 scope.onChecked();
-                scope.isChecked = true;
+                scope.isChecked = false;
                 };
             scope.unselected = function () {
                 scope.showCheckbox = true;
                 scope.onChecked();
-                scope.isChecked = false;
+                scope.isChecked = true;
             }
         }
     }

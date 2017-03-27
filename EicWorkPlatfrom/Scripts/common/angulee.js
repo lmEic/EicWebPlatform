@@ -287,7 +287,7 @@ var leeHelper = (function () {
             var reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
             return reg.test(val)
         },
-        ///读入图片文件并预览
+        ///读入图片文件并预览 imgId:图片控件Id,file：file元素
         readFile: function (imgId, file) {
             var reader = new FileReader();
             var img = document.getElementById(imgId)
@@ -298,6 +298,20 @@ var leeHelper = (function () {
                 };
             })(img);
             reader.readAsDataURL(file);
+        },
+        ///上传文件
+        upoadFile: function (el,handler) {
+            var files = el.files;
+            if (files.length > 0) {
+                var file = files[0];
+                var fd = new FormData();
+                fd.append('file', file);
+                if (handler && _.isFunction(handler))
+                {
+                    fd.name = file.name;
+                    handler(fd);
+                }
+            }
         },
         ///设置用户数据
         setUserData: function (uiVm) {
@@ -329,7 +343,7 @@ var leeHelper = (function () {
         },
         //对数组对象进行排序
         sortArrOfObjectsByPtName: function (arrToSort, strObjPropertyName, sortAscending) {
-            if (sortAscending == undefined) sortAscending = true;  // default to true
+            if (sortAscending === undefined) sortAscending = true;  // default to true
             if (sortAscending) {
                 //arrToSort.sort(function (a, b) {
                 //    return a[strObjPropertyName].toLowerCase() > b[strObjPropertyName].toLowerCase();
@@ -353,36 +367,36 @@ var leeHelper = (function () {
         var id = 0;
         var modData = totalCount % colCount;
         var rows =parseInt(totalCount / colCount);
-        var rowItem, colItem;
+        var rowItem, colItem,len,colIndex;
         for (var rowIndex = 1; rowIndex <= rows; rowIndex++) {
             rowItem = { rowId: rowIndex,cols:[]};
-            for (var colIndex = 1; colIndex <= colCount; colIndex++) {
+            for (colIndex = 1; colIndex <= colCount; colIndex++) {
                 id += 1;
                 colItem = { index: id, rowId: rowIndex, colId: colIndex, indata: null, focus: false, nextColId: colIndex + 1, result: true };
                 if (_.isArray(defaultDatas))//检测传入的数据是否是数组
                 {
-                    var len = defaultDatas.length + 1;
+                    len = defaultDatas.length + 1;
                     if (id <= len)
                     {
                         var idata=defaultDatas[id - 1];
                         if (idata !== undefined && idata !== "")
                             colItem.indata = idata;
-                        if (_.isFunction(handler) && colItem.indata != null)
+                        if (_.isFunction(handler) && colItem.indata !== null)
                             handler(colItem);
                     }
                 }
-                if (colIndex == colCount)
+                if (colIndex === colCount)
                 {
                     colItem.rowId += 1;
                     colItem.nextColId = 1;
                 }
-                if (id == totalCount)
+                if (id === totalCount)
                 {
                     colItem.nextColId = "last";
                 }
                 rowItem.cols.push(colItem);
             }
-            if (rowIndex == rows)
+            if (rowIndex === rows)
             {
                 rowIndex = rows + 1;
             }
@@ -390,19 +404,19 @@ var leeHelper = (function () {
         }
         //添加余数部分数据
         rowItem = { rowId: rows + 1, cols: [] };
-        for (var colIndex = 1; colIndex <= modData; colIndex++) {
+        for (colIndex = 1; colIndex <= modData; colIndex++) {
             id += 1;
             colItem = { index: id, rowId: rowItem.rowId, colId: colIndex, indata: null, focus: false, nextColId: colIndex + 1,result:true };
-            if (colIndex == modData)
+            if (colIndex === modData)
             {
                 colItem.nextColId = "last";
             }
             if (_.isArray(defaultDatas))//检测传入的数据是否是数组
             {
-                var len = defaultDatas.length + 1;
+                len = defaultDatas.length + 1;
                 if (id <= len) {
                     colItem.indata = defaultDatas[id - 1];
-                    if (_.isFunction(handler) && colItem.indata != null)
+                    if (_.isFunction(handler) && colItem.indata !== null)
                         handler(colItem);
                 }
             }
@@ -472,7 +486,7 @@ Date.prototype.pattern = function (fmt) {
     var o = {
         "M+": this.getMonth() + 1, //月份         
         "d+": this.getDate(), //日         
-        "h+": this.getHours() % 12 == 0 ? 12 : this.getHours() % 12, //小时         
+        "h+": this.getHours() % 12 === 0 ? 12 : this.getHours() % 12, //小时         
         "H+": this.getHours(), //小时         
         "m+": this.getMinutes(), //分         
         "s+": this.getSeconds(), //秒         
@@ -496,7 +510,7 @@ Date.prototype.pattern = function (fmt) {
     }
     for (var k in o) {
         if (new RegExp("(" + k + ")").test(fmt)) {
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         }
     }
     return fmt;
@@ -508,7 +522,7 @@ Array.prototype.unique = function () {
     {
         //如果当前数组的第i项在当前数组中第一次出现的位置不是i，
         //那么表示第i项是重复的，忽略掉。否则存入结果数组
-        if (this.indexOf(this[i]) == i) n.push(this[i]);
+        if (this.indexOf(this[i]) === i) n.push(this[i]);
     }
     return n;
 }

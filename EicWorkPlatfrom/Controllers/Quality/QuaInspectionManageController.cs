@@ -11,6 +11,12 @@ using Lm.Eic.App.Erp.Bussiness.QmsManage;
 
 namespace EicWorkPlatfrom.Controllers
 {
+    /********************************************************************
+    	created:	2017/03/27
+    	file ext:	cs
+    	author:		YLee
+    	purpose:	
+    *********************************************************************/
     public class QuaInspectionManageController : EicBaseController
     {
         //
@@ -64,7 +70,7 @@ namespace EicWorkPlatfrom.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 删除进料检验配置数据 deleteIqlInspectionConfigItem
+        /// 删除进料检验配置数据
         /// </summary>
         /// <param name="configItem"></param>
         /// <returns></returns>
@@ -95,22 +101,16 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult ImportIqcInspectionItemConfigDatas(HttpPostedFileBase file)
         {
             List<InspectionIqcItemConfigModel> datas = null;
-            if (file != null)
-            {
-                if (file.ContentLength > 0)
-                {
-                    ///待加入验证文件名称逻辑:
-                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
-                    file.SaveAs(fileName);
-                    datas = InspectionService.ConfigManager.IqcItemConfigManager.ImportProductFlowListBy(fileName);
-                    if (datas != null && datas.Count > 0)
-                    //批量保存数据
-                    { var opResult = InspectionService.ConfigManager.IqcItemConfigManager.StoreIqcInspectionItemConfig(datas); }
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp);
+            this.SaveFileToServer(file, filePath, () => {
+                string fileName = Path.Combine(filePath, file.FileName);
+                datas = InspectionService.ConfigManager.IqcItemConfigManager.ImportProductFlowListBy(fileName);
+                if (datas != null && datas.Count > 0)
+                //批量保存数据
+                { var opResult = InspectionService.ConfigManager.IqcItemConfigManager.StoreIqcInspectionItemConfig(datas); }
 
-                    System.IO.File.Delete(fileName);
-                }
-            }
-
+                System.IO.File.Delete(fileName);
+            });
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
@@ -208,7 +208,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <summary>
         /// 存储  检验方式配置
         /// </summary>
-        /// <param name="inspectionModeConfigEntity"></param>
+        /// <param name="inspectionMode"></param>
         /// <returns></returns>
         ///获取检验水平数据
         [NoAuthenCheck]
@@ -302,6 +302,18 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
+        /// 上传FQC检验采集数据附件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult UploadIqcGatherDataAttachFile(HttpPostedFileBase file)
+        {
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
+            this.SaveFileToServer(file, filePath);
+            return Json("OK");
+        }
+        /// <summary>
         /// 存储采集的数据
         /// </summary>
         /// <param name="gatherData"></param>
@@ -310,8 +322,9 @@ namespace EicWorkPlatfrom.Controllers
         [HttpPost]
         public JsonResult StoreIqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
-
-            var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcModelForm(gatherData);
+            gatherData.DocumentPath= Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM")),gatherData.FileName);
+            var rootPath = HttpContext.Request.PhysicalApplicationPath;
+            var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcModelForm(gatherData,rootPath);
             return Json(opResult);
         }
 
@@ -363,16 +376,33 @@ namespace EicWorkPlatfrom.Controllers
              return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
+        /// 上传FQC检验采集数据附件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult UploadFqcGatherDataAttachFile(HttpPostedFileBase file)
+        {
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
+            this.SaveFileToServer(file,filePath);
+            return Json("OK");
+        }
+
+       
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult StoreFqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
-
+            if (gatherData != null && gatherData.FileName != null)
+                gatherData.DocumentPath = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM")), gatherData.FileName);
             var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
         }
+       
         #endregion
         #endregion
 
@@ -423,8 +453,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ContentResult GetInspectionFormManageOfFqcDatas(string formStatus, DateTime dateFrom, DateTime dateTo)
         {
-           
-             var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
+            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
             return DateJsonResult(datas);
         }
         [NoAuthenCheck]

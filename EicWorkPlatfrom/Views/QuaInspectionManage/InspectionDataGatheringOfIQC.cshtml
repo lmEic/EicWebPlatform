@@ -208,6 +208,15 @@
                                             </span>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <span yl-checkbox data-content="上传附件" data-is-checked="showUploadFile">
+                                            </span>
+                                            <a href="javascript:void(0);" class="btn btn-sm btn-warning file" title="请选择要上传的附件" ng-if="showUploadFile">
+                                                <i class="fa fa-upload"></i>选择文件<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)">
+                                            </a>
+                                        </td>
+                                    </tr>
                                 </tbody>
                                 <tfoot ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'" ng-cloak>
                                     <tr>
@@ -267,6 +276,16 @@
                                                  <hr />
                                              </p>
                                          </div>
+                                     </div>
+                                     <div class="form-group">
+                                         <div class="col-md-3 col-md-offset-2">
+                                             <span yl-checkbox data-content="上传附件" data-is-checked="showUploadFile">
+                                             </span>
+                                             <a href="javascript:void(0);" class="btn btn-sm btn-warning file" title="请选择要上传的附件" ng-if="showUploadFile">
+                                                 <i class="fa fa-upload"></i>选择文件<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)">
+                                             </a>
+                                         </div>
+
                                      </div>
                                  </fieldset>
                                  <hr />

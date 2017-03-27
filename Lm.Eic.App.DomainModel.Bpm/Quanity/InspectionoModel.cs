@@ -293,7 +293,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
     }
 
-   #region IQC
+    #region IQC
     /// <summary>
     /// IQC物料检验配置文件
     /// </summary>
@@ -694,6 +694,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionmode = value; }
             get { return _inspectionmode; }
         }
+ 
         private DateTime _materialindate;
         /// <summary>
         ///进料日期
@@ -747,6 +748,26 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _inspectionitemdatas = value; }
             get { return _inspectionitemdatas; }
+        }
+
+        private string _documentPath;
+        /// <summary>
+        /// 文件存放路经
+        /// </summary>
+        public string DocumentPath
+        {
+            set { _documentPath = value; }
+            get { return _documentPath; }
+        }
+        private string _fileName;
+        /// <summary>
+        /// 文件名
+        /// </summary>
+        public string FileName
+        {
+            set { _fileName = value; }
+            get { return _fileName; }
+
         }
         private string _inspectionitemstatus;
         /// <summary>
@@ -1108,6 +1129,25 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionitem = value; }
             get { return _inspectionitem; }
         }
+        private string _documentPath;
+        /// <summary>
+        /// 文件存放路经
+        /// </summary>
+        public string DocumentPath
+        {
+            set { _documentPath = value; }
+            get { return _documentPath; }
+        }
+        private string _fileName;
+        /// <summary>
+        /// 文件名
+        /// </summary>
+        public string FileName
+        {
+            set { _fileName = value; }
+            get { return _fileName; }
+
+        }
         private double _orderidcount;
         /// <summary>
         ///订单总数
@@ -1243,7 +1283,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _instorageorderid = value; }
             get { return _instorageorderid; }
         }
-        private int  _inspectionngcount;
+        private int _inspectionngcount;
         /// <summary>
         ///不良数
         /// </summary>
@@ -1449,6 +1489,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionstatus = value; }
             get { return _inspectionstatus; }
         }
+        private int _inspectionItemCount = 0;
+        /// <summary>
+        /// 检验项目数量
+        /// </summary>
+        public int InspectionItemCount
+        {
+            set { _inspectionItemCount = value; }
+            get { return _inspectionItemCount; }
+        }
         private string _inspectionitems;
         /// <summary>
         ///检验项目
@@ -1531,9 +1580,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     {
         public InspectionFqcOrderIdModel()
         {
-            
+
         }
-            
+
         #region Model
         /// <summary>
         ///单号
@@ -1603,6 +1652,18 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public string MaterialSpec { set; get; }
         public string MaterialDrawId { set; get; }
         public string MaterialSupplier { set; get; }
+        /// <summary>
+        /// 文件存放路径
+        /// </summary>
+        public string DocumentPath { set; get; }
+        /// <summary>
+        /// 文件名
+        /// </summary>
+        public string  FileName { set; get; }
+        /// <summary>
+        /// 机台编号
+        /// </summary>
+        public string MachineId { set; get; }
         /// <summary>
         /// 班别
         /// </summary>
@@ -1726,6 +1787,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// 操作人
         /// </summary>
         public string OpPerson { get; set; }
+        /// <summary>
+        /// 操作标识
+        /// </summary>
+
+        public string OpSign { set; get; }
         /// <summary>
         ///加载的自增健
         /// </summary>

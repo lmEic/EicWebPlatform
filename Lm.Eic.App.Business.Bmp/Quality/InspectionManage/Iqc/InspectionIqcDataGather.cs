@@ -18,7 +18,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     { 
       
 
-        public OpResult StoreInspectionIqcModelForm(InspectionItemDataSummaryLabelModel model)
+        public OpResult StoreInspectionIqcModelForm(InspectionItemDataSummaryLabelModel model,string rootPath)
         {
             var opReulst = new OpResult("数据为空，保存失败", false);
             if (model == null) return opReulst;
@@ -54,9 +54,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 Memo = model.Memo,
                 InspectionNGCount= model.InspectionNGCount,
                 OpPerson = model.OpPerson,
+                DocumentPath=model.DocumentPath ,
                 Id_Key = model.Id_Key
             };
-            if (datailModel != null && model.Id_Key > 0)
+            if (datailModel != null && model.Id_Key != 0)
             { datailModel.OpSign = "edit"; }
             return InspectionManagerCrudFactory.IqcDetailCrud.Store(datailModel, true);
 
