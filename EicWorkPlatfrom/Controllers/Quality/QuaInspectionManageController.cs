@@ -379,15 +379,12 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult UploadFqcGatherDataAttachFile(HttpPostedFileBase file)
         {
-            
             if (file != null)
             {
                 if (file.ContentLength > 0)
                 {
-                    ///待加入验证文件名称逻辑:
-                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
+                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary,FileLibraryKey.FqcInspectionGatherDataFile,DateTime.Now.ToString("yyyyMM")), file.FileName);
                     file.SaveAs(fileName);
-                    //处理服务器端文件
                 }
             }
             return Json("OK");
