@@ -694,15 +694,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionmode = value; }
             get { return _inspectionmode; }
         }
-        private string _documentPath;
-        /// <summary>
-        /// 文件存放路经
-        /// </summary>
-        public string DocumentPath
-        {
-            set { _documentPath = value; }
-            get { return _documentPath; }
-        }
+ 
         private DateTime _materialindate;
         /// <summary>
         ///进料日期
@@ -756,6 +748,26 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _inspectionitemdatas = value; }
             get { return _inspectionitemdatas; }
+        }
+
+        private string _documentPath;
+        /// <summary>
+        /// 文件存放路经
+        /// </summary>
+        public string DocumentPath
+        {
+            set { _documentPath = value; }
+            get { return _documentPath; }
+        }
+        private string _fileName;
+        /// <summary>
+        /// 文件名
+        /// </summary>
+        public string FileName
+        {
+            set { _fileName = value; }
+            get { return _fileName; }
+
         }
         private string _inspectionitemstatus;
         /// <summary>
