@@ -372,6 +372,27 @@ namespace EicWorkPlatfrom.Controllers
              return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
+        /// 上传FQC检验采集数据附件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult UploadFqcGatherDataAttachFile(InspectionItemDataSummaryLabelModel para, HttpPostedFileBase file)
+        {
+            
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    ///待加入验证文件名称逻辑:
+                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
+                    file.SaveAs(fileName);
+                    //处理服务器端文件
+                }
+            }
+            return Json("OK");
+        }
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>

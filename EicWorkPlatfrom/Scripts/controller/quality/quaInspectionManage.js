@@ -115,14 +115,12 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             materialId: materialId
         })
     }
-      quality.getFqcOrderInfoDatas = function (orderId) {
+    quality.getFqcOrderInfoDatas = function (orderId) {
         var url = quaInspectionManageUrl + "GetFqcOrderInfoDatas";
         return ajaxService.getData(url, {
             orderId: orderId
         })
     }
-
-
     /////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -179,6 +177,11 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             gatherData: gatherData,
         });
     };
+    //上传FQC采集数据附件
+    quality.uploadFqcGatherDataAttachFile = function (file) {
+        var url =quaInspectionManageUrl + 'UploadFqcGatherDataAttachFile';
+        return ajaxService.uploadFile(url, file);
+    };
     /////////////////////////////iqc检验单管理模块/////////////////////////
     //iqc检验单管理模块获取表单数据  
     quality.getInspectionFormManageOfIqcDatas = function (formStatus, dateFrom, dateTo) {
@@ -220,9 +223,9 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     };
     //fqc检验项目配置模块  导入Excel
-    quality.importfqcInspectionItemConfigDatas = function (file) {
+    quality.importfqcInspectionItemConfigDatas = function (file,para) {
         var url = quaInspectionManageUrl + 'ImportFqcInspectionItemConfigDatas';
-        return ajaxService.uploadFile(url, file);
+        return ajaxService.uploadFile(url,{file:file,para:para});
     }
 
     //fqc检验项目配置模块  保存
@@ -381,15 +384,11 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     }
     //013935导入excel
     $scope.selectFile = function (el) {
-        var files = el.files;
-        if (files.length > 0) {
-            var file = files[0];
-            var fd = new FormData();
-            fd.append('file', file);
+        leeHelper.upoadFile(el, function (fd) {
             qualityInspectionDataOpService.importIqcInspectionItemConfigDatas(fd).then(function (datas) {
                 vmManager.dataSource = datas;
             });
-        }
+        })
     };
     $scope.vmManager = vmManager;
 
@@ -907,7 +906,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    //保存Iqc采集数据
+    //保存Fqc采集数据
     operate.saveGatherDatas = function () {
         var dataList = [], result = true;
         var dataItem = vmManager.currentInspectionItem;
@@ -938,6 +937,18 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
             }
         });
     };
+
+
+    $scope.selectFile = function (el) {
+        leeHelper.upoadFile(el, function (fd) {
+            qualityInspectionDataOpService.uploadFqcGatherDataAttachFile(fd,vmManager.currentInspectionItem).then(function (result) {
+                if (result === 'OK')
+                {
+                    alert("处理数据库保存记录！")
+                }
+            })
+        });
+    }
 })
 
 ///iqc检验单管理
