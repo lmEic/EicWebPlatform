@@ -293,7 +293,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
     }
 
-   #region IQC
+    #region IQC
     /// <summary>
     /// IQC物料检验配置文件
     /// </summary>
@@ -1283,7 +1283,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _instorageorderid = value; }
             get { return _instorageorderid; }
         }
-        private int  _inspectionngcount;
+        private int _inspectionngcount;
         /// <summary>
         ///不良数
         /// </summary>
@@ -1580,9 +1580,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     {
         public InspectionFqcOrderIdModel()
         {
-            
+
         }
-            
+
         #region Model
         /// <summary>
         ///单号
@@ -1655,7 +1655,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         /// 文件存放路径
         /// </summary>
-        public  string DocumentPath { set; get; }
+        public string DocumentPath { set; get; }
         /// <summary>
         /// 文件名
         /// </summary>

@@ -944,7 +944,12 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
             qualityInspectionDataOpService.uploadFqcGatherDataAttachFile(fd).then(function (result) {
                 if (result === 'OK')
                 {
-                    alert("处理数据库保存记录！")
+                    vmManager.currentInspectionItem.FileName = fd.FileName;
+                    qualityInspectionDataOpService.storeFqcInspectionGatherDatas(vmManager.currentInspectionItem).then(function (opResult) {
+                        if (opResult.Result) {
+                            alert("上传文件成功");
+                        }
+                    })
                 }
             })
         });
