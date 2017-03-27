@@ -694,6 +694,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionmode = value; }
             get { return _inspectionmode; }
         }
+        private string _documentPath;
+        /// <summary>
+        /// 文件存放路经
+        /// </summary>
+        public string DocumentPath
+        {
+            set { _documentPath = value; }
+            get { return _documentPath; }
+        }
         private DateTime _materialindate;
         /// <summary>
         ///进料日期
@@ -1107,6 +1116,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _inspectionitem = value; }
             get { return _inspectionitem; }
+        }
+        private string _documentPath;
+        /// <summary>
+        /// 文件存放路经
+        /// </summary>
+        public string DocumentPath
+        {
+            set { _documentPath = value; }
+            get { return _documentPath; }
         }
         private double _orderidcount;
         /// <summary>
@@ -1612,6 +1630,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public string MaterialSpec { set; get; }
         public string MaterialDrawId { set; get; }
         public string MaterialSupplier { set; get; }
+        /// <summary>
+        /// 文件存放路径
+        /// </summary>
+        public  string DocumentPath { set; get; }
         /// <summary>
         /// 机台编号
         /// </summary>

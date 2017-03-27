@@ -54,9 +54,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 Memo = model.Memo,
                 InspectionNGCount= model.InspectionNGCount,
                 OpPerson = model.OpPerson,
+                DocumentPath=model.DocumentPath ,
                 Id_Key = model.Id_Key
             };
-            if (datailModel != null && model.Id_Key > 0)
+            if (datailModel != null && model.Id_Key != 0)
             { datailModel.OpSign = "edit"; }
             return InspectionManagerCrudFactory.IqcDetailCrud.Store(datailModel, true);
 
