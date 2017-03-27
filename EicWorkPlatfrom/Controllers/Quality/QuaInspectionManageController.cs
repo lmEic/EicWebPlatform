@@ -107,6 +107,8 @@ namespace EicWorkPlatfrom.Controllers
                 {
                     ///待加入验证文件名称逻辑:
                     string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
+
+
                     file.SaveAs(fileName);
                     datas = InspectionService.ConfigManager.IqcItemConfigManager.ImportProductFlowListBy(fileName);
                     if (datas != null && datas.Count > 0)
@@ -318,7 +320,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             var rootPath = HttpContext.Request.PhysicalApplicationPath;
 
-            var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcModelForm(gatherData);
+            var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcModelForm(gatherData,rootPath);
             return Json(opResult);
         }
 
@@ -378,9 +380,10 @@ namespace EicWorkPlatfrom.Controllers
         {
             var rootPath = HttpContext.Request.PhysicalApplicationPath;
 
-            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
+            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData,rootPath);
             return Json(datas);
         }
+       
         #endregion
         #endregion
 

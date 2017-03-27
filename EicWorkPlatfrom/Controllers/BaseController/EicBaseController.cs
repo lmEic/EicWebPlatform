@@ -373,6 +373,14 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         public const string PurSupplierCertificate = "PurSupplierCertificate";
         /// <summary>
+        /// FQC检验文件存存放文件夹
+        /// </summary>
+        public const string FQCInspectionPath = "FQCInspectionPath";
+        /// <summary>
+        /// IQC检验文件存存放文件夹
+        /// </summary>
+        public const string IQCInspectionPath = "IQCInspectionPath";
+        /// <summary>
         /// 临时存放文件夹
         /// </summary>
         public const string Temp = "Temp";

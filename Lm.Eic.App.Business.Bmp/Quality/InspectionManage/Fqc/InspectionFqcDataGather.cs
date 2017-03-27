@@ -179,14 +179,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="sumModel"></param>
         /// <returns></returns>
-        public OpResult StoreFqcDataGather(InspectionItemDataSummaryLabelModel sumModel)
+        public OpResult StoreFqcDataGather(InspectionItemDataSummaryLabelModel sumModel, string rootPath="")
         {
             var returnOpResult = new OpResult("数据为空，保存失败", false);
             if (sumModel == null) return returnOpResult;
             InspectionFqcMasterModel masterModel = null;
             InspectionFqcDetailModel detailModel = null;
             ///先排除总表不能为空
-            SumDataToConvterData(sumModel, out masterModel, out detailModel);
+            SumDataToConvterData(sumModel, rootPath, out masterModel, out detailModel);
             if (detailModel == null || masterModel == null) return new OpResult("表单数据为空，保存失败", false);
             // 先保存详细表  再更新主表信息
             returnOpResult = storeInspectionDetial(detailModel);
@@ -413,11 +413,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="sumModel"></param>
         /// <param name="masterModel"></param>
         /// <param name="detailModel"></param>
-        private void SumDataToConvterData(InspectionItemDataSummaryLabelModel sumModel, out InspectionFqcMasterModel masterModel, out InspectionFqcDetailModel detailModel)
+        private void SumDataToConvterData(InspectionItemDataSummaryLabelModel sumModel, string rootPath, out InspectionFqcMasterModel masterModel, out InspectionFqcDetailModel detailModel)
         {
             try
             {
                 if (sumModel == null) { masterModel = null; detailModel = null; }
+                ///   DocumentPath
+                
                 masterModel = new InspectionFqcMasterModel()
                 {
                     OrderId = sumModel.OrderId,
@@ -464,6 +466,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialInDate = sumModel.MaterialInDate,
                     InspectionMode = sumModel.InspectionMode,
                     NeedPutInDataCount=sumModel.NeedFinishDataNumber ,
+                    ///
                     DocumentPath=sumModel .DocumentPath ,
                     Memo = sumModel.Memo,
                     ClassType = sumModel.ClassType,

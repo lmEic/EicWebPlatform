@@ -18,7 +18,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     { 
       
 
-        public OpResult StoreInspectionIqcModelForm(InspectionItemDataSummaryLabelModel model)
+        public OpResult StoreInspectionIqcModelForm(InspectionItemDataSummaryLabelModel model,string rootPath)
         {
             var opReulst = new OpResult("数据为空，保存失败", false);
             if (model == null) return opReulst;
