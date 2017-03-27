@@ -7,8 +7,7 @@ var qualityModule = angular.module('bpm.qualityApp');
 qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     var quality = {};
     var quaInspectionManageUrl = "/quaInspectionManage/";
-    ////////////////////////////////////////  iqc检验项目配置模块///////////////////
-    //////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////IQC检验项目配置模块//////////////////////////////////////
     //iqc检验项目配置模块 物料查询
     quality.getIqcspectionItemConfigDatas = function (materialId) {
         var url = quaInspectionManageUrl + "GetIqcspectionItemConfigDatas";
@@ -28,29 +27,30 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         var url = quaInspectionManageUrl + 'ImportIqcInspectionItemConfigDatas';
         return ajaxService.uploadFile(url, file);
     }
-
-    //iqc检验项目配置模块  保存
+    //iqc检验项目配置模块  保存数据
     quality.saveIqcInspectionItemConfigDatas = function (iqcInspectionConfigItems) {
         var url = quaInspectionManageUrl + 'SaveIqcInspectionItemConfigDatas';
         return ajaxService.postData(url, {
             iqcInspectionConfigItems: iqcInspectionConfigItems
         })
     }
-    // iqc检验项目配置模块 删除
+    // iqc检验项目配置模块 删除数据
     quality.deleteIqlInspectionConfigItem = function (configItem) { 
         var url = quaInspectionManageUrl + 'DeleteIqlInspectionConfigItem';
         return ajaxService.postData(url, {
             configItem: configItem,
         });
     };
-    /////////////////////////////////////////////////////////////
-    //检验方式转换配置获得数据
+
+    ////////////////////////////////////////////////////////////检验方式转换模块/////////////////////////////////////////
+    //检验方式转换模块  获得数据
     quality.getModeSwitchDatas = function (inspectionModeType) {
         var url = quaInspectionManageUrl + "GetModeSwitchDatas";
         return ajaxService.getData(url, {
             inspectionModeType: inspectionModeType
         })
     }
+    //检验方式转换模块  保存数据
     quality.saveModeSwitchDatas = function (inspectionModeType,switchModeList) {
         var url = quaInspectionManageUrl + "SaveModeSwitchDatas";
         return ajaxService.postData(url, {
@@ -58,24 +58,16 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             switchModeList: switchModeList
         })
     }
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-    ////////////////////////////////////////////////检验方式配置模块////////////////////////////////////
-    //获取检验水平数据
+    ///////////////////////////////////////////////////////////IQC检验方式配置模块////////////////////////////////////
+    //iqc检验方式配置模块   获取检验水平数据
     quality.getInspectionLevelValues = function (inspectionMode) {
         var url = quaInspectionManageUrl + "GetInspectionLevelValues";
         return ajaxService.postData(url, {
             inspectionMode: inspectionMode
         })
     }
-
-    //获取AQL数据
+    //iqc检验方式配置模块   获取AQL数据
     quality.getInspectionAQLValues = function (inspectionMode, inspectionLevel) {
         var url = quaInspectionManageUrl + "GetInspectionAQLValues";
         return ajaxService.postData(url, {
@@ -83,16 +75,14 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             inspectionMode: inspectionMode
         })
     }
-    
-
-    //处理'检验方式'配置数据  
+    //iqc检验方式配置模块   处理'检验方式'配置数据  
     quality.storeIqcInspectionModeData = function (inspectionModeConfigEntity) {
         var url = quaInspectionManageUrl + "StoreInspectionModeConfigData";
         return ajaxService.postData(url, {
             inspectionModeConfigEntity: inspectionModeConfigEntity
         })
     }
-    //获取“检验方式配置数据”
+    //iqc检验方式配置模块   获取“检验方式配置数据”
     quality.getIqcInspectionModeDatas = function (inspectionMode, inspectionLevel, inspectionAQL) {
         var url = quaInspectionManageUrl + "GetIqcInspectionModeDatas";
         return ajaxService.getData(url, {
@@ -101,40 +91,16 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             inspectionAQL: inspectionAQL
         })
     }
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-
     
-    ////////////////////////////////////////////FQC数据采集控制器////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-     //FQC检验数据采集模块获得检验项目数据
-    quality.getFqcInspectionItemDataSummaryLabelList = function (orderId, materialId) {
-        var url = quaInspectionManageUrl + "GetFqcInspectionItemDataSummaryLabelList";
-        return ajaxService.getData(url, {
-            orderId:orderId,
-            materialId: materialId
-        })
-    }
-      quality.getFqcOrderInfoDatas = function (orderId) {
-        var url = quaInspectionManageUrl + "GetFqcOrderInfoDatas";
-        return ajaxService.getData(url, {
-            orderId: orderId
-        })
-    }
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    ////////////////////////////////////////////iqc数据采集////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////IQC检验数据采集模块///////////////////////////////////
+    //iqc检验数据采集模块   获得料号数据
     quality.getInspectionDataGatherMaterialIdDatas = function (orderId) {
         var url = quaInspectionManageUrl + "GetIqcMaterialInfoDatas";
         return ajaxService.getData(url, {
             orderId: orderId
         })
     }
-    //iqc进料检验数据采集模块获得检验项目数据
+    //iqc检验数据采集模块   获得检验项目数据
     quality.getIqcInspectionItemDataSummaryLabelList = function (orderId, materialId) {
         var url = quaInspectionManageUrl + "GetIqcInspectionItemDataSummaryLabelList";
         return ajaxService.getData(url, {
@@ -142,22 +108,23 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             materialId: materialId
         })
     }
-    //保存进料检验采集的数据  
+    //iqc检验数据采集模块   保存进料检验采集的数据  
     quality.storeIqcInspectionGatherDatas = function (gatherData) {
         var url = quaInspectionManageUrl + 'StoreIqcInspectionGatherDatas';
         return ajaxService.postData(url, {
            gatherData: gatherData,
         });
     };
-    ////////////////////////////////////////////FQC数据采集//////////////////////////////////////////////////
-    //获取FQC工单信息数据
+
+    /////////////////////////////////////////////////////////////////FQC检验数据采集模块//////////////////////////////////////////////////
+    //fqc检验数据采集模块  获取工单信息数据
     quality.getFqcOrderInfoDatas = function (orderId) {
         var url = quaInspectionManageUrl + 'GetFqcOrderInfoDatas';
         return ajaxService.getData(url, {
             orderId: orderId,
         });
     };
-    //创建FQC抽样表单项目
+    //fqc检验数据采集模块  创建抽样表单项目
     quality.createFqcSampleFormItem = function (orderId, sampleCount) {
         var url = quaInspectionManageUrl + 'CreateFqcSampleFormItem';
         return ajaxService.getData(url, {
@@ -165,7 +132,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             sampleCount: sampleCount,
         });
     };
-    //获取FQC抽检表单项目
+    //fqc检验数据采集模块  获取抽检表单项目
     quality.getFqcSampleFormItems = function (orderId, orderIdNumber) {
         var url = quaInspectionManageUrl + 'GetFqcSampleFormItems';
         return ajaxService.getData(url, {
@@ -173,14 +140,16 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             orderIdNumber: orderIdNumber,
         });
     };
+    //fqc检验数据采集模块   保存进料检验采集的数据  
     quality.storeFqcInspectionGatherDatas = function (gatherData) {
         var url = quaInspectionManageUrl + 'StoreFqcInspectionGatherDatas';
         return ajaxService.postData(url, {
             gatherData: gatherData,
         });
     };
-    /////////////////////////////iqc检验单管理模块/////////////////////////
-    //iqc检验单管理模块获取表单数据  
+
+    ////////////////////////////////////////////////////////////////IQC检验单管理模块////////////////////////////////////////////
+    //iqc检验单管理模块    获取表单数据  
     quality.getInspectionFormManageOfIqcDatas = function (formStatus, dateFrom, dateTo) {
         var url = quaInspectionManageUrl + 'GetInspectionFormManageOfIqcDatas';
         return ajaxService.getData(url, {
@@ -189,7 +158,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             dateTo:dateTo
         })
     };
-    //iqc检验单管理模块获取详细数据
+    //iqc检验单管理模块    获取详细数据
     quality.getInspectionFormDetailOfIqcDatas = function (orderId, materialId) {
         var url = quaInspectionManageUrl + "GetInspectionFormDetailOfIqcDatas";
         return ajaxService.getData(url, {
@@ -197,16 +166,17 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             materialId: materialId
         })
     }
-    //iqc检验单管理模块发送审核数据
+    //iqc检验单管理模块    发送审核数据
     quality.postInspectionFormManageCheckedOfIqcData = function (model) {
         var url = quaInspectionManageUrl + "PostInspectionFormManageCheckedOfIqcData";
         return ajaxService.postData(url, {
             model:model
         })
     }
-    //////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////fqc检验项目配置模块////////////////////////////////////
-    quality.getfqcInspectionItemConfigDatas = function (materialId) {
+
+    ////////////////////////////////////////////////////////////FQC检验项目配置模块////////////////////////////////////////////////
+    //fqc检验项目配置模块   获取数据
+    quality.getFqcInspectionItemConfigDatas = function (materialId) {
         var url = quaInspectionManageUrl + "GetFqcInspectionItemConfigDatas";
         return ajaxService.getData(url, {
             materialId: materialId
@@ -220,11 +190,10 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     };
     //fqc检验项目配置模块  导入Excel
-    quality.importfqcInspectionItemConfigDatas = function (file) {
+    quality.importFqcInspectionItemConfigDatas = function (file) {
         var url = quaInspectionManageUrl + 'ImportFqcInspectionItemConfigDatas';
         return ajaxService.uploadFile(url, file);
     }
-
     //fqc检验项目配置模块  保存
     quality.saveFqcInspectionItemConfigDatas = function (fqcInspectionConfigItems) {
         var url = quaInspectionManageUrl + 'SaveFqcInspectionItemConfigDatas';
@@ -239,9 +208,9 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             configItem: configItem,
         });
     };
-    //////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////fqc检验单管理模块////////////////////////////////////
-    //fqc检验单管理模块获取表单数据  
+
+    /////////////////////////////////////////////////////////FQC检验单管理模块////////////////////////////////////////////////////
+    //fqc检验单管理模块    获取表单数据  
     quality.getInspectionFormManageOfFqcDatas = function (formStatus, dateFrom, dateTo) {
         var url = quaInspectionManageUrl + 'GetInspectionFormManageOfFqcDatas';
         return ajaxService.getData(url, {
@@ -250,7 +219,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             dateTo: dateTo
         })
     };
-    //iqc检验单管理模块获取详细数据
+    //iqc检验单管理模块    获取详细数据
     quality.getInspectionFormDetailOfFqcDatas = function (orderId, orderIdNumber) {
         var url = quaInspectionManageUrl + "GetInspectionFormDetailOfFqcDatas";
         return ajaxService.getData(url, {
@@ -258,7 +227,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             orderIdNumber: orderIdNumber
         })
     }
-    //iqc检验单管理模块发送审核数据
+    //iqc检验单管理模块    发送审核数据
     quality.postInspectionFormManageCheckedOfFqcData = function (model) {
         var url = quaInspectionManageUrl + "PostInspectionFormManageCheckedOfFqcData";
         return ajaxService.postData(url, {
@@ -266,7 +235,6 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     }
     return quality;
-    ///////////////////////////////////////////////////////////////////////////////////////
 })
 
 //iqc检验项目配置模块
@@ -573,7 +541,7 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
     }
 })
 
-///iqc数据采集控制器
+///iqc数据采集模块
 qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService) {
     var vmManager = {
         orderId: null,
@@ -747,7 +715,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
     };
 })
 
-///fqc数据采集控制器
+///fqc数据采集模块
 qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService) {
     var vmManager = {
         opPersonInfo:{department:'',classType:''},
@@ -941,7 +909,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
     };
 })
 
-///iqc检验单管理
+///iqc检验单管理模块
 qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService, $modal,$alert) {
     var vmManager = $scope.vmManager = {
         dateFrom: null,
@@ -1015,7 +983,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
     $scope.operate = operate;
 })
 
-//检验方式转换配置
+//检验方式转换模块
 qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityInspectionDataOpService) {
     var vmManager = $scope.vmManager = {
         isEnable:false,
@@ -1057,7 +1025,7 @@ qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityIn
     }
 })
 
-//fqc检验项目配置
+//fqc检验项目配置模块
 qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualityInspectionDataOpService,$modal) {
     var uiVM = {
         MaterialId:null,
@@ -1113,7 +1081,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
 
         //013935根据品号查询
         getConfigDatas: function () {
-            $scope.searchPromise = qualityInspectionDataOpService.getfqcInspectionItemConfigDatas($scope.vm.MaterialId).then(function (datas) {
+            $scope.searchPromise = qualityInspectionDataOpService.getFqcInspectionItemConfigDatas($scope.vm.MaterialId).then(function (datas) {
                 if (datas != null) {
                     $scope.tableVm = datas.ProductMaterailModel;
                     vmManager.dataSource = datas.InspectionItemConfigModelList;
@@ -1179,7 +1147,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
             var file = files[0];
             var fd = new FormData();
             fd.append('file', file);
-            qualityInspectionDataOpService.importfqcInspectionItemConfigDatas(fd).then(function (datas) {
+            qualityInspectionDataOpService.importFqcInspectionItemConfigDatas(fd).then(function (datas) {
                 vmManager.dataSource = datas;
             });
         }
@@ -1233,7 +1201,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
     }
 })
 
-//fqc检验单管理
+//fqc检验单管理模块
 qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qualityInspectionDataOpService, $modal, $alert) {
     var vmManager = $scope.vmManager = {
         dateFrom: null,
