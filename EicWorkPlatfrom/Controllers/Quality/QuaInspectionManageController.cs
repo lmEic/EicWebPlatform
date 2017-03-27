@@ -101,24 +101,16 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult ImportIqcInspectionItemConfigDatas(HttpPostedFileBase file)
         {
             List<InspectionIqcItemConfigModel> datas = null;
-            if (file != null)
-            {
-                if (file.ContentLength > 0)
-                {
-                    ///待加入验证文件名称逻辑:
-                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp);
+            this.SaveFileToServer(file, filePath, () => {
+                string fileName = Path.Combine(filePath, file.FileName);
+                datas = InspectionService.ConfigManager.IqcItemConfigManager.ImportProductFlowListBy(fileName);
+                if (datas != null && datas.Count > 0)
+                //批量保存数据
+                { var opResult = InspectionService.ConfigManager.IqcItemConfigManager.StoreIqcInspectionItemConfig(datas); }
 
-
-                    file.SaveAs(fileName);
-                    datas = InspectionService.ConfigManager.IqcItemConfigManager.ImportProductFlowListBy(fileName);
-                    if (datas != null && datas.Count > 0)
-                    //批量保存数据
-                    { var opResult = InspectionService.ConfigManager.IqcItemConfigManager.StoreIqcInspectionItemConfig(datas); }
-
-                    System.IO.File.Delete(fileName);
-                }
-            }
-
+                System.IO.File.Delete(fileName);
+            });
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
@@ -317,14 +309,8 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult UploadIqcGatherDataAttachFile(HttpPostedFileBase file)
         {
-            if (file != null)
-            {
-                if (file.ContentLength > 0)
-                {
-                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM")), file.FileName);
-                    file.SaveAs(fileName);
-                }
-            }
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
+            this.SaveFileToServer(file, filePath);
             return Json("OK");
         }
         /// <summary>
@@ -338,7 +324,6 @@ namespace EicWorkPlatfrom.Controllers
         {
             gatherData.DocumentPath= Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM")),gatherData.FileName);
             var rootPath = HttpContext.Request.PhysicalApplicationPath;
-
             var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcModelForm(gatherData,rootPath);
             return Json(opResult);
         }
@@ -398,16 +383,13 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult UploadFqcGatherDataAttachFile(HttpPostedFileBase file)
         {
-            if (file != null)
-            {
-                if (file.ContentLength > 0)
-                {
-                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary,FileLibraryKey.FqcInspectionGatherDataFile,DateTime.Now.ToString("yyyyMM")),file.FileName);
-                    file.SaveAs(fileName);
-                }
-            }
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
+            this.SaveFileToServer(file,filePath);
             return Json("OK");
         }
+
+       
+
         /// <summary>
         /// 
         /// </summary>
@@ -415,9 +397,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreFqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
-            if (gatherData != null && gatherData.FileName!=null)
             gatherData.DocumentPath = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM")), gatherData.FileName);
-            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
+            var rootPath = HttpContext.Request.PhysicalApplicationPath;
+            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData,rootPath);
             return Json(datas);
         }
        
@@ -471,8 +453,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ContentResult GetInspectionFormManageOfFqcDatas(string formStatus, DateTime dateFrom, DateTime dateTo)
         {
-           
-             var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
+            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
             return DateJsonResult(datas);
         }
         [NoAuthenCheck]
