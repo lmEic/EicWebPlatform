@@ -215,7 +215,24 @@ namespace EicWorkPlatfrom.Controllers
             ms.Seek(0, SeekOrigin.Begin);
             return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
         }
-
+        /// <summary>
+        /// 将文件保存到服务器上
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="filePath"></param>
+        /// <param name="handler"></param>
+        protected void SaveFileToServer(HttpPostedFileBase file, string filePath, Action handler=null)
+        {
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    string fileName = Path.Combine(filePath, file.FileName);
+                    file.SaveAs(fileName);
+                    if (handler != null) handler();
+                }
+            }
+        }
 
         #region CombinedFilePath
         protected string CombinedFilePath(string path1)
