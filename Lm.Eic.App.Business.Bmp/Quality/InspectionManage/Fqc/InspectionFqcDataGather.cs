@@ -468,6 +468,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     NeedPutInDataCount=sumModel.NeedFinishDataNumber ,
                     ///
                     DocumentPath=sumModel .DocumentPath ,
+                    FileName=sumModel.FileName,
                     Memo = sumModel.Memo,
                     ClassType = sumModel.ClassType,
                     Department = sumModel.Department,

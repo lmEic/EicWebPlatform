@@ -1126,6 +1126,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _documentPath = value; }
             get { return _documentPath; }
         }
+        private string _fileName;
+        /// <summary>
+        /// 文件名
+        /// </summary>
+        public string FileName
+        {
+            set { _fileName = value; }
+            get { return _fileName; }
+
+        }
         private double _orderidcount;
         /// <summary>
         ///订单总数
@@ -1634,6 +1644,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// 文件存放路径
         /// </summary>
         public  string DocumentPath { set; get; }
+        /// <summary>
+        /// 文件名
+        /// </summary>
+        public string  FileName { set; get; }
         /// <summary>
         /// 机台编号
         /// </summary>
