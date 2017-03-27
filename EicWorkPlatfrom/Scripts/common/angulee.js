@@ -308,6 +308,7 @@ var leeHelper = (function () {
                 fd.append('file', file);
                 if (handler && _.isFunction(handler))
                 {
+                    fd.name = file.name;
                     handler(fd);
                 }
             }

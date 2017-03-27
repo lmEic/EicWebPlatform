@@ -310,6 +310,24 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
+        /// 上传FQC检验采集数据附件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult UploadIqcGatherDataAttachFile(HttpPostedFileBase file)
+        {
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM")), file.FileName);
+                    file.SaveAs(fileName);
+                }
+            }
+            return Json("OK");
+        }
+        /// <summary>
         /// 存储采集的数据
         /// </summary>
         /// <param name="gatherData"></param>
@@ -318,6 +336,7 @@ namespace EicWorkPlatfrom.Controllers
         [HttpPost]
         public JsonResult StoreIqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
+            gatherData.DocumentPath= Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM")),gatherData.FileName);
             var rootPath = HttpContext.Request.PhysicalApplicationPath;
 
             var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcModelForm(gatherData,rootPath);
@@ -383,7 +402,7 @@ namespace EicWorkPlatfrom.Controllers
             {
                 if (file.ContentLength > 0)
                 {
-                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary,FileLibraryKey.FqcInspectionGatherDataFile,DateTime.Now.ToString("yyyyMM")), file.FileName);
+                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary,FileLibraryKey.FqcInspectionGatherDataFile,DateTime.Now.ToString("yyyyMM")),file.FileName);
                     file.SaveAs(fileName);
                 }
             }

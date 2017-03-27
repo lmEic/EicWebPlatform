@@ -121,11 +121,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             orderId: orderId
         })
     }
-    /////////////////////////////////////////////////////////////////////////////////////////////
-
-
     ////////////////////////////////////////////iqc数据采集////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////
     quality.getInspectionDataGatherMaterialIdDatas = function (orderId) {
         var url = quaInspectionManageUrl + "GetIqcMaterialInfoDatas";
         return ajaxService.getData(url, {
@@ -146,6 +142,11 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         return ajaxService.postData(url, {
            gatherData: gatherData,
         });
+    };
+    //上传FQC采集数据附件
+    quality.uploadIqcGatherDataAttachFile = function (file) {
+        var url = quaInspectionManageUrl + 'UploadIqcGatherDataAttachFile';
+        return ajaxService.uploadFile(url, file);
     };
     ////////////////////////////////////////////FQC数据采集//////////////////////////////////////////////////
     //获取FQC工单信息数据
@@ -743,6 +744,21 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             }
         });
     };
+
+    $scope.selectFile = function (el) {
+        leeHelper.upoadFile(el, function (fd) {
+            qualityInspectionDataOpService.uploadIqcGatherDataAttachFile(fd).then(function (result) {
+                if (result === 'OK') {
+                    vmManager.currentInspectionItem.FileName = fd.FileName;
+                    qualityInspectionDataOpService.storeIqcInspectionGatherDatas(vmManager.currentInspectionItem).then(function (opResult) {
+                        if (opResult.Result) {
+                            alert("上传文件成功");
+                        }
+                    })
+                }
+            })
+        });
+    }
 })
 
 ///fqc数据采集控制器
@@ -944,7 +960,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
             qualityInspectionDataOpService.uploadFqcGatherDataAttachFile(fd).then(function (result) {
                 if (result === 'OK')
                 {
-                    vmManager.currentInspectionItem.FileName = fd.FileName;
+                    vmManager.currentInspectionItem.FileName = fd.name;
                     qualityInspectionDataOpService.storeFqcInspectionGatherDatas(vmManager.currentInspectionItem).then(function (opResult) {
                         if (opResult.Result) {
                             alert("上传文件成功");
