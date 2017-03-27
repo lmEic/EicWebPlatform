@@ -70,7 +70,7 @@ namespace EicWorkPlatfrom.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 删除进料检验配置数据 deleteIqlInspectionConfigItem
+        /// 删除进料检验配置数据
         /// </summary>
         /// <param name="configItem"></param>
         /// <returns></returns>
@@ -208,7 +208,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <summary>
         /// 存储  检验方式配置
         /// </summary>
-        /// <param name="inspectionModeConfigEntity"></param>
+        /// <param name="inspectionMode"></param>
         /// <returns></returns>
         ///获取检验水平数据
         [NoAuthenCheck]
