@@ -137,14 +137,23 @@ var leeDataHandler = (function () {
             return null;
         },
     };
-
+    ///数据操作类型
+    var leeDataOpMode = {
+        add: 'add',
+        edit: 'edit',
+        update: 'update',
+        'delete': 'delete',
+        uploadFile:'uploadFile',
+    };
     return {
         ///操作状态
         operateStatus: leeOperateStatus,
         ///数据操作行为
         dataOperate: leeDataOperate,
         ///本地数据存储
-        dataStorage:leeDataStorage,
+        dataStorage: leeDataStorage,
+        ///数据操作类型
+        dataOpMode:leeDataOpMode
     };
 })();
 ///常用操作助手

@@ -8,6 +8,7 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
@@ -572,6 +573,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             this.AddOpItem(OpMode.Add, AddFqcInspectionDetail);
             this.AddOpItem(OpMode.Edit, EidtFqcInspectionDetail);
             this.AddOpItem(OpMode.Delete, DeleteFqcInspectionDetail);
+            this.AddOpItem(OpMode.UploadFile, UploadFileFqcInspectionDetail);
         }
 
         private OpResult DeleteFqcInspectionDetail(InspectionFqcDetailModel model)
@@ -581,12 +583,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult EidtFqcInspectionDetail(InspectionFqcDetailModel model)
         {
+        
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
         private OpResult AddFqcInspectionDetail(InspectionFqcDetailModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+        private OpResult UploadFileFqcInspectionDetail(InspectionFqcDetailModel model)
+        {
+            if (model != null && model.DocumentPath != null && model.DocumentPath != string.Empty)
+               model.DocumentPath.DeleteFileDocumentation();
+
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext); 
         }
 
 
