@@ -415,10 +415,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreFqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
+            if (gatherData != null && gatherData.FileName!=null)
             gatherData.DocumentPath = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM")), gatherData.FileName);
-            var rootPath = HttpContext.Request.PhysicalApplicationPath;
-
-            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData,rootPath);
+            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
         }
        

@@ -1788,6 +1788,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// </summary>
         public string OpPerson { get; set; }
         /// <summary>
+        /// 操作标识
+        /// </summary>
+
+        public string OpSign { set; get; }
+        /// <summary>
         ///加载的自增健
         /// </summary>
         public decimal Id_Key { set; get; }
