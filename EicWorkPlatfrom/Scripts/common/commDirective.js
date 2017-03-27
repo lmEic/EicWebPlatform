@@ -746,12 +746,12 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             scope.selected = function () {
                 scope.showCheckbox = false;
                 scope.onChecked();
-                scope.isChecked = true;
+                scope.isChecked = false;
                 };
             scope.unselected = function () {
                 scope.showCheckbox = true;
                 scope.onChecked();
-                scope.isChecked = false;
+                scope.isChecked = true;
             }
         }
     }

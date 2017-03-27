@@ -11,6 +11,12 @@ using Lm.Eic.App.Erp.Bussiness.QmsManage;
 
 namespace EicWorkPlatfrom.Controllers
 {
+    /********************************************************************
+    	created:	2017/03/27
+    	file ext:	cs
+    	author:		YLee
+    	purpose:	
+    *********************************************************************/
     public class QuaInspectionManageController : EicBaseController
     {
         //
@@ -369,7 +375,6 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreFqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
-
             var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
         }

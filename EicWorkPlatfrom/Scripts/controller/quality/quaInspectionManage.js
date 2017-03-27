@@ -323,7 +323,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
         //013935根据品号查询
         getConfigDatas: function () {
             $scope.searchPromise = qualityInspectionDataOpService.getIqcspectionItemConfigDatas($scope.vm.MaterialId).then(function (datas) {
-                if (datas != null) {
+                if (datas !== null) {
                     $scope.tableVm = datas.ProductMaterailModel;
                     vmManager.dataSource = datas.InspectionItemConfigModelList;
                 }
@@ -357,7 +357,6 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
 
             })
         },
-        delItem:null,
         delModal:$modal({
             title: "删除提示",
             content: "你确定要删除此数据吗?",
@@ -886,7 +885,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 }
                 if (item.nextColId === "last") {
                     //保存数据
-                    operate.saveIqcGatherDatas();
+                    operate.saveGatherDatas();
                 }
             }
         },
