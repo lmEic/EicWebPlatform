@@ -442,7 +442,6 @@ namespace EicWorkPlatfrom.Controllers
             var opResult = InspectionService.InspectionFormManager.FqcFromManager.AuditFqcInspectionMasterModel(model);
             return Json(opResult);
         }
-
         #endregion
         #endregion
 
