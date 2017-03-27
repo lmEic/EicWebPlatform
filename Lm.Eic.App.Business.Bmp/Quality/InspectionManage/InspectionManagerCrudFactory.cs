@@ -613,6 +613,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
            
         }
 
+        public InspectionFqcDetailModel GetFqcDetailModelBy(string orderId, int orderIdNumber, string inspecitonItem)
+        {
+            try
+            {
+                return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspectionItem == inspecitonItem);
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw new Exception(ex.InnerException.Message);
+            }
+
+        }
+
     }
 
 
@@ -636,13 +650,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult EidtFqcInspectionMaster(InspectionFqcMasterModel model)
         {
-            var findmodel = irep.Entities.FirstOrDefault(e => e.OrderId == model.OrderId && e.OrderIdNumber == model.OrderIdNumber && e.MaterialId == model.MaterialId);
-            if (findmodel == null) return new OpResult(OpContext, false); 
-             model.InspectionItems = findmodel.InspectionItems + "," + model.InspectionItems;
-             model.Id_Key = findmodel.Id_Key;
+            
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
+        public InspectionFqcMasterModel ExistModel(string orderId, int orderIdNumber, string materialId)
+        {
+            try
+            {
+                return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.MaterialId == materialId);
+            }
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
+        }
         private OpResult AddFqcInspectionMaster(InspectionFqcMasterModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
