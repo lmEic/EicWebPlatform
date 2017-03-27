@@ -941,7 +941,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
 
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
-            qualityInspectionDataOpService.uploadFqcGatherDataAttachFile(fd,vmManager.currentInspectionItem).then(function (result) {
+            qualityInspectionDataOpService.uploadFqcGatherDataAttachFile(fd).then(function (result) {
                 if (result === 'OK')
                 {
                     alert("处理数据库保存记录！")

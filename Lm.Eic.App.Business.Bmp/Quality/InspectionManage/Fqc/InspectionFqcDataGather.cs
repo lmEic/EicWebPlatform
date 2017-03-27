@@ -527,6 +527,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (isExistmodel!=null || model.Id_Key!=0)
             {
                 model.Id_Key = isExistmodel.Id_Key;
+                string path = isExistmodel.DocumentPath;
+                
                 model.OpSign = "edit";
             }
             return InspectionManagerCrudFactory.FqcDetailCrud.Store(model);

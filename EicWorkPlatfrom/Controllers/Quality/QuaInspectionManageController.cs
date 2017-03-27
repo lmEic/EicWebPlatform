@@ -377,7 +377,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="file"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult UploadFqcGatherDataAttachFile(InspectionItemDataSummaryLabelModel para, HttpPostedFileBase file)
+        public JsonResult UploadFqcGatherDataAttachFile(HttpPostedFileBase file)
         {
             
             if (file != null)
