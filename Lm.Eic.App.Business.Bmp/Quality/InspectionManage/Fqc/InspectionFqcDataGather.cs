@@ -366,8 +366,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         SizeLSL =0,
                         SizeUSL=0,
                         SizeMemo=string.Empty ,
-
-                       
                         Id_Key=m.Id_Key 
                     };
                     /// 依据检验项目得到相应的数值
@@ -466,6 +464,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialInDate = sumModel.MaterialInDate,
                     InspectionMode = sumModel.InspectionMode,
                     NeedPutInDataCount=sumModel.NeedFinishDataNumber ,
+                    DocumentPath=sumModel .DocumentPath ,
                     Memo = sumModel.Memo,
                     ClassType = sumModel.ClassType,
                     Department = sumModel.Department,
