@@ -316,6 +316,7 @@ namespace EicWorkPlatfrom.Controllers
         [HttpPost]
         public JsonResult StoreIqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
+            var rootPath = HttpContext.Request.PhysicalApplicationPath;
 
             var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcModelForm(gatherData);
             return Json(opResult);
@@ -375,6 +376,8 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreFqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
+            var rootPath = HttpContext.Request.PhysicalApplicationPath;
+
             var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
         }
