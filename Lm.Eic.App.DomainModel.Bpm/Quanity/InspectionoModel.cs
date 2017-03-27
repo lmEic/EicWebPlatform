@@ -1449,6 +1449,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionstatus = value; }
             get { return _inspectionstatus; }
         }
+        private int _inspectionItemCount = 0;
+        /// <summary>
+        /// 检验项目数量
+        /// </summary>
+        public int InspectionItemCount
+        {
+            set { _inspectionItemCount = value; }
+            get { return _inspectionItemCount; }
+        }
         private string _inspectionitems;
         /// <summary>
         ///检验项目
@@ -1603,6 +1612,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public string MaterialSpec { set; get; }
         public string MaterialDrawId { set; get; }
         public string MaterialSupplier { set; get; }
+        /// <summary>
+        /// 机台编号
+        /// </summary>
+        public string MachineId { set; get; }
         /// <summary>
         /// 班别
         /// </summary>
