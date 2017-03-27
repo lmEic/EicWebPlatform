@@ -1,6 +1,7 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.App.Erp.Domain.QuantityModel;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -179,14 +180,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="sumModel"></param>
         /// <returns></returns>
-        public OpResult StoreFqcDataGather(InspectionItemDataSummaryLabelModel sumModel, string rootPath="")
+        public OpResult StoreFqcDataGather(InspectionItemDataSummaryLabelModel sumModel)
         {
             var returnOpResult = new OpResult("数据为空，保存失败", false);
             if (sumModel == null) return returnOpResult;
             InspectionFqcMasterModel masterModel = null;
             InspectionFqcDetailModel detailModel = null;
             ///先排除总表不能为空
-            SumDataToConvterData(sumModel, rootPath, out masterModel, out detailModel);
+            SumDataToConvterData(sumModel, out masterModel, out detailModel);
             if (detailModel == null || masterModel == null) return new OpResult("表单数据为空，保存失败", false);
             // 先保存详细表  再更新主表信息
             returnOpResult = storeInspectionDetial(detailModel);
@@ -413,7 +414,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="sumModel"></param>
         /// <param name="masterModel"></param>
         /// <param name="detailModel"></param>
-        private void SumDataToConvterData(InspectionItemDataSummaryLabelModel sumModel, string rootPath, out InspectionFqcMasterModel masterModel, out InspectionFqcDetailModel detailModel)
+        private void SumDataToConvterData(InspectionItemDataSummaryLabelModel sumModel,  out InspectionFqcMasterModel masterModel, out InspectionFqcDetailModel detailModel)
         {
             try
             {
@@ -475,7 +476,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     InspectionDataTimeRegion = sumModel.InspectionDataTimeRegion,
                     InStorageOrderId = sumModel.InStorageOrderId,
                     InspectionNGCount = sumModel.InspectionNGCount,
-                    OpSign = "add",
+                    OpSign = sumModel.OpSign,
                     OpPerson = sumModel.OpPerson
                 };
 
@@ -529,8 +530,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 model.Id_Key = isExistmodel.Id_Key;
                 string path = isExistmodel.DocumentPath;
-                
-                model.OpSign = "edit";
+                if(path!=null&&path != string.Empty)
+                path.DeleteFileDocumentation();
+                model.OpSign = OpMode.Edit;
             }
             return InspectionManagerCrudFactory.FqcDetailCrud.Store(model);
         }
