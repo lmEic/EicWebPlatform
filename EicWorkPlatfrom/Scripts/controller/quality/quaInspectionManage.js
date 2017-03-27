@@ -562,7 +562,7 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
     };
     //编辑iqc检验方式模块的数据
     operate.editItem = function (item) {
-        item.OpSign = "edit";
+        item.OpSign = leeDataHandler.dataOpMode.edit;
         $scope.vm = uiVM = _.clone(item);
     }
     //删除iqc检验方式模块的数据
@@ -749,7 +749,8 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         leeHelper.upoadFile(el, function (fd) {
             qualityInspectionDataOpService.uploadIqcGatherDataAttachFile(fd).then(function (result) {
                 if (result === 'OK') {
-                    vmManager.currentInspectionItem.FileName = fd.FileName;
+                    vmManager.currentInspectionItem.FileName = fd.name;
+                    vmManager.currentInspectionItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
                     qualityInspectionDataOpService.storeIqcInspectionGatherDatas(vmManager.currentInspectionItem).then(function (opResult) {
                         if (opResult.Result) {
                             alert("上传文件成功");
@@ -961,6 +962,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 if (result === 'OK')
                 {
                     vmManager.currentInspectionItem.FileName = fd.name;
+                    vmManager.currentInspectionItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
                     qualityInspectionDataOpService.storeFqcInspectionGatherDatas(vmManager.currentInspectionItem).then(function (opResult) {
                         if (opResult.Result) {
                             alert("上传文件成功");
