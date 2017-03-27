@@ -97,7 +97,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
 
         public int UpAuditMaterData(string orderId, int orderIdNumber, string upAuditData)
         {
-            string upDetailsql = string.Format("Update   Qms_FqcInspectionMaster   Set  InspectionItemStatus='{0}'  Where OrderId='{1}' and  OrderIdNumber='{2}'", upAuditData, orderId, orderIdNumber);
+            string upDetailsql = string.Format("Update   Qms_FqcInspectionMaster   Set   InspectionStatus='{0}'  Where OrderId='{1}' and  OrderIdNumber='{2}'", upAuditData, orderId, orderIdNumber);
             return DbHelper.Bpm.ExecuteNonQuery(upDetailsql);
         }
     }

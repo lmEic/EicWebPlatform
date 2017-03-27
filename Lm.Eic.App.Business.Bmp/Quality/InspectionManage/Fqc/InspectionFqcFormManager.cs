@@ -16,7 +16,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             //查询ERP中所有物料和单号 
             var list = InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(formStatus, dateFrom, dateTo);
        
-            if (list == null || list.Count <= 0) return new List<InspectionFqcMasterModel>();
             switch (formStatus)
             {
                 case "待检测":
@@ -36,17 +35,32 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
+        public List<InspectionFqcDetailModel> GetInspectionDatailListBy(string orderId,int orderIdNumber)
+        {
+            return InspectionManagerCrudFactory.FqcDetailCrud.GetFqcInspectionDetailModelListBy(orderId, orderIdNumber);
+        }
+
         /// <summary>
         ///审核主表数据
         /// </summary>
         /// <returns></returns>
         public OpResult AuditFqcInspectionMasterModel(InspectionFqcMasterModel model)
         {
-            if (model == null) return null;
-            var retrunResult = InspectionManagerCrudFactory.FqcMasterCrud.Store(model, true);
-            if (retrunResult.Result)
-                return InspectionManagerCrudFactory.FqcMasterCrud.UpAuditDetailData(model.OrderId, model.OrderIdNumber, "Done");
-            else return retrunResult;
+            try
+            {
+                if (model == null) return null;
+                var retrunResult = InspectionManagerCrudFactory.FqcMasterCrud.Store(model, true);
+                if (retrunResult.Result)
+                    ///主要更新成功 再   更新详细表的信息
+                    retrunResult= InspectionManagerCrudFactory.FqcMasterCrud.UpAuditDetailData(model.OrderId, model.OrderIdNumber, "Done");
+                return retrunResult;
+            }
+            catch (Exception ex)
+            {
+                return new OpResult(ex.InnerException.Message);
+                throw new Exception(ex.InnerException.Message);
+            }
+          
         }
         List<InspectionFqcMasterModel> GetERPOrderAndMaterialBy(DateTime startTime, DateTime endTime)
         {

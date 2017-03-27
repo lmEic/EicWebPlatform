@@ -603,7 +603,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
-                return irep.IsExist(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspecitonItem == inspecitonItem);
+                return irep.IsExist(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspectionItem == inspecitonItem);
             }
             catch (Exception ex)
             {
@@ -637,8 +637,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private OpResult EidtFqcInspectionMaster(InspectionFqcMasterModel model)
         {
             var findmodel = irep.Entities.FirstOrDefault(e => e.OrderId == model.OrderId && e.OrderIdNumber == model.OrderIdNumber && e.MaterialId == model.MaterialId);
-            model.InspectionItems = findmodel.InspectionItems + "," + model.InspectionItems;
-            return irep.Update(e => e.Id_Key == findmodel.Id_Key, model).ToOpResult_Eidt(OpContext);
+            if (findmodel == null) return new OpResult(OpContext, false); 
+             model.InspectionItems = findmodel.InspectionItems + "," + model.InspectionItems;
+             model.Id_Key = findmodel.Id_Key;
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
         private OpResult AddFqcInspectionMaster(InspectionFqcMasterModel model)
@@ -661,7 +663,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         public OpResult UpAuditDetailData(string orderId, int orderIdNumber, string Updatestring)
         {
-            return irep.UpAuditMaterData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);
+            return irep.UpAuditDetailData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);
         }
     }
     #endregion
