@@ -595,21 +595,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
 
             var oldmodel = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailModelBy(model.OrderId, model.OrderIdNumber, model.InspectionItem);
-            if (oldmodel != null && model.OpSign == OpMode.UploadFile)
+            if (oldmodel != null)
             {
                 model.Id_Key = oldmodel.Id_Key;
                 string oldPath = oldmodel.DocumentPath;
                 string NewPath = model.DocumentPath;
                 if (oldPath != null && oldPath != string.Empty && oldPath != NewPath)
-                    GetDcumentPath(oldPath).DeleteFileDocumentation();
-                model.OpSign = OpMode.Edit;
+                    if (!GetDcumentPath(oldPath).DeleteFileDocumentation())
+                     return new OpResult(OpContext, false);
+                return EidtFqcInspectionDetail(model);
             }
-            //if (model != null && model.DocumentPath != null && model.DocumentPath != string.Empty)
-
-
-            //    GetDcumentPath( model.DocumentPath).DeleteFileDocumentation();
-
-            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext); 
+            else return AddFqcInspectionDetail(model);
         }
 
         private string GetDcumentPath(string putinDcumentPath)
