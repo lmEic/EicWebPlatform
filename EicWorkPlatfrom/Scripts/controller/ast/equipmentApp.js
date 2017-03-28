@@ -11,7 +11,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     //设备信息展示
     $stateProvider.state('astEquipmentInfoView', {
         templateUrl: urlPrefix + 'AstEquipmentInfoView'
-    })
+    });
 
     //设备档案登记
     $stateProvider.state('astArchiveInput', {
@@ -198,13 +198,13 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
     //    })
     //}
     //013935根据表单编号查询设备
-    ast.getEquipmentRepairFormIdDatas = function (assetNumber,formId) {
+    ast.getEquipmentRepairFormIdDatas = function (assetNumber, formId) {
         var url = astUrlPrefix + 'GetEquipmentRepairFormIdDatas';
         return ajaxService.getData(url, {
             formId: formId,
-             assetNumber:assetNumber
-        })
-    }
+            assetNumber: assetNumber
+        });
+    };
     
     return ast;
 })
@@ -325,7 +325,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                 $scope.searchPromise = astDataopService.getAstDiscardListByAssetNumber(vmManager.AssetNumber).then(function (datas) {
                     vmManager.discardDataSource = datas;
                 });
-            },
+            }
         };
 
         $scope.vmManager = vmManager;
@@ -438,7 +438,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
             $scope.searchPromise = astDataopService.getAstMaintenanceListByAssetNumber(item.AssetNumber).then(function (datas) {
                 vmManager.maintenanceRecordDataSource = datas;
             });
-        },
+        }
     };
     $scope.vmManager = vmManager;
 
@@ -965,7 +965,7 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
 
     var vmManager = {
         init: function () {
-            leeHelper.clearVM(uiVM, ['OpSign', 'MaintenanceDate', 'AssetNumber'])
+            leeHelper.clearVM(uiVM, ['OpSign', 'MaintenanceDate', 'AssetNumber']);
             vmManager.isAssetNumerExist = false;
         },
         datasets: [],
@@ -1161,11 +1161,11 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         getEquipmentRepairDatas: function () {
             vmManager.editDatas = [];
             $scope.searchPromise = astDataopService.getEquipmentRepairFormIdDatas(vmManager.assetNumber, vmManager.formId).then(function (datas) {
-                if(datas != null){
+                if(datas !== null){
                     vmManager.editDatas = datas;
                 }
             });
-        },
+        }
 
     };
 
@@ -1206,8 +1206,8 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                             operate.editModal.$promise.then(operate.editModal.hide);
                         }
                     });
-                })
-            }
+                });
+            };
         },
         show: false
     });

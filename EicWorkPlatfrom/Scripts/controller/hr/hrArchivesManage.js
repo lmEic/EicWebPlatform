@@ -34,7 +34,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
     hrArchive.storeLeaveOffData = function (leaveEntity) {
         var url = archiveUrlPrefix + 'StoreLeaveOffData';
         return ajaxService.postData(url, {
-            leaveEntity: leaveEntity,
+            leaveEntity: leaveEntity
         });
     };
 
@@ -63,7 +63,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
             birthday : birthday,
             marryStatus : marryStatus,
             workingStatus : workingStatus,
-            searchMode: searchMode,
+            searchMode: searchMode
         });
     };
     //获取该工号列表的所有人员信息
@@ -91,7 +91,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
     hrArchive.changeDepartment = function (changeDepartments) {
         var url = archiveUrlPrefix + "ChangeDepartment";
         return ajaxService.postData(url, {
-            changeDepartments: changeDepartments,
+            changeDepartments: changeDepartments
         });
     };
 
@@ -99,7 +99,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
     hrArchive.changePost = function (changePosts) {
         var url = archiveUrlPrefix + "ChangePost";
         return ajaxService.postData(url, {
-            changePosts: changePosts,
+            changePosts: changePosts
         });
     };
 
@@ -107,7 +107,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
     hrArchive.changeStudy = function (studyInfos) {
         var url = archiveUrlPrefix + "ChangeStudy";
         return ajaxService.postData(url, {
-            studyInfos: studyInfos,
+            studyInfos: studyInfos
         });
     };
 
@@ -115,7 +115,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
     hrArchive.changeTel = function (tels) {
         var url = archiveUrlPrefix + "ChangeTelInfo";
         return ajaxService.postData(url, {
-            tels: tels,
+            tels: tels
         });
     };
 
@@ -131,7 +131,7 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
         var url = archiveUrlPrefix + 'ChangeWorkerId';
         return ajaxService.postData(url, {
             workerId: workerId,
-            newWorkerId: newWorkerId,
+            newWorkerId: newWorkerId
         });
     };
 
@@ -193,19 +193,19 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         { name: 'department', text: '部门信息', defaultCls: defualtCls, iconCls: iconCls, isEdit: false },
         { name: 'post', text: '岗位信息', defaultCls: defualtCls, iconCls: iconCls, isEdit: false },
         { name: 'school', text: '学历信息', defaultCls: defualtCls, iconCls: iconCls, isEdit: false },
-        { name: 'tel', text: '联系方式', defaultCls: defualtCls, iconCls: iconCls, isEdit: false },
+        { name: 'tel', text: '联系方式', defaultCls: defualtCls, iconCls: iconCls, isEdit: false }
         //{ name: 'certificate', text: '证书信息', defaultCls: defualtCls, iconCls: iconCls, isEdit: false },
     ];
 
 
     var archiveInput = {
-        activeTab:'inputTab',
-        opSign:'add',
+        activeTab: 'inputTab',
+        opSign: 'add',
         //输入成功的员工档案数据信息
-        inputedEmployeeDatas:[],
+        inputedEmployeeDatas: [],
         //配置数据
-        configDatas:[],
-        showIdentitySwitch:false,
+        configDatas: [],
+        showIdentitySwitch: false,
         showIdetityIcon: 'fa fa-2x fa-toggle-down',
         showIdentityBoard: function () {
             archiveInput.showIdentitySwitch = !archiveInput.showIdentitySwitch;
@@ -215,26 +215,24 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         identityInfos: [],
         identityInfo: null,
         //姓名信息列表
-        namesInfo:[],
+        namesInfo: [],
         registedTimeSegments: [{ name: "am", text: "上午" }, { name: "pm", text: "下午" }],
         btnTypes: btnTypes,
-        currentBtnType:btnTypes[0],
+        currentBtnType: btnTypes[0],
         selectBtnType: function (btnType) {
             archiveInput.currentBtnType = btnType;
             angular.forEach(archiveInput.btnTypes, function (bt) {
                 if (!bt.isEdit)
                     bt.defaultCls = defualtCls;
             });
-            if (!btnType.isEdit)
-            {
+            if (!btnType.isEdit) {
                 archiveInput.currentBtnType.defaultCls = activeCls;
             }
         },
         //根据身份证号后六位获取的数据是否唯一
         isSingle: true,
         setIdentityValue: function () {
-            if (archiveInput.identityInfo.IdentityID !== null)
-            {
+            if (archiveInput.identityInfo.IdentityID !== null) {
                 employeeIdentity.IdentityID = archiveInput.identityInfo.IdentityID;
                 employeeIdentity.Name = archiveInput.identityInfo.Name;
                 employeeIdentity.NativePlace = archiveInput.identityInfo.NativePlace;
@@ -244,8 +242,7 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         getIdentityInfo: function ($event) {
             archiveInput.namesInfo = [];
             if (employeeIdentity.IdentityID === undefined || employeeIdentity.IdentityID === null) return;
-            if (employeeIdentity.IdentityID.length === 6)
-            {
+            if (employeeIdentity.IdentityID.length === 6) {
                 $scope.identityPromise = hrArchivesDataOpService.getIdentityInfoBy(employeeIdentity.IdentityID).then(function (datas) {
                     if (datas.length > 0) {
                         archiveInput.identityInfos = datas;
@@ -268,18 +265,18 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
                 });
             }
         },
-        identityInfoMsgModal : $modal({
+        identityInfoMsgModal: $modal({
             title: "信息提示",
             content: "此身份证已经超过有效期了！",
-            templateUrl:leeHelper.modalTplUrl.msgModalUrl,
-            show: false,
+            templateUrl: leeHelper.modalTplUrl.msgModalUrl,
+            show: false
         }),
         showIdentityExpireInfoMsgModal: function (isExpire) {
             if (isExpire)
                 archiveInput.identityInfoMsgModal.$promise.then(archiveInput.identityInfoMsgModal.show);
         },
         selectName: function () {
-            var data=_.find(archiveInput.identityInfos, { Name: employeeIdentity.Name });
+            var data = _.find(archiveInput.identityInfos, { Name: employeeIdentity.Name });
             archiveInput.identityInfo = data.Identity;
             archiveInput.showIdentityExpireInfoMsgModal(data.IsExpire);
             archiveInput.setIdentityValue();
@@ -324,7 +321,7 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
             archiveInput.currentBtnType.iconCls = "fa fa-check-square-o";
         },
         //界面跳转
-        navigateTo:function(btnIndex){
+        navigateTo: function (btnIndex) {
             archiveInput.setCurrentBtnStatus();
             archiveInput.selectBtnType(archiveInput.btnTypes[btnIndex]);
         },
@@ -356,8 +353,7 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
         datasource: [],
         //获取档案数据
 
-        getWorkerArchiveDatas: function (searchMode)
-        {
+        getWorkerArchiveDatas: function (searchMode) {
             archiveInput.datasets = [];
             archiveInput.datasource = [];
             $scope.searchPromise = hrArchivesDataOpService.getWorkerArchives(
@@ -370,16 +366,13 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
                 archiveInput.workingStatus,
                 searchMode).then(function (datas) {
                     archiveInput.datasource = datas;
-            });
+                });
         },
-        
+
         startRegistedDate: new Date(),
         //查询报到截止日期
-        endRegistedDate: new Date(),
-
-
-
-    }
+        endRegistedDate: new Date()
+    };
     $scope.configPromise = hrArchivesDataOpService.getArchiveConfigDatas().then(function (datas) {
         archiveInput.configDatas = datas;
         archiveInput.workerIdCategories = createDataSource(datas, 'WorkerIdCategory', '工号类别');
@@ -493,7 +486,7 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
             leeHelper.clearVM(archiveInput.identityInfo);
             leeHelper.clearVM(employeeIdentity, ["RegistedDate", "RegistedSegment", "Post", "PostNature", "PostType", "DepartmentText", "Department"]);
         },
-        oldVm:null,
+        oldVm:null
     };
 });
 hrModule.controller('arDepartmentChangeCtrl', function ($scope,hrArchivesDataOpService, dataDicConfigTreeSet, connDataOpService) {
@@ -523,7 +516,7 @@ hrModule.controller('arDepartmentChangeCtrl', function ($scope,hrArchivesDataOpS
                         OpSign: null,
                         OpPerson: null,
                         AssignDate: null,
-                        OpCmdVisible:false,
+                        OpCmdVisible:false
                     };
                     vmManager.changeDatas.push(item);
                     vmManager.workerIdList.push($scope.WorkerId);
@@ -542,18 +535,16 @@ hrModule.controller('arDepartmentChangeCtrl', function ($scope,hrArchivesDataOpS
         $scope.workerPromise = hrArchivesDataOpService.getEmployeeByWorkerIds(vmManager.workerIdList,0).then(function (data) {
             angular.forEach(data, function (item) {
                 var dep = _.find(vmManager.changeDatas, { WorkerId: item.WorkerId });
-                if (dep !== undefined)
-                {
+                if (dep !== undefined) {
                     dep.WorkerName = item.Name;
                     dep.OldDepartment = item.Department;
                     dep.OpCmdVisible = true;
                     var depConfig = _.find(vmManager.configDatas, { DataNodeName: item.Department });
-                    if (depConfig !== undefined)
-                    {
+                    if (depConfig !== undefined) {
                         dep.OldDepartmentText = depConfig.DataNodeText;
                     }
                 }
-            })
+            });
         });
     };
 
@@ -562,7 +553,7 @@ hrModule.controller('arDepartmentChangeCtrl', function ($scope,hrArchivesDataOpS
     };
     operate.change = function (dep) {
         pHelper.setOpStatusInfo("调动至:", "change", dep);
-    }
+    };
     operate.save = function () {
         hrArchivesDataOpService.changeDepartment(vmManager.changeDatas).then(function (opResult) {
             if (opResult.Result) {
@@ -598,7 +589,7 @@ hrModule.controller('arDepartmentChangeCtrl', function ($scope,hrArchivesDataOpS
             vmManager.opSign = opsign;
             vmManager.opDescription = opdescription;
             vmManager.current = dep;
-        },
+        }
     };
 });
 hrModule.controller('arPostChangeCtrl', function ($scope, hrArchivesDataOpService, dataDicConfigTreeSet, connDataOpService) {
@@ -630,7 +621,7 @@ hrModule.controller('arPostChangeCtrl', function ($scope, hrArchivesDataOpServic
                         OpSign: null,
                         OpPerson: null,
                         AssignDate:null,
-                        OpCmdVisible: false,
+                        OpCmdVisible: false
                     };
                     vmManager.changeDatas.push(item);
                     vmManager.workerIdList.push($scope.WorkerId);
@@ -660,7 +651,7 @@ hrModule.controller('arPostChangeCtrl', function ($scope, hrArchivesDataOpServic
                         dep.OldDepartmentText = depConfig.DataNodeText;
                     }
                 }
-            })
+            });
         });
     };
 
@@ -669,7 +660,7 @@ hrModule.controller('arPostChangeCtrl', function ($scope, hrArchivesDataOpServic
     };
     operate.change = function (post) {
         pHelper.setOpStatusInfo("变动为:", "change", post);
-    }
+    };
     operate.save = function () {
         hrArchivesDataOpService.changePost(vmManager.changeDatas).then(function (opResult) {
             if (opResult.Result) {
@@ -705,7 +696,7 @@ hrModule.controller('arPostChangeCtrl', function ($scope, hrArchivesDataOpServic
             vmManager.opSign = opsign;
             vmManager.opDescription = opdescription;
             vmManager.current = post;
-        },
+        }
     };
 });
 hrModule.controller('arStudyChangeCtrl', function ($scope, $modal, hrArchivesDataOpService, dataDicConfigTreeSet, connDataOpService) {
@@ -722,7 +713,7 @@ hrModule.controller('arStudyChangeCtrl', function ($scope, $modal, hrArchivesDat
         OpCmdVisible: false,
         Id_Key: null,
         id: 0
-    }
+    };
     //视图管理器
     var vmManager = {
         opSign: 'edit',
@@ -769,7 +760,7 @@ hrModule.controller('arStudyChangeCtrl', function ($scope, $modal, hrArchivesDat
         queryItem.OpCmdVisible = true;
         queryItem.OpSign = "init";
         queryItem.id += 1;
-    }
+    };
     operate.search = function () {
         $scope.workerPromise = hrArchivesDataOpService.getEmployeeByWorkerIds(vmManager.workerIdList, 1).then(function (data) {
             angular.forEach(data, function (item) {
@@ -786,7 +777,7 @@ hrModule.controller('arStudyChangeCtrl', function ($scope, $modal, hrArchivesDat
                         }
                     }
                 }
-            })
+            });
         });
     };
 
@@ -817,7 +808,7 @@ hrModule.controller('arStudyChangeCtrl', function ($scope, $modal, hrArchivesDat
                 });
             };
         },
-        show: false,
+        show: false
     });
     operate.edit = function (item) {
         pHelper.setOpStatusInfo('edit', item);
@@ -825,7 +816,7 @@ hrModule.controller('arStudyChangeCtrl', function ($scope, $modal, hrArchivesDat
     operate.add = function (item) {
         pHelper.setOpStatusInfo('add', item);
         leeHelper.clearVM(uiVM, ['WorkerId', 'WorkerName']);
-    }
+    };
 
     operate.save = function () {
         hrArchivesDataOpService.changeStudy(vmManager.changeDatas).then(function (opResult) {
@@ -840,7 +831,7 @@ hrModule.controller('arStudyChangeCtrl', function ($scope, $modal, hrArchivesDat
     $scope.promise = connDataOpService.loadConfigDicData('ArchiiveConfig', 'QulificationType').then(function (datas) {
         angular.forEach(datas, function (item) {
             vmManager.qulifacations.push({ name: item.DataNodeText, text: item.DataNodeText });
-        })
+        });
     });
 
     var pHelper = {
@@ -851,7 +842,7 @@ hrModule.controller('arStudyChangeCtrl', function ($scope, $modal, hrArchivesDat
             uiVM = _.clone(item);
             vmManager.opSign = opsign;
             operate.editModal.$promise.then(operate.editModal.show);
-        },
+        }
     };
 });
 hrModule.controller('arTelChangeCtrl', function ($scope, $modal, hrArchivesDataOpService, dataDicConfigTreeSet, connDataOpService) {
@@ -870,7 +861,7 @@ hrModule.controller('arTelChangeCtrl', function ($scope, $modal, hrArchivesDataO
         Id_Key: null,
         OpCmdVisible: false,
         id: 0
-    }
+    };
     //视图管理器
     var vmManager = {
         opSign: 'edit',
@@ -915,7 +906,7 @@ hrModule.controller('arTelChangeCtrl', function ($scope, $modal, hrArchivesDataO
         queryItem.OpCmdVisible = true;
         queryItem.OpSign = "init";
         queryItem.id += 1;
-    }
+    };
     operate.search = function () {
         $scope.workerPromise = hrArchivesDataOpService.getEmployeeByWorkerIds(vmManager.workerIdList, 2).then(function (data) {
             angular.forEach(data, function (item) {
@@ -932,7 +923,7 @@ hrModule.controller('arTelChangeCtrl', function ($scope, $modal, hrArchivesDataO
                         }
                     }
                 }
-            })
+            });
         });
     };
 
@@ -962,7 +953,7 @@ hrModule.controller('arTelChangeCtrl', function ($scope, $modal, hrArchivesDataO
                 });
             };
         },
-        show: false,
+        show: false
     });
     operate.edit = function (item) {
         pHelper.setOpStatusInfo('edit', item);
@@ -970,7 +961,7 @@ hrModule.controller('arTelChangeCtrl', function ($scope, $modal, hrArchivesDataO
     operate.add = function (item) {
         pHelper.setOpStatusInfo('add', item);
         leeHelper.clearVM(uiVM, ['WorkerId', 'WorkerName']);
-    }
+    };
 
     operate.save = function () {
         hrArchivesDataOpService.changeTel(vmManager.changeDatas).then(function (opResult) {
@@ -990,17 +981,16 @@ hrModule.controller('arTelChangeCtrl', function ($scope, $modal, hrArchivesDataO
             uiVM = _.clone(item);
             vmManager.opSign = opsign;
             operate.editModal.$promise.then(operate.editModal.show);
-        },
+        }
     };
 });
 hrModule.controller('printCardCtrl', function ($scope, hrArchivesDataOpService) {
     var uiVM = {
         workerId: null,
         registedDateStart: new Date(),
-        registedDateEnd: new Date(),
+        registedDateEnd: new Date()
     };
     $scope.vm = uiVM;
-
 
     var vmManager = {
         dataSet: [],
@@ -1010,8 +1000,8 @@ hrModule.controller('printCardCtrl', function ($scope, hrArchivesDataOpService) 
             $scope.promise = hrArchivesDataOpService.getWorkersInfo($scope.vm, mode).then(function (datas) {
                 angular.forEach(datas, function (item) {
                     vmManager.dataSet.push(item);
-                })
-            })
+                });
+            });
         },
         searchByWorkerId: function ($event) {
             if ($event.keyCode === 13) {
@@ -1029,7 +1019,7 @@ hrModule.controller('printCardCtrl', function ($scope, hrArchivesDataOpService) 
         getCardImgBg: function (item) {
             var url = (item.PostNature === "直接") ? "../../Content/image/DirectCardTpl.jpg" : "../../Content/image/IndirectCardTpl.jpg";
             return url;
-        },
+        }
     };
     $scope.vmManager = vmManager;
 
@@ -1038,17 +1028,16 @@ hrModule.controller('printCardCtrl', function ($scope, hrArchivesDataOpService) 
         hrArchivesDataOpService.getWorkerCardImages().then(function (data) {
             var dd = {
                 content: [
-
                     	{
                     	    image: data,
                     	    width: 200
                     	},
                     'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines'
                 ]
-            }
+            };
             pdfMake.createPdf(dd).open();
-        })
-    }
+        });
+    };
 });
 //离职管理控制器
 hrModule.controller('arLeaveOffCtrl', function ($scope, hrArchivesDataOpService, connDataOpService) {
@@ -1062,84 +1051,8 @@ hrModule.controller('arLeaveOffCtrl', function ($scope, hrArchivesDataOpService,
         LeaveDate: null,
         LeaveReason: null,
         Memo: null,
-        OpSign: 'add',
-    }
-    $scope.vm = uiVM;
-
-    var vmCopy = _.clone(uiVM);
-
-    var vmManager = {
-        init: function () {
-            uiVM = vmCopy;
-            vmManager.workerId = '';
-            vmManager.workerInfo = null;
-            $scope.vm = uiVM;
-        },
-        workerId:null,
-        leaveReasonTypes: [],
-        workerInfo:null,
-        getWorker: function ($event) {
-            if (event.keyCode == 13)
-            {
-                if (vmManager.workerId !== undefined && vmManager.workerId.length >= 6)
-                {
-                    $scope.searchPromise = connDataOpService.getWorkersBy(vmManager.workerId).then(function (datas) {
-                        if (angular.isArray(datas) && datas.length > 0)
-                        {
-                            vmManager.workerInfo = datas[0];
-                        }
-                    });
-                }
-            }
-        },
-        setVmValue: function () {
-            uiVM.ID = vmManager.workerInfo.IdentityID;
-            uiVM.WorkerId = vmManager.workerInfo.WorkerId;
-            uiVM.WorkerName = vmManager.workerInfo.Name;
-            uiVM.Department = vmManager.workerInfo.Department;
-            uiVM.Post = vmManager.workerInfo.Post;
-            
-        },
+        OpSign: 'add'
     };
-    $scope.vmManager = vmManager;
-    var operate = Object.create(leeDataHandler.operateStatus);
-    $scope.operate = operate;
-    operate.save = function (isValid) {
-        leeDataHandler.dataOperate.add(operate, isValid, function () {
-            vmManager.setVmValue();
-            hrArchivesDataOpService.storeLeaveOffData(uiVM).then(function (opResult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
-                    vmManager.init();
-                })
-            })
-        })
-    };
-    operate.refresh = function () {
-        leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); })
-    };
-
-    $scope.promise = connDataOpService.loadConfigDicData('ArchiiveConfig', 'LeaveOff').then(function (datas) {
-        vmManager.leaveReasonTypes = [];
-        angular.forEach(datas, function (dataitem) {
-            vmManager.leaveReasonTypes.push({ name: dataitem.DataNodeText, text: dataitem.DataNodeText });
-        });
-    });
-    
-})
-//变更工号控制器
-hrModule.controller('arChangeWorkerIdCtrl', function ($scope, hrArchivesDataOpService, connDataOpService) {
-    ///离职视图模型
-    var uiVM = {
-        ID: null,
-        WorkerId: null,
-        WorkerName: null,
-        Department: null,
-        Post: null,
-        WorkerIdNumType: 0,
-        WorkerIdType: '',
-        NewWorkerId:null,
-        OpSign: 'add',
-    }
     $scope.vm = uiVM;
 
     var vmCopy = _.clone(uiVM);
@@ -1152,10 +1065,82 @@ hrModule.controller('arChangeWorkerIdCtrl', function ($scope, hrArchivesDataOpSe
             $scope.vm = uiVM;
         },
         workerId: null,
-      
+        leaveReasonTypes: [],
         workerInfo: null,
         getWorker: function ($event) {
-            if (event.keyCode == 13) {
+            if (event.keyCode === 13) {
+                if (vmManager.workerId !== undefined && vmManager.workerId.length >= 6) {
+                    $scope.searchPromise = connDataOpService.getWorkersBy(vmManager.workerId).then(function (datas) {
+                        if (angular.isArray(datas) && datas.length > 0) {
+                            vmManager.workerInfo = datas[0];
+                        }
+                    });
+                }
+            }
+        },
+        setVmValue: function () {
+            uiVM.ID = vmManager.workerInfo.IdentityID;
+            uiVM.WorkerId = vmManager.workerInfo.WorkerId;
+            uiVM.WorkerName = vmManager.workerInfo.Name;
+            uiVM.Department = vmManager.workerInfo.Department;
+            uiVM.Post = vmManager.workerInfo.Post;
+
+        }
+    };
+    $scope.vmManager = vmManager;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.save = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            vmManager.setVmValue();
+            hrArchivesDataOpService.storeLeaveOffData(uiVM).then(function (opResult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
+                    vmManager.init();
+                });
+            });
+        });
+    };
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); });
+    };
+
+    $scope.promise = connDataOpService.loadConfigDicData('ArchiiveConfig', 'LeaveOff').then(function (datas) {
+        vmManager.leaveReasonTypes = [];
+        angular.forEach(datas, function (dataitem) {
+            vmManager.leaveReasonTypes.push({ name: dataitem.DataNodeText, text: dataitem.DataNodeText });
+        });
+    });
+});
+//变更工号控制器
+hrModule.controller('arChangeWorkerIdCtrl', function ($scope, hrArchivesDataOpService, connDataOpService) {
+    ///离职视图模型
+    var uiVM = {
+        ID: null,
+        WorkerId: null,
+        WorkerName: null,
+        Department: null,
+        Post: null,
+        WorkerIdNumType: 0,
+        WorkerIdType: '',
+        NewWorkerId: null,
+        OpSign: 'add'
+    };
+    $scope.vm = uiVM;
+
+    var vmCopy = _.clone(uiVM);
+
+    var vmManager = {
+        init: function () {
+            uiVM = vmCopy;
+            vmManager.workerId = '';
+            vmManager.workerInfo = null;
+            $scope.vm = uiVM;
+        },
+        workerId: null,
+
+        workerInfo: null,
+        getWorker: function ($event) {
+            if (event.keyCode === 13) {
                 if (vmManager.workerId !== undefined && vmManager.workerId.length >= 6) {
                     $scope.searchPromise = connDataOpService.getWorkersBy(vmManager.workerId).then(function (datas) {
                         if (angular.isArray(datas) && datas.length > 0) {
@@ -1174,7 +1159,7 @@ hrModule.controller('arChangeWorkerIdCtrl', function ($scope, hrArchivesDataOpSe
 
         },
         //作业工号配置数据
-        workerIdConfigs:[],
+        workerIdConfigs: [],
         //工号数字类别
         workerIdCategories: [],
         selectWorkerIdCategory: function () {
@@ -1182,13 +1167,13 @@ hrModule.controller('arChangeWorkerIdCtrl', function ($scope, hrArchivesDataOpSe
             angular.forEach(workerIdTypes, function (dataitem) {
                 vmManager.workerIdTypes.push({ name: dataitem.DataNodeText, text: dataitem.DataNodeText });
             });
-           
+
             hrArchivesDataOpService.getWorkerIdBy($scope.vm.WorkerIdNumType).then(function (data) {
                 $scope.vm.NewWorkerId = data;
             });
         },
         //工号具体类型
-        workerIdTypes: [],
+        workerIdTypes: []
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -1198,20 +1183,19 @@ hrModule.controller('arChangeWorkerIdCtrl', function ($scope, hrArchivesDataOpSe
             hrArchivesDataOpService.changeWorkerId(vmManager.workerId, $scope.vm.NewWorkerId).then(function (opResult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
                     vmManager.init();
-                })
-            })
-        })
+                });
+            });
+        });
     };
     operate.refresh = function () {
-        leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); })
+        leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); });
     };
 
     $scope.promise = connDataOpService.loadConfigDicData('ArchiiveConfig', 'WorkerIdCategory').then(function (datas) {
         vmManager.workerIdConfigs = datas;
         var workerIdCategories = _.where(datas, { ParentDataNodeText: '工号类别' });
         angular.forEach(workerIdCategories, function (dataitem) {
-                vmManager.workerIdCategories.push({ name: dataitem.DataNodeName, text: dataitem.DataNodeText });
+            vmManager.workerIdCategories.push({ name: dataitem.DataNodeName, text: dataitem.DataNodeText });
         });
     });
-
-})
+});

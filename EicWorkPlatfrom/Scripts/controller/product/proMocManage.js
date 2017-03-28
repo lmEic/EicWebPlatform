@@ -15,7 +15,7 @@ productModule.factory('mocDataOpService', function (ajaxService) {
             department: department,
             productName: productName,
             orderId: orderId,
-            searchMode: searchMode,
+            searchMode: searchMode
         });
     };
 

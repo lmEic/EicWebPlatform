@@ -21,7 +21,7 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     {
         var url = purUrlPrefix + 'GetPurQualifiedSupplierListBy';
         return ajaxService.getData(url, {
-            yearMonth: yearMonth,
+            yearMonth: yearMonth
         });
     };
 
@@ -46,7 +46,7 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     purDb.storePurSupplierCertificateInfo = function (certificateDatas) {
         var url = purUrlPrefix + 'StorePurSupplierCertificateInfo';
         return ajaxService.postData(url, {
-            certificateDatas: certificateDatas,
+            certificateDatas: certificateDatas
         });
     };
     ///获取合格供应商证书信息
@@ -54,14 +54,14 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     {
         var url = purUrlPrefix + 'GetSupplierQualifiedCertificateListBy';
         return ajaxService.getData(url, {
-            supplierId: supplierId,
+            supplierId: supplierId
         });
     };
     ///删除供应商证书文件
     purDb.delPurSupplierCertificateFile = function (entity) {
         var url = purUrlPrefix + 'DelPurSupplierCertificateFile';
         return ajaxService.postData(url, {
-            entity: entity,
+            entity: entity
         });
     };
     //-------------------------供应商考核管理-------------------------------------
@@ -69,14 +69,14 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     purDb.getAuditSupplierList = function (season) {
         var url = purUrlPrefix + 'GetAuditSupplierList';
         return ajaxService.getData(url, {
-            yearSeason: season,
+            yearSeason: season
         });
     };
     //保存考核供应商信息
     purDb.saveAuditSupplierInfo = function (entity) {
         var url = purUrlPrefix + 'SaveAuditSupplierInfo';
         return ajaxService.postData(url, {
-            entity: entity,
+            entity: entity
         });
     };
 
@@ -85,28 +85,28 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     purDb.getWaittingTourSupplier = function (yearQuarter) {
         var url = purUrlPrefix + 'GetWaittingTourSupplier';
         return ajaxService.getData(url, {
-            yearQuarter: yearQuarter,
+            yearQuarter: yearQuarter
         });
     };
     ///保存供应商辅导信息
     purDb.savePurSupTourInfo = function (entity) {
         var url = purUrlPrefix + 'SavePurSupTourInfo';
         return ajaxService.postData(url, {
-            entity: entity,
+            entity: entity
         });
     };
     //-------------------------供应商评分管理-------------------------------------
     purDb.getPurSupGradeInfo = function (yearQuarter) {
         var url = purUrlPrefix + 'GetPurSupGradeInfo';
         return ajaxService.getData(url, {
-            yearQuarter: yearQuarter,
+            yearQuarter: yearQuarter
         });
     };
     ///保存供应商评分数据
     purDb.savePurSupGradeInfo = function (entity) {
         var url = purUrlPrefix + 'SavePurSupGradeData';
         return ajaxService.postData(url, {
-            entity: entity,
+            entity: entity
         });
     };
     ///获取供应商数据列表
@@ -114,7 +114,7 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
         var url =purUrlPrefix  + 'GetPurSupplierDataList';
         return ajaxService.getData(url, {
             supplierId: supplierId,
-            dataType: dataType,
+            dataType: dataType
         });
     };
     return purDb;
@@ -186,7 +186,7 @@ null,
     "袁晓春",
         UpperPurchaseDate
     :
-    "2016-11-19",
+    "2016-11-19"
     };
 
     var vmManager = $scope.vmManager = {
@@ -202,7 +202,7 @@ null,
 
         CreateQualifiedSupplierList: function () {
             $scope.searchPromise = supplierDataOpService.CreateQualifiedSupplierInfoList(vmManager.datasource).then(function () {
-                console.log(vmManager.datasources)
+
             });
         },
         supplierCertificateEditModal: $modal({
@@ -236,7 +236,7 @@ null,
                 var uploadFileItem = {
                     id: 1,EligibleCertificate: '', adding: true, uploadSuccess: false,
                     PurchaseType: '', SupplierProperty: '', SupplierId: '', FilePath: '',
-                    CertificateFileName: '', DateOfCertificate: null,
+                    CertificateFileName: '', DateOfCertificate: null
                 };
 
                 var editManager = {
@@ -258,8 +258,8 @@ null,
                             if (opResult.Result) {
                                 leeHelper.remove(editManager.certificateDatas, item);
                             }
-                            else { alert(opResult.Message);}
-                        })
+                            else { alert(opResult.Message); }
+                        });
                     },
                     //证书数据
                     certificateDatas:[],
@@ -268,7 +268,7 @@ null,
                         $scope.searchPromise = supplierDataOpService.getSupplierQualifiedCertificateListBy(vmManager.editItem.SupplierId).then(function (datas) {
                             editManager.certificateDatas = datas;
                         });
-                    },
+                    }
                 };
                 $scope.vmManager = editManager;
                 ///选择文件并上传
@@ -303,7 +303,7 @@ null,
         editSupplierCertificate: function (item) {
             vmManager.editItem = item;
             vmManager.supplierCertificateEditModal.$promise.then(vmManager.supplierCertificateEditModal.show);
-        },
+        }
     };
 });
 //供应商考核管理
@@ -330,13 +330,13 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         Optime: null,
         OpSign: null,
         Id_key: null,
-        isEditting:false,
+        isEditting:false
     };
 
     ///供应商考核视图模型
-   var uiVM=$scope.vm = {
-       SupplierId: null,
-        SupplierShortName:null,
+    var uiVM = $scope.vm = {
+        SupplierId: null,
+        SupplierShortName: null,
         SupplierName: null,
         QualityCheck: null,
         AuditPrice: null,
@@ -355,8 +355,8 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         OpDate: null,
         Optime: null,
         OpSign: 'add',
-        Id_key: null,
-    }
+        Id_key: null
+    };
    
    var initVm = _.clone(uiVM);
 
@@ -374,13 +374,13 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
                     leeHelper.copyVm($scope.vm, vmManager.editItem);
                     vmManager.init();
                 });
-            })
-        })
+            });
+        });
     };
     operate.refresh = function () {
         crud.refresh(operate, function () {
             vmManager.init();
-        })
+        });
     };
 
 
@@ -402,7 +402,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         editSupplierAuditData: function (item) {
             vmManager.displayEditForm = true;
             vmManager.editItem = $scope.vm = uiVM = item;
-        },
+        }
     };
 
    
@@ -437,7 +437,7 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         Optime: null,
         OpSign: null,
         Id_key: null,
-        isEditting: false,
+        isEditting: false
     };
 
     ///供应商辅导视图模型
@@ -468,8 +468,8 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         OpDate: null,
         Optime: null,
         OpSign: null,
-        Id_key: null,
-    }
+        Id_key: null
+    };
 
     var initVm = _.clone(uiVM);
 
@@ -514,12 +514,12 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
                                 vmManager.editItem = $scope.vm;
                                 vmManager.supTourEditModal.$promise.then(vmManager.supTourEditModal.hide);
                             }
-                        })
-                    })
+                        });
+                    });
                 };
 
             },
-            show:false,
+            show:false
         })
     };
 
@@ -549,7 +549,7 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
         OpDate: null,
         OpTime: null,
         Id_key: null,
-        isEditting: false,
+        isEditting: false
     };
 
     ///供应商考核视图模型
@@ -573,8 +573,8 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
         OpDate: null,
         Optime: null,
         OpSign: null,
-        Id_key: null,
-    }
+        Id_key: null
+    };
 
     var initVm = _.clone(uiVM);
 
@@ -624,11 +624,11 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
                                 vmManager.editItem = $scope.vm;
                                 vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.hide);
                             }
-                        })
-                    })
+                        });
+                    });
                 };
             },
-            show: false,
+            show: false
         })
     };
 });

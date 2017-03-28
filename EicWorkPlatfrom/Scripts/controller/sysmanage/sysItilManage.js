@@ -9,7 +9,7 @@ smModule.factory('sysitilService', function (ajaxService) {
     itil.storeProjectDevelopRecord = function (entity) {
         var url = urlPrefix + 'StoreProjectDevelopRecord';
         return ajaxService.postData(url, {
-            entity: entity,
+            entity: entity
         });
     };
     ///根据开发进度状态查找开发模块
@@ -18,21 +18,21 @@ smModule.factory('sysitilService', function (ajaxService) {
         return ajaxService.getData(url, {
             progressStatuses: progressStatuses,
             functionName: functionName,
-            mode: mode,
+            mode: mode
         });
     };
     ///改变模块开发进度状态
     itil.changeDevelopModuleProgressStatus = function (entity) {
         var url = urlPrefix + 'ChangeDevelopModuleProgressStatus';
         return ajaxService.postData(url, {
-            entity: entity,
+            entity: entity
         });
     };
 
     itil.viewDevelopModuleDetails = function (entity) {
         var url = urlPrefix + 'ViewDevelopModuleDetails';
         return ajaxService.postData(url, {
-            entity: entity,
+            entity: entity
         });
     };
     ///发送邮件通知
@@ -46,7 +46,7 @@ smModule.factory('sysitilService', function (ajaxService) {
 });
 smModule.controller('supTelManageCtrl', function ($scope, $modal, sysitilService) {
 });
-smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysitilService) {
+smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sysitilService) {
     ///视图模型
     var uiVM = {
         MClassName: null,
@@ -57,13 +57,13 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
         DifficultyCoefficient: 1,
         DevPriority: 1,
         StartDate: new Date(),
-        FinishDate:null,
+        FinishDate: null,
         CurrentProgress: null,
         Executor: null,
         Memo: null,
         OpSign: 'add',
-        Id_Key:0,
-    }
+        Id_Key: 0
+    };
 
     $scope.vm = uiVM;
 
@@ -71,13 +71,13 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
 
     var queryFields = {
         selectedProgressStatuses: [],
-        functionName:null,
+        functionName: null
     };
     $scope.query = queryFields;
 
     var vmManager = {
         activeTab: 'initTab',
-        isLocal:true,
+        isLocal: true,
         init: function () {
             if (uiVM.OpSign === 'add') {
                 uiVM.MFunctionName = null;
@@ -91,7 +91,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
             vmManager.canEdit = false;
         },
         executors: [{ name: '万晓桥', text: '万晓桥' }, { name: '张文明', text: '张文明' }, { name: '杨垒', text: '杨垒' }],
-        
+
         progressStatuses: [
                 { value: '待开发', label: '<i class="fa fa-calendar-o"></i>  待开发' },
                 { value: '待审核', label: '<i class="fa fa-feed"></i>  待审核' },
@@ -109,10 +109,10 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
         },
         datasource: [],
         datasets: [],
-        isUpdate:false,
+        isUpdate: false,
         searchBy: function () {
             vmManager.isUpdate = true;
-            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses,queryFields.functionName,2).then(function (datas) {
+            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses, queryFields.functionName, 2).then(function (datas) {
                 vmManager.developModules = datas;
             });
         },
@@ -127,20 +127,19 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
             vmManager.showDetailsBoard = isShowDetailsBoard;
             editModalOption.title = isShowDetailsBoard ? "进度状态明细窗口" : "状态变更窗口";
             uiVM = _.clone(item);
-            if (!isShowDetailsBoard)
-            {
+            if (!isShowDetailsBoard) {
                 uiVM.OpSign = 'eidt';
                 uiVM.CurrentProgress = null;
                 uiVM.Executor = null;
             }
-           
+
             vmManager.editModal = $modal(editModalOption);
             vmManager.editModal.$promise.then(vmManager.editModal.show);
         },
         changeProgressStatus: function (item) {
             vmManager.showModalWindow(item, false);
         },
-        developChangeDetails:[],
+        developChangeDetails: [],
         showDetailsBoard: false,//显示明细面板
         editModal: null,
         functionName: null,
@@ -148,7 +147,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
             $scope.searchPromise = sysitilService.sendMail().then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
 
-                })
+                });
             });
         }
     };
@@ -183,7 +182,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
                 });
             };
         },
-        show: false,
+        show: false
     };
     operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
@@ -195,15 +194,14 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
                         vmManager.developModules.push(mdl);
                         vmManager.isUpdate = false;
                     }
-                    else (mdl.OpSign == 'edit')
-                    {
+                    else if (mdl.OpSign === 'edit') {
                         var item = _.find(vmManager.developModules, { Id_Key: uiVM.Id_Key });
                         leeHelper.copyVm(uiVM, item);
                     }
                     vmManager.init();
                 });
             });
-        })
+        });
     };
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
@@ -212,8 +210,8 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope,$modal,sysi
     };
     operate.viewDetails = function (item) {
         vmManager.showModalWindow(item, true);
-        $scope.searchPromise=sysitilService.viewDevelopModuleDetails(item).then(function (datas) {
+        $scope.searchPromise = sysitilService.viewDevelopModuleDetails(item).then(function (datas) {
             vmManager.developChangeDetails = datas;
         });
-    }
-})
+    };
+});

@@ -21,7 +21,7 @@ var leeDataHandler = (function () {
                     vm[key] = null;
                 }
             }
-        },
+        }
     };
     ///数据操作
     var leeDataOperate = {
@@ -55,7 +55,7 @@ var leeDataHandler = (function () {
         displayMessage: function (opstatus, message, customFn) {
             opstatus.showValidation = false;
             opstatus.result = false;
-            opstatus.message = message
+            opstatus.message = message;
             opstatus.msgDisplay = true;
 
             (function () {
@@ -76,7 +76,7 @@ var leeDataHandler = (function () {
             {
                 cancelfn();
             }
-        },
+        }
     };
     ///数据存储
     var leeDataStorage = {
@@ -98,12 +98,11 @@ var leeDataHandler = (function () {
                 //头像
                 headPortrait: null,
                 //部门
-                department:null,
+                department: null,
                 //网站物理路径
                 webSitePhysicalApplicationPath: null,
-                serverName:null,
+                serverName: null
             };
-
             var loginInfoJson = localStorage.getItem("loginUser");
             if (!_.isUndefined(loginInfoJson) && !_.isNull(loginInfoJson))
             {
@@ -135,7 +134,7 @@ var leeDataHandler = (function () {
                 }
             }
             return null;
-        },
+        }
     };
     ///数据操作类型
     var leeDataOpMode = {
@@ -143,7 +142,7 @@ var leeDataHandler = (function () {
         edit: 'edit',
         update: 'update',
         'delete': 'delete',
-        uploadFile:'uploadFile',
+        uploadFile:'uploadFile'
     };
     return {
         ///操作状态
@@ -168,7 +167,7 @@ var leeHelper = (function () {
     };
     var commonTplUrl = {
         //树组件选择窗口
-        treeSelectTplUrl: '/CommonTpl/TreeSelectTpl',
+        treeSelectTplUrl: '/CommonTpl/TreeSelectTpl'
     };
     var controllerNames = {
         equipment: 'Equipment',
@@ -197,7 +196,7 @@ var leeHelper = (function () {
         //vm:视图对象
         //notKeys:不包含的要清楚值的键值
         //defValue:清除后，设定每个字段的默认值
-        clearVM: function (vm, notKeys,defValue) {
+        clearVM: function (vm, notKeys, defValue) {
             for (var key in vm) {
                 if (_.isArray(notKeys)) {
                     if (!_.contains(notKeys, key)) {
@@ -239,7 +238,7 @@ var leeHelper = (function () {
                     ary.splice(i, 1);
                     break;
                 }
-            };
+            }
         },
         ///在数组指定位置插入项
         insert: function (ary, index, item) {
@@ -260,7 +259,7 @@ var leeHelper = (function () {
                 if (_.isArray(uniqProperties)) {
                     _.forEach(uniqProperties, function (fieldName) {
                         ckey = ckey + "_" + item[fieldName];
-                    })
+                    });
                 }
                 else {
                     ckey = item[uniqProperties];
@@ -288,18 +287,18 @@ var leeHelper = (function () {
                 if (dep !== undefined) {
                     item.Department = dep.DataNodeText;
                 }
-            })
+            });
             return workerDatas;
         },
         ///判断是否是中文
         checkIsChineseValue: function (val) {
             var reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
-            return reg.test(val)
+            return reg.test(val);
         },
         ///读入图片文件并预览 imgId:图片控件Id,file：file元素
         readFile: function (imgId, file) {
             var reader = new FileReader();
-            var img = document.getElementById(imgId)
+            var img = document.getElementById(imgId);
             //载入事件
             reader.onload = (function (aimg) {
                 return function (e) {
@@ -309,14 +308,13 @@ var leeHelper = (function () {
             reader.readAsDataURL(file);
         },
         ///上传文件
-        upoadFile: function (el,handler) {
+        upoadFile: function (el, handler) {
             var files = el.files;
             if (files.length > 0) {
                 var file = files[0];
                 var fd = new FormData();
                 fd.append('file', file);
-                if (handler && _.isFunction(handler))
-                {
+                if (handler && _.isFunction(handler)) {
                     fd.name = file.name;
                     handler(fd);
                 }
@@ -342,7 +340,7 @@ var leeHelper = (function () {
                 printWindow.document.write(newstr);
                 printWindow.print();
                 return false;
-            };
+            }
         },
         //将小数转换为百分比
         toPercent: function (data, len) {
@@ -357,7 +355,7 @@ var leeHelper = (function () {
                 //arrToSort.sort(function (a, b) {
                 //    return a[strObjPropertyName].toLowerCase() > b[strObjPropertyName].toLowerCase();
                 //});
-                return _.sortBy(arrToSort,strObjPropertyName);
+                return _.sortBy(arrToSort, strObjPropertyName);
             }
             else {
                 //arrToSort.sort(function (a, b) {
@@ -371,74 +369,69 @@ var leeHelper = (function () {
         ///totalCount：总数量,colCount:列数量
         ///defaultDatas:默认传入的数据列表
         ///handler：处理句柄
-        createDataInputs: function (totalCount, colCount,defaultDatas,handler) {
-        var inputDatas = [];
-        var id = 0;
-        var modData = totalCount % colCount;
-        var rows =parseInt(totalCount / colCount);
-        var rowItem, colItem,len,colIndex;
-        for (var rowIndex = 1; rowIndex <= rows; rowIndex++) {
-            rowItem = { rowId: rowIndex,cols:[]};
-            for (colIndex = 1; colIndex <= colCount; colIndex++) {
+        createDataInputs: function (totalCount, colCount, defaultDatas, handler) {
+            var inputDatas = [];
+            var id = 0;
+            var modData = totalCount % colCount;
+            var rows = parseInt(totalCount / colCount);
+            var rowItem, colItem, len, colIndex;
+            for (var rowIndex = 1; rowIndex <= rows; rowIndex++) {
+                rowItem = { rowId: rowIndex, cols: [] };
+                for (colIndex = 1; colIndex <= colCount; colIndex++) {
+                    id += 1;
+                    colItem = { index: id, rowId: rowIndex, colId: colIndex, indata: null, focus: false, nextColId: colIndex + 1, result: true };
+                    if (_.isArray(defaultDatas))//检测传入的数据是否是数组
+                    {
+                        len = defaultDatas.length + 1;
+                        if (id <= len) {
+                            var idata = defaultDatas[id - 1];
+                            if (idata !== undefined && idata !== "")
+                                colItem.indata = idata;
+                            if (_.isFunction(handler) && colItem.indata !== null)
+                                handler(colItem);
+                        }
+                    }
+                    if (colIndex === colCount) {
+                        colItem.rowId += 1;
+                        colItem.nextColId = 1;
+                    }
+                    if (id === totalCount) {
+                        colItem.nextColId = "last";
+                    }
+                    rowItem.cols.push(colItem);
+                }
+                if (rowIndex === rows) {
+                    rowIndex = rows + 1;
+                }
+                inputDatas.push(rowItem);
+            }
+            //添加余数部分数据
+            rowItem = { rowId: rows + 1, cols: [] };
+            for (colIndex = 1; colIndex <= modData; colIndex++) {
                 id += 1;
-                colItem = { index: id, rowId: rowIndex, colId: colIndex, indata: null, focus: false, nextColId: colIndex + 1, result: true };
+                colItem = { index: id, rowId: rowItem.rowId, colId: colIndex, indata: null, focus: false, nextColId: colIndex + 1, result: true };
+                if (colIndex === modData) {
+                    colItem.nextColId = "last";
+                }
                 if (_.isArray(defaultDatas))//检测传入的数据是否是数组
                 {
                     len = defaultDatas.length + 1;
-                    if (id <= len)
-                    {
-                        var idata=defaultDatas[id - 1];
-                        if (idata !== undefined && idata !== "")
-                            colItem.indata = idata;
+                    if (id <= len) {
+                        colItem.indata = defaultDatas[id - 1];
                         if (_.isFunction(handler) && colItem.indata !== null)
                             handler(colItem);
                     }
                 }
-                if (colIndex === colCount)
-                {
-                    colItem.rowId += 1;
-                    colItem.nextColId = 1;
-                }
-                if (id === totalCount)
-                {
-                    colItem.nextColId = "last";
-                }
                 rowItem.cols.push(colItem);
             }
-            if (rowIndex === rows)
-            {
-                rowIndex = rows + 1;
-            }
             inputDatas.push(rowItem);
-        }
-        //添加余数部分数据
-        rowItem = { rowId: rows + 1, cols: [] };
-        for (colIndex = 1; colIndex <= modData; colIndex++) {
-            id += 1;
-            colItem = { index: id, rowId: rowItem.rowId, colId: colIndex, indata: null, focus: false, nextColId: colIndex + 1,result:true };
-            if (colIndex === modData)
-            {
-                colItem.nextColId = "last";
-            }
-            if (_.isArray(defaultDatas))//检测传入的数据是否是数组
-            {
-                len = defaultDatas.length + 1;
-                if (id <= len) {
-                    colItem.indata = defaultDatas[id - 1];
-                    if (_.isFunction(handler) && colItem.indata !== null)
-                        handler(colItem);
-                }
-            }
-            rowItem.cols.push(colItem);
-        }
-        inputDatas.push(rowItem);
-        return inputDatas;
+            return inputDatas;
         },
         ///max规格上限,min规格下限,targetValue目标值，compareSign比较操作符
-        checkValue:function(max, min, targetValue, compareSign) {
+        checkValue: function (max, min, targetValue, compareSign) {
             return (targetValue >= min && targetValue <= max);
         }
-    }
+    };
 })();
 ///zTree 助手
 var leeTreeHelper = (function () {
@@ -486,7 +479,7 @@ var leeTreeHelper = (function () {
         transformToArray: function (treeId, treeNodes) {
             var treeObj = $.fn.zTree.getZTreeObj(treeId);
             return treeObj.transformToArray(treeNodes);
-        },
+        }
     };
     return ztree;
 })();
@@ -519,11 +512,11 @@ Date.prototype.pattern = function (fmt) {
     }
     for (var k in o) {
         if (new RegExp("(" + k + ")").test(fmt)) {
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]):(("00" + o[k]).substr(("" + o[k]).length)));
         }
     }
     return fmt;
-}
+};
 ///数组去重方法扩展
 Array.prototype.unique = function () {
     var n = [this[0]]; //结果数组
@@ -534,4 +527,4 @@ Array.prototype.unique = function () {
         if (this.indexOf(this[i]) === i) n.push(this[i]);
     }
     return n;
-}
+};

@@ -16,7 +16,7 @@ var eloam = (function () {
             plugin().Video_RotateLeft(video);
         }
     }
-    //右转
+    //右转 
     function Right() {
         if (video) {
             plugin().Video_RotateRight(video);
@@ -61,9 +61,9 @@ var eloam = (function () {
         //dbt 1 表示设备到达， 2 表示设备丢失		
         addEvent(plugin(), 'DevChange', function(type, idx, dbt) 
         {
-        	if(1 != type) {
-        		return;
-        	}
+            if (1 !== type) {
+                return;
+            }
         	OpenVideo();
         });
 
@@ -95,7 +95,7 @@ var eloam = (function () {
         }
         plugin().Image_Release(img);
         return bSave;
-    };
+    }
     ///保存为Pdf
     function saveToPdf(fileName) {
         if (video) {
@@ -115,7 +115,7 @@ var eloam = (function () {
                     //var mi = date.getMilliseconds().toString();
                     //var namepdf = "\\\\192.168.0.65\\svn\\文档扫描\\" + yy + mm + dd + hh + nn + ss + mi + ".pdf";
 
-                    var b = plugin().Image_SaveToPDF(img, 0, fileName, 0)
+                    var b = plugin().Image_SaveToPDF(img, 0, fileName, 0);
                     if (b) {
                         view().View_PlayCaptureEffect();
                     }
