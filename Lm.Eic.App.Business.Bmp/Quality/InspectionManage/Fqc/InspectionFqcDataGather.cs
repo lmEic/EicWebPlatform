@@ -418,9 +418,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
-                if (sumModel == null) { masterModel = null; detailModel = null; }
-                ///   DocumentPath
                 
+                if (sumModel == null) { masterModel = null; detailModel = null; }
+                string documentPath = sumModel.DocumentPath;
+                ///   DocumentPath
+                if (documentPath != null && documentPath != string.Empty && documentPath.Contains (@"\"))
+                { documentPath= documentPath.Replace(@"\","/"); }
                 masterModel = new InspectionFqcMasterModel()
                 {
                     OrderId = sumModel.OrderId,
@@ -443,9 +446,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     InspectionCount = sumModel.MaterialCount ,
                     Department = sumModel.Department,
                     OpPerson = sumModel.OpPerson,
-                    OpSign = "add"
+                    OpSign = OpMode.Add 
                 };
-
+             
                 detailModel = new InspectionFqcDetailModel()
                 {
                     OrderId = sumModel.OrderId,
@@ -468,8 +471,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     InspectionMode = sumModel.InspectionMode,
                     NeedPutInDataCount=sumModel.NeedFinishDataNumber ,
                     ///
-                    DocumentPath=sumModel .DocumentPath ,
-                    FileName=sumModel.FileName,
+                    DocumentPath = documentPath,
+                    FileName =sumModel.FileName,
                     Memo = sumModel.Memo,
                     ClassType = sumModel.ClassType,
                     Department = sumModel.Department,
@@ -525,20 +528,23 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private OpResult storeInspectionDetial(InspectionFqcDetailModel model)
         {
-            //var isExistmodel = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailModelBy(model.OrderId, model.OrderIdNumber, model.InspectionItem);
-            //if (isExistmodel!=null || model.Id_Key!=0)
-            //{
-            //    model.Id_Key = isExistmodel.Id_Key;
-            //    string path = isExistmodel.DocumentPath;
-            //    if(path!=null&&path != string.Empty)
-            //    path.DeleteFileDocumentation();
-            //    model.OpSign = OpMode.Edit;
-            //}
+           
             return InspectionManagerCrudFactory.FqcDetailCrud.Store(model);
         }
 
 
- 
+        private string GetDcumentPath(string putinDcumentPath)
+        {
+            string dcumentPath = putinDcumentPath;
+            if (dcumentPath.Contains("/"))
+            { dcumentPath = dcumentPath.Replace("/", @"\"); }
+            if (!dcumentPath.Contains(@"E:\Repositorys\EicWebPlatform\EicWorkPlatfrom\"))
+            {
+                dcumentPath = @"E:\Repositorys\EicWebPlatform\EicWorkPlatfrom\" + dcumentPath;
+            }
+            return dcumentPath;
+        }
+
         /// <summary>
         /// 得到工单数量的完成的状态字典
         /// </summary>
