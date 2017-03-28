@@ -78,11 +78,10 @@ hrModule.factory('hrArchivesDataOpService', function (ajaxService) {
     };
 
     ///输入员工档案信息
-    hrArchive.inputWorkerArchive = function (employee, oldEmployeeIdentity, opSign) {
+    hrArchive.inputWorkerArchive = function (employee,opSign) {
         var url = archiveUrlPrefix + "InputWorkerArchive";
         return ajaxService.postData(url, {
             employee: employee,
-            oldEmployeeIdentity: oldEmployeeIdentity,
             opSign: opSign
         });
     };
@@ -432,7 +431,7 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
     operate.saveAll = function (isValid) {
         employeeIdentity.Organizetion = getDepartmentOrganization(employeeIdentity.DepartmentText);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            hrArchivesDataOpService.inputWorkerArchive(employeeIdentity,pHelper.oldVm,archiveInput.opSign).then(function (opResult) {
+            hrArchivesDataOpService.inputWorkerArchive(employeeIdentity,archiveInput.opSign).then(function (opResult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opResult,function () {
                     if (opResult.Result) {
                         if (archiveInput.opSign === "add") {

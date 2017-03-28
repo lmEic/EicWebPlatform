@@ -25,6 +25,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             return this.crud.Store(entity);
         }
+
+        public WorkerChangedModel GetModel(string oldWorkerId)
+        {
+            return this.crud.GetModel(oldWorkerId);
+        }
     }
 
 internal class ArWorkerIdChangeCurd:CrudBase <WorkerChangedModel,IArWorkerIdChangedRepository>
@@ -45,6 +50,11 @@ internal class ArWorkerIdChangeCurd:CrudBase <WorkerChangedModel,IArWorkerIdChan
             }
             else return OpResult.SetResult("工号变更失败", true);
 
+        }
+
+        internal WorkerChangedModel GetModel(string oldWorkerId)
+        {
+            return this.irep.Entities.FirstOrDefault(e => e.OldWorkerId == oldWorkerId);
         }
     }
 }

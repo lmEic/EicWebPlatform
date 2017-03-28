@@ -1653,6 +1653,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public string MaterialDrawId { set; get; }
         public string MaterialSupplier { set; get; }
         /// <summary>
+        /// 站点根路径
+        /// </summary>
+        public string SiteRootPath { get; set; }
+
+        /// <summary>
         /// 文件存放路径
         /// </summary>
         public string DocumentPath { set; get; }

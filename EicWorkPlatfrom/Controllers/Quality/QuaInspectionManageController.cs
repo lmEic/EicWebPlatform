@@ -392,17 +392,17 @@ namespace EicWorkPlatfrom.Controllers
        
 
         /// <summary>
-        /// 
+        /// 保存FQC检验采集数据
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult StoreFqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
-            if (gatherData != null && gatherData.FileName != null && gatherData.OpSign==OpMode.UploadFile)
-                gatherData.DocumentPath = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM")), gatherData.FileName);
-
-           
-
+            if (gatherData.OpSign == OpMode.UploadFile)//上传文件
+            {
+                gatherData.DocumentPath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"), gatherData.FileName);
+                gatherData.SiteRootPath = this.SiteRootPath;
+            }
            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
         }

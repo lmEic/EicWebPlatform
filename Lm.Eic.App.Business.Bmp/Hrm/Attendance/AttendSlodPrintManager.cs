@@ -207,6 +207,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 record = 0;
                 //获取每个人的信息
                 worker = workers.FirstOrDefault(w => w.WorkerId == workerId);
+                if (worker == null)
+                {
+                    var m = ArchiveService.ArchivesManager.WorkerIdChangeManager.GetModel(workerId);
+                    if (m != null)
+                        worker = workers.FirstOrDefault(w => w.WorkerId == m.NewWorkerId);
+                }
                 //从实时考勤数据表中获取该员工的考勤数据
                 var attendDataPerWorker = datasInTime.FindAll(f => f.WorkerId == workerId).OrderBy(o => o.SlodCardTime).ToList();
                 //从考勤中获取该员工的考勤数据

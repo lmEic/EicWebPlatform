@@ -110,7 +110,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <summary>
         /// 处理请假数据
         /// </summary>
-        /// <param name="entities"></param>
+        /// <param name="askForLeaves"></param>
         /// <returns></returns>
         [HttpPost]
         public JsonResult HandleAskForLeave(List<AttendAskLeaveModel> askForLeaves)
@@ -122,7 +122,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <summary>
         /// 处理请假数据
         /// </summary>
-        /// <param name="entities"></param>
+        /// <param name="askForLeaves"></param>
         /// <returns></returns>
         [HttpPost]
         public JsonResult UpdateAskForLeave(List<AttendSlodFingerDataCurrentMonthModel> askForLeaves)

@@ -187,7 +187,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             InspectionFqcMasterModel masterModel = null;
             InspectionFqcDetailModel detailModel = null;
             ///先排除总表不能为空
-            SumDataToConvterData(sumModel, out masterModel, out detailModel);
+            GetMasterAndDetailModelFrom(sumModel, out masterModel, out detailModel);
             if (detailModel == null || masterModel == null) return new OpResult("表单数据为空，保存失败", false);
             // 先保存详细表  再更新主表信息
             returnOpResult = storeInspectionDetial(detailModel);
@@ -414,16 +414,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="sumModel"></param>
         /// <param name="masterModel"></param>
         /// <param name="detailModel"></param>
-        private void SumDataToConvterData(InspectionItemDataSummaryLabelModel sumModel,  out InspectionFqcMasterModel masterModel, out InspectionFqcDetailModel detailModel)
+        private void GetMasterAndDetailModelFrom(InspectionItemDataSummaryLabelModel sumModel,  out InspectionFqcMasterModel masterModel, out InspectionFqcDetailModel detailModel)
         {
             try
             {
-                
-                if (sumModel == null) { masterModel = null; detailModel = null; }
-                string documentPath = sumModel.DocumentPath;
-                ///   DocumentPath
-                if (documentPath != null && documentPath != string.Empty && documentPath.Contains (@"\"))
-                { documentPath= documentPath.Replace(@"\","/"); }
+
+                if (sumModel == null)
+                {
+                    masterModel = null;
+                    detailModel = null;
+                }
+                //string documentPath = sumModel.DocumentPath;
+                /////   DocumentPath
+                //if (documentPath != null && documentPath != string.Empty && documentPath.Contains (@"\"))
+                //{ documentPath= documentPath.Replace(@"\","/"); }
                 masterModel = new InspectionFqcMasterModel()
                 {
                     OrderId = sumModel.OrderId,
@@ -470,9 +474,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialInDate = sumModel.MaterialInDate,
                     InspectionMode = sumModel.InspectionMode,
                     NeedPutInDataCount=sumModel.NeedFinishDataNumber ,
-                    ///
-                    DocumentPath = documentPath,
-                    FileName =sumModel.FileName,
                     Memo = sumModel.Memo,
                     ClassType = sumModel.ClassType,
                     Department = sumModel.Department,

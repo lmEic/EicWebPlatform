@@ -36,6 +36,14 @@ namespace EicWorkPlatfrom.Controllers
 
         #region my define
         /// <summary>
+        /// 站点根路径
+        /// </summary>
+        protected string SiteRootPath
+        {
+            get { return this.HttpContext.Request.PhysicalApplicationPath; }
+        }
+
+        /// <summary>
         /// 登录在线用户
         /// </summary>
         protected LoginUser OnLineUser

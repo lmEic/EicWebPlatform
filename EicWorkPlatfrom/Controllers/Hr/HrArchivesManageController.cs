@@ -139,10 +139,10 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="employee"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult InputWorkerArchive(ArchivesEmployeeIdentityDto employee, ArchivesEmployeeIdentityDto oldEmployeeIdentity, string opSign)
+        public JsonResult InputWorkerArchive(ArchivesEmployeeIdentityDto employee,string opSign)
         {
             employee.OpPerson = OnLineUser.UserName;
-            var result = ArchiveService.ArchivesManager.Store(employee, oldEmployeeIdentity, opSign);
+            var result = ArchiveService.ArchivesManager.Store(employee,opSign);
             return Json(result);
         }
         /// <summary>
