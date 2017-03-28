@@ -6,25 +6,25 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
 .factory('homeDataopService', function (ajaxService) {
     var home = {};
     var calendarUrl = "/home/";
-    home.getCalendarDatas = function (nowYear,nowMonth) {
+    home.getCalendarDatas = function (nowYear, nowMonth) {
         var url = calendarUrl + "GetCalendarDatas";
         return ajaxService.getData(url, {
             nowYear: nowYear,
             nowMonth: nowMonth
-        })
+        });
     };
     home.saveCalendarDatas = function (vm) {
         var url = calendarUrl + "SaveCalendarDatas";
         return ajaxService.postData(url, {
-           vm:vm
-        })
-    }
+            vm: vm
+        });
+    };
 
     return home;
 })
-.controller('moduleNavCtrl', function ($scope,$http,navDataService) {
+.controller('moduleNavCtrl', function ($scope, $http, navDataService) {
     var moduleNav = {
-        navList:[]
+        navList: []
     };
     $scope.nav = moduleNav;
 
@@ -34,13 +34,12 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
 
     $scope.logout = function () {
         $http.get('/Account/Logout').success(function (datas) {
-            if (datas === "ok")
-            {
+            if (datas === "ok") {
                 window.location = "/Account/Login";
             }
         }).error(function (errdata) {
         });
-    }
+    };
 })
 //布局控制器
 .controller('layoutCtrl', function ($scope, $http, navDataService, $modal) {
@@ -58,7 +57,7 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
             }
         },
         navLeftSize: '25%',
-        navMainSize: '75%',
+        navMainSize: '75%'
     };
     $scope.navLayout = layoutVm;
     ///个人头像
@@ -89,26 +88,26 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         OpSign: null,
         OpDate: null,
         OpTime: null,
-        OpPerson:null,
-        Id_Key: null,
-    }
+        OpPerson: null,
+        Id_Key: null
+    };
     //013935创建视图管理器
     var vmManager = {
-       
+
         nowYear: new Date().getFullYear(),
         nowMonth: new Date().getMonth() + 1,
         calendarWeeks: null,
         calendarDatas: null,
 
-        calendarViewSwitch:true,
-        calendarView: function(){
+        calendarViewSwitch: true,
+        calendarView: function () {
             vmManager.calendarViewSwitch = !vmManager.calendarViewSwitch;
         },
         //013935获取日历数据
         loadCalendarDatas: function () {
 
             if (window.localStorage) {
-                if (localStorage.getItem("calendarDatas") == null || localStorage.getItem("nowMonth") != vmManager.nowMonth || localStorage.getItem("nowYear") != vmManager.nowYear) {
+                if (localStorage.getItem("calendarDatas") === null || localStorage.getItem("nowMonth") !== vmManager.nowMonth || localStorage.getItem("nowYear") !== vmManager.nowYear) {
                     $scope.promise = homeDataopService.getCalendarDatas(vmManager.nowYear, vmManager.nowMonth).then(function (datas) {
                         var calendarStr = JSON.stringify(datas);
                         localStorage.setItem("nowYear", vmManager.nowYear);
@@ -117,32 +116,32 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
                         vmManager.calendarDatas = datas;
                         var week = [];
                         for (var i = 0; i < datas.length; i++) {
-                            if (datas[i].YearWeekNumber != 0) {
-                                if (week.indexOf(datas[i].YearWeekNumber) == -1) {
+                            if (datas[i].YearWeekNumber !== 0) {
+                                if (week.indexOf(datas[i].YearWeekNumber) === -1) {
                                     week.push(datas[i].YearWeekNumber);
                                 }
                             }
                         }
                         vmManager.calendarWeeks = week;
-                    })
+                    });
                 } else {
-                        var datas = JSON.parse(localStorage.getItem("calendarDatas"));
-                        vmManager.calendarDatas = datas;
-                        var week = [];
-                        for (var i = 0; i < datas.length; i++) {
-                            if (datas[i].YearWeekNumber != 0) {
-                                if (week.indexOf(datas[i].YearWeekNumber) == -1) {
-                                    week.push(datas[i].YearWeekNumber);
-                                }
+                    var datas = JSON.parse(localStorage.getItem("calendarDatas"));
+                    vmManager.calendarDatas = datas;
+                    var week = [];
+                    for (var i = 0; i < datas.length; i++) {
+                        if (datas[i].YearWeekNumber !== 0) {
+                            if (week.indexOf(datas[i].YearWeekNumber) === -1) {
+                                week.push(datas[i].YearWeekNumber);
                             }
                         }
+                    }
                     vmManager.calendarWeeks = week;
                 }
             }
         },
         //013935双击显示模态框
         editItem: function (item) {
-            if (item.CalendarDay != "") {
+            if (item.CalendarDay !== "") {
                 uiVM = _.clone(item);
                 vmManager.editModal.$promise.then(vmManager.editModal.show);
             }
@@ -150,7 +149,7 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         editModal: $modal({
             title: '修改日历信息',
             content: '',
-            templateUrl:"/Home/EditHomeCalendarTpl/",
+            templateUrl: "/Home/EditHomeCalendarTpl/",
             controller: function ($scope, homeDataopService) {
                 $scope.vm = uiVM;
                 $scope.vmManager = vmManager;
@@ -164,20 +163,18 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
                         { type: "法定假日", color: "#29B8CB" },
                         { type: "补班", color: "yellow" },
                         { type: "休假", color: "violet" },
-                        { type: "星期六日", color: "red" }],
+                        { type: "星期六日", color: "red" }]
                 };
                 $scope.vmEditManager = vmEditManager;
                 $scope.editSave = function () {
                     leeHelper.setUserData(uiVM);
                     uiVM.OpSign = 'edit';
                     $scope.promise = homeDataopService.saveCalendarDatas($scope.vm).then(function () {
-                        
+
                         var selItemColor = _.find(vmEditManager.calendarColors, { type: uiVM.DateProperty });
-                        if (selItemColor !== undefined)
-                        {
+                        if (selItemColor !== undefined) {
                             var selectedItem = _.find(vmManager.calendarDatas, { CalendarDate: $scope.vm.CalendarDate });
-                            if (selectedItem != null);
-                            {
+                            if (selectedItem !== null) {
                                 selectedItem.DateColor = $scope.vm.DateColor = selItemColor.color;
                                 selectedItem.DateProperty = $scope.vm.DateProperty = selItemColor.type;
                                 selectedItem.Title = $scope.vm.Title;
@@ -186,15 +183,15 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
                         var calendarStr = JSON.stringify(vmManager.calendarDatas);
                         localStorage.setItem("calendarDatas", calendarStr);
                         vmManager.editModal.$promise.then(vmManager.editModal.hide);
-                    })
+                    });
                 };
             },
-            show: false,
-        }),
+            show: false
+        })
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 
     vmManager.loadCalendarDatas();
-})
+});

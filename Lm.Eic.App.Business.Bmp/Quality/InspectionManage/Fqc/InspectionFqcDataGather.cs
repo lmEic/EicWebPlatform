@@ -481,6 +481,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     InStorageOrderId = sumModel.InStorageOrderId,
                     InspectionNGCount = sumModel.InspectionNGCount,
                     OpSign = sumModel.OpSign,
+                    Id_Key=sumModel.Id_Key,
                     OpPerson = sumModel.OpPerson
                 };
 
@@ -529,23 +530,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private OpResult storeInspectionDetial(InspectionFqcDetailModel model)
         {
-           
+            ///如果操作标识为空  判断Id_key是否为0
+            if (model != null  && model.OpSign == null)
+            {
+                if (model.Id_Key ==0)
+                    model.OpSign = OpMode.Add;
+                else model.OpSign = OpMode.Edit;
+            }
             return InspectionManagerCrudFactory.FqcDetailCrud.Store(model);
         }
-
-
-        private string GetDcumentPath(string putinDcumentPath)
-        {
-            string dcumentPath = putinDcumentPath;
-            if (dcumentPath.Contains("/"))
-            { dcumentPath = dcumentPath.Replace("/", @"\"); }
-            if (!dcumentPath.Contains(@"E:\Repositorys\EicWebPlatform\EicWorkPlatfrom\"))
-            {
-                dcumentPath = @"E:\Repositorys\EicWebPlatform\EicWorkPlatfrom\" + dcumentPath;
-            }
-            return dcumentPath;
-        }
-
         /// <summary>
         /// 得到工单数量的完成的状态字典
         /// </summary>

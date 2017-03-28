@@ -7,10 +7,10 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
 .config(function ($stateProvider, $urlRouterProvider) {
     var supplierUrlPrefix = leeHelper.controllers.supplierManage + "/";
     //--------------供应商管理----------------------------
-  
+
     $stateProvider.state('purSupplierInput', {
         templateUrl: supplierUrlPrefix + 'PurSupplierInput'
-    })
+    });
     //供应商证书管理
     $stateProvider.state('supplierCertificateManage', {
         templateUrl: supplierUrlPrefix + 'SupplierCertificateManage'
@@ -26,10 +26,10 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
      //供应稽核评分
     .state('supplierAuditToGrade', {
         templateUrl: supplierUrlPrefix + 'SupplierAuditToGrade'
-    })
+    });
 })
 
-.factory('purchaseService', function ($http,$q) {
+.factory('purchaseService', function ($http, $q) {
     var purDb = {};
     //--------------requisition---------------------
     purDb.GetReqHeaderDatasBy = function (reqvm) {
@@ -38,7 +38,7 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
             params: {
                 department: reqvm.department,
                 dateFrom: reqvm.dateFrom,
-                dateTo:reqvm.dateTo
+                dateTo: reqvm.dateTo
             }
         }).success(function (datas) {
             defer.resolve(datas);
@@ -66,7 +66,7 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
         var defer = $q.defer();
         $http.get('/Purchase/FindReqBodyDatasByID', {
             params: {
-                requsitionID:requsitionID
+                requsitionID: requsitionID
             }
         }).success(function (datas) {
             defer.resolve(datas);
@@ -179,7 +179,7 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
                 if (!angular.isUndefined(navItem)) {
                     moduleNavLayoutVm.navItems.push(navItem);
                 }
-            })
+            });
         },
         stateTo: function (navItem) {
             $state.go(navItem.UiSerf);
@@ -197,7 +197,7 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
             }
         },
         navLeftSize: '16%',
-        navMainSize: '83%',
+        navMainSize: '83%'
     };
     $scope.navLayout = moduleNavLayoutVm;
     $scope.promise = navDataService.getSubModuleNavs('采购管理', 'PurchaseManage').then(function (datas) {
@@ -209,28 +209,28 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
     $scope.navmenu = {
         getMenuItems: function () {
             var menuItems = [
-               { templateId: 'RequisitionQueryTemplate', menuText: '请购单查询', },
-               { templateId: 'PurchaseQueryTemplate', menuText: '采购单查询', },
-               { templateId: 'StockQueryTemplate', menuText: '进货单查询', },
+               { templateId: 'RequisitionQueryTemplate', menuText: '请购单查询' },
+               { templateId: 'PurchaseQueryTemplate', menuText: '采购单查询' },
+               { templateId: 'StockQueryTemplate', menuText: '进货单查询' }
             ];
             return menuItems;
         },
-        templateId: "RequisitionQueryTemplate",
+        templateId: "RequisitionQueryTemplate"
     };
 })
-.controller("reqQueryCtrl", function ($scope,$aside,purchaseService) {
+.controller("reqQueryCtrl", function ($scope, $aside, purchaseService) {
     var reqVm = {
         department: 'EIC',
         dateFrom: '2015-12-01',
-        dateTo:'2016-02-20',
+        dateTo: '2016-02-20'
     };
     $scope.vm = reqVm;
 
     var requisition = {
-        datasource:[],
+        datasource: [],
         reqHeaders: [],
         reqBodys: [],
-        reqBodyDetails:[]
+        reqBodyDetails: []
     };
     $scope.req = requisition;
 
@@ -252,9 +252,9 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
             });
             operate.asideBoard.$promise.then(function () {
                 operate.asideBoard.show();
-            })
+            });
         },
-        selectedRow:null,
+        selectedRow: null,
         getReqHeaderDatas: function () {
             $scope.promise = purchaseService.GetReqHeaderDatasBy(reqVm).then(function (datas) {
                 requisition.datasource = _.clone(datas);
@@ -264,7 +264,7 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
             operate.selectedRow = row;
             $scope.reqBodyPromise = purchaseService.GetReqBodyDatasByID(row.BuyingID).then(function (datas) {
                 requisition.reqBodys = datas;
-            })
+            });
         }
     };
 
@@ -274,7 +274,7 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
     var purVm = {
         department: 'EIC',
         dateFrom: '2015-12-01',
-        dateTo: '2016-02-20',
+        dateTo: '2016-02-20'
     };
     $scope.vm = purVm;
 
@@ -304,7 +304,7 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
             });
             operate.asideBoard.$promise.then(function () {
                 operate.asideBoard.show();
-            })
+            });
         },
         selectedRow: null,
         getPurHeaderDatas: function () {
@@ -316,7 +316,7 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
             operate.selectedRow = row;
             $scope.purBodyPromise = purchaseService.GetPurBodyDatasByID(row.PurchaseID).then(function (datas) {
                 purchase.purBodys = datas;
-            })
+            });
         }
     };
 
@@ -326,7 +326,7 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
     var stoVm = {
         department: 'EIC',
         dateFrom: '2015-12-01',
-        dateTo: '2016-02-20',
+        dateTo: '2016-02-20'
     };
     $scope.vm = stoVm;
 
@@ -356,7 +356,7 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
             });
             operate.asideBoard.$promise.then(function () {
                 operate.asideBoard.show();
-            })
+            });
         },
         selectedRow: null,
         getStoHeaderDatas: function () {
@@ -368,9 +368,9 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
             operate.selectedRow = row;
             $scope.stoBodyPromise = purchaseService.GetStoBodyDatasByID(row.StockID).then(function (datas) {
                 stock.stoBodys = datas;
-            })
+            });
         }
     };
 
     $scope.operate = operate;
-})
+});

@@ -21,48 +21,48 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
     })
     //--------------员工档案管理--------------------------
      .state('hrEmployeeDataInput', {
-         templateUrl: 'HrArchivesManage/HrEmployeeDataInput',
+         templateUrl: 'HrArchivesManage/HrEmployeeDataInput'
      })
     .state('hrDepartmentChange', {
-        templateUrl: 'HrArchivesManage/HrDepartmentChange',
+        templateUrl: 'HrArchivesManage/HrDepartmentChange'
     })
     .state('hrPostChange', {
-        templateUrl: 'HrArchivesManage/HrPostChange',
+        templateUrl: 'HrArchivesManage/HrPostChange'
     })
      .state('hrStudyManage', {
-         templateUrl: 'HrArchivesManage/HrStudyManage',
+         templateUrl: 'HrArchivesManage/HrStudyManage'
      })
      .state('hrTelManage', {
-         templateUrl: 'HrArchivesManage/HrTelManage',
+         templateUrl: 'HrArchivesManage/HrTelManage'
      })
      .state('hrChangeWorkerId', {
-         templateUrl: 'HrArchivesManage/HrChangeWorkerId',
+         templateUrl: 'HrArchivesManage/HrChangeWorkerId'
      })
      .state('hrLeaveOffManage', {
-             templateUrl: 'HrArchivesManage/HrLeaveOffManage',
+         templateUrl: 'HrArchivesManage/HrLeaveOffManage'
      })
     //--------------档案业务管理--------------------------
      .state('hrPrintCard', {
-         templateUrl: 'HrArchivesManage/HrPrintCard',
+         templateUrl: 'HrArchivesManage/HrPrintCard'
      })
     //--------------考勤业务管理--------------------------
      .state('hrClassTypeManage', {
-         templateUrl: 'HrAttendanceManage/HrClassTypeManage',
+         templateUrl: 'HrAttendanceManage/HrClassTypeManage'
      })
      .state('hrSumerizeAttendanceData', {
-         templateUrl: 'HrAttendanceManage/HrSumerizeAttendanceData',
+         templateUrl: 'HrAttendanceManage/HrSumerizeAttendanceData'
      })
      .state('hrAskLeaveManage', {
-         templateUrl: 'HrAttendanceManage/HrAskLeaveManage',
-      })
+         templateUrl: 'HrAttendanceManage/HrAskLeaveManage'
+     })
      .state('hrHandleException', {
-         templateUrl: 'HrAttendanceManage/HrHandleException',
+         templateUrl: 'HrAttendanceManage/HrHandleException'
      })
     //--------------总务管理--------------------------
     //厂服管理
      .state('gaWorkerClothesManage', {
-         templateUrl: 'HrGeneralAffairsManage/GaWorkerClothesManage',
-     })
+         templateUrl: 'HrGeneralAffairsManage/GaWorkerClothesManage'
+     });
 })
 .controller('moduleNavCtrl', function ($scope, navDataService, $state) {
     ///模块导航布局视图对象
@@ -77,7 +77,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
                 if (!angular.isUndefined(navItem)) {
                     moduleNavLayoutVm.navItems.push(navItem);
                 }
-            })
+            });
         },
         stateTo: function (navItem) {
             $state.go(navItem.UiSerf);
@@ -95,12 +95,12 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
             }
         },
         navLeftSize: '16%',
-        navMainSize: '83%',
+        navMainSize: '83%'
     };
     $scope.navLayout = moduleNavLayoutVm;
     $scope.promise = navDataService.getSubModuleNavs('人力资源管理', 'HrManage').then(function (datas) {
         moduleNavLayoutVm.menus = datas;
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
-})
+});
 

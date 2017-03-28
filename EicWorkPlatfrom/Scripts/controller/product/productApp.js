@@ -16,11 +16,11 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     //--------------生产日报-------------------------
     $stateProvider.state('dReportHoursSet', {
         //标准工时设定
-        templateUrl: reportUrlPrefix + 'DReportHoursSet',
+        templateUrl: reportUrlPrefix + 'DReportHoursSet'
     })
     .state('dReportInput', {
         //日报录入
-        templateUrl: reportUrlPrefix + 'DReportInput',
+        templateUrl: reportUrlPrefix + 'DReportInput'
     })
     //--------------人员管理--------------------------
     .state('registWorkerInfo', {
@@ -28,16 +28,16 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     })
     //-------------看板管理-------------------
     .state('jumperWireBoard', {//线材看板管理
-        templateUrl:boardUrlPrefix+ 'JumperWireBoard'
+        templateUrl: boardUrlPrefix + 'JumperWireBoard'
     })
     //-------------工单管理-------------------
     .state('checkOrderBills', {//工单订单对比
         templateUrl: mocUrlPrefix + 'CheckOrderBills'
-    })
+    });
 })
 .factory('proEmployeeDataService', function (ajaxService) {
     var dataAccess = {};
-    var urlPrefix='/ProEmployee/'
+    var urlPrefix = '/ProEmployee/';
 
     dataAccess.getWorkers = function () {
       return  ajaxService.getData(urlPrefix + 'GetWorkers', {});
@@ -70,7 +70,7 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
                 if (!angular.isUndefined(navItem)) {
                     moduleNavLayoutVm.navItems.push(navItem);
                 }
-            })
+            });
         },
         stateTo: function (navItem) {
             $state.go(navItem.UiSerf);
@@ -88,7 +88,7 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
             }
         },
         navLeftSize:'16%',
-        navMainSize:'83%',
+        navMainSize:'83%'
     };
     $scope.navLayout = moduleNavLayoutVm;
     $scope.promise = navDataService.getSubModuleNavs('生产管理','ProductManage').then(function (datas) {
@@ -131,7 +131,7 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
                     }
                 });
             }
-        },
+        }
     };
     $scope.vmManager = vmManager;
 
@@ -149,8 +149,8 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
         LeadWorkerName: null,
         OpPerson: null,
         OpSign: vmManager.activeTab === 'initTab' ? 'add' : 'edit',
-        Id_Key: null,
-    }
+        Id_Key: null
+    };
 
     $scope.vm = uiVM;
 
@@ -176,13 +176,13 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
 
     operate.registUser = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            uiVM.IsPostKey =$scope.vmManager.isPostKey === true ? 1 : 0;
+            uiVM.IsPostKey = $scope.vmManager.isPostKey === true ? 1 : 0;
             proEmployeeDataService.registWorker(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     pHelper.clearVM();
                 });
             });
-        })
+        });
     };
     operate.cancel = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
@@ -197,4 +197,4 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
             vmManager.postType = 0;
         }
     };
-})
+});
