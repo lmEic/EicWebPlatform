@@ -8,12 +8,12 @@ angular.module('mp.configApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'n
     var createTreeDataset = function (datas, root) {
         var treeNodes = [];
         var childrenNodes = _.where(datas, { ParentDataNodeText: root });
-        if (childrenNodes != undefined && childrenNodes.length > 0) {
+        if (childrenNodes !== undefined && childrenNodes.length > 0) {
             angular.forEach(childrenNodes, function (node) {
                 var trnode = {
                     name: node.DataNodeText,
                     children: createTreeDataset(datas, node.DataNodeText),
-                    vm: node,
+                    vm: node
                 };
                 treeNodes.push(trnode);
             });
@@ -40,6 +40,6 @@ angular.module('mp.configApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'n
                 ztreeSets.push(ztreeSetItem);
             }
             return ztreeSetItem.ztreeSet;
-        },
+        }
     };
-})
+});

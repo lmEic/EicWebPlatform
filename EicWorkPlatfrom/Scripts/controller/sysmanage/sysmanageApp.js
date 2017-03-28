@@ -11,10 +11,10 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
 
     //--------------配置管理--------------------------
     $stateProvider.state('hrDepartmentSet', {
-        templateUrl:configUrlPrefix + 'HrDepartmentSet',
+        templateUrl: configUrlPrefix + 'HrDepartmentSet'
     })
     .state('hrCommonDataSet', {
-        templateUrl: configUrlPrefix + 'HrCommonDataSet',
+        templateUrl: configUrlPrefix + 'HrCommonDataSet'
     })
     //--------------账户管理--------------------------
     .state('accRegistUser', {
@@ -41,16 +41,16 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
     //--------------ITIL管理--------------------------
        //供应商管理
     .state('itilSupTelManage', {
-        templateUrl: itilUrlPrefix + 'ItilSupTelManage',
+        templateUrl: itilUrlPrefix + 'ItilSupTelManage'
     })//项目开发管理
     .state('itilProjectDevelopManage', {
-        templateUrl: itilUrlPrefix + 'ItilProjectDevelopManage',
+        templateUrl: itilUrlPrefix + 'ItilProjectDevelopManage'
     })
     .state('proClassManage', {
         templateUrl: 'ProEmployee/ProClassManage'
     }).state('workHoursManage', {
         templateUrl: 'ProEmployee/WorkHoursManage'
-    })
+    });
     ////--------------基本配置管理--------------------------
     //.state('hrDepartmentSet', {
     //    templateUrl: 'HrBaseInfoManage/HrDepartmentSet',
@@ -71,7 +71,7 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
                 if (!angular.isUndefined(navItem)) {
                     moduleNavLayoutVm.navItems.push(navItem);
                 }
-            })
+            });
         },
         stateTo: function (navItem) {
             $state.go(navItem.UiSerf);
@@ -89,11 +89,11 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
             }
         },
         navLeftSize: '16%',
-        navMainSize: '83%',
+        navMainSize: '83%'
     };
     $scope.navLayout = moduleNavLayoutVm;
     $scope.promise = navDataService.getSubModuleNavs('系统管理', 'EicSystemManage').then(function (datas) {
         moduleNavLayoutVm.menus = datas;
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
-})
+});

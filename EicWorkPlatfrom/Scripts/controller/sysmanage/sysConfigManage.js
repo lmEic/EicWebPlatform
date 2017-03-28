@@ -19,7 +19,7 @@ smModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfig
         AboutCategory: 'smDepartmentSet',
         Icon: null,
         DisplayOrder: 0,
-        Memo: null,
+        Memo: null
     };
     var oldDepartmentDto = _.clone(departmentDto);
 
@@ -30,7 +30,7 @@ smModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfig
     $scope.operate = operate;
 
     operate.delNode = function () {
-        if (angular.isUndefined(departmentTreeSet.treeNode) || departmentTreeSet.treeNode == null) {
+        if (angular.isUndefined(departmentTreeSet.treeNode) || departmentTreeSet.treeNode === null) {
             alert("请先选择要删除的节点!")
         }
         else {
@@ -105,12 +105,12 @@ smModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfig
                 })
             };
         },
-        show: false,
+        show: false
     });
     var pHelper = {
         clearVM: function () {
             leeHelper.clearVM(departmentDto, ['ModuleName', 'AboutCategory', 'TreeModuleKey']);
-        },
+        }
     };
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
@@ -154,7 +154,7 @@ smModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConf
     $scope.operate = operate;
 
     operate.delNode = function () {
-        if (angular.isUndefined(commonConfigTreeSet.treeNode) || commonConfigTreeSet.treeNode == null) {
+        if (angular.isUndefined(commonConfigTreeSet.treeNode) || commonConfigTreeSet.treeNode === null) {
             alert("请先选择要删除的节点!")
         }
         else {
@@ -217,7 +217,7 @@ smModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConf
     var pHelper = {
         clearVM: function () {
             leeHelper.clearVM(configDto, ['TreeModuleKey']);
-        },
+        }
     };
 
     operate.deleteModal = $modal({
@@ -235,7 +235,7 @@ smModule.controller('CommonConfigSetCtrl', function ($scope, $modal, dataDicConf
                 })
             };
         },
-        show: false,
+        show: false
     });
 
     var commonConfigTreeSet = dataDicConfigTreeSet.getTreeSet('commonConfigTree', '数据配置字典');

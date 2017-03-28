@@ -192,7 +192,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     quality.storeFqcInspectionGatherDatas = function (gatherData) {
         var url = quaInspectionManageUrl + 'StoreFqcInspectionGatherDatas';
         return ajaxService.postData(url, {
-            gatherData: gatherData,
+            gatherData: gatherData
         });
     };
     //fqc进料检验数据采集模块   上传采集数据附件
