@@ -593,12 +593,36 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
         private OpResult UploadFileFqcInspectionDetail(InspectionFqcDetailModel model)
         {
-            if (model != null && model.DocumentPath != null && model.DocumentPath != string.Empty)
-               model.DocumentPath.DeleteFileDocumentation();
+
+            var oldmodel = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailModelBy(model.OrderId, model.OrderIdNumber, model.InspectionItem);
+            if (oldmodel != null && model.OpSign == OpMode.UploadFile)
+            {
+                model.Id_Key = oldmodel.Id_Key;
+                string oldPath = oldmodel.DocumentPath;
+                string NewPath = model.DocumentPath;
+                if (oldPath != null && oldPath != string.Empty && oldPath != NewPath)
+                    GetDcumentPath(oldPath).DeleteFileDocumentation();
+                model.OpSign = OpMode.Edit;
+            }
+            //if (model != null && model.DocumentPath != null && model.DocumentPath != string.Empty)
+
+
+            //    GetDcumentPath( model.DocumentPath).DeleteFileDocumentation();
 
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext); 
         }
 
+        private string GetDcumentPath(string putinDcumentPath)
+        {
+            string dcumentPath = putinDcumentPath;
+            if (dcumentPath.Contains("/"))
+            { dcumentPath = dcumentPath.Replace("/", @"\"); }
+            if (!dcumentPath.Contains(@"E:\Repositorys\EicWebPlatform\EicWorkPlatfrom\"))
+            {
+                dcumentPath = @"E:\Repositorys\EicWebPlatform\EicWorkPlatfrom\" + dcumentPath;
+            }
+            return dcumentPath;
+        }
 
         public List<InspectionFqcDetailModel> GetFqcInspectionDetailModelListBy(string orderId)
         {
@@ -628,6 +652,21 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             try
             {
                 return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.InspectionItem == inspecitonItem);
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw new Exception(ex.InnerException.Message);
+            }
+
+        }
+
+
+        public InspectionFqcDetailModel GetFqcDetailModelBy(decimal id_key)
+        {
+            try
+            {
+                return irep.Entities.FirstOrDefault(e => e.Id_Key ==id_key );
             }
             catch (Exception ex)
             {

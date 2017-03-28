@@ -8,6 +8,7 @@ using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.App.Erp.Domain.QuantityModel;
 using System.IO;
 using Lm.Eic.App.Erp.Bussiness.QmsManage;
+using Lm.Eic.Uti.Common.YleeOOMapper;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -397,9 +398,12 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreFqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
-            if (gatherData != null && gatherData.FileName != null)
+            if (gatherData != null && gatherData.FileName != null && gatherData.OpSign==OpMode.UploadFile)
                 gatherData.DocumentPath = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM")), gatherData.FileName);
-            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
+
+           
+
+           var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
         }
        
