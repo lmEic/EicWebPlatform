@@ -193,6 +193,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             // 先保存详细表  再更新主表信息
             returnOpResult = storeInspectionDetial(detailModel, sumModel.SiteRootPath);
             if (!returnOpResult.Result) return returnOpResult;
+            ///如果只是上传文档 不用更校招  Masterial
             if (sumModel.OpSign != OpMode.UploadFile)
                 returnOpResult = storeInspectionMasterial(masterModel);
             return returnOpResult;
