@@ -28,7 +28,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             get { return OBulider.BuildInstance<IqcDetailDatasGather>(); }
         }
         #endregion
-        public OpResult StoreInspectionIqcModelForm(InspectionItemDataSummaryLabelModel model, string rootPath)
+        public OpResult StoreInspectionIqcGatherDatas(InspectionItemDataSummaryLabelModel model)
         {
             var opReulst = new OpResult("数据为空，保存失败", false);
             if (model == null) return opReulst;
@@ -37,6 +37,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 opReulst = MasterDatasGather.StoreInspectionIqcMasterModelForm(model);
             return opReulst;
         }
+
 
 
         /// <summary>
@@ -167,42 +168,54 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private string GetJudgeInspectionMode(string InspectionClass, string materialId, string InspecitonItem)
         {
-            ///3，比较 对比
-            ///4，返回一个 转换的状态
-            ///1,通过料号 和 抽检验项目  得到当前的最后一次抽检的状态
-            string retrunstirng = "正常";
-            var DetailModeList = DetailDatasGather.GetIqcDetailModeDatasBy(materialId, InspecitonItem).OrderByDescending(e => e.MaterialInDate).Take(100).ToList();
-            if (DetailModeList == null || DetailModeList.Count <= 0) return retrunstirng;
-
-            var currentStatus = DetailModeList.Last().InspectionMode;
-            ///2，通当前状态 得到抽样规则 抽样批量  拒受数
-            var modeSwithParameterList = InspectionManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy(InspectionClass, currentStatus);
-            if (modeSwithParameterList == null || modeSwithParameterList.Count <= 0) return retrunstirng;
-            int sampleNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwitchProperty == "SampleNumber").Select(e => e.SwitchVaule).Min();
-            int AcceptNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Max();
-            int sampleNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "SampleNumber").Select(e => e.SwitchVaule).Max();
-            int AcceptNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Min();
-            var getNumber = DetailModeList.Take(sampleNumberVauleMax).Count(e => e.InspectionItemResult == "NG");
-            switch (currentStatus)
+            try
             {
-                case "加严":
-                    retrunstirng = (getNumber >= AcceptNumberVauleMin) ? "正常" : currentStatus;
-                    break;
-                case "放宽":
-                    retrunstirng = (getNumber <= AcceptNumberVauleMin) ? "正常" : currentStatus;
-                    break;
-                case "正常":
-                    if (getNumber <= AcceptNumberVauleMin) retrunstirng = "放宽";
-                    else
-                    { ///加严的数量
-                        int getTheNumber = DetailModeList.Take(sampleNumberVauleMin).Count(e => e.InspectionItemResult == "NG");
-                        retrunstirng = (getTheNumber >= AcceptNumberVauleMax) ? "加严" : currentStatus;
-                    }
-                    break;
-                default:
-                    break;
+                ///3，比较 对比
+                ///4，返回一个 转换的状态
+                ///1,通过料号 和 抽检验项目  得到当前的最后一次抽检的状态
+                string retrunstirng = "正常";
+                var DetailModeDatas = DetailDatasGather.GetIqcDetailModeDatasBy(materialId, InspecitonItem);
+                if (DetailModeDatas == null) return retrunstirng;
+                var DetailModeData = DetailModeDatas.OrderByDescending(e => e.MaterialInDate).Take(100).ToList();
+
+                if (DetailModeData == null || DetailModeData.Count <= 0) return retrunstirng;
+
+                var currentStatus = DetailModeData.Last().InspectionMode;
+                ///2，通当前状态 得到抽样规则 抽样批量  拒受数
+                var modeSwithParameterList = InspectionManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy(InspectionClass, currentStatus);
+                if (modeSwithParameterList == null || modeSwithParameterList.Count <= 0) return retrunstirng;
+                int sampleNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwitchProperty == "SampleNumber").Select(e => e.SwitchVaule).Min();
+                int AcceptNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Max();
+                int sampleNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "SampleNumber").Select(e => e.SwitchVaule).Max();
+                int AcceptNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Min();
+                var getNumber = DetailModeData.Take(sampleNumberVauleMax).Count(e => e.InspectionItemResult == "NG");
+                switch (currentStatus)
+                {
+                    case "加严":
+                        retrunstirng = (getNumber >= AcceptNumberVauleMin) ? "正常" : currentStatus;
+                        break;
+                    case "放宽":
+                        retrunstirng = (getNumber <= AcceptNumberVauleMin) ? "正常" : currentStatus;
+                        break;
+                    case "正常":
+                        if (getNumber <= AcceptNumberVauleMin) retrunstirng = "放宽";
+                        else
+                        { ///加严的数量
+                            int getTheNumber = DetailModeData.Take(sampleNumberVauleMin).Count(e => e.InspectionItemResult == "NG");
+                            retrunstirng = (getTheNumber >= AcceptNumberVauleMax) ? "加严" : currentStatus;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                return retrunstirng;
             }
-            return retrunstirng;
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
         /// 查找IQC检验项目所有的信息
         /// </summary>

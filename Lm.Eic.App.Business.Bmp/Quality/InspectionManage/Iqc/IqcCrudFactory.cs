@@ -203,7 +203,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     {
         public InspectionIqcDetailCrud() : base(new IqcInspectionDetailRepository(), "物料检验项次数据")
         { }
-
+        #region   Crud
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddIqcInspectionDetail);
@@ -225,6 +225,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
+        #endregion
+
+
+        #region  Find
         /// <summary>
         /// 由单号和料号得到所有检验项目的数据
         /// </summary>
@@ -233,12 +237,30 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal List<InspectionIqcDetailModel> GetIqcInspectionDetailModelListBy(string materialId, string inspectionItem)
         {
-            return irep.Entities.Where(e => e.InspecitonItem == inspectionItem && e.MaterialId == materialId).ToList(); ;
+            try
+            {
+                return irep.Entities.Where(e => e.InspecitonItem == inspectionItem && e.MaterialId == materialId).ToList();
+            }
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
+
         }
 
         internal InspectionIqcDetailModel GetIqcInspectionDetailModelBy(string orderid, string materialId, string inspectionItem)
         {
-            return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId && e.InspecitonItem == inspectionItem).ToList().FirstOrDefault(); ;
+            try
+            {
+                return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId && e.InspecitonItem == inspectionItem).ToList().FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
+
         }
         internal List<InspectionIqcDetailModel> GetIqcInspectionDetailModelBy(string orderid, string materialId)
         {
@@ -253,25 +275,34 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal bool JudgeYwTest(string materialId, DateTime materialInDate)
         {
-            bool ratuenValue = true;
-            //调出此物料所有打印记录项
-            var inspectionItemsRecords = irep.Entities.Where(e => e.MaterialId == materialId).Distinct().ToList();
-            //如果第一次打印 
-            if (inspectionItemsRecords == null | inspectionItemsRecords.Count() <= 0) return true;
-
-            // 进料日期后退30天 抽测打印记录
-            var inspectionItemsMonthRecord = (from t in inspectionItemsRecords
-                                              where t.MaterialInDate >= (materialInDate.AddDays(-30))
-                                                    & t.MaterialInDate <= materialInDate
-                                              select t.InspecitonItem).Distinct<string>().ToList();
-            //没有 测
-            if (inspectionItemsMonthRecord == null) return true;
-            // 有  每项中是否有测过  盐雾测试
-            foreach (var n in inspectionItemsMonthRecord)
+            try
             {
-                if (n.Contains("盐雾")) { ratuenValue = false; break; }
+                bool ratuenValue = true;
+                //调出此物料所有打印记录项
+                var inspectionItemsRecords = irep.Entities.Where(e => e.MaterialId == materialId).Distinct().ToList();
+                //如果第一次打印 
+                if (inspectionItemsRecords == null | inspectionItemsRecords.Count() <= 0) return true;
+
+                // 进料日期后退30天 抽测打印记录
+                var inspectionItemsMonthRecord = (from t in inspectionItemsRecords
+                                                  where t.MaterialInDate >= (materialInDate.AddDays(-30))
+                                                        & t.MaterialInDate <= materialInDate
+                                                  select t.InspecitonItem).Distinct<string>().ToList();
+                //没有 测
+                if (inspectionItemsMonthRecord == null) return true;
+                // 有  每项中是否有测过  盐雾测试
+                foreach (var n in inspectionItemsMonthRecord)
+                {
+                    if (n.Contains("盐雾")) { ratuenValue = false; break; }
+                }
+                return ratuenValue;
             }
-            return ratuenValue;
+            catch (Exception ex)
+            {
+                return false;
+                throw new Exception(ex.InnerException.Message);
+            }
+
 
 
         }
@@ -290,6 +321,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             else return false;
         }
     }
-
+    #endregion 
     #endregion
 }

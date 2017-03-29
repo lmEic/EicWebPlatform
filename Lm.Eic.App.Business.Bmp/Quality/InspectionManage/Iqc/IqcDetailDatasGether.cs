@@ -16,8 +16,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         public List<InspectionIqcDetailModel> GetIqcDetailModeDatasBy(string materailId, string inspecitonItem)
         {
+
             return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelListBy(materailId, inspecitonItem);
+
+            
         }
+
         /// <summary>
         /// 通过总表 存储Iqc检验详细数据
         /// </summary>
@@ -54,7 +58,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
         }
-
 
         /// <summary>
         /// 得到副表的详细参数
