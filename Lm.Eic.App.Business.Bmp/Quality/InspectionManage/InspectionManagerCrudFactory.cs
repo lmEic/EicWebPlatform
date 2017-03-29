@@ -539,7 +539,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.IsExist(e => e.MaterialId == materailId);
         }
-        public OpResult StoreFqcItemConfiList(List<InspectionFqcItemConfigModel> modelList)
+        public OpResult StoreFqcItemConfigList(List<InspectionFqcItemConfigModel> modelList)
         {
             OpResult opResult = OpResult.SetResult("未执行任何操作！");
             SetFixFieldValue(modelList, OpMode.Add);
@@ -549,8 +549,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 if (this.irep.IsExist(e => e.Id_Key == m.Id_Key))
                 { m.OpSign = "edit"; }
-
-
                 opResult = this.Store(m);
                 if (opResult.Result)
                     i = i + opResult.RecordCount;
@@ -595,8 +593,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
 
             var oldmodel = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailModelBy(model.OrderId, model.OrderIdNumber, model.InspectionItem);
-            if (oldmodel != null)
+            if (oldmodel != null && model.OpSign == OpMode.UploadFile)
             {
+
                 model.Id_Key = oldmodel.Id_Key;
                 string oldPath = oldmodel.DocumentPath;
                 string NewPath = model.DocumentPath;
@@ -605,7 +604,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                      return new OpResult(OpContext, false);
                 return EidtFqcInspectionDetail(model);
             }
-            else return AddFqcInspectionDetail(model);
+            //if (model != null && model.DocumentPath != null && model.DocumentPath != string.Empty)
+
+
+            //    GetDcumentPath( model.DocumentPath).DeleteFileDocumentation();
+
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext); 
         }
 
         private string GetDcumentPath(string putinDcumentPath)
@@ -629,7 +633,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber).ToList();
         }
-        public bool DetailDataIsexistBy(string orderId, int orderIdNumber, string inspecitonItem)
+        public bool IsExist(string orderId, int orderIdNumber, string inspecitonItem)
         {
             try
             {
