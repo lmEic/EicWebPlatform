@@ -37,7 +37,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         public List<InspectionFqcDetailModel> GetInspectionDatailListBy(string orderId,int orderIdNumber)
         {
-            return InspectionManagerCrudFactory.FqcDetailCrud.GetFqcInspectionDetailModelListBy(orderId, orderIdNumber);
+            return InspectionManagerCrudFactory.FqcDetailCrud.GetFqcInspectionDetailDatasBy(orderId, orderIdNumber);
         }
 
         /// <summary>

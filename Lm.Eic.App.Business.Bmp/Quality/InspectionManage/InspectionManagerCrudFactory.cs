@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeDbHandler;
@@ -68,7 +69,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         public static InspectionFqcDatailCrud FqcDetailCrud
         {
-            get { return OBulider.BuildInstance <InspectionFqcDatailCrud>(); }
+            get { return OBulider.BuildInstance<InspectionFqcDatailCrud>(); }
         }
 
         public static InspectionFqcMasterCrud FqcMasterCrud
@@ -208,9 +209,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             catch (Exception ex)
             {
                 return OpResult.SetResult("未执行任何操作！");
-                throw new Exception(ex.InnerException.Message); 
+                throw new Exception(ex.InnerException.Message);
             }
-         
+
         }
     }
 
@@ -332,7 +333,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult EidtIqcInspectionMaster(InspectionIqcMasterModel model)
         {
-           
+
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
         /// <summary>
@@ -342,7 +343,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="materialId"></param>
         /// <param name="inspectionStatus"></param>
         /// <returns></returns>
-        internal OpResult UpAuditDetailData(string orderId,string  materialId, string inspectionStatus)
+        internal OpResult UpAuditDetailData(string orderId, string materialId, string inspectionStatus)
         {
             return irep.UpAuditDetailData(orderId, materialId, inspectionStatus).ToOpResult_Eidt(OpContext);
         }
@@ -387,7 +388,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="endTime"></param>
         /// <returns></returns>
 
-        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy(string inspectionStatus, DateTime startTime, DateTime endTime, string inspectionResult =null )
+        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterModelListBy(string inspectionStatus, DateTime startTime, DateTime endTime, string inspectionResult = null)
         {
             if (inspectionResult == null)
                 return irep.Entities.Where(e => e.InspectionStatus == inspectionStatus && e.MaterialInDate >= startTime && e.MaterialInDate <= endTime).ToList();
@@ -561,17 +562,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     }
 
 
-    internal class InspectionFqcDatailCrud : CrudBase<InspectionFqcDetailModel,IFqcInspectionDatailRepository>
+    internal class InspectionFqcDatailCrud : CrudBase<InspectionFqcDetailModel, IFqcInspectionDatailRepository>
     {
-        public InspectionFqcDatailCrud():base(new FqcInspectionDatailRepository(),"FQC详细表单")
+        public InspectionFqcDatailCrud() : base(new FqcInspectionDatailRepository(), "FQC详细表单")
         { }
-
+        #region Crud
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddFqcInspectionDetail);
             this.AddOpItem(OpMode.Edit, EidtFqcInspectionDetail);
             this.AddOpItem(OpMode.Delete, DeleteFqcInspectionDetail);
-            this.AddOpItem(OpMode.UploadFile, UploadFileFqcInspectionDetail);
         }
 
         private OpResult DeleteFqcInspectionDetail(InspectionFqcDetailModel model)
@@ -581,36 +581,35 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult EidtFqcInspectionDetail(InspectionFqcDetailModel model)
         {
-        
+
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
         private OpResult AddFqcInspectionDetail(InspectionFqcDetailModel model)
         {
+            //如果存在
+            return this.EidtFqcInspectionDetail(model);
+
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-        private OpResult UploadFileFqcInspectionDetail(InspectionFqcDetailModel model)
+        internal OpResult UploadFileFqcInspectionDetail(InspectionFqcDetailModel model, string siteRootPath)
         {
-
             var oldmodel = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailModelBy(model.OrderId, model.OrderIdNumber, model.InspectionItem);
-            if (oldmodel != null && model.OpSign == OpMode.UploadFile)
+            if (oldmodel == null)
+                return this.AddFqcInspectionDetail(model);//若不存在则直接添加
+            model.Id_Key = oldmodel.Id_Key;
+            if (oldmodel.DocumentPath != model.DocumentPath)//比对新旧文件是否一样,若不一样，则删除旧的文件
             {
-
-                model.Id_Key = oldmodel.Id_Key;
-                string oldPath = oldmodel.DocumentPath;
-                string NewPath = model.DocumentPath;
-                if (oldPath != null && oldPath != string.Empty && oldPath != NewPath)
-                    if (!GetDcumentPath(oldPath).DeleteFileDocumentation())
-                     return new OpResult(OpContext, false);
-                return EidtFqcInspectionDetail(model);
+                string fileName = Path.Combine(siteRootPath, oldmodel.DocumentPath);
+                fileName = fileName.Replace("/", @"\");
+                if (File.Exists(fileName))
+                    File.Delete(fileName);//删除旧的文件
             }
-            //if (model != null && model.DocumentPath != null && model.DocumentPath != string.Empty)
-
-
-            //    GetDcumentPath( model.DocumentPath).DeleteFileDocumentation();
-
-            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext); 
+            this.SetFixFieldValue(model);
+            return this.EidtFqcInspectionDetail(model);//同时修改文件模型记录
         }
+        #endregion
+
 
         private string GetDcumentPath(string putinDcumentPath)
         {
@@ -623,13 +622,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
             return dcumentPath;
         }
-
-        public List<InspectionFqcDetailModel> GetFqcInspectionDetailModelListBy(string orderId)
+        #region find method
+        public List<InspectionFqcDetailModel> GetFqcInspectionDetailDatasBy(string orderId)
         {
             return irep.Entities.Where(e => e.OrderId == orderId).ToList();
         }
 
-        public List<InspectionFqcDetailModel> GetFqcInspectionDetailModelListBy(string orderId, int orderIdNumber)
+        public List<InspectionFqcDetailModel> GetFqcInspectionDetailDatasBy(string orderId, int orderIdNumber)
         {
             return irep.Entities.Where(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber).ToList();
         }
@@ -644,7 +643,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 return false;
                 throw new Exception(ex.InnerException.Message);
             }
-           
+
         }
 
         public InspectionFqcDetailModel GetFqcDetailModelBy(string orderId, int orderIdNumber, string inspecitonItem)
@@ -666,7 +665,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
-                return irep.Entities.FirstOrDefault(e => e.Id_Key ==id_key );
+                return irep.Entities.FirstOrDefault(e => e.Id_Key == id_key);
             }
             catch (Exception ex)
             {
@@ -675,7 +674,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
         }
-
+        #endregion
     }
 
 
@@ -699,7 +698,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult EidtFqcInspectionMaster(InspectionFqcMasterModel model)
         {
-            
+
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
