@@ -570,26 +570,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddFqcInspectionDetail);
-            this.AddOpItem(OpMode.Edit, EidtFqcInspectionDetail);
-            this.AddOpItem(OpMode.Delete, DeleteFqcInspectionDetail);
         }
 
-        private OpResult DeleteFqcInspectionDetail(InspectionFqcDetailModel model)
-        {
-            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
-        }
-
-        private OpResult EidtFqcInspectionDetail(InspectionFqcDetailModel model)
-        {
-
-            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
-        }
+        
 
         private OpResult AddFqcInspectionDetail(InspectionFqcDetailModel model)
         {
-            //如果存在
-            return this.EidtFqcInspectionDetail(model);
-
+            //如果存在 (Id_key 已经赋值） 
+            if (IsExist(model.OrderId, model.OrderIdNumber, model.InspectionItem))
+                return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
         internal OpResult UploadFileFqcInspectionDetail(InspectionFqcDetailModel model, string siteRootPath)
@@ -606,22 +595,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     File.Delete(fileName);//删除旧的文件
             }
             this.SetFixFieldValue(model);
-            return this.EidtFqcInspectionDetail(model);//同时修改文件模型记录
+         return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);// 同时修改文件模型记录
         }
         #endregion
 
 
-        private string GetDcumentPath(string putinDcumentPath)
-        {
-            string dcumentPath = putinDcumentPath;
-            if (dcumentPath.Contains("/"))
-            { dcumentPath = dcumentPath.Replace("/", @"\"); }
-            if (!dcumentPath.Contains(@"E:\Repositorys\EicWebPlatform\EicWorkPlatfrom\"))
-            {
-                dcumentPath = @"E:\Repositorys\EicWebPlatform\EicWorkPlatfrom\" + dcumentPath;
-            }
-            return dcumentPath;
-        }
         #region find method
         public List<InspectionFqcDetailModel> GetFqcInspectionDetailDatasBy(string orderId)
         {
