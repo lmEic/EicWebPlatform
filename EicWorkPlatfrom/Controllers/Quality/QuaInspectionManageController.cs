@@ -103,7 +103,8 @@ namespace EicWorkPlatfrom.Controllers
         {
             List<InspectionIqcItemConfigModel> datas = null;
             string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp);
-            this.SaveFileToServer(file, filePath, () => {
+            this.SaveFileToServer(file, filePath, () =>
+            {
                 string fileName = Path.Combine(filePath, file.FileName);
                 datas = InspectionService.ConfigManager.IqcItemConfigManager.ImportProductFlowListBy(fileName);
                 if (datas != null && datas.Count > 0)
@@ -165,7 +166,7 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         public JsonResult CheckFqcInspectionItemConfigMaterialId(string materialId)
         {
-          
+
             var result = InspectionService.ConfigManager.FqcItemConfigManager.IsExistFqcConfigMaterailId(materialId);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -178,7 +179,7 @@ namespace EicWorkPlatfrom.Controllers
         [HttpPost]
         public JsonResult DeleteFqcInspectionConfigItem(InspectionFqcItemConfigModel configItem)
         {
-           
+
             var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(configItem);
             return Json(opResult);
         }
@@ -191,7 +192,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult SaveFqcInspectionItemConfigDatas(List<InspectionFqcItemConfigModel> fqcInspectionConfigItems)
         {
-          
+
             var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(fqcInspectionConfigItems);
             return Json(opResult);
         }
@@ -263,16 +264,16 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
-        public JsonResult SaveModeSwitchDatas(string inspectionModeType,List<InspectionModeSwitchConfigModel> switchModeList)
+        public JsonResult SaveModeSwitchDatas(string inspectionModeType, List<InspectionModeSwitchConfigModel> switchModeList)
         {
-            var opResult = InspectionService.ConfigManager.ModeSwithConfigManager.StroeInspectionModeSwithConfig(inspectionModeType,switchModeList);
+            var opResult = InspectionService.ConfigManager.ModeSwithConfigManager.StroeInspectionModeSwithConfig(inspectionModeType, switchModeList);
             return Json(opResult);
         }
         #endregion
 
         #region  检验项目数据收集
         #region IQC 
-        
+
         [NoAuthenCheck]
         public ActionResult InspectionDataGatheringOfIQC()
         {
@@ -297,7 +298,7 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         [NoAuthenCheck]
         [HttpGet]
-        public JsonResult GetIqcInspectionItemDataSummaryLabelList(string orderId,string materialId)
+        public JsonResult GetIqcInspectionItemDataSummaryLabelList(string orderId, string materialId)
         {
             var datas = InspectionService.DataGatherManager.IqcDataGather.BuildingIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
@@ -323,9 +324,9 @@ namespace EicWorkPlatfrom.Controllers
         [HttpPost]
         public JsonResult StoreIqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
-            gatherData.DocumentPath= Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM")),gatherData.FileName);
+            gatherData.DocumentPath = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM")), gatherData.FileName);
             var rootPath = HttpContext.Request.PhysicalApplicationPath;
-            var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcModelForm(gatherData,rootPath);
+            var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcModelForm(gatherData, rootPath);
             return Json(opResult);
         }
 
@@ -371,10 +372,10 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="orderIdNumber"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetFqcSampleFormItems(string orderId,int orderIdNumber)
+        public JsonResult GetFqcSampleFormItems(string orderId, int orderIdNumber)
         {
-            var datas = InspectionService.DataGatherManager.FqcDataGather.FindFqcInspectionSummaryDataBy(orderId,orderIdNumber);
-             return Json(datas, JsonRequestBehavior.AllowGet);
+            var datas = InspectionService.DataGatherManager.FqcDataGather.FindFqcInspectionSummaryDataBy(orderId, orderIdNumber);
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 上传FQC检验采集数据附件
@@ -385,11 +386,9 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult UploadFqcGatherDataAttachFile(HttpPostedFileBase file)
         {
             string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
-            this.SaveFileToServer(file,filePath);
+            this.SaveFileToServer(file, filePath);
             return Json("OK");
         }
-
-       
 
         /// <summary>
         /// 保存FQC检验采集数据
@@ -403,10 +402,10 @@ namespace EicWorkPlatfrom.Controllers
                 gatherData.DocumentPath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"), gatherData.FileName);
                 gatherData.SiteRootPath = this.SiteRootPath;
             }
-           var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
+            var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
         }
-       
+
         #endregion
         #endregion
 
@@ -436,7 +435,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult PostInspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model)
         {
-            var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel (model);
+            var opResult = InspectionService.InspectionFormManager.IqcFromManager.AuditIqcInspectionMasterModel(model);
             return Json(opResult);
         }
         #endregion
@@ -464,8 +463,8 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult GetInspectionFormDetailOfFqcDatas(string orderId, int orderIdNumber)
         {
 
-            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionDatailListBy(orderId,orderIdNumber);
-            
+            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionDatailListBy(orderId, orderIdNumber);
+
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
