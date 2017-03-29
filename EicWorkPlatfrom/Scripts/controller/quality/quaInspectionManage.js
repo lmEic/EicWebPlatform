@@ -745,16 +745,18 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             }
         });
     };
-
+    //上传附件
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
             qualityInspectionDataOpService.uploadIqcGatherDataAttachFile(fd).then(function (result) {
                 if (result === 'OK') {
-                    vmManager.currentInspectionItem.FileName = fd.name;
+                    vmManager.currentInspectionItem.FileName = $scope.uploadFileName = fd.name;
                     vmManager.currentInspectionItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
                     qualityInspectionDataOpService.storeIqcInspectionGatherDatas(vmManager.currentInspectionItem).then(function (opResult) {
                         if (opResult.Result) {
-                            alert("上传文件成功");
+                            if (opResult.Result) {
+                                alert("上传文件成功");
+                            }
                         }
                     })
                 }
@@ -959,7 +961,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         leeHelper.upoadFile(el, function (fd) {
             qualityInspectionDataOpService.uploadFqcGatherDataAttachFile(fd).then(function (result) {
                 if (result === 'OK') {
-                    vmManager.currentInspectionItem.FileName = fd.name;
+                    vmManager.currentInspectionItem.FileName = $scope.uploadFileName = fd.name;
                     vmManager.currentInspectionItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
                     qualityInspectionDataOpService.storeFqcInspectionGatherDatas(vmManager.currentInspectionItem).then(function (opResult) {
                         if (opResult.Result) {

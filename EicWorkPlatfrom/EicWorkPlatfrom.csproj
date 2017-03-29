@@ -1328,6 +1328,7 @@
     <Content Include="Views\QuaInspectionManage\InspectionModeSwitchConfiguration.cshtml" />
     <Content Include="Views\QuaInspectionManage\FqcInspectionItemConfiguration.cshtml" />
     <Content Include="Views\CommonTpl\CheckboxTpl.cshtml" />
+    <Content Include="Views\CommonTpl\UploadFileTpl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -96,5 +96,10 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
+        public ActionResult UploadFileTpl()
+        {
+            return View();
+        }
     }
 }
