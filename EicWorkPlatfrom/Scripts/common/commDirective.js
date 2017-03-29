@@ -505,7 +505,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                 }
 
                 // 对选项进行sort
-                scope.config.perPageOptions.sort(function (a, b) { return a - b;});
+                scope.config.perPageOptions.sort(function (a, b) { return a - b; });
                 config.pageList = [];
 
                 if (config.numberOfPages <= config.pagesLength) {
@@ -751,6 +751,18 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                 scope.onChecked();
                 scope.isChecked = true;
             };
+        }
+    };
+})
+    //--------------------------checkbox-------------------------------------
+.directive('ylUploadFile', function () {
+    return {
+        restrict: "EA",
+        replace: false,
+        templateUrl: '/CommonTpl/UploadFileTpl',
+        scope: true,
+        link: function (scope, element, attr) {
+
         }
     };
 })

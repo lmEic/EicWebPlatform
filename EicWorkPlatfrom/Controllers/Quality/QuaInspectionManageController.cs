@@ -324,9 +324,12 @@ namespace EicWorkPlatfrom.Controllers
         [HttpPost]
         public JsonResult StoreIqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
-            gatherData.DocumentPath = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM")), gatherData.FileName);
-            var rootPath = HttpContext.Request.PhysicalApplicationPath;
-            var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcModelForm(gatherData, rootPath);
+            if (gatherData.OpSign == OpMode.UploadFile)
+            {
+                gatherData.DocumentPath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"), gatherData.FileName);
+                gatherData.SiteRootPath = this.SiteRootPath;
+            }
+            var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcGatherDatas(gatherData);
             return Json(opResult);
         }
 

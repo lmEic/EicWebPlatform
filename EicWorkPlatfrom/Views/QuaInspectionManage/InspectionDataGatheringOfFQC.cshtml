@@ -24,7 +24,7 @@
                 <div class="input-group">
                     <input type="submit" class="form-control" value="总数量">
                     <div class="input-group-addon">
-                         <label class="label label-primary">{{vmManager.orderInfo.MaterialInCount}}</label>
+                        <label class="label label-primary">{{vmManager.orderInfo.MaterialInCount}}</label>
                     </div>
                     <div class="input-group-addon">
                         已检数量：<label class="label label-success">{{vmManager.orderInfo.HaveInspectionSumCount}}</label>
@@ -74,7 +74,7 @@
                 <label>机台号:</label>
                 {{vmManager.opPersonInfo.ClassType}}
             </div>
-           
+
             <div class="col-md-2">
                 <p>
                     <label>图号:</label>
@@ -243,11 +243,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="5">
-                                            <span yl-checkbox data-content="上传附件" data-is-checked="showUploadFile">
-                                            </span>
-                                            <a href="javascript:void(0);" class="btn btn-sm btn-warning file" title="请选择要上传的附件" ng-if="showUploadFile">
-                                                <i class="fa fa-upload"></i>选择文件<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)">
-                                            </a>
+                                            <div yl-upload-file></div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -312,11 +308,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-3 col-md-offset-2">
-                                            <span yl-checkbox data-content="上传附件" data-is-checked="showUploadFile">
-                                            </span>
-                                            <a href="javascript:void(0);" class="btn btn-sm btn-warning file" title="请选择要上传的附件" ng-if="showUploadFile">
-                                                <i class="fa fa-upload"></i>选择文件<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)">
-                                            </a>
+                                            <div yl-upload-file></div>
                                         </div>
                                     </div>
                                 </fieldset>
