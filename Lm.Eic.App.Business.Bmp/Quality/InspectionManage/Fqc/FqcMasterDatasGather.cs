@@ -42,21 +42,23 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult storeInspectionMasterial(InspectionFqcMasterModel model)
         {
-            var existmodel = InspectionManagerCrudFactory.FqcMasterCrud.ExistModel(model.OrderId, model.OrderIdNumber, model.MaterialId);
-            if (existmodel != null && existmodel.Id_Key != 0 && model.OpPerson != "StartSetValue")
+
+            var oldModel = InspectionManagerCrudFactory.FqcMasterCrud.GetStroeOldModel(model);
+            /// model 如果是新加的  model.OpPerson为StartSetValue
+            /// 先排除是否是新增的
+            if (oldModel != null && oldModel.Id_Key != 0 && model.OpPerson != "StartSetValue")
             {
-                if (existmodel.InspectionItems.Contains(model.InspectionItems))
-                    model.InspectionItems = existmodel.InspectionItems;
-                else model.InspectionItems = existmodel.InspectionItems + "," + model.InspectionItems;
+                if (oldModel.InspectionItems.Contains(model.InspectionItems))
+                    model.InspectionItems = oldModel.InspectionItems;
+                else model.InspectionItems = oldModel.InspectionItems + "," + model.InspectionItems;
                 if (model.InspectionItemCount == this.GetHaveFinishDataNumber(model.InspectionItems))
-                {
-                    model.InspectionResult = "已完成";
-                }
-                model.Id_Key = existmodel.Id_Key;
-                model.OpSign = "edit";
+                { model.InspectionResult = "已完成"; }
+                model.Id_Key = oldModel.Id_Key;
+                model.OpSign = OpMode.Edit;
                 return InspectionManagerCrudFactory.FqcMasterCrud.Store(model);
             }
-            if (existmodel == null && model.OpPerson == "StartSetValue")
+            /// 如果 是新增 只添加一次 
+            if (oldModel == null && model.OpPerson == "StartSetValue")
                 return InspectionManagerCrudFactory.FqcMasterCrud.Store(model);
             return new OpResult("不必添加了");
 

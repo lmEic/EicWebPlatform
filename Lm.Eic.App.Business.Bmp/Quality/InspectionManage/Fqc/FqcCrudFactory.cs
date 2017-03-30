@@ -191,38 +191,44 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
+        internal bool IsExsitStoreModel(InspectionFqcMasterModel newModel)
+        {
+            if (newModel == null) return false;
+            return irep.IsExist(e => e.OrderId == newModel.OrderId && e.OrderIdNumber == newModel.OrderIdNumber && e.MaterialId == newModel.MaterialId);
+        }
 
-        public InspectionFqcMasterModel ExistModel(string orderId, int orderIdNumber, string materialId)
+        internal InspectionFqcMasterModel GetStroeOldModel(InspectionFqcMasterModel newModel)
         {
             try
             {
-                return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.MaterialId == materialId);
+                if (!IsExsitStoreModel(newModel)) return null;
+                return irep.Entities.FirstOrDefault(e => e.OrderId == newModel.OrderId && e.OrderIdNumber == newModel.OrderIdNumber && e.MaterialId == newModel.MaterialId);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
-                throw;
+                throw new Exception(ex.InnerException.Message);
             }
         }
         private OpResult AddFqcInspectionMaster(InspectionFqcMasterModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-        public List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(string orderId)
+        internal List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(string orderId)
         {
             return irep.Entities.Where(e => e.OrderId == orderId).ToList();
         }
 
-        public List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(string formStatus, DateTime dateFrom, DateTime dateTo)
+        internal List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(string formStatus, DateTime dateFrom, DateTime dateTo)
         {
             return irep.Entities.Where(e => e.InspectionStatus == formStatus && e.MaterialInDate >= dateFrom && e.MaterialInDate <= dateTo).ToList();
         }
-        public List<InspectionFqcMasterModel> GetFqcInspectionMasterListBy(string materialId)
+        internal List<InspectionFqcMasterModel> GetFqcInspectionMasterListBy(string materialId)
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
         }
 
-        public OpResult UpAuditDetailData(string orderId, int orderIdNumber, string Updatestring)
+        internal OpResult UpAuditDetailData(string orderId, int orderIdNumber, string Updatestring)
         {
             return irep.UpAuditDetailData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);
         }

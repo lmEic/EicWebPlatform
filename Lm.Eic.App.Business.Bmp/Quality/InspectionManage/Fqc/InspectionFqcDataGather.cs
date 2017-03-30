@@ -106,7 +106,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
         }
-        
+
         /// <summary>
         /// 生成FQC检验项目所有的信息
         /// </summary>
@@ -179,7 +179,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
         }
         /// <summary>
-        /// 存储收集数据
+        /// 存储收集数据 （二次调用，一次是新建存，一次是编辑）
         /// </summary>
         /// <param name="sumModel"></param>
         /// <returns></returns>
@@ -192,10 +192,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             ///先排除总表不能为空
             GetMasterAndDetailModelFrom(sumModel, out masterModel, out detailModel);
             if (detailModel == null || masterModel == null) return new OpResult("表单数据为空，保存失败", false);
-            // 先保存详细表  再更新主表信息
+            /// 先保存副表  再更新主表信息
             returnOpResult = DetailDatasGather.storeInspectionDetial(detailModel, sumModel.SiteRootPath);
             if (!returnOpResult.Result) return returnOpResult;
-            ///如果只是上传文档 不用更校招  Masterial
+            ///如果只是上传文档 不用更新  Masterial
             if (sumModel.OpSign != OpMode.UploadFile)
                 returnOpResult = MasterDatasGather.storeInspectionMasterial(masterModel);
             return returnOpResult;
@@ -203,7 +203,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         #endregion
 
         #region  对内处理 Private
-        
+
         /// <summary>
         /// 新建FQC总表
         /// </summary>
@@ -259,7 +259,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         RefuseCount = 0,
                         InspectionItemDatas = string.Empty,
                         InsptecitonItemIsFinished = false,
-                        ClassType = "白班",
+                        ClassType = string.Empty,
                         InStorageOrderId = "入库单",
                         InspectionItemSumCount = i,
                         InspectionNGCount = 0,
@@ -435,10 +435,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     InspectionResult = "未完工",
                     ///检验批次数量
                     InspectionCount = sumModel.MaterialCount,
-
                     Department = sumModel.Department,
                     OpPerson = sumModel.OpPerson,
-                    OpSign = OpMode.Add
+                    OpSign = sumModel.OpSign
                 };
                 detailModel = new InspectionFqcDetailModel()
                 {

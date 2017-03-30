@@ -132,7 +132,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
         /// <summary>
-        /// 更新详细列表
+        /// 更新详细列表SQl语句
         /// </summary>
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
@@ -142,18 +142,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.UpAuditDetailData(orderId, materialId, inspectionStatus).ToOpResult_Eidt(OpContext);
         }
-        /// <summary>
-        /// 更新主列表
-        /// </summary>
-        /// <param name="orderId"></param>
-        /// <param name="materialId"></param>
-        /// <param name="inspectionStatus"></param>
-        /// <returns></returns>
-        internal OpResult UpAuditMaterData(string orderId, string materialId, string inspectionStatus)
-        {
-            return irep.UpAuditMaterData(orderId, materialId, inspectionStatus).ToOpResult_Eidt(OpContext);
-        }
-
         private OpResult AddIqcInspectionMaster(InspectionIqcMasterModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
@@ -223,12 +211,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult AddIqcInspectionDetail(InspectionIqcDetailModel model)
         {
+            ////如果存在，操作失败
+            if (isExiststroe(model)) return new OpResult(OpContext, false);
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
         #endregion
 
 
         #region  Find
+
+        internal bool isExiststroe(InspectionIqcDetailModel model)
+        {
+            return irep.IsExist(e => e.OrderId == model.OrderId && e.MaterialId == model.MaterialId && e.InspecitonItem == model.InspecitonItem);
+        }
         /// <summary>
         /// 由单号和料号得到所有检验项目的数据
         /// </summary>
