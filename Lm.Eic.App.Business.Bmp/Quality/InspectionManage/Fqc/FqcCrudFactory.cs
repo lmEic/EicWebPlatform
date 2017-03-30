@@ -99,7 +99,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (oldmodel == null)
                 return this.AddFqcInspectionDetail(model);//若不存在则直接添加
             model.Id_Key = oldmodel.Id_Key;
-            if (oldmodel.DocumentPath != model.DocumentPath)//比对新旧文件是否一样,若不一样，则删除旧的文件
+            if (oldmodel.DocumentPath != model.DocumentPath && oldmodel.DocumentPath != string.Empty && oldmodel.DocumentPath != null)//比对新旧文件是否一样,若不一样，则删除旧的文件
             {
                 string fileName = Path.Combine(siteRootPath, oldmodel.DocumentPath);
                 fileName = fileName.Replace("/", @"\");
