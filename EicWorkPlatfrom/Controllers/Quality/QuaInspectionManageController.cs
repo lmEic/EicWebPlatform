@@ -388,8 +388,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult UploadFqcGatherDataAttachFile(HttpPostedFileBase file)
         {
+            string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
             string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
-            this.SaveFileToServer(file, filePath);
+            this.SaveFileToServer(file, filePath, addchangeFileName);
             return Json("OK");
         }
 
@@ -400,6 +401,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreFqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
+
             if (gatherData.OpSign == OpMode.UploadFile)//上传文件
             {
                 gatherData.DocumentPath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"), gatherData.FileName);

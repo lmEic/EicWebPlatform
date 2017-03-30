@@ -949,8 +949,10 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         leeHelper.setUserData(dataItem);
         leeHelper.copyVm($scope.opPersonInfo, dataItem);
         dataItem.OpSign = leeDataHandler.dataOpMode.add;
+
         $scope.opPromise = qualityInspectionDataOpService.storeFqcInspectionGatherDatas(dataItem).then(function (opResult) {
             if (opResult.Result) {
+                console.log(dataItem.DocumentPath);
                 //更新界面检测项目列表
                 vmManager.updateInspectionItemList(dataItem);
                 vmManager.inputDatas = [];
@@ -965,7 +967,11 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         leeHelper.upoadFile(el, function (fd) {
             qualityInspectionDataOpService.uploadFqcGatherDataAttachFile(fd).then(function (result) {
                 if (result === 'OK') {
-                    vmManager.currentInspectionItem.FileName = $scope.uploadFileName = fd.name;
+                    var nowDate = new Date().getDate();
+                    var nowHour = new Date().getHours();
+                    if (nowDate < 10) { nowDate += '0' };
+                    if (nowHour < 10) { nowHour += '0' };
+                    vmManager.currentInspectionItem.FileName = $scope.uploadFileName = nowDate.toString() + nowHour.toString() + fd.name;
                     vmManager.currentInspectionItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
                     qualityInspectionDataOpService.storeFqcInspectionGatherDatas(vmManager.currentInspectionItem).then(function (opResult) {
                         if (opResult.Result) {

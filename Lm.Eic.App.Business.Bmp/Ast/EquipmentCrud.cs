@@ -97,7 +97,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依据财产编号查询
-                        return irep.Entities.Where(m => m.AssetNumber==qryDto.AssetNumber).ToList();
+                        return irep.Entities.Where(m => m.AssetNumber == qryDto.AssetNumber).ToList();
                     case 2: //依据保管部门查询
                         return irep.Entities.Where(m => m.SafekeepDepartment.StartsWith(qryDto.Department, StringComparison.CurrentCulture)).ToList();
 
@@ -324,9 +324,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依据财产编号查询
-                        return irep.Entities.Where(m => m.AssetNumber.StartsWith(qryDto.AssetNumber, StringComparison.CurrentCulture)).ToList();
+                        return irep.Entities.Where(m => m.AssetNumber.Contains(qryDto.AssetNumber)).ToList();
                     case 2: //依据财产编号精确查询
-                        return irep.Entities.Where(m => m.AssetNumber==qryDto.AssetNumber).ToList();
+                        return irep.Entities.Where(m => m.AssetNumber == qryDto.AssetNumber).ToList();
 
                     default: return null;
                 }
@@ -462,9 +462,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依据财产编号查询
-                        return irep.Entities.Where(m => m.AssetNumber.StartsWith(qryDto.AssetNumber, StringComparison.CurrentCulture)).ToList();
+                        return irep.Entities.Where(m => m.AssetNumber.StartsWith(qryDto.AssetNumber)).ToList();
                     case 2: //依据财产编号精确查询
-                        return irep.Entities.Where(m => m.AssetNumber==qryDto.AssetNumber).ToList();
+                        return irep.Entities.Where(m => m.AssetNumber == qryDto.AssetNumber).ToList();
 
                     default: return null;
                 }
@@ -697,8 +697,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         private OpResult AddEquipmentRepairedRecord(EquipmentRepairedRecordModel model)
         {
-            if (model == null) return new  OpResult("实体不能空");
-            if (irep.IsExist (e=>e.AssetNumber==model.AssetNumber && e.FormId ==model.FormId))
+            if (model == null) return new OpResult("实体不能空");
+            if (irep.IsExist(e => e.AssetNumber == model.AssetNumber && e.FormId == model.FormId))
             {
                 return new OpResult("此编号已存在");
             }
@@ -712,7 +712,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         private OpResult EditEquipmentRepairedRecord(EquipmentRepairedRecordModel model)
         {
-            return irep.Update(u=>u.Id_Key==model.Id_Key,model).ToOpResult_Add(OpContext);
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Add(OpContext);
         }
         /// <summary>
         /// 获取设备维修记录
@@ -725,9 +725,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             return data;
 
         }
-        public List<EquipmentRepairedRecordModel> GetEquipmentRepairedRecordFormIdBy(string assetNumber,string formdId)
+        public List<EquipmentRepairedRecordModel> GetEquipmentRepairedRecordFormIdBy(string assetNumber, string formdId)
         {
-            return (formdId == string.Empty || formdId == null) ? irep.Entities.Where(m => m.AssetNumber == assetNumber).ToList():
+            return (formdId == string.Empty || formdId == null) ? irep.Entities.Where(m => m.AssetNumber == assetNumber).ToList() :
             irep.Entities.Where(m => m.FormId == formdId && m.AssetNumber == assetNumber).ToList();
         }
         /// <summary>
