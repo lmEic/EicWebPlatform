@@ -767,7 +767,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
 
 ///fqc数据采集控制器
 qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService, connDataOpService) {
-    $scope.opPersonInfo = { department: '', classType: '' };
+    $scope.opPersonInfo = { Department: '', ClassType: '' };
 
     var vmManager = {
         orderId: null,
@@ -909,7 +909,8 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         },
         //更新检测项目列表
         updateInspectionItemList: function (editItem) {
-            var materialItem = _.find(vmManager.cacheDatas, { key: vmManager.currentMaterialIdItem.ProductID });
+            var key = editItem.orderId + editItem.orderIdNumber;
+            var materialItem = _.find(vmManager.cacheDatas, { key: key });
             if (materialItem !== undefined) {
                 var dataItem = _.find(materialItem.dataSource, { InspectionItem: vmManager.currentInspectionItem.InspectionItem });
                 if (dataItem !== undefined) {
@@ -946,6 +947,8 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         }
         dataItem.InsptecitonItemIsFinished = true;
         leeHelper.setUserData(dataItem);
+        leeHelper.copyVm($scope.opPersonInfo, dataItem);
+        dataItem.OpSign = leeDataHandler.dataOpMode.add;
         $scope.opPromise = qualityInspectionDataOpService.storeFqcInspectionGatherDatas(dataItem).then(function (opResult) {
             if (opResult.Result) {
                 //更新界面检测项目列表
@@ -975,17 +978,15 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
     }
 
     var loadWorkerInfo = (function () {
-        //var user = leeDataHandler.dataStorage.getLoginedUser();
-        //if (user) {
-        connDataOpService.getWorkersBy('003095').then(function (users) {
-            if (_.isArray(users) && users.length > 0) {
-                var userInfo = users[0];
-                console.log(userInfo);
-                $scope.opPersonInfo.classType = userInfo.ClassType;
-                $scope.opPersonInfo.department = userInfo.Department;
-            }
-        });
-        //}
+        var user = leeDataHandler.dataStorage.getLoginedUser();
+        if (user) {
+            connDataOpService.getWorkersBy(user.userId).then(function (users) {
+                if (_.isArray(users) && users.length > 0) {
+                    var userInfo = users[0];
+                    leeHelper.copyVm(userInfo, $scope.opPersonInfo);
+                }
+            });
+        }
     })();
 })
 

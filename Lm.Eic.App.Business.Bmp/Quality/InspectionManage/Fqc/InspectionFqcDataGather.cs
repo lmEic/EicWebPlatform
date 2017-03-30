@@ -162,7 +162,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     return new List<InspectionItemDataSummaryLabelModel>();
                 var orderMaterialInfo = orderMaterialInfoList[0];
                 ///得到FQC已经检验详表
-                var fqcHaveInspectionDatas = DetailDatasGather.GetFqcInspectionDetailModeListlBy(orderId, orderIdNumber);
+                var fqcHaveInspectionDatas = DetailDatasGather.GetFqcInspectionDetailDatasBy(orderId, orderIdNumber);
                 if (fqcHaveInspectionDatas == null || fqcHaveInspectionDatas.Count <= 0)
                     return new List<InspectionItemDataSummaryLabelModel>();
                 ///得到需要检验的项目
