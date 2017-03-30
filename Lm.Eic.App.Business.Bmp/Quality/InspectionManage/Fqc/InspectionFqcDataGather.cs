@@ -512,9 +512,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (existmodel == null && model.OpPerson == "StartSetValue")
                 return InspectionManagerCrudFactory.FqcMasterCrud.Store(model);
             return new OpResult("不必添加了");
-
-
-
         }
 
 
@@ -546,8 +543,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             });
             return ddd;
         }
-
-
         /// <summary>
         /// 获取已经检验的数量
         /// </summary>

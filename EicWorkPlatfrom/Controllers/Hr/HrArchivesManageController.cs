@@ -15,7 +15,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
     {
         #region View Tpl
 
-        
+
         //
         // GET: /HrArchivesManage/
         public ActionResult Index()
@@ -57,11 +57,12 @@ namespace EicWorkPlatfrom.Controllers.Hr
             return View();
         }
         #endregion
+
         /// <summary>
         /// 办理离职数据
         /// </summary>
         /// <returns></returns>
-        [HttpPost]       
+        [HttpPost]
         [NoAuthenCheck]
         public JsonResult StoreLeaveOffData(ArLeaveOfficeModel leaveEntity)
         {
@@ -83,7 +84,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
                     if (m.PersonalPicture != null)
                         //将个人的图片信息转换为Base64字符串编码保存到此属性中
                         m.NewAddress = Convert.ToBase64String(m.PersonalPicture);
-                    vm = new IdentityViewModel() { Identity = m, IsExpire = ArchiveService.ArchivesManager.IdentityManager.IdentityLimitDateIsExpired(m),Name=m.Name };
+                    vm = new IdentityViewModel() { Identity = m, IsExpire = ArchiveService.ArchivesManager.IdentityManager.IdentityLimitDateIsExpired(m), Name = m.Name };
                     datas.Add(vm);
                 });
             }
@@ -139,10 +140,10 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="employee"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult InputWorkerArchive(ArchivesEmployeeIdentityDto employee,string opSign)
+        public JsonResult InputWorkerArchive(ArchivesEmployeeIdentityDto employee, string opSign)
         {
             employee.OpPerson = OnLineUser.UserName;
-            var result = ArchiveService.ArchivesManager.Store(employee,opSign);
+            var result = ArchiveService.ArchivesManager.Store(employee, opSign);
             return Json(result);
         }
         /// <summary>
@@ -161,7 +162,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
             string workingStatus,
             int searchMode)
         {
-             var data = ArchiveService.ArchivesManager.FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto
+            var data = ArchiveService.ArchivesManager.FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto
             {
                 RegistedDateStart = startRegistedDate,
                 RegistedDateEnd = endRegistedDate,
@@ -171,7 +172,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 MarryStatus = marryStatus,
                 WorkingStatus = workingStatus,
                 SearchMode = searchMode
-            }); 
+            });
             TempData["archiveDatas"] = data;
             return DateJsonResult(data);
         }
@@ -286,7 +287,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 datas.ForEach(e =>
                 {
                     e.Department = ArchiveService.ArchivesManager.DepartmentMananger.GetDepartmentText(e.Department);
-                    
+
                 });
             }
         }
@@ -344,7 +345,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public JsonResult ChangeWorkerId(string workerId, string newWorkerId)
         {
-            var opResult = ArchiveService.ArchivesManager.StoreWorkerIdChangeInfo(new WorkerChangedModel() { OldWorkerId=workerId, NewWorkerId=newWorkerId ,OpSign="add"});
+            var opResult = ArchiveService.ArchivesManager.StoreWorkerIdChangeInfo(new WorkerChangedModel() { OldWorkerId = workerId, NewWorkerId = newWorkerId, OpSign = "add" });
             return Json(opResult);
         }
     }

@@ -1,4 +1,4 @@
-﻿"use strict";
+﻿
 /// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/underscore/underscore-min.js" />
@@ -766,9 +766,10 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
 })
 
 ///fqc数据采集控制器
-qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService) {
+qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService, connDataOpService) {
+    $scope.opPersonInfo = { department: '', classType: '' };
+
     var vmManager = {
-        opPersonInfo: { department: '', classType: '' },
         orderId: null,
         orderInfo: null,
         //抽样批次数量
@@ -972,6 +973,20 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
             })
         });
     }
+
+    var loadWorkerInfo = (function () {
+        //var user = leeDataHandler.dataStorage.getLoginedUser();
+        //if (user) {
+        connDataOpService.getWorkersBy('003095').then(function (users) {
+            if (_.isArray(users) && users.length > 0) {
+                var userInfo = users[0];
+                console.log(userInfo);
+                $scope.opPersonInfo.classType = userInfo.ClassType;
+                $scope.opPersonInfo.department = userInfo.Department;
+            }
+        });
+        //}
+    })();
 })
 
 ///iqc检验单管理
