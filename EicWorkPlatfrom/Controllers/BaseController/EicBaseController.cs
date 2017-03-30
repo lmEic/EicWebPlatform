@@ -229,7 +229,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="file"></param>
         /// <param name="filePath"></param>
         /// <param name="handler"></param>
-        protected void SaveFileToServer(HttpPostedFileBase file, string filePath, Action handler=null)
+        protected void SaveFileToServer(HttpPostedFileBase file, string filePath, Action handler = null)
         {
             if (file != null)
             {
@@ -242,11 +242,30 @@ namespace EicWorkPlatfrom.Controllers
             }
         }
 
+        /// <summary>
+        /// 将文件保存到服务器上
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="filePath"></param>
+        /// <param name="handler"></param>
+        protected void SaveFileToServer(HttpPostedFileBase file, string filePath, string changeFileName, Action handler = null)
+        {
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    string fileName = Path.Combine(filePath, changeFileName + file.FileName);
+                    file.SaveAs(fileName);
+                    if (handler != null) handler();
+                }
+            }
+        }
+
         #region CombinedFilePath
         protected string CombinedFilePath(string path1)
         {
             string siteRootPath = this.HttpContext.Request.PhysicalApplicationPath;
-            string dirctoryPath = Path.Combine(siteRootPath,path1);
+            string dirctoryPath = Path.Combine(siteRootPath, path1);
             if (!Directory.Exists(dirctoryPath))
             {
                 Directory.CreateDirectory(dirctoryPath);
@@ -264,7 +283,7 @@ namespace EicWorkPlatfrom.Controllers
         }
         protected string CombinedFilePath(string path1, string path2, string path3)
         {
-            string dirctoryPath = Path.Combine(CombinedFilePath(path1,path2), path3);
+            string dirctoryPath = Path.Combine(CombinedFilePath(path1, path2), path3);
             if (!Directory.Exists(dirctoryPath))
             {
                 Directory.CreateDirectory(dirctoryPath);
@@ -348,7 +367,7 @@ namespace EicWorkPlatfrom.Controllers
             if (imageFormat.Equals(ImageFormat.Png)) context.HttpContext.Response.ContentType = "image/png";
             if (imageFormat.Equals(ImageFormat.Tiff)) context.HttpContext.Response.ContentType = "image/tiff";
             if (imageFormat.Equals(ImageFormat.Wmf)) context.HttpContext.Response.ContentType = "image/wmf";
-            image.Save(context.HttpContext.Response.OutputStream,imageFormat);
+            image.Save(context.HttpContext.Response.OutputStream, imageFormat);
         }
     }
     /// <summary>

@@ -49,7 +49,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
         }
-        
+
         #endregion
 
 
@@ -326,6 +326,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         MaterialCount = m.MaterialCount,
                         InspectionItem = m.InspectionItem,
                         EquipmentId = m.EquipmentId,
+                        DocumentPath = m.DocumentPath,
+                        FileName = m.FileName,
                         Memo = m.Memo,
                         InspectionItemStatus = m.InspectionItemStatus,
                         ///检验方法
@@ -340,6 +342,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         InsptecitonItemIsFinished = false,
                         /// 分析已完成的数据的数量
                         HaveFinishDataNumber = this.DoHaveFinishDataNumber(m.InspectionItemResult, m.InspectionItemDatas, (int)m.InspectionCount),
+
 
 
                         InStorageOrderId = m.InStorageOrderId,
