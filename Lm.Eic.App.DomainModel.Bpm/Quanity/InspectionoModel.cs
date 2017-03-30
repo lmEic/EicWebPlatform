@@ -649,6 +649,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public InspectionIqcDetailModel()
         { }
         #region Model
+
         private string _orderid;
         /// <summary>
         ///单号
@@ -694,7 +695,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionmode = value; }
             get { return _inspectionmode; }
         }
- 
         private DateTime _materialindate;
         /// <summary>
         ///进料日期
@@ -749,25 +749,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _inspectionitemdatas = value; }
             get { return _inspectionitemdatas; }
         }
-
-        private string _documentPath;
+        private string _documentpath;
         /// <summary>
-        /// 文件存放路经
+        ///文件路径
         /// </summary>
         public string DocumentPath
         {
-            set { _documentPath = value; }
-            get { return _documentPath; }
+            set { _documentpath = value; }
+            get { return _documentpath; }
         }
-        private string _fileName;
+        private string _filename;
         /// <summary>
-        /// 文件名
+        ///文件名
         /// </summary>
         public string FileName
         {
-            set { _fileName = value; }
-            get { return _fileName; }
-
+            set { _filename = value; }
+            get { return _filename; }
         }
         private string _inspectionitemstatus;
         /// <summary>
@@ -1664,7 +1662,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         /// 文件名
         /// </summary>
-        public string  FileName { set; get; }
+        public string FileName { set; get; }
         /// <summary>
         /// 机台编号
         /// </summary>

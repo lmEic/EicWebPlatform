@@ -108,6 +108,9 @@
     <Compile Include="Purchase\SupplierManager\SupplierConfigManagerCrud.cs" />
     <Compile Include="Purchase\SupplierManager\SupplierConfigManager.cs" />
     <Compile Include="Purchase\SupplierManager\SuppliersGradeManager.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\FqcCrudFactory.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\FqcDetailDatasGather.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\FqcMasterDatasGather.cs" />
     <Compile Include="Quality\InspectionManage\Fqc\InspectionFqcConfigManager.cs" />
     <Compile Include="Quality\InspectionManage\Fqc\InspectionFqcDataGather.cs" />
     <Compile Include="Quality\InspectionManage\Fqc\InspectionFqcFormManager.cs" />
@@ -128,6 +131,9 @@
     <Compile Include="Quality555\SampleManager\SampleItermRules\SampleItermRulesManger.cs" />
     <Compile Include="Quality555\SampleManager\SampleIqcManager.cs" />
     <Compile Include="Quality555\SupperManager\SupperManager.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\IqcCrudFactory.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\IqcDetailDatasGether.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\IqcMasterDatasGather.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

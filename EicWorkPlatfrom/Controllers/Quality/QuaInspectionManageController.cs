@@ -351,7 +351,7 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult GetFqcOrderInfoDatas(string orderId)
         {
             var orderInfo = InspectionService.DataGatherManager.FqcDataGather.GetFqcInspectionFqcOrderIdInfoBy(orderId);
-            var sampledDatas = InspectionService.DataGatherManager.FqcDataGather.GetFqcMasterOrderIdDatasBy(orderId);
+            var sampledDatas = InspectionService.DataGatherManager.FqcDataGather.MasterDatasGather.GetFqcMasterOrderIdDatasBy(orderId);
             var datas = new { orderInfo = orderInfo, sampledDatas = sampledDatas };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
