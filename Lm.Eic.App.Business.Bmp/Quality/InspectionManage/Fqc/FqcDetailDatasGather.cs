@@ -30,7 +30,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderIdNumber">单号序号</param>
         /// <param name="orderId">单号</param>
         /// <returns></returns>
-        public List<InspectionFqcDetailModel> GetFqcInspectionDetailModeListlBy(string orderId, int orderIdNumber)
+        public List<InspectionFqcDetailModel> GetFqcInspectionDetailDatasBy(string orderId, int orderIdNumber)
         {
             return InspectionManagerCrudFactory.FqcDetailCrud.GetFqcInspectionDetailDatasBy(orderId, orderIdNumber);
         }
