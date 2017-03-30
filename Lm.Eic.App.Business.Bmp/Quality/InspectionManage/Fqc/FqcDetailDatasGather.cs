@@ -25,9 +25,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
         /// <summary>
+        /// 得到副表的详细记录
         /// </summary>
-        /// <param name="orderIdNumber"></param>
-        /// <param name="orderId"></param>
+        /// <param name="orderIdNumber">单号序号</param>
+        /// <param name="orderId">单号</param>
         /// <returns></returns>
         public List<InspectionFqcDetailModel> GetFqcInspectionDetailModeListlBy(string orderId, int orderIdNumber)
         {

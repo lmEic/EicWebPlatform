@@ -9,18 +9,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     public class FqcMasterDatasGather : InspectionDateGatherManageBase
     {
-
-
         /// <summary>
         /// 物料得到 MasterDatas
         /// </summary>
-        /// <param name="MarterialId"></param>
+        /// <param name="marterialId"></param>
         /// <returns></returns>
-        public List<InspectionFqcMasterModel> GetFqcMasterModeListlBy(string MarterialId)
+        public List<InspectionFqcMasterModel> GetFqcMasterModeListlBy(string marterialId)
         {
-            return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterListBy(MarterialId);
+            return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterListBy(marterialId);
         }
-
         /// <summary>
         ///  得到Mater列表数据
         /// </summary>
