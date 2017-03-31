@@ -33,11 +33,10 @@
                         </div>
                         <div bs-pane data-title="查询数据" data-name="selectTab">
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-10">
                                     <form class="form-inline" role="form" novalidate>
                                         <div class="form-group">
-                                            <label class="control-label">选择日期</label>
-                                            <input type="date" ng-model="vm.AttendanceDate" format-date class="form-control" />
+                                            <span yl-date-range date-from="vmManager.dateFrom" date-to="vmManager.dateTo"></span>
                                         </div>
                                         <div class="form-group">
                                             <div class="input-group">
@@ -58,7 +57,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <input type="text" placeholder="输入工号按回车键" ng-model="vm.WorkerId" ng-keypress="vmManager.getAttendanceDatas($event)" class="form-control" />
                                 </div>
                             </div>

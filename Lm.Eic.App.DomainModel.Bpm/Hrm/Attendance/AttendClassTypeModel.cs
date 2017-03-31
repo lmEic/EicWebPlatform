@@ -524,6 +524,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
         public string WorkerId { get; set; }
 
         public string YearMonth { get; set; }
+
+        public DateTime DateFrom { get; set; }
+
+        public DateTime DateTo { get; set; }
     }
 
     /// <summary>
