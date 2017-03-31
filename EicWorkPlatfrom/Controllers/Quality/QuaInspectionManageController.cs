@@ -311,8 +311,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult UploadIqcGatherDataAttachFile(HttpPostedFileBase file)
         {
+            string addchangeFileName = "(" + DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00") + ")";
             string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
-            this.SaveFileToServer(file, filePath);
+            this.SaveFileToServer(file, filePath, addchangeFileName);
             return Json("OK");
         }
         /// <summary>
@@ -324,7 +325,8 @@ namespace EicWorkPlatfrom.Controllers
         [HttpPost]
         public JsonResult StoreIqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
-            if (gatherData.OpSign == OpMode.UploadFile)
+            if (gatherData == null) return Json(new OpResult("数据为空", false));
+            if (gatherData.FileName != null && gatherData.FileName.Length > 1)
             {
                 gatherData.DocumentPath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"), gatherData.FileName);
                 gatherData.SiteRootPath = this.SiteRootPath;
@@ -364,7 +366,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult CreateFqcSampleFormItem(string orderId, int sampleCount)
         {
-            var datas = InspectionService.DataGatherManager.FqcDataGather.BuildingFqcInspectionSummaryDataBy(orderId, sampleCount);
+            var datas = InspectionService.DataGatherManager.FqcDataGather.BuildingFqcInspectionSummaryDatasBy(orderId, sampleCount);
 
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
@@ -388,7 +390,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult UploadFqcGatherDataAttachFile(HttpPostedFileBase file)
         {
-            string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
+            string addchangeFileName = "(" + DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00") + ")";
             string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
             this.SaveFileToServer(file, filePath, addchangeFileName);
             return Json("OK");
@@ -401,8 +403,8 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreFqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
         {
-
-            if (gatherData.OpSign == OpMode.UploadFile)//上传文件
+            if (gatherData == null) return Json(new OpResult("数据为空，保存失败", false));
+            if (gatherData.FileName != null && gatherData.FileName.Length > 1)//上传文件
             {
                 gatherData.DocumentPath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"), gatherData.FileName);
                 gatherData.SiteRootPath = this.SiteRootPath;
