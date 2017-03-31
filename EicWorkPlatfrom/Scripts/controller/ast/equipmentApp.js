@@ -995,13 +995,6 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
                 msgModal.$promise.then(msgModal.show);
                 return false;
             }
-            if (angular.isUndefined(uiVM.DocumentPath) || uiVM.DocumentPath === null) {
-                var msgModal = $modal({
-                    title: "错误提示:正在上传文件，请等待文件上传成功后在进行保存！", content: "", templateUrl: leeHelper.modalTplUrl.msgModalUrl, show: false
-                });
-                msgModal.$promise.then(msgModal.show);
-                return false;
-            }
             else { return true; }
         },
         getAstDatas: function () {
