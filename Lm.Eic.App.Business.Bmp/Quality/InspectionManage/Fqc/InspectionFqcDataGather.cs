@@ -185,7 +185,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult StoreFqcDataGather(InspectionItemDataSummaryLabelModel sumModel)
         {
-            var returnOpResult = new OpResult("数据为空，保存失败", false);
+            var returnOpResult = new OpResult("采集数据模型不能为NULL", false);
             InspectionFqcMasterModel masterModel = null;
             InspectionFqcDetailModel detailModel = null;
             ///先排除总表不能为空
