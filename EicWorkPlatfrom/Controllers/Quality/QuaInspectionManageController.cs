@@ -311,7 +311,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult UploadIqcGatherDataAttachFile(HttpPostedFileBase file)
         {
-            string addchangeFileName = "(" + DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00") + ")";
+            string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
             string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
             this.SaveFileToServer(file, filePath, addchangeFileName);
             return Json("OK");
@@ -390,7 +390,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult UploadFqcGatherDataAttachFile(HttpPostedFileBase file)
         {
-            string addchangeFileName = "(" + DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00") + ")";
+            string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
             string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
             this.SaveFileToServer(file, filePath, addchangeFileName);
             return Json("OK");
