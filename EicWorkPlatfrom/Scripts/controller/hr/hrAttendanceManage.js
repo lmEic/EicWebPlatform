@@ -33,10 +33,12 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
     };
 
     //获取当天的考勤数据信息
-    hr.getAttendanceDatas = function (qryDate, department, workerId, mode) {
+    hr.getAttendanceDatas = function (qryDate, dateFrom, dateTo, department, workerId, mode) {
         var url = attendUrl + 'GetAttendanceDatas';
         return ajaxService.getData(url, {
             qryDate: qryDate,
+            dateFrom: dateFrom,
+            dateTo: dateTo,
             department: department,
             workerId: workerId,
             mode: mode
@@ -123,11 +125,11 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
 //班别设置管理
 hrModule.controller('attendClassTypeSetCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService) {
     var qryDto = {
-        Department:null,
-        DepartmentText:null,
+        Department: null,
+        DepartmentText: null,
         DateFrom: null,
         DateTo: null,
-        ClassType:'白班'
+        ClassType: '白班'
     };
     $scope.vm = qryDto;
 
@@ -148,15 +150,14 @@ hrModule.controller('attendClassTypeSetCtrl', function ($scope, $modal, hrDataOp
         selectedCls: ''
     };
     var vmManager = {
-        classTypes: [{ name: '白班', text: '白班' }, { name: '晚班', text: '晚班' }, { name: '', text: 'All' } ],
+        classTypes: [{ name: '白班', text: '白班' }, { name: '晚班', text: '晚班' }, { name: '', text: 'All' }],
         dataSets: [],
-        dataSource:[],
+        dataSource: [],
         filterWorkerId: '',
-        filterClassType:'',
+        filterClassType: '',
         filterByWorkerId: function ($event) {
             if ($event.keyCode === 13) {
-                if (qryDto.Department === null || vmManager.filterWorkerId === null)
-                {
+                if (qryDto.Department === null || vmManager.filterWorkerId === null) {
                     alert("必须选择部门，作业工号不能为空！");
                     return;
                 }
@@ -180,9 +181,9 @@ hrModule.controller('attendClassTypeSetCtrl', function ($scope, $modal, hrDataOp
         },
         msgModal: $modal({
             title: '信息提示',
-            content:'请先选择要转班人员的数据！',
+            content: '请先选择要转班人员的数据！',
             templateUrl: leeHelper.modalTplUrl.msgModalUrl,
-            show:false
+            show: false
         }),
         isSelectAll: false,
         selectAll: function () {
@@ -204,7 +205,7 @@ hrModule.controller('attendClassTypeSetCtrl', function ($scope, $modal, hrDataOp
             });
         }
     };
-   
+
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     operate.loadData = function () {
@@ -274,12 +275,14 @@ hrModule.controller('hrSumerizeAttendanceDataCtrl', function ($scope, $modal, hr
         Department: '部门',
         DepartmentText: '部门',
         WorkerId: '',
-        AttendanceDate:new Date()
+        AttendanceDate: new Date()
     };
     $scope.vm = qryDto;
 
 
     var vmManager = {
+        dateFrom: new Date(),
+        dateTo: new Date(),
         dataSets: [],
         dataSource: [],
         init: function () {
@@ -287,8 +290,7 @@ hrModule.controller('hrSumerizeAttendanceDataCtrl', function ($scope, $modal, hr
             vmManager.dataSource = [];
         },
         getAttendanceDatas: function ($event) {
-            if ($event.keyCode === 13)
-            {
+            if ($event.keyCode === 13) {
                 if (qryDto.WorkerId.length === 0) return;
                 operate.loadData(2);
             }
@@ -298,7 +300,7 @@ hrModule.controller('hrSumerizeAttendanceDataCtrl', function ($scope, $modal, hr
             var url = "HrAttendanceManage/ExoportAttendanceDatasToExcel/?qryDate=" + qryDto.AttendanceDate;
             return url;
         },
-        yearMonth:'',
+        yearMonth: '',
         //导出到Excel
         exportYearMonthDatasToExcel: function () {
             var url = "HrAttendanceManage/ExoportAttendanceMonthDatasToExcel/?yearMonth=" + vmManager.yearMonth;
@@ -312,7 +314,7 @@ hrModule.controller('hrSumerizeAttendanceDataCtrl', function ($scope, $modal, hr
 
     operate.loadData = function (mode) {
         vmManager.init();
-        $scope.promise = hrDataOpService.getAttendanceDatas(qryDto.AttendanceDate,qryDto.Department,qryDto.WorkerId,mode).then(function (datas) {
+        $scope.promise = hrDataOpService.getAttendanceDatas(qryDto.AttendanceDate, vmManager.dateFrom, vmManager.dateTo, qryDto.Department, qryDto.WorkerId, mode).then(function (datas) {
             vmManager.dataSource = datas;
             vmManager.dataSets = _.clone(vmManager.dataSource);
         });
@@ -341,7 +343,7 @@ hrModule.controller('hrSumerizeAttendanceDataCtrl', function ($scope, $modal, hr
 });
 //请假设置管理
 hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService, hrArchivesDataOpService) {
-  
+
     ///视图模型
     var uiVM = {
         WorkerId: null,
@@ -366,7 +368,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         id: 0
     };
     var askLeaveVM = {
-        AttendanceDate:null,
+        AttendanceDate: null,
         SlotCardTime: null,
         LeaveType: null,
         LeaveHours: null,
@@ -379,24 +381,24 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         Department: null,
         DepartmentText: null,
         OpCmdVisible: false,
-        OpSign:null
+        OpSign: null
     };
     //视图管理器
     var vmManager = {
         activeTab: 'initTab',
         workerId: null,
-        yearMonth:null,
-        opSign:null,
+        yearMonth: null,
+        opSign: null,
         //部门信息
-        departments:[],
+        departments: [],
         leaveTypes: [],
         changeDatas: [],
         //存储到数据库中的数据集
-        dbDataSet:[],
+        dbDataSet: [],
         workerIdList: [],
         addWorkerId: function ($event) {
-            if ($event.keyCode===13) {
-                var item = _.findWhere(vmManager.changeDatas, { WorkerId:vmManager.workerId });
+            if ($event.keyCode === 13) {
+                var item = _.findWhere(vmManager.changeDatas, { WorkerId: vmManager.workerId });
                 if (item === undefined) {
                     item = {
                         WorkerId: _.clone(vmManager.workerId),
@@ -424,10 +426,9 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
             }
         },
         searchLeaveData: function ($event) {
-            if ($event.keyCode === 13)
-            {
+            if ($event.keyCode === 13) {
                 vmManager.askLeaveDatas = [];
-                $scope.askLeavePromise = hrDataOpService.getAskLeaveDataAbout(vmManager.workerId,vmManager.yearMonth).then(function (datas) {
+                $scope.askLeavePromise = hrDataOpService.getAskLeaveDataAbout(vmManager.workerId, vmManager.yearMonth).then(function (datas) {
                     angular.forEach(datas, function (item) {
                         var dataItem = _.clone(askLeaveVM);
                         leeHelper.copyVm(item, dataItem);
@@ -440,7 +441,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
             }
         },
         //请假数据
-        askLeaveDatas:[]
+        askLeaveDatas: []
     };
     $scope.vmManager = vmManager;
 
@@ -448,8 +449,8 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
     var operate = Object.create(leeDataHandler.operateStatus);
     operate.vm = uiVM;
     $scope.operate = operate;
-    
- 
+
+
     operate.search = function () {
         $scope.workerPromise = hrArchivesDataOpService.getEmployeeByWorkerIds(vmManager.workerIdList, 0).then(function (data) {
             angular.forEach(data, function (item) {
@@ -492,8 +493,8 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
                         LeaveMemo: null,
                         StartLeaveDate: null,
                         EndLeaveDate: null,
-                        LeaveTimeRegionStart:null,
-                        LeaveTimeRegionEnd:null,
+                        LeaveTimeRegionStart: null,
+                        LeaveTimeRegionEnd: null,
                         DepartmentText: null,
                         ClassType: null,
                         id: 0
@@ -534,26 +535,21 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
     operate.handleAskForLeave = function (item, opSign) {
         leeHelper.clearVM(uiVM);
         vmManager.opSign = opSign;
-        if (opSign === 'handle' || opSign==='edit')
-        {
+        if (opSign === 'handle' || opSign === 'edit') {
             leeHelper.copyVm(item, uiVM);
         }
-        else if (opSign === 'add')
-        {
+        else if (opSign === 'add') {
             leeHelper.copyVm(item, uiVM, ['LeaveType', 'LeaveHours', 'StartLeaveDate', 'EndLeaveDate']);
         }
-        else if (opSign === 'del')
-        {
+        else if (opSign === 'del') {
             var rowItem = _.findWhere(vmManager.changeDatas, { WorkerId: item.WorkerId });
-            if (rowItem !== undefined)
-            {
+            if (rowItem !== undefined) {
                 leeHelper.remove(rowItem.LeaveDataSet, item);
                 leeHelper.remove(vmManager.dbDataSet, item);
-               
+
             }
         }
-        else if (opSign === 'handleEdit')
-        {
+        else if (opSign === 'handleEdit') {
             leeHelper.copyVm(item, uiVM);
             uiVM.StartLeaveDate = item.AttendanceDate;
             uiVM.EndLeaveDate = item.AttendanceDate;
@@ -565,8 +561,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
     };
 
     operate.save = function () {
-        if (vmManager.activeTab === 'initTab')
-        {
+        if (vmManager.activeTab === 'initTab') {
             hrDataOpService.handleAskForLeave(vmManager.dbDataSet).then(function (opResult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
                     vmManager.changeDatas = [];
@@ -574,8 +569,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
                 });
             });
         }
-        else if (vmManager.activeTab === 'manageTab')
-        {
+        else if (vmManager.activeTab === 'manageTab') {
             hrDataOpService.updateAskForLeave(vmManager.askLeaveDatas).then(function (opResult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
                     vmManager.askLeaveDatas = [];
@@ -586,8 +580,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
 
     $scope.promise = hrDataOpService.getLeaveTypesConfigs().then(function (datas) {
         var leaveTypes = _.where(datas, { ModuleName: "AttendanceConfig", AboutCategory: "AskForLeaveType" });
-        if (leaveTypes !== undefined)
-        {
+        if (leaveTypes !== undefined) {
             angular.forEach(leaveTypes, function (item) {
                 vmManager.leaveTypes.push({ name: item.DataNodeText, text: item.DataNodeText });
             });
@@ -607,12 +600,12 @@ hrModule.controller('attendExceptionHandleCtrl', function ($scope, $modal, hrDat
         Department: null,
         DepartmentText: null,
         AttendanceDate: null,
-        SlotCardTime:null,
+        SlotCardTime: null,
         LeaveHours: null,
         LeaveTimeRegion: null,
         SlotExceptionType: null,
         SlotExceptionMemo: null,
-        Id_Key:0
+        Id_Key: 0
     };
     var askLeaveVM = {
         WorkerId: null,
@@ -628,16 +621,16 @@ hrModule.controller('attendExceptionHandleCtrl', function ($scope, $modal, hrDat
     var slotCardVM = {
         WorkerId: null,
         WorkerName: null,
-        AttendanceDate:null,
+        AttendanceDate: null,
         SlotCardTime1: null,
         SlotCardTime2: null,
-        ForgetSlotReason:null
+        ForgetSlotReason: null
     };
     //视图管理器
     var vmManager = {
         activeTab: 'autoCheckExceptionTab',
         opSign: null,
-        leaveTypes:[],
+        leaveTypes: [],
         //部门信息
         departments: [],
         //存储到数据库中的数据集
@@ -646,7 +639,7 @@ hrModule.controller('attendExceptionHandleCtrl', function ($scope, $modal, hrDat
         dataItems: [],
         //选定的项
         selectedItem: null,
-        yearMonth:'',
+        yearMonth: '',
         autoCheckExceptionData: function () {
             vmManager.dataItems = [];
             $scope.handlePromise = hrDataOpService.autoCheckExceptionSlotData(vmManager.yearMonth).then(function (datas) {
@@ -855,10 +848,10 @@ hrModule.controller('workClothesManageCtrl', function ($scope, $modal, hrDataOpS
         closeSpecifies: [],
         productNames: [
             {
-                id: "夏季厂服", text: "夏季厂服", specifyList: [{ id: "34", text: "34" }, { id: "35", text: "35" }, { id: "36", text: "36" }, { id: "37", text: "37" }, { id: "38", text: "38" }, { id: "39", text: "39" }, { id: "40", text: "40" }, { id: "41", text: "41" }, { id: "42", text: "42" }, { id: "43", text: "43" }, { id: "44", text: "44" } ]
+                id: "夏季厂服", text: "夏季厂服", specifyList: [{ id: "34", text: "34" }, { id: "35", text: "35" }, { id: "36", text: "36" }, { id: "37", text: "37" }, { id: "38", text: "38" }, { id: "39", text: "39" }, { id: "40", text: "40" }, { id: "41", text: "41" }, { id: "42", text: "42" }, { id: "43", text: "43" }, { id: "44", text: "44" }]
             },
             {
-                id: "冬季厂服", text: "冬季厂服", specifyList: [{ id: "S", text: "S" }, { id: "M", text: "M" }, { id: "L", text: "L" }, { id: "XL", text: "XL" }, { id: "XXL", text: "XXL" }, { id: "XXXL", text: "XXXL" } ]
+                id: "冬季厂服", text: "冬季厂服", specifyList: [{ id: "S", text: "S" }, { id: "M", text: "M" }, { id: "L", text: "L" }, { id: "XL", text: "XL" }, { id: "XXL", text: "XXL" }, { id: "XXXL", text: "XXXL" }]
             }
         ],
         selectProductName: function () {
@@ -958,8 +951,7 @@ hrModule.controller('workClothesManageCtrl', function ($scope, $modal, hrDataOpS
                 if (mdl.OpSign === 'add') {
                     vmManager.storeDataset.push(mdl);
                 }
-                else if(mdl.OpSign === 'edit')
-                {
+                else if (mdl.OpSign === 'edit') {
                     var item = _.find(vmManager.storeDataset, { Id_Key: uiVM.Id_Key });
                     leeHelper.copyVm(uiVM, item);
                 }

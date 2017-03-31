@@ -28,17 +28,18 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
     public class AttendClassTypeDetailRepository : HrmRepositoryBase<AttendClassTypeDetailModel>, IAttendClassTypeDetailRepository
     { }
 
-  
+
 
     /// <summary>
     ///实时刷卡数据持久化层
     /// </summary>
-    public interface IAttendFingerPrintDataInTimeRepository : IRepository<AttendFingerPrintDataInTimeModel> {
+    public interface IAttendFingerPrintDataInTimeRepository : IRepository<AttendFingerPrintDataInTimeModel>
+    {
         int backupData(AttendFingerPrintDataInTimeModel entity);
 
         int StoreNoIdentityWorkerInfo(AttendFingerPrintDataInTimeModel entity);
 
-      
+
         List<AttendFingerPrintDataInTimeModel> loaddatas();
 
         int deleteLibData(DateTime t, string workerId);
@@ -53,7 +54,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("INSERT INTO Attendance_FingerPrintDataInTimeLib  (WorkerId,WorkerName,CardID,CardType,SlodCardTime,SlodCardDate)");
-            sb.AppendFormat(" values ('{0}',",entity.WorkerId);
+            sb.AppendFormat(" values ('{0}',", entity.WorkerId);
             sb.AppendFormat("'{0}',", entity.WorkerName);
             sb.AppendFormat("'{0}',", entity.CardID);
             sb.AppendFormat("'{0}',", entity.CardType);
@@ -128,11 +129,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
             }
             else if (qryDto.SearchMode == 1)
             {
-                sqlText.AppendFormat(" where AttendanceDate='{0}' And Department='{1}'", qryDto.AttendanceDate,qryDto.Department);
+                sqlText.AppendFormat(" where AttendanceDate>='{0}' And AttendanceDate<='{1}' And Department='{2}'", qryDto.DateFrom, qryDto.DateTo, qryDto.Department);
             }
             else if (qryDto.SearchMode == 2)
             {
-                sqlText.AppendFormat(" where WorkerId='{0}'", qryDto.WorkerId);
+                sqlText.AppendFormat(" where AttendanceDate>='{0}' And AttendanceDate<='{1}' And  WorkerId='{2}'", qryDto.DateFrom, qryDto.DateTo, qryDto.WorkerId);
             }
             else if (qryDto.SearchMode == 3)
             {

@@ -95,6 +95,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
         internal OpResult UploadFileFqcInspectionDetail(InspectionFqcDetailModel model, string siteRootPath)
         {
+            if (model == null) return OpResult.SetResult("采集数据模型不能为NULL");
             var oldmodel = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailModelBy(model.OrderId, model.OrderIdNumber, model.InspectionItem);
             if (oldmodel == null)
                 return this.AddFqcInspectionDetail(model);//若不存在则直接添加
