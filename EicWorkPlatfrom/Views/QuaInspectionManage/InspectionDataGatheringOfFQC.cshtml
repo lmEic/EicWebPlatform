@@ -245,7 +245,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="5">
-                                            <div yl-upload-file></div>
+                                            <div yl-upload-file ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'"></div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -310,7 +310,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-3 col-md-offset-2">
-                                            <div yl-upload-file></div>
+                                            <div yl-upload-file ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'"></div>
                                         </div>
                                     </div>
                                 </fieldset>
