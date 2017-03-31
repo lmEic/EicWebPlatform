@@ -5,6 +5,7 @@ using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -212,8 +213,48 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private OpResult AddIqcInspectionDetail(InspectionIqcDetailModel model)
         {
             ////如果存在，操作失败
-            if (isExiststroe(model)) return new OpResult(OpContext, false);
+            if (isExiststroe(model))
+            {
+                return new OpResult(OpContext, false);
+            }
             return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+
+        internal OpResult UploadFileIqcInspectionDetail(InspectionIqcDetailModel model, string siteRootPath)
+        {
+            if (model == null) return new OpResult("保存文件不能为空", false);
+            var oldmodel = GetIqcOldDetailModelBy(model);
+            if (oldmodel == null)
+                return this.AddIqcInspectionDetail(model);//若不存在则直接添加
+            model.Id_Key = oldmodel.Id_Key;
+            if (oldmodel.DocumentPath != model.DocumentPath && oldmodel.DocumentPath != string.Empty && oldmodel.DocumentPath != null)//比对新旧文件是否一样,若不一样，则删除旧的文件
+            {
+                if (siteRootPath != string.Empty && siteRootPath != null)
+                {
+                    string fileName = Path.Combine(siteRootPath, oldmodel.DocumentPath);
+                    fileName = fileName.Replace("/", @"\");
+                    if (File.Exists(fileName))
+                        File.Delete(fileName);
+
+                }//删除旧的文件
+            }
+            this.SetFixFieldValue(model);
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);// 同时修改文件模型记录
+        }
+
+        private InspectionIqcDetailModel GetIqcOldDetailModelBy(InspectionIqcDetailModel newModel)
+        {
+            try
+            {
+                if (newModel == null) return null;
+                return irep.Entities.FirstOrDefault(e => e.OrderId == newModel.OrderId && e.MaterialId == newModel.MaterialId & e.InspecitonItem == newModel.InspecitonItem);
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw new Exception(ex.InnerException.Message);
+            }
+
         }
         #endregion
 

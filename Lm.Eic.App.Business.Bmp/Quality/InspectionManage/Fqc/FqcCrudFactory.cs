@@ -88,14 +88,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult AddFqcInspectionDetail(InspectionFqcDetailModel model)
         {
+            if (model == null) return new OpResult("保存文件不能为空", false);
             //如果存在 (Id_key 已经赋值） 
             if (IsExist(model.OrderId, model.OrderIdNumber, model.InspectionItem))
+            {
+                if (model.Id_Key <= 0) return new OpResult("Id_key 没有赋值", false);
                 return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+            }
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
         internal OpResult UploadFileFqcInspectionDetail(InspectionFqcDetailModel model, string siteRootPath)
         {
-            var oldmodel = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailModelBy(model.OrderId, model.OrderIdNumber, model.InspectionItem);
+            if (model == null) return new OpResult("保存文件不能为空", false);
+            var oldmodel = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcOldDetailModelBy(model);
             if (oldmodel == null)
                 return this.AddFqcInspectionDetail(model);//若不存在则直接添加
             model.Id_Key = oldmodel.Id_Key;
@@ -104,9 +109,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 if (siteRootPath != string.Empty && siteRootPath != null)
                 {
                     string fileName = Path.Combine(siteRootPath, oldmodel.DocumentPath);
+                    //if (fileName.Contains("/"))
+                    //{
                     fileName = fileName.Replace("/", @"\");
                     if (File.Exists(fileName))
                         File.Delete(fileName);
+                    //}
                 }//删除旧的文件
             }
             this.SetFixFieldValue(model);
@@ -134,6 +142,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             catch (Exception ex)
             {
                 return false;
+                throw new Exception(ex.InnerException.Message);
+            }
+
+        }
+        public InspectionFqcDetailModel GetFqcOldDetailModelBy(InspectionFqcDetailModel newmodel)
+        {
+            try
+            {
+                if (newmodel == null) return null;
+                return irep.Entities.FirstOrDefault(e => e.OrderId == newmodel.OrderId && e.OrderIdNumber == newmodel.OrderIdNumber && e.InspectionItem == newmodel.InspectionItem);
+            }
+            catch (Exception ex)
+            {
+                return null;
                 throw new Exception(ex.InnerException.Message);
             }
 

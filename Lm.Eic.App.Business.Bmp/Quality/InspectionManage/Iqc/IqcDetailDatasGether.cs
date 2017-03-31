@@ -19,7 +19,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
             return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelListBy(materailId, inspecitonItem);
 
-            
+
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult StoreInspectionIqcDetailModelForm(InspectionItemDataSummaryLabelModel model)
+        public OpResult StoreInspectionIqcDetailModelForm(InspectionItemDataSummaryLabelModel model, string siteRootPath)
         {
             InspectionIqcDetailModel datailModel = new InspectionIqcDetailModel()
             {
@@ -45,20 +45,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionItemStatus = "doing",
                 MaterialId = model.MaterialId,
                 MaterialInDate = model.MaterialInDate,
-                OpSign = "add",
+                FileName = model.FileName,
+                OpSign = model.OpSign,
                 Memo = model.Memo,
                 InspectionNGCount = model.InspectionNGCount,
                 OpPerson = model.OpPerson,
                 DocumentPath = model.DocumentPath,
                 Id_Key = model.Id_Key
             };
-            if (datailModel != null && model.Id_Key != 0)
-            { datailModel.OpSign = "edit"; }
-            return InspectionManagerCrudFactory.IqcDetailCrud.Store(datailModel, true);
+            return storeInspectionDetial(datailModel, siteRootPath);
 
 
         }
-
+        private OpResult storeInspectionDetial(InspectionIqcDetailModel model, string siteRootPath)
+        {
+            if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
+                return InspectionManagerCrudFactory.IqcDetailCrud.UploadFileIqcInspectionDetail(model, siteRootPath);
+            return InspectionManagerCrudFactory.IqcDetailCrud.Store(model, true);
+        }
         /// <summary>
         /// 得到副表的详细参数
         /// </summary>

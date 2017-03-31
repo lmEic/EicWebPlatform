@@ -112,19 +112,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<InspectionItemDataSummaryLabelModel> BuildingFqcInspectionSummaryDataBy(string orderId, double sampleCount)
+        public List<InspectionItemDataSummaryLabelModel> BuildingFqcInspectionSummaryDatasBy(string orderId, double sampleCount)
         {
             try
             {
-                List<InspectionItemDataSummaryLabelModel> returnList = null;
+                List<InspectionItemDataSummaryLabelModel> returnDatas = null;
+                if (sampleCount <= 0) return returnDatas;
                 ///一个工单 对应一个料号，有工单就是料号
                 var orderMaterialInfoList = this.GetPuroductSupplierInfo(orderId);
-                if (orderMaterialInfoList == null || orderMaterialInfoList.Count <= 0) return new List<InspectionItemDataSummaryLabelModel>();
+                if (orderMaterialInfoList == null || orderMaterialInfoList.Count <= 0) return returnDatas;
                 var orderMaterialInfo = orderMaterialInfoList[0];
                 ///得到需要检验的项目
                 var fqcNeedInspectionsItemdatas = GetFqcNeedInspectionItemDatas(orderMaterialInfo.ProductID);
 
-                if (fqcNeedInspectionsItemdatas == null || fqcNeedInspectionsItemdatas.Count <= 0) return new List<InspectionItemDataSummaryLabelModel>();
+                if (fqcNeedInspectionsItemdatas == null || fqcNeedInspectionsItemdatas.Count <= 0) return returnDatas;
 
                 /// Master表中得到序号+1
                 int orderIdNumber = 0;
@@ -132,12 +133,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 if (FqcHaveInspectionAllOrderiDDatas == null || FqcHaveInspectionAllOrderiDDatas.Count <= 0) orderIdNumber = 1;
                 else orderIdNumber = FqcHaveInspectionAllOrderiDDatas.Max(e => e.OrderIdNumber) + 1;
                 ///处理数据
-                returnList = HandleBuildingSummaryDataLabelModel(sampleCount, orderIdNumber, orderMaterialInfo, fqcNeedInspectionsItemdatas);
+                returnDatas = HandleBuildingSummaryDataLabelModel(sampleCount, orderIdNumber, orderMaterialInfo, fqcNeedInspectionsItemdatas);
                 ///
-                if (returnList == null || returnList.Count <= 0) return returnList;
+                if (returnDatas == null || returnDatas.Count <= 0) return returnDatas;
                 //存诸 表
-                returnList.ForEach(m => { StoreFqcDataGather(m); });
-                return returnList;
+                returnDatas.ForEach(m => { StoreFqcDataGather(m); });
+                return returnDatas;
             }
             catch (Exception ex)
             {
@@ -185,7 +186,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public OpResult StoreFqcDataGather(InspectionItemDataSummaryLabelModel sumModel)
         {
             var returnOpResult = new OpResult("数据为空，保存失败", false);
-            if (sumModel == null) return returnOpResult;
             InspectionFqcMasterModel masterModel = null;
             InspectionFqcDetailModel detailModel = null;
             ///先排除总表不能为空
@@ -267,6 +267,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         OpPerson = "StartSetValue",
                         NeedFinishDataNumber = 0,
                         HaveFinishDataNumber = 0,
+                        OpSign = OpMode.Add,
                         InspectionItemResult = string.Empty
                     };
                     ///如果没有得到抽检验方案 侧为空

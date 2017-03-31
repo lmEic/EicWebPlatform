@@ -750,7 +750,11 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         leeHelper.upoadFile(el, function (fd) {
             qualityInspectionDataOpService.uploadIqcGatherDataAttachFile(fd).then(function (result) {
                 if (result === 'OK') {
-                    vmManager.currentInspectionItem.FileName = $scope.uploadFileName = fd.name;
+                    var nowDate = new Date().getDate();
+                    var nowHour = new Date().getHours();
+                    if (nowDate < 10) { nowDate += '0' };
+                    if (nowHour < 10) { nowHour += '0' };
+                    vmManager.currentInspectionItem.FileName = $scope.uploadFileName = '(' + nowDate.toString() + nowHour.toString() + ')' + fd.name;
                     vmManager.currentInspectionItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
                     qualityInspectionDataOpService.storeIqcInspectionGatherDatas(vmManager.currentInspectionItem).then(function (opResult) {
                         if (opResult.Result) {
@@ -971,7 +975,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                     var nowHour = new Date().getHours();
                     if (nowDate < 10) { nowDate += '0' };
                     if (nowHour < 10) { nowHour += '0' };
-                    vmManager.currentInspectionItem.FileName = $scope.uploadFileName = nowDate.toString() + nowHour.toString() + fd.name;
+                    vmManager.currentInspectionItem.FileName = $scope.uploadFileName = '(' + nowDate.toString() + nowHour.toString() + ')' + fd.name;
                     vmManager.currentInspectionItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
                     qualityInspectionDataOpService.storeFqcInspectionGatherDatas(vmManager.currentInspectionItem).then(function (opResult) {
                         if (opResult.Result) {

@@ -649,7 +649,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public InspectionIqcDetailModel()
         { }
         #region Model
-
         private string _orderid;
         /// <summary>
         ///单号

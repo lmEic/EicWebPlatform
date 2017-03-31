@@ -32,7 +32,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             var opReulst = new OpResult("数据为空，保存失败", false);
             if (model == null) return opReulst;
-            opReulst = DetailDatasGather.StoreInspectionIqcDetailModelForm(model);
+            opReulst = DetailDatasGather.StoreInspectionIqcDetailModelForm(model, model.SiteRootPath);
             if (opReulst.Result)
                 opReulst = MasterDatasGather.StoreInspectionIqcMasterModelForm(model);
             return opReulst;
