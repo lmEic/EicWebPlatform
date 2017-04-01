@@ -96,7 +96,6 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult UploadPurSupplierCertificateFile(HttpPostedFileBase file)
         {
-            var result = 0;
             if (file != null)
             {
                 if (file.ContentLength > 0)
@@ -105,10 +104,10 @@ namespace EicWorkPlatfrom.Controllers.Purchase
                                                                ///待加入验证文件名称逻辑:
                     string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.PurSupplierCertificate, year), file.FileName);
                     file.SaveAs(fileName);
-                    result = 1;
+                    return Json("OK");
                 }
             }
-            return Json(result);
+            return Json("FAIL");
         }
         /// <summary>
         /// 保存供应商证书信息
@@ -117,9 +116,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <returns></returns>
         [HttpPost]
         [NoAuthenCheck]
-        public JsonResult StorePurSupplierCertificateInfo(List<InPutSupplieCertificateInfoModel> certificateDatas)
+        public JsonResult StorePurSupplierCertificateInfo(InPutSupplieCertificateInfoModel certificateData)
         {
-            var opResult = PurchaseService.PurSupplierManager.SupplierCertificateManager.SavaEditSpplierCertificate(certificateDatas);
+            var opResult = PurchaseService.PurSupplierManager.SupplierCertificateManager.SavaEditSpplierCertificate(certificateData, this.SiteRootPath);
             return Json(opResult);
         }
 
@@ -128,6 +127,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// </summary>
         /// <param name="supplierId">供应商Id</param>
         /// <returns></returns>
+        /// UploadPurSupplierCertificateFile
+        /// StorePurSupplierCertificateInfo
+        /// DelPurSupplierCertificateFile
         [NoAuthenCheck]
 
         public ContentResult GetSupplierQualifiedCertificateListBy(string supplierId)
@@ -145,21 +147,18 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public JsonResult DelPurSupplierCertificateFile(SupplierQualifiedCertificateModel entity)
         {
 
-            var rootPath = HttpContext.Request.PhysicalApplicationPath;
-            if (entity == null) return Json(new OpResult("数据为空，保存失败", false));
-            var siteRootPath = string.Empty;
-            if (entity.CertificateFileName != null && entity.CertificateFileName.Length > 1)//上传文件
-            {
+            //var rootPath = HttpContext.Request.PhysicalApplicationPath;
+            //if (entity == null) return Json(new OpResult("数据为空，保存失败", false));
+            //var siteRootPath = string.Empty;
+            //if (entity.CertificateFileName != null && entity.CertificateFileName.Length > 1)//上传文件
+            //{
 
-                string year = DateTime.Now.Year.ToString();///按年份进行存储
-                entity.FilePath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, year, entity.CertificateFileName);
-                siteRootPath = this.SiteRootPath;
-            }
+            //    string year = DateTime.Now.Year.ToString();///按年份进行存储
+            //    entity.FilePath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, year, entity.CertificateFileName);
+            //    siteRootPath = this.SiteRootPath;
+            //}
 
-            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.StoreEditSpplierCertificate(entity, siteRootPath);
-
-
-
+            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.StoreEditSpplierCertificate(entity, this.SiteRootPath);
             return Json(datas);
         }
         #endregion

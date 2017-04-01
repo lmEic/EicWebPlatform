@@ -10,7 +10,7 @@ var leeDataHandler = (function () {
         msgDisplay: false,//结果信息显示标志
         vm: null,
         //清空视图对象
-        clearVm: function (vm,notKeys) {
+        clearVm: function (vm, notKeys) {
             for (var key in vm) {
                 if (_.isArray(notKeys)) {
                     if (!_.contains(notKeys, key)) {
@@ -26,18 +26,15 @@ var leeDataHandler = (function () {
     ///数据操作
     var leeDataOperate = {
         ///添加操作行为
-        add: function (opstatus,isvalid, addfn)
-        {
+        add: function (opstatus, isvalid, addfn) {
             opstatus.showValidation = !isvalid;
-            if (isvalid)
-            {
+            if (isvalid) {
                 if (addfn !== undefined)
                     addfn();
             }
         },
         ///处理操作结果
-        handleSuccessResult: function (opstatus,opresult,customFn)
-        {
+        handleSuccessResult: function (opstatus, opresult, customFn) {
             opstatus.showValidation = false;
             opstatus.result = opresult.Result;
             opstatus.message = opresult.Message;
@@ -67,13 +64,11 @@ var leeDataHandler = (function () {
                 customFn();
         },
         ///刷新操作
-        refresh: function (opstatus,cancelfn)
-        {
+        refresh: function (opstatus, cancelfn) {
             opstatus.showValidation = false;
             opstatus.msgDisplay = false;
             opstatus.result = false;
-            if (cancelfn !== undefined)
-            {
+            if (cancelfn !== undefined) {
                 cancelfn();
             }
         }
@@ -82,8 +77,7 @@ var leeDataHandler = (function () {
     var leeDataStorage = {
         ///存储登录用户信息
         setLoginedUser: function (userDatas) {
-            if (_.isObject(userDatas))
-            {
+            if (_.isObject(userDatas)) {
                 localStorage.setItem("loginUser", JSON.stringify(userDatas));
             }
         },
@@ -104,28 +98,23 @@ var leeDataHandler = (function () {
                 serverName: null
             };
             var loginInfoJson = localStorage.getItem("loginUser");
-            if (!_.isUndefined(loginInfoJson) && !_.isNull(loginInfoJson))
-            {
+            if (!_.isUndefined(loginInfoJson) && !_.isNull(loginInfoJson)) {
                 var loginInfo = JSON.parse(loginInfoJson);
-                if (_.isObject(loginInfo))
-                {
+                if (_.isObject(loginInfo)) {
                     //保存用户信息
-                    if (loginInfo.loginUser !== undefined && loginInfo.loginUser!==null)
-                    {
+                    if (loginInfo.loginUser !== undefined && loginInfo.loginUser !== null) {
                         var user = loginInfo.loginUser;
-                        if (user.LoginedUser !== null)
-                        {
+                        if (user.LoginedUser !== null) {
                             loginedUser.userId = user.LoginedUser.UserId;
                             loginedUser.userName = user.LoginedUser.UserName;
                             loginedUser.headPortrait = user.LoginedUser.HeadPortrait;
                             if (!_.isUndefined(user.LoginedUser.Department))
                                 loginedUser.department = user.LoginedUser.Department;
                         }
-                       
+
                     }
                     //保存站点信息
-                    if (loginInfo.webSite !== undefined && loginInfo.webSite!==null)
-                    {
+                    if (loginInfo.webSite !== undefined && loginInfo.webSite !== null) {
                         var webSite = loginInfo.webSite;
                         loginedUser.webSitePhysicalApplicationPath = webSite.PhysicalApplicationPath;
                         loginedUser.serverName = webSite.ServerName;
@@ -142,7 +131,9 @@ var leeDataHandler = (function () {
         edit: 'edit',
         update: 'update',
         'delete': 'delete',
-        uploadFile:'uploadFile'
+        uploadFile: 'uploadFile',
+        deleteFile: 'deleteFile',
+        IdKey: 'Id_Key'
     };
     return {
         ///操作状态
@@ -152,7 +143,7 @@ var leeDataHandler = (function () {
         ///本地数据存储
         dataStorage: leeDataStorage,
         ///数据操作类型
-        dataOpMode:leeDataOpMode
+        dataOpMode: leeDataOpMode
     };
 })();
 ///常用操作助手
@@ -471,7 +462,7 @@ var leeTreeHelper = (function () {
             treeObj.checkNode(treeNode, checked, checkTypeFlag, callbackFlag);
         },
         //勾选 或 取消勾选 全部节点
-        checkAllNodes: function (treeId,checked) {
+        checkAllNodes: function (treeId, checked) {
             var treeObj = $.fn.zTree.getZTreeObj(treeId);
             treeObj.checkAllNodes(checked);
         },
@@ -512,7 +503,7 @@ Date.prototype.pattern = function (fmt) {
     }
     for (var k in o) {
         if (new RegExp("(" + k + ")").test(fmt)) {
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]):(("00" + o[k]).substr(("" + o[k]).length)));
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         }
     }
     return fmt;

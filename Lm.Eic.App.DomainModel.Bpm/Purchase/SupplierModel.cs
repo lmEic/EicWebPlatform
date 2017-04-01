@@ -115,14 +115,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _opsign = value; }
             get { return _opsign; }
         }
-        private decimal _id_key;
+        private decimal _id_Key;
         /// <summary>
         ///自增键
         /// </summary>
-        public decimal Id_key
+        public decimal Id_Key
         {
-            set { _id_key = value; }
-            get { return _id_key; }
+            set { _id_Key = value; }
+            get { return _id_Key; }
         }
         #endregion Model
     }
@@ -296,14 +296,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _optime = value; }
             get { return _optime; }
         }
-        private decimal _id_key;
+        private decimal _id_Key;
         /// <summary>
         ///自增建
         /// </summary>
-        public decimal Id_key
+        public decimal Id_Key
         {
-            set { _id_key = value; }
-            get { return _id_key; }
+            set { _id_Key = value; }
+            get { return _id_Key; }
         }
         #endregion Model
     }
@@ -503,14 +503,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _opsign = value; }
             get { return _opsign; }
         }
-        private decimal _id_key;
+        private decimal _id_Key;
         /// <summary>
         ///自增键
         /// </summary>
-        public decimal Id_key
+        public decimal Id_Key
         {
-            set { _id_key = value; }
-            get { return _id_key; }
+            set { _id_Key = value; }
+            get { return _id_Key; }
         }
         #endregion Model
     }
@@ -763,14 +763,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _opsign = value; }
             get { return _opsign; }
         }
-        private decimal _id_key;
+        private decimal _id_Key;
         /// <summary>
         ///自增键
         /// </summary>
-        public decimal Id_key
+        public decimal Id_Key
         {
-            set { _id_key = value; }
-            get { return _id_key; }
+            set { _id_Key = value; }
+            get { return _id_Key; }
         }
         #endregion Model
     }
@@ -924,14 +924,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _optime = value; }
             get { return _optime; }
         }
-        private decimal _id_key;
+        private decimal _id_Key;
         /// <summary>
         ///自增键
         /// </summary>
-        public decimal Id_key
+        public decimal Id_Key
         {
-            set { _id_key = value; }
-            get { return _id_key; }
+            set { _id_Key = value; }
+            get { return _id_Key; }
         }
         #endregion Model
     }
@@ -984,7 +984,33 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         /// </summary>
         public string IsEfficacy
         { set; get; }
-        #endregion
+
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string Remark { set; get; }
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson { get; set; }
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate { get; set; }
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime { get; set; }
+        /// <summary>
+        ///操作标志
+        /// </summary>
+        public string OpSign { get; set; }
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key { get; set; }
+        #endregion Model
+
     }
 
 

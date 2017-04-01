@@ -41,10 +41,10 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
         return ajaxService.uploadFile(url, file);
     };
     ///存储合格证书
-    purDb.storePurSupplierCertificateInfo = function (certificateDatas) {
+    purDb.storePurSupplierCertificateInfo = function (certificateData) {
         var url = purUrlPrefix + 'StorePurSupplierCertificateInfo';
         return ajaxService.postData(url, {
-            certificateDatas: certificateDatas
+            certificateData: certificateData
         });
     };
     ///获取合格供应商证书信息
@@ -221,7 +221,7 @@ null,
     var uploadFileVM = {
         id: 1, EligibleCertificate: '', adding: true, uploadSuccess: false,
         PurchaseType: '', SupplierProperty: '', SupplierId: '', FilePath: '',
-        CertificateFileName: '', DateOfCertificate: null
+        CertificateFileName: '', DateOfCertificate: null, OpSign: 'add',
     };
     var editManager = $scope.editManager = {
         fileList: [_.clone(uploadFileVM)],
@@ -238,11 +238,12 @@ null,
         uploadFileItem: null,
         //删除证书文件
         removeCertificateFile: function (item) {
+            item.OpSign = leeDataHandler.dataOpMode.deleteFile;
             supplierDataOpService.delPurSupplierCertificateFile(item).then(function (opResult) {
                 if (opResult.Result) {
                     leeHelper.remove(editManager.certificateDatas, item);
                 }
-                else { alert(opResult.Message); }
+                alert(opResult.Message);
             });
         },
         //证书数据
@@ -277,7 +278,7 @@ null,
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
             $scope.uploadPromie = supplierDataOpService.uploadPurSupplierCertificateFile(fd).then(function (result) {
-                if (result) {
+                if (result === "OK") {
                     var fileItem = _.find(editManager.fileList, { id: editManager.uploadFileItem.id });
                     if (!_.isUndefined(fileItem)) {
                         //更新文件模型数据
@@ -285,7 +286,13 @@ null,
                         fileItem.uploadSuccess = true;
                         fileItem.CertificateFileName = fd.name;
                         leeHelper.copyVm($scope.vm, fileItem);
-                        fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + file.name;
+                        fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + fd.name;
+                        fileItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
+                        supplierDataOpService.storePurSupplierCertificateInfo(fileItem).then(function (opresult) {
+                            if (opresult.Result) {
+                                alert("上传成功");
+                            }
+                        });
                     }
                 }
             });

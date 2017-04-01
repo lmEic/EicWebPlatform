@@ -1,0 +1,134 @@
+ public JsonResult StoreFqcInspectionPath(HttpPostedFileBase file)
+        {
+            var  rootPath = HttpContext.Request.PhysicalApplicationPath; ;
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    ///待加入验证文件名称逻辑:
+                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary,FileLibraryKey.FQCInspectionPath), file.FileName);
+////
+if(IsExsit(fileName))
+
+
+                    file.SaveAs(fileName);
+                    //datas = InspectionService.ConfigManager.IqcItemConfigManager.ImportProductFlowListBy(fileName);
+                    //if (datas != null && datas.Count > 0)
+                    ////批量保存数据
+                    //{ var opResult = InspectionService.ConfigManager.IqcItemConfigManager.StoreIqcInspectionItemConfig(datas);}
+
+                    System.IO.File.Delete(fileName);
+                }
+            }
+            return Json(rootPath, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
+
+
+
+
+        private void SumDataToConvterDetailData(InspectionItemDataSummaryLabelModel sumModel,  out InspectionFqcDetailModel detailModel)
+        {
+            try
+            {
+                if (sumModel == null) detailModel = null;
+                 detailModel = new InspectionFqcDetailModel()
+                {
+                    OrderId = sumModel.OrderId,
+                    OrderIdNumber = sumModel.OrderIdNumber,
+                    EquipmentId = sumModel.EquipmentId,
+                    OrderIdCount = sumModel.MaterialInCount,
+                     ///物料批次数量
+                     MaterialCount = sumModel.MaterialCount,
+                    InspectionMethod=sumModel.InspectionMethod,
+                    InspectionItem = sumModel.InspectionItem,
+                    InspectionAcceptCount = sumModel.AcceptCount,
+                    InspectionCount = sumModel.InspectionCount,
+                    InspectionRefuseCount = sumModel.RefuseCount,
+                    InspectionDate = DateTime.Now,
+                    InspectionItemDatas = sumModel.InspectionItemDatas,
+                    InspectionItemResult = sumModel.InspectionItemResult,
+                    InspectionItemStatus = sumModel.InspectionItemStatus,
+                    MaterialId = sumModel.MaterialId,
+                    MaterialInDate = sumModel.MaterialInDate,
+                    InspectionMode = sumModel.InspectionMode,
+                    OpSign = "add",
+                    Memo = sumModel.Memo,
+                    OpPerson = sumModel.OpPerson,
+                    ClassType = "初始化",
+                    Department = "初始化",
+                    InspectionDataTimeRegion = "初始化",
+                    InStorageOrderId = "初始化",
+                    InspectionNGCount = 0
+                };
+            }
+            catch (Exception ex)
+            {
+                detailModel = null;
+                throw new Exception(ex.InnerException.Message);
+            }
+           
+        }
+
+
+
+ /// <summary>
+        /// 存储创建的Master FQC数据
+        /// </summary>
+        /// <param name="orderMaterialInfo"></param>
+        /// <param name="orderId"></param>
+        /// <param name="sampleCount"></param>
+        /// <param name="orderIdNumber"></param>
+        /// <returns></returns>
+        private OpResult StoreBuildingFqcMasterDataGather(MaterialModel orderMaterialInfo, string orderId, double sampleCount, int orderIdNumber)
+        {
+            try
+            {
+                InspectionFqcMasterModel masterModel = new InspectionFqcMasterModel()
+                {
+                    OrderId = orderId,
+                    OrderIdNumber = orderIdNumber,
+                    MaterialId = orderMaterialInfo.ProductID,
+                    MaterialName = orderMaterialInfo.ProductName,
+                    MaterialSpec = orderMaterialInfo.ProductStandard,
+                    MaterialDrawId = orderMaterialInfo.ProductDrawID,
+                    MaterialSupplier = orderMaterialInfo.ProductSupplier,
+                    MaterialCount = orderMaterialInfo.ProduceNumber,
+                    MaterialInDate = orderMaterialInfo.ProduceInDate,
+                    InspectionMode = "正常",
+                    FinishDate = DateTime.Now.Date,
+                    InspectionStatus = "待审核",
+                    InspectionResult = "未完成",
+                    InspectionCount = sampleCount,
+                    OpSign = "add"
+                };
+                return storeInspectionMasterial(masterModel);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException .Message ) ;
+            }
+          
+        
+        }
+
+        /// <summary>
+        /// 存储创建的Detial FQC数据
+        /// </summary>
+        /// <param name="sumModel"></param>
+        /// <returns></returns>
+        private OpResult StoreBuildingFqcDetialDataGather(InspectionItemDataSummaryLabelModel sumModel)
+        {
+            var returnOpResult = new OpResult("数据为空，保存失败", false);
+            if (sumModel == null) return returnOpResult;
+            InspectionFqcDetailModel detailModel = null;
+            ///先排除总表不能为空
+            SumDataToConvterDetailData(sumModel, out detailModel);
+            if (detailModel == null) return new OpResult("表单数据为空，保存失败", false);
+            // 先保存详细表  再更新主表信息
+            return storeInspectionDetial(detailModel);
+
+        }

@@ -88,9 +88,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 model.OpSign = OpMode.Add;
                 return this.Store(model, true);
             }//若不存在则直接添加
-            model.Id_key = oldmodel.Id_key; ///先进行操作儿
+            model.Id_Key = oldmodel.Id_Key; ///先进行操作儿
             SetFixFieldValue(model);
-            ReOpResult = irep.Update(e => e.Id_key == model.Id_key, model).ToOpResult_Delete(OpContext);
+            ReOpResult = irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Delete(OpContext);
             if (ReOpResult.Result == false) return ReOpResult;
             if (oldmodel.FilePath != model.FilePath && oldmodel.FilePath != string.Empty && oldmodel.FilePath != null)//比对新旧文件是否一样,若不一样，则删除旧的文件
             {
@@ -110,17 +110,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             OpResult ReOpResult = new OpResult("采集数据模型不能为NULL", false);
             if (model == null) return ReOpResult;
-            var oldmodel = this.GetOldQualifiedCertificateModelBy(model);
-            if (oldmodel == null) return new OpResult("不存此数据", false); ;
-            model.Id_key = oldmodel.Id_key; ///先进行操作儿
-            SetFixFieldValue(model);
-            ReOpResult = irep.Delete(e => e.Id_key == model.Id_key, true).ToOpResult_Delete(OpContext);
+            ReOpResult = irep.Delete(e => e.Id_Key == model.Id_Key, true).ToOpResult_Delete(OpContext);
             if (ReOpResult.Result == false) return ReOpResult;
-            if (oldmodel.FilePath != model.FilePath && oldmodel.FilePath != string.Empty && oldmodel.FilePath != null)//比对新旧文件是否一样,若不一样，则删除旧的文件
+            if (model.FilePath != string.Empty && model.FilePath != null)//比对新旧文件是否一样,若不一样，则删除旧的文件
             {
                 if (siteRootPath != string.Empty && siteRootPath != null)
                 {
-                    string fileName = Path.Combine(siteRootPath, oldmodel.FilePath);
+                    string fileName = Path.Combine(siteRootPath, model.FilePath);
                     fileName = fileName.Replace("/", @"\");
                     if (File.Exists(fileName))
                         File.Delete(fileName);
@@ -147,12 +143,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         private OpResult DeleteSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model)
         {
-            return irep.Delete(e => e.Id_key == model.Id_key, true).ToOpResult_Delete(OpContext);
+            return irep.Delete(e => e.Id_Key == model.Id_Key, true).ToOpResult_Delete(OpContext);
         }
 
         private OpResult EidtSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model)
         {
-            return irep.Update(e => e.Id_key == model.Id_key, model).ToOpResult_Delete(OpContext);
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Delete(OpContext);
 
         }
 
@@ -251,7 +247,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             if (irep.IsExist(e => e.SupplierId == supplierId))
             {
-                findId_key = irep.Entities.Where(e => e.SupplierId == supplierId).ToList().FirstOrDefault().Id_key;
+                findId_key = irep.Entities.Where(e => e.SupplierId == supplierId).ToList().FirstOrDefault().Id_Key;
                 return true;
             }
             else
@@ -295,7 +291,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             ///判断产品品号是否存在
             try
             {
-                if (irep.IsExist(m => m.Id_key == model.Id_key))
+                if (irep.IsExist(m => m.Id_Key == model.Id_Key))
                 {
                     return OpResult.SetResult("此数据已存在！");
                 }
@@ -308,9 +304,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         OpResult EidtSupplierInfo(SupplierInfoModel model)
         {
-            if (irep.IsExist(m => m.Id_key == model.Id_key))
+            if (irep.IsExist(m => m.Id_Key == model.Id_Key))
             {
-                return irep.Update(m => m.Id_key == model.Id_key, model).ToOpResult_Add("修改成功", model.Id_key);
+                return irep.Update(m => m.Id_Key == model.Id_Key, model).ToOpResult_Add("修改成功", model.Id_Key);
 
             }
             else return OpResult.SetResult("此数据不存在！无法修改");
@@ -320,7 +316,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         OpResult DeleteSupplierInfo(SupplierInfoModel model)
         {
-            return irep.Delete(model).ToOpResult_Add("删除成功", model.Id_key);
+            return irep.Delete(model).ToOpResult_Add("删除成功", model.Id_Key);
         }
         #endregion
         /// <summary>

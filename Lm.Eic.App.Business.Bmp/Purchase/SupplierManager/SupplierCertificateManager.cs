@@ -91,11 +91,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult SavaEditSpplierCertificate(List<InPutSupplieCertificateInfoModel> modelList)
+        public OpResult SavaEditSpplierCertificate(InPutSupplieCertificateInfoModel model, string siteRootPath)
         {
             //判断列表是否为空
-            if (modelList == null || modelList.Count <= 0) return new OpResult("数据列表不能为空");
-            var model = modelList[0];
+            OpResult reOpresult = new OpResult("没有进任何操作");
+            if (model == null) return new OpResult("数据列表不能为空");
             //通过SupplierId得到供应商信息
             var supplierInfoModel = GetSuppplierInfoBy(model.SupplierId);
             //判断是否为空
@@ -103,36 +103,29 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             //赋值 供应商属性和采购性质
             supplierInfoModel.PurchaseType = model.PurchaseType;
             supplierInfoModel.SupplierProperty = model.SupplierProperty;
-            string isExistCertificateFileName = string.Empty;
-            //更新保存数据
-            if (SaveSupplierInfoModel(supplierInfoModel).Result)
+            
+            if (model.CertificateFileName == null && model.CertificateFileName == string.Empty) new OpResult("证书名称不能为空");
+            //如果存已保存的数据名
+            //if (SupplierCrudFactory.SupplierQualifiedCertificateCrud.IsExistCertificateFileName(model.CertificateFileName))
+            //  return reOpresult;
+            if (!supplierInfoModel.Remark.Contains(model.CertificateFileName))
+                supplierInfoModel.Remark += model.CertificateFileName + ",";
+            if (!SaveSupplierInfoModel(supplierInfoModel).Result) return new OpResult("数据保存失败");
+            SupplierQualifiedCertificateModel savemodel = new SupplierQualifiedCertificateModel()
             {
-                List<SupplierQualifiedCertificateModel> certificateModelList = new List<SupplierQualifiedCertificateModel>();
+                SupplierId = model.SupplierId,
+                EligibleCertificate = model.EligibleCertificate,
+                CertificateFileName = model.CertificateFileName,
+                FilePath = model.FilePath,
+                DateOfCertificate = model.DateOfCertificate.ToDate(),
+                IsEfficacy = "是",
+                OpSign = model.OpSign,
+                OpPerson = model.OpPerson,
+            };
+            return StoreEditSpplierCertificate(savemodel, siteRootPath);
 
-                //保存证书数据
-                modelList.ForEach(e =>
-                {
-
-                    if (SupplierCrudFactory.SupplierQualifiedCertificateCrud.IsExistCertificateFileName(e.CertificateFileName))
-                    {
-                        isExistCertificateFileName += e.CertificateFileName + ",";
-                    }
-                    SupplierQualifiedCertificateModel savemodel = new SupplierQualifiedCertificateModel()
-                    {
-                        SupplierId = e.SupplierId,
-                        EligibleCertificate = e.EligibleCertificate,
-                        CertificateFileName = e.CertificateFileName,
-                        FilePath = e.FilePath,
-                        DateOfCertificate = e.DateOfCertificate.ToDate(),
-                        IsEfficacy = "是",
-                        OpSign = "add"
-                    };
-                    certificateModelList.Add(savemodel);
-                });
-                if (isExistCertificateFileName != String.Empty) return new OpResult("此" + isExistCertificateFileName + "文档已经存在，数据保存失败");
-                else return SupplierCrudFactory.SupplierQualifiedCertificateCrud.SavaSupplierEligibleList(certificateModelList);
-            }
-            else return new OpResult("数据保存失败");
+            //else return SupplierCrudFactory.SupplierQualifiedCertificateCrud.SavaSupplierEligibleList(certificateModelList);
+            
         }
 
 
@@ -150,7 +143,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
                     return SupplierCrudFactory.SupplierQualifiedCertificateCrud.UploadFileSupplierQualifiedCertificate(model, siteRootPath);
 
-                if (model != null && model.OpSign == OpMode.Delete)//如果删除文件则启文件相应的删除处理
+                if (model != null && model.OpSign == OpMode.DeleteFile)//如果删除文件则启文件相应的删除处理
                     return SupplierCrudFactory.SupplierQualifiedCertificateCrud.DeleteFileSupplierQualifiedCertificate(model, siteRootPath);
                 return SupplierCrudFactory.SupplierQualifiedCertificateCrud.Store(model);
             }
@@ -273,7 +266,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 if (SupplierCrudFactory.SuppliersInfoCrud.IsExistSupperid(model.SupplierId, out findId_key))
                 {
                     model.OpSign = "edit";
-                    model.Id_key = findId_key;
+                    model.Id_Key = findId_key;
                 }
                 else model.OpSign = "add";
 
