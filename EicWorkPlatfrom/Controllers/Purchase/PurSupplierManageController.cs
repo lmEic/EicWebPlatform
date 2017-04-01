@@ -33,6 +33,8 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// 供应商证书管理
         /// </summary>
         /// <returns></returns>
+        /// 
+        [NoAuthenCheck]
         public ActionResult SupplierCertificateManage()
         {
             return View();
@@ -153,6 +155,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         #endregion
 
         #region SupplierEvaluationManage 供应商考核登记 
+        [NoAuthenCheck]
         public ActionResult SupplierEvaluationManage()
         {
             return View();
@@ -174,6 +177,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// 供应商考核导出EXcel
         /// </summary>
         /// <returns></returns>
+        [NoAuthenCheck]
         public FileResult CreateSupplierEvaluationToExcel()
         {
             var datas = TempData["SupplierSeasonDatas"] as List<SupplierSeasonAuditModel>;
@@ -186,8 +190,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
+        /// SaveAuditSupplierInfo
         [NoAuthenCheck]
-        ///SaveAuditSupplierInfo
+
         public JsonResult SaveAuditSupplierInfo(SupplierSeasonAuditModel entity)
         {
             var datas = PurchaseService.PurSupplierManager.SupplierAuditManager.SaveAuditSupplierInfo(entity);
@@ -197,6 +202,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         #endregion
 
         #region SupplierToturManage 供应商辅导管理
+        [NoAuthenCheck]
         public ActionResult SupplierToturManage()
         {
             return View();
@@ -218,6 +224,8 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// 供应商辅导数据导出EXcel
         /// </summary>
         /// <returns></returns>
+        /// 
+        [NoAuthenCheck]
         public FileResult CreateSupplierTourToExcel()
         {
             var datas = TempData["SupplierTourData"] as List<SupplierSeasonTutorModel>;
@@ -279,6 +287,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// 评分的供应商信息列表导出EXcel
         /// </summary>
         /// <returns></returns>
+        [NoAuthenCheck]
         public FileResult CreateSupplierGradeInfoDataToExcel()
         {
             var datas = TempData["SupplierGradeInfoData"] as List<SupplierSeasonTutorModel>;
