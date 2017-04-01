@@ -3,7 +3,7 @@
     <div class="panel-heading">
         <h6 class="panel-title">供应商证书管理</h6>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" id="editWindow">
         <form class="form-inline" role="search">
             @*<input type="text" class="form-control" ng-model="vmManager.searchYear" placeholder="请输入四位年份 如：2016" />*@
             <span yl-month-button data-title-visible="true" data-yearmonth="vmManager.searchYear"></span>
@@ -11,7 +11,7 @@
             <a class="btn btn-success" href="@Url.Action("CreateQualifiedSupplierInfoList", "PurSupplierManage")"><i class="fa fa-file-excel-o"></i> 导出Excel</a>
         </form>
         <div class="h-split"></div>
-        <div class="well" cg-busy="{promise:searchPromise}" id="editWindow">
+        <div class="well" cg-busy="{promise:searchPromise}">
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
@@ -76,7 +76,7 @@
         </div>
 
         <div pageslide ps-open="vmManager.editWindowShow" ps-side="left" ps-size="100%" ps-speed="0.25" ps-container='editWindow'>
-            <div style="padding:10px;overflow-y:auto">
+            <div style="padding:10px;overflow-y:scroll;max-height:480px;">
                 <div class="row">
                     <div class="col-md-4">
                         <table class="table table-bordered table-condensed">
