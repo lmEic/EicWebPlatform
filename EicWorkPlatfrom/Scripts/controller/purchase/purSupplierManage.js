@@ -186,7 +186,7 @@ null,
     "2016-11-19"
     };
 
-    var uiVm = $scope.vm = {
+    $scope.vm = {
         PurchaseType: '',
         SupplierProperty: '',
         SupplierId: ''
@@ -200,7 +200,7 @@ null,
         goToEdit: function (item) {
             vmManager.editItem = item;
             if (!vmManager.editWindowShow) {
-                leeHelper.copyVm(vmManager.editItem, uiVm);
+                leeHelper.copyVm(item, $scope.vm);
                 editManager.getCertificateDatas();
             }
             vmManager.editWindowShow = !vmManager.editWindowShow;
@@ -255,44 +255,41 @@ null,
         }
     }
 
-
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
     //保存供应商证书数据
-    $scope.savePurSupplierCertificateDatas = function (isValid) {
-        if (isValid) {
-            //添加数据
+    operate.savePurSupplierCertificateDatas = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
             supplierDataOpService.storePurSupplierCertificateInfo(editManager.fileList).then(function (opresult) {
-                if (opresult.Result) {
-                    vmManager.supplierCertificateEditModal.$promise.then(vmManager.supplierCertificateEditModal.hide);
-                    vmManager.editItem.PurchaseType = $scope.vm.PurchaseType;
-                    vmManager.editItem.SupplierProperty = $scope.vm.SupplierProperty;
-                    editManager.fileList = [];
-                }
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    if (opresult.Result) {
+                        vmManager.editItem.PurchaseType = $scope.vm.PurchaseType;
+                        vmManager.editItem.SupplierProperty = $scope.vm.SupplierProperty;
+                        editManager.fileList = [];
+                        vmManager.editWindowShow = false;
+                    }
+                })
             });
-        }
+        });
     };
 
     ///选择文件并上传
     $scope.selectFile = function (el) {
-        //var files = el.files;
-        //if (files.length > 0) {
-        //    var file = files[0];
-        //    var fd = new FormData();
-        //    fd.append('file', file);
-        //    //上传证书文件
-        //    $scope.uploadPromie = supplierDataOpService.uploadPurSupplierCertificateFile(fd).then(function (result) {
-        //        if (result) {
-        //            var fileItem = _.find(editManager.fileList, { id: editManager.uploadFileItem.id });
-        //            if (!_.isUndefined(fileItem)) {
-        //                //更新文件模型数据
-        //                var year = new Date().getFullYear();
-        //                fileItem.uploadSuccess = true;
-        //                fileItem.CertificateFileName = file.name;
-        //                leeHelper.copyVm(editUiVM, fileItem);
-        //                fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + file.name;
-        //            }
-        //        }
-        //    });
-        //}
+        leeHelper.upoadFile(el, function (fd) {
+            $scope.uploadPromie = supplierDataOpService.uploadPurSupplierCertificateFile(fd).then(function (result) {
+                if (result) {
+                    var fileItem = _.find(editManager.fileList, { id: editManager.uploadFileItem.id });
+                    if (!_.isUndefined(fileItem)) {
+                        //更新文件模型数据
+                        var year = new Date().getFullYear();
+                        fileItem.uploadSuccess = true;
+                        fileItem.CertificateFileName = fd.name;
+                        leeHelper.copyVm($scope.vm, fileItem);
+                        fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + file.name;
+                    }
+                }
+            });
+        })
     };
 });
 //供应商考核管理
