@@ -36,6 +36,14 @@ namespace EicWorkPlatfrom.Controllers
 
         #region my define
         /// <summary>
+        /// 站点根路径
+        /// </summary>
+        protected string SiteRootPath
+        {
+            get { return this.HttpContext.Request.PhysicalApplicationPath; }
+        }
+
+        /// <summary>
         /// 登录在线用户
         /// </summary>
         protected LoginUser OnLineUser
@@ -215,13 +223,49 @@ namespace EicWorkPlatfrom.Controllers
             ms.Seek(0, SeekOrigin.Begin);
             return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
         }
+        /// <summary>
+        /// 将文件保存到服务器上
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="filePath"></param>
+        /// <param name="handler"></param>
+        protected void SaveFileToServer(HttpPostedFileBase file, string filePath, Action handler = null)
+        {
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    string fileName = Path.Combine(filePath, file.FileName);
+                    file.SaveAs(fileName);
+                    if (handler != null) handler();
+                }
+            }
+        }
 
+        /// <summary>
+        /// 将文件保存到服务器上
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="filePath"></param>
+        /// <param name="handler"></param>
+        protected void SaveFileToServer(HttpPostedFileBase file, string filePath, string changeFileName, Action handler = null)
+        {
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    string fileName = Path.Combine(filePath, changeFileName + file.FileName);
+                    file.SaveAs(fileName);
+                    if (handler != null) handler();
+                }
+            }
+        }
 
         #region CombinedFilePath
         protected string CombinedFilePath(string path1)
         {
             string siteRootPath = this.HttpContext.Request.PhysicalApplicationPath;
-            string dirctoryPath = Path.Combine(siteRootPath,path1);
+            string dirctoryPath = Path.Combine(siteRootPath, path1);
             if (!Directory.Exists(dirctoryPath))
             {
                 Directory.CreateDirectory(dirctoryPath);
@@ -239,7 +283,7 @@ namespace EicWorkPlatfrom.Controllers
         }
         protected string CombinedFilePath(string path1, string path2, string path3)
         {
-            string dirctoryPath = Path.Combine(CombinedFilePath(path1,path2), path3);
+            string dirctoryPath = Path.Combine(CombinedFilePath(path1, path2), path3);
             if (!Directory.Exists(dirctoryPath))
             {
                 Directory.CreateDirectory(dirctoryPath);
@@ -323,7 +367,7 @@ namespace EicWorkPlatfrom.Controllers
             if (imageFormat.Equals(ImageFormat.Png)) context.HttpContext.Response.ContentType = "image/png";
             if (imageFormat.Equals(ImageFormat.Tiff)) context.HttpContext.Response.ContentType = "image/tiff";
             if (imageFormat.Equals(ImageFormat.Wmf)) context.HttpContext.Response.ContentType = "image/wmf";
-            image.Save(context.HttpContext.Response.OutputStream,imageFormat);
+            image.Save(context.HttpContext.Response.OutputStream, imageFormat);
         }
     }
     /// <summary>
@@ -376,5 +420,13 @@ namespace EicWorkPlatfrom.Controllers
         /// 临时存放文件夹
         /// </summary>
         public const string Temp = "Temp";
+        /// <summary>
+        /// FQC检验采集数据附件文件夹
+        /// </summary>
+        public const string FqcInspectionGatherDataFile = "FqcInspectionGatherDataFile";
+        /// <summary>
+        /// IQC检验采集数据附件文件夹
+        /// </summary>
+        public const string IqcInspectionGatherDataFile = "IqcInspectionGatherDataFile";
     }
 }

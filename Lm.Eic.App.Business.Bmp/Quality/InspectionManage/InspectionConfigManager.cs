@@ -31,12 +31,21 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             get { return OBulider.BuildInstance<InspectionModeSwithConfigManager>(); }
         }
+
+
         /// <summary>
         ///Iqc检验项目配置管理器
         /// </summary>
         public InspectionIqcItemConfigManager IqcItemConfigManager
         {
             get { return OBulider.BuildInstance<InspectionIqcItemConfigManager>(); }
+        }
+        /// <summary>
+        /// FQC检验项目配置管理器
+        /// </summary>
+        public InspectionFqcItemConfigManager FqcItemConfigManager
+        {
+            get { return OBulider.BuildInstance<InspectionFqcItemConfigManager>(); }
         }
     }
 
@@ -52,22 +61,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult StoreInspectionModeConfig(InspectionModeConfigModel model)
         {
-            return InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.Store(model, true);
+            return InspectionManagerCrudFactory.InspectionModeConfigCrud.Store(model, true);
         }
         public List<InspectionModeConfigModel> GetInInspectionModeConfigModelList(string inspectionMode, string inspectionLevel, string inspectionAQL)
         {
-            return InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode,  inspectionLevel,  inspectionAQL);
+            return InspectionManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode,  inspectionLevel,  inspectionAQL);
         }
         public List<string> GetInspectionModeConfigStrList(string inspectionMode, string inspectionLevel)
         {
-            var listDatas = InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode, inspectionLevel);
+            var listDatas = InspectionManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode, inspectionLevel);
       
 
             return listDatas.Select(e => e.InspectionAQL).Distinct().ToList(); 
         }
         public List<string> GetInspectionModeConfigStrList(string inspectionMode)
         {
-            var listDatas = InspectionIqcManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode);
+            var listDatas = InspectionManagerCrudFactory.InspectionModeConfigCrud.GetInspectionStartEndNumberBy(inspectionMode);
             return listDatas.Select(e => e.InspectionLevel).Distinct().ToList(); 
         }
     }
@@ -82,7 +91,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult StroeInspectionModeSwithConfig(string inspectionModeType,List<InspectionModeSwitchConfigModel> modelList)
         {
-            return InspectionIqcManagerCrudFactory.InspectionModeSwithConfigCrud.StoreModeSwithConfigModelList(inspectionModeType, modelList);
+            return InspectionManagerCrudFactory.InspectionModeSwithConfigCrud.StoreModeSwithConfigModelList(inspectionModeType, modelList);
         }
         /// <summary>
         /// 得到转换数据
@@ -91,7 +100,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionModeSwitchConfigModel> GetInspectionModeSwithConfig(string swithCategory)
         {
-            return InspectionIqcManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy(swithCategory);
+            return InspectionManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy(swithCategory);
         }
         //public OpResult StroeInspectionSwithConfig(InspectionModeSwithConfigSummaryModel model)
         //{

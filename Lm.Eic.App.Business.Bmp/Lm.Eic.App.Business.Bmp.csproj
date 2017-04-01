@@ -51,6 +51,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -107,14 +108,21 @@
     <Compile Include="Purchase\SupplierManager\SupplierConfigManagerCrud.cs" />
     <Compile Include="Purchase\SupplierManager\SupplierConfigManager.cs" />
     <Compile Include="Purchase\SupplierManager\SuppliersGradeManager.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\FqcCrudFactory.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\FqcDetailDatasGather.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\FqcMasterDatasGather.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\InspectionFqcConfigManager.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\InspectionFqcDataGather.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\InspectionFqcFormManager.cs" />
     <Compile Include="Quality\InspectionManage\InsepctionDataGatherManager.cs" />
     <Compile Include="Quality\InspectionManage\InspectionFormManager.cs" />
-    <Compile Include="Quality\InspectionManage\InspectionIqcConfigManager.cs" />
-    <Compile Include="Quality\InspectionManage\InspectionIqcManagerCrudFactory.cs" />
+    <Compile Include="Quality\InspectionManage\InspectionManageBase.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\InspectionIqcConfigManager.cs" />
+    <Compile Include="Quality\InspectionManage\InspectionManagerCrudFactory.cs" />
     <Compile Include="Quality\InspectionManage\InspectionService.cs" />
-    <Compile Include="Quality\InspectionManage\InspectionIqcDataGather.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\InspectionIqcDataGather.cs" />
     <Compile Include="Quality\InspectionManage\InspectionConfigManager.cs" />
-    <Compile Include="Quality\InspectionManage\InspectionIqcFormManager.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\InspectionIqcFormManager.cs" />
     <Compile Include="Quality555\QualityService.cs" />
     <Compile Include="Quality555\QuantityMangerFactory.cs" />
     <Compile Include="Quality555\SampleManager\IPQCSample\IPQCSampleItems..cs" />
@@ -123,6 +131,9 @@
     <Compile Include="Quality555\SampleManager\SampleItermRules\SampleItermRulesManger.cs" />
     <Compile Include="Quality555\SampleManager\SampleIqcManager.cs" />
     <Compile Include="Quality555\SupperManager\SupperManager.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\IqcCrudFactory.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\IqcDetailDatasGether.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\IqcMasterDatasGather.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

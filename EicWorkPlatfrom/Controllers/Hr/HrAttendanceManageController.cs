@@ -22,9 +22,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
         }
 
         [NoAuthenCheck]
-        public ContentResult GetClassTypeDatas(string department,string workerId,string classType)
+        public ContentResult GetClassTypeDatas(string department, string workerId, string classType)
         {
-            var datas = AttendanceService.ClassTypeSetter.LoadDatasBy(department,workerId,classType);
+            var datas = AttendanceService.ClassTypeSetter.LoadDatasBy(department, workerId, classType);
             return DateJsonResult(datas);
         }
 
@@ -48,15 +48,15 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="department"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetAttendanceDatas(DateTime qryDate,string department,string workerId,int mode)
+        public ContentResult GetAttendanceDatas(DateTime qryDate, DateTime dateFrom, DateTime dateTo, string department, string workerId, int mode)
         {
-            List<AttendanceDataModel> datas=new List<AttendanceDataModel> ();
+            List<AttendanceDataModel> datas = new List<AttendanceDataModel>();
             if (mode == 0)
                 datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(qryDate);
             else if (mode == 1)
-                datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(qryDate, department);
+                datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(dateFrom, dateTo, department);
             else if (mode == 2)
-                datas = AttendanceService.AttendSlodPrintManager.LoadAttendDatasBy(workerId);
+                datas = AttendanceService.AttendSlodPrintManager.LoadAttendDatasBy(workerId, dateFrom, dateTo);
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -74,7 +74,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public FileResult ExoportAttendanceMonthDatasToExcel(string yearMonth)
         {
             var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(yearMonth);
-            return this.ExportToExcel(ms, yearMonth, "考勤数据-" +yearMonth);
+            return this.ExportToExcel(ms, yearMonth, "考勤数据-" + yearMonth);
         }
         /// <summary>
         /// 请假管理
@@ -110,7 +110,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <summary>
         /// 处理请假数据
         /// </summary>
-        /// <param name="entities"></param>
+        /// <param name="askForLeaves"></param>
         /// <returns></returns>
         [HttpPost]
         public JsonResult HandleAskForLeave(List<AttendAskLeaveModel> askForLeaves)
@@ -122,7 +122,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <summary>
         /// 处理请假数据
         /// </summary>
-        /// <param name="entities"></param>
+        /// <param name="askForLeaves"></param>
         /// <returns></returns>
         [HttpPost]
         public JsonResult UpdateAskForLeave(List<AttendSlodFingerDataCurrentMonthModel> askForLeaves)

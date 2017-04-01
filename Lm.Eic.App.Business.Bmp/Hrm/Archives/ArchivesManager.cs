@@ -137,11 +137,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// <param name="oldDto">旧的数据传输对象</param>
         /// <param name="opSign">操作标志</param>
         /// <returns></returns>
-        public OpResult Store(ArchivesEmployeeIdentityDto dto, ArchivesEmployeeIdentityDto oldDto, string opSign)
+        public OpResult Store(ArchivesEmployeeIdentityDto dto,string opSign)
         {
             int record = 0;
             try
             {
+                dto.RegistedDate = dto.RegistedDate.AddDays(1);
                 ArchivesEmployeeIdentityModel empIdentityMdl = new ArchivesEmployeeIdentityModel();
                 ArStudyModel studyMdl = null;
                 ArTelModel telMdl = null;

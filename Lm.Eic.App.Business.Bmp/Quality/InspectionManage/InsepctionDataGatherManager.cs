@@ -17,7 +17,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             get { return OBulider.BuildInstance<InspectionIqcDataGather>(); }
         }
-
+        /// <summary>
+        /// Fqc数据采集器
+        /// </summary>
+        public InspectionFqcDataGather FqcDataGather
+        {
+            get { return OBulider.BuildInstance<InspectionFqcDataGather>(); }
+        }
 
       
     }

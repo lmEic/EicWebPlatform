@@ -13,35 +13,42 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     ////工单Url前缀
     //var mocUrlPrefix = leeHelper.controllers.mocManage + "/";
 
-    //--------------检验项目管理-------------------------
+    //--------------IQC检验项目管理-------------------------
     $stateProvider.state('iqcInspectionItemConfiguration', {
         //IQC检验项目配置
-        templateUrl: inspectionUrlPrefix + 'IqcInspectionItemConfiguration',
+        templateUrl: inspectionUrlPrefix + 'IqcInspectionItemConfiguration'
     })
      //IQC检验方式配置
     .state('iqcInspectionModeConfiguration', {
-        templateUrl: inspectionUrlPrefix + 'IqcInspectionModeConfiguration',
+        templateUrl: inspectionUrlPrefix + 'IqcInspectionModeConfiguration'
     })
      //IQC检验方式转换配置
     .state('inspectionModeSwitchConfiguration', {
-        templateUrl: inspectionUrlPrefix + 'InspectionModeSwitchConfiguration',
+        templateUrl: inspectionUrlPrefix + 'InspectionModeSwitchConfiguration'
     })
     .state('inspectionDataGatheringOfIQC', {
         //Iqc检验项目数据采集
-        templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfIQC',
-    })
-    .state('inspectionDataGatheringOfFQC', {
-         //Fqc检验项目数据采集
-         templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfFQC',
+        templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfIQC'
     })
     .state('inspectionFormManageOfIqc', {
-         //iqc检验单管理
-        templateUrl: inspectionUrlPrefix + 'InspectionFormManageOfIqc',
+        //iqc检验单管理
+        templateUrl: inspectionUrlPrefix + 'InspectionFormManageOfIqc'
+    })
+    //--------------FQC检验项目管理-------------------------
+    .state('fqcInspectionItemConfiguration', {
+        //FQC检验项目配置
+        templateUrl: inspectionUrlPrefix + 'FqcInspectionItemConfiguration'
+    })
+    .state('inspectionDataGatheringOfFQC', {
+        //Fqc检验项目数据采集
+        templateUrl: inspectionUrlPrefix + 'InspectionDataGatheringOfFQC'
     })
     .state('inspectionFormManageOfFqc', {
-        //iqc检验单管理
-        templateUrl: inspectionUrlPrefix + 'InspectionFormManageOfFqc',
-    })
+        //Fqc检验单管理
+        templateUrl: inspectionUrlPrefix + 'InspectionFormManageOfFqc'
+    });
+
+
     ////--------------人员管理--------------------------
     //.state('registWorkerInfo', {
     //    templateUrl: 'ProEmployee/RegistWorkerInfo'
@@ -90,7 +97,7 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
                 if (!angular.isUndefined(navItem)) {
                     moduleNavLayoutVm.navItems.push(navItem);
                 }
-            })
+            });
         },
         stateTo: function (navItem) {
             $state.go(navItem.UiSerf);
@@ -108,11 +115,11 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
             }
         },
         navLeftSize: '16%',
-        navMainSize: '83%',
+        navMainSize: '83%'
     };
     $scope.navLayout = moduleNavLayoutVm;
     $scope.promise = navDataService.getSubModuleNavs('质量管理', 'QuantityManage').then(function (datas) {
         moduleNavLayoutVm.menus = datas;
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
-})
+});

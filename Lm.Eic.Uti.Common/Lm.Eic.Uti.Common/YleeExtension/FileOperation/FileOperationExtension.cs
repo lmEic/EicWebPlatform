@@ -37,11 +37,16 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         {
             try
             {
+                if (File.Exists(FileDocumentationName))
+                {
                     File.Delete(FileDocumentationName);
                     return true;
+                }
+                else return false;
             }
             catch (Exception ex)
             {
+                return false;
                 throw new Exception(ex.InnerException.Message);
             }
         }

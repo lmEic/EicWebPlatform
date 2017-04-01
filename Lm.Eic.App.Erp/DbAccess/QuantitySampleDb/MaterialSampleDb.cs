@@ -304,7 +304,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 Material.Category = category;
                 Material.Code = code;
                 Material.ProductID = DTds.Rows[0]["料号"].ToString().Trim();
-                Material.ProduceNumber = DTds.Rows[0]["数量"].ToString().Trim().ToLong ();
+                Material.ProduceNumber = DTds.Rows[0]["数量"].ToString().Trim().ToDouble();
                 Material.ProduceInDate = DateTime.ParseExact(DTds.Rows[0]["开单日期"].ToString().Trim(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
                 Materials.Add(Material);
             }

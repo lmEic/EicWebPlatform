@@ -17,14 +17,14 @@ productModule.factory('boardDataOpService', function (ajaxService) {
         var url = urlPrefix + 'CheckMaterialIdMatchProductId';
         return ajaxService.postData(url, {
             materialId: materialId,
-            productId: productId,
+            productId: productId
         });
     };
     ///添加物料看板规格记录
     boardDataOp.addMaterialSpecBoardRecord = function (model) {
         var url = urlPrefix + 'AddMaterialSpecBoardRecord';
         return ajaxService.postData(url, {
-            model: model,
+            model: model
         });
     };
     ///获取待审核列表
@@ -37,7 +37,7 @@ productModule.factory('boardDataOpService', function (ajaxService) {
     boardDataOp.auditMaterialBoardData = function (model) {
         var url = urlPrefix + 'AuditMaterialBoardData';
         return ajaxService.postData(url, {
-            model: model,
+            model: model
         });
     };
 
@@ -55,9 +55,9 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
         Department: null,
         State: null,
         OpPerson: null,
-        OpSign:'add',
-        Id_Key: null,
-    }
+        OpSign: 'add',
+        Id_Key: null
+    };
     $scope.vm = uiVM;
 
     var waittingAuditItem;
@@ -126,7 +126,7 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
                 }
                 vmManager.init();
             });
-        })
+        });
     };
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
@@ -173,7 +173,7 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
             canvas = null;
         };
         img.src = url;
-    };
+    }
 
     ///打印视图模型
     var printVM = {
@@ -183,7 +183,7 @@ productModule.controller('jumperWireBoardCtrl', function ($scope, boardDataOpSer
         print: function () {
             var img = document.getElementById('imagePreview');
             printJS(img.src, "image");
-        },//打印图片
+        }//打印图片
     };
 
     $scope.printvm = printVM;

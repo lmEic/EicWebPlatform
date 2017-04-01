@@ -88,15 +88,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");
             return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping);
         }
-        public List<AttendanceDataModel> LoadAttendDataInToday(DateTime qryDate,string department)
+        public List<AttendanceDataModel> LoadAttendDataInToday(DateTime dateFrom, DateTime dateTo, string department)
         {
-            var qdate = qryDate.ToDate();
-            return this.currentMonthAttendDataHandler.LoadAttendDataInToday(qdate,department);
+            var dfrom = dateFrom.ToDate();
+            var dTo = dateTo.ToDate();
+            return this.currentMonthAttendDataHandler.LoadAttendDataInToday(dateFrom, dateTo, department);
         }
-        public List<AttendanceDataModel> LoadAttendDatasBy(string workerId)
+        public List<AttendanceDataModel> LoadAttendDatasBy(string workerId, DateTime dateFrom, DateTime dateTo)
         {
-            return this.currentMonthAttendDataHandler.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 2, WorkerId = workerId });
-            
+            var dFrom = dateFrom.ToDate();
+            var dTo = dateTo.ToDate();
+            return this.currentMonthAttendDataHandler.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 2, WorkerId = workerId, DateFrom = dFrom, DateTo = dTo });
+
         }
         /// <summary>
         /// 自动处理异常数据
@@ -174,10 +177,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             TransimitAttendDatas(qryDate);
             return this.irep.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 0, AttendanceDate = qryDate });
         }
-        public List<AttendanceDataModel> LoadAttendDataInToday(DateTime qryDate,string department)
+        public List<AttendanceDataModel> LoadAttendDataInToday(DateTime dateFrom, DateTime dateTo, string department)
         {
-            DateTime qdate=qryDate.ToDate();
-            return this.irep.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 1, AttendanceDate = qryDate, Department = department });
+            var dfrom = dateFrom.ToDate();
+            var dto = dateTo.ToDate();
+            return this.irep.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 1, DateFrom = dateFrom, DateTo = dto, Department = department });
         }
         /// <summary>
         /// 将实时考勤数据转移至本月数据表中
@@ -201,12 +205,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             ArWorkerInfo worker = null;
             //将考勤中数据中的人进行分组
             List<string> attendWorkerIdList = datasInTime.Select(e => e.WorkerId).Distinct().ToList();
-            AttendClassTypeDetailModel ctmdl=null;
+            AttendClassTypeDetailModel ctmdl = null;
             attendWorkerIdList.ForEach(workerId =>
             {
                 record = 0;
                 //获取每个人的信息
                 worker = workers.FirstOrDefault(w => w.WorkerId == workerId);
+                if (worker == null)
+                {
+                    var m = ArchiveService.ArchivesManager.WorkerIdChangeManager.GetModel(workerId);
+                    if (m != null)
+                        worker = workers.FirstOrDefault(w => w.WorkerId == m.NewWorkerId);
+                }
                 //从实时考勤数据表中获取该员工的考勤数据
                 var attendDataPerWorker = datasInTime.FindAll(f => f.WorkerId == workerId).OrderBy(o => o.SlodCardTime).ToList();
                 //从考勤中获取该员工的考勤数据
@@ -214,7 +224,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 var currentAttendData = dayAttendDatas.FirstOrDefault(e => e.WorkerId == workerId);//从内存中进行查找
                 if (worker != null)
                 {
-                    ctmdl=AttendanceService.ClassTypeSetter.GetClassTypeDetailModel(worker.WorkerId,qryDate);
+                    ctmdl = AttendanceService.ClassTypeSetter.GetClassTypeDetailModel(worker.WorkerId, qryDate);
                     string classType = ctmdl == null ? "白班" : worker.ClassType;
                     string department = departmentManager.GetDepartmentText(worker.Department);
 
@@ -256,7 +266,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <param name="slotCardTime"></param>
         /// <param name="attendTime"></param>
         /// <returns></returns>
-        private string ConcatSlotCardTime(string slotCardTime,DateTime attendTime)
+        private string ConcatSlotCardTime(string slotCardTime, DateTime attendTime)
         {
             List<string> timeStrList = null;
             var cardTimeList = slotCardTime.Split(',');
@@ -296,7 +306,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             {
                 record = UpdateSlotCardTime1(currentAttendData, slodCardTime, currentAttendData.SlotCardTime);
             }
-            else 
+            else
             {
                 record = UpdateSlotCardTime2(currentAttendData, slodCardTime, currentAttendData.SlotCardTime);
             }
@@ -341,7 +351,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
 
                 });
             }
-            else 
+            else
             {
                 return irep.Update(f => f.Id_Key == currentAttendData.Id_Key, u => new AttendSlodFingerDataCurrentMonthModel
                 {
@@ -361,7 +371,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <param name="worker"></param>
         /// <param name="slodCardTime"></param>
         /// <returns></returns>
-        private int InitAttendData(AttendFingerPrintDataInTimeModel attendTimeMdl, ArWorkerInfo worker, DateTime slodCardTime,out AttendSlodFingerDataCurrentMonthModel initMdl,DateTime middleTime)
+        private int InitAttendData(AttendFingerPrintDataInTimeModel attendTimeMdl, ArWorkerInfo worker, DateTime slodCardTime, out AttendSlodFingerDataCurrentMonthModel initMdl, DateTime middleTime)
         {
             initMdl = null;
             int record = 0;
@@ -557,7 +567,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             List<AttendSlodWorkerModel> attendSlodWorkers = this.GetAttendSlodWorkers(qurYear, qurMonth);
             AttendClassTypeSetter classTypeSetter = new AttendClassTypeSetter();
             //获取本月份的日期天数
-            int daysInMonths = DateTime.DaysInMonth(qurYear,qurMonth);
+            int daysInMonths = DateTime.DaysInMonth(qurYear, qurMonth);
 
             Dictionary<string, string> dicClassTypes = new Dictionary<string, string>();
             //一天的中间时间
@@ -588,10 +598,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                             WorkerId = worker.WorkerId,
                             CardID = "",
                             CardType = "",
-                            ClassType = ctdMdl==null?"白班":ctdMdl.ClassType,
+                            ClassType = ctdMdl == null ? "白班" : ctdMdl.ClassType,
                             Department = worker.Department,
                             WorkerName = worker.WorkerName,
-                            WeekDay =currentDay.DayOfWeek.ToString().ToChineseWeekDay(),
+                            WeekDay = currentDay.DayOfWeek.ToString().ToChineseWeekDay(),
                             LeaveHours = 0,
                             LeaveMark = 0,
                             YearMonth = currentDay.ToString("yyyyMM"),
@@ -635,7 +645,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                             else
                             {
                                 //在都完整的情况下，分析考勤异常情况
-                                AnalogSlotCardTime(attendSd,ref slotExceptionType, dayMiddleTime, classType, day, year, month, slotCardTime);
+                                AnalogSlotCardTime(attendSd, ref slotExceptionType, dayMiddleTime, classType, day, year, month, slotCardTime);
                             }
                         }
                         attendSd.SlotExceptionType = slotExceptionType;
@@ -706,11 +716,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                         DateTime dayPmstand = new DateTime(year, month, day, 19, 50, 0);
                         if (classType == "白班")
                         {
-                            AnalogDayAttendData(attendSd,ref exceptionType, dayMiddleTime, currentTime, dayAmstart, dayAmend);
+                            AnalogDayAttendData(attendSd, ref exceptionType, dayMiddleTime, currentTime, dayAmstart, dayAmend);
                         }
                         else if (classType == "晚班")
                         {
-                            AnalogNightAttendData(attendSd,ref exceptionType, dayMiddleTime, currentTime, dayPmstart, dayPmend);
+                            AnalogNightAttendData(attendSd, ref exceptionType, dayMiddleTime, currentTime, dayPmstart, dayPmend);
                         }
                     }
                 });
@@ -884,7 +894,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <param name="year"></param>
         /// <param name="month"></param>
         /// <returns></returns>
-        private List<AttendSlodWorkerModel> GetAttendSlodWorkers(int year,int month)
+        private List<AttendSlodWorkerModel> GetAttendSlodWorkers(int year, int month)
         {
             List<AttendSlodWorkerModel> attendSlodWorkers = null;
             AttendSlodWorkerModel aswMdl = null;
@@ -902,19 +912,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             }
             return attendSlodWorkers;
         }
-        private List<AttendSlodWorkerModel> ConvertToAttendWorkerList(List<LeaveOfficeMapEntity> attendWorkers, AttendSlodWorkerModel aswMdl, DateTime dtStart, DateTime dtEnd,bool isLeave)
+        private List<AttendSlodWorkerModel> ConvertToAttendWorkerList(List<LeaveOfficeMapEntity> attendWorkers, AttendSlodWorkerModel aswMdl, DateTime dtStart, DateTime dtEnd, bool isLeave)
         {
             List<AttendSlodWorkerModel> attendSlodWorkerList = new List<AttendSlodWorkerModel>();
             if (attendWorkers != null && attendWorkers.Count > 0)
             {
-                attendWorkers.ForEach(worker => {
+                attendWorkers.ForEach(worker =>
+                {
                     aswMdl = new Attendance.AttendSlodWorkerModel()
                     {
                         WorkerId = worker.WorkerId,
                         WorkerName = worker.WorkerName,
                         Department = worker.Department,
                         AttendDateStart = dtStart,
-                        AttendDateEnd =isLeave==true? worker.LeaveDate.AddDays(-1):dtEnd
+                        AttendDateEnd = isLeave == true ? worker.LeaveDate.AddDays(-1) : dtEnd
                     };
                     attendSlodWorkerList.Add(aswMdl);
                 });
@@ -967,7 +978,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public void BackupData(List<AttendFingerPrintDataInTimeModel> entities,int targetRecord)
+        public void BackupData(List<AttendFingerPrintDataInTimeModel> entities, int targetRecord)
         {
             int record = 0;
             entities.ForEach(entity => { record += this.irep.backupData(entity); });
@@ -998,7 +1009,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         public void tu()
         {
             var datas = this.irep.loaddatas();
-            datas.ForEach(d => {
+            datas.ForEach(d =>
+            {
                 if (!this.irep.IsExist(e => e.WorkerId == d.WorkerId && e.SlodCardDate == d.SlodCardDate && e.SlodCardTime == d.SlodCardTime))
                 {
                     if (this.irep.Insert(d) == 1)

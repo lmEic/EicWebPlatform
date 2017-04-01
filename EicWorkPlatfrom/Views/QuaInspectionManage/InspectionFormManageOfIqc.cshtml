@@ -63,7 +63,7 @@
                                     <td>{{item.MaterialInDate}}</td>
                                     <td>
                                         <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getDetailDatas(item)" ng-show="item.InspectionStatus !== '未完成'">明细</button>
-                                        <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)" ng-show="item.InspectionStatus === '待审核'&&item.InspectionResult==='已判定'">审核</button>
+                                        <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)" ng-show="item.InspectionStatus === '待审核'&&item.InspectionResult==='已完成'">审核</button>
                                     </td>
                                 </tr>
 
@@ -139,12 +139,12 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="item in vmManager.detailDatas track by $index">
-                                    <td>{{item.InspectionItem}}</td>
+                                    <td>{{item.InspectionMode}}</td>
                                     <td>{{item.SizeMemo}}</td>
                                     <td>{{item.InspectionLevel}} AQL=/{{item.InspectionAQL}}</td>
                                     <td>{{item.InspectionCount}}/{{item.AcceptCount}}/{{item.RefuseCount}}</td>
                                     <td>{{item.InspectionMode}}</td>
-                                    <td>{{item.InspectionSolution}}</td>
+                                    <td>{{item.InspectionMethod}}</td>
                                     <td>{{item.EquipmentId}}</td>
                                     <td>
                                         <table class="table table-bordered table-condensed">

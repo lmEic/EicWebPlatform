@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using System.Text;
+using Lm.Eic.Uti.Common.YleeExcelHanlder;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.Uti.Common.YleeDbHandler
 {
@@ -63,6 +66,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             return this.PersistentDatas(model);
         }
+
         public virtual OpResult Store(TEntity model, bool isNeedEntity)
         {
             return this.PersistentDatas(model, isNeedEntity);
@@ -94,7 +98,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             });
         }
 
-        /// <summary>
         /// 设置固定字段的值
         /// </summary>
         /// <param name="entityList">列表</param>
