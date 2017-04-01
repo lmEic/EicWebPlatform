@@ -76,16 +76,6 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             return DateJsonResult(datas);
         }
         /// <summary>
-        /// 编辑供应商证书模板
-        /// </summary>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public ActionResult EditPurSupplierCertificateViewTpl()
-        {
-            return View();
-        }
-
-        /// <summary>
         /// 获取采购供应商用户数据列表
         /// </summary>
         /// <param name="supplierId"></param>

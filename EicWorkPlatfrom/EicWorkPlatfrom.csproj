@@ -1306,7 +1306,6 @@
     <Content Include="Views\PurSupplierManage\PurSupplierInput.cshtml" />
     <Content Include="Views\HrArchivesManage\HrLeaveOffManage.cshtml" />
     <Content Include="Views\HrArchivesManage\HrChangeWorkerId.cshtml" />
-    <Content Include="Views\PurSupplierManage\EditPurSupplierCertificateViewTpl.cshtml" />
     <Content Include="Views\CommonTpl\ImageFilePreviewTpl.cshtml" />
     <Content Include="Views\PurSupplierManage\SupplierEvaluationManage.cshtml" />
     <Content Include="Views\CommonTpl\QuarterButtonTpl.cshtml" />
