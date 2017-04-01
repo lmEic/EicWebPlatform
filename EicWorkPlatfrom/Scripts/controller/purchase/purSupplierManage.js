@@ -17,8 +17,7 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
         });
     };
     //根据年份获取合格供应商清单
-    purDb.getPurQualifiedSupplierListBy = function (yearMonth)
-    {
+    purDb.getPurQualifiedSupplierListBy = function (yearMonth) {
         var url = purUrlPrefix + 'GetPurQualifiedSupplierListBy';
         return ajaxService.getData(url, {
             yearMonth: yearMonth
@@ -29,11 +28,10 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     //        导出得到EXCEL            //
     //                                //
     ////////////////////////////////////
-    purDb.CreateQualifiedSupplierInfoList = function (data)
-    {
+    purDb.CreateQualifiedSupplierInfoList = function (data) {
         var url = purUrlPrefix + 'CreateQualifiedSupplierInfoList';
         return ajaxService.getData(url, {
-           data :data 
+            data: data
         });
     };
 
@@ -50,8 +48,7 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
         });
     };
     ///获取合格供应商证书信息
-    purDb.getSupplierQualifiedCertificateListBy = function (supplierId)
-    {
+    purDb.getSupplierQualifiedCertificateListBy = function (supplierId) {
         var url = purUrlPrefix + 'GetSupplierQualifiedCertificateListBy';
         return ajaxService.getData(url, {
             supplierId: supplierId
@@ -111,7 +108,7 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     };
     ///获取供应商数据列表
     purDb.getPurSupplierDataList = function (supplierId, dataType) {
-        var url =purUrlPrefix  + 'GetPurSupplierDataList';
+        var url = purUrlPrefix + 'GetPurSupplierDataList';
         return ajaxService.getData(url, {
             supplierId: supplierId,
             dataType: dataType
@@ -121,7 +118,7 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
 });
 
 //供应商证书管理
-purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService,$modal) {
+purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService, $modal) {
 
     var item = {
         BillAddress
@@ -189,121 +186,113 @@ null,
     "2016-11-19"
     };
 
+    var uiVm = $scope.vm = {
+        PurchaseType: '',
+        SupplierProperty: '',
+        SupplierId: ''
+    };
+
     var vmManager = $scope.vmManager = {
         searchYear: new Date().getFullYear(),
         datasets: [],
-        datasource:[item],
-
+        datasource: [item],
+        editWindowShow: false,
+        goToEdit: function (item) {
+            vmManager.editItem = item;
+            if (!vmManager.editWindowShow) {
+                leeHelper.copyVm(vmManager.editItem, uiVm);
+                editManager.getCertificateDatas();
+            }
+            vmManager.editWindowShow = !vmManager.editWindowShow;
+        },
         getPurQualifiedSupplier: function () {
             $scope.searchPromise = supplierDataOpService.getPurQualifiedSupplierListBy(vmManager.searchYear).then(function (datas) {
                 vmManager.datasource = datas;
             });
         },
-
         CreateQualifiedSupplierList: function () {
             $scope.searchPromise = supplierDataOpService.CreateQualifiedSupplierInfoList(vmManager.datasource).then(function () {
 
             });
         },
-        supplierCertificateEditModal: $modal({
-            title: "供应商证书编辑", content: '',
-            templateUrl: leeHelper.controllers.supplierManage + '/EditPurSupplierCertificateViewTpl/',
-            controller: function ($scope) {
-                var editUiVM = {
-                    PurchaseType: '',
-                    SupplierProperty: '',
-                    SupplierId: ''
-                };
-                leeHelper.copyVm(vmManager.editItem, editUiVM);
-
-                $scope.vm = editUiVM;
-
-                //保存供应商证书数据
-                $scope.savePurSupplierCertificateDatas = function (isValid) {
-                    if (isValid) {
-                        //添加数据
-                        supplierDataOpService.storePurSupplierCertificateInfo(editManager.fileList).then(function (opresult) {
-                            if (opresult.Result) {
-                                vmManager.supplierCertificateEditModal.$promise.then(vmManager.supplierCertificateEditModal.hide);
-                                vmManager.editItem.PurchaseType = $scope.vm.PurchaseType;
-                                vmManager.editItem.SupplierProperty = $scope.vm.SupplierProperty;
-                                editManager.fileList = [];
-                            }
-                        });
-                    }
-                };
-                //上传文件项目
-                var uploadFileItem = {
-                    id: 1,EligibleCertificate: '', adding: true, uploadSuccess: false,
-                    PurchaseType: '', SupplierProperty: '', SupplierId: '', FilePath: '',
-                    CertificateFileName: '', DateOfCertificate: null
-                };
-
-                var editManager = {
-                    fileList: [_.clone(uploadFileItem)],
-                    //新上传文件
-                    addFile: function (item) {
-                        item.adding = false;
-                        var newItem = _.clone(uploadFileItem);
-                        newItem.id = editManager.fileList.length + 1;
-                        editManager.fileList.push(newItem);
-                    },
-                    getFile: function (fileItem) {
-                        editManager.uploadFileItem = _.clone(fileItem);
-                    },
-                    uploadFileItem: null,
-                    //删除证书文件
-                    removeCertificateFile: function (item) {
-                        supplierDataOpService.delPurSupplierCertificateFile(item).then(function (opResult) {
-                            if (opResult.Result) {
-                                leeHelper.remove(editManager.certificateDatas, item);
-                            }
-                            else { alert(opResult.Message); }
-                        });
-                    },
-                    //证书数据
-                    certificateDatas:[],
-                    getCertificateDatas: function () {
-                        editManager.certificateDatas = [];
-                        $scope.searchPromise = supplierDataOpService.getSupplierQualifiedCertificateListBy(vmManager.editItem.SupplierId).then(function (datas) {
-                            editManager.certificateDatas = datas;
-                        });
-                    }
-                };
-                $scope.vmManager = editManager;
-                ///选择文件并上传
-                $scope.selectFile = function (el) {
-                    var files = el.files;
-                    if (files.length > 0) {
-                        var file = files[0];
-                        var fd = new FormData();
-                        fd.append('file', file);
-                        //上传证书文件
-                        $scope.uploadPromie = supplierDataOpService.uploadPurSupplierCertificateFile(fd).then(function (result) {
-                            if (result) {
-                                var fileItem = _.find(editManager.fileList, { id: editManager.uploadFileItem.id });
-                                if (!_.isUndefined(fileItem)) {
-                                    //更新文件模型数据
-                                    var year = new Date().getFullYear();
-                                    fileItem.uploadSuccess = true;
-                                    fileItem.CertificateFileName = file.name;
-                                    leeHelper.copyVm(editUiVM, fileItem);
-                                    fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + file.name;
-                                }
-                            }
-                        });
-                    }
-                };
-                //提取数据
-                editManager.getCertificateDatas();
-            },
-            show: false
-        }),
-        editItem:null,
-        editSupplierCertificate: function (item) {
-            vmManager.editItem = item;
-            vmManager.supplierCertificateEditModal.$promise.then(vmManager.supplierCertificateEditModal.show);
+        editItem: null,
+    };
+    //上传文件项目
+    var uploadFileVM = {
+        id: 1, EligibleCertificate: '', adding: true, uploadSuccess: false,
+        PurchaseType: '', SupplierProperty: '', SupplierId: '', FilePath: '',
+        CertificateFileName: '', DateOfCertificate: null
+    };
+    var editManager = $scope.editManager = {
+        fileList: [_.clone(uploadFileVM)],
+        //新上传文件
+        addFile: function (item) {
+            item.adding = false;
+            var newItem = _.clone(uploadFileVM);
+            newItem.id = editManager.fileList.length + 1;
+            editManager.fileList.push(newItem);
+        },
+        getFile: function (fileItem) {
+            editManager.uploadFileItem = _.clone(fileItem);
+        },
+        uploadFileItem: null,
+        //删除证书文件
+        removeCertificateFile: function (item) {
+            supplierDataOpService.delPurSupplierCertificateFile(item).then(function (opResult) {
+                if (opResult.Result) {
+                    leeHelper.remove(editManager.certificateDatas, item);
+                }
+                else { alert(opResult.Message); }
+            });
+        },
+        //证书数据
+        certificateDatas: [],
+        getCertificateDatas: function () {
+            editManager.certificateDatas = [];
+            $scope.searchCertificatePromise = supplierDataOpService.getSupplierQualifiedCertificateListBy(vmManager.editItem.SupplierId).then(function (datas) {
+                editManager.certificateDatas = datas;
+            });
         }
+    }
+
+
+    //保存供应商证书数据
+    $scope.savePurSupplierCertificateDatas = function (isValid) {
+        if (isValid) {
+            //添加数据
+            supplierDataOpService.storePurSupplierCertificateInfo(editManager.fileList).then(function (opresult) {
+                if (opresult.Result) {
+                    vmManager.supplierCertificateEditModal.$promise.then(vmManager.supplierCertificateEditModal.hide);
+                    vmManager.editItem.PurchaseType = $scope.vm.PurchaseType;
+                    vmManager.editItem.SupplierProperty = $scope.vm.SupplierProperty;
+                    editManager.fileList = [];
+                }
+            });
+        }
+    };
+
+    ///选择文件并上传
+    $scope.selectFile = function (el) {
+        //var files = el.files;
+        //if (files.length > 0) {
+        //    var file = files[0];
+        //    var fd = new FormData();
+        //    fd.append('file', file);
+        //    //上传证书文件
+        //    $scope.uploadPromie = supplierDataOpService.uploadPurSupplierCertificateFile(fd).then(function (result) {
+        //        if (result) {
+        //            var fileItem = _.find(editManager.fileList, { id: editManager.uploadFileItem.id });
+        //            if (!_.isUndefined(fileItem)) {
+        //                //更新文件模型数据
+        //                var year = new Date().getFullYear();
+        //                fileItem.uploadSuccess = true;
+        //                fileItem.CertificateFileName = file.name;
+        //                leeHelper.copyVm(editUiVM, fileItem);
+        //                fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + file.name;
+        //            }
+        //        }
+        //    });
+        //}
     };
 });
 //供应商考核管理
@@ -317,7 +306,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         DeliveryDate: null,
         ActionLiven: null,
         HSFGrade: null,
-        TotalCheckScore:0,
+        TotalCheckScore: 0,
         CheckLevel: null,
         RewardsWay: null,
         MaterialGrade: null,
@@ -330,7 +319,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         Optime: null,
         OpSign: null,
         Id_key: null,
-        isEditting:false
+        isEditting: false
     };
 
     ///供应商考核视图模型
@@ -357,11 +346,11 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         OpSign: 'add',
         Id_key: null
     };
-   
-   var initVm = _.clone(uiVM);
+
+    var initVm = _.clone(uiVM);
 
     //操作部分
-    var operate = $scope.operate =Object.create(leeDataHandler.dataOperate);
+    var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
     //数据操作
     var crud = leeDataHandler.dataOperate;
 
@@ -390,7 +379,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
             $scope.vm = uiVM = _.clone(initVm);
         },
         editDatas: [item],
-        yearQuarter:'',
+        yearQuarter: '',
         //获取要考核的供应商数据列表
         getAuditSupplierDatas: function () {
             $scope.promise = supplierDataOpService.getAuditSupplierList(vmManager.yearQuarter).then(function (datas) {
@@ -398,14 +387,14 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
             });
         },
         editItem: null,
-        displayEditForm:false,
+        displayEditForm: false,
         editSupplierAuditData: function (item) {
             vmManager.displayEditForm = true;
             vmManager.editItem = $scope.vm = uiVM = item;
         }
     };
 
-   
+
 });
 //供应商辅导管理
 purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierDataOpService, $modal) {
@@ -476,7 +465,7 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
 
     //视图管理器
     var vmManager = $scope.vmManager = {
-        supplierId:null,
+        supplierId: null,
         editDatas: [item],
         yearQuarter: '',
         //获取要考核的供应商数据列表
@@ -519,7 +508,7 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
                 };
 
             },
-            show:false
+            show: false
         })
     };
 
@@ -585,7 +574,7 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
 
     //视图管理器
     var vmManager = $scope.vmManager = {
-        supplierId:'',
+        supplierId: '',
         editDatas: [item],
         yearQuarter: '',
         ///根据供应商编号查询供应商辅导数据信息
