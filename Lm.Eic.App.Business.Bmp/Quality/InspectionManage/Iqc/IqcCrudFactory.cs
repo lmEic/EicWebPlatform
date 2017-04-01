@@ -215,8 +215,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             ////如果存在，操作失败
             if (isExiststroe(model))
             {
-                return new OpResult(OpContext, false);
+                this.SetFixFieldValue(model);
+                return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
             }
+            this.SetFixFieldValue(model);
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
