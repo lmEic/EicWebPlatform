@@ -1,6 +1,7 @@
 ﻿using Lm.Eic.App.Business.Bmp.Purchase;
 using Lm.Eic.App.DomainModel.Bpm.Purchase;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -145,8 +146,17 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
 
             var rootPath = HttpContext.Request.PhysicalApplicationPath;
+            if (entity == null) return Json(new OpResult("数据为空，保存失败", false));
+            var siteRootPath = string.Empty;
+            if (entity.CertificateFileName != null && entity.CertificateFileName.Length > 1)//上传文件
+            {
 
-            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.DelEditSpplierCertificate(entity, rootPath);
+                string year = DateTime.Now.Year.ToString();///按年份进行存储
+                entity.FilePath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, year, entity.CertificateFileName);
+                siteRootPath = this.SiteRootPath;
+            }
+
+            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.StoreEditSpplierCertificate(entity, siteRootPath);
 
 
 

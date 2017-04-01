@@ -24,12 +24,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             get { return OBulider.BuildInstance<SupplierCertificateManager>(); }
         }
     }
- /// <summary>
- /// 供应商证书管理
- /// </summary>
-    public  class SupplierCertificateManager
+    /// <summary>
+    /// 供应商证书管理
+    /// </summary>
+    public class SupplierCertificateManager
     {
-      
+
         //缓存合格供应商清册表
         Dictionary<string, EligibleSuppliersModel> eligibleSuppliersModelKey = new Dictionary<string, EligibleSuppliersModel>();
 
@@ -40,9 +40,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public List<EligibleSuppliersModel> GetQualifiedSupplierList(string endYearMonth)
         {
-           var QualifiedSupplierInfo = new List<EligibleSuppliersModel>();
+            var QualifiedSupplierInfo = new List<EligibleSuppliersModel>();
             EligibleSuppliersModel model = null;
-            string startYearMonth = (int.Parse(endYearMonth)-100).ToString();
+            string startYearMonth = (int.Parse(endYearMonth) - 100).ToString();
             //获取供应商信息
             var supplierInfoList = GetSupplierInformationListBy(startYearMonth, endYearMonth);
 
@@ -84,6 +84,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
+
+
         /// <summary>
         /// 保存编辑的供应商证书信息
         /// </summary>
@@ -106,12 +108,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             if (SaveSupplierInfoModel(supplierInfoModel).Result)
             {
                 List<SupplierQualifiedCertificateModel> certificateModelList = new List<SupplierQualifiedCertificateModel>();
-             
+
                 //保存证书数据
                 modelList.ForEach(e =>
                 {
 
-                   if(SupplierCrudFactory.SupplierQualifiedCertificateCrud.IsExistCertificateFileName(e.CertificateFileName))
+                    if (SupplierCrudFactory.SupplierQualifiedCertificateCrud.IsExistCertificateFileName(e.CertificateFileName))
                     {
                         isExistCertificateFileName += e.CertificateFileName + ",";
                     }
@@ -119,47 +121,42 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     {
                         SupplierId = e.SupplierId,
                         EligibleCertificate = e.EligibleCertificate,
-                        CertificateFileName =e.CertificateFileName,
+                        CertificateFileName = e.CertificateFileName,
                         FilePath = e.FilePath,
-                        DateOfCertificate =e.DateOfCertificate.ToDate(),
+                        DateOfCertificate = e.DateOfCertificate.ToDate(),
                         IsEfficacy = "是",
                         OpSign = "add"
                     };
                     certificateModelList.Add(savemodel);
                 });
-                if (isExistCertificateFileName != String.Empty) return new OpResult("此"+isExistCertificateFileName+"文档已经存在，数据保存失败");
-               else  return SupplierCrudFactory.SupplierQualifiedCertificateCrud.SavaSupplierEligibleList(certificateModelList);
+                if (isExistCertificateFileName != String.Empty) return new OpResult("此" + isExistCertificateFileName + "文档已经存在，数据保存失败");
+                else return SupplierCrudFactory.SupplierQualifiedCertificateCrud.SavaSupplierEligibleList(certificateModelList);
             }
             else return new OpResult("数据保存失败");
         }
+
+
+        
         /// <summary>
         /// 删除供应商证书
         /// </summary>
         /// <param name="model">实体</param>
         /// <param name="rootPath">根路经</param>
         /// <returns></returns>
-        public OpResult DelEditSpplierCertificate(SupplierQualifiedCertificateModel model, string rootPath)
+        public OpResult StoreEditSpplierCertificate(SupplierQualifiedCertificateModel model, string siteRootPath)
         {
             try
             {
-                OpResult result = OpResult.SetResult("数据操作失败!");
-                if (model == null || model.FilePath == string.Empty) return new  OpResult("此文档实体路经不能空");
+                if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
+                    return SupplierCrudFactory.SupplierQualifiedCertificateCrud.UploadFileSupplierQualifiedCertificate(model, siteRootPath);
 
-                if (rootPath == null || rootPath == string.Empty) return  new OpResult("此根路经发生错误");
-
-                var fileDocumentPath = rootPath + model.FilePath.Replace("/", @"\");
-                if(! fileDocumentPath.ExistFile())
-                     result= new OpResult("此" + fileDocumentPath + "文档不存在或路经不对");
-                else
-                {
-                    if (fileDocumentPath.DeleteFileDocumentation())
-                        result = SupplierCrudFactory.SupplierQualifiedCertificateCrud.DeleteSupplierCertificate(model);
-                }
-               
-                return result;
+                if (model != null && model.OpSign == OpMode.Delete)//如果删除文件则启文件相应的删除处理
+                    return SupplierCrudFactory.SupplierQualifiedCertificateCrud.DeleteFileSupplierQualifiedCertificate(model, siteRootPath);
+                return SupplierCrudFactory.SupplierQualifiedCertificateCrud.Store(model);
             }
             catch (Exception ex)
             {
+                return new OpResult("操作出现异常", false);
                 throw new Exception(ex.InnerException.Message);
             }
 
@@ -184,8 +181,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             try
             {
                 if (datas == null || datas.Count < 0) return null;
-                 var dataGroupping = datas.GetGroupList<EligibleSuppliersModel>("");
-                 return dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(CreateFieldMapping());
+                var dataGroupping = datas.GetGroupList<EligibleSuppliersModel>("");
+                return dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(CreateFieldMapping());
             }
             catch (Exception ex)
             {
@@ -224,7 +221,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 new FileFieldMapping ("REACH_Guarantee","REACH保证书") ,
                 new FileFieldMapping ("SVHC_Guarantee","SVHC调查表") ,
                 new FileFieldMapping ("REACH_Guarantee","REACH保证书") ,
-                new FileFieldMapping ("SVHC_Guarantee","SVHC调查表") 
+                new FileFieldMapping ("SVHC_Guarantee","SVHC调查表")
             };
             return fieldmappping;
         }
@@ -261,7 +258,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             return SupplierCrudFactory.SuppliersInfoCrud.SavaSupplierInfoList(modelList);
         }
-       
+
         /// <summary>
         /// 更新并保存供应商信息
         /// </summary>
@@ -295,7 +292,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         SupplierInfoModel GetErpSuppplierInfoBy(string supplierId)
         {
             var erpSupplierInfo = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
-           
+
             if (erpSupplierInfo == null) return null;
             return new SupplierInfoModel
             {
@@ -390,7 +387,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             };
         }
 
-       
+
         #endregion
     }
 

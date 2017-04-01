@@ -126,6 +126,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         #endregion Model
     }
+    
     /// <summary>
     /// 供应商信息表
     /// SuppliersInfo
@@ -943,9 +944,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     public class InPutSupplieCertificateInfoModel
     {
         #region Model
-       /// <summary>
-       /// 供应商ID
-       /// </summary>
+        /// <summary>
+        /// 供应商ID
+        /// </summary>
         public string SupplierId
         { set; get; }
         /// <summary>
@@ -988,7 +989,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
 
 
 
-      /// <summary>
+    /// <summary>
     /// 合格的供应商清册Model
     /// EligibleSuppliersTable
     /// </summary>
@@ -1142,7 +1143,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         // ISO9001 ISO14001 供应商基本资料表 供应商评鉴表  不使用童工申明 
         //供应商环境调查表  廉洁承诺书  PCN协议
         // 质量保证协议 	HSF保证书  REACH保证书	SVHC调查表 
-    
+
         #region  合格证书
         /// <summary>
         ///  ISO9001

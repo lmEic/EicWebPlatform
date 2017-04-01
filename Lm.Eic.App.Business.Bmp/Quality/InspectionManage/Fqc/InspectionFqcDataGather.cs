@@ -25,7 +25,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public int FqcNeedInputDataCountBy(string orderId, int orderIdNumber, string materialId, string InspectionDataGatherType, int defaultValue)
         {
-            if (InspectionDataGatherType == "D") return 1;
+
             return defaultValue;
         }
         /// <summary>
