@@ -7,6 +7,7 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement;
 using System.IO;
 
@@ -63,12 +64,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// </summary>
     public class SupplierQualifiedCertificateCrud : CrudBase<SupplierQualifiedCertificateModel, ISupplierQualifiedCertificateRepository>
     {
-        public SupplierQualifiedCertificateCrud() : base(new SupplierQualifiedCertifcateRepository(), "供应商合格文件录入")
+        public SupplierQualifiedCertificateCrud() : base(new SupplierQualifiedCertifcateRepository(), "供应商合格文件")
         { }
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
+
 
         protected override void AddCrudOpItems()
         {
@@ -80,39 +78,30 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         public OpResult UploadFileSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model, string siteRootPath)
         {
-            OpResult ReOpResult = new OpResult("采集数据模型不能为NULL", false);
-            if (model == null) return ReOpResult;
+            if (model == null) return OpResult.SetResult("采集数据模型不能为NULL", false);
             var oldmodel = this.GetOldQualifiedCertificateModelBy(model);
             if (oldmodel == null)
             {
-                model.OpSign = OpMode.Add;
+                model.OpSign = OpMode.Add;//若不存在则直接添加
                 return this.Store(model, true);
-            }//若不存在则直接添加
+            }
             model.Id_Key = oldmodel.Id_Key; ///先进行操作儿
             SetFixFieldValue(model);
-            ReOpResult = irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Delete(OpContext);
-            if (ReOpResult.Result == false) return ReOpResult;
-            if (oldmodel.FilePath != model.FilePath && oldmodel.FilePath != string.Empty && oldmodel.FilePath != null)//比对新旧文件是否一样,若不一样，则删除旧的文件
-            {
-                if (siteRootPath != string.Empty && siteRootPath != null)
-                {
-                    string fileName = Path.Combine(siteRootPath, oldmodel.FilePath);
-                    fileName = fileName.Replace("/", @"\");
-                    if (File.Exists(fileName))
-                        File.Delete(fileName);
-                }//删除旧的文件
-            }
-            return ReOpResult;
+            var result = irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Delete(OpContext);
+            if (!result.Result) return result;
+            //比对新旧文件是否一样,若不一样，则删除旧的文件
+            oldmodel.FilePath.DeleteExistFile(model.FilePath, siteRootPath);
+            return result;
         }
 
 
         public OpResult DeleteFileSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model, string siteRootPath)
         {
-            OpResult ReOpResult = new OpResult("采集数据模型不能为NULL", false);
+            OpResult ReOpResult = OpResult.SetResult("采集数据模型不能为NULL", false);
             if (model == null) return ReOpResult;
             ReOpResult = irep.Delete(e => e.Id_Key == model.Id_Key, true).ToOpResult_Delete(OpContext);
             if (ReOpResult.Result == false) return ReOpResult;
-            if (model.FilePath != string.Empty && model.FilePath != null)//比对新旧文件是否一样,若不一样，则删除旧的文件
+            if (model.FilePath != string.Empty && model.FilePath != null)//删除旧的文件
             {
                 if (siteRootPath != string.Empty && siteRootPath != null)
                 {
@@ -120,9 +109,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     fileName = fileName.Replace("/", @"\");
                     if (File.Exists(fileName))
                         File.Delete(fileName);
-                }//删除旧的文件
+                }
             }
-            return ReOpResult;
+            return OpResult.SetResult(string.Format("删除文件{0}成功！", model.CertificateFileName), true);
         }
 
         private SupplierQualifiedCertificateModel GetOldQualifiedCertificateModelBy(SupplierQualifiedCertificateModel model)
@@ -159,7 +148,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         }
 
         /// <summary>
-        /// / 添加一条供应商的合格文件记录
+        /// / 添加供应商的合格文件记录
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -269,7 +258,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     m.OpDate = date;
                     //需要添加附加答条件
                 });
-                ///如查SupplierID号存在  
+                ///如查SupplierID号存在
                 if (!modelList.IsNullOrEmpty())
                     return OpResult.SetResult("列表不能为空！ 保存失败");
 
@@ -361,7 +350,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return this.irep.Entities.Where(e => e.TotalCheckScore < limitScore && e.SeasonDateNum == seasonDateNum).ToList();
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="parameterKey"></param>
         /// <returns></returns>
@@ -478,7 +467,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return irep.Entities.Where(e => e.GradeYear == gradeYear).ToList();
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>

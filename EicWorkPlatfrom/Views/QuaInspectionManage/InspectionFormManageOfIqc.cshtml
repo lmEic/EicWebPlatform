@@ -4,7 +4,7 @@
             IQC检验表单管理
         </h6>
     </div>
-   
+
     <div>
         <div class="panel-body">
             <div class="row">
@@ -25,17 +25,22 @@
                         <span yl-operatemsg-board></span>
                     </form>
                 </div>
+                <div class="col-md-2">
+                    <button class="btn btn-warning" type="button" ng-click="vmManager.showCheckModal()" ng-show="vmManager.currentItem.InspectionStatus==='未审核'"><i class="fa  fa-eyedropper"></i>审核</button>
+                    <button class="btn btn-success" type="button"><i class="fa fa-file-text"></i>导出</button>
+                    <button class="btn btn-default" type="button" ng-click="vmManager.refresh()"><i class="fa fa-reply"></i>返回</button>
+                </div>
             </div>
             <div class="h-split"></div>
 
             <div class="row">
                 <div class="col-md-12" id="editWindow">
                     <div class="table-responsive" style="min-height:500px;" cg-busy="{promise:searchPromise}">
-                        <table class="table table-striped table-hover table-bordered" style="table-layout:fixed;word-wrap:break-word; text-wrap:none;">
+                        <table class="table table-striped table-hover table-bordered" style="table-layout:fixed;">
                             <thead>
                                 <tr class="info">
                                     <th>单号</th>
-                                    <th>料号</th>
+                                    <th>品名</th>
                                     <th>供应商</th>
                                     <th>检测项目</th>
                                     <th>图号</th>
@@ -48,8 +53,8 @@
                             <tbody>
                                 <tr ng-repeat="item in vmManager.dataSets track by $index">
                                     <td>{{item.OrderId}}</td>
-                                    <td style="white-space:nowrap;">
-                                        <span title="品名:{{item.MaterialName}} 规格:{{item.MaterialSpec}}">{{item.MaterialId}}</span>
+                                    <td>
+                                        <span title="料号:{{item.MaterialId}} 规格:{{item.MaterialSpec}}">{>{{item.MaterialName}}</span>
                                     </td>
                                     <td>{{item.MaterialSupplier}}</td>
                                     <td>{{item.InspectionItems}}</td>
@@ -168,19 +173,11 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="row">
-                        <div class="col-md-offset-5">
-                            <button class="btn btn-warning" type="button" ng-click="vmManager.showCheckModal()" ng-show="vmManager.currentItem.InspectionStatus==='未审核'"><i class="fa  fa-eyedropper"></i>审核</button>
-                            <button class="btn btn-success" type="button"><i class="fa fa-file-text"></i>导出</button>
-                            <button class="btn btn-default" type="button" ng-click="vmManager.refresh()"><i class="fa fa-reply"></i>返回</button>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div class="panel-footer">
 
     </div>

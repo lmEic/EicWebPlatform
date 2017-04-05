@@ -94,23 +94,19 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public OpResult SavaEditSpplierCertificate(InPutSupplieCertificateInfoModel model, string siteRootPath)
         {
             //判断列表是否为空
-            OpResult reOpresult = new OpResult("没有进任何操作");
-            if (model == null) return new OpResult("数据列表不能为空");
+            OpResult reOpresult = OpResult.SetResult("没有进任何操作");
+            if (model == null) return OpResult.SetResult("数据列表不能为空");
             //通过SupplierId得到供应商信息
             var supplierInfoModel = GetSuppplierInfoBy(model.SupplierId);
             //判断是否为空
-            if (supplierInfoModel == null) return new OpResult(string.Format("没有{0}供应商编号", model.SupplierId), true);
+            if (supplierInfoModel == null) return OpResult.SetResult(string.Format("没有{0}供应商编号", model.SupplierId), true);
             //赋值 供应商属性和采购性质
             supplierInfoModel.PurchaseType = model.PurchaseType;
             supplierInfoModel.SupplierProperty = model.SupplierProperty;
-            
-            if (model.CertificateFileName == null && model.CertificateFileName == string.Empty) new OpResult("证书名称不能为空");
-            //如果存已保存的数据名
-            //if (SupplierCrudFactory.SupplierQualifiedCertificateCrud.IsExistCertificateFileName(model.CertificateFileName))
-            //  return reOpresult;
-            if (!supplierInfoModel.Remark.Contains(model.CertificateFileName))
+            if (model.CertificateFileName == null || model.CertificateFileName == string.Empty) return OpResult.SetResult("证书名称不能为空");
+            if (supplierInfoModel.Remark != null && !supplierInfoModel.Remark.Contains(model.CertificateFileName))
                 supplierInfoModel.Remark += model.CertificateFileName + ",";
-            if (!SaveSupplierInfoModel(supplierInfoModel).Result) return new OpResult("数据保存失败");
+            if (!SaveSupplierInfoModel(supplierInfoModel).Result) return OpResult.SetResult("数据保存失败");
             SupplierQualifiedCertificateModel savemodel = new SupplierQualifiedCertificateModel()
             {
                 SupplierId = model.SupplierId,
@@ -123,13 +119,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 OpPerson = model.OpPerson,
             };
             return StoreEditSpplierCertificate(savemodel, siteRootPath);
-
-            //else return SupplierCrudFactory.SupplierQualifiedCertificateCrud.SavaSupplierEligibleList(certificateModelList);
-            
         }
 
 
-        
+
         /// <summary>
         /// 删除供应商证书
         /// </summary>

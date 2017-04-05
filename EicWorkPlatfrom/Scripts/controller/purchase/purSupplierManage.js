@@ -260,22 +260,22 @@ null,
     $scope.operate = operate;
     //保存供应商证书数据
     operate.savePurSupplierCertificateDatas = function (isValid) {
-        leeDataHandler.dataOperate.add(operate, isValid, function () {
-            supplierDataOpService.storePurSupplierCertificateInfo(editManager.fileList).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                    if (opresult.Result) {
-                        vmManager.editItem.PurchaseType = $scope.vm.PurchaseType;
-                        vmManager.editItem.SupplierProperty = $scope.vm.SupplierProperty;
-                        editManager.fileList = [];
-                        vmManager.editWindowShow = false;
-                    }
-                })
-            });
-        });
+        vmManager.editItem.PurchaseType = $scope.vm.PurchaseType;
+        vmManager.editItem.SupplierProperty = $scope.vm.SupplierProperty;
+        operate.cancel();
+    };
+    operate.cancel = function () {
+        editManager.certificateDatas = [];
+        editManager.fileList = [_.clone(uploadFileVM)];
+        vmManager.editWindowShow = false;
     };
 
     ///选择文件并上传
     $scope.selectFile = function (el) {
+        if (!$scope.formPurchase.$valid) {
+            alert("信息录入不完整，请检查！");
+            return;
+        }
         leeHelper.upoadFile(el, function (fd) {
             $scope.uploadPromie = supplierDataOpService.uploadPurSupplierCertificateFile(fd).then(function (result) {
                 if (result === "OK") {
@@ -290,7 +290,10 @@ null,
                         fileItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
                         supplierDataOpService.storePurSupplierCertificateInfo(fileItem).then(function (opresult) {
                             if (opresult.Result) {
-                                alert("上传成功");
+                                if (angular.isObject(opresult.Entity)) {
+                                    editManager.certificateDatas.push(opresult.Entity);
+                                }
+                                alert("上传文件:" + fd.name + "成功！");
                             }
                         });
                     }
