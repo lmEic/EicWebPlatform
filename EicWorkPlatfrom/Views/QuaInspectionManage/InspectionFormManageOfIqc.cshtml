@@ -54,7 +54,7 @@
                                 <tr ng-repeat="item in vmManager.dataSets track by $index">
                                     <td>{{item.OrderId}}</td>
                                     <td>
-                                        <span title="料号:{{item.MaterialId}} 规格:{{item.MaterialSpec}}">{>{{item.MaterialName}}</span>
+                                        <span title="料号:{{item.MaterialId}} 规格:{{item.MaterialSpec}}">{{item.MaterialName}}</span>
                                     </td>
                                     <td>{{item.MaterialSupplier}}</td>
                                     <td>{{item.InspectionItems}}</td>

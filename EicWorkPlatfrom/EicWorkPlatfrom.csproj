@@ -181,8 +181,6 @@
     <Content Include="Content\angular-busy\dist\angular-busy.js" />
     <Content Include="Content\angular-busy\dist\angular-busy.min.css" />
     <Content Include="Content\angular-busy\dist\angular-busy.min.js" />
-    <Content Include="Content\angular-fileupload\dist\angular-file-upload.js" />
-    <Content Include="Content\angular-fileupload\dist\angular-file-upload.min.js" />
     <Content Include="Content\angular-motion\dist\angular-motion.css" />
     <Content Include="Content\angular-motion\dist\angular-motion.min.css" />
     <Content Include="Content\angular-motion\dist\modules\collapse.css" />
@@ -319,6 +317,12 @@
     <Content Include="Content\login\login.css" />
     <Content Include="Content\login\profilepicture.jpg" />
     <Content Include="Content\main.css" />
+    <Content Include="Content\ng-file-upload\dist\ng-file-upload-all.js" />
+    <Content Include="Content\ng-file-upload\dist\ng-file-upload-all.min.js" />
+    <Content Include="Content\ng-file-upload\dist\ng-file-upload-shim.js" />
+    <Content Include="Content\ng-file-upload\dist\ng-file-upload-shim.min.js" />
+    <Content Include="Content\ng-file-upload\dist\ng-file-upload.js" />
+    <Content Include="Content\ng-file-upload\dist\ng-file-upload.min.js" />
     <Content Include="Content\pdfmaker\pdfmake.js" />
     <Content Include="Content\pdfmaker\pdfmake.min.js" />
     <Content Include="Content\pdfmaker\vfs_fonts.js" />
@@ -468,8 +472,6 @@
     <Content Include="Content\bootwatch\_bootswatch.scss" />
     <Content Include="Content\bootwatch\_variables.scss" />
     <Content Include="Content\pdfmaker\pdfmake.min.js.map" />
-    <Content Include="Content\angular-fileupload\dist\angular-file-upload.js.map" />
-    <Content Include="Content\angular-fileupload\dist\angular-file-upload.min.js.map" />
     <None Include="Properties\PublishProfiles\eicApp.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -1225,7 +1227,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Shipping\Index.cshtml" />

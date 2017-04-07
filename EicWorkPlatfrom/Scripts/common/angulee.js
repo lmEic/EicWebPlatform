@@ -311,6 +311,22 @@ var leeHelper = (function () {
                 }
             }
         },
+        ///上传多个文件
+        upoadFiles: function (el, handler) {
+            var files = el.files;
+            var fd = new FormData();
+            var fileNameList = [];
+            if (files.length > 0) {
+                _.forEach(files, function (file) {
+                    fd.append('files', file);
+                    fileNameList.push(file.name);
+                });
+                if (handler && _.isFunction(handler)) {
+                    fd.fileNameList = fileNameList;
+                    handler(fd);
+                }
+            }
+        },
         ///设置用户数据
         setUserData: function (uiVm) {
             var user = leeDataHandler.dataStorage.getLoginedUser();
@@ -477,14 +493,14 @@ var leeTreeHelper = (function () {
 ///日期格式化扩展
 Date.prototype.pattern = function (fmt) {
     var o = {
-        "M+": this.getMonth() + 1, //月份         
-        "d+": this.getDate(), //日         
-        "h+": this.getHours() % 12 === 0 ? 12 : this.getHours() % 12, //小时         
-        "H+": this.getHours(), //小时         
-        "m+": this.getMinutes(), //分         
-        "s+": this.getSeconds(), //秒         
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度         
-        "S": this.getMilliseconds() //毫秒         
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours() % 12 === 0 ? 12 : this.getHours() % 12, //小时
+        "H+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
     };
     var week = {
         "0": "/u65e5",

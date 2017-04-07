@@ -1,13 +1,12 @@
 ﻿using Lm.Eic.App.Business.Bmp.Purchase;
 using Lm.Eic.App.DomainModel.Bpm.Purchase;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
-using Lm.Eic.Uti.Common.YleeOOMapper;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using System;
+using System.IO;
 
 namespace EicWorkPlatfrom.Controllers.Purchase
 {
@@ -34,7 +33,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// 供应商证书管理
         /// </summary>
         /// <returns></returns>
-        /// 
+        ///
         [NoAuthenCheck]
         public ActionResult SupplierCertificateManage()
         {
@@ -94,14 +93,16 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <param name="file"></param>
         /// <returns></returns>
         [NoAuthenCheck]
+        [HttpPost]
         public JsonResult UploadPurSupplierCertificateFile(HttpPostedFileBase file)
         {
             if (file != null)
             {
                 if (file.ContentLength > 0)
                 {
-                    string year = DateTime.Now.Year.ToString();///按年份进行存储
-                                                               ///待加入验证文件名称逻辑:
+                    ///按年份进行存储
+                    string year = DateTime.Now.Year.ToString();
+                    ///待加入验证文件名称逻辑:
                     string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.PurSupplierCertificate, year), file.FileName);
                     file.SaveAs(fileName);
                     return Json("OK");
@@ -163,7 +164,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         }
         #endregion
 
-        #region SupplierEvaluationManage 供应商考核登记 
+        #region SupplierEvaluationManage 供应商考核登记
         [NoAuthenCheck]
         public ActionResult SupplierEvaluationManage()
         {
@@ -233,7 +234,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// 供应商辅导数据导出EXcel
         /// </summary>
         /// <returns></returns>
-        /// 
+        ///
         [NoAuthenCheck]
         public FileResult CreateSupplierTourToExcel()
         {

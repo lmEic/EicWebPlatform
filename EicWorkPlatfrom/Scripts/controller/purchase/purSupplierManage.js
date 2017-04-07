@@ -36,9 +36,9 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     };
 
     ///上传供应商证书文件
-    purDb.uploadPurSupplierCertificateFile = function (file) {
+    purDb.uploadPurSupplierCertificateFile = function (files) {
         var url = purUrlPrefix + 'UploadPurSupplierCertificateFile';
-        return ajaxService.uploadFile(url, file);
+        return ajaxService.uploadFile(url, files);
     };
     ///存储合格证书
     purDb.storePurSupplierCertificateInfo = function (certificateData) {
@@ -118,73 +118,73 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
 });
 
 //供应商证书管理
-purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService, $modal) {
+purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService) {
 
-    //    var item = {
-    //        BillAddress
-    //:
-    //"慈溪市周巷镇三江口村协同191号",
-    //        EligibleCertificate
-    //:
-    //null,
-    //        Id_key
-    //    :
-    //    0,
-    //        LastPurchaseDate
-    //    :
-    //    "2016-11-22",
-    //        OpDate
-    //    :
-    //    "0001-01-01",
-    //        OpPerson
-    //    :
-    //    null,
-    //        OpSign
-    //    :
-    //    null,
-    //        OpTime
-    //    :
-    //    "0001-01-01",
-    //        PurchaseType
-    //    :
-    //    null,
-    //        PurchaseUser
-    //    :
-    //    "008409    ",
-    //        Remark
-    //    :
-    //    null,
-    //        SupplierAddress
-    //    :
-    //    "慈溪市周巷镇三江口村协同191号",
-    //        SupplierEmail
-    //    :
-    //    "46158433@qq.com",
-    //        SupplierFaxNo
-    //    :
-    //    "63498634",
-    //        SupplierId
-    //    :
-    //    "D10069",
-    //        SupplierName
-    //    :
-    //    "慈溪市周巷双溪橡胶制品厂",
-    //        SupplierProperty
-    //    :
-    //    null,
-    //        SupplierShortName
-    //    :
-    //    "双溪橡胶",
-    //        SupplierTel
-    //    :
-    //    "63498634",
-    //        SupplierUser
-    //    :
-    //    "袁晓春",
-    //        UpperPurchaseDate
-    //    :
-    //    "2016-11-19"
-    //    };
+    var item = {
+        BillAddress
+:
+"慈溪市周巷镇三江口村协同191号",
+        EligibleCertificate
+:
+null,
+        Id_key
+    :
+    0,
+        LastPurchaseDate
+    :
+    "2016-11-22",
+        OpDate
+    :
+    "0001-01-01",
+        OpPerson
+    :
+    null,
+        OpSign
+    :
+    null,
+        OpTime
+    :
+    "0001-01-01",
+        PurchaseType
+    :
+    null,
+        PurchaseUser
+    :
+    "008409    ",
+        Remark
+    :
+    null,
+        SupplierAddress
+    :
+    "慈溪市周巷镇三江口村协同191号",
+        SupplierEmail
+    :
+    "46158433@qq.com",
+        SupplierFaxNo
+    :
+    "63498634",
+        SupplierId
+    :
+    "D10069",
+        SupplierName
+    :
+    "慈溪市周巷双溪橡胶制品厂",
+        SupplierProperty
+    :
+    null,
+        SupplierShortName
+    :
+    "双溪橡胶",
+        SupplierTel
+    :
+    "63498634",
+        SupplierUser
+    :
+    "袁晓春",
+        UpperPurchaseDate
+    :
+    "2016-11-19"
+    };
 
     $scope.vm = {
         PurchaseType: '',
@@ -194,8 +194,8 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
 
     var vmManager = $scope.vmManager = {
         searchYear: new Date().getFullYear(),
-        datasets: [],
-        datasource: [item],
+        datasets: [item],
+        datasource: [],
         editWindowShow: false,
         goToEdit: function (item) {
             vmManager.editItem = item;
@@ -269,6 +269,7 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
         editManager.fileList = [_.clone(uploadFileVM)];
         vmManager.editWindowShow = false;
     };
+
 
     ///选择文件并上传
     $scope.selectFile = function (el) {

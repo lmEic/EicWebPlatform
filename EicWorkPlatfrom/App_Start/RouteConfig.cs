@@ -7,7 +7,7 @@ namespace EicWorkPlatfrom
     {
         static AuthenCheckManager()
         {
-            IsCheck = true;
+            //IsCheck = true;
         }
 
         private static bool isCheck = false;
@@ -40,7 +40,7 @@ namespace EicWorkPlatfrom
             }
             else
             {
-                //Product 
+                //Product
                 //EicSystemManage
                 //Equipment
                 //HR

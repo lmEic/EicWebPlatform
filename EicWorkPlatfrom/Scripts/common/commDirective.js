@@ -841,7 +841,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         var defer = $q.defer();
         $http.post(url, para, {
             transformRequest: angular.identity,
-            headers: { 'Content-Type': undefined }
+            headers: { 'Content-Type': undefined },
         }).success(function (data) {
             defer.resolve(data);
         }).error(function (errdata) {
