@@ -39,7 +39,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
                 if (loginUser.Password == loginMdl.Password)
                 {
                     status.StatusCode = 0;
-                    identity = LoginHandler.CollectUserInfoWhenLogined(identity,loginMdl.UserId);
+                    identity = LoginHandler.CollectUserInfoWhenLogined(identity, loginMdl.UserId);
                 }
                 else
                 {
@@ -66,7 +66,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
             {
                 return OpResult.SetResult("该用户已经存在！", false);
             }
-            var UserOrganizeInfo =UserInfoHandler.GetLoginedUserInfo(user.UserId);
+            var UserOrganizeInfo = UserInfoHandler.GetLoginedUserInfo(user.UserId);
             if (UserOrganizeInfo != null)
             {
                 user.CurrentStatus = "可使用";
@@ -76,7 +76,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
             }
             else
             {
-                return OpResult.SetResult("人事系统中没有此用户信息！", false);
+                return OpResult.SetResult("人事系统中没有此用户信息！");
             }
         }
 
@@ -118,7 +118,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
         /// </summary>
         /// <param name="loginUser"></param>
         /// <returns></returns>
-        internal static IdentityInfo CollectUserInfoWhenLogined(IdentityInfo waitHandlerModel,string userId)
+        internal static IdentityInfo CollectUserInfoWhenLogined(IdentityInfo waitHandlerModel, string userId)
         {
             var user = UserInfoHandler.GetLoginedUserInfo(userId);
             waitHandlerModel.LoginedUser = user;

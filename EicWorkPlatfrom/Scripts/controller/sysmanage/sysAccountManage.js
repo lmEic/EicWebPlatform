@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 var smModule = angular.module('bpm.sysmanageApp');
-smModule.factory('accountService', function ($http,$q) {
+smModule.factory('accountService', function ($http, $q) {
     var account = {};
     var urlPrefix = '/Account/';
 
@@ -16,7 +16,7 @@ smModule.factory('accountService', function ($http,$q) {
     };
     var postData = function (url, para) {
         var defer = $q.defer();
-        $http.post(url,para).success(function (data) {
+        $http.post(url, para).success(function (data) {
             defer.resolve(data);
         }).error(function (errdata) {
             defer.reject(errdata);
@@ -107,7 +107,7 @@ smModule.factory('treeSetService', function () {
             angular.forEach(childrenNodes, function (node) {
                 var trnode = {
                     name: node.ModuleText,
-                    children:createTreeDataset(datas, node.ModuleText),
+                    children: createTreeDataset(datas, node.ModuleText),
                     vm: node
                 };
                 treeNodes.push(trnode);
@@ -116,7 +116,7 @@ smModule.factory('treeSetService', function () {
         return treeNodes;
     };
     var zTreeSet = {
-        treeId:'navModuleTree',
+        treeId: 'navModuleTree',
         navMenus: [],
         startLoad: false,
         setTreeDataset: function (datas) {
@@ -142,7 +142,7 @@ smModule.factory('vmService', function () {
             TemplateID: null,
             AtLevel: 0,
             Icon: null,
-            DisplayOrder:0,
+            DisplayOrder: 0,
         },
     };
     return viewModel;
@@ -157,12 +157,11 @@ smModule.directive('ngBlur', function ($parse) {
         });
     }
 })
-smModule.directive('ngFocus',function () {
+smModule.directive('ngFocus', function () {
     return {
         restrict: "AE",
         require: "ngModel",
-        link: function (scope, element, attrs, ctrl)
-        {
+        link: function (scope, element, attrs, ctrl) {
             var FOCUS_CLASS = "ng-focused";
             ctrl.$focused = false;
             element.bind('focus', function (evt) {
@@ -182,17 +181,15 @@ smModule.directive('ngFocus',function () {
 smModule.directive('ensureUserUnique', function (accountService) {
     return {
         require: '^ngModel',
-        link: function (scope, element, attrs, ngModel)
-        {
+        link: function (scope, element, attrs, ngModel) {
             var setAsChecking = function (bool) {
                 ngModel.$setValidity('checkingAvailability', !bool);
             };
             var setAsUserName = function (bool) {
-                ngModel.$setValidity('usernameAvailability',bool);
+                ngModel.$setValidity('usernameAvailability', bool);
             };
             ngModel.$parsers.push(function (val) {
-                if (!val || val.length <= 5)
-                {
+                if (!val || val.length <= 5) {
                     return;
                 }
                 setAsChecking(true);
@@ -262,7 +259,7 @@ smModule.controller('addUserMatchRoleCtrl', function ($scope, accountService) {
 
     var addRowToDataset = function (role) {
         var datarow = _.clone(userVm);
-        leeHelper.copyVm(role, datarow,['UserId','UserName']);
+        leeHelper.copyVm(role, datarow, ['UserId', 'UserName']);
         vmManager.dataset.push(datarow);
     };
 
@@ -296,7 +293,7 @@ smModule.controller('addUserMatchRoleCtrl', function ($scope, accountService) {
                 vmManager.selectRole(role);
             });
         },
-        selectRole:function(role){
+        selectRole: function (role) {
             var item = _.find(vmManager.matchRoles, { RoleId: role.RoleId });
             var dataitem = _.find(vmManager.dataset, { RoleId: role.RoleId });
 
@@ -309,15 +306,13 @@ smModule.controller('addUserMatchRoleCtrl', function ($scope, accountService) {
                     addRowToDataset(role);
                 }
                 else {
-                    if (dataitem.OpSign === 'delete')
-                    {
+                    if (dataitem.OpSign === 'delete') {
                         dataitem.OpSign = 'add';
                     }
                 }
             }
             else {
-                if (item !== undefined)
-                {
+                if (item !== undefined) {
                     leeHelper.remove(vmManager.matchRoles, item);
                 }
                 //若不存在，则添加到数据集队列中，标志位delete
@@ -336,14 +331,13 @@ smModule.controller('addUserMatchRoleCtrl', function ($scope, accountService) {
             vmManager.selectRole(role);
 
             var roleitem = _.find(vmManager.roles, { RoleId: role.RoleId });
-            if (roleitem !== undefined)
-            {
+            if (roleitem !== undefined) {
                 roleitem.isSelect = false;
             }
         },
         //数据集
         dataset: [],
-        matchRoles:[],
+        matchRoles: [],
     };
     $scope.vmManager = vmManager;
 
@@ -376,22 +370,22 @@ smModule.controller('addUserMatchRoleCtrl', function ($scope, accountService) {
     });
 })
 //------------------模块管理---------------------
-smModule.controller('moduleNavManageCtrl', function ($scope,$modal,vmService,accountService,treeSetService) {
+smModule.controller('moduleNavManageCtrl', function ($scope, $modal, vmService, accountService, treeSetService) {
     var moduleNavVm = vmService.moduleNavVm;
     var oldModuleNavVm = _.clone(moduleNavVm);
     $scope.vm = moduleNavVm;
 
-    var operate =Object.create(leeDataHandler.operateStatus);
+    var operate = Object.create(leeDataHandler.operateStatus);
     operate.vm = moduleNavVm;
-    operate.nodeTypes= [
+    operate.nodeTypes = [
             { name: 'module', text: '模块' },
             { name: 'action', text: '操作' },
     ];
-    operate.UiTypes= [
+    operate.UiTypes = [
            { name: 'BS', text: 'B/S端' },
            { name: 'CS', text: 'C/S端' },
     ];
-    operate.delNode=function(){
+    operate.delNode = function () {
         if (angular.isUndefined(zTreeSet.treeNode) || zTreeSet.treeNode === null) {
             alert("请先选择要删除的节点!")
         }
@@ -409,9 +403,9 @@ smModule.controller('moduleNavManageCtrl', function ($scope,$modal,vmService,acc
         saveModuleNav(isValid, 'edit', 'updateNode');
     };
 
-    var saveModuleNav = function (isValid,opType,opNodeType) {
+    var saveModuleNav = function (isValid, opType, opNodeType) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            accountService.saveModuleNavData(moduleNavVm,oldModuleNavVm,opType).then(function (opresult) {
+            accountService.saveModuleNavData(moduleNavVm, oldModuleNavVm, opType).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
                         var vm = _.clone($scope.vm);
@@ -453,7 +447,7 @@ smModule.controller('moduleNavManageCtrl', function ($scope,$modal,vmService,acc
         });
     };
 
-    operate.deleteModal=$modal({
+    operate.deleteModal = $modal({
         title: "删除提示",
         content: "你确定要删除此节点数据吗?",
         templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
@@ -507,7 +501,7 @@ smModule.controller('addRoleCtrl', function ($scope, accountService) {
             uiVM.OpSign = 'add';
             vmManager.canEdit = false;
         },
-        canEdit:false,
+        canEdit: false,
         roles: [],
         roleGroups: [],
         selectRoleGroup: function (item) {
@@ -536,13 +530,11 @@ smModule.controller('addRoleCtrl', function ($scope, accountService) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     var role = _.clone(uiVM);
                     role.Id_Key = opresult.Id_Key;
-                    if (role.OpSign === 'add')
-                    {
+                    if (role.OpSign === 'add') {
                         vmManager.roles.push(role);
                         vmManager.roleGroups = leeHelper.getUniqDatas(vmManager.roles, 'RoleGroupName');
                     }
-                    else if (role.OpSign === 'edit')
-                    {
+                    else if (role.OpSign === 'edit') {
                         var current = _.find(vmManager.roles, { RoleId: role.RoleId });
                         if (current !== undefined)
                             leeHelper.copyVm(role, current);
@@ -558,46 +550,76 @@ smModule.controller('addRoleCtrl', function ($scope, accountService) {
         });
     };
 })
-smModule.controller('assemblyManageCtrl', function ($scope, accountService) {
-    $scope.navmenu = {
-        getMenuItems: function () {
-            var menuItems = [
-            { templateId: 'AddAssemblyTemplate', menuText: '新增程序集', },
-            ];
-            return menuItems;
+smModule.controller('assignUserToRoleCtrl', function ($scope, accountService) {
+    var userVm = {
+        UserId: null,
+        UserName: null,
+        RoleId: null,
+        RoleName: null,
+        RoleLevel: 0,
+        OpSign: 'add',
+    };
+
+    $scope.vm = userVm;
+
+    var addRowToDataset = function (role) {
+        var datarow = _.clone(userVm);
+        leeHelper.copyVm(role, datarow, ['UserId', 'UserName']);
+        vmManager.dataset.push(datarow);
+    };
+
+    var vmManager = {
+        roles: [],
+        matchRoles: [],
+        findUserByUserId: function ($event) {
+            if ($event.keyCode === 13) {
+                if (userVm.UserId === null || userVm.RoleId === null) {
+                    alert("请先选择角色!");
+                    return;
+                }
+                $scope.promise = accountService.findUserById(userVm.UserId).then(function (data) {
+                    if (_.isObject(data)) {
+                        userVm.UserId = data.UserId;
+                        userVm.UserName = data.UserName;
+                        userVm.OpSign = 'add';
+                        vmManager.matchRoles.push(_.clone(userVm));
+                        userVm.UserId = null;
+                    }
+                });
+            }
         },
-        templateId: "AddAssemblyTemplate"
+        selectRole: function (role) {
+            leeHelper.copyVm(role, userVm);
+        },
+        removeRole: function (role) {
+            leeHelper.remove(vmManager.matchRoles, role);
+        }
     };
-})
-smModule.controller("addAssemblyCtrl", function ($scope, accountService) {
-    var assemblyVm = {
-        assemblyName: null,
-        assemblyText: null
-    };
-    $scope.vm = assemblyVm;
+    $scope.vmManager = vmManager;
 
     var operate = Object.create(leeDataHandler.operateStatus);
-    operate.vm = assemblyVm;
 
-    operate.addAssembly = function (isvalid)
-    {
-        leeDataHandler.dataOperate.add(operate, isvalid, function () {
-            accountService.addAssembly(assemblyVm).then(function (opresult) {
+    operate.saveMatchRoles = function () {
+        leeDataHandler.dataOperate.add(operate, true, function () {
+            $scope.promise = accountService.addMatchRoles(vmManager.matchRoles).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                    leeHelper.clearVM(assemblyVm);
+                    vmManager.matchRoles = [];
                 });
             });
         });
-    }
-    operate.cancel = function () {
-        leeDataHandler.dataOperate.refresh(operate, function () {
-            leeHelper.clearVM(assemblyVm);
-        });
     };
     $scope.operate = operate;
+    $scope.promise = accountService.getRoles().then(function (datas) {
+        vmManager.roles = [];
+        angular.forEach(datas, function (item) {
+            var role = _.clone(userVm);
+            leeHelper.copyVm(item, role);
+            vmManager.roles.push(role);
+        });
+    });
 })
 //------------------权限分配---------------------
-smModule.controller("assignUserPowerCtrl", function ($scope,vmService,accountService, treeSetService) {
+smModule.controller("assignUserPowerCtrl", function ($scope, vmService, accountService, treeSetService) {
     var Vm = vmService.moduleNavVm;
     $scope.vm = Vm;
     var operate = {
@@ -667,15 +689,14 @@ smModule.controller("assignUserPowerCtrl", function ($scope,vmService,accountSer
                 }
                 else {//如果取消选定
                     leeHelper.remove(arole.roles, role);//则从显示队列中移除
-                    roleInfo.changeDataList(role,'delete');//并添加到上传数据库的移除队列中
+                    roleInfo.changeDataList(role, 'delete');//并添加到上传数据库的移除队列中
                 }
             }
         },
-        changeDataList: function (role,opSign) {
+        changeDataList: function (role, opSign) {
             var id = role.roleId + '_' + Vm.AssemblyName + '_' + Vm.ModuleName + '_' + Vm.CtrlName + '_' + Vm.ActionName + '_' + opSign;
             var arole = _.findWhere(roleInfo.dataList, { id: id });
-            if (angular.isUndefined(arole))
-            {
+            if (angular.isUndefined(arole)) {
                 //直接生成扁平模型
                 var mdlrole = angular.copy(Vm);
                 mdlrole.RoleId = role.roleId;
@@ -689,9 +710,8 @@ smModule.controller("assignUserPowerCtrl", function ($scope,vmService,accountSer
             roleInfo.checkChange(role);
         },
         loadRoleMatchModules: function () {
-            $scope.roleModulePromise = accountService.findRoleMatchModules(Vm.AssemblyName, Vm.ModuleName,Vm.CtrlName).then(function (datas) {
-                if (angular.isArray(datas))
-                {
+            $scope.roleModulePromise = accountService.findRoleMatchModules(Vm.AssemblyName, Vm.ModuleName, Vm.CtrlName).then(function (datas) {
+                if (angular.isArray(datas)) {
                     roleInfo.assignRoles = [];
                     angular.forEach(datas, function (rm) {
                         //从角色列表中找到匹配的角色信息
@@ -717,7 +737,7 @@ smModule.controller("assignUserPowerCtrl", function ($scope,vmService,accountSer
 smModule.controller("assignUserPowerLotCtrl", function ($scope, vmService, accountService, treeSetService) {
     var uiVm = {
         RoleId: null,
-        RoleName:null,
+        RoleName: null,
         AssemblyName: null,
         ModuleName: null,
         ModuleText: null,
@@ -772,7 +792,7 @@ smModule.controller("assignUserPowerLotCtrl", function ($scope, vmService, accou
         //显示集
         roleMatchModules: [],
         //数据集
-        dbDataset:[],
+        dbDataset: [],
     };
     $scope.vmManager = vmManager;
 
@@ -780,8 +800,7 @@ smModule.controller("assignUserPowerLotCtrl", function ($scope, vmService, accou
 
     operate.saveDatas = function () {
         var dataList = _.where(vmManager.dbDataset, { IsNew: true });
-        if (_.isArray(dataList) && dataList.length > 0)
-        {
+        if (_.isArray(dataList) && dataList.length > 0) {
             accountService.saveRoleMatchModule(dataList).then(function (opresult) {
                 if (opresult.Result) {
                     leeTreeHelper.checkAllNodes(zTreeSet.treeId, false);
@@ -824,8 +843,7 @@ smModule.controller("assignUserPowerLotCtrl", function ($scope, vmService, accou
             }
         }
         else {
-            if (rm !== undefined)
-            {
+            if (rm !== undefined) {
                 leeHelper.remove(vmManager.roleMatchModules, rm);
             }
             if (dataitem !== undefined) {

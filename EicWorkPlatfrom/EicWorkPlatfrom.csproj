@@ -1332,6 +1332,8 @@
     <Content Include="Views\QuaInspectionManage\FqcInspectionItemConfiguration.cshtml" />
     <Content Include="Views\CommonTpl\CheckboxTpl.cshtml" />
     <Content Include="Views\CommonTpl\UploadFileTpl.cshtml" />
+    <Content Include="Views\Account\SysRoleAssignManage.cshtml" />
+    <Content Include="Views\CommonTpl\SwitchButtonTpl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

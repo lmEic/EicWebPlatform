@@ -754,7 +754,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         }
     };
 })
-    //--------------------------checkbox-------------------------------------
+ //--------------------------uploadFile-------------------------------------
 .directive('ylUploadFile', function () {
     return {
         restrict: "EA",
@@ -763,6 +763,27 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         scope: true,
         link: function (scope, element, attr) {
 
+        }
+    };
+})
+ //--------------------------uploadFile-------------------------------------
+.directive('ylSwitchButton', function () {
+    return {
+        restrict: "EA",
+        replace: false,
+        templateUrl: '/CommonTpl/SwitchButtonTpl',
+        scope: {
+            toggle: '&',
+            switched: '='
+        },
+        link: function (scope, element, attr) {
+            if (!scope.isSelectAll)
+                scope.isSelectAll = false;
+            scope.selectAll = function () {
+                scope.toggle();
+                scope.switched = !scope.switched;
+                scope.isSelectAll = !scope.isSelectAll;
+            };
         }
     };
 })
