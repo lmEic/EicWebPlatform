@@ -92,8 +92,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         public static DateTime ToDate(this string dt)
         {
             DateTime d = DateTime.Now.ToDate();
-            if (dt == string.Empty) return d; 
-            
+            if (dt == string.Empty) return d;
+
             if (DateTime.TryParse(dt, out d))
             {
                 return d.ToDate();
@@ -104,7 +104,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
             }
             return d;
         }
-       
+
         /// <summary>
         /// 将字符串转换为int类型
         /// </summary>
@@ -157,7 +157,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         public static long ToLong(this string value)
         {
             long r = 0;
-            if (long.TryParse (value ,out r ))
+            if (long.TryParse(value, out r))
             { return r; }
             return r;
         }
@@ -319,11 +319,11 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         /// </summary>
         /// <param name="context">操作的对象</param>
         /// <returns></returns>
-        public static OpResult ToOpResult_Add(this int record, string context,decimal id_Key)
+        public static OpResult ToOpResult_Add(this int record, string context, decimal id_Key)
         {
             string sucessMsg = string.Format("添加{0}数据成功", context);
             string failMsg = string.Format("添加{0}数据失败", context);
-            return OpResult.SetResult(sucessMsg, failMsg, record,id_Key);
+            return OpResult.SetResult(sucessMsg, failMsg, record, id_Key);
         }
 
         /// <summary>
@@ -396,5 +396,12 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         }
 
         #endregion Int
+
+        #region trim
+        public static string TrimEndNewLine(this string content)
+        {
+            return content.TrimEnd((char[])"\r\n".ToCharArray());
+        }
+        #endregion
     }
 }

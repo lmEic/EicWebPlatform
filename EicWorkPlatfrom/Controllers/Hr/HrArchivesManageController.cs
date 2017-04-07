@@ -286,7 +286,8 @@ namespace EicWorkPlatfrom.Controllers.Hr
             {
                 datas.ForEach(e =>
                 {
-                    e.Department = ArchiveService.ArchivesManager.DepartmentMananger.GetDepartmentText(e.Department);
+                    string dep = e.Department.TrimEndNewLine();
+                    e.Department = ArchiveService.ArchivesManager.DepartmentMananger.GetDepartmentText(dep);
 
                 });
             }

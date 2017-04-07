@@ -120,71 +120,71 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
 //供应商证书管理
 purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService) {
 
-    var item = {
-        BillAddress
-:
-"慈溪市周巷镇三江口村协同191号",
-        EligibleCertificate
-:
-null,
-        Id_key
-    :
-    0,
-        LastPurchaseDate
-    :
-    "2016-11-22",
-        OpDate
-    :
-    "0001-01-01",
-        OpPerson
-    :
-    null,
-        OpSign
-    :
-    null,
-        OpTime
-    :
-    "0001-01-01",
-        PurchaseType
-    :
-    null,
-        PurchaseUser
-    :
-    "008409    ",
-        Remark
-    :
-    null,
-        SupplierAddress
-    :
-    "慈溪市周巷镇三江口村协同191号",
-        SupplierEmail
-    :
-    "46158433@qq.com",
-        SupplierFaxNo
-    :
-    "63498634",
-        SupplierId
-    :
-    "D10069",
-        SupplierName
-    :
-    "慈溪市周巷双溪橡胶制品厂",
-        SupplierProperty
-    :
-    null,
-        SupplierShortName
-    :
-    "双溪橡胶",
-        SupplierTel
-    :
-    "63498634",
-        SupplierUser
-    :
-    "袁晓春",
-        UpperPurchaseDate
-    :
-    "2016-11-19"
-    };
+    //    var item = {
+    //        BillAddress
+    //:
+    //"慈溪市周巷镇三江口村协同191号",
+    //        EligibleCertificate
+    //:
+    //null,
+    //        Id_key
+    //    :
+    //    0,
+    //        LastPurchaseDate
+    //    :
+    //    "2016-11-22",
+    //        OpDate
+    //    :
+    //    "0001-01-01",
+    //        OpPerson
+    //    :
+    //    null,
+    //        OpSign
+    //    :
+    //    null,
+    //        OpTime
+    //    :
+    //    "0001-01-01",
+    //        PurchaseType
+    //    :
+    //    null,
+    //        PurchaseUser
+    //    :
+    //    "008409    ",
+    //        Remark
+    //    :
+    //    null,
+    //        SupplierAddress
+    //    :
+    //    "慈溪市周巷镇三江口村协同191号",
+    //        SupplierEmail
+    //    :
+    //    "46158433@qq.com",
+    //        SupplierFaxNo
+    //    :
+    //    "63498634",
+    //        SupplierId
+    //    :
+    //    "D10069",
+    //        SupplierName
+    //    :
+    //    "慈溪市周巷双溪橡胶制品厂",
+    //        SupplierProperty
+    //    :
+    //    null,
+    //        SupplierShortName
+    //    :
+    //    "双溪橡胶",
+    //        SupplierTel
+    //    :
+    //    "63498634",
+    //        SupplierUser
+    //    :
+    //    "袁晓春",
+    //        UpperPurchaseDate
+    //    :
+    //    "2016-11-19"
+    //    };
 
     $scope.vm = {
         PurchaseType: '',
