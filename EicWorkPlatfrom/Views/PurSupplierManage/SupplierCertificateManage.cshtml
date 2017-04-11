@@ -4,12 +4,21 @@
         <h6 class="panel-title">供应商证书管理</h6>
     </div>
     <div class="panel-body" id="editWindow">
-        <form class="form-inline" role="search">
-            @*<input type="text" class="form-control" ng-model="vmManager.searchYear" placeholder="请输入四位年份 如：2016" />*@
-            <span yl-month-button data-title-visible="true" data-yearmonth="vmManager.searchYear"></span>
-            <button type="button" class="btn btn-default" ng-click="vmManager.getPurQualifiedSupplier()"><i class="fa fa-search"></i> 载入</button>
-            <a class="btn btn-success" href="@Url.Action("CreateQualifiedSupplierInfoList", "PurSupplierManage")"><i class="fa fa-file-excel-o"></i> 导出Excel</a>
-        </form>
+        <div class="row">
+            <div class="col-md-6">
+                <form class="form-inline" role="search">
+                    <span yl-month-button data-title-visible="true" data-yearmonth="vmManager.searchYear"></span>
+                    <button type="button" class="btn btn-default" ng-click="vmManager.getPurQualifiedSupplier()"><i class="fa fa-search"></i> 载入</button>
+                    <a class="btn btn-success" href="@Url.Action("CreateQualifiedSupplierInfoList", "PurSupplierManage")"><i class="fa fa-file-excel-o"></i> 导出Excel</a>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <form class="form-inline pull-right" role="search">
+                    <input type="text" class="form-control" ng-model="vmManager.filterSupplierId" placeholder="输入供应商编号进行过滤" />
+                    <button type="button" class="btn btn-default" ng-click="vmManager.filterBySupplierId()"><i class="fa fa-search"></i> </button>
+                </form>
+            </div>
+        </div>
         <div class="h-split"></div>
         <div class="well" cg-busy="{promise:searchPromise}">
             <div class="table-responsive">
@@ -58,11 +67,27 @@
                                 <div class="h-split"></div>
                                 <span title="最近采购时间">{{item.LastPurchaseDate}}</span>
                             </td>
-                            <td>{{item.SupplierProperty}}</td>
+                            <td>
+                                <div ng-if="!item.purchaseTypeEditting">
+                                    <span title="采购类别">{{item.PurchaseType}}</span><br />
+                                    <div class="h-split" ng-if="item.SupplierProperty"></div>
+                                    <span title="供应商类别">{{item.SupplierProperty}}</span>
+                                </div>
+                                <div ng-if="item.purchaseTypeEditting">
+                                    <input type="text" placeholder="输入采购类别" ng-model="item.PurchaseType" /><br />
+                                    <div class="h-split"></div>
+                                    <input type="text" placeholder="输入供应商类别" ng-model="item.SupplierProperty" /><br />
+                                    <div class="h-split"></div>
+                                    <span class="btn btn-xs btn-success" ng-click="vmManager.saveEditPurchaseTypeInfo(item)">保存</span>|
+                                    <span class="btn btn-xs btn-default" ng-click="vmManager.cancelEditPurchaseTypeInfo(item)">取消</span>
+                                </div>
+                            </td>
                             <td>{{item.Remark}}</td>
                             <td>
-                                <button class="btn btn-xs btn-primary" ng-click="vmManager.goToEdit(item)" title="编辑">
-                                    编辑证书
+                                <span class="btn btn-xs btn-warning" title="编辑供应商类别，采购类别信息" ng-click="vmManager.editPurchaseTypeInfo(item)">编辑类别</span><br />
+                                <div class="h-split"></div>
+                                <button class="btn btn-xs btn-primary" ng-click="vmManager.goToEdit(item)" title="上传，修改证书文件">
+                                    管理证书
                                 </button>
                             </td>
                         </tr>
@@ -97,26 +122,27 @@
                         <form role="form" name="formPurchase" novalidate class="form-horizontal">
                             <fieldset>
                                 <legend>
-                                    <label>类别信息</label>
-                                    <span class="label label-primary pull-right">供应商编号：【{{vm.SupplierId}}】</span>
+                                    <span class="label label-primary">供应商编号：【{{vm.SupplierId}}】</span>
+                                    <span class="label label-default">采购类别：【{{vm.PurchaseType}}】</span>
+                                    <span class="label label-success">供应商类别：【{{vm.SupplierProperty}}】</span>
                                 </legend>
-                                <div class="form-group">
-                                    <label for="purchaseType" class="col-md-2 control-label">采购类别</label>
-                                    <div class="col-md-4">
-                                        <input name="purchaseType" class="form-control" ng-model="vm.PurchaseType" ng-show="true" required />
-                                        <div class="error-messages" ng-messages="formPurchase.purchaseType.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">采购类别不能为空</small>
+                                @*<div class="form-group">
+                                        <label for="purchaseType" class="col-md-2 control-label">采购类别</label>
+                                        <div class="col-md-4">
+                                            <input name="purchaseType" class="form-control" ng-model="vm.PurchaseType" ng-show="true" required />
+                                            <div class="error-messages" ng-messages="formPurchase.purchaseType.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">采购类别不能为空</small>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <label for="supplierProperty" class="col-md-2 control-label">供应商类别</label>
-                                    <div class="col-md-4">
-                                        <input name="supplierProperty" class="form-control" ng-model="vm.SupplierProperty" ng-show="true" required />
-                                        <div class="error-messages" ng-messages="formPurchase.supplierProperty.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">供应商类别不能为空</small>
+                                        <label for="supplierProperty" class="col-md-2 control-label">供应商类别</label>
+                                        <div class="col-md-4">
+                                            <input name="supplierProperty" class="form-control" ng-model="vm.SupplierProperty" ng-show="true" required />
+                                            <div class="error-messages" ng-messages="formPurchase.supplierProperty.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">供应商类别不能为空</small>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    </div>*@
                             </fieldset>
                             <fieldset>
                                 <legend>
@@ -157,10 +183,8 @@
                             <hr />
                             <div class="alert alert-info">
                                 <div class="row">
-                                    <div class="col-md-1">
-                                    </div>
                                     <div class="col-md-10">
-                                        <button class="btn btn-primary" ng-click="operate.savePurSupplierCertificateDatas(formPurchase.$valid)"><i class="fa fa-save"></i>保存</button>
+                                        <button class="btn btn-primary" ng-click="operate.savePurSupplierCertificateDatas(formPurchase.$valid)"><i class="fa fa-save"></i>确定</button>
                                         <button class="btn btn-default" ng-click="operate.cancel()"><i class="fa fa-refresh"></i>取消</button>
                                         <span yl-operatemsg-board></span>
                                     </div>

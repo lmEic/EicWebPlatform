@@ -194,8 +194,10 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
 
     var vmManager = $scope.vmManager = {
         searchYear: new Date().getFullYear(),
-        datasets: [item],
+        filterSupplierId: null,
+        datasets: [],
         datasource: [],
+        datasourceCopy: [],
         editWindowShow: false,
         goToEdit: function (item) {
             vmManager.editItem = item;
@@ -216,12 +218,36 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
             });
         },
         editItem: null,
+        editPurchaseTypeInfo: function (item) {
+            item.purchaseTypeEditting = true;
+            vmManager.editItem = item;
+        },
+        cancelEditPurchaseTypeInfo: function (item) {
+            item.purchaseTypeEditting = false;
+        },
+        saveEditPurchaseTypeInfo: function (item) {
+            item.OpSign = 'editPurchaseType';
+            supplierDataOpService.storePurSupplierCertificateInfo(item).then(function (opresult) {
+                if (opresult.Result) {
+                    item.purchaseTypeEditting = false;
+                }
+            });
+        },
+        filterBySupplierId: function () {
+            if (vmManager.filterSupplierId != null && vmManager.filterSupplierId.length > 0) {
+                vmManager.datasourceCopy = _.clone(vmManager.datasource);
+                vmManager.datasource = _.clone(_.where(vmManager.datasource, { SupplierId: vmManager.filterSupplierId }));
+            }
+            else {
+                vmManager.datasource = _.clone(vmManager.datasourceCopy);
+            }
+        },
     };
     //上传文件项目
     var uploadFileVM = {
         id: 1, EligibleCertificate: '', adding: true, uploadSuccess: false,
         PurchaseType: '', SupplierProperty: '', SupplierId: '', FilePath: '',
-        CertificateFileName: '', DateOfCertificate: null, OpSign: 'add',
+        CertificateFileName: '', DateOfCertificate: null, OpSign: 'add', OpPerson: '',
     };
     var editManager = $scope.editManager = {
         fileList: [_.clone(uploadFileVM)],
@@ -270,7 +296,6 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
         vmManager.editWindowShow = false;
     };
 
-
     ///选择文件并上传
     $scope.selectFile = function (el) {
         if (!$scope.formPurchase.$valid) {
@@ -289,6 +314,7 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
                         leeHelper.copyVm($scope.vm, fileItem);
                         fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + fd.name;
                         fileItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
+                        leeHelper.setUserData(fileItem);
                         supplierDataOpService.storePurSupplierCertificateInfo(fileItem).then(function (opresult) {
                             if (opresult.Result) {
                                 if (angular.isObject(opresult.Entity)) {
