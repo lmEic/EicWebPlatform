@@ -118,14 +118,19 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                                <span>
+                                <div>
                                     <label>抽样方案:</label>
-                                    {{vmManager.currentInspectionItem.InspectionCount}}
-                                    <span ng-if="vmManager.currentInspectionItem.AcceptCount!==null">/</span>
-                                    {{vmManager.currentInspectionItem.AcceptCount}}
-                                    <span ng-if="vmManager.currentInspectionItem.RefuseCount!==null">/</span>
-                                    {{vmManager.currentInspectionItem.RefuseCount}}
-                                </span>
+                                    <input type="text" ng-show="vmManager.currentInspectionItem.InspectionDataGatherType==='E'" width="50"
+                                           placeholder="输入抽样数量" title="输入抽样数量后，请按下回车键生成输入数据框" ng-model="vmManager.currentInspectionItem.InspectionCount" />
+                                    <span ng-if="vmManager.currentInspectionItem.InspectionCount">
+                                        <span class="label label-primary">
+                                            {{vmManager.currentInspectionItem.InspectionCount}}
+                                        </span>
+                                        <span class="label label-success"
+                                              ng-if="vmManager.currentInspectionItem.AcceptCount">/{{vmManager.currentInspectionItem.AcceptCount}}</span>
+                                        <span class="label label-danger" ng-if="vmManager.currentInspectionItem.RefuseCount">/{{vmManager.currentInspectionItem.RefuseCount}}</span>
+                                    </span>
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <span>
