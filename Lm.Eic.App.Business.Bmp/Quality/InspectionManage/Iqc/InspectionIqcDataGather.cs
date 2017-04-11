@@ -30,7 +30,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         #endregion
         public OpResult StoreInspectionIqcGatherDatas(InspectionItemDataSummaryLabelModel model)
         {
-            var opReulst = new OpResult("数据为空，保存失败", false);
+            var opReulst = OpResult.SetResult("数据为空，保存失败", false);
             if (model == null) return opReulst;
             opReulst = DetailDatasGather.StoreInspectionIqcDetailModelForm(model, model.SiteRootPath);
             if (opReulst.Result)
@@ -47,7 +47,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private List<InspectionIqcItemConfigModel> getIqcNeedInspectionItemDatas(string materialId, DateTime materialInDate)
         {
-
             var needInsepctionItems = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
             if (needInsepctionItems == null || needInsepctionItems.Count <= 0) return new List<InspectionIqcItemConfigModel>();
             needInsepctionItems.ForEach(m =>
