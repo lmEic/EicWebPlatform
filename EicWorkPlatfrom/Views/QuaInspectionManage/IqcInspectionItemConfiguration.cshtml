@@ -3,7 +3,7 @@
         <h6 class="panel-title"> IQC检验项目配置</h6>
     </div>
     <div class="panel-body">
-            @*品号查询*@
+        @*品号查询*@
         <div>
             <label>品号</label>
             <input type="text" placeholder="按品号查询" ng-model="vm.MaterialId" />
@@ -12,9 +12,9 @@
                 <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
             </a>
             <span class="pull-right" ng-show="vmManager.copyLotWindowDisplay">
-                <input readonly placeholder="原始产品品号" ng-model="vm.MaterialId"/>
+                <input readonly placeholder="原始产品品号" ng-model="vm.MaterialId" />
                 <i class="fa fa-arrows-h"></i>
-                <input placeholder="新的产品品号" ng-model="vmManager.targetMaterialId"/>
+                <input placeholder="新的产品品号" ng-model="vmManager.targetMaterialId" />
                 <span class="btn btn-sm btn-primary" ng-click="vmManager.copyAll()"><i class="fa fa-copy"></i>复制</span>
             </span>
             <button type="button" class="btn-sm btn-success pull-right" ng-click="vmManager.showCopyLotWindow()">批量复制</button>
@@ -31,8 +31,8 @@
                 <span title="{{tableVm.MaterialSpecify}}">{{tableVm.MaterialSpecify}}</span>
             </div>
             <div class="col-md-2">
-                <label>供应商:</label>
-                <span style="font-weight:100;" title="{{tableVm.MaterialBelongDepartment}}">{{tableVm.MaterialBelongDepartment}}</span>
+                @*<label>供应商:</label>
+                    <span style="font-weight:100;" title="{{tableVm.MaterialBelongDepartment}}">{{tableVm.MaterialBelongDepartment}}</span>*@
             </div>
             <div class="col-md-2">
                 <label>图号:</label>
@@ -117,7 +117,7 @@
                             <div class="form-group">
                                 <label class="col-md-2 control-label">AQL</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control"  name="inspectionAQL" ng-model="vm.InspectionAQL" />
+                                    <input type="text" class="form-control" name="inspectionAQL" ng-model="vm.InspectionAQL" />
                                 </div>
 
                                 <label class="col-md-2 control-label">检验规范</label>
@@ -129,13 +129,13 @@
                             <div class="form-group">
                                 <label class="col-md-2 control-label">量具编号</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="equipmentID" ng-model="vm.EquipmentID" />
+                                    <input type="text" class="form-control" name="equipmentID" ng-model="vm.EquipmentId" />
                                 </div>
                                 <label class="col-md-2 control-label">检验水平</label>
                                 <div class="col-md-4">
                                     <input type="text" class="form-control" name="inspectionLevel" ng-model="vm.InspectionLevel" />
                                 </div>
-                                
+
                             </div>
 
                             <div class="form-group">
@@ -212,10 +212,10 @@
                 </div>
             </div>
         </div>
-      
-           
+
+
     </div>
     <div class="panel-footer">
-       
+
     </div>
 </div>
