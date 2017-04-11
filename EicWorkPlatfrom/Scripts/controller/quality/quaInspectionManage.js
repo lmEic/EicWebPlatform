@@ -628,7 +628,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         selectInspectionItem: function (item) {
             vmManager.currentInspectionItem = item;
             vmManager.dataList = [];
-            //vmManager.currentInspectionItem.InspectionDataGatherType = "E";
+            vmManager.currentInspectionItem.InspectionDataGatherType = "E";
             var dataGatherType = vmManager.currentInspectionItem.InspectionDataGatherType;
             vmManager.createGataherDataUi(dataGatherType, item);
         },
