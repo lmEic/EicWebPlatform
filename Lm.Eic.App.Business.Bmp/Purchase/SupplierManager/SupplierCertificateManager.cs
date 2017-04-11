@@ -30,9 +30,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     public class SupplierCertificateManager
     {
 
-        //缓存合格供应商清册表
-        Dictionary<string, EligibleSuppliersModel> eligibleSuppliersModelKey = new Dictionary<string, EligibleSuppliersModel>();
-
         /// <summary>
         /// 从ERP中获取年份合格供应商清册表
         /// </summary>
@@ -50,17 +47,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
             supplierInfoList.ForEach(supplierInfo =>
             {
-                model = new EligibleSuppliersModel();
-                if (eligibleSuppliersModelKey.ContainsKey(supplierInfo.SupplierId))
-                {
-                    model = eligibleSuppliersModelKey[supplierInfo.SupplierId];
-                }
-                else
-                {
-                    model = getEligibleSuppliersModel(supplierInfo);
-                    eligibleSuppliersModelKey.Add(supplierInfo.SupplierId, model);
-                }
-
+                model = getEligibleSuppliersModel(supplierInfo);
                 QualifiedSupplierInfo.Add(model);
             });
             return QualifiedSupplierInfo.OrderBy(e => e.SupplierId).ToList();
@@ -79,7 +66,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 //先从已存的数据信息中找 没有找到再从ERP中找
                 SupplierInfoModel SupplierInfo = SupplierCrudFactory.SuppliersInfoCrud.GetSupplierInfoBy(supplierId);
                 if (SupplierInfo == null)
-                { SupplierInfo = GetErpSuppplierInfoBy(supplierId); }
+                {
+                    SupplierInfo = GetErpSuppplierInfoBy(supplierId);
+                    //添加至供应商信息表中
+                    SupplierCrudFactory.SuppliersInfoCrud.InitSupplierInfo(SupplierInfo);
+                }
                 return SupplierInfo;
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
@@ -91,7 +82,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult SavaEditSpplierCertificate(InPutSupplieCertificateInfoModel model, string siteRootPath)
+        public OpResult SaveSpplierCertificateData(InPutSupplieCertificateInfoModel model, string siteRootPath)
         {
             //判断列表是否为空
             OpResult reOpresult = OpResult.SetResult("没有进任何操作");
@@ -109,9 +100,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 return SupplierCrudFactory.SuppliersInfoCrud.EidtSupplierInfo(supplierInfoModel);
             }
             if (model.CertificateFileName == null || model.CertificateFileName == string.Empty) return OpResult.SetResult("证书名称不能为空");
-            if (supplierInfoModel.Remark != null && !supplierInfoModel.Remark.Contains(model.CertificateFileName))
-                supplierInfoModel.Remark += model.CertificateFileName + ",";
-            if (!SaveSupplierInfoModel(supplierInfoModel).Result) return OpResult.SetResult("数据保存失败");
             SupplierQualifiedCertificateModel savemodel = new SupplierQualifiedCertificateModel()
             {
                 SupplierId = model.SupplierId,
@@ -123,18 +111,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 OpSign = model.OpSign,
                 OpPerson = model.OpPerson,
             };
-            return StoreEditSpplierCertificate(savemodel, siteRootPath);
+            return StoreSpplierCertificateData(savemodel, siteRootPath);
         }
-
-
-
         /// <summary>
         /// 删除供应商证书
         /// </summary>
         /// <param name="model">实体</param>
         /// <param name="rootPath">根路经</param>
         /// <returns></returns>
-        public OpResult StoreEditSpplierCertificate(SupplierQualifiedCertificateModel model, string siteRootPath)
+        public OpResult StoreSpplierCertificateData(SupplierQualifiedCertificateModel model, string siteRootPath)
         {
             try
             {

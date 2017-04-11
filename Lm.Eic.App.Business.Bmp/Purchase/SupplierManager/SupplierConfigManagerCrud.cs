@@ -291,7 +291,18 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
         }
+        internal OpResult InitSupplierInfo(SupplierInfoModel model)
+        {
+            try
+            {
+                SetFixFieldValue(model);
+                model.SupplierId = model.SupplierId.Trim();
+                model.OpSign = "init";
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
+        }
         public OpResult EidtSupplierInfo(SupplierInfoModel model)
         {
             if (irep.IsExist(m => m.SupplierId == model.SupplierId))
@@ -301,7 +312,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                         f => new SupplierInfoModel
                         {
                             SupplierProperty = model.SupplierProperty,
-                            PurchaseType = model.PurchaseType
+                            PurchaseType = model.PurchaseType,
+                            OpSign = model.OpSign
                         }).ToOpResult_Eidt("修改供应商类别成功！");
                 return irep.Update(m => m.SupplierId == model.SupplierId, model).ToOpResult_Eidt("修改成功");
 

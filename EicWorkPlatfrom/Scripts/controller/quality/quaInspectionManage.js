@@ -3,7 +3,7 @@
 /// <reference path="../../angular.min.js" />
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/underscore/underscore-min.js" />
 var qualityModule = angular.module('bpm.qualityApp');
-//数据访问工厂 
+//数据访问工厂
 qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     var quality = {};
     var quaInspectionManageUrl = "/quaInspectionManage/";
@@ -75,7 +75,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             inspectionMode: inspectionMode
         });
     };
-    //检验方式配置模块      处理'检验方式'配置数据  
+    //检验方式配置模块      处理'检验方式'配置数据
     quality.storeIqcInspectionModeData = function (inspectionModeConfigEntity) {
         var url = quaInspectionManageUrl + "StoreInspectionModeConfigData";
         return ajaxService.postData(url, {
@@ -134,7 +134,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             materialId: materialId
         })
     }
-    //iqc进料检验数据采集模块     保存采集数据  
+    //iqc进料检验数据采集模块     保存采集数据
     quality.storeIqcInspectionGatherDatas = function (gatherData) {
         var url = quaInspectionManageUrl + 'StoreIqcInspectionGatherDatas';
         return ajaxService.postData(url, {
@@ -150,7 +150,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 
 
     ///////////////////////////////////////////iqc检验单管理模块///////////////////////////////////////////////
-    //iqc检验单管理模块    获取表单数据  
+    //iqc检验单管理模块    获取表单数据
     quality.getInspectionFormManageOfIqcDatas = function (formStatus, dateFrom, dateTo) {
         var url = quaInspectionManageUrl + 'GetInspectionFormManageOfIqcDatas';
         return ajaxService.getData(url, {
@@ -247,7 +247,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     };
 
     //////////////////////////////////////////////fqc检验单管理模块/////////////////////////////////////////////
-    //fqc检验单管理模块    获取表单数据  
+    //fqc检验单管理模块    获取表单数据
     quality.getInspectionFormManageOfFqcDatas = function (formStatus, dateFrom, dateTo) {
         var url = quaInspectionManageUrl + 'GetInspectionFormManageOfFqcDatas';
         return ajaxService.getData(url, {
@@ -627,7 +627,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         //点击检验项目获取所有项目信息
         selectInspectionItem: function (item) {
             vmManager.currentInspectionItem = item;
-            //vmManager.currentInspectionItem.InspectionDataGatherType = 'C';
+            vmManager.currentInspectionItem.InspectionDataGatherType = 'E';
             vmManager.dataList = [];
             var dataGatherType = vmManager.currentInspectionItem.InspectionDataGatherType;
             vmManager.createGataherDataUi(dataGatherType, item);
