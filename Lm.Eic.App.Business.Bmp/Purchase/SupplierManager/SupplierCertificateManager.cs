@@ -103,6 +103,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             //赋值 供应商属性和采购性质
             supplierInfoModel.PurchaseType = model.PurchaseType;
             supplierInfoModel.SupplierProperty = model.SupplierProperty;
+            if (model.OpSign == "editPurchaseType")//修改证书类别信息
+            {
+                supplierInfoModel.OpSign = model.OpSign;
+                return SupplierCrudFactory.SuppliersInfoCrud.EidtSupplierInfo(supplierInfoModel);
+            }
             if (model.CertificateFileName == null || model.CertificateFileName == string.Empty) return OpResult.SetResult("证书名称不能为空");
             if (supplierInfoModel.Remark != null && !supplierInfoModel.Remark.Contains(model.CertificateFileName))
                 supplierInfoModel.Remark += model.CertificateFileName + ",";
@@ -156,8 +161,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             return SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId);
         }
-
-
         /// <summary>
         /// 生成合格供应商清单
         /// </summary>

@@ -280,22 +280,30 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             ///判断产品品号是否存在
             try
             {
-                if (irep.IsExist(m => m.Id_Key == model.Id_Key))
+                if (irep.IsExist(m => m.SupplierId == model.SupplierId))
                 {
                     return OpResult.SetResult("此数据已存在！");
                 }
                 SetFixFieldValue(model);
+                model.SupplierId = model.SupplierId.Trim();
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
         }
 
-        OpResult EidtSupplierInfo(SupplierInfoModel model)
+        public OpResult EidtSupplierInfo(SupplierInfoModel model)
         {
-            if (irep.IsExist(m => m.Id_Key == model.Id_Key))
+            if (irep.IsExist(m => m.SupplierId == model.SupplierId))
             {
-                return irep.Update(m => m.Id_Key == model.Id_Key, model).ToOpResult_Add("修改成功", model.Id_Key);
+                if (model.OpSign == "editPurchaseType")
+                    return irep.Update(u => u.SupplierId == model.SupplierId,
+                        f => new SupplierInfoModel
+                        {
+                            SupplierProperty = model.SupplierProperty,
+                            PurchaseType = model.PurchaseType
+                        }).ToOpResult_Eidt("修改供应商类别成功！");
+                return irep.Update(m => m.SupplierId == model.SupplierId, model).ToOpResult_Eidt("修改成功");
 
             }
             else return OpResult.SetResult("此数据不存在！无法修改");
@@ -305,7 +313,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         OpResult DeleteSupplierInfo(SupplierInfoModel model)
         {
-            return irep.Delete(model).ToOpResult_Add("删除成功", model.Id_Key);
+            return irep.Delete(m => m.SupplierId == model.SupplierId).ToOpResult_Delete("删除成功");
         }
         #endregion
         /// <summary>
@@ -317,7 +325,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
-                return irep.Entities.Where(m => m.SupplierId == supplierId).ToList().FirstOrDefault();
+                return irep.Entities.FirstOrDefault(m => m.SupplierId == supplierId);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
