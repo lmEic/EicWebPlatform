@@ -202,26 +202,44 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private OpResult DeleteIqcInspectionDetail(InspectionIqcDetailModel model)
         {
+            var oldmodel = GetIqcOldDetailModelBy(model);
+            if (oldmodel == null) return OpResult.SetResult("此项不存在，删除失败", false);
+            model.Id_Key = oldmodel.Id_Key;
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
         private OpResult EidtIqcInspectionDetail(InspectionIqcDetailModel model)
         {
+            // 先前判定是否存在
+            var oldmodel = GetIqcOldDetailModelBy(model);
+            if (oldmodel == null) return OpResult.SetResult("此项不存在，修改失败", false);
+            model.Id_Key = oldmodel.Id_Key;
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
-
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private OpResult AddIqcInspectionDetail(InspectionIqcDetailModel model)
         {
-            ////如果存在，操作失败
-            if (isExiststroe(model))
-            {
-                this.SetFixFieldValue(model);
-                return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
-            }
-            this.SetFixFieldValue(model);
+            //////如果存在，操作失败
+            //if (isExiststroe(model))
+            //{
+            //    this.SetFixFieldValue(model);
+            //    var oldmodel = GetIqcOldDetailModelBy(model);
+            //    model.Id_Key = oldmodel.Id_Key;
+            //    return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+            //}
+            //this.SetFixFieldValue(model);
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="siteRootPath"></param>
+        /// <returns></returns>
         internal OpResult UploadFileIqcInspectionDetail(InspectionIqcDetailModel model, string siteRootPath)
         {
             if (model == null) return new OpResult("保存文件不能为空", false);
@@ -243,6 +261,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             this.SetFixFieldValue(model);
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);// 同时修改文件模型记录
         }
+        /// <summary>
+        /// 得到旧的
+        /// </summary>
+        /// <param name="newModel"></param>
+        /// <returns></returns>
 
         private InspectionIqcDetailModel GetIqcOldDetailModelBy(InspectionIqcDetailModel newModel)
         {

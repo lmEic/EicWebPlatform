@@ -61,6 +61,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
                 return InspectionManagerCrudFactory.IqcDetailCrud.UploadFileIqcInspectionDetail(model, siteRootPath);
+            /// 判断是否存在此录入的项次
+            if (InspectionManagerCrudFactory.IqcDetailCrud.isExiststroe(model))
+                model.OpSign = OpMode.Edit;
+            else model.OpSign = OpMode.Add;
             return InspectionManagerCrudFactory.IqcDetailCrud.Store(model, true);
         }
         /// <summary>

@@ -19,11 +19,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     {
 
         #region LoadClass
-        public IqcMasterDatasGather MasterDatasGather
+        IqcMasterDatasGather MasterDatasGather
         {
             get { return OBulider.BuildInstance<IqcMasterDatasGather>(); }
         }
-        public IqcDetailDatasGather DetailDatasGather
+        IqcDetailDatasGather DetailDatasGather
         {
             get { return OBulider.BuildInstance<IqcDetailDatasGather>(); }
         }
@@ -295,8 +295,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
            });
             return returnList;
         }
-
-
 
     }
 
