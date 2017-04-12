@@ -2,6 +2,7 @@
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
@@ -104,19 +105,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (oldmodel == null)
                 return this.AddFqcInspectionDetail(model);//若不存在则直接添加
             model.Id_Key = oldmodel.Id_Key;
-            if (oldmodel.DocumentPath != model.DocumentPath && oldmodel.DocumentPath != string.Empty && oldmodel.DocumentPath != null)//比对新旧文件是否一样,若不一样，则删除旧的文件
-            {
-                if (siteRootPath != string.Empty && siteRootPath != null)
-                {
-                    string fileName = Path.Combine(siteRootPath, oldmodel.DocumentPath);
-                    //if (fileName.Contains("/"))
-                    //{
-                    fileName = fileName.Replace("/", @"\");
-                    if (File.Exists(fileName))
-                        File.Delete(fileName);
-                    //}
-                }//删除旧的文件
-            }
+            oldmodel.DocumentPath.DeleteExistFile(model.DocumentPath, siteRootPath);//删除旧的文件
             this.SetFixFieldValue(model);
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);// 同时修改文件模型记录
         }
@@ -146,6 +135,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
         }
+
         public InspectionFqcDetailModel GetFqcOldDetailModelBy(InspectionFqcDetailModel newmodel)
         {
             try

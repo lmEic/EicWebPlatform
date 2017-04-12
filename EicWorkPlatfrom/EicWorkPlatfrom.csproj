@@ -1334,6 +1334,7 @@
     <Content Include="Views\CommonTpl\UploadFileTpl.cshtml" />
     <Content Include="Views\Account\SysRoleAssignManage.cshtml" />
     <Content Include="Views\CommonTpl\SwitchButtonTpl.cshtml" />
+    <Content Include="Views\CommonTpl\ViewInputDataButtonTpl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
