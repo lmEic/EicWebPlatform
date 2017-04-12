@@ -308,6 +308,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     $scope.vm = uiVM;
     var initVM = _.clone(uiVM);
     var vmManager = {
+        editWindowShow: false,
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
         InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }],
         dataSource: [],
@@ -384,6 +385,8 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
             },
             show: false,
         }),
+        showInputDataWindow: function ()
+        { vmManager.editWindowShow = !vmManager.editWindowShow; }
     }
     //013935导入excel
     $scope.selectFile = function (el) {
@@ -462,6 +465,7 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
     $scope.vm = uiVM;
     var initVM = _.clone(uiVM);
     var vmManager = {
+        editWindowShow: false,
         inspectionMode: "正常",
         inspectionLevel: null,
         inspectionAQL: null,
@@ -529,7 +533,9 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
                 }
             }
 
-        })
+        }),
+        showInputDataWindow: function ()
+        { vmManager.editWindowShow = !vmManager.editWindowShow; }
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -630,27 +636,28 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             vmManager.dataList = [];
             vmManager.currentInspectionItem.InspectionDataGatherType = "E";
             var dataGatherType = vmManager.currentInspectionItem.InspectionDataGatherType;
+            if (dataGatherType === "E") {
+                if (item.InspectionCount === "0") return;
+            }
             vmManager.createGataherDataUi(dataGatherType, item);
         },
         createTypeEInput: function () {
             var item = vmManager.currentInspectionItem;
-            item.NeedFinishDataNumber = item.InspectionCount;
-            var dataList = item.InspectionItemDatas === null || item.InspectionItemDatas === "" ? [] : item.InspectionItemDatas.split(',');
-            vmManager.inputDatas = leeHelper.createDataInputs(item.NeedFinishDataNumber, 5, dataList, function (itemdata) {
-                itemdata.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, itemdata.indata);
-                vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.result });
-            });
-            vmManager.currentInspectionItem.AcceptCount = 0;
-            vmManager.currentInspectionItem.RefuseCount = 1;
+            vmManager.createGataherDataUi("E", item);
         },
-        ///根据采集方式创建数据采集窗口
+        //根据采集方式创建数据采集窗口
         createGataherDataUi: function (dataGatherType, item) {
             var dataList = item.InspectionItemDatas === null || item.InspectionItemDatas === "" ? [] : item.InspectionItemDatas.split(',');
-            if (dataGatherType === "A") {
+            item.NeedFinishDataNumber = parseInt(item.InspectionCount);
+            if (dataGatherType === "A" || dataGatherType === "E") {
                 vmManager.inputDatas = leeHelper.createDataInputs(item.NeedFinishDataNumber, 5, dataList, function (itemdata) {
                     itemdata.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, itemdata.indata);
                     vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.result });
                 });
+                if (dataGatherType === "E") {
+                    vmManager.currentInspectionItem.AcceptCount = 0;
+                    vmManager.currentInspectionItem.RefuseCount = 1;
+                }
             }
             else if (dataGatherType === "C") {
                 if (dataList.length === 0) {

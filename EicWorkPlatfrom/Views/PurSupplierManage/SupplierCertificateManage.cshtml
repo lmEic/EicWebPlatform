@@ -99,84 +99,88 @@
                 </div>
             </div>
         </div>
-
-        <div pageslide ps-open="vmManager.editWindowShow" ps-side="left" ps-size="100%" ps-speed="0.25" ps-container='editWindow'>
-            <div style="padding:10px;overflow-y:scroll;max-height:480px;">
-                <div class="row">
-                    <div class="col-md-4">
-                        <table class="table table-bordered table-condensed">
-                            <thead>
-                                <tr class="info"><td>证书列表</td></tr>
-                            </thead>
-                            <tbody cg-busy="{promise:searchCertificatePromise}">
-                                <tr ng-repeat="item in editManager.certificateDatas track by $index">
-                                    <td>
-                                        {{item.CertificateFileName}}
-                                        <span class="btn btn-danger btn-xs pull-right" ng-click="editManager.removeCertificateFile(item)"><i class="fa fa-remove"></i></span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-8">
-                        <form role="form" name="formPurchase" novalidate class="form-horizontal">
-                            <fieldset>
-                                <legend>
-                                    <span class="label label-primary">供应商编号：【{{vm.SupplierId}}】</span>
-                                    <span class="label label-default">采购类别：【{{vm.PurchaseType}}】</span>
-                                    <span class="label label-success">供应商类别：【{{vm.SupplierProperty}}】</span>
-                                </legend>
-                            </fieldset>
-                            <fieldset>
-                                <legend>
-                                    <label>证书信息</label>
-                                </legend>
-                                <div class="form-group" ng-repeat="fileItem in editManager.fileList track by $index">
-                                    <div class="col-md-3">
-                                        <input type="text" name="eligibleCertificate" class="form-control" ng-model="fileItem.EligibleCertificate" placeholder="输入证书名称" />
-                                        <div class="error-messages" ng-messages="formPurchase.eligibleCertificate.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">证书名称不能为空</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="date" name="dateOfCertificate" class="form-control" ng-model="fileItem.DateOfCertificate" placeholder="获取证书日期" />
-                                        <div class="error-messages" ng-messages="formPurchase.dateOfCertificate.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">证书日期不能为空</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <label for="drawing">文件名称：</label>
-                                            </div>
-                                            <input type="file" name="file" class="form-control" onchange="angular.element(this).scope().selectFile(this)" ng-click="editManager.getFile(fileItem)" />
-                                            <div class="input-group-addon" cg-busy="{promise:uploadPromise}">
-                                                <span class="label label-primary" ng-click="editManager.addFile(fileItem)" ng-show="fileItem.adding">
-                                                    <i class="fa fa-plus-square"></i>
-                                                </span>
-                                                <span class="label label-success" ng-show="fileItem.uploadSuccess">
-                                                    <i class="fa fa-check-square"></i>
-                                                </span>
-                                            </div>
-                                        </div>
+    </div>
+    <div pageslide ps-open="vmManager.editWindowShow" ps-side="left" ps-size="100%" ps-speed="0.25" ps-container='editWindow'>
+        <div style="padding:10px;overflow-y:scroll;min-height:480px;min-height:880px;">
+            <div class="row">
+                <div class="col-md-4">
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                            <tr class="info"><td>证书列表</td></tr>
+                        </thead>
+                        <tbody cg-busy="{promise:searchCertificatePromise}">
+                            <tr ng-repeat="item in editManager.certificateDatas track by $index">
+                                <td>
+                                    {{item.EligibleCertificate}}
+                                    <span class="btn btn-danger btn-xs pull-right" ng-click="editManager.removeCertificateFile(item)"><i class="fa fa-remove"></i></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-8">
+                    <form role="form" name="formPurchase" novalidate class="form-horizontal">
+                        <fieldset>
+                            <legend>
+                                <span class="label label-primary">供应商编号：【{{vm.SupplierId}}】</span>
+                                <span class="label label-default">采购类别：【{{vm.PurchaseType}}】</span>
+                                <span class="label label-success">供应商类别：【{{vm.SupplierProperty}}】</span>
+                            </legend>
+                        </fieldset>
+                        <fieldset>
+                            <legend>
+                                <label>证书信息</label>
+                            </legend>
+                            <div class="form-group" ng-repeat="fileItem in editManager.fileList track by $index">
+                                <div class="col-md-3">
+                                    <button type="button" class="btn  btn-default" ng-model="fileItem.EligibleCertificate"
+                                            data-html="1" data-multiple="0"
+                                            data-animation="am-flip-x" data-placeholder="选择证书名称"
+                                            bs-options="item.id as item.text for item in vmManager.certificateFileNames" bs-select>
+                                        <span class="caret"></span>
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="date" name="dateOfCertificate" class="form-control" ng-model="fileItem.DateOfCertificate" placeholder="获取证书日期" />
+                                    <div class="error-messages" ng-messages="formPurchase.dateOfCertificate.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">证书日期不能为空</small>
                                     </div>
                                 </div>
-                            </fieldset>
-
-                            <hr />
-                            <div class="alert alert-info">
-                                <div class="row">
-                                    <div class="col-md-10">
-                                        <button class="btn btn-primary" ng-click="operate.savePurSupplierCertificateDatas(formPurchase.$valid)"><i class="fa fa-save"></i>确定</button>
-                                        <button class="btn btn-default" ng-click="operate.cancel()"><i class="fa fa-refresh"></i>取消</button>
-                                        <span yl-operatemsg-board></span>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <label for="drawing">文件名称：</label>
+                                        </div>
+                                        <input type="file" name="file" class="form-control" onchange="angular.element(this).scope().selectFile(this)" ng-click="editManager.getFile(fileItem)" />
+                                        <div class="input-group-addon" cg-busy="{promise:uploadPromise}">
+                                            <span class="label label-primary" ng-click="editManager.addFile(fileItem)" ng-show="fileItem.adding">
+                                                <i class="fa fa-plus-square"></i>
+                                            </span>
+                                            <span class="label label-success" ng-show="fileItem.uploadSuccess">
+                                                <i class="fa fa-check-square"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </fieldset>
+
+                        <hr />
+                        <div class="alert alert-info">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <button class="btn btn-primary" ng-click="operate.savePurSupplierCertificateDatas(formPurchase.$valid)"><i class="fa fa-save"></i>确定</button>
+                                    <button class="btn btn-default" ng-click="operate.cancel()"><i class="fa fa-refresh"></i>取消</button>
+                                    <span yl-operatemsg-board></span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="panel-footer">
+
     </div>
 </div>

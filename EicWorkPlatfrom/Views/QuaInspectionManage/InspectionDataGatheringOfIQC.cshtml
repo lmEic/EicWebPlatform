@@ -303,7 +303,7 @@
                             <table class="table table-bordered table-condensed">
                                 <caption>
                                     <label>抽样数量</label>
-                                    <input placeholder="输入抽样数量" ng-model="vmManager.currentInspectionItem.InspectionCount" />
+                                    <input placeholder="输入抽样数量" type="number" min="0" ng-model="vmManager.currentInspectionItem.InspectionCount" />
                                     <span class="btn btn-sm btn-primary" ng-click="vmManager.createTypeEInput()">生成</span>
                                 </caption>
                                 <thead>
