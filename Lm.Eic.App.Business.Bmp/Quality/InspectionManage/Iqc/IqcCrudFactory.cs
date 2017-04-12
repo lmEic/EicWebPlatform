@@ -296,7 +296,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderid">单号</param>
         /// <param name="materialId">料号</param>
         /// <returns></returns>
-        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailModelListBy(string materialId, string inspectionItem)
+        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailModelDatasBy(string materialId, string inspectionItem)
         {
             try
             {
@@ -323,7 +323,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
         }
-        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailModelBy(string orderid, string materialId)
+        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailOrderIdModelBy(string orderid, string materialId)
         {
             return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId).ToList();
         }

@@ -17,7 +17,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionIqcDetailModel> GetIqcDetailModeDatasBy(string materailId, string inspecitonItem)
         {
 
-            return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelListBy(materailId, inspecitonItem);
+            return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelDatasBy(materailId, inspecitonItem);
 
 
         }
@@ -76,7 +76,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public InspectionIqcDetailModel GetIqcInspectionDetailModelBy(string orderId, string materailId, string inspecitonItem)
         {
-            return GetIqcInspectionDetailModeDatasBy(orderId, materailId).FirstOrDefault(e => e.InspecitonItem == inspecitonItem);
+            return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelBy(orderId, materailId, inspecitonItem);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionIqcDetailModel> GetIqcInspectionDetailModeDatasBy(string orderId, string materailId)
         {
-            return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelBy(orderId, materailId);
+            return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailOrderIdModelBy(orderId, materailId);
         }
     }
 }
