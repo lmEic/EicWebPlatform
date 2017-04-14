@@ -207,6 +207,7 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
             { id: 'HSF保证书', text: 'HSF保证书' },
             { id: 'REACH保证书', text: 'REACH保证书' },
             { id: 'SVHC调查表', text: 'SVHC调查表' },
+            { id: '供应商基本资料表', text: '供应商基本资料表' }
         ],
         datasets: [],
         datasource: [],

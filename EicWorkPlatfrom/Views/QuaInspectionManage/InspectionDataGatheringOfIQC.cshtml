@@ -125,7 +125,7 @@
                                             {{vmManager.currentInspectionItem.InspectionCount}}
                                         </span>
                                         <span class="label label-success"
-                                              ng-if="vmManager.currentInspectionItem.AcceptCount">/{{vmManager.currentInspectionItem.AcceptCount}}</span>
+                                              ng-if="vmManager.currentInspectionItem.AcceptCount!==null">/{{vmManager.currentInspectionItem.AcceptCount}}</span>
                                         <span class="label label-danger" ng-if="vmManager.currentInspectionItem.RefuseCount">/{{vmManager.currentInspectionItem.RefuseCount}}</span>
                                     </span>
                                 </div>

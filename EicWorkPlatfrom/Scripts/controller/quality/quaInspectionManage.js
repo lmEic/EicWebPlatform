@@ -310,7 +310,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     var vmManager = {
         editWindowShow: false,
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
-        InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }, { id: "E", text: "E" }],
+        InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }],
         dataSource: [],
         dataSets: [],
         copyLotWindowDisplay: false,
@@ -327,12 +327,12 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
             $scope.vm = uiVM;
         },
 
-        //013935根据品号查询
         getConfigDatas: function () {
             $scope.searchPromise = qualityInspectionDataOpService.getIqcspectionItemConfigDatas($scope.vm.MaterialId).then(function (datas) {
                 if (datas !== null) {
                     $scope.tableVm = datas.ProductMaterailModel;
                     vmManager.dataSource = datas.InspectionItemConfigModelList;
+                    vmManager.showInputDataWindow();
                 }
             });
         },
@@ -360,6 +360,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
                         item.Id_key = null;
                         item.MaterialId = vmManager.targetMaterialId;
                     });
+                    vmManager.showInputDataWindow();
                 }
 
             })
@@ -488,9 +489,12 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
         //获取检验水平数据
         getInspectionLevelValues: function () {
             qualityInspectionDataOpService.getInspectionLevelValues($scope.vm.InspectionMode).then(function (datas) {
-                angular.forEach(datas, function (item) {
-                    $scope.vmManager.inspectionLevelValues.push(item);
-                })
+                if (_.isArray(datas)) {
+                    angular.forEach(datas, function (item) {
+                        $scope.vmManager.inspectionLevelValues.push(item);
+                    });
+                    vmManager.showInputDataWindow();
+                }
             })
         },
         //获取AQL数据
@@ -636,6 +640,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         selectInspectionItem: function (item) {
             vmManager.currentInspectionItem = item;
             vmManager.dataList = [];
+            //vmManager.currentInspectionItem.InspectionDataGatherType = "E";
             var dataGatherType = vmManager.currentInspectionItem.InspectionDataGatherType;
             if (dataGatherType === "E") {
                 if (item.InspectionCount === "0") return;
@@ -1176,7 +1181,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
     var vmManager = {
         editWindowShow: false,
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
-        InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }, { id: "E", text: "E" }],
+        InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }],
         dataSource: [],
         dataSets: [],
         copyLotWindowDisplay: false,
@@ -1199,6 +1204,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
                 if (datas !== null) {
                     $scope.tableVm = datas.ProductMaterailModel;
                     vmManager.dataSource = datas.InspectionItemConfigModelList;
+                    vmManager.showInputDataWindow();
                 }
             });
         },
