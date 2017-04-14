@@ -77,7 +77,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     retrunList.Add(MaterialModelToInspectionIqcMasterModel(e));
                 }
             });
-            return retrunList.OrderByDescending(e => e.MaterialInDate).ToList();
+            return retrunList;
         }
 
         List<InspectionIqcMasterModel> GetErpNotStoreToSqlOrderAndMaterialBy(DateTime startTime, DateTime endTime)
@@ -92,7 +92,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     retrunList.Add(MaterialModelToInspectionIqcMasterModel(e));
                 }
             });
-            return retrunList.OrderByDescending(e => e.MaterialInDate).ToList();
+            return retrunList;
         }
 
         InspectionIqcMasterModel MaterialModelToInspectionIqcMasterModel(MaterialModel model)

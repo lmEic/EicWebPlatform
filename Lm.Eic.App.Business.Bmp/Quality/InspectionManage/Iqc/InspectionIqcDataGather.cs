@@ -128,9 +128,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     SizeLSL = m.SizeLSL,
                     SizeUSL = m.SizeUSL,
                     SizeMemo = m.SizeMemo,
-                    InspectionAQL = string.Empty,
-                    InspectionMode = string.Empty,
-                    InspectionLevel = string.Empty,
+                    InspectionAQL = m.InspectionAQL,
+                    InspectionMode = m.InspectionMode,
+                    InspectionLevel = m.InspectionLevel,
                     Memo = string.Empty,
                     InspectionCount = 0,
                     AcceptCount = 0,
@@ -143,9 +143,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 };
                 if (inspectionModeConfigModelData != null)
                 {
-                    model.InspectionMode = inspectionModeConfigModelData.InspectionMode;
-                    model.InspectionLevel = inspectionModeConfigModelData.InspectionLevel;
-                    model.InspectionAQL = inspectionModeConfigModelData.InspectionAQL;
+
                     model.InspectionCount = inspectionModeConfigModelData.InspectionCount;
                     model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
                     model.RefuseCount = inspectionModeConfigModelData.RefuseCount;
