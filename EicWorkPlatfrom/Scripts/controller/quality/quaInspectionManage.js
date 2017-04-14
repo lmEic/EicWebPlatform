@@ -416,6 +416,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     operate.editItem = function (item) {
         uiVM = item;
         uiVM.OpSign = "edit";
+        vmManager.showInputDataWindow();
         $scope.vm = uiVM;
     };
     //删除项
@@ -573,6 +574,7 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
     operate.editItem = function (item) {
         item.OpSign = leeDataHandler.dataOpMode.edit;
         $scope.vm = uiVM = _.clone(item);
+        vmManager.showInputDataWindow();
     }
     //删除iqc检验方式模块的数据
     operate.deleteItem = function (item) {
@@ -1286,6 +1288,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
         uiVM = item;
         uiVM.OpSign = "edit";
         $scope.vm = uiVM;
+        vmManager.showInputDataWindow();
     };
     //删除项
     operate.deleteItem = function (item) {

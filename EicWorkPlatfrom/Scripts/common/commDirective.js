@@ -766,7 +766,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         }
     };
 })
- //--------------------------uploadFile-------------------------------------
+ //--------------------------ylSwitchButton-------------------------------------
 .directive('ylSwitchButton', function () {
     return {
         restrict: "EA",
@@ -784,6 +784,20 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                 scope.switched = !scope.switched;
                 scope.isSelectAll = !scope.isSelectAll;
             };
+        }
+    };
+})
+//--------------------------ylSwitchButton------------------------------------
+.directive('ylViewDataButton', function () {
+    return {
+        restrict: "EA",
+        replace: false,
+        templateUrl: '/CommonTpl/ViewInputDataButtonTpl',
+        scope: {
+            toggle: '&',
+        },
+        link: function (scope, element, attr) {
+            scope.showInputDataWindow = function () { scope.toggle(); };
         }
     };
 })
