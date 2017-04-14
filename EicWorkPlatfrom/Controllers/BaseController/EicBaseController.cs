@@ -35,6 +35,11 @@ namespace EicWorkPlatfrom.Controllers
         #endregion json date converter
 
         #region my define
+        protected void SetWebSitSubTitle(string subTitle)
+        {
+            ViewData["subTitle"] = subTitle;
+        }
+
         /// <summary>
         /// 站点根路径
         /// </summary>

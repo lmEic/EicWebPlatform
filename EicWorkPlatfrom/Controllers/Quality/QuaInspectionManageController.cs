@@ -16,7 +16,7 @@ namespace EicWorkPlatfrom.Controllers
     	created:	2017/03/27
     	file ext:	cs
     	author:		YLee
-    	purpose:	
+    	purpose:
     *********************************************************************/
     public class QuaInspectionManageController : EicBaseController
     {
@@ -42,7 +42,7 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
@@ -141,7 +141,7 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
@@ -272,11 +272,12 @@ namespace EicWorkPlatfrom.Controllers
         #endregion
 
         #region  检验项目数据收集
-        #region IQC 
+        #region IQC
 
         [NoAuthenCheck]
         public ActionResult InspectionDataGatheringOfIQC()
         {
+            SetWebSitSubTitle("进料检验(IQC)数据采集");
             return View();
         }
         /// <summary>
@@ -424,7 +425,7 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         /// <summary>
-        /// 根据单据状态获得检验单数据  
+        /// 根据单据状态获得检验单数据
         /// </summary>  selectedFormStatus,dateFrom,dateTo
         /// <returns></returns>
         [NoAuthenCheck]
@@ -457,7 +458,7 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         /// <summary>
-        /// 根据单据状态获得检验单数据  
+        /// 根据单据状态获得检验单数据
         /// </summary>  selectedFormStatus,dateFrom,dateTo
         /// <returns></returns>
         [NoAuthenCheck]
