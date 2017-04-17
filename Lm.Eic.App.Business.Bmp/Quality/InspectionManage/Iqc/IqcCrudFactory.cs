@@ -182,7 +182,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             DateTime starttime = startTime.ToDate();
             DateTime endtime = endTime.ToDate();
-            return irep.Entities.Where(e => e.MaterialInDate >= starttime && e.MaterialInDate <= endtime).ToList();
+            return irep.Entities.Where(e => e.MaterialInDate >= starttime && e.MaterialInDate <= endtime).OrderBy(e => e.MaterialInDate).ToList();
         }
     }
     /// <summary>

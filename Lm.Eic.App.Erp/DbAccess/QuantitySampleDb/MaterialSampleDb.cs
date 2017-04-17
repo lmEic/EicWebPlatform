@@ -14,7 +14,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
     {
         StockDb StockDb = null;
         MaterialInfoDb PorductInfoS = null;
-        public OrderIdInspectionDb ()
+        public OrderIdInspectionDb()
         {
             PorductInfoS = new MaterialInfoDb();
             StockDb = new StockDb();
@@ -22,7 +22,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         /// <summary>  
         ///  由单子 得到单别 单号   (单别为 591 110 (341 342 343 344)和制令单)
         /// <param name="id">单号XXX-XXXXXXX</param>
-       /// <returns></returns>
+        /// <returns></returns>
         public List<MaterialModel> FindMaterialBy(string id)
         {
             var idm = ErpDbAccessHelper.DecomposeID(id);
@@ -39,10 +39,11 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
 
             List<MaterialModel> masterialAllinfo = new List<MaterialModel>();
             List<string> allOrderId = GetAllMaterialOrderId(searchStartDate, searchEndDate);
-            if(allOrderId==null ||allOrderId.Count <=0) return masterialAllinfo;
-            allOrderId.ForEach(e => {
-                if (masterialAllinfo.Count<200)
-                masterialAllinfo.AddRange(FindMaterialBy(e));
+            if (allOrderId == null || allOrderId.Count <= 0) return masterialAllinfo;
+            allOrderId.ForEach(e =>
+            {
+                if (masterialAllinfo.Count < 200)
+                    masterialAllinfo.AddRange(FindMaterialBy(e));
             });
             return masterialAllinfo;
         }
@@ -87,15 +88,15 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         /// <param name="searchStartDate"></param>
         /// <param name="searchEndDate"></param>
         /// <returns></returns>
-        private  List<string> GetAllMaterialOrderId(DateTime searchStartDate, DateTime searchEndDate)
+        private List<string> GetAllMaterialOrderId(DateTime searchStartDate, DateTime searchEndDate)
         {
             List<string> eeturnOrderList = new List<string>();
             if (searchEndDate >= searchStartDate)
             {
-                eeturnOrderList = GetAllMaterialOrderBy(searchEndDate);
+                eeturnOrderList = GetAllMaterialOrderBy(searchStartDate);
                 for (int i = 1; i <= (searchEndDate - searchStartDate).Days; i++)
                 {
-                    DateTime spanDate = searchEndDate.AddDays(-i);
+                    DateTime spanDate = searchStartDate.AddDays(i);
                     if (eeturnOrderList.Count <= 100)
                         eeturnOrderList.AddRange(GetAllMaterialOrderBy(spanDate));
                     else break;
@@ -113,7 +114,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             string Startsql110 = string.Empty;
             string Startsql34 = string.Empty;
             string startDateStr = searchDate.ToDateTimeShortStr();
-            if (startDateStr != string.Empty )
+            if (startDateStr != string.Empty)
             {
                 Startsql591 = "AND (TH029 = '" + startDateStr + "')";
                 Startsql110 = "AND (TA014 = '" + startDateStr + "')";
@@ -159,9 +160,9 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         private List<MaterialModel> GetMaterialIdBy(string category, string code)
         {
 
-            string sql = string.Empty ;
-            string dtSqlMaterialId =string .Empty ;
-            string dtSqlSum = string .Empty ;
+            string sql = string.Empty;
+            string dtSqlMaterialId = string.Empty;
+            string dtSqlSum = string.Empty;
             if (category == null || code == null) return new List<MaterialModel>();
             if (category.Contains("5") & category != "591")
             {
@@ -195,13 +196,13 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             }
 
         }
-      
+
         /// <summary>
-         ///   得到供应商名称
-         /// </summary>
-         /// <param name="SupplierID">供应商ID</param>
-         /// <returns></returns>
-        private  string GetSupplierNameBy(string SupplierID)
+        ///   得到供应商名称
+        /// </summary>
+        /// <param name="SupplierID">供应商ID</param>
+        /// <returns></returns>
+        private string GetSupplierNameBy(string SupplierID)
         {
             DataTable dt2 = DbHelper.Erp.LoadTable("SELECT  MA002 AS 供应商  FROM PURMA  WHERE (MA001 = '" + SupplierID + "')");
             if (dt2.Rows.Count > 0)
@@ -211,7 +212,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             return SupplierID;
         }
 
-         /// <summary> 
+        /// <summary> 
         /// 进货单
         /// </summary>
         /// <param name="category">单别</param>
@@ -224,8 +225,8 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         {
             MaterialModel Material = null;
             List<MaterialModel> Materials = new List<MaterialModel>(); ;
-            string SupplierID = string.Empty ;
-            string InMaterialDate =string .Empty ;
+            string SupplierID = string.Empty;
+            string InMaterialDate = string.Empty;
             DataTable DTds = DbHelper.Erp.LoadTable(sql);
             if (DTds.Rows.Count > 0)
             {
@@ -241,42 +242,42 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 {
                     foreach (DataRow dr in DT.Rows)
                     {
-                        double  ProduceNumber = 0;
+                        double ProduceNumber = 0;
                         string materialId = dr["料号"].ToString();
                         //  SELECT  Sum(TH007) AS 数量 FROM  PURTH   WHERE   (TH001= '" + category + "') AND (TH002 = '" + code + "') AND (TH004='"; ;
                         DataTable dtSum = DbHelper.Erp.LoadTable(dtSqlSum + materialId + "')");
                         if (dtSum.Rows.Count > 0)
                         {
-                            ProduceNumber = dtSum.Rows[0]["数量"].ToString().Trim().ToDouble ();
-                            
+                            ProduceNumber = dtSum.Rows[0]["数量"].ToString().Trim().ToDouble();
+
                         }
-                       
-                       var PorductInfo= PorductInfoS.GetProductInfoBy(dr["料号"].ToString()).FirstOrDefault ();
-                       Material = new MaterialModel()
-                       {
-                         ProduceNumber = ProduceNumber,
-                         ProductDrawID = PorductInfo.MaterialrawID.Trim(),
-                         ProductName = PorductInfo .MaterailName.Trim(),
-                         ProductStandard = PorductInfo.MaterialSpecify.Trim(),
-                         ProductID = PorductInfo.ProductMaterailId.Trim(),
-                         ProductSupplier = SupplierID.Trim(),
-                         ProduceInDate =  DateTime.ParseExact(InMaterialDate , "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture),
-                         Category = category,
-                         Code = code
+
+                        var PorductInfo = PorductInfoS.GetProductInfoBy(dr["料号"].ToString()).FirstOrDefault();
+                        Material = new MaterialModel()
+                        {
+                            ProduceNumber = ProduceNumber,
+                            ProductDrawID = PorductInfo.MaterialrawID.Trim(),
+                            ProductName = PorductInfo.MaterailName.Trim(),
+                            ProductStandard = PorductInfo.MaterialSpecify.Trim(),
+                            ProductID = PorductInfo.ProductMaterailId.Trim(),
+                            ProductSupplier = SupplierID.Trim(),
+                            ProduceInDate = DateTime.ParseExact(InMaterialDate, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture),
+                            Category = category,
+                            Code = code
                         };
-                      
+
                         Materials.Add(Material);
                     }
                 }
             }
             return Materials;
         }
-           /// <summary>
-           /// 制令单
-           /// </summary>
-           /// <param name="category">单别</param>
-           /// <param name="code">单号</param>
-           /// <returns></returns>
+        /// <summary>
+        /// 制令单
+        /// </summary>
+        /// <param name="category">单别</param>
+        /// <param name="code">单号</param>
+        /// <returns></returns>
         private List<MaterialModel> GetMaterials(string category, string code)
         {
             string TA001 = category;
@@ -311,7 +312,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             return Materials;
         }
 
-       
+
         #endregion   私有方法
     }
 
@@ -319,7 +320,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
     /// <summary>
     /// ERP中由料号得到物料相关信息
     /// </summary>
-   public  class MaterialInfoDb
+    public class MaterialInfoDb
     {
 
         private string GetPorductSqlFields()

@@ -310,7 +310,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     var vmManager = {
         editWindowShow: false,
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
-        InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }],
+        InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }, { id: "E", text: "E" }],
         dataSource: [],
         dataSets: [],
         copyLotWindowDisplay: false,
@@ -1181,7 +1181,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
     var vmManager = {
         editWindowShow: false,
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
-        InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }],
+        InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }, { id: "E", text: "E" }],
         dataSource: [],
         dataSets: [],
         copyLotWindowDisplay: false,
