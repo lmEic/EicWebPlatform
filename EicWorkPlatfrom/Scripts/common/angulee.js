@@ -178,7 +178,9 @@ var leeHelper = (function () {
         //质量管理控制器
         quality: 'Quality',
         //质量抽样检验控制器
-        quaInspectionManage: 'QuaInspectionManage'
+        quaInspectionManage: 'QuaInspectionManage',
+        //质量RMA控制器
+        quaRmaManage: 'QuaRmaManage'
     };
     return {
         ///控制器名称
