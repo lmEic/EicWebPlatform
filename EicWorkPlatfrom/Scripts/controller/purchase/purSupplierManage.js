@@ -256,24 +256,13 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
         },
     };
     //上传文件项目
-    var uploadFileVM = {
-        id: 1, EligibleCertificate: '', adding: true, uploadSuccess: false,
+    var uploadFileVM = $scope.fileItem = {
+        EligibleCertificate: '',
         PurchaseType: '', SupplierProperty: '', SupplierId: null, FilePath: '',
         CertificateFileName: '', DateOfCertificate: null, OpSign: 'add', OpPerson: '',
     };
+    var uploadFileVmCopy = _.clone(uploadFileVM);
     var editManager = $scope.editManager = {
-        fileList: [_.clone(uploadFileVM)],
-        //新上传文件
-        addFile: function (item) {
-            item.adding = false;
-            var newItem = _.clone(uploadFileVM);
-            newItem.id = editManager.fileList.length + 1;
-            editManager.fileList.push(newItem);
-        },
-        getFile: function (fileItem) {
-            editManager.uploadFileItem = _.clone(fileItem);
-        },
-        uploadFileItem: null,
         //删除证书文件
         removeCertificateFile: function (item) {
             item.OpSign = leeDataHandler.dataOpMode.deleteFile;
@@ -304,7 +293,7 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
     };
     operate.cancel = function () {
         editManager.certificateDatas = [];
-        editManager.fileList = [_.clone(uploadFileVM)];
+        $scope.fileItem = uploadFileVM = _.clone(uploadFileVmCopy);
         vmManager.editWindowShow = false;
     };
 
@@ -314,31 +303,29 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
             alert("信息录入不完整，请检查！");
             return;
         }
-        var fileItem = _.find(editManager.fileList, { id: editManager.uploadFileItem.id });
         leeHelper.upoadFile(el, function (fd) {
-            fileItem.SupplierId = $scope.vm.SupplierId;
+            uploadFileVM.SupplierId = $scope.vm.SupplierId;
+            var fileItem = uploadFileVM;
             var fileAttachData = { SupplierId: fileItem.SupplierId, EligibleCertificate: fileItem.EligibleCertificate };
             fd.append('fileAttachData', JSON.stringify(fileAttachData));
             $scope.uploadPromie = supplierDataOpService.uploadPurSupplierCertificateFile(fd).then(function (data) {
                 if (data.Result === "OK") {
-                    if (!_.isUndefined(fileItem)) {
-                        //更新文件模型数据
-                        var year = new Date().getFullYear();
-                        fileItem.uploadSuccess = true;
-                        fileItem.CertificateFileName = data.FileName;
-                        leeHelper.copyVm($scope.vm, fileItem);
-                        fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + data.FileName;
-                        fileItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
-                        leeHelper.setUserData(fileItem);
-                        supplierDataOpService.storePurSupplierCertificateInfo(fileItem).then(function (opresult) {
-                            if (opresult.Result) {
-                                if (angular.isObject(opresult.Entity)) {
-                                    editManager.certificateDatas.push(opresult.Entity);
-                                }
-                                alert("上传文件:" + fd.name + "成功！");
+                    //更新文件模型数据
+                    var year = new Date().getFullYear();
+                    fileItem.CertificateFileName = data.FileName;
+                    leeHelper.copyVm($scope.vm, fileItem);
+                    fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + data.FileName;
+                    fileItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
+                    leeHelper.setUserData(fileItem);
+                    supplierDataOpService.storePurSupplierCertificateInfo(fileItem).then(function (opresult) {
+                        if (opresult.Result) {
+                            if (angular.isObject(opresult.Entity)) {
+                                editManager.certificateDatas.push(opresult.Entity);
                             }
-                        });
-                    }
+                            $scope.fileItem = uploadFileVM = _.clone(uploadFileVmCopy);
+                            alert("上传文件:" + fd.name + "成功！");
+                        }
+                    });
                 }
             });
         })

@@ -131,7 +131,7 @@
                             <legend>
                                 <label>证书信息</label>
                             </legend>
-                            <div class="form-group" ng-repeat="fileItem in editManager.fileList track by $index">
+                            <div class="form-group">
                                 <div class="col-md-3">
                                     <button type="button" class="btn  btn-default" ng-model="fileItem.EligibleCertificate"
                                             data-html="1" data-multiple="0"
@@ -151,15 +151,7 @@
                                         <div class="input-group-addon">
                                             <label for="drawing">文件名称：</label>
                                         </div>
-                                        <input type="file" name="file" class="form-control" onchange="angular.element(this).scope().selectFile(this)" ng-click="editManager.getFile(fileItem)" />
-                                        <div class="input-group-addon" cg-busy="{promise:uploadPromise}">
-                                            <span class="label label-primary" ng-click="editManager.addFile(fileItem)" ng-show="fileItem.adding">
-                                                <i class="fa fa-plus-square"></i>
-                                            </span>
-                                            <span class="label label-success" ng-show="fileItem.uploadSuccess">
-                                                <i class="fa fa-check-square"></i>
-                                            </span>
-                                        </div>
+                                        <input type="file" name="file" class="form-control" onchange="angular.element(this).scope().selectFile(this)" />
                                     </div>
                                 </div>
                             </div>

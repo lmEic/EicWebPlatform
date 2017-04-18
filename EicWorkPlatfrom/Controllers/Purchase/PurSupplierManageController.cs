@@ -110,6 +110,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
                     string fileName = String.Format("{0}{1}{2}", data.SupplierId, data.EligibleCertificate, extensionName);
                     string fullFileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.PurSupplierCertificate, year), fileName);
                     file.DeleteExistFile(fullFileName).SaveAs(fullFileName);
+
                     return Json(new { Result = "OK", FileName = fileName });
                 }
             }
