@@ -71,7 +71,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddSupplierQualifiedCertificate);
-            this.AddOpItem(OpMode.Edit, EidtSupplierQualifiedCertificate);
+            this.AddOpItem(OpMode.UpDate, EidtSupplierQualifiedCertificate);
             this.AddOpItem(OpMode.Delete, DeleteSupplierQualifiedCertificate);
 
         }
@@ -86,7 +86,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 model.OpSign = OpMode.Add;//若不存在则直接添加
                 return this.Store(model, true);
             }
-            return OpResult.SetResult("文件重新上传成功！", true);
+
+            model.OpSign = OpMode.UpDate;
+            model.Id_Key = oldmodel.Id_Key;
+            //若不存在则直接添加
+            return this.Store(model, true);
+
+            //return OpResult.SetResult("文件重新上传成功！", true);
         }
 
 
@@ -96,7 +102,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             if (model == null) return ReOpResult;
             var oldModel = this.GetOldQualifiedCertificateModelBy(model);
             if (oldModel == null) return OpResult.SetResult("不存在此数据", false);
-            ReOpResult = irep.Delete(e => e.Id_Key == oldModel.Id_Key, true).ToOpResult_Delete(OpContext);
+            oldModel.OpSign = OpMode.Delete;
+            ReOpResult = this.Store(oldModel, true);
             if (!ReOpResult.Result) return ReOpResult;
             //比对新旧文件是否一样,若不一样，则删除旧的文件
             oldModel.FilePath.DeleteExistFile(model.FilePath, siteRootPath);
