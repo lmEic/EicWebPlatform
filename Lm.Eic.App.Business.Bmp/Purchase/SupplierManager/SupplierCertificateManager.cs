@@ -42,9 +42,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             string startYearMonth = (int.Parse(endYearMonth) - 100).ToString();
             //获取供应商信息
             var supplierInfoList = GetSupplierInformationListBy(startYearMonth, endYearMonth);
-
             if (supplierInfoList == null || supplierInfoList.Count <= 0) return QualifiedSupplierInfo;
-
             supplierInfoList.ForEach(supplierInfo =>
             {
                 model = getEligibleSuppliersModel(supplierInfo);
