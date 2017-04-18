@@ -18,5 +18,50 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
     return rma;
 })
 qualityModule.controller('createRmaFormCtrl', function ($scope) {
+    ///视图模型
+    var uiVm = $scope.vm = {
+        RmaId: null,
+        CustomerId: null,
+        CustomerShortName: null,
+        OpPerson: null,
+        OpSgin: null,
+    };
+
+    var vmManager = {
+        activeTab: 'initTab',
+        //自动生成RMA编号
+        autoCreateRmaId: function () {
+
+        },
+        //获取表单数据
+        getRmaFormDatas: function () { },
+        datasets: [],
+    };
+    $scope.vmManager = vmManager;
+
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveAll = function (isValid) { };
+    operate.refresh = function () { };
 
 });
+qualityModule.controller('rmaInputDescriptionCtrl', function ($scope) {
+    ///视图模型
+    var rmaVm = $scope.rmavm = {
+        RmaId: null,
+        CustomerId: null,
+        CustomerShortName: null,
+    };
+
+    var vmManager = {
+        //获取表单数据
+        getRmaFormDatas: function () { },
+        datasets: [],
+    };
+    $scope.vmManager = vmManager;
+
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveAll = function (isValid) { };
+    operate.refresh = function () { };
+})
