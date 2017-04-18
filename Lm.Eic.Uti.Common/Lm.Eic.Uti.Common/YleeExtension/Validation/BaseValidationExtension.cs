@@ -19,7 +19,12 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
         {
             return string.IsNullOrEmpty(s);
         }
-        
+
+        public static bool IsNull(this Object model)
+        {
+            return model == null;
+        }
+
         /// <summary>
         /// 字符串是否为数字
         /// </summary>
@@ -91,7 +96,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
         //
         // 返回结果:
         //     如果在List中全部找到，则为 true，否则为 false。
-        public static bool Contains(this List<string> mystList,string[] stList )
+        public static bool Contains(this List<string> mystList, string[] stList)
         {
             if (mystList == null || stList == null)
                 return false;
@@ -112,12 +117,12 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
         /// <param name="seasonDateNum">格式yyyyMM</param>
         /// <param name="stardate">格式yyyyMMdd</param>
         /// <param name="enddate">格式yyyyMMdd</param>
-        public static void SeasonNumConvertStartDateAndEndDate(this string seasonDateNum, out string  stardate, out string enddate)
+        public static void SeasonNumConvertStartDateAndEndDate(this string seasonDateNum, out string stardate, out string enddate)
         {
             try
             {
 
-                string year = string.Empty ;
+                string year = string.Empty;
                 int DateNum = 0;
                 //
                 if (seasonDateNum == string.Empty)
@@ -129,7 +134,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
                 if (seasonDateNum.Length != 6)
                 {
                     DateNum = int.Parse(seasonDateNum.Substring(seasonDateNum.Length - 1, 1));
-                    year =DateTime.Now .Year .ToString() ;
+                    year = DateTime.Now.Year.ToString();
                 }
                 else
                 {

@@ -332,7 +332,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         /// </summary>
         /// <param name="dr">DataTable的一行</param>
         /// <param name="model"></param>
-        private void MapProductRowAndModel(DataRow dr, ProductMaterailModel model)
+        private void MapProductRowAndModel(DataRow dr, ProductMaterailDto model)
         {
             model.ProductMaterailId = dr["MB001"].ToString();
             model.MaterailName = dr["MB002"].ToString();
@@ -349,11 +349,11 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         /// </summary>
         /// <param name="marteial">料号</param>
         /// <returns></returns>
-        public List<ProductMaterailModel> GetProductInfoBy(string marteial)
+        public List<ProductMaterailDto> GetProductInfoBy(string marteial)
         {
-            if (marteial == null || marteial == string.Empty) return new List<ProductMaterailModel>();
+            if (marteial == null || marteial == string.Empty) return new List<ProductMaterailDto>();
             string sqlWhere = string.Format(" where MB001='{0}'", marteial.Trim());
-            return ErpDbAccessHelper.FindDataBy<ProductMaterailModel>(GetPorductSqlFields(), sqlWhere, (dr, m) =>
+            return ErpDbAccessHelper.FindDataBy<ProductMaterailDto>(GetPorductSqlFields(), sqlWhere, (dr, m) =>
             {
                 this.MapProductRowAndModel(dr, m);
             });

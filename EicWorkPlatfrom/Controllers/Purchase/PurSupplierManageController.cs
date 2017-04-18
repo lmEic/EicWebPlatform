@@ -96,6 +96,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [HttpPost]
         public JsonResult UploadPurSupplierCertificateFile(HttpPostedFileBase file)
         {
+            var FailResult = new { Result = "FAIL" };
             if (file != null)
             {
                 if (file.ContentLength > 0)
@@ -104,12 +105,15 @@ namespace EicWorkPlatfrom.Controllers.Purchase
                     //按年份进行存储
                     string year = DateTime.Now.Year.ToString();
                     //待加入验证文件名称逻辑:
-                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.PurSupplierCertificate, year), file.FileName);
-                    file.SaveAs(fileName);
-                    return Json("OK");
+                    if (data == null) return Json(FailResult);
+                    string extensionName = System.IO.Path.GetExtension(file.FileName);
+                    string fileName = String.Format("{0}{1}{2}", data.SupplierId, data.EligibleCertificate, extensionName);
+                    string fullFileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.PurSupplierCertificate, year), fileName);
+                    file.DeleteExistFile(fullFileName).SaveAs(fullFileName);
+                    return Json(new { Result = "OK", FileName = fileName });
                 }
             }
-            return Json("FAIL");
+            return Json(FailResult);
         }
         /// <summary>
         /// 保存供应商证书信息

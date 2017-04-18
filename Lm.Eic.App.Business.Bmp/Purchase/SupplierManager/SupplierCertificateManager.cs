@@ -84,34 +84,42 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public OpResult SaveSpplierCertificateData(InPutSupplieCertificateInfoModel model, string siteRootPath)
         {
-            //判断列表是否为空
-            OpResult reOpresult = OpResult.SetResult("没有进任何操作");
-            if (model == null) return OpResult.SetResult("数据列表不能为空");
-            //通过SupplierId得到供应商信息
-            var supplierInfoModel = GetSuppplierInfoBy(model.SupplierId);
-            //判断是否为空
-            if (supplierInfoModel == null) return OpResult.SetResult(string.Format("没有{0}供应商编号", model.SupplierId), true);
-            //赋值 供应商属性和采购性质
-            supplierInfoModel.PurchaseType = model.PurchaseType;
-            supplierInfoModel.SupplierProperty = model.SupplierProperty;
-            if (model.OpSign == "editPurchaseType")//修改证书类别信息
+            try
             {
-                supplierInfoModel.OpSign = model.OpSign;
-                return SupplierCrudFactory.SuppliersInfoCrud.EidtSupplierInfo(supplierInfoModel);
+                //判断列表是否为空
+                OpResult reOpresult = OpResult.SetResult("没有进任何操作");
+                if (model == null) return OpResult.SetResult("数据列表不能为空");
+                //通过SupplierId得到供应商信息
+                var supplierInfoModel = GetSuppplierInfoBy(model.SupplierId);
+                //判断是否为空
+                if (supplierInfoModel == null) return OpResult.SetResult(string.Format("没有{0}供应商编号", model.SupplierId), true);
+                //赋值 供应商属性和采购性质
+                supplierInfoModel.PurchaseType = model.PurchaseType;
+                supplierInfoModel.SupplierProperty = model.SupplierProperty;
+                if (model.OpSign == "editPurchaseType")//修改证书类别信息
+                {
+                    supplierInfoModel.OpSign = model.OpSign;
+                    return SupplierCrudFactory.SuppliersInfoCrud.EidtSupplierInfo(supplierInfoModel);
+                }
+                if (model.CertificateFileName == null || model.CertificateFileName == string.Empty) return OpResult.SetResult("证书名称不能为空");
+                SupplierQualifiedCertificateModel savemodel = new SupplierQualifiedCertificateModel()
+                {
+                    SupplierId = model.SupplierId,
+                    EligibleCertificate = model.EligibleCertificate,
+                    CertificateFileName = model.CertificateFileName,
+                    FilePath = model.FilePath,
+                    DateOfCertificate = model.DateOfCertificate.ToDate(),
+                    IsEfficacy = "是",
+                    OpSign = model.OpSign,
+                    OpPerson = model.OpPerson,
+                };
+                return StoreSpplierCertificateData(savemodel, siteRootPath);
             }
-            if (model.CertificateFileName == null || model.CertificateFileName == string.Empty) return OpResult.SetResult("证书名称不能为空");
-            SupplierQualifiedCertificateModel savemodel = new SupplierQualifiedCertificateModel()
+            catch (Exception ex)
             {
-                SupplierId = model.SupplierId,
-                EligibleCertificate = model.EligibleCertificate,
-                CertificateFileName = model.CertificateFileName,
-                FilePath = model.FilePath,
-                DateOfCertificate = model.DateOfCertificate.ToDate(),
-                IsEfficacy = "是",
-                OpSign = model.OpSign,
-                OpPerson = model.OpPerson,
-            };
-            return StoreSpplierCertificateData(savemodel, siteRootPath);
+                throw new Exception(ex.InnerException.Message);
+            }
+
         }
         /// <summary>
         /// 删除供应商证书
@@ -123,12 +131,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
-                if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
-                    return SupplierCrudFactory.SupplierQualifiedCertificateCrud.UploadFileSupplierQualifiedCertificate(model, siteRootPath);
-
                 if (model != null && model.OpSign == OpMode.DeleteFile)//如果删除文件则启文件相应的删除处理
                     return SupplierCrudFactory.SupplierQualifiedCertificateCrud.DeleteFileSupplierQualifiedCertificate(model, siteRootPath);
-                return SupplierCrudFactory.SupplierQualifiedCertificateCrud.Store(model);
+                return SupplierCrudFactory.SupplierQualifiedCertificateCrud.StoreSupplierQualifiedCertificate(model);
+
             }
             catch (Exception ex)
             {
