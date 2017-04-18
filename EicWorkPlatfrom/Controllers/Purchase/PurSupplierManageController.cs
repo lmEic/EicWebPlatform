@@ -102,13 +102,11 @@ namespace EicWorkPlatfrom.Controllers.Purchase
                 if (file.ContentLength > 0)
                 {
                     FileAttatchData data = JsonConvert.DeserializeObject<FileAttatchData>(Request.Params["fileAttachData"]);
-                    //按年份进行存储
-                    string year = DateTime.Now.Year.ToString();
                     //待加入验证文件名称逻辑:
                     if (data == null) return Json(FailResult);
                     string extensionName = System.IO.Path.GetExtension(file.FileName);
                     string fileName = String.Format("{0}{1}{2}", data.SupplierId, data.EligibleCertificate, extensionName);
-                    string fullFileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.PurSupplierCertificate, year), fileName);
+                    string fullFileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.PurSupplierCertificate), fileName);
                     file.DeleteExistFile(fullFileName).SaveAs(fullFileName);
 
                     return Json(new { Result = "OK", FileName = fileName });

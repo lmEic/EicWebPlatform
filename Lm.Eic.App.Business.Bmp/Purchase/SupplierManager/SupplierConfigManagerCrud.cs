@@ -86,12 +86,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 model.OpSign = OpMode.Add;//若不存在则直接添加
                 return this.Store(model, true);
             }
-            model.Id_Key = oldmodel.Id_Key; ///先进行操作儿
-            model.OpSign = OpMode.Edit;
-            ReOpResult = this.Store(model, true);
-            if (!ReOpResult.Result) return ReOpResult;
-            //比对新旧文件是否一样,若不一样，则删除旧的文件
-            return ReOpResult;
+            return OpResult.SetResult("文件重新上传成功！", true);
         }
 
 
