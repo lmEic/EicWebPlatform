@@ -87,7 +87,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 return this.Store(model, true);
             }
             model.Id_Key = oldmodel.Id_Key; ///先进行操作儿
-            model.OpSign = OpMode.UpDate;
+            model.OpSign = OpMode.Edit;
             ReOpResult = this.Store(model, true);
             if (!ReOpResult.Result) return ReOpResult;
             //比对新旧文件是否一样,若不一样，则删除旧的文件
