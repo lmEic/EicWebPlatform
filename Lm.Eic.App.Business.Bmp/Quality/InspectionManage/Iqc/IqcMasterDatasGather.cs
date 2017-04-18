@@ -13,7 +13,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     public class IqcMasterDatasGather : InspectionDateGatherManageBase
     {
 
-        public OpResult StoreInspectionIqcMasterModelForm(InspectionItemDataSummaryLabelModel model)
+        public OpResult StoreInspectionIqcMasterModelForm(InspectionItemDataSummaryVM model)
         {
             InspectionIqcMasterModel MasterModel = new InspectionIqcMasterModel()
             {

@@ -10,7 +10,7 @@ using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.Uti.Common.YleeDbHandler
 {
-    public abstract class CrudBase<TEntity,IRep> 
+    public abstract class CrudBase<TEntity, IRep>
         where TEntity : class, new()
     {
 
@@ -20,7 +20,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// </summary>
         /// <param name="repository">数据访问接口</param>
         /// <param name="opContext">操作的数据对象</param>
-        public CrudBase(IRep repository,string opContext)
+        public CrudBase(IRep repository, string opContext)
         {
             irep = repository;
             OpContext = opContext;
@@ -49,11 +49,11 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// </summary>
         /// <param name="opKey"></param>
         /// <param name="opItem"></param>
-        protected virtual void AddOpItem(string opKey,Func<TEntity, OpResult> opItem)
+        protected virtual void AddOpItem(string opKey, Func<TEntity, OpResult> opItem)
         {
             if (!crudOpDics.ContainsKey(opKey))
             {
-                crudOpDics.Add(opKey,opItem);
+                crudOpDics.Add(opKey, opItem);
             }
         }
 
@@ -88,7 +88,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// </summary>
         /// <param name="entityList">列表</param>
         /// <param name="opMode">操作标示</param>
-        protected virtual void SetFixFieldValue(IEnumerable<TEntity> entityList,string opMode)
+        protected virtual void SetFixFieldValue(IEnumerable<TEntity> entityList, string opMode)
         {
             entityList.ToList().ForEach((m) =>
             {
@@ -161,25 +161,25 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="entity"></param>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        private PropertyInfo IsHasProperty(TEntity entity,string propertyName)
+        private PropertyInfo IsHasProperty(TEntity entity, string propertyName)
         {
             Type type = entity.GetType();
-            PropertyInfo pi= type.GetProperties().ToList().FirstOrDefault(e => e.Name == propertyName);
+            PropertyInfo pi = type.GetProperties().ToList().FirstOrDefault(e => e.Name == propertyName);
             return pi;
         }
-        protected OpResult StoreEntity(TEntity entity,Func<TEntity,OpResult> storeHandler,bool isNeedEntity=false)
+        protected OpResult StoreEntity(TEntity entity, Func<TEntity, OpResult> storeHandler, bool isNeedEntity = false)
         {
             OpResult result = null;
             if (entity == null) return OpResult.SetResult("entity can't set null!");
             SetFixFieldValue(entity);
             try
             {
-                result=storeHandler(entity);
+                result = storeHandler(entity);
                 BindEntityToOpResult(isNeedEntity, result, entity);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.InnerException.Message); 
+                throw new Exception(ex.InnerException.Message);
             }
             return result;
         }
@@ -197,4 +197,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             return newModel;
         }
     }
+
+
 }

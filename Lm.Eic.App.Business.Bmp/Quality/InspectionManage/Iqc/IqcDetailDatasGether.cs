@@ -27,7 +27,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult StoreInspectionIqcDetailModelForm(InspectionItemDataSummaryLabelModel model, string siteRootPath)
+        public OpResult StoreInspectionIqcDetailModelForm(InspectionItemDataSummaryVM model, string siteRootPath)
         {
             InspectionIqcDetailModel datailModel = new InspectionIqcDetailModel()
             {

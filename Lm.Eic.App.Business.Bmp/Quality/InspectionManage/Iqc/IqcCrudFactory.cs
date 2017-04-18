@@ -2,7 +2,10 @@
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.Validation;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -80,26 +83,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <summary>
         /// 批量保存 IQC检验项目数据
         /// </summary>
-        /// <param name="modelList"></param>
+        /// <param name="modeldatas"></param>
         /// <returns></returns>
-        internal OpResult StoreInspectionItemConfiList(List<InspectionIqcItemConfigModel> modelList)
+        internal OpResult StoreInspectionItemConfigDatas(List<InspectionIqcItemConfigModel> modeldatas)
         {
             OpResult opResult = OpResult.SetResult("未执行任何操作！");
-            SetFixFieldValue(modelList, OpMode.Add);
+            SetFixFieldValue(modeldatas, OpMode.Add);
             int i = 0;
             //如果存在 就修改   
-            modelList.ForEach(m =>
+            modeldatas.ForEach(m =>
             {
                 if (this.irep.IsExist(e => e.Id_Key == m.Id_Key))
                 { m.OpSign = "edit"; }
-
-
                 opResult = this.Store(m);
                 if (opResult.Result)
                     i = i + opResult.RecordCount;
             });
             opResult = i.ToOpResult(OpContext);
-            if (i == modelList.Count) opResult.Entity = modelList;
+            if (i == modeldatas.Count) opResult.Entity = modeldatas;
             return opResult;
 
 
@@ -185,6 +186,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Entities.Where(e => e.MaterialInDate >= starttime && e.MaterialInDate <= endtime).OrderBy(e => e.MaterialInDate).ToList();
         }
     }
+
     /// <summary>
     ///进料检验单（ERP） 物料检验项次录入数据
     /// </summary>
@@ -271,7 +273,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
-                if (newModel == null) return null;
+                if (newModel.IsNull()) return null;
                 return irep.Entities.FirstOrDefault(e => e.OrderId == newModel.OrderId && e.MaterialId == newModel.MaterialId & e.InspecitonItem == newModel.InspecitonItem);
             }
             catch (Exception ex)
@@ -382,6 +384,33 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             else return false;
         }
     }
-    #endregion 
+
+    public class TestCurd : ModelEntityCurdBase<InspectionIqcMasterModel>
+    {
+
+    }
     #endregion
+
+
+
+
+    #endregion
+    class rmamodel
+    {
+        public string rmaid { get; set; }
+
+        public List<rmadescriptionItem> descriptionItems { get; set; }
+
+        public List<handleItem> handleItems { get; set; }
+    }
+
+    class rmadescriptionItem
+    {
+        public string productId { get; set; }
+    }
+
+    class handleItem
+    {
+
+    }
 }

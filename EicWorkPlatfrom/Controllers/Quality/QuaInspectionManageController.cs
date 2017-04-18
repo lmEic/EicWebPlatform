@@ -325,7 +325,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         [NoAuthenCheck]
         [HttpPost]
-        public JsonResult StoreIqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
+        public JsonResult StoreIqcInspectionGatherDatas(InspectionItemDataSummaryVM gatherData)
         {
             if (gatherData == null) return Json(new OpResult("数据为空", false));
             if (gatherData.FileName != null && gatherData.FileName.Length > 1)
@@ -403,7 +403,7 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult StoreFqcInspectionGatherDatas(InspectionItemDataSummaryLabelModel gatherData)
+        public JsonResult StoreFqcInspectionGatherDatas(InspectionItemDataSummaryVM gatherData)
         {
             if (gatherData == null) return Json(new OpResult("数据为空，保存失败", false));
             if (gatherData.FileName != null && gatherData.FileName.Length > 1)//上传文件

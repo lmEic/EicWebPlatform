@@ -54,7 +54,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult StoreIqcInspectionItemConfig(List<InspectionIqcItemConfigModel> modelList)
         {
-            return InspectionManagerCrudFactory.IqcItemConfigCrud.StoreInspectionItemConfiList(modelList);
+            return InspectionManagerCrudFactory.IqcItemConfigCrud.StoreInspectionItemConfigDatas(modelList);
         }
 
 
