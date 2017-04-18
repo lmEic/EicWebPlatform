@@ -323,6 +323,7 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
                                 if (item === undefined)
                                     editManager.certificateDatas.push(opresult.Entity);
                             }
+                            console.log(opresult.Result);
                             $scope.fileItem = uploadFileVM = _.clone(uploadFileVmCopy);
                             alert("上传文件:" + fd.name + "成功！");
                         }
