@@ -102,14 +102,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     return SupplierCrudFactory.SuppliersInfoCrud.EidtSupplierInfo(supplierInfoModel);
                 }
                 if (model.CertificateFileName == null || model.CertificateFileName == string.Empty) return OpResult.SetResult("证书名称不能为空");
-                ///证书名称赋值
-                string certificateFileName = CombinationFileName(model.CertificateFileName, model.SupplierId, model.EligibleCertificate);
-                ///
                 SupplierQualifiedCertificateModel savemodel = new SupplierQualifiedCertificateModel()
                 {
                     SupplierId = model.SupplierId,
                     EligibleCertificate = model.EligibleCertificate,
-                    CertificateFileName = certificateFileName,
+                    CertificateFileName = model.CertificateFileName,
                     FilePath = model.FilePath,
                     DateOfCertificate = model.DateOfCertificate.ToDate(),
                     IsEfficacy = "是",
@@ -124,18 +121,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             }
 
         }
-
-        public string CombinationFileName(string oldFileName, string filename1, string filename2)
-        {
-            string combinationFileName = oldFileName;
-            if (oldFileName.Contains("."))
-            {
-                string[] arr = oldFileName.Split('.');
-                combinationFileName = filename1 + filename2 + "." + arr[arr.Length - 1];
-            }
-            return combinationFileName;
-        }
-
         /// <summary>
         /// 删除供应商证书
         /// </summary>
@@ -146,15 +131,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
-                if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
-                {
-                    model.FilePath = "FileLibrary/PurSupplierCertificate/" + CombinationFileName(model.CertificateFileName, model.SupplierId, model.EligibleCertificate);
-                    model.CertificateFileName = CombinationFileName(model.CertificateFileName, model.SupplierId, model.EligibleCertificate);
-                }
                 if (model != null && model.OpSign == OpMode.DeleteFile)//如果删除文件则启文件相应的删除处理
                     return SupplierCrudFactory.SupplierQualifiedCertificateCrud.DeleteFileSupplierQualifiedCertificate(model, siteRootPath);
                 return SupplierCrudFactory.SupplierQualifiedCertificateCrud.StoreSupplierQualifiedCertificate(model);
-                //return SupplierCrudFactory.SupplierQualifiedCertificateCrud.Store(model);
+
             }
             catch (Exception ex)
             {

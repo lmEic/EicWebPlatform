@@ -295,23 +295,7 @@ namespace EicWorkPlatfrom.Controllers
             }
             return dirctoryPath;
         }
-        /// <summary>
-        /// 组合文件名
-        /// </summary>
-        /// <param name="oldFileName"></param>
-        /// <param name="filename1"></param>
-        /// <param name="filename2"></param>
-        /// <returns></returns>
-        public string CombinationFileName(string oldFileName, string filename1, string filename2)
-        {
-            string combinationFileName = oldFileName;
-            if (oldFileName.Contains("."))
-            {
-                string[] arr = oldFileName.Split('.');
-                combinationFileName = filename1 + filename2 + "." + arr[arr.Length - 1];
-            }
-            return combinationFileName;
-        }
+        
         #endregion
 
         /// <summary>

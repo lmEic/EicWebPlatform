@@ -319,15 +319,15 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
             fileItem.SupplierId = $scope.vm.SupplierId;
             var fileAttachData = { SupplierId: fileItem.SupplierId, EligibleCertificate: fileItem.EligibleCertificate };
             fd.append('fileAttachData', JSON.stringify(fileAttachData));
-            $scope.uploadPromie = supplierDataOpService.uploadPurSupplierCertificateFile(fd).then(function (result) {
-                if (result === "OK") {
+            $scope.uploadPromie = supplierDataOpService.uploadPurSupplierCertificateFile(fd).then(function (data) {
+                if (data.Result === "OK") {
                     if (!_.isUndefined(fileItem)) {
                         //更新文件模型数据
                         var year = new Date().getFullYear();
                         fileItem.uploadSuccess = true;
-                        fileItem.CertificateFileName = fd.name;
+                        fileItem.CertificateFileName = data.FileName;
                         leeHelper.copyVm($scope.vm, fileItem);
-                        fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + fd.name;
+                        fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + year + "/" + data.FileName;
                         fileItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
                         leeHelper.setUserData(fileItem);
                         supplierDataOpService.storePurSupplierCertificateInfo(fileItem).then(function (opresult) {

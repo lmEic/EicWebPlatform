@@ -102,7 +102,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             var oldModel = this.GetOldQualifiedCertificateModelBy(model);
             if (oldModel == null) return OpResult.SetResult("不存在此数据", false);
             ReOpResult = irep.Delete(e => e.Id_Key == oldModel.Id_Key, true).ToOpResult_Delete(OpContext);
-            if (ReOpResult.Result == false) return ReOpResult;
+            if (!ReOpResult.Result) return ReOpResult;
             //比对新旧文件是否一样,若不一样，则删除旧的文件
             oldModel.FilePath.DeleteExistFile(model.FilePath, siteRootPath);
             return ReOpResult;
