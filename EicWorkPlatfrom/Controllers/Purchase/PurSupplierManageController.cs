@@ -100,9 +100,10 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             {
                 if (file.ContentLength > 0)
                 {
-                    ///按年份进行存储
+                    FileAttatchData data = JsonConvert.DeserializeObject<FileAttatchData>(Request.Params["fileAttachData"]);
+                    //按年份进行存储
                     string year = DateTime.Now.Year.ToString();
-                    ///待加入验证文件名称逻辑:
+                    //待加入验证文件名称逻辑:
                     string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.PurSupplierCertificate, year), file.FileName);
                     file.SaveAs(fileName);
                     return Json("OK");
@@ -305,4 +306,16 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         }
         #endregion
     }
+
+
+
+
+    #region view model
+    public class FileAttatchData
+    {
+        public string SupplierId { get; set; }
+
+        public string EligibleCertificate { get; set; }
+    }
+    #endregion
 }

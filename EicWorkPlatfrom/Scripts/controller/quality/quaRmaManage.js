@@ -4,7 +4,7 @@
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/underscore/underscore-min.js" />
 var qualityModule = angular.module('bpm.qualityApp');
 //数据访问工厂
-qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
+qualityModule.factory("rmaDataOpService", function (ajaxService) {
     var rma = {};
     var quaInspectionManageUrl = "/quaInspectionManage/";
     ///////////////////////////////////////////////////iqc检验项目配置模块////////////////////////////////////////
@@ -16,5 +16,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         });
     };
     return rma;
-    ///////////////////////////////////////////////////////////////////////////////////////
 })
+qualityModule.controller('createRmaFormCtrl', function ($scope) {
+
+});
