@@ -104,8 +104,10 @@ namespace EicWorkPlatfrom.Controllers.Purchase
                     //按年份进行存储
                     string year = DateTime.Now.Year.ToString();
                     //待加入验证文件名称逻辑:
-                    string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.PurSupplierCertificate, year), file.FileName);
-                    file.SaveAs(fileName);
+                    if (data == null) return Json("FAIL");
+                    string fileName = this.CombinationFileName(file.FileName, data.SupplierId, data.EligibleCertificate);
+                    fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.PurSupplierCertificate, year), fileName);
+                    file.DeleteExistFile(fileName).SaveAs(fileName);
                     return Json("OK");
                 }
             }
@@ -120,6 +122,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult StorePurSupplierCertificateInfo(InPutSupplieCertificateInfoModel certificateData)
         {
+
             var opResult = PurchaseService.PurSupplierManager.SupplierCertificateManager.SaveSpplierCertificateData(certificateData, this.SiteRootPath);
             return Json(opResult);
         }

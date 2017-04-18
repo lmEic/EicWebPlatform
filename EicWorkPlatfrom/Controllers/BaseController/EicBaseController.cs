@@ -295,6 +295,23 @@ namespace EicWorkPlatfrom.Controllers
             }
             return dirctoryPath;
         }
+        /// <summary>
+        /// 组合文件名
+        /// </summary>
+        /// <param name="oldFileName"></param>
+        /// <param name="filename1"></param>
+        /// <param name="filename2"></param>
+        /// <returns></returns>
+        public string CombinationFileName(string oldFileName, string filename1, string filename2)
+        {
+            string combinationFileName = oldFileName;
+            if (oldFileName.Contains("."))
+            {
+                string[] arr = oldFileName.Split('.');
+                combinationFileName = filename1 + filename2 + "." + arr[arr.Length - 1];
+            }
+            return combinationFileName;
+        }
         #endregion
 
         /// <summary>
@@ -389,6 +406,28 @@ namespace EicWorkPlatfrom.Controllers
         public static ImageResult ImageResult(this Controller ctrl, Image image)
         {
             return new ImageResult(image);
+        }
+        /// <summary>
+        /// 删除已经存在的文件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static HttpPostedFileBase DeleteExistFile(this HttpPostedFileBase file, string fileName)
+        {
+            try
+            {
+                if (System.IO.File.Exists(fileName))
+                {
+                    System.IO.File.Delete(fileName);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+            return file;
         }
     }
 
