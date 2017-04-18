@@ -311,7 +311,6 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
             $scope.uploadPromie = supplierDataOpService.uploadPurSupplierCertificateFile(fd).then(function (data) {
                 if (data.Result === "OK") {
                     //更新文件模型数据
-
                     fileItem.CertificateFileName = data.FileName;
                     leeHelper.copyVm($scope.vm, fileItem);
                     fileItem.FilePath = "FileLibrary/PurSupplierCertificate/" + data.FileName;
@@ -320,7 +319,9 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
                     supplierDataOpService.storePurSupplierCertificateInfo(fileItem).then(function (opresult) {
                         if (opresult.Result) {
                             if (angular.isObject(opresult.Entity)) {
-                                editManager.certificateDatas.push(opresult.Entity);
+                                var item = _.findWhere(editManager.certificateDatas, { SupplierId: opresult.Entity.SupplierId });
+                                if (item === undefined)
+                                    editManager.certificateDatas.push(opresult.Entity);
                             }
                             $scope.fileItem = uploadFileVM = _.clone(uploadFileVmCopy);
                             alert("上传文件:" + fd.name + "成功！");
