@@ -311,6 +311,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
 
 
     #region view model
+    /// <summary>
+    /// 上传文件附件数据模型
+    /// </summary>
     public class FileAttatchData
     {
         public string SupplierId { get; set; }
