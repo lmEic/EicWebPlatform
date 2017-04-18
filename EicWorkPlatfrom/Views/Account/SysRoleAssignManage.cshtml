@@ -1,0 +1,84 @@
+﻿<div class="panel panel-primary" ng-controller="assignUserToRoleCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>给角色分配用户</h6>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <div class="row">
+                <div class="col-md-6" cg-busy="{promise:promise}">
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-info">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <i class="fa fa-user"></i>
+                                    <span>角色列表</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input class="form-control" type="text" placeholder="输入角色快速定位" ng-model="filterRole" />
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-search"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <ul class="nav nav-pills" style="max-height:450px;overflow-y:auto">
+                                <li ng-repeat="role in vmManager.roles|filter:filterRole track by $index">
+                                    <div class="well well-sm" ng-click="vmManager.selectRole(role)">
+                                        <span class="label label-primary">{{role.RoleId}}</span>
+                                        <br />
+                                        <span data-title="角色等级{{role.RoleLevel}}" data-bs-tooltip>
+                                            <i class="fa fa-user"></i>
+                                            {{role.RoleName}}
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="search" class="form-control" ng-model="vm.UserId" ng-keypress="vmManager.findUserByUserId($event)" placeholder="请输入用户姓名并按下回车键进行查找" />
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-info">
+                            <i class="fa fa-user"></i>
+                            角色ID：<span>{{vm.RoleId}}</span>
+                            角色名称:<span>{{vm.RoleName}}</span>
+                            <span class="pull-right">
+                                <span class="btn btn-xs btn-primary" ng-click="operate.saveMatchRoles()">
+                                    <i class="fa fa-save"></i> 批量保存
+                                </span>
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            <ul class="nav nav-pills info">
+                                <li ng-repeat="role in vmManager.matchRoles track by $index">
+                                    <div class="well well-sm">
+                                        <span class="label label-primary">
+                                            {{role.UserId}}
+                                            <span class="btn btn-xs btn-danger" ng-click="vmManager.removeRole(role)">
+                                                <i class="fa fa-remove"></i>
+                                            </span>
+                                        </span>
+                                        <br />
+                                        <span>
+                                            <i class="fa fa-user"></i>
+                                            {{role.UserName}}
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div yl-operatemsg-board></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -29,6 +29,9 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
     .state('sysRoleManage', {
         templateUrl: 'Account/SysRoleManage'
     })
+    .state('sysRoleAssignManage', {
+        templateUrl: 'Account/SysRoleAssignManage'
+    })
      .state('sysAssemblyEdit', {
          templateUrl: 'Account/SysAssemblyEdit'
      })

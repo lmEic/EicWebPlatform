@@ -10,7 +10,7 @@ var leeDataHandler = (function () {
         msgDisplay: false,//结果信息显示标志
         vm: null,
         //清空视图对象
-        clearVm: function (vm,notKeys) {
+        clearVm: function (vm, notKeys) {
             for (var key in vm) {
                 if (_.isArray(notKeys)) {
                     if (!_.contains(notKeys, key)) {
@@ -26,18 +26,15 @@ var leeDataHandler = (function () {
     ///数据操作
     var leeDataOperate = {
         ///添加操作行为
-        add: function (opstatus,isvalid, addfn)
-        {
+        add: function (opstatus, isvalid, addfn) {
             opstatus.showValidation = !isvalid;
-            if (isvalid)
-            {
+            if (isvalid) {
                 if (addfn !== undefined)
                     addfn();
             }
         },
         ///处理操作结果
-        handleSuccessResult: function (opstatus,opresult,customFn)
-        {
+        handleSuccessResult: function (opstatus, opresult, customFn) {
             opstatus.showValidation = false;
             opstatus.result = opresult.Result;
             opstatus.message = opresult.Message;
@@ -67,13 +64,11 @@ var leeDataHandler = (function () {
                 customFn();
         },
         ///刷新操作
-        refresh: function (opstatus,cancelfn)
-        {
+        refresh: function (opstatus, cancelfn) {
             opstatus.showValidation = false;
             opstatus.msgDisplay = false;
             opstatus.result = false;
-            if (cancelfn !== undefined)
-            {
+            if (cancelfn !== undefined) {
                 cancelfn();
             }
         }
@@ -82,8 +77,7 @@ var leeDataHandler = (function () {
     var leeDataStorage = {
         ///存储登录用户信息
         setLoginedUser: function (userDatas) {
-            if (_.isObject(userDatas))
-            {
+            if (_.isObject(userDatas)) {
                 localStorage.setItem("loginUser", JSON.stringify(userDatas));
             }
         },
@@ -104,28 +98,23 @@ var leeDataHandler = (function () {
                 serverName: null
             };
             var loginInfoJson = localStorage.getItem("loginUser");
-            if (!_.isUndefined(loginInfoJson) && !_.isNull(loginInfoJson))
-            {
+            if (!_.isUndefined(loginInfoJson) && !_.isNull(loginInfoJson)) {
                 var loginInfo = JSON.parse(loginInfoJson);
-                if (_.isObject(loginInfo))
-                {
+                if (_.isObject(loginInfo)) {
                     //保存用户信息
-                    if (loginInfo.loginUser !== undefined && loginInfo.loginUser!==null)
-                    {
+                    if (loginInfo.loginUser !== undefined && loginInfo.loginUser !== null) {
                         var user = loginInfo.loginUser;
-                        if (user.LoginedUser !== null)
-                        {
+                        if (user.LoginedUser !== null) {
                             loginedUser.userId = user.LoginedUser.UserId;
                             loginedUser.userName = user.LoginedUser.UserName;
                             loginedUser.headPortrait = user.LoginedUser.HeadPortrait;
                             if (!_.isUndefined(user.LoginedUser.Department))
                                 loginedUser.department = user.LoginedUser.Department;
                         }
-                       
+
                     }
                     //保存站点信息
-                    if (loginInfo.webSite !== undefined && loginInfo.webSite!==null)
-                    {
+                    if (loginInfo.webSite !== undefined && loginInfo.webSite !== null) {
                         var webSite = loginInfo.webSite;
                         loginedUser.webSitePhysicalApplicationPath = webSite.PhysicalApplicationPath;
                         loginedUser.serverName = webSite.ServerName;
@@ -142,7 +131,9 @@ var leeDataHandler = (function () {
         edit: 'edit',
         update: 'update',
         'delete': 'delete',
-        uploadFile:'uploadFile'
+        uploadFile: 'uploadFile',
+        deleteFile: 'deleteFile',
+        IdKey: 'Id_Key'
     };
     return {
         ///操作状态
@@ -152,7 +143,7 @@ var leeDataHandler = (function () {
         ///本地数据存储
         dataStorage: leeDataStorage,
         ///数据操作类型
-        dataOpMode:leeDataOpMode
+        dataOpMode: leeDataOpMode
     };
 })();
 ///常用操作助手
@@ -187,7 +178,9 @@ var leeHelper = (function () {
         //质量管理控制器
         quality: 'Quality',
         //质量抽样检验控制器
-        quaInspectionManage: 'QuaInspectionManage'
+        quaInspectionManage: 'QuaInspectionManage',
+        //质量RMA控制器
+        quaRmaManage: 'QuaRmaManage'
     };
     return {
         ///控制器名称
@@ -316,6 +309,22 @@ var leeHelper = (function () {
                 fd.append('file', file);
                 if (handler && _.isFunction(handler)) {
                     fd.name = file.name;
+                    handler(fd);
+                }
+            }
+        },
+        ///上传多个文件
+        upoadFiles: function (el, handler) {
+            var files = el.files;
+            var fd = new FormData();
+            var fileNameList = [];
+            if (files.length > 0) {
+                _.forEach(files, function (file) {
+                    fd.append('files', file);
+                    fileNameList.push(file.name);
+                });
+                if (handler && _.isFunction(handler)) {
+                    fd.fileNameList = fileNameList;
                     handler(fd);
                 }
             }
@@ -471,7 +480,7 @@ var leeTreeHelper = (function () {
             treeObj.checkNode(treeNode, checked, checkTypeFlag, callbackFlag);
         },
         //勾选 或 取消勾选 全部节点
-        checkAllNodes: function (treeId,checked) {
+        checkAllNodes: function (treeId, checked) {
             var treeObj = $.fn.zTree.getZTreeObj(treeId);
             treeObj.checkAllNodes(checked);
         },
@@ -486,14 +495,14 @@ var leeTreeHelper = (function () {
 ///日期格式化扩展
 Date.prototype.pattern = function (fmt) {
     var o = {
-        "M+": this.getMonth() + 1, //月份         
-        "d+": this.getDate(), //日         
-        "h+": this.getHours() % 12 === 0 ? 12 : this.getHours() % 12, //小时         
-        "H+": this.getHours(), //小时         
-        "m+": this.getMinutes(), //分         
-        "s+": this.getSeconds(), //秒         
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度         
-        "S": this.getMilliseconds() //毫秒         
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours() % 12 === 0 ? 12 : this.getHours() % 12, //小时
+        "H+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
     };
     var week = {
         "0": "/u65e5",
@@ -512,7 +521,7 @@ Date.prototype.pattern = function (fmt) {
     }
     for (var k in o) {
         if (new RegExp("(" + k + ")").test(fmt)) {
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]):(("00" + o[k]).substr(("" + o[k]).length)));
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         }
     }
     return fmt;

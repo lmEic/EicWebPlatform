@@ -99,7 +99,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                     case 1: //依据财产编号查询
                         return irep.Entities.Where(m => m.AssetNumber == qryDto.AssetNumber).ToList();
                     case 2: //依据保管部门查询
-                        return irep.Entities.Where(m => m.SafekeepDepartment.StartsWith(qryDto.Department, StringComparison.CurrentCulture)).ToList();
+                        return irep.Entities.Where(m => m.SafekeepDepartment.Contains(qryDto.Department)).ToList();
+
+                    //return irep.Entities.Where(m => m.SafekeepDepartment.StartsWith(qryDto.Department, StringComparison.CurrentCulture)).ToList();
 
                     case 3: //依据录入日期查询
                         DateTime inputDate = qryDto.InputDate.ToDate();
@@ -115,7 +117,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                     case 6: //查询所有在使用待设备 生成设备总览表
                         return irep.Entities.Where(m => m.IsScrapped == "否").ToList();
                     case 7: //依据财产编号查询
-                        return irep.Entities.Where(m => m.AssetNumber.StartsWith(qryDto.AssetNumber, StringComparison.CurrentCulture)).ToList();
+                        return irep.Entities.Where(m => m.AssetNumber.Contains(qryDto.AssetNumber)).ToList();
                     default:
                         return new List<EquipmentModel>();
                 }

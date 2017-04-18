@@ -17,7 +17,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionIqcDetailModel> GetIqcDetailModeDatasBy(string materailId, string inspecitonItem)
         {
 
-            return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelListBy(materailId, inspecitonItem);
+            return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelDatasBy(materailId, inspecitonItem);
 
 
         }
@@ -27,7 +27,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult StoreInspectionIqcDetailModelForm(InspectionItemDataSummaryLabelModel model, string siteRootPath)
+        public OpResult StoreInspectionIqcDetailModelForm(InspectionItemDataSummaryVM model, string siteRootPath)
         {
             InspectionIqcDetailModel datailModel = new InspectionIqcDetailModel()
             {
@@ -61,6 +61,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
                 return InspectionManagerCrudFactory.IqcDetailCrud.UploadFileIqcInspectionDetail(model, siteRootPath);
+            /// 判断是否存在此录入的项次
+            if (InspectionManagerCrudFactory.IqcDetailCrud.isExiststroe(model))
+                model.OpSign = OpMode.Edit;
+            else model.OpSign = OpMode.Add;
             return InspectionManagerCrudFactory.IqcDetailCrud.Store(model, true);
         }
         /// <summary>
@@ -72,7 +76,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public InspectionIqcDetailModel GetIqcInspectionDetailModelBy(string orderId, string materailId, string inspecitonItem)
         {
-            return GetIqcInspectionDetailModeDatasBy(orderId, materailId).FirstOrDefault(e => e.InspecitonItem == inspecitonItem);
+            return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelBy(orderId, materailId, inspecitonItem);
         }
 
         /// <summary>
@@ -83,7 +87,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionIqcDetailModel> GetIqcInspectionDetailModeDatasBy(string orderId, string materailId)
         {
-            return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelBy(orderId, materailId);
+            return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailOrderIdModelBy(orderId, materailId);
         }
     }
 }

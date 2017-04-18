@@ -62,6 +62,7 @@
     <Compile Include="Mapping\PmsMapping\DailyReport\DailyReportMapping.cs" />
     <Compile Include="Mapping\PurchaseMapping\SupplierMapping.cs" />
     <Compile Include="Mapping\QmsMapping\QmsInspectionMapping.cs" />
+    <Compile Include="Mapping\QmsMapping\QmsRmaMapping.cs" />
     <Compile Include="Mapping\QuantityMapping555\QuantityDbContext.cs" />
     <Compile Include="Mapping\QuantityMapping555\QuantitySampleMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

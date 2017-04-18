@@ -35,6 +35,11 @@ namespace EicWorkPlatfrom.Controllers
         #endregion json date converter
 
         #region my define
+        protected void SetWebSitSubTitle(string subTitle)
+        {
+            ViewData["subTitle"] = subTitle;
+        }
+
         /// <summary>
         /// 站点根路径
         /// </summary>
@@ -290,6 +295,7 @@ namespace EicWorkPlatfrom.Controllers
             }
             return dirctoryPath;
         }
+        
         #endregion
 
         /// <summary>
@@ -384,6 +390,28 @@ namespace EicWorkPlatfrom.Controllers
         public static ImageResult ImageResult(this Controller ctrl, Image image)
         {
             return new ImageResult(image);
+        }
+        /// <summary>
+        /// 删除已经存在的文件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static HttpPostedFileBase DeleteExistFile(this HttpPostedFileBase file, string fileName)
+        {
+            try
+            {
+                if (System.IO.File.Exists(fileName))
+                {
+                    System.IO.File.Delete(fileName);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+            return file;
         }
     }
 

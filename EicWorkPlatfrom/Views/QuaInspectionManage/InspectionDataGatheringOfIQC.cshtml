@@ -118,25 +118,28 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                                <span>
+                                <div>
                                     <label>抽样方案:</label>
-                                    {{vmManager.currentInspectionItem.InspectionCount}}
-                                    <span ng-if="vmManager.currentInspectionItem.AcceptCount!==null">/</span>
-                                    {{vmManager.currentInspectionItem.AcceptCount}}
-                                    <span ng-if="vmManager.currentInspectionItem.RefuseCount!==null">/</span>
-                                    {{vmManager.currentInspectionItem.RefuseCount}}
-                                </span>
+                                    <span ng-if="vmManager.currentInspectionItem.InspectionCount">
+                                        <span class="label label-primary">
+                                            {{vmManager.currentInspectionItem.InspectionCount}}
+                                        </span>
+                                        <span class="label label-success"
+                                              ng-if="vmManager.currentInspectionItem.AcceptCount!==null">/{{vmManager.currentInspectionItem.AcceptCount}}</span>
+                                        <span class="label label-danger" ng-if="vmManager.currentInspectionItem.RefuseCount">/{{vmManager.currentInspectionItem.RefuseCount}}</span>
+                                    </span>
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <span>
                                     <label>检验方法:</label>
-                                    {{vmManager.currentInspectionItem.InspectionMode}}
+                                    {{vmManager.currentInspectionItem.InspectionMethod}}
                                 </span>
                             </div>
                             <div class="col-md-4">
                                 <span>
                                     <label>量具编号:</label>
-                                    <input placeholder="输入量具编号" ng-model="vmManager.currentInspectionItem.EquipmentID" type="text" />
+                                    <input placeholder="输入量具编号" ng-model="vmManager.currentInspectionItem.EquipmentId" type="text" />
                                 </span>
                             </div>
                         </div>
@@ -293,6 +296,44 @@
                                 </div>
                             </form>
 
+                        </div>
+                    </div>
+                    <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='E'">
+                        <div class="well" style="overflow:hidden;">
+                            <table class="table table-bordered table-condensed">
+                                <caption>
+                                    <label>抽样数量</label>
+                                    <input placeholder="输入抽样数量" type="number" min="0" ng-model="vmManager.currentInspectionItem.InspectionCount" />
+                                    <span class="btn btn-sm btn-primary" ng-click="vmManager.createTypeEInput()">生成</span>
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th ng-repeat="header in vmManager.inputDatas[0].cols">
+                                            <label class="label label-info">Data{{header.colId}}</label>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="row in vmManager.inputDatas">
+                                        <td ng-repeat="col in row.cols">
+                                            <span ng-show="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
+                                                {{col.indata}}
+                                            </span>
+                                            <input ng-model="col.indata" style="text-align:center;width:120px;" ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'"
+                                                   ng-class="{'invalidInputBg':!col.result,'':col.result}"
+                                                   title="规格上限:{{vmManager.currentInspectionItem.SizeUSL}} 规格下限:{{vmManager.currentInspectionItem.SizeLSL}}"
+                                                   focus-setter focus-if="col.focus" ng-keydown="vmManager.dataInputKeyDown(col,$event)" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'" ng-cloak>
+                                    <tr>
+                                        <td>
+                                            <button class="btn btn-warning" ng-click="operate.saveIqcGatherDatas()">保存数据</button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
                 </div>

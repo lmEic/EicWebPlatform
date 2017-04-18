@@ -25,7 +25,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public int FqcNeedInputDataCountBy(string orderId, int orderIdNumber, string materialId, string InspectionDataGatherType, int defaultValue)
         {
-            if (InspectionDataGatherType == "D") return 1;
+
             return defaultValue;
         }
         /// <summary>
@@ -112,11 +112,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<InspectionItemDataSummaryLabelModel> BuildingFqcInspectionSummaryDatasBy(string orderId, double sampleCount)
+        public List<InspectionItemDataSummaryVM> BuildingFqcInspectionSummaryDatasBy(string orderId, double sampleCount)
         {
             try
             {
-                List<InspectionItemDataSummaryLabelModel> returnDatas = null;
+                List<InspectionItemDataSummaryVM> returnDatas = null;
                 if (sampleCount <= 0) return returnDatas;
                 ///一个工单 对应一个料号，有工单就是料号
                 var orderMaterialInfoList = this.GetPuroductSupplierInfo(orderId);
@@ -142,7 +142,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
             catch (Exception ex)
             {
-                return new List<InspectionItemDataSummaryLabelModel>();
+                return new List<InspectionItemDataSummaryVM>();
                 throw new Exception(ex.InnerException.Message);
             }
 
@@ -153,27 +153,27 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="orderIdNumber"></param>
         /// <returns></returns>
-        public List<InspectionItemDataSummaryLabelModel> FindFqcInspectionSummaryDataBy(string orderId, int orderIdNumber)
+        public List<InspectionItemDataSummaryVM> FindFqcInspectionSummaryDataBy(string orderId, int orderIdNumber)
         {
             try
             {
                 var orderMaterialInfoList = this.GetPuroductSupplierInfo(orderId);
                 if (orderMaterialInfoList == null || orderMaterialInfoList.Count <= 0)
-                    return new List<InspectionItemDataSummaryLabelModel>();
+                    return new List<InspectionItemDataSummaryVM>();
                 var orderMaterialInfo = orderMaterialInfoList[0];
                 ///得到FQC已经检验详表
                 var fqcHaveInspectionDatas = DetailDatasGather.GetFqcInspectionDetailDatasBy(orderId, orderIdNumber);
                 if (fqcHaveInspectionDatas == null || fqcHaveInspectionDatas.Count <= 0)
-                    return new List<InspectionItemDataSummaryLabelModel>();
+                    return new List<InspectionItemDataSummaryVM>();
                 ///得到需要检验的项目
                 var fqcInspectionsItemdatas = GetFqcNeedInspectionItemDatas(orderMaterialInfo.ProductID);
                 if (fqcInspectionsItemdatas == null || fqcInspectionsItemdatas.Count <= 0)
-                    return new List<InspectionItemDataSummaryLabelModel>();
+                    return new List<InspectionItemDataSummaryVM>();
                 return HandleFindSummaryDataLabelModel(orderMaterialInfo, fqcHaveInspectionDatas, fqcInspectionsItemdatas);
             }
             catch (Exception ex)
             {
-                return new List<InspectionItemDataSummaryLabelModel>();
+                return new List<InspectionItemDataSummaryVM>();
                 throw new Exception(ex.InnerException.Message);
 
             }
@@ -183,7 +183,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="sumModel"></param>
         /// <returns></returns>
-        public OpResult StoreFqcDataGather(InspectionItemDataSummaryLabelModel sumModel)
+        public OpResult StoreFqcDataGather(InspectionItemDataSummaryVM sumModel)
         {
             var returnOpResult = new OpResult("采集数据模型不能为NULL", false);
             InspectionFqcMasterModel masterModel = null;
@@ -211,11 +211,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderMaterialInfo"></param>
         /// <param name="fqcNeedInspectionsItemdatas"></param>
         /// <returns></returns>
-        private List<InspectionItemDataSummaryLabelModel> HandleBuildingSummaryDataLabelModel(double sampleCount, int orderIdNumber, MaterialModel orderMaterialInfo, List<InspectionFqcItemConfigModel> fqcNeedInspectionsItemdatas)
+        private List<InspectionItemDataSummaryVM> HandleBuildingSummaryDataLabelModel(double sampleCount, int orderIdNumber, MaterialModel orderMaterialInfo, List<InspectionFqcItemConfigModel> fqcNeedInspectionsItemdatas)
         {
             try
             {
-                List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
+                List<InspectionItemDataSummaryVM> returnList = new List<InspectionItemDataSummaryVM>();
                 if (orderMaterialInfo == null) return returnList;
                 int i = 0;
                 fqcNeedInspectionsItemdatas.ForEach(m =>
@@ -227,7 +227,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(m.InspectionLevel, m.InspectionAQL, sampleCount, inspectionMode);
 
                     ///初始化 综合模块
-                    var model = new InspectionItemDataSummaryLabelModel()
+                    var model = new InspectionItemDataSummaryVM()
                     {
                         OrderId = orderMaterialInfo.OrderID,
                         OrderIdNumber = orderIdNumber,
@@ -289,7 +289,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
             catch (Exception ex)
             {
-                return new List<InspectionItemDataSummaryLabelModel>();
+                return new List<InspectionItemDataSummaryVM>();
                 throw new Exception(ex.InnerException.Message);
             }
         }
@@ -300,11 +300,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="fqcHaveInspectionDatas"></param>
         /// <param name="fqcInspectionsItemdatas"></param>
         /// <returns></returns>
-        private List<InspectionItemDataSummaryLabelModel> HandleFindSummaryDataLabelModel(MaterialModel orderMaterialInfo, List<InspectionFqcDetailModel> fqcHaveInspectionDatas, List<InspectionFqcItemConfigModel> fqcInspectionsItemdatas)
+        private List<InspectionItemDataSummaryVM> HandleFindSummaryDataLabelModel(MaterialModel orderMaterialInfo, List<InspectionFqcDetailModel> fqcHaveInspectionDatas, List<InspectionFqcItemConfigModel> fqcInspectionsItemdatas)
         {
             try
             {
-                List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
+                List<InspectionItemDataSummaryVM> returnList = new List<InspectionItemDataSummaryVM>();
                 ///如果没有此测试项目直接返回
                 if (fqcInspectionsItemdatas == null || fqcInspectionsItemdatas.Count <= 0) return returnList;
                 string inspectionDataTimeRegion = DateTime.Now.Date.ToShortDateString();
@@ -313,7 +313,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 fqcHaveInspectionDatas.ForEach(m =>
                 {
                     ///初始化 综合模块
-                    var model = new InspectionItemDataSummaryLabelModel()
+                    var model = new InspectionItemDataSummaryVM()
                     {
                         OrderId = orderMaterialInfo.OrderID,
                         OrderIdNumber = m.OrderIdNumber,
@@ -396,7 +396,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
             catch (Exception ex)
             {
-                return new List<InspectionItemDataSummaryLabelModel>();
+                return new List<InspectionItemDataSummaryVM>();
                 throw new Exception(ex.InnerException.Message);
 
             }
@@ -409,7 +409,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="sumModel"></param>
         /// <param name="masterModel"></param>
         /// <param name="detailModel"></param>
-        private void GetMasterAndDetailModelFrom(InspectionItemDataSummaryLabelModel sumModel, out InspectionFqcMasterModel masterModel, out InspectionFqcDetailModel detailModel)
+        private void GetMasterAndDetailModelFrom(InspectionItemDataSummaryVM sumModel, out InspectionFqcMasterModel masterModel, out InspectionFqcDetailModel detailModel)
         {
             try
             {

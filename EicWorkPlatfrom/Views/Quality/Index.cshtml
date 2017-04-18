@@ -6,7 +6,7 @@
 <head>
     <meta http-equiv="Content-Type" />
     <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1,user-scalable=no" />
-    <title>质量管理</title>
+    <title>质量管理---@ViewData["subTitle"]</title>
     <link rel="shortcut icon" href="@Url.Content("~/Content/login/lmlogo.png")" />
     <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/bootwatch/cerulean.bootstrap.min.css")" type="text/css" rel="stylesheet" />
@@ -61,14 +61,18 @@
                             <div class="panel-body">
                                 <ol class="rounded-list">
                                     <li>
-                                        <a data-ui-sref-active="active" data-ui-sref="iqcInspectionItemConfiguration" style="cursor:pointer">进料检验IQC项目配置</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="iqcInspectionModeConfiguration" style="cursor:pointer">进料检验IQC方式配置</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="inspectionModeSwitchConfiguration" style="cursor:pointer">检验方式转换配置</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="inspectionDataGatheringOfIQC" style="cursor:pointer">IQC检验数据采集</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="inspectionFormManageOfIqc" style="cursor:pointer">IQC检验单管理</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="fqcInspectionItemConfiguration" style="cursor:pointer">FQC检验项目配置</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="inspectionDataGatheringOfFQC" style="cursor:pointer">FQC检验数据采集</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="inspectionFormManageOfFqc" style="cursor:pointer">FQC检验单管理</a>
+                                        @*<a data-ui-sref-active="active" data-ui-sref="iqcInspectionItemConfiguration" style="cursor:pointer">进料检验IQC项目配置</a>
+                                            <a data-ui-sref-active="active" data-ui-sref="iqcInspectionModeConfiguration" style="cursor:pointer">进料检验IQC方式配置</a>
+                                            <a data-ui-sref-active="active" data-ui-sref="inspectionModeSwitchConfiguration" style="cursor:pointer">检验方式转换配置</a>
+                                            <a data-ui-sref-active="active" data-ui-sref="inspectionDataGatheringOfIQC" style="cursor:pointer">IQC检验数据采集</a>
+                                            <a data-ui-sref-active="active" data-ui-sref="inspectionFormManageOfIqc" style="cursor:pointer">IQC检验单管理</a>
+                                            <a data-ui-sref-active="active" data-ui-sref="fqcInspectionItemConfiguration" style="cursor:pointer">FQC检验项目配置</a>
+                                            <a data-ui-sref-active="active" data-ui-sref="inspectionDataGatheringOfFQC" style="cursor:pointer">FQC检验数据采集</a>
+                                            <a data-ui-sref-active="active" data-ui-sref="inspectionFormManageOfFqc" style="cursor:pointer">FQC检验单管理</a>*@
+
+                                        <a data-ui-sref-active="active" data-ui-sref="createRmaForm" style="cursor:pointer">创建表单</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="rmaInputDescription" style="cursor:pointer">描述登记</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="rmaInspectionHandle" style="cursor:pointer">检验处置</a>
                                     </li>
                                 </ol>
                             </div>
@@ -83,15 +87,19 @@
         </div>
     }
     @Scripts.Render("~/bundles/bootstrap")
+
     @Scripts.Render("~/bundles/angularJs")
-    <script src="@Url.Content("~/Content/ztree/dist/js/jquery.ztree.all.min.js")"></script>
-    <script src="@Url.Content("~/Content/pdfmaker/pdfmake.min.js")"></script>
-    <script src="@Url.Content("~/Content/pdfmaker/vfs_fonts.js")"></script>
+
     @Scripts.Render("~/bundles/anstrap")
+
+    <script src="@Url.Content("~/Content/ztree/dist/js/jquery.ztree.all.min.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/controller/masterProduct/mpConfigApp.js")"></script>
+
     <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
     <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
-    <script src="@Url.Content("~/Scripts/controller/masterProduct/mpConfigApp.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/quality/qualityApp.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/quality/quaInspectionManage.js")"></script>
+    <script src="@Url.Content("~/Scripts/controller/quality/quaRmaManage.js")"></scri></script>
 </body>
 </html>

@@ -137,6 +137,10 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        public ActionResult SysRoleAssignManage()
+        {
+            return View();
+        }
         #endregion role manage
 
         #region assembly

@@ -18,7 +18,7 @@
             }
         }
 
-        private int recordCount=0;
+        private int recordCount = 0;
 
         /// <summary>
         /// 操作结果返回数量
@@ -153,6 +153,7 @@
         public const string UpDate = "update";
         public const string Delete = "delete";
         public const string UploadFile = "uploadFile";
+        public const string DeleteFile = "deleteFile";
     }
 
 

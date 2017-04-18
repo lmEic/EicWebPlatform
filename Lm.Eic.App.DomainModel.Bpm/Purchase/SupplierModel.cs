@@ -115,17 +115,18 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _opsign = value; }
             get { return _opsign; }
         }
-        private decimal _id_key;
+        private decimal _id_Key;
         /// <summary>
         ///自增键
         /// </summary>
-        public decimal Id_key
+        public decimal Id_Key
         {
-            set { _id_key = value; }
-            get { return _id_key; }
+            set { _id_Key = value; }
+            get { return _id_Key; }
         }
         #endregion Model
     }
+    
     /// <summary>
     /// 供应商信息表
     /// SuppliersInfo
@@ -295,14 +296,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _optime = value; }
             get { return _optime; }
         }
-        private decimal _id_key;
+        private decimal _id_Key;
         /// <summary>
         ///自增建
         /// </summary>
-        public decimal Id_key
+        public decimal Id_Key
         {
-            set { _id_key = value; }
-            get { return _id_key; }
+            set { _id_Key = value; }
+            get { return _id_Key; }
         }
         #endregion Model
     }
@@ -502,14 +503,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _opsign = value; }
             get { return _opsign; }
         }
-        private decimal _id_key;
+        private decimal _id_Key;
         /// <summary>
         ///自增键
         /// </summary>
-        public decimal Id_key
+        public decimal Id_Key
         {
-            set { _id_key = value; }
-            get { return _id_key; }
+            set { _id_Key = value; }
+            get { return _id_Key; }
         }
         #endregion Model
     }
@@ -762,14 +763,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _opsign = value; }
             get { return _opsign; }
         }
-        private decimal _id_key;
+        private decimal _id_Key;
         /// <summary>
         ///自增键
         /// </summary>
-        public decimal Id_key
+        public decimal Id_Key
         {
-            set { _id_key = value; }
-            get { return _id_key; }
+            set { _id_Key = value; }
+            get { return _id_Key; }
         }
         #endregion Model
     }
@@ -923,14 +924,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _optime = value; }
             get { return _optime; }
         }
-        private decimal _id_key;
+        private decimal _id_Key;
         /// <summary>
         ///自增键
         /// </summary>
-        public decimal Id_key
+        public decimal Id_Key
         {
-            set { _id_key = value; }
-            get { return _id_key; }
+            set { _id_Key = value; }
+            get { return _id_Key; }
         }
         #endregion Model
     }
@@ -943,9 +944,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     public class InPutSupplieCertificateInfoModel
     {
         #region Model
-       /// <summary>
-       /// 供应商ID
-       /// </summary>
+        /// <summary>
+        /// 供应商ID
+        /// </summary>
         public string SupplierId
         { set; get; }
         /// <summary>
@@ -983,12 +984,38 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         /// </summary>
         public string IsEfficacy
         { set; get; }
-        #endregion
+
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string Remark { set; get; }
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson { get; set; }
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate { get; set; }
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime { get; set; }
+        /// <summary>
+        ///操作标志
+        /// </summary>
+        public string OpSign { get; set; }
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key { get; set; }
+        #endregion Model
+
     }
 
 
 
-      /// <summary>
+    /// <summary>
     /// 合格的供应商清册Model
     /// EligibleSuppliersTable
     /// </summary>
@@ -1142,7 +1169,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         // ISO9001 ISO14001 供应商基本资料表 供应商评鉴表  不使用童工申明 
         //供应商环境调查表  廉洁承诺书  PCN协议
         // 质量保证协议 	HSF保证书  REACH保证书	SVHC调查表 
-    
+
         #region  合格证书
         /// <summary>
         ///  ISO9001

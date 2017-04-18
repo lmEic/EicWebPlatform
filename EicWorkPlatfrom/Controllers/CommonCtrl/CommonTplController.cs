@@ -96,8 +96,18 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+        [NoAuthenCheck]
         public ActionResult UploadFileTpl()
+        {
+            return View();
+        }
+        [NoAuthenCheck]
+        public ActionResult SwitchButtonTpl()
+        {
+            return View();
+        }
+        [NoAuthenCheck]
+        public ActionResult ViewInputDataButtonTpl()
         {
             return View();
         }

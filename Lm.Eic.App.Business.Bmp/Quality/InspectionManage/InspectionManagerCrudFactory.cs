@@ -56,6 +56,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             get { return OBulider.BuildInstance<InspectionIqcDetailCrud>(); }
         }
+
         #endregion
 
 

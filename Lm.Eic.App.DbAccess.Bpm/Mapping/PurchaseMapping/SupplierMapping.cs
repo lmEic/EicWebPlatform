@@ -17,8 +17,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
     {
        public SupplierQualifiedCertificateMapping()
         {
-            this.HasKey(t => t.Id_key );
-            this.Property(t => t.Id_key ).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.HasKey(t => t.Id_Key );
+            this.Property(t => t.Id_Key ).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Pur_SuppliersQualifiedCertificate");
         }
     }
@@ -31,8 +31,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
   {
       public SupplierInfoMapping()
       {
-          this.HasKey(t => t.Id_key);
-          this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+          this.HasKey(t => t.Id_Key);
+          this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
           this.ToTable("Pur_SuppliersInfo");
       }
   }
@@ -48,8 +48,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
   {
       public SupplierSeasonAuditMapping()
       {
-          this.HasKey(t => t.Id_key);
-          this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+          this.HasKey(t => t.Id_Key);
+          this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
           this.ToTable("Pur_SuppliersSeasonAuditInfo");
       }
   }
@@ -62,8 +62,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
     {
         public SupplierSeasonTutorMapping()
         {
-            this.HasKey(t => t.Id_key);
-            this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Pur_SupplierSeasonTutorInfo");
         }
     }
@@ -75,8 +75,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping
     {
         public SupplierGradeInfoMapping()
         {
-            this.HasKey(t => t.Id_key);
-            this.Property(t => t.Id_key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Pur_SupplierGradeInfo");
         }
     }

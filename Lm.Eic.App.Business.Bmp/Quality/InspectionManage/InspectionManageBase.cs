@@ -13,7 +13,7 @@ using Lm.Eic.App.Erp.Bussiness.QuantityManage;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
-    public  class InspectionDateGatherManageBase
+    public class InspectionDateGatherManageBase
     {
 
         /// <summary>
@@ -27,13 +27,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterListBy(MarterialId);
         }
 
-      
+
         /// <summary>
         /// 判断是否按提正常还放宽加严
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-       public string GetJudgeInspectionMode(string inspectionClass, string currentStatus, int nGnumber)
+        public string GetJudgeInspectionMode(string inspectionClass, string currentStatus, int nGnumber)
         {
             ///3，比较 对比
             ///4，返回一个 转换的状态
@@ -74,7 +74,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="InspectionItemDatas">测试的数据</param>
         /// <param name="needFinishDataNumber">需完成的数量</param>
         /// <returns></returns>
-        public  int DoHaveFinishDataNumber(string inspectionItemResult, string InspectionItemDatas, int needFinishDataNumber)
+        public int DoHaveFinishDataNumber(string inspectionItemResult, string InspectionItemDatas, int needFinishDataNumber)
         {
             return (inspectionItemResult == "OK") ? needFinishDataNumber : GetHaveFinishDataNumber(InspectionItemDatas);
         }
@@ -83,7 +83,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="inspectionDatas"></param>
         /// <returns></returns>
-         public int GetHaveFinishDataNumber(string inspectionDatas)
+        public int GetHaveFinishDataNumber(string inspectionDatas)
         {
             if (inspectionDatas == null) return 0;
             if ((!inspectionDatas.Contains(",")) || inspectionDatas == string.Empty) return 0;
@@ -105,7 +105,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="iqcInspectionItemConfig"></param>
         /// <param name="inMaterialCount"></param>
         /// <returns></returns>
-        public InspectionModeConfigModel GetInspectionModeConfigDataBy(string inspectionLevel, string inspectionAQL , double inMaterialCount, string inspectionMode = "正常")
+        public InspectionModeConfigModel GetInspectionModeConfigDataBy(string inspectionLevel, string inspectionAQL, double inMaterialCount, string inspectionMode = "正常")
         {
             if (inspectionLevel == null) return new InspectionModeConfigModel();
             var maxs = new List<Int64>();
@@ -144,7 +144,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 if (max != -1)
                 {
-
                     if (max >= number)
                     {
                         IntMaxNumbers.Add(max);
@@ -171,6 +170,38 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 else return -1;
             }
             return IntMinNumbers.Max();
+        }
+    }
+
+
+    public class ModelEntityCurdBase<ModelEntity> : CrudBase<ModelEntity, IMdoelReository<ModelEntity>>
+      where ModelEntity : class, new()
+    {
+        public ModelEntityCurdBase() : base(new MdoelReository<ModelEntity>(), "测试")
+        {
+        }
+
+
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddModel);
+            this.AddOpItem(OpMode.Edit, EidtModel);
+            this.AddOpItem(OpMode.Delete, DeleteModel);
+        }
+
+        protected virtual OpResult EidtModel(ModelEntity arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual OpResult DeleteModel(ModelEntity arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual OpResult AddModel(ModelEntity arg)
+        {
+            throw new NotImplementedException();
         }
     }
 

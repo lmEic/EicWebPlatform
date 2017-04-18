@@ -1,0 +1,6 @@
+﻿<button type="button" ng-class="isSelectAll===false?'btn btn-xs btn-info':'btn btn-xs btn-success'"
+        ng-model="isSelectAll" ng-click="selectAll()" bs-checkbox>
+    <i ng-class="isSelectAll===false?'fa fa-toggle-off':'fa fa-toggle-on'"></i>
+    <span ng-show="isSelectAll===false">全选</span>
+    <span ng-show="isSelectAll">全不选</span>
+</button>

@@ -7,8 +7,9 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExtension.Validation;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.App.DbAccess.Bpm.Repository.PurchaseRep.PurchaseSuppliesManagement;
-
+using System.IO;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
@@ -57,72 +58,128 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         }
     }
 
-    
+
     /// <summary>
     /// 供应商合格证书Curd
     /// </summary>
-    public class SupplierQualifiedCertificateCrud:CrudBase <SupplierQualifiedCertificateModel,ISupplierQualifiedCertificateRepository >
-  {
-      public SupplierQualifiedCertificateCrud():base(new SupplierQualifiedCertifcateRepository() ,"供应商合格文件录入")
-      {}
-      /// 
-      /// </summary>
-      /// <param name="model"></param>
-      /// <returns></returns>
-      protected override void AddCrudOpItems()
-      {
-            
+    public class SupplierQualifiedCertificateCrud : CrudBase<SupplierQualifiedCertificateModel, ISupplierQualifiedCertificateRepository>
+    {
+        public SupplierQualifiedCertificateCrud() : base(new SupplierQualifiedCertifcateRepository(), "供应商合格文件")
+        { }
 
-      }
-      /// <summary>
-      /// / 添加一条供应商的合格文件记录
-      /// </summary>
-      /// <param name="model"></param>
-      /// <returns></returns>
-      public OpResult SavaSupplierEligible(SupplierQualifiedCertificateModel model)
-      {
-          try
-          {
-              model.OpSign = OpMode.Add;
-              SetFixFieldValue(model);
-              return irep.Insert(model).ToOpResult_Add(OpContext);
-          }
-          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
-      }
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddSupplierQualifiedCertificate);
+            this.AddOpItem(OpMode.UpDate, EidtSupplierQualifiedCertificate);
+            this.AddOpItem(OpMode.Delete, DeleteSupplierQualifiedCertificate);
 
-        public OpResult DeleteSupplierCertificate(SupplierQualifiedCertificateModel model)
+        }
+
+        public OpResult StoreSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model)
+        {
+            OpResult ReOpResult = OpResult.SetResult("采集数据模型不能为NULL", false);
+            if (model == null) return ReOpResult;
+            var oldmodel = this.GetOldQualifiedCertificateModelBy(model);
+            if (oldmodel == null)
+            {
+                model.OpSign = OpMode.Add;//若不存在则直接添加
+                return this.Store(model, true);
+            }
+
+            model.OpSign = OpMode.UpDate;
+            model.Id_Key = oldmodel.Id_Key;
+            //若不存在则直接添加
+            return this.Store(model, true);
+
+            //return OpResult.SetResult("文件重新上传成功！", true);
+        }
+
+
+        public OpResult DeleteFileSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model, string siteRootPath)
+        {
+            OpResult ReOpResult = OpResult.SetResult("采集数据模型不能为NULL", false);
+            if (model == null) return ReOpResult;
+            var oldModel = this.GetOldQualifiedCertificateModelBy(model);
+            if (oldModel == null) return OpResult.SetResult("不存在此数据", false);
+            oldModel.OpSign = OpMode.Delete;
+            ReOpResult = this.Store(oldModel, true);
+            if (!ReOpResult.Result) return ReOpResult;
+            //比对新旧文件是否一样,若不一样，则删除旧的文件
+            oldModel.FilePath.DeleteExistFile(model.FilePath, siteRootPath);
+            return ReOpResult;
+        }
+
+        private SupplierQualifiedCertificateModel GetOldQualifiedCertificateModelBy(SupplierQualifiedCertificateModel model)
         {
             try
             {
-                return irep.Delete(e => e.Id_key == model.Id_key, true).ToOpResult_Delete("删除完成");
+                if (model == null) return null;
+                return irep.Entities.FirstOrDefault(e => e.SupplierId == model.SupplierId && e.EligibleCertificate == model.EligibleCertificate);
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+
+        private OpResult DeleteSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model)
+        {
+            return irep.Delete(e => e.Id_Key == model.Id_Key, true).ToOpResult_Delete(OpContext);
+        }
+
+        private OpResult EidtSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model)
+        {
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+
+        }
+
+
+        public OpResult AddSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model)
+        {
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+        }
+
+        /// <summary>
+        /// / 添加供应商的合格文件记录
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult SavaSupplierEligible(SupplierQualifiedCertificateModel model)
+        {
+            try
+            {
+                model.OpSign = OpMode.Add;
+                SetFixFieldValue(model);
+                return irep.Insert(model).ToOpResult_Add(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+
         }
-     /// <summary>
-      /// 批量保存供应商的合格文件记录
-     /// </summary>
-     /// <param name="modelList"></param>
-     /// <returns></returns>
-      public OpResult SavaSupplierEligibleList(List<SupplierQualifiedCertificateModel> modelList)
-      {
-      
-          try
-          {
-              DateTime date = DateTime.Now.ToDate();
-              SetFixFieldValue(modelList, OpMode.Add, m =>
-              {
-                  m.OpDate = date;
-                  //需要添加附加答条件
-              });
+        /// <summary>
+        /// 批量保存供应商的合格文件记录
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        public OpResult SavaSupplierEligibleList(List<SupplierQualifiedCertificateModel> modelList)
+        {
 
-              if (!modelList.IsNullOrEmpty())
-                  return OpResult.SetResult("合格文件记录列表不能为空！ 保存失败");
-              return irep.Insert(modelList).ToOpResult_Add(OpContext);
-          }
-          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+            try
+            {
+                DateTime date = DateTime.Now.ToDate();
+                SetFixFieldValue(modelList, OpMode.Add, m =>
+                {
+                    m.OpDate = date;  //需要添加附加答条件
+                });
 
-      }
+                if (!modelList.IsNullOrEmpty())
+                    return OpResult.SetResult("合格文件记录列表不能为空！ 保存失败");
+                return irep.Insert(modelList).ToOpResult_Add(OpContext);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+
+        }
         /// <summary>
         /// 是否已经保存在证书
         /// </summary>
@@ -134,20 +191,21 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         }
 
 
-     /// <summary>
-     /// 获得供应商合格文件项目
-     /// </summary>
-     /// <param name="supplierId"></param>
-     /// <returns></returns>
+        /// <summary>
+        /// 获得供应商合格文件项目
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
         public List<SupplierQualifiedCertificateModel> GetQualifiedCertificateListBy(string supplierId)
-      {
-          try
-          {
-              return irep.Entities.Where(m => m.SupplierId  == supplierId).ToList();
-          }
-          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
-      }
-  }
+        {
+            try
+            {
+                return irep.Entities.Where(m => m.SupplierId == supplierId).ToList();
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        }
+
+    }
     /// <summary>
     /// 供应商信息Curd
     /// </summary>
@@ -172,92 +230,112 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             if (irep.IsExist(e => e.SupplierId == supplierId))
             {
-                findId_key = irep.Entities .Where (e=>e.SupplierId ==supplierId ).ToList ().FirstOrDefault().Id_key;
+                findId_key = irep.Entities.Where(e => e.SupplierId == supplierId).ToList().FirstOrDefault().Id_Key;
                 return true;
             }
             else
-            { findId_key = 0;  return false; }
+            { findId_key = 0; return false; }
         }
-       
-      /// <summary>
-      /// 批量保存供应商信息
-      /// </summary>
-      /// <param name="modelList"></param>
-      /// <returns></returns>
-      public OpResult SavaSupplierInfoList(List<SupplierInfoModel> modelList)
-      {
-          try
-          {
-              DateTime date = DateTime.Now.ToDate();
-              SetFixFieldValue(modelList, OpMode.Add, m =>
-              {
-                  m.OpDate = date;
-                  //需要添加附加答条件
-              });
-              ///如查SupplierID号存在  
-              if (!modelList.IsNullOrEmpty())
-                  return OpResult.SetResult("列表不能为空！ 保存失败");
-          
-            //return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
-             
-              return irep.Insert(modelList).ToOpResult_Add(OpContext);
-          }
-          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
-      }
-      #region  Store
-      /// <summary>
-       /// 添加供应商信息
-      /// </summary>
-      /// <param name="model></param>
-      /// <returns></returns>
-      OpResult AddSupplierInfo(SupplierInfoModel model)
-      {
 
-          ///判断产品品号是否存在
-          try
-          {
-              if (irep.IsExist(m => m.Id_key == model.Id_key))
-              {
-                  return OpResult.SetResult("此数据已存在！");
-              }
-              SetFixFieldValue(model);
-              return irep.Insert(model).ToOpResult_Add(OpContext);
-          }
-          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        /// <summary>
+        /// 批量保存供应商信息
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
+        public OpResult SavaSupplierInfoList(List<SupplierInfoModel> modelList)
+        {
+            try
+            {
+                DateTime date = DateTime.Now.ToDate();
+                SetFixFieldValue(modelList, OpMode.Add, m =>
+                {
+                    m.OpDate = date;
+                    //需要添加附加答条件
+                });
+                ///如查SupplierID号存在
+                if (!modelList.IsNullOrEmpty())
+                    return OpResult.SetResult("列表不能为空！ 保存失败");
 
-      }
+                //return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
 
-      OpResult EidtSupplierInfo(SupplierInfoModel model)
-      {
-          if (irep.IsExist(m => m.Id_key  == model.Id_key ))
-          {
-              return irep.Update(m => m.Id_key == model.Id_key, model).ToOpResult_Add("修改成功", model.Id_key);
-             
-          }
-          else  return OpResult.SetResult("此数据不存在！无法修改");
-         
+                return irep.Insert(modelList).ToOpResult_Add(OpContext);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        }
+        #region  Store
+        /// <summary>
+        /// 添加供应商信息
+        /// </summary>
+        /// <param name="model></param>
+        /// <returns></returns>
+        OpResult AddSupplierInfo(SupplierInfoModel model)
+        {
 
-      }
+            ///判断产品品号是否存在
+            try
+            {
+                if (irep.IsExist(m => m.SupplierId == model.SupplierId))
+                {
+                    return OpResult.SetResult("此数据已存在！");
+                }
+                SetFixFieldValue(model);
+                model.SupplierId = model.SupplierId.Trim();
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
-      OpResult DeleteSupplierInfo(SupplierInfoModel model)
-      {
-          return irep.Delete (model).ToOpResult_Add("删除成功", model.Id_key);
-      }
-      #endregion
-      /// <summary>
-      /// 获取供应商信息
-      /// </summary>
-      /// <param name="supplierId">供应商ID</param>
-      /// <returns></returns>
-      public SupplierInfoModel GetSupplierInfoBy(string supplierId)
-      {
-          try
-          {
-              return irep.Entities.Where(m => m.SupplierId == supplierId).ToList().FirstOrDefault ();
-          }
-          catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
-      }
-}
+        }
+        internal OpResult InitSupplierInfo(SupplierInfoModel model)
+        {
+            try
+            {
+                SetFixFieldValue(model);
+                model.SupplierId = model.SupplierId.Trim();
+                model.OpSign = "init";
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+
+        }
+        public OpResult EidtSupplierInfo(SupplierInfoModel model)
+        {
+            if (irep.IsExist(m => m.SupplierId == model.SupplierId))
+            {
+                if (model.OpSign == "editPurchaseType")
+                    return irep.Update(u => u.SupplierId == model.SupplierId,
+                        f => new SupplierInfoModel
+                        {
+                            SupplierProperty = model.SupplierProperty,
+                            PurchaseType = model.PurchaseType,
+                            OpSign = model.OpSign
+                        }).ToOpResult_Eidt("修改供应商类别成功！");
+                return irep.Update(m => m.SupplierId == model.SupplierId, model).ToOpResult_Eidt("修改成功");
+
+            }
+            else return OpResult.SetResult("此数据不存在！无法修改");
+
+
+        }
+
+        OpResult DeleteSupplierInfo(SupplierInfoModel model)
+        {
+            return irep.Delete(m => m.SupplierId == model.SupplierId).ToOpResult_Delete("删除成功");
+        }
+        #endregion
+        /// <summary>
+        /// 获取供应商信息
+        /// </summary>
+        /// <param name="supplierId">供应商ID</param>
+        /// <returns></returns>
+        public SupplierInfoModel GetSupplierInfoBy(string supplierId)
+        {
+            try
+            {
+                return irep.Entities.FirstOrDefault(m => m.SupplierId == supplierId);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        }
+    }
     /// <summary>
     /// 供应商季度审查表Curd
     /// </summary>
@@ -286,7 +364,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return this.irep.Entities.Where(e => e.TotalCheckScore < limitScore && e.SeasonDateNum == seasonDateNum).ToList();
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="parameterKey"></param>
         /// <returns></returns>
@@ -297,19 +375,19 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return modelList[0];
         }
 
-         OpResult AddSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
+        OpResult AddSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
         {
-            model.ParameterKey = model.SupplierId.Trim () + "&&" + model.SeasonDateNum;
+            model.ParameterKey = model.SupplierId.Trim() + "&&" + model.SeasonDateNum;
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-         OpResult DelteSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
+        OpResult DelteSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
         {
             return irep.Delete(model).ToOpResult_Add(OpContext);
         }
 
         OpResult EditSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
         {
-            return irep.Update(e => e.ParameterKey  == model.ParameterKey , model).ToOpResult_Add(OpContext); ;
+            return irep.Update(e => e.ParameterKey == model.ParameterKey, model).ToOpResult_Add(OpContext); ;
         }
 
         public bool IsExist(string parameterKey)
@@ -322,7 +400,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// 季度考核实地辅导计划/执行Crud
     /// </summary>
 
-    public class SuppliersSeasonTutorCrud:CrudBase<SupplierSeasonTutorModel,ISupplierSeasonAuditTutorRepository>
+    public class SuppliersSeasonTutorCrud : CrudBase<SupplierSeasonTutorModel, ISupplierSeasonAuditTutorRepository>
     {
         public SuppliersSeasonTutorCrud() : base(new SupplierSeasonAuditTutorRepository(), "季度考核实地辅导计划/执行")
         { }
@@ -349,7 +427,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         OpResult AddSupplierSeasonAuditTutorInfo(SupplierSeasonTutorModel model)
         {
-            model.ParameterKey = model.SupplierId.Trim() + "&&" + model.SeasonNum ;
+            model.ParameterKey = model.SupplierId.Trim() + "&&" + model.SeasonNum;
             model.YearMonth = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString();
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
@@ -377,7 +455,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// <summary>
     /// 供应商自评复评明细表 Crud
     /// </summary>
-    public class SupplierGradeInfoCrud : CrudBase<SupplierGradeInfoModel,ISupplierGradeInfoRepository>
+    public class SupplierGradeInfoCrud : CrudBase<SupplierGradeInfoModel, ISupplierGradeInfoRepository>
     {
         public SupplierGradeInfoCrud() : base(new SupplierGradeInfoRepository(), "供应商自评复评明细表 ")
         { }
@@ -403,7 +481,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return irep.Entities.Where(e => e.GradeYear == gradeYear).ToList();
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>

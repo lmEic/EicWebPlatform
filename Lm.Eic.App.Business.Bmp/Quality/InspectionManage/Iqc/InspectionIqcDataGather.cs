@@ -19,18 +19,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     {
 
         #region LoadClass
-        public IqcMasterDatasGather MasterDatasGather
+        IqcMasterDatasGather MasterDatasGather
         {
             get { return OBulider.BuildInstance<IqcMasterDatasGather>(); }
         }
-        public IqcDetailDatasGather DetailDatasGather
+        IqcDetailDatasGather DetailDatasGather
         {
             get { return OBulider.BuildInstance<IqcDetailDatasGather>(); }
         }
         #endregion
-        public OpResult StoreInspectionIqcGatherDatas(InspectionItemDataSummaryLabelModel model)
+        public OpResult StoreInspectionIqcGatherDatas(InspectionItemDataSummaryVM model)
         {
-            var opReulst = new OpResult("数据为空，保存失败", false);
+            var opReulst = OpResult.SetResult("数据为空，保存失败", false);
             if (model == null) return opReulst;
             opReulst = DetailDatasGather.StoreInspectionIqcDetailModelForm(model, model.SiteRootPath);
             if (opReulst.Result)
@@ -72,15 +72,23 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<InspectionItemDataSummaryLabelModel> BuildingIqcInspectionItemDataSummaryLabelListBy(string orderId, string materialId)
+        public List<InspectionItemDataSummaryVM> BuildingIqcInspectionItemDataSummaryLabelListBy(string orderId, string materialId)
         {
-            List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
-            var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault(e => e.ProductID == materialId);
-            if (orderMaterialInfo == null) return new List<InspectionItemDataSummaryLabelModel>(); ;
-            var iqcNeedInspectionsItemdatas = getIqcNeedInspectionItemDatas(materialId, orderMaterialInfo.ProduceInDate);
-            if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0) return new List<InspectionItemDataSummaryLabelModel>(); ;
-            //保存单头数据
-            return DoInspectionSummayDatas(orderMaterialInfo, iqcNeedInspectionsItemdatas);
+            try
+            {
+                var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault(e => e.ProductID == materialId);
+                if (orderMaterialInfo == null) return new List<InspectionItemDataSummaryVM>();
+                var iqcNeedInspectionsItemdatas = getIqcNeedInspectionItemDatas(materialId, orderMaterialInfo.ProduceInDate);
+                if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0) return new List<InspectionItemDataSummaryVM>();
+                //保存单头数据
+                return DoInspectionSummayDatas(orderMaterialInfo, iqcNeedInspectionsItemdatas);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.InnerException.Message);
+            }
+
         }
         /// <summary>
         /// 处理数据总表
@@ -88,9 +96,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderMaterialInfo"></param>
         /// <param name="iqcNeedInspectionsItemdatas"></param>
         /// <returns></returns>
-        private List<InspectionItemDataSummaryLabelModel> DoInspectionSummayDatas(MaterialModel orderMaterialInfo, List<InspectionIqcItemConfigModel> iqcNeedInspectionsItemdatas)
+        private List<InspectionItemDataSummaryVM> DoInspectionSummayDatas(MaterialModel orderMaterialInfo, List<InspectionIqcItemConfigModel> iqcNeedInspectionsItemdatas)
         {
-            List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
+            List<InspectionItemDataSummaryVM> returnList = new List<InspectionItemDataSummaryVM>();
             iqcNeedInspectionsItemdatas.ForEach(m =>
             {
                 var inspectionMode = GetJudgeInspectionMode("IQC", m.MaterialId, m.InspectionItem);
@@ -99,7 +107,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 ///得到已经检验的数据  
                 var iqcHaveInspectionData = DetailDatasGather.GetIqcInspectionDetailModelBy(orderMaterialInfo.OrderID, orderMaterialInfo.ProductID, m.InspectionItem);
                 ///初始化 综合模块
-                var model = new InspectionItemDataSummaryLabelModel()
+                var model = new InspectionItemDataSummaryVM()
                 {
                     OrderId = orderMaterialInfo.OrderID,
                     MaterialId = orderMaterialInfo.ProductID,
@@ -120,9 +128,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     SizeLSL = m.SizeLSL,
                     SizeUSL = m.SizeUSL,
                     SizeMemo = m.SizeMemo,
-                    InspectionAQL = string.Empty,
-                    InspectionMode = string.Empty,
-                    InspectionLevel = string.Empty,
+                    InspectionAQL = m.InspectionAQL,
+                    InspectionMode = m.InspectionMode,
+                    InspectionLevel = m.InspectionLevel,
                     Memo = string.Empty,
                     InspectionCount = 0,
                     AcceptCount = 0,
@@ -135,9 +143,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 };
                 if (inspectionModeConfigModelData != null)
                 {
-                    model.InspectionMode = inspectionModeConfigModelData.InspectionMode;
-                    model.InspectionLevel = inspectionModeConfigModelData.InspectionLevel;
-                    model.InspectionAQL = inspectionModeConfigModelData.InspectionAQL;
+
                     model.InspectionCount = inspectionModeConfigModelData.InspectionCount;
                     model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
                     model.RefuseCount = inspectionModeConfigModelData.RefuseCount;
@@ -154,6 +160,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     model.InsptecitonItemIsFinished = true;
                     model.Id_Key = iqcHaveInspectionData.Id_Key;
                     model.Memo = iqcHaveInspectionData.Memo;
+                    if (model.InspectionCount == 0)
+                        model.InspectionCount = (int)iqcHaveInspectionData.InspectionCount;
+                    if (model.AcceptCount == 0)
+                        model.AcceptCount = (int)iqcHaveInspectionData.InspectionAcceptCount;
+                    if (model.RefuseCount == 0)
+                        model.RefuseCount = (int)iqcHaveInspectionData.InspectionRefuseCount;
+                    if (model.NeedFinishDataNumber == 0)
+                        model.NeedFinishDataNumber = (int)iqcHaveInspectionData.InspectionCount;
                     model.HaveFinishDataNumber = DoHaveFinishDataNumber(iqcHaveInspectionData.InspectionItemResult, iqcHaveInspectionData.InspectionItemDatas, model.NeedFinishDataNumber);
                 }
                 returnList.Add(model);
@@ -170,16 +184,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
+                ///1,通过料号 和 抽检验项目  得到当前的最后一次抽检的状态
                 ///3，比较 对比
                 ///4，返回一个 转换的状态
-                ///1,通过料号 和 抽检验项目  得到当前的最后一次抽检的状态
                 string retrunstirng = "正常";
                 var DetailModeDatas = DetailDatasGather.GetIqcDetailModeDatasBy(materialId, InspecitonItem);
                 if (DetailModeDatas == null) return retrunstirng;
                 var DetailModeData = DetailModeDatas.OrderByDescending(e => e.MaterialInDate).Take(100).ToList();
-
                 if (DetailModeData == null || DetailModeData.Count <= 0) return retrunstirng;
-
                 var currentStatus = DetailModeData.Last().InspectionMode;
                 ///2，通当前状态 得到抽样规则 抽样批量  拒受数
                 var modeSwithParameterList = InspectionManagerCrudFactory.InspectionModeSwithConfigCrud.GetInspectionModeSwithConfiglistBy(InspectionClass, currentStatus);
@@ -200,7 +212,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     case "正常":
                         if (getNumber <= AcceptNumberVauleMin) retrunstirng = "放宽";
                         else
-                        { ///加严的数量
+                        {
+                            ///加严的数量
                             int getTheNumber = DetailModeData.Take(sampleNumberVauleMin).Count(e => e.InspectionItemResult == "NG");
                             retrunstirng = (getTheNumber >= AcceptNumberVauleMax) ? "加严" : currentStatus;
                         }
@@ -210,10 +223,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 }
                 return retrunstirng;
             }
-            catch (Exception)
+            catch (Exception es)
             {
-
-                throw;
+                throw new Exception(es.InnerException.Message);
             }
 
         }
@@ -222,9 +234,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<InspectionItemDataSummaryLabelModel> FindIqcInspectionItemDataSummaryLabelListBy(string orderId, string materialId)
+        public List<InspectionItemDataSummaryVM> FindIqcInspectionItemDataSummaryLabelListBy(string orderId, string materialId)
         {
-            List<InspectionItemDataSummaryLabelModel> returnList = new List<InspectionItemDataSummaryLabelModel>();
+            List<InspectionItemDataSummaryVM> returnList = new List<InspectionItemDataSummaryVM>();
             var iqcHaveInspectionData = DetailDatasGather.GetIqcInspectionDetailModeDatasBy(orderId, materialId);
             if (iqcHaveInspectionData == null || iqcHaveInspectionData.Count <= 0) return returnList;
             var iqcItemConfigdatas = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
@@ -232,7 +244,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             iqcHaveInspectionData.ForEach(m =>
            {
                ///初始化 综合模块
-               var model = new InspectionItemDataSummaryLabelModel()
+               var model = new InspectionItemDataSummaryVM()
                {
                    OrderId = orderId,
                    MaterialId = materialId,
@@ -287,8 +299,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
            });
             return returnList;
         }
-
-
 
     }
 
