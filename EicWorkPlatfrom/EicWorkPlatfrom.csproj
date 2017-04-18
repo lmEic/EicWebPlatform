@@ -153,6 +153,7 @@
     <Compile Include="Controllers\Purchase\PurSupplierManageController.cs" />
     <Compile Include="Controllers\Quality\QuaInspectionManageController.cs" />
     <Compile Include="Controllers\Quality\QualityController.cs" />
+    <Compile Include="Controllers\Quality\QuaRmaManageController.cs" />
     <Compile Include="Controllers\SystemManage\EicSystemManageController.cs" />
     <Compile Include="Controllers\Equipment\EquipmentController.cs" />
     <Compile Include="Controllers\FinanceController.cs" />
@@ -401,6 +402,7 @@
     <Content Include="Scripts\controller\purchase\purSupplierManage.js" />
     <Content Include="Scripts\controller\quality\quaInspectionManage.js" />
     <Content Include="Scripts\controller\quality\qualityApp.js" />
+    <Content Include="Scripts\controller\quality\quaRmaManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysAccountManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysItilManage.js" />
     <Content Include="Scripts\controller\masterProduct\mpconfigApp.js" />
@@ -1335,6 +1337,9 @@
     <Content Include="Views\Account\SysRoleAssignManage.cshtml" />
     <Content Include="Views\CommonTpl\SwitchButtonTpl.cshtml" />
     <Content Include="Views\CommonTpl\ViewInputDataButtonTpl.cshtml" />
+    <Content Include="Views\QuaRmaManage\CreateRmaForm.cshtml" />
+    <Content Include="Views\QuaRmaManage\RmaInspectionHandle.cshtml" />
+    <Content Include="Views\QuaRmaManage\RmaInputDescription.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

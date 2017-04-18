@@ -7,8 +7,8 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
     //检验项目Url前缀
     var inspectionUrlPrefix = leeHelper.controllers.quaInspectionManage + "/";
-    ////报表Url前缀
-    //var reportUrlPrefix = leeHelper.controllers.dailyReport + "/";
+    ////RMAUrl前缀
+    var rmaUrlPrefix = leeHelper.controllers.quaRmaManage + "/";
 
     ////工单Url前缀
     //var mocUrlPrefix = leeHelper.controllers.mocManage + "/";
@@ -46,13 +46,17 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     .state('inspectionFormManageOfFqc', {
         //Fqc检验单管理
         templateUrl: inspectionUrlPrefix + 'InspectionFormManageOfFqc'
-    });
-
-
-    ////--------------人员管理--------------------------
-    //.state('registWorkerInfo', {
-    //    templateUrl: 'ProEmployee/RegistWorkerInfo'
-    //})
+    })
+    ////--------------RMA管理--------------------------
+    .state('createRmaForm', {
+        templateUrl: rmaUrlPrefix + 'CreateRmaForm'
+    })
+    .state('rmaInputDescription', {
+        templateUrl: rmaUrlPrefix + 'RmaInputDescription'
+    })
+    .state('rmaInspectionHandle', {
+        templateUrl: rmaUrlPrefix + 'RmaInspectionHandle'
+    })
     ////-------------看板管理-------------------
     //.state('jumperWireBoard', {//线材看板管理
     //    templateUrl: boardUrlPrefix + 'JumperWireBoard'

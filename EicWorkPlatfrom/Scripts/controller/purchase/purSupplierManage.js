@@ -214,9 +214,8 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
         datasourceCopy: [],
         editWindowShow: false,
         goToEdit: function (item) {
-            vmManager.editItem = item;
+            leeHelper.copyVm(item, $scope.vm);
             if (!vmManager.editWindowShow) {
-                leeHelper.copyVm(item, $scope.vm);
                 editManager.getCertificateDatas();
             }
             vmManager.editWindowShow = !vmManager.editWindowShow;
@@ -224,6 +223,7 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
         getPurQualifiedSupplier: function () {
             $scope.searchPromise = supplierDataOpService.getPurQualifiedSupplierListBy(vmManager.searchYear).then(function (datas) {
                 vmManager.datasource = datas;
+                vmManager.datasourceCopy = _.clone(datas);
             });
         },
         CreateQualifiedSupplierList: function () {
@@ -248,19 +248,17 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
             });
         },
         filterBySupplierId: function () {
+            vmManager.datasource = _.clone(vmManager.datasourceCopy);
             if (vmManager.filterSupplierId != null && vmManager.filterSupplierId.length > 0) {
-                vmManager.datasourceCopy = _.clone(vmManager.datasource);
+
                 vmManager.datasource = _.clone(_.where(vmManager.datasource, { SupplierId: vmManager.filterSupplierId }));
-            }
-            else {
-                vmManager.datasource = _.clone(vmManager.datasourceCopy);
             }
         },
     };
     //上传文件项目
     var uploadFileVM = {
         id: 1, EligibleCertificate: '', adding: true, uploadSuccess: false,
-        PurchaseType: '', SupplierProperty: '', SupplierId: '', FilePath: '',
+        PurchaseType: '', SupplierProperty: '', SupplierId: null, FilePath: '',
         CertificateFileName: '', DateOfCertificate: null, OpSign: 'add', OpPerson: '',
     };
     var editManager = $scope.editManager = {
@@ -290,7 +288,7 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
         certificateDatas: [],
         getCertificateDatas: function () {
             editManager.certificateDatas = [];
-            $scope.searchCertificatePromise = supplierDataOpService.getSupplierQualifiedCertificateListBy(vmManager.editItem.SupplierId).then(function (datas) {
+            $scope.searchCertificatePromise = supplierDataOpService.getSupplierQualifiedCertificateListBy($scope.vm.SupplierId).then(function (datas) {
                 editManager.certificateDatas = datas;
             });
         }
@@ -316,10 +314,13 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
             alert("信息录入不完整，请检查！");
             return;
         }
+        var fileItem = _.find(editManager.fileList, { id: editManager.uploadFileItem.id });
         leeHelper.upoadFile(el, function (fd) {
+            fileItem.SupplierId = $scope.vm.SupplierId;
+            var fileAttachData = { SupplierId: fileItem.SupplierId, EligibleCertificate: fileItem.EligibleCertificate };
+            fd.append('fileAttachData', JSON.stringify(fileAttachData));
             $scope.uploadPromie = supplierDataOpService.uploadPurSupplierCertificateFile(fd).then(function (result) {
                 if (result === "OK") {
-                    var fileItem = _.find(editManager.fileList, { id: editManager.uploadFileItem.id });
                     if (!_.isUndefined(fileItem)) {
                         //更新文件模型数据
                         var year = new Date().getFullYear();
