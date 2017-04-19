@@ -134,10 +134,14 @@
     <Compile Include="Quality\InspectionManage\Iqc\IqcCrudFactory.cs" />
     <Compile Include="Quality\InspectionManage\Iqc\IqcDetailDatasGether.cs" />
     <Compile Include="Quality\InspectionManage\Iqc\IqcMasterDatasGather.cs" />
+    <Compile Include="Quality\QualityModelEntityCurdBase.cs" />
+    <Compile Include="Quality\RmaMange\CreateRmaReportManager.cs" />
+    <Compile Include="Quality\RmaMange\HandleRmaReportManager.cs" />
+    <Compile Include="Quality\RmaMange\RamCurdFactory.cs" />
+    <Compile Include="Quality\RmaMange\RecordRmaReportManager.cs" />
+    <Compile Include="Quality\RmaMange\RmaService.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Quality\RmaMange\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.App.Business.Mes\Lm.Eic.App.Business.Mes.csproj">
       <Project>{25616437-5761-4fe5-8dcc-d76b4641b6a7}</Project>

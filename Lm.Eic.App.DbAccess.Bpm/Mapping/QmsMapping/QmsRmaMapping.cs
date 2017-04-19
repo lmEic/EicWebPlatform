@@ -19,4 +19,22 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
             this.ToTable("Qms_RmaReportInitiate");
         }
     }
+    public class RmaBussesDescriptionMapping : EntityTypeConfiguration<RmaBussesDescriptionModel>
+    {
+        public RmaBussesDescriptionMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_RmaBussesDescription");
+        }
+    }
+    public class RmaInspectionManageMapping : EntityTypeConfiguration<RmaInspectionManageModel>
+    {
+        public RmaInspectionManageMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_RmaInspectionManage");
+        }
+    }
 }

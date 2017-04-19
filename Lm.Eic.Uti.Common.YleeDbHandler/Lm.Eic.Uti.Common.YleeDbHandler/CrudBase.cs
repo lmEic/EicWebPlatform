@@ -7,7 +7,6 @@ using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using System.Text;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
-
 namespace Lm.Eic.Uti.Common.YleeDbHandler
 {
     public abstract class CrudBase<TEntity, IRep>
@@ -197,6 +196,5 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             return newModel;
         }
     }
-
 
 }

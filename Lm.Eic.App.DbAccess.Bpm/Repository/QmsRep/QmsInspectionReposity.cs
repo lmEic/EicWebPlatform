@@ -97,10 +97,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
 
 
 
-    public interface IMdoelReository<EntityModel> : IRepository<EntityModel>
+    public interface IBpmRepositoryMdoelReository<EntityModel> : IRepository<EntityModel>
       where EntityModel : class, new()
     { }
-    public class MdoelReository<EntityModel> : BpmRepositoryBase<EntityModel>, IMdoelReository<EntityModel>
+    public class BpmRepositoryMdoelReository<EntityModel> : BpmRepositoryBase<EntityModel>, IBpmRepositoryMdoelReository<EntityModel>
      where EntityModel : class, new()
     { }
 

@@ -263,14 +263,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _opsgin = value; }
             get { return _opsgin; }
         }
-        private decimal _id_key;
+        private decimal _id_Key;
         /// <summary>
         ///自增键
         /// </summary>
-        public decimal Id_key
+        public decimal Id_Key
         {
-            set { _id_key = value; }
-            get { return _id_key; }
+            set { _id_Key = value; }
+            get { return _id_Key; }
         }
         #endregion Model
 
@@ -380,14 +380,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _opsgin = value; }
             get { return _opsgin; }
         }
-        private decimal _id_key;
+        private decimal _id_Key;
         /// <summary>
         ///自增键
         /// </summary>
-        public decimal Id_key
+        public decimal Id_Key
         {
-            set { _id_key = value; }
-            get { return _id_key; }
+            set { _id_Key = value; }
+            get { return _id_Key; }
         }
         #endregion Model
     }

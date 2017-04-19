@@ -21,7 +21,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <summary>
         /// 检验方式配置CRUD
         /// </summary>
-        public static InspectionModeConfigCrud InspectionModeConfigCrud
+        internal static InspectionModeConfigCrud InspectionModeConfigCrud
         {
             get { return OBulider.BuildInstance<InspectionModeConfigCrud>(); }
         }
@@ -29,7 +29,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <summary>
         /// 检验方式配置CRUD
         /// </summary>
-        public static InspectionModeSwithConfigCrud InspectionModeSwithConfigCrud
+        internal static InspectionModeSwithConfigCrud InspectionModeSwithConfigCrud
         {
             get { return OBulider.BuildInstance<InspectionModeSwithConfigCrud>(); }
         }
@@ -38,21 +38,21 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <summary>
         /// IQC物料检验配置CRUD
         /// </summary>
-        public static InspectionIqcItemConfigCrud IqcItemConfigCrud
+        internal static InspectionIqcItemConfigCrud IqcItemConfigCrud
         {
             get { return OBulider.BuildInstance<InspectionIqcItemConfigCrud>(); }
         }
         /// <summary>
         /// 物料检验项次CRUD
         /// </summary>
-        public static InspectionIqcMasterCrud IqcMasterCrud
+        internal static InspectionIqcMasterCrud IqcMasterCrud
         {
             get { return OBulider.BuildInstance<InspectionIqcMasterCrud>(); }
         }
         /// <summary>
         ///  物料检验项次数据CRUD
         /// </summary>
-        public static InspectionIqcDetailCrud IqcDetailCrud
+        internal static InspectionIqcDetailCrud IqcDetailCrud
         {
             get { return OBulider.BuildInstance<InspectionIqcDetailCrud>(); }
         }
@@ -63,17 +63,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         #region  FQC CRUD
 
 
-        public static InspectionFqcItemConfigCrud FqcItemConfigCrud
+        internal static InspectionFqcItemConfigCrud FqcItemConfigCrud
         {
             get { return OBulider.BuildInstance<InspectionFqcItemConfigCrud>(); }
         }
 
-        public static InspectionFqcDatailCrud FqcDetailCrud
+        internal static InspectionFqcDatailCrud FqcDetailCrud
         {
             get { return OBulider.BuildInstance<InspectionFqcDatailCrud>(); }
         }
 
-        public static InspectionFqcMasterCrud FqcMasterCrud
+        internal static InspectionFqcMasterCrud FqcMasterCrud
         {
             get { return OBulider.BuildInstance<InspectionFqcMasterCrud>(); }
         }
@@ -215,10 +215,5 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
     }
-
-
-
-
-
 
 }
