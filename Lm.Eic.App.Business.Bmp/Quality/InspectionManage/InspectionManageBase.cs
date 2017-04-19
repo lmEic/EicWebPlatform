@@ -173,36 +173,4 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
     }
 
-
-    public class ModelEntityCurdBase<ModelEntity> : CrudBase<ModelEntity, IMdoelReository<ModelEntity>>
-      where ModelEntity : class, new()
-    {
-        public ModelEntityCurdBase() : base(new MdoelReository<ModelEntity>(), "测试")
-        {
-        }
-
-
-        protected override void AddCrudOpItems()
-        {
-            this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.Edit, EidtModel);
-            this.AddOpItem(OpMode.Delete, DeleteModel);
-        }
-
-        protected virtual OpResult EidtModel(ModelEntity arg)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected virtual OpResult DeleteModel(ModelEntity arg)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected virtual OpResult AddModel(ModelEntity arg)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
 }

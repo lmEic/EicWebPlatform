@@ -49,7 +49,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         public DbSet<DReportsOrderModel> DReportOrder { get; set; }
 
         public DbSet<ProductFlowModel> ProductFlow { get; set; }
-        public DbSet <ReportsAttendenceModel> ReportsAttendence { get; set; }
+        public DbSet<ReportsAttendenceModel> ReportsAttendence { get; set; }
 
         #endregion
 
@@ -66,7 +66,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         public DbSet<SupplierInfoModel> SupplierInfo { set; get; }
         //供应商证书信息
         public DbSet<SupplierQualifiedCertificateModel> SupplierEligible { set; get; }
-     
+
         //季度考核总览表
         public DbSet<SupplierSeasonAuditModel> SupplieSeasonAudit { set; get; }
         //季度考核 实地辅导计划/执行表
@@ -83,23 +83,37 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         public DbSet<InspectionModeConfigModel> InspectionModeConfig { set; get; }
         public DbSet<InspectionModeSwitchConfigModel> InspectionModeSwithConfig { set; get; }
 
-
+        #region Iqc
         public DbSet<InspectionIqcItemConfigModel> IqcInspectionItemConfig { set; get; }
         public DbSet<InspectionIqcMasterModel> IqcInspectionMaster { set; get; }
         public DbSet<InspectionIqcDetailModel> IqcInspectionDetail { set; get; }
-     
+
+        #endregion
 
 
-        public DbSet <InspectionFqcItemConfigModel> FqcInspectionItemConfig { set; get; }
 
+
+        #region  Fqc
+        public DbSet<InspectionFqcItemConfigModel> FqcInspectionItemConfig { set; get; }
         public DbSet<InspectionFqcMasterModel> FqcInspectionMaster { set; get; }
         public DbSet<InspectionFqcDetailModel> FqcInspectionDetail { set; get; }
+
+        #endregion
+
+
+        #region  RMA
+
+        public DbSet<RmaBussesDescriptionModel> RmaBussesDescription { set; get; }
+        public DbSet<RmaInspectionManageModel> RmaInspectionManage { set; get; }
+        public DbSet<RmaReportInitiateModel> RmaReportInitiate { set; get; }
+        #endregion
+
         #endregion
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-           
+
             #region 设备管理
             modelBuilder.Configurations.Add(new EquipmentModelMapping());
             modelBuilder.Configurations.Add(new EquipmentCheckModelMapping());
@@ -125,10 +139,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             //非生产工时工单表
             modelBuilder.Configurations.Add(new DReportsOrderModelMapping());
             //出勤人员表
-            modelBuilder.Configurations.Add(new ReportsAttendenceModelMapping ());
+            modelBuilder.Configurations.Add(new ReportsAttendenceModelMapping());
             #endregion
-           
-            
+
+
             #region  物料看板
             modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
             #endregion
@@ -163,8 +177,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new FqcInspectionItemConfigMapping());
             modelBuilder.Configurations.Add(new FqcInspectionMasterMapping());
             modelBuilder.Configurations.Add(new FqcInspectionDetailMapping());
-
-
+            // RMA
+            modelBuilder.Configurations.Add(new RmaBussesDescriptionMapping());
+            modelBuilder.Configurations.Add(new RmaInspectionManageMapping());
+            modelBuilder.Configurations.Add(new RmaReportInitiateMapping());
 
             #endregion
         }
