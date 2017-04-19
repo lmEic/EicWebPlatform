@@ -5,7 +5,7 @@ using Lm.Eic.Uti.Common.YleeObjectBuilder;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 {
-    internal class RamCurdFactory
+    internal class RmaCurdFactory
     {
         internal static RmaReportInitiateCurd RmaReportInitiate
         {

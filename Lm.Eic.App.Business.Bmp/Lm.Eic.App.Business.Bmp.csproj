@@ -135,9 +135,9 @@
     <Compile Include="Quality\InspectionManage\Iqc\IqcDetailDatasGether.cs" />
     <Compile Include="Quality\InspectionManage\Iqc\IqcMasterDatasGather.cs" />
     <Compile Include="Quality\QualityModelEntityCurdBase.cs" />
-    <Compile Include="Quality\RmaMange\CreateRmaReportManager.cs" />
-    <Compile Include="Quality\RmaMange\HandleRmaReportManager.cs" />
-    <Compile Include="Quality\RmaMange\RamCurdFactory.cs" />
+    <Compile Include="Quality\RmaMange\RmaReportManager.cs" />
+    <Compile Include="Quality\RmaMange\RmaManager.cs" />
+    <Compile Include="Quality\RmaMange\RmaCurdFactory.cs" />
     <Compile Include="Quality\RmaMange\RecordRmaReportManager.cs" />
     <Compile Include="Quality\RmaMange\RmaService.cs" />
   </ItemGroup>

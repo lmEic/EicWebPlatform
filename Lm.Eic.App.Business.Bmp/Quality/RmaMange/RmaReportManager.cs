@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 {
-    public class CreateRmaReportManager
+    public class RmaReportManager
     {
     }
 }
