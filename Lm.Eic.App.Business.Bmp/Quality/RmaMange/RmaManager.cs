@@ -8,4 +8,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
     public class RmaManager
     {
     }
+
+
 }

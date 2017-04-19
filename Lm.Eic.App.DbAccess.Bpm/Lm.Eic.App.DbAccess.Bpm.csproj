@@ -75,7 +75,7 @@
     <Compile Include="Repository\PmsRep\DailyReport\DailyReportRepository.cs" />
     <Compile Include="Repository\PmsRep\DailyReport\LmMesDailyReportRepository.cs" />
     <Compile Include="Repository\PurchaseRep\PurchaseSuppliesManagement\QualifiedSupplierRepository.cs" />
-    <Compile Include="Repository\QmsRep\IMdoelReository.cs" />
+    <Compile Include="Repository\QmsRep\QmsRmaReository.cs" />
     <Compile Include="Repository\QmsRep\QmsInspectionReposity.cs" />
     <Compile Include="Repository\QuantityRep\SampleReposity.cs" />
   </ItemGroup>

@@ -2,6 +2,10 @@
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep;
+using Lm.Eic.Uti.Common.YleeDbHandler;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 {
@@ -26,68 +30,90 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 
     }
 
-    internal class RmaReportInitiateCurd : QualityModelEntityCurdBase<RmaReportInitiateModel>
+    internal class RmaReportInitiateCurd : CrudBase<RmaReportInitiateModel, IRmaReportInitiateRepository>
     {
-        public RmaReportInitiateCurd() : base("创建表单")
+        public RmaReportInitiateCurd() : base(new RmaReportInitiateRepository(), "创建表单")
         { }
-        protected override OpResult AddModel(RmaReportInitiateModel arg)
+
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddModel);
+            this.AddOpItem(OpMode.UpDate, Update);
+            this.AddOpItem(OpMode.Delete, DeleteModel);
+        }
+
+        protected OpResult AddModel(RmaReportInitiateModel model)
         {
             throw new NotImplementedException();
         }
 
-        protected override OpResult DeleteModel(RmaReportInitiateModel arg)
+        protected OpResult DeleteModel(RmaReportInitiateModel model)
         {
             throw new NotImplementedException();
         }
 
-        protected override OpResult Update(RmaReportInitiateModel arg)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-
-
-    internal class RmaBussesDescriptionCurd : QualityModelEntityCurdBase<RmaBussesDescriptionModel>
-    {
-        public RmaBussesDescriptionCurd() : base("记录登记表单")
-        {
-        }
-
-        protected override OpResult AddModel(RmaBussesDescriptionModel arg)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override OpResult DeleteModel(RmaBussesDescriptionModel arg)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override OpResult Update(RmaBussesDescriptionModel arg)
+        protected OpResult Update(RmaReportInitiateModel model)
         {
             throw new NotImplementedException();
         }
     }
 
 
-    internal class RmaInspectionManageCurd : QualityModelEntityCurdBase<RmaInspectionManageModel>
+
+    internal class RmaBussesDescriptionCurd : CrudBase<RmaBussesDescriptionModel, IRmaBussesDescriptionRepository>
     {
-        public RmaInspectionManageCurd() : base("Ram检验处理")
+        public RmaBussesDescriptionCurd() : base(new RmaBussesDescriptionRepository(), "记录登记表单")
         {
         }
 
-        protected override OpResult AddModel(RmaInspectionManageModel arg)
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddModel);
+            this.AddOpItem(OpMode.UpDate, Update);
+            this.AddOpItem(OpMode.Delete, DeleteModel);
+        }
+
+        protected OpResult AddModel(RmaBussesDescriptionModel arg)
         {
             throw new NotImplementedException();
         }
 
-        protected override OpResult DeleteModel(RmaInspectionManageModel arg)
+        protected OpResult DeleteModel(RmaBussesDescriptionModel arg)
         {
             throw new NotImplementedException();
         }
 
-        protected override OpResult Update(RmaInspectionManageModel arg)
+        protected OpResult Update(RmaBussesDescriptionModel arg)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+    internal class RmaInspectionManageCurd : CrudBase<RmaInspectionManageModel, IRmaInspectionManageRepository>
+    {
+        public RmaInspectionManageCurd() : base(new RmaInspectionManageRepository(), "Ram检验处理")
+        {
+        }
+
+        protected override void AddCrudOpItems()
+        {
+            this.AddOpItem(OpMode.Add, AddModel);
+            this.AddOpItem(OpMode.UpDate, Update);
+            this.AddOpItem(OpMode.Delete, DeleteModel);
+        }
+
+        protected OpResult AddModel(RmaInspectionManageModel arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected OpResult DeleteModel(RmaInspectionManageModel arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected OpResult Update(RmaInspectionManageModel arg)
         {
             throw new NotImplementedException();
         }

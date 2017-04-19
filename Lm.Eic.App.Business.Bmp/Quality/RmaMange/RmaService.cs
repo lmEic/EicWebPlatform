@@ -21,13 +21,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         {
             get { return OBulider.BuildInstance<RmaManager>(); }
         }
-        /// <summary>
-        /// 记录登记Ram表单
-        /// </summary>
-        public static RecordRmaReportManager RecordRmaReport
-        {
-            get { return OBulider.BuildInstance<RecordRmaReportManager>(); }
-        }
+
 
     }
 }

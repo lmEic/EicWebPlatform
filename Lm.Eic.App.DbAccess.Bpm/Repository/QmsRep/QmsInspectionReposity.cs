@@ -15,14 +15,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
     }
     public class InspectionModeConfigRepository : BpmRepositoryBase<InspectionModeConfigModel>, IInspectionModeConfigRepository
     {
-
-
-
     }
 
     public interface IInspectionModeSwitchConfigRepository : IRepository<InspectionModeSwitchConfigModel>
     {
-
     }
     public class InspectionModeSwitchConfigRepository : BpmRepositoryBase<InspectionModeSwitchConfigModel>, IInspectionModeSwitchConfigRepository
     {
@@ -93,15 +89,5 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
     }
 
     #endregion
-
-
-
-
-    public interface IBpmRepositoryMdoelReository<EntityModel> : IRepository<EntityModel>
-      where EntityModel : class, new()
-    { }
-    public class BpmRepositoryMdoelReository<EntityModel> : BpmRepositoryBase<EntityModel>, IBpmRepositoryMdoelReository<EntityModel>
-     where EntityModel : class, new()
-    { }
 
 }

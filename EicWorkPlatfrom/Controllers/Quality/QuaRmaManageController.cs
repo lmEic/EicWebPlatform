@@ -17,7 +17,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         }
 
         #region CreateRmaForm
-
+        [NoAuthenCheck]
         public ActionResult CreateRmaForm()
         {
             return View();
@@ -26,6 +26,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         #endregion
 
         #region RmaInputDescription
+        [NoAuthenCheck]
         public ActionResult RmaInputDescription()
         {
             return View();
@@ -33,6 +34,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         #endregion
 
         #region RmaInspectionHandle
+        [NoAuthenCheck]
         public ActionResult RmaInspectionHandle()
         {
             return View();
