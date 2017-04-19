@@ -4,7 +4,7 @@
     </div>
     <div class="panel-body">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <form class="form-inline">
                     <div class="form-group">
                         <label>RMA单号</label>
@@ -13,85 +13,49 @@
                     </div>
                 </form>
             </div>
+            <div class="col-md-8">
+                <span class="pull-right">
+                    客户简称<label class="label label-default">{{ramvm.CustomerShortName}}</label>
+                </span>
+                <span class="pull-right">
+                    客户编号<label class="label label-success">{{ramvm.CustomerId}}</label>
+                </span>
+                <span class="pull-right">
+                    RMA单号<label class="label label-info">{{ramvm.RmaId}}</label>
+                </span>
+            </div>
         </div>
         <div class="h-split"></div>
+
         <div class="row">
-            <div class="col-md-2">
-                RMA单号<label class="label label-info">{{ramvm.RmaId}}</label>
-            </div>
-            <div class="col-md-2">
-                客户编号<label class="label label-success">{{ramvm.}}</label>
-            </div>
-            <div class="col-md-3">
-                客户简称<label class="label label-default">{{ramvm. RmaId}}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="bs-callout bs-callout-default">
-                    <form role="form" name="formRma" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
-                        <fieldset>
-                            <div class="form-group">
-                                <label for="rmaId" class="col-md-2 control-label">单号</label>
-                                <div class="col-md-6">
-                                    <input name="rmaId" class="form-control" ng-model="vm.RmaId" readonly required />
-                                    <div class="error-messages" ng-messages="formRma.rmaId.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">单号不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="customerId" class="col-md-2 control-label">客户编号</label>
-                                <div class="col-md-6">
-                                    <input name="customerId" class="form-control" ng-model="vm.CustomerId" required />
-                                    <div class="error-messages" ng-messages="formRma.customerId.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">客户编号不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="customerShortName" class="col-md-2 control-label">客户简称</label>
-                                <div class="col-md-6">
-                                    <input name="customerShortName" class="form-control" ng-model="vm.CustomerShortName" required />
-                                    <div class="error-messages" ng-messages="formRma.customerShortName.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">客户简称不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <hr />
-                        <div class="alert alert-info">
-                            <div class="row">
-                                <div class="col-md-2">
-                                </div>
-                                <div class="col-md-10">
-                                    <button class="btn btn-primary" ng-click="operate.saveAll(formRma.$valid)"><i class="fa fa-save"></i>保存</button>
-                                    <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
-                                    <span yl-operatemsg-board></span>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="bs-callout bs-callout-info" cg-busy="{promise:searchPromise}">
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr class="info">
-                                    <th>RMA单号</th>
-                                    <th>处理状态</th>
+                                    <th>单号</th>
+                                    <th>料号</th>
+                                    <th>产品名称</th>
+                                    <th>产品规格</th>
+                                    <th>客户退货陈述</th>
+                                    <th>数量</th>
+                                    <th>仓管点</th>
+                                    <th>单位</th>
                                     <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="item in vmManager.editDatas track by $index">
                                     <td>{{item.RmaId}}</td>
-                                    <td>{{item.HandleStatus}}</td>
-                                    <td>
-                                        <span class="btn btn-xs btn-primary"><i class="fa fa-pencil-square-o"></i></span>
-                                    </td>
+                                    <td>{{item.ProdcutId}}</td>
+                                    <td>{{item.ProductName}}</td>
+                                    <td>{{item.ProductSpec}}</td>
+                                    <td>{{item.ReturnDescrption}}</td>
+                                    <td>{{item.ProductCount}}</td>
+                                    <td>{{item.StorehouseReceiveCount}}</td>
+                                    <td>{{item.ProductPackUnit}}</td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>

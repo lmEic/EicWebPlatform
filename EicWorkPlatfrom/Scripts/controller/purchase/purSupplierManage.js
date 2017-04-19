@@ -299,8 +299,8 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
 
     ///选择文件并上传
     $scope.selectFile = function (el) {
-        if (!$scope.formPurchase.$valid) {
-            alert("信息录入不完整，请检查！");
+        if ($scope.fileItem.EligibleCertificate === null || $scope.fileItem.DateOfCertificate === null) {
+            alert("证书类型或者证书日期不能为空!");
             return;
         }
         leeHelper.upoadFile(el, function (fd) {
@@ -319,7 +319,7 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
                     supplierDataOpService.storePurSupplierCertificateInfo(fileItem).then(function (opresult) {
                         if (opresult.Result) {
                             if (angular.isObject(opresult.Entity)) {
-                                var item = _.findWhere(editManager.certificateDatas, { SupplierId: opresult.Entity.SupplierId });
+                                var item = _.findWhere(editManager.certificateDatas, { SupplierId: fileItem.SupplierId, EligibleCertificate: fileItem.EligibleCertificate });
                                 if (item === undefined)
                                     editManager.certificateDatas.push(opresult.Entity);
                             }

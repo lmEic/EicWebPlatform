@@ -5,14 +5,14 @@
     </div>
     <div class="panel-body" id="editWindow">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <form class="form-inline" role="search">
                     <span yl-month-button data-title-visible="true" data-yearmonth="vmManager.searchYear"></span>
                     <button type="button" class="btn btn-default" ng-click="vmManager.getPurQualifiedSupplier()"><i class="fa fa-search"></i> 载入</button>
                     <a class="btn btn-success" href="@Url.Action("CreateQualifiedSupplierInfoList", "PurSupplierManage")"><i class="fa fa-file-excel-o"></i> 导出Excel</a>
                 </form>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <form class="form-inline pull-right" role="search">
                     <input type="text" class="form-control" ng-model="vmManager.filterSupplierId" placeholder="输入供应商编号进行过滤" />
                     <button type="button" class="btn btn-default" ng-click="vmManager.filterBySupplierId()"><i class="fa fa-search"></i> </button>
