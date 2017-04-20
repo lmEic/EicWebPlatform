@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Lm.Eic.App.Business.Bmp.Quality;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
@@ -106,7 +107,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
     }
-
 
     /// <summary>
     /// 进料检验单（ERP）  物料检验项次
@@ -225,15 +225,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private OpResult AddIqcInspectionDetail(InspectionIqcDetailModel model)
         {
-            //////如果存在，操作失败
-            //if (isExiststroe(model))
-            //{
-            //    this.SetFixFieldValue(model);
-            //    var oldmodel = GetIqcOldDetailModelBy(model);
-            //    model.Id_Key = oldmodel.Id_Key;
-            //    return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
-            //}
-            //this.SetFixFieldValue(model);
+
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
         /// <summary>
@@ -285,9 +277,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
         #endregion
 
-
         #region  Find
-
         internal bool isExiststroe(InspectionIqcDetailModel model)
         {
             return irep.IsExist(e => e.OrderId == model.OrderId && e.MaterialId == model.MaterialId && e.InspecitonItem == model.InspecitonItem);
@@ -366,11 +356,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 throw new Exception(ex.InnerException.Message);
             }
 
-
-
         }
-
-
         /// <summary>
         ///  判定些物料在二年内是否有录入记录 
         /// </summary>
@@ -383,34 +369,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 return true;
             else return false;
         }
-    }
 
-    public class TestCurd : ModelEntityCurdBase<InspectionIqcMasterModel>
-    {
+        #endregion
 
     }
     #endregion
 
-
-
-
-    #endregion
-    class rmamodel
-    {
-        public string rmaid { get; set; }
-
-        public List<rmadescriptionItem> descriptionItems { get; set; }
-
-        public List<handleItem> handleItems { get; set; }
-    }
-
-    class rmadescriptionItem
-    {
-        public string productId { get; set; }
-    }
-
-    class handleItem
-    {
-
-    }
 }
