@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Quality.RmaMange;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 namespace EicWorkPlatfrom.Controllers.Quality
 {
@@ -24,11 +25,28 @@ namespace EicWorkPlatfrom.Controllers.Quality
             return View();
         }
 
-
+        [NoAuthenCheck]
         public JsonResult getRmaBuildRmaId()
         {
-            var datas = RmaService.CreateRmaReport.GetNewRmaID();
+            var datas = RmaService.RmaReport.GetNewRmaID();
             return Json(datas);
+        }
+        [NoAuthenCheck]
+        public JsonResult SaveCreateRmaRapot(RmaReportInitiateModel data)
+        {
+            var result = RmaService.RmaReport.StoreRamReortInitiate(data);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rmaId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetRmaBussesDescriptionDatas(string rmaId)
+        {
+            var datas = RmaService.RmaManger.GetBussesDescriptiondatas(rmaId);
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

@@ -72,9 +72,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         }
 
 
-        internal List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
+        internal RmaReportInitiateModel GetInitiateData(string rmaId)
         {
-            return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
+            return irep.Entities.FirstOrDefault(e => e.RmaId == rmaId);
         }
         #endregion
 
@@ -108,6 +108,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         OpResult Update(RmaBussesDescriptionModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionData(string rmaId)
+        {
+            return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
         #endregion
 
