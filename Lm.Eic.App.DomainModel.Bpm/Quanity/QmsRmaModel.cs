@@ -84,6 +84,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _feepaymentway = value; }
             get { return _feepaymentway; }
         }
+        private double _rmasumcount;
+        /// <summary>
+        ///数量
+        /// </summary>
+        public double RmaSumCount
+        {
+            set { _rmasumcount = value; }
+            get { return _rmasumcount; }
+        }
         private string _handlestatus;
         /// <summary>
         ///处理状态
@@ -93,14 +102,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _handlestatus = value; }
             get { return _handlestatus; }
         }
-        private double _rmasumcount;
+        private string _rmayear;
         /// <summary>
-        ///数量
+        ///年份
         /// </summary>
-        public double RmaSumCount
+        public string RmaYear
         {
-            set { _rmasumcount = value; }
-            get { return _rmasumcount; }
+            set { _rmayear = value; }
+            get { return _rmayear; }
+        }
+        private string _rmamonth;
+        /// <summary>
+        ///月份
+        /// </summary>
+        public string RmaMonth
+        {
+            set { _rmamonth = value; }
+            get { return _rmamonth; }
         }
         private string _opperson;
         /// <summary>
@@ -138,14 +156,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _opsgin = value; }
             get { return _opsgin; }
         }
-        private decimal _id_Key;
+        private decimal _id_key;
         /// <summary>
         ///自增键
         /// </summary>
         public decimal Id_Key
         {
-            set { _id_Key = value; }
-            get { return _id_Key; }
+            set { _id_key = value; }
+            get { return _id_key; }
         }
         #endregion Model
     }
