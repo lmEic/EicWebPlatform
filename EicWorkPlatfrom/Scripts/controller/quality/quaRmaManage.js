@@ -7,19 +7,30 @@ var qualityModule = angular.module('bpm.qualityApp');
 qualityModule.factory("rmaDataOpService", function (ajaxService) {
     var rma = {};
     var quaRmaManageUrl = "/quaRmaManage/";
-    ////////
+
+    /////////// 生成创建的Rma表RmaId
+    rma.getRmaBuildRmaId = function () {
+        var url = quaRmaManageUrl + "getRmaBuildRmaId";
+        return ajaxService.getData(url, {
+        });
+    };
+
+    ////// 存储初始创建的Rma表
+    rma.storeRmaBuildRmaIdData = function (initiateData) {
+        var url = quaRmaManageUrl + 'StoreinitiateDataData';
+        return ajaxService.postData(url, {
+            initiateData: initiateData,
+        });
+    };
+
+    //////// 得到 Rma表描述 
     rma.getRmaBussesDescriptionDatas = function (rmaId) {
         var url = quaRmaManageUrl + "GetRmaBussesDescriptionDatas";
         return ajaxService.getData(url, {
             rmaId: rmaId
         });
     };
-    ///////////
-    rma.getRmaBuildRmaId = function () {
-        var url = quaRmaManageUrl + "getRmaBuildRmaId";
-        return ajaxService.getData(url, {
-        });
-    };
+
     return rma;
 })
 ////创建表单
