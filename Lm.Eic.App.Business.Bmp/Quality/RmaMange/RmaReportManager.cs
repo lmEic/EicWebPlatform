@@ -21,7 +21,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         /// <returns></returns>
         public OpResult StoreRamReortInitiate(RmaReportInitiateModel model)
         {
-            return null;
+            return RmaCurdFactory.RmaReportInitiate.Store(model);
         }
     }
 }
