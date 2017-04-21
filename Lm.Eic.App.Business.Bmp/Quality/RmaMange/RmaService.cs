@@ -17,7 +17,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         /// <summary>
         /// 检验处理Ram表单
         /// </summary>
-        public static RmaManager HandleRmaReport
+        public static RmaManager RmaReport
         {
             get { return OBulider.BuildInstance<RmaManager>(); }
         }
