@@ -6,35 +6,37 @@ using Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 {
     internal class RmaCurdFactory
     {
-        internal static RmaReportInitiateCurd RmaReportInitiate
+        internal static RmaReportInitiateCrud RmaReportInitiate
         {
-            get { return OBulider.BuildInstance<RmaReportInitiateCurd>(); }
+            get { return OBulider.BuildInstance<RmaReportInitiateCrud>(); }
         }
 
-        internal static RmaBussesDescriptionCurd RmaBussesDescription
+        internal static RmaBussesDescriptionCrud RmaBussesDescription
         {
-            get { return OBulider.BuildInstance<RmaBussesDescriptionCurd>(); }
+            get { return OBulider.BuildInstance<RmaBussesDescriptionCrud>(); }
         }
 
 
-        internal static RmaInspectionManageCurd RmaInspectionManage
+        internal static RmaInspectionManageCrud RmaInspectionManage
         {
-            get { return OBulider.BuildInstance<RmaInspectionManageCurd>(); }
+            get { return OBulider.BuildInstance<RmaInspectionManageCrud>(); }
         }
 
 
     }
 
-    internal class RmaReportInitiateCurd : CrudBase<RmaReportInitiateModel, IRmaReportInitiateRepository>
+    internal class RmaReportInitiateCrud : CrudBase<RmaReportInitiateModel, IRmaReportInitiateRepository>
     {
-        public RmaReportInitiateCurd() : base(new RmaReportInitiateRepository(), "创建表单")
+        public RmaReportInitiateCrud() : base(new RmaReportInitiateRepository(), "创建表单")
         { }
-
+        #region  CRUD
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
@@ -42,30 +44,50 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             this.AddOpItem(OpMode.Delete, DeleteModel);
         }
 
-        protected OpResult AddModel(RmaReportInitiateModel model)
+        OpResult AddModel(RmaReportInitiateModel model)
         {
-            throw new NotImplementedException();
+            return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
-        protected OpResult DeleteModel(RmaReportInitiateModel model)
+        OpResult DeleteModel(RmaReportInitiateModel model)
         {
-            throw new NotImplementedException();
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        protected OpResult Update(RmaReportInitiateModel model)
+        OpResult Update(RmaReportInitiateModel model)
         {
-            throw new NotImplementedException();
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
+        #endregion
+
+        #region  Find
+        internal string GetNewRmaID()
+        {
+            ///以R开头 年份 月份  再加序序号000
+            string nowYaer = DateTime.Now.ToString("yy");
+            string nowMonth = DateTime.Now.ToString("MM");
+            var count = irep.Entities.Count(e => e.RmaYear == nowYaer && e.RmaMonth == nowMonth) + 1;
+            return "R" + nowYaer + nowMonth + count.ToString("000");
+
+        }
+
+
+        internal List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
+        {
+            return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
+        }
+        #endregion
+
     }
 
 
 
-    internal class RmaBussesDescriptionCurd : CrudBase<RmaBussesDescriptionModel, IRmaBussesDescriptionRepository>
+    internal class RmaBussesDescriptionCrud : CrudBase<RmaBussesDescriptionModel, IRmaBussesDescriptionRepository>
     {
-        public RmaBussesDescriptionCurd() : base(new RmaBussesDescriptionRepository(), "记录登记表单")
+        public RmaBussesDescriptionCrud() : base(new RmaBussesDescriptionRepository(), "记录登记表单")
         {
         }
-
+        #region  CRUD
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
@@ -73,29 +95,33 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             this.AddOpItem(OpMode.Delete, DeleteModel);
         }
 
-        protected OpResult AddModel(RmaBussesDescriptionModel arg)
+        OpResult AddModel(RmaBussesDescriptionModel model)
         {
-            throw new NotImplementedException();
+            return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
-        protected OpResult DeleteModel(RmaBussesDescriptionModel arg)
+        OpResult DeleteModel(RmaBussesDescriptionModel model)
         {
-            throw new NotImplementedException();
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        protected OpResult Update(RmaBussesDescriptionModel arg)
+        OpResult Update(RmaBussesDescriptionModel model)
         {
-            throw new NotImplementedException();
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
+        #endregion
+
+
+
     }
 
 
-    internal class RmaInspectionManageCurd : CrudBase<RmaInspectionManageModel, IRmaInspectionManageRepository>
+    internal class RmaInspectionManageCrud : CrudBase<RmaInspectionManageModel, IRmaInspectionManageRepository>
     {
-        public RmaInspectionManageCurd() : base(new RmaInspectionManageRepository(), "Ram检验处理")
+        public RmaInspectionManageCrud() : base(new RmaInspectionManageRepository(), "Ram检验处理")
         {
         }
-
+        #region  CRUD
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
@@ -103,20 +129,26 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             this.AddOpItem(OpMode.Delete, DeleteModel);
         }
 
-        protected OpResult AddModel(RmaInspectionManageModel arg)
+        OpResult AddModel(RmaInspectionManageModel model)
         {
-            throw new NotImplementedException();
+            return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
-        protected OpResult DeleteModel(RmaInspectionManageModel arg)
+        OpResult DeleteModel(RmaInspectionManageModel model)
         {
-            throw new NotImplementedException();
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        protected OpResult Update(RmaInspectionManageModel arg)
+        OpResult Update(RmaInspectionManageModel model)
         {
-            throw new NotImplementedException();
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
+        #endregion
+
+
+
+
+
     }
 
 }

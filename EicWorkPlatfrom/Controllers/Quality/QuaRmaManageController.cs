@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Lm.Eic.App.Business.Bmp.Quality.RmaMange;
 
 namespace EicWorkPlatfrom.Controllers.Quality
 {
@@ -23,6 +24,12 @@ namespace EicWorkPlatfrom.Controllers.Quality
             return View();
         }
 
+
+        public JsonResult getRmaBuildRmaId()
+        {
+            var datas = RmaService.CreateRmaReport.GetNewRmaID();
+            return Json(datas);
+        }
         #endregion
 
         #region RmaInputDescription
