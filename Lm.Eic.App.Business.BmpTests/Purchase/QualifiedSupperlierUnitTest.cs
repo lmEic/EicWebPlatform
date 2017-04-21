@@ -13,13 +13,13 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
         public void QualifiedSupplierTest()
         {
             var mm = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetQualifiedSupplierList("2016");
-           
-           if (mm!=null ||mm.Count >0)
+
+            if (mm != null || mm.Count > 0)
             {
-               //var tem=  PurchaseService.PurSupplierManager.SavaQualifiedSupplierInfoList(mm);
-               //if (!tem.Result) { Assert.Fail(); }
+                //var tem=  PurchaseService.PurSupplierManager.SavaQualifiedSupplierInfoList(mm);
+                //if (!tem.Result) { Assert.Fail(); }
             }
-      
+
         }
 
         [TestMethod]
@@ -37,27 +37,27 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
         [TestMethod]
         public void EditsupplierInfoTest()
         {
-            InPutSupplieCertificateInfoModel model = new InPutSupplieCertificateInfoModel()
-            {
-                DateOfCertificate = DateTime.Now,
-                EligibleCertificate = "学习证书",
-                FilePath = @"d:\ee\test",
-                IsEfficacy = "是",
-                SupplierId = "D048888",
-                PurchaseType = "光纤主、被动元件散件",
-                SupplierProperty = "关键供应商"
-            };
-            var modellist = new List<InPutSupplieCertificateInfoModel>();
-            modellist.Add(model);
-            var tem = PurchaseService.PurSupplierManager.SupplierCertificateManager.SavaEditSpplierCertificate(modellist);
-            if (!tem.Result) { Assert.Fail(); }
+            //InPutSupplieCertificateInfoModel model = new InPutSupplieCertificateInfoModel()
+            //{
+            //    DateOfCertificate = DateTime.Now,
+            //    EligibleCertificate = "学习证书",
+            //    FilePath = @"d:\ee\test",
+            //    IsEfficacy = "是",
+            //    SupplierId = "D048888",
+            //    PurchaseType = "光纤主、被动元件散件",
+            //    SupplierProperty = "关键供应商"
+            //};
+            //var modellist = new List<InPutSupplieCertificateInfoModel>();
+            //modellist.Add(model);
+            //var tem = PurchaseService.PurSupplierManager.SupplierCertificateManager.SavaEditSpplierCertificate(modellist);
+            //if (!tem.Result) { Assert.Fail(); }
 
         }
         [TestMethod]
         public void GetSupplierQualifiedCertificateList()
         {
             var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetSupplierQualifiedCertificateListBy("D04004");
-            if (datas==null ) { Assert.Fail(); }
+            if (datas == null) { Assert.Fail(); }
         }
         public void SuppliersSeasonAuditInfo()
         {
