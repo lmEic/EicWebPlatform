@@ -31,7 +31,7 @@ namespace Lm.Eic.App.Business.BmpTests.Quantity
 
             // }
             // #endregion
-            var ff = RmaService.CreateRmaReport.GetNewRmaID();
+            //var ff = RmaService.CreateRmaReport.GetNewRmaID();
 
             Assert.Fail();
         }
