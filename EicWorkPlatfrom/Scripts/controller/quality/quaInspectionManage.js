@@ -373,16 +373,20 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
                 $scope.confirmDelete = function () {
                     $scope.opPromise = qualityInspectionDataOpService.deleteIqlInspectionConfigItem(vmManager.delItem).then(function (opresult) {
                         leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                            if (opresult.Result) {
+                            if (opresult.Result || vmManager.delItem.Id_key == null) {
                                 leeHelper.remove(vmManager.dataSets, vmManager.delItem);
                                 var ds = _.clone(vmManager.dataSource);
                                 leeHelper.remove(ds, vmManager.delItem);
                                 vmManager.dataSource = ds;
                                 vmManager.delModal.$promise.then(vmManager.delModal.hide);
                             }
+
+                            vmManager.delModal.$promise.then(vmManager.delModal.hide);
                         });
                     });
+
                 };
+
             },
             show: false,
         }),
@@ -762,7 +766,9 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         }
         dataItem.InsptecitonItemIsFinished = true;
         leeHelper.setUserData(dataItem);
+
         $scope.opPromise = qualityInspectionDataOpService.storeIqcInspectionGatherDatas(dataItem).then(function (opResult) {
+
             if (opResult.Result) {
                 //更新界面检测项目列表
                 vmManager.updateInspectionItemList(dataItem);

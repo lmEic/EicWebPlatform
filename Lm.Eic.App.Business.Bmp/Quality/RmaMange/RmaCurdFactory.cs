@@ -41,19 +41,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         {
             this.AddOpItem(OpMode.Add, AddModel);
             this.AddOpItem(OpMode.UpDate, Update);
-            this.AddOpItem(OpMode.Delete, DeleteModel);
         }
 
         OpResult AddModel(RmaReportInitiateModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-
-        OpResult DeleteModel(RmaReportInitiateModel model)
-        {
-            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
-        }
-
         OpResult Update(RmaReportInitiateModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
@@ -61,7 +54,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         #endregion
 
         #region  Find
-        internal string GetNewRmaID()
+        internal string CreateNewRmaID()
         {
             ///以R开头 年份 月份  再加序序号000
             string nowYaer = DateTime.Now.ToString("yy");
@@ -75,6 +68,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         internal RmaReportInitiateModel GetInitiateData(string rmaId)
         {
             return irep.Entities.FirstOrDefault(e => e.RmaId == rmaId);
+        }
+
+
+        internal bool IsExist(string rmaId)
+        {
+
+            return irep.IsExist(e => e.RmaId == rmaId);
         }
         #endregion
 
@@ -109,7 +109,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
-        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionData(string rmaId)
+        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatas(string rmaId)
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }

@@ -26,15 +26,16 @@ namespace EicWorkPlatfrom.Controllers.Quality
         }
 
         [NoAuthenCheck]
-        public JsonResult getRmaBuildRmaId()
+        public JsonResult CreateRmaId()
         {
-            var datas = RmaService.RmaReport.GetNewRmaID();
-            return Json(datas);
+            var data = RmaService.RmaReport.CreateRmaID();
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
-        public JsonResult SaveCreateRmaRapot(RmaReportInitiateModel data)
+        public JsonResult StoreinitiateDataData(RmaReportInitiateModel initiateData)
         {
-            var result = RmaService.RmaReport.StoreRamReortInitiate(data);
+            var result = RmaService.RmaReport.StoreRamReortInitiate(initiateData);
+
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -43,7 +44,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         /// <param name="rmaId"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetRmaBussesDescriptionDatas(string rmaId)
+        public JsonResult GetBussesDescriptionDatas(string rmaId)
         {
             var datas = RmaService.RmaManger.GetBussesDescriptiondatas(rmaId);
             return Json(datas, JsonRequestBehavior.AllowGet);

@@ -9,8 +9,8 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
     var quaRmaManageUrl = "/quaRmaManage/";
 
     /////////// 生成创建的Rma表RmaId
-    rma.getRmaBuildRmaId = function () {
-        var url = quaRmaManageUrl + "getRmaBuildRmaId";
+    rma.createRmaId = function () {
+        var url = quaRmaManageUrl + "CreateRmaId";
         return ajaxService.getData(url, {
         });
     };
@@ -34,32 +34,52 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
     return rma;
 })
 ////创建表单
-qualityModule.controller('createRmaFormCtrl', function ($scope) {
+qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService) {
     ///视图模型
     var uiVm = $scope.vm = {
         RmaId: null,
-        CustomerId: null,
+        ProductName: null,
         CustomerShortName: null,
+        RmaIdStatus: "未结案",
+        RmaMonth: 04,
+        RmaYear: 17,
         OpPerson: null,
-        OpSgin: null,
+        OpSign: null,
     };
 
     var vmManager = {
         activeTab: 'initTab',
         //自动生成RMA编号
         autoCreateRmaId: function () {
-
+            rmaDataOpService.createRmaId().then(function (data) {
+                uiVm.RmaId = data;
+            });
         },
         //获取表单数据
         getRmaFormDatas: function () { },
         datasets: [],
+        dataSource: [],
     };
     $scope.vmManager = vmManager;
 
     var operate = Object.create(leeDataHandler.operateStatus);
+
     $scope.operate = operate;
-    operate.saveAll = function (isValid) { };
+    operate.saveAll = function (isValid) {
+        leeHelper.setUserData(uiVM);
+        var dataItem = _.clone(uiVM);
+        uiVm.OpSign = 'add';
+        vmManager.dataSource = $scope.vm;
+        rmaDataOpService.storeRmaBuildRmaIdData(vmManager.dataSource).then(function (Reslut) {
+            if (opresult.Result) {
+
+                vmManager.datasets = [];
+                vmManager.dataSource = [];
+            }
+        })
+    };
     operate.refresh = function () { };
+
 
 });
 //// 描述登记

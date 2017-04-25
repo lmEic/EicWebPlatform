@@ -10,9 +10,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
     public class RmaReportManager
     {
         //生成RmaId编号
-        public string GetNewRmaID()
+        public string CreateRmaID()
         {
-            return RmaCurdFactory.RmaReportInitiate.GetNewRmaID();
+            return RmaCurdFactory.RmaReportInitiate.CreateNewRmaID();
         }
         /// <summary>
         /// 存
@@ -33,7 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             return RmaCurdFactory.RmaReportInitiate.GetInitiateData(rmaId);
         }
 
-        
+
     }
     /// <summary>
     /// 操作界面数据 只是做为一个选项
@@ -59,9 +59,34 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 
         #region method
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public RmaReportInitiateModel GetRemPeortInitiateData()
+        {
 
+            if (string.IsNullOrEmpty(RmaId)) return new RmaReportInitiateModel();
+            return RmaCurdFactory.RmaReportInitiate.GetInitiateData(RmaId);
+        }
 
-
+        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatas()
+        {
+            if (string.IsNullOrEmpty(RmaId)) return new List<RmaBussesDescriptionModel>();
+            return RmaService.RmaManger.GetBussesDescriptiondatas(RmaId);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public OpResult StoreRamReortInitiate()
+        {
+            if (RmaReportInitiate == null) return null;
+            if (RmaCurdFactory.RmaReportInitiate.IsExist(RmaReportInitiate.RmaId))
+                RmaReportInitiate.OpSign = OpMode.UpDate;
+            else RmaReportInitiate.OpSign = OpMode.Add;
+            return RmaCurdFactory.RmaReportInitiate.Store(RmaReportInitiate);
+        }
         #endregion
     }
 

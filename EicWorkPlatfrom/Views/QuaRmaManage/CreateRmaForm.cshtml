@@ -34,20 +34,20 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="customerId" class="col-md-2 control-label">客户编号</label>
-                                <div class="col-md-6">
-                                    <input name="customerId" class="form-control" ng-model="vm.CustomerId" required />
-                                    <div class="error-messages" ng-messages="formRma.customerId.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">客户编号不能为空</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label for="customerShortName" class="col-md-2 control-label">客户简称</label>
                                 <div class="col-md-6">
                                     <input name="customerShortName" class="form-control" ng-model="vm.CustomerShortName" required />
                                     <div class="error-messages" ng-messages="formRma.customerShortName.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">客户简称不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="productName" class="col-md-2 control-label">品名</label>
+                                <div class="col-md-6">
+                                    <input name="productName" class="form-control" ng-model="vm.ProductName" required />
+                                    <div class="error-messages" ng-messages="formRma.productName.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">品名不能为空</small>
                                     </div>
                                 </div>
                             </div>

@@ -44,4 +44,46 @@ namespace Lm.Eic.App.Erp.Domain.CopManageModel
         { set; get; }
 
     }
+
+
+    public class CopReturnOrderModel
+    {
+        public string OrderId { get; set; }
+        /// <summary>
+        /// TJ003 AS 序号
+        /// </summary>
+        public string OrderDesc
+        { set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string CustomerId
+        { set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string CustomerShortName
+        { set; get; }
+        /// <summary>
+        /// TJ004 AS 品号
+        /// </summary>
+        public string ProductID { get; set; }
+        /// <summary>
+        ///TJ005 AS 品名
+        /// </summary>
+        public string ProductName { get; set; }
+        /// <summary>
+        /// TJ006 AS 规格
+        /// </summary>
+        public string ProductSpecify { get; set; }
+        /// <summary>
+        /// TJ007 AS 规格
+        /// </summary>
+        public double ProductNumber { get; set; }
+        /// <summary>
+        /// TJ008 AS 规格
+        /// </summary>
+        public string ProductUnit { get; set; }
+
+    }
 }

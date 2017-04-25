@@ -92,14 +92,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _optime = value; }
             get { return _optime; }
         }
-        private string _opsgin;
+        private string _opsign;
         /// <summary>
         ///操作标识
         /// </summary>
-        public string OpSgin
+        public string OpSign
         {
-            set { _opsgin = value; }
-            get { return _opsgin; }
+            set { _opsign = value; }
+            get { return _opsign; }
         }
         private decimal _id_key;
         /// <summary>
@@ -272,14 +272,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _optime = value; }
             get { return _optime; }
         }
-        private string _opsgin;
+        private string _opsign;
         /// <summary>
         ///操作标识
         /// </summary>
-        public string OpSgin
+        public string OpSign
         {
-            set { _opsgin = value; }
-            get { return _opsgin; }
+            set { _opsign = value; }
+            get { return _opsign; }
         }
         private decimal _id_key;
         /// <summary>
@@ -425,14 +425,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _optime = value; }
             get { return _optime; }
         }
-        private string _opsgin;
+        private string _opsign;
         /// <summary>
         ///操作标识
         /// </summary>
-        public string OpSgin
+        public string OpSign
         {
-            set { _opsgin = value; }
-            get { return _opsgin; }
+            set { _opsign = value; }
+            get { return _opsign; }
         }
         private decimal _id_key;
         /// <summary>

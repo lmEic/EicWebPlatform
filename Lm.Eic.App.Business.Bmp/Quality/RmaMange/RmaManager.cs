@@ -18,7 +18,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         /// <returns></returns>
         public List<RmaBussesDescriptionModel> GetBussesDescriptiondatas(string rmaId)
         {
-            return RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionData(rmaId);
+            return RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatas(rmaId);
         }
     }
 
