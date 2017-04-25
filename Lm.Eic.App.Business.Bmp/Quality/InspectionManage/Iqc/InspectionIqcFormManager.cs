@@ -70,7 +70,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 if (InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(e.OrderID, e.ProductID))
                 {
-                    retrunList.Add(InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(e.OrderID, e.ProductID));
+                    retrunList.Add(InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(e.OrderID, e.ProductID));
                 }
                 else
                 {

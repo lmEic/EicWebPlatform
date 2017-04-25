@@ -21,6 +21,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
         }
+        public List<InspectionIqcMasterModel> GetIqcMasterModeDatasBy(string materailId)
+        {
+
+            return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(materailId);
+
+
+        }
 
         /// <summary>
         /// 通过总表 存储Iqc检验详细数据

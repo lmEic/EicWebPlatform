@@ -32,6 +32,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             var opReulst = OpResult.SetResult("数据为空，保存失败", false);
             if (model == null) return opReulst;
+            ///输入的数据不为空值
+            if (model.InspectionItemDatas == null || model.InspectionItemDatas == string.Empty) return opReulst;
             opReulst = DetailDatasGather.StoreInspectionIqcDetailModelForm(model, model.SiteRootPath);
             if (opReulst.Result)
                 opReulst = MasterDatasGather.StoreInspectionIqcMasterModelForm(model);
@@ -188,7 +190,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 ///3，比较 对比
                 ///4，返回一个 转换的状态
                 string retrunstirng = "正常";
-                var DetailModeDatas = DetailDatasGather.GetIqcDetailModeDatasBy(materialId, InspecitonItem);
+                var DetailModeDatas = DetailDatasGather.GetIqcMasterModeDatasBy(materialId);
                 if (DetailModeDatas == null) return retrunstirng;
                 var DetailModeData = DetailModeDatas.OrderByDescending(e => e.MaterialInDate).Take(100).ToList();
                 if (DetailModeData == null || DetailModeData.Count <= 0) return retrunstirng;
@@ -200,7 +202,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 int AcceptNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Max();
                 int sampleNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "SampleNumber").Select(e => e.SwitchVaule).Max();
                 int AcceptNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Min();
-                var getNumber = DetailModeData.Take(sampleNumberVauleMax).Count(e => e.InspectionItemResult == "NG");
+                var getNumber = DetailModeData.Take(sampleNumberVauleMax).Count(e => e.InspectionResult == "FAIL");
                 switch (currentStatus)
                 {
                     case "加严":
@@ -214,7 +216,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         else
                         {
                             ///加严的数量
-                            int getTheNumber = DetailModeData.Take(sampleNumberVauleMin).Count(e => e.InspectionItemResult == "NG");
+                            int getTheNumber = DetailModeData.Take(sampleNumberVauleMin).Count(e => e.InspectionResult == "FAIL");
                             retrunstirng = (getTheNumber >= AcceptNumberVauleMax) ? "加严" : currentStatus;
                         }
                         break;
@@ -280,11 +282,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                    model.InspectionAQL = iqcItemConfigdata.InspectionAQL;
                    model.InspectionMethod = iqcItemConfigdata.InspectionMethod;
                    model.InspectionLevel = iqcItemConfigdata.InspectionLevel;
+                   model.EquipmentId = iqcItemConfigdata.EquipmentId;
                    //数据采集类型
                    model.InspectionDataGatherType = iqcItemConfigdata.InspectionDataGatherType;
                }
                //检验方式
                var inspectionMode = GetJudgeInspectionMode("IQC", m.MaterialId, m.InspecitonItem);
+               if (model.InspectionMode == string.Empty)
+               {
+                   model.InspectionMode = inspectionMode;
+               }
 
                var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(iqcItemConfigdata.InspectionLevel, iqcItemConfigdata.InspectionAQL, m.MaterialCount, inspectionMode);
 

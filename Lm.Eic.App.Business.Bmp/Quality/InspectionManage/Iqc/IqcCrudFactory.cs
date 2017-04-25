@@ -148,13 +148,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
+        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterDatasBy(string materialId)
+        {
+            return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        internal InspectionIqcMasterModel GetIqcInspectionMasterModelListBy(string orderId, string materialId)
+        internal InspectionIqcMasterModel GetIqcInspectionMasterDatasBy(string orderId, string materialId)
         {
             return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.MaterialId == materialId);
         }

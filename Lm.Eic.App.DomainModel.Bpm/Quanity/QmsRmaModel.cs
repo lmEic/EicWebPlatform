@@ -10,7 +10,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// </summary>
     public class RmaReportInitiateModel
     {
-
         #region Model
         private string _rmaid;
         /// <summary>
@@ -21,15 +20,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _rmaid = value; }
             get { return _rmaid; }
         }
-        private string _customerid;
-        /// <summary>
-        ///客户编号
-        /// </summary>
-        public string CustomerId
-        {
-            set { _customerid = value; }
-            get { return _customerid; }
-        }
         private string _customershortname;
         /// <summary>
         ///客户简称
@@ -39,68 +29,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _customershortname = value; }
             get { return _customershortname; }
         }
-        private string _orderid;
+        private string _productname;
         /// <summary>
-        ///订单号
+        ///品名
         /// </summary>
-        public string OrderId
+        public string ProductName
         {
-            set { _orderid = value; }
-            get { return _orderid; }
+            set { _productname = value; }
+            get { return _productname; }
         }
-        private DateTime _productsshipdate;
+        private string _rmaidstatus;
         /// <summary>
-        ///原出货日期
+        ///单号状态
         /// </summary>
-        public DateTime ProductsShipDate
+        public string RmaIdStatus
         {
-            set { _productsshipdate = value; }
-            get { return _productsshipdate; }
-        }
-        private string _customerdemandmode;
-        /// <summary>
-        ///客户需求方式
-        /// </summary>
-        public string CustomerDemandMode
-        {
-            set { _customerdemandmode = value; }
-            get { return _customerdemandmode; }
-        }
-        private DateTime _customerdemandhandledate;
-        /// <summary>
-        ///客户需求处理日期
-        /// </summary>
-        public DateTime CustomerDemandHandleDate
-        {
-            set { _customerdemandhandledate = value; }
-            get { return _customerdemandhandledate; }
-        }
-        private string _feepaymentway;
-        /// <summary>
-        ///付费方式
-        /// </summary>
-        public string FeePaymentWay
-        {
-            set { _feepaymentway = value; }
-            get { return _feepaymentway; }
-        }
-        private double _rmasumcount;
-        /// <summary>
-        ///数量
-        /// </summary>
-        public double RmaSumCount
-        {
-            set { _rmasumcount = value; }
-            get { return _rmasumcount; }
-        }
-        private string _handlestatus;
-        /// <summary>
-        ///处理状态
-        /// </summary>
-        public string HandleStatus
-        {
-            set { _handlestatus = value; }
-            get { return _handlestatus; }
+            set { _rmaidstatus = value; }
+            get { return _rmaidstatus; }
         }
         private string _rmayear;
         /// <summary>
@@ -147,14 +92,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _optime = value; }
             get { return _optime; }
         }
-        private string _opsgin;
+        private string _opsign;
         /// <summary>
         ///操作标识
         /// </summary>
-        public string OpSgin
+        public string OpSign
         {
-            set { _opsgin = value; }
-            get { return _opsgin; }
+            set { _opsign = value; }
+            get { return _opsign; }
         }
         private decimal _id_key;
         /// <summary>
@@ -166,6 +111,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             get { return _id_key; }
         }
         #endregion Model
+
     }
     /// <summary>
     /// 
@@ -181,6 +127,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _rmaid = value; }
             get { return _rmaid; }
+        }
+        private int _rmaidnumber;
+        /// <summary>
+        ///单号的序号
+        /// </summary>
+        public int RmaIdNumber
+        {
+            set { _rmaidnumber = value; }
+            get { return _rmaidnumber; }
+        }
+        private string _returnhandleorder;
+        /// <summary>
+        ///退销单
+        /// </summary>
+        public string ReturnHandleOrder
+        {
+            set { _returnhandleorder = value; }
+            get { return _returnhandleorder; }
         }
         private string _prodcutid;
         /// <summary>
@@ -209,15 +173,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _productspec = value; }
             get { return _productspec; }
         }
-        private string _returndescrption;
-        /// <summary>
-        ///客户退货陈述
-        /// </summary>
-        public string ReturnDescrption
-        {
-            set { _returndescrption = value; }
-            get { return _returndescrption; }
-        }
         private double _productcount;
         /// <summary>
         ///数量
@@ -227,23 +182,68 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _productcount = value; }
             get { return _productcount; }
         }
-        private double _storehousereceivecount;
+        private string _salesorder;
         /// <summary>
-        ///仓管点
+        ///订单号
         /// </summary>
-        public double StorehouseReceiveCount
+        public string SalesOrder
         {
-            set { _storehousereceivecount = value; }
-            get { return _storehousereceivecount; }
+            set { _salesorder = value; }
+            get { return _salesorder; }
         }
-        private string _productpackunit;
+        private string _productsshipdate;
         /// <summary>
-        ///单位
+        ///原出货日期
         /// </summary>
-        public string ProductPackUnit
+        public string ProductsShipDate
         {
-            set { _productpackunit = value; }
-            get { return _productpackunit; }
+            set { _productsshipdate = value; }
+            get { return _productsshipdate; }
+        }
+        private string _badreason;
+        /// <summary>
+        ///不良原因
+        /// </summary>
+        public string BadReason
+        {
+            set { _badreason = value; }
+            get { return _badreason; }
+        }
+        private string _customerhandleidea;
+        /// <summary>
+        ///客户处理意见
+        /// </summary>
+        public string CustomerHandleIdea
+        {
+            set { _customerhandleidea = value; }
+            get { return _customerhandleidea; }
+        }
+        private string _feepaymentway;
+        /// <summary>
+        ///付费方工式
+        /// </summary>
+        public string FeePaymentWay
+        {
+            set { _feepaymentway = value; }
+            get { return _feepaymentway; }
+        }
+        private string _rmaidstatus;
+        /// <summary>
+        ///单号状态
+        /// </summary>
+        public string RmaIdStatus
+        {
+            set { _rmaidstatus = value; }
+            get { return _rmaidstatus; }
+        }
+        private string _handlestatus;
+        /// <summary>
+        ///处理状态
+        /// </summary>
+        public string HandleStatus
+        {
+            set { _handlestatus = value; }
+            get { return _handlestatus; }
         }
         private string _opperson;
         /// <summary>
@@ -272,23 +272,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _optime = value; }
             get { return _optime; }
         }
-        private string _opsgin;
+        private string _opsign;
         /// <summary>
         ///操作标识
         /// </summary>
-        public string OpSgin
+        public string OpSign
         {
-            set { _opsgin = value; }
-            get { return _opsgin; }
+            set { _opsign = value; }
+            get { return _opsign; }
         }
-        private decimal _id_Key;
+        private decimal _id_key;
         /// <summary>
         ///自增键
         /// </summary>
         public decimal Id_Key
         {
-            set { _id_Key = value; }
-            get { return _id_Key; }
+            set { _id_key = value; }
+            get { return _id_key; }
         }
         #endregion Model
 
@@ -308,6 +308,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _rmaid = value; }
             get { return _rmaid; }
         }
+        private int _rmaidnumber;
+        /// <summary>
+        ///单号的序号
+        /// </summary>
+        public int RmaIdNumber
+        {
+            set { _rmaidnumber = value; }
+            get { return _rmaidnumber; }
+        }
         private string _badphenomenon;
         /// <summary>
         ///不良现象
@@ -326,6 +335,42 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _badreadson = value; }
             get { return _badreadson; }
         }
+        private string _handlemode;
+        /// <summary>
+        ///处理方式
+        /// </summary>
+        public string HandleMode
+        {
+            set { _handlemode = value; }
+            get { return _handlemode; }
+        }
+        private string _pesponsibleperson;
+        /// <summary>
+        ///负责人
+        /// </summary>
+        public string PesponsiblePerson
+        {
+            set { _pesponsibleperson = value; }
+            get { return _pesponsibleperson; }
+        }
+        private string _finishdate;
+        /// <summary>
+        ///完成日期
+        /// </summary>
+        public string FinishDate
+        {
+            set { _finishdate = value; }
+            get { return _finishdate; }
+        }
+        private string _paytime;
+        /// <summary>
+        ///花费时间
+        /// </summary>
+        public string PayTime
+        {
+            set { _paytime = value; }
+            get { return _paytime; }
+        }
         private string _liabilitybelongto;
         /// <summary>
         ///责任归属
@@ -335,32 +380,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _liabilitybelongto = value; }
             get { return _liabilitybelongto; }
         }
-        private string _liabilitybelongdescription;
+        private string _handlestatus;
         /// <summary>
-        ///责任归属具体单位
+        ///处理状态
         /// </summary>
-        public string LiabilityBelongDescription
+        public string HandleStatus
         {
-            set { _liabilitybelongdescription = value; }
-            get { return _liabilitybelongdescription; }
+            set { _handlestatus = value; }
+            get { return _handlestatus; }
         }
-        private string _handlemodeproperty;
+        private string _rmaidstatus;
         /// <summary>
-        ///处理方式
+        ///单号状态
         /// </summary>
-        public string HandleModeProperty
+        public string RmaIdStatus
         {
-            set { _handlemodeproperty = value; }
-            get { return _handlemodeproperty; }
-        }
-        private string _handlemodedescription;
-        /// <summary>
-        ///处理具体方式
-        /// </summary>
-        public string HandleModeDescription
-        {
-            set { _handlemodedescription = value; }
-            get { return _handlemodedescription; }
+            set { _rmaidstatus = value; }
+            get { return _rmaidstatus; }
         }
         private string _opperson;
         /// <summary>
@@ -389,23 +425,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _optime = value; }
             get { return _optime; }
         }
-        private string _opsgin;
+        private string _opsign;
         /// <summary>
         ///操作标识
         /// </summary>
-        public string OpSgin
+        public string OpSign
         {
-            set { _opsgin = value; }
-            get { return _opsgin; }
+            set { _opsign = value; }
+            get { return _opsign; }
         }
-        private decimal _id_Key;
+        private decimal _id_key;
         /// <summary>
         ///自增键
         /// </summary>
         public decimal Id_Key
         {
-            set { _id_Key = value; }
-            get { return _id_Key; }
+            set { _id_key = value; }
+            get { return _id_key; }
         }
         #endregion Model
     }
