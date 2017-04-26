@@ -94,8 +94,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             //如果存在 就修改   
             modeldatas.ForEach(m =>
             {
-                if (this.irep.IsExist(e => e.Id_Key == m.Id_Key))
-                { m.OpSign = "edit"; }
+                if (this.irep.IsExist(e => e.MaterialId == m.MaterialId && e.InspectionItem == m.InspectionItem))
+                { m.OpSign = OpMode.Edit; }
                 opResult = this.Store(m);
                 if (opResult.Result)
                     i = i + opResult.RecordCount;

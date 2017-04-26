@@ -391,6 +391,8 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
         }),
         showInputDataWindow: function ()
         { vmManager.editWindowShow = !vmManager.editWindowShow; },
+
+        edittingRowIndex: 0,
     }
     //导入excel
     $scope.selectFile = function (el) {
@@ -413,10 +415,6 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
                 ds.push(dataItem);
                 vmManager.dataSource = ds;
             }
-            if (uiVM.OpSign === "insert") {
-                var ds = _.clone(vmManager.dataSource);
-                vmManager.dataSource = ds;
-            }
             operate.refresh();
             vmManager.showInputDataWindow();
         })
@@ -429,10 +427,10 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
         vmManager.showInputDataWindow();
         $scope.vm = uiVM;
         var dataItem = _.clone(uiVM);
-        dataItem.Id_key = null;
         var ds = _.clone(vmManager.dataSource);
         ds.push(dataItem);
         vmManager.dataSource = ds;
+
     };
     //编辑
     operate.editItem = function (item) {
