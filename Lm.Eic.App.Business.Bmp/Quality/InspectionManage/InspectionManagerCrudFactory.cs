@@ -193,7 +193,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     return opResult;
                 SetFixFieldValue(modelList, OpMode.Add);
                 int i = 0;
-                //如果存在 就修改   
+                //如果存在 就修改
                 modelList.ForEach(m =>
                 {
                     if (this.irep.IsExist(e => e.Id_Key == m.Id_Key))
