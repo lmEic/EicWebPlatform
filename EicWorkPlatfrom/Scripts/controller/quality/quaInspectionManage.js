@@ -309,6 +309,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     var initVM = _.clone(uiVM);
     var vmManager = {
         editWindowShow: false,
+        insert: false,
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
         InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }, { id: "E", text: "E" }],
         dataSource: [],
@@ -326,7 +327,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
             uiVM.OpSign = 'add';
             $scope.vm = uiVM;
         },
-
+        ///查询得到配置数据
         getConfigDatas: function () {
             $scope.searchPromise = qualityInspectionDataOpService.getIqcspectionItemConfigDatas($scope.vm.MaterialId).then(function (datas) {
                 if (datas !== null) {
@@ -336,7 +337,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
                 }
             });
         },
-        //013935获取进料检验项目最大配置工序ID
+        //获取进料检验项目最大配置工序ID
         getInspectionIndex: function () {
             if (vmManager.dataSource.length > 0) {
                 var maxItem = _.max(vmManager.dataSource, function (item) { return item.InspectionItemIndex; });
@@ -378,9 +379,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
                                 var ds = _.clone(vmManager.dataSource);
                                 leeHelper.remove(ds, vmManager.delItem);
                                 vmManager.dataSource = ds;
-                                vmManager.delModal.$promise.then(vmManager.delModal.hide);
                             }
-
                             vmManager.delModal.$promise.then(vmManager.delModal.hide);
                         });
                     });
@@ -391,9 +390,9 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
             show: false,
         }),
         showInputDataWindow: function ()
-        { vmManager.editWindowShow = !vmManager.editWindowShow; }
+        { vmManager.editWindowShow = !vmManager.editWindowShow; },
     }
-    //013935导入excel
+    //导入excel
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
             qualityInspectionDataOpService.importIqcInspectionItemConfigDatas(fd).then(function (datas) {
@@ -402,10 +401,9 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
         })
     };
     $scope.vmManager = vmManager;
-
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    //013935确认
+    //确认
     operate.confirm = function (isValid) {
         leeHelper.setUserData(uiVM);
         var dataItem = _.clone(uiVM);
@@ -415,9 +413,28 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
                 ds.push(dataItem);
                 vmManager.dataSource = ds;
             }
+            if (uiVM.OpSign === "insert") {
+                var ds = _.clone(vmManager.dataSource);
+                vmManager.dataSource = ds;
+            }
             operate.refresh();
+            vmManager.showInputDataWindow();
         })
     };
+
+    //添加插入一项数据
+    operate.insertItem = function (item) {
+        uiVM = item;
+        uiVM.OpSign = "insert";
+        vmManager.showInputDataWindow();
+        $scope.vm = uiVM;
+        var dataItem = _.clone(uiVM);
+        dataItem.Id_key = null;
+        var ds = _.clone(vmManager.dataSource);
+        ds.push(dataItem);
+        vmManager.dataSource = ds;
+    };
+    //编辑
     operate.editItem = function (item) {
         uiVM = item;
         uiVM.OpSign = "edit";
@@ -430,7 +447,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
         vmManager.delItem = item;
         vmManager.delModal.$promise.then(vmManager.delModal.show);
     }
-
+    // 清空界面数据
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
             vmManager.init();
