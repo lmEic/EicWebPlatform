@@ -40,10 +40,10 @@
                             <thead>
                                 <tr class="info">
                                     <th>单号</th>
+                                    <th>品号</th>
                                     <th>品名</th>
                                     <th>供应商</th>
                                     <th>检测项目</th>
-                                    <th>图号</th>
                                     <th>进货数量</th>
                                     <th>检测状态</th>
                                     <th>进货日期</th>
@@ -53,12 +53,12 @@
                             <tbody>
                                 <tr ng-repeat="item in vmManager.dataSets track by $index">
                                     <td>{{item.OrderId}}</td>
+                                    <td>{{item.MaterialId}}</td>
                                     <td>
-                                        <span title="料号:{{item.MaterialId}} 规格:{{item.MaterialSpec}}">{{item.MaterialName}}</span>
+                                        <span title="规格:{{item.MaterialSpec}}">{{item.MaterialName}}</span>
                                     </td>
                                     <td>{{item.MaterialSupplier}}</td>
                                     <td>{{item.InspectionItems}}</td>
-                                    <td>{{item.MaterialDrawId}}</td>
                                     <td>{{item.MaterialCount}}</td>
                                     <td>
                                         <span title="检测方式:{{item.InspectionMode}}，检测结果:{{item.InspctionResult}},检测日期:{{item.MaterialInDate}}">

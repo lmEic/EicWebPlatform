@@ -613,6 +613,8 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         currentMaterialIdItem: null,
         currentInspectionItem: null,
         panelDataSource: [],
+        e_InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "C", text: "C" }],
+        inputDataGatherType: 'A',
         //缓存数据
         cacheDatas: [],
         searchMaterialIdKeyDown: function ($event) {
@@ -666,9 +668,10 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             }
             vmManager.createGataherDataUi(dataGatherType, item);
         },
+        //生成
         createTypeEInput: function () {
             var item = vmManager.currentInspectionItem;
-            vmManager.createGataherDataUi("E", item);
+            vmManager.createGataherDataUi(vmManager.inputDataGatherType, item);
         },
         //根据采集方式创建数据采集窗口
         createGataherDataUi: function (dataGatherType, item) {
@@ -752,6 +755,8 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 }
             }
         },
+
+
     }
     $scope.vmManager = vmManager;
 
