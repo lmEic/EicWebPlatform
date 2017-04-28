@@ -46,7 +46,8 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
         OpPerson: null,
         OpSign: null,
     };
-
+    $scope.vm = uiVm;
+    var initVM = _.clone(uiVm);
     var vmManager = {
         activeTab: 'initTab',
         //自动生成RMA编号
@@ -59,6 +60,16 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
         getRmaFormDatas: function () { },
         datasets: [],
         dataSource: [],
+        init: function () {
+            if (uiVm.OpSign === 'add') {
+                leeHelper.clearVM(uiVm);
+            }
+            else {
+                uiVm = _.clone(initVM);
+            }
+            uiVm.OpSign = 'add';
+            $scope.vm = uiVm;
+        },
     };
     $scope.vmManager = vmManager;
 
@@ -66,20 +77,27 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
 
     $scope.operate = operate;
     operate.saveAll = function (isValid) {
-        leeHelper.setUserData(uiVM);
-        var dataItem = _.clone(uiVM);
+        leeHelper.setUserData(uiVm);
+        var dataItem = _.clone(uiVm);
         uiVm.OpSign = 'add';
         vmManager.dataSource = $scope.vm;
-        rmaDataOpService.storeRmaBuildRmaIdData(vmManager.dataSource).then(function (Reslut) {
+        rmaDataOpService.storeRmaBuildRmaIdData(uiVm).then(function (opresult) {
             if (opresult.Result) {
-
-                vmManager.datasets = [];
+                var mdl = _.clone(uiVm);
+                mdl.Id_Key = opresult.Id_Key;
+                if (mdl.OpSign === 'add') {
+                    vmManager.datasets.push(mdl);
+                }
                 vmManager.dataSource = [];
+                vmManager.init();
             }
         })
     };
-    operate.refresh = function () { };
-
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.init();
+        });
+    };
 
 });
 //// 描述登记

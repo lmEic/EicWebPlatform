@@ -343,6 +343,65 @@
                             </table>
                         </div>
                     </div>
+                    <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='F'">
+                        <div class="well" style="overflow:hidden;">
+                            <table class="table table-bordered table-condensed">
+                                <caption>
+                                    <label>抽样数量</label>
+                                    <input placeholder="输入抽样数量" type="number" min="0" ng-model="vmManager.currentInspectionItem.InspectionCount" />
+                                    <label>输入类型</label>
+                                    <button placeholder="数据类型" type="button" class="btn  btn-default" ng-model="vmManager.inputDataGatherType"
+                                            data-html="1" data-multiple="0"
+                                            data-animation="am-flip-x" data-placeholder="A"
+                                            bs-options="item.id as item.text for item in vmManager.e_InspectionDataGatherTypes" bs-select>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <span class="btn btn-sm btn-primary" ng-click="vmManager.createTypeEInput()">生成</span>
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th ng-repeat="header in vmManager.inputDatas[0].cols">
+                                            <label class="label label-info">Data{{header.colId}}</label>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="row in vmManager.inputDatas">
+                                        <td ng-repeat="col in row.cols" class="text-center">
+                                            <span ng-show="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
+                                                <label class="text-success">
+                                                    <i class="fa fa-2x fa-check-square-o"></i>
+                                                    <span class="label label-success">OK</span>
+                                                </label>
+                                            </span>
+                                            <span ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
+                                                <label class="text-success" ng-click="vmManager.setItemResult(col)" ng-show="col.indata==='OK'">
+                                                    <i class="fa fa-2x fa-check-square-o"></i>
+                                                    <span class="label label-success">OK</span>
+                                                </label>
+                                                <label class="text-danger" ng-click="vmManager.setItemResult(col)" ng-hide="col.indata==='OK'">
+                                                    <i class="fa fa-2x fa-square-o"></i>
+                                                    <span class="label label-danger">NG</span>
+                                                </label>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <div yl-upload-file ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'"></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'" ng-cloak>
+                                    <tr>
+                                        <td>
+                                            <button class="btn btn-warning" ng-click="operate.saveIqcGatherDatas()">保存数据</button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
