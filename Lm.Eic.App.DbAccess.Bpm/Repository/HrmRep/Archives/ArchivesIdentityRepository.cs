@@ -17,6 +17,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
         List<ArWorkerInfo> GetWorkerInfos(string whereAppend = "");
 
         List<LeaveOfficeMapEntity> GetAttendWorkers();
+
     }
 
     /// <summary>
@@ -35,8 +36,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
                 int id = int.Parse(workerId) + 1;
                 workerId = id.ToString().PadLeft(6, '0');
                 //判定生成工号是否在更变的工号中
-                string SqlFindChangeWorkerId= string.Format("SELECT OldWorkerId FROM Archives_WorkerIdChanged WHERE (OldWorkerId = '{0}')", workerId);
-                if(DbHelper.Hrm.IsExist(SqlFindChangeWorkerId))
+                string SqlFindChangeWorkerId = string.Format("SELECT OldWorkerId FROM Archives_WorkerIdChanged WHERE (OldWorkerId = '{0}')", workerId);
+                if (DbHelper.Hrm.IsExist(SqlFindChangeWorkerId))
                 {
                     int newid = int.Parse(workerId) + 1;
                     workerId = newid.ToString().PadLeft(6, '0');
@@ -60,6 +61,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
         {
             return DbHelper.Hrm.LoadEntities<LeaveOfficeMapEntity>("Select WorkerId,Name as WorkerName,Department,RegistedDate as LeaveDate from Archives_EmployeeIdentityInfo where WorkingStatus='在职'");
         }
+        
     }
 
     /// <summary>
@@ -166,10 +168,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
         }
     }
 
-    public interface IArWorkerIdChangedRepository:IRepository <WorkerChangedModel>
+    public interface IArWorkerIdChangedRepository : IRepository<WorkerChangedModel>
     {
         int UpdateAllTableWorkerId(string oldWorkerId, string newWorkreId);
-        
+
     }
     public class ArworkerIdChangedRepository : HrmRepositoryBase<WorkerChangedModel>, IArWorkerIdChangedRepository
     {
@@ -192,7 +194,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
                     "Archives_IdentitySumerize",
                     "Archives_Department",
                     "Archives_Employee"
-                 
+
                 };
                 updateTable.ForEach(e =>
                 {
@@ -208,7 +210,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
 
                 throw;
             }
-          
+
         }
     }
 
