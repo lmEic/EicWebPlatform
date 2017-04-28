@@ -50,6 +50,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionItemResult = model.InspectionItemResult,
                 //InspectionItemStatus = model.InsptecitonItemIsFinished.ToString(),
                 InspectionItemStatus = "doing",
+                InspectionMode = model.InspectionMode,
                 MaterialId = model.MaterialId,
                 MaterialInDate = model.MaterialInDate,
                 FileName = model.FileName,

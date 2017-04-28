@@ -1,0 +1,45 @@
+
+      public List<string> GetOrderId(string SearchStartDate)
+      {
+          List<string> OrderId = new List<string>();
+          string Startsql591 = "";
+          string Startsql110 = "";
+          string Startsql34 = "";
+
+          if (SearchStartDate != null & SearchStartDate != string.Empty)
+          {
+              Startsql591 = "AND(TH029 = '" + SearchStartDate + "')";
+              Startsql110 = "AND(TA014 = '" + SearchStartDate + "')";
+              Startsql34 = "AND(TG014 = '" + SearchStartDate + "')";
+          }
+          DataTable dt34 = ErpDb.LoadTable("SELECT TG001,TG002   FROM PURTG  WHERE (TG001 = '341' OR TG001 = '343')" + Startsql34);
+          if (dt34.Rows.Count > 0)
+          {
+              foreach (DataRow dt in dt34.Rows)
+              {
+                  OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
+              }
+
+          }
+          DataTable dt591 = ErpDb.LoadTable("SELECT  TH001,TH002  FROM  MOCTH  WHERE (TH001 = '591')" + Startsql591);
+          if (dt591.Rows.Count > 0)
+          {
+              foreach (DataRow dt in dt591.Rows)
+              {
+                  OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
+              }
+
+          }
+          DataTable dt110 = ErpDb.LoadTable("SELECT TA001,TA002   FROM  INVTA  WHERE  (TA001 = '110')" + Startsql110);
+          if (dt110.Rows.Count > 0)
+          {
+              foreach (DataRow dt in dt110.Rows)
+              {
+                  OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
+              }
+
+          }
+
+          return OrderId;
+
+      }

@@ -613,8 +613,6 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         currentMaterialIdItem: null,
         currentInspectionItem: null,
         panelDataSource: [],
-        e_InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "C", text: "C" }],
-        inputDataGatherType: 'A',
         //缓存数据
         cacheDatas: [],
         searchMaterialIdKeyDown: function ($event) {
@@ -671,18 +669,23 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         //生成
         createTypeEInput: function () {
             var item = vmManager.currentInspectionItem;
-            vmManager.createGataherDataUi(vmManager.inputDataGatherType, item);
+            vmManager.createGataherDataUi("E", item);
         },
         //根据采集方式创建数据采集窗口
         createGataherDataUi: function (dataGatherType, item) {
             var dataList = item.InspectionItemDatas === null || item.InspectionItemDatas === "" ? [] : item.InspectionItemDatas.split(',');
             item.NeedFinishDataNumber = parseInt(item.InspectionCount);
-            if (dataGatherType === "A" || dataGatherType === "E") {
+            if (dataGatherType === "A" || dataGatherType === "E" || dataGatherType === "F") {
                 vmManager.inputDatas = leeHelper.createDataInputs(item.NeedFinishDataNumber, 5, dataList, function (itemdata) {
-                    itemdata.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, itemdata.indata);
-                    vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.result });
+                    if (dataGatherType === "F") {
+                        vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.indata === "OK" ? true : false });
+                    }
+                    else {
+                        itemdata.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, itemdata.indata);
+                        vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.result });
+                    }
                 });
-                if (dataGatherType === "E") {
+                if (dataGatherType === "E" || dataGatherType === "F") {
                     vmManager.currentInspectionItem.AcceptCount = 0;
                     vmManager.currentInspectionItem.RefuseCount = 1;
                 }

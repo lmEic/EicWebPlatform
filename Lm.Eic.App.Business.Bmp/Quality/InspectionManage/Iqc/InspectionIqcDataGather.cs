@@ -83,7 +83,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 var iqcNeedInspectionsItemdatas = getIqcNeedInspectionItemDatas(materialId, orderMaterialInfo.ProduceInDate);
                 if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0) return new List<InspectionItemDataSummaryVM>();
                 //保存单头数据
-                return DoInspectionSummayDatas(orderMaterialInfo, iqcNeedInspectionsItemdatas);
+                return HandleInspectionSummayDatas(orderMaterialInfo, iqcNeedInspectionsItemdatas);
             }
             catch (Exception ex)
             {
@@ -98,7 +98,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderMaterialInfo"></param>
         /// <param name="iqcNeedInspectionsItemdatas"></param>
         /// <returns></returns>
-        private List<InspectionItemDataSummaryVM> DoInspectionSummayDatas(MaterialModel orderMaterialInfo, List<InspectionIqcItemConfigModel> iqcNeedInspectionsItemdatas)
+        private List<InspectionItemDataSummaryVM> HandleInspectionSummayDatas(MaterialModel orderMaterialInfo, List<InspectionIqcItemConfigModel> iqcNeedInspectionsItemdatas)
         {
             List<InspectionItemDataSummaryVM> returnList = new List<InspectionItemDataSummaryVM>();
             iqcNeedInspectionsItemdatas.ForEach(m =>
@@ -122,16 +122,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialSupplier = orderMaterialInfo.ProductSupplier,
                     MaterialInCount = orderMaterialInfo.ProduceNumber,
                     InspectionItemSumCount = iqcNeedInspectionsItemdatas.Count,
+
                     InspectionItemStatus = "Doing",
                     ///检验方法
                     InspectionMethod = m.InspectionMethod,
-                    //数据采集类型
+                    ///数据采集类型
                     InspectionDataGatherType = m.InspectionDataGatherType,
                     SizeLSL = m.SizeLSL,
                     SizeUSL = m.SizeUSL,
                     SizeMemo = m.SizeMemo,
                     InspectionAQL = m.InspectionAQL,
-                    InspectionMode = m.InspectionMode,
+                    ///检验方式
+                    InspectionMode = inspectionMode,
                     InspectionLevel = m.InspectionLevel,
                     Memo = string.Empty,
                     InspectionCount = 0,
@@ -162,6 +164,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     model.InsptecitonItemIsFinished = true;
                     model.Id_Key = iqcHaveInspectionData.Id_Key;
                     model.Memo = iqcHaveInspectionData.Memo;
+                    model.InspectionMode = iqcHaveInspectionData.InspectionMode;
                     if (model.InspectionCount == 0)
                         model.InspectionCount = (int)iqcHaveInspectionData.InspectionCount;
                     if (model.AcceptCount == 0)
