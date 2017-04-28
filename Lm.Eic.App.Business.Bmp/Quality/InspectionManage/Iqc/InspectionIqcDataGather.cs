@@ -165,14 +165,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     model.Id_Key = iqcHaveInspectionData.Id_Key;
                     model.Memo = iqcHaveInspectionData.Memo;
                     model.InspectionMode = iqcHaveInspectionData.InspectionMode;
-                    if (model.InspectionCount == 0)
-                        model.InspectionCount = (int)iqcHaveInspectionData.InspectionCount;
-                    if (model.AcceptCount == 0)
-                        model.AcceptCount = (int)iqcHaveInspectionData.InspectionAcceptCount;
-                    if (model.RefuseCount == 0)
-                        model.RefuseCount = (int)iqcHaveInspectionData.InspectionRefuseCount;
-                    if (model.NeedFinishDataNumber == 0)
-                        model.NeedFinishDataNumber = (int)iqcHaveInspectionData.InspectionCount;
+
+                    model.InspectionCount = (int)iqcHaveInspectionData.InspectionCount;
+
+                    model.AcceptCount = (int)iqcHaveInspectionData.InspectionAcceptCount;
+
+                    model.RefuseCount = (int)iqcHaveInspectionData.InspectionRefuseCount;
+
+                    model.NeedFinishDataNumber = (int)iqcHaveInspectionData.InspectionCount;
                     model.HaveFinishDataNumber = DoHaveFinishDataNumber(iqcHaveInspectionData.InspectionItemResult, iqcHaveInspectionData.InspectionItemDatas, model.NeedFinishDataNumber);
                 }
                 returnList.Add(model);
