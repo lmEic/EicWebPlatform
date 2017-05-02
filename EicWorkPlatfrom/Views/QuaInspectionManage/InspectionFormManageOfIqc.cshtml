@@ -166,6 +166,11 @@
                                                         <label>描述:</label>{{item.Memo}}
                                                     </td>
                                                 </tr>
+                                                <tr ng-show="item.FileName!==null">
+                                                    <td>
+                                                        <label>上传文件:</label>{{item.FileName}}
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </td>

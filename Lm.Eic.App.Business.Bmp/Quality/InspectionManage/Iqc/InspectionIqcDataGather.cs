@@ -122,7 +122,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialSupplier = orderMaterialInfo.ProductSupplier,
                     MaterialInCount = orderMaterialInfo.ProduceNumber,
                     InspectionItemSumCount = iqcNeedInspectionsItemdatas.Count,
-
                     InspectionItemStatus = "Doing",
                     ///检验方法
                     InspectionMethod = m.InspectionMethod,
@@ -165,17 +164,21 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     model.Id_Key = iqcHaveInspectionData.Id_Key;
                     model.Memo = iqcHaveInspectionData.Memo;
                     model.InspectionMode = iqcHaveInspectionData.InspectionMode;
-                    if (model.InspectionCount == 0)
-                        model.InspectionCount = (int)iqcHaveInspectionData.InspectionCount;
-                    if (model.AcceptCount == 0)
-                        model.AcceptCount = (int)iqcHaveInspectionData.InspectionAcceptCount;
-                    if (model.RefuseCount == 0)
-                        model.RefuseCount = (int)iqcHaveInspectionData.InspectionRefuseCount;
-                    if (model.NeedFinishDataNumber == 0)
-                        model.NeedFinishDataNumber = (int)iqcHaveInspectionData.InspectionCount;
+                    model.FileName = iqcHaveInspectionData.FileName;
+                    model.DocumentPath = iqcHaveInspectionData.DocumentPath;
+
+                    model.InspectionCount = (int)iqcHaveInspectionData.InspectionCount;
+
+                    model.AcceptCount = (int)iqcHaveInspectionData.InspectionAcceptCount;
+
+                    model.RefuseCount = (int)iqcHaveInspectionData.InspectionRefuseCount;
+
+                    model.NeedFinishDataNumber = (int)iqcHaveInspectionData.InspectionCount;
                     model.HaveFinishDataNumber = DoHaveFinishDataNumber(iqcHaveInspectionData.InspectionItemResult, iqcHaveInspectionData.InspectionItemDatas, model.NeedFinishDataNumber);
                 }
                 returnList.Add(model);
+                //产生测试项目先存入到数据库中(如果存在 直接反回)
+                DetailDatasGather.InitializestoreInspectionDetial(model);
             });
             return returnList;
         }
@@ -271,6 +274,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                    NeedFinishDataNumber = Convert.ToInt16(m.InspectionCount),
                    HaveFinishDataNumber = this.GetHaveFinishDataNumber(m.InspectionItemDatas),
                    InspectionItemResult = m.InspectionItemResult,
+                   FileName = m.FileName,
+                   DocumentPath = m.FileName,
                    Memo = m.Memo,
                    InspectionMethod = string.Empty,
                    InspectionMode = m.InspectionMode,

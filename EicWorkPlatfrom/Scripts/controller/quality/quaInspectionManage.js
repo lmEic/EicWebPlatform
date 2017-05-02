@@ -311,7 +311,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
         editWindowShow: false,
         insert: false,
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
-        InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }, { id: "E", text: "E" }],
+        InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }, { id: "E", text: "E" }, { id: "F", text: "F" }],
         dataSource: [],
         dataSets: [],
         copyLotWindowDisplay: false,
@@ -661,36 +661,33 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             vmManager.dataList = [];
             //vmManager.currentInspectionItem.InspectionDataGatherType = "E";
             var dataGatherType = vmManager.currentInspectionItem.InspectionDataGatherType;
-            if (dataGatherType === "E") {
+            if (dataGatherType === "E" || dataGatherType === "F") {
                 if (item.InspectionCount === "0") return;
             }
             vmManager.createGataherDataUi(dataGatherType, item);
         },
         //生成
         createTypeEInput: function () {
+            vmManager.dataList = [];
             var item = vmManager.currentInspectionItem;
-            vmManager.createGataherDataUi("E", item);
+            var dataGatherType = vmManager.currentInspectionItem.InspectionDataGatherType
+            vmManager.createGataherDataUi(dataGatherType, item);
         },
         //根据采集方式创建数据采集窗口
         createGataherDataUi: function (dataGatherType, item) {
             var dataList = item.InspectionItemDatas === null || item.InspectionItemDatas === "" ? [] : item.InspectionItemDatas.split(',');
             item.NeedFinishDataNumber = parseInt(item.InspectionCount);
-            if (dataGatherType === "A" || dataGatherType === "E" || dataGatherType === "F") {
+            if (dataGatherType === "A" || dataGatherType === "E") {
                 vmManager.inputDatas = leeHelper.createDataInputs(item.NeedFinishDataNumber, 5, dataList, function (itemdata) {
-                    if (dataGatherType === "F") {
-                        vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.indata === "OK" ? true : false });
-                    }
-                    else {
-                        itemdata.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, itemdata.indata);
-                        vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.result });
-                    }
+                    itemdata.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, itemdata.indata);
+                    vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.result });
                 });
-                if (dataGatherType === "E" || dataGatherType === "F") {
+                if (dataGatherType === "E") {
                     vmManager.currentInspectionItem.AcceptCount = 0;
                     vmManager.currentInspectionItem.RefuseCount = 1;
                 }
             }
-            else if (dataGatherType === "C") {
+            else if (dataGatherType === "C" || dataGatherType === "F") {
                 if (dataList.length === 0) {
                     for (var i = 0; i < item.NeedFinishDataNumber; i++) {
                         dataList.push('OK');
@@ -699,6 +696,11 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 vmManager.inputDatas = leeHelper.createDataInputs(item.NeedFinishDataNumber, 5, dataList, function (itemdata) {
                     vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.indata === "OK" ? true : false });
                 });
+
+                if (dataGatherType === "F") {
+                    vmManager.currentInspectionItem.AcceptCount = 0;
+                    vmManager.currentInspectionItem.RefuseCount = 1;
+                }
             }
 
         },
@@ -769,7 +771,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
     operate.saveIqcGatherDatas = function () {
         var dataList = [], result = true;
         var dataItem = vmManager.currentInspectionItem;
-        if (dataItem.InspectionDataGatherType === "A" || dataItem.InspectionDataGatherType === "E" || dataItem.InspectionDataGatherType === "C") {
+        if (dataItem.InspectionDataGatherType === "A" || dataItem.InspectionDataGatherType === "E" || dataItem.InspectionDataGatherType === "C" || dataItem.InspectionDataGatherType === "F") {
             //获取数据及判定结果
             angular.forEach(vmManager.dataList, function (item) {
                 dataList.push(item.data);
@@ -779,7 +781,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             dataItem.InspectionItemDatas = dataList.join(",");
             dataItem.InspectionItemResult = result ? "OK" : "NG";
             dataItem.HaveFinishDataNumber = vmManager.dataList.length;
-            if (dataItem.InspectionDataGatherType === "E") {
+            if (dataItem.InspectionDataGatherType === "E" || dataItem.InspectionDataGatherType === "F") {
                 dataItem.HaveFinishDataNumber = dataItem.NeedFinishDataNumber;
             }
         }
@@ -789,7 +791,6 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         }
         dataItem.InsptecitonItemIsFinished = true;
         leeHelper.setUserData(dataItem);
-
         $scope.opPromise = qualityInspectionDataOpService.storeIqcInspectionGatherDatas(dataItem).then(function (opResult) {
 
             if (opResult.Result) {
@@ -1114,6 +1115,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             vmManager.currentItem = item;
             qualityInspectionDataOpService.getInspectionFormDetailOfIqcDatas(item.OrderId, item.MaterialId).then(function (datas) {
                 vmManager.isShowDetailWindow = true;
+                console.log(datas);
                 angular.forEach(datas, function (item) {
                     var dataItems = item.InspectionItemDatas.split(",");
                     item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
