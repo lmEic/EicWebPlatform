@@ -278,7 +278,6 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ActionResult InspectionDataGatheringOfIQC()
         {
-            SetWebSitSubTitle("进料检验(IQC)数据采集");
             return View();
         }
         /// <summary>

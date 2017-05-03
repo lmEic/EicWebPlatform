@@ -23,7 +23,7 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
         });
     };
 
-    //////// 得到 Rma表描述 
+    //////// 得到 Rma表描述
     rma.getRmaBussesDescriptionDatas = function (rmaId) {
         var url = quaRmaManageUrl + "GetRmaBussesDescriptionDatas";
         return ajaxService.getData(url, {
@@ -35,6 +35,7 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
 })
 ////创建表单
 qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService) {
+    leeHelper.setWebSiteTitle("质量管理", "创建RMA表单");
     ///视图模型
     var uiVm = $scope.vm = {
         RmaId: null,
@@ -102,6 +103,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
 });
 //// 描述登记
 qualityModule.controller('rmaInputDescriptionCtrl', function ($scope) {
+    leeHelper.setWebSiteTitle("质量管理", "RMA表单描述登记");
     ///视图模型
     var rmaVm = $scope.rmavm = {
         RmaId: null,
@@ -124,6 +126,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope) {
 
 ////检验处置
 qualityModule.controller('rmaInspectionHandleCtrl', function ($scope) {
+    leeHelper.setWebSiteTitle("质量管理", "RMA检验处置");
     ///视图模型
     var rmaVm = $scope.rmavm = {
         RmaId: null,

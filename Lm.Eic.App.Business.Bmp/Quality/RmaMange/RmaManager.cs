@@ -10,16 +10,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
     public class RmaManager
     {
 
-        /// <summary>
-        /// 
-        /// 
-        /// </summary>
-        /// <param name="rmaId"></param>
-        /// <returns></returns>
-        public List<RmaBussesDescriptionModel> GetBussesDescriptiondatas(string rmaId)
-        {
-            return RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatas(rmaId);
-        }
+
     }
 
 

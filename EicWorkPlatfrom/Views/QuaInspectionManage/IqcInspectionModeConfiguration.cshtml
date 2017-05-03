@@ -27,151 +27,134 @@
                     <button type="button" class="btn btn-success " ng-click="vmManager.getInspectionModeDatas()"><i class="fa fa-search">查询</i></button>
                 </form>
             </div>
-            <div class="col-md-3">
-                <span yl-view-data-button data-toggle="vmManager.showInputDataWindow()"></span>
-            </div>
         </div>
         <div class="h-split"></div>
-        <div class="well" id="editWindow">
-            <form role="form" name="inspectionModeForm" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
-                <div class="form-group">
-                    <label for="inspectionMode" class="col-md-2 control-label">检验方式</label>
-                    <div class="col-md-4">
-                        <button type="button" class="btn  btn-default" ng-model="vm.InspectionMode"
-                                data-html="1" data-multiple="0"
-                                data-animation="am-flip-x" data-placeholder="正常"
-                                bs-options="item.id as item.text for item in vmManager.inspectionModeArr" bs-select>
-                            <span class="caret"></span>
-                        </button>
-                    </div>
-
-                    <label for="inspectionLevel" class="col-md-2 control-label">检验水平</label>
-                    <div class="col-md-4">
-                        <input name="inspectionLevel" class="form-control" ng-model="vm.InspectionLevel" required ng-focus="vmManager.getInspectionLevelValues()"
-                               bs-options="value for value in vmManager.inspectionLevelValues" limit="8" placeholder="Enter value" bs-typeahead />
-                        <div class="error-messages" ng-messages="inspectionModeForm.inspectionLevel.$error" ng-show="operate.showValidation">
-                            <small ng-message="required">检验水平不能为空</small>
+        <div class="row">
+            <div class="col-md-9 well">
+                <form role="form" name="inspectionModeForm" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                    <div class="form-group">
+                        <label for="inspectionMode" class="col-md-2 control-label">检验方式</label>
+                        <div class="col-md-4">
+                            <button type="button" class="btn  btn-default" ng-model="vm.InspectionMode"
+                                    data-html="1" data-multiple="0"
+                                    data-animation="am-flip-x" data-placeholder="正常"
+                                    bs-options="item.id as item.text for item in vmManager.inspectionModeArr" bs-select>
+                                <span class="caret"></span>
+                            </button>
                         </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inspectionSize" class="col-md-2 control-label">AQL</label>
-                    <div class="col-md-4">
-                        <input type="text" class="form-control" ng-model="vm.InspectionAQL" name="inspectionAQL" required ng-focus="vmManager.getInspectionAQLValues()"
-                               bs-options="value for value in vmManager.inspectionAQLValues" limit="8" placeholder="Enter value" bs-typeahead>
-                        <div class="error-messages" ng-messages="inspectionModeForm.inspectionAQL.$error" ng-show="operate.showValidation">
-                            <small ng-message="required">AQL不能为空</small>
-                        </div>
-                    </div>
 
-
-                    <label for="startNumber" class="col-md-2 control-label">起始值</label>
-                    <div class="col-md-4">
-                        <input type="number" name="startNumber" class="form-control" ng-model="vm.StartNumber" required />
-                        <div class="error-messages" ng-messages="inspectionModeForm.startNumber.$error" ng-show="operate.showValidation">
-                            <small ng-message="required">起始值不能为空</small>
-                        </div>
-                    </div>
-
-
-                </div>
-                <div class="form-group">
-                    <label for="endNumber" class="col-md-2 control-label">结束值</label>
-                    <div class="col-md-4">
-                        <input type="number" name="endNumber" class="form-control" ng-model="vm.EndNumber" required />
-                        <div class="error-messages" ng-messages="inspectionModeForm.endNumber.$error" ng-show="operate.showValidation">
-                            <small ng-message="required">结束值不能为空</small>
-                        </div>
-                    </div>
-
-                    <label for="inspectionCount" class="col-md-2 control-label">检验数量</label>
-                    <div class="col-md-4">
-                        <input type="number" name="inspectionCount" class="form-control" ng-model="vm.InspectionCount" required />
-                        <div class="error-messages" ng-messages="inspectionModeForm.inspectionCount.$error" ng-show="operate.showValidation">
-                            <small ng-message="required">检验数量不能为空</small>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="form-group">
-                    <label for="acceptCount" class="col-md-2 control-label">接受数量</label>
-                    <div class="col-md-4">
-                        <input type="number" name="acceptCount" class="form-control" ng-model="vm.AcceptCount" required />
-                        <div class="error-messages" ng-messages="inspectionModeForm.acceptCount.$error" ng-show="operate.showValidation">
-                            <small ng-message="required">接受数量不能为空</small>
-                        </div>
-                    </div>
-
-                    <label for="refuseCount" class="col-md-2 control-label">拒收数量</label>
-                    <div class="col-md-4">
-                        <input type="number" name="refuseCount" class="form-control" ng-model="vm.RefuseCount" required />
-                        <div class="error-messages" ng-messages="inspectionModeForm.refuseCount.$error" ng-show="operate.showValidation">
-                            <small ng-message="required">拒收数量不能为空</small>
-                        </div>
-                    </div>
-                </div>
-                <hr />
-                <div class="alert alert-info">
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-4">
-                            <button class="btn btn-primary" ng-click="operate.saveIqcInspectionModeData(inspectionModeForm.$valid)"><i class="fa fa-save"></i>保存</button>
-                            <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-9 col-md-offset-3">
-                                <div yl-operatemsg-board></div>
+                        <label for="inspectionLevel" class="col-md-2 control-label">检验水平</label>
+                        <div class="col-md-4">
+                            <input name="inspectionLevel" class="form-control" ng-model="vm.InspectionLevel" required ng-focus="vmManager.getInspectionLevelValues()"
+                                   bs-options="value for value in vmManager.inspectionLevelValues" limit="8" placeholder="Enter value" bs-typeahead />
+                            <div class="error-messages" ng-messages="inspectionModeForm.inspectionLevel.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">检验水平不能为空</small>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                    <div class="form-group">
+                        <label for="inspectionSize" class="col-md-2 control-label">AQL</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" ng-model="vm.InspectionAQL" name="inspectionAQL" required ng-focus="vmManager.getInspectionAQLValues()"
+                                   bs-options="value for value in vmManager.inspectionAQLValues" limit="8" placeholder="Enter value" bs-typeahead>
+                            <div class="error-messages" ng-messages="inspectionModeForm.inspectionAQL.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">AQL不能为空</small>
+                            </div>
+                        </div>
 
-        <div pageslide ps-open="vmManager.editWindowShow" ps-side="top" ps-size="100%" ps-speed="0.25" ps-container='editWindow'>
-            <div style="padding:10px;overflow-y:scroll;max-height:580px;">
-                <div class="bs-callout bs-callout-info" min-height:428px;">
-                    <div class="table-responsive" cg-busy="{promise:searchPromise}">
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <tr class="info">
-                                    <th>检验方式</th>
-                                    <th>检验水平</th>
-                                    <th>AQL</th>
-                                    <th>起始值</th>
-                                    <th>结束值</th>
-                                    <th>检验数量</th>
-                                    <th>接受数量</th>
-                                    <th>拒收数量</th>
-                                    <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="item in vmManager.dataSets track by $index">
-                                    <td>{{item.InspectionMode}}</td>
-                                    <td>{{item.InspectionLevel}}</td>
-                                    <td>{{item.InspectionAQL}}</td>
-                                    <td>{{item.StartNumber}}</td>
-                                    <td>{{item.EndNumber}}</td>
-                                    <td>{{item.InspectionCount}}</td>
-                                    <td>{{item.AcceptCount}}</td>
-                                    <td>{{item.RefuseCount}}</td>
-                                    <td>
-                                        <button class="btn btn-xs btn-info" ng-click="operate.editItem(item)" title="编辑">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item)" title="删除">
-                                            <i class="fa fa-remove"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
 
-                    <div ng-if="vmManager.dataSource.length>0"
-                         yl-pagination data-dataset="vmManager.dataSets"
-                         data-datasource="vmManager.dataSource">
+                        <label for="startNumber" class="col-md-2 control-label">起始值</label>
+                        <div class="col-md-4">
+                            <input type="number" name="startNumber" class="form-control" ng-model="vm.StartNumber" required />
+                            <div class="error-messages" ng-messages="inspectionModeForm.startNumber.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">起始值不能为空</small>
+                            </div>
+                        </div>
+
+
                     </div>
+                    <div class="form-group">
+                        <label for="endNumber" class="col-md-2 control-label">结束值</label>
+                        <div class="col-md-4">
+                            <input type="number" name="endNumber" class="form-control" ng-model="vm.EndNumber" required />
+                            <div class="error-messages" ng-messages="inspectionModeForm.endNumber.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">结束值不能为空</small>
+                            </div>
+                        </div>
+
+                        <label for="inspectionCount" class="col-md-2 control-label">检验数量</label>
+                        <div class="col-md-4">
+                            <input type="number" name="inspectionCount" class="form-control" ng-model="vm.InspectionCount" required />
+                            <div class="error-messages" ng-messages="inspectionModeForm.inspectionCount.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">检验数量不能为空</small>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="acceptCount" class="col-md-2 control-label">接受数量</label>
+                        <div class="col-md-4">
+                            <input type="number" name="acceptCount" class="form-control" ng-model="vm.AcceptCount" required />
+                            <div class="error-messages" ng-messages="inspectionModeForm.acceptCount.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">接受数量不能为空</small>
+                            </div>
+                        </div>
+
+                        <label for="refuseCount" class="col-md-2 control-label">拒收数量</label>
+                        <div class="col-md-4">
+                            <input type="number" name="refuseCount" class="form-control" ng-model="vm.RefuseCount" required />
+                            <div class="error-messages" ng-messages="inspectionModeForm.refuseCount.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">拒收数量不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="alert alert-info">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-4">
+                                <button class="btn btn-primary" ng-click="operate.saveIqcInspectionModeData(inspectionModeForm.$valid)"><i class="fa fa-save"></i>保存</button>
+                                <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-9 col-md-offset-3">
+                                    <div yl-operatemsg-board></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="info">
+                            <th>检验方式</th>
+                            <th>AQL</th>
+                            <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in vmManager.dataSets track by $index">
+                            <td>
+                                <span title="检验水平：{{item.InspectionLevel}}">
+                                    {{item.InspectionMode}}
+                                </span>
+                            </td>
+                            <td>{{item.InspectionAQL}}</td>
+                            <td>
+                                <button class="btn btn-xs btn-info" ng-click="operate.editItem(item)" title="编辑">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item)" title="删除">
+                                    <i class="fa fa-remove"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div ng-if="vmManager.dataSource.length>0"
+                     yl-pagination data-dataset="vmManager.dataSets"
+                     data-datasource="vmManager.dataSource">
                 </div>
             </div>
         </div>
