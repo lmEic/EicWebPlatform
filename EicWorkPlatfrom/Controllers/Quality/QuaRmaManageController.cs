@@ -39,14 +39,14 @@ namespace EicWorkPlatfrom.Controllers.Quality
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="rmaId"></param>
         /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult GetBussesDescriptionDatas(string rmaId)
         {
-            var datas = RmaService.RmaManger.GetBussesDescriptiondatas(rmaId);
+            var datas = 0;//RmaService.RmaManger.GetBussesDescriptiondatas(rmaId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         #endregion

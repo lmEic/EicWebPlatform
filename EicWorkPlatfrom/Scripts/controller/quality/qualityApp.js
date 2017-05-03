@@ -127,3 +127,8 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
 });
+
+
+
+
+

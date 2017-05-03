@@ -29,7 +29,7 @@
                 <label>品名:</label>
                 <span title="{{tableVm.MaterailName}}">{{tableVm.MaterailName}}</span>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <label>品名规格:</label>
                 <span title="{{tableVm.MaterialSpecify}}">{{tableVm.MaterialSpecify}}</span>
             </div>
@@ -41,12 +41,10 @@
                 <label>图号:</label>
                 <span title="{{tableVm.MaterialrawID}}">{{tableVm.MaterialrawID}}</span>
             </div>
-            <div class="col-md-4">
-                <span yl-view-data-button data-toggle="vmManager.showInputDataWindow()"></span>
-            </div>
         </div>
-        <div id="editWindow">
-            <div class="well">
+        <div class="h-split"></div>
+        <div class="row">
+            <div class="col-md-9 well">
                 <form role="form" name="fqcInspectionItemForm" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                     <div class="form-group">
                         <label for="materialId" class="col-md-2 control-label">料号</label>
@@ -179,32 +177,28 @@
                     </div>
                 </form>
             </div>
-        </div>
-
-        <div pageslide ps-open="vmManager.editWindowShow" ps-side="right" ps-size="100%" ps-speed="0.25" ps-container='editWindow'>
-            <div style="padding:10px;overflow-y:scroll;max-height:480px;">
+            <div class="col-md-3">
+                <span ng-if="vmManager.dataSource.length>0" cg-busy="{promise:opPromise}">
+                    <button class="btn btn-success" ng-click="operate.saveAll()">批量保存</button>
+                    <span yl-operatemsg-board></span>
+                </span>
+                <span class="h-split"></span>
                 <table class="table table-hover table-striped">
                     <thead>
-                        <tr>
+                        <tr class="info">
                             <th>工序</th>
-                            <th>品号</th>
                             <th>检验项目</th>
-                            <th>规格说明</th>
-                            <th>检验水平</th>
-                            <th>AQL</th>
-                            <th>检验方法</th>
                             <th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="item in vmManager.dataSets track by $index">
                             <td>{{item.InspectionItemIndex}}</td>
-                            <td>{{item.MaterialId}}</td>
-                            <td>{{item.InspectionItem}}</td>
-                            <td>{{item.SizeMemo}}</td>
-                            <td>{{item.InspectionLevel}}</td>
-                            <td>{{item.InspectionAQL}}</td>
-                            <td>{{item.InspectionMethod}}</td>
+                            <td>
+                                <span title="品号:{{item.MaterialId}}">
+                                    {{item.InspectionItem}}
+                                </span>
+                            </td>
                             <td style="cursor:pointer;">
                                 <button class="btn btn-xs btn-info" ng-click="operate.editItem(item)" title="编辑">
                                     <i class="fa fa-edit"></i>
@@ -215,14 +209,6 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tfoot ng-if="vmManager.dataSource.length>0" cg-busy="{promise:opPromise}">
-                        <tr>
-                            <td colspan="7">
-                                <button class="btn btn-success" ng-click="operate.saveAll()">批量保存</button>
-                                <span yl-operatemsg-board></span>
-                            </td>
-                        </tr>
-                    </tfoot>
                 </table>
                 <div ng-if="vmManager.dataSource.length>0"
                      yl-pagination data-dataset="vmManager.dataSets"

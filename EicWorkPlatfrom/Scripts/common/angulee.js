@@ -439,6 +439,10 @@ var leeHelper = (function () {
         ///max规格上限,min规格下限,targetValue目标值，compareSign比较操作符
         checkValue: function (max, min, targetValue, compareSign) {
             return (targetValue >= min && targetValue <= max);
+        },
+        ///设置网站标题
+        setWebSiteTitle: function (title, subTitle) {
+            document.title = title + "---" + subTitle;
         }
     };
 })();
