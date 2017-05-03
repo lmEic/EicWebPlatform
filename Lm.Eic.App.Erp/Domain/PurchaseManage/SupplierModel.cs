@@ -32,7 +32,7 @@
         /// <summary>
         /// 邮箱
         /// </summary>
-        public string Email { get;set; }
+        public string Email { get; set; }
         /// <summary>
         /// 负责人 MA012
         /// </summary>
@@ -57,6 +57,10 @@
         /// 账单地址 MA051
         /// </summary>
         public string BillAddress { get; set; }
+        /// <summary>
+        /// 是否有效 MA004
+        /// </summary>
+        public bool IsValidity { get; set; }
     }
 
     /// <summary>

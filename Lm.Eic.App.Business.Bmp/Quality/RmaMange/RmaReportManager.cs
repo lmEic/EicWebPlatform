@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 {
-    public class RmaReportManager
+    public class RmaReport
     {
         //生成RmaId编号
         public string CreateRmaID()
@@ -33,6 +33,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             return RmaCurdFactory.RmaReportInitiate.GetInitiateData(rmaId);
         }
 
+
+    }
+
+
+    public class BusinessHandleReport
+    {
+
+    }
+
+    public class InspectionHandleReport
+    {
 
     }
     /// <summary>
