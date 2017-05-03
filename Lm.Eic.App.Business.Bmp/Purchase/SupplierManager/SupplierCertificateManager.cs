@@ -61,6 +61,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
+                ///没有更新数据表
+
                 //先从已存的数据信息中找 没有找到再从ERP中找
                 SupplierInfoModel SupplierInfo = SupplierCrudFactory.SuppliersInfoCrud.GetSupplierInfoBy(supplierId);
                 if (SupplierInfo == null)
@@ -284,7 +286,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 SupplierShortName = erpSupplierInfo.SupplierShortName,
                 SupplierUser = erpSupplierInfo.Contact,
                 SupplierTel = erpSupplierInfo.Tel,
-                PayCondition = erpSupplierInfo.PayCondition
+                PayCondition = erpSupplierInfo.PayCondition,
+                Remark = erpSupplierInfo.IsValidity.ToString()
             };
         }
 
