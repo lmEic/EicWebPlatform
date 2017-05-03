@@ -15,7 +15,5 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         {
             get { return OBulider.BuildInstance<RmaManager>(); }
         }
-
-
     }
 }
