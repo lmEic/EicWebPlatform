@@ -28,14 +28,16 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public JsonResult CreateRmaId()
         {
-            var data = RmaService.RmaReport.CreateRmaID();
+            //var data = RmaService.RmaReport.CreateRmaID();
+            var data = "";
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
         public JsonResult StoreinitiateDataData(RmaReportInitiateModel initiateData)
         {
-            var result = RmaService.RmaReport.StoreRamReortInitiate(initiateData);
+            //var result = RmaService.RmaReport.StoreRamReortInitiate(initiateData);
 
+            var result = "";
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
