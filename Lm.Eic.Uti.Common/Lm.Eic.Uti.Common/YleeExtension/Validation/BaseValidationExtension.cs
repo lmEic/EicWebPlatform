@@ -115,52 +115,55 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
         /// 年度、季度格式yyyyMM 转为时间段
         /// </summary>
         /// <param name="seasonDateNum">格式yyyyMM</param>
-        /// <param name="stardate">格式yyyyMMdd</param>
+        /// <param name="startdate">格式yyyyMMdd</param>
         /// <param name="enddate">格式yyyyMMdd</param>
-        public static void SeasonNumConvertStartDateAndEndDate(this string seasonDateNum, out string stardate, out string enddate)
+        public static void SeasonNumConvertStartDateAndEndDate(this string seasonDateNum, out string startdate, out string enddate)
         {
             try
             {
 
-                string year = string.Empty;
+                string endYear = string.Empty;
+                string startYear = string.Empty;
                 int DateNum = 0;
                 //
                 if (seasonDateNum == string.Empty)
                 {
-                    stardate = string.Empty;
+                    startdate = string.Empty;
                     enddate = string.Empty;
                     return;
                 }
                 if (seasonDateNum.Length != 6)
                 {
                     DateNum = int.Parse(seasonDateNum.Substring(seasonDateNum.Length - 1, 1));
-                    year = DateTime.Now.Year.ToString();
+                    endYear = DateTime.Now.Year.ToString();
+                    startYear = (DateTime.Now.Year - 1).ToString();
                 }
                 else
                 {
-                    year = seasonDateNum.Substring(0, 4);
+                    endYear = seasonDateNum.Substring(0, 4);
+                    startYear = (Convert.ToInt16(endYear) - 1).ToString();
                     DateNum = int.Parse(seasonDateNum.Substring(4, 2));
                 }
                 switch (DateNum)
                 {
                     case 1:
-                        stardate = year + "0101";
-                        enddate = year + "0331";
+                        startdate = startYear + "0101";
+                        enddate = endYear + "0331";
                         break;
                     case 2:
-                        stardate = year + "0401";
-                        enddate = year + "0630";
+                        startdate = startYear + "0401";
+                        enddate = endYear + "0630";
                         break;
                     case 3:
-                        stardate = year + "0701";
-                        enddate = year + "0931";
+                        startdate = startYear + "0701";
+                        enddate = endYear + "0931";
                         break;
                     case 4:
-                        stardate = year + "1001";
-                        enddate = year + "1231";
+                        startdate = startYear + "1001";
+                        enddate = endYear + "1231";
                         break;
                     default:
-                        stardate = string.Empty;
+                        startdate = string.Empty;
                         enddate = string.Empty;
                         break;
                 }

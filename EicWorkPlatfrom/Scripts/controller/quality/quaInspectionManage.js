@@ -402,10 +402,10 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     //确认
     operate.confirm = function (isValid) {
         leeHelper.setUserData(uiVM);
-        vmManager.getInspectionIndex();
         var dataItem = _.clone(uiVM);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             if (uiVM.OpSign === "add") {
+                vmManager.getInspectionIndex();
                 var ds = _.clone(vmManager.dataSource);
                 ds.push(dataItem);
                 vmManager.dataSource = ds;
@@ -416,7 +416,8 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
 
     //添加插入一项数据
     operate.copyItem = function (item) {
-        uiVM = item;
+        var oldItem = _.clone(item);
+        uiVM = oldItem;
         vmManager.getInspectionIndex();
         uiVM.OpSign = "copy";
         $scope.vm = uiVM;
@@ -434,9 +435,19 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     };
     //删除项
     operate.deleteItem = function (item) {
-        item.OpSign = "delete";
-        vmManager.delItem = item;
-        vmManager.delModal.$promise.then(vmManager.delModal.show);
+        if (item.OpSign === "copy") {
+            vmManager.delItem = item;
+            var ds = _.clone(vmManager.dataSource);
+            leeHelper.remove(ds, vmManager.delItem);
+            vmManager.dataSource = ds;
+        }
+        else {
+            item.OpSign = "delete";
+            vmManager.delItem = item;
+            vmManager.delModal.$promise.then(vmManager.delModal.show);
+
+        }
+
     }
     // 清空界面数据
     operate.refresh = function () {
