@@ -457,8 +457,8 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             {
                 modelList.ForEach(e =>
                 {
-                    if (!SupplierIdlist.Contains(e.Supplier))
-                    { SupplierIdlist.Add(e.Supplier); };
+                    if (!SupplierIdlist.Contains(e.Supplier.Trim()))
+                    { SupplierIdlist.Add(e.Supplier.Trim()); };
                 });
             }
             return SupplierIdlist;

@@ -122,7 +122,8 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
             try
             {
 
-                string year = string.Empty;
+                string endYear = string.Empty;
+                string stardYear = string.Empty;
                 int DateNum = 0;
                 //
                 if (seasonDateNum == string.Empty)
@@ -134,30 +135,32 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
                 if (seasonDateNum.Length != 6)
                 {
                     DateNum = int.Parse(seasonDateNum.Substring(seasonDateNum.Length - 1, 1));
-                    year = DateTime.Now.Year.ToString();
+                    endYear = DateTime.Now.Year.ToString();
+                    stardYear = (DateTime.Now.Year - 1).ToString();
                 }
                 else
                 {
-                    year = seasonDateNum.Substring(0, 4);
+                    endYear = seasonDateNum.Substring(0, 4);
+                    stardYear = (Convert.ToInt16(endYear) - 1).ToString();
                     DateNum = int.Parse(seasonDateNum.Substring(4, 2));
                 }
                 switch (DateNum)
                 {
                     case 1:
-                        stardate = year + "0101";
-                        enddate = year + "0331";
+                        stardate = stardYear + "0101";
+                        enddate = endYear + "0331";
                         break;
                     case 2:
-                        stardate = year + "0401";
-                        enddate = year + "0630";
+                        stardate = stardYear + "0401";
+                        enddate = endYear + "0630";
                         break;
                     case 3:
-                        stardate = year + "0701";
-                        enddate = year + "0931";
+                        stardate = stardYear + "0701";
+                        enddate = endYear + "0931";
                         break;
                     case 4:
-                        stardate = year + "1001";
-                        enddate = year + "1231";
+                        stardate = stardYear + "1001";
+                        enddate = endYear + "1231";
                         break;
                     default:
                         stardate = string.Empty;

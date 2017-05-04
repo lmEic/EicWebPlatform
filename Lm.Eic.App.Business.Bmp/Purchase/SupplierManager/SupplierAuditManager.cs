@@ -15,7 +15,7 @@ using System.IO;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
- internal class SupplierAuditManagerFactory
+    internal class SupplierAuditManagerFactory
     {
         /// <summary>
         /// 供应商证书管理
@@ -27,10 +27,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     }
 
 
-   /// <summary>
-   /// 供应商考核管理
-   /// </summary>
-public     class SupplierAuditManager
+    /// <summary>
+    /// 供应商考核管理
+    /// </summary>
+    public class SupplierAuditManager
     {
         #region 季度考核表
 
@@ -42,7 +42,7 @@ public     class SupplierAuditManager
         public List<SupplierSeasonAuditModel> GetSeasonSupplierList(string seasonDateNum)
         {
             string starDate = string.Empty, endDate = string.Empty;
-            //处理季度数
+            //处理季度数  统计一年的 向后腿一年
             seasonDateNum.SeasonNumConvertStartDateAndEndDate(out starDate, out endDate);
             List<SupplierSeasonAuditModel> supplierSeasonAuditModelList = new List<SupplierSeasonAuditModel>();
             //从ERP中得到季度进货厂商ID
@@ -52,7 +52,7 @@ public     class SupplierAuditManager
             {
                 supplierSeasonAuditModelList.Add(getSupplierSeasonAuditModel(e, seasonDateNum));
             });
-         supplierSeasonAuditModelList.OrderBy(e => e.SupplierId);
+            supplierSeasonAuditModelList.OrderBy(e => e.SupplierId);
             return supplierSeasonAuditModelList;
 
         }
@@ -124,7 +124,7 @@ public     class SupplierAuditManager
                 new FileFieldMapping ("ManagerRisk","供应商管理风险") ,
                 new FileFieldMapping ("SubstitutionSupplierId","替代厂商") ,
                 new FileFieldMapping ("SeasonDateNum","第几季度") ,
-                new FileFieldMapping ("Remark","备注") 
+                new FileFieldMapping ("Remark","备注")
             };
             return fieldmappping;
         }

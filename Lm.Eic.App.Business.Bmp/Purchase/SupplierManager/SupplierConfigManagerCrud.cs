@@ -285,7 +285,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
         }
-        OpResult UpSupplierInfo(SupplierInfoModel model)
+        internal OpResult UpSupplierInfo(SupplierInfoModel model)
         {
             ///ERP
             ///判断产品品号是否存在
@@ -293,10 +293,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             {
                 if (model == null) return OpResult.SetResult("model is Null", false);
                 if (!irep.IsExist(m => m.SupplierId == model.SupplierId))
-                    return OpResult.SetResult("model is Null", false);
+                    return InitSupplierInfo(model);
                 var oldmodel = irep.FirstOfDefault(e => e.SupplierId == model.SupplierId);
                 model.PurchaseType = oldmodel.PurchaseType;
                 model.SupplierProperty = oldmodel.SupplierProperty;
+                model.OpSign = OpMode.Edit;
                 model.Id_Key = oldmodel.Id_Key;
                 SetFixFieldValue(model);
                 return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
