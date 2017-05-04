@@ -173,33 +173,4 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
     }
 
-    public interface IlistInspectionItemConfigDatas
-    {
-        List<InspectionModeConfigModel> Condition(MaterialModel Materialinfo);
-        void AddItemConfigDatas();
-        void MoveItemConfigDatas();
-    }
-
-
-    public abstract class ItemConfigDatas
-    {
-
-    }
-    public class ListInspectionItemConfigDatas : IlistInspectionItemConfigDatas
-    {
-        public void AddItemConfigDatas()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<InspectionModeConfigModel> Condition(MaterialModel Materialinfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MoveItemConfigDatas()
-        {
-            throw new NotImplementedException();
-        }
-    }
 }

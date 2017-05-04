@@ -163,7 +163,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             return "Select TC001,TC002,TC003,TC004,TC011,TC019  from PURTC";
         }
 
-
+       
         private void MapPurHeaderRowAndModel(DataRow dr, PurchaseHeaderModel m)
         {
             m.Code = dr["TC002"].ToString();
@@ -178,7 +178,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         /// </summary>
         /// <param name="startYearMonth">年份格式yyyy</param>
         /// <returns></returns>
-        public List<string> PurchaseSppuerId(string startYearMonth, string endYearMonth)
+        public List<string> PurchaseSppuerId(string  startYearMonth ,string endYearMonth)
         {
             try
             {
@@ -258,25 +258,23 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         {
             List<PurchaseHeaderModel> FindSupplierLatestTwoPurchase = new List<PurchaseHeaderModel>();
             string SqlFields = "Select TOP (1) TC001,TC002,TC003,TC004,TC011,TC019  from PURTC ";
-            string whereSql = string.Format("WHERE (TC004 = '{0}')  ORDER BY TC003 DESC ", suppplierId);
-            var lastestPruchase = ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(SqlFields, whereSql, (dr, m) =>
-            {
-                this.MapPurHeaderRowAndModel(dr, m);
-            }).FirstOrDefault();
+            string whereSql = string .Format ("WHERE (TC004 = '{0}')  ORDER BY TC003 DESC ",suppplierId );
+          var  lastestPruchase = ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(SqlFields, whereSql, (dr, m) => {
+              this.MapPurHeaderRowAndModel(dr, m);
+          }).FirstOrDefault();
             if (lastestPruchase == null) return FindSupplierLatestTwoPurchase;
-
-            FindSupplierLatestTwoPurchase.Add(lastestPruchase);
-            string notmonth = lastestPruchase.PurchaseDate.Substring(0, lastestPruchase.PurchaseDate.Length - 2);
-            string whereSql2 = string.Format("WHERE   (TC004 = '{0}')  AND (NOT (TC003 LIKE '{1}%'))  ORDER BY TC003 DESC ", suppplierId, notmonth);
-            var FirstPruchase = ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(SqlFields, whereSql2, (dr, m) =>
-            {
-                this.MapPurHeaderRowAndModel(dr, m);
-            }).FirstOrDefault();
-            if (FirstPruchase == null)
-            { FindSupplierLatestTwoPurchase.Add(lastestPruchase); }
-            else FindSupplierLatestTwoPurchase.Add(FirstPruchase);
-
-
+            
+                FindSupplierLatestTwoPurchase.Add(lastestPruchase);
+                string notmonth = lastestPruchase.PurchaseDate.Substring(0, lastestPruchase.PurchaseDate.Length - 2);
+                string whereSql2 = string.Format("WHERE   (TC004 = '{0}')  AND (NOT (TC003 LIKE '{1}%'))  ORDER BY TC003 DESC ", suppplierId, notmonth);
+                var FirstPruchase = ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(SqlFields, whereSql2, (dr, m) => {
+                    this.MapPurHeaderRowAndModel(dr, m);
+                }).FirstOrDefault();
+                if (FirstPruchase == null )
+                { FindSupplierLatestTwoPurchase.Add(lastestPruchase); }
+              else  FindSupplierLatestTwoPurchase.Add(FirstPruchase);
+          
+            
             return FindSupplierLatestTwoPurchase;
         }
         #endregion PurchaseHeader
@@ -353,7 +351,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             }
             return purBodys;
         }
-
+       
         #endregion PurchaseBody
     }
 
@@ -416,7 +414,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             var idm = ErpDbAccessHelper.DecomposeID(id);
             return FindStoHeaderBy(idm.Code, idm.Category);
         }
-
+        
         /// <summary>
         /// 根据采购部门获取进货单单头数据信息
         /// </summary>
@@ -448,17 +446,17 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         /// <param name="startDate">进货时间</param>
         /// <param name="endDate">进货时间</param>
         /// <returns></returns>
-        public List<string> GetStockSupplierId(string startDate, string endDate)
+        public List<string> GetStockSupplierId(string  startDate, string  endDate)
         {
             List<string> SupplierIdlist = new List<string>();
             string whereSql = string.Format(" WHERE  (TG001 = '341' OR TG001 = '343') AND (TG003 >= '{0}')AND ( TG003 <= '{1}')  order by TG005 ", startDate, endDate);
             var modelList = FindStoHeaderBy(whereSql);
-            if (modelList != null && modelList.Count > 0)
+            if(modelList!=null&& modelList.Count >0)
             {
                 modelList.ForEach(e =>
                 {
-                    if (!SupplierIdlist.Contains(e.Supplier.Trim()))
-                    { SupplierIdlist.Add(e.Supplier.Trim()); };
+                    if (!SupplierIdlist.Contains(e.Supplier))
+                    { SupplierIdlist.Add(e.Supplier); };
                 });
             }
             return SupplierIdlist;
@@ -489,7 +487,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             m.Memo = dr["TH033"].ToString();
             m.PurchaseID = ErpDbAccessHelper.ComposeID(dr["TH011"].ToString().Trim(), dr["TH012"].ToString().Trim());
             m.StockAmount = dr["TH019"].ToString().ToDouble();
-            m.StockCount = Convert.ToInt64(dr["TH007"].ToString().ToDouble());
+            m.StockCount =Convert .ToInt64 ( dr["TH007"].ToString().ToDouble());
             m.StockUnit = dr["TH018"].ToString().ToDouble();
         }
 
@@ -553,50 +551,31 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
 
         private string SqlFields
         {
-            get { return "SELECT MA001,MA002,MA003,MA004,MA008,MA010,MA011,MA012,MA013,MA014,MA025,MA051   FROM   PURMA "; }
+            get { return "SELECT MA001,MA002,MA003,MA008,MA010,MA011,MA012,MA013,MA014,MA025,MA051   FROM   PURMA "; }
         }
         /// <summary>
         /// 获得供应商信息
         /// </summary>
         /// <param name="SupplierId">供应商ID</param>
         /// <returns></returns>
-        public SupplierModel FindSpupplierInfoBy(string SupplierId)
+       public SupplierModel FindSpupplierInfoBy(string SupplierId)
         {
             string whereSql = string.Format("where MA001='{0}'", SupplierId);
-            var listModels = ErpDbAccessHelper.FindDataBy<SupplierModel>(SqlFields, whereSql, (dr, m) =>
-              {
-                  m.SupplierID = dr["MA001"].ToString().Trim();
-                  m.SupplierShortName = dr["MA002"].ToString().Trim();
-                  m.SupplierName = dr["MA003"].ToString().Trim();
-                  m.Tel = dr["MA008"].ToString().Trim();
-                  m.FaxNo = dr["MA010"].ToString().Trim();
-                  m.Email = dr["MA011"].ToString().Trim();
-                  m.Principal = dr["MA012"].ToString().Trim();
-                  m.Contact = dr["MA013"].ToString().Trim();
-                  m.Address = dr["MA014"].ToString().Trim();
-                  m.PayCondition = dr["MA025"].ToString().Trim();
-                  m.BillAddress = dr["MA051"].ToString().Trim();
-                  m.IsValidity = JudgeIsVaildet(dr["MA004"].ToString().Trim());
-              });
-            return listModels.FirstOrDefault();
-        }
-
-
-        private bool JudgeIsVaildet(string validityStr)
-        {
-            switch (validityStr.Trim())
+            var listModels= ErpDbAccessHelper.FindDataBy<SupplierModel>(SqlFields, whereSql,(dr, m) => 
             {
-                case "01Y":
-                    return true;
-                case "01":
-                    return true;
-                case "02Y":
-                    return false;
-                case "02":
-                    return false;
-                default:
-                    return false;
-            }
+                m.SupplierID = dr["MA001"].ToString().Trim();
+                m.SupplierShortName = dr["MA002"].ToString().Trim();
+                m.SupplierName = dr["MA003"].ToString().Trim();
+                m.Tel = dr["MA008"].ToString().Trim();
+                m.FaxNo = dr["MA010"].ToString().Trim();
+                m.Email = dr["MA011"].ToString().Trim();
+                m.Principal = dr["MA012"].ToString().Trim();
+                m.Contact = dr["MA013"].ToString().Trim();
+                m.Address = dr["MA014"].ToString().Trim();
+                m.PayCondition = dr["MA025"].ToString().Trim();
+                m.BillAddress = dr["MA051"].ToString().Trim();
+            });
+          return listModels.FirstOrDefault();
         }
     }
 }

@@ -7,7 +7,10 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 {
-    public class RmaReport
+    /// <summary>
+    /// 
+    /// </summary>
+    public class RmaReportManager
     {
         //生成RmaId编号
         public string CreateRmaID()
@@ -15,7 +18,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             return RmaCurdFactory.RmaReportInitiate.CreateNewRmaID();
         }
         /// <summary>
-        /// 存
+        /// 
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -32,19 +35,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         {
             return RmaCurdFactory.RmaReportInitiate.GetInitiateData(rmaId);
         }
-
-
-    }
-
-
-    public class BusinessHandleReport
-    {
-
-    }
-
-    public class InspectionHandleReport
-    {
-
     }
     /// <summary>
     /// 操作界面数据 只是做为一个选项
@@ -83,8 +73,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 
         public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatas()
         {
-            if (string.IsNullOrEmpty(RmaId)) return new List<RmaBussesDescriptionModel>();
-            return RmaService.RmaManger.GetBussesDescriptiondatas(RmaId);
+            return new List<RmaBussesDescriptionModel>();
+            //if (string.IsNullOrEmpty(RmaId)) return new List<RmaBussesDescriptionModel>();
+            //return RmaService.RmaManger.GetBussesDescriptiondatas(RmaId);
         }
         /// <summary>
         /// 
