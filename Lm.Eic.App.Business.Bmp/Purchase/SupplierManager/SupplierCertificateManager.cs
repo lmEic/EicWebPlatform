@@ -67,8 +67,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 if (SupplierInfo == null)
                 {
                     SupplierInfo = GetErpSuppplierInfoBy(supplierId);
-                    //添加至供应商信息表中
-                    SupplierCrudFactory.SuppliersInfoCrud.InitSupplierInfo(SupplierInfo);
+                    if (SupplierInfo != null && SupplierInfo.Remark == "True")
+                        //添加至供应商信息表中
+                        SupplierCrudFactory.SuppliersInfoCrud.UpSupplierInfo(SupplierInfo);
                 }
                 return SupplierInfo;
             }
@@ -283,7 +284,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 SupplierShortName = erpSupplierInfo.SupplierShortName,
                 SupplierUser = erpSupplierInfo.Contact,
                 SupplierTel = erpSupplierInfo.Tel,
-                PayCondition = erpSupplierInfo.PayCondition
+                PayCondition = erpSupplierInfo.PayCondition,
+                Remark = erpSupplierInfo.IsCooperate
+
             };
         }
 

@@ -285,6 +285,28 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
         }
+
+        internal OpResult UpSupplierInfo(SupplierInfoModel model)
+        {
+            try
+            {
+                if (irep.IsExist(e => e.SupplierId == model.SupplierId))
+                {
+                    var oldModel = irep.Entities.FirstOrDefault(e => e.SupplierId == model.SupplierId);
+                    model.SupplierProperty = oldModel.SupplierProperty;
+                    model.PurchaseType = oldModel.PurchaseType;
+                    model.Id_Key = oldModel.Id_Key;
+                    return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+                }
+                SetFixFieldValue(model);
+                model.SupplierId = model.SupplierId.Trim();
+                model.OpSign = "init";
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+
+        }
+
         internal OpResult InitSupplierInfo(SupplierInfoModel model)
         {
             try
@@ -370,9 +392,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public SupplierSeasonAuditModel GetSupplierSeasonAuditInfo(string parameterKey)
         {
-            var modelList = this.irep.Entities.Where(e => e.ParameterKey == parameterKey).ToList();
-            if (modelList == null || modelList.Count == 0) return null;
-            return modelList[0];
+            return this.irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
         }
 
         OpResult AddSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
