@@ -38,6 +38,13 @@ namespace EicWorkPlatfrom.Controllers.Quality
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        [NoAuthenCheck]
+        public JsonResult GetRmaReportMaster(string rmaId)
+        {
+            var datas = 0;
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         /// <summary>
         ///
         /// </summary>

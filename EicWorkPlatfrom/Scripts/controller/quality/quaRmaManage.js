@@ -8,12 +8,20 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
     var rma = {};
     var quaRmaManageUrl = "/quaRmaManage/";
 
-    /////////// 生成创建的Rma表RmaId
+    //生成创建的Rma表RmaId
     rma.createRmaId = function () {
         var url = quaRmaManageUrl + "CreateRmaId";
         return ajaxService.getData(url, {
         });
     };
+    ///获取RMA表单单头
+    rma.getRmaReportMaster = function (rmaId) {
+        var url = quaRmaManageUrl + 'GetRmaReportMaster';
+        return ajaxService.getData(url, {
+            rmaId: rmaId,
+        });
+    };
+
 
     ////// 存储初始创建的Rma表
     rma.storeRmaBuildRmaIdData = function (initiateData) {
@@ -42,25 +50,26 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
         ProductName: null,
         CustomerShortName: null,
         RmaIdStatus: "未结案",
-        RmaMonth: 04,
-        RmaYear: 17,
         OpPerson: null,
         OpSign: null,
+        Id_Key: 0
     };
     $scope.vm = uiVm;
     var initVM = _.clone(uiVm);
     var vmManager = {
-        activeTab: 'initTab',
         //自动生成RMA编号
         autoCreateRmaId: function () {
-            rmaDataOpService.createRmaId().then(function (data) {
+            $scope.doPromise = rmaDataOpService.createRmaId().then(function (data) {
                 uiVm.RmaId = data;
             });
         },
         //获取表单数据
-        getRmaFormDatas: function () { },
-        datasets: [],
-        dataSource: [],
+        getRmaFormDatas: function () {
+            $scope.searchPromise = rmaDataOpService.getRmaReportMaster(uiVm.RmaId).then(function (data) {
+                vmManager.dataSets = data;
+            });
+        },
+        dataSets: [],
         init: function () {
             if (uiVm.OpSign === 'add') {
                 leeHelper.clearVM(uiVm);
@@ -77,19 +86,19 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
     var operate = Object.create(leeDataHandler.operateStatus);
 
     $scope.operate = operate;
+    operate.edit = function (item) {
+        $scope.vm = uiVm = item;
+    };
     operate.saveAll = function (isValid) {
         leeHelper.setUserData(uiVm);
-        var dataItem = _.clone(uiVm);
         uiVm.OpSign = 'add';
-        vmManager.dataSource = $scope.vm;
         rmaDataOpService.storeRmaBuildRmaIdData(uiVm).then(function (opresult) {
             if (opresult.Result) {
-                var mdl = _.clone(uiVm);
-                mdl.Id_Key = opresult.Id_Key;
-                if (mdl.OpSign === 'add') {
-                    vmManager.datasets.push(mdl);
+                var dataItem = _.clone(uiVm);
+                dataItem.Id_Key = opresult.Id_Key;
+                if (dataItem.OpSign === 'add') {
+                    vmManager.dataSets.push(dataItem);
                 }
-                vmManager.dataSource = [];
                 vmManager.init();
             }
         })
@@ -114,7 +123,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope) {
     var vmManager = {
         //获取表单数据
         getRmaFormDatas: function () { },
-        datasets: [],
+        dataSets: [],
     };
     $scope.vmManager = vmManager;
 
@@ -123,7 +132,6 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope) {
     operate.saveAll = function (isValid) { };
     operate.refresh = function () { };
 })
-
 ////检验处置
 qualityModule.controller('rmaInspectionHandleCtrl', function ($scope) {
     leeHelper.setWebSiteTitle("质量管理", "RMA检验处置");
