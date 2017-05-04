@@ -402,7 +402,6 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     //确认
     operate.confirm = function (isValid) {
         leeHelper.setUserData(uiVM);
-
         var dataItem = _.clone(uiVM);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             if (uiVM.OpSign === "add") {
@@ -436,7 +435,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     };
     //删除项
     operate.deleteItem = function (item) {
-        if (item.OpSign == "copy") {
+        if (item.OpSign === "copy") {
             vmManager.delItem = item;
             var ds = _.clone(vmManager.dataSource);
             leeHelper.remove(ds, vmManager.delItem);
