@@ -10,7 +10,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
     /// <summary>
     /// 
     /// </summary>
-    public class RmaReportManager
+    public class RmaReport
     {
         //生成RmaId编号
         public string CreateRmaID()
@@ -36,6 +36,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             return RmaCurdFactory.RmaReportInitiate.GetInitiateData(rmaId);
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
+
+    public class BussesDescription
+    {
+
+    }
+    public class InspecitonManage
+    {
+
+    }
+
     /// <summary>
     /// 操作界面数据 只是做为一个选项
     /// </summary>
