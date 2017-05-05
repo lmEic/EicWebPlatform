@@ -41,11 +41,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         #region Porperty
         public string RmaId { set; get; }
         /// <summary>
-        /// 单头信息
+        /// Rma初始信息
         /// </summary>
         public RmaReportInitiateModel RmaReportInitiate { set; get; }
         /// <summary>
-        /// 单身信息
+        /// 业务操作信息
         /// </summary>
         public List<RmaBussesDescriptionModel> RmaBussesDescriptionDs { set; get; }
         /// <summary>
@@ -53,8 +53,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         /// </summary>
         public List<RmaInspectionManageModel> RmaInspectionManageData { set; get; }
         #endregion
-
-
 
         #region method
 
