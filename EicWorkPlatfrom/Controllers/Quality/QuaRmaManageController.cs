@@ -28,7 +28,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public JsonResult CreateRmaId()
         {
-            var data = RmaService.RmaManager.RmaReport.CreateRmaID();
+            var data = RmaService.RmaManager.RmaId;
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]

@@ -39,7 +39,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 
 
         #region Porperty
-        public string RmaId { set; get; }
+        string _ramId;
+        public string RmaId
+        {
+            set { _ramId = value; }
+            get
+            {
+                if (_ramId == null || _ramId == string.Empty)
+                    return RmaReport.CreateRmaID();
+                return _ramId;
+            }
+        }
         /// <summary>
         /// Rma初始信息
         /// </summary>
@@ -55,6 +65,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         #endregion
 
         #region method
+
+
 
         /// <summary>
         /// 
