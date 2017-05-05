@@ -6,23 +6,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
     /// <summary>
     /// 
     /// </summary>
-    public interface IRmaReportInitiateRepository : IRepository<RmaReportInitiateModel>
+    public interface IRmaReportInitiateRepository : IRepository<ReportInitiateModel>
     {
 
     }
-    public class RmaReportInitiateRepository : BpmRepositoryBase<RmaReportInitiateModel>, IRmaReportInitiateRepository
-    {
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IRmaBussesDescriptionRepository : IRepository<RmaBussesDescriptionModel>
-    {
-
-    }
-    public class RmaBussesDescriptionRepository : BpmRepositoryBase<RmaBussesDescriptionModel>, IRmaBussesDescriptionRepository
+    public class RmaReportInitiateRepository : BpmRepositoryBase<ReportInitiateModel>, IRmaReportInitiateRepository
     {
     }
 
@@ -30,11 +18,23 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
     /// <summary>
     /// 
     /// </summary>
-    public interface IRmaInspectionManageRepository : IRepository<RmaInspectionManageModel>
+    public interface IRmaBussesDescriptionRepository : IRepository<BussesDescriptionModel>
     {
 
     }
-    public class RmaInspectionManageRepository : BpmRepositoryBase<RmaInspectionManageModel>, IRmaInspectionManageRepository
+    public class RmaBussesDescriptionRepository : BpmRepositoryBase<BussesDescriptionModel>, IRmaBussesDescriptionRepository
+    {
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IRmaInspectionManageRepository : IRepository<InspectionManageModel>
+    {
+
+    }
+    public class RmaInspectionManageRepository : BpmRepositoryBase<InspectionManageModel>, IRmaInspectionManageRepository
     {
 
     }

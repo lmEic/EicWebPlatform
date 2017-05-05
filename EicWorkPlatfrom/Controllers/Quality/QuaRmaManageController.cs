@@ -32,7 +32,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
-        public JsonResult StoreinitiateDataData(RmaReportInitiateModel initiateData)
+        public JsonResult StoreinitiateDataData(ReportInitiateModel initiateData)
         {
             var result = RmaService.RmaManager.RmaReport.StoreRamReortInitiate(initiateData);
 
