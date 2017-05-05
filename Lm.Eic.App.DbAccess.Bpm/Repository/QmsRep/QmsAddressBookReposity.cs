@@ -12,15 +12,5 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
     {
     }
 
-    /// <summary>
-    /// 通讯录
-    /// </summary>
-    public interface IAddressBookRepository : IRepository<AddressBookModel>
-    {
 
-    }
-    public class AddressBookRepository : BpmRepositoryBase<AddressBookModel>, IAddressBookRepository
-    {
-
-    }
 }
