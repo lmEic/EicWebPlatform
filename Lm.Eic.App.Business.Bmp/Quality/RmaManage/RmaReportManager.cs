@@ -5,20 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
+namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
     /// <summary>
-    /// Ram初始数据建立管理模块
+    /// Ram初始数据处理器
     /// </summary>
-    public class RmaReport
+    public class RmaReportInitiateProcessor
     {
         //生成RmaId编号
-        public string CreateRmaID()
+        public string BuildingRmaID()
         {
-            return RmaCurdFactory.RmaReportInitiate.CreateNewRmaID();
+            return RmaCurdFactory.RmaReportInitiate.BuildingNewRmaID();
         }
         /// <summary>
-        /// 
+        /// 存储初始Rma表单
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -47,7 +47,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             return RmaCurdFactory.RmaReportInitiate.Store(model);
         }
         /// <summary>
-        /// 
+        /// 得到初始Rma表单
         /// </summary>
         /// <param name="rmaId"></param>
         /// <returns></returns>
@@ -57,16 +57,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         }
     }
     /// <summary>
-    /// 业务处理管理模块
+    /// Rma单业务部门操作处理器
     /// </summary>
-    public class BussesDescription
+    public class RmaBussesDescriptionProcessor
     {
 
     }
     /// <summary>
-    /// 品保处理管理模块
+    /// Rma单 品保部操作处理器
     /// </summary>
-    public class InspecitonManage
+    public class RmaInspecitonManageProcessor
     {
 
     }

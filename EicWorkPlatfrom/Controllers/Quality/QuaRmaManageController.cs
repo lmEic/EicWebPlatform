@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Lm.Eic.App.Business.Bmp.Quality.RmaMange;
+using Lm.Eic.App.Business.Bmp.Quality.RmaManage;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 namespace EicWorkPlatfrom.Controllers.Quality
@@ -28,13 +28,13 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public JsonResult CreateRmaId()
         {
-            var data = RmaService.RmaManager.RmaId;
+            var data = RmaService.RmaManager.AutoBuildingRmdId();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
         public JsonResult StoreinitiateDataData(RmaReportInitiateModel initiateData)
         {
-            var result = RmaService.RmaManager.RmaReport.StoreRamReortInitiate(initiateData);
+            var result = RmaService.RmaManager.StoreRamReortInitiate(initiateData);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 
-namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
+namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
     public class RamMockDatas
     {

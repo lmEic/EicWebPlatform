@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
 using System;
-using Lm.Eic.App.Business.Bmp.Quality.RmaMange;
+using Lm.Eic.App.Business.Bmp.Quality.RmaManage;
 using Lm.Eic.App.Erp.DbAccess.CopManageDb;
 
 namespace Lm.Eic.App.Business.BmpTests.Quantity
