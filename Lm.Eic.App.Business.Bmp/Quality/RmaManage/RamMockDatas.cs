@@ -5,7 +5,7 @@ using System.Text;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 
-namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
+namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
     public class RmaMockDatas
     {

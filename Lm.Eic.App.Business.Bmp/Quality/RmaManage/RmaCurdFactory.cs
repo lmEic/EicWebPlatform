@@ -9,7 +9,7 @@ using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
+namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
     internal class RmaCurdFactory
     {
@@ -54,7 +54,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         #endregion
 
         #region  Find
-        internal string CreateNewRmaID()
+        /// <summary>
+        /// 以R开头 当前 00年份 00月份  后面三位流水号
+        /// </summary>
+        /// <returns></returns>
+        internal string BuildingNewRmaID()
         {
             ///以R开头 年份 月份  再加序序号000
             string nowYaer = DateTime.Now.ToString("yy");

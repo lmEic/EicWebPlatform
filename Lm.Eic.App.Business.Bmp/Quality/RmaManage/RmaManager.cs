@@ -6,50 +6,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
+namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
     public class RmaManager
     {
-        #region  ModelManagerPorperty
+        #region  Private Porperty  Processor   处理器
         /// <summary>
-        /// 创建Ram表单管理
+        /// 创建Ram表单处理器
         /// </summary>
-        public RmaReport RmaReport
+        private RmaReportInitiateProcessor RmaReportProcessor
         {
-            get { return OBulider.BuildInstance<RmaReport>(); }
+            get { return OBulider.BuildInstance<RmaReportInitiateProcessor>(); }
         }
         /// <summary>
-        /// 业务处理表单
+        /// 业务部门填充 物料信息 处理器
         /// </summary>
-        public BussesDescription BussesManage
+        private RmaBussesDescriptionProcessor BussesManageProcessor
         {
-            get { return OBulider.BuildInstance<BussesDescription>(); }
+            get { return OBulider.BuildInstance<RmaBussesDescriptionProcessor>(); }
         }
 
         /// <summary>
-        /// 品保结案处理
+        /// 品保部 结案 处理器
         /// </summary>
-        public InspecitonManage InspecitonManage
+        private RmaInspecitonManageProcessor InspecitonManageProcessor
         {
-            get { return OBulider.BuildInstance<InspecitonManage>(); }
+            get { return OBulider.BuildInstance<RmaInspecitonManageProcessor>(); }
         }
 
 
         #endregion
 
 
+
+
         #region Porperty
-        string _ramId;
+        /// <summary>
+        /// 处理表单
+        /// </summary>
         public string RmaId
-        {
-            private set { _ramId = value; }
-            get
-            {
-                if (_ramId == null || _ramId == string.Empty)
-                    return RmaReport.CreateRmaID();
-                return _ramId;
-            }
-        }
+        { set; get; }
         /// <summary>
         /// Rma初始信息
         /// </summary>
@@ -57,14 +53,27 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         /// <summary>
         /// 业务操作信息
         /// </summary>
-        public List<RmaBussesDescriptionModel> RmaBussesDescriptionDs { set; get; }
+        public List<RmaBussesDescriptionModel> RmaBussesDescriptionDatas { set; get; }
         /// <summary>
         /// 检验表单处理信息
         /// </summary>
-        public List<RmaInspectionManageModel> RmaInspectionManageData { set; get; }
+        public List<RmaInspectionManageModel> RmaInspectionManageDatas { set; get; }
         #endregion
 
+
+
         #region method
+        /// <summary>
+        ///自动生成Rma表单单号
+        /// </summary>
+        /// <returns></returns>
+
+        public string AutoBuildingRmdId()
+        {
+
+            return RmaReportProcessor.BuildingRmaID();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -74,19 +83,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             return null;
         }
 
+
         public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatas()
         {
             return null;
         }
         /// <summary>
-        /// 
+        /// 存储初始化数据
         /// </summary>
         /// <returns></returns>
-        public OpResult StoreRamReortInitiate()
+        public OpResult StoreRamReortInitiate(RmaReportInitiateModel model)
         {
-            return null;
+            return RmaReportProcessor.StoreRamReortInitiate(model);
         }
 
         #endregion
     }
+
+
 }
