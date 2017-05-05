@@ -285,6 +285,30 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
         }
+
+        internal OpResult UpSupplierInfo(SupplierInfoModel model)
+        {
+            try
+            {
+                if (irep.IsExist(e => e.SupplierId == model.SupplierId))
+                {
+                    return irep.Update(u => u.SupplierId == model.SupplierId,
+                       f => new SupplierInfoModel
+                       {
+                           SupplierProperty = model.SupplierProperty,
+                           PurchaseType = model.PurchaseType,
+                           OpSign = model.OpSign
+                       }).ToOpResult_Eidt("修改供应商类别成功！");
+                }
+                SetFixFieldValue(model);
+                model.SupplierId = model.SupplierId.Trim();
+                model.OpSign = "init";
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+
+        }
+
         internal OpResult InitSupplierInfo(SupplierInfoModel model)
         {
             try
@@ -359,9 +383,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <param name="seasonDateNum">季度</param>
         /// <param name="limitScore">限制的分数线</param>
         /// <returns></returns>
-        public List<SupplierSeasonAuditModel> GetlimitScoreSupplierAuditInfo(string seasonDateNum, double limitScore)
+        public List<SupplierSeasonAuditModel> GetlimitScoreSupplierAuditInfo(string seasonDateNum, double limitTotalCheckScore, double limitQualityCheck)
         {
-            return this.irep.Entities.Where(e => e.TotalCheckScore < limitScore && e.SeasonDateNum == seasonDateNum).ToList();
+            return this.irep.Entities.Where(e => (e.TotalCheckScore < limitTotalCheckScore || e.QualityCheck < limitQualityCheck) && e.SeasonDateNum == seasonDateNum).ToList();
         }
         /// <summary>
         ///
@@ -370,9 +394,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public SupplierSeasonAuditModel GetSupplierSeasonAuditInfo(string parameterKey)
         {
-            var modelList = this.irep.Entities.Where(e => e.ParameterKey == parameterKey).ToList();
-            if (modelList == null || modelList.Count == 0) return null;
-            return modelList[0];
+            return this.irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
         }
 
         OpResult AddSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)

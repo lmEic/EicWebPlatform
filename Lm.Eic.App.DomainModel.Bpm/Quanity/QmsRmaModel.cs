@@ -5,15 +5,18 @@ using System.Text;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 {
-    /// <summary>
-    /// 
+    // <summary>
+    ///初始Rma单模型
     /// </summary>
-    public class RmaReportInitiateModel
+    [Serializable]
+    public partial class ReportInitiateModel
     {
+        public ReportInitiateModel()
+        { }
         #region Model
         private string _rmaid;
         /// <summary>
-        ///单号
+        ///RMA单号
         /// </summary>
         public string RmaId
         {
@@ -40,7 +43,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _rmaidstatus;
         /// <summary>
-        ///单号状态
+        ///单据状态
         /// </summary>
         public string RmaIdStatus
         {
@@ -94,7 +97,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _opsign;
         /// <summary>
-        ///操作标识
+        ///操作标志
         /// </summary>
         public string OpSign
         {
@@ -111,17 +114,19 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             get { return _id_key; }
         }
         #endregion Model
-
     }
     /// <summary>
-    /// 
+    ///业务Rma处理模型
     /// </summary>
-    public class RmaBussesDescriptionModel
+    [Serializable]
+    public partial class BussesDescriptionModel
     {
+        public BussesDescriptionModel()
+        { }
         #region Model
         private string _rmaid;
         /// <summary>
-        ///单号
+        ///RMA单号
         /// </summary>
         public string RmaId
         {
@@ -130,7 +135,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private int _rmaidnumber;
         /// <summary>
-        ///单号的序号
+        ///序号
         /// </summary>
         public int RmaIdNumber
         {
@@ -139,7 +144,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _returnhandleorder;
         /// <summary>
-        ///退销单
+        ///销货单号
         /// </summary>
         public string ReturnHandleOrder
         {
@@ -148,7 +153,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _prodcutid;
         /// <summary>
-        ///料号
+        ///品号
         /// </summary>
         public string ProdcutId
         {
@@ -157,7 +162,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _productname;
         /// <summary>
-        ///产品名称
+        ///品名
         /// </summary>
         public string ProductName
         {
@@ -166,7 +171,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _productspec;
         /// <summary>
-        ///产品规格
+        ///规格
         /// </summary>
         public string ProductSpec
         {
@@ -182,6 +187,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _productcount = value; }
             get { return _productcount; }
         }
+        private string _customerid;
+        /// <summary>
+        ///客户编号
+        /// </summary>
+        public string CustomerId
+        {
+            set { _customerid = value; }
+            get { return _customerid; }
+        }
+        private string _customername;
+        /// <summary>
+        ///客户名称
+        /// </summary>
+        public string CustomerName
+        {
+            set { _customername = value; }
+            get { return _customername; }
+        }
         private string _salesorder;
         /// <summary>
         ///订单号
@@ -191,50 +214,41 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _salesorder = value; }
             get { return _salesorder; }
         }
-        private string _productsshipdate;
+        private DateTime _productsshipdate;
         /// <summary>
         ///原出货日期
         /// </summary>
-        public string ProductsShipDate
+        public DateTime ProductsShipDate
         {
             set { _productsshipdate = value; }
             get { return _productsshipdate; }
         }
-        private string _badreason;
+        private string _baddescrption;
         /// <summary>
-        ///不良原因
+        ///不良现象
         /// </summary>
-        public string BadReason
+        public string BadDescrption
         {
-            set { _badreason = value; }
-            get { return _badreason; }
+            set { _baddescrption = value; }
+            get { return _baddescrption; }
         }
-        private string _customerhandleidea;
+        private string _customerhandlesuggestion;
         /// <summary>
-        ///客户处理意见
+        ///处理意见
         /// </summary>
-        public string CustomerHandleIdea
+        public string CustomerHandleSuggestion
         {
-            set { _customerhandleidea = value; }
-            get { return _customerhandleidea; }
+            set { _customerhandlesuggestion = value; }
+            get { return _customerhandlesuggestion; }
         }
         private string _feepaymentway;
         /// <summary>
-        ///付费方工式
+        ///付费方式
         /// </summary>
         public string FeePaymentWay
         {
             set { _feepaymentway = value; }
             get { return _feepaymentway; }
-        }
-        private string _rmaidstatus;
-        /// <summary>
-        ///单号状态
-        /// </summary>
-        public string RmaIdStatus
-        {
-            set { _rmaidstatus = value; }
-            get { return _rmaidstatus; }
         }
         private string _handlestatus;
         /// <summary>
@@ -274,7 +288,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _opsign;
         /// <summary>
-        ///操作标识
+        ///操作标志
         /// </summary>
         public string OpSign
         {
@@ -291,17 +305,19 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             get { return _id_key; }
         }
         #endregion Model
-
     }
     /// <summary>
-    /// 
+    ///品保Rma处理模型
     /// </summary>
-    public class RmaInspectionManageModel
+    [Serializable]
+    public partial class InspectionManageModel
     {
+        public InspectionManageModel()
+        { }
         #region Model
         private string _rmaid;
         /// <summary>
-        ///单号
+        ///RMA单号
         /// </summary>
         public string RmaId
         {
@@ -310,7 +326,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private int _rmaidnumber;
         /// <summary>
-        ///单号的序号
+        ///序号
         /// </summary>
         public int RmaIdNumber
         {
@@ -326,6 +342,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _badphenomenon = value; }
             get { return _badphenomenon; }
         }
+        private string _baddescription;
+        /// <summary>
+        ///不良描述
+        /// </summary>
+        public string BadDescription
+        {
+            set { _baddescription = value; }
+            get { return _baddescription; }
+        }
         private string _badreadson;
         /// <summary>
         ///不良原因
@@ -335,23 +360,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _badreadson = value; }
             get { return _badreadson; }
         }
-        private string _handlemode;
+        private string _handleway;
         /// <summary>
         ///处理方式
         /// </summary>
-        public string HandleMode
+        public string HandleWay
         {
-            set { _handlemode = value; }
-            get { return _handlemode; }
+            set { _handleway = value; }
+            get { return _handleway; }
         }
-        private string _pesponsibleperson;
+        private string _responsibleperson;
         /// <summary>
-        ///负责人
+        ///责任人
         /// </summary>
-        public string PesponsiblePerson
+        public string ResponsiblePerson
         {
-            set { _pesponsibleperson = value; }
-            get { return _pesponsibleperson; }
+            set { _responsibleperson = value; }
+            get { return _responsibleperson; }
         }
         private string _finishdate;
         /// <summary>
@@ -364,7 +389,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _paytime;
         /// <summary>
-        ///花费时间
+        ///话费工时
         /// </summary>
         public string PayTime
         {
@@ -389,18 +414,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _handlestatus = value; }
             get { return _handlestatus; }
         }
-        private string _rmaidstatus;
-        /// <summary>
-        ///单号状态
-        /// </summary>
-        public string RmaIdStatus
-        {
-            set { _rmaidstatus = value; }
-            get { return _rmaidstatus; }
-        }
         private string _opperson;
         /// <summary>
-        ///操作人员
+        ///操作人
         /// </summary>
         public string OpPerson
         {
@@ -427,7 +443,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _opsign;
         /// <summary>
-        ///操作标识
+        ///操作标志
         /// </summary>
         public string OpSign
         {
@@ -445,4 +461,5 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+
 }

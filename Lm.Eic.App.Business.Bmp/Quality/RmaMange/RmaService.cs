@@ -7,17 +7,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 {
     public static class RmaService
     {
-        /// <summary>
-        /// 添加创建Ram表单管理
-        /// </summary>
-        public static RmaReportManager RmaReport
-        {
-            get { return OBulider.BuildInstance<RmaReportManager>(); }
-        }
+        
         /// <summary>
         /// 检验Ram表单处理管理
         /// </summary>
-        public static RmaManager RmaManger
+        public static RmaManager RmaManager
         {
             get { return OBulider.BuildInstance<RmaManager>(); }
         }

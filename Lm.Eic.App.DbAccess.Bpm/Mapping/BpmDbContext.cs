@@ -103,9 +103,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         #region  RMA
 
-        public DbSet<RmaBussesDescriptionModel> RmaBussesDescription { set; get; }
-        public DbSet<RmaInspectionManageModel> RmaInspectionManage { set; get; }
-        public DbSet<RmaReportInitiateModel> RmaReportInitiate { set; get; }
+        public DbSet<BussesDescriptionModel> RmaBussesDescription { set; get; }
+        public DbSet<InspectionManageModel> RmaInspectionManage { set; get; }
+        public DbSet<ReportInitiateModel> RmaReportInitiate { set; get; }
         #endregion
 
         #endregion

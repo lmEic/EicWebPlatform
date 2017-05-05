@@ -10,7 +10,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
 {
 
 
-    public class RmaReportInitiateMapping : EntityTypeConfiguration<RmaReportInitiateModel>
+    public class RmaReportInitiateMapping : EntityTypeConfiguration<ReportInitiateModel>
     {
         public RmaReportInitiateMapping()
         {
@@ -19,7 +19,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
             this.ToTable("Qms_RmaReportInitiate");
         }
     }
-    public class RmaBussesDescriptionMapping : EntityTypeConfiguration<RmaBussesDescriptionModel>
+    public class RmaBussesDescriptionMapping : EntityTypeConfiguration<BussesDescriptionModel>
     {
         public RmaBussesDescriptionMapping()
         {
@@ -28,7 +28,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
             this.ToTable("Qms_RmaBussesDescription");
         }
     }
-    public class RmaInspectionManageMapping : EntityTypeConfiguration<RmaInspectionManageModel>
+    public class RmaInspectionManageMapping : EntityTypeConfiguration<InspectionManageModel>
     {
         public RmaInspectionManageMapping()
         {

@@ -56,7 +56,6 @@
     <Compile Include="Quanity\InspectionoModel.cs" />
     <Compile Include="Quanity555\QuantitySampleRecordModel.cs" />
     <Compile Include="Hrm\GeneralAffairs\WorkClothesManageModel.cs" />
-    <Compile Include="Quanity\QmsAddressBookModel.cs" />
     <Compile Include="Quanity\QmsRmaModel.cs" />
   </ItemGroup>
   <ItemGroup>
