@@ -32,7 +32,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 
     }
 
-    internal class RmaReportInitiateCrud : CrudBase<ReportInitiateModel, IRmaReportInitiateRepository>
+    internal class RmaReportInitiateCrud : CrudBase<RmaReportInitiateModel, IRmaReportInitiateRepository>
     {
         public RmaReportInitiateCrud() : base(new RmaReportInitiateRepository(), "创建表单")
         { }
@@ -43,11 +43,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             this.AddOpItem(OpMode.UpDate, Update);
         }
 
-        OpResult AddModel(ReportInitiateModel model)
+        OpResult AddModel(RmaReportInitiateModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-        OpResult Update(ReportInitiateModel model)
+        OpResult Update(RmaReportInitiateModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -65,7 +65,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         }
 
 
-        internal ReportInitiateModel GetInitiateData(string rmaId)
+        internal RmaReportInitiateModel GetInitiateData(string rmaId)
         {
             return irep.Entities.FirstOrDefault(e => e.RmaId == rmaId);
         }
@@ -82,7 +82,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 
 
 
-    internal class RmaBussesDescriptionCrud : CrudBase<BussesDescriptionModel, IRmaBussesDescriptionRepository>
+    internal class RmaBussesDescriptionCrud : CrudBase<RmaBussesDescriptionModel, IRmaBussesDescriptionRepository>
     {
         public RmaBussesDescriptionCrud() : base(new RmaBussesDescriptionRepository(), "记录登记表单")
         {
@@ -95,21 +95,21 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             this.AddOpItem(OpMode.Delete, DeleteModel);
         }
 
-        OpResult AddModel(BussesDescriptionModel model)
+        OpResult AddModel(RmaBussesDescriptionModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
-        OpResult DeleteModel(BussesDescriptionModel model)
+        OpResult DeleteModel(RmaBussesDescriptionModel model)
         {
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        OpResult Update(BussesDescriptionModel model)
+        OpResult Update(RmaBussesDescriptionModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
-        public List<BussesDescriptionModel> GetRmaBussesDescriptionDatas(string rmaId)
+        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatas(string rmaId)
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
@@ -120,7 +120,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
     }
 
 
-    internal class RmaInspectionManageCrud : CrudBase<InspectionManageModel, IRmaInspectionManageRepository>
+    internal class RmaInspectionManageCrud : CrudBase<RmaInspectionManageModel, IRmaInspectionManageRepository>
     {
         public RmaInspectionManageCrud() : base(new RmaInspectionManageRepository(), "Ram检验处理")
         {
@@ -133,17 +133,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             this.AddOpItem(OpMode.Delete, DeleteModel);
         }
 
-        OpResult AddModel(InspectionManageModel model)
+        OpResult AddModel(RmaInspectionManageModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
-        OpResult DeleteModel(InspectionManageModel model)
+        OpResult DeleteModel(RmaInspectionManageModel model)
         {
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        OpResult Update(InspectionManageModel model)
+        OpResult Update(RmaInspectionManageModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }

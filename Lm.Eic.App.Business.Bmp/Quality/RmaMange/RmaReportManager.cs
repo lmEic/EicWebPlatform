@@ -22,7 +22,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult StoreRamReortInitiate(ReportInitiateModel model)
+        public OpResult StoreRamReortInitiate(RmaReportInitiateModel model)
         {
             if (model == null) return null;
             if (RmaCurdFactory.RmaReportInitiate.IsExist(model.RmaId))
@@ -51,7 +51,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         /// </summary>
         /// <param name="rmaId"></param>
         /// <returns></returns>
-        public ReportInitiateModel GetRemPeortInitiateData(string rmaId)
+        public RmaReportInitiateModel GetRemPeortInitiateData(string rmaId)
         {
             return RmaCurdFactory.RmaReportInitiate.GetInitiateData(rmaId);
         }
@@ -68,82 +68,5 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
     {
 
     }
-
-    /// <summary>
-    /// 操作界面数据 只是做为一个选项
-    /// </summary>
-    public class RmaBussesDescriPtion
-    {
-
-        #region Porperty
-        public string RmaId { set; get; }
-        /// <summary>
-        /// 单头信息
-        /// </summary>
-        public ReportInitiateModel RmaReportInitiate { set; get; }
-        /// <summary>
-        /// 单身信息
-        /// </summary>
-        public List<BussesDescriptionModel> RmaBussesDescriptionDs { set; get; }
-        /// <summary>
-        /// 检验表单处理信息
-        /// </summary>
-        public List<InspectionManageModel> RmaInspectionManageData { set; get; }
-        #endregion
-
-        #region method
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public ReportInitiateModel GetRemPeortInitiateData()
-        {
-
-            if (string.IsNullOrEmpty(RmaId)) return new ReportInitiateModel();
-            return RmaCurdFactory.RmaReportInitiate.GetInitiateData(RmaId);
-        }
-
-        public List<BussesDescriptionModel> GetRmaBussesDescriptionDatas()
-        {
-            return new List<BussesDescriptionModel>();
-            //if (string.IsNullOrEmpty(RmaId)) return new List<RmaBussesDescriptionModel>();
-            //return RmaService.RmaManger.GetBussesDescriptiondatas(RmaId);
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public OpResult StoreRamReortInitiate()
-        {
-            if (RmaReportInitiate == null) return null;
-            if (RmaCurdFactory.RmaReportInitiate.IsExist(RmaReportInitiate.RmaId))
-
-                RmaReportInitiate.OpSign = OpMode.UpDate;
-            else
-            {
-                if (RmaReportInitiate != null)
-                {
-                    if (RmaReportInitiate.RmaId != null && RmaReportInitiate.RmaId.Length == 8)
-                    {
-                        RmaReportInitiate.RmaYear = RmaReportInitiate.RmaId.Substring(1, 2);
-                        RmaReportInitiate.RmaMonth = RmaReportInitiate.RmaId.Substring(3, 2);
-
-                    }
-                    else
-                    {
-                        RmaReportInitiate.RmaYear = DateTime.Now.ToString("yy");
-                        RmaReportInitiate.RmaMonth = DateTime.Now.ToString("MM");
-                    }
-
-                }
-                RmaReportInitiate.OpSign = OpMode.Add;
-            }
-
-            return RmaCurdFactory.RmaReportInitiate.Store(RmaReportInitiate);
-        }
-        #endregion
-    }
-
 
 }

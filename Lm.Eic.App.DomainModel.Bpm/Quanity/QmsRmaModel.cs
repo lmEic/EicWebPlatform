@@ -9,9 +9,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     ///初始Rma单模型
     /// </summary>
     [Serializable]
-    public partial class ReportInitiateModel
+    public partial class RmaReportInitiateModel
     {
-        public ReportInitiateModel()
+        public RmaReportInitiateModel()
         { }
         #region Model
         private string _rmaid;
@@ -119,9 +119,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     ///业务Rma处理模型
     /// </summary>
     [Serializable]
-    public partial class BussesDescriptionModel
+    public partial class RmaBussesDescriptionModel
     {
-        public BussesDescriptionModel()
+        public RmaBussesDescriptionModel()
         { }
         #region Model
         private string _rmaid;
@@ -310,9 +310,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     ///品保Rma处理模型
     /// </summary>
     [Serializable]
-    public partial class InspectionManageModel
+    public partial class RmaInspectionManageModel
     {
-        public InspectionManageModel()
+        public RmaInspectionManageModel()
         { }
         #region Model
         private string _rmaid;

@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 {
     public class RmaManager
     {
+        #region  ModelManagerPorperty
         /// <summary>
         /// 创建Ram表单管理
         /// </summary>
@@ -33,6 +35,52 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         }
 
 
+        #endregion
+
+
+        #region Porperty
+        public string RmaId { set; get; }
+        /// <summary>
+        /// 单头信息
+        /// </summary>
+        public RmaReportInitiateModel RmaReportInitiate { set; get; }
+        /// <summary>
+        /// 单身信息
+        /// </summary>
+        public List<RmaBussesDescriptionModel> RmaBussesDescriptionDs { set; get; }
+        /// <summary>
+        /// 检验表单处理信息
+        /// </summary>
+        public List<RmaInspectionManageModel> RmaInspectionManageData { set; get; }
+        #endregion
+
+
+
+        #region method
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public RmaReportInitiateModel GetRemPeortInitiateData()
+        {
+            return null;
+        }
+
+        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatas()
+        {
+            return null;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public OpResult StoreRamReortInitiate()
+        {
+            return null;
+        }
+
+        #endregion
     }
 
 
