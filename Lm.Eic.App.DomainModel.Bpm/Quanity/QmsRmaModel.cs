@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 {
-    /// <summary>
+    // <summary>
     ///初始Rma单模型
     /// </summary>
     [Serializable]
@@ -115,7 +115,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
-
     /// <summary>
     ///业务Rma处理模型
     /// </summary>

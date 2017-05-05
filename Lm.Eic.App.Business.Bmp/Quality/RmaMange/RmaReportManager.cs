@@ -72,7 +72,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
     /// <summary>
     /// 操作界面数据 只是做为一个选项
     /// </summary>
-    public class RmaBussesDescriPtionVm
+    public class RmaBussesDescriPtion
     {
 
         #region Porperty
@@ -84,7 +84,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         /// <summary>
         /// 单身信息
         /// </summary>
-        public List<BussesDescriptionModel> RmaBussesDescriptionBodays { set; get; }
+        public List<BussesDescriptionModel> RmaBussesDescriptionDs { set; get; }
         /// <summary>
         /// 检验表单处理信息
         /// </summary>
