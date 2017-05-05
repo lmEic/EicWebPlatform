@@ -8,7 +8,7 @@ using System.Text;
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 {
     /// <summary>
-    /// 
+    /// Ram初始数据建立管理模块
     /// </summary>
     public class RmaReport
     {
@@ -57,13 +57,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         }
     }
     /// <summary>
-    /// 
+    /// 业务处理管理模块
     /// </summary>
-
     public class BussesDescription
     {
 
     }
+    /// <summary>
+    /// 品保处理管理模块
+    /// </summary>
     public class InspecitonManage
     {
 
