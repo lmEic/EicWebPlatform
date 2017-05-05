@@ -42,7 +42,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         string _ramId;
         public string RmaId
         {
-            set { _ramId = value; }
+            private set { _ramId = value; }
             get
             {
                 if (_ramId == null || _ramId == string.Empty)
@@ -65,9 +65,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         #endregion
 
         #region method
-
-
-
         /// <summary>
         /// 
         /// </summary>
@@ -92,6 +89,4 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 
         #endregion
     }
-
-
 }
