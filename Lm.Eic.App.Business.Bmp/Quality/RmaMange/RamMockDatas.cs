@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 {
-    public class RamMockDatas
+    public class RmaMockDatas
     {
-        //Public static List<ReportInitiateModel> ReportInitiateMockDataSet
-        //{
-        //    get
-        //    {
-        //        List<ReportInitiateModel> mockDataSet = New List<ReportInitiateModel>();
-        //        mockDataSet.Add(New ReportInitiateModel(){ RmaId = 22,CustomerShortName = 22,ProductName = 22,RmaIdStatus = 22,RmaYear = 22,RmaMonth = 22,OpPerson =,OpDate =,OpTime =,OpSign =,Id_Key =});
-        //        mockDataSet.Add(New ReportInitiateModel(){ RmaId = 22,CustomerShortName = 22,ProductName = 22,RmaIdStatus = 22,RmaYear = 22,RmaMonth = 22,OpPerson =,OpDate =,OpTime =,OpSign =,Id_Key =});
-        //        return mockDataSet;
-        //    }
-        //}
+        public static List<RmaReportInitiateModel> ReportInitiateMockDataSet
+        {
+            get
+            {
+                List<RmaReportInitiateModel> mockDataSet = new List<RmaReportInitiateModel>();
+                mockDataSet.Add(new RmaReportInitiateModel() { RmaId = "21", CustomerShortName = "25", ProductName = "44", RmaIdStatus = "12", RmaYear = "2", RmaMonth = "5" });
+                mockDataSet.Add(new RmaReportInitiateModel() { RmaId = "21", CustomerShortName = "25", ProductName = "44", RmaIdStatus = "12", RmaYear = "2", RmaMonth = "5" });
+                return mockDataSet;
+            }
+        }
     }
 }
