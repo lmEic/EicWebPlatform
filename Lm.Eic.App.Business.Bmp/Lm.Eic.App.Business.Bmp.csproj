@@ -134,6 +134,7 @@
     <Compile Include="Quality\InspectionManage\Iqc\IqcCrudFactory.cs" />
     <Compile Include="Quality\InspectionManage\Iqc\IqcDetailDatasGether.cs" />
     <Compile Include="Quality\InspectionManage\Iqc\IqcMasterDatasGather.cs" />
+    <Compile Include="Quality\RmaMange\RamMockDatas.cs" />
     <Compile Include="Quality\RmaMange\RmaReportManager.cs" />
     <Compile Include="Quality\RmaMange\RmaManager.cs" />
     <Compile Include="Quality\RmaMange\RmaCurdFactory.cs" />

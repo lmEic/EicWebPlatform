@@ -143,6 +143,11 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope) {
     };
 
     var vmManager = {
+        activeTab: 'businessTab',
+        editWindowDisplay: false,
+        showEditFormWindow: function () {
+            vmManager.editWindowDisplay = !vmManager.editWindowDisplay;
+        },
         //获取表单数据
         getRmaFormDatas: function () { },
         datasets: [],
