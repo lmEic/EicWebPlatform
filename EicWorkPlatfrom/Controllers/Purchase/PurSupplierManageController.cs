@@ -214,9 +214,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <param name="yearQuarter"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ActionResult GetWaittingTourSupplier(string yearQuarter)
+        public ActionResult GetWaittingTourSupplier(string yearQuarter, double limitTotalCheckScore, double limitQualityCheck)
         {
-            var datas = PurchaseService.PurSupplierManager.SupplierTutorManger.GetWaittingTourSupplier(yearQuarter);
+            var datas = PurchaseService.PurSupplierManager.SupplierTutorManger.GetWaittingTourSupplier(yearQuarter, limitTotalCheckScore, limitQualityCheck);
             TempData["SupplierTourData"] = datas;
             return Json(datas, JsonRequestBehavior.AllowGet);
         }

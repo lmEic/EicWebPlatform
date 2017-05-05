@@ -79,10 +79,12 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
 
     //-------------------------供应商辅导管理-------------------------------------
     //获取要辅导的供应商数据
-    purDb.getWaittingTourSupplier = function (yearQuarter) {
+    purDb.getWaittingTourSupplier = function (yearQuarter, limitTotalCheckScore, limitQualityCheck) {
         var url = purUrlPrefix + 'GetWaittingTourSupplier';
         return ajaxService.getData(url, {
-            yearQuarter: yearQuarter
+            yearQuarter: yearQuarter,
+            limitTotalCheckScore: limitTotalCheckScore,
+            limitQualityCheck: limitQualityCheck
         });
     };
     ///保存供应商辅导信息
@@ -506,9 +508,11 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         supplierId: null,
         editDatas: [item],
         yearQuarter: '',
+        limitTotalCheckScore: 80,
+        limitQualityCheck: 90,
         //获取要考核的供应商数据列表
         getWaittingTourSupplier: function () {
-            $scope.searchPromise = supplierDataOpService.getWaittingTourSupplier(vmManager.yearQuarter).then(function (datas) {
+            $scope.searchPromise = supplierDataOpService.getWaittingTourSupplier(vmManager.yearQuarter, vmManager.limitTotalCheckScore, vmManager.limitQualityCheck).then(function (datas) {
                 vmManager.editDatas = datas;
             });
         },
