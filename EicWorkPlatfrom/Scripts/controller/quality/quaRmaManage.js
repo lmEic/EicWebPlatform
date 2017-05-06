@@ -87,7 +87,9 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
 
     $scope.operate = operate;
     operate.edit = function (item) {
-        $scope.vm = uiVm = item;
+        item.OpSign = leeDataHandler.dataOpMode.edit;
+        $scope.vm = uiVM = _.clone(item);
+
     };
     operate.saveAll = function (isValid) {
         leeHelper.setUserData(uiVm);
