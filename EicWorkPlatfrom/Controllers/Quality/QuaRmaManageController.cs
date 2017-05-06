@@ -28,7 +28,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public JsonResult CreateRmaId()
         {
-            var data = RmaService.RmaManager.RmaReportBuilding.BuildingRmaID();
+            var data = RmaService.RmaManager.RmaReportBuilding.AutoBuildingRmaID();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
@@ -42,7 +42,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public JsonResult GetRmaReportMaster(string rmaId)
         {
-            var datas = 0;
+            var datas = RmaService.RmaManager.RmaReportBuilding.GetRemPeortInitiateData(rmaId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
