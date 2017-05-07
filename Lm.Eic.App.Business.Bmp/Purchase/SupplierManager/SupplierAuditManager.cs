@@ -50,7 +50,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             if (getSeasonSupplierList == null || getSeasonSupplierList.Count <= 0) return supplierSeasonAuditModelList;
             getSeasonSupplierList.ForEach(e =>
             {
-                supplierSeasonAuditModelList.Add(getSupplierSeasonAuditModel(e, seasonDateNum));
+                var model = getSupplierSeasonAuditModel(e, seasonDateNum);
+                if (model != null)
+                    supplierSeasonAuditModelList.Add(model);
             });
             supplierSeasonAuditModelList.OrderBy(e => e.SupplierId);
             return supplierSeasonAuditModelList;
@@ -69,6 +71,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             SupplierSeasonAuditModel supplierSeasonAuditInfo = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditInfo(supplierId.Trim() + "&&" + seasonDateNum);
             if (supplierSeasonAuditInfo != null) return supplierSeasonAuditInfo;
             var supplierInfo = CertificateManagerFactory.SupplierCertificateManager.GetSuppplierInfoBy(supplierId);
+            if (supplierInfo == null || supplierInfo.Remark != "True") return null;
             supplierSeasonAuditInfo = new SupplierSeasonAuditModel()
             {
                 SupplierId = supplierInfo.SupplierId,

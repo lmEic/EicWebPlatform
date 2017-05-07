@@ -292,11 +292,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             {
                 if (irep.IsExist(e => e.SupplierId == model.SupplierId))
                 {
-                    var oldModel = irep.Entities.FirstOrDefault(e => e.SupplierId == model.SupplierId);
-                    model.SupplierProperty = oldModel.SupplierProperty;
-                    model.PurchaseType = oldModel.PurchaseType;
-                    model.Id_Key = oldModel.Id_Key;
-                    return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+                    return irep.Update(u => u.SupplierId == model.SupplierId,
+                       f => new SupplierInfoModel
+                       {
+                           SupplierProperty = model.SupplierProperty,
+                           PurchaseType = model.PurchaseType,
+                           OpSign = model.OpSign
+                       }).ToOpResult_Eidt("修改供应商类别成功！");
                 }
                 SetFixFieldValue(model);
                 model.SupplierId = model.SupplierId.Trim();
@@ -381,9 +383,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <param name="seasonDateNum">季度</param>
         /// <param name="limitScore">限制的分数线</param>
         /// <returns></returns>
-        public List<SupplierSeasonAuditModel> GetlimitScoreSupplierAuditInfo(string seasonDateNum, double limitScore)
+        public List<SupplierSeasonAuditModel> GetlimitScoreSupplierAuditInfo(string seasonDateNum, double limitTotalCheckScore, double limitQualityCheck)
         {
-            return this.irep.Entities.Where(e => e.TotalCheckScore < limitScore && e.SeasonDateNum == seasonDateNum).ToList();
+            return this.irep.Entities.Where(e => (e.TotalCheckScore < limitTotalCheckScore || e.QualityCheck < limitQualityCheck) && e.SeasonDateNum == seasonDateNum).ToList();
         }
         /// <summary>
         ///

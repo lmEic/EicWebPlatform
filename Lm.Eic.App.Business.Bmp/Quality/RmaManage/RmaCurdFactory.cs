@@ -9,7 +9,7 @@ using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
+namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
     internal class RmaCurdFactory
     {
@@ -54,7 +54,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         #endregion
 
         #region  Find
-        internal string CreateNewRmaID()
+        /// <summary>
+        /// 以R开头 当前 00年份 00月份  后面三位流水号
+        /// </summary>
+        /// <returns></returns>
+        internal string BuildingNewRmaID()
         {
             ///以R开头 年份 月份  再加序序号000
             string nowYaer = DateTime.Now.ToString("yy");
@@ -76,6 +80,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
 
             return irep.IsExist(e => e.RmaId == rmaId);
         }
+        internal List<RmaReportInitiateModel> getRmaReportInitiateDatas(string year, string month)
+        {
+            return irep.Entities.Where(e => e.RmaYear == year && e.RmaMonth == month).ToList();
+        }
         #endregion
 
     }
@@ -92,19 +100,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         {
             this.AddOpItem(OpMode.Add, AddModel);
             this.AddOpItem(OpMode.UpDate, Update);
-            this.AddOpItem(OpMode.Delete, DeleteModel);
         }
 
         OpResult AddModel(RmaBussesDescriptionModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-
-        OpResult DeleteModel(RmaBussesDescriptionModel model)
-        {
-            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
-        }
-
         OpResult Update(RmaBussesDescriptionModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
@@ -114,6 +115,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
         #endregion
+
+        /// <summary>
+        /// 得业务录入 数据
+        /// </summary>
+        /// <param name="rmaId"></param>
+        /// <returns></returns>
+        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatasBy(string rmaId)
+        {
+            return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
+        }
 
 
 
@@ -130,7 +141,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         {
             this.AddOpItem(OpMode.Add, AddModel);
             this.AddOpItem(OpMode.UpDate, Update);
-            this.AddOpItem(OpMode.Delete, DeleteModel);
         }
 
         OpResult AddModel(RmaInspectionManageModel model)
@@ -138,10 +148,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
-        OpResult DeleteModel(RmaInspectionManageModel model)
-        {
-            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
-        }
+
 
         OpResult Update(RmaInspectionManageModel model)
         {
@@ -149,7 +156,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaMange
         }
         #endregion
 
-
+        public List<RmaInspectionManageModel> GetRmaInspectionManageDatasBy(string rmaId)
+        {
+            return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
+        }
 
 
 

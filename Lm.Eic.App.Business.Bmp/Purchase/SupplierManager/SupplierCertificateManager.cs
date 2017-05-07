@@ -68,7 +68,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 {
                     SupplierInfo = GetErpSuppplierInfoBy(supplierId);
                     if (SupplierInfo != null && SupplierInfo.Remark == "True")
-                        //添加至供应商信息表中
+                        //添加至供应商信息表中  更新上传到数据库中
                         SupplierCrudFactory.SuppliersInfoCrud.UpSupplierInfo(SupplierInfo);
                 }
                 return SupplierInfo;
@@ -89,13 +89,14 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 //判断列表是否为空
                 OpResult reOpresult = OpResult.SetResult("没有进任何操作");
                 if (model == null) return OpResult.SetResult("数据列表不能为空");
-                //通过SupplierId得到供应商信息
+                //从ERP中得到相应的SupplierId供应商信息
                 var supplierInfoModel = GetErpSuppplierInfoBy(model.SupplierId);
                 //判断是否为空
                 if (supplierInfoModel == null) return OpResult.SetResult(string.Format("没有{0}供应商编号", model.SupplierId), true);
                 //赋值 供应商属性和采购性质
                 supplierInfoModel.PurchaseType = model.PurchaseType;
                 supplierInfoModel.SupplierProperty = model.SupplierProperty;
+                ///如果是只是修改  供应商信息的 
                 if (model.OpSign == "editPurchaseType")//修改证书类别信息
                 {
                     supplierInfoModel.OpSign = model.OpSign;
@@ -278,15 +279,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 SupplierId = supplierId,
                 SupplierEmail = erpSupplierInfo.Email,
                 SupplierAddress = erpSupplierInfo.Address,
-                ///交货地址不用，所以把交货地址变为供应商负责人
-                BillAddress = erpSupplierInfo.Principal,
+                BillAddress = erpSupplierInfo.BillAddress,
                 SupplierFaxNo = erpSupplierInfo.FaxNo,
                 SupplierName = erpSupplierInfo.SupplierName,
                 SupplierShortName = erpSupplierInfo.SupplierShortName,
                 SupplierUser = erpSupplierInfo.Contact,
                 SupplierTel = erpSupplierInfo.Tel,
                 PayCondition = erpSupplierInfo.PayCondition,
-                ///备注做是为是 在合作的供应商
                 Remark = erpSupplierInfo.IsCooperate
 
             };

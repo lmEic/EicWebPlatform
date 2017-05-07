@@ -189,8 +189,6 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                         dtSqlMaterialId = string.Format("SELECT  DISTINCT TH004 AS 料号 FROM  PURTH   WHERE   (TH001= '{0}') AND (TH002 = '{1}')", category, code);
                         dtSqlSum = string.Format("SELECT  Sum(TH007) AS 数量 FROM  PURTH   WHERE   (TH001= '{0}') AND (TH002 = '{1}') AND (TH004='", category, code);
                         break;
-
-
                 }
                 return GetMaterialsBy(category, code, sql, dtSqlMaterialId, dtSqlSum);
             }
@@ -249,7 +247,6 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                         if (dtSum.Rows.Count > 0)
                         {
                             ProduceNumber = dtSum.Rows[0]["数量"].ToString().Trim().ToDouble();
-
                         }
 
                         var PorductInfo = PorductInfoS.GetProductInfoBy(dr["料号"].ToString()).FirstOrDefault();
@@ -265,7 +262,6 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                             Category = category,
                             Code = code
                         };
-
                         Materials.Add(Material);
                     }
                 }
@@ -358,9 +354,6 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 this.MapProductRowAndModel(dr, m);
             });
         }
-
-
-        /// <summary>
     }
 
 }
