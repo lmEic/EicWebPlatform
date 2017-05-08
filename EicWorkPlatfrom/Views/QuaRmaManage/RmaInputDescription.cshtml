@@ -2,27 +2,29 @@
     <div class="panel-heading">
         <h6 class="panel-title">RMA描述登记</h6>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" cg-busy="{promise:searchPromise}">
         <div class="row">
             <div class="col-md-4">
                 <form class="form-inline">
                     <div class="form-group">
                         <label>RMA单号</label>
                         <input type="text" placeholder="按RMA单号查询" ng-model="vm.RmaId" />
-                        <button class="btn btn-xs btn-primary" ng-click="vmManager.getRmaFormDatas()" type="button">查询</button>
+                        <button class="btn btn-xs btn-primary" ng-click="vmManager.getPreHandleData()" type="button">查询</button>
                     </div>
                 </form>
             </div>
+
+        </div>
+        <div class="h-split"></div>
+        <div class="row">
+            <div class="col-md-2">
+                客户简称<label class="label label-default">{{ramvm.CustomerShortName}}</label>
+            </div>
+            <div class="col-md-2">
+                客户编号<label class="label label-success">{{ramvm.CustomerId}}</label>
+            </div>
             <div class="col-md-8">
-                <span class="pull-right">
-                    客户简称<label class="label label-default">{{ramvm.CustomerShortName}}</label>
-                </span>
-                <span class="pull-right">
-                    客户编号<label class="label label-success">{{ramvm.CustomerId}}</label>
-                </span>
-                <span class="pull-right">
-                    RMA单号<label class="label label-info">{{ramvm.RmaId}}</label>
-                </span>
+                RMA单号<label class="label label-info">{{ramvm.RmaId}}</label>
             </div>
         </div>
         <div class="h-split"></div>

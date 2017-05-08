@@ -45,17 +45,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
             var datas = RmaService.RmaManager.RmaReportBuilding.GetRemPeortInitiateData(rmaId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="rmaId"></param>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult GetBussesDescriptionDatas(string rmaId)
-        {
-            var datas = 0;//RmaService.RmaManger.GetBussesDescriptiondatas(rmaId);
-            return Json(datas, JsonRequestBehavior.AllowGet);
-        }
+
         #endregion
 
         #region RmaInputDescription
@@ -70,6 +60,24 @@ namespace EicWorkPlatfrom.Controllers.Quality
         {
             var datas = 0;
             return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="rmaId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetRmaDescriptionDatas(string rmaId)
+        {
+            var datas = 0;//RmaService.RmaManger.GetBussesDescriptiondatas(rmaId);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        [HttpPost]
+        public JsonResult StoreRmaInputDescriptionData(RmaBussesDescriptionModel model)
+        {
+            var opResult = 0;
+            return Json(opResult);
         }
         #endregion
 
