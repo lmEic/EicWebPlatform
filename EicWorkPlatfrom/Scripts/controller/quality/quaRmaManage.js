@@ -9,8 +9,8 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
     var quaRmaManageUrl = "/quaRmaManage/";
 
     //自动生成RMA表单号
-    rma.autoCreateRmaId = function () {
-        var url = quaRmaManageUrl + 'AutoCreateRmaId';
+    rma.autoBuildingRmaId = function () {
+        var url = quaRmaManageUrl + 'AutoBuildingRmaId';
         return ajaxService.getData(url, {
         });
     };
@@ -60,16 +60,16 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
         dataSets: [],
         //自动生成RMA编号
         autoCreateRmaId: function () {
-            $scope.doPromise = rmaDataOpService.autoCreateRmaId.then(function (rmaId) {
+            $scope.doPromise = rmaDataOpService.autoBuildingRmaId().then(function (rmaId) {
                 uiVm.RmaId = rmaId;
             });
         },
         //获取表单数据
         getRmaFormDatas: function () {
-            $scope.searchPromise = rmaDataOpService.getRmaReportMaster(uiVm.RmaId).then(function (data) {
+            $scope.searchPromise = rmaDataOpService.getRmaReportMaster(uiVm.RmaId).then(function (datas) {
                 vmManager.dataSets = [];
-                console.log(data);
-                vmManager.dataSets = data;
+                console.log(datas);
+                vmManager.dataSets = datas;
             });
         },
 
@@ -108,7 +108,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
     };
 });
 //// 描述RMA登记
-qualityModule.controller('rmaInputDescriptionCtrl', function ($scope) {
+qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpService) {
     leeHelper.setWebSiteTitle("质量管理", "RMA表单描述登记");
     ///视图模型
     var rma = $scope.rmavm = {
@@ -123,14 +123,20 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope) {
     };
 
     var vmManager = {
+        dataSets: [],
         //获取ERP退货单信息
         getReturnOrderInfo: function ($event) {
             if ($event.keyCode === 13)
                 $scope.showWindow();
         },
         //获取表单数据
-        getRmaFormDatas: function () { },
-        dataSets: [],
+        getRmaFormDatas: function () {
+            $scope.searchPromise = rmaDataOpService.getRmaReportMaster(rma.RmaId).then(function (data) {
+                vmManager.dataSets = [];
+                console.log(data);
+                vmManager.dataSets = data;
+            });
+        },
     };
     $scope.vmManager = vmManager;
 

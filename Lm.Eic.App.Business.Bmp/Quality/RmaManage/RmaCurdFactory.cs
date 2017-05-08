@@ -58,7 +58,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// 以R开头 当前 00年份 00月份  后面三位流水号
         /// </summary>
         /// <returns></returns>
-        internal string BuildingNewRmaID()
+        internal string BuildingNewRmaId()
         {
             ///以R开头 年份 月份  再加序序号000
             string nowYaer = DateTime.Now.ToString("yy");
@@ -69,9 +69,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         }
 
 
-        internal RmaReportInitiateModel GetInitiateData(string rmaId)
+        internal List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
         {
-            return irep.Entities.FirstOrDefault(e => e.RmaId == rmaId);
+            return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
 
 
