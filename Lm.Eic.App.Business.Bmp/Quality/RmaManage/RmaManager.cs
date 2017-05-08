@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Lm.Eic.App.Erp.DbAccess.CopManageDb;
+using Lm.Eic.App.Erp.Domain.CopManageModel;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
@@ -53,36 +54,21 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="returnHandleOrder">退货单</param>
         /// <returns></returns>
-        public List<RmaBussesDescriptionModel> GetErpBussesInfoDatasBy(string returnHandleOrder)
+        public List<CopReturnOrderModel> GetErpBussesInfoDatasBy(string returnHandleOrder)
         {
             try
             {
-                List<RmaBussesDescriptionModel> returnDatas = new List<RmaBussesDescriptionModel>();
                 //从ERP中得到相应的数据
-                var listErpDatas = CopOrderCrudFactory.CopReturnOrderManageDb.FindReturnOrderByID(returnHandleOrder);
-                if (listErpDatas == null || listErpDatas.Count <= 0) return returnDatas;
-                listErpDatas.ForEach(m =>
-                {
-                    returnDatas.Add(new RmaBussesDescriptionModel()
-                    {
-                        ReturnHandleOrder = m.OrderId,
-                        CustomerId = m.CustomerId,
-                        RmaIdNumber = Convert.ToInt16(m.OrderDesc),
-                        CustomerName = m.CustomerShortName,
-                        ProdcutId = m.ProductID,
-                        ProductName = m.ProductName,
-                        ProductSpec = m.ProductSpecify,
-                        ProductCount = m.ProductNumber,
-                    });
-                });
-                return returnDatas;
+                return CopOrderCrudFactory.CopReturnOrderManageDb.FindReturnOrderByID(returnHandleOrder);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.InnerException.Message);
             }
-            
+
         }
+
+
 
         #endregion
     }

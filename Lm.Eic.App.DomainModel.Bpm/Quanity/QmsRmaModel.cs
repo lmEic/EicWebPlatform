@@ -115,33 +115,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+
+
+
+
+    #region  业务信息
     /// <summary>
-    ///业务Rma处理模型
+    /// 业务Rma从ERP中的基础信息
     /// </summary>
-    [Serializable]
-    public partial class RmaBussesDescriptionModel
+    public partial class RmaERPBusseeInfoModel
     {
-        public RmaBussesDescriptionModel()
-        { }
-        #region Model
-        private string _rmaid;
-        /// <summary>
-        ///RMA单号
-        /// </summary>
-        public string RmaId
-        {
-            set { _rmaid = value; }
-            get { return _rmaid; }
-        }
-        private int _rmaidnumber;
-        /// <summary>
-        ///序号
-        /// </summary>
-        public int RmaIdNumber
-        {
-            set { _rmaidnumber = value; }
-            get { return _rmaidnumber; }
-        }
         private string _returnhandleorder;
         /// <summary>
         ///销货单号
@@ -223,6 +206,35 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _productsshipdate = value; }
             get { return _productsshipdate; }
         }
+    }
+    /// <summary>
+    ///业务Rma处理模型
+    /// </summary>
+    [Serializable]
+    public partial class RmaBussesDescriptionModel : RmaERPBusseeInfoModel
+    {
+        public RmaBussesDescriptionModel()
+        { }
+        #region Model
+        private string _rmaid;
+        /// <summary>
+        ///RMA单号
+        /// </summary>
+        public string RmaId
+        {
+            set { _rmaid = value; }
+            get { return _rmaid; }
+        }
+        private int _rmaidnumber;
+        /// <summary>
+        ///序号
+        /// </summary>
+        public int RmaIdNumber
+        {
+            set { _rmaidnumber = value; }
+            get { return _rmaidnumber; }
+        }
+
         private string _baddescrption;
         /// <summary>
         ///不良现象
@@ -306,6 +318,13 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+
+    #endregion
+
+
+
+
+
     /// <summary>
     ///品保Rma处理模型
     /// </summary>
