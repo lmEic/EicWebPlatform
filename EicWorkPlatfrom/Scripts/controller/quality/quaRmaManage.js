@@ -1,4 +1,5 @@
-﻿
+﻿/// <reference path="quaInspectionManage.js" />
+
 /// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/underscore/underscore-min.js" />

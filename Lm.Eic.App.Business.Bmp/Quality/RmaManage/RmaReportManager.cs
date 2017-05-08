@@ -56,7 +56,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="rmaId"></param>
         /// <returns></returns>
-        public List<RmaReportInitiateModel> GetRemPeortInitiateData(string rmaId)
+        public List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
         {
             return RmaCurdFactory.RmaReportInitiate.GetInitiateDatas(rmaId);
         }
@@ -155,6 +155,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return RmaCurdFactory.RmaInspectionManage.GetInspectionManageDatasBy(RmaId);
         }
+
+        /// <summary>
+        /// 存储品保处理据的
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+
+        public OpResult StoreInspectionManageData(RmaInspectionManageModel model)
+        {
+            return RmaCurdFactory.RmaInspectionManage.Store(model);
+        }
+
+
     }
 
 }
