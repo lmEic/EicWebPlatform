@@ -34,7 +34,7 @@
                         <label for="returnHandleOrder" class="col-md-2 control-label">ERP单号</label>
                         <div class="col-md-10">
                             <div class="input-group">
-                                <input name="returnHandleOrder" class="form-control" ng-model="vm.ReturnHandleOrder" required />
+                                <input name="returnHandleOrder" id="returnHandleOrder" class="form-control" ng-keypress="vmManager.getReturnOrderInfo($event)" ng-model="vm.ReturnHandleOrder" required />
                                 <div class="error-messages" ng-messages="formRmaBussesDescription.returnHandleOrder.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">ERP单号不能为空</small>
                                 </div>
@@ -51,7 +51,29 @@
                                     <span>{{vm.ProductCount}}</span>
                                 </div>
                             </div>
-
+                            <dialog ng-if="nwopen" for="returnHandleOrder" align="bottom left" data-close="showWindow()">
+                                <div dialog-title>ERP退货单信息</div>
+                                <div dialog-content>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>xingm</th>
+                                                <th>agew</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>asdf</td>
+                                                <td>asdf</td>
+                                            </tr>
+                                            <tr>
+                                                <td>asfgsaeasdf</td>
+                                                <td>aaewebgvsdf</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </dialog>
                         </div>
                     </div>
                     <div class="form-group">

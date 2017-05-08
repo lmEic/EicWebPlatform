@@ -204,6 +204,8 @@
     <Content Include="Content\angular-pageloadingeffect\snap.svg.js" />
     <Content Include="Content\angular-pageslide\angular-pageslide-directive.js" />
     <Content Include="Content\angular-pageslide\angular-pageslide-directive.min.js" />
+    <Content Include="Content\angular-popups\dist\angular-popups-nocss.js" />
+    <Content Include="Content\angular-popups\dist\angular-popups.js" />
     <Content Include="Content\angular-strap\dist\angular-strap.compat.js" />
     <Content Include="Content\angular-strap\dist\angular-strap.compat.min.js" />
     <Content Include="Content\angular-strap\dist\angular-strap.js" />
@@ -474,6 +476,8 @@
     <Content Include="Content\bootwatch\_bootswatch.scss" />
     <Content Include="Content\bootwatch\_variables.scss" />
     <Content Include="Content\pdfmaker\pdfmake.min.js.map" />
+    <Content Include="Content\angular-popups\dist\angular-popups-nocss.js.map" />
+    <Content Include="Content\angular-popups\dist\angular-popups.js.map" />
     <None Include="Properties\PublishProfiles\eicApp.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />

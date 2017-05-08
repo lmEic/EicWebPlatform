@@ -40,7 +40,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         #region  Method
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public RmaReportInitiateModel GetRemPeortInitiateData()
