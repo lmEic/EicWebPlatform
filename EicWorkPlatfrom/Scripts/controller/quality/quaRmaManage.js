@@ -9,8 +9,8 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
     var quaRmaManageUrl = "/quaRmaManage/";
 
     //自动生成RMA表单号
-    rma.autoBuildingRmaId = function () {
-        var url = quaRmaManageUrl + 'AutoBuildingRmaId';
+    rma.autoCreateRmaId = function () {
+        var url = quaRmaManageUrl + 'AutoCreateRmaId';
         return ajaxService.getData(url, {
         });
     };
@@ -38,6 +38,14 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
         });
     };
 
+    //获取退货单数据
+    rma.getReturnOrderInfo = function (orderId) {
+        var url = quaRmaManageUrl + 'GetReturnOrderInfo';
+        return ajaxService.getData(url, {
+            orderId: orderId,
+        });
+    };
+
     return rma;
 })
 ////创建RMA表单
@@ -57,22 +65,19 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
     //初始化原型
     var initVM = _.clone(uiVm);
     var vmManager = {
-        dataSets: [],
         //自动生成RMA编号
         autoCreateRmaId: function () {
-            $scope.doPromise = rmaDataOpService.autoBuildingRmaId().then(function (rmaId) {
+            $scope.doPromise = rmaDataOpService.autoCreateRmaId.then(function (rmaId) {
                 uiVm.RmaId = rmaId;
             });
         },
         //获取表单数据
         getRmaFormDatas: function () {
-            $scope.searchPromise = rmaDataOpService.getRmaReportMaster(uiVm.RmaId).then(function (datas) {
-                vmManager.dataSets = [];
-                console.log(datas);
-                vmManager.dataSets = datas;
+            $scope.searchPromise = rmaDataOpService.getRmaReportMaster(uiVm.RmaId).then(function (data) {
+                vmManager.dataSets = data;
             });
         },
-
+        dataSets: [],
         init: function () {
             uiVm = _.clone(initVM);
             uiVm.OpSign = 'add';
@@ -108,35 +113,51 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
     };
 });
 //// 描述RMA登记
-qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpService) {
+qualityModule.controller('rmaInputDescriptionCtrl', function ($scope) {
     leeHelper.setWebSiteTitle("质量管理", "RMA表单描述登记");
+    var uiVm = $scope.vm = {
+        RmaId: null,
+        RmaIdNumber: 0,
+        ReturnHandleOrder: null,
+        ProdcutId: null,
+        ProductName: null,
+        ProductSpec: null,
+        ProductCount: null,
+        CustomerId: null,
+        CustomerName: null,
+        SalesOrder: null,
+        ProductsShipDate: null,
+        BadDescrption: null,
+        CustomerHandleSuggestion: null,
+        FeePaymentWay: null,
+        HandleStatus: null,
+        OpPerson: null,
+        OpSign: leeDataHandler.dataOpMode.add,
+        Id_Key: null,
+    }
+    var initVM = _.clone(uiVm);
     ///视图模型
     var rma = $scope.rmavm = {
         RmaId: null,
         CustomerId: null,
         CustomerShortName: null,
     };
-
-    $scope.nwopen = false;
-    $scope.showWindow = function () {
-        $scope.nwopen = !$scope.nwopen;
-    };
-
     var vmManager = {
-        dataSets: [],
+        windowOpen: false,
+        showWindow: function () {
+            vmManager.windowOpen = !vmManager.windowOpen;
+        },
+        returnOrderDatas: [],
         //获取ERP退货单信息
         getReturnOrderInfo: function ($event) {
             if ($event.keyCode === 13)
-                $scope.showWindow();
+
+
+                vmManager.showWindow();
         },
         //获取表单数据
-        getRmaFormDatas: function () {
-            $scope.searchPromise = rmaDataOpService.getRmaReportMaster(rma.RmaId).then(function (data) {
-                vmManager.dataSets = [];
-                console.log(data);
-                vmManager.dataSets = data;
-            });
-        },
+        getRmaFormDatas: function () { },
+        dataSets: [],
     };
     $scope.vmManager = vmManager;
 
