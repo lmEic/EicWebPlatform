@@ -24,13 +24,21 @@ namespace EicWorkPlatfrom.Controllers.Quality
         {
             return View();
         }
-
+        /// <summary>
+        ///自动生成RmaId单号
+        /// </summary>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult AutoBuildingRmaId()
         {
             var data = RmaService.RmaManager.RmaReportBuilding.AutoBuildingRmaId();
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 保存 初始RMA单数据
+        /// </summary>
+        /// <param name="initiateData"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult StoreinitiateDataData(RmaReportInitiateModel initiateData)
         {
@@ -38,11 +46,15 @@ namespace EicWorkPlatfrom.Controllers.Quality
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
+        /// <summary>
+        /// 得到Rma单的数据
+        /// </summary>
+        /// <param name="rmaId"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult GetRmaReportMaster(string rmaId)
         {
-            var datas = RmaService.RmaManager.RmaReportBuilding.GetRemPeortInitiateData(rmaId);
+            var datas = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(rmaId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
@@ -58,7 +70,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public JsonResult GetReturnOrderInfo(string orderId)
         {
-            var datas = 0;
+            var datas = RmaService.RmaManager.BussesManageProcessor.GetErpBussesInfoDatasBy(orderId); ;
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -69,14 +81,20 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public JsonResult GetRmaDescriptionDatas(string rmaId)
         {
-            var datas = 0;//RmaService.RmaManger.GetBussesDescriptiondatas(rmaId);
+            /// Rma 初始表的数据
+            var RmaInitiateDatas = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(rmaId);
+            /// 业务部处理的数据
+            var BussesDescriptionDatas = RmaService.RmaManager.BussesManageProcessor.GetRmaBussesDescriptionDatasBy(rmaId);
+
+            var datas = new { RmaInitiateDatas, BussesDescriptionDatas };
+            
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
         [HttpPost]
         public JsonResult StoreRmaInputDescriptionData(RmaBussesDescriptionModel model)
         {
-            var opResult = 0;
+            var opResult = RmaService.RmaManager.BussesManageProcessor.StoreRmaBussesDescriptionData(model);
             return Json(opResult);
         }
         #endregion

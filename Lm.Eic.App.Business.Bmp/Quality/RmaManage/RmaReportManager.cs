@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.App.Erp.DbAccess.CopManageDb;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
@@ -55,7 +56,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="rmaId"></param>
         /// <returns></returns>
-        public List<RmaReportInitiateModel> GetRemPeortInitiateData(string rmaId)
+        public List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
         {
             return RmaCurdFactory.RmaReportInitiate.GetInitiateDatas(rmaId);
         }
@@ -94,7 +95,50 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(RmaId);
         }
+        /// <summary>
+        /// 通过退料单或换货单得到相应的物料信息
+        /// </summary>
+        /// <param name="returnHandleOrder">退货单</param>
+        /// <returns></returns>
+        public List<RmaERPBusseeInfoModel> GetErpBussesInfoDatasBy(string returnHandleOrder)
+        {
+            try
+            {
+                List<RmaERPBusseeInfoModel> returnDatas = new List<RmaERPBusseeInfoModel>();
+                //从ERP中得到相应的数据
+                var listErpDatas = CopOrderCrudFactory.CopReturnOrderManageDb.FindReturnOrderByID(returnHandleOrder);
+                if (listErpDatas == null || listErpDatas.Count <= 0) return returnDatas;
+                listErpDatas.ForEach(m =>
+                {
+                    returnDatas.Add(new RmaERPBusseeInfoModel()
+                    {
+                        ReturnHandleOrder = m.OrderId,
+                        CustomerId = m.CustomerId,
+                        CustomerName = m.CustomerShortName,
+                        ProdcutId = m.ProductID,
+                        ProductName = m.ProductName,
+                        ProductSpec = m.ProductSpecify,
+                        ProductCount = m.ProductNumber,
 
+                    });
+                });
+                return returnDatas;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+
+        }
+        /// <summary>
+        /// 存储
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult StoreRmaBussesDescriptionData(RmaBussesDescriptionModel model)
+        {
+            return RmaCurdFactory.RmaBussesDescription.Store(model);
+        }
 
     }
     /// <summary>
@@ -102,6 +146,27 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
     /// </summary>
     public class RmaInspecitonManageProcessor
     {
+        /// <summary>
+        /// 通过RmaId，得到品何处理数据
+        /// </summary>
+        /// <param name="RmaId"></param>
+        /// <returns></returns>
+        public List<RmaInspectionManageModel> GetDatasBy(string RmaId)
+        {
+            return RmaCurdFactory.RmaInspectionManage.GetInspectionManageDatasBy(RmaId);
+        }
+
+        /// <summary>
+        /// 存储品保处理据的
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+
+        public OpResult StoreInspectionManageData(RmaInspectionManageModel model)
+        {
+            return RmaCurdFactory.RmaInspectionManage.Store(model);
+        }
+
 
     }
 
