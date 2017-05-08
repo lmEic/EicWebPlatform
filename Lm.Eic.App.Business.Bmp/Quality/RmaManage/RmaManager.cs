@@ -75,7 +75,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public RmaReportInitiateModel GetRemPeortInitiateData()

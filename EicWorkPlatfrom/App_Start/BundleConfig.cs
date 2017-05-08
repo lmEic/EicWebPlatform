@@ -28,7 +28,8 @@ namespace EicWorkPlatfrom
                 //"~/Content/ng-file-upload/dist/ng-file-upload-shim.min.js",
                 //"~/Content/ng-file-upload/dist/ng-file-upload.min.js",
                 "~/Content/angular-strap/dist/angular-strap.min.js",
-                "~/Content/angular-strap/dist/angular-strap.tpl.min.js"));
+                "~/Content/angular-strap/dist/angular-strap.tpl.min.js",
+                "~/Content/angular-popups/dist/angular-popups.js"));
 
 
 
