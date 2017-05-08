@@ -17,9 +17,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// 自动生成RmaId编号
         /// </summary>
         /// <returns></returns>
-        public string AutoBuildingRmaID()
+        public string AutoBuildingRmaId()
         {
-            return RmaCurdFactory.RmaReportInitiate.BuildingNewRmaID();
+            return RmaCurdFactory.RmaReportInitiate.BuildingNewRmaId();
         }
         /// <summary>
         /// 存储初始Rma表单
@@ -31,7 +31,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             if (model == null) return null;
             if (RmaCurdFactory.RmaReportInitiate.IsExist(model.RmaId))
             {
-                var oldmodel = RmaCurdFactory.RmaReportInitiate.GetInitiateData(model.RmaId);
+                var oldmodel = RmaCurdFactory.RmaReportInitiate.GetInitiateDatas(model.RmaId).FirstOrDefault();
                 model.RmaMonth = oldmodel.RmaMonth;
                 model.RmaYear = oldmodel.RmaYear;
                 model.Id_Key = oldmodel.Id_Key;
@@ -55,9 +55,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="rmaId"></param>
         /// <returns></returns>
-        public RmaReportInitiateModel GetRemPeortInitiateData(string rmaId)
+        public List<RmaReportInitiateModel> GetRemPeortInitiateData(string rmaId)
         {
-            return RmaCurdFactory.RmaReportInitiate.GetInitiateData(rmaId);
+            return RmaCurdFactory.RmaReportInitiate.GetInitiateDatas(rmaId);
         }
         /// <summary>
         /// 通过年月份得到RamId
