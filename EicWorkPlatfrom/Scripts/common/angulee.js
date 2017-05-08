@@ -446,6 +446,19 @@ var leeHelper = (function () {
         }
     };
 })();
+/// 对话框助手
+var leeDialog = (function () {
+    var dialog = {
+        title: "消息提示",
+        content: '',
+        //打开关闭标志
+        open: false,
+        show: function () {
+            dialog.open = !dialog.open;
+        },
+    };
+    return dialog;
+})();
 ///zTree 助手
 var leeTreeHelper = (function () {
     var ztree = {

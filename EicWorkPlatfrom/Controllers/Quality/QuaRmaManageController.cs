@@ -105,6 +105,21 @@ namespace EicWorkPlatfrom.Controllers.Quality
         {
             return View();
         }
+        [NoAuthenCheck]
+        public JsonResult GetRmaInspectionHandleDatas(string rmaId)
+        {
+            var data = 0;
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StoreRmaInspectionHandleDatas(RmaInspectionManageModel model)
+        {
+            var data = 0;
+
+            return Json(data);
+        }
         #endregion
     }
 }

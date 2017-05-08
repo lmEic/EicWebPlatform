@@ -31,11 +31,10 @@
         <div class="row">
             <div class="col-md-9 well">
                 <form role="form" name="formRmaBussesDescription" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
-
                     <div class="form-group">
                         <label for="returnHandleOrder" class="col-md-2 control-label">ERP单号</label>
                         <div class="col-md-10">
-                            <input name="returnHandleOrder" id="returnHandleOrder" class="form-control" ng-keypress="vmManager.getReturnOrderInfo($event)" ng-model="vm.ReturnHandleOrder" required />
+                            <input name="returnHandleOrder" id="returnHandleOrder" class="form-control" ng-keypress="vmManager.getReturnOrderData($event)" ng-model="vm.ReturnHandleOrder" required />
                             <div class="error-messages" ng-messages="formRmaBussesDescription.returnHandleOrder.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">ERP单号不能为空</small>
                             </div>
@@ -59,9 +58,9 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <dialog ng-if="vmManager.windowOpen" for="returnHandleOrder" align="bottom left" data-close="vmManager.showWindow()">
-                                <div dialog-title>ERP退货单信息</div>
-                                <div dialog-content>
+                            <dialog ng-if="dialog.open" for="returnHandleOrder" align="bottom left" data-close="dialog.show()">
+                                <content dialog-title class="info"><i class="fa fa-th-list"></i> ERP退货单信息</content>
+                                <content dialog-content>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
@@ -84,7 +83,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
+                                </content>
                             </dialog>
                         </div>
                     </div>
