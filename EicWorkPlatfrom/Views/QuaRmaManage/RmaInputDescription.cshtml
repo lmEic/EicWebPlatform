@@ -39,18 +39,34 @@
                                     <small ng-message="required">ERP单号不能为空</small>
                                 </div>
                                 <div class="input-group-addon">
-                                    <span>{{vm.ProdcutId}}</span>
+                                    <span>{{}}</span>
                                 </div>
                                 <div class="input-group-addon">
-                                    <span>{{vm.ProductName}}</span>
-                                </div>
-                                <div class="input-group-addon">
-                                    <span>{{vm.ProductSpec}}</span>
                                 </div>
                                 <div class="input-group-addon">
                                     <span>{{vm.ProductCount}}</span>
                                 </div>
                             </div>
+                            <table class="table table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="info">品号</td>
+                                        <td>{{vm.ProdcutId}}</td>
+                                        <td class="info">品名</td>
+                                        <td>{{vm.ProductName}}</td>
+                                        <td class="info">品名</td>
+                                        <td>{{vm.ProductSpec}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="info">客户编号</td>
+                                        <td>{{vm.ProdcutId}}</td>
+                                        <td class="info">客户名称</td>
+                                        <td>{{vm.ProductName}}</td>
+                                        <td class="info">数量</td>
+                                        <td>{{vm.ProductCount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             <dialog ng-if="nwopen" for="returnHandleOrder" align="bottom left" data-close="showWindow()">
                                 <div dialog-title>ERP退货单信息</div>
                                 <div dialog-content>
