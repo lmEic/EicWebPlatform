@@ -11,7 +11,7 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
     //-------------RMA表单创建----------------------------
     //自动生成RMA表单号
     rma.autoCreateRmaId = function () {
-        var url = quaRmaManageUrl + 'AutoCreateRmaId';
+        var url = quaRmaManageUrl + 'AutoBuildingRmaId';
         return ajaxService.getData(url, {
         });
     };
@@ -73,7 +73,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
     var vmManager = {
         //自动生成RMA编号
         autoCreateRmaId: function () {
-            $scope.doPromise = rmaDataOpService.autoCreateRmaId.then(function (rmaId) {
+            $scope.doPromise = rmaDataOpService.autoCreateRmaId().then(function (rmaId) {
                 uiVm.RmaId = rmaId;
             });
         },
@@ -147,11 +147,12 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
     }
     var initVM = _.clone(uiVm);
     ///视图模型
-    var rma = $scope.rmavm = {
-        RmaId: null,
-        CustomerId: null,
+    var rma = {
+        RmaId: "444",
+        ProductName: null,
         CustomerShortName: null,
     };
+    $scope.rmavm = rma;
     var vmManager = {
         init: function () {
             uiVm = _.clone(initVM);
@@ -165,8 +166,13 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         returnOrderDatas: [],
         //获取预处理数据
         getPreHandleData: function () {
-            $scope.searchPromise = rmaDataOpService.getRmaDescriptionDatas(uiVm.RmaId).then(function (data) {
+            $scope.searchPromise = rmaDataOpService.getRmaDescriptionDatas(uiVm.RmaId).then(function (datas) {
 
+                if (datas !== null) {
+                    $scope.rmavm = datas.RmaInitiateData;
+                    console.log(datas.RmaInitiateData);
+                    vmManager.dataSets = datas.BussesDescriptionDatas;
+                }
             });
         },
         //获取ERP退货单信息

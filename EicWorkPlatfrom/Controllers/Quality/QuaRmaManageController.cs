@@ -82,11 +82,11 @@ namespace EicWorkPlatfrom.Controllers.Quality
         public JsonResult GetRmaDescriptionDatas(string rmaId)
         {
             /// Rma 初始表的数据
-            var RmaInitiateDatas = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(rmaId);
+            var RmaInitiateData = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(rmaId).FirstOrDefault();
             /// 业务部处理的数据
             var BussesDescriptionDatas = RmaService.RmaManager.BussesManageProcessor.GetRmaBussesDescriptionDatasBy(rmaId);
 
-            var datas = new { RmaInitiateDatas, BussesDescriptionDatas };
+            var datas = new { RmaInitiateData, BussesDescriptionDatas };
             
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
