@@ -74,7 +74,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        ///
+        /// 由Rma单量   描述信息
         /// </summary>
         /// <param name="rmaId"></param>
         /// <returns></returns>
@@ -90,6 +90,12 @@ namespace EicWorkPlatfrom.Controllers.Quality
             
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 存储 业务部描述信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         [HttpPost]
         public JsonResult StoreRmaInputDescriptionData(RmaBussesDescriptionModel model)
@@ -105,20 +111,36 @@ namespace EicWorkPlatfrom.Controllers.Quality
         {
             return View();
         }
+        /// <summary>
+        /// 由Rma单量得到 描述信息和处理信息
+        /// </summary>
+        /// <param name="rmaId"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult GetRmaInspectionHandleDatas(string rmaId)
         {
-            var data = 0;
+            /// 业务部处理的数据
+            var BussesDescriptionDatas = RmaService.RmaManager.BussesManageProcessor.GetRmaBussesDescriptionDatasBy(rmaId);
+            /// 检验处理数据
+            var InspectionHandleDatas = RmaService.RmaManager.InspecitonManageProcessor.GetDatasBy(rmaId);
 
-            return Json(data, JsonRequestBehavior.AllowGet);
+
+            var datas = new { InspectionHandleDatas, BussesDescriptionDatas };
+
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 存储 检验处理
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [NoAuthenCheck]
         public JsonResult StoreRmaInspectionHandleDatas(RmaInspectionManageModel model)
         {
-            var data = 0;
+            var opReult = RmaService.RmaManager.InspecitonManageProcessor.StoreInspectionManageData(model);
 
-            return Json(data);
+            return Json(opReult);
         }
         #endregion
     }
