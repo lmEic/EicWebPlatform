@@ -64,6 +64,13 @@ namespace EicWorkPlatfrom.Controllers.Quality
         {
             return View();
         }
+
+        [NoAuthenCheck]
+        public JsonResult GetReturnOrderInfo(string orderId)
+        {
+            var datas = 0;
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region RmaInspectionHandle
