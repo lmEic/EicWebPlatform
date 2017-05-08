@@ -57,6 +57,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
     $scope.vm = uiVm;
     var initVM = _.clone(uiVm);
     var vmManager = {
+        dataSets: [],
         //自动生成RMA编号
         autoCreateRmaId: function () {
             $scope.doPromise = rmaDataOpService.createRmaId().then(function (data) {
@@ -66,10 +67,12 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
         //获取表单数据
         getRmaFormDatas: function () {
             $scope.searchPromise = rmaDataOpService.getRmaReportMaster(uiVm.RmaId).then(function (data) {
+                vmManager.dataSets = [];
+                console.log(data);
                 vmManager.dataSets = data;
             });
         },
-        dataSets: [],
+
         init: function () {
             if (uiVm.OpSign === 'add') {
                 leeHelper.clearVM(uiVm);
