@@ -156,7 +156,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         }
         #endregion
 
-        public List<RmaInspectionManageModel> GetRmaInspectionManageDatasBy(string rmaId)
+        public List<RmaInspectionManageModel> GetInspectionManageDatasBy(string rmaId)
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }

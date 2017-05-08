@@ -146,7 +146,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
     /// </summary>
     public class RmaInspecitonManageProcessor
     {
-
+        /// <summary>
+        /// 通过RmaId，得到品何处理数据
+        /// </summary>
+        /// <param name="RmaId"></param>
+        /// <returns></returns>
+        public List<RmaInspectionManageModel> GetDatasBy(string RmaId)
+        {
+            return RmaCurdFactory.RmaInspectionManage.GetInspectionManageDatasBy(RmaId);
+        }
     }
 
 }
