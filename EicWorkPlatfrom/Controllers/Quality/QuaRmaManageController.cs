@@ -38,18 +38,14 @@ namespace EicWorkPlatfrom.Controllers.Quality
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        /// <summary>
-        /// 通过 
-        /// </summary>
-        /// <param name="rmaId"></param>
-        /// <returns></returns>
+
         [NoAuthenCheck]
         public JsonResult GetRmaReportMaster(string rmaId)
         {
             var datas = RmaService.RmaManager.RmaReportBuilding.GetRemPeortInitiateData(rmaId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-        
+
         #endregion
 
         #region RmaInputDescription
@@ -58,19 +54,31 @@ namespace EicWorkPlatfrom.Controllers.Quality
         {
             return View();
         }
-        /// <summary>
-        ///得到ERP退换单信息
-        /// </summary>
-        /// <param name="orderId"></param>
-        /// <returns></returns>
+
         [NoAuthenCheck]
         public JsonResult GetReturnOrderInfo(string orderId)
         {
-            var datas = RmaService.RmaManager.GetErpBussesInfoDatasBy(orderId); ;
+            var datas = 0;
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-
-        
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="rmaId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetRmaDescriptionDatas(string rmaId)
+        {
+            var datas = 0;//RmaService.RmaManger.GetBussesDescriptiondatas(rmaId);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        [HttpPost]
+        public JsonResult StoreRmaInputDescriptionData(RmaBussesDescriptionModel model)
+        {
+            var opResult = 0;
+            return Json(opResult);
+        }
         #endregion
 
         #region RmaInspectionHandle
