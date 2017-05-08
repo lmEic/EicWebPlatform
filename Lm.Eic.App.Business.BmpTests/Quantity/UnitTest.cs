@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
-using System;
 using Lm.Eic.App.Business.Bmp.Quality.RmaManage;
-using Lm.Eic.App.Erp.DbAccess.CopManageDb;
+using System;
+
+
 
 namespace Lm.Eic.App.Business.BmpTests.Quantity
 {
@@ -32,9 +32,9 @@ namespace Lm.Eic.App.Business.BmpTests.Quantity
 
             // }
             // #endregion
-            var ff = CopOrderCrudFactory.CopReturnOrderManageDb.FindReturnOrderByID("242-1704004");
-
-            Assert.Fail();
+            var listDatas = RmaService.RmaManager.GetErpBussesInfoDatasBy("241-160909001");
+            if (listDatas == null)
+                Assert.Fail();
         }
 
 

@@ -12,8 +12,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
     /// </summary>
     public class RmaReportInitiateProcessor
     {
-        //生成RmaId编号
-        public string BuildingRmaID()
+
+        /// <summary>
+        /// 自动生成RmaId编号
+        /// </summary>
+        /// <returns></returns>
+        public string AutoBuildingRmaID()
         {
             return RmaCurdFactory.RmaReportInitiate.BuildingNewRmaID();
         }
@@ -55,12 +59,42 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return RmaCurdFactory.RmaReportInitiate.GetInitiateData(rmaId);
         }
+        /// <summary>
+        /// 通过年月份得到RamId
+        /// </summary>
+        /// <param name="yearMonth">yyyyMM</param>
+        /// <returns></returns>
+        public List<RmaReportInitiateModel> getRmaReportInitiateDatasBy(string yearMonth)
+        {
+            try
+            {
+                if (yearMonth.Length != 6) return null;
+                //201701
+                string year = yearMonth.Substring(0, 4);
+                string month = yearMonth.Substring(4, 2);
+                return RmaCurdFactory.RmaReportInitiate.getRmaReportInitiateDatas(year, month);
+            }
+            catch (Exception es)
+            {
+                throw new Exception(es.InnerException.Message);
+            }
+        }
     }
     /// <summary>
     /// Rma单业务部门操作处理器
     /// </summary>
     public class RmaBussesDescriptionProcessor
     {
+        /// <summary>
+        /// 通过RmaId，得到业务处理数据
+        /// </summary>
+        /// <param name="RmaId"></param>
+        /// <returns></returns>
+        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatasBy(string RmaId)
+        {
+            return RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(RmaId);
+        }
+
 
     }
     /// <summary>

@@ -131,12 +131,12 @@ namespace Lm.Eic.App.Erp.DbAccess.CopManageDb
           });
         }
 
-        public List<CopReturnOrderModel> FindReturnOrderByID(string id)
+        public List<CopReturnOrderModel> FindReturnOrderByID(string returnHandleOrderid)
         {
-            var idm = ErpDbAccessHelper.DecomposeID(id);
+            var idm = ErpDbAccessHelper.DecomposeID(returnHandleOrderid);
             return FindBodyReturnOrderBy(idm.Category, idm.Code);
         }
 
     }
-    
+
 }
