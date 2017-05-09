@@ -79,16 +79,16 @@ namespace EicWorkPlatfrom.Controllers.Quality
         /// <param name="rmaId"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetRmaDescriptionDatas(string rmaId)
+        public ContentResult GetRmaDescriptionDatas(string rmaId)
         {
             /// Rma 初始表的数据
-            var RmaInitiateData = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(rmaId).FirstOrDefault();
+            var rmaInitiateData = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(rmaId).FirstOrDefault();
             /// 业务部处理的数据
-            var BussesDescriptionDatas = RmaService.RmaManager.BussesManageProcessor.GetRmaBussesDescriptionDatasBy(rmaId);
+            var bussesDescriptionDatas = RmaService.RmaManager.BussesManageProcessor.GetRmaBussesDescriptionDatasBy(rmaId);
 
-            var datas = new { RmaInitiateData, BussesDescriptionDatas };
-            
-            return Json(datas, JsonRequestBehavior.AllowGet);
+            var datas = new { rmaInitiateData, bussesDescriptionDatas };
+
+            return DateJsonResult(datas);
         }
 
         /// <summary>
