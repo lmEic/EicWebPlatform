@@ -178,7 +178,6 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         //获取预处理数据
         getPreHandleData: function () {
             $scope.searchPromise = rmaDataOpService.getRmaDescriptionDatas(uiVm.RmaId).then(function (data) {
-                console.log(data);
                 if (angular.isObject(data)) {
                     leeHelper.copyVm(data.rmaInitiateData, rmavm);
                     vmManager.dataSets = data.bussesDescriptionDatas;
@@ -233,9 +232,9 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
 qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpService) {
     leeHelper.setWebSiteTitle("质量管理", "RMA检验处置");
     ///视图模型
-    var rmaVm = $scope.rmavm = {
+    var rmavm = $scope.rmavm = {
         RmaId: null,
-        CustomerId: null,
+        ProductName: null,
         CustomerShortName: null,
     };
     var uiVm = $scope.vm = {
@@ -263,7 +262,11 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         //获取表单数据
         getRmaInspectionHandleDatas: function () {
             $scope.searchPromise = rmaDataOpService.getRmaInspectionHandleDatas(uiVm.RmaId).then(function (data) {
-                log(data);
+                if (angular.isObject(data)) {
+                    leeHelper.copyVm(data.rmaInitiateData, rmavm);
+                    vmManager.businessHandleDatas = data.bussesDescriptionDatas;
+                    vmManager.dataSets = data.inspectionHandleDatas;
+                }
             });
         },
         businessHandleDatas: [],

@@ -117,17 +117,19 @@ namespace EicWorkPlatfrom.Controllers.Quality
         /// <param name="rmaId"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetRmaInspectionHandleDatas(string rmaId)
+        public ContentResult GetRmaInspectionHandleDatas(string rmaId)
         {
+            /// Rma 初始表的数据
+            var rmaInitiateData = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(rmaId).FirstOrDefault();
             /// 业务部处理的数据
-            var BussesDescriptionDatas = RmaService.RmaManager.BussesManageProcessor.GetRmaBussesDescriptionDatasBy(rmaId);
+            var bussesDescriptionDatas = RmaService.RmaManager.BussesManageProcessor.GetRmaBussesDescriptionDatasBy(rmaId);
             /// 检验处理数据
-            var InspectionHandleDatas = RmaService.RmaManager.InspecitonManageProcessor.GetDatasBy(rmaId);
+            var inspectionHandleDatas = RmaService.RmaManager.InspecitonManageProcessor.GetDatasBy(rmaId);
 
 
-            var datas = new { InspectionHandleDatas, BussesDescriptionDatas };
+            var datas = new { rmaInitiateData, inspectionHandleDatas, bussesDescriptionDatas };
 
-            return Json(datas, JsonRequestBehavior.AllowGet);
+            return DateJsonResult(datas);
         }
         /// <summary>
         /// 存储 检验处理

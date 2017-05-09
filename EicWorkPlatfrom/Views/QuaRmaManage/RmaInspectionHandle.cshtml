@@ -17,13 +17,13 @@
         <div class="h-split"></div>
         <div class="row">
             <div class="col-md-2">
-                客户简称<label class="label label-default">{{ramvm.CustomerShortName}}</label>
+                客户简称<label class="label label-default">{{rmavm.CustomerShortName}}</label>
             </div>
             <div class="col-md-2">
-                客户编号<label class="label label-success">{{ramvm.CustomerId}}</label>
+                客户编号<label class="label label-success">{{rmavm.ProductName}}</label>
             </div>
             <div class="col-md-8">
-                RMA单号<label class="label label-info">{{ramvm.RmaId}}</label>
+                RMA单号<label class="label label-info">{{rmavm.RmaId}}</label>
             </div>
         </div>
         <div class="h-split"></div>
@@ -33,12 +33,9 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr class="info">
-                                <th>RMA单号</th>
                                 <th>序号</th>
                                 <th>销货单号</th>
-                                <th>品号</th>
                                 <th>品名</th>
-                                <th>规格</th>
                                 <th>数量</th>
                                 <th>客户编号</th>
                                 <th>客户名称</th>
@@ -52,12 +49,11 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in vmManager.businessHandleDatas track by $index">
-                                <td>{{item.RmaId}}</td>
                                 <td>{{item.RmaIdNumber}}</td>
                                 <td>{{item.ReturnHandleOrder}}</td>
-                                <td>{{item.ProdcutId}}</td>
-                                <td>{{item.ProductName}}</td>
-                                <td>{{item.ProductSpec}}</td>
+                                <td title="品号：{{item.ProdcutId}},规格:{{item.ProductSpec}}">
+                                    {{item.ProductName}}
+                                </td>
                                 <td>{{item.ProductCount}}</td>
                                 <td>{{item.CustomerId}}</td>
                                 <td>{{item.CustomerName}}</td>
