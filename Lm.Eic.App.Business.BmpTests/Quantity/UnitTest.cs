@@ -32,7 +32,7 @@ namespace Lm.Eic.App.Business.BmpTests.Quantity
 
             // }
             // #endregion
-            var listDatas = RmaService.RmaManager.GetErpBussesInfoDatasBy("241-160909001");
+            var listDatas = RmaService.RmaManager.BussesManageProcessor.GetErpBussesInfoDatasBy("241-160909001");
             if (listDatas == null)
                 Assert.Fail();
         }

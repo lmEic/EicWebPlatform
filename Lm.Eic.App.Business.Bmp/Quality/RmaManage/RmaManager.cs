@@ -48,28 +48,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return null;
         }
-
-        /// <summary>
-        /// 通过退料单或换货单得到相应的物料信息
-        /// </summary>
-        /// <param name="returnHandleOrder">退货单</param>
-        /// <returns></returns>
-        public List<CopReturnOrderModel> GetErpBussesInfoDatasBy(string returnHandleOrder)
-        {
-            try
-            {
-                //从ERP中得到相应的数据
-                return CopOrderCrudFactory.CopReturnOrderManageDb.FindReturnOrderByID(returnHandleOrder);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-
-        }
-
-
-
         #endregion
     }
 

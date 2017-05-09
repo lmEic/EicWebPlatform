@@ -27,6 +27,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             get { return OBulider.BuildInstance<IqcDetailDatasGather>(); }
         }
+        InspectionItemCondition ItemCondition
+        {
+            get { return OBulider.BuildInstance<InspectionItemCondition>(); }
+        }
         #endregion
         public OpResult StoreInspectionIqcGatherDatas(InspectionItemDataSummaryVM model)
         {
@@ -39,35 +43,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 opReulst = MasterDatasGather.StoreInspectionIqcMasterModelForm(model);
             return opReulst;
         }
+                
 
-
-
-        /// <summary>
-        /// 加载所有的测试项目
-        /// </summary>
-        /// <param name="materialId"></param>
-        /// <returns></returns>
-        private List<InspectionIqcItemConfigModel> getIqcNeedInspectionItemDatas(string materialId, DateTime materialInDate)
-        {
-            var needInsepctionItems = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
-            if (needInsepctionItems == null || needInsepctionItems.Count <= 0) return new List<InspectionIqcItemConfigModel>();
-            needInsepctionItems.ForEach(m =>
-            {
-
-                if (m.InspectionItem.Contains("盐雾"))
-                {
-                    if (!InspectionManagerCrudFactory.IqcDetailCrud.JudgeYwTest(materialId, materialInDate))
-                        needInsepctionItems.Remove(m);
-                }
-                if (m.InspectionItem.Contains("全尺寸"))
-                {
-                    if (InspectionManagerCrudFactory.IqcDetailCrud.JudgeMaterialTwoYearIsRecord(m.MaterialId))
-                        needInsepctionItems.Remove(m);
-                }
-
-            });
-            return needInsepctionItems;
-        }
         /// <summary>
         /// 生成IQC检验项目所有的信息
         /// </summary>
@@ -80,7 +57,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             {
                 var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault(e => e.ProductID == materialId);
                 if (orderMaterialInfo == null) return new List<InspectionItemDataSummaryVM>();
-                var iqcNeedInspectionsItemdatas = getIqcNeedInspectionItemDatas(materialId, orderMaterialInfo.ProduceInDate);
+                var iqcNeedInspectionsItemdatas = ItemCondition.getIqcNeedInspectionItemDatas(materialId, orderMaterialInfo.ProduceInDate);
                 if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0) return new List<InspectionItemDataSummaryVM>();
                 //保存单头数据
                 return HandleInspectionSummayDatas(orderMaterialInfo, iqcNeedInspectionsItemdatas);
