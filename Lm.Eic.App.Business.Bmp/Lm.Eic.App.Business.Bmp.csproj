@@ -116,6 +116,7 @@
     <Compile Include="Quality\InspectionManage\Fqc\InspectionFqcFormManager.cs" />
     <Compile Include="Quality\InspectionManage\InsepctionDataGatherManager.cs" />
     <Compile Include="Quality\InspectionManage\InspectionFormManager.cs" />
+    <Compile Include="Quality\InspectionManage\InspectionItemCondition.cs" />
     <Compile Include="Quality\InspectionManage\InspectionManageBase.cs" />
     <Compile Include="Quality\InspectionManage\Iqc\InspectionIqcConfigManager.cs" />
     <Compile Include="Quality\InspectionManage\InspectionManagerCrudFactory.cs" />
