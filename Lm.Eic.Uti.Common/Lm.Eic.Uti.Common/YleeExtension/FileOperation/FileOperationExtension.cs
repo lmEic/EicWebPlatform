@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using System.Data;
 
 namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
 {
@@ -29,7 +28,55 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 }
             }
         }
-
+        /// <summary>
+        /// 删除文档
+        /// </summary>
+        /// <param name="FileDocumentationName"></param>
+        /// <returns></returns>
+        public static bool DeleteFileDocumentation(this string FileDocumentationName)
+        {
+            try
+            {
+                if (File.Exists(FileDocumentationName))
+                {
+                    File.Delete(FileDocumentationName);
+                    return true;
+                }
+                else return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+        /// <summary>
+        /// 比较新旧文档是否相同，如果相同，则删除旧文档
+        /// </summary>
+        /// <param name="oldFileName"></param>
+        /// <param name="newFileName"></param>
+        /// <param name="rootPath"></param>
+        /// <returns></returns>
+        public static void DeleteExistFile(this string oldFileName, string newFileName, string rootPath)
+        {
+            try
+            {
+                if (oldFileName == newFileName && oldFileName != string.Empty && oldFileName != null)
+                {
+                    if (rootPath != string.Empty && rootPath != null)
+                    {
+                        string fileName = Path.Combine(rootPath, oldFileName);
+                        fileName = fileName.Replace("/", @"\");
+                        if (File.Exists(fileName))
+                            File.Delete(fileName);//删除旧的文件
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
         /// <summary>
         /// 获取文件中的内容,按行存储到列表中
         /// </summary>
@@ -141,6 +188,20 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         }
 
         /// <summary>
+        /// 获取文件留
+        /// </summary>
+        /// <param name="documentPatch">文档路径</param>
+        /// <returns></returns>
+        public static MemoryStream GetMemoryStream(string documentPatch)
+        {
+            if (!File.Exists(documentPatch))
+                return new MemoryStream();
+
+            byte[] data = File.ReadAllBytes(documentPatch);
+            return new MemoryStream(data);
+        }
+
+        /// <summary>
         /// 扩展方法：使用NPOI将数据导入到Excel内存流
         /// </summary>
         /// <typeparam name="T">数据类型</typeparam>
@@ -157,7 +218,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             ICellStyle cellSytleDate = workbook.CreateCellStyle();
             IDataFormat format = workbook.CreateDataFormat();
             cellSytleDate.DataFormat = format.GetFormat("yyyy年mm月dd日");
-
             try
             {
                 #region 填充列头区域
@@ -193,7 +253,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                     for (int colIndex = 0; colIndex < tpis.Length; colIndex++)
                     {
                         FillIcell<T>(cellSytleDate, rowContent, entity, tpis, colIndex, colIndex);
-                       
                     }
                 }
 
@@ -208,7 +267,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 throw new Exception(ex.ToString());
             }
         }
-        
+
         /// <summary>
         /// 扩展方法：导入到现有的Excel模板文件中
         /// </summary>
@@ -226,16 +285,15 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             workbook.Write(localFile);
             localFile.Close();
         }
-
         /// <summary>
-        ///  扩展方法：导入到现有的Excel模板文件中
+        ///  扩展方法：按所需字段导入到现有的Excel模板文件中
         /// </summary>
         /// <typeparam name="T">实体</typeparam>
         /// <param name="dataSource">实体数据源</param>
         /// <param name="xlsSheetName"></param>
         /// <param name="FieldMapList">所需字段</param>
         /// <returns></returns>
-        public static MemoryStream ExportToExcel<T>(this List<T> dataSource, string xlsSheetName, List<FileFieldMapping> FieldMapList) where T : class ,new()
+        public static MemoryStream ExportToExcel<T>(this List<T> dataSource, string xlsSheetName, List<FileFieldMapping> FieldMapList) where T : class, new()
         {
 
             MemoryStream stream = new MemoryStream();
@@ -254,9 +312,12 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 throw new Exception(ex.ToString());
             }
         }
-
+        /// <summary>
+        /// 创建Sheet表
+        /// </summary>
         private static ISheet WorkbookCreateSheet<T>(List<T> dataSource, string xlsSheetName, List<FileFieldMapping> FieldMapList, HSSFWorkbook workbook) where T : class, new()
         {
+            if (xlsSheetName == string.Empty) xlsSheetName = "Sheet1";
             ISheet sheet = workbook.CreateSheet(xlsSheetName);
             ICellStyle cellSytleDate = workbook.CreateCellStyle();
             IDataFormat format = workbook.CreateDataFormat();
@@ -272,17 +333,32 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             cellFontHeader.FontHeightInPoints = 12;
             headStyle.SetFont(cellFontHeader);
             int forEachindex = 0;
-            FieldMapList.ForEach(e =>
+
+            if (FieldMapList == null || FieldMapList.Count < 1)
             {
-                ICell cell = rowHeader.CreateCell(forEachindex);
-                cell.SetCellValue(e.FieldDiscretion);
-                cell.CellStyle = headStyle;
-                forEachindex++;
-            });
+
+                Type t = dataSource[0].GetType();
+                PropertyInfo[] pis = t.GetProperties();
+                for (int colIndex = 0; colIndex < pis.Length; colIndex++)
+                {
+                    ICell cell = rowHeader.CreateCell(colIndex);
+                    cell.SetCellValue(pis[colIndex].Name);
+                    cell.CellStyle = headStyle;
+                }
+            }
+            else
+            {
+                FieldMapList.ForEach(e =>
+                {
+                    ICell cell = rowHeader.CreateCell(forEachindex);
+                    cell.SetCellValue(e.FieldDiscretion);
+                    cell.CellStyle = headStyle;
+                    forEachindex++;
+                });
+            }
+
             #endregion 填充列头区域
-
             #region 对所需字段依数 填充内容区域
-
             for (int rowIndex = 0; rowIndex < dataSource.Count; rowIndex++)
             {
                 IRow rowContent = sheet.CreateRow(rowIndex + 1);
@@ -290,23 +366,45 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 Type tentity = entity.GetType();
                 PropertyInfo[] tpis = tentity.GetProperties();
                 int colIndex = 0;
-                FieldMapList.ForEach(e =>
+                if (FieldMapList == null || FieldMapList.Count < 1)
                 {
-                    for (int tipsIndex = 0; tipsIndex < tpis.Length; tipsIndex++)
+                    for (int Index = 0; Index < tpis.Length; Index++)
                     {
-                        //如不是所需字段 跳过
-                        if (e.FieldName != tpis[tipsIndex].Name) continue;
-                        FillIcell<T>(cellSytleDate, rowContent, entity, tpis, tipsIndex, colIndex);
-                        colIndex++;
+                        FillIcell<T>(cellSytleDate, rowContent, entity, tpis, Index, Index);
                     }
-                });
+                }
+                else
+                {
+                    FieldMapList.ForEach(e =>
+                    {
+                        //添加项次序号
+                        if (e.FieldDiscretion == "项次")
+                        {
+                            ICell cellContent = rowContent.CreateCell(colIndex);
+                            cellContent.SetCellValue((rowIndex + 1).ToString());
+                            colIndex++;
+                        }
+                        else
+                        {
+                            for (int tipsIndex = 0; tipsIndex < tpis.Length; tipsIndex++)
+                            { //如不是所需字段 跳过
+                                if (e.FieldName == tpis[tipsIndex].Name)
+                                {
+                                    FillIcell<T>(cellSytleDate, rowContent, entity, tpis, tipsIndex, colIndex);
+                                    colIndex++;
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                }
             }
-
-
             #endregion 填充内容区域
             return sheet;
         }
-
+        /// <summary>
+        /// 填充表格值
+        /// </summary>
         private static void FillIcell<T>(ICellStyle cellSytleDate, IRow rowContent, T entity, PropertyInfo[] tpis, int tipsIndex, int colIndex)
         {
             ICell cellContent = rowContent.CreateCell(colIndex);
@@ -364,17 +462,14 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             }
         }
 
-
-
-
         /// <summary>
-        ///  数据按字段分组
+        ///  扩展方法：数据按字段分组
         /// </summary>
         /// <typeparam name="T">实体</typeparam>
-        /// <param name="waitingGroupingList">List数组</param>
-        /// <param name="gruopStr">要分组的字段</param>
+        /// <param name="dataSource">List数组</param>
+        /// <param name="propertyStr">要分组的字段</param>
         /// <returns></returns>
-        public static Dictionary<string, List<T>> GetGroupList<T>(this List<T> dataSource, string propertyStr) where T : class ,new ()
+        public static Dictionary<string, List<T>> GetGroupList<T>(this List<T> dataSource, string propertyStr) where T : class, new()
         {
             try
             {
@@ -403,7 +498,10 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
 
                 #region 如果未找到指定待属性，返回
                 if (!isFind)
+                {
+                    dicGroupingEntity.Add(propertyStr, dataSource);
                     return dicGroupingEntity;
+                }
 
                 string groupName = string.Empty;
                 //获取分组列表
@@ -433,15 +531,14 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             }
         }
 
-
-
         /// <summary>
-        /// 一组实体数据 到Excel内存流
+        /// 扩展方法：把一组实体数据 安所需字段 导入到现有的Excel模板文件中
         /// </summary>
         /// <typeparam name="T">实体</typeparam>
-        /// <param name="DicDataSources">数据字典</param>
+        /// <param name="DicDataSources">一组实体数据</param>
+        /// <param name="FieldMapList">所需字段</param>
         /// <returns></returns>
-        public static MemoryStream ExportToExcelMultiSheets<T>(this Dictionary<string, List<T>> DicDataSources, List<FileFieldMapping> FieldMapList) where T : class ,new ()
+        public static MemoryStream ExportToExcelMultiSheets<T>(this Dictionary<string, List<T>> DicDataSources, List<FileFieldMapping> FieldMapList) where T : class, new()
         {
             try
             {
@@ -464,25 +561,27 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         }
 
     }
-     /// <summary>
-     /// 文件字段对应的描述
-     /// </summary>
+    /// <summary>
+    /// 文件字段对应的描述
+    /// </summary>
     public class FileFieldMapping
     {
         /// <summary>
         /// 文件字段描述
         /// </summary>
-        public  string FieldDiscretion { set; get; }
+        string _fieldDiscretion;
+        public string FieldDiscretion { get { return _fieldDiscretion; } }
         /// <summary>
         /// 文件字段名
         /// </summary>
-        public string FieldName { set; get; }
+        string _fieldName;
+        public string FieldName { get { return _fieldName; } }
 
-        public void  SetField(string fieldName,string fieldDiscretion )
+        public FileFieldMapping(string fieldName, string fieldDiscretion)
         {
-            this.FieldDiscretion =fieldDiscretion;
-            this.FieldName = fieldName;
+            this._fieldDiscretion = fieldDiscretion;
+            this._fieldName = fieldName;
         }
-       
+
     }
 }

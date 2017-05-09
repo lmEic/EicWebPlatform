@@ -1,0 +1,113 @@
+﻿<div class="row" ng-controller="hrSumerizeAttendanceDataCtrl">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h6 class="panel-title"><i class="fa fa-sun-o">汇总考勤数据</i></h6>
+            </div>
+            <div class="panel-body" cg-busy="{promise:promise}">
+                <div class="well">
+                    <div bs-tabs bs-active-pane="vmManager.activeTab">
+                        <div bs-pane data-title="汇总数据" data-name="sumerizeTab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form class="form-inline" role="form" novalidate>
+                                        <div class="form-group">
+                                            <label class="control-label">选择日期</label>
+                                            <input type="date" ng-model="vm.AttendanceDate" format-date class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-info" ng-click="operate.loadData(0)"><i class="fa fa-cloud-download"></i>载入考勤数据</button>
+                                            <a class="btn btn-success" title="导出" ng-href="{{ vmManager.exportToExcel()}}"><i class="fa fa-file-excel-o"></i>导出</a>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <form class="form-inline" role="form" novalidate>
+                                        <div class="form-group">
+                                            <span yl-month-button data-yearmonth="vmManager.yearMonth"></span>
+                                            <a class="btn btn-success" title="导出" ng-href="{{ vmManager.exportYearMonthDatasToExcel()}}"><i class="fa fa-file-excel-o"></i>导出</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div bs-pane data-title="查询数据" data-name="selectTab">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <form class="form-inline" role="form" novalidate>
+                                        <div class="form-group">
+                                            <span yl-date-range date-from="vmManager.dateFrom" date-to="vmManager.dateTo"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-primary" ng-click="operate.change(dep)"
+                                                            title="选择部门信息"
+                                                            data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
+                                                            data-animation="am-flip-x" data-auto-close="1"
+                                                            data-bs-popover>
+                                                        选择部门
+                                                    </button>
+                                                </div>
+                                                <input type="text" readonly placeholder="部门" ng-model="vm.Department" class="form-control" />
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-primary" ng-click="operate.loadData(1)"><i class="fa fa-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" placeholder="输入工号按回车键" ng-model="vm.WorkerId" ng-keypress="vmManager.getAttendanceDatas($event)" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="well" ng-cloak>
+                    <div class="table-responsive" ng-if="vmManager.dataSets.length>0">
+                        <table class="table table-striped table-hover">
+                            <caption></caption>
+                            <thead>
+                                <tr class="info">
+                                    <th>Id</th>
+                                    <th>工号</th>
+                                    <th>姓名</th>
+                                    <th>部门</th>
+                                    <th>班别</th>
+                                    <th>
+                                        刷卡日期
+                                        <span yl-sortby-field data-dbset="vmManager.dataSets" data-sort-field="AttendanceDate"></span>
+                                    </th>
+                                    <th>刷卡时间1</th>
+                                    <th>刷卡时间2</th>
+                                    <th>刷卡时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vmManager.dataSets">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{item.WorkerId}}</td>
+                                    <td>{{item.WorkerName}}</td>
+                                    <td>{{item.Department}}</td>
+                                    <td>{{item.ClassType}}</td>
+                                    <td>{{item.AttendanceDate}}</td>
+                                    <td>{{item.SlotCardTime1}}</td>
+                                    <td>{{item.SlotCardTime2}}</td>
+                                    <td>{{item.SlotCardTime}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div yl-pagination
+                             data-datasource="vmManager.dataSource"
+                             data-dataset="vmManager.dataSets">
+                        </div>
+                    </div>
+                    <h4 class="text-info" ng-if="vmManager.dataSets.length===0"><i class=" fa fa-info-circle"></i>没有考勤数据！</h4>
+                </div>
+            </div>
+            <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+</div>

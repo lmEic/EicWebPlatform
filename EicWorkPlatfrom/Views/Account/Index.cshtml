@@ -4,7 +4,7 @@
 
 <!DOCTYPE html>
 
-<html ng-app="mesOptical.accountApp">
+<html ng-app="bpm.sysmanageApp">
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>帐户管理</title>
@@ -25,64 +25,67 @@
         <div ng-include="'@Url.Action("ModuleLayoutIndexTpl", "CommonTpl")'"></div>
     }
     else
-	{
-    <div>
-        <header role="banner">
-            <nav role="navigation" class="navbar navbar-static-top navbar-inverse">
-                <div class="container">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="@Url.Action("Index","Home")">
-                            <span>
-                                <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司"
-                                     src="@Url.Content("~/Content/login/lmlogo.png")" />企业信息化平台(V1.0)
-                            </span>
-                        </a>
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    </div>
-                    <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <li>
-                                <a href="#">账户管理</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-        <main class="container-fluid">
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="bs-callout bs-callout-info">
-                        <h4><span class="fa fa-list-ul">导航菜单</span></h4>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <ol class="rounded-list">
+    {
+        <div>
+            <header role="banner">
+                <nav role="navigation" class="navbar navbar-static-top navbar-inverse">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="@Url.Action("Index","Home")">
+                                <span>
+                                    <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司"
+                                         src="@Url.Content("~/Content/login/lmlogo.png")"
+                                         style="margin-left: -50px;margin-top: -5px;background-color: whitesmoke;height: 28px;width: 32px;border-radius: 5px;margin-right: 3px;" />
+                                    企业信息化平台(V1.0)
+                                </span>
+                            </a>
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
                                 <li>
-                                    <a data-ui-sref-active="active" data-ui-sref="accRegistUser" style="cursor:pointer">用户注册</a>
-                                    <a data-ui-sref-active="active" data-ui-sref="sysRoleManage" style="cursor:pointer">角色管理</a>
-                                    <a data-ui-sref-active="active" data-ui-sref="accAssignRoleToUser" style="cursor:pointer">添加角色与用户</a>
-                                    <a data-ui-sref-active="active" data-ui-sref="sysModuleEdit" style="cursor:pointer">模块管理</a>
-                                    <a data-ui-sref-active="active" data-ui-sref="sysAssemblyEdit" style="cursor:pointer">程序集编辑</a>
-                                    <a data-ui-sref-active="active" data-ui-sref="assignPowerToRole" style="cursor:pointer">分配权限</a>
-                                    <a data-ui-sref-active="active" data-ui-sref="assignModuleToRole" style="cursor:pointer">分配菜单</a>
+                                    <a href="#">账户管理</a>
                                 </li>
-                            </ol>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <main class="container-fluid">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="bs-callout bs-callout-info">
+                            <h4><span class="fa fa-list-ul">导航菜单</span></h4>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <ol class="rounded-list">
+                                    <li>
+                                        <a data-ui-sref-active="active" data-ui-sref="accRegistUser" style="cursor:pointer">用户注册</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="sysRoleManage" style="cursor:pointer">角色管理</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="sysAssignRoleManage" style="cursor:pointer">角色分配</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="accAssignRoleToUser" style="cursor:pointer">添加角色与用户</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="sysModuleEdit" style="cursor:pointer">模块管理</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="sysAssemblyEdit" style="cursor:pointer">程序集编辑</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="assignPowerToRole" style="cursor:pointer">分配权限</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="assignModuleToRole" style="cursor:pointer">分配菜单</a>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div data-ui-view>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-10">
-                    <div data-ui-view>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-	}
+            </main>
+        </div>
+    }
 
     @Scripts.Render("~/bundles/bootstrap")
 
@@ -96,6 +99,6 @@
 
     <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
 
-    <script src="@Url.Content("~/Scripts/controller/account/accountApp.js")"></script>
+    <script src="@Url.Content("~/Scripts/controller/sysmanage/sysmanageApp.js")"></script>
 </body>
 </html>

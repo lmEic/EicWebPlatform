@@ -24,7 +24,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
     {
         public ArchivesEmployeeIdentityModelMapping()
         {
-            this.HasKey(t => t.IdentityID).HasKey(t => t.WorkerId);
+            this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Archives_EmployeeIdentityInfo");
         }
@@ -105,6 +105,38 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Archives_WorkerInfo");
+        }
+    }
+
+    public class ArWorkerLeaveOfficeInfoMapping: EntityTypeConfiguration<ArLeaveOfficeModel>
+    {
+        public ArWorkerLeaveOfficeInfoMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Archives_LeaveOffice");
+        }
+    }
+   
+    public class ArWorkerIdChangedMapping:EntityTypeConfiguration <WorkerChangedModel>
+    {
+        public ArWorkerIdChangedMapping ()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Archives_WorkerIdChanged");
+        }
+    }
+    /// <summary>
+    ///ArchivesForgetInputWorkerModel
+    /// </summary>
+    public class ArchivesForgetInputWorkerModelMapping : EntityTypeConfiguration<ArchivesForgetInputWorkerModel>
+    {
+        public ArchivesForgetInputWorkerModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Archives_ForgetInputWorkerInfo");
         }
     }
 }

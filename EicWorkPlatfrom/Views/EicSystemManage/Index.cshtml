@@ -65,6 +65,15 @@
                                 <ol class="rounded-list">
                                     <li>
                                         <a data-ui-sref-active="active" data-ui-sref="itilProjectDevelopManage" style="cursor:pointer">项目开发管理</a>
+
+                                        <a data-ui-sref-active="active" data-ui-sref="accRegistUser" style="cursor:pointer">用户注册</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="sysRoleManage" style="cursor:pointer">角色管理</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="sysRoleAssignManage" style="cursor:pointer">角色分配</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="accAssignRoleToUser" style="cursor:pointer">添加角色与用户</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="sysModuleEdit" style="cursor:pointer">模块管理</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="sysAssemblyEdit" style="cursor:pointer">程序集编辑</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="assignPowerToRole" style="cursor:pointer">分配权限</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="assignModuleToRole" style="cursor:pointer">分配菜单</a>
                                     </li>
                                 </ol>
                             </div>
@@ -87,14 +96,13 @@
 
     @Scripts.Render("~/bundles/anstrap")
 
-    @Scripts.Render("~/common/leehelper")
+    <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
 
     <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
 
     <script src="@Url.Content("~/Scripts/controller/masterProduct/mpConfigApp.js")"></script>
 
     <script src="@Url.Content("~/Scripts/controller/sysmanage/sysmanageApp.js")"></script>
-
     <script src="@Url.Content("~/Scripts/controller/sysmanage/sysConfigManage.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/sysmanage/sysItilManage.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/sysmanage/sysAccountManage.js")"></script>

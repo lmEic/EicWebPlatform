@@ -13,7 +13,6 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
         #region login
 
         [NoAuthenCheck]
@@ -31,12 +30,17 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult LoginCheck(LoginModel user)
         {
             var loginUser = AuthenService.UserManager.UserRegister.LoginCheck(user);
+            var webSite = new WebSiteInfo()
+            {
+                ServerName = this.HttpContext.Server.MachineName.ToUpper(),
+                PhysicalApplicationPath = HttpContext.Request.PhysicalApplicationPath
+            };
             if (loginUser.LoginStatus.StatusCode == 0)
             {
                 Session[EicConstKeys.UserAccount] = loginUser;
             }
-
-            return Json(loginUser, JsonRequestBehavior.AllowGet);
+            var loginInfo = new { webSite = webSite, loginUser = loginUser };
+            return Json(loginInfo, JsonRequestBehavior.AllowGet);
         }
 
         [NoAuthenCheck]
@@ -133,6 +137,10 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        public ActionResult SysRoleAssignManage()
+        {
+            return View();
+        }
         #endregion role manage
 
         #region assembly
@@ -186,7 +194,6 @@ namespace EicWorkPlatfrom.Controllers
             var modules = AuthenService.ModuleManager.NavMneus;
             return Json(modules, JsonRequestBehavior.AllowGet);
         }
-
         #endregion module nav
 
         #region user match roles

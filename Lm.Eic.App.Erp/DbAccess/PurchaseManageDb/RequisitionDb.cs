@@ -1,8 +1,11 @@
 ﻿using Lm.Eic.App.Erp.Domain.PurchaseManage;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
+using System.Linq;
 
 namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
 {
@@ -160,6 +163,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             return "Select TC001,TC002,TC003,TC004,TC011,TC019  from PURTC";
         }
 
+
         private void MapPurHeaderRowAndModel(DataRow dr, PurchaseHeaderModel m)
         {
             m.Code = dr["TC002"].ToString();
@@ -169,7 +173,35 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             m.PurchasePerson = dr["TC011"].ToString();
             m.SupplierID = dr["TC004"].ToString();
         }
-
+        /// <summary>
+        /// 获取采购供应商ID （331 333）
+        /// </summary>
+        /// <param name="startYearMonth">年份格式yyyy</param>
+        /// <returns></returns>
+        public List<string> PurchaseSppuerId(string startYearMonth, string endYearMonth)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT  DISTINCT TC004 ")
+                  .Append("FROM   PURTC ")
+                  .Append("WHERE   (TC001 = '331' OR TC001 = '333') AND (TC003 >= '{0}%') AND  (TC003 < '{1}%')");
+                DataTable dt = DbHelper.Erp.LoadTable(string.Format(sb.ToString(), startYearMonth, endYearMonth));
+                List<string> SppuerIdList = new List<string>();
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        SppuerIdList.Add(dr[0].ToString());
+                    }
+                }
+                return SppuerIdList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
         /// <summary>
         /// 根据查询条件获取采购单单头数据信息
         /// </summary>
@@ -217,6 +249,36 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             return purHeaders;
         }
 
+        /// <summary>
+        /// 供应商最近二项采购
+        /// </summary>
+        /// <param name="suppplierId"></param>
+        /// <returns></returns>
+        public List<PurchaseHeaderModel> FindSupplierLatestTwoPurchaseBy(string suppplierId)
+        {
+            List<PurchaseHeaderModel> FindSupplierLatestTwoPurchase = new List<PurchaseHeaderModel>();
+            string SqlFields = "Select TOP (1) TC001,TC002,TC003,TC004,TC011,TC019  from PURTC ";
+            string whereSql = string.Format("WHERE (TC004 = '{0}')  ORDER BY TC003 DESC ", suppplierId);
+            var lastestPruchase = ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(SqlFields, whereSql, (dr, m) =>
+            {
+                this.MapPurHeaderRowAndModel(dr, m);
+            }).FirstOrDefault();
+            if (lastestPruchase == null) return FindSupplierLatestTwoPurchase;
+
+            FindSupplierLatestTwoPurchase.Add(lastestPruchase);
+            string notmonth = lastestPruchase.PurchaseDate.Substring(0, lastestPruchase.PurchaseDate.Length - 2);
+            string whereSql2 = string.Format("WHERE   (TC004 = '{0}')  AND (NOT (TC003 LIKE '{1}%'))  ORDER BY TC003 DESC ", suppplierId, notmonth);
+            var FirstPruchase = ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(SqlFields, whereSql2, (dr, m) =>
+            {
+                this.MapPurHeaderRowAndModel(dr, m);
+            }).FirstOrDefault();
+            if (FirstPruchase == null)
+            { FindSupplierLatestTwoPurchase.Add(lastestPruchase); }
+            else FindSupplierLatestTwoPurchase.Add(FirstPruchase);
+
+
+            return FindSupplierLatestTwoPurchase;
+        }
         #endregion PurchaseHeader
 
         //-----------------PurchaseBody---------------------------------
@@ -258,6 +320,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             string sqlWhere = string.Format(" where TD001='{0}' and TD002='{1}'", category, code);
             return FindPurBodyBy(sqlWhere);
         }
+
 
         public List<PurchaseBodyModel> FindPurBodyByID(string id)
         {
@@ -379,6 +442,27 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             return stoHeaders;
         }
 
+        /// <summary>
+        /// 得到进货供应商Id
+        /// </summary>
+        /// <param name="startDate">进货时间</param>
+        /// <param name="endDate">进货时间</param>
+        /// <returns></returns>
+        public List<string> GetStockSupplierId(string startDate, string endDate)
+        {
+            List<string> SupplierIdlist = new List<string>();
+            string whereSql = string.Format(" WHERE  (TG001 = '341' OR TG001 = '343') AND (TG003 >= '{0}')AND ( TG003 <= '{1}')  order by TG005 ", startDate, endDate);
+            var modelList = FindStoHeaderBy(whereSql);
+            if (modelList != null && modelList.Count > 0)
+            {
+                modelList.ForEach(e =>
+                {
+                    if (!SupplierIdlist.Contains(e.Supplier))
+                    { SupplierIdlist.Add(e.Supplier); };
+                });
+            }
+            return SupplierIdlist;
+        }
         #endregion StockHeader
 
         //-----------------StockBody---------------------------------
@@ -405,7 +489,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
             m.Memo = dr["TH033"].ToString();
             m.PurchaseID = ErpDbAccessHelper.ComposeID(dr["TH011"].ToString().Trim(), dr["TH012"].ToString().Trim());
             m.StockAmount = dr["TH019"].ToString().ToDouble();
-            m.StockCount =Convert .ToInt64 ( dr["TH007"].ToString().ToDouble());
+            m.StockCount = Convert.ToInt64(dr["TH007"].ToString().ToDouble());
             m.StockUnit = dr["TH018"].ToString().ToDouble();
         }
 
@@ -456,5 +540,71 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         }
 
         #endregion StockBody
+    }
+
+
+    /// <summary>
+    /// 采购供应商数据访问DB
+    /// </summary>
+    public class SupplierDb
+    {
+        // MA001 AS 编号, MA002 AS 简称, MA003 AS 全称, MA008 AS 电话, MA010 AS 传真, MA012 AS 负责人,MA01 AS  Email,
+        //MA013 AS 联系人地址, MA014 AS 地址, MA025 AS 付款条件, MA051 AS 账单地址
+
+        private string SqlFields
+        {
+            get { return "SELECT MA001,MA002, MA004,MA003,MA008,MA010,MA011,MA012,MA013,MA014,MA025,MA051   FROM   PURMA "; }
+        }
+        /// <summary>
+        /// 获得供应商信息
+        /// </summary>
+        /// <param name="SupplierId">供应商ID</param>
+        /// <returns></returns>
+        public SupplierModel FindSpupplierInfoBy(string SupplierId)
+        {
+            string whereSql = string.Format("where MA001='{0}'", SupplierId);
+            var listModels = ErpDbAccessHelper.FindDataBy<SupplierModel>(SqlFields, whereSql, (dr, m) =>
+              {
+                  m.SupplierID = dr["MA001"].ToString().Trim();
+                  m.SupplierShortName = dr["MA002"].ToString().Trim();
+                  m.SupplierName = dr["MA003"].ToString().Trim();
+                  m.Tel = dr["MA008"].ToString().Trim();
+                  m.FaxNo = dr["MA010"].ToString().Trim();
+                  m.Email = dr["MA011"].ToString().Trim();
+                  m.Principal = dr["MA012"].ToString().Trim();
+                  m.Contact = dr["MA013"].ToString().Trim();
+                  m.Address = dr["MA014"].ToString().Trim();
+                  m.PayCondition = dr["MA025"].ToString().Trim();
+                  m.BillAddress = dr["MA051"].ToString().Trim();
+                  m.IsCooperate = HandelIsConnparate(dr["MA004"].ToString().Trim());
+              });
+            return listModels.FirstOrDefault();
+        }
+
+
+        private string HandelIsConnparate(string Erpstring)
+        {
+            // 01  01Y   01YH  01H    02   02Y 02YH 
+            switch (Erpstring)
+            {
+                case "01":
+                    return "True";
+                case "01Y":
+                    return "True";
+                case "01H":
+                    return "True";
+                case "01YH":
+                    return "True";
+                case "02":
+                    return "True";
+                case "02Y":
+                    return "False";
+                case "02YH":
+                    return "False";
+                default:
+                    return "True";
+            }
+        }
+
     }
 }

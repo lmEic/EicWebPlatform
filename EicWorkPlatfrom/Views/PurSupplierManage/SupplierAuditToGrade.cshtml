@@ -1,0 +1,58 @@
+﻿<div class="panel panel-primary" ng-controller="supplierAuditToGradeCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title">供应商稽核评分管理</h6>
+    </div>
+    <div class="panel-body">
+        <nav class="nav">
+            <form class="navbar-form navbar-left">
+                <span yl-quarter-button data-yearquarter="vmManager.yearQuarter"></span>
+                <button type="button" class="btn btn-default" ng-click="vmManager.getSupGradeInfo()"><i class="fa fa-search"></i> 载入</button>
+                <a class="btn btn-success" href="@Url.Action("CreateSupplierGradeInfoDataToExcel", "PurSupplierManage")"><i class="fa fa-file-excel-o"></i> 导出Excel</a>
+            </form>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="vmManager.supplierId" placeholder="输入供应商编号">
+                </div>
+                <button type="submit" class="btn btn-default" ng-click="vmManager.searchBySupplierId('grade')"><i class="fa fa-search"></i></button>
+            </form>
+        </nav>
+        <div class="h-split"></div>
+        <div class="well" cg-busy="{promise:searchPromise}">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="info">
+                            <th>供应商编号</th>
+                            <th>供应商名称</th>
+                            <th>供应商类别</th>
+                            <th>采购类别</th>
+                            <th>采购料件</th>
+                            <th>上次采购日期</th>
+                            <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in vmManager.editDatas track by $index">
+                            <td>{{item.SupplierId}}</td>
+                            <td>{{item.SupplierName}}</td>
+                            <td>{{item.SupplierProperty}}</td>
+                            <td>{{item.PurchaseType}}</td>
+                            <td>{{item.PurchaseMaterial}}</td>
+                            <td>{{item.LastPurchaseDate}}</td>
+                            <td>
+                                <button class="btn btn-xs btn-primary" ng-click="vmManager.editSupGradeInfo(item)" title="填写评分信息">
+                                    填写评分信息
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="panel-footer">
+
+    </div>
+</div>

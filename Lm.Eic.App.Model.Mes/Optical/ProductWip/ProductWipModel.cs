@@ -13,206 +13,105 @@ namespace Lm.Eic.App.DomainModel.Mes.Optical.ProductWip
 
         #region Model
 
-        private string _departmentname;
-        private DateTime _productdate;
-        private string _classtype;
-        private string _productstatus;
-        private string _producttype;
-        private string _productbigstation;
-        private string _productstation;
-        private string _workerid;
-        private string _workername;
-        private string _indepartment;
-        private string _flowcardid;
-        private int _goodcount;
-        private string _memo;
-        private DateTime _inputtime;
-        private string _field1;
-        private string _field2;
-        private string _field3;
-        private string _field4;
-        private string _field5;
-        private decimal _id_key;
+        /// <summary>
+        ///
+        /// </summary>
+        public string DepartmentName { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string DepartmentName
-        {
-            set { _departmentname = value; }
-            get { return _departmentname; }
-        }
+        public DateTime ProductDate { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public DateTime ProductDate
-        {
-            set { _productdate = value; }
-            get { return _productdate; }
-        }
+        public string ClassType { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string ClassType
-        {
-            set { _classtype = value; }
-            get { return _classtype; }
-        }
+        public string ProductStatus { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string ProductStatus
-        {
-            set { _productstatus = value; }
-            get { return _productstatus; }
-        }
+        public string ProductType { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string ProductType
-        {
-            set { _producttype = value; }
-            get { return _producttype; }
-        }
+        public string ProductBigStation { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string ProductBigStation
-        {
-            set { _productbigstation = value; }
-            get { return _productbigstation; }
-        }
+        public string ProductStation { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string ProductStation
-        {
-            set { _productstation = value; }
-            get { return _productstation; }
-        }
+        public string WorkerID { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string WorkerID
-        {
-            set { _workerid = value; }
-            get { return _workerid; }
-        }
+        public string WorkerName { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string WorkerName
-        {
-            set { _workername = value; }
-            get { return _workername; }
-        }
+        public string InDepartment { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string InDepartment
-        {
-            set { _indepartment = value; }
-            get { return _indepartment; }
-        }
+        public string FlowCardID { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string FlowCardID
-        {
-            set { _flowcardid = value; }
-            get { return _flowcardid; }
-        }
+        public int GoodCount { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public int GoodCount
-        {
-            set { _goodcount = value; }
-            get { return _goodcount; }
-        }
+        public string Memo { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string Memo
-        {
-            set { _memo = value; }
-            get { return _memo; }
-        }
+        public DateTime InputTime { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public DateTime InputTime
-        {
-            set { _inputtime = value; }
-            get { return _inputtime; }
-        }
+        public string Field1 { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string Field1
-        {
-            set { _field1 = value; }
-            get { return _field1; }
-        }
+        public string Field2 { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string Field2
-        {
-            set { _field2 = value; }
-            get { return _field2; }
-        }
+        public string Field3 { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string Field3
-        {
-            set { _field3 = value; }
-            get { return _field3; }
-        }
+        public string Field4 { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string Field4
-        {
-            set { _field4 = value; }
-            get { return _field4; }
-        }
+        public string Field5 { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string Field5
-        {
-            set { _field5 = value; }
-            get { return _field5; }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public decimal Id_Key
-        {
-            set { _id_key = value; }
-            get { return _id_key; }
-        }
+        public decimal Id_Key { get; set; }
 
         #endregion Model
     }
@@ -228,96 +127,50 @@ namespace Lm.Eic.App.DomainModel.Mes.Optical.ProductWip
 
         #region Model
 
-        private int _flowid;
-        private string _producttype;
-        private string _productstation;
-        private string _productstationdetail;
-        private string _stationdetailprevious;
-        private string _stationsign;
-        private int _isvisible;
-        private string _productstatus;
-        private decimal _id_key;
+        /// <summary>
+        ///
+        /// </summary>
+        public int FlowID { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public int FlowID
-        {
-            set { _flowid = value; }
-            get { return _flowid; }
-        }
+        public string ProductType { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string ProductType
-        {
-            set { _producttype = value; }
-            get { return _producttype; }
-        }
+        public string ProductStation { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string ProductStation
-        {
-            set { _productstation = value; }
-            get { return _productstation; }
-        }
+        public string ProductStationDetail { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string ProductStationDetail
-        {
-            set { _productstationdetail = value; }
-            get { return _productstationdetail; }
-        }
+        public string StationDetailPrevious { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string StationDetailPrevious
-        {
-            set { _stationdetailprevious = value; }
-            get { return _stationdetailprevious; }
-        }
+        public string StationSign { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string StationSign
-        {
-            set { _stationsign = value; }
-            get { return _stationsign; }
-        }
+        public int IsVisible { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public int IsVisible
-        {
-            set { _isvisible = value; }
-            get { return _isvisible; }
-        }
+        public string ProductStatus { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string ProductStatus
-        {
-            set { _productstatus = value; }
-            get { return _productstatus; }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public decimal Id_Key
-        {
-            set { _id_key = value; }
-            get { return _id_key; }
-        }
+        public decimal Id_Key { get; set; }
 
         #endregion Model
     }

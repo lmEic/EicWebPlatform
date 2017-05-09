@@ -24,9 +24,46 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
 
         #region method
+        /// <summary>
+        /// 初次修改岗位信息(档案编辑入口)
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        internal int Edit(ArPostChangeLibModel entity)
+        {
+            int record = 0;
+            var posts = this.irep.Entities.Where(e => e.WorkerId == entity.WorkerId).ToList();
+            if (posts != null && posts.Count == 1)
+            {
+                record = this.irep.Update(e => e.WorkerId == entity.WorkerId, u => new ArPostChangeLibModel
+                {
+                    NowPost = entity.NowPost,
+                    OldPost = entity.OldPost,
+                    PostNature = entity.PostNature,
+                    PostType = entity.PostType,
+                    AssignDate = entity.AssignDate
+                });
+            }
+            return record;
+        }
 
         /// <summary>
-        /// 变动岗位信息
+        /// 初始化员工岗位数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        internal int InitPost(ArPostChangeLibModel entity)
+        {
+            int record = 0;
+            if (!this.irep.IsExist(e => e.WorkerId == entity.WorkerId))
+            {
+                record = this.irep.Insert(entity);
+            }
+            return record;
+        }
+
+        /// <summary>
+        /// 变动岗位信息(直接岗位变动业务入口)
         /// </summary>
         /// <param name="changeEntity"></param>
         /// <returns></returns>
@@ -47,10 +84,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                         OpPerson = changeEntity.OpPerson
                     });
                 }
-            }
-            if (changeEntity.OpSign == "change")
-            {
-                if (Posts != null && Posts.Count > 0)
+                else if (changeEntity.OpSign == "change")
                 {
                     changeRecord = Posts.Count;
                     Posts.ForEach(d =>
@@ -60,11 +94,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                             InStatus = "Out"
                         });
                     });
+                    changeEntity.InStatus = "In";
+                    record = this.irep.Insert(changeEntity);
+                    changeRecord = changeRecord + record;
                 }
-                changeEntity.InStatus = "In";
-                record = this.irep.Insert(changeEntity);
-                changeRecord = changeRecord + record;
             }
+          
             return record;
         }
 

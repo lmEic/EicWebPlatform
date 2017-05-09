@@ -55,6 +55,17 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         }
 
         /// <summary>
+        /// 转换为yyyyMMdd 字符串
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static string ToDateTimeShortStr(this DateTime dt)
+        {
+            return dt.ToString("yyyyMMdd");
+        }
+
+
+        /// <summary>
         /// 获取给定日期所在当年的周数
         /// </summary>
         /// <param name="giveDay"></param>
@@ -81,7 +92,13 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         public static DateTime ToDate(this string dt)
         {
             DateTime d = DateTime.Now.ToDate();
+            if (dt == string.Empty) return d;
+
             if (DateTime.TryParse(dt, out d))
+            {
+                return d.ToDate();
+            }
+            if (DateTime.TryParseExact(dt, "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out d))
             {
                 return d.ToDate();
             }
@@ -140,7 +157,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         public static long ToLong(this string value)
         {
             long r = 0;
-            if (long.TryParse (value ,out r ))
+            if (long.TryParse(value, out r))
             { return r; }
             return r;
         }
@@ -202,7 +219,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         #endregion String
 
         #region Image
-
         /// <summary>
         /// 将图片转换为字节数组
         /// </summary>
@@ -213,7 +229,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
             if (img == null) return null;
             Bitmap map = new Bitmap(img);
             MemoryStream ms = new MemoryStream();
-            map.Save(ms, ImageFormat.Jpeg);
+            saveImageToMs(img, ms);
             ms.Position = 0;
             byte[] mybite = new byte[int.Parse(ms.Length.ToString())];
             ms.Read(mybite, 0, int.Parse(ms.Length.ToString()));
@@ -222,6 +238,61 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
             return mybite;
         }
 
+        private static void saveImageToMs(Image img, MemoryStream ms)
+        {
+            ImageFormat format = img.RawFormat;
+            if (format.Equals(ImageFormat.Jpeg))
+            {
+                img.Save(ms, ImageFormat.Jpeg);
+            }
+            else if (format.Equals(ImageFormat.Png))
+            {
+                img.Save(ms, ImageFormat.Png);
+            }
+            else if (format.Equals(ImageFormat.Bmp))
+            {
+                img.Save(ms, ImageFormat.Bmp);
+            }
+            else if (format.Equals(ImageFormat.Gif))
+            {
+                img.Save(ms, ImageFormat.Gif);
+            }
+            else if (format.Equals(ImageFormat.Icon))
+            {
+                img.Save(ms, ImageFormat.Icon);
+            }
+        }
+        /// <summary>
+        /// 将Image转换为内存流
+        /// </summary>
+        /// <param name="img"></param>
+        /// <returns></returns>
+        public static MemoryStream ToMemoryStream(this Image img)
+        {
+            if (img == null) return null;
+            Bitmap map = new Bitmap(img);
+            MemoryStream ms = new MemoryStream();
+            saveImageToMs(img, ms);
+            return ms;
+        }
+        /// <summary>
+        /// 读取文件到字节数组
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static byte[] ToPhotoByte(this string fileName)
+        {
+            byte[] photo_byte = null;
+            if (!File.Exists(fileName)) return photo_byte;
+            using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (BinaryReader br = new BinaryReader(fs))
+                {
+                    photo_byte = br.ReadBytes((int)fs.Length);
+                }
+            }
+            return photo_byte;
+        }
         #endregion Image
 
         #region Byte[]
@@ -248,11 +319,11 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         /// </summary>
         /// <param name="context">操作的对象</param>
         /// <returns></returns>
-        public static OpResult ToOpResult_Add(this int record, string context,decimal id_Key)
+        public static OpResult ToOpResult_Add(this int record, string context, decimal id_Key)
         {
             string sucessMsg = string.Format("添加{0}数据成功", context);
             string failMsg = string.Format("添加{0}数据失败", context);
-            return OpResult.SetResult(sucessMsg, failMsg, record,id_Key);
+            return OpResult.SetResult(sucessMsg, failMsg, record, id_Key);
         }
 
         /// <summary>
@@ -325,5 +396,12 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         }
 
         #endregion Int
+
+        #region trim
+        public static string TrimEndNewLine(this string content)
+        {
+            return content.TrimEnd((char[])"\r\n".ToCharArray());
+        }
+        #endregion
     }
 }

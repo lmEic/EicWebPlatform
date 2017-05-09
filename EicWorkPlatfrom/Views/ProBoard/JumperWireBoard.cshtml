@@ -1,0 +1,150 @@
+﻿<div class="panel panel-primary" ng-controller="jumperWireBoardCtrl">
+    <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
+        <div bs-pane data-title="看板资料录入" data-name="initTab">
+            <div class="well">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form role="form" name="formJumperWire" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="productID" class="col-md-3 control-label">产品品号</label>
+                                    <div class="col-md-8">
+                                        <input name="productID" class="form-control" ng-model="vm.ProductID" required />
+                                        <div class="error-messages" ng-messages="formJumperWire.productID.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">产品品号不能为空</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="materialID" class="col-md-3 control-label">物料编号</label>
+                                    <div class="col-md-8">
+                                        <input name="materialID" class="form-control" ng-model="vm.MaterialID" placeholder="输入物料编号并按下回车键进行系统验证"
+                                                ng-keypress="vmManager.isMatchProductId($event)" required />
+                                        <div class="error-messages" ng-messages="formJumperWire.materialID.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">物料编号不能为空</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="drawing" class="col-md-3 control-label">文件名称：</label>
+                                    <div class="col-md-8">
+                                        <input type="file" name="file" class="form-control" id="boardFile" onchange="angular.element(this).scope().selectFile(this)"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="remarks" class="col-md-3 control-label">备注</label>
+                                    <div class="col-md-8">
+                                        <textarea rows="3" name="remarks" placeholder="填写备注" class="form-control" ng-model="vm.Remarks" />
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <hr />
+                            <div class="alert alert-info">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <button class="btn btn-primary" ng-click="operate.saveAll(formJumperWire.$valid)"><i class="fa fa-save"></i>保存</button>
+                                        <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                        <span yl-operatemsg-board></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6" cg-busy="{promise:previewPromise}">
+                        <img class="img-rounded" id="previewFile" style="width:100%;height:420px;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div bs-pane data-title="看板信息审核" data-name="checkTab">
+            <div class="well" cg-busy="{promise:searchPromise}">
+                <span class="btn btn-sm btn-primary" ng-click="vmManager.getWaittingCheckInfo()"><i class="fa fa-tablet"></i>查看待审核信息</span>
+                <div class="h-split"></div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-condensed table-hover">
+                        <thead>
+                            <tr class="info">
+                                <th>产品品号</th>
+                                <th>物料品号</th>
+                                <th>物料看板</th>
+                                <th>操作人</th>
+                                <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.editDatas track by $index">
+                                <td>{{item.ProductID}}</td>
+                                <td>{{item.MaterialID}}</td>
+                                <td>
+                                    <img ng-src="{{item.DocumentPath}}" style="width:100px;height:80px;" class="img-rounded" title="{{item.ProductID}}" />
+                                </td>
+                                <td>{{item.OpPerson}}</td>
+                                <td>
+                                    <button class="btn btn-xs btn-danger" ng-click="vmManager.aduitItem(item)" title="审核">
+                                        <i class="fa fa-pencil"></i>审核
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div bs-pane data-title="打印物料看板" data-name="printMaterialTab">
+            <div class="well">
+                <div class="row">
+                    <div class="col-md-4">
+                        <form role="form" name="formPrintBoard" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="orderId" class="col-md-4 control-label">工单号码</label>
+                                    <div class="col-md-8">
+                                        <input name="orderId" class="form-control" ng-model="printvm.orderId" placeholder="输入工单单号" required/>
+                                        <div class="error-messages" ng-messages="formPrintBoard.orderId.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">工单号码不能为空</small>
+                                        </div>
+                                   </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="shippingDate" class="col-md-4 control-label">出货日期</label>
+                                    <div class="col-md-8">
+                                        <input name="shippingDate" type="date" format-date ng-model="printvm.shippingDate" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="shippingCount" class="col-md-4 control-label">出货数量</label>
+                                    <div class="col-md-8">
+                                        <input name="shippingCount" class="form-control" ng-model="printvm.shippingCount" required/>
+                                        <div class="error-messages" ng-messages="formPrintBoard.shippingCount.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">出货数量不能为空</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-4">
+                                </div>
+                                <div class="col-md-8">
+                                    <button class="btn btn-primary" ng-click="operate.createImage(formPrintBoard.$valid)"><i class="fa fa-image"></i>生成</button>
+                                    <button class="btn btn-success" ng-click="printvm.print()"><i class="fa fa-print"></i>打印</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-8">
+                        <div style="width:100%;height:420px;">
+                            <img class="img-rounded" id="imagePreview" ng-src="{{previewFileName}}" style="width:100%;height:100%;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>

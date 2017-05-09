@@ -68,4 +68,16 @@ namespace Lm.Eic.Framework.Authenticate.Repository.Mapping
             this.ToTable("Authen_ModuleNavigation");
         }
     }
+
+    
+    public class AuditModelMapping : EntityTypeConfiguration<AuditModel>
+    {
+        public AuditModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Authen_Audit");
+        }
+    }
+
 }

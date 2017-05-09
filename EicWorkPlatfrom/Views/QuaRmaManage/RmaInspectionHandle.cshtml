@@ -1,0 +1,220 @@
+﻿<div class="panel panel-primary" ng-controller="rmaInspectionHandleCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title">RMA检验处置</h6>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <form class="form-inline" cg-busy="{promise:searchPromise}">
+                    <div class="form-group">
+                        <label>RMA单号</label>
+                        <input type="text" placeholder="按RMA单号查询" ng-model="vm.RmaId" />
+                        <button class="btn btn-xs btn-primary" ng-click="vmManager.getRmaInspectionHandleDatas()" type="button">查询</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="h-split"></div>
+        <div class="row">
+            <div class="col-md-2">
+                客户简称<label class="label label-default">{{ramvm.CustomerShortName}}</label>
+            </div>
+            <div class="col-md-2">
+                客户编号<label class="label label-success">{{ramvm.CustomerId}}</label>
+            </div>
+            <div class="col-md-8">
+                RMA单号<label class="label label-info">{{ramvm.RmaId}}</label>
+            </div>
+        </div>
+        <div class="h-split"></div>
+        <div bs-tabs bs-active-pane="vmManager.activeTab" style="min-height:450px;">
+            <div bs-pane data-title="业务操作" data-name="businessTab">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr class="info">
+                                <th>RMA单号</th>
+                                <th>序号</th>
+                                <th>销货单号</th>
+                                <th>品号</th>
+                                <th>品名</th>
+                                <th>规格</th>
+                                <th>数量</th>
+                                <th>客户编号</th>
+                                <th>客户名称</th>
+                                <th>订单号</th>
+                                <th>原出货日期</th>
+                                <th>不良现象</th>
+                                <th>处理意见</th>
+                                <th>付费方式</th>
+                                <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.businessHandleDatas track by $index">
+                                <td>{{item.RmaId}}</td>
+                                <td>{{item.RmaIdNumber}}</td>
+                                <td>{{item.ReturnHandleOrder}}</td>
+                                <td>{{item.ProdcutId}}</td>
+                                <td>{{item.ProductName}}</td>
+                                <td>{{item.ProductSpec}}</td>
+                                <td>{{item.ProductCount}}</td>
+                                <td>{{item.CustomerId}}</td>
+                                <td>{{item.CustomerName}}</td>
+                                <td>{{item.SalesOrder}}</td>
+                                <td>{{item.ProductsShipDate}}</td>
+                                <td>{{item.BadDescrption}}</td>
+                                <td>{{item.CustomerHandleSuggestion}}</td>
+                                <td>{{item.FeePaymentWay}}</td>
+                                <td>
+                                    <button class="btn btn-xs btn-primary" ng-click="operate.handleItem(item)" title="填写处理结果">
+                                        填写处理结果
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div bs-pane data-title="品保操作" data-name="qualityTab">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr class="info">
+                                <th>RMA单号</th>
+                                <th>序号</th>
+                                <th>不良现象</th>
+                                <th>不良描述</th>
+                                <th>不良原因</th>
+                                <th>处理方式</th>
+                                <th>责任人</th>
+                                <th>完成日期</th>
+                                <th>话费工时</th>
+                                <th>责任归属</th>
+                                <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.dataSets track by $index">
+                                <td>{{item.RmaId}}</td>
+                                <td>{{item.RmaIdNumber}}</td>
+                                <td>{{item.BadPhenomenon}}</td>
+                                <td>{{item.BadDescription}}</td>
+                                <td>{{item.BadReadson}}</td>
+                                <td>{{item.HandleWay}}</td>
+                                <td>{{item.ResponsiblePerson}}</td>
+                                <td>{{item.FinishDate}}</td>
+                                <td>{{item.PayTime}}</td>
+                                <td>{{item.LiabilityBelongTo}}</td>
+                                <td>
+                                    <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
+                                        修改
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <dialog ng-if="dialog.open" modal data-close="dialog.show()" style="width:65%;">
+                <content dialog-title>
+                    <i class="fa fa-pencil-square">数据编辑</i>
+                </content>
+                <content dialog-content style="width:100%;">
+                    <form role="form" name="formRmaInspectionManage" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                        <div class="form-group">
+                            <label for="rmaId" class="col-md-2 control-label">单号</label>
+                            <div class="col-md-4">
+                                <input name="rmaId" class="form-control" ng-model="vm.RmaId" readonly required />
+                                <div class="error-messages" ng-messages="formRmaInspectionManage.rmaId.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">单号不能为空</small>
+                                </div>
+                            </div>
+                            <label for="rmaIdNumber" class="col-md-2 control-label">序号</label>
+                            <div class="col-md-4">
+                                <input name="rmaIdNumber" class="form-control" readonly ng-model="vm.RmaIdNumber" required />
+                                <div class="error-messages" ng-messages="formRmaInspectionManage.rmaIdNumber.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">序号不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="badPhenomenon" class="col-md-2 control-label">不良现象</label>
+                            <div class="col-md-4">
+                                <textarea name="badPhenomenon" rows="3" readonly class="form-control" ng-model="vm.BadPhenomenon" required />
+                                <div class="error-messages" ng-messages="formRmaInspectionManage.badPhenomenon.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">不良现象不能为空</small>
+                                </div>
+                            </div>
+                            <label for="badReadson" class="col-md-2 control-label">不良原因</label>
+                            <div class="col-md-4">
+                                <textarea name="badReadson" rows="3" class="form-control" ng-model="vm.BadReadson" required />
+                                <div class="error-messages" ng-messages="formRmaInspectionManage.badReadson.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">不良原因不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="handleWay" class="col-md-2 control-label">处理方式</label>
+                            <div class="col-md-4">
+                                <input name="handleWay" class="form-control" ng-model="vm.HandleWay" required />
+                                <div class="error-messages" ng-messages="formRmaInspectionManage.handleWay.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">处理方式不能为空</small>
+                                </div>
+                            </div>
+                            <label for="responsiblePerson" class="col-md-2 control-label">负责人</label>
+                            <div class="col-md-4">
+                                <input name="responsiblePerson" class="form-control" ng-model="vm.ResponsiblePerson" required />
+                                <div class="error-messages" ng-messages="formRmaInspectionManage.responsiblePerson.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">负责人不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="finishDate" class="col-md-2 control-label">完成日期</label>
+                            <div class="col-md-4">
+                                <input name="finishDate" class="form-control" ng-model="vm.FinishDate" required />
+                                <div class="error-messages" ng-messages="formRmaInspectionManage.finishDate.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">完成日期不能为空</small>
+                                </div>
+                            </div>
+                            <label for="payTime" class="col-md-2 control-label">花费工时</label>
+                            <div class="col-md-4">
+                                <input name="payTime" class="form-control" ng-model="vm.PayTime" required />
+                                <div class="error-messages" ng-messages="formRmaInspectionManage.payTime.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">花费工时不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="liabilityBelongTo" class="col-md-2 control-label">责任归属</label>
+                            <div class="col-md-4">
+                                <input name="liabilityBelongTo" class="form-control" ng-model="vm.LiabilityBelongTo" required />
+                                <div class="error-messages" ng-messages="formRmaInspectionManage.liabilityBelongTo.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">责任归属不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="alert alert-info">
+                            <div class="row">
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-10">
+                                    <button class="btn btn-primary" ng-click="operate.saveAll(formRmaInspectionManage.$valid)"><i class="fa fa-save"></i>保存</button>
+                                    <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                    <span yl-operatemsg-board></span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </content>
+            </dialog>
+        </div>
+    </div>
+</div>
+<div class="panel-footer">
+
+</div>

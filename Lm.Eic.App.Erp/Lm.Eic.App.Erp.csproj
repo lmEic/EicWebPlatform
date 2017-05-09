@@ -40,11 +40,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bussiness\CopManage\CopService.cs" />
+    <Compile Include="Bussiness\CopManage\CopOrderManage.cs" />
+    <Compile Include="Bussiness\MocManage\BomManage.cs" />
+    <Compile Include="Bussiness\MocManage\MocBase.cs" />
+    <Compile Include="Bussiness\MocManage\MocService.cs" />
+    <Compile Include="Bussiness\MocManage\OrderManage.cs" />
     <Compile Include="Bussiness\PurchaseManage\PurchaseManager.cs" />
+    <Compile Include="Bussiness\QmsManage\QmsDbManager.cs" />
     <Compile Include="Bussiness\QuantityManage\QuantityManager.cs" />
+    <Compile Include="DbAccess\CopManageDb\CopOrderManageDb.cs" />
     <Compile Include="DbAccess\DbAccessHelper.cs" />
+    <Compile Include="DbAccess\InvManageDb\InvOrderManage.cs" />
+    <Compile Include="DbAccess\MocManageDb\BomManageDb\BomManageDb.cs" />
+    <Compile Include="DbAccess\MocManageDb\OrderManageDb\OrderManageDb.cs" />
     <Compile Include="DbAccess\PurchaseManageDb\RequisitionDb.cs" />
     <Compile Include="DbAccess\QuantitySampleDb\MaterialSampleDb.cs" />
+    <Compile Include="Domain\CopManageModel\CopOrderModel.cs" />
+    <Compile Include="Domain\InvManageModel\FinishedProductStoreModel.cs" />
+    <Compile Include="Domain\MocManageModel\OrderManageModel\MaterialModel.cs" />
+    <Compile Include="Domain\MocManageModel\OrderManageModel\OrderModel.cs" />
+    <Compile Include="Domain\ProductTypeMonitorModel\ProductTypeMonitorModel.cs" />
     <Compile Include="Domain\PurchaseManage\PerchaseHeaderModel.cs" />
     <Compile Include="Domain\PurchaseManage\PurchaseModelBase.cs" />
     <Compile Include="Domain\PurchaseManage\PuroductSupplierAnalogModel.cs" />
@@ -56,6 +72,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Lm.Eic.App.DomainModel.Bpm\Lm.Eic.App.DomainModel.Bpm.csproj">
+      <Project>{B4B07C08-AFF7-4BE3-B8AE-5A6E85DA2018}</Project>
+      <Name>Lm.Eic.App.DomainModel.Bpm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Lm.Eic.Uti.Common.YleeDbHandler\Lm.Eic.Uti.Common.YleeDbHandler\Lm.Eic.Uti.Common.YleeDbHandler.csproj">
       <Project>{8301c71a-afde-4853-8c05-39ff96b207c6}</Project>
       <Name>Lm.Eic.Uti.Common.YleeDbHandler</Name>
@@ -65,6 +85,7 @@
       <Name>Lm.Eic.Uti.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

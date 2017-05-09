@@ -3,10 +3,6 @@ using Lm.Eic.Framework.ProductMaster.Model.ITIL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.BmpTests.ProductMaster
@@ -17,7 +13,7 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
         [TestMethod()]
         public void AutoTest()
         {
-
+     
         }
 
 
@@ -27,12 +23,12 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
             ItilDevelopModuleManageModel model = new ItilDevelopModuleManageModel();
             model.ModuleName = "ModultName";
             model.MClassName = "ClassName";
-            model.MFunctionName = "FunctionName3";
+            model.MFunctionName = "FunctionName5";
             model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
             model.FunctionDescription = "功能描述";
             model.DifficultyCoefficient = 5;
             model.DevPriority = 5;
-            model.CodingPerson = "张明";
+            model.Executor = "张明";
             model.StartDate = DateTime.Now.ToDate();
             model.OpSign = "add";
             var result = ItilService.ItilDevelopModuleManager.Store(model);
@@ -43,10 +39,31 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
         public void ItilDevelopModuleManageFindByTest()
         {
             List<string> stateList = new List<string>() { "待开发", "待审核" };
-            var devList = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(stateList);
+            var devList = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(new ItilDto() {  ProgressSignList = stateList,SearchMode=1});
             if (devList.Count <= 0) { Assert.Fail(); }
+        }
 
+        [TestMethod()]
+        public void ChangeProgressTest()
+        {
+            List<string> stateList = new List<string>() { "待开发", "待审核" };
+            var devList = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(new ItilDto() { ProgressSignList = stateList, SearchMode = 1 });
+            var model = devList[0];
+            model.CurrentProgress = "待审核";
+            var result = ItilService.ItilDevelopModuleManager.ChangeProgressStatus(model);
+            if (!result.Result) { Assert.Fail(); }
+            ItilService.ItilDevelopModuleManager.SendMail();
+        }
 
+        [TestMethod()]
+        public void GetChangeRecordListByTest()
+        {
+            List<string> stateList = new List<string>() { "待开发", "待审核" };
+            var devList = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(new ItilDto() { ProgressSignList = stateList, SearchMode = 1 });
+            var model = devList[0];
+            model.CurrentProgress = "待审核";
+            var result = ItilService.ItilDevelopModuleManager.GetChangeRecordListBy(model);
+            if (result.Count<0) { Assert.Fail(); }
         }
     }
 }

@@ -9,21 +9,44 @@ smModule.factory('sysitilService', function (ajaxService) {
     itil.storeProjectDevelopRecord = function (entity) {
         var url = urlPrefix + 'StoreProjectDevelopRecord';
         return ajaxService.postData(url, {
-            entity: entity,
+            entity: entity
         });
     };
     ///根据开发进度状态查找开发模块
-    itil.getProjectDevelopModuleBy = function (progressStatuses) {
+    itil.getProjectDevelopModuleBy = function (progressStatuses, functionName, mode) {
         var url = urlPrefix + 'GetProjectDevelopModuleBy';
         return ajaxService.getData(url, {
             progressStatuses: progressStatuses,
+            functionName: functionName,
+            mode: mode
         });
     };
+    ///改变模块开发进度状态
+    itil.changeDevelopModuleProgressStatus = function (entity) {
+        var url = urlPrefix + 'ChangeDevelopModuleProgressStatus';
+        return ajaxService.postData(url, {
+            entity: entity
+        });
+    };
+
+    itil.viewDevelopModuleDetails = function (entity) {
+        var url = urlPrefix + 'ViewDevelopModuleDetails';
+        return ajaxService.postData(url, {
+            entity: entity
+        });
+    };
+    ///发送邮件通知
+    itil.sendMail = function () {
+        var url = urlPrefix + 'SendMail';
+        return ajaxService.getData(url, {
+        });
+    };
+
     return itil;
 });
 smModule.controller('supTelManageCtrl', function ($scope, $modal, sysitilService) {
 });
-smModule.controller('itilProjectDevelopManageCtrl', function ($scope, sysitilService) {
+smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sysitilService) {
     ///视图模型
     var uiVM = {
         MClassName: null,
@@ -35,31 +58,40 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, sysitilSer
         DevPriority: 1,
         StartDate: new Date(),
         FinishDate: null,
-        CurrentPregress: null,
-        CodingPerson: null,
-        CheckPerson: null,
+        CurrentProgress: null,
+        Executor: null,
         Memo: null,
-        OpSign: null,
-    }
+        OpSign: 'add',
+        Id_Key: 0
+    };
 
     $scope.vm = uiVM;
 
+    var originalVM = _.clone(uiVM);
+
+    var queryFields = {
+        selectedProgressStatuses: [],
+        functionName: null
+    };
+    $scope.query = queryFields;
+
     var vmManager = {
         activeTab: 'initTab',
+        isLocal: true,
         init: function () {
             if (uiVM.OpSign === 'add') {
                 uiVM.MFunctionName = null;
                 uiVM.FunctionDescription = null;
             }
             else {
-                leeHelper.clearVM(uiVM, ['StartDate']);
+                uiVM = _.clone(originalVM);
             }
             uiVM.OpSign = 'add';
             $scope.vm = uiVM;
             vmManager.canEdit = false;
         },
-        codePersons: [{ name: '万晓桥', text: '万晓桥' }, { name: '张文明', text: '张文明' }, { name: '杨垒', text: '杨垒' }],
-        selectedProgressStatuses: [],
+        executors: [{ name: '万晓桥', text: '万晓桥' }, { name: '张文明', text: '张文明' }, { name: '杨垒', text: '杨垒' }],
+
         progressStatuses: [
                 { value: '待开发', label: '<i class="fa fa-calendar-o"></i>  待开发' },
                 { value: '待审核', label: '<i class="fa fa-feed"></i>  待审核' },
@@ -72,15 +104,52 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, sysitilSer
         selectDevelopModule: function (item) {
             vmManager.canEdit = true;
             uiVM = _.clone(item);
-            uiVM.OpSign = 'edit';
+            uiVM.OpSign = vmManager.isUpdate ? 'update' : 'edit';
             $scope.vm = uiVM;
         },
-        editDatas: [],
-        getDevelopModules: function () {
-            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(vmManager.selectedProgressStatuses).then(function (datas) {
-                vmManager.editDatas = datas;
+        datasource: [],
+        datasets: [],
+        isUpdate: false,
+        searchBy: function () {
+            vmManager.isUpdate = true;
+            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses, queryFields.functionName, 2).then(function (datas) {
+                vmManager.developModules = datas;
             });
         },
+        getDevelopModules: function () {
+            vmManager.datasets = [];
+            vmManager.datasource = [];
+            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses, queryFields.functionName, 1).then(function (datas) {
+                vmManager.datasource = datas;
+            });
+        },
+        showModalWindow: function (item, isShowDetailsBoard) {
+            vmManager.showDetailsBoard = isShowDetailsBoard;
+            editModalOption.title = isShowDetailsBoard ? "进度状态明细窗口" : "状态变更窗口";
+            uiVM = _.clone(item);
+            if (!isShowDetailsBoard) {
+                uiVM.OpSign = 'eidt';
+                uiVM.CurrentProgress = null;
+                uiVM.Executor = null;
+            }
+
+            vmManager.editModal = $modal(editModalOption);
+            vmManager.editModal.$promise.then(vmManager.editModal.show);
+        },
+        changeProgressStatus: function (item) {
+            vmManager.showModalWindow(item, false);
+        },
+        developChangeDetails: [],
+        showDetailsBoard: false,//显示明细面板
+        editModal: null,
+        functionName: null,
+        sendMail: function () {
+            $scope.searchPromise = sysitilService.sendMail().then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+
+                });
+            });
+        }
     };
 
     $scope.vmManager = vmManager;
@@ -88,6 +157,33 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, sysitilSer
 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
+
+    //模态窗口选项
+    var editModalOption = {
+        title: "状态变更窗口",
+        templateUrl: 'SysITIL/ChangeDevelopModuleProgressStatusTpl/',
+        controller: function ($scope) {
+            $scope.vm = uiVM;
+            var op = Object.create(leeDataHandler.operateStatus);
+            $scope.operate = op;
+            $scope.vmManager = vmManager;
+
+
+            $scope.save = function (isvalidate) {
+                leeDataHandler.dataOperate.add(op, isvalidate, function () {
+                    sysitilService.changeDevelopModuleProgressStatus($scope.vm).then(function (opresult) {
+                        var item = _.find(vmManager.datasource, { Id_Key: uiVM.Id_Key });
+                        if (angular.isDefined(item)) {
+                            leeHelper.copyVm(uiVM, item);
+                            vmManager.init();
+                            vmManager.editModal.$promise.then(vmManager.editModal.hide);
+                        }
+                    });
+                });
+            };
+        },
+        show: false
+    };
     operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             sysitilService.storeProjectDevelopRecord(uiVM).then(function (opresult) {
@@ -96,20 +192,26 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, sysitilSer
                     mdl.Id_Key = opresult.Id_Key;
                     if (mdl.OpSign === 'add') {
                         vmManager.developModules.push(mdl);
+                        vmManager.isUpdate = false;
                     }
-                    else if (mdl.OpSign == 'edit') {
-                        var current = _.find(vmManager.developModules, { Id_Key: mdl.Id_Key });
-                        if (current !== undefined)
-                            leeHelper.copyVm(mdl, current);
+                    else if (mdl.OpSign === 'edit') {
+                        var item = _.find(vmManager.developModules, { Id_Key: uiVM.Id_Key });
+                        leeHelper.copyVm(uiVM, item);
                     }
                     vmManager.init();
                 });
             });
-        })
+        });
     };
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
             vmManager.inti();
         });
     };
-})
+    operate.viewDetails = function (item) {
+        vmManager.showModalWindow(item, true);
+        $scope.searchPromise = sysitilService.viewDevelopModuleDetails(item).then(function (datas) {
+            vmManager.developChangeDetails = datas;
+        });
+    };
+});

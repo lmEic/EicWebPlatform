@@ -1,4 +1,5 @@
-﻿using Lm.Eic.App.Business.Bmp.Hrm.Attendance;
+﻿using System;
+using Lm.Eic.App.Business.Bmp.Hrm.Attendance;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
 using Lm.Eic.Framework.ProductMaster.Business.Config;
 using Lm.Eic.Framework.ProductMaster.Model;
@@ -21,9 +22,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
         }
 
         [NoAuthenCheck]
-        public ContentResult GetClassTypeDatas(string department)
+        public ContentResult GetClassTypeDatas(string department, string workerId, string classType)
         {
-            var datas = AttendanceService.ClassTypeSetter.LoadDatasBy(department);
+            var datas = AttendanceService.ClassTypeSetter.LoadDatasBy(department, workerId, classType);
             return DateJsonResult(datas);
         }
 
@@ -33,28 +34,48 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var result = AttendanceService.ClassTypeSetter.SetClassType(classTypes, OnLineUser.UserName);
             return Json(result);
         }
-
         /// <summary>
         /// 今日考勤
         /// </summary>
         /// <returns></returns>
-        public ActionResult HrAttendInToday()
+        public ActionResult HrSumerizeAttendanceData()
         {
             return View();
         }
-
         /// <summary>
         /// 获取今日的考勤数据
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetAttendanceDatasOfToday(string department)
+        public ContentResult GetAttendanceDatas(DateTime qryDate, DateTime dateFrom, DateTime dateTo, string department, string workerId, int mode)
         {
-            var datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(department);
+            List<AttendanceDataModel> datas = new List<AttendanceDataModel>();
+            if (mode == 0)
+                datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(qryDate);
+            else if (mode == 1)
+                datas = AttendanceService.AttendSlodPrintManager.LoadAttendDataInToday(dateFrom, dateTo, department);
+            else if (mode == 2)
+                datas = AttendanceService.AttendSlodPrintManager.LoadAttendDatasBy(workerId, dateFrom, dateTo);
             return DateJsonResult(datas);
         }
-
+        /// <summary>
+        /// 导出当前日期考勤记录
+        /// </summary>
+        /// <param name="qryDate"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult ExoportAttendanceDatasToExcel(DateTime qryDate)
+        {
+            var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(qryDate);
+            return this.ExportToExcel(ms, qryDate.ToShortDateString(), "考勤数据-" + qryDate.ToShortDateString());
+        }
+        [NoAuthenCheck]
+        public FileResult ExoportAttendanceMonthDatasToExcel(string yearMonth)
+        {
+            var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(yearMonth);
+            return this.ExportToExcel(ms, yearMonth, "考勤数据-" + yearMonth);
+        }
         /// <summary>
         /// 请假管理
         /// </summary>
@@ -89,7 +110,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <summary>
         /// 处理请假数据
         /// </summary>
-        /// <param name="entities"></param>
+        /// <param name="askForLeaves"></param>
         /// <returns></returns>
         [HttpPost]
         public JsonResult HandleAskForLeave(List<AttendAskLeaveModel> askForLeaves)
@@ -101,7 +122,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <summary>
         /// 处理请假数据
         /// </summary>
-        /// <param name="entities"></param>
+        /// <param name="askForLeaves"></param>
         /// <returns></returns>
         [HttpPost]
         public JsonResult UpdateAskForLeave(List<AttendSlodFingerDataCurrentMonthModel> askForLeaves)
@@ -129,7 +150,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [HttpPost]
         public ContentResult AutoCheckExceptionSlotData(string yearMonth)
         {
-            var datas = AttendanceService.AttendSlodPrintManager.AutoCheckExceptionSlotData();
+            var datas = AttendanceService.AttendSlodPrintManager.AutoCheckExceptionSlotData(yearMonth);
             return DateJsonResult(datas);
         }
 

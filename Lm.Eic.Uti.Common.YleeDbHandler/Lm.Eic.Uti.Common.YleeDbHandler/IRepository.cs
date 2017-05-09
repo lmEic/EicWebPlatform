@@ -127,6 +127,9 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <returns> 符合编号的记录，不存在返回null </returns>
         TEntity GetByKey(object key);
 
+        
+        /// <summary>
+
         /// <summary>
         /// 全部提交
         /// </summary>
@@ -331,17 +334,18 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             return isSave ? EFContext.Commit() : 0;
         }
 
-        public int Update(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression)
-        {
-            return EFContext.RegisterModified<TEntity>(predicate, updateExpression);
-        }
-
         /// <summary>
         /// 按需更新实体
         /// </summary>
         /// <param name="predicate">更新条件</param>
         /// <param name="updateExpression">按需给实体赋值</param>
         /// <returns></returns>
+        public int Update(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression)
+        {
+            return EFContext.RegisterModified<TEntity>(predicate, updateExpression);
+        }
+
+        
 
         /// <summary>
         ///     查找指定主键的实体记录

@@ -11,10 +11,10 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
 
     //--------------配置管理--------------------------
     $stateProvider.state('hrDepartmentSet', {
-        templateUrl:configUrlPrefix + 'HrDepartmentSet',
+        templateUrl: configUrlPrefix + 'HrDepartmentSet'
     })
     .state('hrCommonDataSet', {
-        templateUrl: configUrlPrefix + 'HrCommonDataSet',
+        templateUrl: configUrlPrefix + 'HrCommonDataSet'
     })
     //--------------账户管理--------------------------
     .state('accRegistUser', {
@@ -29,6 +29,9 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
     .state('sysRoleManage', {
         templateUrl: 'Account/SysRoleManage'
     })
+    .state('sysRoleAssignManage', {
+        templateUrl: 'Account/SysRoleAssignManage'
+    })
      .state('sysAssemblyEdit', {
          templateUrl: 'Account/SysAssemblyEdit'
      })
@@ -41,16 +44,16 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
     //--------------ITIL管理--------------------------
        //供应商管理
     .state('itilSupTelManage', {
-        templateUrl: itilUrlPrefix + 'ItilSupTelManage',
+        templateUrl: itilUrlPrefix + 'ItilSupTelManage'
     })//项目开发管理
     .state('itilProjectDevelopManage', {
-        templateUrl: itilUrlPrefix + 'ItilProjectDevelopManage',
+        templateUrl: itilUrlPrefix + 'ItilProjectDevelopManage'
     })
     .state('proClassManage', {
         templateUrl: 'ProEmployee/ProClassManage'
     }).state('workHoursManage', {
         templateUrl: 'ProEmployee/WorkHoursManage'
-    })
+    });
     ////--------------基本配置管理--------------------------
     //.state('hrDepartmentSet', {
     //    templateUrl: 'HrBaseInfoManage/HrDepartmentSet',
@@ -71,15 +74,29 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
                 if (!angular.isUndefined(navItem)) {
                     moduleNavLayoutVm.navItems.push(navItem);
                 }
-            })
+            });
         },
         stateTo: function (navItem) {
             $state.go(navItem.UiSerf);
         },
+        navViewSwitch: true,//左侧视图导航开关
+        switchView: function () {
+            moduleNavLayoutVm.navViewSwitch = !moduleNavLayoutVm.navViewSwitch;
+            if (moduleNavLayoutVm.navViewSwitch) {
+                moduleNavLayoutVm.navLeftSize = '16%';
+                moduleNavLayoutVm.navMainSize = '83%';
+            }
+            else {
+                moduleNavLayoutVm.navLeftSize = '3%';
+                moduleNavLayoutVm.navMainSize = '96%';
+            }
+        },
+        navLeftSize: '16%',
+        navMainSize: '83%'
     };
     $scope.navLayout = moduleNavLayoutVm;
     $scope.promise = navDataService.getSubModuleNavs('系统管理', 'EicSystemManage').then(function (datas) {
         moduleNavLayoutVm.menus = datas;
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
-})
+});

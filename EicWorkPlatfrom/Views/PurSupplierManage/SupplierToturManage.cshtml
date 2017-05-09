@@ -1,0 +1,72 @@
+﻿<div class="panel panel-primary" ng-controller="supplierToturManageCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title">供应商辅导管理</h6>
+    </div>
+    <div class="panel-body">
+        <nav class="nav">
+            <form class="navbar-form navbar-left">
+                <span yl-quarter-button data-yearquarter="vmManager.yearQuarter"></span>
+                <button type="button" class="btn btn-default" ng-click="vmManager.getWaittingTourSupplier()"><i class="fa fa-search"></i> 载入</button>
+                <a class="btn btn-success" href="@Url.Action("CreateSupplierTourToExcel", "PurSupplierManage")"><i class="fa fa-file-excel-o"></i> 导出Excel</a>
+                品质低于:<input type="image" ng-model="vmManager.limitQualityCheck" readonly="readonly" align="middle" />
+                总数低于:<input type="image" ng-model="vmManager.limitTotalCheckScore" readonly="readonly" align="middle" />
+            </form>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" ng-model="vmManager.supplierId" placeholder="输入供应商编号">
+                </div>
+                <button type="submit" class="btn btn-default" ng-click="vmManager.searchBySupplierId('tutor')"><i class="fa fa-search"></i></button>
+            </form>
+        </nav>
+        <div class="h-split"></div>
+        <div class="well" cg-busy="{promise:searchPromise}">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="info">
+                            <th>供应商编号</th>
+                            <th>供应商名称</th>
+                            <th>品质</th>
+                            <th>价格</th>
+                            <th>交期</th>
+                            <th>配合度</th>
+                            <th>HSF能力</th>
+                            <th>总分</th>
+                            <th>等级</th>
+                            <th>奖惩方式</th>
+                            <th>物料等级</th>
+                            <th>风险管理</th>
+                            <th>季度</th>
+                            <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in vmManager.editDatas track by $index">
+                            <td>{{item.SupplierId}}</td>
+                            <td>{{item.SupplierName}}</td>
+                            <td>{{item.QualityCheck}}</td>
+                            <td>{{item.AuditPrice}}</td>
+                            <td>{{item.DeliveryDate}}</td>
+                            <td>{{item.ActionLiven}}</td>
+                            <td>{{item.HSFGrade}}</td>
+                            <td>{{item.TotalCheckScore}}</td>
+                            <td>{{item.CheckLevel}}</td>
+                            <td>{{item.RewardsWay}}</td>
+                            <td>{{item.MaterialGrade}}</td>
+                            <td>{{item.ManagerRisk}}</td>
+                            <td>{{item.SeasonNum}}</td>
+                            <td>
+                                <button class="btn btn-xs btn-primary" ng-if="!item.PlanTutorContent" ng-click="vmManager.editSupplierToturInfo(item)" title="编辑辅导信息">
+                                    填写辅导计划
+                                </button>
+                                <button class="btn btn-xs btn-success" ng-if="item.PlanTutorContent" ng-click="vmManager.editSupplierToturInfo(item)" title="编辑辅导信息">
+                                    填写辅导结果
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

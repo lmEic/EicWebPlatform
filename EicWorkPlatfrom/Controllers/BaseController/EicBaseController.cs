@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -32,9 +34,14 @@ namespace EicWorkPlatfrom.Controllers
 
         #endregion json date converter
 
-
-
         #region my define
+        /// <summary>
+        /// 站点根路径
+        /// </summary>
+        protected string SiteRootPath
+        {
+            get { return this.HttpContext.Request.PhysicalApplicationPath; }
+        }
 
         /// <summary>
         /// 登录在线用户
@@ -46,8 +53,8 @@ namespace EicWorkPlatfrom.Controllers
                 LoginUser user = new LoginUser();
                 if (this.LoginIdentity != null)
                 {
-                    user.UserId = this.LoginIdentity.RegistUser.UserId;
-                    user.UserName = this.LoginIdentity.RegistUser.UserName;
+                    user.UserId = this.LoginIdentity.LoginedUser.UserId;
+                    user.UserName = this.LoginIdentity.LoginedUser.UserName;
                     user.Role = this.LoginIdentity.MatchRoleList.OrderBy(o => o.RoleLevel).ToList()[0];
                 }
                 else
@@ -216,6 +223,86 @@ namespace EicWorkPlatfrom.Controllers
             ms.Seek(0, SeekOrigin.Begin);
             return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
         }
+        /// <summary>
+        /// 将文件保存到服务器上
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="filePath"></param>
+        /// <param name="handler"></param>
+        protected void SaveFileToServer(HttpPostedFileBase file, string filePath, Action handler = null)
+        {
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    string fileName = Path.Combine(filePath, file.FileName);
+                    file.SaveAs(fileName);
+                    if (handler != null) handler();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 将文件保存到服务器上
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="filePath"></param>
+        /// <param name="handler"></param>
+        protected void SaveFileToServer(HttpPostedFileBase file, string filePath, string changeFileName, Action handler = null)
+        {
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    string fileName = Path.Combine(filePath, changeFileName + file.FileName);
+                    file.SaveAs(fileName);
+                    if (handler != null) handler();
+                }
+            }
+        }
+
+        #region CombinedFilePath
+        protected string CombinedFilePath(string path1)
+        {
+            string siteRootPath = this.HttpContext.Request.PhysicalApplicationPath;
+            string dirctoryPath = Path.Combine(siteRootPath, path1);
+            if (!Directory.Exists(dirctoryPath))
+            {
+                Directory.CreateDirectory(dirctoryPath);
+            }
+            return dirctoryPath;
+        }
+        protected string CombinedFilePath(string path1, string path2)
+        {
+            string dirctoryPath = Path.Combine(CombinedFilePath(path1), path2);
+            if (!Directory.Exists(dirctoryPath))
+            {
+                Directory.CreateDirectory(dirctoryPath);
+            }
+            return dirctoryPath;
+        }
+        protected string CombinedFilePath(string path1, string path2, string path3)
+        {
+            string dirctoryPath = Path.Combine(CombinedFilePath(path1, path2), path3);
+            if (!Directory.Exists(dirctoryPath))
+            {
+                Directory.CreateDirectory(dirctoryPath);
+            }
+            return dirctoryPath;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 获取图像Base64Url
+        /// </summary>
+        /// <param name="imgBytes"></param>
+        /// <returns></returns>
+        protected string GetBase64Url(byte[] imgBytes)
+        {
+            if (imgBytes == null) return "default.jpg";
+            return "data:image/jpg;base64," + Convert.ToBase64String(imgBytes);
+        }
 
         #endregion file operate method
     }
@@ -236,35 +323,90 @@ namespace EicWorkPlatfrom.Controllers
 
         public string Department { get; set; }
     }
+    /// <summary>
+    /// 站点信息
+    /// </summary>
+    public class WebSiteInfo
+    {
+        /// <summary>
+        /// 站点服务器名称
+        /// </summary>
+        public string ServerName { get; set; }
+        /// <summary>
+        /// 站点物理跟路径
+        /// </summary>
+        public string PhysicalApplicationPath { get; set; }
+    }
 
     /// <summary>
     /// 图片行为结果
     /// </summary>
-    public class ImageEicResult : ActionResult
+    public class ImageResult : ActionResult
     {
-        private MemoryStream imgStream;
-        private string contentType;
+        private Image image;
 
-        public ImageEicResult(MemoryStream imgStream, string contentType)
+        public ImageResult(Image image)
         {
-            this.imgStream = imgStream;
-            this.contentType = contentType;
+            this.image = image;
         }
 
         public override void ExecuteResult(ControllerContext context)
         {
             if (context == null)
                 throw new ArgumentException("context");
-            if (imgStream == null)
-                throw new ArgumentException("imgStream is null");
-            if (contentType == null)
-                throw new ArgumentException("contentType is null");
+            if (image == null)
+                throw new ArgumentException("image is null");
 
             HttpResponseBase response = context.HttpContext.Response;
             response.Clear();
+            ImageFormat imageFormat = image.RawFormat;
             response.Cache.SetCacheability(HttpCacheability.NoCache);
-            response.ContentType = contentType;
-            imgStream.WriteTo(response.OutputStream);
+            if (imageFormat.Equals(ImageFormat.Bmp)) context.HttpContext.Response.ContentType = "image/bmp";
+            if (imageFormat.Equals(ImageFormat.Gif)) context.HttpContext.Response.ContentType = "image/gif";
+            if (imageFormat.Equals(ImageFormat.Icon)) context.HttpContext.Response.ContentType = "image/vnd.microsoft.icon";
+            if (imageFormat.Equals(ImageFormat.Jpeg)) context.HttpContext.Response.ContentType = "image/jpeg";
+            if (imageFormat.Equals(ImageFormat.Png)) context.HttpContext.Response.ContentType = "image/png";
+            if (imageFormat.Equals(ImageFormat.Tiff)) context.HttpContext.Response.ContentType = "image/tiff";
+            if (imageFormat.Equals(ImageFormat.Wmf)) context.HttpContext.Response.ContentType = "image/wmf";
+            image.Save(context.HttpContext.Response.OutputStream, imageFormat);
+        }
+    }
+    /// <summary>
+    /// 控制器扩展类
+    /// </summary>
+    public static class ControllerExtension
+    {
+        /// <summary>
+        /// Image Result
+        /// </summary>
+        /// <param name="ctrl"></param>
+        /// <param name="image"></param>
+        /// <returns></returns>
+        public static ImageResult ImageResult(this Controller ctrl, Image image)
+        {
+            return new ImageResult(image);
+        }
+        /// <summary>
+        /// 删除已经存在的文件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static HttpPostedFileBase DeleteExistFile(this HttpPostedFileBase file, string fileName)
+        {
+            try
+            {
+                if (System.IO.File.Exists(fileName))
+                {
+                    System.IO.File.Delete(fileName);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+            return file;
         }
     }
 
@@ -277,5 +419,37 @@ namespace EicWorkPlatfrom.Controllers
     {
         public NoAuthenCheckAttribute()
         { }
+    }
+
+    /// <summary>
+    /// 文件库键值
+    /// </summary>
+    public class FileLibraryKey
+    {
+        /// <summary>
+        /// 文件库根路径
+        /// </summary>
+        public const string FileLibrary = "FileLibrary";
+
+        /// <summary>
+        /// 制二物料看板文件夹
+        /// </summary>
+        public const string TwoMaterialBoard = "TwoMaterialBoard";
+        /// <summary>
+        /// 采购供应商证书文件夹
+        /// </summary>
+        public const string PurSupplierCertificate = "PurSupplierCertificate";
+        /// <summary>
+        /// 临时存放文件夹
+        /// </summary>
+        public const string Temp = "Temp";
+        /// <summary>
+        /// FQC检验采集数据附件文件夹
+        /// </summary>
+        public const string FqcInspectionGatherDataFile = "FqcInspectionGatherDataFile";
+        /// <summary>
+        /// IQC检验采集数据附件文件夹
+        /// </summary>
+        public const string IqcInspectionGatherDataFile = "IqcInspectionGatherDataFile";
     }
 }

@@ -3,10 +3,13 @@ using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
 {
@@ -30,28 +33,81 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
 
         #endregion constructure
 
-
-
         #region method
-
         /// <summary>
         /// 载入某部门的当天的数据
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public List<AttendanceDataModel> LoadAttendDataInToday(string department)
+        public List<AttendanceDataModel> LoadAttendDataInToday(DateTime qryDate)
         {
-            return this.currentMonthAttendDataHandler.LoadAttendDataInToday(department);
+            var qdate = qryDate.ToDate();
+            return this.currentMonthAttendDataHandler.LoadAttendDataInToday(qdate);
         }
+        /// <summary>
+        /// 按考勤日期导出数据
+        /// </summary>
+        /// <param name="qryDate"></param>
+        /// <returns></returns>
+        public MemoryStream BuildAttendanceDataBy(DateTime qryDate)
+        {
+            List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                 new FileFieldMapping ("Number","项次") ,
+                  new FileFieldMapping ("WorkerId","工号") ,
+                  new FileFieldMapping ("WorkerName","姓名") ,
+                  new FileFieldMapping ("Department","部门") ,
+                  new FileFieldMapping ("ClassType","班别") ,
+                  new FileFieldMapping ("AttendanceDate","刷卡日期") ,
+                  new FileFieldMapping ("SlotCardTime1","第一次时间") ,
+                  new FileFieldMapping ("SlotCardTime2","第一次时间") ,
+                  new FileFieldMapping ("SlotCardTime","刷卡时间") ,
+                };
+            var datas = LoadAttendDataInToday(qryDate);
+            var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");
+            return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping);
+        }
+        /// <summary>
+        /// 按月份导出数据
+        /// </summary>
+        /// <param name="yearMonth"></param>
+        /// <returns></returns>
+        public MemoryStream BuildAttendanceDataBy(string yearMonth)
+        {
+            List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                 new FileFieldMapping ("Number","项次") ,
+                  new FileFieldMapping ("WorkerId","工号") ,
+                  new FileFieldMapping ("WorkerName","姓名") ,
+                  new FileFieldMapping ("Department","部门") ,
+                  new FileFieldMapping ("ClassType","班别") ,
+                  new FileFieldMapping ("AttendanceDate","刷卡日期") ,
+                  new FileFieldMapping ("SlotCardTime1","第一次时间") ,
+                  new FileFieldMapping ("SlotCardTime2","第一次时间") ,
+                  new FileFieldMapping ("SlotCardTime","刷卡时间") ,
+                };
+            var datas = this.currentMonthAttendDataHandler.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 3, YearMonth = yearMonth });
+            var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");
+            return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping);
+        }
+        public List<AttendanceDataModel> LoadAttendDataInToday(DateTime dateFrom, DateTime dateTo, string department)
+        {
+            var dfrom = dateFrom.ToDate();
+            var dTo = dateTo.ToDate();
+            return this.currentMonthAttendDataHandler.LoadAttendDataInToday(dateFrom, dateTo, department);
+        }
+        public List<AttendanceDataModel> LoadAttendDatasBy(string workerId, DateTime dateFrom, DateTime dateTo)
+        {
+            var dFrom = dateFrom.ToDate();
+            var dTo = dateTo.ToDate();
+            return this.currentMonthAttendDataHandler.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 2, WorkerId = workerId, DateFrom = dFrom, DateTo = dTo });
 
+        }
         /// <summary>
         /// 自动处理异常数据
         /// </summary>
-        public List<AttendSlodFingerDataCurrentMonthModel> AutoCheckExceptionSlotData()
+        public List<AttendSlodFingerDataCurrentMonthModel> AutoCheckExceptionSlotData(string yearMonth)
         {
-            return this.currentMonthAttendDataHandler.AutoHandleExceptionSlotData();
+            return this.currentMonthAttendDataHandler.AutoHandleExceptionSlotData(yearMonth);
         }
-
         /// <summary>
         /// 载入异常考勤数据
         /// </summary>
@@ -60,7 +116,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         {
             return this.currentMonthAttendDataHandler.LoadExceptionSlotData();
         }
-
         /// <summary>
         /// 处理异常刷卡数据
         /// </summary>
@@ -96,66 +151,144 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
 
         #endregion constructure
 
-
-
         #region method
-
         #region handle attend method
-
+        /// <summary>
+        /// searchMode:
+        /// 0:按考勤日期查询
+        /// 1:按考勤日期与部门查询
+        /// 2:按工号查询
+        /// 3:按年月份查询
+        /// </summary>
+        /// <param name="qryDto"></param>
+        /// <returns></returns>
+        public List<AttendanceDataModel> LoadAttendanceDatasBy(AttendanceDataQueryDto qryDto)
+        {
+            return this.irep.LoadAttendanceDatasBy(qryDto);
+        }
         /// <summary>
         /// 载入今天的考勤数据
         /// </summary>
         /// <param name="department"></param>
+        /// <param name="qryDate"></param>
         /// <returns></returns>
-        public List<AttendanceDataModel> LoadAttendDataInToday(string department)
+        public List<AttendanceDataModel> LoadAttendDataInToday(DateTime qryDate)
         {
-            if (this.fingerPrintDataInTime.IsExsitAttendData)
-            {
-                TransimitAttendDatas();
-            }
-            return this.irep.LoadAttendDataOfToday(department);
+            TransimitAttendDatas(qryDate);
+            return this.irep.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 0, AttendanceDate = qryDate });
         }
-
+        public List<AttendanceDataModel> LoadAttendDataInToday(DateTime dateFrom, DateTime dateTo, string department)
+        {
+            var dfrom = dateFrom.ToDate();
+            var dto = dateTo.ToDate();
+            return this.irep.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 1, DateFrom = dateFrom, DateTo = dto, Department = department });
+        }
         /// <summary>
         /// 将实时考勤数据转移至本月数据表中
         /// </summary>
         /// <returns></returns>
-        public OpResult TransimitAttendDatas()
+        public OpResult TransimitAttendDatas(DateTime qryDate)
         {
+            qryDate = qryDate.ToDate();
             int record = 0;
-            //实时考勤数据
-            var datasInTime = this.fingerPrintDataInTime.FingPrintDatas;
+            //实时考勤数据 && e.WorkerId == "604505"
+            var datasInTime = this.fingerPrintDataInTime.FingPrintDatas.FindAll(e => e.SlodCardDate == qryDate);
+            if (datasInTime == null || datasInTime.Count == 0) return OpResult.SetResult("没有考勤数据要进行汇总");
+            //一次载入该日期的所有考勤数据到内存中
+            var dayAttendDatas = this.irep.Entities.Where(e => e.AttendanceDate == qryDate);
+            //获取所有人员信息到内存中
             var workers = ArchiveService.ArchivesManager.FindWorkers();
-            if (datasInTime != null && datasInTime.Count > 0)
+            var departmentManager = new ArDepartmentManager();
+            //中间时间
+            DateTime middleTime = new DateTime(qryDate.Year, qryDate.Month, qryDate.Day, 13, 0, 0);
+            //处理实时考勤数据
+            ArWorkerInfo worker = null;
+            //将考勤中数据中的人进行分组
+            List<string> attendWorkerIdList = datasInTime.Select(e => e.WorkerId).Distinct().ToList();
+            AttendClassTypeDetailModel ctmdl = null;
+            attendWorkerIdList.ForEach(workerId =>
             {
-                datasInTime.ForEach(attendTime =>
+                record = 0;
+                //获取每个人的信息
+                worker = workers.FirstOrDefault(w => w.WorkerId == workerId);
+                if (worker == null)
                 {
-                    var worker = workers.FirstOrDefault(w => w.WorkerId == attendTime.WorkerId);
-                    var currentAttendData = this.irep.Entities.FirstOrDefault(e => e.WorkerId == attendTime.WorkerId && e.AttendanceDate == attendTime.SlodCardDate);
-                    if (worker != null)
+                    var m = ArchiveService.ArchivesManager.WorkerIdChangeManager.GetModel(workerId);
+                    if (m != null)
+                        worker = workers.FirstOrDefault(w => w.WorkerId == m.NewWorkerId);
+                }
+                //从实时考勤数据表中获取该员工的考勤数据
+                var attendDataPerWorker = datasInTime.FindAll(f => f.WorkerId == workerId).OrderBy(o => o.SlodCardTime).ToList();
+                //从考勤中获取该员工的考勤数据
+                //var currentAttendData = this.irep.Entities.FirstOrDefault(e => e.WorkerId == workerId && e.AttendanceDate == qryDate);
+                var currentAttendData = dayAttendDatas.FirstOrDefault(e => e.WorkerId == workerId);//从内存中进行查找
+                if (worker != null)
+                {
+                    ctmdl = AttendanceService.ClassTypeSetter.GetClassTypeDetailModel(worker.WorkerId, qryDate);
+                    string classType = ctmdl == null ? "白班" : worker.ClassType;
+                    string department = departmentManager.GetDepartmentText(worker.Department);
+
+                    int len = attendDataPerWorker.Count;
+                    for (int i = 0; i < len; i++)
                     {
-                        string classType = worker.ClassType;
-                        string department = worker.Department;
-                        DateTime dayMiddleTime = new DateTime(attendTime.SlodCardDate.Year, attendTime.SlodCardDate.Month, attendTime.SlodCardDate.Day, 12, 0, 0);
+                        var attendance = attendDataPerWorker[i];
+
+                        //如果考勤数据表没有该人员的考勤数据
                         if (currentAttendData == null)
                         {
-                            record = InitAttendData(record, attendTime, worker, dayMiddleTime, attendTime.SlodCardTime);
+                            //则初始化考勤数据
+                            record += InitAttendData(attendance, worker, attendance.SlodCardTime, out currentAttendData, middleTime);
                         }
                         else
                         {
-                            record = MergeAttendTime(record, currentAttendData, dayMiddleTime, attendTime.SlodCardTime);
+                            //反之则合并数据
+                            record += MergeAttendTime(currentAttendData, attendance.SlodCardTime);
                         }
                     }
-                    if (record == 1)
+                    if (record == len)//如果处理记录与目标数量一致则进行备份数据
                     {
-                        this.fingerPrintDataInTime.Delete(attendTime);
+                        this.fingerPrintDataInTime.BackupData(attendDataPerWorker, record);
+                        //从内存中移除数据，减少查询时间
+                        workers.Remove(worker);
                         record = 0;
                     }
-                });
-            }
-            return OpResult.SetResult("搬运数据成功！", record > 0);
+                }
+                else
+                {
+                    this.fingerPrintDataInTime.StoreNoIdentityWorkerInfo(attendDataPerWorker[0]);
+                }
+            });
+            return OpResult.SetResult("处理考勤数据成功！", record > 0);
         }
-
+        /// <summary>
+        /// 重新排序连接的时间字符串
+        /// </summary>
+        /// <param name="slotCardTime"></param>
+        /// <param name="attendTime"></param>
+        /// <returns></returns>
+        private string ConcatSlotCardTime(string slotCardTime, DateTime attendTime)
+        {
+            List<string> timeStrList = null;
+            var cardTimeList = slotCardTime.Split(',');
+            if (cardTimeList.Length == 0)
+            {
+                slotCardTime = string.Format("{0},{1}", slotCardTime, attendTime.ToString("HH:mm"));
+                cardTimeList = slotCardTime.Split(',');
+                timeStrList = cardTimeList.ToList();
+            }
+            else
+            {
+                timeStrList = cardTimeList.ToList();
+                timeStrList.Add(attendTime.ToString("HH:mm"));
+            }
+            timeStrList.Sort();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < timeStrList.Count; i++)
+            {
+                sb.Append(timeStrList[i] + ",");
+            }
+            return sb.ToString().Trim(',');
+        }
         /// <summary>
         /// 合并考勤时间
         /// </summary>
@@ -163,46 +296,71 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <param name="currentAttendData"></param>
         /// <param name="slodCardTime"></param>
         /// <returns></returns>
-        private int MergeAttendTime(int record, AttendSlodFingerDataCurrentMonthModel currentAttendData, DateTime dayMiddelTime, DateTime slodCardTime)
+        private int MergeAttendTime(AttendSlodFingerDataCurrentMonthModel currentAttendData, DateTime slodCardTime)
         {
+            int record = 0;
             //若请假流程在前，则会先有考勤数据记录，但没有考勤时间，所以从刷卡时间1开始填写
-            string cardtime = currentAttendData.SlotCardTime + "," + slodCardTime.ToString("HH:mm");
-            if (slodCardTime <= dayMiddelTime)
+            currentAttendData.SlotCardTime = ConcatSlotCardTime(currentAttendData.SlotCardTime, slodCardTime);
+
+            if (currentAttendData.SlotCardTime1 == null || currentAttendData.SlotCardTime1.Length == 0)
             {
-                record = UpdateSlotCardTime1(record, currentAttendData, slodCardTime, cardtime);
+                record = UpdateSlotCardTime1(currentAttendData, slodCardTime, currentAttendData.SlotCardTime);
             }
             else
             {
-                record = UpdateSlotCardTime2(record, currentAttendData, slodCardTime, cardtime);
+                record = UpdateSlotCardTime2(currentAttendData, slodCardTime, currentAttendData.SlotCardTime);
             }
             return record;
         }
-
-        private int UpdateSlotCardTime2(int record, AttendSlodFingerDataCurrentMonthModel currentAttendData, DateTime slodCardTime, string cardtime)
+        /// <summary>
+        /// 更新刷卡时间2
+        /// </summary>
+        /// <param name="currentAttendData"></param>
+        /// <param name="slodCardTime"></param>
+        /// <param name="cardtime"></param>
+        /// <returns></returns>
+        private int UpdateSlotCardTime2(AttendSlodFingerDataCurrentMonthModel currentAttendData, DateTime slodCardTime, string cardtime)
         {
-            record += irep.Update(f => f.Id_Key == currentAttendData.Id_Key, u => new AttendSlodFingerDataCurrentMonthModel
+            return irep.Update(f => f.Id_Key == currentAttendData.Id_Key, u => new AttendSlodFingerDataCurrentMonthModel
             {
-                SlotCardTime2 = slodCardTime.ToDateTimeStr(),
+                //直接进行更新替代
+                SlotCardTime2 = slodCardTime.ToString("yyyy-MM-dd HH:mm"),
                 SlotCardTime = currentAttendData.SlotCardTime == null || currentAttendData.SlotCardTime.Length == 0 ? slodCardTime.ToString("HH:mm") : cardtime
             });
-            return record;
         }
-
-        private int UpdateSlotCardTime1(int record, AttendSlodFingerDataCurrentMonthModel currentAttendData, DateTime slodCardTime, string cardtime)
+        /// <summary>
+        /// 更新刷卡时间1
+        /// </summary>
+        /// <param name="currentAttendData"></param>
+        /// <param name="slodCardTime"></param>
+        /// <param name="cardtime"></param>
+        /// <returns></returns>
+        private int UpdateSlotCardTime1(AttendSlodFingerDataCurrentMonthModel currentAttendData, DateTime slodCardTime, string cardtime)
         {
-            if (currentAttendData.SlotCardTime != null)
+            var ctimes = cardtime.Split(',').ToList();
+            if (ctimes.Count >= 2)
             {
-                record += irep.Update(f => f.Id_Key == currentAttendData.Id_Key, u => new AttendSlodFingerDataCurrentMonthModel
+                ctimes.Sort();
+                string cardTimeStr = currentAttendData.AttendanceDate.ToDateStr() + " " + ctimes[ctimes.Count - 1];
+                return irep.Update(f => f.Id_Key == currentAttendData.Id_Key, u => new AttendSlodFingerDataCurrentMonthModel
                 {
-                    SlotCardTime = currentAttendData.SlotCardTime == null || currentAttendData.SlotCardTime.Length == 0 ? slodCardTime.ToString("HH:mm") : cardtime
+                    //重新调整刷卡时间2
+                    //SlotCardTime1 = ctimes[0],
+                    SlotCardTime2 = cardTimeStr,
+                    SlotCardTime = currentAttendData.SlotCardTime == null || currentAttendData.SlotCardTime.Length == 0 ? slodCardTime.ToString("HH:mm") : cardtime,
+
                 });
             }
             else
             {
-                record = 1;
-            }
+                return irep.Update(f => f.Id_Key == currentAttendData.Id_Key, u => new AttendSlodFingerDataCurrentMonthModel
+                {
+                    //刷卡时间1若有就不进行更新，反之则进行更新
+                    SlotCardTime1 = currentAttendData.SlotCardTime1 == null || currentAttendData.SlotCardTime1.Length == 0 ? slodCardTime.ToString("yyyy-MM-dd HH:mm") : currentAttendData.SlotCardTime1,
+                    SlotCardTime = currentAttendData.SlotCardTime == null || currentAttendData.SlotCardTime.Length == 0 ? slodCardTime.ToString("HH:mm") : cardtime,
 
-            return record;
+                });
+            }
         }
 
         /// <summary>
@@ -213,7 +371,27 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <param name="worker"></param>
         /// <param name="slodCardTime"></param>
         /// <returns></returns>
-        private int InitAttendData(int record, AttendFingerPrintDataInTimeModel attendTimeMdl, ArWorkerInfo worker, DateTime dayMiddelTime, DateTime slodCardTime)
+        private int InitAttendData(AttendFingerPrintDataInTimeModel attendTimeMdl, ArWorkerInfo worker, DateTime slodCardTime, out AttendSlodFingerDataCurrentMonthModel initMdl, DateTime middleTime)
+        {
+            initMdl = null;
+            int record = 0;
+            var mdl = CreateAttendDataModel(attendTimeMdl, worker, slodCardTime);
+            //首次赋值需要加中间判定时间
+            if (slodCardTime > middleTime)
+                mdl.SlotCardTime2 = slodCardTime.ToString("yyyy-MM-dd HH:mm");
+            else
+                mdl.SlotCardTime1 = slodCardTime.ToString("yyyy-MM-dd HH:mm");
+            record = irep.Insert(mdl);
+            if (record == 1)
+            {
+                initMdl = CreateAttendDataModel(attendTimeMdl, worker, slodCardTime);
+                initMdl.Id_Key = mdl.Id_Key;
+                initMdl.SlotCardTime1 = mdl.SlotCardTime1;
+            }
+            return record;
+        }
+
+        private AttendSlodFingerDataCurrentMonthModel CreateAttendDataModel(AttendFingerPrintDataInTimeModel attendTimeMdl, ArWorkerInfo worker, DateTime slodCardTime)
         {
             var mdl = new AttendSlodFingerDataCurrentMonthModel()
             {
@@ -234,18 +412,19 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 OpSign = "init",
                 OpPerson = "system",
             };
-            if (slodCardTime <= dayMiddelTime)
-            {
-                mdl.SlotCardTime1 = slodCardTime.ToDateTimeStr();
-            }
-            else
-            {
-                mdl.SlotCardTime2 = slodCardTime.ToDateTimeStr();
-            }
-            record += irep.Insert(mdl);
-            return record;
+            return mdl;
         }
 
+        /// <summary>
+        /// 更改考勤中的班次信息
+        /// </summary>
+        /// <param name="classType"></param>
+        /// <param name="slodCardDate"></param>
+        /// <returns></returns>
+        public int UpdateClassTypeInfo(string classType, DateTime slodCardDate)
+        {
+            return this.irep.UpdateClassTypeInfo(classType, slodCardDate);
+        }
         #endregion handle attend method
 
         #region ask for leave method
@@ -373,120 +552,190 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         }
 
         /// <summary>
-        /// 自动处理异常数据
         /// 返回有异常的数据
         /// </summary>
-        public List<AttendSlodFingerDataCurrentMonthModel> AutoHandleExceptionSlotData()
+        public List<AttendSlodFingerDataCurrentMonthModel> AutoHandleExceptionSlotData(string yearMonth)
         {
-            var workers = ArchiveService.ArchivesManager.FindWorkers();
+            List<AttendSlodFingerDataCurrentMonthModel> attendExceptionSlodDatas = new List<AttendSlodFingerDataCurrentMonthModel>();
+            string[] dfields = yearMonth.Split('-');
+            if (dfields.Length != 2) return attendExceptionSlodDatas;
+            int qurYear = dfields[0].Trim().ToInt(), qurMonth = dfields[1].Trim().ToInt();
+            //考勤数据中没有处理过异常的数据集
+            List<AttendSlodFingerDataCurrentMonthModel> attendSlotDatas = this.irep.Entities.Where(e => e.HandleSlotExceptionStatus == 0 && e.YearMonth == yearMonth).ToList();
+            if (attendSlotDatas == null || attendSlotDatas.Count == 0) return attendExceptionSlodDatas;
+            //本月考勤中所有员工列表
+            List<AttendSlodWorkerModel> attendSlodWorkers = this.GetAttendSlodWorkers(qurYear, qurMonth);
+            AttendClassTypeSetter classTypeSetter = new AttendClassTypeSetter();
+            //获取本月份的日期天数
+            int daysInMonths = DateTime.DaysInMonth(qurYear, qurMonth);
+
+            Dictionary<string, string> dicClassTypes = new Dictionary<string, string>();
             //一天的中间时间
             DateTime dayMiddleTime;
-            DateTime qryDate = DateTime.Now.AddDays(-1);
-            Dictionary<string, string> dicClassTypes = new Dictionary<string, string>();
-            //考勤数据中没有处理过异常的数据集
-            List<AttendSlodFingerDataCurrentMonthModel> attendSlotDatas = this.irep.Entities.Where(e => e.HandleSlotExceptionStatus == 0 && e.AttendanceDate <= qryDate).ToList();
-            if (attendSlotDatas != null && attendSlotDatas.Count > 0)
+            DateTime currentDay;
+            string workerId;//工号
+            string classType;//班别
+            string slotExceptionType = string.Empty;//刷卡异常类别
+            AttendClassTypeDetailModel ctdMdl = null;
+            //每个人考勤数据
+            List<AttendSlodFingerDataCurrentMonthModel> attendSlotDatasOfWorker = null;
+            AttendSlodFingerDataCurrentMonthModel attendSd = null;
+            attendSlodWorkers.ForEach(worker =>
             {
-                string workerId;//工号
-                string classType;//班别
-                string slotExceptionType = string.Empty;//刷卡异常类别
-                attendSlotDatas.ForEach(attendSd =>
+                attendSlotDatasOfWorker = attendSlotDatas.Where(m => m.WorkerId == worker.WorkerId).ToList();
+                while (worker.AttendDateStart <= worker.AttendDateEnd)
                 {
-                    workerId = attendSd.WorkerId;
-                    slotExceptionType = string.Empty;
-                    classType = GetClassTypeOf(workers, ref dicClassTypes, workerId);
-                    //时间点
-                    int hour = classType == "白班" ? 12 : 24;
-                    int day = attendSd.AttendanceDate.Day;
-                    int year = attendSd.AttendanceDate.Year;
-                    int month = attendSd.AttendanceDate.Month;
-
-                    dayMiddleTime = new DateTime(year, month, day, hour, 0, 0);
-                    string slotCardTime = attendSd.SlotCardTime;//刷卡时间
-                    if (slotCardTime == null || slotCardTime.Length < 5)
+                    currentDay = worker.AttendDateStart;
+                    //每天的考勤数据
+                    attendSd = attendSlotDatasOfWorker.FirstOrDefault(d => d.AttendanceDate == currentDay);
+                    if (attendSd == null)//如果不存在考勤数据
                     {
-                        if (attendSd.LeaveMark == 0)//如果有请假的话，则不做旷工标志处理
-                            MergeSlotExceptionType(ref slotExceptionType, "旷工");
+                        //初始化该日期的考勤数据
+                        ctdMdl = classTypeSetter.GetClassTypeDetailModel(attendSd.WorkerId, attendSd.AttendanceDate);
+                        var mdl = new AttendSlodFingerDataCurrentMonthModel()
+                        {
+                            AttendanceDate = currentDay,
+                            WorkerId = worker.WorkerId,
+                            CardID = "",
+                            CardType = "",
+                            ClassType = ctdMdl == null ? "白班" : ctdMdl.ClassType,
+                            Department = worker.Department,
+                            WorkerName = worker.WorkerName,
+                            WeekDay = currentDay.DayOfWeek.ToString().ToChineseWeekDay(),
+                            LeaveHours = 0,
+                            LeaveMark = 0,
+                            YearMonth = currentDay.ToString("yyyyMM"),
+                            SlotCardTime = currentDay.ToString("HH:mm"),
+                            HandleSlotExceptionStatus = 0,
+                            SlotExceptionMark = 0,
+                            OpSign = "init",
+                            OpPerson = "system",
+                        };
+                        this.irep.Insert(mdl);
                     }
                     else
                     {
-                        if (attendSd.SlotCardTime1 == null || attendSd.SlotCardTime2 == null)
+                        //存在的话则进行检测处理
+                        workerId = attendSd.WorkerId;
+                        //刷卡异常类型
+                        slotExceptionType = string.Empty;
+                        classType = attendSd.ClassType;
+                        //时间点
+                        int hour = classType == "白班" ? 12 : 24;
+                        int day = attendSd.AttendanceDate.Day;
+                        int year = attendSd.AttendanceDate.Year;
+                        int month = attendSd.AttendanceDate.Month;
+                        //中间时间
+                        dayMiddleTime = new DateTime(year, month, day, hour, 0, 0);
+                        string slotCardTime = attendSd.SlotCardTime;//刷卡时间
+                        if (slotCardTime == null || slotCardTime.Length < 5)
                         {
-                            if (attendSd.LeaveMark == 0)
-                                MergeSlotExceptionType(ref slotExceptionType, "漏刷卡");
-                            else
-                                MergeSlotExceptionType(ref slotExceptionType, "请假漏刷");
-                        } //继续分析刷卡时间都全面的情况
+                            if (attendSd.LeaveMark == 0)//如果有请假的话，则不做旷工标志处理
+                                MergeSlotExceptionType(ref slotExceptionType, "旷工");//标志异常考勤信息为旷工
+                        }
                         else
                         {
-                            AnalogSlotCardTime(ref slotExceptionType, dayMiddleTime, classType, day, year, month, slotCardTime);
+                            if (attendSd.SlotCardTime1 == null || attendSd.SlotCardTime2 == null)//刷卡时间不完整的情况分析
+                            {
+                                if (attendSd.LeaveMark == 0)
+                                    MergeSlotExceptionType(ref slotExceptionType, "漏刷卡");
+                                else
+                                    MergeSlotExceptionType(ref slotExceptionType, "请假漏刷");
+                            } //继续分析刷卡时间都全面的情况
+                            else
+                            {
+                                //在都完整的情况下，分析考勤异常情况
+                                AnalogSlotCardTime(attendSd, ref slotExceptionType, dayMiddleTime, classType, day, year, month, slotCardTime);
+                            }
                         }
+                        attendSd.SlotExceptionType = slotExceptionType;
+                        attendSd.SlotExceptionMark = slotExceptionType != null && slotExceptionType.Length >= 2 ? 1 : 0;
+                        attendSd.HandleSlotExceptionStatus = attendSd.SlotExceptionMark == 1 ? 1 : -1;//若有异常，则状态为1，没有异常则状态为-1代表已经检测过
+                                                                                                      //同步到数据库中
+                        this.irep.Update(f => f.WorkerId == attendSd.WorkerId && f.AttendanceDate == attendSd.AttendanceDate, u => new AttendSlodFingerDataCurrentMonthModel
+                        {
+                            HandleSlotExceptionStatus = attendSd.HandleSlotExceptionStatus,
+                            SlotExceptionType = slotExceptionType,
+                            SlotExceptionMark = attendSd.SlotExceptionMark
+                        });
                     }
-                    attendSd.SlotExceptionType = slotExceptionType;
-                    attendSd.SlotExceptionMark = slotExceptionType != null && slotExceptionType.Length >= 2 ? 1 : 0;
-                    attendSd.HandleSlotExceptionStatus = attendSd.SlotExceptionMark == 1 ? 1 : -1;//若有异常，则状态为1，没有异常则状态为-1代表已经检测过
-                    //同步到数据库中
-                    this.irep.Update(f => f.WorkerId == attendSd.WorkerId && f.AttendanceDate == attendSd.AttendanceDate, u => new AttendSlodFingerDataCurrentMonthModel
-                    {
-                        HandleSlotExceptionStatus = attendSd.HandleSlotExceptionStatus,
-                        SlotExceptionType = slotExceptionType,
-                        SlotExceptionMark = attendSd.SlotExceptionMark
-                    });
-                });
-            }
-            return attendSlotDatas.Where(e => e.HandleSlotExceptionStatus == 1).OrderBy(o => o.AttendanceDate).ToList();
+                    //日期递增
+                    worker.AttendDateStart = worker.AttendDateStart.AddDays(1);
+                }
+            });
+            attendExceptionSlodDatas = attendSlotDatas.Where(e => e.HandleSlotExceptionStatus == 1).OrderBy(o => o.AttendanceDate).ToList();
+            return attendExceptionSlodDatas;
         }
-
+        /// <summary>
+        /// 合并异常类型信息
+        /// </summary>
+        /// <param name="slotExceptionType"></param>
+        /// <param name="exceptionType"></param>
         private void MergeSlotExceptionType(ref string slotExceptionType, string exceptionType)
         {
             if (!slotExceptionType.Contains(exceptionType))
                 slotExceptionType = slotExceptionType.Length == 0 ? exceptionType : slotExceptionType + "," + exceptionType;
         }
-
-        private void AnalogSlotCardTime(ref string slotExceptionType, DateTime dayMiddleTime, string classType, int day, int year, int month, string slotCardTime)
+        /// <summary>
+        /// 分析刷卡时间
+        /// </summary>
+        /// <param name="slotExceptionType"></param>
+        /// <param name="dayMiddleTime"></param>
+        /// <param name="classType"></param>
+        /// <param name="day"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <param name="slotCardTime"></param>
+        private void AnalogSlotCardTime(AttendSlodFingerDataCurrentMonthModel attendSd, ref string slotExceptionType, DateTime dayMiddleTime, string classType, int day, int year, int month, string slotCardTime)
         {
             string exceptionType = slotExceptionType;
             //分析时间
             string[] slotTimes = slotCardTime.Split(',');
             if (slotTimes != null && slotTimes.Length > 0)
             {
-                if (slotTimes.Length > 3)//有三次以上刷卡记录，先自动判定为异常
+                if (slotTimes.Length > 3)//有三次以上刷卡记录，不做处理
                 {
-                    MergeSlotExceptionType(ref slotExceptionType, "多次刷卡");
+                    //MergeSlotExceptionType(ref slotExceptionType, "多次刷卡");
                 }
                 slotTimes.ToList().ForEach(st =>
                 {
                     string[] ttimes = st.Split(':');
-                    if (ttimes != null && ttimes.Length == 2)
+                    if (ttimes != null && ttimes.Length == 2)//分析刷卡具体时间
                     {
                         int h = ttimes[0].ToInt();
                         int m = ttimes[1].ToInt();
                         //组合当前刷卡时间
                         DateTime currentTime = new DateTime(year, month, day, h, m, 0);
-                        //白班迟到时间区间
-                        DateTime dayAmstand = new DateTime(year, month, day, 7, 50, 0);
+                        //白班迟到时间区间7:51--7:55
+                        DateTime dayAmstand = new DateTime(year, month, day, 7, 50, 0);//上班时间
                         DateTime dayAmstart = new DateTime(year, month, day, 7, 51, 0);
                         DateTime dayAmend = new DateTime(year, month, day, 7, 55, 0);
-                        //晚班迟到时间区间
+                        //晚班迟到时间区间19:51--19:55
                         DateTime dayPmstart = new DateTime(year, month, day, 19, 51, 0);
                         DateTime dayPmend = new DateTime(year, month, day, 19, 55, 0);
                         DateTime dayPmstand = new DateTime(year, month, day, 19, 50, 0);
-
                         if (classType == "白班")
                         {
-                            AnalogDayAttendData(ref exceptionType, dayMiddleTime, currentTime, dayAmstart, dayAmend);
+                            AnalogDayAttendData(attendSd, ref exceptionType, dayMiddleTime, currentTime, dayAmstart, dayAmend);
                         }
                         else if (classType == "晚班")
                         {
-                            AnalogNightAttendData(ref exceptionType, dayMiddleTime, currentTime, dayPmstart, dayPmend);
+                            AnalogNightAttendData(attendSd, ref exceptionType, dayMiddleTime, currentTime, dayPmstart, dayPmend);
                         }
                     }
                 });
             }
             slotExceptionType = exceptionType;
         }
-
-        private void AnalogNightAttendData(ref string slotExceptionType, DateTime dayMiddleTime, DateTime currentTime, DateTime dayPmstart, DateTime dayPmend)
+        /// <summary>
+        /// 分析处理晚班数据
+        /// </summary>
+        /// <param name="slotExceptionType"></param>
+        /// <param name="dayMiddleTime"></param>
+        /// <param name="currentTime"></param>
+        /// <param name="dayPmstart"></param>
+        /// <param name="dayPmend"></param>
+        private void AnalogNightAttendData(AttendSlodFingerDataCurrentMonthModel attendSd, ref string slotExceptionType, DateTime dayMiddleTime, DateTime currentTime, DateTime dayPmstart, DateTime dayPmend)
         {
             if (currentTime > dayPmstart && currentTime < dayPmend)
             {
@@ -494,11 +743,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             }
             else if (currentTime > dayPmend)
             {
-                MergeSlotExceptionType(ref slotExceptionType, "旷工");
+                //先判定是否有请假状况
+                if (attendSd.LeaveMark == 0)
+                    MergeSlotExceptionType(ref slotExceptionType, "旷工");
             }
         }
-
-        private void AnalogDayAttendData(ref string slotExceptionType, DateTime dayMiddleTime, DateTime currentTime, DateTime dayAmstart, DateTime dayAmend)
+        /// <summary>
+        /// 分析处理白天数据
+        /// </summary>
+        /// <param name="slotExceptionType"></param>
+        /// <param name="dayMiddleTime"></param>
+        /// <param name="currentTime"></param>
+        /// <param name="dayAmstart"></param>
+        /// <param name="dayAmend"></param>
+        private void AnalogDayAttendData(AttendSlodFingerDataCurrentMonthModel attendSd, ref string slotExceptionType, DateTime dayMiddleTime, DateTime currentTime, DateTime dayAmstart, DateTime dayAmend)
         {
             if (currentTime > dayAmstart && currentTime < dayAmend)
             {
@@ -506,7 +764,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             }
             else if (currentTime > dayAmend)
             {
-                MergeSlotExceptionType(ref slotExceptionType, "旷工");
+                //先判定是否有请假状况
+                if (attendSd.LeaveMark == 0)
+                    MergeSlotExceptionType(ref slotExceptionType, "旷工");
             }
         }
 
@@ -628,6 +888,50 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             return record;
         }
 
+        /// <summary>
+        /// 获取出勤人员的信息
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
+        private List<AttendSlodWorkerModel> GetAttendSlodWorkers(int year, int month)
+        {
+            List<AttendSlodWorkerModel> attendSlodWorkers = null;
+            AttendSlodWorkerModel aswMdl = null;
+            int days = DateTime.DaysInMonth(year, month);
+            DateTime dtStart = new DateTime(year, month, 1, 0, 0, 0);
+            DateTime dtEnd = new DateTime(year, month, days, 0, 0, 0);
+            //获取离职人员信息
+            List<LeaveOfficeMapEntity> LeavedWorkers = ArchiveService.ArchivesManager.LeaveOffManager.GetLeavedWorkers(dtStart, dtEnd);
+            attendSlodWorkers = this.ConvertToAttendWorkerList(LeavedWorkers, aswMdl, dtStart, dtEnd, true);
+            List<LeaveOfficeMapEntity> WorkingWorkers = ArchiveService.ArchivesManager.GetAttendWorkers();
+            if (attendSlodWorkers != null)
+            {
+                //合并在职人员信息
+                attendSlodWorkers.AddRange(this.ConvertToAttendWorkerList(WorkingWorkers, aswMdl, dtStart, dtEnd, false));
+            }
+            return attendSlodWorkers;
+        }
+        private List<AttendSlodWorkerModel> ConvertToAttendWorkerList(List<LeaveOfficeMapEntity> attendWorkers, AttendSlodWorkerModel aswMdl, DateTime dtStart, DateTime dtEnd, bool isLeave)
+        {
+            List<AttendSlodWorkerModel> attendSlodWorkerList = new List<AttendSlodWorkerModel>();
+            if (attendWorkers != null && attendWorkers.Count > 0)
+            {
+                attendWorkers.ForEach(worker =>
+                {
+                    aswMdl = new Attendance.AttendSlodWorkerModel()
+                    {
+                        WorkerId = worker.WorkerId,
+                        WorkerName = worker.WorkerName,
+                        Department = worker.Department,
+                        AttendDateStart = dtStart,
+                        AttendDateEnd = isLeave == true ? worker.LeaveDate.AddDays(-1) : dtEnd
+                    };
+                    attendSlodWorkerList.Add(aswMdl);
+                });
+            }
+            return attendSlodWorkerList;
+        }
         #endregion handle attend exception method
 
         #endregion method
@@ -669,12 +973,25 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         #endregion property
 
         #region method
-
-        public int Delete(AttendFingerPrintDataInTimeModel entity)
+        /// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public void BackupData(List<AttendFingerPrintDataInTimeModel> entities, int targetRecord)
         {
-            return this.irep.Delete(e => e.WorkerId == entity.WorkerId);
+            int record = 0;
+            entities.ForEach(entity => { record += this.irep.backupData(entity); });
+            if (record == targetRecord)
+            {
+                var mdl = entities[0];
+                this.irep.Delete(e => e.WorkerId == mdl.WorkerId && e.SlodCardDate == mdl.SlodCardDate);
+            }
         }
-
+        public int StoreNoIdentityWorkerInfo(AttendFingerPrintDataInTimeModel entity)
+        {
+            return this.irep.StoreNoIdentityWorkerInfo(entity);
+        }
         /// <summary>
         /// 实时考勤数据表中是否有考勤数据
         /// </summary>
@@ -688,6 +1005,25 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         }
 
         #endregion method
+
+        public void tu()
+        {
+            var datas = this.irep.loaddatas();
+            datas.ForEach(d =>
+            {
+                if (!this.irep.IsExist(e => e.WorkerId == d.WorkerId && e.SlodCardDate == d.SlodCardDate && e.SlodCardTime == d.SlodCardTime))
+                {
+                    if (this.irep.Insert(d) == 1)
+                    {
+                        this.irep.deleteLibData(d.SlodCardTime, d.WorkerId);
+                    }
+                }
+                else
+                {
+                    this.irep.deleteLibData(d.SlodCardTime, d.WorkerId);
+                }
+            });
+        }
     }
 
     public class AttendAskLeaveManager
@@ -706,8 +1042,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         }
 
         #endregion constructure
-
-
 
         #region method
 
@@ -739,5 +1073,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         }
 
         #endregion method
+    }
+    /// <summary>
+    /// 作业员出勤刷卡模型
+    /// </summary>
+    public class AttendSlodWorkerModel
+    {
+        public string WorkerId { get; set; }
+
+        public string WorkerName { get; set; }
+
+        public string Department { get; set; }
+
+        public DateTime AttendDateStart { get; set; }
+
+        public DateTime AttendDateEnd { get; set; }
     }
 }

@@ -1,0 +1,185 @@
+﻿<div class="panel panel-default " ng-controller="purSupplierInputCtrl">
+    <form role="form" name="formEquipment" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+        <div class="container">
+
+            <div class="row clearfix">
+                    <div class="h-split">
+                        <div class="nav">
+                                <h3 class="text-center navbar-collapse">供应商信息</h3>
+                        </div>
+                    </div>
+            </div>
+            <br />
+
+            <div class="row clearfix ">
+                <div class="col-md-4 ">
+                    <div class="input-group">
+                        <span class="input-group-addon">供应商编号:</span>
+                        <input name="supplierId" class="form-control" ng-model="vmManager.SupplierId" ng-keypress="vmManager.getErpSuppplierInfoBy($event,1)" required />
+                    </div>
+                    <div class="error-messages" ng-messages="formEquipment.supplierId.$error" ng-show="operate.showValidation">
+                        <small ng-message="required">供应商编号不能为空</small>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">采购类别:</span>
+                        <input name="purchaseType" type="text" class="form-control" ng-model="vm.PurchaseType" placeholder="输入采购类别" required>
+                    </div>
+                    <div class="error-messages" ng-messages="formEquipment.purchaseType.$error" ng-show="operate.showValidation">
+                        <small ng-message="required">采购类别不能为空</small>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon">供应商类别:</span>
+                        <input name="supplierProperty" type="text" class="form-control" ng-model="vm.SupplierProperty" placeholder="输入供应商类别" required>
+                    </div>
+                    <div class="error-messages" ng-messages="formEquipment.supplierProperty.$error" ng-show="operate.showValidation">
+                        <small ng-message="required">供应商类别不能为空</small>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                   
+                </div>
+
+            </div>
+
+            <br />
+
+            <div class="row clearfix">
+                <div class="col-md-4">
+                    <label class="control-label">供应商简称:<span class="label label-default">{{vm. SupplierShortName}}</span></label>
+                </div>
+                <div class="col-md-4 ">
+                    <label class="control-label">全称:<span class="label label-default">{{vm.SupplierName}}</span></label>
+                </div>
+                <div class="col-md-4 ">
+                    <label class="control-label">采购负责人:<span class="label label-default">{{vm.PurchaseUser}}</span></label>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row clearfix">
+                <div class="col-md-4">
+                    <label class="control-label">厂商联系人:<span class="label label-default">{{vm. SupplierUser}}</span></label>
+                </div>
+                <div class="col-md-4 ">
+                    <label class="control-label">联系电话:<span class="label label-default">{{vm. SupplierTel}}</span></label>
+                </div>
+                <div class="col-md-4 ">
+                    <label class="control-label">传真:<span class="label label-default">{{vm.SupplierFaxNo}}</span></label>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row clearfix">
+                <div class="col-md-4">
+                    <label class="control-label">Email:<span class="label label-default">{{vm.SupplierEmail}}</span></label>
+                </div>
+                <div class="col-md-4">
+                    <label class="control-label">地址:<span class="label label-default">{{vm. SupplierAddress}}</span></label>
+                </div>
+                <div class="col-md-4">
+                    <label class="control-label">付款条件:<span class="label label-default">{{vm. PayCondition}}</span></label>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row clearfix">
+                <div class="h-split">
+                    <div class="nav">
+                        <h3 class="text-center navbar-collapse">供应商认证文件清单</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row clearfix">
+                <div class="table-responsive col-md-11">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr class="info">
+                                <th>项目</th>
+                                <th>有效日期</th>
+                                <th>录入日期</th>
+                                <th>是否有效</th>
+                                <th>文件</th>
+                                <th>备注</th>
+                                <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                <th><button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#mymodal-data" title="添加"> 添加</button></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.CheckDataSource track by $index">
+                                <td>{{item.AssetNumber}}</td>
+                                <td>{{item.AssetNumber}}</td>
+                                <td>{{item.EquipmentName}}</td>
+                                <td>{{item.AssetNumber}}</td>
+                                <td><input type="file" name="kk" size="15" maxlength="100" /></td>
+                                <td>{{item.EquipmentName}}</td>
+                                <td>
+                                    <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="查看">
+                                        查看
+                                    </button>
+                                    <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="编辑">
+                                        编辑
+                                    </button>
+                                    <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="删除">
+                                        删除
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div yl-pagination data-dataset="vmManager.datasets" data-datasource="vmManager.datasource"></div>
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+
+            <br />
+
+          
+            <!-- 添加供应商认证文件 -->
+            <div class="modal" id="mymodal-data" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">添加供应商认证文件</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>证书内容</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+           
+           
+
+            <div class="row clearfix">
+
+                <div class="col-md-4 ">
+                </div>
+                <div class="col-md-4 ">
+                    <button class="btn btn-primary " ng-click="operate.saveAll(formEquipment.$valid)"><i class="fa fa-save"></i>保存</button>
+                    <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                    <span yl-operatemsg-board></span>
+                </div>
+                <div class="col-md-4 ">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

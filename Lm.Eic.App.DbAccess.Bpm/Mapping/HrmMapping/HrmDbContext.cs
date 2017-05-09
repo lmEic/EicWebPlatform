@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Data.Entity;
@@ -51,7 +52,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         /// <summary>
         /// 班别设置信息
         /// </summary>
-        public DbSet<AttendClassTypeModel> AttendClassType { get; set; }
+        public DbSet<AttendClassTypeDetailModel> AttendClassType { get; set; }
 
         /// <summary>
         /// 实时刷卡数据
@@ -62,6 +63,16 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         /// 当月刷卡数据模型
         /// </summary>
         public DbSet<AttendSlodFingerDataCurrentMonthModel> AttendSlodFingerDataCurrentMonth { get; set; }
+
+        public DbSet<WorkClothesManageModel> WorkClothesManage { get; set; }
+        /// <summary>
+        /// 离职人员信息
+        /// </summary>
+        public DbSet<ArLeaveOfficeModel> ArWorkerLeaveOfficeInfo { get; set; }
+        /// <summary>
+        /// 行事历列表
+        /// </summary>
+        public DbSet<CalendarModel> Calendarlist{ set; get; }
 
         #endregion dbset
 
@@ -77,11 +88,21 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             modelBuilder.Configurations.Add(new ArchivesEmployeeIdentityModelMapping());
 
             modelBuilder.Configurations.Add(new ProWorkerInfoMapping());
+            //离职人员信息
+            modelBuilder.Configurations.Add(new ArWorkerLeaveOfficeInfoMapping ());
 
             //考勤模块
             modelBuilder.Configurations.Add(new AttendClassTypeModelMapping());
+            modelBuilder.Configurations.Add(new AttendClassTypeDetailModelMapping());
             modelBuilder.Configurations.Add(new AttendSlodFingerDataCurrentMonthModelMapping());
             modelBuilder.Configurations.Add(new AttendFingerPrintDataInTimeModelMapping());
+
+            //总务
+            modelBuilder.Configurations.Add(new WorkClothesManageModelMapping());
+            //工号变更
+            modelBuilder.Configurations.Add(new ArWorkerIdChangedMapping());
+            //
+            modelBuilder.Configurations.Add(new CalendarsMapping());
         }
     }
 

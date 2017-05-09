@@ -13,6 +13,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
 {
     public class HrArchivesManageController : EicBaseController
     {
+        #region View Tpl
+
+
         //
         // GET: /HrArchivesManage/
         public ActionResult Index()
@@ -45,6 +48,28 @@ namespace EicWorkPlatfrom.Controllers.Hr
             return View();
         }
 
+        /// <summary>
+        /// 离职管理
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult HrLeaveOffManage()
+        {
+            return View();
+        }
+        #endregion
+
+        /// <summary>
+        /// 办理离职数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StoreLeaveOffData(ArLeaveOfficeModel leaveEntity)
+        {
+            var opResult = ArchiveService.ArchivesManager.LeaveOffManager.StoreLeaveOffInfo(leaveEntity);
+            return Json(opResult);
+        }
+
         [NoAuthenCheck]
         public JsonResult GetIdentityInfoBy(string lastSixIdWord)
         {
@@ -59,7 +84,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
                     if (m.PersonalPicture != null)
                         //将个人的图片信息转换为Base64字符串编码保存到此属性中
                         m.NewAddress = Convert.ToBase64String(m.PersonalPicture);
-                    vm = new IdentityViewModel() { Identity = m, IsExpire = ArchiveService.ArchivesManager.IdentityManager.IdentityLimitDateIsExpired(m) };
+                    vm = new IdentityViewModel() { Identity = m, IsExpire = ArchiveService.ArchivesManager.IdentityManager.IdentityLimitDateIsExpired(m), Name = m.Name };
                     datas.Add(vm);
                 });
             }
@@ -115,13 +140,59 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="employee"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult InputWorkerArchive(ArchivesEmployeeIdentityDto employee, ArchivesEmployeeIdentityDto oldEmployeeIdentity, string opSign)
+        public JsonResult InputWorkerArchive(ArchivesEmployeeIdentityDto employee, string opSign)
         {
             employee.OpPerson = OnLineUser.UserName;
-            var result = ArchiveService.ArchivesManager.Store(employee, oldEmployeeIdentity, opSign);
+            var result = ArchiveService.ArchivesManager.Store(employee, opSign);
             return Json(result);
         }
-
+        /// <summary>
+        /// 获取档案数据
+        /// </summary>
+        /// <param name="searchMode"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetWorkerArchives(
+            DateTime startRegistedDate,
+            DateTime endRegistedDate,
+            string workerId,
+            string department,
+            string birthday,
+            string marryStatus,
+            string workingStatus,
+            int searchMode)
+        {
+            var data = ArchiveService.ArchivesManager.FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto
+            {
+                RegistedDateStart = startRegistedDate,
+                RegistedDateEnd = endRegistedDate,
+                WorkerId = workerId,
+                Department = department,
+                BirthMonth = birthday,
+                MarryStatus = marryStatus,
+                WorkingStatus = workingStatus,
+                SearchMode = searchMode
+            });
+            TempData["archiveDatas"] = data;
+            return DateJsonResult(data);
+        }
+        public ContentResult GetWorkerIdArchives(string workerId, int searchMode)
+        {
+            var data = ArchiveService.ArchivesManager.FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto
+            {
+                WorkerId = workerId,
+                SearchMode = searchMode
+            });
+            TempData["archiveDatas"] = data;
+            return DateJsonResult(data);
+        }
+        [NoAuthenCheck]
+        public FileResult BuildWorkerArchivesList()
+        {
+            var datas = TempData["archiveDatas"] as List<ArchivesEmployeeIdentityModel>;
+            var ms = ArchiveService.ArchivesManager.BuildWorkerArchivesInfoList(datas);
+            return this.ExportToExcel(ms, "员工档案总表", "员工档案总表");
+        }
         /// <summary>
         /// 变更部门信息
         /// </summary>
@@ -130,14 +201,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [HttpPost]
         public JsonResult ChangeDepartment(List<ArDepartmentChangeLibModel> changeDepartments)
         {
-            if (changeDepartments != null && changeDepartments.Count > 0)
-            {
-                changeDepartments.ForEach(d =>
-                {
-                    d.AssignDate = DateTime.Now.ToDate();
-                    d.OpPerson = this.OnLineUser.UserName;
-                });
-            }
             var result = ArchiveService.ArchivesManager.ChangeDepartment(changeDepartments);
             return Json(result);
         }
@@ -150,14 +213,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [HttpPost]
         public JsonResult ChangePost(List<ArPostChangeLibModel> changePosts)
         {
-            if (changePosts != null && changePosts.Count > 0)
-            {
-                changePosts.ForEach(d =>
-                {
-                    d.AssignDate = DateTime.Now.ToDate();
-                    d.OpPerson = this.OnLineUser.UserName;
-                });
-            }
             var result = ArchiveService.ArchivesManager.ChangePost(changePosts);
             return Json(result);
         }
@@ -221,14 +276,21 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public JsonResult GetWorkersInfo(QueryWorkersDto dto, int searchMode)
         {
             var datas = ArchiveService.ArchivesManager.FindWorkers(dto, searchMode);
+            RebuildDepartmentContent(datas);
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+
+        private void RebuildDepartmentContent(List<ArWorkerInfo> datas)
+        {
             if (datas != null && datas.Count > 0)
             {
                 datas.ForEach(e =>
                 {
-                    e.Department = ArchiveService.ArchivesManager.DepartmentMananger.GetDepartmentText(e.Department);
+                    string dep = e.Department.TrimEndNewLine();
+                    e.Department = ArchiveService.ArchivesManager.DepartmentMananger.GetDepartmentText(dep);
+
                 });
             }
-            return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
         [NoAuthenCheck]
@@ -242,6 +304,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public JsonResult GetWorkersBy(string workerIdOrName)
         {
             var datas = ArchiveService.ArchivesManager.FindWorkers(new QueryWorkersDto() { WorkerId = workerIdOrName }, 2);
+            RebuildDepartmentContent(datas);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 
@@ -260,9 +323,31 @@ namespace EicWorkPlatfrom.Controllers.Hr
             g.Dispose();
             bmp.Dispose();
 
-            var data ="data:image/jpg;base64,"+ Convert.ToBase64String(imgBytes);
+            var data = GetBase64Url(imgBytes);
 
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 变更工号
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult HrChangeWorkerId()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 变更工号办理
+        /// </summary>
+        /// <param name="workerId"></param>
+        /// <param name="newWorkerId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult ChangeWorkerId(string workerId, string newWorkerId)
+        {
+            var opResult = ArchiveService.ArchivesManager.StoreWorkerIdChangeInfo(new WorkerChangedModel() { OldWorkerId = workerId, NewWorkerId = newWorkerId, OpSign = "add" });
+            return Json(opResult);
         }
     }
 
@@ -274,9 +359,11 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// 身份证是否过期
         /// </summary>
         public bool IsExpire { get; set; }
+        /// <summary>
+        /// 姓名
+        /// </summary>
+        public string Name { get; set; }
     }
-
-
 
     /// <summary>
     /// 生成厂牌模板

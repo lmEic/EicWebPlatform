@@ -8,7 +8,6 @@ namespace EicWorkPlatfrom.Controllers
     {
         //
         // GET: /ITIL/
-
         public ActionResult Index()
         {
             return View();
@@ -23,7 +22,15 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+        /// <summary>
+        /// 变更开发模块进度状态模板
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ActionResult ChangeDevelopModuleProgressStatusTpl()
+        {
+            return View();
+        }
         [NoAuthenCheck]
         public JsonResult StoreProjectDevelopRecord(ItilDevelopModuleManageModel entity)
         {
@@ -36,10 +43,42 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="progressStatuses"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetProjectDevelopModuleBy(List<string> progressStatuses)
+        public ContentResult GetProjectDevelopModuleBy(List<string> progressStatuses)
         {
-            var result = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(progressStatuses);
-            return Json(result, JsonRequestBehavior.AllowGet);
+            var result = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(new ItilDto() { ProgressSignList = progressStatuses, SearchMode = 1 });
+            return DateJsonResult(result);
+        }
+        /// <summary>
+        /// 改变模块开发进度状态
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult ChangeDevelopModuleProgressStatus(ItilDevelopModuleManageModel entity)
+        {
+            var result = ItilService.ItilDevelopModuleManager.ChangeProgressStatus(entity);
+            return Json(result);
+        }
+        /// <summary>
+        /// 查看模块开发明细
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult ViewDevelopModuleDetails(ItilDevelopModuleManageModel entity)
+        {
+            var datas = ItilService.ItilDevelopModuleManager.GetChangeRecordListBy(entity);
+            return DateJsonResult(datas);            
+        }
+        /// <summary>
+        /// 发送邮件通知
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SendMail()
+        {
+            var result = ItilService.ItilDevelopModuleManager.SendMail();
+            return Json(result);
         }
     }
 }

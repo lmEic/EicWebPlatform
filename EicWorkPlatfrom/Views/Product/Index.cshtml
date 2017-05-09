@@ -29,13 +29,15 @@
     {
         <div>
             <header role="banner">
-                <nav role="navigation" class="navbar navbar-static-top navbar-inverse">
+                <nav role="navigation" class="navbar navbar-static-top navbar-inverse" ng-cloak>
                     <div class="container">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="@Url.Action("Index","Home")">
                                 <span>
                                     <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司"
-                                         src="@Url.Content("~/Content/login/lmlogo.png")" />企业信息化平台(V1.0)
+                                         src="@Url.Content("~/Content/login/lmlogo.png")"
+                                         style="margin-left: -50px;margin-top: -5px;background-color: whitesmoke;height: 28px;width: 32px;border-radius: 5px;margin-right: 3px;" />
+                                    企业信息化平台(V1.0)
                                 </span>
                             </a>
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -54,24 +56,38 @@
                     </div>
                 </nav>
             </header>
+
             <main class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2">
+                <div class="row" ng-cloak>
+                    <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-show="navLayout.navViewSwitch">
                         <div class="bs-callout bs-callout-info">
-                            <h4><span class="fa fa-list-ul">导航菜单</span></h4>
+                            <h4>
+                                <span class="fa fa-list-ul">导航菜单</span>
+                                <span class="pull-right">
+                                    <span class="badge" ng-click="navLayout.switchView()" title="点击折叠导航面板" style="cursor:pointer"><i class="fa fa-hand-o-left"></i></span>
+                                </span>
+                            </h4>
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <ol class="rounded-list">
                                     <li>
                                         <a data-ui-sref-active="active" data-ui-sref="registWorkerInfo" style="cursor:pointer">注册用户</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="jumperWireBoard" style="cursor:pointer">线材看板管理</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="dReportHoursSet" style="cursor:pointer">标准工时设定</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="dReportInput" style="cursor:pointer">日报录入</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="checkOrderBills" style="cursor:pointer">工单订单对比</a>
                                     </li>
                                 </ol>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-10">
+                    <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-hide="navLayout.navViewSwitch">
+                        <span class="badge" ng-click="navLayout.switchView()" title="点击打开导航面板" style="cursor:pointer"><i class="fa fa-hand-o-right"></i></span>
+                    </div>
+                    <div class="pull-right" style="width:{{navLayout.navMainSize}};">
                         <div data-ui-view>
+
                         </div>
                     </div>
                 </div>
@@ -79,19 +95,22 @@
         </div>
     }
 
-    @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/bootstrap")
 
-    @Scripts.Render("~/bundles/angularJs")
+        @Scripts.Render("~/bundles/angularJs")
 
-    @Scripts.Render("~/bundles/anstrap")
+        @Scripts.Render("~/bundles/anstrap")
 
-    @Scripts.Render("~/common/leehelper")
+        <script src="@Url.Content("~/Content/ztree/dist/js/jquery.ztree.all.min.js")"></script>
 
-    <script src="@Url.Content("~/Content/ztree/dist/js/jquery.ztree.all.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/controller/masterProduct/mpConfigApp.js")"></script>
 
-    <script src="@Url.Content("~/Scripts/controller/masterProduct/mpConfigApp.js")"></script>
+        <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
+        <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
 
-    <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
-    <script src="@Url.Content("~/Scripts/controller/product/productApp.js")"></script>
-</body>
+        <script src="@Url.Content("~/Scripts/controller/product/productApp.js")"></script>
+        <script src="@Url.Content("~/Scripts/controller/product/proBoard.js")"></script>
+        <script src="@Url.Content("~/Scripts/controller/product/proDailyReport.js")"></script>
+        <script src="@Url.Content("~/Scripts/controller/product/proMocManage.js")"></script>
+    </body>
 </html>

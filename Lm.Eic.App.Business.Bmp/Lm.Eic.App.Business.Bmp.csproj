@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Lm.Eic.App.Business.Bmp</RootNamespace>
     <AssemblyName>Lm.Eic.App.Business.Bmp</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,6 +50,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,8 +63,17 @@
     <Compile Include="Ast\AstService.cs" />
     <Compile Include="Ast\EquipmentCheckManager.cs" />
     <Compile Include="Ast\EquipmentCrud.cs" />
+    <Compile Include="Ast\EquipmentDiscardManager.cs" />
     <Compile Include="Ast\EquipmentMaintenanceManager.cs" />
     <Compile Include="Ast\EquipmentManager.cs" />
+    <Compile Include="Ast\EquipmentRepairedManager.cs" />
+    <Compile Include="Hrm\Archives\ArCalendarManger.cs" />
+    <Compile Include="Hrm\Archives\ArLeaveOfficeManager.cs" />
+    <Compile Include="Hrm\Archives\ArWorkerIdChangeManager.cs" />
+    <Compile Include="Pms\BoardManagment\BoardBase.cs" />
+    <Compile Include="Pms\BoardManagment\BoardService.cs" />
+    <Compile Include="Pms\BoardManagment\BoardCrud.cs" />
+    <Compile Include="Pms\BoardManagment\MaterialBoardManager.cs" />
     <Compile Include="Hrm\Archives\ArchiveBase.cs" />
     <Compile Include="Hrm\Archives\ArchiveService.cs" />
     <Compile Include="Hrm\Archives\ArchivesManager.cs" />
@@ -74,19 +86,60 @@
     <Compile Include="Hrm\Attendance\AttendanceService.cs" />
     <Compile Include="Hrm\Attendance\AttendClassTypeSetter.cs" />
     <Compile Include="Hrm\Attendance\AttendSlodPrintManager.cs" />
-    <Compile Include="ProduceDailyReport\DailyReportCollectManager.cs" />
+    <Compile Include="Hrm\GeneralAffairs\GeneralAffairsFactory.cs" />
+    <Compile Include="Hrm\GeneralAffairs\GeneralAffairsService.cs" />
+    <Compile Include="Hrm\GeneralAffairs\WorkerClothesManager.cs" />
+    <Compile Include="Pms\DailyReport\ConfigManager.cs" />
+    <Compile Include="Pms\DailyReport\ConfigManagerCrud.cs" />
+    <Compile Include="Pms\DailyReport\InputManagerCrud.cs" />
+    <Compile Include="Pms\DailyReport\DailyReportService.cs" />
+    <Compile Include="Pms\DailyReport\DailyRrportBase.cs" />
+    <Compile Include="Pms\DailyReport\InputManager.cs" />
+    <Compile Include="Pms\DailyReport\LmProMasterDailyReort\LmProDailyReportCrud.cs" />
+    <Compile Include="Pms\DailyReport\LmProMasterDailyReort\LmProDailyReportManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchase\PurchaseManager.cs" />
     <Compile Include="Purchase\PurchaseService.cs" />
     <Compile Include="Purchase\RequisitionManager.cs" />
     <Compile Include="Purchase\StockManager.cs" />
-    <Compile Include="Quantity\QuantityServices.cs" />
-    <Compile Include="Quantity\SampleManager\IPQCSample\IPQCSampleItems..cs" />
-    <Compile Include="Quantity\SampleManager\SampleManger.cs" />
-    <Compile Include="Quantity\SampleManager\SampleCrud.cs" />
-    <Compile Include="Quantity\SampleManager\SampleItermRules\SampleItermRulesManger.cs" />
-    <Compile Include="Quantity\SampleManager\SampleIqcManager.cs" />
-    <Compile Include="Quantity\SupperManager\SupperManager.cs" />
+    <Compile Include="Purchase\SupplierManager\SupplierAuditManager.cs" />
+    <Compile Include="Purchase\SupplierManager\SupplierTutorManger.cs" />
+    <Compile Include="Purchase\SupplierManager\SupplierCertificateManager.cs" />
+    <Compile Include="Purchase\SupplierManager\SupplierConfigManagerCrud.cs" />
+    <Compile Include="Purchase\SupplierManager\SupplierConfigManager.cs" />
+    <Compile Include="Purchase\SupplierManager\SuppliersGradeManager.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\FqcCrudFactory.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\FqcDetailDatasGather.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\FqcMasterDatasGather.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\InspectionFqcConfigManager.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\InspectionFqcDataGather.cs" />
+    <Compile Include="Quality\InspectionManage\Fqc\InspectionFqcFormManager.cs" />
+    <Compile Include="Quality\InspectionManage\InsepctionDataGatherManager.cs" />
+    <Compile Include="Quality\InspectionManage\InspectionFormManager.cs" />
+    <Compile Include="Quality\InspectionManage\InspectionItemCondition.cs" />
+    <Compile Include="Quality\InspectionManage\InspectionManageBase.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\InspectionIqcConfigManager.cs" />
+    <Compile Include="Quality\InspectionManage\InspectionManagerCrudFactory.cs" />
+    <Compile Include="Quality\InspectionManage\InspectionService.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\InspectionIqcDataGather.cs" />
+    <Compile Include="Quality\InspectionManage\InspectionConfigManager.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\InspectionIqcFormManager.cs" />
+    <Compile Include="Quality555\QualityService.cs" />
+    <Compile Include="Quality555\QuantityMangerFactory.cs" />
+    <Compile Include="Quality555\SampleManager\IPQCSample\IPQCSampleItems..cs" />
+    <Compile Include="Quality555\SampleManager\SampleManger.cs" />
+    <Compile Include="Quality555\SampleManager\SampleCrud.cs" />
+    <Compile Include="Quality555\SampleManager\SampleItermRules\SampleItermRulesManger.cs" />
+    <Compile Include="Quality555\SampleManager\SampleIqcManager.cs" />
+    <Compile Include="Quality555\SupperManager\SupperManager.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\IqcCrudFactory.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\IqcDetailDatasGether.cs" />
+    <Compile Include="Quality\InspectionManage\Iqc\IqcMasterDatasGather.cs" />
+    <Compile Include="Quality\RmaManage\RamMockDatas.cs" />
+    <Compile Include="Quality\RmaManage\RmaReportManager.cs" />
+    <Compile Include="Quality\RmaManage\RmaManager.cs" />
+    <Compile Include="Quality\RmaManage\RmaCurdFactory.cs" />
+    <Compile Include="Quality\RmaManage\RmaService.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -131,6 +184,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

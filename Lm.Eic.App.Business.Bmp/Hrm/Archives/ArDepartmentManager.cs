@@ -34,6 +34,39 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         #endregion property
 
         #region method
+        /// <summary>
+        /// 初次修改部门信息(档案编辑入口)
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        internal int Edit(ArDepartmentChangeLibModel entity)
+        {
+            int record = 0;
+            var posts = this.irep.Entities.Where(e => e.WorkerId == entity.WorkerId).ToList();
+            if (posts != null && posts.Count == 1)
+            {
+                record = this.irep.Update(e => e.WorkerId == entity.WorkerId, u => new ArDepartmentChangeLibModel
+                {
+                    NowDepartment = entity.NowDepartment,
+                    OldDepartment = entity.OldDepartment,
+                });
+            }
+            return record;
+        }
+        /// <summary>
+        /// 初始化员工部门数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        internal int InitDepartment(ArDepartmentChangeLibModel entity)
+        {
+            int record = 0;
+            if (!this.irep.IsExist(e => e.WorkerId == entity.WorkerId))
+            {
+                record = this.irep.Insert(entity);
+            }
+            return record;
+        }
 
         /// <summary>
         /// 变动部门信息
@@ -57,10 +90,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                         OpPerson = changeEntity.OpPerson
                     });
                 }
-            }
-            if (changeEntity.OpSign == "change")
-            {
-                if (departments != null && departments.Count > 0)
+                else if (changeEntity.OpSign == "change")
                 {
                     changeRecord = departments.Count;
                     departments.ForEach(d =>
@@ -70,10 +100,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                             InStatus = "Out"
                         });
                     });
+                    changeEntity.InStatus = "In";
+                    record = this.irep.Insert(changeEntity);
+                    changeRecord = changeRecord + record;
                 }
-                changeEntity.InStatus = "In";
-                record = this.irep.Insert(changeEntity);
-                changeRecord = changeRecord + record;
             }
             return record;
         }
@@ -101,7 +131,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             string code = dep == null ? "" : dep.DataNodeName;
             return code;
         }
-
         #endregion method
     }
 }

@@ -1,27 +1,43 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 
-angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
-.config(function ($stateProvider, $urlRouterProvider) {
-    $stateProvider.state('standardHoursConfig', {
-        templateUrl: 'DailyReport/StandardHoursConfig',
-    }).state('proStationConfig', {
-        templateUrl: 'DailyReport/ProStationConfig',
+angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', "pageslide-directive"])
+.config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
+
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
+    //看板Url前缀
+    var boardUrlPrefix = leeHelper.controllers.productBoard + "/";
+    //报表Url前缀
+    var reportUrlPrefix = leeHelper.controllers.dailyReport + "/";
+
+    //工单Url前缀
+    var mocUrlPrefix = leeHelper.controllers.mocManage + "/";
+
+    //--------------生产日报-------------------------
+    $stateProvider.state('dReportHoursSet', {
+        //标准工时设定
+        templateUrl: reportUrlPrefix + 'DReportHoursSet'
+    })
+    .state('dReportInput', {
+        //日报录入
+        templateUrl: reportUrlPrefix + 'DReportInput'
     })
     //--------------人员管理--------------------------
     .state('registWorkerInfo', {
         templateUrl: 'ProEmployee/RegistWorkerInfo'
-    }).state('proStationManage', {
-        templateUrl: 'ProEmployee/ProStationManage'
-    }).state('proClassManage', {
-        templateUrl: 'ProEmployee/ProClassManage'
-    }).state('workHoursManage', {
-        templateUrl: 'ProEmployee/WorkHoursManage'
     })
+    //-------------看板管理-------------------
+    .state('jumperWireBoard', {//线材看板管理
+        templateUrl: boardUrlPrefix + 'JumperWireBoard'
+    })
+    //-------------工单管理-------------------
+    .state('checkOrderBills', {//工单订单对比
+        templateUrl: mocUrlPrefix + 'CheckOrderBills'
+    });
 })
 .factory('proEmployeeDataService', function (ajaxService) {
     var dataAccess = {};
-    var urlPrefix='/ProEmployee/'
+    var urlPrefix = '/ProEmployee/';
 
     dataAccess.getWorkers = function () {
       return  ajaxService.getData(urlPrefix + 'GetWorkers', {});
@@ -54,11 +70,25 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
                 if (!angular.isUndefined(navItem)) {
                     moduleNavLayoutVm.navItems.push(navItem);
                 }
-            })
+            });
         },
         stateTo: function (navItem) {
             $state.go(navItem.UiSerf);
         },
+        navViewSwitch: true,//左侧视图导航开关
+        switchView: function () {
+            moduleNavLayoutVm.navViewSwitch = !moduleNavLayoutVm.navViewSwitch;
+            if (moduleNavLayoutVm.navViewSwitch) {
+                moduleNavLayoutVm.navLeftSize = '16%';
+                moduleNavLayoutVm.navMainSize = '83%';
+            }
+            else {
+                moduleNavLayoutVm.navLeftSize = '3%';
+                moduleNavLayoutVm.navMainSize = '96%';
+            }
+        },
+        navLeftSize:'16%',
+        navMainSize:'83%'
     };
     $scope.navLayout = moduleNavLayoutVm;
     $scope.promise = navDataService.getSubModuleNavs('生产管理','ProductManage').then(function (datas) {
@@ -88,7 +118,7 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
             }
         },
         searchWorker: function ($event) {
-            if ($event.keyCode == 13) {
+            if ($event.keyCode === 13) {
                 $scope.promise = proEmployeeDataService.GetWorkerBy(vmManager.WorkerId).then(function (user) {
                     if (angular.isObject(user)) {
                         uiVM = user;
@@ -101,7 +131,7 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
                     }
                 });
             }
-        },
+        }
     };
     $scope.vmManager = vmManager;
 
@@ -119,8 +149,8 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
         LeadWorkerName: null,
         OpPerson: null,
         OpSign: vmManager.activeTab === 'initTab' ? 'add' : 'edit',
-        Id_Key: null,
-    }
+        Id_Key: null
+    };
 
     $scope.vm = uiVM;
 
@@ -146,13 +176,13 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
 
     operate.registUser = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            uiVM.IsPostKey =$scope.vmManager.isPostKey === true ? 1 : 0;
+            uiVM.IsPostKey = $scope.vmManager.isPostKey === true ? 1 : 0;
             proEmployeeDataService.registWorker(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     pHelper.clearVM();
                 });
             });
-        })
+        });
     };
     operate.cancel = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
@@ -167,4 +197,4 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
             vmManager.postType = 0;
         }
     };
-})
+});

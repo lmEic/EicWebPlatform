@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Lm.Eic.App.DomainModel.Bpm</RootNamespace>
     <AssemblyName>Lm.Eic.App.DomainModel.Bpm</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,15 +40,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ast\EquipmentCheckModel.cs" />
-    <Compile Include="Ast\EquipmentMaintenanceModel.cs" />
     <Compile Include="Ast\EquipmentModel.cs" />
     <Compile Include="Ast\QueryEquipmentDto.cs" />
+    <Compile Include="Hrm\Archives\CalendarModel.cs" />
+    <Compile Include="Hrm\Archives\QueryWorkerArchivesDto.cs" />
+    <Compile Include="Pms\BoardManagment\MaterialSpecBoardModel.cs" />
     <Compile Include="Hrm\Archives\ArchivesIdentityModel.cs" />
     <Compile Include="Hrm\Attendance\AttendClassTypeModel.cs" />
+    <Compile Include="Hrm\GeneralAffairs\QueryGeneralAffairsDto.cs" />
+    <Compile Include="Pms\DailyReport\DailyReportModel.cs" />
+    <Compile Include="Pms\DailyReport\Ms589DaiyReportModel.cs" />
+    <Compile Include="Pms\DailyReport\QueryDailyReportDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Quanity\QuantitySampleRecordModel.cs" />
+    <Compile Include="Purchase\SupplierModel.cs" />
+    <Compile Include="Quanity\InspectionoModel.cs" />
+    <Compile Include="Quanity555\QuantitySampleRecordModel.cs" />
+    <Compile Include="Hrm\GeneralAffairs\WorkClothesManageModel.cs" />
+    <Compile Include="Quanity\QmsRmaModel.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lm.Eic.Uti.Common\Lm.Eic.Uti.Common\Lm.Eic.Uti.Common.csproj">
+      <Project>{35FA689A-9EF7-4944-8A6E-0CF9F2CACDDE}</Project>
+      <Name>Lm.Eic.Uti.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

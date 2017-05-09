@@ -1,0 +1,341 @@
+﻿<div class="panel panel-primary" ng-controller="fqcDataGatheringCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title"> 成品/半成品检验数据采集(FQC)</h6>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="输入工单号查询" ng-model="vmManager.orderId" ng-keydown="vmManager.searchFqcOrderInfoKeyDown($event)">
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" ng-click="vmManager.getFqcOrderInfo()"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="number" class="form-control" placeholder="输入抽样批次数量" ng-model="vmManager.sampleCount">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" ng-click="vmManager.createSampleFormItem()">生成抽样表单</button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-2 col-md-offset-2">
+                <div class="input-group">
+                    <input type="submit" class="form-control" value="总数量">
+                    <div class="input-group-addon">
+                        <label class="label label-primary">{{vmManager.orderInfo.MaterialInCount}}</label>
+                    </div>
+                    <div class="input-group-addon">
+                        已检数量：<label class="label label-success">{{vmManager.orderInfo.HaveInspectionSumCount}}</label>
+                    </div>
+                    <div class="input-group-addon">
+                        未检数量：<label class="label label-danger">{{vmManager.orderInfo.MaterialInCount-vmManager.orderInfo.HaveInspectionSumCount}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="h-split"></div>
+        <div class="row">
+            <div class="col-md-2">
+                <label>工单号:</label>
+                {{vmManager.orderInfo.OrderId}}
+            </div>
+            <div class="col-md-2">
+                <p>
+                    <label>品号:</label>
+                    {{vmManager.orderInfo.MaterialId}}
+                </p>
+            </div>
+            <div class="col-md-3">
+                <p>
+                    <label>规格:</label>
+                    {{vmManager.orderInfo.MaterialSpec}}
+                </p>
+            </div>
+            <div class="col-md-3">
+                <p>
+                    <label>供应商:</label>
+                    {{vmManager.orderInfo.MaterialSupplier}}
+                </p>
+            </div>
+        </div>
+        <div class="h-split"></div>
+        <div class="row">
+            <div class="col-md-2">
+                <label>部门:</label>
+                {{opPersonInfo.Department}}
+            </div>
+            <div class="col-md-2">
+                <label>班别:</label>
+                {{opPersonInfo.ClassType}}
+            </div>
+            <div class="col-md-3">
+                <span>
+                    <label>机台号:</label>
+                    <input type="text" placeholder="请输入机台编号" ng-model="vmManager.currentInspectionItem.MachineId" />
+                </span>
+            </div>
+
+            <div class="col-md-2">
+                <p>
+                    <label>图号:</label>
+                    {{vmManager.orderInfo.MaterialDrawId}}
+                </p>
+            </div>
+        </div>
+        <div class="h-split"></div>
+        <div class="row clearfix">
+            <div class="col-md-3">
+                <div class="bs-callout bs-callout-info">
+                    <p>
+                        <i class="fa fa-list-ul">工单抽检批次列表</i>
+                    </p>
+                </div>
+                <div class="panel-group" ng-model="panels.activePanel" role="tablist" cg-busy="{promise:searchPromise}" aria-multiselectable="true" bs-collapse>
+                    <div class="panel panel-default" ng-repeat="item in vmManager.panelDataSource" ng-show="vmManager.panelDataSource.length>0">
+                        <div class="panel-heading" role="tab" ng-click="vmManager.selectOrderSubIdItem(item)">
+                            <a bs-collapse-toggle style="cursor:pointer;color:#000">
+                                {{item.orderId}}-{{item.orderIdNumber}}
+                                <span class="pull-right">
+                                    <i ng-show="item.inspectionStatus==='done'" class="badge-success fa fa-check"></i>
+                                    <i ng-hide="item.inspectionStatus==='done'" class="badge-fail fa fa-close"></i>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="panel-collapse list-group " role="tabpanel" bs-collapse-target cg-busy="{promise:searchPromise}">
+                            <a class="panel-body list-group-item" ng-repeat="inspectionItem in item.dataSets"
+                               ng-class="{'active':inspectionItem===vmManager.currentInspectionItem}"
+                               ng-click="vmManager.selectInspectionItem(inspectionItem)">
+                                {{inspectionItem.InspectionItem}}
+                                <span class="pull-right">
+                                    <i class="fa fa-check badge-success" title="结果判定标志" ng-show="inspectionItem.InspectionItemResult==='OK' && inspectionItem.InsptecitonItemIsFinished===true"></i>
+                                    <i class="fa fa-close badge-fail" title="结果判定标志" ng-show="inspectionItem.InspectionItemResult==='NG' && inspectionItem.InsptecitonItemIsFinished==true"></i>
+                                </span>
+                                <span class="pull-right" title="数量显示标志" ng-class="{true: 'badge-info', false: 'badge-fail'}[inspectionItem.NeedFinishDataNumber===inspectionItem.HaveFinishDataNumber]">
+                                    {{inspectionItem.NeedFinishDataNumber}}/{{inspectionItem.HaveFinishDataNumber}}
+                                </span>
+                            </a>
+                            <div ng-if="item.inspectionItemDatas.length>0"
+                                 yl-pagination data-dataset="item.dataSets"
+                                 data-datasource="item.inspectionItemDatas">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-header" ng-hide="vmManager.panelDataSource.length>0">
+                        <h4>此工单暂无抽检数据！</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="bs-callout bs-callout-info" style="min-height:500px;">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>
+                                    <label>检验项目:</label>
+                                    {{vmManager.currentInspectionItem.InspectionItem}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>规格值:</label>
+                                    {{vmManager.currentInspectionItem.SizeMemo}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>检验水平:</label>
+                                    {{vmManager.currentInspectionItem.InspectionLevel}}
+                                    <span ng-if="vmManager.currentInspectionItem.InspectionAQL">  AQL=</span>
+                                    {{vmManager.currentInspectionItem.InspectionAQL}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>
+                                    <label>抽样方案:</label>
+                                    {{vmManager.currentInspectionItem.InspectionCount}}/
+                                    {{vmManager.currentInspectionItem.AcceptCount}}/
+                                    {{vmManager.currentInspectionItem.RefuseCount}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>检验方法:</label>
+                                    {{vmManager.currentInspectionItem.InspectionMode}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>
+                                    <label>量具编号:</label>
+                                    <input placeholder="输入量具编号" ng-model="vmManager.currentInspectionItem.EquipmentID" type="text" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='A'">
+                        <div class="well" ng-show="vmManager.inputDatas.length>0" style="overflow:hidden;">
+                            <table class="table table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th ng-repeat="header in vmManager.inputDatas[0].cols">
+                                            <label class="label label-info">Data{{header.colId}}</label>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="row in vmManager.inputDatas">
+                                        <td ng-repeat="col in row.cols">
+                                            <span ng-show="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
+                                                {{col.indata}}
+                                            </span>
+                                            <input ng-model="col.indata" style="text-align:center;width:120px;" ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'"
+                                                   ng-class="{'invalidInputBg':!col.result,'':col.result}"
+                                                   title="规格上限:{{vmManager.currentInspectionItem.SizeUSL}} 规格下限:{{vmManager.currentInspectionItem.SizeLSL}}"
+                                                   focus-setter focus-if="col.focus" ng-keydown="vmManager.dataInputKeyDown(col,$event)" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'" ng-cloak>
+                                    <tr>
+                                        <td>
+                                            <button class="btn btn-warning" ng-click="operate.saveIqcGatherDatas()">保存数据</button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='B'">
+                        <h1>文件导入类型</h1>
+                    </div>
+                    <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='C'">
+                        <div class="well" ng-show="vmManager.inputDatas.length>0">
+                            <table class="table table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" ng-repeat="header in vmManager.inputDatas[0].cols">
+                                            <label class="label label-info">Data{{header.colId}}</label>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="row in vmManager.inputDatas">
+                                        <td ng-repeat="col in row.cols" class="text-center">
+                                            <span ng-show="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
+                                                <label class="text-success">
+                                                    <i class="fa fa-2x fa-check-square-o"></i>
+                                                    <span class="label label-success">OK</span>
+                                                </label>
+                                            </span>
+                                            <span ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
+                                                <label class="text-success" ng-click="vmManager.setItemResult(col)" ng-show="col.indata==='OK'">
+                                                    <i class="fa fa-2x fa-check-square-o"></i>
+                                                    <span class="label label-success">OK</span>
+                                                </label>
+                                                <label class="text-danger" ng-click="vmManager.setItemResult(col)" ng-hide="col.indata==='OK'">
+                                                    <i class="fa fa-2x fa-square-o"></i>
+                                                    <span class="label label-danger">NG</span>
+                                                </label>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <div yl-upload-file ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'"></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'" ng-cloak>
+                                    <tr>
+                                        <td>
+                                            <button class="btn btn-warning" ng-click="operate.saveIqcGatherDatas()">保存数据</button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='D'">
+                        <div class="well">
+                            <form role="form" name="formIqcInspectionDataGather" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">判定结果</label>
+                                        <div class="col-md-4">
+                                            <span ng-show="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
+                                                <label class="text-success">
+                                                    <i class="fa fa-2x fa-check-square-o"></i>
+                                                    <span class="label label-success">OK</span>
+                                                </label>
+                                            </span>
+                                            <span ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
+                                                <label class="text-success" ng-click="vmManager.currentInspectionItem.InspectionItemDatas='NG';" ng-show="vmManager.currentInspectionItem.InspectionItemDatas==='OK'">
+                                                    <i class="fa fa-2x fa-check-square-o"></i>
+                                                    <span class="label label-success">OK</span>
+                                                </label>
+                                                <label class="text-danger" ng-click="vmManager.currentInspectionItem.InspectionItemDatas='OK';" ng-hide="vmManager.currentInspectionItem.InspectionItemDatas==='OK'">
+                                                    <i class="fa fa-2x fa-square-o"></i>
+                                                    <span class="label label-danger">NG</span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="memo" class="col-md-2 control-label">状况描述</label>
+                                        <div class="col-md-4">
+                                            <textarea name="memo" rows="3" ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'"
+                                                      placeholder="输入状况描述结果"
+                                                      class="form-control" ng-model="vmManager.currentInspectionItem.Memo" />
+                                            <p ng-show="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
+                                                {{vmManager.currentInspectionItem.Memo}}
+                                                <hr />
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ngCount" class="col-md-2 control-label">NG数量</label>
+                                        <div class="col-md-4">
+                                            <input name="ngCount" type="number" ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'"
+                                                   placeholder="输入NG数量"
+                                                   class="form-control" ng-model="vmManager.currentInspectionItem.InspectionNGCount" />
+                                            <p ng-show="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
+                                                {{vmManager.currentInspectionItem.InspectionNGCount}}
+                                                <hr />
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-3 col-md-offset-2">
+                                            <div yl-upload-file ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'"></div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <hr />
+                                <div class="alert alert-info" ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                        </div>
+                                        <div class="col-md-10">
+                                            <button class="btn btn-primary" ng-click="operate.saveGatherDatas()"><i class="fa fa-save"></i>保存数据</button>
+                                            <span yl-operatemsg-board></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="panel-footer">
+
+    </div>
+</div>

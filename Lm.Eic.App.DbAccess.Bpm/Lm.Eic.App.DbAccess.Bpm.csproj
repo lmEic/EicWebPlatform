@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Lm.Eic.App.DbAccess.Bpm</RootNamespace>
     <AssemblyName>Lm.Eic.App.DbAccess.Bpm</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,17 +49,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mapping\HrmMapping\CalendarsMapping.cs" />
+    <Compile Include="Mapping\LmMesMapping\OpticalMesDbContext.cs" />
+    <Compile Include="Mapping\LmMesMapping\MesDailyReportMapping.cs" />
+    <Compile Include="Mapping\PmsMapping\BoardManagment\MaterialSpecBoardMapping.cs" />
     <Compile Include="Mapping\BpmDbContext.cs" />
     <Compile Include="Mapping\AstMapping\EquipmentMapping.cs" />
     <Compile Include="Mapping\HrmMapping\ArchivesMapping.cs" />
     <Compile Include="Mapping\HrmMapping\AttendanceMapping.cs" />
+    <Compile Include="Mapping\HrmMapping\GeneralAffairsMapping.cs" />
     <Compile Include="Mapping\HrmMapping\HrmDbContext.cs" />
-    <Compile Include="Mapping\QuantityMapping\QuantityDbContext.cs" />
-    <Compile Include="Mapping\QuantityMapping\QuantitySampleMapping.cs" />
+    <Compile Include="Mapping\PmsMapping\DailyReport\DailyReportMapping.cs" />
+    <Compile Include="Mapping\PurchaseMapping\SupplierMapping.cs" />
+    <Compile Include="Mapping\QmsMapping\QmsInspectionMapping.cs" />
+    <Compile Include="Mapping\QmsMapping\QmsRmaMapping.cs" />
+    <Compile Include="Mapping\QuantityMapping555\QuantityDbContext.cs" />
+    <Compile Include="Mapping\QuantityMapping555\QuantitySampleMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AstRep\EquipmentRepository.cs" />
+    <Compile Include="Repository\HrmRep\Archives\CalendarsRepository.cs" />
+    <Compile Include="Repository\PmsRep\BoardManagment\MaterialSpecBoardRepository.cs" />
     <Compile Include="Repository\HrmRep\Archives\ArchivesIdentityRepository.cs" />
     <Compile Include="Repository\HrmRep\Attendance\AttendClassTypeRepository.cs" />
+    <Compile Include="Repository\HrmRep\GeneralAffairs\GeneralAffairsRepository.cs" />
+    <Compile Include="Repository\PmsRep\DailyReport\DailyReportRepository.cs" />
+    <Compile Include="Repository\PmsRep\DailyReport\LmMesDailyReportRepository.cs" />
+    <Compile Include="Repository\PurchaseRep\PurchaseSuppliesManagement\QualifiedSupplierRepository.cs" />
+    <Compile Include="Repository\QmsRep\QmsRmaReository.cs" />
+    <Compile Include="Repository\QmsRep\QmsInspectionReposity.cs" />
     <Compile Include="Repository\QuantityRep\SampleReposity.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +96,7 @@
       <Name>Lm.Eic.Uti.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

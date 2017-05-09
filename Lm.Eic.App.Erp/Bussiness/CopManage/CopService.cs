@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Lm.Eic.Uti.Common.YleeObjectBuilder;
+namespace Lm.Eic.App.Erp.Bussiness.CopManage
+{
+   public  class CopService
+    {
+       public static CopOrderManage OrderManageManager
+       {
+           get { return OBulider.BuildInstance<CopOrderManage>(); }
+       }
+    }
+}

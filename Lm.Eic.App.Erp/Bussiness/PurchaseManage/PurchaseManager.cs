@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Lm.Eic.App.Erp.DbAccess.PurchaseManageDb;
+﻿using Lm.Eic.App.Erp.DbAccess.PurchaseManageDb;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 namespace Lm.Eic.App.Erp.Bussiness.PurchaseManage
 {
-  public static class PurchaseDbManager
+    public static class PurchaseDbManager
     {
       /// <summary>
       /// 请购数据访问接口
@@ -34,10 +30,17 @@ namespace Lm.Eic.App.Erp.Bussiness.PurchaseManage
       public static StockDb StockDb
       {
           get
-          {
-              return OBulider.BuildInstance<StockDb>();
+          { 
+              return OBulider.BuildInstance<StockDb>(); 
           }
       }
-
+        
+      /// <summary>
+      /// 采购供应商访问接口
+      /// </summary>
+      public static SupplierDb SupplierDb
+      {
+          get { return OBulider.BuildInstance<SupplierDb>(); }
+      }
     }
 }

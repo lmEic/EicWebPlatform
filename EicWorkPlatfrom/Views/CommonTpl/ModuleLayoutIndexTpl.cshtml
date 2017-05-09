@@ -1,11 +1,13 @@
 ﻿<header role="banner">
-    <nav role="navigation" class="navbar navbar-static-top navbar-inverse">
+    <nav role="navigation" class="navbar navbar-static-top navbar-inverse" ng-cloak>
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="@Url.Action("Index","Home")">
                     <span>
                         <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司"
-                             src="@Url.Content("~/Content/login/lmlogo.png")" />企业信息化平台(V1.0)
+                             src="@Url.Content("~/Content/login/lmlogo.png")"
+                             style="margin-left: -50px;margin-top: -5px;background-color: whitesmoke;height: 28px;width: 32px;border-radius: 5px;margin-right: 3px;" />
+                        企业信息化平台(V1.0)
                     </span>
                 </a>
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -25,11 +27,16 @@
     </nav>
 </header>
 <main class="container-fluid">
-    <div class="row">
-        <div class="col-md-2">
+    <div class="row" ng-cloak>
+        <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-show="navLayout.navViewSwitch">
             <ul class="list-group">
                 <li class="list-group-item active">
-                    <span class="fa fa-list-ul">导航菜单</span>
+                    <h5 class="list-group-item-heading">
+                        <span class="fa fa-list-ul">导航菜单</span>
+                        <span class="pull-right">
+                            <span class="badge" ng-click="navLayout.switchView()" title="点击折叠导航面板" style="cursor:pointer"><i class="fa fa-hand-o-left"></i></span>
+                        </span>
+                    </h5>
                 </li>
                 <li class="list-group-item" ng-if="navLayout.navItems.length>0">
                     <ol class="rounded-list">
@@ -38,8 +45,9 @@
                             <ol>
                                 <li ng-repeat="subItem in navItem.Childrens track by $index" ng-click="navLayout.stateTo(subItem)">
                                     <a data-ui-sref-active="active" style="cursor:pointer">
-                                    <span>{{subItem.ModuleText}}</span>
-                                    <i class="{{subItem.Icon}}"></i></a>
+                                        <span>{{subItem.ModuleText}}</span>
+                                        <i class="{{subItem.Icon}}"></i>
+                                    </a>
                                 </li>
                             </ol>
                         </li>
@@ -47,7 +55,13 @@
                 </li>
             </ul>
         </div>
-        <div class="col-md-10" data-ui-view>
+        <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-hide="navLayout.navViewSwitch">
+            <span class="badge" ng-click="navLayout.switchView()" title="点击打开导航面板" style="cursor:pointer"><i class="fa fa-hand-o-right"></i></span>
+        </div>
+        <div class="pull-right" style="width:{{navLayout.navMainSize}};">
+            <div data-ui-view>
+
+            </div>
         </div>
     </div>
 </main>

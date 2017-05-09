@@ -1,12 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Lm.Eic.App.Business.Bmp.Ast;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.App.Erp.Bussiness.CopManage;
 
 namespace Lm.Eic.App.Business.Bmp.Ast.Tests
 {
@@ -47,13 +44,29 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             Assert.Fail();
           
         }
+        public void BuildInventoryList()
+        {
+            var tem = AstService.EquipmentManager.BuildInventoryList();
+
+
+            #region 输出到Excel
+            string path = @"E:\\IQC.xls";
+            using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+            {
+                byte[] bArr = tem.ToArray();
+                fs.Write(bArr, 0, bArr.Length);
+                fs.Flush();
+            }
+            #endregion
+            Assert.Fail();
+        }
 
         [TestMethod()]
         public void MaintenanceStoreTest()
         {
             //ceshi 
-            EquipmentMaintenanceModel model = new EquipmentMaintenanceModel();
-            model.AssetNumber = "Z160002";
+            EquipmentMaintenanceRecordModel model = new EquipmentMaintenanceRecordModel();
+            model.AssetNumber = "Z160001";
             model.MaintenanceDate = DateTime.Now.ToDate();
             model.MaintenanceResult = "";
             model.OpSign = "add";

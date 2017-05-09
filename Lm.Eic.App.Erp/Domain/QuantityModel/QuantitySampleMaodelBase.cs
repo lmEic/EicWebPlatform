@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Lm.Eic.App.Erp.Domain.QuantityModel
+﻿namespace Lm.Eic.App.Erp.Domain.QuantityModel
 {
-  public   class QuantitySampleMaodelBase
+    public   class QuantitySampleMaodelBase
     {
         /// <summary>
         /// 单别

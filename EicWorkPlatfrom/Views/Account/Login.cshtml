@@ -13,16 +13,33 @@
     <link href="@Url.Content("~/Content/bootwatch/cerulean.bootstrap.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/font-awesome/css/font-awesome.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/main.css")" type="text/css" rel="stylesheet" />
-
     <link href="@Url.Content("~/Content/login/login.css")" type="text/css" rel="stylesheet" />
 </head>
 <body>
+   
+       
     <div class="container" ng-controller="loginCtrl">
+        <style>
+            .login-form:before {           
+                content: "";
+                position: absolute;
+                top: -50px;
+                left: 165px;
+                width: 102px;
+                height: 102px;
+                padding: 2px;
+                border: 1px solid rgb(216,216,219);
+                background: #fff url("{{headPortrait}}");
+                background-size: cover;
+                border-radius: 50px;
+            }
+        </style>   
         <div class="row navigationBg">
             <div class="col-md-6">
             </div>
             <div class="col-md-5 loginBg">
-                <form class="form-horizontal login-form" name="loginForm" method="post" novalidate role="form">
+                <form class="form-horizontal login-form"
+                     name="loginForm" method="post" novalidate role="form" onkeypress="if (event.keyCode === 13) return false;">
                     <div class="login-inputcontent">
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="userId">用户名:</label>
@@ -36,7 +53,7 @@
                                     <small ng-message="required">用户名不能为空</small>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
 
                         <div class="form-group login-inputpassword">
                             <label class="control-label col-sm-3" for="password">用户密码:</label>
@@ -44,6 +61,7 @@
                                 <div class="input-group">
                                     <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
                                     <input class="form-control" type="password" name="password" focus-if="focus.passwordFocus" focus-setter
+                                           ng-keypress="moveFocusToPassword($event,'loginFocus')"
                                            ng-model="vm.password" required placeholder="默认为您的作业工号" />
                                 </div>
                                 <div class="error-messages" ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
@@ -52,13 +70,17 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-6 col-sm-offset-4">
-                                <button type="submit" class="btn btn-primary btn-block login-button"
-                                        ng-click="loginCheck(loginForm.$valid)" id="btnlogin">
+                            <div class="col-sm-6 col-sm-offset-4" ng-cloak>
+                                <button type="submit" class="btn btn-primary btn-block login-button" focus-if="focus.loginFocus" focus-setter
+                                        ng-keypress="loginCheck(loginForm.$valid)" ng-click="loginCheck(loginForm.$valid)"
+                                        id="btnlogin">
                                     登录
                                     <span class="glyphicon glyphicon-log-in"></span>
-                                    <img src="~/Content/login/input-spinner.gif" class="pull-right" ng-if="vm.start" ng-cloak />
+                                    <img src="~/Content/login/input-spinner.gif" class="pull-right" ng-if="vm.start"/>
                                 </button>
+                                <div class="alert alert-danger" ng-hide="loginResult.isSuccess">
+                                    <span class="text-danger">{{loginResult.message}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -78,8 +100,12 @@
         </div>
     </div>
 
+
+
     <script src="@Url.Content("~/Scripts/jquery-2.1.4.js")"></script>
     <script src="@Url.Content("~/Content/bootstrap/dist/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Content/underscore/underscore-min.js")"></script>
+    <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
     <script src="@Url.Content("~/Scripts/angular.min.js")"></script>
     <script src="@Url.Content("~/Scripts/angular-messages.min.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/account/loginApp.js")"></script>

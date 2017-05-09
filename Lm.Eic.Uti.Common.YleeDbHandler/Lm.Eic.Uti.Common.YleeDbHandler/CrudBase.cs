@@ -2,82 +2,156 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Reflection;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-
+using System.Text;
+using Lm.Eic.Uti.Common.YleeExcelHanlder;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 namespace Lm.Eic.Uti.Common.YleeDbHandler
 {
-    public abstract class CrudBase<TEntity,IRep> 
+    public abstract class CrudBase<TEntity, IRep>
         where TEntity : class, new()
     {
 
         protected IRep irep = default(IRep);
-
-        public CrudBase()
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="repository">数据访问接口</param>
+        /// <param name="opContext">操作的数据对象</param>
+        public CrudBase(IRep repository, string opContext)
         {
-            InitIrep();
+            irep = repository;
+            OpContext = opContext;
         }
 
+        private string _opContext = string.Empty;
         /// <summary>
-        /// 初始化数据访问接口
+        /// 操作的数据对象
         /// </summary>
-        protected abstract void InitIrep();
-
-        /// <summary>
-        /// 持久化数据
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="addfn"></param>
-        /// <param name="updatefn"></param>
-        /// <param name="delfn"></param>
-        /// <returns></returns>
-        protected OpResult PersistentDatas(TEntity entity, Func<TEntity, OpResult> addfn, Func<TEntity, OpResult> updatefn, Func<TEntity, OpResult> delfn)
+        public string OpContext
         {
-            OpResult result = OpResult.SetResult("持久化数据操作失败!", false);
-            string opSign="default";
-            PropertyInfo pi=IsHasProperty(entity,"OpSign");
-            if (pi != null) opSign = pi.GetValue(entity, null) as string;
-            switch (opSign)
+            get { return _opContext; }
+            private set
             {
-                case OpMode.Add:
-                    result = addfn(entity);
-                    break;
-                case OpMode.Edit:
-                    result = updatefn(entity);
-                    break;
-                case OpMode.Delete:
-                    result = delfn(entity);
-                    break;
-                default:
-                    break;
+                _opContext = value;
             }
-            return result;
         }
+
+        private Dictionary<string, Func<TEntity, OpResult>> crudOpDics = new Dictionary<string, Func<TEntity, OpResult>>();
+        /// <summary>
+        /// 添加Crud操作项目集合
+        /// </summary>
+        protected abstract void AddCrudOpItems();
+        /// <summary>
+        /// 添加具体的操作项目
+        /// </summary>
+        /// <param name="opKey"></param>
+        /// <param name="opItem"></param>
+        protected virtual void AddOpItem(string opKey, Func<TEntity, OpResult> opItem)
+        {
+            if (!crudOpDics.ContainsKey(opKey))
+            {
+                crudOpDics.Add(opKey, opItem);
+            }
+        }
+
+        /// <summary>
+        /// 修改数据仓库
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public virtual OpResult Store(TEntity model)
+        {
+            return this.PersistentDatas(model);
+        }
+
+        public virtual OpResult Store(TEntity model, bool isNeedEntity)
+        {
+            return this.PersistentDatas(model, isNeedEntity);
+        }
+        /// <summary>
+        /// 设定固定字段值
+        /// </summary>
+        /// <param name="entity"></param>
+        protected virtual void SetFixFieldValue(TEntity entity)
+        {
+            var optimePi = IsHasProperty(entity, "OpTime");
+            if (optimePi != null) optimePi.SetValue(entity, DateTime.Now.ToDateTime(), null);
+            var opDatePi = IsHasProperty(entity, "OpDate");
+            if (opDatePi != null) opDatePi.SetValue(entity, DateTime.Now.ToDate(), null);
+        }
+
+        /// <summary>
+        /// 设置固定字段的值
+        /// </summary>
+        /// <param name="entityList">列表</param>
+        /// <param name="opMode">操作标示</param>
+        protected virtual void SetFixFieldValue(IEnumerable<TEntity> entityList, string opMode)
+        {
+            entityList.ToList().ForEach((m) =>
+            {
+                SetFixFieldValue(m);
+                var opSignPi = IsHasProperty(m, "OpSign");
+                if (opSignPi != null) opSignPi.SetValue(m, opMode, null);
+            });
+        }
+
+        /// 设置固定字段的值
+        /// </summary>
+        /// <param name="entityList">列表</param>
+        /// <param name="opMode">操作标示</param>
+        protected virtual void SetFixFieldValue(IEnumerable<TEntity> entityList, string opMode, Action<TEntity> setFixFieldMethod)
+        {
+            entityList.ToList().ForEach((m) =>
+            {
+                SetFixFieldValue(m);
+                var opSignPi = IsHasProperty(m, "OpSign");
+                if (opSignPi != null) opSignPi.SetValue(m, opMode, null);
+                setFixFieldMethod(m);
+            });
+        }
+        private void BindEntityToOpResult(bool isNeedEntity, OpResult result, TEntity entity)
+        {
+            if (isNeedEntity)
+                result.Entity = entity;
+            //取得操作方法
+            PropertyInfo piIdKey = IsHasProperty(entity, "Id_Key");
+            if (piIdKey == null)
+            {
+                string idKey = piIdKey.GetValue(entity, null) as string;
+                result.Id_Key = idKey.ToDeciaml();
+            }
+        }
+
         /// <summary>
         /// 持久化数据
         /// </summary>
         /// <param name="entity"></param>
-        /// <param name="addfn"></param>
-        /// <param name="updatefn"></param>
         /// <returns></returns>
-        protected OpResult PersistentDatas(TEntity entity, Func<TEntity, OpResult> addfn, Func<TEntity, OpResult> updatefn)
+        protected OpResult PersistentDatas(TEntity entity, bool isNeedEntity = false)
         {
-            OpResult result = OpResult.SetResult("持久化数据操作失败!", false);
+            OpResult result = OpResult.SetResult("持久化数据操作失败!");
             string opSign = "default";
-            PropertyInfo pi = IsHasProperty(entity, "OpSign");
-            if (pi != null) opSign = pi.GetValue(entity, null) as string;
-            switch (opSign)
+            if (entity == null)
+                return OpResult.SetResult(string.Format("{0}不能为null！", OpContext));
+            try
             {
-                case OpMode.Add:
-                    result = addfn(entity);
-                    break;
-                case OpMode.Edit:
-                    result = updatefn(entity);
-                    break;
-                default:
-                    break;
+                SetFixFieldValue(entity);
+                //取得操作方法
+                PropertyInfo pi = IsHasProperty(entity, "OpSign");
+                if (pi != null)
+                    opSign = pi.GetValue(entity, null) as string;
+                //是否包含指定的方法
+                if (!crudOpDics.ContainsKey(opSign))
+                    AddCrudOpItems();
+                //是否包含指定的方法
+                if (!crudOpDics.ContainsKey(opSign))
+                    return OpResult.SetResult(string.Format("未找到{0}的实现函数", opSign));
+                result = (crudOpDics[opSign])(entity);
+                BindEntityToOpResult(isNeedEntity, result, entity);
             }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
             return result;
         }
         /// <summary>
@@ -86,32 +160,41 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="entity"></param>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        private PropertyInfo IsHasProperty(TEntity entity,string propertyName)
+        private PropertyInfo IsHasProperty(TEntity entity, string propertyName)
         {
             Type type = entity.GetType();
-            PropertyInfo pi= type.GetProperties().ToList().FirstOrDefault(e => e.Name == propertyName);
+            PropertyInfo pi = type.GetProperties().ToList().FirstOrDefault(e => e.Name == propertyName);
             return pi;
         }
-
-    
-        protected OpResult StoreEntity(TEntity entity,Func<TEntity,OpResult> storeHandler)
+        protected OpResult StoreEntity(TEntity entity, Func<TEntity, OpResult> storeHandler, bool isNeedEntity = false)
         {
             OpResult result = null;
-            if (entity == null) return OpResult.SetResult("entity can't set null!", false);
-            var optimePi = IsHasProperty(entity, "OpTime");
-            if (optimePi != null) optimePi.SetValue(entity, DateTime.Now.ToDateTime(),null);
-            var opDatePi = IsHasProperty(entity, "OpDate");
-            if (opDatePi != null) opDatePi.SetValue(entity, DateTime.Now.ToDate(), null);
+            if (entity == null) return OpResult.SetResult("entity can't set null!");
+            SetFixFieldValue(entity);
             try
             {
-                result=storeHandler(entity);
+                result = storeHandler(entity);
+                BindEntityToOpResult(isNeedEntity, result, entity);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.InnerException.Message); 
+                throw new Exception(ex.InnerException.Message);
             }
             return result;
         }
 
+        /// <summary>
+        /// 模型转换
+        /// </summary>
+        /// <typeparam name="TDestination">目标模型</typeparam>
+        /// <param name="oldModel"></param>
+        /// <returns></returns>
+        protected TDestination ConventModel<TDestination>(TEntity oldModel) where TDestination : class, new()
+        {
+            TDestination newModel = new TDestination();
+            OOMaper.Mapper(oldModel, newModel);
+            return newModel;
+        }
     }
+
 }

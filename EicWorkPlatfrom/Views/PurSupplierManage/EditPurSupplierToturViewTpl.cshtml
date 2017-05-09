@@ -1,0 +1,75 @@
+﻿<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="min-width:690px;">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4>
+                    <i class="fa fa-bell-o"></i>
+                    {{title}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" name="formSupTour" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="planToturDate" class="col-md-3 control-label">计划辅导日期</label>
+                            <div class="col-md-4">
+                                <input name="planToturDate" type="date" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                @*<div class="error-messages" ng-messages="formSupTour.planToturDate.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">计划辅导日期不能为空</small>
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="planToturContent" class="col-md-3 control-label">计划辅导内容</label>
+                            <div class="col-md-9">
+                                <textarea name="planToturContent" rows="2" class="form-control" ng-model="vm.PlanTutorContent" required />
+                                <div class="error-messages" ng-messages="formSupTour.planToturContent.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">计划辅导内容不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="edittingItem.PlanTutorContent">
+                            <label for="actionToturDate" class="col-md-3 control-label">实际辅导日期</label>
+                            <div class="col-md-4">
+                                <input name="actionToturDate" type="date" class="form-control" format-date ng-model="vm.ActionTutorDate" />
+                                @*<div class="error-messages" ng-messages="formSupTour.actionToturDate.$error" ng-show="operate.showValidation">
+                    <small ng-message="required">实际辅导日期不能为空</small>
+                </div>*@
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="edittingItem.PlanTutorContent">
+                            <label for="actionToturContent" class="col-md-3 control-label">实际辅导内容</label>
+                            <div class="col-md-9">
+                                <textarea name="actionToturContent" rows="2" class="form-control" ng-model="vm.ActionTutorContent" />
+                                @*<div class="error-messages" ng-messages="formSupTour.actionToturContent.$error" ng-show="operate.showValidation">
+                    <small ng-message="required">实际辅导内容不能为空</small>
+                </div>*@
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="edittingItem.PlanTutorContent">
+                            <label for="toturResult" class="col-md-3 control-label">辅导结果</label>
+                            <div class="col-md-9">
+                                <textarea name="toturResult" rows="2" class="form-control" ng-model="vm.TutorResult" />
+                                @*<div class="error-messages" ng-messages="formSupTour.toturResult.$error" ng-show="operate.showValidation">
+                    <small ng-message="required">辅导结果不能为空</small>
+                </div>*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="remark" class="col-md-3 control-label">备注</label>
+                            <div class="col-md-9">
+                                <textarea name="remark" rows="2" class="form-control" ng-model="vm.Remark" required />
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
+                <button type="button" class="btn btn-primary" ng-click="operate.savePurSupTurDatas(formSupTour.$valid)"><i class="fa fa-save"></i>确定</button>
+            </div>
+        </div>
+    </div>
+</div>

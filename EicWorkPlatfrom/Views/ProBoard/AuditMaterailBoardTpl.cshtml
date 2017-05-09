@@ -1,0 +1,19 @@
+﻿<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4>
+                    <i class="fa fa-bell-o"></i>
+                    {{title}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <span class="btn btn-sm btn-danger pull-right" ng-click="auditMaterialBoard()"><i class="fa fa-check-circle"></i>审核</span>
+                <div style="width:100%;height:360px;">
+                    <img class="img-rounded" id="imagePreview" ng-src="{{previewFileName}}" style="width:100%;height:95%;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

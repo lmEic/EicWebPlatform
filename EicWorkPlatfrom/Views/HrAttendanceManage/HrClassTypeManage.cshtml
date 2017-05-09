@@ -39,7 +39,7 @@
                                 <div class="input-group-addon">
                                     过滤条件
                                 </div>
-                                <input type="text" placeholder="输入工号查询个人" ng-model="vmManager.filterWorkerId" ng-change="vmManager.filterByWorkerId()" class="form-control" />
+                                <input type="text" placeholder="输入工号查询个人" ng-model="vmManager.filterWorkerId" ng-keypress="vmManager.filterByWorkerId($event)" class="form-control" />
                                 <div class="input-group-addon">
                                     <i class="fa fa-ellipsis-v"></i>
                                 </div>
@@ -122,7 +122,7 @@
                                         <small ng-message="required">班别不能为空</small>
                                     </div>
                                 </div>
-                                <div class="input-group-btn">
+                                <div class="input-group-btn" cg-busy="{promise:doPromise}">
                                     <button type="button" class="btn btn-info" ng-click="operate.changeClass(classTypeForm.$valid)"><i class="fa fa-retweet"></i>转班</button>
                                 </div>
                             </div>

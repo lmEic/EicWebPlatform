@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
 {
@@ -96,6 +93,15 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _finishdate = value; }
             get { return _finishdate; }
         }
+        private string _finishmonth;
+        /// <summary>
+        ///完成月份
+        /// </summary>
+        public string FinishMonth
+        {
+            set { _finishmonth = value; }
+            get { return _finishmonth; }
+        }
         private string _currentprogress;
         /// <summary>
         ///开发进度
@@ -105,23 +111,14 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
             set { _currentprogress = value; }
             get { return _currentprogress; }
         }
-        private string _codingperson;
+        private string _executor;
         /// <summary>
         ///执行人
         /// </summary>
-        public string CodingPerson
+        public string Executor
         {
-            set { _codingperson = value; }
-            get { return _codingperson; }
-        }
-        private string _checkperson;
-        /// <summary>
-        ///审核人
-        /// </summary>
-        public string CheckPerson
-        {
-            set { _checkperson = value; }
-            get { return _checkperson; }
+            set { _executor = value; }
+            get { return _executor; }
         }
         private string _memo;
         /// <summary>
@@ -188,6 +185,4 @@ namespace Lm.Eic.Framework.ProductMaster.Model.ITIL
         }
         #endregion Model
     }
-
-
 }

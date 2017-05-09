@@ -119,7 +119,8 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             Type entityType = typeof(TEntity);
 
             Dictionary<string, PropertyInfo> dic = new Dictionary<string, PropertyInfo>();
-            foreach (PropertyInfo info in entityType.GetProperties())
+            PropertyInfo[] pts=entityType.GetProperties();
+            foreach (PropertyInfo info in pts)
             {
                 dic.Add(info.Name, info);
             }

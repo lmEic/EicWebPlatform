@@ -35,7 +35,9 @@
                             <a class="navbar-brand" href="@Url.Action("Index","Home")">
                                 <span>
                                     <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司"
-                                         src="@Url.Content("~/Content/login/lmlogo.png")" />企业信息化平台(V1.0)
+                                         src="@Url.Content("~/Content/login/lmlogo.png")"
+                                         style="margin-left: -50px;margin-top: -5px;background-color: whitesmoke;height: 28px;width: 32px;border-radius: 5px;margin-right: 3px;" />
+                                    企业信息化平台(V1.0)
                                 </span>
                             </a>
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -64,15 +66,22 @@
                             <div class="panel-body">
                                 <ol class="rounded-list">
                                     <li>
-                                        <a data-ui-sref-active="active" data-ui-sref="hrCommonDataSet" style="cursor:pointer">常规设置</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="hrDepartmentSet" style="cursor:pointer">部门设置</a>
                                         <a data-ui-sref-active="active" data-ui-sref="hrEmployeeDataInput" style="cursor:pointer">档案登记</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="hrLeaveOffManage" style="cursor:pointer">离职管理</a>
+
+                                        <a data-ui-sref-active="active" data-ui-sref="hrPostChange" style="cursor:pointer">岗位变更</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="hrDepartmentChange" style="cursor:pointer">部门变更</a>
+
+                                        <a data-ui-sref-active="active" data-ui-sref="hrChangeWorkerId" style="cursor:pointer">变更工号</a>
+
                                         <a data-ui-sref-active="active" data-ui-sref="hrPrintCard" style="cursor:pointer">厂牌打印</a>
                                         <a data-ui-sref-active="active" data-ui-sref="hrClassTypeManage" style="cursor:pointer">班别管理</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="hrAttendInToday" style="cursor:pointer">今日考勤</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="hrSumerizeAttendanceData" style="cursor:pointer">汇总考勤数据</a>
 
                                         <a data-ui-sref-active="active" data-ui-sref="hrAskLeaveManage" style="cursor:pointer">请假管理</a>
                                         <a data-ui-sref-active="active" data-ui-sref="hrHandleException" style="cursor:pointer">异常处理</a>
+
+                                        <a data-ui-sref-active="active" data-ui-sref="gaWorkerClothesManage" style="cursor:pointer">厂服管理</a>
                                     </li>
                                 </ol>
                             </div>
@@ -97,12 +106,13 @@
 
     @Scripts.Render("~/bundles/anstrap")
 
-    @Scripts.Render("~/common/leehelper")
-
+    <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
     <script src="@Url.Content("~/Scripts/common/commDirective.js")"></script>
 
     <script src="@Url.Content("~/Scripts/controller/masterProduct/mpConfigApp.js")"></script>
 
     <script src="@Url.Content("~/Scripts/controller/hr/hrApp.js")"></script>
+    <script src="@Url.Content("~/Scripts/controller/hr/hrArchivesManage.js")"></script>
+    <script src="@Url.Content("~/Scripts/controller/hr/hrAttendanceManage.js")"></script>
 </body>
 </html>

@@ -23,7 +23,7 @@
                             <div class="page-header">
                                 <input type="text" placeholder="快速搜索" ng-model="roleFilter" />
                             </div>
-                            <ul class="nav nav-pills">
+                            <ul class="nav nav-pills" style="max-height:420px;overflow-y:auto">
                                 <li ng-repeat="role in vmManager.roles|filter:roleFilter track by $index">
                                     <div class="well well-sm" style="width:140px;cursor:pointer">
                                         <span ng-class="vmManager.selectedRole!==role?'label label-default':'label label-warning'"
@@ -74,7 +74,7 @@
                                 </span>
                             </span>
                         </li>
-                        <li class="list-group-item" cg-busy="{promise:savePromise}">
+                        <li class="list-group-item" cg-busy="{promise:savePromise}" style="max-height:450px;overflow-y:auto">
                             <div ng-show="vmManager.roleMatchModules.length>0">
                                 <div class="page-header">
                                     <input type="text" placeholder="快速搜索" ng-model="roleModule" />

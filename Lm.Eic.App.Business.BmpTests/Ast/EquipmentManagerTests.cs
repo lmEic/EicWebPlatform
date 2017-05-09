@@ -1,12 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Lm.Eic.App.Business.Bmp.Ast;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-
+using Lm.Eic.App.Erp.Bussiness.MocManage;
+using Lm.Eic.App.Erp.Bussiness.CopManage;
 namespace Lm.Eic.App.Business.Bmp.Ast.Tests
 {
     [TestClass()]
@@ -47,7 +43,32 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             model.CheckInterval = 6;
             model.OpSign = "add";
             var tem = AstService.EquipmentManager.Store(model);
-           // Assert.Fail();
+            if (!tem.Result) { Assert.Fail(); }
         }
     }
+
+
+    public class EquipmentDiscardTests
+    {
+        public void StoreEquipmentDiscardTest()
+        {
+            DomainModel.Bpm.Ast.EquipmentDiscardRecordModel model = new DomainModel.Bpm.Ast.EquipmentDiscardRecordModel();
+            model.AssetNumber = "Z160001";
+            model.DiscardDate = DateTime.Now;
+            model.DiscardType = "无法修复";
+            model.DiscardCause = "无法修复了";
+            model.DocumentId = "BF20160822";
+            model.OpSign = "add";
+            var tem = AstService.EquipmentManager.DiscardManager.Store(model);
+            if (!tem.Result) { Assert.Fail(); }
+        }
+
+        public void GetEquipmentDiscardRecord()
+        {
+            var temList = AstService.EquipmentManager.DiscardManager.GetEquipmentDiscardRecord("Z160001");
+            if (temList == null) { Assert.Fail(); }
+        }
+    }
+
+
 }

@@ -39,7 +39,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
                 if (loginUser.Password == loginMdl.Password)
                 {
                     status.StatusCode = 0;
-                    identity = LoginHandler.CollectUserInfoWhenLogined(identity, loginUser);
+                    identity = LoginHandler.CollectUserInfoWhenLogined(identity, loginMdl.UserId);
                 }
                 else
                 {
@@ -66,17 +66,17 @@ namespace Lm.Eic.Framework.Authenticate.Business
             {
                 return OpResult.SetResult("该用户已经存在！", false);
             }
-            var UserOrganizeInfo = registerRep.GetUserOrganiseInfo(user.UserId);
+            var UserOrganizeInfo = UserInfoHandler.GetLoginedUserInfo(user.UserId);
             if (UserOrganizeInfo != null)
             {
                 user.CurrentStatus = "可使用";
-                user.UserName = UserOrganizeInfo.Name;
+                user.UserName = UserOrganizeInfo.UserName;
                 record = registerRep.Insert(user);
                 return OpResult.SetResult("添加用户成功！", record > 0);
             }
             else
             {
-                return OpResult.SetResult("人事系统中没有此用户信息！", false);
+                return OpResult.SetResult("人事系统中没有此用户信息！");
             }
         }
 
@@ -118,9 +118,10 @@ namespace Lm.Eic.Framework.Authenticate.Business
         /// </summary>
         /// <param name="loginUser"></param>
         /// <returns></returns>
-        internal static IdentityInfo CollectUserInfoWhenLogined(IdentityInfo waitHandlerModel, RegistUserModel user)
+        internal static IdentityInfo CollectUserInfoWhenLogined(IdentityInfo waitHandlerModel, string userId)
         {
-            waitHandlerModel.RegistUser = user;
+            var user = UserInfoHandler.GetLoginedUserInfo(userId);
+            waitHandlerModel.LoginedUser = user;
             RoleManager rm = new RoleManager();
             var matchRoles = rm.GetUserMatchRoles(user.UserId);
             if (matchRoles != null)
