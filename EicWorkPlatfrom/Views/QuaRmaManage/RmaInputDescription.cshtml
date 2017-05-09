@@ -34,7 +34,8 @@
                     <div class="form-group">
                         <label for="returnHandleOrder" class="col-md-2 control-label">ERP单号</label>
                         <div class="col-md-10">
-                            <input name="returnHandleOrder" id="returnHandleOrder" class="form-control" ng-keypress="vmManager.getReturnOrderData($event)" ng-model="vm.ReturnHandleOrder" required />
+                            <input name="returnHandleOrder" id="returnHandleOrder" placeholder="输入ERP单号按回车键"
+                                   class="form-control" ng-keypress="vmManager.getReturnOrderData($event)" ng-model="vm.ReturnHandleOrder" required />
                             <div class="error-messages" ng-messages="formRmaBussesDescription.returnHandleOrder.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">ERP单号不能为空</small>
                             </div>
@@ -73,7 +74,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="item in vmManager.returnOrderDatas track by $index" ng-click="vmManager.selectReturnOrderItem(item)">
+                                            <tr ng-repeat="item in vmManager.returnOrderDatas track by $index"
+                                                title="双击选择项"
+                                                ng-dblclick="vmManager.selectReturnOrderItem(item)">
                                                 <td>{{item.ProdcutId}}</td>
                                                 <td>{{item.ProductName}}</td>
                                                 <td>{{item.ProductSpec}}</td>
@@ -101,18 +104,18 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="badReason" class="col-md-2 control-label">不良原因</label>
+                        <label for="badDescrption" class="col-md-2 control-label">不良现象</label>
                         <div class="col-md-4">
-                            <textarea name="badReason" class="form-control" ng-model="vm.BadReason" required rows="3" />
-                            <div class="error-messages" ng-messages="formRmaBussesDescription.badReason.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">不良原因不能为空</small>
+                            <input name="badDescrption" class="form-control" ng-model="vm.BadDescrption" required />
+                            <div class="error-messages" ng-messages="formRmaBussesDescription.badDescrption.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">不良现象不能为空</small>
                             </div>
                         </div>
-                        <label for="customerHandleIdea" class="col-md-2 control-label">客户处理意见</label>
+                        <label for="customerHandleSuggestion" class="col-md-2 control-label">处理意见</label>
                         <div class="col-md-4">
-                            <textarea rows="3" name="customerHandleIdea" class="form-control" ng-model="vm.CustomerHandleIdea" required />
-                            <div class="error-messages" ng-messages="formRmaBussesDescription.customerHandleIdea.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">客户处理意见不能为空</small>
+                            <input name="customerHandleSuggestion" class="form-control" ng-model="vm.CustomerHandleSuggestion" required />
+                            <div class="error-messages" ng-messages="formRmaBussesDescription.customerHandleSuggestion.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">处理意见不能为空</small>
                             </div>
                         </div>
                     </div>

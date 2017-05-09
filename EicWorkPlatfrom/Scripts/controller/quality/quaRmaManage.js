@@ -162,7 +162,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
     ///视图模型
     var rmavm = $scope.rmavm = {
         RmaId: null,
-        CustomerId: null,
+        ProductName: null,
         CustomerShortName: null,
     };
 
@@ -196,6 +196,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         selectReturnOrderItem: function (item) {
             leeHelper.copyVm(item, uiVm);
             $scope.vm = uiVm;
+            dialog.show();
         },
         dataSets: [],
     };
