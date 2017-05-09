@@ -396,6 +396,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
 
     $scope.operate = operate;
     operate.save = function (isValid) {
+        leeHelper.setUserData(uiVM);
         crud.add(operate, isValid, function () {
             uiVM.TotalCheckScore = uiVM.QualityCheck * 0.3 + uiVM.AuditPrice * 0.2 + uiVM.DeliveryDate * 0.15 + uiVM.ActionLiven * 0.15 + uiVM.HSFGrade * 0.2;
             $scope.promise = supplierDataOpService.saveAuditSupplierInfo($scope.vm).then(function (opResult) {

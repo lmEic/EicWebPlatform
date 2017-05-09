@@ -160,9 +160,9 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
     }
     var initVM = _.clone(uiVm);
     ///视图模型
-    var rma = $scope.rmavm = {
+    var rmavm = $scope.rmavm = {
         RmaId: null,
-        CustomerId: null,
+        ProductName: null,
         CustomerShortName: null,
     };
 
@@ -178,7 +178,11 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         //获取预处理数据
         getPreHandleData: function () {
             $scope.searchPromise = rmaDataOpService.getRmaDescriptionDatas(uiVm.RmaId).then(function (data) {
-
+                console.log(data);
+                if (angular.isObject(data)) {
+                    leeHelper.copyVm(data.rmaInitiateData, rmavm);
+                    vmManager.dataSets = data.bussesDescriptionDatas;
+                }
             });
         },
         //获取ERP退货单信息
@@ -188,6 +192,11 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                     vmManager.returnOrderDatas = datas;
                     dialog.show();
                 });
+        },
+        selectReturnOrderItem: function (item) {
+            leeHelper.copyVm(item, uiVm);
+            $scope.vm = uiVm;
+            dialog.show();
         },
         dataSets: [],
     };
@@ -254,7 +263,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         //获取表单数据
         getRmaInspectionHandleDatas: function () {
             $scope.searchPromise = rmaDataOpService.getRmaInspectionHandleDatas(uiVm.RmaId).then(function (data) {
-
+                log(data);
             });
         },
         businessHandleDatas: [],
