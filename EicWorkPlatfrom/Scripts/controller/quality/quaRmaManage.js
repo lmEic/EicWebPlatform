@@ -150,7 +150,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         CustomerName: null,
         SalesOrder: null,
         ProductsShipDate: null,
-        BadDescrption: null,
+        BadDescription: null,
         CustomerHandleSuggestion: null,
         FeePaymentWay: null,
         HandleStatus: null,
@@ -195,7 +195,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         selectReturnOrderItem: function (item) {
             leeHelper.copyVm(item, uiVm);
             $scope.vm = uiVm;
-            dialog.show();
+            dialog.close();
         },
         dataSets: [],
     };
@@ -303,12 +303,13 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
                             vmManager.dataSets.push(dataItem);
                         }
                         vmManager.init();
+                        dialog.close();
                     }
                 })
             })
         })
     };
-    leeDataHandler.dataOperate.refresh(operate, function () {
-        vmManager.init();
-    });
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); });
+    };
 })

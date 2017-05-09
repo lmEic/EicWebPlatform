@@ -68,10 +68,10 @@ namespace EicWorkPlatfrom.Controllers.Quality
         }
 
         [NoAuthenCheck]
-        public JsonResult GetReturnOrderInfo(string orderId)
+        public ContentResult GetReturnOrderInfo(string orderId)
         {
             var datas = RmaService.RmaManager.BussesManageProcessor.GetErpBussesInfoDatasBy(orderId); ;
-            return Json(datas, JsonRequestBehavior.AllowGet);
+            return DateJsonResult(datas);
         }
         /// <summary>
         /// 由Rma单量   描述信息

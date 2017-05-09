@@ -59,7 +59,7 @@
                                 <td>{{item.CustomerName}}</td>
                                 <td>{{item.SalesOrder}}</td>
                                 <td>{{item.ProductsShipDate}}</td>
-                                <td>{{item.BadDescrption}}</td>
+                                <td>{{item.BadDescription}}</td>
                                 <td>{{item.CustomerHandleSuggestion}}</td>
                                 <td>{{item.FeePaymentWay}}</td>
                                 <td>
@@ -77,10 +77,8 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr class="info">
-                                <th>RMA单号</th>
                                 <th>序号</th>
                                 <th>不良现象</th>
-                                <th>不良描述</th>
                                 <th>不良原因</th>
                                 <th>处理方式</th>
                                 <th>责任人</th>
@@ -92,9 +90,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in vmManager.dataSets track by $index">
-                                <td>{{item.RmaId}}</td>
                                 <td>{{item.RmaIdNumber}}</td>
-                                <td>{{item.BadPhenomenon}}</td>
                                 <td>{{item.BadDescription}}</td>
                                 <td>{{item.BadReadson}}</td>
                                 <td>{{item.HandleWay}}</td>
@@ -113,7 +109,7 @@
                 </div>
             </div>
 
-            <dialog ng-if="dialog.open" modal data-close="dialog.show()" style="width:65%;">
+            <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%;">
                 <content dialog-title>
                     <i class="fa fa-pencil-square">数据编辑</i>
                 </content>
@@ -138,8 +134,8 @@
                         <div class="form-group">
                             <label for="badPhenomenon" class="col-md-2 control-label">不良现象</label>
                             <div class="col-md-4">
-                                <textarea name="badPhenomenon" rows="3" readonly class="form-control" ng-model="vm.BadPhenomenon" required />
-                                <div class="error-messages" ng-messages="formRmaInspectionManage.badPhenomenon.$error" ng-show="operate.showValidation">
+                                <textarea name="badDescription" rows="3" readonly class="form-control" ng-model="vm.BadDescription" required />
+                                <div class="error-messages" ng-messages="formRmaInspectionManage.badDescription.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">不良现象不能为空</small>
                                 </div>
                             </div>
@@ -171,7 +167,7 @@
                         <div class="form-group">
                             <label for="finishDate" class="col-md-2 control-label">完成日期</label>
                             <div class="col-md-4">
-                                <input name="finishDate" class="form-control" ng-model="vm.FinishDate" required />
+                                <input name="finishDate" type="date" format-date class="form-control" ng-model="vm.FinishDate" required />
                                 <div class="error-messages" ng-messages="formRmaInspectionManage.finishDate.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">完成日期不能为空</small>
                                 </div>

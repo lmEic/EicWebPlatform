@@ -453,9 +453,14 @@ var leeDialog = (function () {
         content: '',
         //打开关闭标志
         open: false,
+        //打开窗体
         show: function () {
-            dialog.open = !dialog.open;
+            dialog.open = true;
         },
+        //关闭窗体
+        close: function () {
+            dialog.open = false;
+        }
     };
     return dialog;
 })();

@@ -59,7 +59,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <dialog ng-if="dialog.open" for="returnHandleOrder" align="bottom left" data-close="dialog.show()">
+                            <dialog ng-if="dialog.open" for="returnHandleOrder" align="bottom left" data-close="dialog.close()">
                                 <content dialog-title class="info"><i class="fa fa-th-list"></i> ERP退货单信息</content>
                                 <content dialog-content>
                                     <table class="table table-striped">
@@ -104,10 +104,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="badDescrption" class="col-md-2 control-label">不良现象</label>
+                        <label for="badDescription" class="col-md-2 control-label">不良现象</label>
                         <div class="col-md-4">
-                            <input name="badDescrption" class="form-control" ng-model="vm.BadDescrption" required />
-                            <div class="error-messages" ng-messages="formRmaBussesDescription.badDescrption.$error" ng-show="operate.showValidation">
+                            <input name="badDescription" class="form-control" ng-model="vm.BadDescription" required />
+                            <div class="error-messages" ng-messages="formRmaBussesDescription.badDescription.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">不良现象不能为空</small>
                             </div>
                         </div>
