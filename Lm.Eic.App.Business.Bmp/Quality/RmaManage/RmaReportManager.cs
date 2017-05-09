@@ -118,8 +118,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                         ProdcutId = m.ProductID,
                         ProductName = m.ProductName,
                         ProductSpec = m.ProductSpecify,
-                        ProductCount = m.ProductNumber,
-
+                        ProductCount = m.ProductNumber
                     });
                 });
                 return returnDatas;

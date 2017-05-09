@@ -11,7 +11,7 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
     //-------------RMA表单创建----------------------------
     //自动生成RMA表单号
     rma.autoCreateRmaId = function () {
-        var url = quaRmaManageUrl + 'AutoCreateRmaId';
+        var url = quaRmaManageUrl + 'AutoBuildingRmaId';
         return ajaxService.getData(url, {
         });
     };
@@ -86,7 +86,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
     var vmManager = {
         //自动生成RMA编号
         autoCreateRmaId: function () {
-            $scope.doPromise = rmaDataOpService.autoCreateRmaId.then(function (rmaId) {
+            $scope.doPromise = rmaDataOpService.autoCreateRmaId().then(function (rmaId) {
                 uiVm.RmaId = rmaId;
             });
         },
