@@ -21,11 +21,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// <summary>
     /// 供应商稽核评分管理
     /// </summary>
-    public  class SuppliersGradeManager
+    public class SuppliersGradeManager
     {
 
         public List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string yearQuarter)
         {
+
             return SupplierCrudFactory.SupplierGradeInfoCrud.GetPurSupGradeInfoBy(yearQuarter);
         }
 
@@ -34,8 +35,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             entity.GradeYear = entity.FirstGradeDate.Year.ToString();
             entity.ParameterKey = entity.SupplierId + "&" + entity.GradeYear + "&" + entity.SupGradeType;
             if (SupplierCrudFactory.SupplierGradeInfoCrud.IsExist(entity.ParameterKey))
-                entity.OpSign = "edit";
-            else entity.OpSign = "add";
+                entity.OpSign = OpMode.Edit;
+            else entity.OpSign = OpMode.Add;
             return SupplierCrudFactory.SupplierGradeInfoCrud.Store(entity);
         }
     }

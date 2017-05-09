@@ -235,14 +235,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             get { return _rmaidnumber; }
         }
 
-        private string _baddescrption;
+        private string _baddescription;
         /// <summary>
         ///不良现象
         /// </summary>
-        public string BadDescrption
+        public string BadDescription
         {
-            set { _baddescrption = value; }
-            get { return _baddescrption; }
+            set { _baddescription = value; }
+            get { return _baddescription; }
         }
         private string _customerhandlesuggestion;
         /// <summary>
