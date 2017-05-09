@@ -293,16 +293,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 if (irep.IsExist(e => e.SupplierId == model.SupplierId))
                 {
                     return irep.Update(u => u.SupplierId == model.SupplierId,
-                       f => new SupplierInfoModel
-                       {
-                           SupplierProperty = model.SupplierProperty,
-                           PurchaseType = model.PurchaseType,
-                           OpSign = model.OpSign
-                       }).ToOpResult_Eidt("修改供应商类别成功！");
+                     model).ToOpResult_Eidt(OpContext);
                 }
                 SetFixFieldValue(model);
                 model.SupplierId = model.SupplierId.Trim();
-                model.OpSign = "init";
+                model.OpSign = OpMode.Add;
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
