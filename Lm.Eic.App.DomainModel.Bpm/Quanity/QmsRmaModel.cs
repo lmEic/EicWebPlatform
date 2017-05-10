@@ -197,15 +197,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _salesorder = value; }
             get { return _salesorder; }
         }
-        private DateTime _productsshipdate;
-        /// <summary>
-        ///原出货日期
-        /// </summary>
-        public DateTime ProductsShipDate
-        {
-            set { _productsshipdate = value; }
-            get { return _productsshipdate; }
-        }
+
     }
     /// <summary>
     ///业务Rma处理模型
@@ -252,6 +244,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _customerhandlesuggestion = value; }
             get { return _customerhandlesuggestion; }
+        }
+        private DateTime _productsshipdate;
+        /// <summary>
+        ///原出货日期
+        /// </summary>
+        public DateTime ProductsShipDate
+        {
+            set { _productsshipdate = value; }
+            get { return _productsshipdate; }
         }
         private string _feepaymentway;
         /// <summary>
