@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Lm.Eic.App.Erp.Bussiness.PurchaseManage;
 using Lm.Eic.App.DomainModel.Bpm.Purchase;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-
 using Lm.Eic.Uti.Common.YleeOOMapper;
-
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using System.IO;
@@ -51,9 +48,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             });
             return QualifiedSupplierInfo.OrderBy(e => e.SupplierId).ToList();
         }
-
-
-
         /// 获取供应商信息
         /// </summary>
         /// <param name="supplierId"></param>
@@ -75,8 +69,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
-
-
         /// <summary>
         /// 保存编辑的供应商证书信息
         /// </summary>
@@ -154,29 +146,35 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             return SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId);
         }
-        /// <summary>
-        ///获取供应商证书列表
-        /// </summary>
-        /// <param name="suppliersId">供应商Id</param>
-        /// <param name="eligibleCertificate">供应商证书</param>
-        /// <returns></returns>
-        public SupplierQualifiedCertificateModel GetSupplierQualifiedCertificateListBy(string supplierId, string eligibleCertificate)
+        public DownLoadFileModel GetSupQuaCertificateDLFM(string siteRootPath, string supplierId, string eligibleCertificate)
         {
+            DownLoadFileModel dlfm = null;
+            SupplierQualifiedCertificateModel m = null;
             var mdls = SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId, eligibleCertificate);
-            if (mdls != null && mdls.Count > 0) return mdls.FirstOrDefault();
-            return null;
+            if (mdls == null || mdls.Count == 0) return dlfm.Default();
+            m = mdls.FirstOrDefault();
+            dlfm = new DownLoadFileModel()
+            {
+                FileDownLoadName = m.CertificateFileName,
+                FilePath = siteRootPath.GetDownLoadFilePath(m.FilePath),
+                ContentType = m.CertificateFileName.GetDownLoadContentType()
+            };
+            return dlfm;
         }
         /// <summary>
         /// 生成合格供应商清单
         /// </summary>
         /// <returns></returns>
-        public MemoryStream BuildQualifiedSupplierInfoList(List<EligibleSuppliersModel> datas)
+        public DownLoadFileModel BuildQualifiedSupplierInfoList(List<EligibleSuppliersModel> datas)
         {
             try
             {
-                if (datas == null || datas.Count < 0) return null;
+                DownLoadFileModel dlfm = new DownLoadFileModel(2);
+                if (datas == null || datas.Count < 0) return dlfm.Default();
                 var dataGroupping = datas.GetGroupList<EligibleSuppliersModel>("");
-                return dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(CreateFieldMapping());
+                dlfm.FileStream = dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(CreateFieldMapping());
+                dlfm.FileDownLoadName = "供应商证书信息数据";
+                return dlfm;
             }
             catch (Exception ex)
             {

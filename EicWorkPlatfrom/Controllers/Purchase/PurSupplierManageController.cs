@@ -60,20 +60,14 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public FileResult CreateQualifiedSupplierInfoList()
         {
             var datas = TempData["QualifiedSupplierDatas"] as List<EligibleSuppliersModel>;
-            var ds = PurchaseService.PurSupplierManager.SupplierCertificateManager.BuildQualifiedSupplierInfoList(datas);
-            return this.ExportToExcel(ds, "合格供应商清单", "合格供应商");
+            var dlfm = PurchaseService.PurSupplierManager.SupplierCertificateManager.BuildQualifiedSupplierInfoList(datas);
+            return this.DownLoadExcelFile(dlfm);
         }
         [NoAuthenCheck]
         public FileResult LoadQualifiedCertificateFile(string suppliserId, string eligibleCertificate)
         {
-            string fullFilePath = string.Empty, filePath = string.Empty, fileName = string.Empty;
-            var m = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetSupplierQualifiedCertificateListBy(suppliserId, eligibleCertificate);
-            if (m != null)
-            {
-                fileName = m.CertificateFileName;
-                filePath = Path.Combine(SiteRootPath, m.FilePath.Replace('/', '\\'));
-            }
-            return File(filePath, "application/pdf", fileName);
+            DownLoadFileModel dlfm = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetSupQuaCertificateDLFM(SiteRootPath, suppliserId, eligibleCertificate);
+            return this.DownLoadFile(dlfm);
         }
         /// <summary>
         /// 获取合格供应商信息
