@@ -282,6 +282,10 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
             $scope.searchCertificatePromise = supplierDataOpService.getSupplierQualifiedCertificateListBy($scope.vm.SupplierId).then(function (datas) {
                 editManager.certificateDatas = datas;
             });
+        },
+        loadFile: function (item) {
+            var loadUrl = "/PurSupplierManage/LoadQualifiedCertificateFile?suppliserId=" + item.SupplierId + "&eligibleCertificate=" + item.EligibleCertificate;
+            return loadUrl;
         }
     }
 

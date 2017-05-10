@@ -202,9 +202,27 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             {
                 return irep.Entities.Where(m => m.SupplierId == supplierId).ToList();
             }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
-
+        /// <summary>
+        /// 获得供应商合格文件项目
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        public List<SupplierQualifiedCertificateModel> GetQualifiedCertificateListBy(string supplierId, string eligibleCertificate)
+        {
+            try
+            {
+                return irep.Entities.Where(m => m.SupplierId == supplierId && m.EligibleCertificate == eligibleCertificate).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
     /// <summary>
     /// 供应商信息Curd

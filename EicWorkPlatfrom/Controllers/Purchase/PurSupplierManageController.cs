@@ -63,6 +63,18 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             var ds = PurchaseService.PurSupplierManager.SupplierCertificateManager.BuildQualifiedSupplierInfoList(datas);
             return this.ExportToExcel(ds, "合格供应商清单", "合格供应商");
         }
+        [NoAuthenCheck]
+        public FileResult LoadQualifiedCertificateFile(string suppliserId, string eligibleCertificate)
+        {
+            string fullFilePath = string.Empty, filePath = string.Empty, fileName = string.Empty;
+            var m = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetSupplierQualifiedCertificateListBy(suppliserId, eligibleCertificate);
+            if (m != null)
+            {
+                fileName = m.CertificateFileName;
+                filePath = Path.Combine(SiteRootPath, m.FilePath.Replace('/', '\\'));
+            }
+            return File(filePath, "application/pdf", fileName);
+        }
         /// <summary>
         /// 获取合格供应商信息
         /// </summary>
@@ -150,7 +162,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult DelPurSupplierCertificateFile(SupplierQualifiedCertificateModel entity)
         {
-            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.StoreSpplierCertificateData(entity, this.SiteRootPath);
+            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.DeleteSpplierCertificateData(entity, this.SiteRootPath);
             return Json(datas);
         }
         #endregion

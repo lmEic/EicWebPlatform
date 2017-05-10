@@ -96,7 +96,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 //赋值 供应商属性和采购性质
                 supplierInfoModel.PurchaseType = model.PurchaseType;
                 supplierInfoModel.SupplierProperty = model.SupplierProperty;
-                ///如果是只是修改  供应商信息的 
+                ///如果是只是修改  供应商信息的
                 if (model.OpSign == "editPurchaseType")//修改证书类别信息
                 {
                     supplierInfoModel.OpSign = model.OpSign;
@@ -114,7 +114,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     OpSign = model.OpSign,
                     OpPerson = model.OpPerson,
                 };
-                return StoreSpplierCertificateData(savemodel, siteRootPath);
+                return DeleteSpplierCertificateData(savemodel, siteRootPath);
             }
             catch (Exception ex)
             {
@@ -128,7 +128,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <param name="model">实体</param>
         /// <param name="rootPath">根路经</param>
         /// <returns></returns>
-        public OpResult StoreSpplierCertificateData(SupplierQualifiedCertificateModel model, string siteRootPath)
+        public OpResult DeleteSpplierCertificateData(SupplierQualifiedCertificateModel model, string siteRootPath)
         {
             try
             {
@@ -153,6 +153,18 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public List<SupplierQualifiedCertificateModel> GetSupplierQualifiedCertificateListBy(string supplierId)
         {
             return SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId);
+        }
+        /// <summary>
+        ///获取供应商证书列表
+        /// </summary>
+        /// <param name="suppliersId">供应商Id</param>
+        /// <param name="eligibleCertificate">供应商证书</param>
+        /// <returns></returns>
+        public SupplierQualifiedCertificateModel GetSupplierQualifiedCertificateListBy(string supplierId, string eligibleCertificate)
+        {
+            var mdls = SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId, eligibleCertificate);
+            if (mdls != null && mdls.Count > 0) return mdls.FirstOrDefault();
+            return null;
         }
         /// <summary>
         /// 生成合格供应商清单

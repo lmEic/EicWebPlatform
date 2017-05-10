@@ -108,9 +108,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 //从ERP中得到相应的数据
                 var listErpDatas = CopOrderCrudFactory.CopReturnOrderManageDb.FindReturnOrderByID(returnHandleOrder);
                 if (listErpDatas == null || listErpDatas.Count <= 0) return returnDatas;
+                RmaERPBusseeInfoModel mdl = null;
                 listErpDatas.ForEach(m =>
                 {
-                    returnDatas.Add(new RmaERPBusseeInfoModel()
+                    mdl = new RmaERPBusseeInfoModel()
                     {
                         ReturnHandleOrder = m.OrderId,
                         CustomerId = m.CustomerId,
@@ -119,7 +120,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                         ProductName = m.ProductName,
                         ProductSpec = m.ProductSpecify,
                         ProductCount = m.ProductNumber
-                    });
+                    };
+                    returnDatas.Add(mdl);
                 });
                 return returnDatas;
             }
@@ -138,7 +140,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return RmaCurdFactory.RmaBussesDescription.Store(model);
         }
-
     }
     /// <summary>
     /// Rma单 品保部操作处理器
@@ -168,5 +169,4 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
 
     }
-
 }
