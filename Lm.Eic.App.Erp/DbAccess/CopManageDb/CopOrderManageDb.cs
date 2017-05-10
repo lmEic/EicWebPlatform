@@ -17,7 +17,7 @@ namespace Lm.Eic.App.Erp.DbAccess.CopManageDb
     public class CopOrderCrudFactory
     {
         /// <summary>
-        /// 销售订单Crud
+        ///     销售订单Crud   
         /// </summary>
         public static CopOrderManageDb CopOrderManageDb
         {

@@ -1,6 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Quanity;
-using Lm.Eic.App.Erp.DbAccess.CopManageDb;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.App.Erp.Bussiness.CopManage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,32 +91,33 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="RmaId"></param>
         /// <returns></returns>
-        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatasBy(string RmaId)
+        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatasBy(string rmaId)
         {
-            return RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(RmaId);
+            if (rmaId != null && rmaId == string.Empty) return null;
+            return RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(rmaId);
         }
         /// <summary>
         /// 通过退料单或换货单得到相应的物料信息
         /// </summary>
         /// <param name="returnHandleOrder">退货单</param>
         /// <returns></returns>
-        public List<RmaERPBusseeInfoModel> GetErpBussesInfoDatasBy(string returnHandleOrder)
+        public List<RmaRetrunOrderInfoModel> GetErpBussesInfoDatasBy(string returnHandleOrder)
         {
             try
             {
-                List<RmaERPBusseeInfoModel> returnDatas = new List<RmaERPBusseeInfoModel>();
+                List<RmaRetrunOrderInfoModel> returnDatas = new List<RmaRetrunOrderInfoModel>();
+                RmaRetrunOrderInfoModel mdl = null;
                 //从ERP中得到相应的数据
-                var listErpDatas = CopOrderCrudFactory.CopReturnOrderManageDb.FindReturnOrderByID(returnHandleOrder);
-                if (listErpDatas == null || listErpDatas.Count <= 0) return returnDatas;
-                RmaERPBusseeInfoModel mdl = null;
-                listErpDatas.ForEach(m =>
+                var ErpReturnOrderDatas = CopService.ReturnOrderManage.GetCopReturnOrderInfoBy(returnHandleOrder);
+                if (ErpReturnOrderDatas == null || ErpReturnOrderDatas.Count <= 0) return returnDatas;
+                ErpReturnOrderDatas.ForEach(m =>
                 {
-                    mdl = new RmaERPBusseeInfoModel()
+                    mdl = new RmaRetrunOrderInfoModel()
                     {
                         ReturnHandleOrder = m.OrderId,
                         CustomerId = m.CustomerId,
                         CustomerName = m.CustomerShortName,
-                        ProdcutId = m.ProductID,
+                        ProductId = m.ProductID,
                         ProductName = m.ProductName,
                         ProductSpec = m.ProductSpecify,
                         ProductCount = m.ProductNumber
@@ -138,8 +139,31 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public OpResult StoreRmaBussesDescriptionData(RmaBussesDescriptionModel model)
         {
-            return RmaCurdFactory.RmaBussesDescription.Store(model);
+            ///1.判断是否存在  在Rma初始表中是否存在 然后判断业务描述表是否存在  关键字（RmaId, RmaIdNumber） 
+            ///2.如果存在 操作符为 Edit
+            ///3.那些字段不能为空  ProductsShipDate 不能为空 不能为“0001-01-01”
+            ///4.如果存储成功，改变初始Rma单状态
+            try
+            {
+                OpResult result = OpResult.SetResult("存储数据表");
+                if (model == null) return OpResult.SetResult("存储的数据不能为空");
+                if (model.ProductsShipDate == DateTime.MinValue || model.ProductsShipDate == null) return OpResult.SetResult("存储的完成日期不对");
+                if (!RmaCurdFactory.RmaReportInitiate.IsExist(model.RmaId)) return OpResult.SetResult("此表单不存在");
+                if (RmaCurdFactory.RmaBussesDescription.IsExist(model.RmaId, model.ProductId))
+                    model.OpSign = OpMode.Edit;
+                else model.OpSign = OpMode.Add;
+                result = RmaCurdFactory.RmaBussesDescription.Store(model, true);
+                if (result.Result)
+                    RmaCurdFactory.RmaReportInitiate.UpDataInitiateRmaIdStatus(model.RmaId, "处理中");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+
         }
+
     }
     /// <summary>
     /// Rma单 品保部操作处理器
@@ -147,13 +171,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
     public class RmaInspecitonManageProcessor
     {
         /// <summary>
-        /// 通过RmaId，得到品何处理数据
+        /// 通过RmaId，得到品保处理数据
         /// </summary>
-        /// <param name="RmaId"></param>
+        /// <param name="rmaId"></param>
         /// <returns></returns>
-        public List<RmaInspectionManageModel> GetDatasBy(string RmaId)
+        public List<RmaInspectionManageModel> GetDatasBy(string rmaId)
         {
-            return RmaCurdFactory.RmaInspectionManage.GetInspectionManageDatasBy(RmaId);
+            if (rmaId != null && rmaId == string.Empty) return null;
+            return RmaCurdFactory.RmaInspectionManage.GetInspectionManageDatasBy(rmaId);
         }
 
         /// <summary>
@@ -164,9 +189,25 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         public OpResult StoreInspectionManageData(RmaInspectionManageModel model)
         {
-            return RmaCurdFactory.RmaInspectionManage.Store(model);
+            ///1.判断是否存在  在Rma表的业务描述表是否存在    关键字（RmaId, ProdcutId） 
+            ///2.如果存在 操作符为 Edit
+            ///3.如果存储成功，改变Rma的业务描述表单状态和 初始R
+            OpResult result = OpResult.SetResult("存储数据表");
+            if (model == null) return OpResult.SetResult("存储表不能为空");
+            if (!RmaCurdFactory.RmaBussesDescription.IsExist(model.RmaId, model.ProductId)) return OpResult.SetResult("业务退货处理单为空");
+            if (RmaCurdFactory.RmaInspectionManage.IsExist(model.RmaId, model.ProductId))
+                model.OpSign = OpMode.Edit;
+            else model.OpSign = OpMode.Add;
+            result = RmaCurdFactory.RmaInspectionManage.Store(model, true);
+            if (result.Result)
+            {
+                RmaCurdFactory.RmaReportInitiate.UpDataInitiateRmaIdStatus(model.RmaId, "已结案");
+                RmaCurdFactory.RmaBussesDescription.UpDataBussesDescriptionStatus(model.RmaId, model.ProductId, "已结案");
+            }
+            return result;
         }
 
 
     }
+
 }

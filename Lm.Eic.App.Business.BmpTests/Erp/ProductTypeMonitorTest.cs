@@ -13,11 +13,11 @@ namespace Lm.Eic.App.Business.BmpTests.Erp
         public void MS589ProductTypeMonitorTest()
              {
                 //var mmm= CopService.OrderManageManager .GetMS589ProductTypeMonitor();
-            var mmmmm = CopService.OrderManageManager.GetProductTypeMonitorInfoBy("138155-475-01");
+            var mmmmm = CopService.OrderWorkorderManager.GetProductTypeMonitorInfoBy("138155-475-01");
              }
          public void TestExportExcel()
             {
-                var tem = CopService.OrderManageManager.BuildProductTypeMonitoList();
+                var tem = CopService.OrderWorkorderManager.BuildProductTypeMonitoList();
                 if (tem == null) { Assert.Fail(); }
 
                 string path = @"E:\\IQC.xls";
