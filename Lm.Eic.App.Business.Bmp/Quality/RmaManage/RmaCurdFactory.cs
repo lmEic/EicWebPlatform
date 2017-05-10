@@ -84,6 +84,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.Entities.Where(e => e.RmaYear == year && e.RmaMonth == month).ToList();
         }
+        /// <summary>
+        /// 改Rma状态
+        /// </summary>
+        /// <param name="rmaId"></param>
+        /// <param name="rmaIdStatus"></param>
+        /// <returns></returns>
+        internal OpResult UpDataInitiateRmaIdStatus(string rmaId, string rmaIdStatus)
+        {
+            var oldModel = irep.FirstOfDefault(e => e.RmaId == rmaId);
+            if (oldModel == null) return OpResult.SetResult("不存在", false);
+            oldModel.RmaIdStatus = rmaIdStatus;
+            return irep.Update(e => e.Id_Key == oldModel.Id_Key, oldModel).ToOpResult_Eidt(OpContext);
+        }
+
         #endregion
 
     }
@@ -121,12 +135,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="rmaId"></param>
         /// <returns></returns>
-        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatasBy(string rmaId)
+        internal List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatasBy(string rmaId)
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
 
+        internal bool IsExist(string rmaid, string productId)
+        {
 
+            return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId);
+        }
+        internal OpResult UpDataBussesDescriptionStatus(string rmaId, string productId, string handleStatus)
+        {
+            var oldModel = irep.FirstOfDefault(e => e.RmaId == rmaId && e.ProductId == productId);
+            if (oldModel == null) return OpResult.SetResult("不存在", false);
+            oldModel.HandleStatus = handleStatus;
+            return irep.Update(e => e.Id_Key == oldModel.Id_Key, oldModel).ToOpResult_Eidt(OpContext);
+
+        }
 
     }
 
@@ -156,11 +182,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         }
         #endregion
 
-        public List<RmaInspectionManageModel> GetInspectionManageDatasBy(string rmaId)
+        internal List<RmaInspectionManageModel> GetInspectionManageDatasBy(string rmaId)
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
 
+        internal bool IsExist(string rmaid, string productId)
+        {
+
+            return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId);
+        }
 
 
     }

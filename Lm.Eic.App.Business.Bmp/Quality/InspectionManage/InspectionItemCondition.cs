@@ -19,7 +19,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             /// 针对所有需测试的项
             var item = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy("AllMaterialId").FirstOrDefault();
             if (item != null) item.MaterialId = materialId;
-            needInsepctionItems.Add(item);
+            bool IsAddAllMaterialId = true;
+
             if (needInsepctionItems == null || needInsepctionItems.Count <= 0) return new List<InspectionIqcItemConfigModel>();
             var isAddOrRemoveItemDic = JudgeIsAddOrRemoveItemDic(materialInDate, materialId);
             needInsepctionItems.ForEach(m =>
@@ -31,7 +32,23 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         needInsepctionItems.Remove(m);
                     }
                 }
+                ///是否包函 ROHS  如果不包括  依条件添加
+                if (m.InspectionItem.Contains("ROHS"))
+                {
+                    IsAddAllMaterialId = false;
+                }
             });
+            ///判定是否应该 添加 AllMaterial
+            if (IsAddAllMaterialId)
+            {
+                if (isAddOrRemoveItemDic.ContainsKey("AllMaterialId"))
+                {
+                    if (isAddOrRemoveItemDic["AllMaterialId"])
+                    {
+                        needInsepctionItems.Add(item);
+                    }
+                }
+            }
             return needInsepctionItems;
         }
 

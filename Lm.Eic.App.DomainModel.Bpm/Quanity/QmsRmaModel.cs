@@ -123,7 +123,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// 业务Rma从ERP中的基础信息
     /// </summary>
-    public partial class RmaERPBusseeInfoModel
+    public partial class RmaRetrunOrderInfoModel
     {
         private string _returnhandleorder;
         /// <summary>
@@ -134,14 +134,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _returnhandleorder = value; }
             get { return _returnhandleorder; }
         }
-        private string _prodcutid;
+        private string _productid;
         /// <summary>
         ///品号
         /// </summary>
-        public string ProdcutId
+        public string ProductId
         {
-            set { _prodcutid = value; }
-            get { return _prodcutid; }
+            set { _productid = value; }
+            get { return _productid; }
         }
         private string _productname;
         /// <summary>
@@ -203,7 +203,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     ///业务Rma处理模型
     /// </summary>
     [Serializable]
-    public partial class RmaBussesDescriptionModel : RmaERPBusseeInfoModel
+    public partial class RmaBussesDescriptionModel : RmaRetrunOrderInfoModel
     {
         public RmaBussesDescriptionModel()
         { }
@@ -353,6 +353,18 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _rmaidnumber = value; }
             get { return _rmaidnumber; }
         }
+        // ProductId
+
+        private string _productId;
+        /// <summary>
+        ///物料料号
+        /// </summary>
+        public string ProductId
+        {
+            set { _productId = value; }
+            get { return _productId; }
+        }
+
         private string _badphenomenon;
         /// <summary>
         ///不良现象

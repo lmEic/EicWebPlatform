@@ -10,90 +10,15 @@ using Lm.Eic.App.Erp.DbAccess.InvManageDb;
 using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System.IO;
+using Lm.Eic.App.Erp.Domain.CopManageModel;
 
 namespace Lm.Eic.App.Erp.Bussiness.CopManage
 {
-
-    public class CopOrderManage
+    /// <summary>
+    /// 订单与工单对比
+    /// </summary>
+    public class CopOrderWorkorderManage
     {
-        #region 常量字符
-        /// <summary>
-        ///
-        /// </summary>
-        const string
-               // 全检工单单别
-               AllCheckCategory = "523",
-               // 现场成品仓标识
-               localeFinishedSign = "D05",
-               // 来料工单标识
-               IncomingmaterialSign = "C03",
-            ///保税标识  
-            FreeTradeSign = "B03",
-               // 已完工字段
-               HaveFinishSign = "已完工",
-               // 指定完工字段
-               SpecifiedFinishSign = "指定完工";
-        List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
-                 new FileFieldMapping ("Number","项次") ,
-                  new FileFieldMapping ("ProductType","品名") ,
-                  new FileFieldMapping ("ProductSpecify","规格") ,
-                  new FileFieldMapping ("SumCount","汇总") ,
-                  new FileFieldMapping ("OrderCount","工单数量")  ,
-                  new FileFieldMapping ("LocaleFinishedCount","现场成品仓") ,
-                  new FileFieldMapping ("FreeTradeInHouseCount","库存成品"),
-                  new FileFieldMapping ("AllCheckOrderCount","全检工单"),
-                  new FileFieldMapping ("PutInMaterialCount","来料成品"),
-                  new FileFieldMapping ("DifferenceCount","差异"),
-                  new FileFieldMapping ("More","备注")
-                };
-        #endregion
-        /// <summary>
-        /// 获得一个产品型号对应的订单与工单的对比参数
-        /// </summary>
-        /// <param name="containsProductTypeOrProductSpecify">包含产品名字和规格</param>
-        /// <returns></returns>
-        public ProductTypeMonitorModel GetProductTypeMonitorInfoBy(string containsProductTypeOrProductSpecify)
-        {
-            #region 业务订单
-            double localeFinishedCount, freeTradeInHouseCount, putInMaterialCount, orderCount = 0, allCheckOrderCount = 0, sumCount = 0;
-            //查找一个型号的订单 并添加到业务订单中
-            var getCoporderModel = CopOrderCrudFactory.CopOrderManageDb.GetCopOrderBy(containsProductTypeOrProductSpecify);
-            //如果业务订单中没有，直接返回空
-            if (getCoporderModel == null || getCoporderModel.Count <= 0) return null;
-            //业务订单中未完工订单
-            var allCopOrderList = getCoporderModel.FindAll(f => f.ProductName == containsProductTypeOrProductSpecify);
-            if (allCopOrderList != null && allCopOrderList.Count > 0)
-            {
-                sumCount = allCopOrderList.Sum(m => m.ProductNumber) - allCopOrderList.Sum(m => m.FinishNumber);
-            }
-            #endregion
-
-            #region  工单处理
-            // 依型号汇总工单信息 
-            OutunfinishedOrderConct(containsProductTypeOrProductSpecify, out orderCount, out allCheckOrderCount);
-            #endregion
-
-            #region 成品仓库
-            //输出成品仓库信息
-            OutProductInStoreConct(containsProductTypeOrProductSpecify, out localeFinishedCount, out freeTradeInHouseCount, out putInMaterialCount);
-            #endregion
-            return new ProductTypeMonitorModel
-            {
-                ProductType = containsProductTypeOrProductSpecify,
-                ProductSpecify = getCoporderModel.Find(f => f.ProductName == containsProductTypeOrProductSpecify).ProductSpecify,
-                //工单总量-工单入库量  不包括“全检工单523”
-                OrderCount = orderCount,
-                //订单总量-订单已交量
-                SumCount = sumCount,
-                LocaleFinishedCount = localeFinishedCount,
-                FreeTradeInHouseCount = freeTradeInHouseCount,
-                PutInMaterialCount = putInMaterialCount,
-                //另外统计 “全检工单523”
-                AllCheckOrderCount = allCheckOrderCount,
-                DifferenceCount = localeFinishedCount + freeTradeInHouseCount + putInMaterialCount + allCheckOrderCount + orderCount - sumCount
-            };
-        }
-
         /// <summary>
         /// 得到制三部的 订单与工单的对比参数
         /// </summary>
@@ -139,25 +64,86 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
                 throw new Exception(ex.InnerException.Message);
             }
         }
-
-        public MemoryStream BuildProductTypeMonitoList(List<ProductTypeMonitorModel> datas)
-        {
-            try
-            {
-
-                if (datas != null || datas.Count > 0)
-                {
-                    var GroupdataGroupping = datas.GetGroupList<ProductTypeMonitorModel>("订单与工单对比");
-                    return GroupdataGroupping.ExportToExcelMultiSheets<ProductTypeMonitorModel>(fieldmappping);
-                }
-                else return null;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
         #region 依产品型号得到相应信息
+
+        #region 常量字符
+        /// <summary>
+        ///
+        /// </summary>
+        const string
+               // 全检工单单别
+               AllCheckCategory = "523",
+               // 现场成品仓标识
+               localeFinishedSign = "D05",
+               // 来料工单标识
+               IncomingmaterialSign = "C03",
+               ///保税标识  
+               FreeTradeSign = "B03",
+               // 已完工字段
+               HaveFinishSign = "已完工",
+               // 指定完工字段
+               SpecifiedFinishSign = "指定完工";
+        List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                 new FileFieldMapping ("Number","项次") ,
+                  new FileFieldMapping ("ProductType","品名") ,
+                  new FileFieldMapping ("ProductSpecify","规格") ,
+                  new FileFieldMapping ("SumCount","汇总") ,
+                  new FileFieldMapping ("OrderCount","工单数量")  ,
+                  new FileFieldMapping ("LocaleFinishedCount","现场成品仓") ,
+                  new FileFieldMapping ("FreeTradeInHouseCount","库存成品"),
+                  new FileFieldMapping ("AllCheckOrderCount","全检工单"),
+                  new FileFieldMapping ("PutInMaterialCount","来料成品"),
+                  new FileFieldMapping ("DifferenceCount","差异"),
+                  new FileFieldMapping ("More","备注")
+                };
+        #endregion
+        /// <summary>
+        /// 获得一个产品型号对应的订单与工单的对比参数
+        /// </summary>
+        /// <param name="containsProductTypeOrProductSpecify">包含产品名字和规格</param>
+        /// <returns></returns>
+        private ProductTypeMonitorModel GetProductTypeMonitorInfoBy(string containsProductTypeOrProductSpecify)
+        {
+            #region 业务订单
+            double localeFinishedCount, freeTradeInHouseCount, putInMaterialCount, orderCount = 0, allCheckOrderCount = 0, sumCount = 0;
+            //查找一个型号的订单 并添加到业务订单中
+            var getCoporderModel = CopOrderCrudFactory.CopOrderManageDb.GetCopOrderBy(containsProductTypeOrProductSpecify);
+            //如果业务订单中没有，直接返回空
+            if (getCoporderModel == null || getCoporderModel.Count <= 0) return null;
+            //业务订单中未完工订单
+            var allCopOrderList = getCoporderModel.FindAll(f => f.ProductName == containsProductTypeOrProductSpecify);
+            if (allCopOrderList != null && allCopOrderList.Count > 0)
+            {
+                sumCount = allCopOrderList.Sum(m => m.ProductNumber) - allCopOrderList.Sum(m => m.FinishNumber);
+            }
+            #endregion
+
+            #region  工单处理
+            // 依型号汇总工单信息 
+            OutunfinishedOrderConct(containsProductTypeOrProductSpecify, out orderCount, out allCheckOrderCount);
+            #endregion
+
+            #region 成品仓库
+            //输出成品仓库信息
+            OutProductInStoreConct(containsProductTypeOrProductSpecify, out localeFinishedCount, out freeTradeInHouseCount, out putInMaterialCount);
+            #endregion
+            return new ProductTypeMonitorModel
+            {
+                ProductType = containsProductTypeOrProductSpecify,
+                ProductSpecify = getCoporderModel.Find(f => f.ProductName == containsProductTypeOrProductSpecify).ProductSpecify,
+                //工单总量-工单入库量  不包括“全检工单523”
+                OrderCount = orderCount,
+                //订单总量-订单已交量
+                SumCount = sumCount,
+                LocaleFinishedCount = localeFinishedCount,
+                FreeTradeInHouseCount = freeTradeInHouseCount,
+                PutInMaterialCount = putInMaterialCount,
+                //另外统计 “全检工单523”
+                AllCheckOrderCount = allCheckOrderCount,
+                DifferenceCount = localeFinishedCount + freeTradeInHouseCount + putInMaterialCount + allCheckOrderCount + orderCount - sumCount
+            };
+        }
+
         /// <summary>
         ///  获取所有生产工单, 除掉镭射雕刻,客退品
         /// </summary>
@@ -272,5 +258,19 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// 销售退换单 管理
+    /// </summary>
+    public class CopReturnOrderManage
+    {
+        /// <summary>
+        /// 得到退料和换货单信息
+        /// <returns></returns>
+        public List<CopReturnOrderModel> GetCopReturnOrderInfoBy(string returnHandleOrder)
+        {
+            return CopOrderCrudFactory.CopReturnOrderManageDb.FindReturnOrderByID(returnHandleOrder);
+        }
     }
 }

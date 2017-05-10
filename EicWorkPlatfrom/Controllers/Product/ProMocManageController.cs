@@ -43,13 +43,13 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult GetMS589ProductTypeMonitor(string department)
         {
-            var datas =  CopService.OrderManageManager.GetMS589ProductTypeMonitor();
+            var datas =  CopService.OrderWorkorderManager.GetMS589ProductTypeMonitor();
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
         public FileResult CreateProductTypeMonitoList()
         {
-            var ds = CopService.OrderManageManager.BuildProductTypeMonitoList() ;
+            var ds = CopService.OrderWorkorderManager.BuildProductTypeMonitoList() ;
             return this.ExportToExcel(ds, "工单核对清单", "工单核对清单");
         }
        public FileResult FileExprotToexcel(List<ProductTypeMonitorModel> datas)
