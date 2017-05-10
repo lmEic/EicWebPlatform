@@ -142,7 +142,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         RmaId: null,
         RmaIdNumber: 0,
         ReturnHandleOrder: null,
-        ProdcutId: null,
+        ProductId: null,
         ProductName: null,
         ProductSpec: null,
         ProductCount: null,
@@ -179,6 +179,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         getPreHandleData: function () {
             $scope.searchPromise = rmaDataOpService.getRmaDescriptionDatas(uiVm.RmaId).then(function (data) {
                 if (angular.isObject(data)) {
+                    vmManager.dataSets = [];
                     leeHelper.copyVm(data.rmaInitiateData, rmavm);
                     vmManager.dataSets = data.bussesDescriptionDatas;
                 }

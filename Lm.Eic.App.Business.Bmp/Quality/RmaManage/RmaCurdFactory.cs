@@ -40,14 +40,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.UpDate, Update);
+            this.AddOpItem(OpMode.Edit, Eidtdate);
         }
 
         OpResult AddModel(RmaReportInitiateModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-        OpResult Update(RmaReportInitiateModel model)
+        OpResult Eidtdate(RmaReportInitiateModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }

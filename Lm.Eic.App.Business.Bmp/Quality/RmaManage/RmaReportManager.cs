@@ -8,6 +8,17 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
+
+
+    /// <summary>
+    /// Rma常用状态常量
+    /// </summary>
+    public static class RmaCommomStatus
+    {
+        public const string InitiateStatus = "未结案";
+        public const string HandleStatust = "处理中";
+        public const string FinishStatus = "已结案";
+    }
     /// <summary>
     /// Ram初始数据处理器
     /// </summary>
@@ -30,26 +41,29 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         public OpResult StoreRamReortInitiate(RmaReportInitiateModel model)
         {
             if (model == null) return null;
+
             if (RmaCurdFactory.RmaReportInitiate.IsExist(model.RmaId))
             {
-                var oldmodel = RmaCurdFactory.RmaReportInitiate.GetInitiateDatas(model.RmaId).FirstOrDefault();
-                model.RmaMonth = oldmodel.RmaMonth;
-                model.RmaYear = oldmodel.RmaYear;
-                model.Id_Key = oldmodel.Id_Key;
-                model.RmaIdStatus = oldmodel.RmaIdStatus;
-                model.OpSign = OpMode.UpDate;
+                model.OpSign = OpMode.Edit;
+                ModelSetVaule(model, model.RmaIdStatus);
             }
             else
             {
-                if (model.RmaId != null && model.RmaId.Length == 8)
-                {
-                    model.RmaYear = model.RmaId.Substring(1, 2);
-                    model.RmaMonth = model.RmaId.Substring(3, 2);
-                }
-                model.RmaIdStatus = "未结案";
                 model.OpSign = OpMode.Add;
+                ModelSetVaule(model, RmaCommomStatus.InitiateStatus);
             }
+
             return RmaCurdFactory.RmaReportInitiate.Store(model);
+        }
+
+        private void ModelSetVaule(RmaReportInitiateModel model, string InitiateStatus)
+        {
+            if (model.RmaId != null && model.RmaId.Length == 8)
+            {
+                model.RmaYear = model.RmaId.Substring(1, 2);
+                model.RmaMonth = model.RmaId.Substring(3, 2);
+            }
+            model.RmaIdStatus = InitiateStatus;
         }
         /// <summary>
         /// 得到初始Rma表单
@@ -154,7 +168,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 else model.OpSign = OpMode.Add;
                 result = RmaCurdFactory.RmaBussesDescription.Store(model, true);
                 if (result.Result)
-                    RmaCurdFactory.RmaReportInitiate.UpDataInitiateRmaIdStatus(model.RmaId, "处理中");
+                    RmaCurdFactory.RmaReportInitiate.UpDataInitiateRmaIdStatus(model.RmaId, RmaCommomStatus.HandleStatust);
                 return result;
             }
             catch (Exception ex)
@@ -189,25 +203,25 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         public OpResult StoreInspectionManageData(RmaInspectionManageModel model)
         {
-            ///1.判断是否存在  在Rma表的业务描述表是否存在    关键字（RmaId, ProdcutId） 
-            ///2.如果存在 操作符为 Edit
-            ///3.如果存储成功，改变Rma的业务描述表单状态和 初始R
+            
+            ///1.如果存在 操作符为 Edit
+            ///2.如果存储成功，改变Rma的业务描述表单状态和 初始状态
             OpResult result = OpResult.SetResult("存储数据表");
             if (model == null) return OpResult.SetResult("存储表不能为空");
-            if (!RmaCurdFactory.RmaBussesDescription.IsExist(model.RmaId, model.ProductId)) return OpResult.SetResult("业务退货处理单为空");
             if (RmaCurdFactory.RmaInspectionManage.IsExist(model.RmaId, model.ProductId))
                 model.OpSign = OpMode.Edit;
             else model.OpSign = OpMode.Add;
             result = RmaCurdFactory.RmaInspectionManage.Store(model, true);
             if (result.Result)
             {
-                RmaCurdFactory.RmaReportInitiate.UpDataInitiateRmaIdStatus(model.RmaId, "已结案");
-                RmaCurdFactory.RmaBussesDescription.UpDataBussesDescriptionStatus(model.RmaId, model.ProductId, "已结案");
+                RmaCurdFactory.RmaReportInitiate.UpDataInitiateRmaIdStatus(model.RmaId, RmaCommomStatus.FinishStatus);
+                RmaCurdFactory.RmaBussesDescription.UpDataBussesDescriptionStatus(model.RmaId, model.ProductId, RmaCommomStatus.FinishStatus);
             }
             return result;
         }
 
 
     }
+
 
 }
