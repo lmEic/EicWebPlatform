@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Lm.Eic.App.Erp.Bussiness.PurchaseManage;
 using Lm.Eic.App.DomainModel.Bpm.Purchase;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-
 using Lm.Eic.Uti.Common.YleeOOMapper;
-
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using System.IO;
@@ -51,9 +48,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             });
             return QualifiedSupplierInfo.OrderBy(e => e.SupplierId).ToList();
         }
-
-
-
         /// 获取供应商信息
         /// </summary>
         /// <param name="supplierId"></param>
@@ -75,8 +69,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
-
-
         /// <summary>
         /// 保存编辑的供应商证书信息
         /// </summary>
@@ -96,7 +88,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 //赋值 供应商属性和采购性质
                 supplierInfoModel.PurchaseType = model.PurchaseType;
                 supplierInfoModel.SupplierProperty = model.SupplierProperty;
-                ///如果是只是修改  供应商信息的 
+                ///如果是只是修改  供应商信息的
                 if (model.OpSign == "editPurchaseType")//修改证书类别信息
                 {
                     supplierInfoModel.OpSign = model.OpSign;
@@ -114,7 +106,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     OpSign = model.OpSign,
                     OpPerson = model.OpPerson,
                 };
-                return StoreSpplierCertificateData(savemodel, siteRootPath);
+                return DeleteSpplierCertificateData(savemodel, siteRootPath);
             }
             catch (Exception ex)
             {
@@ -128,7 +120,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <param name="model">实体</param>
         /// <param name="rootPath">根路经</param>
         /// <returns></returns>
-        public OpResult StoreSpplierCertificateData(SupplierQualifiedCertificateModel model, string siteRootPath)
+        public OpResult DeleteSpplierCertificateData(SupplierQualifiedCertificateModel model, string siteRootPath)
         {
             try
             {
@@ -154,17 +146,35 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             return SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId);
         }
+        public DownLoadFileModel GetSupQuaCertificateDLFM(string siteRootPath, string supplierId, string eligibleCertificate)
+        {
+            DownLoadFileModel dlfm = null;
+            SupplierQualifiedCertificateModel m = null;
+            var mdls = SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId, eligibleCertificate);
+            if (mdls == null || mdls.Count == 0) return dlfm.Default();
+            m = mdls.FirstOrDefault();
+            dlfm = new DownLoadFileModel()
+            {
+                FileDownLoadName = m.CertificateFileName,
+                FilePath = siteRootPath.GetDownLoadFilePath(m.FilePath),
+                ContentType = m.CertificateFileName.GetDownLoadContentType()
+            };
+            return dlfm;
+        }
         /// <summary>
         /// 生成合格供应商清单
         /// </summary>
         /// <returns></returns>
-        public MemoryStream BuildQualifiedSupplierInfoList(List<EligibleSuppliersModel> datas)
+        public DownLoadFileModel BuildQualifiedSupplierInfoList(List<EligibleSuppliersModel> datas)
         {
             try
             {
-                if (datas == null || datas.Count < 0) return null;
+                DownLoadFileModel dlfm = new DownLoadFileModel(2);
+                if (datas == null || datas.Count < 0) return dlfm.Default();
                 var dataGroupping = datas.GetGroupList<EligibleSuppliersModel>("");
-                return dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(CreateFieldMapping());
+                dlfm.FileStream = dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(CreateFieldMapping());
+                dlfm.FileDownLoadName = "供应商证书信息数据";
+                return dlfm;
             }
             catch (Exception ex)
             {

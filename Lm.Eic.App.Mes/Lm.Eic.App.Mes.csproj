@@ -40,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbAccess\OrmMapping\PromShippingScheduleModelMapping.cs" />
+    <Compile Include="Domain\Authen\UserInfo.cs" />
+    <Compile Include="Domain\Optical\ProductShipping\ProductShippingScheduleModel.cs" />
+    <Compile Include="Domain\Optical\ProductWip\ProductedWipDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -51,11 +55,10 @@
     <Folder Include="DbAccess\Optical\ProductConfigDb\" />
     <Folder Include="DbAccess\Optical\ProductShippingDb\" />
     <Folder Include="DbAccess\Optical\ProductWipDb\" />
-    <Folder Include="DbAccess\OrmMapping\" />
-    <Folder Include="Domain\Authen\" />
     <Folder Include="Domain\Optical\ProductConfig\" />
-    <Folder Include="Domain\Optical\ProductShipping\" />
-    <Folder Include="Domain\Optical\ProductWip\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

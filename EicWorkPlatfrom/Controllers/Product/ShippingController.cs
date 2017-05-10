@@ -1,6 +1,4 @@
-﻿using Lm.Eic.App.Business.Mes.Optical.ProductShipping;
-using Lm.Eic.App.Business.Mes.Optical.ProductWip;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -19,25 +17,25 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
-        public ActionResult PerStationWipDataView()
-        {
-            return View();
-        }
+        //public ActionResult PerStationWipDataView()
+        //{
+        //    return View();
+        //}
 
-        public ContentResult LoadShippingScheduleDatas()
-        {
-            var datas = ShippingService.ScheduleManager.ShippingScheduleDatas;
+        //public ContentResult LoadShippingScheduleDatas()
+        //{
+        //    var datas = ShippingService.ScheduleManager.ShippingScheduleDatas;
 
-            return DateJsonResult(datas);
-        }
+        //    return DateJsonResult(datas);
+        //}
 
-        public ContentResult LoadProductWipDatasBy(string productType)
-        {
-            var wipNormalStationSet = ProductWipService.WipDataManager.NormalFlowStationSetter.LoadBy(productType);
-            var wipDatas = ProductWipService.WipDataManager.LoadBy(productType);
+        //public ContentResult LoadProductWipDatasBy(string productType)
+        //{
+        //    var wipNormalStationSet = ProductWipService.WipDataManager.NormalFlowStationSetter.LoadBy(productType);
+        //    var wipDatas = ProductWipService.WipDataManager.LoadBy(productType);
 
-            var datas = new { normalStationSets = wipNormalStationSet, wipDatas = wipDatas };
-            return DateJsonResult(datas);
-        }
+        //    var datas = new { normalStationSets = wipNormalStationSet, wipDatas = wipDatas };
+        //    return DateJsonResult(datas);
+        //}
     }
 }

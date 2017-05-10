@@ -124,10 +124,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
-        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatas(string rmaId)
-        {
-            return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
-        }
         #endregion
 
         /// <summary>

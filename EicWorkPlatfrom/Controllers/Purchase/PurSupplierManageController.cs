@@ -60,8 +60,14 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public FileResult CreateQualifiedSupplierInfoList()
         {
             var datas = TempData["QualifiedSupplierDatas"] as List<EligibleSuppliersModel>;
-            var ds = PurchaseService.PurSupplierManager.SupplierCertificateManager.BuildQualifiedSupplierInfoList(datas);
-            return this.ExportToExcel(ds, "合格供应商清单", "合格供应商");
+            var dlfm = PurchaseService.PurSupplierManager.SupplierCertificateManager.BuildQualifiedSupplierInfoList(datas);
+            return this.DownLoadExcelFile(dlfm);
+        }
+        [NoAuthenCheck]
+        public FileResult LoadQualifiedCertificateFile(string suppliserId, string eligibleCertificate)
+        {
+            DownLoadFileModel dlfm = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetSupQuaCertificateDLFM(SiteRootPath, suppliserId, eligibleCertificate);
+            return this.DownLoadFile(dlfm);
         }
         /// <summary>
         /// 获取合格供应商信息
@@ -150,7 +156,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult DelPurSupplierCertificateFile(SupplierQualifiedCertificateModel entity)
         {
-            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.StoreSpplierCertificateData(entity, this.SiteRootPath);
+            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.DeleteSpplierCertificateData(entity, this.SiteRootPath);
             return Json(datas);
         }
         #endregion
