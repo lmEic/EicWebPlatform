@@ -18,7 +18,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             List<InspectionIqcItemConfigModel> needInsepctionItems = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
             /// 针对所有需测试的项
             var item = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy("AllMaterialId").FirstOrDefault();
-            if (item != null) item.InspectionItem = materialId;
+            if (item != null) item.MaterialId = materialId;
             needInsepctionItems.Add(item);
             if (needInsepctionItems == null || needInsepctionItems.Count <= 0) return new List<InspectionIqcItemConfigModel>();
             var isAddOrRemoveItemDic = JudgeIsAddOrRemoveItemDic(materialInDate, materialId);
@@ -67,7 +67,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             try
             {
                 //调出此物料所有打印记录项
-                 
+
                 //如果第一次打印 
                 if (datas == null | datas.Count() <= 0)
                     return false;
@@ -99,7 +99,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private bool JudgeMaterialTwoYearIsRecord(List<InspectionIqcDetailModel> datas)
         {
-            
+
             if (datas == null | datas.Count() <= 0)
                 return false;
             var returnitem = datas.Where(e => e.MaterialInDate >= DateTime.Now.AddYears(-2));
@@ -132,5 +132,5 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return true;
         }
     }
-        
+
 }
