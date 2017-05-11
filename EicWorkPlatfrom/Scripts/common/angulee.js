@@ -449,7 +449,7 @@ var leeHelper = (function () {
             var fileIcon = "fa fa-file-pdf-o";
             var index1 = fileName.lastIndexOf('.');
             var index2 = fileName.length;
-            var postf = fileName.substring(index1, index2)
+            var postf = fileName.substring(index1, index2).toLowerCase();
             if (postf === ".pdf") {
                 fileIcon = "fa fa-file-pdf-o";
             }
