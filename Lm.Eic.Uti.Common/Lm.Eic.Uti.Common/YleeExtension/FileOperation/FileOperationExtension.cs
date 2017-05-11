@@ -275,9 +275,9 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <param name="xlsSheetName">Sheet名称</param>
         /// <param name="fileDownLoadName">下载的文件名</param>
         /// <returns></returns>
-        public static DownLoadFileModel FileDownLoadDatasToExcxel<T>(this List<T> dataSource, string xlsSheetName, string fileDownLoadName) where T : class
+        public static DownLoadFileModel ToDownLoadExcelFileModel<T>(this List<T> dataSource, string xlsSheetName, string fileDownLoadName) where T : class
         {
-            
+
             if (dataSource == null || dataSource.Count == 0) return new DownLoadFileModel().Default();
             return dataSource.ExportToExcel(xlsSheetName).CreateDownLoadExcelFileModel(fileDownLoadName);
         }

@@ -443,6 +443,32 @@ var leeHelper = (function () {
         ///设置网站标题
         setWebSiteTitle: function (title, subTitle) {
             document.title = title + "---" + subTitle;
+        },
+        //获取文件后缀名 fileName:包含后缀名的文件名
+        getFileExtensionIcon: function (fileName) {
+            var fileIcon = "fa fa-file-pdf-o";
+            var index1 = fileName.lastIndexOf('.');
+            var index2 = filename.length;
+            var postf = filename.substring(index1, index2)
+            if (postf === ".pdf") {
+                fileIcon = "fa fa-file-pdf-o";
+            }
+            else if (postf === ".txt") {
+                fileIcon = "fa fa-file-text";
+            }
+            else if (postf === ".doc" || postf === ".docx") {
+                fileIcon = "fa fa-file-word-o";
+            }
+            else if (postf === ".xls" || postf === ".xlsx") {
+                fileIcon = "fa fa-file-excel-o";
+            }
+            else if (postf === ".ppt" || postf === ".pptx") {
+                fileIcon = "fa fa-file-powerpoint-o";
+            }
+            else if (postf === ".jpg" || postf === ".jpeg" || postf === ".bpm" || postf === ".png") {
+                fileIcon = "fa fa-file-image-o";
+            }
+            return fileIcon;
         }
     };
 })();
