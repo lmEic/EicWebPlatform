@@ -535,11 +535,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         }
 
-        public MemoryStream BuildWorkerArchivesInfoList(List<ArchivesEmployeeIdentityModel> exportDatas)
+        public DownLoadFileModel BuildWorkerArchivesInfoList(List<ArchivesEmployeeIdentityModel> datas)
         {
             List<FileFieldMapping> fieldmappping = CreateFieldMapping();
-            var dataTableGrouping = exportDatas.GetGroupList<ArchivesEmployeeIdentityModel>("");
-            return dataTableGrouping.ExportToExcelMultiSheets<ArchivesEmployeeIdentityModel>(fieldmappping);
+            if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
+            var dataTableGrouping = datas.GetGroupList<ArchivesEmployeeIdentityModel>("");
+            return dataTableGrouping.ExportToExcelMultiSheets<ArchivesEmployeeIdentityModel>(fieldmappping).CreateDownLoadExcelFileModel("员工档案总表");
         }
         private List<FileFieldMapping> CreateFieldMapping()
         {

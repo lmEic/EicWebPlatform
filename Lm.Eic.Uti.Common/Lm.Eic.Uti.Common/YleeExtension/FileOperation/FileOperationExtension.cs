@@ -267,6 +267,21 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 throw new Exception(ex.ToString());
             }
         }
+        /// <summary>
+        /// 扩展方法：将数据下载到Excel文件
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="dataSource">数据集合</param>
+        /// <param name="xlsSheetName">Sheet名称</param>
+        /// <param name="fileDownLoadName">下载的文件名</param>
+        /// <returns></returns>
+        public static DownLoadFileModel FileDownLoadDatasToExcxel<T>(this List<T> dataSource, string xlsSheetName, string fileDownLoadName) where T : class
+        {
+            
+            if (dataSource == null || dataSource.Count == 0) return new DownLoadFileModel().Default();
+            return dataSource.ExportToExcel(xlsSheetName).CreateDownLoadExcelFileModel(fileDownLoadName);
+        }
+
 
         /// <summary>
         /// 扩展方法：导入到现有的Excel模板文件中
@@ -590,6 +605,22 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         public static string GetDownLoadFilePath(this string webSiteRootPath, string fileRelativePath)
         {
             return Path.Combine(webSiteRootPath, fileRelativePath.Replace('/', '\\'));
+        }
+        /// <summary>
+        /// 创建Excel文件下载模型
+        /// </summary>
+        /// <param name="dlfm"></param>
+        /// <param name="ms"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static DownLoadFileModel CreateDownLoadExcelFileModel(this MemoryStream ms, string fileName)
+        {
+            DownLoadFileModel dlfm = new DownLoadFileModel(2);
+            if (ms == null) return dlfm.Default();
+            dlfm.FileStream = ms;
+            dlfm.ContentType = "application/vnd.ms-excel";
+            dlfm.FileDownLoadName = fileName + ".xls";
+            return dlfm;
         }
     }
     /// <summary>

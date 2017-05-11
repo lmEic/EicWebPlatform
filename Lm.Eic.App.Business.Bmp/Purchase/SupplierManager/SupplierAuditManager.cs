@@ -94,14 +94,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return SupplierCrudFactory.SuppliersSeasonAuditCrud.Store(model);
         }
 
-        public MemoryStream SupplierSeasonDataStream(List<SupplierSeasonAuditModel> datas)
+        public DownLoadFileModel SupplierSeasonDataDLFM(List<SupplierSeasonAuditModel> datas)
         {
             try
             {
-                if (datas == null || datas.Count < 0) return null;
-                //
+                if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
                 var dataGroupping = datas.GetGroupList<SupplierSeasonAuditModel>("");
-                return dataGroupping.ExportToExcelMultiSheets<SupplierSeasonAuditModel>(CreateFieldMapping());
+                return dataGroupping.ExportToExcelMultiSheets<SupplierSeasonAuditModel>(CreateFieldMapping()).CreateDownLoadExcelFileModel("供应商考核清单");
             }
             catch (Exception ex)
             {

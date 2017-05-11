@@ -49,7 +49,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// </summary>
         /// <param name="qryDate"></param>
         /// <returns></returns>
-        public MemoryStream BuildAttendanceDataBy(DateTime qryDate)
+        public DownLoadFileModel BuildAttendanceDataBy(DateTime qryDate)
         {
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
                  new FileFieldMapping ("Number","项次") ,
@@ -63,15 +63,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                   new FileFieldMapping ("SlotCardTime","刷卡时间") ,
                 };
             var datas = LoadAttendDataInToday(qryDate);
+            if (datas == null || datas.Count < 0) return new DownLoadFileModel(2).Default();
             var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");
-            return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping);
+            return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping).CreateDownLoadExcelFileModel(qryDate.ToShortDateString() + "考勤数据-" + qryDate.ToShortDateString());
         }
         /// <summary>
         /// 按月份导出数据
         /// </summary>
         /// <param name="yearMonth"></param>
         /// <returns></returns>
-        public MemoryStream BuildAttendanceDataBy(string yearMonth)
+        public DownLoadFileModel BuildAttendanceDataBy(string yearMonth)
         {
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
                  new FileFieldMapping ("Number","项次") ,
@@ -85,8 +86,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                   new FileFieldMapping ("SlotCardTime","刷卡时间") ,
                 };
             var datas = this.currentMonthAttendDataHandler.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 3, YearMonth = yearMonth });
+
+            if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
             var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");
-            return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping);
+            return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping).CreateDownLoadExcelFileModel("考勤数据-" + yearMonth);
         }
         public List<AttendanceDataModel> LoadAttendDataInToday(DateTime dateFrom, DateTime dateTo, string department)
         {

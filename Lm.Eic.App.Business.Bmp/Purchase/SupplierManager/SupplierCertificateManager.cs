@@ -169,12 +169,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
-                DownLoadFileModel dlfm = new DownLoadFileModel(2);
-                if (datas == null || datas.Count < 0) return dlfm.Default();
+                if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
                 var dataGroupping = datas.GetGroupList<EligibleSuppliersModel>("");
-                dlfm.FileStream = dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(CreateFieldMapping());
-                dlfm.FileDownLoadName = "供应商证书信息数据";
-                return dlfm;
+                return dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(CreateFieldMapping()).CreateDownLoadExcelFileModel("供应商证书信息数据");
             }
             catch (Exception ex)
             {

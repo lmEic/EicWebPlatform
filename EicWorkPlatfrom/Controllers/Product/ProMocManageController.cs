@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
- using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
+using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using Lm.Eic.App.Erp.Domain.ProductTypeMonitorModel;
 
 namespace EicWorkPlatfrom.Controllers.Product
@@ -43,18 +43,18 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult GetMS589ProductTypeMonitor(string department)
         {
-            var datas =  CopService.OrderWorkorderManager.GetMS589ProductTypeMonitor();
+            var datas = CopService.OrderWorkorderManager.GetMS589ProductTypeMonitor();
+            TempData["OrderWorkorderData"] = datas;
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
         public FileResult CreateProductTypeMonitoList()
         {
-            var ds = CopService.OrderWorkorderManager.BuildProductTypeMonitoList() ;
-            return this.ExportToExcel(ds, "工单核对清单", "工单核对清单");
+            var datas = TempData["SupplierGradeInfoData"] as List<ProductTypeMonitorModel>;
+            //Excel
+            var ds = CopService.OrderWorkorderManager.BuildProductTypeMonitoList(datas, "工单核对清单");
+            return this.DownLoadFile(ds);
         }
-       public FileResult FileExprotToexcel(List<ProductTypeMonitorModel> datas)
-        {
-            return this.ExportToExcel(datas, "工单核对清单", "工单核对清单");
-        }
+
     }
 }

@@ -50,14 +50,14 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
         /// 生成EXCEL表格
         /// </summary>
         /// <returns></returns>
-        public MemoryStream BuildProductTypeMonitoList()
+        public DownLoadFileModel BuildProductTypeMonitoList(List<ProductTypeMonitorModel> datas, string fileDownLoadName)
         {
             try
             {
-
-                var dataGroupping = GetMS589ProductTypeMonitor();
-                var GroupdataGroupping = dataGroupping.GetGroupList<ProductTypeMonitorModel>("订单与工单对比");
-                return GroupdataGroupping.ExportToExcelMultiSheets<ProductTypeMonitorModel>(fieldmappping);
+                
+                if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
+                var datasGroupping = datas.GetGroupList<ProductTypeMonitorModel>("订单与工单对比");
+                return datasGroupping.ExportToExcelMultiSheets<ProductTypeMonitorModel>(fieldmappping).CreateDownLoadExcelFileModel(fileDownLoadName);
             }
             catch (Exception ex)
             {

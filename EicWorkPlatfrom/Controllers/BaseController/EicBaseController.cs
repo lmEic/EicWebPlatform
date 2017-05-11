@@ -223,18 +223,6 @@ namespace EicWorkPlatfrom.Controllers
         //    ms.Seek(0, SeekOrigin.Begin);
         //    return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
         //}
-
-        /// <summary>
-        /// 下载Excel文件
-        /// </summary>
-        /// <param name="downLoadFileModel"></param>
-        /// <returns></returns>
-        protected FileResult DownLoadExcelFile(DownLoadFileModel downLoadFileModel)
-        {
-            downLoadFileModel.ContentType = "application/vnd.ms-excel";
-            downLoadFileModel.FileStream.Seek(0, SeekOrigin.Begin);
-            return DownLoadFile(downLoadFileModel);
-        }
         /// <summary>
         /// 下载文件
         /// </summary>
@@ -247,7 +235,10 @@ namespace EicWorkPlatfrom.Controllers
             else if (downLoadFileModel.HandleMode == 1)
                 return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
             else if (downLoadFileModel.HandleMode == 2)
+            {
+                downLoadFileModel.FileStream.Seek(0, SeekOrigin.Begin);
                 return File(downLoadFileModel.FileStream, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+            }
             else
                 return File(downLoadFileModel.FilePath, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
         }
