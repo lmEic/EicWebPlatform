@@ -283,10 +283,15 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
                 editManager.certificateDatas = datas;
             });
         },
+        ///下载文件
         loadFile: function (item) {
             var loadUrl = "/PurSupplierManage/LoadQualifiedCertificateFile?suppliserId=" + item.SupplierId + "&eligibleCertificate=" + item.EligibleCertificate;
             return loadUrl;
-        }
+        },
+        ///获取文件扩展名图标
+        getFileExtentionIcon: function (item) {
+            return leeHelper.getFileExtensionIcon(item.CertificateFileName);
+        },
     }
 
     var operate = Object.create(leeDataHandler.operateStatus);

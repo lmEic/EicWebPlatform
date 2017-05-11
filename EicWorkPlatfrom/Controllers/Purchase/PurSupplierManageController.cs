@@ -240,7 +240,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             var datas = TempData["SupplierTourData"] as List<SupplierSeasonTutorModel>;
             ///导出Exce
-            var dlfm = datas.FileDownLoadDatasToExcxel("供应商辅导管理", "供应商辅导清单");
+            var dlfm = datas.ToDownLoadExcelFileModel<SupplierSeasonTutorModel>("供应商辅导管理", "供应商辅导清单");
             return this.DownLoadFile(dlfm);
         }
         /// <summary>
@@ -303,7 +303,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             var datas = TempData["SupplierGradeInfoData"] as List<SupplierSeasonTutorModel>;
             ///Excell
-            var dlfm = datas.FileDownLoadDatasToExcxel("供应商考评分模板", "供应商考评分数模板清单");
+            var dlfm = datas.ToDownLoadExcelFileModel<SupplierSeasonTutorModel>("供应商考评分模板", "供应商考评分数模板清单");
             return this.DownLoadFile(dlfm);
         }
         /// <summary>

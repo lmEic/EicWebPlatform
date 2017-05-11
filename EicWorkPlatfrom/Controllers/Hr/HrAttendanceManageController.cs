@@ -68,8 +68,8 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public FileResult ExoportAttendanceDatasToExcel(DateTime qryDate)
         {
             ///excel
-            var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(qryDate);
-            return this.DownLoadFile(ms);
+            var dlfm = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(qryDate);
+            return this.DownLoadFile(dlfm);
         }
         [NoAuthenCheck]
         public FileResult ExoportAttendanceMonthDatasToExcel(string yearMonth)
