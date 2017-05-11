@@ -191,8 +191,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 new FileFieldMapping ("SupplierFaxNo","供应商传真") ,
                 new FileFieldMapping ("SupplierEmail","供应商邮箱") ,
                 new FileFieldMapping ("SupplierAddress","供应商地址") ,
-                new FileFieldMapping ("BillAddress","联系人") ,
-                new FileFieldMapping ("PurchaseUser","采购人员") ,
+                new FileFieldMapping ("SupplierPrincipal","负责人") ,
+                new FileFieldMapping ("SupplierUser","联系人") ,
                 new FileFieldMapping ("UpperPurchaseDate","上次采购时间") ,
                 new FileFieldMapping ("LastPurchaseDate","最近采购时间") ,
                 new FileFieldMapping ("PurchaseType","采购类型") ,
@@ -281,12 +281,14 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             var erpSupplierInfo = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
 
             if (erpSupplierInfo == null) return null;
+            string Principal = erpSupplierInfo.Principal.Trim() == string.Empty ? erpSupplierInfo.Contact : erpSupplierInfo.Principal;
             return new SupplierInfoModel
             {
                 SupplierId = supplierId,
                 SupplierEmail = erpSupplierInfo.Email,
                 SupplierAddress = erpSupplierInfo.Address,
-                BillAddress = erpSupplierInfo.BillAddress,
+                /// 负责人
+                SupplierPrincipal = Principal,
                 SupplierFaxNo = erpSupplierInfo.FaxNo,
                 SupplierName = erpSupplierInfo.SupplierName,
                 SupplierShortName = erpSupplierInfo.SupplierShortName,
@@ -354,7 +356,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 PurchaseType = supplierInfo.PurchaseType,
                 SupplierEmail = supplierInfo.SupplierEmail,
                 SupplierAddress = supplierInfo.SupplierAddress,
-                BillAddress = supplierInfo.BillAddress,
+                SupplierPrincipal = supplierInfo.SupplierPrincipal,
                 SupplierFaxNo = supplierInfo.SupplierFaxNo,
                 SupplierName = supplierInfo.SupplierName,
                 Remark = supplierInfo.Remark,

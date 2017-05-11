@@ -308,12 +308,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
+                SetFixFieldValue(model);
                 if (irep.IsExist(e => e.SupplierId == model.SupplierId))
                 {
-                    return irep.Update(u => u.SupplierId == model.SupplierId,
-                     model).ToOpResult_Eidt(OpContext);
+                    var oldModel = irep.FirstOfDefault(e => e.SupplierId == model.SupplierId);
+                    model.Id_Key = oldModel.Id_Key;
+                    return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
                 }
-                SetFixFieldValue(model);
                 model.SupplierId = model.SupplierId.Trim();
                 model.OpSign = OpMode.Add;
                 return irep.Insert(model).ToOpResult_Add(OpContext);
@@ -398,7 +399,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public List<SupplierSeasonAuditModel> GetlimitScoreSupplierAuditInfo(string seasonDateNum, double limitTotalCheckScore, double limitQualityCheck)
         {
-            return this.irep.Entities.Where(e => (e.TotalCheckScore < limitTotalCheckScore || e.QualityCheck < limitQualityCheck) && e.SeasonDateNum == seasonDateNum).ToList();
+            return this.irep.Entities.Where(e => (e.TotalCheckScore < limitTotalCheckScore || e.QualityCheck < limitQualityCheck) && e.SeasonDateNum == seasonDateNum).OrderBy(e => e.SupplierId).ToList();
         }
         /// <summary>
         ///

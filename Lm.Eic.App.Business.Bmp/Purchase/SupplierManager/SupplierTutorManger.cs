@@ -38,11 +38,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                    {
                        if (SupplierCrudFactory.SuppliersSeasonTutorCrud.IsExist(m.ParameterKey))
                        {
-                           waittingTourSupplierList.Add(SupplierCrudFactory.SuppliersSeasonTutorCrud.GetSupplierSeasonTutorModelBy(m.ParameterKey));
+                           var SupplierSeasonTutorInfo = SupplierCrudFactory.SuppliersSeasonTutorCrud.GetSupplierSeasonTutorModelBy(m.ParameterKey);
+                           if (!waittingTourSupplierList.Contains(SupplierSeasonTutorInfo))
+                               waittingTourSupplierList.Add(SupplierSeasonTutorInfo);
                        }
                        else
                        {
-                           waittingTourSupplierList.Add(GetlimitScoreSupplierTutorModelTo(m));
+                           var SupplierSeasonTutorInfo = GetlimitScoreSupplierTutorModelTo(m);
+                           if (!waittingTourSupplierList.Contains(SupplierSeasonTutorInfo))
+                               waittingTourSupplierList.Add(GetlimitScoreSupplierTutorModelTo(m));
                        }
                    });
             }
