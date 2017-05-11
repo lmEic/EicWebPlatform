@@ -376,6 +376,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         SupplierId: null,
         SupplierShortName: null,
         SupplierName: null,
+        ParameterKey: null,
         QualityCheck: null,
         AuditPrice: null,
         DeliveryDate: null,
@@ -407,7 +408,9 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
     operate.save = function (isValid) {
         leeHelper.setUserData(uiVM);
         crud.add(operate, isValid, function () {
-            uiVM.TotalCheckScore = uiVM.QualityCheck * 0.3 + uiVM.AuditPrice * 0.2 + uiVM.DeliveryDate * 0.15 + uiVM.ActionLiven * 0.15 + uiVM.HSFGrade * 0.2;
+            uiVM.TotalCheckScore = (uiVM.QualityCheck * 0.3 + uiVM.AuditPrice * 0.2 + uiVM.DeliveryDate * 0.15 + uiVM.ActionLiven * 0.15 + uiVM.HSFGrade * 0.2).toFixed(2);
+            uiVM.ParameterKey = uiVM.SupplierId + "&&" + uiVM.SeasonDateNum;
+            uiVM.OpSign = "add";
             $scope.promise = supplierDataOpService.saveAuditSupplierInfo($scope.vm).then(function (opResult) {
                 crud.handleSuccessResult(operate, opResult, function () {
                     leeHelper.copyVm($scope.vm, vmManager.editItem);
