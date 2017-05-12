@@ -155,6 +155,4 @@
         public const string UploadFile = "uploadFile";
         public const string DeleteFile = "deleteFile";
     }
-
-
 }

@@ -95,9 +95,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <param name="rmaId"></param>
         /// <param name="rmaIdStatus"></param>
         /// <returns></returns>
-        internal OpResult UpdateInitiateRmaIdStatus(string rmaId, string rmaIdStatus)
+        internal OpResult UpdateHandleStatus(string rmaId, string handleStatus)
         {
-            return irep.Update(e => e.RmaId == rmaId, u => new RmaReportInitiateModel { RmaIdStatus = rmaIdStatus }).ToOpResult_Eidt(OpContext);
+            return irep.Update(e => e.RmaId == rmaId, u => new RmaReportInitiateModel
+            {
+                RmaIdStatus = handleStatus
+            }).ToOpResult_Eidt(OpContext);
         }
         #endregion
 
@@ -140,10 +143,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId);
         }
-        internal OpResult UpdateBussesDescriptionStatus(string rmaId, string productId, string handleStatus)
+        internal OpResult UpdateHandleStatus(string rmaId, string productId)
         {
             return irep.Update(e => e.RmaId == rmaId && e.ProductId == productId,
-                new RmaBusinessDescriptionModel { HandleStatus = handleStatus }).ToOpResult_Eidt(OpContext);
+                new RmaBusinessDescriptionModel
+                {
+                    HandleStatus = RmaHandleStatus.BusinessStatus
+                }).ToOpResult_Eidt(OpContext);
         }
     }
 
@@ -156,16 +162,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         #region  CRUD
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.Edit, UpdateModel);
+            this.AddOpItem(OpMode.Add, Add);
+            this.AddOpItem(OpMode.Edit, Update);
         }
-        OpResult AddModel(RmaInspectionManageModel model)
+        OpResult Add(RmaInspectionManageModel model)
         {
             if (!IsExist(model.RmaId, model.ProductId))
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             return OpResult.SetErrorResult("该记录已经存在！");
         }
-        OpResult UpdateModel(RmaInspectionManageModel model)
+        OpResult Update(RmaInspectionManageModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -174,6 +180,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         internal List<RmaInspectionManageModel> GetInspectionManageDatasBy(string rmaId)
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
+        }
+
+        internal OpResult UpdateHandleStatus(string rmaId, string productId)
+        {
+            if (string.IsNullOrEmpty(rmaId) || string.IsNullOrEmpty(productId)) return OpResult.SetErrorResult("ramId或者productId不能为空!");
+            return irep.Update(f => f.RmaId == rmaId && f.ProductId == productId, u => new RmaInspectionManageModel
+            {
+                HandleStatus = RmaHandleStatus.InspecitonStatus
+            }).ToOpResult_Eidt(OpContext);
         }
         internal bool IsExist(string rmaId, string productId)
         {

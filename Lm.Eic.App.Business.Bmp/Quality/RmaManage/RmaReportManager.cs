@@ -14,7 +14,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
     public class RmaHandleStatus
     {
         public const string InitiateStatus = "未结案";
-        public const string BusinessStatust = "业务处理中";
+        public const string BusinessStatus = "业务处理中";
         public const string InspecitonStatus = "品保处理中";
         public const string FinishStatus = "已结案";
     }
@@ -40,9 +40,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return RmaCurdFactory.RmaReportInitiate.Store(model);
         }
-
-
-
         /// <summary>
         /// 得到初始Rma表单
         /// </summary>
@@ -57,7 +54,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="yearMonth">yyyyMM</param>
         /// <returns></returns>
-        public List<RmaReportInitiateModel> getRmaReportInitiateDatasBy(string yearMonth)
+        public List<RmaReportInitiateModel> GetRmaReportInitiateDatasBy(string yearMonth)
         {
             try
             {
@@ -135,8 +132,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             {
                 if (model.ProductsShipDate == DateTime.MinValue) return OpResult.SetErrorResult("存储的完成日期不对");
                 var result = RmaCurdFactory.RmaBussesDescription.Store(model, true);
-                if (result.Result)
-                    RmaCurdFactory.RmaReportInitiate.UpdateInitiateRmaIdStatus(model.RmaId, RmaHandleStatus.BusinessStatust);
+                if (result.Result && model.OpSign == OpMode.Add)
+                {
+                    RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, RmaHandleStatus.BusinessStatus);
+                    RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, model.ProductId);
+                }
+
                 return result;
             }
             catch (Exception ex)
@@ -171,10 +172,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         public OpResult StoreInspectionManageData(RmaInspectionManageModel model)
         {
             var result = RmaCurdFactory.RmaInspectionManage.Store(model, true);
-            if (result.Result)
+            if (result.Result && model.OpSign == OpMode.Add)
             {
-                RmaCurdFactory.RmaReportInitiate.UpdateInitiateRmaIdStatus(model.RmaId, RmaHandleStatus.FinishStatus);
-                RmaCurdFactory.RmaBussesDescription.UpdateBussesDescriptionStatus(model.RmaId, model.ProductId, RmaHandleStatus.FinishStatus);
+                RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, RmaHandleStatus.InspecitonStatus);
+                RmaCurdFactory.RmaInspectionManage.UpdateHandleStatus(model.RmaId, model.ProductId);
             }
             return result;
         }
