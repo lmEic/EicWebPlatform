@@ -23,13 +23,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             get { return OBulider.BuildInstance<RmaBussesDescriptionCrud>(); }
         }
 
-
         internal static RmaInspectionManageCrud RmaInspectionManage
         {
             get { return OBulider.BuildInstance<RmaInspectionManageCrud>(); }
         }
-
-
     }
 
     internal class RmaReportInitiateCrud : CrudBase<RmaReportInitiateModel, IRmaReportInitiateRepository>
@@ -101,9 +98,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         #endregion
 
     }
-
-
-
     internal class RmaBussesDescriptionCrud : CrudBase<RmaBussesDescriptionModel, IRmaBussesDescriptionRepository>
     {
         public RmaBussesDescriptionCrud() : base(new RmaBussesDescriptionRepository(), "记录登记表单")
@@ -118,7 +112,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         OpResult AddModel(RmaBussesDescriptionModel model)
         {
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+            if (!IsExist(model.RmaId, model.ProductId))
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            return Update(model);
         }
         OpResult Update(RmaBussesDescriptionModel model)
         {
@@ -138,20 +134,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         internal bool IsExist(string rmaid, string productId)
         {
-
             return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId);
         }
-        internal OpResult UpDataBussesDescriptionStatus(string rmaId, string productId, string handleStatus)
+        internal OpResult UpDateBussesDescriptionStatus(string rmaId, string productId, string handleStatus)
         {
-            var oldModel = irep.FirstOfDefault(e => e.RmaId == rmaId && e.ProductId == productId);
-            if (oldModel == null) return OpResult.SetResult("不存在", false);
-            oldModel.HandleStatus = handleStatus;
-            return irep.Update(e => e.Id_Key == oldModel.Id_Key, oldModel).ToOpResult_Eidt(OpContext);
-
+            return irep.Update(e => e.RmaId == rmaId && e.ProductId == productId,
+                new RmaBussesDescriptionModel { HandleStatus = handleStatus }).ToOpResult_Eidt(OpContext);
         }
-
     }
-
 
     internal class RmaInspectionManageCrud : CrudBase<RmaInspectionManageModel, IRmaInspectionManageRepository>
     {
