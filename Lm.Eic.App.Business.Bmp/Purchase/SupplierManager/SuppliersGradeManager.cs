@@ -57,7 +57,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public OpResult SavePurSupGradeData(SupplierGradeInfoModel entity)
         {
             ///操作符在界面没有确定
-            if (entity == null) return OpResult.SetResult("实体不能为空", false);
+            if (entity == null) return OpResult.SetErrorResult("实体不能为空");
             string ParameterKey = entity.SupplierId + "&" + entity.GradeYear + "&" + entity.SupGradeType;
             if (SupplierCrudFactory.SupplierGradeInfoCrud.IsExist(ParameterKey))
                 entity.OpSign = OpMode.Add;
