@@ -150,8 +150,8 @@
     {
         public const string Add = "add";
         public const string Edit = "edit";
-        public const string UpDate = "update";
         public const string Delete = "delete";
+        public const string UpDate = "update";
         public const string UploadFile = "uploadFile";
         public const string DeleteFile = "deleteFile";
     }

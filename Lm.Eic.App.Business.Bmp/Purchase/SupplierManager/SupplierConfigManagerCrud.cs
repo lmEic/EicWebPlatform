@@ -71,7 +71,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddSupplierQualifiedCertificate);
-            this.AddOpItem(OpMode.UpDate, EidtSupplierQualifiedCertificate);
+            this.AddOpItem(OpMode.Edit, EidtSupplierQualifiedCertificate);
             this.AddOpItem(OpMode.Delete, DeleteSupplierQualifiedCertificate);
 
         }

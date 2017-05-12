@@ -125,7 +125,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static decimal ToDeciaml(this string value)
+        public static decimal ToDecimal(this string value)
         {
             decimal r = 0;
             if (decimal.TryParse(value, out r))

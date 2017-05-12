@@ -119,7 +119,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             this.AddOpItem(OpMode.Edit, EditDevelopModuleManageRecord);
             this.AddOpItem(OpMode.UpDate, UpdateDevelopModuleManageRecord);
         }
-        
         /// <summary>
         /// 添加一条开发任务到数据库
         /// </summary>
@@ -147,7 +146,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 else { _waittingSendMailList.Add(model); }//添加至待发送邮件列表
             }
             return result;
-           
+
         }
         /// <summary>
         /// 编辑一条开发任务
@@ -163,8 +162,8 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
             model.CurrentProgress = "待开发";
             model.OpSign = OpMode.Edit;
-            OpResult  result = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
-           
+            OpResult result = irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("开发任务");
+
             //修改开发任务变更记录
             changeRecordList.ForEach(m =>
             {
@@ -181,7 +180,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
 
             //获取待修改的开发任务操作记录
-            var changeRecordList = GetChangeRecordListBy(model);  
+            var changeRecordList = GetChangeRecordListBy(model);
 
             //修改开发任务
             model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
@@ -191,7 +190,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             //修改开发任务变更记录
             changeRecordList.ForEach(m =>
             {
-                ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.UpdateChangeRecord(model,m.Id_Key);
+                ItilCrudFactory.ItilDevelopModuleChangeRecordCrud.UpdateChangeRecord(model, m.Id_Key);
             });
             return result;
         }
@@ -340,8 +339,8 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             };
         }
 
-       
 
-     
+
+
     }
 }

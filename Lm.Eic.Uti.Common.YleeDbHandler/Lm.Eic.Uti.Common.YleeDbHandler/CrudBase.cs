@@ -81,7 +81,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             var opDatePi = IsHasProperty(entity, "OpDate");
             if (opDatePi != null) opDatePi.SetValue(entity, DateTime.Now.ToDate(), null);
         }
-
         /// <summary>
         /// 设置固定字段的值
         /// </summary>
@@ -96,7 +95,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 if (opSignPi != null) opSignPi.SetValue(m, opMode, null);
             });
         }
-
         /// 设置固定字段的值
         /// </summary>
         /// <param name="entityList">列表</param>
@@ -117,10 +115,10 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 result.Entity = entity;
             //取得操作方法
             PropertyInfo piIdKey = IsHasProperty(entity, "Id_Key");
-            if (piIdKey == null)
+            if (piIdKey != null)
             {
-                string idKey = piIdKey.GetValue(entity, null) as string;
-                result.Id_Key = idKey.ToDeciaml();
+                object idKey = piIdKey.GetValue(entity, null);
+                result.Id_Key = idKey.ToString().ToDecimal();
             }
         }
 
@@ -151,7 +149,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 result = (crudOpDics[opSign])(entity);
                 BindEntityToOpResult(isNeedEntity, result, entity);
             }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+            catch (Exception ex) { throw new Exception(ex.Message); }
             return result;
         }
         /// <summary>
@@ -182,7 +180,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return result;
         }
-
         /// <summary>
         /// 模型转换
         /// </summary>
