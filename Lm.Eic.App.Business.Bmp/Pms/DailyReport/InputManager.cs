@@ -159,7 +159,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 if (!savaResult.Result)
                 {
                     DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(temDailyList, dailyReportDate);
-                    return OpResult.SetResult("数据保存失败！");
+                    return OpResult.SetErrorResult("数据保存失败！");
                 }
                 else
                     return savaResult;
@@ -167,7 +167,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             catch (Exception ex)
             {
                 DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(temDailyList, dailyReportDate);
-                return OpResult.SetResult("数据保存失败！");
+                return OpResult.SetErrorResult("数据保存失败！");
                 throw new Exception(ex.InnerException.Message);
             }
         }
@@ -181,7 +181,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             //将临时表中的本部门的所有列表 克隆至正式日报表中
             var dailyReportTempList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
             if (!dailyReportTempList.IsNullOrEmpty())
-                return OpResult.SetResult("未找到本部门的任何日报记录！");
+                return OpResult.SetErrorResult("未找到本部门的任何日报记录！");
 
             //清除正式表中的本部门的日报数据
             DailyReportInputCrudFactory.DailyReportCrud.DeleteDailyReportListBy(department, dailyReportDate.ToDate());

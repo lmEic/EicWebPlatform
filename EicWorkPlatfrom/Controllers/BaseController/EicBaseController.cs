@@ -230,17 +230,62 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         protected FileResult DownLoadFile(DownLoadFileModel downLoadFileModel)
         {
-            if (downLoadFileModel.HandleMode == 0)
-                return File(downLoadFileModel.FilePath, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
-            else if (downLoadFileModel.HandleMode == 1)
-                return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
-            else if (downLoadFileModel.HandleMode == 2)
+            try
             {
-                downLoadFileModel.FileStream.Seek(0, SeekOrigin.Begin);
-                return File(downLoadFileModel.FileStream, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+                switch (downLoadFileModel.HandleMode)
+                {
+                    case 0:
+                        return NewMethod(ref downLoadFileModel);
+                    case 1:
+                        return NewMethod1111(ref downLoadFileModel);
+
+                    case 2:
+                        return NewMethod2221(ref downLoadFileModel);
+                    default:
+                        return NewMethod1(downLoadFileModel);
+                }
             }
-            else
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+             
+        }
+
+        private FileResult NewMethod1(DownLoadFileModel downLoadFileModel)
+        {
+            return File(downLoadFileModel.FilePath, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+        }
+
+        private FileResult NewMethod2221(ref DownLoadFileModel downLoadFileModel)
+        {
+            if (downLoadFileModel.FileStream == null)
+            {
+                downLoadFileModel = new DownLoadFileModel().Default("文件流不能为null！");
                 return File(downLoadFileModel.FilePath, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+            }
+            downLoadFileModel.FileStream.Seek(0, SeekOrigin.Begin);
+            return File(downLoadFileModel.FileStream, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+        }
+
+        private FileResult NewMethod1111(ref DownLoadFileModel downLoadFileModel)
+        {
+            if (downLoadFileModel.FileContnet == null)
+            {
+                downLoadFileModel = new DownLoadFileModel().Default("文件内容不能为null！");
+                return File(downLoadFileModel.FilePath, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+            }
+            return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+        }
+
+        private FileResult NewMethod(ref DownLoadFileModel downLoadFileModel)
+        {
+            if (System.IO.File.Exists(downLoadFileModel.FilePath))
+            {
+                downLoadFileModel = new DownLoadFileModel().Default(string.Format("{0}不存在！", downLoadFileModel.FilePath)));
+            }
+            return File(downLoadFileModel.FilePath, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
         }
 
         /// <summary>

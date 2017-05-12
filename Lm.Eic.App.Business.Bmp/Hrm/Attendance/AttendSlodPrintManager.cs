@@ -126,7 +126,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <returns></returns>
         public OpResult HandleExceptionSlotCardData(List<AttendSlodFingerDataCurrentMonthModel> entities)
         {
-            return OpResult.SetResult("处理异常刷卡数据成功！", this.currentMonthAttendDataHandler.HandleExceptionSlotCardData(entities) > 0);
+            return OpResult.SetSuccessResult("处理异常刷卡数据成功！", this.currentMonthAttendDataHandler.HandleExceptionSlotCardData(entities) > 0);
         }
 
         #endregion method
@@ -196,7 +196,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             int record = 0;
             //实时考勤数据 && e.WorkerId == "604505"
             var datasInTime = this.fingerPrintDataInTime.FingPrintDatas.FindAll(e => e.SlodCardDate == qryDate);
-            if (datasInTime == null || datasInTime.Count == 0) return OpResult.SetResult("没有考勤数据要进行汇总");
+            if (datasInTime == null || datasInTime.Count == 0) return OpResult.SetErrorResult("没有考勤数据要进行汇总");
             //一次载入该日期的所有考勤数据到内存中
             var dayAttendDatas = this.irep.Entities.Where(e => e.AttendanceDate == qryDate);
             //获取所有人员信息到内存中
@@ -261,7 +261,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                     this.fingerPrintDataInTime.StoreNoIdentityWorkerInfo(attendDataPerWorker[0]);
                 }
             });
-            return OpResult.SetResult("处理考勤数据成功！", record > 0);
+            return OpResult.SetSuccessResult("处理考勤数据成功！", record > 0);
         }
         /// <summary>
         /// 重新排序连接的时间字符串
@@ -1056,13 +1056,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         public OpResult HandleAskForLeave(List<AttendAskLeaveModel> entities)
         {
             int record = currentMonthAttendDataHandler.SyncAskLeaveData(entities);
-            return OpResult.SetResult("请假操作成功！", record > 0);
+            return OpResult.SetSuccessResult("请假操作成功！", record > 0);
         }
 
         public OpResult HandleAskForLeave(List<AttendSlodFingerDataCurrentMonthModel> entities)
         {
             int record = currentMonthAttendDataHandler.UpdateAskLeaveData(entities);
-            return OpResult.SetResult("修改请假数据成功！", record > 0);
+            return OpResult.SetSuccessResult("修改请假数据成功！", record > 0);
         }
 
         /// <summary>

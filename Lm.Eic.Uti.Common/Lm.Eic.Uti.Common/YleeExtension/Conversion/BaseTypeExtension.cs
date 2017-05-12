@@ -125,7 +125,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static decimal ToDeciaml(this string value)
+        public static decimal ToDecimal(this string value)
         {
             decimal r = 0;
             if (decimal.TryParse(value, out r))
@@ -381,7 +381,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         /// <returns></returns>
         public static OpResult ToOpResult(this int record, string successMessage, decimal Id_Key)
         {
-            return OpResult.SetResult(successMessage, record > 0, Id_Key);
+            return OpResult.SetSuccessResult(successMessage, record > 0, Id_Key);
         }
 
         /// <summary>
@@ -392,7 +392,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         /// <returns></returns>
         public static OpResult ToOpResult(this int record, string successMessage)
         {
-            return OpResult.SetResult(successMessage, record > 0);
+            return OpResult.SetSuccessResult(successMessage, record > 0);
         }
 
         #endregion Int

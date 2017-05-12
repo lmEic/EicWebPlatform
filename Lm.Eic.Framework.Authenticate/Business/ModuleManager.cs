@@ -33,7 +33,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
 
         public OpResult Store(ModuleNavigationModel entity, ModuleNavigationModel oldEntity, string opType)
         {
-            OpResult result = OpResult.SetResult("待进行操作", false);
+            OpResult result = OpResult.SetSuccessResult("待进行操作", false);
             if (opType == "add")
             {
                 result = Add(entity);
@@ -52,18 +52,18 @@ namespace Lm.Eic.Framework.Authenticate.Business
         private OpResult Add(ModuleNavigationModel entity)
         {
             int record = 0;
-            if (entity == null) return OpResult.SetResult("ModuleNavigationModel entity can't be null", false);
+            if (entity == null) return OpResult.SetSuccessResult("ModuleNavigationModel entity can't be null", false);
             SetPrimaryPropertyValue(entity);
             if (!irep.IsExist(e => e.PrimaryKey == entity.PrimaryKey))
             {
                 record += irep.Insert(entity);
             }
-            return OpResult.SetResult("新增模块数据成功", record > 0, entity.Id_Key);
+            return OpResult.SetSuccessResult("新增模块数据成功", record > 0, entity.Id_Key);
         }
 
         private OpResult Delete(ModuleNavigationModel entity)
         {
-            if (entity == null) return OpResult.SetResult("ModuleNavigationModel entity can't be null", false);
+            if (entity == null) return OpResult.SetSuccessResult("ModuleNavigationModel entity can't be null", false);
             SetPrimaryPropertyValue(entity);
             int record = irep.Delete(r => r.PrimaryKey == entity.PrimaryKey);
             if (record > 0)
@@ -71,12 +71,12 @@ namespace Lm.Eic.Framework.Authenticate.Business
                 //删除角色与模块匹配列表中对应的记录
                 rm.MatchModuleHandler.Delete(entity.PrimaryKey);
             }
-            return OpResult.SetResult("删除模块数据成功", record > 0);
+            return OpResult.SetSuccessResult("删除模块数据成功", record > 0);
         }
 
         public OpResult Update(ModuleNavigationModel oldEntity, ModuleNavigationModel mdl)
         {
-            if (mdl == null) return OpResult.SetResult("mdl can't be null", false);
+            if (mdl == null) return OpResult.SetSuccessResult("mdl can't be null", false);
             int record = 0;
             SetPrimaryPropertyValue(oldEntity);
             SetPrimaryPropertyValue(mdl);
@@ -88,7 +88,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
                 //修改角色匹配模块记录中对应的信息
                 record += rm.MatchModuleHandler.Update(oldEntity, mdl);
             }
-            return OpResult.SetResult("修改成功！", record > 0);
+            return OpResult.SetSuccessResult("修改成功！", record > 0);
         }
 
         /// <summary>
@@ -138,11 +138,11 @@ namespace Lm.Eic.Framework.Authenticate.Business
             if (!irep.IsExist(r => r.AssemblyName == mdl.AssemblyName))
             {
                 int record = irep.Insert(mdl);
-                return OpResult.SetResult("新增程序集成功！", record > 0);
+                return OpResult.SetSuccessResult("新增程序集成功！", record > 0);
             }
             else
             {
-                return OpResult.SetResult("系统中已经存在此程序集数据", false);
+                return OpResult.SetSuccessResult("系统中已经存在此程序集数据", false);
             }
         }
 

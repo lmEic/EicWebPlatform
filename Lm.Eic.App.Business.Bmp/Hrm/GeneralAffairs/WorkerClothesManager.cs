@@ -251,11 +251,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
 
             if (irep.IsExist(m => m.Id_Key == model.Id_Key))
             {
-                return OpResult.SetResult("此数据已存在！");
+                return OpResult.SetErrorResult("此数据已存在！");
             }
             if (!IsCanOldChangeNew(model))
             {
-                return OpResult.SetResult("该用户暂无资格以旧换新！");
+                return OpResult.SetErrorResult("该用户暂无资格以旧换新！");
             }
             return irep.Insert(model).ToOpResult_Add("添加完成", model.Id_Key);
         }
@@ -277,7 +277,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private OpResult UpDateWorkClothesManageRecord(WorkClothesManageModel model)
         {
-            OpResult result = OpResult.SetResult("未执行任何修改");
+            OpResult result = OpResult.SetErrorResult("未执行任何修改");
             if (model == null) return result;
             return result;
 

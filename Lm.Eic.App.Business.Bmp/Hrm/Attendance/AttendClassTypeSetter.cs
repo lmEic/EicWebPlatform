@@ -136,7 +136,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             int record = 0;
             try
             {
-                if (entities == null || entities.Count == 0) return OpResult.SetResult("entities can't be null", false);
+                if (entities == null || entities.Count == 0) return OpResult.SetSuccessResult("entities can't be null", false);
                 AttendClassTypeDetailModel mdl = null;
                 AttendClassTypeModel ctMdl = null;
                 entities.ForEach(dto =>
@@ -156,7 +156,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             {
                 throw new Exception(ex.Message);
             }
-            return OpResult.SetResult("设置班别成功!", record > 0);
+            return OpResult.SetSuccessResult("设置班别成功!", record > 0);
         }
         private void StoreClassTypeData(ref int record,AttendClassTypeModel ctMdl,AttendClassTypeModel dto)
         {
