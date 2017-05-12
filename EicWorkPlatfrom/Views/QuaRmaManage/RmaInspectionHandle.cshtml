@@ -63,8 +63,9 @@
                                 <td>{{item.CustomerHandleSuggestion}}</td>
                                 <td>{{item.FeePaymentWay}}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-primary" ng-click="operate.handleItem(item)" title="填写处理结果">
-                                        填写处理结果
+                                    <span ng-if="item.isHandle" class="label label-success">已处理</span>
+                                    <button ng-if="!item.isHandle" class="btn btn-xs btn-primary" ng-click="operate.handleItem(item)" title="填写处理结果">
+                                        带处理
                                     </button>
                                 </td>
                             </tr>
@@ -150,7 +151,7 @@
                         <div class="form-group">
                             <label for="handleWay" class="col-md-2 control-label">处理方式</label>
                             <div class="col-md-4">
-                                <input name="handleWay" class="form-control" ng-model="vm.HandleWay" required />
+                                <textarea rows="3" name="handleWay" class="form-control" ng-model="vm.HandleWay" required />
                                 <div class="error-messages" ng-messages="formRmaInspectionManage.handleWay.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">处理方式不能为空</small>
                                 </div>

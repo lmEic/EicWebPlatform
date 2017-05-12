@@ -255,9 +255,12 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         Id_Key: null,
     }
 
+    var initVM = _.clone(uiVm);
     var vmManager = {
         init: function () {
-
+            uiVm = _.clone(initVM);
+            uiVm.OpSign = leeDataHandler.dataOpMode.add;
+            $scope.vm = uiVm;
         },
         activeTab: 'businessTab',
         //获取表单数据
@@ -267,6 +270,10 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
                     leeHelper.copyVm(data.rmaInitiateData, rmavm);
                     vmManager.businessHandleDatas = data.bussesDescriptionDatas;
                     vmManager.dataSets = data.inspectionHandleDatas;
+                    angular.forEach(vmManager.businessHandleDatas, function (item) {
+                        item.isHandle = _.find(vmManager.dataSets, { RmaId: item.RmaId, ProductId: item.ProductId }) !== undefined;
+                    })
+
                 }
             });
         },

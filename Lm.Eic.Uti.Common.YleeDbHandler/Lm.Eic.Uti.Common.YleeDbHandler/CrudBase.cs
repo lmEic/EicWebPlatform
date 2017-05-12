@@ -149,7 +149,10 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 result = (crudOpDics[opSign])(entity);
                 BindEntityToOpResult(isNeedEntity, result, entity);
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
             return result;
         }
         /// <summary>
