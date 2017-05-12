@@ -532,14 +532,16 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         OpResult AddSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
             entity.LastPurchaseDate = DateTime.Now.Date;
+            entity.ParameterKey = entity.SupplierId + "&" + entity.GradeYear + "&" + entity.SupGradeType;
             if (!IsExist(entity.ParameterKey))
                 return irep.Insert(entity).ToOpResult_Add(OpContext);
             return EditSupplierGradeInfo(entity);
         }
 
-        public List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string gradeYear)
+        
+        public SupplierGradeInfoModel GetPurSupGradeInfoBy(string parameterKey)
         {
-            return irep.Entities.Where(e => e.GradeYear == gradeYear).ToList();
+            return irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
         }
         /// <summary>
         ///
@@ -548,6 +550,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         OpResult EditSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
+
+            entity.GradeYear = entity.FirstGradeDate.Year.ToString();
             return irep.Update(e => e.SupplierId == entity.SupplierId, entity).ToOpResult_Add(OpContext); ;
         }
 
