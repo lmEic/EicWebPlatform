@@ -26,15 +26,42 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         public List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string yearQuarter)
         {
-
-            return SupplierCrudFactory.SupplierGradeInfoCrud.GetPurSupGradeInfoBy(yearQuarter);
+            List<SupplierGradeInfoModel> returnDatas = new List<SupplierGradeInfoModel>();
+            SupplierGradeInfoModel model = null;
+            ///关键字段
+            string parameterKey = string.Empty;
+            //格式是yyyyMM
+            string gradeYear = yearQuarter.Substring(0, 4);
+            List<EligibleSuppliersModel> SupplierInfoDatas = CertificateManagerFactory.SupplierCertificateManager.GetQualifiedSupplierList(yearQuarter);
+            if (SupplierInfoDatas == null || SupplierInfoDatas.Count == 0) return returnDatas;
+            SupplierInfoDatas.ForEach(m =>
+            {
+                parameterKey = m.SupplierId + "&" + gradeYear + "&" + m.PurchaseType;
+                model = SupplierCrudFactory.SupplierGradeInfoCrud.GetPurSupGradeInfoBy(parameterKey);
+                if (model == null)
+                {
+                    model = new SupplierGradeInfoModel
+                    {
+                        SupplierId = m.SupplierId,
+                        SupplierName = m.SupplierShortName,
+                        PurchaseType = m.SupplierProperty,
+                        LastPurchaseDate = m.LastPurchaseDate,
+                        PurchaseMaterial = m.PurchaseType,
+                    };
+                }
+                if (!returnDatas.Contains(model))
+                    returnDatas.Add(model);
+            });
+            return returnDatas;
         }
-
         public OpResult SavePurSupGradeData(SupplierGradeInfoModel entity)
         {
-            if (entity == null) return OpResult.SetSuccessResult("数据不为空", false);
-            entity.GradeYear = entity.FirstGradeDate.Year.ToString();
-            entity.ParameterKey = entity.SupplierId + "&" + entity.GradeYear + "&" + entity.SupGradeType;
+            ///操作符在界面没有确定
+            if (entity == null) return OpResult.SetResult("实体不能为空", false);
+            string ParameterKey = entity.SupplierId + "&" + entity.GradeYear + "&" + entity.SupGradeType;
+            if (SupplierCrudFactory.SupplierGradeInfoCrud.IsExist(ParameterKey))
+                entity.OpSign = OpMode.Add;
+            else entity.OpSign = OpMode.Edit;
             return SupplierCrudFactory.SupplierGradeInfoCrud.Store(entity);
         }
     }

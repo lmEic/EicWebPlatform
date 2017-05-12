@@ -70,7 +70,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public ContentResult GetReturnOrderInfo(string orderId)
         {
-            var datas = RmaService.RmaManager.BussesManageProcessor.GetErpBussesInfoDatasBy(orderId); ;
+            var datas = RmaService.RmaManager.BusinessManageProcessor.GetErpBussesInfoDatasBy(orderId); ;
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -84,7 +84,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
             /// Rma 初始表的数据
             var rmaInitiateData = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(rmaId).FirstOrDefault();
             /// 业务部处理的数据
-            var bussesDescriptionDatas = RmaService.RmaManager.BussesManageProcessor.GetRmaBussesDescriptionDatasBy(rmaId);
+            var bussesDescriptionDatas = RmaService.RmaManager.BusinessManageProcessor.GetRmaBusinessDescriptionDatasBy(rmaId);
 
             var datas = new { rmaInitiateData, bussesDescriptionDatas };
 
@@ -100,7 +100,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [HttpPost]
         public JsonResult StoreRmaInputDescriptionData(RmaBusinessDescriptionModel model)
         {
-            var opResult = RmaService.RmaManager.BussesManageProcessor.StoreRmaBussesDescriptionData(model);
+            var opResult = RmaService.RmaManager.BusinessManageProcessor.StoreRmaBusinessDescriptionData(model);
             return Json(opResult);
         }
         #endregion
@@ -122,7 +122,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
             /// Rma 初始表的数据
             var rmaInitiateData = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(rmaId).FirstOrDefault();
             /// 业务部处理的数据
-            var bussesDescriptionDatas = RmaService.RmaManager.BussesManageProcessor.GetRmaBussesDescriptionDatasBy(rmaId);
+            var bussesDescriptionDatas = RmaService.RmaManager.BusinessManageProcessor.GetRmaBusinessDescriptionDatasBy(rmaId);
             /// 检验处理数据
             var inspectionHandleDatas = RmaService.RmaManager.InspecitonManageProcessor.GetDatasBy(rmaId);
 
