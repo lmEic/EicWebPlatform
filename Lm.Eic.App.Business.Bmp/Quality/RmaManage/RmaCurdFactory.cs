@@ -45,7 +45,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         OpResult AddModel(RmaReportInitiateModel model)
         {
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+            if (IsExist(model.RmaId))
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            return Eidtdate(model);
         }
         OpResult Eidtdate(RmaReportInitiateModel model)
         {
@@ -92,10 +94,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         internal OpResult UpDataInitiateRmaIdStatus(string rmaId, string rmaIdStatus)
         {
-            var oldModel = irep.FirstOfDefault(e => e.RmaId == rmaId);
-            if (oldModel == null) return OpResult.SetResult("不存在", false);
-            oldModel.RmaIdStatus = rmaIdStatus;
-            return irep.Update(e => e.Id_Key == oldModel.Id_Key, oldModel).ToOpResult_Eidt(OpContext);
+            return irep.Update(e => e.RmaId == rmaId, new RmaReportInitiateModel { RmaIdStatus = rmaIdStatus }).ToOpResult_Eidt(OpContext);
         }
 
         #endregion
@@ -113,14 +112,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.UpDate, Update);
+            this.AddOpItem(OpMode.Edit, Editdate);
         }
 
         OpResult AddModel(RmaBussesDescriptionModel model)
         {
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+            if (!IsExist(model.RmaId, model.ProductId))
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            return Editdate(model);
         }
-        OpResult Update(RmaBussesDescriptionModel model)
+        OpResult Editdate(RmaBussesDescriptionModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -138,15 +139,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         internal bool IsExist(string rmaid, string productId)
         {
-
             return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId);
         }
         internal OpResult UpDataBussesDescriptionStatus(string rmaId, string productId, string handleStatus)
         {
-            var oldModel = irep.FirstOfDefault(e => e.RmaId == rmaId && e.ProductId == productId);
-            if (oldModel == null) return OpResult.SetResult("不存在", false);
-            oldModel.HandleStatus = handleStatus;
-            return irep.Update(e => e.Id_Key == oldModel.Id_Key, oldModel).ToOpResult_Eidt(OpContext);
+
+            return irep.Update(e => e.RmaId == rmaId && e.ProductId == productId, new RmaBussesDescriptionModel { HandleStatus = handleStatus }).ToOpResult_Eidt(OpContext);
 
         }
 
@@ -162,17 +160,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.UpDate, Update);
+            this.AddOpItem(OpMode.Edit, EditDate);
         }
 
         OpResult AddModel(RmaInspectionManageModel model)
         {
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+            ///前面判定 Model不能空
+            if (IsExist(model.RmaId, model.ProductId))
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            return EditDate(model);
         }
 
 
 
-        OpResult Update(RmaInspectionManageModel model)
+        OpResult EditDate(RmaInspectionManageModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }

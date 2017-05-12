@@ -11,9 +11,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
 
     /// <summary>
-    /// Rma常用状态常量
+    /// Rma常用状态
     /// </summary>
-    public static class RmaCommomStatus
+    public class RmaHandelStatus
     {
         public const string InitiateStatus = "未结案";
         public const string HandleStatust = "处理中";
@@ -50,7 +50,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             else
             {
                 model.OpSign = OpMode.Add;
-                ModelSetVaule(model, RmaCommomStatus.InitiateStatus);
+                ModelSetVaule(model, RmaHandelStatus.InitiateStatus);
             }
 
             return RmaCurdFactory.RmaReportInitiate.Store(model);
@@ -72,10 +72,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
         {
+            if (rmaId == null) return null;
             return RmaCurdFactory.RmaReportInitiate.GetInitiateDatas(rmaId);
         }
         /// <summary>
-        /// 通过年月份得到RamId
+        /// 得到这一年一月份 RamId 数据
         /// </summary>
         /// <param name="yearMonth">yyyyMM</param>
         /// <returns></returns>
@@ -153,22 +154,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public OpResult StoreRmaBussesDescriptionData(RmaBussesDescriptionModel model)
         {
-            ///1.判断是否存在  在Rma初始表中是否存在 然后判断业务描述表是否存在  关键字（RmaId, RmaIdNumber） 
+            ///1.判断是否 在Rma初始表中 
             ///2.如果存在 操作符为 Edit
             ///3.那些字段不能为空  ProductsShipDate 不能为空 不能为“0001-01-01”
-            ///4.如果存储成功，改变初始Rma单状态
+            ///4.如果存储成功  操作符在界面赋值 
             try
             {
                 OpResult result = OpResult.SetResult("存储数据表");
                 if (model == null) return OpResult.SetResult("存储的数据不能为空");
                 if (model.ProductsShipDate == DateTime.MinValue || model.ProductsShipDate == null) return OpResult.SetResult("存储的完成日期不对");
+                //判断表单是否在初始表中
                 if (!RmaCurdFactory.RmaReportInitiate.IsExist(model.RmaId)) return OpResult.SetResult("此表单不存在");
-                if (RmaCurdFactory.RmaBussesDescription.IsExist(model.RmaId, model.ProductId))
-                    model.OpSign = OpMode.Edit;
-                else model.OpSign = OpMode.Add;
                 result = RmaCurdFactory.RmaBussesDescription.Store(model, true);
                 if (result.Result)
-                    RmaCurdFactory.RmaReportInitiate.UpDataInitiateRmaIdStatus(model.RmaId, RmaCommomStatus.HandleStatust);
+                    RmaCurdFactory.RmaReportInitiate.UpDataInitiateRmaIdStatus(model.RmaId, RmaHandelStatus.HandleStatust);
                 return result;
             }
             catch (Exception ex)
@@ -203,19 +202,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         public OpResult StoreInspectionManageData(RmaInspectionManageModel model)
         {
-            
+
             ///1.如果存在 操作符为 Edit
             ///2.如果存储成功，改变Rma的业务描述表单状态和 初始状态
+            bool isChangeFinishStatus = true;
             OpResult result = OpResult.SetResult("存储数据表");
             if (model == null) return OpResult.SetResult("存储表不能为空");
-            if (RmaCurdFactory.RmaInspectionManage.IsExist(model.RmaId, model.ProductId))
-                model.OpSign = OpMode.Edit;
-            else model.OpSign = OpMode.Add;
+            if (model.RmaId == null || model.ProductId == null) return OpResult.SetResult("料号不能为空");
+            if (model.BadPhenomenon == null || model.BadPhenomenon == string.Empty)
+                isChangeFinishStatus = false;
             result = RmaCurdFactory.RmaInspectionManage.Store(model, true);
-            if (result.Result)
+            if (result.Result && isChangeFinishStatus)
             {
-                RmaCurdFactory.RmaReportInitiate.UpDataInitiateRmaIdStatus(model.RmaId, RmaCommomStatus.FinishStatus);
-                RmaCurdFactory.RmaBussesDescription.UpDataBussesDescriptionStatus(model.RmaId, model.ProductId, RmaCommomStatus.FinishStatus);
+                RmaCurdFactory.RmaReportInitiate.UpDataInitiateRmaIdStatus(model.RmaId, RmaHandelStatus.FinishStatus);
+                RmaCurdFactory.RmaBussesDescription.UpDataBussesDescriptionStatus(model.RmaId, model.ProductId, RmaHandelStatus.FinishStatus);
             }
             return result;
         }

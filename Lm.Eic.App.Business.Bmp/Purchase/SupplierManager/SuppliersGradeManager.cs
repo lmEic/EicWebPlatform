@@ -26,8 +26,27 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         public List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string yearQuarter)
         {
+            List<SupplierGradeInfoModel> returnDatas = new List<SupplierGradeInfoModel>();
+            SupplierGradeInfoModel model = null;
+            List<EligibleSuppliersModel> SupplierInfoDatas = CertificateManagerFactory.SupplierCertificateManager.GetQualifiedSupplierList(yearQuarter);
+            if (SupplierInfoDatas == null || SupplierInfoDatas.Count == 0) return returnDatas;
+            SupplierInfoDatas.ForEach(m =>
+            {
+                model = new SupplierGradeInfoModel
+                {
+                    SupplierId = m.SupplierId,
+                    SupplierName = m.SupplierShortName,
+                    PurchaseType = m.SupplierProperty,
+                    SupplierProperty = m.SupplierProperty,
+                    LastPurchaseDate = m.LastPurchaseDate,
+                    //
+                    PurchaseMaterial = m.PurchaseType
+                };
 
-            return SupplierCrudFactory.SupplierGradeInfoCrud.GetPurSupGradeInfoBy(yearQuarter);
+                returnDatas.Add(model);
+            });
+            return returnDatas;
+            //return SupplierCrudFactory.SupplierGradeInfoCrud.GetPurSupGradeInfoBy(yearQuarter);
         }
 
         public OpResult SavePurSupGradeData(SupplierGradeInfoModel entity)

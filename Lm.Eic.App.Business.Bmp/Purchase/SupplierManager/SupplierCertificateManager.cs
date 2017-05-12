@@ -248,31 +248,35 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return SupplierCrudFactory.SuppliersInfoCrud.SavaSupplierInfoList(modelList);
         }
 
-        /// <summary>
-        /// 更新并保存供应商信息
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        OpResult SaveSupplierInfoModel(SupplierInfoModel model)
-        {
+        /////// <summary>
+        /////// 更新并保存供应商信息
+        /////// </summary>
+        /////// <param name="model"></param>
+        /////// <returns></returns>
+        //////OpResult SaveSupplierInfoModel(SupplierInfoModel model)
+        //////{
 
-            try
-            {
-                decimal findId_key = 0;
-                if (SupplierCrudFactory.SuppliersInfoCrud.IsExistSupperid(model.SupplierId, out findId_key))
-                {
-                    model.OpSign = "edit";
-                    model.Id_Key = findId_key;
-                }
-                else model.OpSign = "add";
+        //////    try
+        //////    {
+        //////        decimal findId_key = 0;
+        //////        if (SupplierCrudFactory.SuppliersInfoCrud.IsExistSupperid(model.SupplierId, out findId_key))
+        //////        {
+        //////            model.OpSign = OpMode.Edit ;
+        //////            model.Id_Key = findId_key;
+        //////        }
+        //////        else model.OpSign = OpMode.Edit;
 
-                return SupplierCrudFactory.SuppliersInfoCrud.Store(model);
-            }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        //////        return SupplierCrudFactory.SuppliersInfoCrud.Store(model);
+        //////    }
+        //////    catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
 
 
-        }
+        //////}
+
+
+
+
         /// <summary>
         /// 从ERP中得到供应商信息
         /// </summary>
