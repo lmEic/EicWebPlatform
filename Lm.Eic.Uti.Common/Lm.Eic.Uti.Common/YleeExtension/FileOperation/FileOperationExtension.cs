@@ -589,7 +589,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 {".ppt","application/x-ppt"},
                 {".xls","application/vnd.ms-excel"},
                 {".png","application/x-png"},
-                {".jpg","application/x-jpg"},
                 {".jpeg","image/jpeg"},
                 {".jpg","application/x-jpg"},
             };
