@@ -63,7 +63,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     SupplierInfo = GetErpSuppplierInfoBy(supplierId);
                     if (SupplierInfo != null && SupplierInfo.Remark == "True")
                         //添加至供应商信息表中  更新上传到数据库中
-                        SupplierCrudFactory.SuppliersInfoCrud.UpSupplierInfo(SupplierInfo);
+                        SupplierCrudFactory.SuppliersInfoCrud.InitSupplierInfo(SupplierInfo);
                 }
                 return SupplierInfo;
             }
@@ -92,6 +92,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 if (model.OpSign == "editPurchaseType")//修改证书类别信息
                 {
                     supplierInfoModel.OpSign = model.OpSign;
+                    supplierInfoModel.PurchaseUser = model.OpPerson;
+                    supplierInfoModel.Id_Key = model.Id_Key;
                     return SupplierCrudFactory.SuppliersInfoCrud.UpSupplierInfo(supplierInfoModel);
                 }
                 if (model.CertificateFileName == null || model.CertificateFileName == string.Empty) return OpResult.SetResult("证书名称不能为空");
@@ -284,11 +286,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             string Principal = erpSupplierInfo.Principal.Trim() == string.Empty ? erpSupplierInfo.Contact : erpSupplierInfo.Principal;
             return new SupplierInfoModel
             {
-                SupplierId = supplierId,
+                SupplierId = supplierId.Trim(),
                 SupplierEmail = erpSupplierInfo.Email,
                 SupplierAddress = erpSupplierInfo.Address,
                 /// 负责人
-                SupplierPrincipal = Principal,
+                SupplierPrincipal = Principal.Trim(),
                 SupplierFaxNo = erpSupplierInfo.FaxNo,
                 SupplierName = erpSupplierInfo.SupplierName,
                 SupplierShortName = erpSupplierInfo.SupplierShortName,

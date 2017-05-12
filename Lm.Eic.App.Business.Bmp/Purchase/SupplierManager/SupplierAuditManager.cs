@@ -88,9 +88,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public OpResult SaveAuditSupplierInfo(SupplierSeasonAuditModel model)
         {
-            if (SupplierCrudFactory.SuppliersSeasonAuditCrud.IsExist(model.ParameterKey))
-                model.OpSign = "edit";
-            else model.OpSign = "add";
+            //if (SupplierCrudFactory.SuppliersSeasonAuditCrud.IsExist(model.ParameterKey))
+            //    model.OpSign = OpMode.Edit;
+            //else model.OpSign = OpMode.Add;
             return SupplierCrudFactory.SuppliersSeasonAuditCrud.Store(model);
         }
 

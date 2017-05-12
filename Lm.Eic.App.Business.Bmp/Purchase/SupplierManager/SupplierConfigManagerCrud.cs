@@ -293,11 +293,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             try
             {
                 if (irep.IsExist(m => m.SupplierId == model.SupplierId))
-                {
                     return OpResult.SetResult("此数据已存在！");
-                }
-                SetFixFieldValue(model);
-                model.SupplierId = model.SupplierId.Trim();
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
@@ -311,9 +307,24 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 SetFixFieldValue(model);
                 if (irep.IsExist(e => e.SupplierId == model.SupplierId))
                 {
-                    var oldModel = irep.FirstOfDefault(e => e.SupplierId == model.SupplierId);
-                    model.Id_Key = oldModel.Id_Key;
-                    return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+                    return irep.Update(u => u.SupplierId == model.SupplierId,
+                       f => new SupplierInfoModel
+                       {
+                           SupplierProperty = model.SupplierProperty,
+                           PurchaseType = model.PurchaseType,
+                           PurchaseUser = model.PurchaseUser,
+                           SupplierAddress = model.SupplierAddress,
+                           Remark = model.Remark,
+                           PayCondition = model.PayCondition,
+                           SupplierPrincipal = model.SupplierPrincipal,
+                           SupplierEmail = model.SupplierEmail,
+                           SupplierFaxNo = model.SupplierFaxNo,
+                           SupplierTel = model.SupplierTel,
+                           SupplierUser = model.SupplierUser,
+                           OpPerson = model.OpPerson,
+                           OpSign = OpMode.Edit
+                       }).ToOpResult_Eidt("修改供应商类别成功！");
+
                 }
                 model.SupplierId = model.SupplierId.Trim();
                 model.OpSign = OpMode.Add;
@@ -414,7 +425,23 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         OpResult AddSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
         {
             model.ParameterKey = model.SupplierId.Trim() + "&&" + model.SeasonDateNum;
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+            if (!irep.IsExist(e => e.ParameterKey == model.ParameterKey))
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            return irep.Update(e => e.ParameterKey == model.ParameterKey, f => new SupplierSeasonAuditModel
+            {
+                QualityCheck = model.QualityCheck,
+                ActionLiven = model.ActionLiven,
+                AuditPrice = model.AuditPrice,
+                CheckLevel = model.CheckLevel,
+                DeliveryDate = model.DeliveryDate,
+                ManagerRisk = model.ManagerRisk,
+                MaterialGrade = model.MaterialGrade,
+                SubstitutionSupplierId = model.SubstitutionSupplierId,
+                HSFGrade = model.HSFGrade,
+                TotalCheckScore = model.TotalCheckScore,
+                OpPserson = model.OpPserson,
+                Remark = model.Remark
+            }).ToOpResult_Eidt(OpContext);
         }
         OpResult DelteSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
         {
@@ -474,7 +501,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         OpResult EditSupplierSeasonAuditTutorInfo(SupplierSeasonTutorModel model)
         {
-            return irep.Update(e => e.ParameterKey == model.ParameterKey, model).ToOpResult_Add(OpContext); ;
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Add(OpContext); ;
         }
         /// <summary>
         /// 是否存在
@@ -505,11 +532,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         OpResult AddSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
             entity.LastPurchaseDate = DateTime.Now.Date;
-            entity.PurchaseType = "主要";
-            entity.PurchaseMaterial = "主要111";
-            entity.SupplierProperty = "mmmm";
-
-            return irep.Insert(entity).ToOpResult_Add(OpContext);
+            if (!IsExist(entity.ParameterKey))
+                return irep.Insert(entity).ToOpResult_Add(OpContext);
+            return EditSupplierGradeInfo(entity);
         }
 
         public List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string gradeYear)

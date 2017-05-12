@@ -61,8 +61,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public OpResult SaveSupplierTutorModel(SupplierSeasonTutorModel model)
         {
             if (SupplierCrudFactory.SuppliersSeasonTutorCrud.IsExist(model.ParameterKey))
-                model.OpSign = "edit";
-            else model.OpSign = "add";
+                model.OpSign = OpMode.Edit;
+            else model.OpSign = OpMode.Add;
             return SupplierCrudFactory.SuppliersSeasonTutorCrud.Store(model);
         }
         #region  Internet

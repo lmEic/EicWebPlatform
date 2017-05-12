@@ -32,11 +32,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         public OpResult SavePurSupGradeData(SupplierGradeInfoModel entity)
         {
+            if (entity == null) return OpResult.SetResult("数据不为空", false);
             entity.GradeYear = entity.FirstGradeDate.Year.ToString();
             entity.ParameterKey = entity.SupplierId + "&" + entity.GradeYear + "&" + entity.SupGradeType;
-            if (SupplierCrudFactory.SupplierGradeInfoCrud.IsExist(entity.ParameterKey))
-                entity.OpSign = OpMode.Edit;
-            else entity.OpSign = OpMode.Add;
             return SupplierCrudFactory.SupplierGradeInfoCrud.Store(entity);
         }
     }
