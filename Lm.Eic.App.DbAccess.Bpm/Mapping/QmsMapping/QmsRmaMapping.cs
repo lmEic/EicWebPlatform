@@ -19,7 +19,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
             this.ToTable("Qms_RmaReportInitiate");
         }
     }
-    public class RmaBussesDescriptionMapping : EntityTypeConfiguration<RmaBussesDescriptionModel>
+    public class RmaBussesDescriptionMapping : EntityTypeConfiguration<RmaBusinessDescriptionModel>
     {
         public RmaBussesDescriptionMapping()
         {

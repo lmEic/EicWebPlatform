@@ -100,8 +100,8 @@
             </div>
         </div>
     </div>
-    <div pageslide ps-open="vmManager.editWindowShow" ps-side="left" ps-size="100%" ps-speed="0.25" ps-container='editWindow'>
-        <div style="padding:10px;overflow-y:scroll;min-height:480px;min-height:880px;">
+    <div pageslide ps-open="vmManager.editWindowShow" ps-side="right" ps-size="100%" ps-speed="0.25" ps-container='editWindow'>
+        <div style="padding:10px;overflow-y:scroll;min-height:680px;max-height:880px;">
             <div class="row">
                 <div class="col-md-4">
                     <table class="table table-bordered table-condensed">
@@ -112,7 +112,9 @@
                             <tr ng-repeat="item in editManager.certificateDatas track by $index">
                                 <td>
                                     {{item.EligibleCertificate}}
+                                    <span class="text-primary"><i class="{{editManager.getFileExtentionIcon(item)}}"></i></span>
                                     <span class="btn btn-danger btn-xs pull-right" ng-click="editManager.removeCertificateFile(item)"><i class="fa fa-remove"></i></span>
+                                    <a class="btn btn-success btn-xs pull-right" ng-href="{{editManager.loadFile(item)}}"><i class="fa fa-download"></i></a>
                                 </td>
                             </tr>
                         </tbody>

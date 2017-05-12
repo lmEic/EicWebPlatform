@@ -124,9 +124,10 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public FileResult LoadIqcInspectionItemConfigFile()
         {
+            ///路经下载
             string filePath = @"E:\各部门日报格式\IQC物料检验配置数据表.xls";
-            MemoryStream ms = InspectionService.ConfigManager.IqcItemConfigManager.GetIqcInspectionItemConfigTemplate(filePath);
-            return this.ExportToExcel(ms, "IQC物料检验配置模板", "IQC物料检验配置模板");
+            var dlfm = InspectionService.ConfigManager.IqcItemConfigManager.GetIqcInspectionItemConfigTemplate(filePath, "IQC物料检验配置模板");
+            return this.DownLoadFile(dlfm);
             //return null;
         }
         #endregion
@@ -278,7 +279,6 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public ActionResult InspectionDataGatheringOfIQC()
         {
-            SetWebSitSubTitle("进料检验(IQC)数据采集");
             return View();
         }
         /// <summary>

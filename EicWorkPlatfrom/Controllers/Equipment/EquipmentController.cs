@@ -30,7 +30,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-        
+
         #region Ast EquipmentInfo View
         /// <summary>
         /// 生成校验清单
@@ -48,8 +48,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public FileResult CreateInventoryList()
         {
-            var ds = AstService.EquipmentManager.BuildInventoryList();
-            return this.ExportToExcel(ds, "设备盘点清单", "设备盘点清单");
+            //Excel
+            var dlfm = AstService.EquipmentManager.BuildInventoryList();
+            return this.DownLoadFile(dlfm);
         }
         #endregion
 
@@ -67,7 +68,7 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
-        
+
         #region equipment archives input module
         [NoAuthenCheck]
         public JsonResult GetAstInputConfigDatas()
@@ -83,7 +84,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="assetType"></param>
         /// <param name="taxType"></param>
         /// <returns></returns>
-         [NoAuthenCheck]
+        [NoAuthenCheck]
         public JsonResult GetEquipmentID(string equipmentType, string assetType, string taxType)
         {
             string id = AstService.EquipmentManager.BuildAssetNumber(equipmentType, assetType, taxType);
@@ -95,7 +96,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="inputDate"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetEquipmentArchivesBy(DateTime inputDate,string assetId,int searchMode)
+        public ContentResult GetEquipmentArchivesBy(DateTime inputDate, string assetId, int searchMode)
         {
             var datas = AstService.EquipmentManager.FindBy(new QueryEquipmentDto()
             {
@@ -132,7 +133,7 @@ namespace EicWorkPlatfrom.Controllers
         /// 设备报废登记
         /// </summary>
         /// <returns></returns>
-        public ActionResult AstScrapInput() 
+        public ActionResult AstScrapInput()
         {
             return View();
         }
@@ -151,7 +152,7 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
-       
+
         #region equipment check module method
         /// <summary>
         /// 生成校验清单
@@ -193,8 +194,9 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public FileResult CreateWaitingCheckList()
         {
-            var ds = AstService.EquipmentManager.CheckManager.BuildWaitingCheckList();
-            return this.ExportToExcel(ds, "设备校验清单", "设备校验清单");
+            ///Excel
+            var dlfm = AstService.EquipmentManager.CheckManager.BuildWaitingCheckList();
+            return this.DownLoadFile(dlfm); ;
         }
         /// <summary>
         /// 输入校验记录
@@ -214,7 +216,7 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
-      
+
         #region equipment maintenance module method
         /// <summary>
         /// 生成保养清单
@@ -245,13 +247,15 @@ namespace EicWorkPlatfrom.Controllers
         public ContentResult GetAstMaintenanceListByAssetNumber(string assetNumber)
         {
             var datas = AstService.EquipmentManager.MaintenanceManager.FindBy(
-                new QueryEquipmentDto() {
+                new QueryEquipmentDto()
+                {
                     AssetNumber = assetNumber,
-                    SearchMode = 1 });
+                    SearchMode = 1
+                });
             return DateJsonResult(datas);
         }
 
-     
+
 
         /// <summary>
         /// 输入保养记录
@@ -272,7 +276,7 @@ namespace EicWorkPlatfrom.Controllers
             model.MaintenanceDate = model.MaintenanceDate.ToDate();
             var result = AstService.EquipmentManager.MaintenanceManager.Store(model);
             return Json(result);
-          
+
         }
         [NoAuthenCheck]
         public JsonResult HandleFile(string moduleName, string fileName)
@@ -285,7 +289,7 @@ namespace EicWorkPlatfrom.Controllers
             if (f.Length == 3)
             {
                 assetNum = f[1];
-                string sourceFileName = CombinedFilePath("FileLibrary", "PreviewFiles") +"\\"+ fileName;
+                string sourceFileName = CombinedFilePath("FileLibrary", "PreviewFiles") + "\\" + fileName;
                 var imgBytes = sourceFileName.ToPhotoByte();
                 imgUrl = GetBase64Url(imgBytes);
                 string destFileName = CombinedFilePath("FileLibrary", moduleName, dateFile) + "\\" + assetNum + ".jpg";
@@ -298,9 +302,9 @@ namespace EicWorkPlatfrom.Controllers
         }
         #endregion
 
-        
+
         #region equipment repair module method
-      
+
         /// <summary>
         /// 设备维修录入
         /// </summary>
@@ -350,14 +354,14 @@ namespace EicWorkPlatfrom.Controllers
             var datas = AstService.EquipmentManager.RepairedManager.GetEquipmentRepairedOverView();
             return DateJsonResult(datas);
         }
-      
+
         /// <summary>
         ///  获取设备维修表单
         /// </summary>
         /// <param name="formId"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetEquipmentRepairFormIdDatas(string assetNumber,string formId)
+        public ContentResult GetEquipmentRepairFormIdDatas(string assetNumber, string formId)
         {
 
             var datas = AstService.EquipmentManager.RepairedManager.GetEquipmentRepairedRecordFormBy(assetNumber, formId);

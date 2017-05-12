@@ -7,7 +7,7 @@ using Lm.Eic.Uti.Common.YleeObjectBuilder;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
-    internal class  TutorManagerFactory
+    internal class TutorManagerFactory
     {
         /// <summary>
         /// 供应商辅导管理
@@ -27,24 +27,28 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="seasonDateNum"></param>
         /// <returns></returns>
-        public List<SupplierSeasonTutorModel> GetWaittingTourSupplier(string seasonDateNum)
+        public List<SupplierSeasonTutorModel> GetWaittingTourSupplier(string seasonDateNum, double limitTotalCheckScore, double limitQualityCheck)
         {
             List<SupplierSeasonTutorModel> waittingTourSupplierList = new List<SupplierSeasonTutorModel>();
-            //得到低于80分的所以供应商
-            var auditModelLsit = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetlimitScoreSupplierAuditInfo(seasonDateNum, 80);
+            //得到低于80分的所以供应商  品质低于90分也可  //QualityCheck <90,  
+            var auditModelLsit = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetlimitScoreSupplierAuditInfo(seasonDateNum, limitTotalCheckScore, limitQualityCheck);
             if (auditModelLsit != null && auditModelLsit.Count > 0)
             {
-             auditModelLsit.ForEach(m =>
-                {
-                    if (SupplierCrudFactory.SuppliersSeasonTutorCrud.IsExist(m.ParameterKey))
-                    {
-                      waittingTourSupplierList.Add(SupplierCrudFactory.SuppliersSeasonTutorCrud.GetSupplierSeasonTutorModelBy(m.ParameterKey));
-                    }
-                    else
-                    {
-                        waittingTourSupplierList.Add(GetlimitScoreSupplierTutorModelTo(m));
-                    }
-                });
+                auditModelLsit.ForEach(m =>
+                   {
+                       if (SupplierCrudFactory.SuppliersSeasonTutorCrud.IsExist(m.ParameterKey))
+                       {
+                           var SupplierSeasonTutorInfo = SupplierCrudFactory.SuppliersSeasonTutorCrud.GetSupplierSeasonTutorModelBy(m.ParameterKey);
+                           if (!waittingTourSupplierList.Contains(SupplierSeasonTutorInfo))
+                               waittingTourSupplierList.Add(SupplierSeasonTutorInfo);
+                       }
+                       else
+                       {
+                           var SupplierSeasonTutorInfo = GetlimitScoreSupplierTutorModelTo(m);
+                           if (!waittingTourSupplierList.Contains(SupplierSeasonTutorInfo))
+                               waittingTourSupplierList.Add(GetlimitScoreSupplierTutorModelTo(m));
+                       }
+                   });
             }
             return waittingTourSupplierList;
         }
@@ -57,8 +61,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public OpResult SaveSupplierTutorModel(SupplierSeasonTutorModel model)
         {
             if (SupplierCrudFactory.SuppliersSeasonTutorCrud.IsExist(model.ParameterKey))
-                model.OpSign = "edit";
-            else model.OpSign = "add";
+                model.OpSign = OpMode.Edit;
+            else model.OpSign = OpMode.Add;
             return SupplierCrudFactory.SuppliersSeasonTutorCrud.Store(model);
         }
         #region  Internet
@@ -110,7 +114,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
                 throw;
             }
-          
+
         }
         #endregion
     }

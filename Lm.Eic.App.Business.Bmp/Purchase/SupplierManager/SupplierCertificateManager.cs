@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Lm.Eic.App.Erp.Bussiness.PurchaseManage;
 using Lm.Eic.App.DomainModel.Bpm.Purchase;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
-
 using Lm.Eic.Uti.Common.YleeOOMapper;
-
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using System.IO;
@@ -46,13 +43,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             supplierInfoList.ForEach(supplierInfo =>
             {
                 model = getEligibleSuppliersModel(supplierInfo);
-                QualifiedSupplierInfo.Add(model);
+                if (model != null && model.Remark == "True")
+                    QualifiedSupplierInfo.Add(model);
             });
             return QualifiedSupplierInfo.OrderBy(e => e.SupplierId).ToList();
         }
-
-
-
         /// 获取供应商信息
         /// </summary>
         /// <param name="supplierId"></param>
@@ -66,15 +61,14 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 if (SupplierInfo == null)
                 {
                     SupplierInfo = GetErpSuppplierInfoBy(supplierId);
-                    //添加至供应商信息表中
-                    SupplierCrudFactory.SuppliersInfoCrud.InitSupplierInfo(SupplierInfo);
+                    if (SupplierInfo != null && SupplierInfo.Remark == "True")
+                        //添加至供应商信息表中  更新上传到数据库中
+                        SupplierCrudFactory.SuppliersInfoCrud.InitSupplierInfo(SupplierInfo);
                 }
                 return SupplierInfo;
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
-
-
         /// <summary>
         /// 保存编辑的供应商证书信息
         /// </summary>
@@ -87,17 +81,20 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 //判断列表是否为空
                 OpResult reOpresult = OpResult.SetResult("没有进任何操作");
                 if (model == null) return OpResult.SetResult("数据列表不能为空");
-                //通过SupplierId得到供应商信息
-                var supplierInfoModel = GetSuppplierInfoBy(model.SupplierId);
+                //从ERP中得到相应的SupplierId供应商信息
+                var supplierInfoModel = GetErpSuppplierInfoBy(model.SupplierId);
                 //判断是否为空
                 if (supplierInfoModel == null) return OpResult.SetResult(string.Format("没有{0}供应商编号", model.SupplierId), true);
                 //赋值 供应商属性和采购性质
                 supplierInfoModel.PurchaseType = model.PurchaseType;
                 supplierInfoModel.SupplierProperty = model.SupplierProperty;
+                ///如果是只是修改  供应商信息的
                 if (model.OpSign == "editPurchaseType")//修改证书类别信息
                 {
                     supplierInfoModel.OpSign = model.OpSign;
-                    return SupplierCrudFactory.SuppliersInfoCrud.EidtSupplierInfo(supplierInfoModel);
+                    supplierInfoModel.PurchaseUser = model.OpPerson;
+                    supplierInfoModel.Id_Key = model.Id_Key;
+                    return SupplierCrudFactory.SuppliersInfoCrud.UpSupplierInfo(supplierInfoModel);
                 }
                 if (model.CertificateFileName == null || model.CertificateFileName == string.Empty) return OpResult.SetResult("证书名称不能为空");
                 SupplierQualifiedCertificateModel savemodel = new SupplierQualifiedCertificateModel()
@@ -111,7 +108,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     OpSign = model.OpSign,
                     OpPerson = model.OpPerson,
                 };
-                return StoreSpplierCertificateData(savemodel, siteRootPath);
+                return DeleteSpplierCertificateData(savemodel, siteRootPath);
             }
             catch (Exception ex)
             {
@@ -125,7 +122,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <param name="model">实体</param>
         /// <param name="rootPath">根路经</param>
         /// <returns></returns>
-        public OpResult StoreSpplierCertificateData(SupplierQualifiedCertificateModel model, string siteRootPath)
+        public OpResult DeleteSpplierCertificateData(SupplierQualifiedCertificateModel model, string siteRootPath)
         {
             try
             {
@@ -151,17 +148,32 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             return SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId);
         }
+        public DownLoadFileModel GetSupQuaCertificateDLFM(string siteRootPath, string supplierId, string eligibleCertificate)
+        {
+            DownLoadFileModel dlfm = null;
+            SupplierQualifiedCertificateModel m = null;
+            var mdls = SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId, eligibleCertificate);
+            if (mdls == null || mdls.Count == 0) return dlfm.Default();
+            m = mdls.FirstOrDefault();
+            dlfm = new DownLoadFileModel()
+            {
+                FileDownLoadName = m.CertificateFileName,
+                FilePath = siteRootPath.GetDownLoadFilePath(m.FilePath),
+                ContentType = m.CertificateFileName.GetDownLoadContentType()
+            };
+            return dlfm;
+        }
         /// <summary>
         /// 生成合格供应商清单
         /// </summary>
         /// <returns></returns>
-        public MemoryStream BuildQualifiedSupplierInfoList(List<EligibleSuppliersModel> datas)
+        public DownLoadFileModel BuildQualifiedSupplierInfoList(List<EligibleSuppliersModel> datas)
         {
             try
             {
-                if (datas == null || datas.Count < 0) return null;
+                if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
                 var dataGroupping = datas.GetGroupList<EligibleSuppliersModel>("");
-                return dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(CreateFieldMapping());
+                return dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersModel>(CreateFieldMapping()).CreateDownLoadExcelFileModel("供应商证书信息数据");
             }
             catch (Exception ex)
             {
@@ -181,12 +193,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 new FileFieldMapping ("SupplierFaxNo","供应商传真") ,
                 new FileFieldMapping ("SupplierEmail","供应商邮箱") ,
                 new FileFieldMapping ("SupplierAddress","供应商地址") ,
-                new FileFieldMapping ("BillAddress","交货地址") ,
-                new FileFieldMapping ("PurchaseUser","采购人员") ,
+                new FileFieldMapping ("SupplierPrincipal","负责人") ,
+                new FileFieldMapping ("SupplierUser","联系人") ,
                 new FileFieldMapping ("UpperPurchaseDate","上次采购时间") ,
                 new FileFieldMapping ("LastPurchaseDate","最近采购时间") ,
                 new FileFieldMapping ("PurchaseType","采购类型") ,
-                new FileFieldMapping ("Remark","备注") ,
                 new FileFieldMapping ("ISO9001","ISO9001") ,
                 new FileFieldMapping ("ISO14001","ISO14001") ,
                 new FileFieldMapping ("SupplierBaseDocument","供应商基本资料表") ,
@@ -198,9 +209,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 new FileFieldMapping ("QualityAssuranceProtocol","质量保证协议") ,
                 new FileFieldMapping ("HSF_Guarantee","HSF保证书") ,
                 new FileFieldMapping ("REACH_Guarantee","REACH保证书") ,
-                new FileFieldMapping ("SVHC_Guarantee","SVHC调查表") ,
-                new FileFieldMapping ("REACH_Guarantee","REACH保证书") ,
                 new FileFieldMapping ("SVHC_Guarantee","SVHC调查表")
+
             };
             return fieldmappping;
         }
@@ -238,31 +248,35 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return SupplierCrudFactory.SuppliersInfoCrud.SavaSupplierInfoList(modelList);
         }
 
-        /// <summary>
-        /// 更新并保存供应商信息
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        OpResult SaveSupplierInfoModel(SupplierInfoModel model)
-        {
+        /////// <summary>
+        /////// 更新并保存供应商信息
+        /////// </summary>
+        /////// <param name="model"></param>
+        /////// <returns></returns>
+        //////OpResult SaveSupplierInfoModel(SupplierInfoModel model)
+        //////{
 
-            try
-            {
-                decimal findId_key = 0;
-                if (SupplierCrudFactory.SuppliersInfoCrud.IsExistSupperid(model.SupplierId, out findId_key))
-                {
-                    model.OpSign = "edit";
-                    model.Id_Key = findId_key;
-                }
-                else model.OpSign = "add";
+        //////    try
+        //////    {
+        //////        decimal findId_key = 0;
+        //////        if (SupplierCrudFactory.SuppliersInfoCrud.IsExistSupperid(model.SupplierId, out findId_key))
+        //////        {
+        //////            model.OpSign = OpMode.Edit ;
+        //////            model.Id_Key = findId_key;
+        //////        }
+        //////        else model.OpSign = OpMode.Edit;
 
-                return SupplierCrudFactory.SuppliersInfoCrud.Store(model);
-            }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        //////        return SupplierCrudFactory.SuppliersInfoCrud.Store(model);
+        //////    }
+        //////    catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
 
 
-        }
+        //////}
+
+
+
+
         /// <summary>
         /// 从ERP中得到供应商信息
         /// </summary>
@@ -273,18 +287,22 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             var erpSupplierInfo = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
 
             if (erpSupplierInfo == null) return null;
+            string Principal = erpSupplierInfo.Principal.Trim() == string.Empty ? erpSupplierInfo.Contact : erpSupplierInfo.Principal;
             return new SupplierInfoModel
             {
-                SupplierId = supplierId,
+                SupplierId = supplierId.Trim(),
                 SupplierEmail = erpSupplierInfo.Email,
                 SupplierAddress = erpSupplierInfo.Address,
-                BillAddress = erpSupplierInfo.BillAddress,
+                /// 负责人
+                SupplierPrincipal = Principal.Trim(),
                 SupplierFaxNo = erpSupplierInfo.FaxNo,
                 SupplierName = erpSupplierInfo.SupplierName,
                 SupplierShortName = erpSupplierInfo.SupplierShortName,
                 SupplierUser = erpSupplierInfo.Contact,
                 SupplierTel = erpSupplierInfo.Tel,
-                PayCondition = erpSupplierInfo.PayCondition
+                PayCondition = erpSupplierInfo.PayCondition,
+                Remark = erpSupplierInfo.IsCooperate
+
             };
         }
 
@@ -344,7 +362,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 PurchaseType = supplierInfo.PurchaseType,
                 SupplierEmail = supplierInfo.SupplierEmail,
                 SupplierAddress = supplierInfo.SupplierAddress,
-                BillAddress = supplierInfo.BillAddress,
+                SupplierPrincipal = supplierInfo.SupplierPrincipal,
                 SupplierFaxNo = supplierInfo.SupplierFaxNo,
                 SupplierName = supplierInfo.SupplierName,
                 Remark = supplierInfo.Remark,

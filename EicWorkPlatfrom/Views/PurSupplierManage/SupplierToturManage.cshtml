@@ -8,6 +8,8 @@
                 <span yl-quarter-button data-yearquarter="vmManager.yearQuarter"></span>
                 <button type="button" class="btn btn-default" ng-click="vmManager.getWaittingTourSupplier()"><i class="fa fa-search"></i> 载入</button>
                 <a class="btn btn-success" href="@Url.Action("CreateSupplierTourToExcel", "PurSupplierManage")"><i class="fa fa-file-excel-o"></i> 导出Excel</a>
+                品质低于:<input type="image" ng-model="vmManager.limitQualityCheck" readonly="readonly" align="middle" />
+                总数低于:<input type="image" ng-model="vmManager.limitTotalCheckScore" readonly="readonly" align="middle" />
             </form>
             <form class="navbar-form navbar-right" role="search">
                 <div class="form-group">

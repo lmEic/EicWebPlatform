@@ -21,6 +21,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
         }
+        public List<InspectionIqcMasterModel> GetIqcMasterModeDatasBy(string materailId)
+        {
+
+            return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(materailId);
+
+
+        }
 
         /// <summary>
         /// 通过总表 存储Iqc检验详细数据
@@ -43,6 +50,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionItemResult = model.InspectionItemResult,
                 //InspectionItemStatus = model.InsptecitonItemIsFinished.ToString(),
                 InspectionItemStatus = "doing",
+                InspectionMode = model.InspectionMode,
                 MaterialId = model.MaterialId,
                 MaterialInDate = model.MaterialInDate,
                 FileName = model.FileName,
@@ -66,6 +74,42 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 model.OpSign = OpMode.Edit;
             else model.OpSign = OpMode.Add;
             return InspectionManagerCrudFactory.IqcDetailCrud.Store(model, true);
+        }
+        /// <summary>
+        /// 初始存储数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult InitializestoreInspectionDetial(InspectionItemDataSummaryVM model)
+        {
+            InspectionIqcDetailModel datailModel = new InspectionIqcDetailModel()
+            {
+                OrderId = model.OrderId,
+                EquipmentId = model.EquipmentId,
+                MaterialCount = model.MaterialInCount,
+                InspecitonItem = model.InspectionItem,
+                InspectionAcceptCount = model.AcceptCount,
+                InspectionCount = model.InspectionCount,
+                InspectionRefuseCount = model.RefuseCount,
+                InspectionDate = DateTime.Now,
+                InspectionItemDatas = model.InspectionItemDatas,
+                InspectionItemResult = model.InspectionItemResult,
+                //InspectionItemStatus = model.InsptecitonItemIsFinished.ToString(),
+                InspectionItemStatus = "doing",
+                InspectionMode = model.InspectionMode,
+                MaterialId = model.MaterialId,
+                MaterialInDate = model.MaterialInDate,
+                FileName = model.FileName,
+                OpSign = model.OpSign,
+                Memo = model.Memo,
+                InspectionNGCount = model.InspectionNGCount,
+                OpPerson = model.OpPerson,
+                DocumentPath = model.DocumentPath
+            };
+            /// 判断是否存在此录入的项次
+            if (InspectionManagerCrudFactory.IqcDetailCrud.isExiststroe(datailModel)) return null;
+            datailModel.OpSign = OpMode.Add;
+            return InspectionManagerCrudFactory.IqcDetailCrud.Store(datailModel, true);
         }
         /// <summary>
         /// 得到副表的详细参数

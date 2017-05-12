@@ -29,12 +29,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionItems = model.InspectionItem,
                 FinishDate = DateTime.Now.Date,
                 InspectionStatus = "未完成",
-                InspectionResult = "PASS",
+                InspectionResult = model.InspectionItemResult,
                 OpSign = OpMode.Add
             };
             if (InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(model.OrderId, model.MaterialId))
             {
-                MasterModel = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(model.OrderId, model.MaterialId);
+                MasterModel = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(model.OrderId, model.MaterialId);
                 if (!InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(model.OrderId, model.MaterialId, model.InspectionItem))
                     MasterModel.InspectionItems += "," + model.InspectionItem;
                 if (model.InspectionItemSumCount == GetHaveFinishDataNumber(MasterModel.InspectionItems))
@@ -49,7 +49,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         int DetailNgCount = detailDatas.Count(e => e.InspectionItemResult == "NG");
                         ///测试所以项目只要有一项为 Ng 
                         if (DetailNgCount >= 0)
-                            MasterModel.InspectionResult = "NG";
+                            MasterModel.InspectionResult = "FAIL";
                     }
                 }
                 MasterModel.OpSign = OpMode.Edit;

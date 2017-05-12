@@ -79,10 +79,12 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
 
     //-------------------------供应商辅导管理-------------------------------------
     //获取要辅导的供应商数据
-    purDb.getWaittingTourSupplier = function (yearQuarter) {
+    purDb.getWaittingTourSupplier = function (yearQuarter, limitTotalCheckScore, limitQualityCheck) {
         var url = purUrlPrefix + 'GetWaittingTourSupplier';
         return ajaxService.getData(url, {
-            yearQuarter: yearQuarter
+            yearQuarter: yearQuarter,
+            limitTotalCheckScore: limitTotalCheckScore,
+            limitQualityCheck: limitQualityCheck
         });
     };
     ///保存供应商辅导信息
@@ -280,7 +282,16 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
             $scope.searchCertificatePromise = supplierDataOpService.getSupplierQualifiedCertificateListBy($scope.vm.SupplierId).then(function (datas) {
                 editManager.certificateDatas = datas;
             });
-        }
+        },
+        ///下载文件
+        loadFile: function (item) {
+            var loadUrl = "/PurSupplierManage/LoadQualifiedCertificateFile?suppliserId=" + item.SupplierId + "&eligibleCertificate=" + item.EligibleCertificate;
+            return loadUrl;
+        },
+        ///获取文件扩展名图标
+        getFileExtentionIcon: function (item) {
+            return leeHelper.getFileExtensionIcon(item.CertificateFileName);
+        },
     }
 
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -365,6 +376,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         SupplierId: null,
         SupplierShortName: null,
         SupplierName: null,
+        ParameterKey: null,
         QualityCheck: null,
         AuditPrice: null,
         DeliveryDate: null,
@@ -394,8 +406,11 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
 
     $scope.operate = operate;
     operate.save = function (isValid) {
+        leeHelper.setUserData(uiVM);
         crud.add(operate, isValid, function () {
-            uiVM.TotalCheckScore = uiVM.QualityCheck * 0.3 + uiVM.AuditPrice * 0.2 + uiVM.DeliveryDate * 0.15 + uiVM.ActionLiven * 0.15 + uiVM.HSFGrade * 0.2;
+            uiVM.TotalCheckScore = (uiVM.QualityCheck * 0.3 + uiVM.AuditPrice * 0.2 + uiVM.DeliveryDate * 0.15 + uiVM.ActionLiven * 0.15 + uiVM.HSFGrade * 0.2).toFixed(2);
+            uiVM.ParameterKey = uiVM.SupplierId + "&&" + uiVM.SeasonDateNum;
+            uiVM.OpSign = "add";
             $scope.promise = supplierDataOpService.saveAuditSupplierInfo($scope.vm).then(function (opResult) {
                 crud.handleSuccessResult(operate, opResult, function () {
                     leeHelper.copyVm($scope.vm, vmManager.editItem);
@@ -506,9 +521,11 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         supplierId: null,
         editDatas: [item],
         yearQuarter: '',
+        limitTotalCheckScore: 80,
+        limitQualityCheck: 90,
         //获取要考核的供应商数据列表
         getWaittingTourSupplier: function () {
-            $scope.searchPromise = supplierDataOpService.getWaittingTourSupplier(vmManager.yearQuarter).then(function (datas) {
+            $scope.searchPromise = supplierDataOpService.getWaittingTourSupplier(vmManager.yearQuarter, vmManager.limitTotalCheckScore, vmManager.limitQualityCheck).then(function (datas) {
                 vmManager.editDatas = datas;
             });
         },

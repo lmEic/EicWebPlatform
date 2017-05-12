@@ -15,7 +15,7 @@ using System.IO;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
- internal class SupplierAuditManagerFactory
+    internal class SupplierAuditManagerFactory
     {
         /// <summary>
         /// 供应商证书管理
@@ -27,10 +27,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     }
 
 
-   /// <summary>
-   /// 供应商考核管理
-   /// </summary>
-public     class SupplierAuditManager
+    /// <summary>
+    /// 供应商考核管理
+    /// </summary>
+    public class SupplierAuditManager
     {
         #region 季度考核表
 
@@ -41,18 +41,20 @@ public     class SupplierAuditManager
         /// <returns></returns>
         public List<SupplierSeasonAuditModel> GetSeasonSupplierList(string seasonDateNum)
         {
-            string starDate = string.Empty, endDate = string.Empty;
+            string startDate = string.Empty, endDate = string.Empty;
             //处理季度数
-            seasonDateNum.SeasonNumConvertStartDateAndEndDate(out starDate, out endDate);
+            seasonDateNum.SeasonNumConvertStartDateAndEndDate(out startDate, out endDate);
             List<SupplierSeasonAuditModel> supplierSeasonAuditModelList = new List<SupplierSeasonAuditModel>();
             //从ERP中得到季度进货厂商ID
-            var getSeasonSupplierList = PurchaseDbManager.StockDb.GetStockSupplierId(starDate, endDate);
+            var getSeasonSupplierList = PurchaseDbManager.StockDb.GetStockSupplierId(startDate, endDate);
             if (getSeasonSupplierList == null || getSeasonSupplierList.Count <= 0) return supplierSeasonAuditModelList;
             getSeasonSupplierList.ForEach(e =>
             {
-                supplierSeasonAuditModelList.Add(getSupplierSeasonAuditModel(e, seasonDateNum));
+                var model = getSupplierSeasonAuditModel(e, seasonDateNum);
+                if (model != null)
+                    supplierSeasonAuditModelList.Add(model);
             });
-         supplierSeasonAuditModelList.OrderBy(e => e.SupplierId);
+            supplierSeasonAuditModelList.OrderBy(e => e.SupplierId);
             return supplierSeasonAuditModelList;
 
         }
@@ -69,6 +71,7 @@ public     class SupplierAuditManager
             SupplierSeasonAuditModel supplierSeasonAuditInfo = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditInfo(supplierId.Trim() + "&&" + seasonDateNum);
             if (supplierSeasonAuditInfo != null) return supplierSeasonAuditInfo;
             var supplierInfo = CertificateManagerFactory.SupplierCertificateManager.GetSuppplierInfoBy(supplierId);
+            if (supplierInfo == null || supplierInfo.Remark != "True") return null;
             supplierSeasonAuditInfo = new SupplierSeasonAuditModel()
             {
                 SupplierId = supplierInfo.SupplierId,
@@ -85,20 +88,19 @@ public     class SupplierAuditManager
         /// <returns></returns>
         public OpResult SaveAuditSupplierInfo(SupplierSeasonAuditModel model)
         {
-            if (SupplierCrudFactory.SuppliersSeasonAuditCrud.IsExist(model.ParameterKey))
-                model.OpSign = "edit";
-            else model.OpSign = "add";
+            //if (SupplierCrudFactory.SuppliersSeasonAuditCrud.IsExist(model.ParameterKey))
+            //    model.OpSign = OpMode.Edit;
+            //else model.OpSign = OpMode.Add;
             return SupplierCrudFactory.SuppliersSeasonAuditCrud.Store(model);
         }
 
-        public MemoryStream SupplierSeasonDataStream(List<SupplierSeasonAuditModel> datas)
+        public DownLoadFileModel SupplierSeasonDataDLFM(List<SupplierSeasonAuditModel> datas)
         {
             try
             {
-                if (datas == null || datas.Count < 0) return null;
-                //
+                if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
                 var dataGroupping = datas.GetGroupList<SupplierSeasonAuditModel>("");
-                return dataGroupping.ExportToExcelMultiSheets<SupplierSeasonAuditModel>(CreateFieldMapping());
+                return dataGroupping.ExportToExcelMultiSheets<SupplierSeasonAuditModel>(CreateFieldMapping()).CreateDownLoadExcelFileModel("供应商考核清单");
             }
             catch (Exception ex)
             {
@@ -124,7 +126,7 @@ public     class SupplierAuditManager
                 new FileFieldMapping ("ManagerRisk","供应商管理风险") ,
                 new FileFieldMapping ("SubstitutionSupplierId","替代厂商") ,
                 new FileFieldMapping ("SeasonDateNum","第几季度") ,
-                new FileFieldMapping ("Remark","备注") 
+                new FileFieldMapping ("Remark","备注")
             };
             return fieldmappping;
         }

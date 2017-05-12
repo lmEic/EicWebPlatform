@@ -126,7 +126,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         #endregion Model
     }
-    
+
     /// <summary>
     /// 供应商信息表
     /// SuppliersInfo
@@ -233,14 +233,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _supplieraddress = value; }
             get { return _supplieraddress; }
         }
-        private string _billaddress;
+        private string _supplierPrincipal;
         /// <summary>
-        ///供应商交货地址
+        ///供应商负责人
         /// </summary>
-        public string BillAddress
+        public string SupplierPrincipal
         {
-            set { _billaddress = value; }
-            get { return _billaddress; }
+            set { _supplierPrincipal = value; }
+            get { return _supplierPrincipal; }
         }
         private string _paycondition;
         /// <summary>
@@ -1106,14 +1106,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _supplieraddress = value; }
             get { return _supplieraddress; }
         }
-        private string _billaddress;
+        private string _supplierPrincipal;
         /// <summary>
         ///交货地址
         /// </summary>
-        public string BillAddress
+        public string SupplierPrincipal
         {
-            set { _billaddress = value; }
-            get { return _billaddress; }
+            set { _supplierPrincipal = value; }
+            get { return _supplierPrincipal; }
         }
         private string _purchaseuser;
         /// <summary>

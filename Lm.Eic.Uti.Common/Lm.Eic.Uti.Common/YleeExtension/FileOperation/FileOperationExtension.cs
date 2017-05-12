@@ -267,6 +267,21 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 throw new Exception(ex.ToString());
             }
         }
+        /// <summary>
+        /// 扩展方法：将数据下载到Excel文件
+        /// </summary>
+        /// <typeparam name="T">数据类型</typeparam>
+        /// <param name="dataSource">数据集合</param>
+        /// <param name="xlsSheetName">Sheet名称</param>
+        /// <param name="fileDownLoadName">下载的文件名</param>
+        /// <returns></returns>
+        public static DownLoadFileModel ToDownLoadExcelFileModel<T>(this List<T> dataSource, string xlsSheetName, string fileDownLoadName) where T : class
+        {
+
+            if (dataSource == null || dataSource.Count == 0) return new DownLoadFileModel().Default();
+            return dataSource.ExportToExcel(xlsSheetName).CreateDownLoadExcelFileModel(fileDownLoadName);
+        }
+
 
         /// <summary>
         /// 扩展方法：导入到现有的Excel模板文件中
@@ -559,7 +574,54 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 throw new Exception(ex.ToString());
             }
         }
-
+        /// <summary>
+        /// 根据文件名称获取下载文件类型
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static string GetDownLoadContentType(this string fileName)
+        {
+            Dictionary<string, string> dicContentType = new Dictionary<string, string>() {
+                {".txt","text/plain"},
+                {".zip","application/x-zip-compressed"},
+                {".pdf","application/pdf"},
+                {".doc","application/msword"},
+                {".ppt","application/x-ppt"},
+                {".xls","application/vnd.ms-excel"},
+                {".png","application/x-png"},
+                {".jpg","application/x-jpg"},
+                {".jpeg","image/jpeg"},
+                {".jpg","application/x-jpg"},
+            };
+            string extentionName = Path.GetExtension(fileName);
+            return dicContentType[extentionName];
+        }
+        /// <summary>
+        /// 根据站点根路径和文件相对路径获取文件下载全路径路径
+        /// </summary>
+        /// <param name="webSiteRootPath">站点根路径</param>
+        /// <param name="fileRelativePath">文件相对路径</param>
+        /// <returns></returns>
+        public static string GetDownLoadFilePath(this string webSiteRootPath, string fileRelativePath)
+        {
+            return Path.Combine(webSiteRootPath, fileRelativePath.Replace('/', '\\'));
+        }
+        /// <summary>
+        /// 创建Excel文件下载模型
+        /// </summary>
+        /// <param name="dlfm"></param>
+        /// <param name="ms"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static DownLoadFileModel CreateDownLoadExcelFileModel(this MemoryStream ms, string fileName)
+        {
+            DownLoadFileModel dlfm = new DownLoadFileModel(2);
+            if (ms == null) return dlfm.Default();
+            dlfm.FileStream = ms;
+            dlfm.ContentType = "application/vnd.ms-excel";
+            dlfm.FileDownLoadName = fileName + ".xls";
+            return dlfm;
+        }
     }
     /// <summary>
     /// 文件字段对应的描述
@@ -583,5 +645,65 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             this._fieldName = fieldName;
         }
 
+    }
+    /// <summary>
+    /// 下载文件模型
+    /// </summary>
+    public class DownLoadFileModel
+    {
+        /// <summary>
+        /// 下载文件处理类型，只读属性
+        /// 默认为0:给定文件路径进行下载
+        /// 1：给定字节进行下载
+        /// 2：给定文件流进行下载
+        /// </summary>
+        public int HandleMode { get; private set; }
+        /// <summary>
+        /// 文件路径
+        /// </summary>
+        public string FilePath { get; set; }
+        /// <summary>
+        /// 下载文件名称
+        /// </summary>
+        public string FileDownLoadName { get; set; }
+        /// <summary>
+        /// 文件类型
+        /// </summary>
+        public string ContentType { get; set; }
+        /// <summary>
+        /// 文件内容字节
+        /// </summary>
+        public byte[] FileContnet { get; set; }
+        /// <summary>
+        /// 文件流
+        /// </summary>
+        public MemoryStream FileStream { get; set; }
+        public DownLoadFileModel()
+        {
+            //默认为
+            this.HandleMode = 0;
+        }
+
+        public DownLoadFileModel(int handleMode)
+        {
+            this.HandleMode = handleMode;
+        }
+        /// <summary>
+        /// 默认模型实例，返回含有错误信息的文件模型
+        /// </summary>
+        /// <param name="errorMsg"></param>
+        /// <returns></returns>
+        public DownLoadFileModel Default(string errorMsg = "没有找到此文件记录")
+        {
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(errorMsg);
+            return new DownLoadFileModel()
+            {
+                HandleMode = 1,
+                ContentType = "text/plain",
+                FileContnet = data,
+                FileDownLoadName = "error.txt"
+            };
+
+        }
     }
 }

@@ -116,6 +116,7 @@
     <Compile Include="Quality\InspectionManage\Fqc\InspectionFqcFormManager.cs" />
     <Compile Include="Quality\InspectionManage\InsepctionDataGatherManager.cs" />
     <Compile Include="Quality\InspectionManage\InspectionFormManager.cs" />
+    <Compile Include="Quality\InspectionManage\InspectionItemCondition.cs" />
     <Compile Include="Quality\InspectionManage\InspectionManageBase.cs" />
     <Compile Include="Quality\InspectionManage\Iqc\InspectionIqcConfigManager.cs" />
     <Compile Include="Quality\InspectionManage\InspectionManagerCrudFactory.cs" />
@@ -134,10 +135,11 @@
     <Compile Include="Quality\InspectionManage\Iqc\IqcCrudFactory.cs" />
     <Compile Include="Quality\InspectionManage\Iqc\IqcDetailDatasGether.cs" />
     <Compile Include="Quality\InspectionManage\Iqc\IqcMasterDatasGather.cs" />
-    <Compile Include="Quality\RmaMange\RmaReportManager.cs" />
-    <Compile Include="Quality\RmaMange\RmaManager.cs" />
-    <Compile Include="Quality\RmaMange\RmaCurdFactory.cs" />
-    <Compile Include="Quality\RmaMange\RmaService.cs" />
+    <Compile Include="Quality\RmaManage\RamMockDatas.cs" />
+    <Compile Include="Quality\RmaManage\RmaReportManager.cs" />
+    <Compile Include="Quality\RmaManage\RmaManager.cs" />
+    <Compile Include="Quality\RmaManage\RmaCurdFactory.cs" />
+    <Compile Include="Quality\RmaManage\RmaService.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

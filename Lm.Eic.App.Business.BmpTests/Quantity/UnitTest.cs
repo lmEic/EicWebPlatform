@@ -1,7 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
+using Lm.Eic.App.Business.Bmp.Quality.RmaManage;
 using System;
-using Lm.Eic.App.Business.Bmp.Quality.RmaMange;
+
+
 
 namespace Lm.Eic.App.Business.BmpTests.Quantity
 {
@@ -31,9 +32,9 @@ namespace Lm.Eic.App.Business.BmpTests.Quantity
 
             // }
             // #endregion
-            var ff = RmaService.CreateRmaReport.GetNewRmaID();
-
-            Assert.Fail();
+            var listDatas = RmaService.RmaManager.BussesManageProcessor.GetErpBussesInfoDatasBy("241-160909001");
+            if (listDatas == null)
+                Assert.Fail();
         }
 
 

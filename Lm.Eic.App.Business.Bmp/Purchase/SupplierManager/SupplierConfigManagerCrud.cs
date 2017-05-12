@@ -202,9 +202,27 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             {
                 return irep.Entities.Where(m => m.SupplierId == supplierId).ToList();
             }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
-
+        /// <summary>
+        /// 获得供应商合格文件项目
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        public List<SupplierQualifiedCertificateModel> GetQualifiedCertificateListBy(string supplierId, string eligibleCertificate)
+        {
+            try
+            {
+                return irep.Entities.Where(m => m.SupplierId == supplierId && m.EligibleCertificate == eligibleCertificate).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
     /// <summary>
     /// 供应商信息Curd
@@ -275,16 +293,47 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             try
             {
                 if (irep.IsExist(m => m.SupplierId == model.SupplierId))
-                {
                     return OpResult.SetResult("此数据已存在！");
-                }
-                SetFixFieldValue(model);
-                model.SupplierId = model.SupplierId.Trim();
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
         }
+
+        internal OpResult UpSupplierInfo(SupplierInfoModel model)
+        {
+            try
+            {
+                SetFixFieldValue(model);
+                if (irep.IsExist(e => e.SupplierId == model.SupplierId))
+                {
+                    return irep.Update(u => u.SupplierId == model.SupplierId,
+                       f => new SupplierInfoModel
+                       {
+                           SupplierProperty = model.SupplierProperty,
+                           PurchaseType = model.PurchaseType,
+                           PurchaseUser = model.PurchaseUser,
+                           SupplierAddress = model.SupplierAddress,
+                           Remark = model.Remark,
+                           PayCondition = model.PayCondition,
+                           SupplierPrincipal = model.SupplierPrincipal,
+                           SupplierEmail = model.SupplierEmail,
+                           SupplierFaxNo = model.SupplierFaxNo,
+                           SupplierTel = model.SupplierTel,
+                           SupplierUser = model.SupplierUser,
+                           OpPerson = model.OpPerson,
+                           OpSign = OpMode.Edit
+                       }).ToOpResult_Eidt("修改供应商类别成功！");
+
+                }
+                model.SupplierId = model.SupplierId.Trim();
+                model.OpSign = OpMode.Add;
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            }
+            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+
+        }
+
         internal OpResult InitSupplierInfo(SupplierInfoModel model)
         {
             try
@@ -359,9 +408,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <param name="seasonDateNum">季度</param>
         /// <param name="limitScore">限制的分数线</param>
         /// <returns></returns>
-        public List<SupplierSeasonAuditModel> GetlimitScoreSupplierAuditInfo(string seasonDateNum, double limitScore)
+        public List<SupplierSeasonAuditModel> GetlimitScoreSupplierAuditInfo(string seasonDateNum, double limitTotalCheckScore, double limitQualityCheck)
         {
-            return this.irep.Entities.Where(e => e.TotalCheckScore < limitScore && e.SeasonDateNum == seasonDateNum).ToList();
+            return this.irep.Entities.Where(e => (e.TotalCheckScore < limitTotalCheckScore || e.QualityCheck < limitQualityCheck) && e.SeasonDateNum == seasonDateNum).OrderBy(e => e.SupplierId).ToList();
         }
         /// <summary>
         ///
@@ -370,15 +419,29 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public SupplierSeasonAuditModel GetSupplierSeasonAuditInfo(string parameterKey)
         {
-            var modelList = this.irep.Entities.Where(e => e.ParameterKey == parameterKey).ToList();
-            if (modelList == null || modelList.Count == 0) return null;
-            return modelList[0];
+            return this.irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
         }
 
         OpResult AddSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
         {
             model.ParameterKey = model.SupplierId.Trim() + "&&" + model.SeasonDateNum;
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+            if (!irep.IsExist(e => e.ParameterKey == model.ParameterKey))
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            return irep.Update(e => e.ParameterKey == model.ParameterKey, f => new SupplierSeasonAuditModel
+            {
+                QualityCheck = model.QualityCheck,
+                ActionLiven = model.ActionLiven,
+                AuditPrice = model.AuditPrice,
+                CheckLevel = model.CheckLevel,
+                DeliveryDate = model.DeliveryDate,
+                ManagerRisk = model.ManagerRisk,
+                MaterialGrade = model.MaterialGrade,
+                SubstitutionSupplierId = model.SubstitutionSupplierId,
+                HSFGrade = model.HSFGrade,
+                TotalCheckScore = model.TotalCheckScore,
+                OpPserson = model.OpPserson,
+                Remark = model.Remark
+            }).ToOpResult_Eidt(OpContext);
         }
         OpResult DelteSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
         {
@@ -438,7 +501,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         OpResult EditSupplierSeasonAuditTutorInfo(SupplierSeasonTutorModel model)
         {
-            return irep.Update(e => e.ParameterKey == model.ParameterKey, model).ToOpResult_Add(OpContext); ;
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Add(OpContext); ;
         }
         /// <summary>
         /// 是否存在
@@ -469,11 +532,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         OpResult AddSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
             entity.LastPurchaseDate = DateTime.Now.Date;
-            entity.PurchaseType = "主要";
-            entity.PurchaseMaterial = "主要111";
-            entity.SupplierProperty = "mmmm";
-
-            return irep.Insert(entity).ToOpResult_Add(OpContext);
+            if (!IsExist(entity.ParameterKey))
+                return irep.Insert(entity).ToOpResult_Add(OpContext);
+            return EditSupplierGradeInfo(entity);
         }
 
         public List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string gradeYear)
