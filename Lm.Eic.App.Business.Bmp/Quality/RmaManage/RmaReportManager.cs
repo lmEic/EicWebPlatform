@@ -19,11 +19,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         public const string FinishStatus = "已结案";
     }
     /// <summary>
-    /// Ram初始数据处理器
+    /// Ram表单创建器
     /// </summary>
-    public class RmaReportInitiateProcessor
+    public class RmaReportCreator
     {
-
         /// <summary>
         /// 自动生成RmaId编号
         /// </summary>
@@ -134,7 +133,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             try
             {
-                if (model.ProductsShipDate == DateTime.MinValue) return OpResult.SetResult("存储的完成日期不对");
+                if (model.ProductsShipDate == DateTime.MinValue) return OpResult.SetErrorResult("存储的完成日期不对");
                 var result = RmaCurdFactory.RmaBussesDescription.Store(model, true);
                 if (result.Result)
                     RmaCurdFactory.RmaReportInitiate.UpdateInitiateRmaIdStatus(model.RmaId, RmaHandleStatus.BusinessStatust);

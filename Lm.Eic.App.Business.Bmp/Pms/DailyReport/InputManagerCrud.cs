@@ -128,7 +128,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 });
 
                 if (!modelList.IsNullOrEmpty())
-                    return OpResult.SetResult("日报列表不能为空！ 保存失败");
+                    return OpResult.SetErrorResult("日报列表不能为空！ 保存失败");
 
                 return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }

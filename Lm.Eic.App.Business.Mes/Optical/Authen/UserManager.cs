@@ -42,7 +42,7 @@ namespace Lm.Eic.App.Business.Mes.Optical.Authen
                 user.Password = user.UserID;
                 record = irep.Insert(user);
             }
-            return OpResult.SetResult("添加用户成功！", record > 0);
+            return OpResult.SetSuccessResult("添加用户成功！", record > 0);
         }
 
         private Dictionary<string, string> RolesDic

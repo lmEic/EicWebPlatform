@@ -129,10 +129,10 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <returns></returns>
         protected OpResult PersistentDatas(TEntity entity, bool isNeedEntity = false)
         {
-            OpResult result = OpResult.SetResult("持久化数据操作失败!");
+            OpResult result = OpResult.SetErrorResult("持久化数据操作失败!");
             string opSign = "default";
             if (entity == null)
-                return OpResult.SetResult(string.Format("{0}不能为null！", OpContext));
+                return OpResult.SetErrorResult(string.Format("{0}不能为null！", OpContext));
             try
             {
                 SetFixFieldValue(entity);
@@ -145,7 +145,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                     AddCrudOpItems();
                 //是否包含指定的方法
                 if (!crudOpDics.ContainsKey(opSign))
-                    return OpResult.SetResult(string.Format("未找到{0}的实现函数", opSign));
+                    return OpResult.SetErrorResult(string.Format("未找到{0}的实现函数", opSign));
                 result = (crudOpDics[opSign])(entity);
                 BindEntityToOpResult(isNeedEntity, result, entity);
             }
@@ -167,7 +167,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         protected OpResult StoreEntity(TEntity entity, Func<TEntity, OpResult> storeHandler, bool isNeedEntity = false)
         {
             OpResult result = null;
-            if (entity == null) return OpResult.SetResult("entity can't set null!");
+            if (entity == null) return OpResult.SetErrorResult("entity can't set null!");
             SetFixFieldValue(entity);
             try
             {

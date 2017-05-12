@@ -46,13 +46,13 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
         public OpResult Store(List<SampleItemsIqcRecordModel> listModels)
         {
 
-            OpResult opResult = OpResult.SetResult("未执行任何操作！", false);
+            OpResult opResult = OpResult.SetSuccessResult("未执行任何操作！", false);
              
             try
             {
                 int record = 0;
                 string opContext = "IQC打印记录存储";
-                if (listModels == null||listModels .Count <=0) return OpResult.SetResult("集合不能为空！", false);
+                if (listModels == null||listModels .Count <=0) return OpResult.SetSuccessResult("集合不能为空！", false);
                      //新增 修改
                         listModels.ForEach(model => {
 
@@ -712,7 +712,7 @@ namespace Lm.Eic.App.Business.Bmp.Quantity.SampleManager
             }
             catch (Exception ex)
             {
-                OpResult.SetResult(ex.ToString(), false);  
+                OpResult.SetSuccessResult(ex.ToString(), false);  
             }
 
         }

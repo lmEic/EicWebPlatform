@@ -145,7 +145,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
             //此工艺是否已经存在
             if (irep.IsExist(e => e.ParameterKey == model.ParameterKey))
-                return OpResult.SetResult("此数据已经添加!");
+                return OpResult.SetErrorResult("此数据已经添加!");
 
             return irep.Insert(model).ToOpResult(OpContext);
         }
@@ -169,7 +169,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             return (model.Id_Key > 0) ?
                 irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
-                : OpResult.SetResult("未执行任何操作");
+                : OpResult.SetErrorResult("未执行任何操作");
         }
         #endregion
         /// <summary>

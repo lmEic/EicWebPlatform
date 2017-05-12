@@ -35,21 +35,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         #region  CRUD
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.Edit, EidtModel);
+            this.AddOpItem(OpMode.Add, Add);
+            this.AddOpItem(OpMode.Edit, Eidt);
         }
-        internal OpResult AddModel(RmaReportInitiateModel model)
+        internal OpResult Add(RmaReportInitiateModel model)
         {
             if (!IsExist(model.RmaId))
             {
                 SetModelVaule(model, RmaHandleStatus.InitiateStatus);
-
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
-
-            return EidtModel(model);
+            return OpResult.SetErrorResult("该RMA单号记录已经存在");
         }
-        internal OpResult EidtModel(RmaReportInitiateModel model)
+        internal OpResult Eidt(RmaReportInitiateModel model)
         {
             SetModelVaule(model, model.RmaIdStatus);
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
@@ -120,7 +118,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             if (!IsExist(model.RmaId, model.ProductId))
                 return irep.Insert(model).ToOpResult_Add(OpContext);
-            return OpResult.SetResult("该记录已经存在！", true);
+            return OpResult.SetErrorResult("该记录已经存在！");
         }
         OpResult UpdateModel(RmaBusinessDescriptionModel model)
         {
@@ -165,7 +163,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             if (!IsExist(model.RmaId, model.ProductId))
                 return irep.Insert(model).ToOpResult_Add(OpContext);
-            return UpdateModel(model);
+            return OpResult.SetErrorResult("该记录已经存在！");
         }
         OpResult UpdateModel(RmaInspectionManageModel model)
         {

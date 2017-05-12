@@ -139,7 +139,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             }
             else
             {
-                return OpResult.SetResult("列表不能为空！");
+                return OpResult.SetErrorResult("列表不能为空！");
             }
         }
         #endregion

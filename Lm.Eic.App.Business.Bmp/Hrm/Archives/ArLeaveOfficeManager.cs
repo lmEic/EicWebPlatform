@@ -60,7 +60,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             {
                 return this.irep.ChangeWorkingStatus("离职", entity.WorkerId).ToOpResult("离职操作成功", "离职存保成功,状态更变失败");
             }
-            else return OpResult.SetResult("离职存保失败", true);
+            else return OpResult.SetSuccessResult("离职存保失败", true);
         }
 
         public List<LeaveOfficeMapEntity> GetLeavedWorkers(DateTime dtStart, DateTime dtEnd)

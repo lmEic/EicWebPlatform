@@ -129,7 +129,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             model.ParameterKey = string.Format("{0}&{1}&{2}", model.ModuleName, model.MClassName, model.MFunctionName);
             if (irep.IsExist(m => m.ParameterKey == model.ParameterKey))
             {
-                return OpResult.SetResult("此任务已存在！");
+                return OpResult.SetErrorResult("此任务已存在！");
             }
             OpResult result;
             model.CurrentProgress = "待开发";
@@ -301,7 +301,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         public OpResult SavaChangeRecord(ItilDevelopModuleManageModel model)
         {
             var changeRecordModel = BuildChangeRecordBy(model);
-            if (changeRecordModel == null) { return OpResult.SetResult("开发任务不能为空！"); }
+            if (changeRecordModel == null) { return OpResult.SetErrorResult("开发任务不能为空！"); }
             changeRecordModel.OpSign = OpMode.Add;
             return Store(changeRecordModel);
         }
@@ -314,7 +314,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         public OpResult UpdateChangeRecord(ItilDevelopModuleManageModel ililModel, decimal changeRecordModel_Id_Key)
         {
             var changeRecordModel = BuildChangeRecordBy(ililModel);
-            if (changeRecordModel == null) { return OpResult.SetResult("开发任务不能为空！"); }
+            if (changeRecordModel == null) { return OpResult.SetErrorResult("开发任务不能为空！"); }
             changeRecordModel.OpSign = OpMode.Edit;
             changeRecordModel.Id_Key = changeRecordModel_Id_Key;
             return Store(changeRecordModel);

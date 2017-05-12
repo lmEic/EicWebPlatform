@@ -48,7 +48,7 @@ internal class ArWorkerIdChangeCurd:CrudBase <WorkerChangedModel,IArWorkerIdChan
             {
                 return this.irep.UpdateAllTableWorkerId(entity.OldWorkerId,entity.NewWorkerId).ToOpResult("工号变更操作成功", "工号变更更变失败");
             }
-            else return OpResult.SetResult("工号变更失败", true);
+            else return OpResult.SetSuccessResult("工号变更失败", true);
 
         }
 
