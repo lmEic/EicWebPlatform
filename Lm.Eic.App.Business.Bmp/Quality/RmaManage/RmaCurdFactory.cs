@@ -117,16 +117,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.UpDate, Update);
+            this.AddOpItem(OpMode.Edit, EitData);
         }
 
         OpResult AddModel(RmaBusinessDescriptionModel model)
         {
             if (!IsExist(model.RmaId, model.ProductId))
+            {
                 return irep.Insert(model).ToOpResult_Add(OpContext);
-            return Update(model);
+            }
+
+            return EitData(model);
         }
-        OpResult Update(RmaBusinessDescriptionModel model)
+        OpResult EitData(RmaBusinessDescriptionModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -162,7 +165,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.UpDate, Update);
+            this.AddOpItem(OpMode.Edit, EditData);
         }
 
         OpResult AddModel(RmaInspectionManageModel model)
@@ -172,7 +175,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
 
 
-        OpResult Update(RmaInspectionManageModel model)
+        OpResult EditData(RmaInspectionManageModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -186,6 +189,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.IsExist(e => e.RmaId == rmaId && e.ProductId == productId);
         }
+
     }
 
 }

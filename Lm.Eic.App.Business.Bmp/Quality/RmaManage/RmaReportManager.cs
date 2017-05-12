@@ -39,22 +39,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public OpResult StoreRamReortInitiate(RmaReportInitiateModel model)
         {
-            if (model.OpSign == OpMode.Add)
-                return RmaCurdFactory.RmaReportInitiate.AddModel(model);
+            //if (model.OpSign == OpMode.Add)
+            //    return RmaCurdFactory.RmaReportInitiate.AddModel(model);
 
 
-            if (model == null) return null;
+            //if (model == null) return null;
 
-            if (RmaCurdFactory.RmaReportInitiate.IsExist(model.RmaId))
-            {
-                model.OpSign = OpMode.Edit;
-                SetModelVaule(model, model.RmaIdStatus);
-            }
-            else
-            {
-                model.OpSign = OpMode.Add;
-                SetModelVaule(model, RmaHandleStatus.InitiateStatus);
-            }
+            //if (RmaCurdFactory.RmaReportInitiate.IsExist(model.RmaId))
+            //{
+            //    model.OpSign = OpMode.Edit;
+
+            //}
+            //else
+            //{
+            //    model.OpSign = OpMode.Add;
+
+            //}
 
             return RmaCurdFactory.RmaReportInitiate.Store(model);
         }
@@ -159,7 +159,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 if (model.ProductsShipDate == DateTime.MinValue || model.ProductsShipDate == null) return OpResult.SetResult("存储的完成日期不对");
                 result = RmaCurdFactory.RmaBussesDescription.Store(model, true);
                 if (result.Result)
-                    RmaCurdFactory.RmaReportInitiate.UpDataInitiateRmaIdStatus(model.RmaId, RmaHandleStatus.HandleStatust);
+                    RmaCurdFactory.RmaReportInitiate.UpdateInitiateRmaIdStatus(model.RmaId, RmaHandleStatus.InspecitonStatus);
                 return result;
             }
             catch (Exception ex)
