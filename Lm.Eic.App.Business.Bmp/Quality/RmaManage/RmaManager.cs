@@ -23,9 +23,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <summary>
         /// 业务部门填充 物料信息 处理器
         /// </summary>
-        public RmaBussesDescriptionProcessor BussesManageProcessor
+        public RmaBusinessDescriptionProcessor BussesManageProcessor
         {
-            get { return OBulider.BuildInstance<RmaBussesDescriptionProcessor>(); }
+            get { return OBulider.BuildInstance<RmaBusinessDescriptionProcessor>(); }
         }
 
         /// <summary>

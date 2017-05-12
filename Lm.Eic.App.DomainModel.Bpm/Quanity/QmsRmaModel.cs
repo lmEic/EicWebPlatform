@@ -203,9 +203,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     ///业务Rma处理模型
     /// </summary>
     [Serializable]
-    public partial class RmaBussesDescriptionModel : RmaRetrunOrderInfoModel
+    public partial class RmaBusinessDescriptionModel : RmaRetrunOrderInfoModel
     {
-        public RmaBussesDescriptionModel()
+        public RmaBusinessDescriptionModel()
         { }
         #region Model
         private string _rmaid;

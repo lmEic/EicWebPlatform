@@ -19,13 +19,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 return mockDataSet;
             }
         }
-        public static List<RmaBussesDescriptionModel> BussesDescriptionMockDataSet
+        public static List<RmaBusinessDescriptionModel> BussesDescriptionMockDataSet
         {
             get
             {
-                List<RmaBussesDescriptionModel> mockDataSet = new List<RmaBussesDescriptionModel>();
-                mockDataSet.Add(new RmaBussesDescriptionModel() { RmaId = "11", RmaIdNumber = 22, ReturnHandleOrder = "11", ProductId = "22", ProductName = "11", ProductSpec = "11", ProductCount = 110, CustomerId = "2", CustomerName = "115", SalesOrder = "11", BadDescription = "11", CustomerHandleSuggestion = "但是", FeePaymentWay = "嗯嗯" });
-                mockDataSet.Add(new RmaBussesDescriptionModel() { RmaId = "11", RmaIdNumber = 22, ReturnHandleOrder = "11", ProductId = "22", ProductName = "11", ProductSpec = "11", ProductCount = 110, CustomerId = "2", CustomerName = "115", SalesOrder = "11", BadDescription = "11", CustomerHandleSuggestion = "但是", FeePaymentWay = "嗯嗯" });
+                List<RmaBusinessDescriptionModel> mockDataSet = new List<RmaBusinessDescriptionModel>();
+                mockDataSet.Add(new RmaBusinessDescriptionModel() { RmaId = "11", RmaIdNumber = 22, ReturnHandleOrder = "11", ProductId = "22", ProductName = "11", ProductSpec = "11", ProductCount = 110, CustomerId = "2", CustomerName = "115", SalesOrder = "11", BadDescription = "11", CustomerHandleSuggestion = "但是", FeePaymentWay = "嗯嗯" });
+                mockDataSet.Add(new RmaBusinessDescriptionModel() { RmaId = "11", RmaIdNumber = 22, ReturnHandleOrder = "11", ProductId = "22", ProductName = "11", ProductSpec = "11", ProductCount = 110, CustomerId = "2", CustomerName = "115", SalesOrder = "11", BadDescription = "11", CustomerHandleSuggestion = "但是", FeePaymentWay = "嗯嗯" });
                 return mockDataSet;
             }
         }

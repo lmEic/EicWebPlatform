@@ -18,11 +18,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
     /// <summary>
     /// 
     /// </summary>
-    public interface IRmaBussesDescriptionRepository : IRepository<RmaBussesDescriptionModel>
+    public interface IRmaBussesDescriptionRepository : IRepository<RmaBusinessDescriptionModel>
     {
 
     }
-    public class RmaBussesDescriptionRepository : BpmRepositoryBase<RmaBussesDescriptionModel>, IRmaBussesDescriptionRepository
+    public class RmaBussesDescriptionRepository : BpmRepositoryBase<RmaBusinessDescriptionModel>, IRmaBussesDescriptionRepository
     {
     }
 

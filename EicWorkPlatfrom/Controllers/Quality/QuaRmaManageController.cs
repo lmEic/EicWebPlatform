@@ -98,7 +98,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         /// <returns></returns>
         [NoAuthenCheck]
         [HttpPost]
-        public JsonResult StoreRmaInputDescriptionData(RmaBussesDescriptionModel model)
+        public JsonResult StoreRmaInputDescriptionData(RmaBusinessDescriptionModel model)
         {
             var opResult = RmaService.RmaManager.BussesManageProcessor.StoreRmaBussesDescriptionData(model);
             return Json(opResult);
