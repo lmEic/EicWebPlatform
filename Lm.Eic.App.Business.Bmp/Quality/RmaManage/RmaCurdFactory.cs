@@ -23,13 +23,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             get { return OBulider.BuildInstance<RmaBussesDescriptionCrud>(); }
         }
 
-
         internal static RmaInspectionManageCrud RmaInspectionManage
         {
             get { return OBulider.BuildInstance<RmaInspectionManageCrud>(); }
         }
-
-
     }
 
     internal class RmaReportInitiateCrud : CrudBase<RmaReportInitiateModel, IRmaReportInitiateRepository>
@@ -45,9 +42,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         OpResult AddModel(RmaReportInitiateModel model)
         {
-            if (IsExist(model.RmaId))
-                return irep.Insert(model).ToOpResult_Add(OpContext);
-            return Eidtdate(model);
+            return irep.Insert(model).ToOpResult_Add(OpContext);
         }
         OpResult Eidtdate(RmaReportInitiateModel model)
         {
@@ -94,15 +89,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         internal OpResult UpDataInitiateRmaIdStatus(string rmaId, string rmaIdStatus)
         {
-            return irep.Update(e => e.RmaId == rmaId, new RmaReportInitiateModel { RmaIdStatus = rmaIdStatus }).ToOpResult_Eidt(OpContext);
+            var oldModel = irep.FirstOfDefault(e => e.RmaId == rmaId);
+            if (oldModel == null) return OpResult.SetResult("不存在", false);
+            oldModel.RmaIdStatus = rmaIdStatus;
+            return irep.Update(e => e.Id_Key == oldModel.Id_Key, oldModel).ToOpResult_Eidt(OpContext);
         }
 
         #endregion
 
     }
-
-
-
     internal class RmaBussesDescriptionCrud : CrudBase<RmaBussesDescriptionModel, IRmaBussesDescriptionRepository>
     {
         public RmaBussesDescriptionCrud() : base(new RmaBussesDescriptionRepository(), "记录登记表单")
@@ -112,16 +107,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.Edit, Editdate);
+            this.AddOpItem(OpMode.UpDate, Update);
         }
 
         OpResult AddModel(RmaBussesDescriptionModel model)
         {
             if (!IsExist(model.RmaId, model.ProductId))
                 return irep.Insert(model).ToOpResult_Add(OpContext);
-            return Editdate(model);
+            return Update(model);
         }
-        OpResult Editdate(RmaBussesDescriptionModel model)
+        OpResult Update(RmaBussesDescriptionModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -141,15 +136,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId);
         }
-        internal OpResult UpDataBussesDescriptionStatus(string rmaId, string productId, string handleStatus)
+        internal OpResult UpDateBussesDescriptionStatus(string rmaId, string productId, string handleStatus)
         {
-
-            return irep.Update(e => e.RmaId == rmaId && e.ProductId == productId, new RmaBussesDescriptionModel { HandleStatus = handleStatus }).ToOpResult_Eidt(OpContext);
-
+            return irep.Update(e => e.RmaId == rmaId && e.ProductId == productId,
+                new RmaBussesDescriptionModel { HandleStatus = handleStatus }).ToOpResult_Eidt(OpContext);
         }
-
     }
-
 
     internal class RmaInspectionManageCrud : CrudBase<RmaInspectionManageModel, IRmaInspectionManageRepository>
     {
@@ -160,20 +152,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.Edit, EditDate);
+            this.AddOpItem(OpMode.UpDate, Update);
         }
 
         OpResult AddModel(RmaInspectionManageModel model)
         {
-            ///前面判定 Model不能空
-            if (IsExist(model.RmaId, model.ProductId))
-                return irep.Insert(model).ToOpResult_Add(OpContext);
-            return EditDate(model);
+            return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
 
 
-        OpResult EditDate(RmaInspectionManageModel model)
+        OpResult Update(RmaInspectionManageModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
