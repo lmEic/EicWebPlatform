@@ -42,10 +42,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         OpResult AddModel(RmaReportInitiateModel model)
         {
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+            if (!IsExist(model.RmaId))
+            {
+                model.RmaYear = model.RmaId.Substring(1, 2);
+                model.RmaMonth = model.RmaId.Substring(3, 2);
+                model.RmaIdStatus = RmaHandleStatus.InspectionStatus;
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            }
+            return Eidtdate(model);
         }
         OpResult Eidtdate(RmaReportInitiateModel model)
         {
+            model.RmaYear = model.RmaId.Substring(1, 2);
+            model.RmaMonth = model.RmaId.Substring(3, 2);
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
         #endregion
@@ -98,7 +107,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         #endregion
 
     }
-    internal class RmaBussesDescriptionCrud : CrudBase<RmaBussesDescriptionModel, IRmaBussesDescriptionRepository>
+    internal class RmaBussesDescriptionCrud : CrudBase<RmaBusinessDescriptionModel, IRmaBussesDescriptionRepository>
     {
         public RmaBussesDescriptionCrud() : base(new RmaBussesDescriptionRepository(), "记录登记表单")
         {
@@ -110,13 +119,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             this.AddOpItem(OpMode.UpDate, Update);
         }
 
-        OpResult AddModel(RmaBussesDescriptionModel model)
+        OpResult AddModel(RmaBusinessDescriptionModel model)
         {
             if (!IsExist(model.RmaId, model.ProductId))
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             return Update(model);
         }
-        OpResult Update(RmaBussesDescriptionModel model)
+        OpResult Update(RmaBusinessDescriptionModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -127,7 +136,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="rmaId"></param>
         /// <returns></returns>
-        internal List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatasBy(string rmaId)
+        internal List<RmaBusinessDescriptionModel> GetRmaBussesDescriptionDatasBy(string rmaId)
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
@@ -139,7 +148,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         internal OpResult UpDateBussesDescriptionStatus(string rmaId, string productId, string handleStatus)
         {
             return irep.Update(e => e.RmaId == rmaId && e.ProductId == productId,
-                new RmaBussesDescriptionModel { HandleStatus = handleStatus }).ToOpResult_Eidt(OpContext);
+                new RmaBusinessDescriptionModel { HandleStatus = handleStatus }).ToOpResult_Eidt(OpContext);
         }
     }
 

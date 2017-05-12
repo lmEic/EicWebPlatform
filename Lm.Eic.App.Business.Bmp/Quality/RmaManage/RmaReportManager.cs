@@ -13,10 +13,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
     /// <summary>
     /// Rma常用状态常量
     /// </summary>
-    public static class RmaCommomStatus
+    public class RmaHandleStatus
     {
         public const string InitiateStatus = "未结案";
-        public const string HandleStatust = "处理中";
+        public const string BusinessStatus = "业务处理中";
+        public const string InspectionStatus = "品保处理中";
         public const string FinishStatus = "已结案";
     }
     /// <summary>
@@ -40,31 +41,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public OpResult StoreRamReortInitiate(RmaReportInitiateModel model)
         {
-            if (model == null) return null;
 
-            if (RmaCurdFactory.RmaReportInitiate.IsExist(model.RmaId))
-            {
-                model.OpSign = OpMode.Edit;
-                ModelSetVaule(model, model.RmaIdStatus);
-            }
-            else
-            {
-                model.OpSign = OpMode.Add;
-                ModelSetVaule(model, RmaCommomStatus.InitiateStatus);
-            }
 
             return RmaCurdFactory.RmaReportInitiate.Store(model);
         }
 
-        private void ModelSetVaule(RmaReportInitiateModel model, string InitiateStatus)
-        {
-            if (model.RmaId != null && model.RmaId.Length == 8)
-            {
-                model.RmaYear = model.RmaId.Substring(1, 2);
-                model.RmaMonth = model.RmaId.Substring(3, 2);
-            }
-            model.RmaIdStatus = InitiateStatus;
-        }
+
         /// <summary>
         /// 得到初始Rma表单
         /// </summary>
@@ -98,14 +80,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
     /// <summary>
     /// Rma单业务部门操作处理器
     /// </summary>
-    public class RmaBussesDescriptionProcessor
+    public class RmaBusinessDescriptionProcessor
     {
         /// <summary>
         /// 通过RmaId，得到业务处理数据
         /// </summary>
         /// <param name="RmaId"></param>
         /// <returns></returns>
-        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatasBy(string rmaId)
+        public List<RmaBusinessDescriptionModel> GetRmaBusinessDescriptionDatasBy(string rmaId)
         {
             if (rmaId != null && rmaId == string.Empty) return null;
             return RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(rmaId);
@@ -115,7 +97,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="returnHandleOrder">退货单</param>
         /// <returns></returns>
-        public List<RmaRetrunOrderInfoModel> GetErpBussesInfoDatasBy(string returnHandleOrder)
+        public List<RmaRetrunOrderInfoModel> GetErpBusinessInfoDatasBy(string returnHandleOrder)
         {
             try
             {
@@ -151,7 +133,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult StoreRmaBussesDescriptionData(RmaBussesDescriptionModel model)
+        public OpResult StoreRmaBusinessDescriptionData(RmaBusinessDescriptionModel model)
         {
             ///2.如果存在 操作符为 Edit
             ///3.那些字段不能为空  ProductsShipDate 不能为空 不能为“0001-01-01”
