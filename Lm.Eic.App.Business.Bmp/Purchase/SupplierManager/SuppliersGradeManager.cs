@@ -36,7 +36,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             if (SupplierInfoDatas == null || SupplierInfoDatas.Count == 0) return returnDatas;
             SupplierInfoDatas.ForEach(m =>
             {
-                parameterKey = m.SupplierId + "&" + gradeYear + "&" + m.PurchaseType;
+                parameterKey = m.SupplierId + "&" + gradeYear;
                 model = SupplierCrudFactory.SupplierGradeInfoCrud.GetPurSupGradeInfoBy(parameterKey);
                 if (model == null)
                 {

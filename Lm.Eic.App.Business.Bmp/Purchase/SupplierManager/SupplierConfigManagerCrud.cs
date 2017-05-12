@@ -538,10 +538,14 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return EditSupplierGradeInfo(entity);
         }
 
-        
-        public SupplierGradeInfoModel GetPurSupGradeInfoBy(string parameterKey)
+
+        public SupplierGradeInfoModel GetPurSupGradeInfoBy(string ParameterKey)
         {
-            return irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
+            return irep.FirstOfDefault(e => e.ParameterKey.Contains(ParameterKey));
+        }
+        public List<SupplierGradeInfoModel> GetPurSupGradeInfoDatasBy(string supplierId, string gradeYear)
+        {
+            return irep.Entities.Where(e => e.SupplierId == supplierId && e.GradeYear == gradeYear).ToList();
         }
         /// <summary>
         ///
