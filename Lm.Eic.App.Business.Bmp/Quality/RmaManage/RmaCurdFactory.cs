@@ -182,10 +182,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
-        internal bool IsExist(string rmaid, string productId)
+        internal bool IsExist(string rmaId, string productId)
         {
-
-            return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId);
+            return irep.IsExist(e => e.RmaId == rmaId && e.ProductId == productId);
         }
     }
 
