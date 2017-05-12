@@ -18,9 +18,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             get { return OBulider.BuildInstance<RmaReportInitiateCrud>(); }
         }
 
-        internal static RmaBussesDescriptionCrud RmaBussesDescription
+        internal static RmaBusinessDescriptionCrud RmaBussesDescription
         {
-            get { return OBulider.BuildInstance<RmaBussesDescriptionCrud>(); }
+            get { return OBulider.BuildInstance<RmaBusinessDescriptionCrud>(); }
         }
 
         internal static RmaInspectionManageCrud RmaInspectionManage
@@ -28,7 +28,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             get { return OBulider.BuildInstance<RmaInspectionManageCrud>(); }
         }
     }
-
     internal class RmaReportInitiateCrud : CrudBase<RmaReportInitiateModel, IRmaReportInitiateRepository>
     {
         public RmaReportInitiateCrud() : base(new RmaReportInitiateRepository(), "创建表单")
@@ -36,27 +35,23 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         #region  CRUD
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.Edit, EidtModel);
+            this.AddOpItem(OpMode.Add, Add);
+            this.AddOpItem(OpMode.Edit, Eidt);
         }
-        internal OpResult AddModel(RmaReportInitiateModel model)
+        internal OpResult Add(RmaReportInitiateModel model)
         {
-
             if (!IsExist(model.RmaId))
             {
                 SetModelVaule(model, RmaHandleStatus.InitiateStatus);
-
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
-
-            return EidtModel(model);
+            return OpResult.SetErrorResult("该RMA单号记录已经存在");
         }
-        internal OpResult EidtModel(RmaReportInitiateModel model)
+        internal OpResult Eidt(RmaReportInitiateModel model)
         {
             SetModelVaule(model, model.RmaIdStatus);
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
-
         private void SetModelVaule(RmaReportInitiateModel model, string InitiateStatus)
         {
             if (model.RmaId != null && model.RmaId.Length == 8)
@@ -104,32 +99,28 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.Update(e => e.RmaId == rmaId, u => new RmaReportInitiateModel { RmaIdStatus = rmaIdStatus }).ToOpResult_Eidt(OpContext);
         }
-
         #endregion
 
     }
-    internal class RmaBussesDescriptionCrud : CrudBase<RmaBusinessDescriptionModel, IRmaBussesDescriptionRepository>
+    internal class RmaBusinessDescriptionCrud : CrudBase<RmaBusinessDescriptionModel, IRmaBussesDescriptionRepository>
     {
-        public RmaBussesDescriptionCrud() : base(new RmaBussesDescriptionRepository(), "记录登记表单")
+        public RmaBusinessDescriptionCrud() : base(new RmaBussesDescriptionRepository(), "登记表单")
         {
         }
         #region  CRUD
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.Edit, EitData);
+            this.AddOpItem(OpMode.Edit, UpdateModel);
         }
 
         OpResult AddModel(RmaBusinessDescriptionModel model)
         {
             if (!IsExist(model.RmaId, model.ProductId))
-            {
                 return irep.Insert(model).ToOpResult_Add(OpContext);
-            }
-
-            return EitData(model);
+            return OpResult.SetErrorResult("该记录已经存在！");
         }
-        OpResult EitData(RmaBusinessDescriptionModel model)
+        OpResult UpdateModel(RmaBusinessDescriptionModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -158,24 +149,23 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
     internal class RmaInspectionManageCrud : CrudBase<RmaInspectionManageModel, IRmaInspectionManageRepository>
     {
-        public RmaInspectionManageCrud() : base(new RmaInspectionManageRepository(), "Ram检验处理")
+        public RmaInspectionManageCrud() : base(new RmaInspectionManageRepository(), "检验处理")
         {
         }
+
         #region  CRUD
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.Edit, EditData);
+            this.AddOpItem(OpMode.Edit, UpdateModel);
         }
-
         OpResult AddModel(RmaInspectionManageModel model)
         {
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+            if (!IsExist(model.RmaId, model.ProductId))
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            return OpResult.SetErrorResult("该记录已经存在！");
         }
-
-
-
-        OpResult EditData(RmaInspectionManageModel model)
+        OpResult UpdateModel(RmaInspectionManageModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -189,7 +179,5 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.IsExist(e => e.RmaId == rmaId && e.ProductId == productId);
         }
-
     }
-
 }

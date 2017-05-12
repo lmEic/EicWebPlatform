@@ -19,13 +19,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 return mockDataSet;
             }
         }
-        public static List<RmaBusinessDescriptionModel> BussesDescriptionMockDataSet
+        public static List<RmaBusinessDescriptionModel> uMockDataSet
         {
             get
             {
                 List<RmaBusinessDescriptionModel> mockDataSet = new List<RmaBusinessDescriptionModel>();
-                mockDataSet.Add(new RmaBusinessDescriptionModel() { RmaId = "11", RmaIdNumber = 22, ReturnHandleOrder = "11", ProductId = "22", ProductName = "11", ProductSpec = "11", ProductCount = 110, CustomerId = "2", CustomerName = "115", SalesOrder = "11", BadDescription = "11", CustomerHandleSuggestion = "但是", FeePaymentWay = "嗯嗯" });
-                mockDataSet.Add(new RmaBusinessDescriptionModel() { RmaId = "11", RmaIdNumber = 22, ReturnHandleOrder = "11", ProductId = "22", ProductName = "11", ProductSpec = "11", ProductCount = 110, CustomerId = "2", CustomerName = "115", SalesOrder = "11", BadDescription = "11", CustomerHandleSuggestion = "但是", FeePaymentWay = "嗯嗯" });
+                mockDataSet.Add(new RmaBusinessDescriptionModel() { RmaId = "11", RmaIdNumber = 1, ReturnHandleOrder = "11", ProductId = "11", ProductName = "11", ProductSpec = "11", ProductCount = 11, CustomerId = "11", CustomerName = "11", SalesOrder = "11", BadDescription = "11", ProductsShipDate = DateTime.Now, CustomerHandleSuggestion = "11", FeePaymentWay = "11", HandleStatus = "11", OpPerson = "11", OpSign = "add" });
                 return mockDataSet;
             }
         }

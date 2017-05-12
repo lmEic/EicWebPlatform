@@ -188,7 +188,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
-                OpResult opResult = OpResult.SetResult("未执行任何操作！");
+                OpResult opResult = OpResult.SetErrorResult("未执行任何操作！");
                 if ((modelList == null || modelList.Count != 8) || !IsExistInspectionModeType(modelList.FirstOrDefault().SwitchCategory))
                     return opResult;
                 SetFixFieldValue(modelList, OpMode.Add);
@@ -209,7 +209,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
             catch (Exception ex)
             {
-                return OpResult.SetResult("未执行任何操作！");
+                return OpResult.SetErrorResult("未执行任何操作！");
                 throw new Exception(ex.InnerException.Message);
             }
 

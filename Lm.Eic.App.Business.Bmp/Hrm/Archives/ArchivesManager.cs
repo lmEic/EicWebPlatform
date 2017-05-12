@@ -150,7 +150,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 ArDepartmentChangeLibModel departmentMdl = null;
                 //得到身份证的信息
                 if (!ArchiveEntityMapper.GetIdentityDataFrom(dto.IdentityID, empIdentityMdl, this.identityManager))
-                    return OpResult.SetResult("没有找到此身份证号的信息！", true);
+                    return OpResult.SetSuccessResult("没有找到此身份证号的信息！", true);
 
                 ArchiveEntityMapper.GetEmployeeDataFrom(dto, empIdentityMdl);
                 ArchiveEntityMapper.GetDepartmentDataFrom(dto, empIdentityMdl, out departmentMdl);
@@ -166,11 +166,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 {
                     record = EditEmployee(dto, record, empIdentityMdl, studyMdl, telMdl);
                 }
-                return OpResult.SetResult("保存档案数据成功！", record > 0, empIdentityMdl.Id_Key);
+                return OpResult.SetSuccessResult("保存档案数据成功！", record > 0, empIdentityMdl.Id_Key);
             }
             catch (Exception)
             {
-                return OpResult.SetResult("保存档案数据失败！", false);
+                return OpResult.SetSuccessResult("保存档案数据失败！", false);
             }
         }
         /// <summary>
@@ -285,7 +285,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public OpResult ChangeDepartment(List<ArDepartmentChangeLibModel> entities)
         {
             int record = 0;
-            if (entities == null || entities.Count == 0) return OpResult.SetResult("entities can't be null", false);
+            if (entities == null || entities.Count == 0) return OpResult.SetSuccessResult("entities can't be null", false);
             entities.ForEach(entity =>
             {
                 if (entity.NowDepartment != null)
@@ -299,7 +299,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     });
                 }
             });
-            return OpResult.SetResult("变更部门信息成功!", record > 0);
+            return OpResult.SetSuccessResult("变更部门信息成功!", record > 0);
         }
 
         /// <summary>
@@ -310,7 +310,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public OpResult ChangePost(List<ArPostChangeLibModel> entities)
         {
             int record = 0;
-            if (entities == null || entities.Count == 0) return OpResult.SetResult("entities can't be null", false);
+            if (entities == null || entities.Count == 0) return OpResult.SetSuccessResult("entities can't be null", false);
             entities.ForEach(entity =>
             {
                 if (entity.NowPost != null)
@@ -326,7 +326,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     });
                 }
             });
-            return OpResult.SetResult("变更岗位信息成功!", record > 0);
+            return OpResult.SetSuccessResult("变更岗位信息成功!", record > 0);
         }
 
         /// <summary>
@@ -337,7 +337,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public OpResult ChangeStudy(List<ArStudyModel> entities)
         {
             int record = 0;
-            if (entities == null || entities.Count == 0) return OpResult.SetResult("entities can't be null", false);
+            if (entities == null || entities.Count == 0) return OpResult.SetSuccessResult("entities can't be null", false);
             //修改学习信息
             entities.ForEach(entity =>
             {
@@ -366,7 +366,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 }
             });
 
-            return OpResult.SetResult("变更学习信息成功!", record > 0);
+            return OpResult.SetSuccessResult("变更学习信息成功!", record > 0);
         }
 
         /// <summary>
@@ -377,7 +377,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public OpResult ChangeTel(List<ArTelModel> entities)
         {
             int record = 0;
-            if (entities == null || entities.Count == 0) return OpResult.SetResult("entities can't be null", false);
+            if (entities == null || entities.Count == 0) return OpResult.SetSuccessResult("entities can't be null", false);
             entities.ForEach(entity =>
             {
                 if (entity.TelPhone != null)
@@ -391,7 +391,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     });
                 }
             });
-            return OpResult.SetResult("变更学习信息成功!", record > 0);
+            return OpResult.SetSuccessResult("变更学习信息成功!", record > 0);
         }
 
         /// <summary>
@@ -413,7 +413,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         public OpResult StoreWorkerIdChangeInfo(WorkerChangedModel entity)
         {
-            OpResult result = OpResult.SetResult("更变工号操作失败!");
+            OpResult result = OpResult.SetErrorResult("更变工号操作失败!");
             if (entity == null) return result;
             List<ArchivesEmployeeIdentityModel> oldWorkerBaseInfoList = FindWorkerArchivesInfoBy(new QueryWorkerArchivesDto { WorkerId = entity.OldWorkerId, SearchMode = 1 });
 
@@ -645,7 +645,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     record = 1;
                 }
             }
-            return OpResult.SetResult("保存人员信息数据成功！", record > 0);
+            return OpResult.SetSuccessResult("保存人员信息数据成功！", record > 0);
         }
 
         public ProWorkerInfo GetWorkerBy(string workerId)

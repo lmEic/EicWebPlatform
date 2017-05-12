@@ -56,7 +56,7 @@
             this.result = result;
             this.message = successMessage;
             if (!result)
-                this.message = "您的操作失败！";
+                this.message = "系统默认提示：您的此次操发生异常，操作失败！";
         }
         public OpResult(string errorMsg)
         {
@@ -69,7 +69,7 @@
             this.message = successMessage;
             this.Id_Key = idKey;
             if (!result)
-                this.message = "您的操作失败！";
+                this.message = "系统默认提示：您的此次操发生异常，操作失败！";
         }
 
         public OpResult(string successMessage, string falseMessage, int record)
@@ -109,21 +109,21 @@
         /// <param name="message"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        public static OpResult SetResult(string errorMsg)
+        public static OpResult SetErrorResult(string errorMsg)
         {
             return new OpResult(errorMsg);
         }
         /// <summary>
         /// 设定操作结果
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">成功的信息</param>
         /// <param name="result"></param>
         /// <returns></returns>
-        public static OpResult SetResult(string successMessage, bool result)
+        public static OpResult SetSuccessResult(string successMessage, bool result = true)
         {
             return new OpResult(successMessage, result);
         }
-        public static OpResult SetResult(string successMessage, bool result, decimal idKey = 0)
+        public static OpResult SetSuccessResult(string successMessage, bool result = true, decimal idKey = 0)
         {
             return new OpResult(successMessage, result, idKey);
         }
@@ -150,8 +150,8 @@
     {
         public const string Add = "add";
         public const string Edit = "edit";
-        public const string UpDate = "update";
         public const string Delete = "delete";
+        public const string UpDate = "update";
         public const string UploadFile = "uploadFile";
         public const string DeleteFile = "deleteFile";
     }

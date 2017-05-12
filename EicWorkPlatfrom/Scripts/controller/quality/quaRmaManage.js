@@ -156,7 +156,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         HandleStatus: null,
         OpPerson: null,
         OpSign: leeDataHandler.dataOpMode.add,
-        Id_Key: null,
+        Id_Key: 0,
     }
     var initVM = _.clone(uiVm);
     ///视图模型

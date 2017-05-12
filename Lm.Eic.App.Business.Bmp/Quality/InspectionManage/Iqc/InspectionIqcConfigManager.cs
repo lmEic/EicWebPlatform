@@ -33,8 +33,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public OpResult IsExistInspectionConfigMaterailId(string materailId)
         {
             bool isexixt = InspectionManagerCrudFactory.IqcItemConfigCrud.IsExistInspectionConfigmaterailId(materailId);
-            OpResult opResult = OpResult.SetResult("", false);
-            if (isexixt) opResult = OpResult.SetResult("此物料料号已经存在", true);
+            OpResult opResult = OpResult.SetSuccessResult("", false);
+            if (isexixt) opResult = OpResult.SetSuccessResult("此物料料号已经存在", true);
             return opResult;
         }
         /// <summary>

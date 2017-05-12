@@ -88,7 +88,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal OpResult StoreInspectionItemConfigDatas(List<InspectionIqcItemConfigModel> modeldatas)
         {
-            OpResult opResult = OpResult.SetResult("未执行任何操作！");
+            OpResult opResult = OpResult.SetErrorResult("未执行任何操作！");
             SetFixFieldValue(modeldatas, OpMode.Add);
             int i = 0;
             //如果存在 就修改   
@@ -209,7 +209,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private OpResult DeleteIqcInspectionDetail(InspectionIqcDetailModel model)
         {
             var oldmodel = GetIqcOldDetailModelBy(model);
-            if (oldmodel == null) return OpResult.SetResult("此项不存在，删除失败", false);
+            if (oldmodel == null) return OpResult.SetSuccessResult("此项不存在，删除失败", false);
             model.Id_Key = oldmodel.Id_Key;
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
@@ -218,7 +218,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             // 先前判定是否存在
             var oldmodel = GetIqcOldDetailModelBy(model);
-            if (oldmodel == null) return OpResult.SetResult("此项不存在，修改失败", false);
+            if (oldmodel == null) return OpResult.SetSuccessResult("此项不存在，修改失败", false);
             model.Id_Key = oldmodel.Id_Key;
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }

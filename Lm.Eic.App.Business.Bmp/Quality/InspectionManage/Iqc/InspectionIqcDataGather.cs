@@ -34,7 +34,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         #endregion
         public OpResult StoreInspectionIqcGatherDatas(InspectionItemDataSummaryVM model)
         {
-            var opReulst = OpResult.SetResult("数据为空，保存失败", false);
+            var opReulst = OpResult.SetSuccessResult("数据为空，保存失败", false);
             if (model == null) return opReulst;
             ///输入的数据不为空值
             if (model.InspectionItemDatas == null || model.InspectionItemDatas == string.Empty) return opReulst;

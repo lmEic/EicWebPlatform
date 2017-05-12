@@ -81,7 +81,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             var opDatePi = IsHasProperty(entity, "OpDate");
             if (opDatePi != null) opDatePi.SetValue(entity, DateTime.Now.ToDate(), null);
         }
-
         /// <summary>
         /// 设置固定字段的值
         /// </summary>
@@ -96,7 +95,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 if (opSignPi != null) opSignPi.SetValue(m, opMode, null);
             });
         }
-
         /// 设置固定字段的值
         /// </summary>
         /// <param name="entityList">列表</param>
@@ -117,10 +115,10 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 result.Entity = entity;
             //取得操作方法
             PropertyInfo piIdKey = IsHasProperty(entity, "Id_Key");
-            if (piIdKey == null)
+            if (piIdKey != null)
             {
-                string idKey = piIdKey.GetValue(entity, null) as string;
-                result.Id_Key = idKey.ToDeciaml();
+                object idKey = piIdKey.GetValue(entity, null);
+                result.Id_Key = idKey.ToString().ToDecimal();
             }
         }
 
@@ -131,10 +129,10 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <returns></returns>
         protected OpResult PersistentDatas(TEntity entity, bool isNeedEntity = false)
         {
-            OpResult result = OpResult.SetResult("持久化数据操作失败!");
+            OpResult result = OpResult.SetErrorResult("持久化数据操作失败!");
             string opSign = "default";
             if (entity == null)
-                return OpResult.SetResult(string.Format("{0}不能为null！", OpContext));
+                return OpResult.SetErrorResult(string.Format("{0}不能为null！", OpContext));
             try
             {
                 SetFixFieldValue(entity);
@@ -147,11 +145,11 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                     AddCrudOpItems();
                 //是否包含指定的方法
                 if (!crudOpDics.ContainsKey(opSign))
-                    return OpResult.SetResult(string.Format("未找到{0}的实现函数", opSign));
+                    return OpResult.SetErrorResult(string.Format("未找到{0}的实现函数", opSign));
                 result = (crudOpDics[opSign])(entity);
                 BindEntityToOpResult(isNeedEntity, result, entity);
             }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+            catch (Exception ex) { throw new Exception(ex.Message); }
             return result;
         }
         /// <summary>
@@ -169,7 +167,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         protected OpResult StoreEntity(TEntity entity, Func<TEntity, OpResult> storeHandler, bool isNeedEntity = false)
         {
             OpResult result = null;
-            if (entity == null) return OpResult.SetResult("entity can't set null!");
+            if (entity == null) return OpResult.SetErrorResult("entity can't set null!");
             SetFixFieldValue(entity);
             try
             {
@@ -182,7 +180,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return result;
         }
-
         /// <summary>
         /// 模型转换
         /// </summary>

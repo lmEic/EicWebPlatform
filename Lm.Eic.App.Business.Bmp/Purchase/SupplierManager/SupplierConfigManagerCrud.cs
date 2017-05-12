@@ -71,14 +71,14 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddSupplierQualifiedCertificate);
-            this.AddOpItem(OpMode.UpDate, EidtSupplierQualifiedCertificate);
+            this.AddOpItem(OpMode.Edit, EidtSupplierQualifiedCertificate);
             this.AddOpItem(OpMode.Delete, DeleteSupplierQualifiedCertificate);
 
         }
 
         public OpResult StoreSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model)
         {
-            OpResult ReOpResult = OpResult.SetResult("采集数据模型不能为NULL", false);
+            OpResult ReOpResult = OpResult.SetSuccessResult("采集数据模型不能为NULL", false);
             if (model == null) return ReOpResult;
             var oldmodel = this.GetOldQualifiedCertificateModelBy(model);
             if (oldmodel == null)
@@ -98,10 +98,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         public OpResult DeleteFileSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model, string siteRootPath)
         {
-            OpResult ReOpResult = OpResult.SetResult("采集数据模型不能为NULL", false);
+            OpResult ReOpResult = OpResult.SetSuccessResult("采集数据模型不能为NULL", false);
             if (model == null) return ReOpResult;
             var oldModel = this.GetOldQualifiedCertificateModelBy(model);
-            if (oldModel == null) return OpResult.SetResult("不存在此数据", false);
+            if (oldModel == null) return OpResult.SetSuccessResult("不存在此数据", false);
             oldModel.OpSign = OpMode.Delete;
             ReOpResult = this.Store(oldModel, true);
             if (!ReOpResult.Result) return ReOpResult;
@@ -174,7 +174,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 });
 
                 if (!modelList.IsNullOrEmpty())
-                    return OpResult.SetResult("合格文件记录列表不能为空！ 保存失败");
+                    return OpResult.SetErrorResult("合格文件记录列表不能为空！ 保存失败");
                 return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
@@ -272,7 +272,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 });
                 ///如查SupplierID号存在
                 if (!modelList.IsNullOrEmpty())
-                    return OpResult.SetResult("列表不能为空！ 保存失败");
+                    return OpResult.SetErrorResult("列表不能为空！ 保存失败");
 
                 //return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
 
@@ -293,7 +293,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             try
             {
                 if (irep.IsExist(m => m.SupplierId == model.SupplierId))
-                    return OpResult.SetResult("此数据已存在！");
+                    return OpResult.SetErrorResult("此数据已存在！");
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
@@ -361,7 +361,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 return irep.Update(m => m.SupplierId == model.SupplierId, model).ToOpResult_Eidt("修改成功");
 
             }
-            else return OpResult.SetResult("此数据不存在！无法修改");
+            else return OpResult.SetErrorResult("此数据不存在！无法修改");
 
 
         }

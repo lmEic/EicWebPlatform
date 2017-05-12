@@ -18,7 +18,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
 
         public OpResult Store(ConfigDataDictionaryModel entity, ConfigDataDictionaryModel oldEntity, string opType)
         {
-            OpResult result = OpResult.SetResult("待进行操作", false);
+            OpResult result = OpResult.SetSuccessResult("待进行操作", false);
             if (opType == "add")
             {
                 result = Add(entity);
@@ -84,32 +84,32 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
         private OpResult Add(ConfigDataDictionaryModel entity)
         {
             int record = 0;
-            if (entity == null) return OpResult.SetResult("ConfigDataDictionaryModel entity can't be null", false);
+            if (entity == null) return OpResult.SetSuccessResult("ConfigDataDictionaryModel entity can't be null", false);
             SetPrimaryPropertyValue(entity);
             if (!irep.IsExist(e => e.PrimaryKey == entity.PrimaryKey))
             {
                 record += irep.Insert(entity);
             }
-            return OpResult.SetResult("新增配置数据成功", record > 0, entity.Id_Key);
+            return OpResult.SetSuccessResult("新增配置数据成功", record > 0, entity.Id_Key);
         }
 
         private OpResult Delete(ConfigDataDictionaryModel entity)
         {
-            if (entity == null) return OpResult.SetResult("ConfigDataDictionaryModel entity can't be null", false);
+            if (entity == null) return OpResult.SetSuccessResult("ConfigDataDictionaryModel entity can't be null", false);
             SetPrimaryPropertyValue(entity);
             int record = irep.Delete(r => r.PrimaryKey == entity.PrimaryKey);
-            return OpResult.SetResult("删除配置数据成功", record > 0);
+            return OpResult.SetSuccessResult("删除配置数据成功", record > 0);
         }
 
         public OpResult Update(ConfigDataDictionaryModel mdl, ConfigDataDictionaryModel oldMdl)
         {
-            if (mdl == null) return OpResult.SetResult("mdl can't be null", false);
+            if (mdl == null) return OpResult.SetSuccessResult("mdl can't be null", false);
             int record = 0;
             SetPrimaryPropertyValue(mdl);
             SetPrimaryPropertyValue(oldMdl);
             //1.更新自身记录
             record = irep.Update(u => u.PrimaryKey == oldMdl.PrimaryKey, mdl);
-            return OpResult.SetResult("修改配置成功！", record > 0);
+            return OpResult.SetSuccessResult("修改配置成功！", record > 0);
         }
     }
 }

@@ -69,19 +69,19 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
 
             if (tem2 == null) { Assert.Fail(); }
         }
-      [TestMethod ()]
+        [TestMethod()]
         public void getDailyReportedData()
         {
-           
-            var tem = DailyReportService.InputManager.DailyReportInputManager.BuildDailyReportTempList("成型课", "2016-11-15".ToDate ());
+
+            var tem = DailyReportService.InputManager.DailyReportInputManager.BuildDailyReportTempList("成型课", "2016-11-15".ToDate());
             #region 输出到Excel
-            string path = @"E:\\IQC.xls";
-            using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
-            {
-                byte[] bArr = tem.ToArray();
-                fs.Write(bArr, 0, bArr.Length);
-                fs.Flush();
-            }
+            //string path = @"E:\\IQC.xls";
+            //using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+            //{
+            //    byte[] bArr = tem.ToArray();
+            //    fs.Write(bArr, 0, bArr.Length);
+            //    fs.Flush();
+            //}
             #endregion
         }
 
@@ -89,9 +89,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport.Tests
         /// <summary>
         /// 测试制三部导出日报信息表
         /// </summary>
-        public void getLMproductDialyReportListByTest ()
+        public void getLMproductDialyReportListByTest()
         {
-            var tem = DailyReportService.LmProDailyReportManager.GetLmProDailyRrportList("2016-11-30".ToDate ());
+            var tem = DailyReportService.LmProDailyReportManager.GetLmProDailyRrportList("2016-11-30".ToDate());
         }
 
 

@@ -79,12 +79,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             try
             {
                 //判断列表是否为空
-                OpResult reOpresult = OpResult.SetResult("没有进任何操作");
-                if (model == null) return OpResult.SetResult("数据列表不能为空");
+                OpResult reOpresult = OpResult.SetErrorResult("没有进任何操作");
+                if (model == null) return OpResult.SetErrorResult("数据列表不能为空");
                 //从ERP中得到相应的SupplierId供应商信息
                 var supplierInfoModel = GetErpSuppplierInfoBy(model.SupplierId);
                 //判断是否为空
-                if (supplierInfoModel == null) return OpResult.SetResult(string.Format("没有{0}供应商编号", model.SupplierId), true);
+                if (supplierInfoModel == null) return OpResult.SetSuccessResult(string.Format("没有{0}供应商编号", model.SupplierId), true);
                 //赋值 供应商属性和采购性质
                 supplierInfoModel.PurchaseType = model.PurchaseType;
                 supplierInfoModel.SupplierProperty = model.SupplierProperty;
@@ -96,7 +96,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     supplierInfoModel.Id_Key = model.Id_Key;
                     return SupplierCrudFactory.SuppliersInfoCrud.UpSupplierInfo(supplierInfoModel);
                 }
-                if (model.CertificateFileName == null || model.CertificateFileName == string.Empty) return OpResult.SetResult("证书名称不能为空");
+                if (model.CertificateFileName == null || model.CertificateFileName == string.Empty) return OpResult.SetErrorResult("证书名称不能为空");
                 SupplierQualifiedCertificateModel savemodel = new SupplierQualifiedCertificateModel()
                 {
                     SupplierId = model.SupplierId,
