@@ -37,25 +37,34 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.Edit, Eidtdate);
+            this.AddOpItem(OpMode.Edit, EidtModel);
+        }
+        internal OpResult AddModel(RmaReportInitiateModel model)
+        {
+
+            if (!IsExist(model.RmaId))
+            {
+                SetModelVaule(model, RmaHandleStatus.InitiateStatus);
+
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            }
+
+            return EidtModel(model);
+        }
+        internal OpResult EidtModel(RmaReportInitiateModel model)
+        {
+            SetModelVaule(model, model.RmaIdStatus);
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
-        OpResult AddModel(RmaReportInitiateModel model)
+        private void SetModelVaule(RmaReportInitiateModel model, string InitiateStatus)
         {
-            if (!IsExist(model.RmaId))
+            if (model.RmaId != null && model.RmaId.Length == 8)
             {
                 model.RmaYear = model.RmaId.Substring(1, 2);
                 model.RmaMonth = model.RmaId.Substring(3, 2);
-                model.RmaIdStatus = RmaHandleStatus.InspectionStatus;
-                return irep.Insert(model).ToOpResult_Add(OpContext);
             }
-            return Eidtdate(model);
-        }
-        OpResult Eidtdate(RmaReportInitiateModel model)
-        {
-            model.RmaYear = model.RmaId.Substring(1, 2);
-            model.RmaMonth = model.RmaId.Substring(3, 2);
-            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+            model.RmaIdStatus = InitiateStatus;
         }
         #endregion
 
@@ -73,20 +82,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             return "R" + nowYaer + nowMonth + count.ToString("000");
 
         }
-
-
         internal List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
-
-
         internal bool IsExist(string rmaId)
         {
-
             return irep.IsExist(e => e.RmaId == rmaId);
         }
-        internal List<RmaReportInitiateModel> getRmaReportInitiateDatas(string year, string month)
+        internal List<RmaReportInitiateModel> GetRmaReportInitiateDatas(string year, string month)
         {
             return irep.Entities.Where(e => e.RmaYear == year && e.RmaMonth == month).ToList();
         }
@@ -96,12 +100,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <param name="rmaId"></param>
         /// <param name="rmaIdStatus"></param>
         /// <returns></returns>
-        internal OpResult UpDataInitiateRmaIdStatus(string rmaId, string rmaIdStatus)
+        internal OpResult UpdateInitiateRmaIdStatus(string rmaId, string rmaIdStatus)
         {
-            var oldModel = irep.FirstOfDefault(e => e.RmaId == rmaId);
-            if (oldModel == null) return OpResult.SetResult("不存在", false);
-            oldModel.RmaIdStatus = rmaIdStatus;
-            return irep.Update(e => e.Id_Key == oldModel.Id_Key, oldModel).ToOpResult_Eidt(OpContext);
+            return irep.Update(e => e.RmaId == rmaId, u => new RmaReportInitiateModel { RmaIdStatus = rmaIdStatus }).ToOpResult_Eidt(OpContext);
         }
 
         #endregion
@@ -145,7 +146,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId);
         }
-        internal OpResult UpDateBussesDescriptionStatus(string rmaId, string productId, string handleStatus)
+        internal OpResult UpdateBussesDescriptionStatus(string rmaId, string productId, string handleStatus)
         {
             return irep.Update(e => e.RmaId == rmaId && e.ProductId == productId,
                 new RmaBusinessDescriptionModel { HandleStatus = handleStatus }).ToOpResult_Eidt(OpContext);
@@ -181,14 +182,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
-
-        internal bool IsExist(string rmaid, string productId)
+        internal bool IsExist(string rmaId, string productId)
         {
-
-            return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId);
+            return irep.IsExist(e => e.RmaId == rmaId && e.ProductId == productId);
         }
-
-
     }
 
 }
