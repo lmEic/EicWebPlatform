@@ -101,7 +101,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="RmaId"></param>
         /// <returns></returns>
-        public List<RmaBusinessDescriptionModel> GetRmaBussesDescriptionDatasBy(string rmaId)
+        public List<RmaBusinessDescriptionModel> GetRmaBusinessDescriptionDatasBy(string rmaId)
         {
             if (rmaId != null && rmaId == string.Empty) return null;
             return RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(rmaId);
@@ -147,7 +147,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult StoreRmaBussesDescriptionData(RmaBusinessDescriptionModel model)
+        public OpResult StoreRmaBusinessDescriptionData(RmaBusinessDescriptionModel model)
         {
             ///2.如果存在 操作符为 Edit
             ///3.那些字段不能为空  ProductsShipDate 不能为空 不能为“0001-01-01”
