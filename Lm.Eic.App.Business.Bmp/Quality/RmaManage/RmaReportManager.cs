@@ -83,7 +83,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 //201701
                 string year = yearMonth.Substring(0, 4);
                 string month = yearMonth.Substring(4, 2);
-                return RmaCurdFactory.RmaReportInitiate.getRmaReportInitiateDatas(year, month);
+                return RmaCurdFactory.RmaReportInitiate.GetRmaReportInitiateDatas(year, month);
             }
             catch (Exception ex)
             {
@@ -191,28 +191,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-
         public OpResult StoreInspectionManageData(RmaInspectionManageModel model)
         {
-
-            ///1.如果存在 操作符为 Edit
-            ///2.如果存储成功，改变Rma的业务描述表单状态和 初始状态
-            OpResult result = OpResult.SetResult("存储数据表");
-            if (model == null) return OpResult.SetResult("存储表不能为空");
-            if (RmaCurdFactory.RmaInspectionManage.IsExist(model.RmaId, model.ProductId))
-                model.OpSign = OpMode.Edit;
-            else model.OpSign = OpMode.Add;
-            result = RmaCurdFactory.RmaInspectionManage.Store(model, true);
+            var result = RmaCurdFactory.RmaInspectionManage.Store(model, true);
             if (result.Result)
             {
-                RmaCurdFactory.RmaReportInitiate.UpDataInitiateRmaIdStatus(model.RmaId, RmaHandleStatus.FinishStatus);
-                RmaCurdFactory.RmaBussesDescription.UpDateBussesDescriptionStatus(model.RmaId, model.ProductId, RmaHandleStatus.FinishStatus);
+                RmaCurdFactory.RmaReportInitiate.UpdateInitiateRmaIdStatus(model.RmaId, RmaHandleStatus.FinishStatus);
+                RmaCurdFactory.RmaBussesDescription.UpdateBussesDescriptionStatus(model.RmaId, model.ProductId, RmaHandleStatus.FinishStatus);
             }
             return result;
         }
-
-
     }
-
-
 }
