@@ -230,19 +230,21 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         protected FileResult DownLoadFile(DownLoadFileModel downLoadFileModel)
         {
-            Dictionary<int, FileResult> dic = new Dictionary<int, FileResult>() {
-                {0, CreateFilePathDLFM(downLoadFileModel)},
-                {1, CreateFileContnetDLFM(downLoadFileModel)},
-                {2, CreateFileStreamDLFM(downLoadFileModel)},
-            };
-
+            
             try
             {
-                if (!dic.ContainsKey(downLoadFileModel.HandleMode))
+                switch (downLoadFileModel.HandleMode)
                 {
-                    return dic[0];
+                    case 0:
+                        return CreateFilePathDLFM(downLoadFileModel);
+                    case 1:
+                        return CreateFileContnetDLFM(downLoadFileModel);
+                    case 2:
+                        return CreateFileStreamDLFM(downLoadFileModel);
+                    default:
+                        return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+
                 }
-                return dic[downLoadFileModel.HandleMode];
             }
             catch (Exception ex)
             {
@@ -251,7 +253,6 @@ namespace EicWorkPlatfrom.Controllers
             }
 
         }
-
         /// <summary>
         /// 给定文件流进行下载
         /// </summary>
@@ -260,7 +261,10 @@ namespace EicWorkPlatfrom.Controllers
         private FileResult CreateFileStreamDLFM(DownLoadFileModel downLoadFileModel)
         {
             if (downLoadFileModel.FileStream == null)
+            {
                 downLoadFileModel = new DownLoadFileModel().Default("文件流不能为null！");
+                return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+            }
             ///
             downLoadFileModel.FileStream.Seek(0, SeekOrigin.Begin);
             return File(downLoadFileModel.FileStream, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
@@ -273,7 +277,10 @@ namespace EicWorkPlatfrom.Controllers
         private FileResult CreateFileContnetDLFM(DownLoadFileModel downLoadFileModel)
         {
             if (downLoadFileModel.FileContnet == null)
+            {
                 downLoadFileModel = new DownLoadFileModel().Default("文件内容不能为null！");
+                return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+            }
             return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
         }
         /// <summary>
@@ -284,7 +291,10 @@ namespace EicWorkPlatfrom.Controllers
         private FileResult CreateFilePathDLFM(DownLoadFileModel downLoadFileModel)
         {
             if (!System.IO.File.Exists(downLoadFileModel.FilePath))
+            {
                 downLoadFileModel = new DownLoadFileModel().Default(string.Format("{0}不存在！", downLoadFileModel.FilePath));
+                return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+            }
             return File(downLoadFileModel.FilePath, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
         }
         /// <summary>
