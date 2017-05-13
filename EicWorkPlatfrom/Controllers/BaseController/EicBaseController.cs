@@ -517,9 +517,5 @@ namespace EicWorkPlatfrom.Controllers
         public const string IqcInspectionGatherDataFile = "IqcInspectionGatherDataFile";
     }
 
-    public class FileDownLoadHandler
-    {
 
-
-    }
 }
