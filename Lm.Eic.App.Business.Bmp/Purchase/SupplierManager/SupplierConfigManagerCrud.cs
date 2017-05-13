@@ -209,11 +209,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="supplierId"></param>
         /// <returns></returns>
-        public SupplierQualifiedCertificateModel GetQualifiedCertificateListBy(string supplierId, string eligibleCertificate)
+        public List<SupplierQualifiedCertificateModel> GetQualifiedCertificateListBy(string supplierId, string eligibleCertificate)
         {
             try
             {
-                return irep.FirstOfDefault(m => m.SupplierId == supplierId && m.EligibleCertificate == eligibleCertificate);
+                return irep.Entities.Where(m => m.SupplierId == supplierId && m.EligibleCertificate == eligibleCertificate).ToList();
             }
             catch (Exception ex)
             {
@@ -526,12 +526,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return EditSupplierGradeInfo(entity);
         }
 
-
-        public SupplierGradeInfoModel GetPurSupGradeInfoBy(string ParameterKey)
-        {
-            return irep.FirstOfDefault(e => e.ParameterKey.Contains(ParameterKey));
-        }
-        public List<SupplierGradeInfoModel> GetPurSupGradeInfoDatasBy(string supplierId, string gradeYear)
+        
+        public SupplierGradeInfoModel GetPurSupGradeInfoBy(string parameterKey)
         {
             return irep.Entities.Where(e => e.SupplierId == supplierId && e.GradeYear == gradeYear).ToList();
         }
