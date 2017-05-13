@@ -16,7 +16,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage.Tests
         public void StoreRmaBussesDescriptionDataTest()
         {
             RmaBusinessDescriptionProcessor r = new RmaBusinessDescriptionProcessor();
-            r.StoreRmaBussesDescriptionData(new RmaBusinessDescriptionModel()
+            r.StoreRmaBusinessDescriptionData(new RmaBusinessDescriptionModel()
             {
                 RmaId = "11",
                 RmaIdNumber = 1,

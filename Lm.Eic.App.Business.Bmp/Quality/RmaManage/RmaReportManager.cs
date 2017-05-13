@@ -80,7 +80,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="RmaId"></param>
         /// <returns></returns>
-        public List<RmaBusinessDescriptionModel> GetRmaBussesDescriptionDatasBy(string rmaId)
+        public List<RmaBusinessDescriptionModel> GetRmaBusinessDescriptionDatasBy(string rmaId)
         {
             if (rmaId != null && rmaId == string.Empty) return null;
             return RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(rmaId);
@@ -90,7 +90,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="returnHandleOrder">退货单</param>
         /// <returns></returns>
-        public List<RmaRetrunOrderInfoModel> GetErpBussesInfoDatasBy(string returnHandleOrder)
+        public List<RmaRetrunOrderInfoModel> GetErpBusinessInfoDatasBy(string returnHandleOrder)
         {
             try
             {
@@ -126,7 +126,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult StoreRmaBussesDescriptionData(RmaBusinessDescriptionModel model)
+        public OpResult StoreRmaBusinessDescriptionData(RmaBusinessDescriptionModel model)
         {
             try
             {

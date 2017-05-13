@@ -7,16 +7,7 @@ using Lm.Eic.Uti.Common.YleeObjectBuilder;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
-    internal class TutorManagerFactory
-    {
-        /// <summary>
-        /// 供应商辅导管理
-        /// </summary>
-        public static SupplierTutorManger SupplierTutorManger
-        {
-            get { return OBulider.BuildInstance<SupplierTutorManger>(); }
-        }
-    }
+
     /// <summary>
     /// 供应商辅导\计划管理
     /// </summary>

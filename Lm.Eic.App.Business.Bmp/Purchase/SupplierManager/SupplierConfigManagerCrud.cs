@@ -73,7 +73,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             this.AddOpItem(OpMode.Add, AddSupplierQualifiedCertificate);
             this.AddOpItem(OpMode.Edit, EidtSupplierQualifiedCertificate);
             this.AddOpItem(OpMode.Delete, DeleteSupplierQualifiedCertificate);
-
         }
 
         public OpResult StoreSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model)
@@ -86,12 +85,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 model.OpSign = OpMode.Add;//若不存在则直接添加
                 return this.Store(model, true);
             }
-
             model.OpSign = OpMode.UpDate;
             model.Id_Key = oldmodel.Id_Key;
             //若不存在则直接添加
             return this.Store(model, true);
-
             //return OpResult.SetResult("文件重新上传成功！", true);
         }
 
@@ -120,7 +117,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             catch (Exception ex)
             {
                 return null;
-                throw new Exception(ex.InnerException.Message);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -154,7 +151,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 SetFixFieldValue(model);
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+            catch (Exception ex) { throw new Exception(ex.Message); }
 
         }
         /// <summary>
@@ -177,7 +174,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     return OpResult.SetErrorResult("合格文件记录列表不能为空！ 保存失败");
                 return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+            catch (Exception ex) { throw new Exception(ex.Message); }
 
         }
         /// <summary>
@@ -240,46 +237,33 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddSupplierInfo);
-            this.AddOpItem(OpMode.Edit, EidtSupplierInfo);
+            //this.AddOpItem(OpMode.Edit, EidtSupplierInfo);
             this.AddOpItem(OpMode.Delete, DeleteSupplierInfo);
         }
 
-        public bool IsExistSupperid(string supplierId, out decimal findId_key)
-        {
-            if (irep.IsExist(e => e.SupplierId == supplierId))
-            {
-                findId_key = irep.Entities.Where(e => e.SupplierId == supplierId).ToList().FirstOrDefault().Id_Key;
-                return true;
-            }
-            else
-            { findId_key = 0; return false; }
-        }
+        ///// <summary>
+        ///// 批量保存供应商信息
+        ///// </summary>
+        ///// <param name="modelList"></param>
+        ///// <returns></returns>
+        //public OpResult SavaSupplierInfoList(List<SupplierInfoModel> modelList)
+        //{
+        //    try
+        //    {
+        //        DateTime date = DateTime.Now.ToDate();
+        //        SetFixFieldValue(modelList, OpMode.Add, m =>
+        //        {
+        //            m.OpDate = date;
+        //            //需要添加附加答条件
+        //        });
+        //        ///如查SupplierID号存在
+        //        if (!modelList.IsNullOrEmpty())
+        //            return OpResult.SetErrorResult("列表不能为空！ 保存失败");
 
-        /// <summary>
-        /// 批量保存供应商信息
-        /// </summary>
-        /// <param name="modelList"></param>
-        /// <returns></returns>
-        public OpResult SavaSupplierInfoList(List<SupplierInfoModel> modelList)
-        {
-            try
-            {
-                DateTime date = DateTime.Now.ToDate();
-                SetFixFieldValue(modelList, OpMode.Add, m =>
-                {
-                    m.OpDate = date;
-                    //需要添加附加答条件
-                });
-                ///如查SupplierID号存在
-                if (!modelList.IsNullOrEmpty())
-                    return OpResult.SetErrorResult("列表不能为空！ 保存失败");
-
-                //return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt("修改完成");
-
-                return irep.Insert(modelList).ToOpResult_Add(OpContext);
-            }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
-        }
+        //        return irep.Insert(modelList).ToOpResult_Add(OpContext);
+        //    }
+        //    catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+        //}
         #region  Store
         /// <summary>
         /// 添加供应商信息
@@ -296,10 +280,38 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     return OpResult.SetErrorResult("此数据已存在！");
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+            catch (Exception ex) { throw new Exception(ex.Message); }
 
         }
 
+        //public OpResult EidtSupplierInfo(SupplierInfoModel model)
+        //{
+        //    if (irep.IsExist(m => m.SupplierId == model.SupplierId))
+        //    {
+        //        if (model.OpSign == "editPurchaseType")
+        //            return irep.Update(u => u.SupplierId == model.SupplierId,
+        //                f => new SupplierInfoModel
+        //                {
+        //                    SupplierProperty = model.SupplierProperty,
+        //                    PurchaseType = model.PurchaseType
+        //                }).ToOpResult_Eidt("修改供应商类别成功！");
+        //        return irep.Update(m => m.SupplierId == model.SupplierId, model).ToOpResult_Eidt("修改成功");
+
+        //    }
+        //    else return OpResult.SetErrorResult("此数据不存在！无法修改");
+
+
+        //}
+
+        OpResult DeleteSupplierInfo(SupplierInfoModel model)
+        {
+            return irep.Delete(m => m.SupplierId == model.SupplierId).ToOpResult_Delete("删除成功");
+        }
+        /// <summary>
+        /// 更新供应商信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         internal OpResult UpSupplierInfo(SupplierInfoModel model)
         {
             try
@@ -321,8 +333,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                            SupplierFaxNo = model.SupplierFaxNo,
                            SupplierTel = model.SupplierTel,
                            SupplierUser = model.SupplierUser,
-                           OpPerson = model.OpPerson,
-                           OpSign = OpMode.Edit
+                           OpSign = model.OpSign
                        }).ToOpResult_Eidt("修改供应商类别成功！");
 
                 }
@@ -346,30 +357,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
         }
-        public OpResult EidtSupplierInfo(SupplierInfoModel model)
-        {
-            if (irep.IsExist(m => m.SupplierId == model.SupplierId))
-            {
-                if (model.OpSign == "editPurchaseType")
-                    return irep.Update(u => u.SupplierId == model.SupplierId,
-                        f => new SupplierInfoModel
-                        {
-                            SupplierProperty = model.SupplierProperty,
-                            PurchaseType = model.PurchaseType,
-                            OpSign = model.OpSign
-                        }).ToOpResult_Eidt("修改供应商类别成功！");
-                return irep.Update(m => m.SupplierId == model.SupplierId, model).ToOpResult_Eidt("修改成功");
 
-            }
-            else return OpResult.SetErrorResult("此数据不存在！无法修改");
-
-
-        }
-
-        OpResult DeleteSupplierInfo(SupplierInfoModel model)
-        {
-            return irep.Delete(m => m.SupplierId == model.SupplierId).ToOpResult_Delete("删除成功");
-        }
         #endregion
         /// <summary>
         /// 获取供应商信息
@@ -539,9 +527,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         }
 
 
-        public SupplierGradeInfoModel GetPurSupGradeInfoBy(string parameterKey)
+        public SupplierGradeInfoModel GetPurSupGradeInfoBy(string ParameterKey)
         {
-            return irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
+            return irep.FirstOfDefault(e => e.ParameterKey.Contains(ParameterKey));
+        }
+        public List<SupplierGradeInfoModel> GetPurSupGradeInfoDatasBy(string supplierId, string gradeYear)
+        {
+            return irep.Entities.Where(e => e.SupplierId == supplierId && e.GradeYear == gradeYear).ToList();
         }
         /// <summary>
         ///
