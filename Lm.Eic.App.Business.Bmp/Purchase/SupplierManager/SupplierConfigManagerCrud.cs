@@ -538,7 +538,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return EditSupplierGradeInfo(entity);
         }
 
-        
+
         public SupplierGradeInfoModel GetPurSupGradeInfoBy(string parameterKey)
         {
             return irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
