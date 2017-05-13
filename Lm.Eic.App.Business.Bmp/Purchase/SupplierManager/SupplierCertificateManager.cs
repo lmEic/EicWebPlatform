@@ -152,8 +152,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public DownLoadFileModel GetSupQuaCertificateDLFM(string siteRootPath, string supplierId, string eligibleCertificate)
         {
             DownLoadFileModel dlfm = null;
-            var model = SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId, eligibleCertificate);
-            if (model == null) return dlfm.Default();
+            var certificateList = SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateListBy(supplierId, eligibleCertificate);
+            if (certificateList == null || certificateList.Count == 0) return dlfm.Default();
+            var model = certificateList.FirstOrDefault();
             if (model.CertificateFileName == null || model.CertificateFileName == null || model.FilePath == null) dlfm.Default();
             dlfm = new DownLoadFileModel()
             {
