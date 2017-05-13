@@ -230,20 +230,19 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         protected FileResult DownLoadFile(DownLoadFileModel downLoadFileModel)
         {
+            Dictionary<int, FileResult> dic = new Dictionary<int, FileResult>() {
+                {0, CreateFilePathDLFM(downLoadFileModel)},
+                {1, CreateFileContnetDLFM(downLoadFileModel)},
+                {2, CreateFileStreamDLFM(downLoadFileModel)},
+            };
+
             try
             {
-                switch (downLoadFileModel.HandleMode)
+                if (!dic.ContainsKey(downLoadFileModel.HandleMode))
                 {
-                    case 0:
-                        return FilePathDLFM(downLoadFileModel);
-                    case 1:
-                        return FileContnetDLFM(downLoadFileModel);
-
-                    case 2:
-                        return FileStreamDLFM(downLoadFileModel);
-                    default:
-                        return FileDLFM(downLoadFileModel);
+                    return dic[0];
                 }
+                return dic[downLoadFileModel.HandleMode];
             }
             catch (Exception ex)
             {
@@ -252,61 +251,42 @@ namespace EicWorkPlatfrom.Controllers
             }
 
         }
+
         /// <summary>
-        ///  文件下载
-        /// </summary>
+        /// 给定文件流进行下载
         /// </summary>
         /// <param name="downLoadFileModel"></param>
         /// <returns></returns>
-        private FileResult FileDLFM(DownLoadFileModel downLoadFileModel)
-        {
-            try
-            {
-                return File(downLoadFileModel.FilePath, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(ex.Message);
-            }
-
-        }
-        /// <summary>
-        /// 2：给定文件流进行下载
-        /// </summary>
-        /// <param name="downLoadFileModel"></param>
-        /// <returns></returns>
-        private FileResult FileStreamDLFM(DownLoadFileModel downLoadFileModel)
+        private FileResult CreateFileStreamDLFM(DownLoadFileModel downLoadFileModel)
         {
             if (downLoadFileModel.FileStream == null)
                 downLoadFileModel = new DownLoadFileModel().Default("文件流不能为null！");
             ///
             downLoadFileModel.FileStream.Seek(0, SeekOrigin.Begin);
-            return FileDLFM(downLoadFileModel);
+            return File(downLoadFileModel.FileStream, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
         }
         /// <summary>
         /// 给定字节进行下载
         /// </summary>
         /// <param name="downLoadFileModel"></param>
         /// <returns></returns>
-        private FileResult FileContnetDLFM(DownLoadFileModel downLoadFileModel)
+        private FileResult CreateFileContnetDLFM(DownLoadFileModel downLoadFileModel)
         {
             if (downLoadFileModel.FileContnet == null)
                 downLoadFileModel = new DownLoadFileModel().Default("文件内容不能为null！");
-            return FileDLFM(downLoadFileModel);
+            return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
         }
         /// <summary>
         /// 给定文件路径进行下载
         /// </summary>
         /// <param name="downLoadFileModel"></param>
         /// <returns></returns>
-        private FileResult FilePathDLFM(DownLoadFileModel downLoadFileModel)
+        private FileResult CreateFilePathDLFM(DownLoadFileModel downLoadFileModel)
         {
             if (!System.IO.File.Exists(downLoadFileModel.FilePath))
                 downLoadFileModel = new DownLoadFileModel().Default(string.Format("{0}不存在！", downLoadFileModel.FilePath));
-            return FileDLFM(downLoadFileModel);
+            return File(downLoadFileModel.FilePath, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
         }
-
         /// <summary>
         /// 将文件保存到服务器上
         /// </summary>
@@ -535,5 +515,11 @@ namespace EicWorkPlatfrom.Controllers
         /// IQC检验采集数据附件文件夹
         /// </summary>
         public const string IqcInspectionGatherDataFile = "IqcInspectionGatherDataFile";
+    }
+
+    public class FileDownLoadHandler
+    {
+
+
     }
 }
