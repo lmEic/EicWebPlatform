@@ -209,11 +209,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="supplierId"></param>
         /// <returns></returns>
-        public List<SupplierQualifiedCertificateModel> GetQualifiedCertificateListBy(string supplierId, string eligibleCertificate)
+        public SupplierQualifiedCertificateModel GetQualifiedCertificateListBy(string supplierId, string eligibleCertificate)
         {
             try
             {
-                return irep.Entities.Where(m => m.SupplierId == supplierId && m.EligibleCertificate == eligibleCertificate).ToList();
+                return irep.FirstOfDefault(m => m.SupplierId == supplierId && m.EligibleCertificate == eligibleCertificate);
             }
             catch (Exception ex)
             {
