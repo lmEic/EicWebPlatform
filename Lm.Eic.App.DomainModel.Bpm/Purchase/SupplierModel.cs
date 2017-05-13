@@ -1019,9 +1019,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     /// 合格的供应商清册Model
     /// EligibleSuppliersTable
     /// </summary>
-    public class EligibleSuppliersModel
+    public class EligibleSuppliersVM
     {
-        public EligibleSuppliersModel()
+        public EligibleSuppliersVM()
         { }
         #region Model
         #region 供应商信息 
@@ -1161,6 +1161,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _remark = value; }
             get { return _remark; }
         }
+        ///
+        public decimal Id_key { set; get; }
         #endregion
 
         //ISO9001 ISO14001 SupplierBaseDocument	SupplierComment	 NotUseChildLabor	

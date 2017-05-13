@@ -655,8 +655,8 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
             controller: function ($scope) {
                 var editItem = $scope.vm = vmManager.editItem;
                 $scope.gradeTypes = [{ id: '供应商系统稽核评估', text: '供应商系统稽核评估' },
-                                    { id: '供应商产品无有害物质系统稽核评估', text: '供应商产品无有害物质系统稽核评估' },
-                                    { id: '系统评估表-针对小供应商', text: '系统评估表-针对小供应商' }];
+                                     { id: '供应商产品无有害物质系统稽核评估', text: '供应商产品无有害物质系统稽核评估' },
+                                     { id: '系统评估表-针对小供应商', text: '系统评估表-针对小供应商' }];
 
                 var crud = leeDataHandler.dataOperate;
                 var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);

@@ -8,22 +8,23 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
-    internal class GradeManagerFactory
-    {
-        /// <summary>
-        /// 供应商稽核评分管理
-        /// </summary>
-        public static SuppliersGradeManager SuppliersGradeManager
-        {
-            get { return OBulider.BuildInstance<SuppliersGradeManager>(); }
-        }
-    }
+
     /// <summary>
     /// 供应商稽核评分管理
     /// </summary>
     public class SuppliersGradeManager
     {
 
+        #region  property
+        /// <summary>
+        /// 具有证书的供应商管理
+        /// </summary>
+        private SupplierCertificateManager HaveCertificateSupplierManager
+        { get { return OBulider.BuildInstance<SupplierCertificateManager>(); } }
+        #endregion
+
+
+        #region   method
         public List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string yearQuarter)
         {
             List<SupplierGradeInfoModel> returnDatas = new List<SupplierGradeInfoModel>();
@@ -32,7 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             string parameterKey = string.Empty;
             //格式是yyyyMM
             string gradeYear = yearQuarter.Substring(0, 4);
-            List<EligibleSuppliersModel> SupplierInfoDatas = CertificateManagerFactory.SupplierCertificateManager.GetQualifiedSupplierList(yearQuarter);
+            List<EligibleSuppliersVM> SupplierInfoDatas = HaveCertificateSupplierManager.GetQualifiedSupplierList(yearQuarter);
             if (SupplierInfoDatas == null || SupplierInfoDatas.Count == 0) return returnDatas;
             SupplierInfoDatas.ForEach(m =>
             {
@@ -64,5 +65,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             else entity.OpSign = OpMode.Edit;
             return SupplierCrudFactory.SupplierGradeInfoCrud.Store(entity);
         }
+        #endregion
     }
 }

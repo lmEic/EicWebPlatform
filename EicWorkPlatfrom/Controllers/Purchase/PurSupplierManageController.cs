@@ -59,7 +59,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public FileResult CreateQualifiedSupplierInfoList()
         {
-            var datas = TempData["QualifiedSupplierDatas"] as List<EligibleSuppliersModel>;
+            var datas = TempData["QualifiedSupplierDatas"] as List<EligibleSuppliersVM>;
             //Excel
             var dlfm = PurchaseService.PurSupplierManager.SupplierCertificateManager.BuildQualifiedSupplierInfoList(datas);
             return this.DownLoadFile(dlfm);
@@ -158,7 +158,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult DelPurSupplierCertificateFile(SupplierQualifiedCertificateModel entity)
         {
-            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.DeleteSpplierCertificateData(entity, this.SiteRootPath);
+            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.StoreSpplierCertificateData(entity, this.SiteRootPath);
             return Json(datas);
         }
         #endregion
