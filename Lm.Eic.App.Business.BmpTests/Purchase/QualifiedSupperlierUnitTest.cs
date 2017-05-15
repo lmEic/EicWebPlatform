@@ -12,7 +12,7 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
         [TestMethod]
         public void QualifiedSupplierTest()
         {
-            var mm = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetQualifiedSupplierList("2016");
+            var mm = PurchaseService.PurSupplierManager.CertificateManager.GetQualifiedSupplierList("2016");
 
             if (mm != null || mm.Count > 0)
             {
@@ -56,12 +56,12 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
         [TestMethod]
         public void GetSupplierQualifiedCertificateList()
         {
-            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetSupplierQualifiedCertificateListBy("D04004");
+            var datas = PurchaseService.PurSupplierManager.CertificateManager.GetSupplierQualifiedCertificateListBy("D04004");
             if (datas == null) { Assert.Fail(); }
         }
         public void SuppliersSeasonAuditInfo()
         {
-            var datas = PurchaseService.PurSupplierManager.SupplierAuditManager.GetSeasonSupplierList("201601");
+            var datas = PurchaseService.PurSupplierManager.AuditManager.GetSeasonSupplierList("201601");
             if (datas == null) { Assert.Fail(); }
         }
 

@@ -107,7 +107,7 @@
     <Compile Include="Purchase\SupplierManager\SupplierCertificateManager.cs" />
     <Compile Include="Purchase\SupplierManager\SupplierConfigManagerCrud.cs" />
     <Compile Include="Purchase\SupplierManager\SupplierConfigManager.cs" />
-    <Compile Include="Purchase\SupplierManager\SuppliersGradeManager.cs" />
+    <Compile Include="Purchase\SupplierManager\SupplierGradeManager.cs" />
     <Compile Include="Quality\InspectionManage\Fqc\FqcCrudFactory.cs" />
     <Compile Include="Quality\InspectionManage\Fqc\FqcDetailDatasGather.cs" />
     <Compile Include="Quality\InspectionManage\Fqc\FqcMasterDatasGather.cs" />

@@ -70,7 +70,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public ContentResult GetReturnOrderInfo(string orderId)
         {
-            var datas = RmaService.RmaManager.BusinessManageProcessor.GetErpBusinessInfoDatasBy(orderId); ;
+            var datas = RmaService.RmaManager.BusinessManageProcessor.GetErpBusinessInfoDatasBy(orderId);
             return DateJsonResult(datas);
         }
         /// <summary>

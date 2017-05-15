@@ -704,5 +704,15 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             };
 
         }
+
+        public DownLoadFileModel CreateInstance(string filePath, string contentType, string downFileName)
+        {
+            return new DownLoadFileModel()
+            {
+                FilePath = filePath,
+                ContentType = contentType,
+                FileDownLoadName = downFileName
+            };
+        }
     }
 }
