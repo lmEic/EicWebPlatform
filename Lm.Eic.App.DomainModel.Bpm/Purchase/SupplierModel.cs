@@ -260,6 +260,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _remark = value; }
             get { return _remark; }
         }
+        private bool _isCooperate;
+        /// <summary>
+        /// 是否正在合作
+        /// </summary>
+        public bool IsCooperate
+        {
+            set { _isCooperate = value; }
+            get { return _isCooperate; }
+        }
         private string _opperson;
         /// <summary>
         ///操作人
@@ -1150,6 +1159,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         {
             set { _purchasetype = value; }
             get { return _purchasetype; }
+        }
+        private bool _isCooperate;
+        /// <summary>
+        /// 是否正在合作
+        /// </summary>
+        public bool IsCooperate
+        {
+            set { _isCooperate = value; }
+            get { return _isCooperate; }
         }
 
         private string _remark;

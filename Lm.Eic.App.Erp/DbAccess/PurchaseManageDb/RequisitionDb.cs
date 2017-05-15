@@ -192,7 +192,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
                 {
                     foreach (DataRow dr in dt.Rows)
                     {
-                        SppuerIdList.Add(dr[0].ToString());
+                        SppuerIdList.Add(dr[0].ToString().Trim());
                     }
                 }
                 return SppuerIdList;
@@ -585,27 +585,27 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         }
 
 
-        private string HandelIsConnparate(string Erpstring)
+        private bool HandelIsConnparate(string Erpstring)
         {
             // 01  01Y   01YH  01H    02   02Y 02YH 
             switch (Erpstring)
             {
                 case "01":
-                    return "True";
+                    return true;
                 case "01Y":
-                    return "True";
+                    return true;
                 case "01H":
-                    return "True";
+                    return true;
                 case "01YH":
-                    return "True";
+                    return true;
                 case "02":
-                    return "True";
+                    return true;
                 case "02Y":
-                    return "False";
+                    return false;
                 case "02YH":
-                    return "False";
+                    return false;
                 default:
-                    return "True";
+                    return true;
             }
         }
 

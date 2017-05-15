@@ -72,7 +72,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             /// 从得到供应商信息
             var supplierInfo = HaveCertificateSupplierManager.GetSuppplierInfoBy(supplierId);
 
-            if (supplierInfo == null || supplierInfo.Remark == "False") return null;
+            if (supplierInfo == null || !supplierInfo.IsCooperate) return null;
             supplierSeasonAuditInfo = new SupplierSeasonAuditModel()
             {
                 SupplierId = supplierInfo.SupplierId,

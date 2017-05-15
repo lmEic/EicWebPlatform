@@ -99,7 +99,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             OpResult ReOpResult = OpResult.SetSuccessResult("采集数据模型不能为NULL", false);
             if (model == null) return ReOpResult;
-            var oldModel = this.GetQualifiedCertificateModelBy(model);
+            var oldModel = this.GetQualifiedCertificateModelBy(model.SupplierId, model.EligibleCertificate);
             if (oldModel == null) return OpResult.SetSuccessResult("不存在此数据", false);
             oldModel.OpSign = OpMode.Delete;
             ReOpResult = this.Store(oldModel, true);

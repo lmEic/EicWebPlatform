@@ -60,7 +60,7 @@
         /// <summary>
         ///是否在合作 MA004
         /// </summary>
-        public string IsCooperate { get; set; }
+        public bool IsCooperate { get; set; }
     }
 
     /// <summary>
