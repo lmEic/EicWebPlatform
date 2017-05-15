@@ -67,19 +67,21 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public SupplierQualifiedCertificateCrud() : base(new SupplierQualifiedCertifcateRepository(), "供应商合格文件")
         { }
 
+        #region crud
+
 
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, AddSupplierQualifiedCertificate);
-            this.AddOpItem(OpMode.Edit, EidtSupplierQualifiedCertificate);
-            this.AddOpItem(OpMode.Delete, DeleteSupplierQualifiedCertificate);
+            this.AddOpItem(OpMode.Add, Add);
+            this.AddOpItem(OpMode.Edit, Eidt);
+            this.AddOpItem(OpMode.Delete, Delete);
         }
 
         public OpResult StoreSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model)
         {
-            OpResult ReOpResult = OpResult.SetSuccessResult("采集数据模型不能为NULL", false);
+            OpResult ReOpResult = OpResult.SetErrorResult("供应商合格证书数据模型不能为NULL");
             if (model == null) return ReOpResult;
-            var oldmodel = this.GetOldQualifiedCertificateModelBy(model);
+            var oldmodel = this.GetQualifiedCertificateModelBy(model.SupplierId, model.EligibleCertificate);
             if (oldmodel == null)
             {
                 model.OpSign = OpMode.Add;//若不存在则直接添加
@@ -93,11 +95,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         }
 
 
-        public OpResult DeleteFileSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model, string siteRootPath)
+        public OpResult DeleteSupplierQualifiedCertificateFile(SupplierQualifiedCertificateModel model, string siteRootPath)
         {
             OpResult ReOpResult = OpResult.SetSuccessResult("采集数据模型不能为NULL", false);
             if (model == null) return ReOpResult;
-            var oldModel = this.GetOldQualifiedCertificateModelBy(model);
+            var oldModel = this.GetQualifiedCertificateModelBy(model);
             if (oldModel == null) return OpResult.SetSuccessResult("不存在此数据", false);
             oldModel.OpSign = OpMode.Delete;
             ReOpResult = this.Store(oldModel, true);
@@ -107,35 +109,27 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return ReOpResult;
         }
 
-        private SupplierQualifiedCertificateModel GetOldQualifiedCertificateModelBy(SupplierQualifiedCertificateModel model)
-        {
-            try
-            {
-                if (model == null) return null;
-                return irep.Entities.FirstOrDefault(e => e.SupplierId == model.SupplierId && e.EligibleCertificate == model.EligibleCertificate);
-            }
-            catch (Exception ex)
-            {
-                return null;
-                throw new Exception(ex.Message);
-            }
-        }
 
-        private OpResult DeleteSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model)
+
+        private OpResult Delete(SupplierQualifiedCertificateModel model)
         {
             return irep.Delete(e => e.Id_Key == model.Id_Key, true).ToOpResult_Delete(OpContext);
         }
+        #endregion
 
-        private OpResult EidtSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model)
+        private OpResult Eidt(SupplierQualifiedCertificateModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
 
         }
 
 
-        public OpResult AddSupplierQualifiedCertificate(SupplierQualifiedCertificateModel model)
+        public OpResult Add(SupplierQualifiedCertificateModel model)
         {
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+            if (!irep.IsExist(e => e.SupplierId == model.SupplierId && e.EligibleCertificate == model.EligibleCertificate))
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            return this.Eidt(model);
+
         }
 
         /// <summary>
@@ -177,17 +171,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             catch (Exception ex) { throw new Exception(ex.Message); }
 
         }
-        /// <summary>
-        /// 是否已经保存在证书
-        /// </summary>
-        /// <param name="CertificateFileName"></param>
-        /// <returns></returns>
-        public bool IsExistCertificateFileName(string CertificateFileName)
-        {
-            return irep.IsExist(e => e.CertificateFileName == CertificateFileName);
-        }
 
 
+        #region query method
         /// <summary>
         /// 获得供应商合格文件项目
         /// </summary>
@@ -220,6 +206,14 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 throw new Exception(ex.Message);
             }
         }
+
+        internal SupplierQualifiedCertificateModel GetQualifiedCertificateModelBy(string supplierId, string eligibleCertificate)
+        {
+            var dataList = GetQualifiedCertificateListBy(supplierId, eligibleCertificate);
+            if (dataList == null || dataList.Count == 0) return null;
+            return dataList.FirstOrDefault();
+        }
+        #endregion
     }
     /// <summary>
     /// 供应商信息Curd
@@ -230,49 +224,22 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public SuppliersInfoCrud()
             : base(new SupplierInfoRepository(), "供应商信息")
         { }
-
-        /// </summary>
+        #region  crud
+        /// <summary>
         /// <param name="model"></param>
+        /// </summary>
         /// <returns></returns>
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, AddSupplierInfo);
-            //this.AddOpItem(OpMode.Edit, EidtSupplierInfo);
-            this.AddOpItem(OpMode.Delete, DeleteSupplierInfo);
+            this.AddOpItem(OpMode.Add, Add);
         }
-
-        ///// <summary>
-        ///// 批量保存供应商信息
-        ///// </summary>
-        ///// <param name="modelList"></param>
-        ///// <returns></returns>
-        //public OpResult SavaSupplierInfoList(List<SupplierInfoModel> modelList)
-        //{
-        //    try
-        //    {
-        //        DateTime date = DateTime.Now.ToDate();
-        //        SetFixFieldValue(modelList, OpMode.Add, m =>
-        //        {
-        //            m.OpDate = date;
-        //            //需要添加附加答条件
-        //        });
-        //        ///如查SupplierID号存在
-        //        if (!modelList.IsNullOrEmpty())
-        //            return OpResult.SetErrorResult("列表不能为空！ 保存失败");
-
-        //        return irep.Insert(modelList).ToOpResult_Add(OpContext);
-        //    }
-        //    catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
-        //}
-        #region  Store
         /// <summary>
         /// 添加供应商信息
         /// </summary>
         /// <param name="model></param>
         /// <returns></returns>
-        OpResult AddSupplierInfo(SupplierInfoModel model)
+        OpResult Add(SupplierInfoModel model)
         {
-
             ///判断产品品号是否存在
             try
             {
@@ -302,24 +269,16 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
 
         //}
-
-        OpResult DeleteSupplierInfo(SupplierInfoModel model)
-        {
-            return irep.Delete(m => m.SupplierId == model.SupplierId).ToOpResult_Delete("删除成功");
-        }
         /// <summary>
         /// 更新供应商信息
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        internal OpResult UpSupplierInfo(SupplierInfoModel model)
+        internal OpResult Update(SupplierInfoModel model)
         {
             try
             {
-                SetFixFieldValue(model);
-                if (irep.IsExist(e => e.SupplierId == model.SupplierId))
-                {
-                    return irep.Update(u => u.SupplierId == model.SupplierId,
+                return irep.Update(u => u.SupplierId == model.SupplierId,
                        f => new SupplierInfoModel
                        {
                            SupplierProperty = model.SupplierProperty,
@@ -335,17 +294,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                            SupplierUser = model.SupplierUser,
                            OpSign = model.OpSign
                        }).ToOpResult_Eidt("修改供应商类别成功！");
-
-                }
-                model.SupplierId = model.SupplierId.Trim();
-                model.OpSign = OpMode.Add;
-                return irep.Insert(model).ToOpResult_Add(OpContext);
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
 
         }
 
-        internal OpResult InitSupplierInfo(SupplierInfoModel model)
+        internal OpResult Init(SupplierInfoModel model)
         {
             try
             {
@@ -354,11 +308,16 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 model.OpSign = "init";
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
         }
 
         #endregion
+
+        #region query
         /// <summary>
         /// 获取供应商信息
         /// </summary>
@@ -372,7 +331,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             }
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
         }
+        #endregion
     }
+
     /// <summary>
     /// 供应商季度审查表Curd
     /// </summary>

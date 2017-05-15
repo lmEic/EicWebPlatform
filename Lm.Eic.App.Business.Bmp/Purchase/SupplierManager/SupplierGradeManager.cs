@@ -8,13 +8,11 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
-
     /// <summary>
     /// 供应商稽核评分管理
     /// </summary>
-    public class SuppliersGradeManager
+    public class SupplierGradeManager
     {
-
         #region  property
         /// <summary>
         /// 具有证书的供应商管理
@@ -22,7 +20,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         private SupplierCertificateManager HaveCertificateSupplierManager
         { get { return OBulider.BuildInstance<SupplierCertificateManager>(); } }
         #endregion
-
 
         #region   method
         public List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string yearQuarter)

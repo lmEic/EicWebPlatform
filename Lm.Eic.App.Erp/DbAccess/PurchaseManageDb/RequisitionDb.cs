@@ -256,29 +256,32 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         /// <returns></returns>
         public List<PurchaseHeaderModel> FindSupplierLatestTwoPurchaseBy(string suppplierId)
         {
-            List<PurchaseHeaderModel> FindSupplierLatestTwoPurchase = new List<PurchaseHeaderModel>();
-            string SqlFields = "Select TOP (1) TC001,TC002,TC003,TC004,TC011,TC019  from PURTC ";
+            List<PurchaseHeaderModel> findSupplierLatestTwoPurchase = new List<PurchaseHeaderModel>();
+            string sqlFields = "Select TOP (1) TC001,TC002,TC003,TC004,TC011,TC019  from PURTC ";
             string whereSql = string.Format("WHERE (TC004 = '{0}')  ORDER BY TC003 DESC ", suppplierId);
-            var lastestPruchase = ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(SqlFields, whereSql, (dr, m) =>
+            var lastestPruchase = ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(sqlFields, whereSql, (dr, m) =>
             {
                 this.MapPurHeaderRowAndModel(dr, m);
             }).FirstOrDefault();
-            if (lastestPruchase == null) return FindSupplierLatestTwoPurchase;
+            if (lastestPruchase == null) return findSupplierLatestTwoPurchase;
 
-            FindSupplierLatestTwoPurchase.Add(lastestPruchase);
+            findSupplierLatestTwoPurchase.Add(lastestPruchase);
             string notmonth = lastestPruchase.PurchaseDate.Substring(0, lastestPruchase.PurchaseDate.Length - 2);
             string whereSql2 = string.Format("WHERE   (TC004 = '{0}')  AND (NOT (TC003 LIKE '{1}%'))  ORDER BY TC003 DESC ", suppplierId, notmonth);
-            var FirstPruchase = ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(SqlFields, whereSql2, (dr, m) =>
+            var firstPruchase = ErpDbAccessHelper.FindDataBy<PurchaseHeaderModel>(sqlFields, whereSql2, (dr, m) =>
             {
                 this.MapPurHeaderRowAndModel(dr, m);
             }).FirstOrDefault();
-            if (FirstPruchase == null)
-            { FindSupplierLatestTwoPurchase.Add(lastestPruchase); }
-            else FindSupplierLatestTwoPurchase.Add(FirstPruchase);
-
-
-            return FindSupplierLatestTwoPurchase;
+            if (firstPruchase == null)
+            {
+                findSupplierLatestTwoPurchase.Add(lastestPruchase);
+            }
+            else
+                findSupplierLatestTwoPurchase.Add(firstPruchase);
+            return findSupplierLatestTwoPurchase;
         }
+
+
         #endregion PurchaseHeader
 
         //-----------------PurchaseBody---------------------------------
