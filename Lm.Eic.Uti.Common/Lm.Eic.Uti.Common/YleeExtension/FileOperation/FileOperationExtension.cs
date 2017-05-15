@@ -61,7 +61,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         {
             try
             {
-                if (oldFileName == newFileName && oldFileName != string.Empty && oldFileName != null)
+                if (oldFileName != newFileName && oldFileName != string.Empty && oldFileName != null)
                 {
                     if (rootPath != string.Empty && rootPath != null)
                     {
@@ -69,6 +69,33 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                         fileName = fileName.Replace("/", @"\");
                         if (File.Exists(fileName))
                             File.Delete(fileName);//删除旧的文件
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+        /// <summary>
+        /// 比较新旧文档是否相同，如果相同，则删除旧文档
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="newFileName"></param>
+        /// <param name="rootPath"></param>
+        /// <returns></returns>
+        public static void DeleteExistFile(this string fileName, string rootPath)
+        {
+            try
+            {
+                if (fileName != string.Empty && fileName != null)
+                {
+                    if (rootPath != string.Empty && rootPath != null)
+                    {
+                        string fileNamePath = Path.Combine(rootPath, fileName);
+                        fileNamePath = fileNamePath.Replace("/", @"\");
+                        if (File.Exists(fileNamePath))
+                            File.Delete(fileNamePath);//删除旧的文件
                     }
                 }
             }

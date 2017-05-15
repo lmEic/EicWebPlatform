@@ -59,7 +59,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public FileResult CreateQualifiedSupplierInfoList()
         {
-            var datas = TempData["QualifiedSupplierDatas"] as List<EligibleSuppliersVM>;
+            var datas = TempData["QualifiedSupplierDatas"] as List<SuppliersSumInfoVM>;
             //Excel
             var dlfm = PurchaseService.PurSupplierManager.CertificateManager.BuildQualifiedSupplierInfoList(datas);
             return this.DownLoadFile(dlfm);

@@ -250,7 +250,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         }
 
         /// <summary>
-        /// 供应商最近二项采购
+        /// 供应商最近二次采购信息
         /// </summary>
         /// <param name="suppplierId"></param>
         /// <returns></returns>
@@ -585,27 +585,27 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         }
 
 
-        private bool HandelIsConnparate(string Erpstring)
+        private string HandelIsConnparate(string Erpstring)
         {
             // 01  01Y   01YH  01H    02   02Y 02YH 
             switch (Erpstring)
             {
                 case "01":
-                    return true;
+                    return "True";
                 case "01Y":
-                    return true;
+                    return "True";
                 case "01H":
-                    return true;
+                    return "True";
                 case "01YH":
-                    return true;
+                    return "True";
                 case "02":
-                    return true;
+                    return "True";
                 case "02Y":
-                    return false;
+                    return "False";
                 case "02YH":
-                    return false;
+                    return "False";
                 default:
-                    return true;
+                    return "True";
             }
         }
 
