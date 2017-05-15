@@ -25,19 +25,19 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public List<EligibleSuppliersVM> GetQualifiedSupplierList(string endYearMonth)
         {
-            var QualifiedSupplierInfo = new List<EligibleSuppliersVM>();
+            List<EligibleSuppliersVM> qualifiedSupplierInfoList = new List<EligibleSuppliersVM>();
             EligibleSuppliersVM model = null;
             string startYearMonth = (int.Parse(endYearMonth) - 100).ToString();
             //获取供应商信息
             var supplierInfoList = GetSupplierInformationListBy(startYearMonth, endYearMonth);
-            if (supplierInfoList == null || supplierInfoList.Count <= 0) return QualifiedSupplierInfo;
+            if (supplierInfoList == null || supplierInfoList.Count <= 0) return qualifiedSupplierInfoList;
             supplierInfoList.ForEach(supplierInfo =>
             {
                 model = getEligibleSuppliersModel(supplierInfo);
                 if (model != null && model.Remark == "True")
-                    QualifiedSupplierInfo.Add(model);
+                    qualifiedSupplierInfoList.Add(model);
             });
-            return QualifiedSupplierInfo.OrderBy(e => e.SupplierId).ToList();
+            return qualifiedSupplierInfoList.OrderBy(e => e.SupplierId).ToList();
         }
         /// <summary>
         /// 获取供应商信息
@@ -48,15 +48,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             try
             {
                 //先从已存的数据信息中找 
-                SupplierInfoModel SupplierInfo = SupplierCrudFactory.SuppliersInfoCrud.GetSupplierInfoBy(supplierId);
-                if (SupplierInfo != null) return SupplierInfo;
+                SupplierInfoModel SupplierInfoList = SupplierCrudFactory.SuppliersInfoCrud.GetSupplierInfoBy(supplierId);
+                if (SupplierInfoList != null) return SupplierInfoList;
                 //没有找到再从ERP中找
-                SupplierInfo = GetErpSuppplierInfoBy(supplierId);
-                if (SupplierInfo != null && SupplierInfo.Remark == "True")
+                SupplierInfoList = GetSuppplierInfoForErpBy(supplierId);
+                if (SupplierInfoList != null && SupplierInfoList.Remark == "True")
                     //添加至供应商信息表中  上传到数据库中
-                    SupplierCrudFactory.SuppliersInfoCrud.InitSupplierInfo(SupplierInfo);
+                    SupplierCrudFactory.SuppliersInfoCrud.InitSupplierInfo(SupplierInfoList);
 
-                return SupplierInfo;
+                return SupplierInfoList;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
@@ -73,7 +73,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 OpResult reOpresult = OpResult.SetErrorResult("没有进任何操作");
                 if (model == null) return OpResult.SetErrorResult("数据列表不能为空");
                 ///从ERP中得到相应的SupplierId供应商信息 便与下面保存时更新数据库信息
-                var supplierInfoModel = GetErpSuppplierInfoBy(model.SupplierId);
+                var supplierInfoModel = GetSuppplierInfoForErpBy(model.SupplierId);
                 ///判断是否为空
                 if (supplierInfoModel == null) return OpResult.SetSuccessResult(string.Format("没有{0}供应商编号", model.SupplierId), true);
 
@@ -227,16 +227,16 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         private List<SupplierInfoModel> GetSupplierInformationListBy(string startYearMonth, string endYearMonth)
         {
-            List<SupplierInfoModel> SupplierInfoList = new List<SupplierInfoModel>();
+            List<SupplierInfoModel> supplierInfoList = new List<SupplierInfoModel>();
             //从ERP中得到此年中所有供应商Id号
-            var supplierList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(startYearMonth, endYearMonth);
+            var supplierIdFormERPList = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(startYearMonth, endYearMonth);
 
-            if (supplierList == null || supplierList.Count <= 0) return null;
-            supplierList.ForEach(supplierId =>
+            if (supplierIdFormERPList == null || supplierIdFormERPList.Count <= 0) return null;
+            supplierIdFormERPList.ForEach(supplierId =>
             {
-                SupplierInfoList.Add(GetSuppplierInfoBy(supplierId));
+                supplierInfoList.Add(GetSuppplierInfoBy(supplierId));
             });
-            return SupplierInfoList;
+            return supplierInfoList;
         }
 
 
@@ -286,7 +286,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="supplierId"></param>
         /// <returns></returns>
-        private SupplierInfoModel GetErpSuppplierInfoBy(string supplierId)
+        private SupplierInfoModel GetSuppplierInfoForErpBy(string supplierId)
         {
             var erpSupplierInfo = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
 
