@@ -43,7 +43,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 opReulst = MasterDatasGather.StoreInspectionIqcMasterModelForm(model);
             return opReulst;
         }
-                
+
 
         /// <summary>
         /// 生成IQC检验项目所有的信息
@@ -278,7 +278,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                    model.InspectionMode = inspectionMode;
                }
 
-               var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(iqcItemConfigdata.InspectionLevel, iqcItemConfigdata.InspectionAQL, m.MaterialCount, inspectionMode);
+               var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(model.InspectionLevel, model.InspectionAQL, m.MaterialCount, inspectionMode);
 
                if (inspectionModeConfigModelData != null)
                {

@@ -19,28 +19,27 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     {
 
         /// <summary>
-        /// 得到IQC检验表单信息 （数量不超过100）
+        /// 得到IQC检验表单信息 
         /// </summary>
-        /// <param name="inspectionStatus"></param>
+        /// <param name="formQueryString"></param>
         /// <param name="startTime"></param>
         /// <param name="endTime"></param>
         /// <returns></returns>
-        public List<InspectionIqcMasterModel> GetInspectionFormManagerListBy(string inspectionStatus, DateTime startTime, DateTime endTime)
+        public List<InspectionIqcMasterModel> GetInspectionFormManagerDatas(string formQueryString, int queryOpModel, DateTime startTime, DateTime endTime)
         {
-            //查询ERP中所有物料和单号 
-            var list = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(startTime, endTime);
-            switch (inspectionStatus)
+            //查询所有物料和单号 
+            var datas = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(startTime, endTime);
+            if (formQueryString == null || formQueryString == string.Empty) return datas;
+            switch (queryOpModel)
             {
-                case "待检验":
-                    return GetErpNotStoreToSqlOrderAndMaterialBy(startTime, endTime);
-                case "未完成":
-                    return list.Where(e => e.InspectionStatus == "未完成").ToList();
-                case "待审核":
-                    return list.Where(e => e.InspectionStatus == "待审核").ToList();
-                case "已审核":
-                    return list.Where(e => e.InspectionStatus == "已审核").ToList();
-                case "全部":
-                    return GetERPOrderAndMaterialBy(startTime, endTime);
+                case 0:
+                    return GetInspectionFormManagerListBy(datas, formQueryString, startTime, endTime);
+                case 1:
+                    return datas.Where(e => e.MaterialId == formQueryString).ToList();
+                case 2:
+                    return datas.Where(e => e.MaterialSupplier.Contains(formQueryString)).ToList();
+                case 3:
+                    return datas.Where(e => e.InspectionItems.Contains(formQueryString)).ToList();
                 default:
                     return new List<InspectionIqcMasterModel>();
             }
@@ -61,7 +60,35 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
             else return retrunResult;
         }
-        List<InspectionIqcMasterModel> GetERPOrderAndMaterialBy(DateTime startTime, DateTime endTime)
+
+        /// <summary>
+        /// 得到IQC检验表单信息 （数量不超过100）
+        /// </summary>
+        /// <param name="inspectionStatus"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        private List<InspectionIqcMasterModel> GetInspectionFormManagerListBy(List<InspectionIqcMasterModel> datas, string inspectionStatus, DateTime startTime, DateTime endTime)
+        {
+            switch (inspectionStatus)
+            {
+                case "待检验":
+                    return GetMasterTableDatasToSqlOrderAndMaterialBy(startTime, endTime);
+                case "未完成":
+                    return datas.Where(e => e.InspectionStatus == "未完成").ToList();
+                case "待审核":
+                    return datas.Where(e => e.InspectionStatus == "待审核").ToList();
+                case "已审核":
+                    return datas.Where(e => e.InspectionStatus == "已审核").ToList();
+                case "全部":
+                    return GetERPOrderAndMaterialBy(startTime, endTime);
+                default:
+                    return new List<InspectionIqcMasterModel>();
+            }
+
+        }
+
+        private List<InspectionIqcMasterModel> GetERPOrderAndMaterialBy(DateTime startTime, DateTime endTime)
         {
             List<InspectionIqcMasterModel> retrunList = new List<InspectionIqcMasterModel>();
             var OrderIdList = GetOrderIdList(startTime, endTime);
@@ -79,8 +106,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             });
             return retrunList;
         }
-
-        List<InspectionIqcMasterModel> GetErpNotStoreToSqlOrderAndMaterialBy(DateTime startTime, DateTime endTime)
+        /// <summary>
+        ///    
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        private List<InspectionIqcMasterModel> GetMasterTableDatasToSqlOrderAndMaterialBy(DateTime startTime, DateTime endTime)
         {
             List<InspectionIqcMasterModel> retrunList = new List<InspectionIqcMasterModel>();
             var OrderIdList = GetOrderIdList(startTime, endTime);
@@ -95,7 +127,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return retrunList;
         }
 
-        InspectionIqcMasterModel MaterialModelToInspectionIqcMasterModel(MaterialModel model)
+        private InspectionIqcMasterModel MaterialModelToInspectionIqcMasterModel(MaterialModel model)
         {
             return model != null ? (new InspectionIqcMasterModel()
             {
@@ -113,7 +145,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionMode = "正常"
             }) : new InspectionIqcMasterModel();
         }
-        List<MaterialModel> GetOrderIdList(DateTime starDate, DateTime endDate)
+        private List<MaterialModel> GetOrderIdList(DateTime starDate, DateTime endDate)
         {
             return QualityDBManager.OrderIdInpectionDb.FindErpAllMasterilBy(starDate, endDate);
         }
