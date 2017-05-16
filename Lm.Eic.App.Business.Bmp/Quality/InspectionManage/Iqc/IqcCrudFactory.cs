@@ -162,13 +162,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.MaterialId == materialId);
         }
-        internal bool IsExistOrderIdAndMaterailId(string orderId, string materialId, string InspectionIqcDetas = null)
+        internal bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
         {
-            bool returnBool = irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId);
-            if (InspectionIqcDetas != null && InspectionIqcDetas != string.Empty)
-                return irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId && e.InspectionStatus.Contains(InspectionIqcDetas));
-            else return returnBool;
+            return irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId);
         }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -329,7 +328,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).Distinct().ToList();
         }
-        
+
         ///// <summary>
         /////  判定些物料在二年内是否有录入记录 
         ///// </summary>

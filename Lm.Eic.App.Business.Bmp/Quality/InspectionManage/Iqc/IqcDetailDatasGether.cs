@@ -107,7 +107,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 DocumentPath = model.DocumentPath
             };
             /// 判断是否存在此录入的项次
-            if (InspectionManagerCrudFactory.IqcDetailCrud.isExiststroe(datailModel)) return null;
+            if (InspectionManagerCrudFactory.IqcDetailCrud.isExiststroe(datailModel)) return OpResult.SetErrorResult("不用添加");
             datailModel.OpSign = OpMode.Add;
             return InspectionManagerCrudFactory.IqcDetailCrud.Store(datailModel, true);
         }

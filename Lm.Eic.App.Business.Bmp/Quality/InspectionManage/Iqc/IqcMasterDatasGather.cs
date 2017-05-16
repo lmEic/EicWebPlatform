@@ -35,7 +35,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(model.OrderId, model.MaterialId))
             {
                 MasterModel = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(model.OrderId, model.MaterialId);
-                if (!InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(model.OrderId, model.MaterialId, model.InspectionItem))
+                if (!MasterModel.InspectionItems.Contains(model.InspectionItem))
                     MasterModel.InspectionItems += "," + model.InspectionItem;
                 if (model.InspectionItemSumCount == GetHaveFinishDataNumber(MasterModel.InspectionItems))
                 {

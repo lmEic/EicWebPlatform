@@ -143,13 +143,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     model.InspectionMode = iqcHaveInspectionData.InspectionMode;
                     model.FileName = iqcHaveInspectionData.FileName;
                     model.DocumentPath = iqcHaveInspectionData.DocumentPath;
-
                     model.InspectionCount = (int)iqcHaveInspectionData.InspectionCount;
-
                     model.AcceptCount = (int)iqcHaveInspectionData.InspectionAcceptCount;
-
                     model.RefuseCount = (int)iqcHaveInspectionData.InspectionRefuseCount;
-
                     model.NeedFinishDataNumber = (int)iqcHaveInspectionData.InspectionCount;
                     model.HaveFinishDataNumber = DoHaveFinishDataNumber(iqcHaveInspectionData.InspectionItemResult, iqcHaveInspectionData.InspectionItemDatas, model.NeedFinishDataNumber);
                 }
