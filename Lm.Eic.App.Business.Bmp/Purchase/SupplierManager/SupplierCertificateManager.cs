@@ -18,26 +18,42 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     public class SupplierCertificateManager
     {
 
+        
+        
         /// <summary>
         /// 从ERP中获取截止到给定月份的合格供应商清册列表
         /// </summary>
         /// <param name="endYearMonth">年份格式yyyyMM</param>
         /// <returns></returns>
-        public List<EligibleSuppliersVM> GetQualifiedSupplierList(string endYearMonth)
+        public List<SuppliersSumInfoVM> GetQualifiedSupplierList(string endYearMonth)
         {
-            List<EligibleSuppliersVM> QualifiedSupplierInfoList = new List<EligibleSuppliersVM>();
-            EligibleSuppliersVM model = null;
+            List<SuppliersSumInfoVM> SupplierInfoVmDatas = new List<SuppliersSumInfoVM>();
+
+            SuppliersSumInfoVM modelVm = null;
             string startYearMonth = (int.Parse(endYearMonth) - 100).ToString();
             //获取供应商信息
             var supplierInfoList = GetSupplierInformationListBy(startYearMonth, endYearMonth);
-            if (supplierInfoList == null || supplierInfoList.Count == 0) return QualifiedSupplierInfoList;
+            if (supplierInfoList == null || supplierInfoList.Count == 0) return SupplierInfoVmDatas;
             supplierInfoList.ForEach(supplierInfo =>
             {
-                model = GetEligibleSuppliersModel(supplierInfo);
-                if (model != null && model.IsCooperate)
-                    QualifiedSupplierInfoList.Add(model);
+                if (supplierInfo.IsCooperate.ToString() == "True")
+                    ///供应商信息加载最后二次采购信息
+                    modelVm = GetSuppliersInfoAddrLatestTwoPurchaseInfo(supplierInfo);
+                if (modelVm != null && !SupplierInfoVmDatas.Contains(modelVm))
+                    SupplierInfoVmDatas.Add(modelVm);
             });
-            return QualifiedSupplierInfoList.OrderBy(e => e.SupplierId).ToList();
+            return SupplierInfoVmDatas.OrderBy(e => e.SupplierId).ToList();
+        }
+        /// <summary>
+        /// 从截止到给定月份的合格供应商清册列表
+        /// </summary>
+        /// <param name="endYearMonth"></param>
+        /// <returns></returns>
+        public List<SupplierInfoModel> GetQualifiedSupplierDatas(string endYearMonth)
+        {
+            string startYearMonth = (int.Parse(endYearMonth) - 100).ToString();
+            //获取供应商信息
+            return GetSupplierInformationListBy(startYearMonth, endYearMonth);
         }
         /// <summary>
         /// 获取供应商信息
@@ -53,7 +69,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 if (supplierInfo != null) return supplierInfo;
                 //没有找到再从ERP中找
                 supplierInfo = GetSuppplierInfoFromErpBy(supplierId);
-                if (supplierInfo != null && supplierInfo.IsCooperate)//待修改
+                if (supplierInfo != null && supplierInfo.IsCooperate == "True")
                     //添加至供应商信息表中  上传到数据库中
                     SupplierCrudFactory.SuppliersInfoCrud.Init(supplierInfo);
                 return supplierInfo;
@@ -132,7 +148,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             {
                 if (model != null && model.OpSign == OpMode.DeleteFile)//如果删除文件则启文件相应的删除处理
                     return SupplierCrudFactory.SupplierQualifiedCertificateCrud.DeleteSupplierQualifiedCertificateFile(model, siteRootPath);
-                return SupplierCrudFactory.SupplierQualifiedCertificateCrud.Store(model);
+                /// 
+                return SupplierCrudFactory.SupplierQualifiedCertificateCrud.UpdateQualifiedCertificateFile(model, siteRootPath);
 
             }
             catch (Exception ex)
@@ -172,13 +189,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// 生成合格供应商清单
         /// </summary>
         /// <returns></returns>
-        public DownLoadFileModel BuildQualifiedSupplierInfoList(List<EligibleSuppliersVM> datas)
+        public DownLoadFileModel BuildQualifiedSupplierInfoList(List<SuppliersSumInfoVM> datas)
         {
             try
             {
                 if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
-                var dataGroupping = datas.GetGroupList<EligibleSuppliersVM>("");
-                return dataGroupping.ExportToExcelMultiSheets<EligibleSuppliersVM>(CreateFieldMapping()).CreateDownLoadExcelFileModel("供应商证书信息数据");
+                var dataGroupping = datas.GetGroupList<SuppliersSumInfoVM>("");
+                return dataGroupping.ExportToExcelMultiSheets<SuppliersSumInfoVM>(CreateFieldMapping()).CreateDownLoadExcelFileModel("供应商证书信息数据");
             }
             catch (Exception ex)
             {
@@ -231,16 +248,19 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         private List<SupplierInfoModel> GetSupplierInformationListBy(string startYearMonth, string endYearMonth)
         {
-            List<SupplierInfoModel> supplierInfoList = new List<SupplierInfoModel>();
+            List<SupplierInfoModel> SupplierInfoDatas = new List<SupplierInfoModel>();
+            SupplierInfoModel m = null;
             ///从ERP中得到此年中最新 所有供应商Id号
             var supplierListFromErp = PurchaseDbManager.PurchaseDb.PurchaseSppuerId(startYearMonth, endYearMonth);
             ///对每一个供应商收集信息
             if (supplierListFromErp == null || supplierListFromErp.Count <= 0) return null;
             supplierListFromErp.ForEach(supplierId =>
             {
-                supplierInfoList.Add(GetSuppplierInfoBy(supplierId));
+                m = GetSuppplierInfoBy(supplierId);
+                if (m != null && !SupplierInfoDatas.Contains(m))
+                    SupplierInfoDatas.Add(m);
             });
-            return supplierInfoList;
+            return SupplierInfoDatas;
         }
 
         /// <summary>
@@ -279,18 +299,18 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         private Dictionary<string, string> CertificateDictionary(string supplierId)
         {
             Dictionary<string, string> certificateDictionary = new Dictionary<string, string>();
-            certificateDictionary.Add("供应商环境调查表", string.Empty);
-            certificateDictionary.Add("供应商基本资料表", string.Empty);
-            certificateDictionary.Add("供应商评鉴表", string.Empty);
-            certificateDictionary.Add("不使用童工申明", string.Empty);
-            certificateDictionary.Add("PCN协议", string.Empty);
-            certificateDictionary.Add("廉洁承诺书", string.Empty);
-            certificateDictionary.Add("质量保证协议", string.Empty);
-            certificateDictionary.Add("HSF保证书", string.Empty);
-            certificateDictionary.Add("REACH保证书", string.Empty);
-            certificateDictionary.Add("SVHC调查表", string.Empty);
-            certificateDictionary.Add("ISO14001", string.Empty);
-            certificateDictionary.Add("ISO9001", string.Empty);
+            certificateDictionary.Add(certificateName.QualityAssuranceProtocol, string.Empty);
+            certificateDictionary.Add(certificateName.SupplierBaseDocument, string.Empty);
+            certificateDictionary.Add(certificateName.SupplierComment, string.Empty);
+            certificateDictionary.Add(certificateName.NotUseChildLabor, string.Empty);
+            certificateDictionary.Add(certificateName.PCN_Protocol, string.Empty);
+            certificateDictionary.Add(certificateName.HonestCommitment, string.Empty);
+            certificateDictionary.Add(certificateName.QualityAssuranceProtocol, string.Empty);
+            certificateDictionary.Add(certificateName.HSF_Guarantee, string.Empty);
+            certificateDictionary.Add(certificateName.REACH_Guarantee, string.Empty);
+            certificateDictionary.Add(certificateName.SVHC_Guarantee, string.Empty);
+            certificateDictionary.Add(certificateName.ISO14001, string.Empty);
+            certificateDictionary.Add(certificateName.ISO9001, string.Empty);
 
             var suppliersQualifiedCertificate = GetSupplierQualifiedCertificateListBy(supplierId);
             if (suppliersQualifiedCertificate != null || suppliersQualifiedCertificate.Count > 0)
@@ -311,38 +331,81 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="supplierInfo"></param>
         /// <returns></returns>
-        private EligibleSuppliersVM GetEligibleSuppliersModel(SupplierInfoModel supplierInfo)
+        private SuppliersSumInfoVM GetSuppliersInfoAddrLatestTwoPurchaseInfo(SupplierInfoModel supplierInfo)
         {
             //从ERP中得到最新二次采购信息
-            var supplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierInfo.SupplierId);
+
+
             //// 获取供应商证书字典
             //var certificateDictionary = CertificateDictionary(supplierInfo.SupplierId);
-            EligibleSuppliersVM m = new EligibleSuppliersVM();
-            //return new EligibleSuppliersVM
-            //{
-            //    LastPurchaseDate = supplierLatestTwoPurchase[0].PurchaseDate.Trim().ToDate(),
-            //    UpperPurchaseDate = supplierLatestTwoPurchase[1].PurchaseDate.Trim().ToDate(),
-            //    PurchaseUser = supplierLatestTwoPurchase[0].PurchasePerson,
-            //    SupplierId = supplierInfo.SupplierId,
-            //    SupplierProperty = supplierInfo.SupplierProperty,
-            //    PurchaseType = supplierInfo.PurchaseType,
-            //    SupplierEmail = supplierInfo.SupplierEmail,
-            //    SupplierAddress = supplierInfo.SupplierAddress,
-            //    SupplierPrincipal = supplierInfo.SupplierPrincipal,
-            //    SupplierFaxNo = supplierInfo.SupplierFaxNo,
-            //    SupplierName = supplierInfo.SupplierName,
-            //    Remark = supplierInfo.Remark,
-            //    SupplierShortName = supplierInfo.SupplierShortName,
-            //    SupplierUser = supplierInfo.SupplierUser,
-            //    SupplierTel = supplierInfo.SupplierTel,
-            //    Id_key = supplierInfo.Id_Key,
-            //};
-            OOMaper.Mapper<SupplierInfoModel, EligibleSuppliersVM>(supplierInfo, m);
+            SuppliersSumInfoVM m = new SuppliersSumInfoVM();
+            OOMaper.Mapper<SupplierInfoModel, SuppliersSumInfoVM>(supplierInfo, m);
+            SupplierLatestTwoPurchaseCell LatestTwoPurchaseModel = new SupplierLatestTwoPurchaseCell();
 
+            //从ERP中得到最新二次采购信息
+            var supplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierInfo.SupplierId);
+            if (supplierLatestTwoPurchase != null)
+            {
+                LatestTwoPurchaseModel.LastPurchaseDate = supplierLatestTwoPurchase[0].PurchaseDate.Trim().ToDate();
+                LatestTwoPurchaseModel.UpperPurchaseDate = supplierLatestTwoPurchase[1].PurchaseDate.Trim().ToDate();
+                LatestTwoPurchaseModel.PurchaseUser = supplierLatestTwoPurchase[0].PurchasePerson.Trim();
+            }
+            OOMaper.Mapper<SupplierLatestTwoPurchaseCell, SuppliersSumInfoVM>(LatestTwoPurchaseModel, m);
             return m;
         }
         #endregion
     }
 
+    public class certificateName
+    {
+        /// <summary>
+        /// 供应商环境调查表
+        /// </summary>
+        public const string EnvironmentalInvestigation = "供应商环境调查表";
+        /// <summary>
+        /// 供应商基本资料表
+        /// </summary>
+        public const string SupplierBaseDocument = "供应商基本资料表";
+        /// <summary>
+        /// 供应商评鉴表
+        /// </summary>
+        public const string SupplierComment = "供应商评鉴表";
+        /// <summary>
+        /// 不使用童工申明
+        /// </summary>
+        public const string NotUseChildLabor = "不使用童工申明";
+        /// <summary>
+        /// PCN协议
+        /// </summary>
+        public const string PCN_Protocol = "PCN协议";
+        /// <summary>
+        /// 廉洁承诺书
+        /// </summary>
+        public const string HonestCommitment = "廉洁承诺书";
+        /// <summary>
+        /// 质量保证协议
+        /// </summary>
+        public const string QualityAssuranceProtocol = "质量保证协议";
+        /// <summary>
+        /// HSF保证书
+        /// </summary>
+        public const string HSF_Guarantee = "HSF保证书";
+        /// <summary>
+        /// REACH保证书
+        /// </summary>
+        public const string REACH_Guarantee = "REACH保证书";
+        /// <summary>
+        /// SVHC调查表
+        /// </summary>
+        public const string SVHC_Guarantee = "SVHC调查表";
+        /// <summary>
+        /// ISO14001
+        /// </summary>
+        public const string ISO9001 = "ISO14001";
+        /// <summary>
+        /// ISO9001
+        /// </summary>
+        public const string ISO14001 = "ISO9001";
+    }
 }
 

@@ -56,7 +56,7 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
         [TestMethod]
         public void GetSupplierQualifiedCertificateList()
         {
-            var datas = PurchaseService.PurSupplierManager.CertificateManager.GetSupplierQualifiedCertificateListBy("D04004");
+            var datas = PurchaseService.PurSupplierManager.CertificateManager.GetSuppplierInfoBy("D04004");
             if (datas == null) { Assert.Fail(); }
         }
         public void SuppliersSeasonAuditInfo()
