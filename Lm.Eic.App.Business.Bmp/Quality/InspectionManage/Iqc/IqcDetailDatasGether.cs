@@ -129,7 +129,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materailId"></param>
         /// <returns></returns>
-        public List<InspectionIqcDetailModel> GetIqcInspectionDetailModeDatasBy(string orderId, string materailId)
+        public List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderId, string materailId)
         {
             return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailOrderIdModelBy(orderId, materailId);
         }

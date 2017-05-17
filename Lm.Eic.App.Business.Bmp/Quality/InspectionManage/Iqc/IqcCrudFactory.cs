@@ -133,6 +133,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
+        public OpResult Update(InspectionIqcMasterModel model)
+        {
+            return irep.Update(e => e.OrderId == model.OrderId && e.MaterialId == model.MaterialId,
+                  f => new InspectionIqcMasterModel
+                  {
+                      InspectionItems = model.InspectionItems,
+                      InspectionResult = model.InspectionResult,
+                      InspectionStatus = model.InspectionStatus
+                  }).ToOpResult_Eidt(OpContext);
+        }
         /// <summary>
         /// 更新详细列表SQl语句
         /// </summary>

@@ -15,46 +15,54 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         public OpResult StoreInspectionIqcMasterModelForm(InspectionItemDataSummaryVM model)
         {
-            InspectionIqcMasterModel MasterModel = new InspectionIqcMasterModel()
+            InspectionIqcMasterModel masterModel = new InspectionIqcMasterModel();
+            OOMaper.Mapper<InspectionItemDataSummaryVM, InspectionIqcMasterModel>(model, masterModel);
+            masterModel.InspectionItems = model.InspectionItem;
+            masterModel.MaterialCount = model.MaterialInCount;
+            masterModel.FinishDate = DateTime.Now.Date;
+            masterModel.InspectionStatus = "未完成";
+            masterModel.InspectionResult = model.InspectionItemResult;
+            masterModel.OpSign = OpMode.Add;
+            if (IsExistOrderIdAndMaterailId(model.OrderId, model.MaterialId))
+                return ChangeMasterModelStatus(masterModel);
+
+            return InspectionManagerCrudFactory.IqcMasterCrud.Store(masterModel, true); ;
+        }
+        public bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
+        {
+            return InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(orderId, materialId);
+        }
+        public InspectionIqcMasterModel GetMasterModel(string orderId, string materialId)
+        {
+            return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(orderId, materialId);
+        }
+        /// <summary>
+        ///更新Master结果和状态
+        /// </summary>
+        /// <param name="masterModel"></param>
+        /// <param name="itemSumCount"></param>
+        private OpResult ChangeMasterModelStatus(InspectionIqcMasterModel masterModel)
+        {
+            var haveStoreMasterModel = GetMasterModel(masterModel.OrderId, masterModel.MaterialId);
+            if (haveStoreMasterModel.InspectionStatus != "未完成") return OpResult.SetSuccessResult("已保存", true);
+            string inspecitonItem = masterModel.InspectionItems.Trim();
+            if (!haveStoreMasterModel.InspectionItems.Contains(inspecitonItem))
+                masterModel.InspectionItems = haveStoreMasterModel.InspectionItems + "," + inspecitonItem;
+            /// 如果完成了，处理待审核状态 那就判断所有的测试项是不是 Pass
+            /// 测试所以项目只要有一项为 Ng 
+            /// Ng数大于0 那么就要判断为NG
+            var detailDatas = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailOrderIdModelBy(masterModel.OrderId, masterModel.MaterialId);
+            if (detailDatas != null && detailDatas.Count > 0)
             {
-                OrderId = model.OrderId,
-                MaterialId = model.MaterialId,
-                MaterialName = model.MaterialName,
-                MaterialSpec = model.MaterialSpec,
-                MaterialDrawId = model.MaterialDrawId,
-                MaterialSupplier = model.MaterialSupplier,
-                MaterialCount = model.MaterialInCount,
-                MaterialInDate = model.MaterialInDate,
-                InspectionMode = model.InspectionMode,
-                InspectionItems = model.InspectionItem,
-                FinishDate = DateTime.Now.Date,
-                InspectionStatus = "未完成",
-                InspectionResult = model.InspectionItemResult,
-                OpSign = OpMode.Add
-            };
-            if (InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(model.OrderId, model.MaterialId))
-            {
-                MasterModel = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(model.OrderId, model.MaterialId);
-                if (!MasterModel.InspectionItems.Contains(model.InspectionItem))
-                    MasterModel.InspectionItems += "," + model.InspectionItem;
-                if (model.InspectionItemSumCount == GetHaveFinishDataNumber(MasterModel.InspectionItems))
+                int itemSumCount = detailDatas.Count();
+                if (itemSumCount >= GetHaveFinishDataNumber(masterModel.InspectionItems))
                 {
-                    MasterModel.InspectionStatus = "待审核";
-                    /// 如果完成了，处理待审核状态 那就判断所有的测试项是不是 Pass
-                    /// 测试所以项目只要有一项为 Ng 
-                    /// Ng数大于0 那么就要判断为NG
-                    var detailDatas = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailOrderIdModelBy(model.OrderId, model.MachineId);
-                    if (detailDatas != null && detailDatas.Count > 0)
-                    {
-                        int DetailNgCount = detailDatas.Count(e => e.InspectionItemResult == "NG");
-                        ///测试所以项目只要有一项为 Ng 
-                        if (DetailNgCount >= 0)
-                            MasterModel.InspectionResult = "FAIL";
-                    }
+                    masterModel.InspectionStatus = "待审核";
                 }
-                MasterModel.OpSign = OpMode.Edit;
+                ///测试所以项目只要有一项为 Ng 
+                masterModel.InspectionResult = (detailDatas.Count(e => e.InspectionItemResult == "NG") > 0 ? "NG" : masterModel.InspectionResult);
             }
-            return InspectionManagerCrudFactory.IqcMasterCrud.Store(MasterModel, true); ;
+            return InspectionManagerCrudFactory.IqcMasterCrud.Update(masterModel);
         }
     }
 }
