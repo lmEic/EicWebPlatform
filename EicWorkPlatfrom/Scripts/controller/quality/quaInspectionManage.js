@@ -1119,7 +1119,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             })
         },
 
-        //
+        //依物料查询
         getMasterDatasByMaterialId: function () {
             vmManager.selectedFormStatus = null;
             vmManager.querySupplierId = null;
@@ -1132,7 +1132,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                 vmManager.dataSets = editDatas;
             })
         },
-        //
+        //依供应商查询
         getMasterDatasBySupplierId: function () {
 
             vmManager.selectedFormStatus = null;
@@ -1146,7 +1146,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                 vmManager.dataSets = editDatas;
             })
         },
-        //
+        //依抽检项查询
         getMasterDatasByInspectionItem: function () {
             vmManager.selectedFormStatus = null;
             vmManager.querySupplierId = null;
@@ -1185,17 +1185,6 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         refresh: function () {
             vmManager.isShowDetailWindow = false;
         },
-        showQuery: function () {
-            if (vmManager.isShowQuery === false) {
-                vmManager.isShowQuery = true;
-            }
-            if (vmManager.isShowQuery === true) {
-                vmManager.isShowQuery = false;
-            }
-        }
-
-
-
     };
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
