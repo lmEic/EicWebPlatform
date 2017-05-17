@@ -110,10 +110,10 @@
                                     <th>品号</th>
                                     <th>品名</th>
                                     <th>供应商</th>
-                                    <th>检测项目</th>
                                     <th>进货数量</th>
                                     <th>检测状态</th>
                                     <th>进货日期</th>
+                                    <th>结果</th>
                                     <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                 </tr>
                             </thead>
@@ -125,14 +125,15 @@
                                         <span title="规格:{{item.MaterialSpec}}">{{item.MaterialName}}</span>
                                     </td>
                                     <td>{{item.MaterialSupplier}}</td>
-                                    <td>{{item.InspectionItems}}</td>
                                     <td>{{item.MaterialCount}}</td>
                                     <td>
-                                        <span title="检测方式:{{item.InspectionMode}}，检测结果:{{item.InspctionResult}},检测日期:{{item.MaterialInDate}}">
+                                        <span title="检测方式:{{item.InspectionMode}}，检测日期:{{item.MaterialInDate}}">
                                             {{item.InspectionStatus}}
                                         </span>
                                     </td>
                                     <td>{{item.MaterialInDate}}</td>
+                                    <td>{{item.InspectionResult}}</td>
+
                                     <td>
                                         <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getDetailDatas(item)" ng-show="item.InspectionStatus !== '未完成'">明细</button>
                                         <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)" ng-show="item.InspectionStatus === '待审核'">审核</button>

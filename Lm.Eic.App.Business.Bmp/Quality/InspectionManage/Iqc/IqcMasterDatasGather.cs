@@ -15,7 +15,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         public OpResult StoreInspectionIqcMasterModelForm(InspectionItemDataSummaryVM model)
         {
-            InspectionIqcMasterModel MasterModel = new InspectionIqcMasterModel()
+            InspectionIqcMasterModel masterModel = new InspectionIqcMasterModel()
             {
                 OrderId = model.OrderId,
                 MaterialId = model.MaterialId,
@@ -34,12 +34,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             };
             if (InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(model.OrderId, model.MaterialId))
             {
-                MasterModel = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(model.OrderId, model.MaterialId);
-                if (!MasterModel.InspectionItems.Contains(model.InspectionItem))
-                    MasterModel.InspectionItems += "," + model.InspectionItem;
-                if (model.InspectionItemSumCount == GetHaveFinishDataNumber(MasterModel.InspectionItems))
+                var haveStoreMasterModel = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(model.OrderId, model.MaterialId);
+
+                if (!haveStoreMasterModel.InspectionItems.Contains(model.InspectionItem))
+                    masterModel.InspectionItems = haveStoreMasterModel.InspectionItems + "," + model.InspectionItem;
+                if (model.InspectionItemSumCount == GetHaveFinishDataNumber(masterModel.InspectionItems))
                 {
-                    MasterModel.InspectionStatus = "待审核";
+                    masterModel.InspectionStatus = "待审核";
                     /// 如果完成了，处理待审核状态 那就判断所有的测试项是不是 Pass
                     /// 测试所以项目只要有一项为 Ng 
                     /// Ng数大于0 那么就要判断为NG
@@ -49,12 +50,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         int DetailNgCount = detailDatas.Count(e => e.InspectionItemResult == "NG");
                         ///测试所以项目只要有一项为 Ng 
                         if (DetailNgCount >= 0)
-                            MasterModel.InspectionResult = "FAIL";
+                            masterModel.InspectionResult = "NG";
                     }
                 }
-                MasterModel.OpSign = OpMode.Edit;
+                masterModel.OpSign = OpMode.Edit;
             }
-            return InspectionManagerCrudFactory.IqcMasterCrud.Store(MasterModel, true); ;
+            return InspectionManagerCrudFactory.IqcMasterCrud.Store(masterModel, true); ;
         }
     }
 }
