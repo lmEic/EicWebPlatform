@@ -168,6 +168,8 @@
     <Compile Include="Controllers\Purchase\PurchaseController.cs" />
     <Compile Include="Controllers\Product\ShippingController.cs" />
     <Compile Include="Controllers\SystemManage\SysConfigController.cs" />
+    <Compile Include="Controllers\ToolsOnLine\ToolsOnLineController.cs" />
+    <Compile Include="Controllers\ToolsOnLine\TolOfficeAssistantController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -413,6 +415,8 @@
     <Content Include="Scripts\controller\shippingApp.js" />
     <Content Include="Scripts\controller\sysmanage\sysConfigManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysmanageApp.js" />
+    <Content Include="Scripts\controller\toolsOnLine\tolOfficeAssistant.js" />
+    <Content Include="Scripts\controller\toolsOnLine\toolsOnlineApp.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
@@ -1344,6 +1348,9 @@
     <Content Include="Views\QuaRmaManage\CreateRmaForm.cshtml" />
     <Content Include="Views\QuaRmaManage\RmaInspectionHandle.cshtml" />
     <Content Include="Views\QuaRmaManage\RmaInputDescription.cshtml" />
+    <Content Include="Views\TolOfficeAssistant\CollaborateContactLib.cshtml" />
+    <Content Include="Views\ToolsOnLine\Index.cshtml" />
+    <Content Include="Views\TolOfficeAssistant\WorkTaskManage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

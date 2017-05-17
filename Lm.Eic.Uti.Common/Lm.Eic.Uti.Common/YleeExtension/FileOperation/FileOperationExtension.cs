@@ -81,7 +81,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// 比较新旧文档是否相同，如果相同，则删除旧文档
         /// </summary>
         /// <param name="fileName"></param>
-        /// <param name="newFileName"></param>
         /// <param name="rootPath"></param>
         /// <returns></returns>
         public static void DeleteExistFile(this string fileName, string rootPath)
@@ -200,7 +199,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <param name="directoryPath">文件夹路径</param>
         public static void ExistDirectory(this string directoryPath)
         {
-            directoryPath = directoryPath.EndsWith("\\") ? directoryPath : directoryPath + "\\";
+            directoryPath = directoryPath.EndsWith("\\", StringComparison.CurrentCulture) ? directoryPath : directoryPath + "\\";
             if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
         }
 
@@ -635,7 +634,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <summary>
         /// 创建Excel文件下载模型
         /// </summary>
-        /// <param name="dlfm"></param>
         /// <param name="ms"></param>
         /// <param name="fileName"></param>
         /// <returns></returns>

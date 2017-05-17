@@ -180,7 +180,12 @@ var leeHelper = (function () {
         //质量抽样检验控制器
         quaInspectionManage: 'QuaInspectionManage',
         //质量RMA控制器
-        quaRmaManage: 'QuaRmaManage'
+        quaRmaManage: 'QuaRmaManage',
+        //办公助手控制器
+        TolOfficeAssistant: 'TolOfficeAssistant',
+        ///在线工具
+        ToolsOnLine: 'ToolsOnLine',
+
     };
     return {
         ///控制器名称
