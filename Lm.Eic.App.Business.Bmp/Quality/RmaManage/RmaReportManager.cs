@@ -135,7 +135,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 if (result.Result && model.OpSign == OpMode.Add)
                 {
                     RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, RmaHandleStatus.BusinessStatus);
-                    RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, model.ProductId);
+                    RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, model.ProductId, model.ReturnHandleOrder);
                 }
 
                 return result;
@@ -175,7 +175,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             if (result.Result && model.OpSign == OpMode.Add)
             {
                 RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, RmaHandleStatus.InspecitonStatus);
-                RmaCurdFactory.RmaInspectionManage.UpdateHandleStatus(model.RmaId, model.ProductId);
+                RmaCurdFactory.RmaInspectionManage.UpdateHandleStatus(model.ParameterKey);
             }
             return result;
         }

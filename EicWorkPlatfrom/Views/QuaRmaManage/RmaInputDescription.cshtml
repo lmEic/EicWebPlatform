@@ -18,14 +18,15 @@
         <div class="h-split"></div>
         <div class="row">
             <div class="col-md-2">
-                客户简称：<label class="label label-default">{{rmavm.CustomerShortName}}</label>
-            </div>
-            <div class="col-md-2">
-                品名：<label class="label label-success">{{rmavm.ProductName}}</label>
-            </div>
-            <div class="col-md-8">
                 RMA单号：<label class="label label-info">{{rmavm.RmaId}}</label>
             </div>
+            <div class="col-md-4">
+                编号/客户简称：<label class="label label-default">{{rmavm.CustomerShortName}}</label>
+            </div>
+            <div class="col-md-4">
+                品名：<label class="label label-success">{{rmavm.ProductName}}</label>
+            </div>
+
         </div>
         <div class="h-split"></div>
         <div class="row">
@@ -149,6 +150,7 @@
                         <thead>
                             <tr class="info">
                                 <th>ERP单号</th>
+                                <th>料号</th>
                                 <th>原出货日期</th>
                                 <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                             </tr>
@@ -156,10 +158,14 @@
                         <tbody>
                             <tr ng-repeat="item in vmManager.dataSets track by $index">
                                 <td>{{item.ReturnHandleOrder}}</td>
+                                <td>{{item.ProductId}}</td>
                                 <td>{{item.ProductsShipDate}}</td>
                                 <td>
                                     <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
                                         <i class="fa fa-pencil-square-o"></i>
+                                    </button>
+                                    <button class="btn btn-xs btn-success" ng-click="operate.copyItem(item)" title="复制">
+                                        <i class="fa fa-files-o"></i>
                                     </button>
                                 </td>
                             </tr>
