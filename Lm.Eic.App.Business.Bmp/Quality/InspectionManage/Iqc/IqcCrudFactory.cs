@@ -334,9 +334,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
 
-        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string materialId)
+        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderid, string materialId)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId).Distinct().ToList();
+            return irep.Entities.Where(e => e.MaterialId == materialId && e.OrderId != orderid).Distinct().ToList();
         }
 
         ///// <summary>

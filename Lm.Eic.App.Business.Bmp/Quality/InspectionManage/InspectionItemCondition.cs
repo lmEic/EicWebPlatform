@@ -13,7 +13,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<InspectionIqcItemConfigModel> getIqcNeedInspectionItemDatas(string materialId, DateTime materialInDate)
+        public List<InspectionIqcItemConfigModel> getIqcNeedInspectionItemDatas(string orderId, string materialId, DateTime materialInDate)
         {
             List<InspectionIqcItemConfigModel> needInsepctionItems = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
             /// 针对所有需测试的项
@@ -22,7 +22,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             bool IsAddAllMaterialId = true;
 
             if (needInsepctionItems == null || needInsepctionItems.Count <= 0) return new List<InspectionIqcItemConfigModel>();
-            var isAddOrRemoveItemDic = JudgeIsAddOrRemoveItemDic(materialInDate, materialId);
+            var isAddOrRemoveItemDic = JudgeIsAddOrRemoveItemDic(orderId, materialId, materialInDate);
             needInsepctionItems.ForEach(m =>
             {
                 if (isAddOrRemoveItemDic.ContainsKey(m.InspectionItem))
@@ -37,6 +37,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 {
                     IsAddAllMaterialId = false;
                 }
+
             });
             ///判定是否应该 添加 AllMaterial
             if (IsAddAllMaterialId)
@@ -45,10 +46,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 {
                     if (isAddOrRemoveItemDic["AllMaterialId"])
                     {
-                        needInsepctionItems.Add(item);
+                        if (item != null)
+                            needInsepctionItems.Add(item);
                     }
                 }
             }
+            
             return needInsepctionItems;
         }
 
@@ -58,11 +61,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="materialId">物料料号</param>
         /// <param name="materialInDate">当前物料进料日期</param>
         /// <returns></returns>
-        public Dictionary<string, bool> JudgeIsAddOrRemoveItemDic(DateTime materialInDate, string materialId)
+        public Dictionary<string, bool> JudgeIsAddOrRemoveItemDic(string orderId, string materialId, DateTime materialInDate)
         {
             /// true 要删除的 
             Dictionary<string, bool> itemDic = new Dictionary<string, bool>();
-            var datas = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailDatasBy(materialId);
+            var datas = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailDatasBy(orderId, materialId);
             itemDic.Add("盐雾测试", JudgeYwTest(materialInDate, datas));
             itemDic.Add("全尺寸", JudgeMaterialTwoYearIsRecord(datas));
             itemDic.Add("ROHS", false);
