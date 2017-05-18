@@ -18,20 +18,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             get { return OBulider.BuildInstance<RmaReportInitiateCrud>(); }
         }
 
-        internal static RmaBussesDescriptionCrud RmaBussesDescription
+        internal static RmaBusinessDescriptionCrud RmaBussesDescription
         {
-            get { return OBulider.BuildInstance<RmaBussesDescriptionCrud>(); }
+            get { return OBulider.BuildInstance<RmaBusinessDescriptionCrud>(); }
         }
-
 
         internal static RmaInspectionManageCrud RmaInspectionManage
         {
             get { return OBulider.BuildInstance<RmaInspectionManageCrud>(); }
         }
-
-
     }
-
     internal class RmaReportInitiateCrud : CrudBase<RmaReportInitiateModel, IRmaReportInitiateRepository>
     {
         public RmaReportInitiateCrud() : base(new RmaReportInitiateRepository(), "创建表单")
@@ -39,17 +35,31 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         #region  CRUD
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.UpDate, Update);
+            this.AddOpItem(OpMode.Add, Add);
+            this.AddOpItem(OpMode.Edit, Eidt);
         }
-
-        OpResult AddModel(RmaReportInitiateModel model)
+        internal OpResult Add(RmaReportInitiateModel model)
         {
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+            if (!IsExist(model.RmaId))
+            {
+                SetModelVaule(model, RmaHandleStatus.InitiateStatus);
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            }
+            return OpResult.SetErrorResult("该RMA单号记录已经存在");
         }
-        OpResult Update(RmaReportInitiateModel model)
+        internal OpResult Eidt(RmaReportInitiateModel model)
         {
+            SetModelVaule(model, model.RmaIdStatus);
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+        private void SetModelVaule(RmaReportInitiateModel model, string InitiateStatus)
+        {
+            if (model.RmaId != null && model.RmaId.Length == 8)
+            {
+                model.RmaYear = model.RmaId.Substring(1, 2);
+                model.RmaMonth = model.RmaId.Substring(3, 2);
+            }
+            model.RmaIdStatus = InitiateStatus;
         }
         #endregion
 
@@ -67,52 +77,55 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             return "R" + nowYaer + nowMonth + count.ToString("000");
 
         }
-
-
         internal List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
-
-
         internal bool IsExist(string rmaId)
         {
-
             return irep.IsExist(e => e.RmaId == rmaId);
         }
-        internal List<RmaReportInitiateModel> getRmaReportInitiateDatas(string year, string month)
+        internal List<RmaReportInitiateModel> GetRmaReportInitiateDatas(string year, string month)
         {
             return irep.Entities.Where(e => e.RmaYear == year && e.RmaMonth == month).ToList();
+        }
+        /// <summary>
+        /// 改Rma状态
+        /// </summary>
+        /// <param name="rmaId"></param>
+        /// <param name="rmaIdStatus"></param>
+        /// <returns></returns>
+        internal OpResult UpdateHandleStatus(string rmaId, string handleStatus)
+        {
+            return irep.Update(e => e.RmaId == rmaId, u => new RmaReportInitiateModel
+            {
+                RmaIdStatus = handleStatus
+            }).ToOpResult_Eidt(OpContext);
         }
         #endregion
 
     }
-
-
-
-    internal class RmaBussesDescriptionCrud : CrudBase<RmaBussesDescriptionModel, IRmaBussesDescriptionRepository>
+    internal class RmaBusinessDescriptionCrud : CrudBase<RmaBusinessDescriptionModel, IRmaBussesDescriptionRepository>
     {
-        public RmaBussesDescriptionCrud() : base(new RmaBussesDescriptionRepository(), "记录登记表单")
+        public RmaBusinessDescriptionCrud() : base(new RmaBussesDescriptionRepository(), "登记表单")
         {
         }
         #region  CRUD
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.UpDate, Update);
+            this.AddOpItem(OpMode.Edit, UpdateModel);
         }
 
-        OpResult AddModel(RmaBussesDescriptionModel model)
+        OpResult AddModel(RmaBusinessDescriptionModel model)
         {
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+            if (!IsExist(model.RmaId, model.ProductId))
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            return OpResult.SetErrorResult("该记录已经存在！");
         }
-        OpResult Update(RmaBussesDescriptionModel model)
+        OpResult UpdateModel(RmaBusinessDescriptionModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
-        }
-        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatas(string rmaId)
-        {
-            return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
         #endregion
 
@@ -121,48 +134,65 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="rmaId"></param>
         /// <returns></returns>
-        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatasBy(string rmaId)
+        internal List<RmaBusinessDescriptionModel> GetRmaBussesDescriptionDatasBy(string rmaId)
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
 
-
-
+        internal bool IsExist(string rmaid, string productId)
+        {
+            return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId);
+        }
+        internal OpResult UpdateHandleStatus(string rmaId, string productId)
+        {
+            return irep.Update(e => e.RmaId == rmaId && e.ProductId == productId,
+                new RmaBusinessDescriptionModel
+                {
+                    HandleStatus = RmaHandleStatus.BusinessStatus
+                }).ToOpResult_Eidt(OpContext);
+        }
     }
-
 
     internal class RmaInspectionManageCrud : CrudBase<RmaInspectionManageModel, IRmaInspectionManageRepository>
     {
-        public RmaInspectionManageCrud() : base(new RmaInspectionManageRepository(), "Ram检验处理")
+        public RmaInspectionManageCrud() : base(new RmaInspectionManageRepository(), "检验处理")
         {
         }
+
         #region  CRUD
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add, AddModel);
-            this.AddOpItem(OpMode.UpDate, Update);
+            this.AddOpItem(OpMode.Add, Add);
+            this.AddOpItem(OpMode.Edit, Update);
         }
-
-        OpResult AddModel(RmaInspectionManageModel model)
+        OpResult Add(RmaInspectionManageModel model)
         {
-            return irep.Insert(model).ToOpResult_Add(OpContext);
+            if (!IsExist(model.RmaId, model.ProductId))
+                return irep.Insert(model).ToOpResult_Add(OpContext);
+            return OpResult.SetErrorResult("该记录已经存在！");
         }
-
-
-
         OpResult Update(RmaInspectionManageModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
         #endregion
 
-        public List<RmaInspectionManageModel> GetInspectionManageDatasBy(string rmaId)
+        internal List<RmaInspectionManageModel> GetInspectionManageDatasBy(string rmaId)
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
 
-
-
+        internal OpResult UpdateHandleStatus(string rmaId, string productId)
+        {
+            if (string.IsNullOrEmpty(rmaId) || string.IsNullOrEmpty(productId)) return OpResult.SetErrorResult("ramId或者productId不能为空!");
+            return irep.Update(f => f.RmaId == rmaId && f.ProductId == productId, u => new RmaInspectionManageModel
+            {
+                HandleStatus = RmaHandleStatus.InspecitonStatus
+            }).ToOpResult_Eidt(OpContext);
+        }
+        internal bool IsExist(string rmaId, string productId)
+        {
+            return irep.IsExist(e => e.RmaId == rmaId && e.ProductId == productId);
+        }
     }
-
 }

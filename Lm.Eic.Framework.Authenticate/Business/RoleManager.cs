@@ -57,7 +57,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
             {
                 record = irep.Update(f => f.RoleId == role.RoleId, role);
             }
-            return OpResult.SetResult("加入角色成功!", record > 0, role.Id_Key);
+            return OpResult.SetSuccessResult("加入角色成功!", record > 0, role.Id_Key);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
         public OpResult StoreMatchRoles(List<UserMatchRoleModel> matchRoles)
         {
             if (matchRoles == null || matchRoles.Count == 0)
-                return OpResult.SetResult("没有要添加的数据", false);
+                return OpResult.SetSuccessResult("没有要添加的数据", false);
             int record = 0;
             matchRoles = matchRoles.FindAll(e => e.OpSign != "init");
             matchRoles.ForEach(role =>
@@ -124,7 +124,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
                         record += irep.Delete(entity);
                 }
             });
-            return OpResult.SetResult("保存用户添加角色数据成功!", record > 0);
+            return OpResult.SetSuccessResult("保存用户添加角色数据成功!", record > 0);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
         /// <returns></returns>
         public OpResult Store(List<RoleMatchModuleModel> entities)
         {
-            if (entities == null || entities.Count == 0) return OpResult.SetResult("entities can't be null", false);
+            if (entities == null || entities.Count == 0) return OpResult.SetSuccessResult("entities can't be null", false);
             int record = 0;
             entities = entities.FindAll(e => e.OpSign != "init");
             entities.ForEach(mdl =>
@@ -182,7 +182,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
                     record += irep.Delete(d => d.PrimaryKey == mdl.PrimaryKey);
                 }
             });
-            return OpResult.SetResult("保存数据成功", record > 0);
+            return OpResult.SetSuccessResult("保存数据成功", record > 0);
         }
 
         /// <summary>

@@ -87,11 +87,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// 生成厂服领取清单
         /// </summary>
         /// <returns></returns>
-        public MemoryStream BuildReceiveWorkClothesList()
+        public DownLoadFileModel DownLaodBuildReceiveWorkClothesFile()
         {
+
+            if (_workClothesmangeModelList == null || _workClothesmangeModelList.Count() <= 0) return new DownLoadFileModel(2).Default();
             var dataGroupping = _workClothesmangeModelList.GetGroupList<WorkClothesManageModel>("ReceiveMonth");
             //生成厂服领取清单
-          return   dataGroupping.ExportToExcelMultiSheets<WorkClothesManageModel>(fieldmappping);
+            return dataGroupping.ExportToExcelMultiSheets<WorkClothesManageModel>(fieldmappping).CreateDownLoadExcelFileModel("厂服领取清单");
         }
 
     }
@@ -146,11 +148,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <summary>
         /// 特别的部门
         /// </summary>
-        private List<string>SpecialDepartmentList
+        private List<string> SpecialDepartmentList
         {
-            get { return new List<string> { "制七课" , "制六课" ,"制三课" ,"生技课" }; }
+            get { return new List<string> { "制七课", "制六课", "制三课", "生技课" }; }
         }
-       
+
         public bool IsCanOldChangeNew(WorkClothesManageModel model)
         {
             // "以旧换旧"不用判定
@@ -178,13 +180,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
                 throw new Exception(ex.InnerException.Message);
             }
         }
-      
+
         /// <summary>
         /// 以旧换新的条件
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private  bool IsOldChangeNew(WorkClothesManageModel model)
+        private bool IsOldChangeNew(WorkClothesManageModel model)
         {
             var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = model.WorkerId, SearchMode = 1 });
             DateTime yearDate = DateTime.Now.Date.AddYears(-2);
@@ -213,17 +215,17 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private bool IsReeviceNow(WorkClothesManageModel model)
         {
-            int count=GetSumPerCount(model);
+            int count = GetSumPerCount(model);
             //冬季厂服 不是特别的部门 只能领二件  其它都可以取三件
             if (model.ProductName == "冬季厂服" && !SpecialDepartmentList.Contains(model.Department))
             {
-                return count <2;
+                return count < 2;
             }
-            else return  count < 3;
+            else return count < 3;
         }
-     
-     
-   
+
+
+
 
         #region     store
         /// <summary>
@@ -249,11 +251,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
 
             if (irep.IsExist(m => m.Id_Key == model.Id_Key))
             {
-                return OpResult.SetResult("此数据已存在！");
+                return OpResult.SetErrorResult("此数据已存在！");
             }
-            if ( !IsCanOldChangeNew(model))
+            if (!IsCanOldChangeNew(model))
             {
-                return OpResult.SetResult("该用户暂无资格以旧换新！");
+                return OpResult.SetErrorResult("该用户暂无资格以旧换新！");
             }
             return irep.Insert(model).ToOpResult_Add("添加完成", model.Id_Key);
         }
@@ -275,7 +277,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private OpResult UpDateWorkClothesManageRecord(WorkClothesManageModel model)
         {
-            OpResult result = OpResult.SetResult("未执行任何修改");
+            OpResult result = OpResult.SetErrorResult("未执行任何修改");
             if (model == null) return result;
             return result;
 

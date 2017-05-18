@@ -88,7 +88,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal OpResult StoreInspectionItemConfigDatas(List<InspectionIqcItemConfigModel> modeldatas)
         {
-            OpResult opResult = OpResult.SetResult("未执行任何操作！");
+            OpResult opResult = OpResult.SetErrorResult("未执行任何操作！");
             SetFixFieldValue(modeldatas, OpMode.Add);
             int i = 0;
             //如果存在 就修改   
@@ -133,6 +133,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
+        public OpResult Update(InspectionIqcMasterModel model)
+        {
+            return irep.Update(e => e.OrderId == model.OrderId && e.MaterialId == model.MaterialId,
+                  f => new InspectionIqcMasterModel
+                  {
+                      InspectionItems = model.InspectionItems,
+                      InspectionResult = model.InspectionResult,
+                      InspectionStatus = model.InspectionStatus
+                  }).ToOpResult_Eidt(OpContext);
+        }
         /// <summary>
         /// 更新详细列表SQl语句
         /// </summary>
@@ -162,13 +172,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.MaterialId == materialId);
         }
-        internal bool IsExistOrderIdAndMaterailId(string orderId, string materialId, string InspectionIqcDetas = null)
+        internal bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
         {
-            bool returnBool = irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId);
-            if (InspectionIqcDetas != null && InspectionIqcDetas != string.Empty)
-                return irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId && e.InspectionStatus.Contains(InspectionIqcDetas));
-            else return returnBool;
+            return irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId);
         }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -209,7 +218,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private OpResult DeleteIqcInspectionDetail(InspectionIqcDetailModel model)
         {
             var oldmodel = GetIqcOldDetailModelBy(model);
-            if (oldmodel == null) return OpResult.SetResult("此项不存在，删除失败", false);
+            if (oldmodel == null) return OpResult.SetSuccessResult("此项不存在，删除失败", false);
             model.Id_Key = oldmodel.Id_Key;
             return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
         }
@@ -218,7 +227,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             // 先前判定是否存在
             var oldmodel = GetIqcOldDetailModelBy(model);
-            if (oldmodel == null) return OpResult.SetResult("此项不存在，修改失败", false);
+            if (oldmodel == null) return OpResult.SetSuccessResult("此项不存在，修改失败", false);
             model.Id_Key = oldmodel.Id_Key;
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -325,11 +334,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
 
-        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string materialId)
+        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderid, string materialId)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId).Distinct().ToList();
+            return irep.Entities.Where(e => e.MaterialId == materialId && e.OrderId != orderid).Distinct().ToList();
         }
-        
+
         ///// <summary>
         /////  判定些物料在二年内是否有录入记录 
         ///// </summary>

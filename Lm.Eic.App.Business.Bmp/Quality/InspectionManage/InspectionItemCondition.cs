@@ -13,23 +13,45 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        public List<InspectionIqcItemConfigModel> getIqcNeedInspectionItemDatas(string materialId, DateTime materialInDate)
+        public List<InspectionIqcItemConfigModel> getIqcNeedInspectionItemDatas(string orderId, string materialId, DateTime materialInDate)
         {
             List<InspectionIqcItemConfigModel> needInsepctionItems = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
-            if (needInsepctionItems == null || needInsepctionItems.Count <= 0) return new List<InspectionIqcItemConfigModel>();
-            var IsAddOrRemoveItemDic = JudgeIsAddOrRemoveItemDic(materialInDate, needInsepctionItems);
+            /// 针对所有需测试的项
+            var item = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy("AllMaterialId").FirstOrDefault();
+            if (item != null) item.MaterialId = materialId;
+            bool IsAddAllMaterialId = true;
 
+            if (needInsepctionItems == null || needInsepctionItems.Count <= 0) return new List<InspectionIqcItemConfigModel>();
+            var isAddOrRemoveItemDic = JudgeIsAddOrRemoveItemDic(orderId, materialId, materialInDate);
             needInsepctionItems.ForEach(m =>
             {
-
-                if (IsAddOrRemoveItemDic.ContainsKey(m.InspectionItem))
+                if (isAddOrRemoveItemDic.ContainsKey(m.InspectionItem))
                 {
-                    if (IsAddOrRemoveItemDic[m.InspectionItem])
+                    if (isAddOrRemoveItemDic[m.InspectionItem])
                     {
                         needInsepctionItems.Remove(m);
                     }
                 }
+                ///是否包函 ROHS  如果不包括  依条件添加
+                if (m.InspectionItem.Contains("ROHS"))
+                {
+                    IsAddAllMaterialId = false;
+                }
+
             });
+            ///判定是否应该 添加 AllMaterial
+            if (IsAddAllMaterialId)
+            {
+                if (isAddOrRemoveItemDic.ContainsKey("AllMaterialId"))
+                {
+                    if (isAddOrRemoveItemDic["AllMaterialId"])
+                    {
+                        if (item != null)
+                            needInsepctionItems.Add(item);
+                    }
+                }
+            }
+            
             return needInsepctionItems;
         }
 
@@ -39,42 +61,49 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="materialId">物料料号</param>
         /// <param name="materialInDate">当前物料进料日期</param>
         /// <returns></returns>
-        public Dictionary<string, bool> JudgeIsAddOrRemoveItemDic(DateTime materialInDate, List<InspectionIqcItemConfigModel> items)
+        public Dictionary<string, bool> JudgeIsAddOrRemoveItemDic(string orderId, string materialId, DateTime materialInDate)
         {
-
-            return null;
+            /// true 要删除的 
+            Dictionary<string, bool> itemDic = new Dictionary<string, bool>();
+            var datas = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailDatasBy(orderId, materialId);
+            itemDic.Add("盐雾测试", JudgeYwTest(materialInDate, datas));
+            itemDic.Add("全尺寸", JudgeMaterialTwoYearIsRecord(datas));
+            itemDic.Add("ROHS", false);
+            itemDic.Add("NOT ROHS", true);
+            itemDic.Add("AllMaterialId", JudgeROHSTest(datas));
+            return itemDic;
         }
 
 
 
         /// <summary>
-        /// 盐雾测试
+        /// 盐雾测试  false(要测)  ture（不要测删除）
         /// </summary>
-        /// <param name="materialInDate"></param>
-        /// <param name="item"></param>
+        /// <param name="materialInDate">进货日期</param>
+        /// <param name="Datas">抽样的数据</param>
         /// <returns></returns>
-        private bool JudgeYwTest(DateTime materialInDate, InspectionIqcItemConfigModel item)
+        private bool JudgeYwTest(DateTime materialInDate, List<InspectionIqcDetailModel> datas)
         {
             try
             {
                 //调出此物料所有打印记录项
-                var inspectionItemsRecords = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailDatasBy(item.MaterialId);
+
                 //如果第一次打印 
-                if (inspectionItemsRecords == null | inspectionItemsRecords.Count() <= 0)
-                    return true;
+                if (datas == null | datas.Count() <= 0)
+                    return false;
                 // 进料日期后退30天 抽测打印记录
-                var inspectionItemsMonthRecord = (from t in inspectionItemsRecords
+                var inspectionItemsMonthRecord = (from t in datas
                                                   where t.MaterialInDate >= (materialInDate.AddDays(-30))
                                                         & t.MaterialInDate <= materialInDate
                                                   select t.InspecitonItem).Distinct<string>().ToList();
                 //没有 测
-                if (inspectionItemsMonthRecord == null) return true;
-                // 有  每项中是否有测过  盐雾测试
+                if (inspectionItemsMonthRecord == null) return false;
+                // 有  每项中是否有测过  盐雾测试 如果有  侧不用测试
                 foreach (var n in inspectionItemsMonthRecord)
                 {
-                    if (n.Contains("盐雾")) return false;
+                    if (n.Contains("盐雾")) return true;
                 }
-                return true;
+                return false;
             }
             catch (Exception ex)
             {
@@ -88,12 +117,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="materialInDate"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        private bool JudgeMaterialTwoYearIsRecord(InspectionIqcItemConfigModel item)
+        private bool JudgeMaterialTwoYearIsRecord(List<InspectionIqcDetailModel> datas)
         {
-            var inspectionItemsRecords = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailDatasBy(item.MaterialId);
-            if (inspectionItemsRecords == null | inspectionItemsRecords.Count() <= 0)
+
+            if (datas == null | datas.Count() <= 0)
                 return false;
-            var returnitem = inspectionItemsRecords.Where(e => e.MaterialInDate >= DateTime.Now.AddYears(-2));
+            var returnitem = datas.Where(e => e.MaterialInDate >= DateTime.Now.AddYears(-2));
             if (returnitem != null && returnitem.Count() > 0)
                 return true;
             return false;
@@ -105,9 +134,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="item"></param>
         /// <returns></returns>
 
-        private bool JudgeROHSTest(InspectionIqcItemConfigModel item)
+        private bool JudgeROHSTest(List<InspectionIqcDetailModel> datas)
         {
-            return true;
+            if (datas == null | datas.Count() <= 0)
+                return true;
+            if (datas.Count() / 2 == 0)
+                return true;
+            else return false;
         }
         /// <summary>
         ///ROT抽样规则 
@@ -119,5 +152,5 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return true;
         }
     }
-        
+
 }

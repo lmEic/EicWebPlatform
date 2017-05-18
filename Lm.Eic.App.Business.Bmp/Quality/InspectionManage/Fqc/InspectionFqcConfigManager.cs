@@ -24,8 +24,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public OpResult IsExistFqcConfigMaterailId(string materailId)
         {
             bool isexixt = InspectionManagerCrudFactory.FqcItemConfigCrud.IsExistFqcConfigmaterailId(materailId);
-            OpResult opResult = OpResult.SetResult("存在", false);
-            if (isexixt) opResult = OpResult.SetResult("此物料料号已经存在", true);
+            OpResult opResult = OpResult.SetSuccessResult("存在", false);
+            if (isexixt) opResult = OpResult.SetSuccessResult("此物料料号已经存在", true);
             return opResult;
         }
         /// <summary>

@@ -67,14 +67,16 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public FileResult ExoportAttendanceDatasToExcel(DateTime qryDate)
         {
-            var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(qryDate);
-            return this.ExportToExcel(ms, qryDate.ToShortDateString(), "考勤数据-" + qryDate.ToShortDateString());
+            ///excel
+            var dlfm = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(qryDate);
+            return this.DownLoadFile(dlfm);
         }
         [NoAuthenCheck]
         public FileResult ExoportAttendanceMonthDatasToExcel(string yearMonth)
         {
-            var ms = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(yearMonth);
-            return this.ExportToExcel(ms, yearMonth, "考勤数据-" + yearMonth);
+            ///excel
+            var dlfm = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(yearMonth);
+            return this.DownLoadFile(dlfm);
         }
         /// <summary>
         /// 请假管理

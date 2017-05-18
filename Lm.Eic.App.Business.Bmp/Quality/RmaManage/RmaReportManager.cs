@@ -1,6 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Quanity;
-using Lm.Eic.App.Erp.DbAccess.CopManageDb;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.App.Erp.Bussiness.CopManage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,20 @@ using System.Text;
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
     /// <summary>
-    /// Ram初始数据处理器
+    /// Rma进度状态
     /// </summary>
-    public class RmaReportInitiateProcessor
+    public class RmaHandleStatus
     {
-
+        public const string InitiateStatus = "未结案";
+        public const string BusinessStatus = "业务处理中";
+        public const string InspecitonStatus = "品保处理中";
+        public const string FinishStatus = "已结案";
+    }
+    /// <summary>
+    /// Ram表单创建器
+    /// </summary>
+    public class RmaReportCreator
+    {
         /// <summary>
         /// 自动生成RmaId编号
         /// </summary>
@@ -29,26 +38,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public OpResult StoreRamReortInitiate(RmaReportInitiateModel model)
         {
-            if (model == null) return null;
-            if (RmaCurdFactory.RmaReportInitiate.IsExist(model.RmaId))
-            {
-                var oldmodel = RmaCurdFactory.RmaReportInitiate.GetInitiateDatas(model.RmaId).FirstOrDefault();
-                model.RmaMonth = oldmodel.RmaMonth;
-                model.RmaYear = oldmodel.RmaYear;
-                model.Id_Key = oldmodel.Id_Key;
-                model.RmaIdStatus = oldmodel.RmaIdStatus;
-                model.OpSign = OpMode.UpDate;
-            }
-            else
-            {
-                if (model.RmaId != null && model.RmaId.Length == 8)
-                {
-                    model.RmaYear = model.RmaId.Substring(1, 2);
-                    model.RmaMonth = model.RmaId.Substring(3, 2);
-                }
-                model.RmaIdStatus = "未结案";
-                model.OpSign = OpMode.Add;
-            }
             return RmaCurdFactory.RmaReportInitiate.Store(model);
         }
         /// <summary>
@@ -65,7 +54,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="yearMonth">yyyyMM</param>
         /// <returns></returns>
-        public List<RmaReportInitiateModel> getRmaReportInitiateDatasBy(string yearMonth)
+        public List<RmaReportInitiateModel> GetRmaReportInitiateDatasBy(string yearMonth)
         {
             try
             {
@@ -73,54 +62,56 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 //201701
                 string year = yearMonth.Substring(0, 4);
                 string month = yearMonth.Substring(4, 2);
-                return RmaCurdFactory.RmaReportInitiate.getRmaReportInitiateDatas(year, month);
+                return RmaCurdFactory.RmaReportInitiate.GetRmaReportInitiateDatas(year, month);
             }
-            catch (Exception es)
+            catch (Exception ex)
             {
-                throw new Exception(es.InnerException.Message);
+                throw new Exception(ex.Message);
             }
         }
     }
     /// <summary>
     /// Rma单业务部门操作处理器
     /// </summary>
-    public class RmaBussesDescriptionProcessor
+    public class RmaBusinessDescriptionProcessor
     {
         /// <summary>
         /// 通过RmaId，得到业务处理数据
         /// </summary>
         /// <param name="RmaId"></param>
         /// <returns></returns>
-        public List<RmaBussesDescriptionModel> GetRmaBussesDescriptionDatasBy(string RmaId)
+        public List<RmaBusinessDescriptionModel> GetRmaBusinessDescriptionDatasBy(string rmaId)
         {
-            return RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(RmaId);
+            if (rmaId != null && rmaId == string.Empty) return null;
+            return RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(rmaId);
         }
         /// <summary>
         /// 通过退料单或换货单得到相应的物料信息
         /// </summary>
         /// <param name="returnHandleOrder">退货单</param>
         /// <returns></returns>
-        public List<RmaERPBusseeInfoModel> GetErpBussesInfoDatasBy(string returnHandleOrder)
+        public List<RmaRetrunOrderInfoModel> GetErpBusinessInfoDatasBy(string returnHandleOrder)
         {
             try
             {
-                List<RmaERPBusseeInfoModel> returnDatas = new List<RmaERPBusseeInfoModel>();
+                List<RmaRetrunOrderInfoModel> returnDatas = new List<RmaRetrunOrderInfoModel>();
+                RmaRetrunOrderInfoModel mdl = null;
                 //从ERP中得到相应的数据
-                var listErpDatas = CopOrderCrudFactory.CopReturnOrderManageDb.FindReturnOrderByID(returnHandleOrder);
-                if (listErpDatas == null || listErpDatas.Count <= 0) return returnDatas;
-                listErpDatas.ForEach(m =>
+                var ErpReturnOrderDatas = CopService.ReturnOrderManage.GetCopReturnOrderInfoBy(returnHandleOrder);
+                if (ErpReturnOrderDatas == null || ErpReturnOrderDatas.Count <= 0) return returnDatas;
+                ErpReturnOrderDatas.ForEach(m =>
                 {
-                    returnDatas.Add(new RmaERPBusseeInfoModel()
+                    mdl = new RmaRetrunOrderInfoModel()
                     {
                         ReturnHandleOrder = m.OrderId,
                         CustomerId = m.CustomerId,
                         CustomerName = m.CustomerShortName,
-                        ProdcutId = m.ProductID,
+                        ProductId = m.ProductID,
                         ProductName = m.ProductName,
                         ProductSpec = m.ProductSpecify,
-                        ProductCount = m.ProductNumber,
-
-                    });
+                        ProductCount = m.ProductNumber
+                    };
+                    returnDatas.Add(mdl);
                 });
                 return returnDatas;
             }
@@ -131,13 +122,29 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         }
         /// <summary>
-        /// 存储
+        /// 存储RMA业务处理数据
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult StoreRmaBussesDescriptionData(RmaBussesDescriptionModel model)
+        public OpResult StoreRmaBusinessDescriptionData(RmaBusinessDescriptionModel model)
         {
-            return RmaCurdFactory.RmaBussesDescription.Store(model);
+            try
+            {
+                if (model.ProductsShipDate == DateTime.MinValue) return OpResult.SetErrorResult("存储的完成日期不对");
+                var result = RmaCurdFactory.RmaBussesDescription.Store(model, true);
+                if (result.Result && model.OpSign == OpMode.Add)
+                {
+                    RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, RmaHandleStatus.BusinessStatus);
+                    RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, model.ProductId);
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
 
     }
@@ -147,13 +154,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
     public class RmaInspecitonManageProcessor
     {
         /// <summary>
-        /// 通过RmaId，得到品何处理数据
+        /// 通过RmaId，得到品保处理数据
         /// </summary>
-        /// <param name="RmaId"></param>
+        /// <param name="rmaId"></param>
         /// <returns></returns>
-        public List<RmaInspectionManageModel> GetDatasBy(string RmaId)
+        public List<RmaInspectionManageModel> GetDatasBy(string rmaId)
         {
-            return RmaCurdFactory.RmaInspectionManage.GetInspectionManageDatasBy(RmaId);
+            if (rmaId != null && rmaId == string.Empty) return null;
+            return RmaCurdFactory.RmaInspectionManage.GetInspectionManageDatasBy(rmaId);
         }
 
         /// <summary>
@@ -161,13 +169,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-
         public OpResult StoreInspectionManageData(RmaInspectionManageModel model)
         {
-            return RmaCurdFactory.RmaInspectionManage.Store(model);
+            var result = RmaCurdFactory.RmaInspectionManage.Store(model, true);
+            if (result.Result && model.OpSign == OpMode.Add)
+            {
+                RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, RmaHandleStatus.InspecitonStatus);
+                RmaCurdFactory.RmaInspectionManage.UpdateHandleStatus(model.RmaId, model.ProductId);
+            }
+            return result;
         }
-
-
     }
-
 }

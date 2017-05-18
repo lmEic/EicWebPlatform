@@ -58,6 +58,8 @@
     <Compile Include="Business\Itil\ItilDevelopModuleCrud.cs" />
     <Compile Include="Business\Itil\ItilDevelopModuleManager.cs" />
     <Compile Include="Business\Itil\ItilService.cs" />
+    <Compile Include="Business\Tools\tlOnline\CollaborateContacManager.cs" />
+    <Compile Include="Business\Tools\tlOnline\ToolOnlineService.cs" />
     <Compile Include="DbAccess\Mapping\LmProMasterDbContext.cs" />
     <Compile Include="DbAccess\Mapping\LmProMasterDbMapping.cs" />
     <Compile Include="DbAccess\Repository\ConfigDataDictionaryRepository.cs" />
@@ -82,6 +84,7 @@
       <Name>Lm.Eic.Uti.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

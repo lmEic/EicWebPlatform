@@ -50,7 +50,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         {
             ///判断产品品号是否存在
            if (irep.IsExist (e=>e.ProductID==model.ProductID ) )
-               return OpResult.SetResult("此产品号已存在！");
+               return OpResult.SetErrorResult("此产品号已存在！");
 
             return irep.Insert(model).ToOpResult("添加新看板成功");
         }

@@ -55,7 +55,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
         public OpResult StoreFqcItemConfigList(List<InspectionFqcItemConfigModel> modelList)
         {
-            OpResult opResult = OpResult.SetResult("未执行任何操作！");
+            OpResult opResult = OpResult.SetErrorResult("未执行任何操作！");
             SetFixFieldValue(modelList, OpMode.Add);
             int i = 0;
             //如果存在 就修改   

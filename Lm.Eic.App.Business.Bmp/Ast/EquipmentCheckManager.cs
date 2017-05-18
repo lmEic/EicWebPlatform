@@ -42,7 +42,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// 生成校验清单
         /// </summary>
         /// <returns></returns>
-        public MemoryStream BuildWaitingCheckList()
+        public DownLoadFileModel BuildWaitingCheckList()
         {
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
                  new FileFieldMapping ("Number","项次") ,
@@ -53,15 +53,16 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                   new FileFieldMapping ("DeliveryDate","购入日期") ,
                   new FileFieldMapping ("EquipmentType","分类")
                 };
+
             //对未超期的数据按部门分组的处理
-            var inDateList = GetPeriodWaitingCheckListRule(_waitingCheckList);
-            var dataTableGrouping = inDateList.GetGroupList<EquipmentModel>("EquipmentType");
+            var datas = GetPeriodWaitingCheckListRule(_waitingCheckList);
+            if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
+            var dataTableGrouping = datas.GetGroupList<EquipmentModel>("EquipmentType");
             //对超期的数据加入到数据字典中
             var overdueDateList = GetOverdueWaitingCheckListRule(_waitingCheckList);
-
             // 加入到数据字典中
             dataTableGrouping.Add("超期待校验列表", overdueDateList);
-            return dataTableGrouping.ExportToExcelMultiSheets<EquipmentModel>(fieldmappping);
+            return dataTableGrouping.ExportToExcelMultiSheets<EquipmentModel>(fieldmappping).CreateDownLoadExcelFileModel("设备校验清单");
         }
 
         /// <summary>

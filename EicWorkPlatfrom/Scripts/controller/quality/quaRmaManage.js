@@ -11,7 +11,7 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
     //-------------RMA表单创建----------------------------
     //自动生成RMA表单号
     rma.autoCreateRmaId = function () {
-        var url = quaRmaManageUrl + 'AutoCreateRmaId';
+        var url = quaRmaManageUrl + 'AutoBuildingRmaId';
         return ajaxService.getData(url, {
         });
     };
@@ -77,7 +77,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
         CustomerShortName: null,
         RmaIdStatus: "未结案",
         OpPerson: null,
-        OpSign: null,
+        OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: 0
     };
     $scope.vm = uiVm;
@@ -86,7 +86,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
     var vmManager = {
         //自动生成RMA编号
         autoCreateRmaId: function () {
-            $scope.doPromise = rmaDataOpService.autoCreateRmaId.then(function (rmaId) {
+            $scope.doPromise = rmaDataOpService.autoCreateRmaId().then(function (rmaId) {
                 uiVm.RmaId = rmaId;
             });
         },
@@ -109,7 +109,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
 
     $scope.operate = operate;
     operate.edit = function (item) {
-        item.OpSign = 'edit';
+        item.OpSign = leeDataHandler.dataOpMode.edit;
         $scope.vm = uiVm = item;
     };
     operate.saveAll = function (isValid) {
@@ -142,7 +142,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         RmaId: null,
         RmaIdNumber: 0,
         ReturnHandleOrder: null,
-        ProdcutId: null,
+        ProductId: null,
         ProductName: null,
         ProductSpec: null,
         ProductCount: null,
@@ -150,19 +150,19 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         CustomerName: null,
         SalesOrder: null,
         ProductsShipDate: null,
-        BadDescrption: null,
+        BadDescription: null,
         CustomerHandleSuggestion: null,
         FeePaymentWay: null,
         HandleStatus: null,
         OpPerson: null,
         OpSign: leeDataHandler.dataOpMode.add,
-        Id_Key: null,
+        Id_Key: 0,
     }
     var initVM = _.clone(uiVm);
     ///视图模型
-    var rma = $scope.rmavm = {
+    var rmavm = $scope.rmavm = {
         RmaId: null,
-        CustomerId: null,
+        ProductName: null,
         CustomerShortName: null,
     };
 
@@ -178,7 +178,11 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         //获取预处理数据
         getPreHandleData: function () {
             $scope.searchPromise = rmaDataOpService.getRmaDescriptionDatas(uiVm.RmaId).then(function (data) {
-
+                if (angular.isObject(data)) {
+                    vmManager.dataSets = [];
+                    leeHelper.copyVm(data.rmaInitiateData, rmavm);
+                    vmManager.dataSets = data.bussesDescriptionDatas;
+                }
             });
         },
         //获取ERP退货单信息
@@ -188,6 +192,11 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                     vmManager.returnOrderDatas = datas;
                     dialog.show();
                 });
+        },
+        selectReturnOrderItem: function (item) {
+            leeHelper.copyVm(item, uiVm);
+            $scope.vm = uiVm;
+            dialog.close();
         },
         dataSets: [],
     };
@@ -224,9 +233,9 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
 qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpService) {
     leeHelper.setWebSiteTitle("质量管理", "RMA检验处置");
     ///视图模型
-    var rmaVm = $scope.rmavm = {
+    var rmavm = $scope.rmavm = {
         RmaId: null,
-        CustomerId: null,
+        ProductName: null,
         CustomerShortName: null,
     };
     var uiVm = $scope.vm = {
@@ -246,15 +255,26 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         Id_Key: null,
     }
 
+    var initVM = _.clone(uiVm);
     var vmManager = {
         init: function () {
-
+            uiVm = _.clone(initVM);
+            uiVm.OpSign = leeDataHandler.dataOpMode.add;
+            $scope.vm = uiVm;
         },
         activeTab: 'businessTab',
         //获取表单数据
         getRmaInspectionHandleDatas: function () {
             $scope.searchPromise = rmaDataOpService.getRmaInspectionHandleDatas(uiVm.RmaId).then(function (data) {
+                if (angular.isObject(data)) {
+                    leeHelper.copyVm(data.rmaInitiateData, rmavm);
+                    vmManager.businessHandleDatas = data.bussesDescriptionDatas;
+                    vmManager.dataSets = data.inspectionHandleDatas;
+                    angular.forEach(vmManager.businessHandleDatas, function (item) {
+                        item.isHandle = _.find(vmManager.dataSets, { RmaId: item.RmaId, ProductId: item.ProductId }) !== undefined;
+                    })
 
+                }
             });
         },
         businessHandleDatas: [],
@@ -291,12 +311,13 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
                             vmManager.dataSets.push(dataItem);
                         }
                         vmManager.init();
+                        dialog.close();
                     }
                 })
             })
         })
     };
-    leeDataHandler.dataOperate.refresh(operate, function () {
-        vmManager.init();
-    });
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); });
+    };
 })

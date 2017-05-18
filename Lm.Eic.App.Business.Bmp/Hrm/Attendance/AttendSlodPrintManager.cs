@@ -49,7 +49,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// </summary>
         /// <param name="qryDate"></param>
         /// <returns></returns>
-        public MemoryStream BuildAttendanceDataBy(DateTime qryDate)
+        public DownLoadFileModel BuildAttendanceDataBy(DateTime qryDate)
         {
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
                  new FileFieldMapping ("Number","项次") ,
@@ -63,15 +63,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                   new FileFieldMapping ("SlotCardTime","刷卡时间") ,
                 };
             var datas = LoadAttendDataInToday(qryDate);
+            if (datas == null || datas.Count < 0) return new DownLoadFileModel(2).Default();
             var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");
-            return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping);
+            return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping).CreateDownLoadExcelFileModel(qryDate.ToShortDateString() + "考勤数据-" + qryDate.ToShortDateString());
         }
         /// <summary>
         /// 按月份导出数据
         /// </summary>
         /// <param name="yearMonth"></param>
         /// <returns></returns>
-        public MemoryStream BuildAttendanceDataBy(string yearMonth)
+        public DownLoadFileModel BuildAttendanceDataBy(string yearMonth)
         {
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
                  new FileFieldMapping ("Number","项次") ,
@@ -85,8 +86,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                   new FileFieldMapping ("SlotCardTime","刷卡时间") ,
                 };
             var datas = this.currentMonthAttendDataHandler.LoadAttendanceDatasBy(new AttendanceDataQueryDto() { SearchMode = 3, YearMonth = yearMonth });
+
+            if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
             var dataGrouping = datas.GetGroupList<AttendanceDataModel>("考勤数据");
-            return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping);
+            return dataGrouping.ExportToExcelMultiSheets<AttendanceDataModel>(fieldmappping).CreateDownLoadExcelFileModel("考勤数据-" + yearMonth);
         }
         public List<AttendanceDataModel> LoadAttendDataInToday(DateTime dateFrom, DateTime dateTo, string department)
         {
@@ -123,7 +126,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <returns></returns>
         public OpResult HandleExceptionSlotCardData(List<AttendSlodFingerDataCurrentMonthModel> entities)
         {
-            return OpResult.SetResult("处理异常刷卡数据成功！", this.currentMonthAttendDataHandler.HandleExceptionSlotCardData(entities) > 0);
+            return OpResult.SetSuccessResult("处理异常刷卡数据成功！", this.currentMonthAttendDataHandler.HandleExceptionSlotCardData(entities) > 0);
         }
 
         #endregion method
@@ -193,7 +196,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             int record = 0;
             //实时考勤数据 && e.WorkerId == "604505"
             var datasInTime = this.fingerPrintDataInTime.FingPrintDatas.FindAll(e => e.SlodCardDate == qryDate);
-            if (datasInTime == null || datasInTime.Count == 0) return OpResult.SetResult("没有考勤数据要进行汇总");
+            if (datasInTime == null || datasInTime.Count == 0) return OpResult.SetErrorResult("没有考勤数据要进行汇总");
             //一次载入该日期的所有考勤数据到内存中
             var dayAttendDatas = this.irep.Entities.Where(e => e.AttendanceDate == qryDate);
             //获取所有人员信息到内存中
@@ -258,7 +261,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                     this.fingerPrintDataInTime.StoreNoIdentityWorkerInfo(attendDataPerWorker[0]);
                 }
             });
-            return OpResult.SetResult("处理考勤数据成功！", record > 0);
+            return OpResult.SetSuccessResult("处理考勤数据成功！", record > 0);
         }
         /// <summary>
         /// 重新排序连接的时间字符串
@@ -1053,13 +1056,13 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         public OpResult HandleAskForLeave(List<AttendAskLeaveModel> entities)
         {
             int record = currentMonthAttendDataHandler.SyncAskLeaveData(entities);
-            return OpResult.SetResult("请假操作成功！", record > 0);
+            return OpResult.SetSuccessResult("请假操作成功！", record > 0);
         }
 
         public OpResult HandleAskForLeave(List<AttendSlodFingerDataCurrentMonthModel> entities)
         {
             int record = currentMonthAttendDataHandler.UpdateAskLeaveData(entities);
-            return OpResult.SetResult("修改请假数据成功！", record > 0);
+            return OpResult.SetSuccessResult("修改请假数据成功！", record > 0);
         }
 
         /// <summary>

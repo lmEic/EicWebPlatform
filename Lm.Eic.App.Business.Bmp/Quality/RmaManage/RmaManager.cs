@@ -16,16 +16,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <summary>
         /// 创建Ram表单处理器
         /// </summary>
-        public RmaReportInitiateProcessor RmaReportBuilding
+        public RmaReportCreator RmaReportBuilding
         {
-            get { return OBulider.BuildInstance<RmaReportInitiateProcessor>(); }
+            get { return OBulider.BuildInstance<RmaReportCreator>(); }
         }
         /// <summary>
         /// 业务部门填充 物料信息 处理器
         /// </summary>
-        public RmaBussesDescriptionProcessor BussesManageProcessor
+        public RmaBusinessDescriptionProcessor BusinessManageProcessor
         {
-            get { return OBulider.BuildInstance<RmaBussesDescriptionProcessor>(); }
+            get { return OBulider.BuildInstance<RmaBusinessDescriptionProcessor>(); }
         }
 
         /// <summary>

@@ -77,11 +77,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.BoardManagment
         public OpResult CheckMaterialIdMatchProductId(string materialId, string productId)
         {
             if (!ContainsProductId(productId))
-                return OpResult.SetResult("未找到输入的产品品号！");
+                return OpResult.SetErrorResult("未找到输入的产品品号！");
             if (!ContainsMaterialId(materialId))
-                return OpResult.SetResult("未在BOM中找到料号");
+                return OpResult.SetErrorResult("未在BOM中找到料号");
 
-            return OpResult.SetResult("", true);
+            return OpResult.SetSuccessResult("", true);
         }
         #endregion
 

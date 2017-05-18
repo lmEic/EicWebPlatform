@@ -197,31 +197,105 @@ namespace EicWorkPlatfrom.Controllers
 
         #region file operate method
 
+        ///// <summary>
+        ///// 导出数据到Excel文件中
+        ///// </summary>
+        ///// <typeparam name="T">泛型类型</typeparam>
+        ///// <param name="dataSource">数据源</param>
+        ///// <param name="xlsSheetName">Sheet表名称</param>
+        ///// <param name="xlsFileName">Excel文件名称,包括扩展名</param>
+        ///// <returns></returns>
+        //protected FileResult ExportToExcel<T>(List<T> dataSource, string xlsSheetName, string xlsFileName) where T : class
+        //{
+        //    MemoryStream ms = dataSource.ExportToExcel<T>(xlsSheetName);
+        //    ms.Seek(0, SeekOrigin.Begin);
+        //    return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
+        //}
+        ///// <summary>
+        ///// 导出数据到Excel文件中
+        ///// </summary>
+        ///// <param name="ms">文件流</param>
+        ///// <param name="xlsSheetName">Sheet表名称</param>
+        ///// <param name="xlsFileName">Excel文件名称,包括扩展名</param>
+        ///// <returns></returns>
+        //protected FileResult ExportToExcel(MemoryStream ms, string xlsSheetName, string xlsFileName)
+        //{
+        //    ms.Seek(0, SeekOrigin.Begin);
+        //    return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
+        //}
         /// <summary>
-        /// 导出数据到Excel文件中
+        /// 下载文件
         /// </summary>
-        /// <typeparam name="T">泛型类型</typeparam>
-        /// <param name="dataSource">数据源</param>
-        /// <param name="xlsSheetName">Sheet表名称</param>
-        /// <param name="xlsFileName">Excel文件名称,包括扩展名</param>
+        /// <param name="downLoadFileModel"></param>
         /// <returns></returns>
-        protected FileResult ExportToExcel<T>(List<T> dataSource, string xlsSheetName, string xlsFileName) where T : class
+        protected FileResult DownLoadFile(DownLoadFileModel downLoadFileModel)
         {
-            MemoryStream ms = dataSource.ExportToExcel<T>(xlsSheetName);
-            ms.Seek(0, SeekOrigin.Begin);
-            return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
+            
+            try
+            {
+                switch (downLoadFileModel.HandleMode)
+                {
+                    case 0:
+                        return CreateFilePathDLFM(downLoadFileModel);
+                    case 1:
+                        return CreateFileContnetDLFM(downLoadFileModel);
+                    case 2:
+                        return CreateFileStreamDLFM(downLoadFileModel);
+                    default:
+                        return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
         }
         /// <summary>
-        /// 导出数据到Excel文件中
+        /// 给定文件流进行下载
         /// </summary>
-        /// <param name="ms">文件流</param>
-        /// <param name="xlsSheetName">Sheet表名称</param>
-        /// <param name="xlsFileName">Excel文件名称,包括扩展名</param>
+        /// <param name="downLoadFileModel"></param>
         /// <returns></returns>
-        protected FileResult ExportToExcel(MemoryStream ms, string xlsSheetName, string xlsFileName)
+        private FileResult CreateFileStreamDLFM(DownLoadFileModel downLoadFileModel)
         {
-            ms.Seek(0, SeekOrigin.Begin);
-            return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
+            if (downLoadFileModel.FileStream == null)
+            {
+                downLoadFileModel = new DownLoadFileModel().Default("文件流不能为null！");
+                return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+            }
+            ///
+            downLoadFileModel.FileStream.Seek(0, SeekOrigin.Begin);
+            return File(downLoadFileModel.FileStream, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+        }
+        /// <summary>
+        /// 给定字节进行下载
+        /// </summary>
+        /// <param name="downLoadFileModel"></param>
+        /// <returns></returns>
+        private FileResult CreateFileContnetDLFM(DownLoadFileModel downLoadFileModel)
+        {
+            if (downLoadFileModel.FileContnet == null)
+            {
+                downLoadFileModel = new DownLoadFileModel().Default("文件内容不能为null！");
+                return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+            }
+            return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+        }
+        /// <summary>
+        /// 给定文件路径进行下载
+        /// </summary>
+        /// <param name="downLoadFileModel"></param>
+        /// <returns></returns>
+        private FileResult CreateFilePathDLFM(DownLoadFileModel downLoadFileModel)
+        {
+            if (!System.IO.File.Exists(downLoadFileModel.FilePath))
+            {
+                downLoadFileModel = new DownLoadFileModel().Default(string.Format("{0}不存在！", downLoadFileModel.FilePath));
+                return File(downLoadFileModel.FileContnet, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
+            }
+            return File(downLoadFileModel.FilePath, downLoadFileModel.ContentType, downLoadFileModel.FileDownLoadName);
         }
         /// <summary>
         /// 将文件保存到服务器上
@@ -452,4 +526,6 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         public const string IqcInspectionGatherDataFile = "IqcInspectionGatherDataFile";
     }
+
+
 }

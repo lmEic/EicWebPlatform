@@ -124,9 +124,10 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public FileResult LoadIqcInspectionItemConfigFile()
         {
+            ///路经下载
             string filePath = @"E:\各部门日报格式\IQC物料检验配置数据表.xls";
-            MemoryStream ms = InspectionService.ConfigManager.IqcItemConfigManager.GetIqcInspectionItemConfigTemplate(filePath);
-            return this.ExportToExcel(ms, "IQC物料检验配置模板", "IQC物料检验配置模板");
+            var dlfm = InspectionService.ConfigManager.IqcItemConfigManager.GetIqcInspectionItemConfigTemplate(filePath, "IQC物料检验配置模板");
+            return this.DownLoadFile(dlfm);
             //return null;
         }
         #endregion
@@ -429,9 +430,9 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>  selectedFormStatus,dateFrom,dateTo
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetInspectionFormManageOfIqcDatas(string formStatus, DateTime dateFrom, DateTime dateTo)
+        public ContentResult GetInspectionFormManageOfIqcDatas(string formQueryString, int queryOpModel, DateTime dateFrom, DateTime dateTo)
         {
-            var datas = InspectionService.InspectionFormManager.IqcFromManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
+            var datas = InspectionService.InspectionFormManager.IqcFromManager.GetInspectionFormManagerDatas(formQueryString, queryOpModel, dateFrom, dateTo);
             return DateJsonResult(datas);
         }
         [NoAuthenCheck]

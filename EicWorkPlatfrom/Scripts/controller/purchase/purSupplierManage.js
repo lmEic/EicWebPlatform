@@ -122,72 +122,6 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
 //供应商证书管理
 purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scope, supplierDataOpService) {
 
-    //    var item = {
-    //        BillAddress
-    //:
-    //"慈溪市周巷镇三江口村协同191号",
-    //        EligibleCertificate
-    //:
-    //null,
-    //        Id_key
-    //    :
-    //    0,
-    //        LastPurchaseDate
-    //    :
-    //    "2016-11-22",
-    //        OpDate
-    //    :
-    //    "0001-01-01",
-    //        OpPerson
-    //    :
-    //    null,
-    //        OpSign
-    //    :
-    //    null,
-    //        OpTime
-    //    :
-    //    "0001-01-01",
-    //        PurchaseType
-    //    :
-    //    null,
-    //        PurchaseUser
-    //    :
-    //    "008409    ",
-    //        Remark
-    //    :
-    //    null,
-    //        SupplierAddress
-    //    :
-    //    "慈溪市周巷镇三江口村协同191号",
-    //        SupplierEmail
-    //    :
-    //    "46158433@qq.com",
-    //        SupplierFaxNo
-    //    :
-    //    "63498634",
-    //        SupplierId
-    //    :
-    //    "D10069",
-    //        SupplierName
-    //    :
-    //    "慈溪市周巷双溪橡胶制品厂",
-    //        SupplierProperty
-    //    :
-    //    null,
-    //        SupplierShortName
-    //    :
-    //    "双溪橡胶",
-    //        SupplierTel
-    //    :
-    //    "63498634",
-    //        SupplierUser
-    //    :
-    //    "袁晓春",
-    //        UpperPurchaseDate
-    //    :
-    //    "2016-11-19"
-    //    };
-
     $scope.vm = {
         PurchaseType: '',
         SupplierProperty: '',
@@ -282,7 +216,16 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
             $scope.searchCertificatePromise = supplierDataOpService.getSupplierQualifiedCertificateListBy($scope.vm.SupplierId).then(function (datas) {
                 editManager.certificateDatas = datas;
             });
-        }
+        },
+        ///下载文件
+        loadFile: function (item) {
+            var loadUrl = "/PurSupplierManage/LoadQualifiedCertificateFile?suppliserId=" + item.SupplierId + "&eligibleCertificate=" + item.EligibleCertificate;
+            return loadUrl;
+        },
+        ///获取文件扩展名图标
+        getFileExtentionIcon: function (item) {
+            return leeHelper.getFileExtensionIcon(item.CertificateFileName);
+        },
     }
 
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -367,6 +310,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         SupplierId: null,
         SupplierShortName: null,
         SupplierName: null,
+        ParameterKey: null,
         QualityCheck: null,
         AuditPrice: null,
         DeliveryDate: null,
@@ -398,7 +342,9 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
     operate.save = function (isValid) {
         leeHelper.setUserData(uiVM);
         crud.add(operate, isValid, function () {
-            uiVM.TotalCheckScore = uiVM.QualityCheck * 0.3 + uiVM.AuditPrice * 0.2 + uiVM.DeliveryDate * 0.15 + uiVM.ActionLiven * 0.15 + uiVM.HSFGrade * 0.2;
+            uiVM.TotalCheckScore = (uiVM.QualityCheck * 0.3 + uiVM.AuditPrice * 0.2 + uiVM.DeliveryDate * 0.15 + uiVM.ActionLiven * 0.15 + uiVM.HSFGrade * 0.2).toFixed(2);
+            uiVM.ParameterKey = uiVM.SupplierId + "&&" + uiVM.SeasonDateNum;
+            uiVM.OpSign = "add";
             $scope.promise = supplierDataOpService.saveAuditSupplierInfo($scope.vm).then(function (opResult) {
                 crud.handleSuccessResult(operate, opResult, function () {
                     leeHelper.copyVm($scope.vm, vmManager.editItem);
@@ -571,11 +517,13 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
         SupplierProperty: null,
         PurchaseType: null,
         PurchaseMaterial: null,
+        ParameterKey: null,
         LastPurchaseDate: null,
         SupGradeType: null,
         FirstGradeScore: null,
         FirstGradeDate: null,
         SecondGradeScore: null,
+        GradeYear: null,
         OpPerson: null,
         OpSign: null,
         OpDate: null,
@@ -643,15 +591,17 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
             controller: function ($scope) {
                 var editItem = $scope.vm = vmManager.editItem;
                 $scope.gradeTypes = [{ id: '供应商系统稽核评估', text: '供应商系统稽核评估' },
-                                    { id: '供应商产品无有害物质系统稽核评估', text: '供应商产品无有害物质系统稽核评估' },
-                                    { id: '系统评估表-针对小供应商', text: '系统评估表-针对小供应商' }];
+                                     { id: '供应商产品无有害物质系统稽核评估', text: '供应商产品无有害物质系统稽核评估' },
+                                     { id: '系统评估表-针对小供应商', text: '系统评估表-针对小供应商' }];
 
                 var crud = leeDataHandler.dataOperate;
                 var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
                 //保存供应商辅导信息
                 operate.savePurSupGradeDatas = function (isValid) {
                     crud.add(operate, isValid, function () {
+                        $scope.vm.GradeYear = vmManager.yearQuarter.substring(0, 4);
                         supplierDataOpService.savePurSupGradeInfo($scope.vm).then(function (opResult) {
+                            console.log($scope.vm.GradeYear);
                             if (opResult) {
                                 vmManager.editItem = $scope.vm;
                                 vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.hide);

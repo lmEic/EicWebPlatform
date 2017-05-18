@@ -180,7 +180,12 @@ var leeHelper = (function () {
         //质量抽样检验控制器
         quaInspectionManage: 'QuaInspectionManage',
         //质量RMA控制器
-        quaRmaManage: 'QuaRmaManage'
+        quaRmaManage: 'QuaRmaManage',
+        //办公助手控制器
+        TolOfficeAssistant: 'TolOfficeAssistant',
+        ///在线工具
+        ToolsOnLine: 'ToolsOnLine',
+
     };
     return {
         ///控制器名称
@@ -443,6 +448,32 @@ var leeHelper = (function () {
         ///设置网站标题
         setWebSiteTitle: function (title, subTitle) {
             document.title = title + "---" + subTitle;
+        },
+        //获取文件后缀名 fileName:包含后缀名的文件名
+        getFileExtensionIcon: function (fileName) {
+            var fileIcon = "fa fa-file-pdf-o";
+            var index1 = fileName.lastIndexOf('.');
+            var index2 = fileName.length;
+            var postf = fileName.substring(index1, index2).toLowerCase();
+            if (postf === ".pdf") {
+                fileIcon = "fa fa-file-pdf-o";
+            }
+            else if (postf === ".txt") {
+                fileIcon = "fa fa-file-text";
+            }
+            else if (postf === ".doc" || postf === ".docx") {
+                fileIcon = "fa fa-file-word-o";
+            }
+            else if (postf === ".xls" || postf === ".xlsx") {
+                fileIcon = "fa fa-file-excel-o";
+            }
+            else if (postf === ".ppt" || postf === ".pptx") {
+                fileIcon = "fa fa-file-powerpoint-o";
+            }
+            else if (postf === ".jpg" || postf === ".jpeg" || postf === ".bpm" || postf === ".png") {
+                fileIcon = "fa fa-file-image-o";
+            }
+            return fileIcon;
         }
     };
 })();
@@ -453,9 +484,14 @@ var leeDialog = (function () {
         content: '',
         //打开关闭标志
         open: false,
+        //打开窗体
         show: function () {
-            dialog.open = !dialog.open;
+            dialog.open = true;
         },
+        //关闭窗体
+        close: function () {
+            dialog.open = false;
+        }
     };
     return dialog;
 })();

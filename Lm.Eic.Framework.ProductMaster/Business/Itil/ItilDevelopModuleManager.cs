@@ -64,7 +64,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         /// <returns></returns>
         public OpResult SendMail()
         {
-            OpResult opResult = OpResult.SetResult("未执行任何邮件发送！");
+            OpResult opResult = OpResult.SetErrorResult("未执行任何邮件发送！");
             EmailMessageHelper email = new EmailMessageHelper("softwareadmin@ezconn.cn", "Echo4u", true);
             email.mailSubject = "开发任务进度变更";
 
@@ -84,7 +84,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                     var mailAdds = _userMailAddsDic[user];
                     email.mailToArray = new string[] { mailAdds };//收件人邮件集合
                     email.mailBody = BulidMailContext(ItilCrudFactory.ItilDevelopModuleManageCrud.WaittingSendMailList.Where(m => m.Executor == user).ToList());
-                    opResult = email.Send() ? OpResult.SetResult("邮件发送成功！", true) : OpResult.SetResult("邮件发送失败！");
+                    opResult = email.Send() ? OpResult.SetSuccessResult("邮件发送成功！", true) : OpResult.SetErrorResult("邮件发送失败！");
                 }
             }
             return opResult;
