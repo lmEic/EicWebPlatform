@@ -1743,15 +1743,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         ///检验数
         /// </summary>
-        public int InspectionCount { get; set; }
+        public double InspectionCount { get; set; }
         /// <summary>
         ///接授数
         /// </summary>
-        public int AcceptCount { get; set; }
+        public double AcceptCount { get; set; }
         /// <summary>
         ///拒授数
         /// </summary>
-        public int RefuseCount { get; set; }
+        public double RefuseCount { get; set; }
         /// <summary>
         /// 规格上限
         /// </summary>

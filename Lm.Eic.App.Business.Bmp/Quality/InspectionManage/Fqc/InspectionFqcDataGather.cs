@@ -462,7 +462,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialId = sumModel.MaterialId,
                     MaterialInDate = sumModel.MaterialInDate,
                     InspectionMode = sumModel.InspectionMode,
-                    NeedPutInDataCount = sumModel.NeedFinishDataNumber,
+                    NeedPutInDataCount = (int)sumModel.NeedFinishDataNumber,
                     Memo = sumModel.Memo,
                     ClassType = sumModel.ClassType,
                     Department = sumModel.Department,
