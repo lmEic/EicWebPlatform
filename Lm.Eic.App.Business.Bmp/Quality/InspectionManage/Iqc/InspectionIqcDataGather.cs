@@ -87,7 +87,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 ///得到已经检验的数据  
                 var iqcHaveInspectionData = DetailDatasGather.GetIqcInspectionDetailModelBy(orderMaterialInfo.OrderID, orderMaterialInfo.ProductID, m.InspectionItem);
                 ///初始化 综合模块 
-                InitializeSummaryVM(model, orderMaterialInfo, iqcNeedInspectionsItemdatas, m, inspectionMode);
+                InitializeSummaryVM(out model, orderMaterialInfo, iqcNeedInspectionsItemdatas, m, inspectionMode);
                 ///加载已经录入的数据
                 SetHaveInspectionItemDataVaule(model, iqcHaveInspectionData);
                 ///加载项目的抽样方案
@@ -208,7 +208,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="m"></param>
         /// <param name="inspectionMode"></param>
         private void InitializeSummaryVM(
-            InspectionItemDataSummaryVM model,
+           out InspectionItemDataSummaryVM model,
             MaterialModel orderMaterialInfo,
             List<InspectionIqcItemConfigModel> iqcNeedInspectionsItemdatas,
             InspectionIqcItemConfigModel m,
