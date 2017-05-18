@@ -77,7 +77,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
         CustomerShortName: null,
         RmaIdStatus: "未结案",
         OpPerson: null,
-        OpSign: null,
+        OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: 0
     };
     $scope.vm = uiVm;
@@ -109,7 +109,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
 
     $scope.operate = operate;
     operate.edit = function (item) {
-        item.OpSign = 'edit';
+        item.OpSign = leeDataHandler.dataOpMode.edit;
         $scope.vm = uiVm = item;
     };
     operate.saveAll = function (isValid) {
