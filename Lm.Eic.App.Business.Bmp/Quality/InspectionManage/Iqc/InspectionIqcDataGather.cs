@@ -98,7 +98,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             });
             return returnList;
         }
-        
+
         /// 查找IQC检验项目所有的信息
         /// </summary>
         /// <param name="orderId"></param>
@@ -250,7 +250,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 HaveFinishDataNumber = 0,
                 InspectionItemResult = string.Empty
             };
-            return model;
         }
         /// <summary>
         /// 加载已经录入的数据
