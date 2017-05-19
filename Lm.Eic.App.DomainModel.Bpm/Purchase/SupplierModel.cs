@@ -946,9 +946,41 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         #endregion Model
     }
+
     #endregion
 
     #region  展示模型
+
+    public class SupplierGradeInfoVm
+    {
+        #region Model
+        /// <summary>
+        ///供应商编号
+        /// </summary>
+        public string SupplierId { get; set; }
+        /// <summary>
+        ///供应商名称
+        /// </summary>
+        public string SupplierName { get; set; }
+        /// <summary>
+        ///供应商类别
+        /// </summary>
+        public string SupplierProperty { get; set; }
+        /// <summary>
+        ///采购类别
+        /// </summary>
+        public string PurchaseType { get; set; }
+        /// <summary>
+        ///上次采购日期
+        /// </summary>
+        public DateTime LastPurchaseDate { get; set; }
+        /// <summary>
+        ///类别列表
+        /// </summary>
+        public string SupGradeInfoContent { get; set; }
+        
+        #endregion Model
+    }
     /// <summary>
     /// 供应商编辑输入模形
     /// </summary>

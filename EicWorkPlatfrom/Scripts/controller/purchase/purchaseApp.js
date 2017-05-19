@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
-angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'pageslide-directive'])
+angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'pageslide-directive', 'angular-popups'])
 
 
 //--------配置文件----------------
