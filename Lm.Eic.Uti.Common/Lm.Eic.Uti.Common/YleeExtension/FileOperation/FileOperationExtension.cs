@@ -61,7 +61,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         {
             try
             {
-                if (oldFileName == newFileName && oldFileName != string.Empty && oldFileName != null)
+                if (oldFileName != newFileName && oldFileName != string.Empty && oldFileName != null)
                 {
                     if (rootPath != string.Empty && rootPath != null)
                     {
@@ -69,6 +69,32 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                         fileName = fileName.Replace("/", @"\");
                         if (File.Exists(fileName))
                             File.Delete(fileName);//删除旧的文件
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+        /// <summary>
+        /// 比较新旧文档是否相同，如果相同，则删除旧文档
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="rootPath"></param>
+        /// <returns></returns>
+        public static void DeleteExistFile(this string fileName, string rootPath)
+        {
+            try
+            {
+                if (fileName != string.Empty && fileName != null)
+                {
+                    if (rootPath != string.Empty && rootPath != null)
+                    {
+                        string fileNamePath = Path.Combine(rootPath, fileName);
+                        fileNamePath = fileNamePath.Replace("/", @"\");
+                        if (File.Exists(fileNamePath))
+                            File.Delete(fileNamePath);//删除旧的文件
                     }
                 }
             }
@@ -173,7 +199,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <param name="directoryPath">文件夹路径</param>
         public static void ExistDirectory(this string directoryPath)
         {
-            directoryPath = directoryPath.EndsWith("\\") ? directoryPath : directoryPath + "\\";
+            directoryPath = directoryPath.EndsWith("\\", StringComparison.CurrentCulture) ? directoryPath : directoryPath + "\\";
             if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
         }
 
@@ -608,7 +634,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <summary>
         /// 创建Excel文件下载模型
         /// </summary>
-        /// <param name="dlfm"></param>
         /// <param name="ms"></param>
         /// <param name="fileName"></param>
         /// <returns></returns>
@@ -703,6 +728,16 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 FileDownLoadName = "error.txt"
             };
 
+        }
+
+        public DownLoadFileModel CreateInstance(string filePath, string contentType, string downFileName)
+        {
+            return new DownLoadFileModel()
+            {
+                FilePath = filePath,
+                ContentType = contentType,
+                FileDownLoadName = downFileName
+            };
         }
     }
 }

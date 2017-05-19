@@ -15,16 +15,6 @@ using System.IO;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
-    internal class SupplierAuditManagerFactory
-    {
-        /// <summary>
-        /// 供应商证书管理
-        /// </summary>
-        public static SupplierCertificateManager SupplierCertificateManager
-        {
-            get { return OBulider.BuildInstance<SupplierCertificateManager>(); }
-        }
-    }
 
 
     /// <summary>
@@ -35,22 +25,30 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         #region 季度考核表
 
         /// <summary>
-        /// 加载ERP厂商季度考核列表
+        /// 具有供应商证书管理
+        /// </summary>
+        private SupplierCertificateManager HaveCertificateSupplierManager
+        { get { return OBulider.BuildInstance<SupplierCertificateManager>(); } }
+        /// <summary>
+        /// 加载厂商季度考核列表
         /// </summary>
         /// <param name="seasonDateNum">Year-Season</param>
         /// <returns></returns>
         public List<SupplierSeasonAuditModel> GetSeasonSupplierList(string seasonDateNum)
         {
             string startDate = string.Empty, endDate = string.Empty;
-            //处理季度数
+            ///处理季度数
             seasonDateNum.SeasonNumConvertStartDateAndEndDate(out startDate, out endDate);
             List<SupplierSeasonAuditModel> supplierSeasonAuditModelList = new List<SupplierSeasonAuditModel>();
-            //从ERP中得到季度进货厂商ID
-            var getSeasonSupplierList = PurchaseDbManager.StockDb.GetStockSupplierId(startDate, endDate);
+            SupplierSeasonAuditModel model = null;
+            ///从ERP中得到时间段所有进货厂商ID
+            List<string> getSeasonSupplierList = PurchaseDbManager.StockDb.GetStockSupplierId(startDate, endDate);
+
             if (getSeasonSupplierList == null || getSeasonSupplierList.Count <= 0) return supplierSeasonAuditModelList;
+            ///对每个供应商进行处理
             getSeasonSupplierList.ForEach(e =>
             {
-                var model = getSupplierSeasonAuditModel(e, seasonDateNum);
+                model = GetSupplierSeasonAuditModelBy(e, seasonDateNum);
                 if (model != null)
                     supplierSeasonAuditModelList.Add(model);
             });
@@ -66,12 +64,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <param name="supplierId"></param>
         /// <param name="seasonDateNum"></param>
         /// <returns></returns>
-        public SupplierSeasonAuditModel getSupplierSeasonAuditModel(string supplierId, string seasonDateNum)
+        private SupplierSeasonAuditModel GetSupplierSeasonAuditModelBy(string supplierId, string seasonDateNum)
         {
+            ///如果已存在，直接导出信息 返回
             SupplierSeasonAuditModel supplierSeasonAuditInfo = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditInfo(supplierId.Trim() + "&&" + seasonDateNum);
             if (supplierSeasonAuditInfo != null) return supplierSeasonAuditInfo;
-            var supplierInfo = CertificateManagerFactory.SupplierCertificateManager.GetSuppplierInfoBy(supplierId);
-            if (supplierInfo == null || supplierInfo.Remark != "True") return null;
+            /// 从得到供应商信息
+            var supplierInfo = HaveCertificateSupplierManager.GetSuppplierInfoBy(supplierId);
+
+            if (supplierInfo == null || !(supplierInfo.IsCooperate.ToString() == "True")) return null;
             supplierSeasonAuditInfo = new SupplierSeasonAuditModel()
             {
                 SupplierId = supplierInfo.SupplierId,
@@ -82,7 +83,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return supplierSeasonAuditInfo;
         }
         /// <summary>
-        /// 
+        /// 保存
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -94,6 +95,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return SupplierCrudFactory.SuppliersSeasonAuditCrud.Store(model);
         }
 
+        /// <summary>
+        /// 下载 季度审查总览表
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
         public DownLoadFileModel SupplierSeasonDataDLFM(List<SupplierSeasonAuditModel> datas)
         {
             try
@@ -107,6 +113,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 throw new Exception(ex.InnerException.Message);
             }
         }
+
+
         private List<FileFieldMapping> CreateFieldMapping()
         {
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){

@@ -44,7 +44,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         {
             var result = RmaService.RmaManager.RmaReportBuilding.StoreRamReortInitiate(initiateData);
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
         /// <summary>
         /// 得到Rma单的数据
@@ -70,7 +70,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public ContentResult GetReturnOrderInfo(string orderId)
         {
-            var datas = RmaService.RmaManager.BusinessManageProcessor.GetErpBusinessInfoDatasBy(orderId); ;
+            var datas = RmaService.RmaManager.BusinessManageProcessor.GetErpBusinessInfoDatasBy(orderId);
             return DateJsonResult(datas);
         }
         /// <summary>

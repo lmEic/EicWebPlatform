@@ -128,15 +128,17 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     }
 
     /// <summary>
-    /// 供应商信息表
-    /// SuppliersInfo
+    ///供应商信息Model
     /// </summary>
-    public class SupplierInfoModel
+    [Serializable]
+    public partial class SupplierInfoModel
     {
+        public SupplierInfoModel()
+        { }
         #region Model
         private string _supplierid;
         /// <summary>
-        ///供应商ID
+        ///供应商Id
         /// </summary>
         public string SupplierId
         {
@@ -145,7 +147,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _purchasetype;
         /// <summary>
-        ///采购类别
+        ///采购类
         /// </summary>
         public string PurchaseType
         {
@@ -154,7 +156,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _supplierproperty;
         /// <summary>
-        ///供应商属性
+        ///采购属性
         /// </summary>
         public string SupplierProperty
         {
@@ -172,7 +174,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _suppliername;
         /// <summary>
-        ///供应商全称
+        ///供应商名称
         /// </summary>
         public string SupplierName
         {
@@ -217,7 +219,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _supplieremail;
         /// <summary>
-        ///供应商邮箱
+        ///供应商Email
         /// </summary>
         public string SupplierEmail
         {
@@ -233,23 +235,32 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _supplieraddress = value; }
             get { return _supplieraddress; }
         }
-        private string _supplierPrincipal;
+        private string _supplierprincipal;
         /// <summary>
         ///供应商负责人
         /// </summary>
         public string SupplierPrincipal
         {
-            set { _supplierPrincipal = value; }
-            get { return _supplierPrincipal; }
+            set { _supplierprincipal = value; }
+            get { return _supplierprincipal; }
         }
         private string _paycondition;
         /// <summary>
-        ///付款条件
+        ///付款方式
         /// </summary>
         public string PayCondition
         {
             set { _paycondition = value; }
             get { return _paycondition; }
+        }
+        private string _iscooperate;
+        /// <summary>
+        ///是否合作
+        /// </summary>
+        public string IsCooperate
+        {
+            set { _iscooperate = value; }
+            get { return _iscooperate; }
         }
         private string _remark;
         /// <summary>
@@ -296,14 +307,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _optime = value; }
             get { return _optime; }
         }
-        private decimal _id_Key;
+        private decimal _id_key;
         /// <summary>
-        ///自增建
+        ///自增键
         /// </summary>
         public decimal Id_Key
         {
-            set { _id_Key = value; }
-            get { return _id_Key; }
+            set { _id_key = value; }
+            get { return _id_key; }
         }
         #endregion Model
     }
@@ -1016,15 +1027,36 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
 
 
     /// <summary>
-    /// 合格的供应商清册Model
-    /// EligibleSuppliersTable
+    /// 最近采购的供应商信息（包含最后二次采购日期）
     /// </summary>
-    public class EligibleSuppliersModel
+    public class SuppliersSumInfoVM
     {
-        public EligibleSuppliersModel()
+        public SuppliersSumInfoVM()
         { }
         #region Model
-        #region 供应商信息 
+        private DateTime _upperpurchasedate;
+        /// <summary>
+        ///上次采购时间
+        /// </summary>
+        public DateTime UpperPurchaseDate
+        {
+            set { _upperpurchasedate = value; }
+            get { return _upperpurchasedate; }
+        }
+        private DateTime _lastpurchasedate;
+        /// <summary>
+        ///最近采购时间
+        /// </summary>
+        public DateTime LastPurchaseDate
+        {
+            set { _lastpurchasedate = value; }
+            get { return _lastpurchasedate; }
+        }
+
+        #endregion
+
+
+        #region Model
         private string _supplierid;
         /// <summary>
         ///供应商Id
@@ -1033,6 +1065,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         {
             set { _supplierid = value; }
             get { return _supplierid; }
+        }
+        private string _purchasetype;
+        /// <summary>
+        ///采购类
+        /// </summary>
+        public string PurchaseType
+        {
+            set { _purchasetype = value; }
+            get { return _purchasetype; }
+        }
+        private string _supplierproperty;
+        /// <summary>
+        ///采购属性
+        /// </summary>
+        public string SupplierProperty
+        {
+            set { _supplierproperty = value; }
+            get { return _supplierproperty; }
         }
         private string _suppliershortname;
         /// <summary>
@@ -1045,21 +1095,21 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _suppliername;
         /// <summary>
-        ///供应商全称
+        ///供应商名称
         /// </summary>
         public string SupplierName
         {
             set { _suppliername = value; }
             get { return _suppliername; }
         }
-        private string _supplierproperty;
+        private string _purchaseuser;
         /// <summary>
-        ///供应商属性
+        ///采购人员
         /// </summary>
-        public string SupplierProperty
+        public string PurchaseUser
         {
-            set { _supplierproperty = value; }
-            get { return _supplierproperty; }
+            set { _purchaseuser = value; }
+            get { return _purchaseuser; }
         }
         private string _suppliertel;
         /// <summary>
@@ -1090,7 +1140,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _supplieremail;
         /// <summary>
-        ///供应商邮箱
+        ///供应商Email
         /// </summary>
         public string SupplierEmail
         {
@@ -1106,15 +1156,100 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _supplieraddress = value; }
             get { return _supplieraddress; }
         }
-        private string _supplierPrincipal;
+        private string _supplierprincipal;
         /// <summary>
-        ///交货地址
+        ///供应商负责人
         /// </summary>
         public string SupplierPrincipal
         {
-            set { _supplierPrincipal = value; }
-            get { return _supplierPrincipal; }
+            set { _supplierprincipal = value; }
+            get { return _supplierprincipal; }
         }
+        private string _paycondition;
+        /// <summary>
+        ///付款方式
+        /// </summary>
+        public string PayCondition
+        {
+            set { _paycondition = value; }
+            get { return _paycondition; }
+        }
+        private string _iscooperate;
+        /// <summary>
+        ///是否合作
+        /// </summary>
+        public string IsCooperate
+        {
+            set { _iscooperate = value; }
+            get { return _iscooperate; }
+        }
+        private string _remark;
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string Remark
+        {
+            set { _remark = value; }
+            get { return _remark; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标签
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+        //ISO9001 ISO14001 SupplierBaseDocument	SupplierComment	 NotUseChildLabor	
+        //EnvironmentalInvestigation	HonestCommitment	PCN_Protocol	
+        //QualityAssuranceProtocol	HSF_Guarantee	REACH_Guarantee	SVHC_Guarantee
+        // ISO9001 ISO14001 供应商基本资料表 供应商评鉴表  不使用童工申明 
+        //供应商环境调查表  廉洁承诺书  PCN协议
+        // 质量保证协议 	HSF保证书  REACH保证书	SVHC调查表 
+
+    }
+
+    #endregion
+    public class SupplierLatestTwoPurchaseCell
+    {
         private string _purchaseuser;
         /// <summary>
         ///采购人员
@@ -1142,98 +1277,5 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _lastpurchasedate = value; }
             get { return _lastpurchasedate; }
         }
-        private string _purchasetype;
-        /// <summary>
-        ///采购类型
-        /// </summary>
-        public string PurchaseType
-        {
-            set { _purchasetype = value; }
-            get { return _purchasetype; }
-        }
-
-        private string _remark;
-        /// <summary>
-        ///备注
-        /// </summary>
-        public string Remark
-        {
-            set { _remark = value; }
-            get { return _remark; }
-        }
-        #endregion
-
-        //ISO9001 ISO14001 SupplierBaseDocument	SupplierComment	 NotUseChildLabor	
-        //EnvironmentalInvestigation	HonestCommitment	PCN_Protocol	
-        //QualityAssuranceProtocol	HSF_Guarantee	REACH_Guarantee	SVHC_Guarantee
-        // ISO9001 ISO14001 供应商基本资料表 供应商评鉴表  不使用童工申明 
-        //供应商环境调查表  廉洁承诺书  PCN协议
-        // 质量保证协议 	HSF保证书  REACH保证书	SVHC调查表 
-
-        #region  合格证书
-        /// <summary>
-        ///  ISO9001
-        /// </summary>
-        public string ISO9001
-        { set; get; }
-        /// <summary>
-        /// ISO14001
-        /// </summary>
-        public string ISO14001
-        { set; get; }
-        /// <summary>
-        /// 供应商基本资料表
-        /// </summary>
-        public string SupplierBaseDocument
-        { set; get; }
-        /// <summary>
-        /// 供应商评鉴表
-        /// </summary>
-        public string SupplierComment
-        { set; get; }
-        /// <summary>
-        /// 不使用童工申明
-        /// </summary>
-        public string NotUseChildLabor
-        { set; get; }
-        /// <summary>
-        /// 供应商环境调查表
-        /// </summary>
-        public string EnvironmentalInvestigation
-        { set; get; }
-        /// <summary>
-        /// 廉洁承诺书 
-        /// </summary>
-        public string HonestCommitment
-        { set; get; }
-        /// <summary>
-        /// PCN协议
-        /// </summary>
-        public string PCN_Protocol
-        { set; get; }
-        /// <summary>
-        /// 质量保证协议
-        /// </summary>
-        public string QualityAssuranceProtocol
-        { set; get; }
-        /// <summary>
-        /// HSF保证书
-        /// </summary>
-        public string HSF_Guarantee
-        { set; get; }
-        /// <summary>
-        /// REACH保证书
-        /// </summary>
-        public string REACH_Guarantee
-        { set; get; }
-        /// <summary>
-        /// SVHC调查表
-        /// </summary>
-        public string SVHC_Guarantee
-        { set; get; }
-        #endregion
-        #endregion
     }
-    #endregion
-
 }

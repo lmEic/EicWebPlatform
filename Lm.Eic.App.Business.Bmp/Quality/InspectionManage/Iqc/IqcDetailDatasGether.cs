@@ -107,7 +107,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 DocumentPath = model.DocumentPath
             };
             /// 判断是否存在此录入的项次
-            if (InspectionManagerCrudFactory.IqcDetailCrud.isExiststroe(datailModel)) return null;
+            if (InspectionManagerCrudFactory.IqcDetailCrud.isExiststroe(datailModel)) return OpResult.SetErrorResult("不用添加");
             datailModel.OpSign = OpMode.Add;
             return InspectionManagerCrudFactory.IqcDetailCrud.Store(datailModel, true);
         }
@@ -129,7 +129,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materailId"></param>
         /// <returns></returns>
-        public List<InspectionIqcDetailModel> GetIqcInspectionDetailModeDatasBy(string orderId, string materailId)
+        public List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderId, string materailId)
         {
             return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailOrderIdModelBy(orderId, materailId);
         }
