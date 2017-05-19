@@ -204,6 +204,8 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
         moduleNavLayoutVm.menus = datas;
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
+    var user = $scope.loginUser = Object.create(leeLoginUser);
+    user.loadHeadPortrait();
 })
 .controller('purchaseQueryCtrl', function ($scope) {
     $scope.navmenu = {

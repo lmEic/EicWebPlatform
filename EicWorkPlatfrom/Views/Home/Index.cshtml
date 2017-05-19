@@ -19,7 +19,7 @@
 
     <link href="@Url.Content("~/Content/angular-busy/dist/angular-busy.min.css")" type="text/css" rel="stylesheet" />
 </head>
-<body>
+<body ng-controller="mainCtrl">
     <header role="banner">
         <nav role="navigation" class="navbar navbar-static-top navbar-default">
             <div class="container">
@@ -27,9 +27,9 @@
                     <a class="navbar-brand" href="@Url.Action("Index","Home")">
                         <span>
                             <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司"
-                                 src="@Url.Content("~/Content/login/lmlogo.png")" 
+                                 src="@Url.Content("~/Content/login/lmlogo.png")"
                                  style="margin-left: -50px;margin-top: -5px;background-color: whitesmoke;height: 28px;width: 32px;border-radius: 5px;margin-right: 3px;" />
-                                 企业信息化平台(V1.0)
+                            企业信息化平台(V1.0)
                         </span>
                     </a>
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -45,19 +45,18 @@
                             <a href="/{{item.CtrlName}}" target="_blank">{{item.ModuleText}}</a>
                         </li>
                     </ul>
-
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tasks"></i>任务<b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img ng-src="{{loginUser.headPortrait}}" class="img-circle" style="width:30px;height:30px;margin-top:-3px;" />
+                                <span title="账号:{{loginUser.userId}}">{{loginUser.userName}}|{{loginUser.department}}</span><b class="caret"></b>
+                            </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li><a href="#">Separated link</a></li>
+                                <li><a ng-click="logout()" style="cursor:pointer"><i class="fa fa-street-view"></i>注销</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">任务看板</a></li>
                             </ul>
                         </li>
-                        <li class="divider"></li>
-                        <li><a ng-click="logout()" style="cursor:pointer"><i class="fa fa-street-view"></i>注销</a></li>
                     </ul>
                 </div>
             </div>
@@ -69,8 +68,8 @@
             <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-show="navLayout.navViewSwitch">
                 <div class="bs-callout bs-callout-info">
                     <h4>
-                        <span class="fa fa-list-ul">我的信息
-                            <img ng-src="{{headPortrait}}" class="img-circle" style="width:30px;height:30px;"/>
+                        <span class="fa fa-list-ul">
+                            我的地盘
                         </span>
                         <span class="pull-right">
                             <span class="badge" ng-click="navLayout.switchView()" title="点击折叠导航面板" style="cursor:pointer"><i class="fa fa-hand-o-left"></i></span>
@@ -78,7 +77,7 @@
                     </h4>
                     <div class="row" style="font-size:12px;color:black;padding-top:0px;" ng-controller="calendarManageCtrl">
                         <div class="col-md-12">
-                            <div  style="position:relative;">
+                            <div style="position:relative;">
                                 <h5 class="text-center" style="background:#d9edf7;font-weight:900;color:black;line-height:30px;">
                                     {{vmManager.nowMonth}}月行事历
                                 </h5>
@@ -91,9 +90,9 @@
                                     </button>
                                 </span>
                             </div>
-                            <div  ng-show="vmManager.calendarViewSwitch">
+                            <div ng-show="vmManager.calendarViewSwitch">
                                 <table class="table table-bordered" style="table-layout:fixed;margin-bottom:5px;" cg-busy="{promise:promise}">
-                                    
+
                                     <thead>
                                         <tr>
                                             <th>Week</th>
@@ -137,11 +136,11 @@
                                     周数
                                 </div>
                             </div>
-                            </div>
+                        </div>
 
                     </div>
                 </div>
-                
+
             </div>
             <div class="pull-left" style="width:{{navLayout.navLeftSize}};" ng-hide="navLayout.navViewSwitch">
                 <span class="badge" ng-click="navLayout.switchView()" title="点击打开导航面板" style="cursor:pointer"><i class="fa fa-hand-o-right"></i></span>

@@ -22,6 +22,14 @@
                         <a href="#">{{navMenu.Item.ModuleText}}(<span class="{{navMenu.Item.Icon}}"></span>)</a>
                     </li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#">
+                            <img ng-src="{{loginUser.headPortrait}}" class="img-circle" style="width:30px;height:30px;margin-top:-3px;" />
+                            <span title="账号:{{loginUser.userId}}">{{loginUser.userName}}|{{loginUser.department}}</span><b class="caret"></b>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
