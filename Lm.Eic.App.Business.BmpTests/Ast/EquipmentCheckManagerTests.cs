@@ -35,35 +35,36 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         [TestMethod()]
         public void ExportEquipmentNotCheckToExcleTest()
         {
-           
+
             var tem = AstService.EquipmentManager.CheckManager.BuildWaitingCheckList();
             #region 输出到Excel
-            string path = @"E:\\IQC.xls";
-            using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
-            {
-                byte[] bArr = tem.ToArray();
-                fs.Write(bArr, 0, bArr.Length);
-                fs.Flush();
-            }
+            //string path = @"E:\\IQC.xls";
+            //using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+            //{
+            //    byte[] bArr = tem.ToArray();
+            //    fs.Write(bArr, 0, bArr.Length);
+            //    fs.Flush();
+            //}
             #endregion
             Assert.Fail();
         }
-        public void  TestExcelToSql()
+        public void TestExcelToSql()
         {
             StringBuilder str = new StringBuilder();
             string path = @"E:\\设备系统设备总览表.xls";
-            var m = ExcelHelper.ExcelToEntityList<EquipmentModel>(path,out str);
+            var m = ExcelHelper.ExcelToEntityList<EquipmentModel>(path, out str);
             string FilePath = @"C:\testDir\test.txt";
             int Number = m.Count;
             if (str.ToString() != string.Empty)
-            { 
+            {
                 FilePath.CreateFile(str.ToString());
-                Assert.Fail(); 
+                Assert.Fail();
                 return;
             }
-            
-        
-            m.ForEach(e => {
+
+
+            m.ForEach(e =>
+            {
                 AstService.EquipmentManager.Store(e);
             });
             if (m.Count < 0) { Assert.Fail(); }
@@ -79,9 +80,9 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             model.CheckDate = DateTime.Now.ToDate();
             model.CheckResult = "";
             model.OpSign = "add";
-           var result = AstService.EquipmentManager.CheckManager.Store(model);
+            var result = AstService.EquipmentManager.CheckManager.Store(model);
             if (!result.Result) { Assert.Fail(); }
-           
+
         }
     }
 }

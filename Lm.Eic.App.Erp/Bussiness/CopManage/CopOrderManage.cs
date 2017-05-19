@@ -10,12 +10,62 @@ using Lm.Eic.App.Erp.DbAccess.InvManageDb;
 using Lm.Eic.App.Erp.Domain.MocManageModel.OrderManageModel;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System.IO;
+using Lm.Eic.App.Erp.Domain.CopManageModel;
 
 namespace Lm.Eic.App.Erp.Bussiness.CopManage
 {
-
-    public class CopOrderManage
+    /// <summary>
+    /// 订单与工单对比
+    /// </summary>
+    public class CopOrderWorkorderManage
     {
+        /// <summary>
+        /// 得到制三部的 订单与工单的对比参数
+        /// </summary>
+        /// <returns></returns>
+        public List<ProductTypeMonitorModel> GetMS589ProductTypeMonitor()
+        {
+            try
+            {
+                List<ProductTypeMonitorModel> typeMonitorModelList = new List<ProductTypeMonitorModel>();
+                //获取MES的产品型号
+                var mesPortype = CopOrderCrudFactory.CopOrderManageDb.MesProductTypeList();
+
+                if (mesPortype == null || mesPortype.Count <= 0) return typeMonitorModelList;
+                mesPortype.ForEach(e =>
+                 {
+                     var m = GetProductTypeMonitorInfoBy(e);
+                     if (m != null)
+                     { typeMonitorModelList.Add(m); }
+                 });
+                return typeMonitorModelList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+
+        /// <summary>
+        /// 生成EXCEL表格
+        /// </summary>
+        /// <returns></returns>
+        public DownLoadFileModel BuildProductTypeMonitoList(List<ProductTypeMonitorModel> datas, string fileDownLoadName)
+        {
+            try
+            {
+                
+                if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
+                var datasGroupping = datas.GetGroupList<ProductTypeMonitorModel>("订单与工单对比");
+                return datasGroupping.ExportToExcelMultiSheets<ProductTypeMonitorModel>(fieldmappping).CreateDownLoadExcelFileModel(fileDownLoadName);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+        #region 依产品型号得到相应信息
+
         #region 常量字符
         /// <summary>
         ///
@@ -27,8 +77,8 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
                localeFinishedSign = "D05",
                // 来料工单标识
                IncomingmaterialSign = "C03",
-            ///保税标识  
-            FreeTradeSign = "B03",
+               ///保税标识  
+               FreeTradeSign = "B03",
                // 已完工字段
                HaveFinishSign = "已完工",
                // 指定完工字段
@@ -52,7 +102,7 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
         /// </summary>
         /// <param name="containsProductTypeOrProductSpecify">包含产品名字和规格</param>
         /// <returns></returns>
-        public ProductTypeMonitorModel GetProductTypeMonitorInfoBy(string containsProductTypeOrProductSpecify)
+        private ProductTypeMonitorModel GetProductTypeMonitorInfoBy(string containsProductTypeOrProductSpecify)
         {
             #region 业务订单
             double localeFinishedCount, freeTradeInHouseCount, putInMaterialCount, orderCount = 0, allCheckOrderCount = 0, sumCount = 0;
@@ -94,70 +144,6 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
             };
         }
 
-        /// <summary>
-        /// 得到制三部的 订单与工单的对比参数
-        /// </summary>
-        /// <returns></returns>
-        public List<ProductTypeMonitorModel> GetMS589ProductTypeMonitor()
-        {
-            try
-            {
-                List<ProductTypeMonitorModel> typeMonitorModelList = new List<ProductTypeMonitorModel>();
-                //获取MES的产品型号
-                var mesPortype = CopOrderCrudFactory.CopOrderManageDb.MesProductTypeList();
-
-                if (mesPortype == null || mesPortype.Count <= 0) return typeMonitorModelList;
-                mesPortype.ForEach(e =>
-                 {
-                     var m = GetProductTypeMonitorInfoBy(e);
-                     if (m != null)
-                     { typeMonitorModelList.Add(m); }
-                 });
-                return typeMonitorModelList;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
-
-        /// <summary>
-        /// 生成EXCEL表格
-        /// </summary>
-        /// <returns></returns>
-        public MemoryStream BuildProductTypeMonitoList()
-        {
-            try
-            {
-
-                var dataGroupping = GetMS589ProductTypeMonitor();
-                var GroupdataGroupping = dataGroupping.GetGroupList<ProductTypeMonitorModel>("订单与工单对比");
-                return GroupdataGroupping.ExportToExcelMultiSheets<ProductTypeMonitorModel>(fieldmappping);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
-
-        public MemoryStream BuildProductTypeMonitoList(List<ProductTypeMonitorModel> datas)
-        {
-            try
-            {
-
-                if (datas != null || datas.Count > 0)
-                {
-                    var GroupdataGroupping = datas.GetGroupList<ProductTypeMonitorModel>("订单与工单对比");
-                    return GroupdataGroupping.ExportToExcelMultiSheets<ProductTypeMonitorModel>(fieldmappping);
-                }
-                else return null;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.InnerException.Message);
-            }
-        }
-        #region 依产品型号得到相应信息
         /// <summary>
         ///  获取所有生产工单, 除掉镭射雕刻,客退品
         /// </summary>
@@ -272,5 +258,19 @@ namespace Lm.Eic.App.Erp.Bussiness.CopManage
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// 销售退换单 管理
+    /// </summary>
+    public class CopReturnOrderManage
+    {
+        /// <summary>
+        /// 得到退料和换货单信息
+        /// <returns></returns>
+        public List<CopReturnOrderModel> GetCopReturnOrderInfoBy(string returnHandleOrder)
+        {
+            return CopOrderCrudFactory.CopReturnOrderManageDb.FindReturnOrderByID(returnHandleOrder);
+        }
     }
 }

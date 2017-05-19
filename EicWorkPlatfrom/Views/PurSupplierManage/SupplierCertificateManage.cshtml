@@ -112,7 +112,9 @@
                             <tr ng-repeat="item in editManager.certificateDatas track by $index">
                                 <td>
                                     {{item.EligibleCertificate}}
+                                    <span class="text-primary"><i class="{{editManager.getFileExtentionIcon(item)}}"></i></span>
                                     <span class="btn btn-danger btn-xs pull-right" ng-click="editManager.removeCertificateFile(item)"><i class="fa fa-remove"></i></span>
+                                    <a class="btn btn-success btn-xs pull-right" ng-href="{{editManager.loadFile(item)}}"><i class="fa fa-download"></i></a>
                                 </td>
                             </tr>
                         </tbody>

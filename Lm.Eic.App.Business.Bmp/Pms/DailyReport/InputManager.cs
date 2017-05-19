@@ -40,7 +40,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     /// <summary>
     /// 日报录入管理器
     /// </summary>
-    public class DailyReportInputManager 
+    public class DailyReportInputManager
     {
         private List<OrderModel> _orderDetailsList = new List<OrderModel>();  //工单缓存
 
@@ -57,17 +57,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             DateTime dailyDate = dailyReportDate.ToDate();
             if (departmentAllDailyReportList.Count > 0)
             {
-                var dailyReportList = departmentAllDailyReportList.Where(date => date.DailyReportDate == dailyDate).OrderBy (e=>e.InPutId).ToList();
+                var dailyReportList = departmentAllDailyReportList.Where(date => date.DailyReportDate == dailyDate).OrderBy(e => e.InPutId).ToList();
                 if (dailyReportList.Count > 0)
                 {
                     //获取最近日期的日报
                     return dailyReportList;
                 }
-                else 
+                else
                 {
-                   //已审核数据模板
-                    var maxDailyReportDate = departmentAllDailyReportList.Where (m=>m.CheckSign=="已审核").Max(m => m.DailyReportDate);
-                   //得到最近数据
+                    //已审核数据模板
+                    var maxDailyReportDate = departmentAllDailyReportList.Where(m => m.CheckSign == "已审核").Max(m => m.DailyReportDate);
+                    //得到最近数据
                     var maxDailyReportList = departmentAllDailyReportList.Where(m => m.DailyReportDate == maxDailyReportDate).OrderBy(e => e.InPutId).ToList();
                     var returnList = new List<DailyReportTempModel>();
                     maxDailyReportList.ForEach(m =>
@@ -80,18 +80,18 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                         mdl.AttendanceHours = 0;
                         mdl.NonProductionHours = 0;
                         mdl.ProductionHours = 0;
-                        mdl.SetHours =12;
+                        mdl.SetHours = 12;
                         mdl.InputHours = 12;
                         mdl.OperationEfficiency = "100%";
                         mdl.ProductionEfficiency = "100%";
                         mdl.EquipmentEifficiency = "100%";
                         returnList.Add(mdl);
-                    }); 
+                    });
                     return returnList;
                 }
             }
             return new List<DailyReportTempModel>();
-          
+
         }
         /// <summary>
         /// 导出Excel列表
@@ -121,16 +121,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <param name="department"></param>
         /// <param name="dailyReportDate"></param>
         /// <returns></returns>
-        public MemoryStream BuildDailyReportTempList(string department, DateTime dailyReportDate)
+        public DownLoadFileModel BuildDailyReportTempList(string department, DateTime dailyReportDate)
         {
+            
+
             var datas = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
-            if (datas != null && datas.Count > 0)
-            { 
-                
-                var dataGroupping = datas.GetGroupList<DailyReportTempModel>("");
-                return dataGroupping.ExportToExcelMultiSheets<DailyReportTempModel>(fieldmappping);
-            }
-            else return new MemoryStream() ;
+            if (datas == null && datas.Count <= 0) return new DownLoadFileModel().Default();
+            var dataGroupping = datas.GetGroupList<DailyReportTempModel>("");
+            return dataGroupping.ExportToExcelMultiSheets<DailyReportTempModel>(fieldmappping).CreateDownLoadExcelFileModel(department + "日报数据(" + dailyReportDate.ToShortDateString() + ")");
         }
         /// <summary>
         /// 保存日报列表
@@ -140,18 +138,18 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public OpResult SavaDailyReportList(List<DailyReportTempModel> modelList, DateTime inPutReportDate)
         {
             //先获取待保存的数据列表 如果新数据保存失败 则将清空的数据还原回数据库
-            string department = string.Empty; 
+            string department = string.Empty;
             var dailyReportDate = DateTime.Now.ToDate();
             if (modelList.IsNullOrEmpty())
             {
                 department = modelList[0].Department;
-                
+
                 dailyReportDate = inPutReportDate.ToDate();
             }
             var temDailyList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
 
             try
-            { 
+            {
                 //更新日报表
                 //先删除
                 DailyReportInputCrudFactory.DailyReportTempCrud.DeleteDailyReportListBy(department, dailyReportDate);
@@ -161,7 +159,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
                 if (!savaResult.Result)
                 {
                     DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(temDailyList, dailyReportDate);
-                    return OpResult.SetResult("数据保存失败！");
+                    return OpResult.SetErrorResult("数据保存失败！");
                 }
                 else
                     return savaResult;
@@ -169,7 +167,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             catch (Exception ex)
             {
                 DailyReportInputCrudFactory.DailyReportTempCrud.SavaDailyReportList(temDailyList, dailyReportDate);
-                return OpResult.SetResult("数据保存失败！");
+                return OpResult.SetErrorResult("数据保存失败！");
                 throw new Exception(ex.InnerException.Message);
             }
         }
@@ -183,8 +181,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             //将临时表中的本部门的所有列表 克隆至正式日报表中
             var dailyReportTempList = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
             if (!dailyReportTempList.IsNullOrEmpty())
-                return OpResult.SetResult("未找到本部门的任何日报记录！");
-        
+                return OpResult.SetErrorResult("未找到本部门的任何日报记录！");
+
             //清除正式表中的本部门的日报数据
             DailyReportInputCrudFactory.DailyReportCrud.DeleteDailyReportListBy(department, dailyReportDate.ToDate());
             //改审核状态
@@ -236,5 +234,5 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         }
     }
 
- 
+
 }

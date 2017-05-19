@@ -104,7 +104,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 int i = 0;
                 string year = model.CalendarYear.ToString("0000");
                 if (irep.IsExist(e => e.CalendarYear == model.CalendarYear))
-                    return OpResult.SetResult(year + "年行事历已经存在");
+                    return OpResult.SetErrorResult(year + "年行事历已经存在");
                 DateTime beginDate = DateTime.Parse(year + "-01-01");
                 DateTime endDate = DateTime.Parse(year + "-12-31");
                 List<DateTime> adlldate = new List<DateTime>();

@@ -23,7 +23,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             string planMaintenanceDate = "201607";
             var waitingMainteanceList = AstService.EquipmentManager.MaintenanceManager.GetWaitingMaintenanceListBy(planMaintenanceDate);
             if (waitingMainteanceList.Count() > 0) { } else { Assert.Fail(); }
-         
+
         }
 
         [TestMethod()]
@@ -42,7 +42,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
             }
             #endregion
             Assert.Fail();
-          
+
         }
         public void BuildInventoryList()
         {
@@ -50,13 +50,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
 
 
             #region 输出到Excel
-            string path = @"E:\\IQC.xls";
-            using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
-            {
-                byte[] bArr = tem.ToArray();
-                fs.Write(bArr, 0, bArr.Length);
-                fs.Flush();
-            }
+            //string path = @"E:\\IQC.xls";
+            //using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+            //{
+            //    byte[] bArr = tem.ToArray();
+            //    fs.Write(bArr, 0, bArr.Length);
+            //    fs.Flush();
+            //}
             #endregion
             Assert.Fail();
         }

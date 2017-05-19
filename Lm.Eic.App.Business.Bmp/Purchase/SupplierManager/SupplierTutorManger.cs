@@ -7,16 +7,7 @@ using Lm.Eic.Uti.Common.YleeObjectBuilder;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
-    internal class TutorManagerFactory
-    {
-        /// <summary>
-        /// 供应商辅导管理
-        /// </summary>
-        public static SupplierTutorManger SupplierTutorManger
-        {
-            get { return OBulider.BuildInstance<SupplierTutorManger>(); }
-        }
-    }
+
     /// <summary>
     /// 供应商辅导\计划管理
     /// </summary>
@@ -38,11 +29,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                    {
                        if (SupplierCrudFactory.SuppliersSeasonTutorCrud.IsExist(m.ParameterKey))
                        {
-                           waittingTourSupplierList.Add(SupplierCrudFactory.SuppliersSeasonTutorCrud.GetSupplierSeasonTutorModelBy(m.ParameterKey));
+                           var SupplierSeasonTutorInfo = SupplierCrudFactory.SuppliersSeasonTutorCrud.GetSupplierSeasonTutorModelBy(m.ParameterKey);
+                           if (!waittingTourSupplierList.Contains(SupplierSeasonTutorInfo))
+                               waittingTourSupplierList.Add(SupplierSeasonTutorInfo);
                        }
                        else
                        {
-                           waittingTourSupplierList.Add(GetlimitScoreSupplierTutorModelTo(m));
+                           var SupplierSeasonTutorInfo = GetlimitScoreSupplierTutorModelTo(m);
+                           if (!waittingTourSupplierList.Contains(SupplierSeasonTutorInfo))
+                               waittingTourSupplierList.Add(GetlimitScoreSupplierTutorModelTo(m));
                        }
                    });
             }
@@ -57,8 +52,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public OpResult SaveSupplierTutorModel(SupplierSeasonTutorModel model)
         {
             if (SupplierCrudFactory.SuppliersSeasonTutorCrud.IsExist(model.ParameterKey))
-                model.OpSign = "edit";
-            else model.OpSign = "add";
+                model.OpSign = OpMode.Edit;
+            else model.OpSign = OpMode.Add;
             return SupplierCrudFactory.SuppliersSeasonTutorCrud.Store(model);
         }
         #region  Internet

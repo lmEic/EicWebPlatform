@@ -123,7 +123,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// 业务Rma从ERP中的基础信息
     /// </summary>
-    public partial class RmaERPBusseeInfoModel
+    public partial class RmaRetrunOrderInfoModel
     {
         private string _returnhandleorder;
         /// <summary>
@@ -134,14 +134,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _returnhandleorder = value; }
             get { return _returnhandleorder; }
         }
-        private string _prodcutid;
+        private string _productid;
         /// <summary>
         ///品号
         /// </summary>
-        public string ProdcutId
+        public string ProductId
         {
-            set { _prodcutid = value; }
-            get { return _prodcutid; }
+            set { _productid = value; }
+            get { return _productid; }
         }
         private string _productname;
         /// <summary>
@@ -197,23 +197,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _salesorder = value; }
             get { return _salesorder; }
         }
-        private DateTime _productsshipdate;
-        /// <summary>
-        ///原出货日期
-        /// </summary>
-        public DateTime ProductsShipDate
-        {
-            set { _productsshipdate = value; }
-            get { return _productsshipdate; }
-        }
+
     }
     /// <summary>
     ///业务Rma处理模型
     /// </summary>
     [Serializable]
-    public partial class RmaBussesDescriptionModel : RmaERPBusseeInfoModel
+    public partial class RmaBusinessDescriptionModel : RmaRetrunOrderInfoModel
     {
-        public RmaBussesDescriptionModel()
+        public RmaBusinessDescriptionModel()
         { }
         #region Model
         private string _rmaid;
@@ -235,14 +227,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             get { return _rmaidnumber; }
         }
 
-        private string _baddescrption;
+        private string _baddescription;
         /// <summary>
         ///不良现象
         /// </summary>
-        public string BadDescrption
+        public string BadDescription
         {
-            set { _baddescrption = value; }
-            get { return _baddescrption; }
+            set { _baddescription = value; }
+            get { return _baddescription; }
         }
         private string _customerhandlesuggestion;
         /// <summary>
@@ -252,6 +244,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _customerhandlesuggestion = value; }
             get { return _customerhandlesuggestion; }
+        }
+        private DateTime _productsshipdate;
+        /// <summary>
+        ///原出货日期
+        /// </summary>
+        public DateTime ProductsShipDate
+        {
+            set { _productsshipdate = value; }
+            get { return _productsshipdate; }
         }
         private string _feepaymentway;
         /// <summary>
@@ -352,6 +353,18 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _rmaidnumber = value; }
             get { return _rmaidnumber; }
         }
+        // ProductId
+
+        private string _parameterKey;
+        /// <summary>
+        ///物料料号
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterKey = value; }
+            get { return _parameterKey; }
+        }
+
         private string _badphenomenon;
         /// <summary>
         ///不良现象

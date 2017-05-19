@@ -32,9 +32,10 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// 生成盘点清单
         /// </summary>
         /// <returns></returns>
-        public MemoryStream BuildInventoryList()
+        public DownLoadFileModel BuildInventoryList()
         {
-              //AssetNumber, EquipmentName, EquipmentSpec, ManufacturingNumber, MaintenanceDate, SafekeepDepartment, AssetType
+            DownLoadFileModel dlfm = new DownLoadFileModel(2);
+            //AssetNumber, EquipmentName, EquipmentSpec, ManufacturingNumber, MaintenanceDate, SafekeepDepartment, AssetType
             List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
                  new FileFieldMapping ("Number","项次") ,
                   new FileFieldMapping ("AssetNumber","编号")  ,
@@ -43,11 +44,12 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                   new FileFieldMapping ("ManufacturingNumber","制造编号")  ,
                   new FileFieldMapping ("MaintenanceDate","登录日期"),
                   new FileFieldMapping ("SafekeepDepartment","部门"),
-                    new FileFieldMapping ("AssetType","资产分类")
+                  new FileFieldMapping ("AssetType","资产分类")
                 };
-            var modelList = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { SearchMode = 6 });
-            var dataTableGrouping = modelList.GetGroupList<EquipmentModel>("SafekeepDepartment");
-            return dataTableGrouping.ExportToExcelMultiSheets<EquipmentModel>(fieldmappping);
+            var datas = CrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { SearchMode = 6 });
+            if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
+            var dataTableGrouping = datas.GetGroupList<EquipmentModel>("SafekeepDepartment");
+            return dataTableGrouping.ExportToExcelMultiSheets<EquipmentModel>(fieldmappping).CreateDownLoadExcelFileModel("设备盘点清单");
         }
         /// <summary>
         /// 生成财产编号
@@ -161,7 +163,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
 
 
 
- 
 
-   
+
+
 }

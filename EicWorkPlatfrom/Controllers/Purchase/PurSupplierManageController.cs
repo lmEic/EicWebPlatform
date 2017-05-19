@@ -47,7 +47,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public ContentResult GetPurQualifiedSupplierListBy(string yearMonth)
         {
-            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetQualifiedSupplierList(yearMonth);
+            var datas = PurchaseService.PurSupplierManager.CertificateManager.GetQualifiedSupplierList(yearMonth);
             TempData["QualifiedSupplierDatas"] = datas;
             return DateJsonResult(datas);
 
@@ -59,9 +59,17 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public FileResult CreateQualifiedSupplierInfoList()
         {
-            var datas = TempData["QualifiedSupplierDatas"] as List<EligibleSuppliersModel>;
-            var ds = PurchaseService.PurSupplierManager.SupplierCertificateManager.BuildQualifiedSupplierInfoList(datas);
-            return this.ExportToExcel(ds, "合格供应商清单", "合格供应商");
+            var datas = TempData["QualifiedSupplierDatas"] as List<SuppliersSumInfoVM>;
+            //Excel
+            var dlfm = PurchaseService.PurSupplierManager.CertificateManager.BuildQualifiedSupplierInfoList(datas);
+            return this.DownLoadFile(dlfm);
+        }
+        [NoAuthenCheck]
+        public FileResult LoadQualifiedCertificateFile(string suppliserId, string eligibleCertificate)
+        {
+            //Excel
+            DownLoadFileModel dlfm = PurchaseService.PurSupplierManager.CertificateManager.GetSupQuaCertificateDLFM(SiteRootPath, suppliserId, eligibleCertificate);
+            return this.DownLoadFile(dlfm);
         }
         /// <summary>
         /// 获取合格供应商信息
@@ -71,7 +79,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public ContentResult GetErpSuppplierInfoBy(string supplierId)
         {
-            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetSuppplierInfoBy(supplierId);
+            var datas = PurchaseService.PurSupplierManager.CertificateManager.GetSuppplierInfoBy(supplierId);
 
             return DateJsonResult(datas);
         }
@@ -122,7 +130,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult StorePurSupplierCertificateInfo(InPutSupplieCertificateInfoModel certificateData)
         {
-            var opResult = PurchaseService.PurSupplierManager.SupplierCertificateManager.SaveSpplierCertificateData(certificateData, this.SiteRootPath);
+            var opResult = PurchaseService.PurSupplierManager.CertificateManager.SaveSupplierCertificateData(certificateData, this.SiteRootPath);
             return Json(opResult);
         }
 
@@ -138,7 +146,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
 
         public ContentResult GetSupplierQualifiedCertificateListBy(string supplierId)
         {
-            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.GetSupplierQualifiedCertificateListBy(supplierId);
+            var datas = PurchaseService.PurSupplierManager.CertificateManager.GetSupplierQualifiedCertificateListBy(supplierId);
             return DateJsonResult(datas);
         }
 
@@ -150,7 +158,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult DelPurSupplierCertificateFile(SupplierQualifiedCertificateModel entity)
         {
-            var datas = PurchaseService.PurSupplierManager.SupplierCertificateManager.StoreSpplierCertificateData(entity, this.SiteRootPath);
+            var datas = PurchaseService.PurSupplierManager.CertificateManager.SaveSupplierCertificateData(entity, this.SiteRootPath);
             return Json(datas);
         }
         #endregion
@@ -169,7 +177,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult GetAuditSupplierList(string yearSeason)
         {
-            var datas = PurchaseService.PurSupplierManager.SupplierAuditManager.GetSeasonSupplierList(yearSeason);
+            var datas = PurchaseService.PurSupplierManager.AuditManager.GetSeasonSupplierList(yearSeason);
             TempData["SupplierSeasonDatas"] = datas;
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
@@ -182,8 +190,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public FileResult CreateSupplierEvaluationToExcel()
         {
             var datas = TempData["SupplierSeasonDatas"] as List<SupplierSeasonAuditModel>;
-            var ds = PurchaseService.PurSupplierManager.SupplierAuditManager.SupplierSeasonDataStream(datas);
-            return this.ExportToExcel(ds, "供应商考核清单", "供应商考核");
+            ///导出Excel
+            var dlfm = PurchaseService.PurSupplierManager.AuditManager.SupplierSeasonDataDLFM(datas);
+            return this.DownLoadFile(dlfm);
         }
         /// <summary>
         /// <summary>
@@ -196,7 +205,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
 
         public JsonResult SaveAuditSupplierInfo(SupplierSeasonAuditModel entity)
         {
-            var datas = PurchaseService.PurSupplierManager.SupplierAuditManager.SaveAuditSupplierInfo(entity);
+            var datas = PurchaseService.PurSupplierManager.AuditManager.SaveAuditSupplierInfo(entity);
 
             return Json(datas);
         }
@@ -216,7 +225,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public ActionResult GetWaittingTourSupplier(string yearQuarter, double limitTotalCheckScore, double limitQualityCheck)
         {
-            var datas = PurchaseService.PurSupplierManager.SupplierTutorManger.GetWaittingTourSupplier(yearQuarter, limitTotalCheckScore, limitQualityCheck);
+            var datas = PurchaseService.PurSupplierManager.TutorManger.GetWaittingTourSupplier(yearQuarter, limitTotalCheckScore, limitQualityCheck);
             TempData["SupplierTourData"] = datas;
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
@@ -230,8 +239,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public FileResult CreateSupplierTourToExcel()
         {
             var datas = TempData["SupplierTourData"] as List<SupplierSeasonTutorModel>;
-            var ds = datas.ExportToExcel("供应商辅导管理");
-            return this.ExportToExcel(ds, "供应商辅导清单", "供应商辅导");
+            ///导出Exce
+            var dlfm = datas.ToDownLoadExcelFileModel<SupplierSeasonTutorModel>("供应商辅导管理", "供应商辅导清单");
+            return this.DownLoadFile(dlfm);
         }
         /// <summary>
         /// 编辑供应商辅导信息模板
@@ -250,7 +260,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult SavePurSupTourInfo(SupplierSeasonTutorModel entity)
         {
-            var opResult = PurchaseService.PurSupplierManager.SupplierTutorManger.SaveSupplierTutorModel(entity);
+            var opResult = PurchaseService.PurSupplierManager.TutorManger.SaveSupplierTutorModel(entity);
             return Json(opResult);
         }
         #endregion
@@ -276,12 +286,12 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <param name="yearQuarter"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetPurSupGradeInfo(string yearQuarter)
+        public ContentResult GetPurSupGradeInfo(string yearQuarter)
         {
-            string year = yearQuarter.Substring(0, yearQuarter.Length - 2);
-            var datas = PurchaseService.PurSupplierManager.SuppliersGradeManager.GetPurSupGradeInfoBy(year);
+
+            var datas = PurchaseService.PurSupplierManager.GradeManager.GetPurSupGradeInfoBy(yearQuarter);
             TempData["SupplierGradeInfoData"] = datas;
-            return Json(datas, JsonRequestBehavior.AllowGet);
+            return DateJsonResult(datas);
         }
 
         /// <summary>
@@ -292,8 +302,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public FileResult CreateSupplierGradeInfoDataToExcel()
         {
             var datas = TempData["SupplierGradeInfoData"] as List<SupplierSeasonTutorModel>;
-            var ds = datas.ExportToExcel("供应商考评分模板");
-            return this.ExportToExcel(ds, "供应商考评分数模板清单", "供应商考评分"); ;
+            ///Excell
+            var dlfm = datas.ToDownLoadExcelFileModel<SupplierSeasonTutorModel>("供应商考评分模板", "供应商考评分数模板清单");
+            return this.DownLoadFile(dlfm);
         }
         /// <summary>
         /// 保存供应商评分数据
@@ -303,7 +314,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult SavePurSupGradeData(SupplierGradeInfoModel entity)
         {
-            var opResult = PurchaseService.PurSupplierManager.SuppliersGradeManager.SavePurSupGradeData(entity);
+            var opResult = PurchaseService.PurSupplierManager.GradeManager.SavePurSupGradeData(entity);
             return Json(opResult);
         }
         #endregion

@@ -190,8 +190,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public FileResult BuildWorkerArchivesList()
         {
             var datas = TempData["archiveDatas"] as List<ArchivesEmployeeIdentityModel>;
-            var ms = ArchiveService.ArchivesManager.BuildWorkerArchivesInfoList(datas);
-            return this.ExportToExcel(ms, "员工档案总表", "员工档案总表");
+            //excel
+            var dlfm = ArchiveService.ArchivesManager.BuildWorkerArchivesInfoList(datas);
+            return this.DownLoadFile(dlfm);
         }
         /// <summary>
         /// 变更部门信息

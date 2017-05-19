@@ -20,7 +20,10 @@
                                     data-bs-options="formStatus.value as formStatus.label for formStatus in vmManager.formStatuses track by $index" data-bs-select>
                                 <span class="caret"></span>
                             </button>
-                            <button role="button" class="btn btn-primary tipBox" ng-click="vmManager.getMasterDatas()"><i class="fa fa-search"></i>查询</button>
+                            <button role="button" class="btn btn-primary tipBox"
+                                    ng-click="vmManager.getMasterDatas()" ng-show="vmManager.isShowQuery">
+                                <i class="fa fa-search"></i>查询
+                            </button>
                         </div>
                         <span yl-operatemsg-board></span>
                     </form>
@@ -31,7 +34,66 @@
                     <button class="btn btn-default" type="button" ng-click="vmManager.refresh()"><i class="fa fa-reply"></i>返回</button>
                 </div>
             </div>
+
             <div class="h-split"></div>
+            <div bs-tabs bs-active-pane="archive.queryActiveTa">
+
+                @*料号查询*@
+                <div bs-pane data-title="料号查询" data-name="qryMaterialIdTab">
+                    <div class="row" ng-show="vmManager.isShowQuery">
+                        <div class="col-md-12">
+                            <form class="form-inline" role="form">
+                                <div class="form-group ">
+                                    <label class="control-label">料号:</label>
+                                    <input type="text" placeholder="料号查询" ng-model="vmManager.queryMaterialId" format-date class="form-control" />
+                                    <button role="button" class="btn btn-primary tipBox" ng-click="vmManager.getMasterDatasByMaterialId()"><i class="fa fa-search"></i>查询</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+                @* 供应商查询*@
+                <div bs-pane data-title="供应商查询" data-name="qrySupperilIdTab">
+                    <div class="row" ng-show="vmManager.isShowQuery">
+                        <div class="col-md-12">
+                            <form class="form-inline" role="form">
+                                <div class="form-group ">
+                                    <label class="control-label">供应商Id:</label>
+                                    <input type="text" placeholder="供应商Id查询" ng-model="vmManager.querySupplierId" format-date class="form-control" />
+                                    <button role="button" class="btn btn-primary tipBox" ng-click="vmManager.getMasterDatasBySupplierId()"><i class="fa fa-search"></i>查询</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+                @* 检验项目查询*@
+                <div bs-pane data-title="检验项目查询" data-name="qryInspectionItemTab">
+                    <div class="row" ng-show="vmManager.isShowQuery">
+                        <div class="col-md-12">
+                            <form class="form-inline" role="form">
+                                <div class="form-group ">
+                                    <label class="control-label">检验项目:</label>
+                                    <button type="button" class="btn btn-default" ng-model="vmManager.selecteInspectionItem"
+                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="检验项目"
+                                            data-bs-options="queryInspectionItems.value as queryInspectionItems.label for queryInspectionItems in vmManager.queryInspectionItems track by $index" data-bs-select>
+
+                                        检验项目<span class="caret"></span>
+                                    </button>
+                                    <button role="button" class="btn btn-primary tipBox" ng-click="vmManager.getMasterDatasByInspectionItem()"><i class="fa fa-search"></i>查询</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+                @* 返回*@
+                <div bs-pane data-title="返回" class="col-md-pull-4" data-name="retrunQueryTab" />
+            </div>
 
             <div class="row">
                 <div class="col-md-12" id="editWindow">
@@ -48,10 +110,10 @@
                                     <th>品号</th>
                                     <th>品名</th>
                                     <th>供应商</th>
-                                    <th>检测项目</th>
                                     <th>进货数量</th>
                                     <th>检测状态</th>
                                     <th>进货日期</th>
+                                    <th>结果</th>
                                     <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                 </tr>
                             </thead>
@@ -63,14 +125,15 @@
                                         <span title="规格:{{item.MaterialSpec}}">{{item.MaterialName}}</span>
                                     </td>
                                     <td>{{item.MaterialSupplier}}</td>
-                                    <td>{{item.InspectionItems}}</td>
                                     <td>{{item.MaterialCount}}</td>
                                     <td>
-                                        <span title="检测方式:{{item.InspectionMode}}，检测结果:{{item.InspctionResult}},检测日期:{{item.MaterialInDate}}">
+                                        <span title="检测方式:{{item.InspectionMode}}，检测日期:{{item.MaterialInDate}}">
                                             {{item.InspectionStatus}}
                                         </span>
                                     </td>
                                     <td>{{item.MaterialInDate}}</td>
+                                    <td>{{item.InspectionResult}}</td>
+
                                     <td>
                                         <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getDetailDatas(item)" ng-show="item.InspectionStatus !== '未完成'">明细</button>
                                         <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)" ng-show="item.InspectionStatus === '待审核'">审核</button>
@@ -181,6 +244,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 

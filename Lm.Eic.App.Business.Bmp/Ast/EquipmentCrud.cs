@@ -142,14 +142,14 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             int record = 0;
             string opContext = "设备档案",
                    opSign = string.Empty;
-            OpResult opResult = OpResult.SetResult("未执行任何操作！");
+            OpResult opResult = OpResult.SetErrorResult("未执行任何操作！");
 
             if (listModel == null || listModel.Count <= 0)
-                return OpResult.SetResult("集合不能为空！");
+                return OpResult.SetErrorResult("集合不能为空！");
 
             opSign = listModel[0].OpSign;
             if (opSign.IsNullOrEmpty())
-                return OpResult.SetResult("操作模式不能为空！");
+                return OpResult.SetErrorResult("操作模式不能为空！");
 
             try
             {
@@ -171,7 +171,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                         break;
 
                     default:
-                        opResult = OpResult.SetResult("操作模式溢出！");
+                        opResult = OpResult.SetErrorResult("操作模式溢出！");
                         break;
                 }
             }
@@ -186,7 +186,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public OpResult Store(EquipmentModel model)
         {
-            OpResult result = OpResult.SetResult("财产编号不能为空！", false);
+            OpResult result = OpResult.SetSuccessResult("财产编号不能为空！", false);
             if (model == null || model.AssetNumber.IsNullOrEmpty())
                 return result;
             try
@@ -206,7 +206,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                         break;
 
                     default:
-                        result = OpResult.SetResult("操作模式溢出");
+                        result = OpResult.SetErrorResult("操作模式溢出");
                         break;
                 }
             }
@@ -354,15 +354,15 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             model.OpDate = DateTime.Now.ToDate();
             model.OpTime = DateTime.Now;
             string opContext = "设备校验";
-            OpResult opResult = OpResult.SetResult("未执行任何操作！");
+            OpResult opResult = OpResult.SetErrorResult("未执行任何操作！");
 
             if (model == null)
-                return OpResult.SetResult("校验记录不能为空！");
+                return OpResult.SetErrorResult("校验记录不能为空！");
 
             //设备是否存在
             var equipment = EquipmentCrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber, SearchMode = 1 }).FirstOrDefault();
             if (equipment == null)
-                return OpResult.SetResult("未找到保养单上的设备\r\n请确定财产编号是否正确！");
+                return OpResult.SetErrorResult("未找到保养单上的设备\r\n请确定财产编号是否正确！");
 
             //设置保养记录 设备名称
             model.EquipmentName = equipment.EquipmentName;
@@ -388,7 +388,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                             break;
 
                         default:
-                            opResult = OpResult.SetResult("操作模式溢出");
+                            opResult = OpResult.SetErrorResult("操作模式溢出");
                             break;
                     }
 
@@ -407,7 +407,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 }
                 else
                 {
-                    return OpResult.SetResult("设备校验日期与录入日期相等");
+                    return OpResult.SetErrorResult("设备校验日期与录入日期相等");
                 }
             }
             catch (Exception ex)
@@ -492,15 +492,15 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             model.OpDate = DateTime.Now.ToDate();
             model.OpTime = DateTime.Now;
             string opContext = "设备保养";
-            OpResult opResult = OpResult.SetResult("未执行任何操作！");
+            OpResult opResult = OpResult.SetErrorResult("未执行任何操作！");
 
             if (model == null)
-                return OpResult.SetResult("保养记录不能为空！");
+                return OpResult.SetErrorResult("保养记录不能为空！");
 
             //设备是否存在
             var equipment = EquipmentCrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { SearchMode = 1, AssetNumber = model.AssetNumber }).FirstOrDefault();
             if (equipment == null)
-                return OpResult.SetResult("未找到保养单上的设备\r\n请确定财产编号是否正确！");
+                return OpResult.SetErrorResult("未找到保养单上的设备\r\n请确定财产编号是否正确！");
 
             //设置保养记录 设备名称
             model.EquipmentName = equipment.EquipmentName;
@@ -525,7 +525,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                             break;
 
                         default:
-                            opResult = OpResult.SetResult("操作模式溢出");
+                            opResult = OpResult.SetErrorResult("操作模式溢出");
                             break;
                     }
 
@@ -542,7 +542,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                     opResult.Attach = model;
                     return opResult;
                 }
-                else { return OpResult.SetResult("设备保养日期与录入日期相等"); }
+                else { return OpResult.SetErrorResult("设备保养日期与录入日期相等"); }
             }
             catch (Exception ex)
             {
@@ -596,23 +596,23 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         private OpResult AddEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
         {
-            OpResult result = OpResult.SetResult("未执行任何操作");
+            OpResult result = OpResult.SetErrorResult("未执行任何操作");
 
             //设备是否存在
             var equipment = EquipmentCrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber, SearchMode = 1 }).FirstOrDefault();
 
             if (equipment == null)
-                return OpResult.SetResult("未找到报废单上的设备\r\n请确定财产编号是否正确！");
+                return OpResult.SetErrorResult("未找到报废单上的设备\r\n请确定财产编号是否正确！");
 
             if (equipment.IsScrapped == "是")
-                return OpResult.SetResult("操作失败！\r\n设备报废为已报废，不能重复报废！");
+                return OpResult.SetErrorResult("操作失败！\r\n设备报废为已报废，不能重复报废！");
 
             //修改设备报废状态
             equipment.IsScrapped = "是";
             equipment.OpSign = OpMode.Edit;
             var equipmentOpResult = EquipmentCrudFactory.EquipmentCrud.Store(equipment);
             if (!equipmentOpResult.Result)
-                return OpResult.SetResult("修改设备报废状态失败！");
+                return OpResult.SetErrorResult("修改设备报废状态失败！");
 
             model.DiscardMonth = DateTime.Now.ToString("yyyyMM");
             //存储记录
@@ -628,7 +628,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         private OpResult EditEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
         {
-            OpResult result = OpResult.SetResult("咱不提供修改方法");
+            OpResult result = OpResult.SetErrorResult("咱不提供修改方法");
             return result;
         }
 
@@ -639,7 +639,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         private OpResult DeleteEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
         {
-            OpResult result = OpResult.SetResult("暂不提供删除方法");
+            OpResult result = OpResult.SetErrorResult("暂不提供删除方法");
             return result;
         }
 

@@ -31,10 +31,10 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var result = GeneralAffairsService.WorkerClothesManager.StoreReceiveWorkClothes(model);
             return Json(result);
         }
-        
+
         [HttpGet]
         [NoAuthenCheck]
-        public JsonResult CanChangeOldForNew(string workerId, string productName, string dealwithType,string department)
+        public JsonResult CanChangeOldForNew(string workerId, string productName, string dealwithType, string department)
         {
             bool canChange = GeneralAffairsService.WorkerClothesManager.CanOldChangeNew(workerId, productName, dealwithType, department);
             return Json(canChange, JsonRequestBehavior.AllowGet);
@@ -49,7 +49,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <returns></returns>
         [HttpGet]
         [NoAuthenCheck]
-        public ContentResult GetWorkerClothesReceiveRecords(string workerId, string department, string receiveMonth,int mode)
+        public ContentResult GetWorkerClothesReceiveRecords(string workerId, string department, string receiveMonth, int mode)
         {
             var datas = GeneralAffairsService.WorkerClothesManager.FindReceiveRecordBy(new QueryGeneralAffairsDto()
             {
@@ -63,8 +63,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public FileResult BuildReceiveWorkClothesList()
         {
-            var ms = GeneralAffairsService.WorkerClothesManager.BuildReceiveWorkClothesList();
-            return this.ExportToExcel(ms, "厂服领取清单", "厂服领取清单");
+            /// excel
+            var dlfm = GeneralAffairsService.WorkerClothesManager.DownLaodBuildReceiveWorkClothesFile();
+            return this.DownLoadFile(dlfm);
         }
     }
 }

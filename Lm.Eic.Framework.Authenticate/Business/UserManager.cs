@@ -64,7 +64,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
             int record = 0;
             if (registerRep.IsExist(e => e.UserId == user.UserId))
             {
-                return OpResult.SetResult("该用户已经存在！", false);
+                return OpResult.SetSuccessResult("该用户已经存在！", false);
             }
             var UserOrganizeInfo = UserInfoHandler.GetLoginedUserInfo(user.UserId);
             if (UserOrganizeInfo != null)
@@ -72,11 +72,11 @@ namespace Lm.Eic.Framework.Authenticate.Business
                 user.CurrentStatus = "可使用";
                 user.UserName = UserOrganizeInfo.UserName;
                 record = registerRep.Insert(user);
-                return OpResult.SetResult("添加用户成功！", record > 0);
+                return OpResult.SetSuccessResult("添加用户成功！", record > 0);
             }
             else
             {
-                return OpResult.SetResult("人事系统中没有此用户信息！");
+                return OpResult.SetErrorResult("人事系统中没有此用户信息！");
             }
         }
 

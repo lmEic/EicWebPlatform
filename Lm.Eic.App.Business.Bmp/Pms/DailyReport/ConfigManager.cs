@@ -40,7 +40,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             get { return OBulider.BuildInstance<NonProductionReasonManager>(); }
         }
-       
+
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             return DailyReportCrudFactory.ProductFlowCrud.GetProductFlowOverviewListBy(departemant);
         }
-        public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string departemant ,string ProductName)
+        public List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string departemant, string ProductName)
         {
             return DailyReportCrudFactory.ProductFlowCrud.GetProductFlowOverviewListBy(departemant, ProductName);
         }
@@ -68,7 +68,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="dto">数据传输对象 品名和部门是必须的</param>
         /// <returns></returns>
-        public  ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
+        public ProductFlowOverviewModel GetProductFlowOverviewBy(QueryDailyReportDto dto)
         {
             return DailyReportCrudFactory.ProductFlowCrud.GetProductFlowOverviewBy(dto);
         }
@@ -84,8 +84,8 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             return DailyReportCrudFactory.ProductFlowCrud.FindBy(dto);
         }
 
-    
-         #endregion
+
+        #endregion
 
 
         #region FileOption
@@ -95,9 +95,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// </summary>
         /// <param name="documentPath"></param>
         /// <returns></returns>
-        public System.IO.MemoryStream GetProductFlowTemplate(string documentPath)
+        public DownLoadFileModel GetProductFlowTemplate(string documentPath)
         {
-            return FileOperationExtension.GetMemoryStream(documentPath);
+            DownLoadFileModel dlfm = new DownLoadFileModel();
+            dlfm.FilePath = documentPath;
+            return dlfm;
         }
 
         /// <summary>
@@ -108,7 +110,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public List<ProductFlowModel> ImportProductFlowListBy(string documentPatch)
         {
             StringBuilder errorStr = new StringBuilder();
-            var listEntity = ExcelHelper.ExcelToEntityList<ProductFlowModel>(documentPatch,out errorStr);
+            var listEntity = ExcelHelper.ExcelToEntityList<ProductFlowModel>(documentPatch, out errorStr);
             string errorStoreFilePath = @"C:\ExcelToEntity\ErrorStr.txt";
             if (errorStr.ToString() != string.Empty)
             {
@@ -137,7 +139,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
             }
             else
             {
-                return OpResult.SetResult("列表不能为空！");
+                return OpResult.SetErrorResult("列表不能为空！");
             }
         }
         #endregion
@@ -168,7 +170,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         {
             return DailyReportCrudFactory.MachineCrud.AddMachineRecord(model);
         }
-      
+
     }
 
     /// <summary>
@@ -204,7 +206,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
     public class ReportAttendenceManager
     {
 
-     
+
 
         public OpResult SaveReportAttendenceEntity(ReportsAttendenceModel entity)
         {
@@ -229,10 +231,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public ReportsAttendenceModel GetReportsAttendence(string department, string attendenceStation, DateTime dailyReportDate)
         {
             DateTime dailyDate = dailyReportDate.ToDate();
-            return  DailyReportCrudFactory.ReportsAttendenceCrud.GetReportsAttendence(department, attendenceStation, dailyDate);
+            return DailyReportCrudFactory.ReportsAttendenceCrud.GetReportsAttendence(department, attendenceStation, dailyDate);
         }
 
-      
+
     }
 
 }

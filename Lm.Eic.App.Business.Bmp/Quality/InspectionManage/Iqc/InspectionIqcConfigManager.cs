@@ -23,7 +23,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionIqcItemConfigModel> GetIqcspectionItemConfigDatasBy(string materialId)
         {
-           return InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
+            return InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
         }
         /// <summary>
         ///  在数据库中是否存在此料号
@@ -33,8 +33,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public OpResult IsExistInspectionConfigMaterailId(string materailId)
         {
             bool isexixt = InspectionManagerCrudFactory.IqcItemConfigCrud.IsExistInspectionConfigmaterailId(materailId);
-            OpResult opResult = OpResult.SetResult("", false);
-            if (isexixt) opResult = OpResult.SetResult("此物料料号已经存在", true);
+            OpResult opResult = OpResult.SetSuccessResult("", false);
+            if (isexixt) opResult = OpResult.SetSuccessResult("此物料料号已经存在", true);
             return opResult;
         }
         /// <summary>
@@ -81,9 +81,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="documentPath"></param>
         /// <returns></returns>
-        public System.IO.MemoryStream GetIqcInspectionItemConfigTemplate(string documentPath)
+        public DownLoadFileModel GetIqcInspectionItemConfigTemplate(string documentPath, string fileDownLoadName)
         {
-            return FileOperationExtension.GetMemoryStream(documentPath);
+            DownLoadFileModel dlfm = new DownLoadFileModel();
+            dlfm.FilePath = documentPath;
+            dlfm.FileDownLoadName = fileDownLoadName;
+            return dlfm;
+
         }
     }
 }
