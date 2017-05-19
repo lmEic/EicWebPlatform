@@ -11,7 +11,7 @@
                 <form class="form-inline pull-right">
                     <div class="form-group">
                         <label>RMA单号</label>
-                        <input type="text" placeholder="按RMA单号查询" ng-model="vm.RmaId" />
+                        <input type="text" placeholder="按RMA单号查询" ng-model="vm.RmaId" ng-keypress="($event.which === 13)?vmManager.getRmaFormDatas():0" />
                         <button class="btn btn-xs btn-primary" ng-click="vmManager.getRmaFormDatas()" type="button">查询</button>
                     </div>
                 </form>
