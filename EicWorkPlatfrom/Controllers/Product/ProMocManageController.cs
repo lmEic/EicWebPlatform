@@ -50,7 +50,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public FileResult CreateProductTypeMonitoList()
         {
-            var datas = TempData["SupplierGradeInfoData"] as List<ProductTypeMonitorModel>;
+            var datas = TempData["OrderWorkorderData"] as List<ProductTypeMonitorModel>;
             //Excel
             var ds = CopService.OrderWorkorderManager.BuildProductTypeMonitoList(datas, "工单核对清单");
             return this.DownLoadFile(ds);

@@ -284,6 +284,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         activeTab: 'businessTab',
         //获取表单数据
         getRmaInspectionHandleDatas: function () {
+            if (uiVm.RmaId == null || uiVm.RmaId == "") return;
             $scope.searchPromise = rmaDataOpService.getRmaInspectionHandleDatas(uiVm.RmaId).then(function (data) {
                 if (angular.isObject(data)) {
                     leeHelper.copyVm(data.rmaInitiateData, rmavm);
@@ -293,7 +294,6 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
                     angular.forEach(vmManager.businessHandleDatas, function (item) {
                         item.isHandle = _.find(vmManager.dataSets, { RmaId: item.RmaId, ParameterKey: item.ParameterKey }) !== undefined;
                     })
-
                 }
             });
         },
