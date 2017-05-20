@@ -126,6 +126,8 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
         moduleNavLayoutVm.menus = datas;
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
+    var user = $scope.loginUser = Object.create(leeLoginUser);
+    user.loadHeadPortrait();
 });
 
 

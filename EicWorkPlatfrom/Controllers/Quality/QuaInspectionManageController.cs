@@ -426,8 +426,8 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         /// <summary>
-        /// 根据单据状态获得检验单数据
-        /// </summary>  selectedFormStatus,dateFrom,dateTo
+        /// 根据单据状态获得检验单数据 selectedFormStatus,dateFrom,dateTo
+        /// </summary>  
         /// <returns></returns>
         [NoAuthenCheck]
         public ContentResult GetInspectionFormManageOfIqcDatas(string formQueryString, int queryOpModel, DateTime dateFrom, DateTime dateTo)

@@ -22,6 +22,10 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
 
     return home;
 })
+.controller('mainCtrl', function ($scope) {
+    var user = $scope.loginUser = Object.create(leeLoginUser);
+    user.loadHeadPortrait();
+})
 .controller('moduleNavCtrl', function ($scope, $http, navDataService) {
     var moduleNav = {
         navList: []
@@ -60,14 +64,6 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
         navMainSize: '75%'
     };
     $scope.navLayout = layoutVm;
-    ///个人头像
-    $scope.headPortrait = "../Content/login/profilepicture.jpg";
-    ///载入个人头像
-    $scope.loadHeadPortrait = function () {
-        var loginUser = leeDataHandler.dataStorage.getLoginedUser();
-        $scope.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
-    };
-    $scope.loadHeadPortrait();
 })
 //日历控制器
 .controller('calendarManageCtrl', function ($scope, homeDataopService, $modal) {
