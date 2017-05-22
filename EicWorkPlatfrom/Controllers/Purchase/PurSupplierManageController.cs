@@ -293,7 +293,12 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             TempData["SupplierGradeInfoData"] = datas;
             return DateJsonResult(datas);
         }
-
+        [NoAuthenCheck]
+        public ContentResult GetPurSupGradeInfoList(string supplierId, string yearQuarter)
+        {
+            var datas = PurchaseService.PurSupplierManager.GradeManager.GetPurSupGradeInfoDataBy(supplierId, yearQuarter);
+            return DateJsonResult(datas);
+        }
         /// <summary>
         /// 评分的供应商信息列表导出EXcel
         /// </summary>

@@ -116,6 +116,14 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
             dataType: dataType
         });
     };
+    ///获取供应商稽核评份列表
+    purDb.getPurSupGradeInfoList = function (supplierId, yearQuarter) {
+        var url = purUrlPrefix + 'GetPurSupGradeInfoList';
+        return ajaxService.getData(url, {
+            supplierId: supplierId,
+            yearQuarter: yearQuarter
+        });
+    };
     return purDb;
 });
 
@@ -560,7 +568,6 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
 
     var operate = Object.create(leeDataHandler.operateStatus);
     var dialog = $scope.dialog = Object.create(leeDialog);
-    var fillDialog = $scope.dialog = Object.create(leeDialog);
     $scope.operate = operate;
     operate.saveAll = function (isValid) { };
     operate.refresh = function () { };
@@ -572,7 +579,6 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
         supGradeInfoEditDatas: [],
         yearQuarter: '',
         dataSource: [],
-        SupGradeInfoContent: "ture",
         ///根据供应商编号查询供应商辅导数据信息
 
         //searchBySupplierId: function (dataType) {
@@ -584,7 +590,6 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
 
         ///详细列表
         editSupGradeInfoTable: function (item) {
-            dialog.show();
             console.log(item);
             vmManager.editItem = $scope.vm = item;
             console.log(item.SupplierId);
@@ -601,7 +606,7 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
             leeHelper.copyVm(item, uiVm);
             $scope.vm = uiVm;
             vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.show);
-            dialog.close();
+
         },
         //获取要考核的供应商数据列表
         getSupGradeInfo: function () {
