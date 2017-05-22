@@ -467,6 +467,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             return irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
         }
+        public List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string supplierId, string gradeYear)
+        {
+            return irep.Entities.Where(e => e.SupplierId == supplierId & e.GradeYear == gradeYear).ToList();
+        }
         /// <summary>
         ///
         /// </summary>
@@ -489,5 +493,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return irep.IsExist(e => e.ParameterKey == parameterKey);
         }
     }
+
 
 }

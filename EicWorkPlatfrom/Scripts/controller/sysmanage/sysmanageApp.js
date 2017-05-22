@@ -99,4 +99,6 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
         moduleNavLayoutVm.menus = datas;
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
+    var user = $scope.loginUser = Object.create(leeLoginUser);
+    user.loadHeadPortrait();
 });
