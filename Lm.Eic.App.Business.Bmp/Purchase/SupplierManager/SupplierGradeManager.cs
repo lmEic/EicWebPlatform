@@ -47,6 +47,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                         PurchaseType = m.SupplierProperty,
                         LastPurchaseDate = m.LastPurchaseDate,
                         PurchaseMaterial = m.PurchaseType,
+
                     };
                 }
                 if (!returnDatas.Contains(model))
