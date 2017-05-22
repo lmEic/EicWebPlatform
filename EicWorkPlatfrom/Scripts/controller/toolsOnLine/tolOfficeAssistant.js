@@ -5,13 +5,23 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
     var oAssistant = {};
     var oaUrlPrefix = '/' + leeHelper.controllers.TolOfficeAssistant + '/';
 
-    ///联系人数据
-    oAssistant.getCollaborateContactDatas = function () {
+    ///获取联系人数据
+    oAssistant.getCollaborateContactDatas = function (department, searchMode, contactPerson, telPhone) {
         var url = oaUrlPrefix + 'GetCollaborateContactDatas';
         return ajaxService.getData(url, {
+            department: department,
+            searchMode: searchMode,
+            contactPerson: contactPerson,
+            telPhone: telPhone
         });
     };
-
+    ///存储联系人数据
+    oAssistant.storeCollaborateContactDatas = function (model) {
+        var url = oaUrlPrefix + 'StoreCollaborateContactDatas';
+        return ajaxService.postData(url, {
+            model: model,
+        });
+    };
 
 
     return oAssistant;
@@ -38,30 +48,41 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         OpDate: null,
         OpTime: null,
         OpSign: leeDataHandler.dataOpMode.add,
-        Id_Key: null,
+        Id_Key: null
     };
     var initVm = _.clone(uiVm);
 
     var dialog = $scope.dialog = Object.create(leeDialog);
 
-    var qryManager = $scope.qryManager = {
+    var qryVm = $scope.qryVm = {
         contactPerson: null,
-        telephone: null,
+        telephone: null
     };
-
 
     var vmManager = {
         activeTab: 'initTab',
+        init: function () {
+            uiVm = _.clone(initVM);
+            uiVm.OpSign = leeDataHandler.dataOpMode.add;
+            $scope.vm = uiVm;
+        },
         editDatas: [],
-        loadDatas: function () {
+        loadDatas: function (department, searchMode, contactPerson, telPhone) {
             vmManager.editDatas = [];
-            $scope.searchPromise = oAssistantDataOpService.getCollaborateContactDatas().then(function (datas) {
+            $scope.searchPromise = oAssistantDataOpService.getCollaborateContactDatas(department, searchMode, contactPerson, telPhone).then(function (datas) {
                 if (angular.isArray(datas))
                     vmManager.editDatas = datas;
             });
+        },
+        getDatasByName: function () {
+            vmManager.loadDatas("", 1, qryVm.contactPerson, null);
+        },
+        getDatasByTelPhone: function () {
+            vmManager.loadDatas("", 2, null, qryVm.telephone);
         }
     };
     $scope.vmManager = vmManager;
+
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.createNew = function () {
@@ -73,10 +94,27 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         $scope.vm = uiVm = item;
         dialog.show();
     },
-    operate.saveAll = function (isValid) { };
-    operate.refresh = function () { };
+    operate.saveAll = function (isValid) {
+        leeHelper.setUserData(uiVm);
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            oAssistantDataOpService.storeCollaborateContactDatas(uiVm).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    if (opresult.Result) {
+                        var dataItem = _.clone(uiVm);
+                        dataItem.Id_Key = opresult.Id_Key;
+                        if (dataItem.OpSign === leeDataHandler.dataOpMode.add) {
+                            vmManager.editDatas.push(dataItem);
+                        }
+                        vmManager.init();
+                        dialog.close();
+                    }
+                })
+            })
+        })
+    };
+    operate.refresh = function () { leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); }); };
 
-    vmManager.loadDatas();
+    vmManager.loadDatas("1", 0, null, null);
 });
 ///工作任务管理控制器
 officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssistantDataOpService) {
