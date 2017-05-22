@@ -23,7 +23,7 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
 ///工作任务管理控制器
 officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssistantDataOpService) {
 
-    var vmManager = $scope.vmManager = {
-        activeTab:'inputTab'
-    };
+    //var vmManager = $scope.vmManager = {
+    //    activeTab:'inputTab'
+    //};
 });
