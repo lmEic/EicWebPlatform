@@ -1,5 +1,5 @@
 ﻿using Lm.Eic.Framework.ProductMaster.DbAccess.Mapping;
-using Lm.Eic.Framework.ProductMaster.Model.ToolCollaborateContactLib;
+using Lm.Eic.Framework.ProductMaster.Model.Tools;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Collections.Generic;

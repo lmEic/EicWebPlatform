@@ -1,6 +1,6 @@
 ﻿using Lm.Eic.Framework.ProductMaster.Model;
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
-using Lm.Eic.Framework.ProductMaster.Model.ToolCollaborateContactLib;
+using Lm.Eic.Framework.ProductMaster.Model.Tools;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
@@ -59,9 +59,6 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
         }
     }
 
-
-
-
     /// <summary>
     ///CollaborateContactLibModel
     /// </summary>
@@ -74,5 +71,4 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             this.ToTable("Tool_CollaborateContactLib");
         }
     }
-
 }
