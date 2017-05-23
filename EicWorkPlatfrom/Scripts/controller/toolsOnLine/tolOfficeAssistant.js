@@ -18,7 +18,7 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
     oAssistant.storeCollaborateContactDatas = function (model) {
         var url = oaUrlPrefix + 'StoreCollaborateContactDatas';
         return ajaxService.postData(url, {
-            model: model,
+            model: model
         });
     };
 
@@ -110,9 +110,9 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
                         vmManager.init();
                         dialog.close();
                     }
-                })
-            })
-        })
+                });
+            });
+        });
     };
     operate.refresh = function () { leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); }); };
 

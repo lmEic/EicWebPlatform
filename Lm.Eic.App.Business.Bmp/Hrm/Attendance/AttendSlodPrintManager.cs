@@ -197,6 +197,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             //实时考勤数据 && e.WorkerId == "604505"
             var datasInTime = this.fingerPrintDataInTime.FingPrintDatas.FindAll(e => e.SlodCardDate == qryDate);
             if (datasInTime == null || datasInTime.Count == 0) return OpResult.SetErrorResult("没有考勤数据要进行汇总");
+            BackupFingerDataDbHandler.BackupData(datasInTime);
             //一次载入该日期的所有考勤数据到内存中
             var dayAttendDatas = this.irep.Entities.Where(e => e.AttendanceDate == qryDate);
             //获取所有人员信息到内存中
@@ -1028,7 +1029,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             });
         }
     }
-
     public class AttendAskLeaveManager
     {
         #region member
