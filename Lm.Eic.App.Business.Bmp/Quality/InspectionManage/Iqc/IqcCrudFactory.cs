@@ -319,7 +319,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
-                return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId && e.InspecitonItem == inspectionItem).ToList().FirstOrDefault();
+                return irep.FirstOfDefault(e => e.OrderId == orderid && e.MaterialId == materialId && e.InspecitonItem == inspectionItem);
             }
             catch (Exception)
             {

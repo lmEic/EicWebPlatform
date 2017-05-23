@@ -627,9 +627,10 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         getMaterialDatas: function () {
             if (vmManager.orderId) {
                 vmManager.panelDataSource = [];
+                vmManager.currentInspectionItem = [];
                 qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
                     angular.forEach(materialIdDatas, function (item) {
-                        var dataItem = { productId: item.ProductID, productName: item.ProductName, materialIdItem: item, inspectionItemDatas: [], dataSets: [] };
+                        var dataItem = { productId: item.ProductID, orderId: item.OrderID, productName: item.ProductName, materialIdItem: item, inspectionItemDatas: [], dataSets: [] };
                         vmManager.panelDataSource.push(dataItem);
                     })
                     vmManager.orderId = null;
@@ -639,12 +640,12 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         //按物料品号获取检验项目信息
         selectMaterialIdItem: function (item) {
             vmManager.currentMaterialIdItem = item;
-            var datas = _.find(vmManager.cacheDatas, { key: item.ProductID });
+            var datas = _.find(vmManager.cacheDatas, { key: item.ProductID + item.OrderID });
             if (datas === undefined) {
                 $scope.searchPromise = qualityInspectionDataOpService.getIqcInspectionItemDataSummaryLabelList(item.OrderID, item.ProductID).then(function (inspectionItemDatas) {
-                    datas = { key: item.ProductID, dataSource: inspectionItemDatas };
+                    datas = { key: item.ProductID + item.OrderID, dataSource: inspectionItemDatas };
                     vmManager.cacheDatas.push(datas);
-                    var dataItems = _.find(vmManager.panelDataSource, { productId: item.ProductID });
+                    var dataItems = _.find(vmManager.panelDataSource, { productId: item.ProductID, orderId: item.OrderID });
                     if (dataItems !== undefined) {
                         dataItems.inspectionItemDatas = inspectionItemDatas;
                         dataItems.dataSets = inspectionItemDatas;
@@ -652,7 +653,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 });
             }
             else {
-                var dataItems = _.find(vmManager.panelDataSource, { productId: item.ProductID });
+                var dataItems = _.find(vmManager.panelDataSource, { productId: item.ProductID, orderId: item.OrderID });
                 if (dataItems !== undefined) {
                     dataItems.inspectionItemDatas = datas.dataSource;
                 }

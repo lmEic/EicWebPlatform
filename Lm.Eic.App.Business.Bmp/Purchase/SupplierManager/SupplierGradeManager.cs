@@ -58,10 +58,14 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             ///操作符在界面没有确定
             if (entity == null) return OpResult.SetErrorResult("实体不能为空");
-            string ParameterKey = entity.SupplierId + "&" + entity.GradeYear + "&" + entity.SupGradeType;
-            if (!SupplierCrudFactory.SupplierGradeInfoCrud.IsExist(ParameterKey))
-                entity.OpSign = OpMode.Add;
-            else entity.OpSign = OpMode.Edit;
+
+            if (SupplierCrudFactory.SupplierGradeInfoCrud.IsExist(entity.ParameterKey))
+            {
+                if (entity.OpSign == OpMode.Add)
+                    return OpResult.SetErrorResult("供应商:" + entity.SupplierId
+                        + "[" + entity.SupGradeType + "]" + entity.GradeYear + "年"
+                        + "已评！不能添加只能修改！");
+            }
             return SupplierCrudFactory.SupplierGradeInfoCrud.Store(entity);
         }
         private string ConvertStringBy(List<string> listDatas)

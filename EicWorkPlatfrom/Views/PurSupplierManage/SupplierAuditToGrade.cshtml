@@ -108,6 +108,12 @@
                         </table>
                     </content>
                 </dialog>
+                <editDialog ng-if="editDialog.open" data-close="editDialog.close()">
+                    <content editDialog-title class="info"><i class="fa fa-th-list"></i> 编辑稽核评份信息</content>
+                    <div>
+                        <input type="text" />
+                    </div>
+                </editDialog>
             </div>
         </div>
 
