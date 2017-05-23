@@ -450,6 +450,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             this.AddOpItem(OpMode.Add, AddSupplierGradeInfo);
             this.AddOpItem(OpMode.Edit, EditSupplierGradeInfo);
+            this.AddOpItem(OpMode.Delete, DeleteSupplierGradeInfo);
         }
 
 
@@ -461,7 +462,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 return irep.Insert(entity).ToOpResult_Add(OpContext);
             return UpdateSupplierGradeInfo(entity);
         }
-
+        OpResult DeleteSupplierGradeInfo(SupplierGradeInfoModel entity)
+        {
+            if (IsExist(entity.ParameterKey) && entity.Id_Key == 0)
+                return irep.Delete(e => e.ParameterKey == entity.ParameterKey).ToOpResult_Delete(OpContext);
+            return irep.Delete(e => e.Id_Key == entity.Id_Key).ToOpResult_Delete(OpContext);
+        }
 
         public SupplierGradeInfoModel GetPurSupGradeInfoBy(string parameterKey)
         {
