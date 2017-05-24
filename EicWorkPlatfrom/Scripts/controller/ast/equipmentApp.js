@@ -246,6 +246,9 @@ angular.module('bpm.astApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', '
         moduleNavLayoutVm.menus = datas;
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
+
+    var user = $scope.loginUser = Object.create(leeLoginUser);
+    user.loadHeadPortrait();
 })
  //设备详细信息与各记录
 .controller('astEquipmentInfoViewCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, astDataopService, $modal) {

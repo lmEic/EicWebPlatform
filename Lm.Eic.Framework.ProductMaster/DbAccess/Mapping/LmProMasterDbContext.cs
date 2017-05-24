@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.Framework.ProductMaster.Model;
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
+using Lm.Eic.Framework.ProductMaster.Model.Tools;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Data.Entity;
@@ -21,6 +22,9 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
 
         public DbSet<ItilDevelopModuleManageChangeRecordModel> ItilDevelopModuleManageChangeRecord { get; set; }
 
+
+        public DbSet<CollaborateContactLibModel> CollaborateContactLib { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -30,6 +34,8 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             modelBuilder.Configurations.Add(new ItilDevelopModuleManageModelMapping());
             modelBuilder.Configurations.Add(new ItilDevelopModuleManageChangeRecordModelMapping());
 
+
+            modelBuilder.Configurations.Add(new CollaborateContactLibModelMapping());
         }
     }
 

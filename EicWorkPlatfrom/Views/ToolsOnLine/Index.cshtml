@@ -11,14 +11,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1,user-scalable=no" />
     <title>在线工具</title>
     <link rel="shortcut icon" href="@Url.Content("~/Content/login/lmlogo.png")" />
-
     <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/bootwatch/cerulean.bootstrap.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/font-awesome/css/font-awesome.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/main.css")" type="text/css" rel="stylesheet" />
-
-    <link href="@Url.Content("~/Content/zTree/dist/css/zTreeStyle/zTreeStyle.css")" type="text/css" rel="stylesheet" />
-    
+    <link href="@Url.Content("~/Content/zTree/dist/css/zTreeStyle/zTreeStyle.css")" type="text/css" rel="stylesheet" />   
     @Styles.Render("~/css/anstrap")
 </head>
 
@@ -74,6 +71,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-10">
                         <div data-ui-view>
                         </div>
@@ -88,7 +86,8 @@
     @Scripts.Render("~/bundles/angularJs")
 
     <script src="@Url.Content("~/Content/ztree/dist/js/jquery.ztree.all.min.js")"></script>
-
+    <script src="@Url.Content("~/Content/pdfmaker/pdfmake.min.js")"></script>
+    <script src="@Url.Content("~/Content/pdfmaker/vfs_fonts.js")"></script>
     @Scripts.Render("~/bundles/anstrap")
 
     <script src="@Url.Content("~/Scripts/common/angulee.js")"></script>
@@ -99,6 +98,9 @@
 
     <script src="@Url.Content("~/Scripts/controller/toolsOnLine/toolsOnlineApp.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/toolsOnLine/tolOfficeAssistant.js")"></script>
+
+
+
    
 </body>
 </html>

@@ -102,5 +102,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
         moduleNavLayoutVm.menus = datas;
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
+    var user = $scope.loginUser = Object.create(leeLoginUser);
+    user.loadHeadPortrait();
 });
 

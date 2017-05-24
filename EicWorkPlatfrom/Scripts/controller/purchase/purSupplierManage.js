@@ -116,6 +116,14 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
             dataType: dataType
         });
     };
+    ///获取供应商稽核评份列表
+    purDb.getPurSupGradeInfoList = function (supplierId, yearQuarter) {
+        var url = purUrlPrefix + 'GetPurSupGradeInfoList';
+        return ajaxService.getData(url, {
+            supplierId: supplierId,
+            yearQuarter: yearQuarter
+        });
+    };
     return purDb;
 });
 
@@ -559,6 +567,7 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
     var initVm = _.clone(uiVM);
 
     var operate = Object.create(leeDataHandler.operateStatus);
+    var dialog = $scope.dialog = Object.create(leeDialog);
     $scope.operate = operate;
     operate.saveAll = function (isValid) { };
     operate.refresh = function () { };
@@ -567,22 +576,58 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
     var vmManager = $scope.vmManager = {
         supplierId: '',
         editDatas: [item],
+        supGradeInfoEditDatas: [],
         yearQuarter: '',
+        dataSource: [],
         ///根据供应商编号查询供应商辅导数据信息
-        searchBySupplierId: function (dataType) {
-            vmManager.editDatas = supplierDataOpService.getPurSupplierDataList(vmManager.supplierId, dataType).then(function (datas) {
-                vmManager.editDatas = datas;
+
+        //searchBySupplierId: function (dataType) {
+        //    vmManager.editDatas = supplierDataOpService.getPurSupplierDataList(vmManager.supplierId, dataType).then(function (datas) {
+        //        vmManager.editDatas = datas;
+
+        //    });
+        //},
+
+        ///详细列表
+        editSupGradeInfoTable: function (item) {
+            console.log(item);
+            vmManager.editItem = $scope.vm = item;
+            console.log(item.SupplierId);
+            supplierDataOpService.getPurSupGradeInfoList(item.SupplierId, vmManager.yearQuarter).then(function (datas) {
+                vmManager.supGradeInfoEditDatas = datas;
+                console.log(datas);
+                dialog.show();
             });
+        },
+
+        /// 选择详细列表
+        selectSupGradeInfoItem: function (item) {
+            leeHelper.setUserData(uiVm);
+            leeHelper.copyVm(item, uiVm);
+            $scope.vm = uiVm;
+            vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.show);
+
         },
         //获取要考核的供应商数据列表
         getSupGradeInfo: function () {
             $scope.promise = supplierDataOpService.getPurSupGradeInfo(vmManager.yearQuarter).then(function (datas) {
                 vmManager.editDatas = datas;
+                vmManager.dataSource = datas;
             });
         },
+
         editItem: null,
         editSupGradeInfo: function (item) {
             vmManager.editItem = $scope.vm = item;
+            item.OpSign = "edit";
+            dialog.close();
+            vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.show);
+        },
+        addSupGradeInfo: function () {
+
+            vmManager.editItem = $scope.vm = item;
+            item.OpSign = "add";
+
             vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.show);
         },
         supGradeEditModal: $modal({
@@ -593,7 +638,6 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
                 $scope.gradeTypes = [{ id: '供应商系统稽核评估', text: '供应商系统稽核评估' },
                                      { id: '供应商产品无有害物质系统稽核评估', text: '供应商产品无有害物质系统稽核评估' },
                                      { id: '系统评估表-针对小供应商', text: '系统评估表-针对小供应商' }];
-
                 var crud = leeDataHandler.dataOperate;
                 var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
                 //保存供应商辅导信息

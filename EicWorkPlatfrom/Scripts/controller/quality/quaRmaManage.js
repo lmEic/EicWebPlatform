@@ -324,7 +324,6 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
     }
     operate.saveAll = function (isValid) {
         leeHelper.setUserData(uiVm);
-        console.log(uiVm);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             rmaDataOpService.storeRmaInspectionHandleDatas(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
