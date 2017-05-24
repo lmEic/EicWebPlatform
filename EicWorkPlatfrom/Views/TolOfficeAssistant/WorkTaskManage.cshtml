@@ -1,2 +1,48 @@
-﻿<h1>工作任务管理</h1>
-<h4>sdfasdfsdafassfd</h4>
+﻿<div class="panel panel-default" ng-controller="workTaskManageCtrl">
+            <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
+                <div bs-pane data-title="任务输入" data-name="inputTab">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="well">
+                                <form role="form" name="workTaskIdentityForm" novalidate class="form-horizontal" onkeypress="if(event.keyCode===13) return false">
+                                    <div class="form-group">
+                                        <label for="systemName" class="col-md-2 control-label">系统名称</label>
+                                        <div class="col-md-4">
+                                            <input name="systemName" class="form-control"ng-model="vm.SystemName" ng-show="false" required />
+                                            <div class="error-messages" ng-message="workTaskIdentityForm.systemName.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">系统名称不能为空</small>
+                                            </div>
+                                            <button type="button" class="btn btn-success" ng-model="vm.SystemName" data-html="1" data-ng-multiple="0" data-ng-animate="am-flip-x" data-placeholder="选择系统名称"
+                                                     ng-change="vmManager.selectSystemName()" data-bs-options="sysName.id as sysName.text for sysName in vmManager" data-selector>
+                                                <span class="caret"></span>
+                                            </button>
+
+                                        </div>
+                                        <label for="moduleName" class="col-md-2 control-label">模块名称</label>
+                                        <div class="col-md-4">
+                                            <input name="moduleName" class="form-control" ng-model="vm.ModuleName" ng-show="false" required />
+                                            <div class="error-messages" ng-messages="workTaskIdentityForm.moduleName.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">模块名称不能为空</small>
+                                            </div>
+                                            <button type="button" class="btn btn-success" ng-model="vm.ModuleName" data-html="1" data-ng-multiple="0" data-ng-animate="am-flip-x" data-placeholder="选择模块名称"
+                                                     data-bs-options="modName.id as modName.text for modName in vmManager.closeModuleName" data-selector>
+                                                <span class="caret"></span>
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div bs-pane data-title="任务输出" data-name="queryTab">
+
+                </div>
+            </div>
+    </div>
+
