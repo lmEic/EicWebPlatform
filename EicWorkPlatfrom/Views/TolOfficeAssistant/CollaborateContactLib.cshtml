@@ -1,1 +1,199 @@
-﻿<h1>名片夹</h1>
+﻿<div class="panel panel-primary" ng-controller="collaborateContactLibCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title">名片夹</h6>
+    </div>
+    <div class="panel-body">
+        <div class="row" ng-click="vmManager.activeTab=null;">
+            <div class="col-md-4">
+                <button class="btn btn-xs btn-success" ng-click="operate.createNew()" type="button">新增</button>
+            </div>
+            <div class="col-md-8">
+                @*<form class="form-inline pull-right">
+                        <div class="form-group">
+                            <label>RMA单号</label>
+                            <input type="text" placeholder="按RMA单号查询" ng-model="vm.RmaId" ng-keypress="($event.which === 13)?vmManager.getRmaFormDatas():0" />
+                            <button class="btn btn-xs btn-primary" ng-click="vmManager.getRmaFormDatas()" type="button">查询</button>
+                        </div>
+                    </form>*@
+            </div>
+        </div>
+        <div class="h-split"></div>
+        <div bs-tabs bs-active-pane="vmManager.activeTab">
+            @*姓名*@
+            <div bs-pane data-title="姓名" data-name="qryByNameTab">
+                <div class="well">
+                    <form class="form-inline" role="form">
+                        <div class="form-group ">
+                            <label class="control-label">姓名:</label>
+                            <input type="text" placeholder="按姓名查询" ng-model="qryVm.contactPerson" class="form-control" />
+                            <button role="button" class="btn btn-primary" ng-click="vmManager.getDatasByName()"><i class="fa fa-search"></i>查询</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            @*手机号码*@
+            <div bs-pane data-title="手机号码" data-name="qryByTelPhoneTab">
+                <div class="well">
+                    <form class="form-inline" role="form">
+                        <div class="form-group ">
+                            <label class="control-label">手机号码:</label>
+                            <input type="text" placeholder="按手机号码查询" ng-model="qryVm.telephone" class="form-control" />
+                            <button role="button" class="btn btn-primary" ng-click="vmManager.getDatasByTelPhone()"><i class="fa fa-search"></i>查询</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="well" cg-busy="{promise:searchPromise}">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="info">
+                            <th>联系人</th>
+                            <th>性别</th>
+                            <th>类别</th>
+                            <th>单位</th>
+                            <th>职务</th>
+                            <th>手机号码</th>
+                            <th>固话</th>
+                            <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in vmManager.editDatas track by $index">
+                            <td>{{item.ContactPerson}}</td>
+                            <td>{{item.Sex}}</td>
+                            <td>{{item.CustomerCategory}}</td>
+                            <td>{{item.ContactCompany}}</td>
+                            <td>{{item.WorkerPosition}}</td>
+                            <td>{{item.Telephone}}</td>
+                            <td>{{item.OfficeTelephone}}</td>
+                            <td>
+                                <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
+                                    修改
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
+            <content dialog-title>
+                <i class="fa fa-pencil-square">数据编辑</i>
+            </content>
+            <content dialog-content style="width:100%;">
+                <form role="form" name="formCollaborateContact" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                    <fieldset>
+                        <legend>名片信息</legend>
+                        <div class="form-group">
+                            <label for="contactPerson" class="col-md-2 control-label">联系人</label>
+                            <div class="col-md-4">
+                                <input name="contactPerson" placeholder="必填" class="form-control" ng-model="vm.ContactPerson" required />
+                                <div class="error-messages" ng-messages="formCollaborateContact.contactPerson.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">联系人不能为空</small>
+                                </div>
+                            </div>
+                            <label for="sex" class="col-md-2 control-label">性别</label>
+                            <div class="col-md-4">
+                                <input name="sex" class="form-control" placeholder="必填" ng-model="vm.Sex" required />
+                                <div class="error-messages" ng-messages="formCollaborateContact.sex.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">性别不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerCategory" class="col-md-2 control-label">类别</label>
+                            <div class="col-md-4">
+                                <input name="customerCategory" placeholder="必填" class="form-control" ng-model="vm.CustomerCategory" required />
+                                <div class="error-messages" ng-messages="formCollaborateContact.customerCategory.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">类别不能为空</small>
+                                </div>
+                            </div>
+                            <label for="contactCompany" class="col-md-2 control-label">单位</label>
+                            <div class="col-md-4">
+                                <input name="contactCompany" placeholder="必填" class="form-control" ng-model="vm.ContactCompany" required />
+                                <div class="error-messages" ng-messages="formCollaborateContact.contactCompany.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">单位不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="workerPosition" class="col-md-2 control-label">职务</label>
+                            <div class="col-md-4">
+                                <input name="workerPosition" placeholder="必填" class="form-control" ng-model="vm.WorkerPosition" required />
+                                <div class="error-messages" ng-messages="formCollaborateContact.workerPosition.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">职务不能为空</small>
+                                </div>
+                            </div>
+                            <label for="telephone" class="col-md-2 control-label">手机号码</label>
+                            <div class="col-md-4">
+                                <input name="telephone" placeholder="必填" class="form-control" ng-model="vm.Telephone" required />
+                                <div class="error-messages" ng-messages="formCollaborateContact.telephone.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">手机号码不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>详细信息</legend>
+                        <div>
+                            <div class="form-group">
+                                <label for="officeTelephone" class="col-md-2 control-label">固话</label>
+                                <div class="col-md-4">
+                                    <input name="officeTelephone" class="form-control" ng-model="vm.OfficeTelephone" />
+                                </div>
+                                <label for="fax" class="col-md-2 control-label">传真</label>
+                                <div class="col-md-4">
+                                    <input name="fax" class="form-control" ng-model="vm.Fax" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="mail" class="col-md-2 control-label">邮箱</label>
+                                <div class="col-md-4">
+                                    <input name="mail" class="form-control" ng-model="vm.Mail" />
+                                </div>
+                                <label for="qqOrSkype" class="col-md-2 control-label">QQ</label>
+                                <div class="col-md-4">
+                                    <input name="qqOrSkype" class="form-control" ng-model="vm.QqOrSkype" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactMemo" class="col-md-2 control-label">往来业务</label>
+                                <div class="col-md-4">
+                                    <input name="contactMemo" class="form-control" ng-model="vm.ContactMemo" />
+                                </div>
+                                <label for="contactAdress" class="col-md-2 control-label">地址</label>
+                                <div class="col-md-4">
+                                    <input name="contactAdress" class="form-control" ng-model="vm.ContactAdress" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="websiteAdress" class="col-md-2 control-label">网址</label>
+                                <div class="col-md-4">
+                                    <input name="websiteAdress" class="form-control" ng-model="vm.WebsiteAdress" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <hr />
+                    <div class="alert alert-info">
+                        <div class="row">
+                            <div class="col-md-2">
+                            </div>
+                            <div class="col-md-10">
+                                <button class="btn btn-primary" ng-click="operate.saveAll(formCollaborateContact.$valid)"><i class="fa fa-save"></i>保存</button>
+                                <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                <span yl-operatemsg-board></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </content>
+        </dialog>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>

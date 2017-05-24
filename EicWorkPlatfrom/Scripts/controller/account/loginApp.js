@@ -2,24 +2,24 @@
 /// <reference path="../../angular.js" />
 angular.module('eicPlatform.loginApp', ['ngMessages'])
 .directive('focusSetter', function ($timeout) {
-        return {
-            restrict: 'A',
-            scope: {
-                trigger:'=focusIf',
-            },
-            link: function (scope, element, attrs) {
-                var dom = element[0];
-                scope.$watch('trigger', function(value) {
-                    if (value===true) {
-                        $timeout(function () {
-                            dom.focus();
-                            scope.trigger = false;
-                        }, scope.$eval(attrs.focusDelay) || 0);
-                    }
-                });
-            }
-        };
- })
+    return {
+        restrict: 'A',
+        scope: {
+            trigger: '=focusIf',
+        },
+        link: function (scope, element, attrs) {
+            var dom = element[0];
+            scope.$watch('trigger', function (value) {
+                if (value === true) {
+                    $timeout(function () {
+                        dom.focus();
+                        scope.trigger = false;
+                    }, scope.$eval(attrs.focusDelay) || 0);
+                }
+            });
+        }
+    };
+})
 .controller('loginCtrl', function ($scope, $http) {
     var vm = {
         userId: null,
@@ -28,29 +28,22 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
     };
     $scope.vm = vm;
 
-    ///个人头像
-    $scope.headPortrait = "../Content/login/profilepicture.jpg";
-    ///载入个人头像
-    $scope.loadHeadPortrait = function () {
-        var loginUser = leeDataHandler.dataStorage.getLoginedUser();
-        $scope.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
-    };
+
 
     var focus = {
         passwordFocus: false,
-        loginFocus:false,
+        loginFocus: false,
     };
     $scope.focus = focus;
 
     var loginResult = {
         isSuccess: true,
-        message:null,
+        message: null,
     };
     $scope.loginResult = loginResult;
 
-    $scope.moveFocusToPassword = function ($event,name) {
-        if ($event.keyCode === 13)
-        {
+    $scope.moveFocusToPassword = function ($event, name) {
+        if ($event.keyCode === 13) {
             focus[name] = true;
         }
     };
@@ -91,5 +84,13 @@ angular.module('eicPlatform.loginApp', ['ngMessages'])
         })();
     };
 
+
+    ///个人头像
+    $scope.headPortrait = "../Content/login/profilepicture.jpg";
+    ///载入个人头像
+    $scope.loadHeadPortrait = function () {
+        var loginUser = leeDataHandler.dataStorage.getLoginedUser();
+        $scope.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
+    };
     $scope.loadHeadPortrait();
 })

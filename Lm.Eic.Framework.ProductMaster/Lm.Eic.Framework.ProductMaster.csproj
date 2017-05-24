@@ -59,9 +59,11 @@
     <Compile Include="Business\Itil\ItilDevelopModuleManager.cs" />
     <Compile Include="Business\Itil\ItilService.cs" />
     <Compile Include="Business\Tools\tlOnline\CollaborateContacManager.cs" />
+    <Compile Include="Business\Tools\tlOnline\ToolOnlineMockDatas.cs" />
     <Compile Include="Business\Tools\tlOnline\ToolOnlineService.cs" />
     <Compile Include="DbAccess\Mapping\LmProMasterDbContext.cs" />
     <Compile Include="DbAccess\Mapping\LmProMasterDbMapping.cs" />
+    <Compile Include="DbAccess\Repository\CollaborateContactLibRepository.cs" />
     <Compile Include="DbAccess\Repository\ConfigDataDictionaryRepository.cs" />
     <Compile Include="DbAccess\Repository\ItilDevelopModuleManageRepository.cs" />
     <Compile Include="Model\ConfigDataDictionaryModel.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="Model\ITIL\ItilDevelopModuleManageChangeRecordModel.cs" />
     <Compile Include="Model\ITIL\ItilDto.cs" />
     <Compile Include="Model\ITIL\ItilSupplierTelModel.cs" />
+    <Compile Include="Model\Tools\CollaborateContactLibModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

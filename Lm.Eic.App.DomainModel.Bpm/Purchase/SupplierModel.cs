@@ -946,10 +946,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         #endregion Model
     }
-
     #endregion
 
     #region  展示模型
+
 
     public class SupplierGradeInfoVm
     {
@@ -978,7 +978,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         ///类别列表
         /// </summary>
         public string SupGradeInfoContent { get; set; }
-        
+
         #endregion Model
     }
     /// <summary>

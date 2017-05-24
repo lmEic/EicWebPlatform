@@ -40,7 +40,7 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     var urlPrefix = '/ProEmployee/';
 
     dataAccess.getWorkers = function () {
-      return  ajaxService.getData(urlPrefix + 'GetWorkers', {});
+        return ajaxService.getData(urlPrefix + 'GetWorkers', {});
     };
 
     dataAccess.GetWorkerBy = function (workerId) {
@@ -57,9 +57,9 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
 
     return dataAccess;
 })
-.controller('moduleNavCtrl', function ($scope,navDataService,$state) {
+.controller('moduleNavCtrl', function ($scope, navDataService, $state) {
     ///模块导航布局视图对象
-    var moduleNavLayoutVm={
+    var moduleNavLayoutVm = {
         menus: [],
         navList: [],
         navItems: [],
@@ -87,14 +87,16 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
                 moduleNavLayoutVm.navMainSize = '96%';
             }
         },
-        navLeftSize:'16%',
-        navMainSize:'83%'
+        navLeftSize: '16%',
+        navMainSize: '83%'
     };
     $scope.navLayout = moduleNavLayoutVm;
-    $scope.promise = navDataService.getSubModuleNavs('生产管理','ProductManage').then(function (datas) {
+    $scope.promise = navDataService.getSubModuleNavs('生产管理', 'ProductManage').then(function (datas) {
         moduleNavLayoutVm.menus = datas;
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
+    var user = $scope.loginUser = Object.create(leeLoginUser);
+    user.loadHeadPortrait();
 })
 .controller('proUserRegistCtrl', function ($scope, dataDicConfigTreeSet, proEmployeeDataService) {
     var vmManager = {
@@ -167,7 +169,7 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);
-        uiVM.Department =dto.DataNodeText;
+        uiVM.Department = dto.DataNodeText;
     };
     $scope.ztree = departmentTreeSet;
 

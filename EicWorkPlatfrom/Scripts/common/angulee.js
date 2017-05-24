@@ -495,6 +495,30 @@ var leeDialog = (function () {
     };
     return dialog;
 })();
+/// 登陆用户
+var leeLoginUser = (function () {
+    var user = {
+        //账号
+        userId: null,
+        //姓名
+        userName: null,
+        //部门
+        department: null,
+        ///个人头像
+        headPortrait: "../Content/login/profilepicture.jpg",
+        ///载入个人头像
+        loadHeadPortrait: function () {
+            var loginUser = leeDataHandler.dataStorage.getLoginedUser();
+            if (loginUser !== null) {
+                user.userId = loginUser.userId;
+                user.userName = loginUser.userName;
+                user.department = loginUser.department;
+            }
+            user.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
+        },
+    };
+    return user;
+})();
 ///zTree 助手
 var leeTreeHelper = (function () {
     var ztree = {

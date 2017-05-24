@@ -450,18 +450,24 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             this.AddOpItem(OpMode.Add, AddSupplierGradeInfo);
             this.AddOpItem(OpMode.Edit, EditSupplierGradeInfo);
+            this.AddOpItem(OpMode.Delete, DeleteSupplierGradeInfo);
         }
 
 
         OpResult AddSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
             entity.LastPurchaseDate = DateTime.Now.Date;
-            entity.ParameterKey = entity.SupplierId + "&" + entity.GradeYear + "&" + entity.SupGradeType;
+
             if (!IsExist(entity.ParameterKey))
                 return irep.Insert(entity).ToOpResult_Add(OpContext);
-            return EditSupplierGradeInfo(entity);
+            return UpdateSupplierGradeInfo(entity);
         }
-
+        OpResult DeleteSupplierGradeInfo(SupplierGradeInfoModel entity)
+        {
+            if (IsExist(entity.ParameterKey) && entity.Id_Key == 0)
+                return irep.Delete(e => e.ParameterKey == entity.ParameterKey).ToOpResult_Delete(OpContext);
+            return irep.Delete(e => e.Id_Key == entity.Id_Key).ToOpResult_Delete(OpContext);
+        }
 
         public SupplierGradeInfoModel GetPurSupGradeInfoBy(string parameterKey)
         {
@@ -478,9 +484,17 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         OpResult EditSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
+            return irep.Update(e => e.Id_Key == entity.Id_Key, entity).ToOpResult_Eidt(OpContext); ;
+        }
+        OpResult UpdateSupplierGradeInfo(SupplierGradeInfoModel entity)
+        {
+            return irep.Update(e => e.ParameterKey == entity.ParameterKey, e => new SupplierGradeInfoModel
+            {
+                SecondGradeScore = entity.SecondGradeScore,
+                FirstGradeScore = entity.FirstGradeScore,
+                FirstGradeDate = entity.FirstGradeDate,
 
-            entity.GradeYear = entity.FirstGradeDate.Year.ToString();
-            return irep.Update(e => e.SupplierId == entity.SupplierId, entity).ToOpResult_Add(OpContext); ;
+            }).ToOpResult_Eidt(OpContext);
         }
 
         /// <summary>
@@ -493,5 +507,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return irep.IsExist(e => e.ParameterKey == parameterKey);
         }
     }
+
 
 }

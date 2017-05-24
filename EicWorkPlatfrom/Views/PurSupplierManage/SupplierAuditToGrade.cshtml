@@ -102,12 +102,22 @@
                                                 title="修改评分信息">
                                             修改
                                         </button>
+                                        <button class="btn btn-xs btn-primary" ng-click="vmManager.deleteSupGradeInfo(item)"
+                                                title="删除评分信息">
+                                            删除
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </content>
                 </dialog>
+                <editDialog ng-if="editDialog.open" data-close="editDialog.close()">
+                    <content editDialog-title class="info"><i class="fa fa-th-list"></i> 编辑稽核评份信息</content>
+                    <div>
+                        <input type="text" />
+                    </div>
+                </editDialog>
             </div>
         </div>
 

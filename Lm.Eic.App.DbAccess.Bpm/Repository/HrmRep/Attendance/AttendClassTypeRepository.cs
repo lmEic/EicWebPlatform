@@ -151,4 +151,29 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
             return DbHelper.Hrm.ExecuteNonQuery(sb.ToString());
         }
     }
+
+    public class BackupFingerDataDbHandler
+    {
+        private static int InsertDataTo(AttendFingerPrintDataInTimeModel entity)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("INSERT INTO Attendance_FingerPrintDataInTimeBackup (WorkerId,WorkerName,CardID,CardType,SlodCardTime,SlodCardDate)");
+            sb.AppendFormat(" values ('{0}',", entity.WorkerId);
+            sb.AppendFormat("'{0}',", entity.WorkerName);
+            sb.AppendFormat("'{0}',", entity.CardID);
+            sb.AppendFormat("'{0}',", entity.CardType);
+            sb.AppendFormat("'{0}',", entity.SlodCardTime);
+            sb.AppendFormat("'{0}')", entity.SlodCardDate);
+            return DbHelper.Hrm.ExecuteNonQuery(sb.ToString());
+        }
+        public static int BackupData(List<AttendFingerPrintDataInTimeModel> entities)
+        {
+            int record = 0;
+            entities.ForEach(entity =>
+            {
+                record += InsertDataTo(entity);
+            });
+            return record;
+        }
+    }
 }
