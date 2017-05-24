@@ -643,10 +643,8 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
                         $scope.vm.ParameterKey = vmManager.editItem.SupplierId + "&" + vmManager.editItem.GradeYear + "&" + vmManager.editItem.SupGradeType;
                         supplierDataOpService.savePurSupGradeInfo($scope.vm).then(function (opResult) {
                             if (opResult.Result) {
-                                $scope.vm.SupGradeInfoContent = "OK";
                                 vmManager.editItem = $scope.vm;
                                 vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.hide);
-
                             }
                             else {
                                 vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.show);
