@@ -625,7 +625,6 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
             }
 
         }),
-
         supGradeEditModal: $modal({
             title: '新增供应商评分信息', content: '',
             templateUrl: leeHelper.controllers.supplierManage + '/EditPurSupAuditToGradeTpl/',

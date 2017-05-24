@@ -28,7 +28,14 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult GetCollaborateContactDatas(string department, int searchMode, string queryContent)
         {
             department = "品保部";
-            var datas = ToolOnlineService.ContactManager.GetContactLibDatasBy(department, searchMode, queryContent, false);
+            QueryContactDto queryDto = new QueryContactDto()
+            {
+                SearchMode = searchMode,
+                Department = department,
+                QueryContent = queryContent,
+                IsExactQuery = false ,
+            };
+            var datas = ToolOnlineService.ContactManager.QueryContactLibDatasBy(department,queryDto);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
