@@ -168,9 +168,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 }
                 return OpResult.SetSuccessResult("保存档案数据成功！", record > 0, empIdentityMdl.Id_Key);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return OpResult.SetSuccessResult("保存档案数据失败！", false);
+                return OpResult.SetErrorResult(ex);
             }
         }
         /// <summary>
