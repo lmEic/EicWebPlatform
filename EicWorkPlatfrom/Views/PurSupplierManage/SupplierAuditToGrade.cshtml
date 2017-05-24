@@ -16,9 +16,12 @@
                 <button type="submit" class="btn btn-default" ng-click="vmManager.searchBySupplierId('grade')"><i class="fa fa-search"></i></button>
             </form>
         </nav>
+
+
         <div class="h-split"></div>
         <div class="well" cg-busy="{promise:searchPromise}">
             <div class="table-responsive">
+                @* 供应商列表 *@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr class="info">
@@ -26,7 +29,6 @@
                             <th>供应商名称</th>
                             <th>供应商类别</th>
                             <th>采购类别</th>
-                            <th>采购料件</th>
                             <th>上次采购日期</th>
                             <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                         </tr>
@@ -37,16 +39,85 @@
                             <td>{{item.SupplierName}}</td>
                             <td>{{item.SupplierProperty}}</td>
                             <td>{{item.PurchaseType}}</td>
-                            <td>{{item.PurchaseMaterial}}</td>
                             <td>{{item.LastPurchaseDate}}</td>
                             <td>
-                                <button class="btn btn-xs btn-primary" ng-click="vmManager.editSupGradeInfo(item)" title="填写评分信息">
-                                    填写评分信息
-                                </button>
+                                <div>
+                                    <button name="SupGradeInfoTable"
+                                            class="btn btn-xs btn-primary"
+                                            ng-if="!item.SupGradeInfoContent"
+                                            title="稽核评分信息">
+                                        详细
+                                    </button>
+                                    <button name="SupGradeInfoTable"
+                                            class="btn btn-xs btn-success"
+                                            ng-if="item.SupGradeInfoContent"
+                                            ng-click="vmManager.editSupGradeInfoTable(item)"
+                                            title="稽核评分信息">
+                                        详细
+                                    </button>
+                                    <span>|</span>
+                                    <button class="btn btn-xs btn-primary" ng-click="vmManager.addSupGradeInfo(item)" title="填写评分信息">
+                                        填写评分信息
+                                    </button>
+                                </div>
+
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                @* 分页显示 *@
+                <div ng-if="vmManager.dataSource.length>0"
+                     yl-pagination
+                     data-dataset="vmManager.editDatas"
+                     data-datasource="vmManager.dataSource">
+                </div>
+                @* 稽核评分详细列表 *@
+                <dialog modal ng-if="dialog.open" data-close="dialog.close()">
+                    <content dialog-title class="info"><i class="fa fa-th-list"></i> 稽核评份信息</content>
+                    <content dialog-content>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>供应商Id</th>
+                                    <th>供应商品名</th>
+                                    <th>评份项目</th>
+                                    <th>首评分</th>
+                                    <th>复评分</th>
+                                    <th>评分年份</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vmManager.supGradeInfoEditDatas track by $index"
+                                    title="双击选择项"
+                                    ng-dblclick="vmManager.selectSupGradeInfoItem(item)">
+                                    <td>{{item.SupplierId}}</td>
+                                    <td>{{item.SupplierName}}</td>
+                                    <td>{{item.SupGradeType}}</td>
+                                    <td>{{item.FirstGradeScore}}</td>
+                                    <td>{{item.SecondGradeScore}}</td>
+                                    <td>{{item.GradeYear}}</td>
+                                    <td>
+                                        <button class="btn btn-xs btn-primary" ng-click="vmManager.editSupGradeInfo(item)"
+                                                title="修改评分信息">
+                                            修改
+                                        </button>
+                                        <button class="btn btn-xs btn-primary" ng-click="vmManager.deleteSupGradeInfo(item)"
+                                                title="删除评分信息">
+                                            删除
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </content>
+                </dialog>
+                <editDialog ng-if="editDialog.open" data-close="editDialog.close()">
+                    <content editDialog-title class="info"><i class="fa fa-th-list"></i> 编辑稽核评份信息</content>
+                    <div>
+                        <input type="text" />
+                    </div>
+                </editDialog>
             </div>
         </div>
 

@@ -33,8 +33,8 @@ var leeDataHandler = (function () {
                     addfn();
             }
         },
-        ///处理操作结果
-        handleSuccessResult: function (opstatus, opresult, customFn) {
+        ///处理操作结果,opstatus:操作器，opresult:操作结果,successFn:成功回调函数
+        handleSuccessResult: function (opstatus, opresult, successFn) {
             opstatus.showValidation = false;
             opstatus.result = opresult.Result;
             opstatus.message = opresult.Message;
@@ -45,8 +45,13 @@ var leeDataHandler = (function () {
                     opstatus.msgDisplay = false;
                 }, 2000);
             })();
-            if (customFn !== undefined)
-                customFn();
+            if (opresult.result === true) {
+                if (successFn !== undefined && _.isFunction(successFn))
+                    successFn();
+            }
+            else {
+
+            }
         },
         ///显示错误信息
         displayMessage: function (opstatus, message, customFn) {
@@ -494,6 +499,30 @@ var leeDialog = (function () {
         }
     };
     return dialog;
+})();
+/// 登陆用户
+var leeLoginUser = (function () {
+    var user = {
+        //账号
+        userId: null,
+        //姓名
+        userName: null,
+        //部门
+        department: null,
+        ///个人头像
+        headPortrait: "../Content/login/profilepicture.jpg",
+        ///载入个人头像
+        loadHeadPortrait: function () {
+            var loginUser = leeDataHandler.dataStorage.getLoginedUser();
+            if (loginUser !== null) {
+                user.userId = loginUser.userId;
+                user.userName = loginUser.userName;
+                user.department = loginUser.department;
+            }
+            user.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
+        },
+    };
+    return user;
 })();
 ///zTree 助手
 var leeTreeHelper = (function () {

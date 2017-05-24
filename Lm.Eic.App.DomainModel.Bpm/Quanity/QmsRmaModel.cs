@@ -355,14 +355,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         // ProductId
 
-        private string _productId;
+        private string _parameterKey;
         /// <summary>
         ///物料料号
         /// </summary>
-        public string ProductId
+        public string ParameterKey
         {
-            set { _productId = value; }
-            get { return _productId; }
+            set { _parameterKey = value; }
+            get { return _parameterKey; }
         }
 
         private string _badphenomenon;

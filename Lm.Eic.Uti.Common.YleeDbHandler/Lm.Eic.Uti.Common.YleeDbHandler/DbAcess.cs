@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -119,7 +120,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             Type entityType = typeof(TEntity);
 
             Dictionary<string, PropertyInfo> dic = new Dictionary<string, PropertyInfo>();
-            PropertyInfo[] pts=entityType.GetProperties();
+            PropertyInfo[] pts = entityType.GetProperties();
             foreach (PropertyInfo info in pts)
             {
                 dic.Add(info.Name, info);
@@ -570,10 +571,10 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
 
         private string GetTableNameFromSql(string sql)
         {
-            int start = sql.ToUpper().IndexOf("FROM") + 4;
+            int start = sql.ToUpper().IndexOf("FROM", StringComparison.CurrentCulture) + 4;
             string subsql = sql.Substring(start, sql.Length - start).Trim();
 
-            int whereIndex = sql.ToUpper().IndexOf("WHERE");
+            int whereIndex = sql.ToUpper().IndexOf("WHERE", StringComparison.CurrentCulture);
             if (whereIndex > 0)
             {
                 return sql.Substring(start, whereIndex - start).Trim();
@@ -704,8 +705,92 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         }
 
         #endregion ExcuteNonQuery
-    }
 
+        #region Insert
+        /// <summary>
+        /// 插入实体数据模型
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity">实体模型</param>
+        /// <param name="tableName">表名称</param>
+        /// <returns></returns>
+        public int Insert<TEntity>(TEntity entity, string tableName)
+        {
+            int record = 0;
+            StringBuilder sbFields = new StringBuilder();
+            StringBuilder sbFieldValues = new StringBuilder();
+            string sql = string.Format("Insert into {0} (", tableName);
+            try
+            {
+                Type tity = entity.GetType();
+                PropertyInfo[] Pis = tity.GetProperties();
+                if (Pis.Length > 0)
+                {
+                    foreach (PropertyInfo pi in Pis)
+                    {
+                        if (pi.Name.ToUpper() == "ENTITYSTATE" || pi.Name.ToUpper() == "ENTITYKEY" || pi.Name.ToUpper() == "ID_KEY")
+                        { }
+                        else
+                        {
+                            sbFields.Append(pi.Name.Trim() + ",");
+                            object piProxyValue = pi.GetValue(entity, null);
+                            sbFieldValues.AppendFormat("'{0}',", piProxyValue);
+                        }
+                    }
+                    sql = string.Format("{0}{1}) values ({2})", sql, sbFields.ToString().TrimEnd(','), sbFieldValues.ToString().TrimEnd(','));
+                    return ExecuteNonQuery(sql);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            return record;
+        }
+        /// <summary>
+        /// 插入实体数据模型,表名称从特性标注中获取，需要用特性的方式进行指定
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity">实体模型</param>
+        /// <returns></returns>
+        public int Insert<TEntity>(TEntity entity)
+        {
+            Type tity = entity.GetType();
+            var attribute = tity.GetCustomAttributes(typeof(LTableNameAttribute), false).FirstOrDefault();
+            if (attribute == null) return 0;
+            string tableName = ((LTableNameAttribute)attribute).TableName;
+            return Insert<TEntity>(entity, tableName);
+        }
+        #endregion
+    }
+    [System.AttributeUsage(AttributeTargets.Class)]
+    public class LTableNameAttribute : Attribute
+    {
+        private string tableName;
+        /// <summary>
+        /// 模型映射表的名字
+        /// </summary>
+        public string TableName
+        {
+            get { return tableName; }
+        }
+
+        public LTableNameAttribute(string tablename)
+        {
+            this.tableName = tablename;
+        }
+    }
+    [System.AttributeUsage(AttributeTargets.Property)]
+    public class LTableFieldLengthAttribute : Attribute
+    {
+        private int fieldLength;
+        public int FieldLength { get; set; }
+
+        public LTableFieldLengthAttribute(int fieldlength)
+        {
+            this.fieldLength = fieldlength;
+        }
+    }
     /// <summary>
     /// 表的字段信息
     /// </summary>

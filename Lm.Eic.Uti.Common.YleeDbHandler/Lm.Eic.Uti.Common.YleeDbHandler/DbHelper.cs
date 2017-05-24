@@ -73,7 +73,13 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             get { return CreateInstance("Authen", "MS5", "LmAuthenticatCenter", "sa", "lm2011"); }
         }
-
+        /// <summary>
+        /// 主产品数据访问接口
+        /// </summary>
+        public static DbAcess LmProductMaster
+        {
+            get { return CreateInstance("LmProductMaster", "MS5", "LmProductMaster", "sa", "lm2011"); }
+        }
         /// <summary>
         /// 考勤系统数据访问入口
         /// </summary>

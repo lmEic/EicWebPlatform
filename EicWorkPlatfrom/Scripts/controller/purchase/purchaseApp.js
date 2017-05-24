@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
-angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'pageslide-directive'])
+angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'pageslide-directive', 'angular-popups'])
 
 
 //--------配置文件----------------
@@ -204,6 +204,8 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
         moduleNavLayoutVm.menus = datas;
         moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
     });
+    var user = $scope.loginUser = Object.create(leeLoginUser);
+    user.loadHeadPortrait();
 })
 .controller('purchaseQueryCtrl', function ($scope) {
     $scope.navmenu = {

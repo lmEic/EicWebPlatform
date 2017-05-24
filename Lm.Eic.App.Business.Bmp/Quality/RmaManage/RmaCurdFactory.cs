@@ -119,7 +119,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         OpResult AddModel(RmaBusinessDescriptionModel model)
         {
-            if (!IsExist(model.RmaId, model.ProductId))
+            if (!IsExist(model.RmaId, model.ProductId, model.ReturnHandleOrder))
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             return OpResult.SetErrorResult("该记录已经存在！");
         }
@@ -139,17 +139,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
 
-        internal bool IsExist(string rmaid, string productId)
+        internal bool IsExist(string rmaid, string productId, string returnHandleOrder)
         {
-            return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId);
+            return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId && e.ReturnHandleOrder == returnHandleOrder);
         }
-        internal OpResult UpdateHandleStatus(string rmaId, string productId)
+        internal OpResult UpdateHandleStatus(string rmaId, string productId, string returnHandleOrder)
         {
-            return irep.Update(e => e.RmaId == rmaId && e.ProductId == productId,
-                new RmaBusinessDescriptionModel
-                {
-                    HandleStatus = RmaHandleStatus.BusinessStatus
-                }).ToOpResult_Eidt(OpContext);
+            return irep.Update(e => e.RmaId == rmaId && e.ProductId == productId && e.ReturnHandleOrder == returnHandleOrder,
+               u => new RmaBusinessDescriptionModel
+               {
+                   HandleStatus = RmaHandleStatus.BusinessStatus
+               }).ToOpResult_Eidt(OpContext);
         }
     }
 
@@ -167,7 +167,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         }
         OpResult Add(RmaInspectionManageModel model)
         {
-            if (!IsExist(model.RmaId, model.ProductId))
+            if (!IsExist(model.RmaId, model.ParameterKey))
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             return OpResult.SetErrorResult("该记录已经存在！");
         }
@@ -182,17 +182,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
 
-        internal OpResult UpdateHandleStatus(string rmaId, string productId)
+        internal OpResult UpdateHandleStatus(string parameterKey)
         {
-            if (string.IsNullOrEmpty(rmaId) || string.IsNullOrEmpty(productId)) return OpResult.SetErrorResult("ramId或者productId不能为空!");
-            return irep.Update(f => f.RmaId == rmaId && f.ProductId == productId, u => new RmaInspectionManageModel
+
+            if (string.IsNullOrEmpty(parameterKey)) return OpResult.SetErrorResult("ramId或者productId不能为空!");
+            return irep.Update(f => f.ParameterKey == parameterKey, u => new RmaInspectionManageModel
             {
                 HandleStatus = RmaHandleStatus.InspecitonStatus
             }).ToOpResult_Eidt(OpContext);
         }
         internal bool IsExist(string rmaId, string productId)
         {
-            return irep.IsExist(e => e.RmaId == rmaId && e.ProductId == productId);
+            return irep.IsExist(e => e.RmaId == rmaId && e.ParameterKey == productId);
         }
     }
 }

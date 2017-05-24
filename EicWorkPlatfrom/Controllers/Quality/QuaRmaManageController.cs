@@ -145,5 +145,12 @@ namespace EicWorkPlatfrom.Controllers.Quality
             return Json(opReult);
         }
         #endregion
+
+        #region RmaReportQuery
+        public ActionResult RmaReportQuery()
+        {
+            return View();
+        }
+        #endregion
     }
 }

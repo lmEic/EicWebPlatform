@@ -1,4 +1,6 @@
-﻿namespace Lm.Eic.Uti.Common.YleeOOMapper
+﻿using System;
+
+namespace Lm.Eic.Uti.Common.YleeOOMapper
 {
     /// <summary>
     /// 操作结果
@@ -103,6 +105,18 @@
         /// </summary>
         public object Attach { get; set; }
 
+        public Exception Exception { get; set; }
+        /// <summary>
+        /// 设置操作错误结果
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
+        public static OpResult SetErrorResult(Exception ex)
+        {
+            var opResult = new OpResult(ex.Message);
+            opResult.Exception = ex;
+            return opResult;
+        }
         /// <summary>
         /// 设定操作结果
         /// </summary>
