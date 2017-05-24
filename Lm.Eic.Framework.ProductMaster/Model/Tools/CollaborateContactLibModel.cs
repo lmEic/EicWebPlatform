@@ -187,5 +187,45 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
         }
         #endregion Model
     }
+    public partial class QueryContactDto
+    {
+        string department;
+        /// <summary>
+        /// 部门
+        /// </summary>
+        public string Department
+        {
+            get { return department; }
+            set { if (department != value) { department = value; } }
+        }
+        string queryContent = string.Empty;
+        /// <summary>
+        /// 联系人姓名
+        /// </summary>
+        public string QueryContent
+        {
+            get { return queryContent; }
+            set { if (queryContent != value) { queryContent = value; } }
+        }
+        /// <summary>
+        /// 是否精确查询
+        /// </summary>
+        bool isExactQuery = true;
+        public bool IsExactQuery
+        {
+            get { return isExactQuery; }
+            set { if (isExactQuery != value) { isExactQuery = value; } }
+        }
+        private int searchMode = 0;
+        /// <summary>
+        /// 搜索模式
+        /// </summary>
+        public int SearchMode
+        {
+            get { return searchMode; }
+            set { if (searchMode != value) { searchMode = value; } }
+        }
 
+
+    }
 }
