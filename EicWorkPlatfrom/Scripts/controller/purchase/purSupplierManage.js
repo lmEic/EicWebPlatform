@@ -625,7 +625,6 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
             }
 
         }),
-
         supGradeEditModal: $modal({
             title: '新增供应商评分信息', content: '',
             templateUrl: leeHelper.controllers.supplierManage + '/EditPurSupAuditToGradeTpl/',
@@ -643,10 +642,8 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
                         $scope.vm.ParameterKey = vmManager.editItem.SupplierId + "&" + vmManager.editItem.GradeYear + "&" + vmManager.editItem.SupGradeType;
                         supplierDataOpService.savePurSupGradeInfo($scope.vm).then(function (opResult) {
                             if (opResult.Result) {
-                                $scope.vm.SupGradeInfoContent = "OK";
                                 vmManager.editItem = $scope.vm;
                                 vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.hide);
-
                             }
                             else {
                                 vmManager.supGradeEditModal.$promise.then(vmManager.supGradeEditModal.show);
