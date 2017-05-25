@@ -38,7 +38,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     quality.deleteIqlInspectionConfigItem = function (configItem) {
         var url = quaInspectionManageUrl + 'DeleteIqlInspectionConfigItem';
         return ajaxService.postData(url, {
-            configItem: configItem,
+            configItem: configItem
         });
     };
 
@@ -105,8 +105,8 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         var url = quaInspectionManageUrl + "GetFqcOrderInfoDatas";
         return ajaxService.getData(url, {
             orderId: orderId
-        })
-    }
+        });
+    };
     quality.uploadFqcGatherDataAttachFile = function (file) {
         var url = quaInspectionManageUrl + 'UploadFqcGatherDataAttachFile';
         return ajaxService.uploadFile(url, file);
@@ -372,7 +372,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
                 $scope.confirmDelete = function () {
                     $scope.opPromise = qualityInspectionDataOpService.deleteIqlInspectionConfigItem(vmManager.delItem).then(function (opresult) {
                         leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                            if (opresult.Result || vmManager.delItem.Id_key == null) {
+                            if (opresult.Result || vmManager.delItem.Id_key === null) {
                                 leeHelper.remove(vmManager.dataSets, vmManager.delItem);
                                 var ds = _.clone(vmManager.dataSource);
                                 leeHelper.remove(ds, vmManager.delItem);
@@ -381,7 +381,6 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
                             vmManager.delModal.$promise.then(vmManager.delModal.hide);
                         });
                     });
-
                 };
 
             },

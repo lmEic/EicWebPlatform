@@ -1,4 +1,10 @@
-﻿namespace Lm.Eic.Uti.Common.YleeOOMapper
+﻿using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using System;
+using System.IO;
+using System.Text;
+using Lm.Eic.Uti.Common.YleeMessage.Log;
+
+namespace Lm.Eic.Uti.Common.YleeOOMapper
 {
     /// <summary>
     /// 操作结果
@@ -30,10 +36,7 @@
                 return recordCount;
             }
         }
-
-
         private bool result = false;
-
         /// <summary>
         /// 操作结果
         /// </summary>
@@ -102,12 +105,46 @@
         /// 附加对象
         /// </summary>
         public object Attach { get; set; }
-
+        /// <summary>
+        /// 异常信息
+        /// </summary>
+        public Exception Exception { get; private set; }
+        /// <summary>
+        /// 异常信息Id
+        /// </summary>
+        public string ExceptionId { get; private set; }
+        /// <summary>
+        /// 记录错误文件
+        /// </summary>
+        /// <param name="ex"></param>
+        private void LogErrorMsgToFile(Exception ex)
+        {
+            ExceptionId = Guid.NewGuid().ToString("N");
+            string errorLogPath = @"C:\EicSystem\WebPlatform\ErrorMsgTrace\";
+            string fileName = Path.Combine(errorLogPath, ExceptionId + ".txt");
+            StringBuilder sbMsg = new StringBuilder();
+            sbMsg.AppendFormat("错误Id：{0}", ExceptionId).AppendLine();
+            sbMsg.AppendFormat("错误信息：{0}", ex.Message).AppendLine();
+            sbMsg.AppendFormat("错误描述：{0}", ex.StackTrace).AppendLine();
+            sbMsg.AppendFormat("错误源：{0}", ex.Source).AppendLine();
+            sbMsg.AppendFormat("发生时间：{0}", DateTime.Now).AppendLine();
+            fileName.AppendFile(sbMsg.ToString());
+        }
+        /// <summary>
+        /// 设置操作错误结果
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
+        public static OpResult SetErrorResult(Exception ex)
+        {
+            var opResult = new OpResult(ex.Message);
+            opResult.LogErrorMsgToFile(ex);
+            return opResult;
+        }
         /// <summary>
         /// 设定操作结果
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="result"></param>
+        /// <param name="errorMsg"></param>
         /// <returns></returns>
         public static OpResult SetErrorResult(string errorMsg)
         {
@@ -116,14 +153,14 @@
         /// <summary>
         /// 设定操作结果
         /// </summary>
-        /// <param name="message">成功的信息</param>
+        /// <param name="successMessage">成功的信息</param>
         /// <param name="result"></param>
         /// <returns></returns>
         public static OpResult SetSuccessResult(string successMessage, bool result = true)
         {
             return new OpResult(successMessage, result);
         }
-        public static OpResult SetSuccessResult(string successMessage, bool result = true, decimal idKey = 0)
+        public static OpResult SetSuccessResult(string successMessage, bool result, decimal idKey)
         {
             return new OpResult(successMessage, result, idKey);
         }
@@ -154,5 +191,29 @@
         public const string UpDate = "update";
         public const string UploadFile = "uploadFile";
         public const string DeleteFile = "deleteFile";
+    }
+    /// <summary>
+    /// OpResult的扩展方法集合
+    /// </summary>
+    public static class OpResultExtension
+    {
+        /// <summary>
+        /// 扩展方法，返回异常结果
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
+        public static OpResult ExOpResult(this Exception ex)
+        {
+            return OpResult.SetErrorResult(ex);
+        }
+        /// <summary>
+        /// 将异常信息记录到文件中去
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="fnName"></param>
+        public static void LogToFile(this Exception ex, string fnName)
+        {
+            MsgLogger.LogErrorMsgToFile(fnName, ex);
+        }
     }
 }

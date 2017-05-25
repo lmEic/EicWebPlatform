@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Lm.Eic.Uti.Common.YleeOOMapper;
+using System.Linq;
 
 namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
 {
@@ -102,6 +104,24 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             {
                 throw new Exception(ex.InnerException.Message);
             }
+        }
+        /// <summary>
+        /// 从文件夹中获取文件
+        /// </summary>
+        /// <param name="dirctoryPath"></param>
+        /// <returns></returns>
+        public static List<string> GetFiles(this string dirctoryPath)
+        {
+            List<string> fileList = new List<string>();
+            if (!Directory.Exists(dirctoryPath))
+            {
+                Directory.CreateDirectory(dirctoryPath);
+                return fileList;
+            }
+            string[] files = Directory.GetFiles(dirctoryPath);
+            if (files != null && files.Length > 0)
+                return files.ToList();
+            return fileList;
         }
         /// <summary>
         /// 获取文件中的内容,按行存储到列表中
@@ -307,8 +327,6 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             if (dataSource == null || dataSource.Count == 0) return new DownLoadFileModel().Default();
             return dataSource.ExportToExcel(xlsSheetName).CreateDownLoadExcelFileModel(fileDownLoadName);
         }
-
-
         /// <summary>
         /// 扩展方法：导入到现有的Excel模板文件中
         /// </summary>
@@ -646,6 +664,34 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             dlfm.FileDownLoadName = fileName + ".xls";
             return dlfm;
         }
+        /// <summary>
+        /// 创建异常信息下载模型
+        /// </summary>
+        /// <param name="exceptionId"></param>
+        /// <returns></returns>
+        public static DownLoadFileModel CreateExceptionDownLoadFileModel(this string exceptionId)
+        {
+            DownLoadFileModel dlfm = new DownLoadFileModel();
+            string errorLogPath = @"C:\EicSystem\WebPlatform\ErrorMsgTrace\";
+            errorLogPath.GetFiles().ForEach(f =>
+            {
+                if (f.IndexOf(exceptionId, StringComparison.CurrentCulture) > 0)
+                {
+                    StringBuilder sbMsg = new StringBuilder();
+                    f.GetFileLines().ForEach(line =>
+                    {
+                        sbMsg.AppendLine(line);
+                    });
+                    dlfm = dlfm.Default(sbMsg.ToString());
+                    File.Delete(f);
+                }
+                else
+                {
+                    dlfm = dlfm.Default();
+                }
+            });
+            return dlfm;
+        }
     }
     /// <summary>
     /// 文件字段对应的描述
@@ -739,5 +785,22 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                 FileDownLoadName = downFileName
             };
         }
+    }
+    /// <summary>
+    /// 异常追踪模型
+    /// </summary>
+    public class ExceptionTraceModel
+    {
+        public string ExceptionId { get; set; }
+
+        public string FnName { get; set; }
+
+        public string MsgContent { get; set; }
+
+        public string StackTrace { get; set; }
+
+        public string MsgSource { get; set; }
+
+        public string OccurTime { get; set; }
     }
 }

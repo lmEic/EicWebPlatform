@@ -75,6 +75,7 @@
     <Compile Include="YleeFtp\FtpOperator.cs" />
     <Compile Include="YleeFtp\FtpOpreateDirectoryPath.cs" />
     <Compile Include="YleeMessage\Email\EmailMessageHelper.cs" />
+    <Compile Include="YleeMessage\Log\MsgLogger.cs" />
     <Compile Include="YleeMessage\Windows\WinMessageHelper.cs" />
     <Compile Include="YleeObjectBuilder\OBulider.cs" />
     <Compile Include="YleeOOMapper\OpResult.cs" />

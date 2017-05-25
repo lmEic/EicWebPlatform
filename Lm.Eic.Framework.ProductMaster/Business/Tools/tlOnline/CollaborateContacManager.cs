@@ -22,31 +22,29 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         {
             return CollaborateCrudFactorty.ContatCrud.Store(model);
         }
-       
-        /// <summary>
-        /// 部门得到所有的信息
-        /// 从数据直接查询
-        /// </summary>
-        /// <param name="queryDto"></param>
-        /// <returns></returns>
-        public List<CollaborateContactLibModel> QueryContactLibDatasBy(string department,QueryContactDto queryDto=null)
-        {
-            try
-            {
-                //部门不能为空
-                if (department == null || department == string.Empty)
-                    return new List<CollaborateContactLibModel>();
-                if (queryDto == null) return CollaborateCrudFactorty.ContatCrud.GetContactLibDatasBy(department);
-                if (queryDto.IsExactQuery)
-                    return CollaborateCrudFactorty.ContatCrud.ExactFind(queryDto.Department,queryDto);
-                else
-                    return CollaborateCrudFactorty.ContatCrud.ContainsFind(queryDto.Department, queryDto);
-            }
-            catch (Exception es)
-            {
-                throw new Exception(es.Message);
-            }
-        }
+
+        ///// <summary>
+        ///// 部门得到所有的信息
+        ///// 从数据直接查询
+        ///// </summary>
+        ///// <param name="queryDto"></param>
+        ///// <returns></returns>
+        //public List<CollaborateContactLibModel> QueryContactLibDatasBy(string department, QueryContactDto queryDto = null)
+        //{
+        //    try
+        //    {
+        //        //部门不能为空
+        //        if (department == null || department == string.Empty)
+        //            return new List<CollaborateContactLibModel>();
+        //        if (queryDto == null) return CollaborateCrudFactorty.ContatCrud.GetContactLibDatasBy(department);
+        //        if (queryDto.IsExactQuery)
+        //            return CollaborateCrudFactorty.ContatCrud.ExactFind(queryDto.Department, queryDto);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex.LogToFile("");
+        //    }
+        //}
     }
-  
+
 }
