@@ -6,7 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Lm.Eic.Uti.Common.YleeOOMapper;
-
+using System.Linq;
 
 namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
 {
@@ -683,6 +683,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
                         sbMsg.AppendLine(line);
                     });
                     dlfm = dlfm.Default(sbMsg.ToString());
+                    File.Delete(f);
                 }
                 else
                 {

@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Text;
+using Lm.Eic.Uti.Common.YleeMessage.Log;
 
 namespace Lm.Eic.Uti.Common.YleeOOMapper
 {
@@ -190,5 +191,29 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         public const string UpDate = "update";
         public const string UploadFile = "uploadFile";
         public const string DeleteFile = "deleteFile";
+    }
+    /// <summary>
+    /// OpResult的扩展方法集合
+    /// </summary>
+    public static class OpResultExtension
+    {
+        /// <summary>
+        /// 扩展方法，返回异常结果
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
+        public static OpResult ExOpResult(this Exception ex)
+        {
+            return OpResult.SetErrorResult(ex);
+        }
+        /// <summary>
+        /// 将异常信息记录到文件中去
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="fnName"></param>
+        public static void LogToFile(this Exception ex, string fnName)
+        {
+            MsgLogger.LogErrorMsgToFile(fnName, ex);
+        }
     }
 }

@@ -50,9 +50,10 @@ var leeDataHandler = (function () {
                     successFn();
             }
             else {
-                //if (opresult.Exception !== undefined) {
-
-                //}
+                if (opresult.ExceptionId !== null && opresult.ExceptionId.length > 1) {
+                    var loadUrl = "/Account/GetExceptionFile?exceptionId=" + opresult.ExceptionId;
+                    return loadUrl;
+                }
             }
         },
         ///显示错误信息
