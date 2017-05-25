@@ -67,11 +67,13 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
             $scope.vm = uiVm;
         },
         editDatas: [],
+        dataSource:[],
         loadDatas: function (department, searchMode, queryContent) {
             vmManager.editDatas = [];
             $scope.searchPromise = oAssistantDataOpService.getCollaborateContactDatas(department, searchMode, queryContent).then(function (datas) {
                 if (angular.isArray(datas))
                     vmManager.editDatas = datas;
+                vmManager.dataSource = datas;
             });
         },
         getDatasByName: function () {

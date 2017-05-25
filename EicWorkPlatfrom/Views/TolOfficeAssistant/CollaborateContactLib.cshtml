@@ -77,8 +77,14 @@
                     </tbody>
                 </table>
             </div>
+            @* 分页显示 *@
+            <div ng-if="vmManager.dataSource.length>0"
+                 yl-pagination
+                 data-dataset="vmManager.editDatas"
+                 data-datasource="vmManager.dataSource">
+            </div>
         </div>
-
+     
         <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
             <content dialog-title>
                 <i class="fa fa-pencil-square">数据编辑</i>
