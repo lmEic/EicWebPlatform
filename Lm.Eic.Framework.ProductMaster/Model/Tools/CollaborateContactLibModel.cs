@@ -210,7 +210,7 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
         /// <summary>
         /// 是否精确查询
         /// </summary>
-        bool isExactQuery = true;
+        bool isExactQuery = false ;
         public bool IsExactQuery
         {
             get { return isExactQuery; }

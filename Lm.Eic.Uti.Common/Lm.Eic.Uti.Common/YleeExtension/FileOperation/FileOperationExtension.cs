@@ -6,6 +6,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Uti.Common.YleeExcelHanlder;
+using Lm.Eic.Uti.Common.YleeMessage.Log;
 using System.Linq;
 
 namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
@@ -588,6 +590,19 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             {
                 throw new Exception(ex.ToString());
             }
+        }
+        /// <summary>
+        /// 扩展方法，从Excel文件中读取数据到泛型集合模型中
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static List<TEntity> GetEntitiesFromExcel<TEntity>(this string fileName)where TEntity:class,new ()
+        {
+            string errMsg = string.Empty;
+            List<TEntity> datas = ExcelHelper.ExcelToEntityDatas<TEntity>(fileName, out errMsg);
+            MsgLogger.LogMsgToFile("GetEntitiesFromExcel<TEntity>", errMsg);
+            return datas;
         }
 
         /// <summary>

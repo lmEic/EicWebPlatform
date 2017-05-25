@@ -57,8 +57,6 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
             xlsApp = null;
         }
 
-
-
         #region Excel导入
 
         /// <summary>
@@ -69,24 +67,29 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
         /// <param name="sheetColumn">列</param>
         /// <param name="errorMsg">错误信息</param>
         /// <returns>转换后的List对象集合<</returns>
-        public static List<T> ExcelToEntityList<T>(string filePath, out StringBuilder errorMsg) where T : new()
+        public static List<T> ExcelToEntityDatas<T>(string filePath, out string errMsg) where T : new()
         {
+            errMsg = string.Empty;
             List<T> enlist = new List<T>();
-            errorMsg = new StringBuilder();
+            StringBuilder errorMsg = new StringBuilder();
             try
             {
                 if (Regex.IsMatch(filePath, ".xls$")) // 2003
                 {
-                    enlist = Excel2003ToEntityList<T>(filePath, out errorMsg);
+                    enlist = Excel2003ToEntityDatas<T>(filePath, out errorMsg);
                 }
                 else if (Regex.IsMatch(filePath, ".xlsx$")) // 2007
                 {
                     //return FailureResultMsg("请选择Excel文件"); // 未设计
                     // enlist = Excel2007ToEntityList<T>(filePath, sheetColumn, out errorMsg);
                 }
-                return enlist;
+                errMsg = errorMsg.ToString();
             }
-            catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message;
+            }
+            return enlist;
         }
 
         /// <summary>
@@ -96,7 +99,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
         /// <param name="filePath">保存文件绝对路径</param>
         /// <param name="errorMsg">错误信息</param>
         /// <returns>转换好的List对象集合</returns>
-        private static List<T> Excel2003ToEntityList<T>(string filePath, out StringBuilder errorMsg) where T : new()
+        private static List<T> Excel2003ToEntityDatas<T>(string filePath, out StringBuilder errorMsg) where T : new()
         {
             errorMsg = new StringBuilder(); // 错误信息,Excel转换到实体对象时，会有格式的错误信息
             List<T> enlist = new List<T>(); // 转换后的集合
@@ -411,6 +414,5 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
             return rs;
         }
 
-      
     }
 }

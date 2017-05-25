@@ -35,7 +35,7 @@ namespace EicWorkPlatfrom.Controllers
                 QueryContent = queryContent,
                 IsExactQuery = false ,
             };
-            var datas = ToolOnlineService.ContactManager.QueryContactLibDatasBy(department,queryDto);
+            var datas = ToolOnlineService.ContactManager.GetContactLibDatasBy(queryDto);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]

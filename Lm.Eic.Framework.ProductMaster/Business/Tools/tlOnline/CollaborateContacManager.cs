@@ -11,6 +11,9 @@ using System.Text;
 
 namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
 {
+
+   
+
     public class CollaborateContactManager
     {
         /// <summary>
@@ -23,28 +26,24 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
             return CollaborateCrudFactorty.ContatCrud.Store(model);
         }
 
-        ///// <summary>
-        ///// 部门得到所有的信息
-        ///// 从数据直接查询
-        ///// </summary>
+       /// <summary>
+        /// 部门得到所有的信息
+        /// 从数据直接查询
+        /// </summary>
         ///// <param name="queryDto"></param>
         ///// <returns></returns>
-        //public List<CollaborateContactLibModel> QueryContactLibDatasBy(string department, QueryContactDto queryDto = null)
-        //{
-        //    try
-        //    {
-        //        //部门不能为空
-        //        if (department == null || department == string.Empty)
-        //            return new List<CollaborateContactLibModel>();
-        //        if (queryDto == null) return CollaborateCrudFactorty.ContatCrud.GetContactLibDatasBy(department);
-        //        if (queryDto.IsExactQuery)
-        //            return CollaborateCrudFactorty.ContatCrud.ExactFind(queryDto.Department, queryDto);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ex.LogToFile("");
-        //    }
-        //}
+        public List<CollaborateContactLibModel> GetContactLibDatasBy(QueryContactDto queryDto )
+        {
+            try
+            {
+                if (queryDto == null) return new DataList<CollaborateContactLibModel>();
+                return CollaborateCrudFactorty.ContatCrud.FindBy(queryDto);
+            }
+            catch (Exception ex)
+            {
+               return ex.ExDataList<CollaborateContactLibModel>();
+            }
+        }
     }
 
 }

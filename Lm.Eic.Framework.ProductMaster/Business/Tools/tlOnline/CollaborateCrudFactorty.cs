@@ -63,47 +63,57 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         }
         /// <summary>
         /// 包含查询
-        ///0:部门查找
-        ///1:联系人姓名
-        ///2:联系电话
-        ///3.办公电话
-        ///4.联系地址
-        ///5.公司名称
-        ///6.联系人属性
-        ///7.往来业务
+        ///0:部门查找，1:联系人姓名，2:联系电话，3.办公电话
+        ///4.联系地址，5.公司名称，6.联系人属性，7.往来业务
         /// </summary>
         /// <param name="queryDto"></param>
         /// <returns></returns>
-        internal List<CollaborateContactLibModel> FindBy(string department, QueryContactDto queryDto)
+        internal List<CollaborateContactLibModel> FindBy(QueryContactDto queryDto)
         {
-            switch (queryDto.SearchMode)
+            try
             {
-                ///部门
-                case 0:
-                    return irep.Entities.Where(e => e.Department == department).ToList();
-                ///联系人姓名
-                case 1:
-                    return irep.Entities.Where(e => e.Department == department && e.ContactPerson.Contains(queryDto.QueryContent)).ToList();
-                ///联系电话
-                case 2:
-                    return irep.Entities.Where(e => e.Department == department && e.Telephone.Contains(queryDto.QueryContent)).ToList();
-                ///办公电话
-                case 3:
-                    return irep.Entities.Where(e => e.Department == department && e.OfficeTelephone.Contains(queryDto.QueryContent)).ToList();
-                ///联系地址
-                case 4:
-                    return irep.Entities.Where(e => e.Department == department && e.ContactAdress.Contains(queryDto.QueryContent)).ToList();
-                ///公司名称
-                case 5:
-                    return irep.Entities.Where(e => e.Department == department && e.ContactCompany.Contains(queryDto.QueryContent)).ToList();
-                ///联系人属性
-                case 6:
-                    return irep.Entities.Where(e => e.Department == department && e.CustomerCategory.Contains(queryDto.QueryContent)).ToList();
-                ///往来业务
-                case 7:
-                    return irep.Entities.Where(e => e.Department == department && e.ContactMemo.Contains(queryDto.QueryContent)).ToList();
-                default:
-                    return new List<CollaborateContactLibModel>();
+                if (queryDto.Department == null || queryDto.Department == string.Empty)
+                    return  new List<CollaborateContactLibModel>(); 
+                switch (queryDto.SearchMode)
+                {
+                    ///部门
+                    case 0:
+                      return  irep.Entities.Where(e => e.Department == queryDto.Department).ToList<CollaborateContactLibModel>() ;
+                      
+                    ///联系人姓名
+                    case 1:
+                      return irep.Entities.Where(e => e.Department == queryDto.Department && e.ContactPerson.Contains(queryDto.QueryContent)).ToList() ;
+                       
+                        ///联系电话
+                    case 2:
+                       return irep.Entities.Where(e => e.Department == queryDto.Department && e.Telephone.Contains(queryDto.QueryContent)).ToList() ;
+                    
+                    ///办公电话
+                    case 3:
+                      return irep.Entities.Where(e => e.Department == queryDto.Department && e.OfficeTelephone.Contains(queryDto.QueryContent)).ToList() ;
+                    
+                    ///联系地址
+                    case 4:
+                        return irep.Entities.Where(e => e.Department == queryDto.Department && e.ContactAdress.Contains(queryDto.QueryContent)).ToList() ;
+                      
+                    ///公司名称
+                    case 5:
+                      return irep.Entities.Where(e => e.Department == queryDto.Department && e.ContactCompany.Contains(queryDto.QueryContent)).ToList() ;
+                     
+                    ///联系人属性
+                    case 6:
+                        return irep.Entities.Where(e => e.Department == queryDto.Department && e.CustomerCategory.Contains(queryDto.QueryContent)).ToList() ;
+                       
+                    ///往来业务
+                    case 7:
+                     return irep.Entities.Where(e => e.Department == queryDto.Department && e.ContactMemo.Contains(queryDto.QueryContent)).ToList();
+             
+                    default: return new List<CollaborateContactLibModel>() as DataList<CollaborateContactLibModel>;
+                }
+            }
+            catch (Exception ex)
+            {
+              return  ex.ExDataList<CollaborateContactLibModel>();  
             }
         }
         #endregion

@@ -52,23 +52,13 @@ namespace Lm.Eic.App.Business.Bmp.Ast.Tests
         {
             StringBuilder str = new StringBuilder();
             string path = @"E:\\设备系统设备总览表.xls";
-            var m = ExcelHelper.ExcelToEntityList<EquipmentModel>(path, out str);
-            string FilePath = @"C:\testDir\test.txt";
+           var m = path.GetEntitiesFromExcel<EquipmentModel>();
             int Number = m.Count;
-            if (str.ToString() != string.Empty)
-            {
-                FilePath.CreateFile(str.ToString());
-                Assert.Fail();
-                return;
-            }
-
-
             m.ForEach(e =>
             {
                 AstService.EquipmentManager.Store(e);
             });
             if (m.Count < 0) { Assert.Fail(); }
-
         }
 
 

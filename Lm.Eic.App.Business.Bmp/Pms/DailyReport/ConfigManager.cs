@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 {
 
@@ -109,14 +108,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         /// <returns></returns>
         public List<ProductFlowModel> ImportProductFlowListBy(string documentPatch)
         {
-            StringBuilder errorStr = new StringBuilder();
-            var listEntity = ExcelHelper.ExcelToEntityList<ProductFlowModel>(documentPatch, out errorStr);
-            string errorStoreFilePath = @"C:\ExcelToEntity\ErrorStr.txt";
-            if (errorStr.ToString() != string.Empty)
-            {
-                errorStoreFilePath.CreateFile(errorStr.ToString());
-            }
-            return listEntity;
+            return documentPatch.GetEntitiesFromExcel<ProductFlowModel>();
         }
 
         #endregion

@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 using Lm.Eic.Uti.Common.YleeMessage.Log;
+using System.Collections.Generic;
 
 namespace Lm.Eic.Uti.Common.YleeOOMapper
 {
@@ -141,6 +142,7 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
             opResult.LogErrorMsgToFile(ex);
             return opResult;
         }
+       
         /// <summary>
         /// 设定操作结果
         /// </summary>
@@ -192,6 +194,10 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         public const string UploadFile = "uploadFile";
         public const string DeleteFile = "deleteFile";
     }
+    public class DataList<T> : List<T>
+    {
+        public string ExceptionId { get; set; }
+    }
     /// <summary>
     /// OpResult的扩展方法集合
     /// </summary>
@@ -211,9 +217,12 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="fnName"></param>
-        public static void LogToFile(this Exception ex, string fnName)
+        public static DataList<T> ExDataList<T>(this Exception ex)
         {
-            MsgLogger.LogErrorMsgToFile(fnName, ex);
+            OpResult result = ex.ExOpResult();
+            var datas= new DataList<T>();
+            datas.ExceptionId = result.ExceptionId;
+            return datas;
         }
     }
 }
