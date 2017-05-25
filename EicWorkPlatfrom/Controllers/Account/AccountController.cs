@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.Framework.Authenticate.Business;
 using Lm.Eic.Framework.Authenticate.Model;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -260,5 +261,14 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         #endregion assign power
+
+        #region  exception handle method
+        [NoAuthenCheck]
+        public FileResult GetExceptionFile(string exceptionId)
+        {
+            DownLoadFileModel dlfm = exceptionId.CreateExceptionDownLoadFileModel();
+            return this.DownLoadFile(dlfm);
+        }
+        #endregion
     }
 }

@@ -193,17 +193,17 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
         },
         filterBySupplierId: function () {
             vmManager.datasource = _.clone(vmManager.datasourceCopy);
-            if (vmManager.filterSupplierId != null && vmManager.filterSupplierId.length > 0) {
+            if (vmManager.filterSupplierId !== null && vmManager.filterSupplierId.length > 0) {
 
                 vmManager.datasource = _.clone(_.where(vmManager.datasource, { SupplierId: vmManager.filterSupplierId }));
             }
-        },
+        }
     };
     //上传文件项目
     var uploadFileVM = $scope.fileItem = {
         EligibleCertificate: '',
         PurchaseType: '', SupplierProperty: '', SupplierId: null, FilePath: '',
-        CertificateFileName: '', DateOfCertificate: null, OpSign: 'add', OpPerson: '',
+        CertificateFileName: '', DateOfCertificate: null, OpSign: 'add', OpPerson: ''
     };
     var uploadFileVmCopy = _.clone(uploadFileVM);
     var editManager = $scope.editManager = {
@@ -233,8 +233,8 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
         ///获取文件扩展名图标
         getFileExtentionIcon: function (item) {
             return leeHelper.getFileExtensionIcon(item.CertificateFileName);
-        },
-    }
+        }
+    };
 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
@@ -283,7 +283,7 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
                     });
                 }
             });
-        })
+        });
     };
 });
 //供应商考核管理
@@ -620,8 +620,8 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
                             }
                         });
                     }
-                )
-                }
+                    );
+                };
             }
 
         }),

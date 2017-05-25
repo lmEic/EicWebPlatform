@@ -81,6 +81,7 @@
     <Compile Include="CrudBase.cs" />
     <Compile Include="DbHelper.cs" />
     <Compile Include="DbAcess.cs" />
+    <Compile Include="ErrorMessageTracer.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IUnitOfWorkContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

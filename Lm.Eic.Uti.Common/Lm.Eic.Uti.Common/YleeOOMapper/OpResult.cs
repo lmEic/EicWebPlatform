@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using System;
+using System.IO;
+using System.Text;
 
 namespace Lm.Eic.Uti.Common.YleeOOMapper
 {
@@ -32,10 +35,7 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
                 return recordCount;
             }
         }
-
-
         private bool result = false;
-
         /// <summary>
         /// 操作结果
         /// </summary>
@@ -104,8 +104,31 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         /// 附加对象
         /// </summary>
         public object Attach { get; set; }
-
-        public Exception Exception { get; set; }
+        /// <summary>
+        /// 异常信息
+        /// </summary>
+        public Exception Exception { get; private set; }
+        /// <summary>
+        /// 异常信息Id
+        /// </summary>
+        public string ExceptionId { get; private set; }
+        /// <summary>
+        /// 记录错误文件
+        /// </summary>
+        /// <param name="ex"></param>
+        private void LogErrorMsgToFile(Exception ex)
+        {
+            ExceptionId = Guid.NewGuid().ToString("N");
+            string errorLogPath = @"C:\EicSystem\WebPlatform\ErrorMsgTrace\";
+            string fileName = Path.Combine(errorLogPath, ExceptionId + ".txt");
+            StringBuilder sbMsg = new StringBuilder();
+            sbMsg.AppendFormat("错误Id：{0}", ExceptionId).AppendLine();
+            sbMsg.AppendFormat("错误信息：{0}", ex.Message).AppendLine();
+            sbMsg.AppendFormat("错误描述：{0}", ex.StackTrace).AppendLine();
+            sbMsg.AppendFormat("错误源：{0}", ex.Source).AppendLine();
+            sbMsg.AppendFormat("发生时间：{0}", DateTime.Now).AppendLine();
+            fileName.AppendFile(sbMsg.ToString());
+        }
         /// <summary>
         /// 设置操作错误结果
         /// </summary>
@@ -114,14 +137,13 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         public static OpResult SetErrorResult(Exception ex)
         {
             var opResult = new OpResult(ex.Message);
-            opResult.Exception = ex;
+            opResult.LogErrorMsgToFile(ex);
             return opResult;
         }
         /// <summary>
         /// 设定操作结果
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="result"></param>
+        /// <param name="errorMsg"></param>
         /// <returns></returns>
         public static OpResult SetErrorResult(string errorMsg)
         {
@@ -130,14 +152,14 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         /// <summary>
         /// 设定操作结果
         /// </summary>
-        /// <param name="message">成功的信息</param>
+        /// <param name="successMessage">成功的信息</param>
         /// <param name="result"></param>
         /// <returns></returns>
         public static OpResult SetSuccessResult(string successMessage, bool result = true)
         {
             return new OpResult(successMessage, result);
         }
-        public static OpResult SetSuccessResult(string successMessage, bool result = true, decimal idKey = 0)
+        public static OpResult SetSuccessResult(string successMessage, bool result, decimal idKey)
         {
             return new OpResult(successMessage, result, idKey);
         }

@@ -50,7 +50,9 @@ var leeDataHandler = (function () {
                     successFn();
             }
             else {
+                //if (opresult.Exception !== undefined) {
 
+                //}
             }
         },
         ///显示错误信息

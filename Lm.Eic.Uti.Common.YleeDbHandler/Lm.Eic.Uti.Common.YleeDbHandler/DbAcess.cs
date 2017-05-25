@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -763,6 +764,119 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         }
         #endregion
     }
+    /// <summary>
+    /// 将对象持久化到文件中，
+    /// 从文件中读取数据持久化到数据库中
+    /// 整个操作只根据实体模型进行
+    /// </summary>
+    public class FileDbHelper
+    {
+        private static string GetTableNameFrom<TEntity>(TEntity entity)
+        {
+            string tableName = string.Empty;
+            Type tity = entity.GetType();
+            var attribute = tity.GetCustomAttributes(typeof(LTableNameAttribute), false).FirstOrDefault();
+            if (attribute == null) return tableName;
+            tableName = ((LTableNameAttribute)attribute).TableName;
+            return tableName;
+        }
+        /// <summary>
+        /// 从文件中读取内容转换为实体字典对象,包含表的名称
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static List<Dictionary<string, object>> GetEntityDicFromTxtFile(string filePath)
+        {
+            List<Dictionary<string, object>> listDatas = new List<Dictionary<string, object>>();
+            if (!File.Exists(filePath))
+            {
+                ErrorMessageTracer.LogMsgToFile("GetEntityDicFromTxtFile", string.Format("{0}不存在！", filePath));
+                return listDatas;
+            }
+            try
+            {
+                using (StreamReader sr = new StreamReader(filePath, Encoding.Default))
+                {
+                    Dictionary<string, object> dataDic = null;
+                    string line = sr.ReadLine();
+                    string[] tblFields = line.Split(':');
+                    if (tblFields.Length != 2)
+                    {
+                        ErrorMessageTracer.LogMsgToFile("GetEntityDicFromTxtFile", "文件中没有包含表名称的信息");
+                        return listDatas;
+                    }
+                    if (tblFields[0].ToString().ToUpper() != "LEETABLENAME")
+                    {
+                        ErrorMessageTracer.LogMsgToFile("GetEntityDicFromTxtFile", "文件中没有包含表名称键值的信息");
+                        return listDatas;
+                    }
+                    string tblKey = tblFields[0].ToString().Trim();
+                    string tblName = tblFields[1].ToString().Trim();
+                    while (!string.IsNullOrEmpty(line))
+                    {
+                        line = sr.ReadLine();
+                        string[] fieldPair = line.Split(',');
+                        if (fieldPair.Length > 0)
+                        {
+                            dataDic = new Dictionary<string, object>();
+                            dataDic.Add(tblKey, tblName);
+                            foreach (string fp in fieldPair)
+                            {
+                                string[] fv = fp.Split('*');
+                                if (fv.Length == 2)
+                                {
+                                    dataDic.Add(fv[0].Trim(), fv[1].Trim());
+                                }
+                            }
+                            listDatas.Add(dataDic);
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                ErrorMessageTracer.LogErrorMsgToFile("GetEntityDicFromFile", ex);
+            }
+            return listDatas;
+        }
+        /// <summary>
+        /// 将实体模型数据添加到文件中，文件中会记录实体模型对应的表名称
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="filePath"></param>
+        public static void AppendFile<TEntity>(TEntity entity, string filePath) where TEntity : class, new()
+        {
+            try
+            {
+                Type tity = entity.GetType();
+                PropertyInfo[] Pis = tity.GetProperties();
+                if (Pis.Length > 0)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    string tableName = GetTableNameFrom<TEntity>(entity);
+                    if (!File.Exists(filePath))
+                        sb.AppendLine(string.Format("leeTableName:{0}", tableName));
+                    foreach (PropertyInfo pi in Pis)
+                    {
+                        if (pi.Name.ToUpper() == "ENTITYSTATE" || pi.Name.ToUpper() == "ENTITYKEY" || pi.Name.ToUpper() == "ID_KEY")
+                        { }
+                        else
+                        {
+                            object piProxyValue = pi.GetValue(entity, null);
+                            sb.AppendFormat("{0}*{1},", pi.Name, piProxyValue);
+                        }
+                    }
+                    filePath.AppendFile(sb.ToString().TrimEnd(','));
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorMessageTracer.LogErrorMsgToFile("AppendFile<TEntity>", ex);
+            }
+        }
+    }
+
     [System.AttributeUsage(AttributeTargets.Class)]
     public class LTableNameAttribute : Attribute
     {
@@ -807,5 +921,34 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// 字段类型
         /// </summary>
         public string ColumnType { get; set; }
+    }
+
+    public static class FileOpExtension
+    {
+        /// <summary>
+        /// 对已经存在的文件进行内容附加
+        /// </summary>
+        /// <param name="filePath">文件路径</param>
+        /// <param name="fileContent">要附加的文件内容</param>
+        /// <param name="encoding">写入文件时采用的编码格式</param>
+        public static void AppendFile(this string filePath, string fileContent, Encoding encoding)
+        {
+            string DirectoryPath = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(DirectoryPath)) Directory.CreateDirectory(DirectoryPath);
+            using (StreamWriter sw = new StreamWriter(filePath, true, encoding))
+            {
+                sw.WriteLine(fileContent);
+                sw.Flush();
+            }
+        }
+        /// <summary>
+        /// 向文件中写入文本内容
+        /// </summary>
+        /// <param name="filePath">文件路径</param>
+        /// <param name="fileContent">文件内容</param>
+        public static void AppendFile(this string filePath, string fileContent)
+        {
+            filePath.AppendFile(fileContent, Encoding.Default);
+        }
     }
 }

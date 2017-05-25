@@ -129,6 +129,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         }
         #endregion
 
+        #region find
         /// <summary>
         /// 得业务录入 数据
         /// </summary>
@@ -151,6 +152,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                    HandleStatus = RmaHandleStatus.BusinessStatus
                }).ToOpResult_Eidt(OpContext);
         }
+        #endregion
     }
 
     internal class RmaInspectionManageCrud : CrudBase<RmaInspectionManageModel, IRmaInspectionManageRepository>
