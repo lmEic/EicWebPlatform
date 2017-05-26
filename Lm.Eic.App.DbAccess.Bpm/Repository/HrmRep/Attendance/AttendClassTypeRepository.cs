@@ -5,6 +5,8 @@ using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
+using System.Linq;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
 {
@@ -150,5 +152,78 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
             sb.AppendFormat("Update Attendance_SlodFingerDataCurrentMonth set ClassType='{0}' where AttendanceDate='{1}'", classType, slodCardDate);
             return DbHelper.Hrm.ExecuteNonQuery(sb.ToString());
         }
+    }
+
+    public class AttendanceDbHelpHandler
+    {
+        private static int InsertDataTo(AttendFingerPrintDataInTimeModel entity)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("INSERT INTO Attendance_FingerPrintDataInTimeBackup (WorkerId,WorkerName,CardID,CardType,SlodCardTime,SlodCardDate)");
+            sb.AppendFormat(" values ('{0}',", entity.WorkerId);
+            sb.AppendFormat("'{0}',", entity.WorkerName);
+            sb.AppendFormat("'{0}',", entity.CardID);
+            sb.AppendFormat("'{0}',", entity.CardType);
+            sb.AppendFormat("'{0}',", entity.SlodCardTime);
+            sb.AppendFormat("'{0}')", entity.SlodCardDate);
+            return DbHelper.Hrm.ExecuteNonQuery(sb.ToString());
+        }
+        public static int BackupData(List<AttendFingerPrintDataInTimeModel> entities)
+        {
+            int record = 0;
+            entities.ForEach(entity =>
+            {
+                record += InsertDataTo(entity);
+            });
+            return record;
+        }
+
+        public static List<ArWorkerInfo> GetWorkerInfos()
+        {
+            string sql = "Select IdentityID, WorkerId,Name,CardID,Post, PostNature,Organizetion, Department,ClassType,PersonalPicture from Archives_EmployeeIdentityInfo ";
+            return DbHelper.Hrm.LoadEntities<ArWorkerInfo>(sql);
+        }
+
+        /// <summary>
+        /// 载入部门信息
+        /// </summary>
+        /// <returns></returns>
+        public static List<DepartmentModel> GetDepartmentDatas()
+        {
+            StringBuilder sbSql = new StringBuilder();
+            sbSql.Append("SELECT DataNodeName, DataNodeText FROM  Config_DataDictionary where TreeModuleKey='Organization' And AboutCategory='HrDepartmentSet'");
+            return DbHelper.LmProductMaster.LoadEntities<DepartmentModel>(sbSql.ToString());
+        }
+
+        public static ClassTypeModel GetClassType(string workerId, DateTime attendanceDate)
+        {
+            StringBuilder sbSql = new StringBuilder();
+            sbSql.Append("SELECT WorkerId,ClassType FROM Attendance_ClassTypeDetail ");
+            sbSql.AppendFormat(" where WorkerId='{0}' And DateAt='{1}'", workerId, attendanceDate);
+            var datas = DbHelper.Hrm.LoadEntities<ClassTypeModel>(sbSql.ToString());
+            if (datas != null && datas.Count > 0) return datas.FirstOrDefault();
+            return null;
+        }
+    }
+    public class DepartmentModel
+    {
+        /// <summary>
+        /// 名称
+        /// </summary>
+        public string DataNodeName { get; set; }
+        /// <summary>
+        /// 文本信息
+        /// </summary>
+        public string DataNodeText { get; set; }
+    }
+
+    /// <summary>
+    /// 班别信息模型
+    /// </summary>
+    public class ClassTypeModel
+    {
+        public string WorkerId { get; set; }
+
+        public string ClassType { get; set; }
     }
 }

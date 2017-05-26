@@ -66,17 +66,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         #region  Find
         /// <summary>
-        /// 以R开头 当前 00年份 00月份  后面三位流水号
+        /// 
         /// </summary>
         /// <returns></returns>
-        internal string BuildingNewRmaId()
+        internal int CountNowYaerMonthRmaIdNumber(string nowYaer,string nowMonth)
         {
-            ///以R开头 年份 月份  再加序序号000
-            string nowYaer = DateTime.Now.ToString("yy");
-            string nowMonth = DateTime.Now.ToString("MM");
-            var count = irep.Entities.Count(e => e.RmaYear == nowYaer && e.RmaMonth == nowMonth) + 1;
-            return "R" + nowYaer + nowMonth + count.ToString("000");
-
+            return irep.Entities.Count(e => e.RmaYear == nowYaer && e.RmaMonth == nowMonth);
         }
         internal List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
         {
@@ -130,6 +125,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         }
         #endregion
 
+        #region find
         /// <summary>
         /// 得业务录入 数据
         /// </summary>
@@ -152,6 +148,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                    HandleStatus = RmaHandleStatus.BusinessStatus
                }).ToOpResult_Eidt(OpContext);
         }
+        #endregion
     }
 
     internal class RmaInspectionManageCrud : CrudBase<RmaInspectionManageModel, IRmaInspectionManageRepository>

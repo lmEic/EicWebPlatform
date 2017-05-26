@@ -25,16 +25,24 @@ namespace EicWorkPlatfrom.Controllers
         }
         [HttpGet]
         [NoAuthenCheck]
-        public JsonResult GetCollaborateContactDatas(string department, int searchMode, string contactPerson, string telPhone)
+        public JsonResult GetCollaborateContactDatas(string department, int searchMode, string queryContent)
         {
-            var datas = ToolOnlineMockDatas.CollaborateContactDataSet;
+            department = "品保部";
+            QueryContactDto queryDto = new QueryContactDto()
+            {
+                SearchMode = searchMode,
+                Department = department,
+                QueryContent = queryContent,
+                IsExactQuery = false ,
+            };
+            var datas = ToolOnlineService.ContactManager.GetContactLibDatasBy(queryDto);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         [NoAuthenCheck]
         public JsonResult StoreCollaborateContactDatas(CollaborateContactLibModel model)
         {
-            var opResult = 1;
+            var opResult = ToolOnlineService.ContactManager.StoreData(model);
             return Json(opResult);
         }
         #endregion

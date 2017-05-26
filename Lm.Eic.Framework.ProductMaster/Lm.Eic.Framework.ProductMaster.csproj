@@ -59,6 +59,7 @@
     <Compile Include="Business\Itil\ItilDevelopModuleManager.cs" />
     <Compile Include="Business\Itil\ItilService.cs" />
     <Compile Include="Business\Tools\tlOnline\CollaborateContacManager.cs" />
+    <Compile Include="Business\Tools\tlOnline\CollaborateCrudFactorty.cs" />
     <Compile Include="Business\Tools\tlOnline\ToolOnlineMockDatas.cs" />
     <Compile Include="Business\Tools\tlOnline\ToolOnlineService.cs" />
     <Compile Include="Business\Tools\tlOnline\WorkTaskManageFactory.cs" />

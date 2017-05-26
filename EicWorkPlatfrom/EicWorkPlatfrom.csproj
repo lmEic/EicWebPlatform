@@ -1352,6 +1352,7 @@
     <Content Include="Views\TolOfficeAssistant\CollaborateContactLib.cshtml" />
     <Content Include="Views\ToolsOnLine\Index.cshtml" />
     <Content Include="Views\TolOfficeAssistant\WorkTaskManage.cshtml" />
+    <Content Include="Views\QuaRmaManage\RmaReportQuery.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

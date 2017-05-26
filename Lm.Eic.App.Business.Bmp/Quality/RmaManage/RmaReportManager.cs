@@ -29,8 +29,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public string AutoBuildingRmaId()
         {
-            return RmaCurdFactory.RmaReportInitiate.BuildingNewRmaId();
+            string nowYaer = DateTime.Now.ToString("yy");
+            string nowMonth = DateTime.Now.ToString("MM");
+            var count = RmaCurdFactory.RmaReportInitiate.CountNowYaerMonthRmaIdNumber(nowYaer ,nowMonth) + 1;
+            return "R" + nowYaer + nowMonth + count.ToString("000");
         }
+      
         /// <summary>
         /// 存储初始Rma表单
         /// </summary>
@@ -142,7 +146,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                ex.ExOpResult();
+                return null;
             }
 
         }

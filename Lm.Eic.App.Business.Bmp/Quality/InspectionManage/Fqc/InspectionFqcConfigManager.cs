@@ -51,15 +51,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionFqcItemConfigModel> ImportProductFlowListBy(string documentPatch)
         {
-            
-            StringBuilder errorStr = new StringBuilder();
-            var listEntity = ExcelHelper.ExcelToEntityList<InspectionFqcItemConfigModel>(documentPatch, out errorStr);
-            string errorStoreFilePath = @"C:\ExcelToEntity\ErrorStr.txt";
-            if (errorStr.ToString() != string.Empty)
-            {
-                errorStoreFilePath.CreateFile(errorStr.ToString());
-            }
-            return listEntity;
+            return documentPatch.GetEntitiesFromExcel<InspectionFqcItemConfigModel>();
         }
     }
 }

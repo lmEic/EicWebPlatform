@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.Framework.ProductMaster.Model.Tools
+namespace Lm.Eic.Framework.ProductMaster.Model.ToolCollaborateContactLib
 {
     /// <summary>
     ///合作联系人库模型
@@ -140,15 +140,6 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
             set { _websiteadress = value; }
             get { return _websiteadress; }
         }
-        private int _isdelete;
-        /// <summary>
-        ///是否删除 0表示删除 1表示启用
-        /// </summary>
-        public int IsDelete
-        {
-            set { _isdelete = value; }
-            get { return _isdelete; }
-        }
         private string _opperson;
         /// <summary>
         ///操作人
@@ -196,55 +187,5 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
         }
         #endregion Model
     }
-    public partial class QueryContactDto
-    {
-        string department;
-        /// <summary>
-        /// 部门
-        /// </summary>
-        public string Department
-        {
-            get { return department; }
-            set { if (department != value) { department = value; } }
-        }
-        int _isDelete = 1;
-        /// <summary>
-        /// 联系人是否失效  1：表示有效， 0：表示无效
-        /// </summary>
-        public int IsDelete
-        {
-            get { return _isDelete; }
-            set { if (_isDelete != value) { _isDelete = value; } }
-        }
-        string queryContent = string.Empty;
-        /// <summary>
-        /// 查询内容
-        /// </summary>
-        public string QueryContent
-        {
-            get { return queryContent; }
-            set { if (queryContent != value) { queryContent = value; } }
-        }
-      
-        /// <summary>
-        /// 是否精确查询
-        /// </summary>
-        bool isExactQuery = false ;
-        public bool IsExactQuery
-        {
-            get { return isExactQuery; }
-            set { if (isExactQuery != value) { isExactQuery = value; } }
-        }
-        private int searchMode = 0;
-        /// <summary>
-        /// 搜索模式
-        /// </summary>
-        public int SearchMode
-        {
-            get { return searchMode; }
-            set { if (searchMode != value) { searchMode = value; } }
-        }
 
-
-    }
 }

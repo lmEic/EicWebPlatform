@@ -33,8 +33,8 @@ var leeDataHandler = (function () {
                     addfn();
             }
         },
-        ///处理操作结果
-        handleSuccessResult: function (opstatus, opresult, customFn) {
+        ///处理操作结果,opstatus:操作器，opresult:操作结果,successFn:成功回调函数
+        handleSuccessResult: function (opstatus, opresult, successFn) {
             opstatus.showValidation = false;
             opstatus.result = opresult.Result;
             opstatus.message = opresult.Message;
@@ -45,8 +45,16 @@ var leeDataHandler = (function () {
                     opstatus.msgDisplay = false;
                 }, 2000);
             })();
-            if (customFn !== undefined)
-                customFn();
+            if (opresult.result === true) {
+                if (successFn !== undefined && _.isFunction(successFn))
+                    successFn();
+            }
+            else {
+                if (opresult.ExceptionId !== null && opresult.ExceptionId.length > 1) {
+                    var loadUrl = "/Account/GetExceptionFile?exceptionId=" + opresult.ExceptionId;
+                    return loadUrl;
+                }
+            }
         },
         ///显示错误信息
         displayMessage: function (opstatus, message, customFn) {

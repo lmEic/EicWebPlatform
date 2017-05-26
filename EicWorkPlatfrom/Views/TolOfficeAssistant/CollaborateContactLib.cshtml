@@ -65,15 +65,33 @@
                             <td>
                                 <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
                                     修改
+                                </button>|
+                                <button class="btn btn-xs btn-primary" ng-click="operate.deleteItem(item)" title="修改">
+                                    删除
                                 </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            @* 分页显示 *@
+            <div ng-if="vmManager.dataSource.length>0"
+                 yl-pagination
+                 data-dataset="vmManager.editDatas"
+                 data-datasource="vmManager.dataSource">
+            </div>
         </div>
+     
+        <deleteDialog ng-if="deleteDialog.open" modal data-close="deleteDialog.close()" style="width:65%">
+            <content deleteDialog-title>
+                <i class="fa fa-pencil-square">删除数据</i>
+            </content>
+            <content deleteDialog-content style="width:100%;">
 
-        <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
+            </content>
+        </deleteDialog>
+      
+          <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
             <content dialog-title>
                 <i class="fa fa-pencil-square">数据编辑</i>
             </content>
@@ -186,6 +204,7 @@
                 </form>
             </content>
         </dialog>
+        
     </div>
 
     <div class="panel-footer">

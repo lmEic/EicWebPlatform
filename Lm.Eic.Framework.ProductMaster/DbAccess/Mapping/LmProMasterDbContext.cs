@@ -33,8 +33,6 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
 
             modelBuilder.Configurations.Add(new ItilDevelopModuleManageModelMapping());
             modelBuilder.Configurations.Add(new ItilDevelopModuleManageChangeRecordModelMapping());
-
-
             modelBuilder.Configurations.Add(new CollaborateContactLibModelMapping());
         }
     }

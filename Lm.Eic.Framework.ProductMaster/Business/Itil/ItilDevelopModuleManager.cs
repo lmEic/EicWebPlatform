@@ -66,7 +66,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             OpResult opResult = OpResult.SetErrorResult("未执行任何邮件发送！");
             EmailMessageHelper email = new EmailMessageHelper("softwareadmin@ezconn.cn", "Echo4u", true);
-            email.mailSubject = "开发任务进度变更";
+            email.MailSubject = "开发任务进度变更";
 
             //生成待发送邮件的人员列表
             List<string> waittingSendMailUserList = new List<string>();
@@ -82,8 +82,8 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 if (_userMailAddsDic.ContainsKey(user))
                 {
                     var mailAdds = _userMailAddsDic[user];
-                    email.mailToArray = new string[] { mailAdds };//收件人邮件集合
-                    email.mailBody = BulidMailContext(ItilCrudFactory.ItilDevelopModuleManageCrud.WaittingSendMailList.Where(m => m.Executor == user).ToList());
+                    email.MailToArray = new string[] { mailAdds };//收件人邮件集合
+                    email.MailBody = BulidMailContext(ItilCrudFactory.ItilDevelopModuleManageCrud.WaittingSendMailList.Where(m => m.Executor == user).ToList());
                     opResult = email.Send() ? OpResult.SetSuccessResult("邮件发送成功！", true) : OpResult.SetErrorResult("邮件发送失败！");
                 }
             }
