@@ -45,22 +45,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return SupplierInfoVmDatas.OrderBy(e => e.SupplierId).ToList();
         }
         /// <summary>
-        /// 从截止到给定月份的合格供应商清册列表
-        /// </summary>
-        /// <param name="endYearMonth"></param>
-        /// <returns></returns>
-        public List<SupplierInfoModel> GetQualifiedSupplierDatas(string endYearMonth)
-        {
-            string startYearMonth = (int.Parse(endYearMonth) - 100).ToString();
-            //获取供应商信息
-            return GetSupplierInformationListBy(startYearMonth, endYearMonth);
-        }
-        /// <summary>
         /// 获取供应商信息
         /// <param name="supplierId"></param>
         /// <returns></returns>
         /// </summary>
-        public SupplierInfoModel GetSuppplierInfoBy(string supplierId)
+      public  SupplierInfoModel GetSuppplierInfoBy(string supplierId)
         {
             try
             {
@@ -70,9 +59,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 //没有找到再从ERP中找
                 supplierInfo = GetSuppplierInfoFromErpBy(supplierId);
                 if (supplierInfo != null && supplierInfo.IsCooperate == "True")
-                    //添加至供应商信息表中  上传到数据库中
+                //添加至供应商信息表中  上传到数据库中
+                {
                     SupplierCrudFactory.SuppliersInfoCrud.Init(supplierInfo);
-                return supplierInfo;
+                    return supplierInfo;
+                }
+                else return null;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
@@ -193,6 +185,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
+                datas = AddQualifiedCertificateDate(datas);
                 if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
                 var dataGroupping = datas.GetGroupList<SuppliersSumInfoVM>("");
                 return dataGroupping.ExportToExcelMultiSheets<SuppliersSumInfoVM>(CreateFieldMapping()).CreateDownLoadExcelFileModel("供应商证书信息数据");
@@ -203,8 +196,36 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             }
         }
 
-
-
+        /// <summary>
+        /// 加载证书日期
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
+        private List<SuppliersSumInfoVM> AddQualifiedCertificateDate(List<SuppliersSumInfoVM> datas)
+        {
+            List<SuppliersSumInfoVM> retrundatas = new List<SuppliersSumInfoVM>();
+            if (datas == null || datas.Count == 0)
+            return null;
+            datas.ForEach(e =>
+            {
+                var dd = CertificateDictionary(e.SupplierId);
+                e.HonestCommitment = dd[certificateName.HonestCommitment];
+                e.QualityAssuranceProtocol =dd[certificateName.QualityAssuranceProtocol];
+                e.SupplierBaseDocument=dd[certificateName.SupplierBaseDocument];
+                e.SupplierComment= dd[certificateName.SupplierComment];
+                e.NotUseChildLabor =dd[certificateName.NotUseChildLabor];
+                e.PCN_Protocol =dd[certificateName.PCN_Protocol];
+                e.HonestCommitment=dd[certificateName.HonestCommitment];
+                e.QualityAssuranceProtocol =dd[certificateName.QualityAssuranceProtocol];
+                e.HSF_Guarantee=dd[certificateName.HSF_Guarantee];
+                e.REACH_Guarantee =dd[certificateName.REACH_Guarantee];
+                e.SVHC_Guarantee =dd[certificateName.SVHC_Guarantee];
+                e.ISO14001=dd[certificateName.ISO14001];
+                e.ISO9001 =dd[certificateName.ISO9001];
+                retrundatas.Add(e);
+            });
+            return retrundatas;
+        }
 
         #region   Private Method
 
@@ -311,7 +332,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             certificateDictionary.Add(certificateName.SVHC_Guarantee, string.Empty);
             certificateDictionary.Add(certificateName.ISO14001, string.Empty);
             certificateDictionary.Add(certificateName.ISO9001, string.Empty);
-
             var suppliersQualifiedCertificate = GetSupplierQualifiedCertificateListBy(supplierId);
             if (suppliersQualifiedCertificate != null || suppliersQualifiedCertificate.Count > 0)
             {
