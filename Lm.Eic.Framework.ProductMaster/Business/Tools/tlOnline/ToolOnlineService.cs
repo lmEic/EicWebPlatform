@@ -11,13 +11,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
     /// </summary>
     public class ToolOnlineService
     {
-        /// <summary>
-        /// 工作任务管理器
-        /// </summary>
-       public static WorkTaskManager WorkTaskManage
-        {
-            get { return OBulider.BuildInstance<WorkTaskManager>(); }
-        }
+       
 
 
     }
