@@ -11,9 +11,6 @@ using System.Text;
 
 namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
 {
-
-   
-
     public class CollaborateContactManager
     {
         /// <summary>
@@ -26,13 +23,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
             return CollaborateCrudFactorty.ContatCrud.Store(model);
         }
 
-       /// <summary>
+        /// <summary>
         /// 部门得到所有的信息
         /// 从数据直接查询
         /// </summary>
         ///// <param name="queryDto"></param>
         ///// <returns></returns>
-        public List<CollaborateContactLibModel> GetContactLibDatasBy(QueryContactDto queryDto )
+        public List<CollaborateContactLibModel> GetContactLibDatasBy(QueryContactDto queryDto)
         {
             try
             {
@@ -41,7 +38,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
             }
             catch (Exception ex)
             {
-               return ex.ExDataList<CollaborateContactLibModel>();
+                return ex.ExDataList<CollaborateContactLibModel>();
             }
         }
     }
