@@ -8,13 +8,6 @@
                 <button class="btn btn-xs btn-success" ng-click="operate.createNew()" type="button">新增</button>
             </div>
             <div class="col-md-8">
-                @*<form class="form-inline pull-right">
-                        <div class="form-group">
-                            <label>RMA单号</label>
-                            <input type="text" placeholder="按RMA单号查询" ng-model="vm.RmaId" ng-keypress="($event.which === 13)?vmManager.getRmaFormDatas():0" />
-                            <button class="btn btn-xs btn-primary" ng-click="vmManager.getRmaFormDatas()" type="button">查询</button>
-                        </div>
-                    </form>*@
             </div>
         </div>
         <div class="h-split"></div>
@@ -79,25 +72,26 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            @* 分页显示 *@
-            <div ng-if="vmManager.dataSource.length>0"
-                 yl-pagination
-                 data-dataset="vmManager.editDatas"
-                 data-datasource="vmManager.dataSource">
+
+                @* 分页显示 *@
+                <div ng-if="vmManager.dataSource.length>0"
+                     yl-pagination
+                     data-dataset="vmManager.editDatas"
+                     data-datasource="vmManager.dataSource">
+                </div>
             </div>
         </div>
-     
-        <deleteDialog ng-if="deleteDialog.open" modal data-close="deleteDialog.close()" style="width:65%">
-            <content deleteDialog-title>
+
+        <dialog ng-if="deleteDialog.open" modal data-close="deleteDialog.close()" style="width:55%">
+            <content dialog-title>
                 <i class="fa fa-pencil-square">删除数据</i>
             </content>
-            <content deleteDialog-content style="width:100%;">
+            <content dialog-content style="width:90%;">
 
             </content>
-        </deleteDialog>
-      
-          <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
+        </dialog>
+
+        <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
             <content dialog-title>
                 <i class="fa fa-pencil-square">数据编辑</i>
             </content>
@@ -210,7 +204,7 @@
                 </form>
             </content>
         </dialog>
-        
+
     </div>
     <div class="panel-footer">
 
