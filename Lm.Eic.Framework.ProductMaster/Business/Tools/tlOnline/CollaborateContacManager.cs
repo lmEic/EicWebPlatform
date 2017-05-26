@@ -20,7 +20,15 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         /// <returns></returns>
         public OpResult StoreData(CollaborateContactLibModel model)
         {
-            return CollaborateCrudFactorty.ContatCrud.Store(model);
+            try
+            {
+                return CollaborateCrudFactorty.ContatCrud.Store(model);
+            }
+            catch (System.Exception ex)
+            {
+                return ex.ExOpResult();
+            }
+
         }
         /// <summary>
         /// 部门得到所有的信息
