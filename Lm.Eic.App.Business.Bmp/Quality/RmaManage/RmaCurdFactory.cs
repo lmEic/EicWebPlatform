@@ -30,8 +30,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
     }
     internal class RmaReportInitiateCrud : CrudBase<RmaReportInitiateModel, IRmaReportInitiateRepository>
     {
-        public RmaReportInitiateCrud() : base(new RmaReportInitiateRepository(), "创建表单")
+        internal RmaReportInitiateCrud() : base(new RmaReportInitiateRepository(), "创建表单")
         { }
+
         #region  CRUD
         protected override void AddCrudOpItems()
         {

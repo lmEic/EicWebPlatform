@@ -19,5 +19,19 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
                 return mockDataSet;
             }
         }
+        public static List<WorkTaskManageModel> WorkTaskManageDataSet
+        {
+            get
+            {
+                List<WorkTaskManageModel> mockDataSet = new List<WorkTaskManageModel>();
+                mockDataSet.Add(new WorkTaskManageModel() {Department="EIC", SystemName = "质量管理", ModuleName = "抽样管理", WorkItem = "IQC检验管理模块", WorkDescription = "IQC检验项目配置", DifficultyCoefficient = 3, WorkPriority = 5, ProgressStatus = "己完成", ProgressDescription = "按时完成", OrderPerson = "张三", CheckPerson = "李四", OpPerson = "XXX", OpSign = "add",StartDate="2017-05-26",EndDate="2017-05-27"});
+                mockDataSet.Add(new WorkTaskManageModel() {Department="EIC", SystemName = "质量管理", ModuleName = "抽样管理", WorkItem = "FQC检验管理模块", WorkDescription = "IQC检验项目配置", DifficultyCoefficient = 3, WorkPriority = 5, ProgressStatus = "己完成", ProgressDescription = "按时完成", OrderPerson = "张三", CheckPerson = "李四", OpPerson = "XXX", OpSign = "add" ,StartDate = "2017-05-26", EndDate = "2017-05-27" });
+                mockDataSet.Add(new WorkTaskManageModel() {Department="EIC", SystemName = "质量管理", ModuleName = "抽样管理", WorkItem = "IQC检验管理模块", WorkDescription = "IQC检验项目配置", DifficultyCoefficient = 3, WorkPriority = 5, ProgressStatus = "己完成", ProgressDescription = "按时完成", OrderPerson = "张三", CheckPerson = "李四", OpPerson = "XXX", OpSign = "add", StartDate = "2017-05-26", EndDate = "2017-05-27" });
+                return mockDataSet;
+
+            }
+        }
+
+        
     }
 }

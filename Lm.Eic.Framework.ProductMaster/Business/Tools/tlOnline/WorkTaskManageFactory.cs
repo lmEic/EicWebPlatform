@@ -7,18 +7,14 @@ using Lm.Eic.Uti.Common.YleeObjectBuilder;
 namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
 {
     /// <summary>
-    /// 在线助手服务门面
+    /// 工作任务管理工厂
     /// </summary>
-    public class ToolOnlineService
+   public static class WorkTaskManageFactory
     {
-        /// <summary>
-        /// 工作任务管理器
-        /// </summary>
-       public static WorkTaskManager WorkTaskManage
+       internal static WorkTaskManageCrud WorkTaskManageCrud
         {
-            get { return OBulider.BuildInstance<WorkTaskManager>(); }
+            get { return OBulider.BuildInstance<WorkTaskManageCrud>(); }
         }
-
 
     }
 }

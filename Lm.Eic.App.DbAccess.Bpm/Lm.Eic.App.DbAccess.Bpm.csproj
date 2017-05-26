@@ -78,6 +78,7 @@
     <Compile Include="Repository\QmsRep\QmsRmaReository.cs" />
     <Compile Include="Repository\QmsRep\QmsInspectionReposity.cs" />
     <Compile Include="Repository\QuantityRep\SampleReposity.cs" />
+    <Compile Include="Repository\ToolsOnLine\WorkTaskManageRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -86,6 +87,10 @@
     <ProjectReference Include="..\Lm.Eic.App.DomainModel.Bpm\Lm.Eic.App.DomainModel.Bpm.csproj">
       <Project>{b4b07c08-aff7-4be3-b8ae-5a6e85da2018}</Project>
       <Name>Lm.Eic.App.DomainModel.Bpm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lm.Eic.Framework.ProductMaster\Lm.Eic.Framework.ProductMaster.csproj">
+      <Project>{7B130827-0935-470D-8BE5-BC6953466DAE}</Project>
+      <Name>Lm.Eic.Framework.ProductMaster</Name>
     </ProjectReference>
     <ProjectReference Include="..\Lm.Eic.Uti.Common.YleeDbHandler\Lm.Eic.Uti.Common.YleeDbHandler\Lm.Eic.Uti.Common.YleeDbHandler.csproj">
       <Project>{8301c71a-afde-4853-8c05-39ff96b207c6}</Project>

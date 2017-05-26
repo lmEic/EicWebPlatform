@@ -44,6 +44,22 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        [HttpGet]
+        [NoAuthenCheck]
+        public JsonResult GetWorkTaskManageDatas(string department, int searchMode, string systemName, string moduleName)
+        {
+            var datas = ToolOnlineMockDatas.WorkTaskManageDataSet;
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StoreWorkTaskManageDatas(WorkTaskManageModel model)
+        {
+            var opResult =1;
+            return Json(opResult);
+        }
+
+
         #endregion
     }
 }
