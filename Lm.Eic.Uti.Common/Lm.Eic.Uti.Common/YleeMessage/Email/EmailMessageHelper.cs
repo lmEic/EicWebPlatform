@@ -6,109 +6,107 @@ using System.Text;
 
 namespace Lm.Eic.Uti.Common.YleeMessage.Email
 {
-    public class EmailMessageHelper
+    /// <summary>
+    /// 
+    /// </summary>
+  public class EmailMessageHelper
     {
         /// <summary>
-        /// 创建一个邮件消息
+        /// 发送邮件
         /// </summary>
-        /// <param name="mailFrom">发件人邮件地址</param>
-        /// <param name="mailPwd">发件人邮件密码</param>
-        /// <param name="isbodyHtml">正文是否为HTML</param>
-        public EmailMessageHelper(string mailFrom,string mailPwd,bool isbodyHtml)
+        /// <param name="mailFrom">发送人地址</param>
+        /// <param name="mailPwd">发送人登录密码</param>
+        /// <param name="isbodyHtml">发送人正文格式</param>
+        /// <param name="severHost">发送人服务器</param>
+        public EmailMessageHelper(string mailFrom, string mailPwd, bool isbodyHtml,string severHost=null )
         {
-            host = "smtp.exmail.qq.com";
-            mailPriority = MailPriority.Normal; //普通优先级
-            this.mailFrom = mailFrom;
-            this.mailPwd = mailPwd;
-            this.isbodyHtml = isbodyHtml;
+            if (severHost != null)
+            { Host = severHost; }
+            //默认为普通优先级
+            MailPriority = MailPriority.Normal; 
+            this.MailFrom = mailFrom;
+            this.MailPwd = mailPwd;
+            this.IsbodyHtml = isbodyHtml;
         }
-
         /// <summary>
         /// 发送者
         /// </summary>
-        public string mailFrom { get; set; }
-
+        public string MailFrom { get; set; }
         /// <summary>
         /// 收件人
         /// </summary>
-        public string[] mailToArray { get; set; }
-
+        public string[] MailToArray { get; set; }
         /// <summary>
         /// 抄送
         /// </summary>
-        public string[] mailCcArray { get; set; }
-
+        public string[] MailCcArray { get; set; }
         /// <summary>
         /// 标题
         /// </summary>
-        public string mailSubject { get; set; }
-
+        public string MailSubject { get; set; }
         /// <summary>
         /// 正文
         /// </summary>
-        public string mailBody { get; set; }
-
+        public string MailBody { get; set; }
         /// <summary>
         /// 发件人密码
         /// </summary>
-        public string mailPwd { get; set; }
-
+        public string MailPwd { get; set; }
         /// <summary>
         /// SMTP邮件服务器
         /// </summary>
-        public string host { get; set; }
-
+        public string _host = "smtp.exmail.qq.com";
+        public string  Host
+        {
+            set { _host = value; }
+            get { return _host; }
+        }
         /// <summary>
         /// 正文是否是html格式
         /// </summary>
-        public bool isbodyHtml { get; set; }
-
+        public bool IsbodyHtml { get; set; }
         /// <summary>
         /// 指定邮件的优先级
         /// </summary>
-        public MailPriority mailPriority { get; set; }
-
+        public MailPriority MailPriority { get; set; }
         /// <summary>
         /// 附件
         /// </summary>
-        public string[] attachmentsPath { get; set; }
-
+        public string[] AttachmentsPath { get; set; }
         public bool Send()
         {
             //使用指定的邮件地址初始化MailAddress实例
-            MailAddress maddr = new MailAddress(mailFrom);
+            MailAddress maddr = new MailAddress(MailFrom);
             //初始化MailMessage实例
             MailMessage myMail = new MailMessage();
-
-
             //向收件人地址集合添加邮件地址
-            if (mailToArray != null)
+            if (MailToArray != null)
             {
-                for (int i = 0; i < mailToArray.Length; i++)
+                for (int i = 0; i < MailToArray.Length; i++)
                 {
-                    myMail.To.Add(mailToArray[i].ToString());
+                    myMail.To.Add(MailToArray[i].ToString());
                 }
             }
 
             //向抄送收件人地址集合添加邮件地址
-            if (mailCcArray != null)
+            if (MailCcArray != null)
             {
-                for (int i = 0; i < mailCcArray.Length; i++)
+                for (int i = 0; i < MailCcArray.Length; i++)
                 {
-                    myMail.CC.Add(mailCcArray[i].ToString());
+                    myMail.CC.Add(MailCcArray[i].ToString());
                 }
             }
             //发件人地址
             myMail.From = maddr;
 
             //电子邮件的标题
-            myMail.Subject = mailSubject;
+            myMail.Subject = MailSubject;
 
             //电子邮件的主题内容使用的编码
             myMail.SubjectEncoding = Encoding.UTF8;
 
             //电子邮件正文
-            myMail.Body = mailBody;
+            myMail.Body = MailBody;
 
             myMail.Priority = MailPriority.Normal;
 
@@ -116,17 +114,18 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Email
             myMail.BodyEncoding = Encoding.Default;
 
             //电子邮件优先级
-            myMail.Priority = mailPriority;
-
-            myMail.IsBodyHtml = isbodyHtml;
+            myMail.Priority = MailPriority;
+            //以Html格式发送 
+            myMail.IsBodyHtml = IsbodyHtml;
+          
 
             //在有附件的情况下添加附件
             try
             {
-                if (attachmentsPath != null && attachmentsPath.Length > 0)
+                if (AttachmentsPath != null && AttachmentsPath.Length > 0)
                 {
                     Attachment attachFile = null;
-                    foreach (string path in attachmentsPath)
+                    foreach (string path in AttachmentsPath)
                     {
                         attachFile = new Attachment(path);
                         myMail.Attachments.Add(attachFile);
@@ -140,12 +139,9 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Email
 
             SmtpClient smtp = new SmtpClient();
             //指定发件人的邮件地址和密码以验证发件人身份
-            smtp.Credentials = new System.Net.NetworkCredential(mailFrom, mailPwd);
-
-
+            smtp.Credentials = new System.Net.NetworkCredential(MailFrom, MailPwd);
             //设置SMTP邮件服务器
-            smtp.Host = host;
-
+            smtp.Host = Host;
             try
             {
                 //将邮件发送到SMTP邮件服务器
@@ -153,7 +149,7 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Email
                 return true;
 
             }
-            catch (System.Net.Mail.SmtpException ex)
+            catch (SmtpException ex)
             {
                 throw new Exception(ex.Message);
             }

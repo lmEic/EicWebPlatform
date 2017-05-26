@@ -140,6 +140,15 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
             set { _websiteadress = value; }
             get { return _websiteadress; }
         }
+        private int _isdelete;
+        /// <summary>
+        ///是否删除 0表示删除 1表示启用
+        /// </summary>
+        public int IsDelete
+        {
+            set { _isdelete = value; }
+            get { return _isdelete; }
+        }
         private string _opperson;
         /// <summary>
         ///操作人
@@ -198,15 +207,25 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
             get { return department; }
             set { if (department != value) { department = value; } }
         }
+        int _isDelete = 1;
+        /// <summary>
+        /// 联系人是否失效  1：表示有效， 0：表示无效
+        /// </summary>
+        public int IsDelete
+        {
+            get { return _isDelete; }
+            set { if (_isDelete != value) { _isDelete = value; } }
+        }
         string queryContent = string.Empty;
         /// <summary>
-        /// 联系人姓名
+        /// 查询内容
         /// </summary>
         public string QueryContent
         {
             get { return queryContent; }
             set { if (queryContent != value) { queryContent = value; } }
         }
+      
         /// <summary>
         /// 是否精确查询
         /// </summary>
