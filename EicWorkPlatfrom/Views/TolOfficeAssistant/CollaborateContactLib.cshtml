@@ -88,7 +88,7 @@
             </div>
         </div>
      
-        <deleteDialog ng-if="deleteDialog.open"  style="width:65%">
+        <deleteDialog ng-if="deleteDialog.open" modal data-close="deleteDialog.close()" style="width:65%">
             <content deleteDialog-title>
                 <i class="fa fa-pencil-square">删除数据</i>
             </content>
