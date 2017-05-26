@@ -22,7 +22,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         {
             return CollaborateCrudFactorty.ContatCrud.Store(model);
         }
-
         /// <summary>
         /// 部门得到所有的信息
         /// 从数据直接查询
