@@ -539,7 +539,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         {
             List<FileFieldMapping> fieldmappping = CreateFieldMapping();
             if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
-            var dataTableGrouping = datas.GetGroupList<ArchivesEmployeeIdentityModel>("");
+            var dataTableGrouping = datas.GetGroupList<ArchivesEmployeeIdentityModel>();
             return dataTableGrouping.ExportToExcelMultiSheets<ArchivesEmployeeIdentityModel>(fieldmappping).CreateDownLoadExcelFileModel("员工档案总表");
         }
         private List<FileFieldMapping> CreateFieldMapping()

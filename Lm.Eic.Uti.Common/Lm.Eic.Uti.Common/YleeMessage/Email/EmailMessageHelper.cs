@@ -7,7 +7,7 @@ using System.Text;
 namespace Lm.Eic.Uti.Common.YleeMessage.Email
 {
     /// <summary>
-    /// 
+    /// Email发送
     /// </summary>
   public class EmailMessageHelper
     {
