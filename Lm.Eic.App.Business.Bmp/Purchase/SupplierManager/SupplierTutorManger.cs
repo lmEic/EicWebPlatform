@@ -4,6 +4,7 @@ using System.Linq;
 using Lm.Eic.App.DomainModel.Bpm.Purchase;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 {
@@ -56,6 +57,41 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             else model.OpSign = OpMode.Add;
             return SupplierCrudFactory.SuppliersSeasonTutorCrud.Store(model);
         }
+
+        public DownLoadFileModel DownLoadTourSupplier(List<SupplierSeasonTutorModel> datas)
+        {
+            if (datas == null || datas.Count == 0) new DownLoadFileModel().Default(); 
+            var dataGroupping = datas.GetGroupList<SupplierSeasonTutorModel>();
+           return  dataGroupping.ExportToExcelMultiSheets<SupplierSeasonTutorModel>(CreateFieldSeasonTutorMapping()).CreateDownLoadExcelFileModel("供应商辅导管理");
+        }
+        private List<FileFieldMapping> CreateFieldSeasonTutorMapping()
+        {
+            List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+                new FileFieldMapping ("Number","项次") ,
+                new FileFieldMapping ("SupplierId","供应商Id") , 
+                new FileFieldMapping ("SupplierShortName","供应商简称") ,    
+                new FileFieldMapping ("SupplierName","供应商全称") ,   
+                new FileFieldMapping ("QualityCheck","质量考核") ,   
+                new FileFieldMapping ("AuditPrice","价格考核") ,   
+                new FileFieldMapping ("DeliveryDate","交期考核") ,    
+                new FileFieldMapping ("ActionLiven","配合度考核") , 
+                new FileFieldMapping ("HSFGrade","HSF能力考核") ,   
+                new FileFieldMapping ("TotalCheckScore","考核总分") ,      
+                new FileFieldMapping ("CheckLevel","考核等级") ,   
+                new FileFieldMapping ("RewardsWay ","处理方式") , 
+                new FileFieldMapping ("MaterialGrade","等级风险") ,    
+                new FileFieldMapping ("ManagerRisk","处理方式") ,  
+                new FileFieldMapping ("SeasonNum","季度") , 
+                new FileFieldMapping ("PlanTutorDate","计划辅导日期") ,      
+                new FileFieldMapping ("PlanTutorContent","计划辅导内容" ) , 
+                new FileFieldMapping ("ActionTutorDate","实际辅导日期") ,   
+                new FileFieldMapping ("ActionTutorContent","实际辅导内容" ) , 
+                new FileFieldMapping ("TutorResult","辅导结果" ) ,  
+                new FileFieldMapping ("TutorCategory","辅导类别" ) ,
+                new FileFieldMapping ("Remark","备注" )
+            };
+            return fieldmappping;
+        }
         #region  Internet
         /// <summary>
         /// 
@@ -100,10 +136,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                     ParameterKey = m.ParameterKey
                 };
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
 
-                throw;
+                throw new System.Exception(ex.Message);
             }
 
         }

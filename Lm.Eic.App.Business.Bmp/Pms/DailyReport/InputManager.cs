@@ -127,7 +127,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
             var datas = DailyReportInputCrudFactory.DailyReportTempCrud.GetDailyReportListBy(department, dailyReportDate);
             if (datas == null && datas.Count <= 0) return new DownLoadFileModel().Default();
-            var dataGroupping = datas.GetGroupList<DailyReportTempModel>("");
+            var dataGroupping = datas.GetGroupList<DailyReportTempModel>();
             return dataGroupping.ExportToExcelMultiSheets<DailyReportTempModel>(fieldmappping).CreateDownLoadExcelFileModel(department + "日报数据(" + dailyReportDate.ToShortDateString() + ")");
         }
         /// <summary>

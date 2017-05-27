@@ -105,7 +105,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             try
             {
                 if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
-                var dataGroupping = datas.GetGroupList<SupplierSeasonAuditModel>("");
+                var dataGroupping = datas.GetGroupList<SupplierSeasonAuditModel>();
                 return dataGroupping.ExportToExcelMultiSheets<SupplierSeasonAuditModel>(CreateFieldMapping()).CreateDownLoadExcelFileModel("供应商考核清单");
             }
             catch (Exception ex)
