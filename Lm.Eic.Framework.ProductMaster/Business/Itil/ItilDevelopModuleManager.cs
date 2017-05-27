@@ -11,8 +11,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 
         public ItilDevelopModuleManager()
         {
-            _userMailAddsDic.Add("杨垒", "ylei@ezconn.cn");
-            _userMailAddsDic.Add("张文明", "zwm@ezconn.cn");
             _userMailAddsDic.Add("万晓桥", "wxq520@ezconn.cn");
         }
 

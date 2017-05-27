@@ -3,6 +3,9 @@ using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using System;
 using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using System.Globalization;
+using Lm.Eic.App.Business.Bmp.Hrm.MailSender;
+using Lm.Eic.App.DomainModel.Bpm.MailSendersModel;
+using System.Collections.Generic;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
 {
@@ -68,6 +71,27 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
             }
         }
 
+        public void Test()
+        {
+            SendersMailModel sender = new SendersMailModel()
+            {
+                SenderMailAddess = "wxq520@ezconn.cn",
+                SenderMailPwd = "wxQ52866414",
+                SenderSeverHost = "smtp.exmail.qq.com"
+            };
+            List<string> MailsAddress = new List<string>();
+            MailsAddress.Add("wxq520@ezconn.cn");
+            MailsAddress.Add("wanxiaoqiao888@163.com");
+            RecipientsMailModel RecipientsMail = new RecipientsMailModel()
+            {
+                IsBodyHtml = true,
+                RecipientMailAddress = MailsAddress
+            };
+            MailSend.EmailSend.sendMailModel = sender;
+            MailSend.EmailSend.recipient = RecipientsMail;
+            var opreulst = MailSend.EmailSend.sendMail();
+
+        }
     }
        
  }
