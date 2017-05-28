@@ -49,7 +49,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.MailSender
         {
             set; get;
         }
-
         /// <summary>
         /// 发送邮件
         /// </summary>
