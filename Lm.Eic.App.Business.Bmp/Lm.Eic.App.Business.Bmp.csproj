@@ -70,7 +70,6 @@
     <Compile Include="Hrm\Archives\ArCalendarManger.cs" />
     <Compile Include="Hrm\Archives\ArLeaveOfficeManager.cs" />
     <Compile Include="Hrm\Archives\ArWorkerIdChangeManager.cs" />
-    <Compile Include="Hrm\MailSender\SevserMail.cs" />
     <Compile Include="Pms\BoardManagment\BoardBase.cs" />
     <Compile Include="Pms\BoardManagment\BoardService.cs" />
     <Compile Include="Pms\BoardManagment\BoardCrud.cs" />
@@ -142,7 +141,9 @@
     <Compile Include="Quality\RmaManage\RmaCurdFactory.cs" />
     <Compile Include="Quality\RmaManage\RmaService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Hrm\MailSender\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.App.Business.Mes\Lm.Eic.App.Business.Mes.csproj">
       <Project>{25616437-5761-4fe5-8dcc-d76b4641b6a7}</Project>
