@@ -92,7 +92,6 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
             if (!result)
                 this.message = falseMessage;
         }
-
         public OpResult(string successMessage, string falseMessage, int record, decimal idKey)
         {
             this.result = record > 0;
@@ -179,6 +178,10 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         public static OpResult SetResult(string successMessage, string falseMessage, bool result)
         {
             return new OpResult(successMessage, falseMessage, result);
+        }
+        public static OpResult SetResult(string message, bool result)
+        {
+            return new OpResult(message, result);
         }
     }
 

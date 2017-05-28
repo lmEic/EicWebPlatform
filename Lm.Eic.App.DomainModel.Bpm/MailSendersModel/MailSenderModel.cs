@@ -19,6 +19,13 @@ namespace Lm.Eic.App.DomainModel.Bpm.MailSendersModel
             set; get;
         }
         /// <summary>
+        /// 发件人名称
+        /// </summary>
+        public string SenderName
+        {
+            set;get;
+        }
+        /// <summary>
         /// 发件密码
         /// </summary>
         public string SenderMailPwd
@@ -26,11 +33,21 @@ namespace Lm.Eic.App.DomainModel.Bpm.MailSendersModel
             set; get;
         }
         /// <summary>
-        /// 发件人服务器
+        /// Smtp 服务器
         /// </summary>
-        public string SenderSeverHost
+        public string SmtpHost
         {
             set; get;
+        }
+       
+        private int _smtpPort = 25;
+        /// <summary>
+        ///Smtp 服务器端口 默认为25
+        /// </summary>
+        public int SmtpPort
+        {
+            set { _smtpPort = value ; }
+            get { return _smtpPort; }
         }
         public MailPriority _mailPriority = MailPriority.Normal;
         /// <summary>
@@ -38,7 +55,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.MailSendersModel
         /// </summary>
         public MailPriority MailPriority
         {
-            set { _mailPriority=value ; }
+            set { _mailPriority = value; }
             get { return _mailPriority; }
         }
     }
@@ -52,9 +69,13 @@ namespace Lm.Eic.App.DomainModel.Bpm.MailSendersModel
         /// </summary>
         public List<string> RecipientMailAddress { get; set; }
         /// <summary>
-        /// 抄送
+        /// 抄送人  
         /// </summary>
-        public List<string> CopyRecipientMailAddress { get; set; }
+        public List<string> CcRecipientMailAddress { get; set; }
+        /// <summary>
+        /// 密送人 
+        /// </summary>
+        public List<string> BccRecipientMailAddress { set; get; }
         /// <summary>
         /// 标题
         /// </summary>
@@ -77,7 +98,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.MailSendersModel
         /// </summary>
         /// <param name="waittingSendDmm"></param>
         /// <returns></returns>
-        public string SendMailContentToHtml(List<string> waittingSendDmm)
+        public string SendMailContentToHtml(string waittingSendContent)
         {
             string mailContext = "<h2>" + MailTitle + "：</h2>";
             mailContext += "<style type=" + "text/css" + ">table.gridtable {" +
@@ -93,10 +114,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.MailSendersModel
             " border-color: #666666;	background-color: #ffffff;}" +
             " </style><!-- Table goes in the document BODY --><table class=" + "gridtable" + ">" +
             "<tr></tr>";
-            foreach (var tem in waittingSendDmm)
+            if(waittingSendContent.Contains('\n') )
+            {
+                string[] sendContent = waittingSendContent.Split('\n');
+                foreach (var tem in sendContent)
+                {
+                    mailContext += "<tr>";
+                    mailContext += string.Format("<td>{0}</td>", tem);
+                    mailContext += "</tr>";
+                }
+            }
+           else
             {
                 mailContext += "<tr>";
-                mailContext += string.Format("<td>{0}</td>", tem);
+                mailContext += string.Format("<td>{0}</td>", waittingSendContent);
                 mailContext += "</tr>";
             }
             mailContext += "</table>";

@@ -77,15 +77,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
             {
                 SenderMailAddess = "wxq520@ezconn.cn",
                 SenderMailPwd = "wxQ52866414",
-                SenderSeverHost = "smtp.exmail.qq.com"
+                SmtpHost = "smtp.exmail.qq.com"
             };
             List<string> MailsAddress = new List<string>();
             MailsAddress.Add("wxq520@ezconn.cn");
             MailsAddress.Add("wanxiaoqiao888@163.com");
+            MailsAddress.Add("ylei@ezconn.cn");
             RecipientsMailModel RecipientsMail = new RecipientsMailModel()
             {
                 IsBodyHtml = true,
-                RecipientMailAddress = MailsAddress
+                RecipientMailAddress = MailsAddress,
+                MailBody="你好，测试一下！",
+                MailTitle ="测试一下，测试一下",
             };
             MailSend.EmailSend.sendMailModel = sender;
             MailSend.EmailSend.recipient = RecipientsMail;
