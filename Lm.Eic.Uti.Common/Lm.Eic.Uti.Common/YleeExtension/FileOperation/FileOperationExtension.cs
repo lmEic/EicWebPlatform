@@ -601,7 +601,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         {
             string errMsg = string.Empty;
             List<TEntity> datas = ExcelHelper.ExcelToEntityDatas<TEntity>(fileName, out errMsg);
-            MsgLogger.LogMsgToFile("GetEntitiesFromExcel<TEntity>", errMsg);
+            MessageLogger.LogMsgToFile("GetEntitiesFromExcel<TEntity>", errMsg);
             return datas;
         }
 

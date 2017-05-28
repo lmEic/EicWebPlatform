@@ -141,7 +141,7 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
             opResult.LogErrorMsgToFile(ex);
             return opResult;
         }
-       
+
         /// <summary>
         /// 设定操作结果
         /// </summary>
@@ -184,7 +184,6 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
             return new OpResult(message, result);
         }
     }
-
     /// <summary>
     /// 数据操作类型
     /// </summary>
@@ -197,14 +196,10 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         public const string UploadFile = "uploadFile";
         public const string DeleteFile = "deleteFile";
     }
-    public class DataList<T> : List<T>
-    {
-        public string ExceptionId { get; set; }
-    }
     /// <summary>
     /// OpResult的扩展方法集合
     /// </summary>
-    public static class OpResultExtension
+    public static class DataOpResultExtension
     {
         /// <summary>
         /// 扩展方法，返回异常结果
@@ -214,18 +209,6 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         public static OpResult ExOpResult(this Exception ex)
         {
             return OpResult.SetErrorResult(ex);
-        }
-        /// <summary>
-        /// 将异常信息记录到文件中去
-        /// </summary>
-        /// <param name="ex"></param>
-        /// <param name="fnName"></param>
-        public static DataList<T> ExDataList<T>(this Exception ex)
-        {
-            OpResult result = ex.ExOpResult();
-            var datas= new DataList<T>();
-            datas.ExceptionId = result.ExceptionId;
-            return datas;
         }
     }
 }
