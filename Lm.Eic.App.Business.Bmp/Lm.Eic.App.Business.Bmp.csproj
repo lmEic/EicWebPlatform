@@ -70,6 +70,7 @@
     <Compile Include="Hrm\Archives\ArCalendarManger.cs" />
     <Compile Include="Hrm\Archives\ArLeaveOfficeManager.cs" />
     <Compile Include="Hrm\Archives\ArWorkerIdChangeManager.cs" />
+    <Compile Include="Hrm\MailSender\SevserMail.cs" />
     <Compile Include="Pms\BoardManagment\BoardBase.cs" />
     <Compile Include="Pms\BoardManagment\BoardService.cs" />
     <Compile Include="Pms\BoardManagment\BoardCrud.cs" />
