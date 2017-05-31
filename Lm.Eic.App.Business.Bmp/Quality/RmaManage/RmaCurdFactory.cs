@@ -13,8 +13,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
     internal class RmaCurdFactory
     {
+        internal static RmaReportInitiateCrud RmaReportInitiate
+        {
+            get { return OBulider.BuildInstance<RmaReportInitiateCrud>(); }
+        }
 
-        internal static RmaReportInitiateCrud RmaReportInitiate => OBulider.BuildInstance<RmaReportInitiateCrud>();
         internal static RmaBusinessDescriptionCrud RmaBussesDescription
         {
             get { return OBulider.BuildInstance<RmaBusinessDescriptionCrud>(); }
@@ -27,9 +30,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
     }
     internal class RmaReportInitiateCrud : CrudBase<RmaReportInitiateModel, IRmaReportInitiateRepository>
     {
-        internal RmaReportInitiateCrud() : base(new RmaReportInitiateRepository(), "创建表单")
+        public RmaReportInitiateCrud() : base(new RmaReportInitiateRepository(), "创建表单")
         { }
-
         #region  CRUD
         protected override void AddCrudOpItems()
         {
@@ -147,7 +149,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         }
         #endregion
     }
-
     internal class RmaInspectionManageCrud : CrudBase<RmaInspectionManageModel, IRmaInspectionManageRepository>
     {
         public RmaInspectionManageCrud() : base(new RmaInspectionManageRepository(), "检验处理")
