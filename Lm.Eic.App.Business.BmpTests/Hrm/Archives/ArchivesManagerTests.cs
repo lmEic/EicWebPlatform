@@ -3,9 +3,9 @@ using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using System;
 using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using System.Globalization;
-using Lm.Eic.App.Business.Bmp.Hrm.MailSender;
-using Lm.Eic.App.DomainModel.Bpm.MailSendersModel;
 using System.Collections.Generic;
+using Lm.Eic.Framework.ProductMaster.Model.EmailConfigInfo;
+using Lm.Eic.Framework.ProductMaster.Business.MailSend;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
 {
@@ -90,10 +90,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
                 MailBody="你好，测试一下！",
                 MailTitle ="测试一下，测试一下",
             };
-            MailSend.EmailSend.sendMailModel = sender;
-            MailSend.EmailSend.recipient = RecipientsMail;
-            var opreulst = MailSend.EmailSend.sendMail();
+            var dd = MailSendService.MailManager.GetReceiveAdress(3);
+            //MailSend.EmailSend.sendMailModel = sender;
+            //MailSend.EmailSend.recipient = RecipientsMail;
+            //var opreulst = MailSend.EmailSend.sendMail();
 
+        }
+        public void testReadText()
+        {
+            //直接读取出字符串
+            string text = System.IO.File.ReadAllText(@"C:\test.txt", System.Text.Encoding.UTF8);
         }
     }
        

@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.Framework.ProductMaster.Model;
+using Lm.Eic.Framework.ProductMaster.Model.EmailConfigInfo;
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
 using Lm.Eic.Framework.ProductMaster.Model.Tools;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -69,6 +70,19 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Tool_CollaborateContactLib");
+        }
+    }
+
+    ///<summary>
+    ///Config_MailInfo
+    /// </summary>
+    public class Config_MailInfoMapping : EntityTypeConfiguration<Config_MailInfoModel>
+    {
+        public Config_MailInfoMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Config_MailInfo");
         }
     }
 }

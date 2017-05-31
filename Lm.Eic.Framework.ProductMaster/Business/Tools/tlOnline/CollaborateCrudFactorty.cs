@@ -115,12 +115,12 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
                     case 7:
                      return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.ContactMemo.Contains(queryDto.QueryContent)).ToList();
              
-                    default: return new List<CollaborateContactLibModel>() as DataList<CollaborateContactLibModel>;
+                    default: return new List<CollaborateContactLibModel>();
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-              return  ex.ExDataList<CollaborateContactLibModel>();  
+              return new List<CollaborateContactLibModel>();  
             }
         }
         #endregion

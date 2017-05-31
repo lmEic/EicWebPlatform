@@ -40,12 +40,12 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         {
             try
             {
-                if (queryDto == null) return new DataList<CollaborateContactLibModel>();
+                if (queryDto == null) return new List<CollaborateContactLibModel>();
                 return CollaborateCrudFactorty.ContatCrud.FindBy(queryDto);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                return ex.ExDataList<CollaborateContactLibModel>();
+                return new List<CollaborateContactLibModel>();
             }
         }
     }

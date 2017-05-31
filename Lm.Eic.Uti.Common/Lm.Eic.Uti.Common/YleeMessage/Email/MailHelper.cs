@@ -4,12 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Net.Mail;
-
-
 namespace Lm.Eic.Uti.Common.YleeMessage.Email
 {
-
-
     /// <summary>
     /// 邮件助手
     /// </summary>
@@ -27,10 +23,5 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Email
             SmtpClient.Credentials = new NetworkCredential(userName, password);
             return SmtpClient;
         }
-
-
     }
-
-
-
 }
