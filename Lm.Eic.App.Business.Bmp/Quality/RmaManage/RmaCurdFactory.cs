@@ -14,11 +14,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
     internal class RmaCurdFactory
     {
 
-        internal static RmaReportInitiateCrud RmaReportInitiate
-        {
-            get { return OBulider.BuildInstance<RmaReportInitiateCrud>(); }
-        }
-
+        internal static RmaReportInitiateCrud RmaReportInitiate => OBulider.BuildInstance<RmaReportInitiateCrud>();
         internal static RmaBusinessDescriptionCrud RmaBussesDescription
         {
             get { return OBulider.BuildInstance<RmaBusinessDescriptionCrud>(); }
