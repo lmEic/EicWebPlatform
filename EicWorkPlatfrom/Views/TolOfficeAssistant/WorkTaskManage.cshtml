@@ -82,6 +82,12 @@
                         </tr>
                     </tbody>
                 </table>
+                @* 分页显示 *@
+                <div ng-if="vmManager.dataSource.length>0"
+                     yl-pagination
+                     data-dataset="vmManager.editDatas"
+                     data-datasource="vmManager.dataSource">
+                </div>
             </div>
         </div>
 
@@ -154,7 +160,7 @@
                                 </div>
                                 <label for="startDate" class="col-md-2 control-label">开始时间</label>
                                 <div class="col-md-4">
-                                    <input name="startDate" type="date" placeholder="必填" class="form-control" ng-model="vm.StartDate" />
+                                    <input name="startDate" type="text" placeholder="必填" class="form-control" ng-model="vm.StartDate" />
                                     <div class="error-messages" ng-messages="formWorkTaskManager.startDate.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">开始时间不能为空</small>
                                     </div>
@@ -163,7 +169,7 @@
                             <div class="form-group">
                                 <label for="endDate" class="col-md-2 control-label">结束时间</label>
                                 <div class="col-md-4">
-                                    <input name="endDate" type="date" placeholder="必填" class="form-control" ng-model="vm.EndDate" />
+                                    <input name="endDate" type="text" placeholder="必填" class="form-control" ng-model="vm.EndDate" />
                                     <div class="error-messages" ng-messages="formWorkTaskManager.endDate.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">结束时间不能为空</small>
                                     </div>

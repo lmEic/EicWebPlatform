@@ -66,7 +66,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         {          
                 try
                 {
-                if (queryDto.Department == null || queryDto.Department == string.Empty)
+                    if (queryDto.Department == null || queryDto.Department == string.Empty)
                     return new List<WorkTaskManageModel>();
                 switch (queryDto.SearchMode)
                 {

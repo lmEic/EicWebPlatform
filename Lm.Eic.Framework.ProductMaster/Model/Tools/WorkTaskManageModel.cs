@@ -144,7 +144,7 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
         }
         private string _opperson;
 
-        private int _isdelete;
+        private int _isdelete=1;
         public int IsDelete
         {
             set { _isdelete = value; }
