@@ -33,9 +33,9 @@ namespace EicWorkPlatfrom.Controllers
                 SearchMode = searchMode,
                 Department = department,
                 QueryContent = queryContent,
-                IsExactQuery = false ,
+                IsExactQuery = false,
             };
-            var datas = ToolOnlineService.ContactManager.GetContactLibDatasBy(queryDto);
+            var datas = 0; /*ToolOnlineService.ContactManager.GetContactLibDatasBy(queryDto);*/
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]

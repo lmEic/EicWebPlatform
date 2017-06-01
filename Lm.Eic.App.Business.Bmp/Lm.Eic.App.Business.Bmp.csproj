@@ -141,9 +141,7 @@
     <Compile Include="Quality\RmaManage\RmaCurdFactory.cs" />
     <Compile Include="Quality\RmaManage\RmaService.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Hrm\MailSender\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.App.Business.Mes\Lm.Eic.App.Business.Mes.csproj">
       <Project>{25616437-5761-4fe5-8dcc-d76b4641b6a7}</Project>

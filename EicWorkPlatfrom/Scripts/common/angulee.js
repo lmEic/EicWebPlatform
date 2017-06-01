@@ -45,7 +45,7 @@ var leeDataHandler = (function () {
                     opstatus.msgDisplay = false;
                 }, 2000);
             })();
-            if (opresult.result === true) {
+            if (opresult.Result === true) {
                 if (successFn !== undefined && _.isFunction(successFn))
                     successFn();
             }

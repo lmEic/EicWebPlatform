@@ -134,7 +134,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// 存储员工档案信息
         /// </summary>
         /// <param name="dto">新的数据传输对象</param>
-        /// <param name="oldDto">旧的数据传输对象</param>
         /// <param name="opSign">操作标志</param>
         /// <returns></returns>
         public OpResult Store(ArchivesEmployeeIdentityDto dto, string opSign)
@@ -269,7 +268,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// <summary>
         /// 根据作业工号列表查询员工信息
         /// </summary>
-        /// <param name="workerIds"></param>
+        /// <param name="workerIdList"></param>
         /// <returns></returns>
         public List<ArchivesEmployeeIdentityModel> FindEmployeeBy(List<string> workerIdList)
         {
@@ -280,7 +279,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// <summary>
         /// 变更部门信息
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entities"></param>
         /// <returns></returns>
         public OpResult ChangeDepartment(List<ArDepartmentChangeLibModel> entities)
         {
@@ -305,7 +304,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// <summary>
         /// 变更岗位信息
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entities"></param>
         /// <returns></returns>
         public OpResult ChangePost(List<ArPostChangeLibModel> entities)
         {
@@ -332,7 +331,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// <summary>
         /// 变更学习信息
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entities"></param>
         /// <returns></returns>
         public OpResult ChangeStudy(List<ArStudyModel> entities)
         {
@@ -372,7 +371,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// <summary>
         /// 变更联系方式信息
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entities"></param>
         /// <returns></returns>
         public OpResult ChangeTel(List<ArTelModel> entities)
         {
@@ -473,7 +472,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// 人员档案查询
         /// </summary>
         /// <param name="qryDto"></param>
-        /// <param name="searchMode"></param>
         /// 0: 默认载入全部在职数据
         /// 1：根据人员工号查询
         /// 2：根据人员所属部门载入数据
@@ -491,10 +489,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依工号查询
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkerId.StartsWith(qryDto.WorkerId)).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkerId.StartsWith(qryDto.WorkerId, StringComparison.CurrentCulture)).ToList();
                         return WorkerArchivesInfoList;
                     case 2: //依部门查询
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.Department.StartsWith(qryDto.Department)).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.Department.StartsWith(qryDto.Department, StringComparison.CurrentCulture)).ToList();
                         return WorkerArchivesInfoList;
                     case 3: //依入职时间段查询
                         DateTime StartDate = qryDto.RegistedDateStart.ToDate();
@@ -509,20 +507,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                         WorkerArchivesInfoList = irep.Entities.Where(m => m.PostNature == qryDto.PostNature).ToList();
                         return WorkerArchivesInfoList;
                     case 5://职工属性
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkerIdType.StartsWith(qryDto.WorkerIdType)).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkerIdType.StartsWith(qryDto.WorkerIdType, StringComparison.CurrentCulture)).ToList();
                         return WorkerArchivesInfoList;
 
                     case 6://出生年月
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.BirthMonth.StartsWith(qryDto.BirthMonth)).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.BirthMonth.StartsWith(qryDto.BirthMonth, StringComparison.CurrentCulture)).ToList();
                         return WorkerArchivesInfoList;
                     case 7://婚姻状况
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.MarryStatus.StartsWith(qryDto.MarryStatus)).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.MarryStatus.StartsWith(qryDto.MarryStatus, StringComparison.CurrentCulture)).ToList();
                         return WorkerArchivesInfoList;
                     case 8: //在职状态
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith(qryDto.WorkingStatus)).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith(qryDto.WorkingStatus, StringComparison.CurrentCulture)).ToList();
                         return WorkerArchivesInfoList;
                     case 0: //在职全部人员
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith("在职")).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith("在职", StringComparison.CurrentCulture)).ToList();
                         return WorkerArchivesInfoList;
                     default:
                         return WorkerArchivesInfoList;
@@ -710,7 +708,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             //根据身份证的有效期获取身份证的过期年份
             if (limitedDate != null)
             {
-                int pos = limitedDate.LastIndexOf("--");
+                int pos = limitedDate.LastIndexOf("--", StringComparison.CurrentCulture);
                 if (pos > 0)
                 {
                     identityExpirationDate = limitedDate.Substring(pos + 2, limitedDate.Length - pos - 2).ToDate();
