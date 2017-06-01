@@ -42,10 +42,10 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
-      OpResult UpdateIsDelete(CollaborateContactLibModel model)
+        OpResult UpdateIsDelete(CollaborateContactLibModel model)
         {
-            return irep.Update(e => e.Id_Key == model.Id_Key, 
-                f=>new CollaborateContactLibModel{IsDelete =model.IsDelete  }).ToOpResult_Delete(OpContext);
+            return irep.Update(e => e.Id_Key == model.Id_Key,
+                f => new CollaborateContactLibModel { IsDelete = model.IsDelete }).ToOpResult_Delete(OpContext);
         }
         #endregion
 
@@ -80,47 +80,47 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
             try
             {
                 if (queryDto.Department == null || queryDto.Department == string.Empty)
-                    return  new List<CollaborateContactLibModel>(); 
+                    return new List<CollaborateContactLibModel>();
                 switch (queryDto.SearchMode)
                 {
                     ///部门
                     case 0:
-                      return  irep.Entities.Where(e => e.IsDelete ==queryDto.IsDelete&&e.Department == queryDto.Department).ToList() ;
-                      
+                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department).ToList();
+
                     ///联系人姓名
                     case 1:
-                      return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.ContactPerson.Contains(queryDto.QueryContent)).ToList() ;
-                       
-                        ///联系电话
+                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.ContactPerson.Contains(queryDto.QueryContent)).ToList();
+
+                    ///联系电话
                     case 2:
-                       return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.Telephone.Contains(queryDto.QueryContent)).ToList() ;
-                    
+                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.Telephone.Contains(queryDto.QueryContent)).ToList();
+
                     ///办公电话
                     case 3:
-                      return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.OfficeTelephone.Contains(queryDto.QueryContent)).ToList() ;
-                    
+                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.OfficeTelephone.Contains(queryDto.QueryContent)).ToList();
+
                     ///联系地址
                     case 4:
-                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.ContactAdress.Contains(queryDto.QueryContent)).ToList() ;
-                      
+                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.ContactAdress.Contains(queryDto.QueryContent)).ToList();
+
                     ///公司名称
                     case 5:
-                      return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.ContactCompany.Contains(queryDto.QueryContent)).ToList() ;
-                     
+                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.ContactCompany.Contains(queryDto.QueryContent)).ToList();
+
                     ///联系人属性
                     case 6:
-                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.CustomerCategory.Contains(queryDto.QueryContent)).ToList() ;
-                       
+                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.CustomerCategory.Contains(queryDto.QueryContent)).ToList();
+
                     ///往来业务
                     case 7:
-                     return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.ContactMemo.Contains(queryDto.QueryContent)).ToList();
-             
+                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.ContactMemo.Contains(queryDto.QueryContent)).ToList();
+
                     default: return new List<CollaborateContactLibModel>();
                 }
             }
-            catch (Exception )
+            catch (Exception ex)
             {
-              return new List<CollaborateContactLibModel>();  
+                throw new Exception(ex.Message);
             }
         }
         #endregion

@@ -68,7 +68,7 @@ namespace EicWorkPlatfrom.Controllers
         public ContentResult ViewDevelopModuleDetails(ItilDevelopModuleManageModel entity)
         {
             var datas = ItilService.ItilDevelopModuleManager.GetChangeRecordListBy(entity);
-            return DateJsonResult(datas);            
+            return DateJsonResult(datas);
         }
         /// <summary>
         /// 发送邮件通知
@@ -77,7 +77,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult SendMail()
         {
-            var result = ItilService.ItilDevelopModuleManager.SendMail();
+            var result = 0;/*ItilService.ItilDevelopModuleManager.SendMail();*/
             return Json(result);
         }
     }

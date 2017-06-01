@@ -30,24 +30,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
             }
 
         }
-        /// <summary>
-        /// 部门得到所有的信息
-        /// 从数据直接查询
-        /// </summary>
-        ///// <param name="queryDto"></param>
-        ///// <returns></returns>
-        public List<CollaborateContactLibModel> GetContactLibDatasBy(QueryContactDto queryDto)
-        {
-            try
-            {
-                if (queryDto == null) return new List<CollaborateContactLibModel>();
-                return CollaborateCrudFactorty.ContatCrud.FindBy(queryDto);
-            }
-            catch (Exception )
-            {
-                return new List<CollaborateContactLibModel>();
-            }
-        }
     }
 
 }
