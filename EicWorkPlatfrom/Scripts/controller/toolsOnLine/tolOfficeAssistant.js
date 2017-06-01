@@ -29,7 +29,7 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
 officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, oAssistantDataOpService, $modal) {
     ///联系人模型
     var uiVm = $scope.vm = {
-        Department: null,
+        Department: '品保部',
         ContactPerson: null,
         Sex: null,
         CustomerCategory: null,
@@ -66,7 +66,7 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
             $scope.vm = uiVm;
         },
         editDatas: [],
-        dataSource:[],
+        dataSource: [],
         loadDatas: function (department, searchMode, queryContent) {
             vmManager.editDatas = [];
             $scope.searchPromise = oAssistantDataOpService.getCollaborateContactDatas(department, searchMode, queryContent).then(function (datas) {
@@ -121,7 +121,7 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         });
     };
     operate.refresh = function () { leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); }); };
-   
+
     vmManager.loadDatas(uiVm.Department, 0, null);
 });
 ///工作任务管理控制器
