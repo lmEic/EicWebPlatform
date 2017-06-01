@@ -4,8 +4,7 @@ using System;
 using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using System.Globalization;
 using System.Collections.Generic;
-using Lm.Eic.Framework.ProductMaster.Model.EmailConfigInfo;
-using Lm.Eic.Framework.ProductMaster.Business.MailSend;
+
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
 {
@@ -71,31 +70,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives.Tests
             }
         }
 
-        public void Test()
-        {
-            SendersMailModel sender = new SendersMailModel()
-            {
-                SenderMailAddess = "wxq520@ezconn.cn",
-                SenderMailPwd = "wxQ52866414",
-                SmtpHost = "smtp.exmail.qq.com"
-            };
-            List<string> MailsAddress = new List<string>();
-            MailsAddress.Add("wxq520@ezconn.cn");
-            MailsAddress.Add("wanxiaoqiao888@163.com");
-            MailsAddress.Add("ylei@ezconn.cn");
-            RecipientsMailModel RecipientsMail = new RecipientsMailModel()
-            {
-                IsBodyHtml = true,
-                RecipientMailAddress = MailsAddress,
-                MailBody="你好，测试一下！",
-                MailTitle ="测试一下，测试一下",
-            };
-            var dd = MailSendService.MailManager.GetReceiveAdress(3);
-            //MailSend.EmailSend.sendMailModel = sender;
-            //MailSend.EmailSend.recipient = RecipientsMail;
-            //var opreulst = MailSend.EmailSend.sendMail();
-
-        }
+    
         public void testReadText()
         {
             //直接读取出字符串

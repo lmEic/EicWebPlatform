@@ -1,5 +1,4 @@
 ﻿using Lm.Eic.Framework.ProductMaster.Model;
-using Lm.Eic.Framework.ProductMaster.Model.EmailConfigInfo;
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
 using Lm.Eic.Framework.ProductMaster.Model.Tools;
 using Lm.Eic.Uti.Common.YleeDbHandler;
@@ -25,7 +24,7 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
 
 
         public DbSet<CollaborateContactLibModel> CollaborateContactLib { get; set; }
-        public DbSet <Config_MailInfoModel> Config_MailInfo { set; get; }
+    
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -36,7 +35,7 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             modelBuilder.Configurations.Add(new ItilDevelopModuleManageModelMapping());
             modelBuilder.Configurations.Add(new ItilDevelopModuleManageChangeRecordModelMapping());
             modelBuilder.Configurations.Add(new CollaborateContactLibModelMapping());
-            modelBuilder.Configurations.Add(new Config_MailInfoMapping());
+      
         }
     }
 
