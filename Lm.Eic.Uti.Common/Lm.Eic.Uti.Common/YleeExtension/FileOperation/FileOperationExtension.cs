@@ -530,13 +530,13 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         /// <param name="dataSource">List数组</param>
         /// <param name="propertyStr">要分组的字段</param>
         /// <returns></returns>
-        public static Dictionary<string, List<T>> GetGroupList<T>(this List<T> dataSource, string propertyStr) where T : class, new()
+        public static Dictionary<string, List<T>> GetGroupList<T>(this List<T> dataSource, string propertyStr=null ) where T : class, new()
         {
             try
             {
                 if (dataSource == null || dataSource.Count <= 0)
                     return null;
-
+                if (propertyStr == null) propertyStr = string.Empty;
                 Dictionary<string, List<T>> dicGroupingEntity = new Dictionary<string, List<T>>();
                 List<string> groupList = new List<string>();
 
@@ -601,7 +601,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
         {
             string errMsg = string.Empty;
             List<TEntity> datas = ExcelHelper.ExcelToEntityDatas<TEntity>(fileName, out errMsg);
-            MsgLogger.LogMsgToFile("GetEntitiesFromExcel<TEntity>", errMsg);
+            MessageLogger.LogMsgToFile("GetEntitiesFromExcel<TEntity>", errMsg);
             return datas;
         }
 

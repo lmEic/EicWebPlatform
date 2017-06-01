@@ -7,7 +7,10 @@ using System.IO;
 
 namespace Lm.Eic.Uti.Common.YleeMessage.Log
 {
-    public static class MsgLogger
+    /// <summary>
+    /// 消息日志记录器
+    /// </summary>
+    public static class MessageLogger
     {
         #region property
         /// <summary>

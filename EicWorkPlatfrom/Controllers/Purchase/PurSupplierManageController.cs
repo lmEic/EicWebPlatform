@@ -239,8 +239,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public FileResult CreateSupplierTourToExcel()
         {
             var datas = TempData["SupplierTourData"] as List<SupplierSeasonTutorModel>;
-            ///导出Exce
-            var dlfm = datas.ToDownLoadExcelFileModel<SupplierSeasonTutorModel>("供应商辅导管理", "供应商辅导清单");
+           
+            var dlfm = PurchaseService.PurSupplierManager.TutorManger.DownLoadTourSupplier(datas);
+           
             return this.DownLoadFile(dlfm);
         }
         /// <summary>

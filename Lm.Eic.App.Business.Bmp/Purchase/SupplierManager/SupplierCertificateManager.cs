@@ -45,22 +45,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return SupplierInfoVmDatas.OrderBy(e => e.SupplierId).ToList();
         }
         /// <summary>
-        /// 从截止到给定月份的合格供应商清册列表
-        /// </summary>
-        /// <param name="endYearMonth"></param>
-        /// <returns></returns>
-        public List<SupplierInfoModel> GetQualifiedSupplierDatas(string endYearMonth)
-        {
-            string startYearMonth = (int.Parse(endYearMonth) - 100).ToString();
-            //获取供应商信息
-            return GetSupplierInformationListBy(startYearMonth, endYearMonth);
-        }
-        /// <summary>
         /// 获取供应商信息
         /// <param name="supplierId"></param>
         /// <returns></returns>
         /// </summary>
-        public SupplierInfoModel GetSuppplierInfoBy(string supplierId)
+      public  SupplierInfoModel GetSuppplierInfoBy(string supplierId)
         {
             try
             {
@@ -70,9 +59,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 //没有找到再从ERP中找
                 supplierInfo = GetSuppplierInfoFromErpBy(supplierId);
                 if (supplierInfo != null && supplierInfo.IsCooperate == "True")
-                    //添加至供应商信息表中  上传到数据库中
+                //添加至供应商信息表中  上传到数据库中
+                {
                     SupplierCrudFactory.SuppliersInfoCrud.Init(supplierInfo);
-                return supplierInfo;
+                    return supplierInfo;
+                }
+                else return null;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
@@ -193,18 +185,46 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
+                datas = AddQualifiedCertificateDate(datas);
                 if (datas == null || datas.Count == 0) return new DownLoadFileModel().Default();
-                var dataGroupping = datas.GetGroupList<SuppliersSumInfoVM>("");
+                var dataGroupping = datas.GetGroupList<SuppliersSumInfoVM>();
                 return dataGroupping.ExportToExcelMultiSheets<SuppliersSumInfoVM>(CreateFieldMapping()).CreateDownLoadExcelFileModel("供应商证书信息数据");
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.InnerException.Message);
+                throw new Exception(ex.Message);
             }
         }
 
-
-
+        /// <summary>
+        /// 加载证书日期
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
+        private List<SuppliersSumInfoVM> AddQualifiedCertificateDate(List<SuppliersSumInfoVM> datas)
+        {
+            List<SuppliersSumInfoVM> retrundatas = new List<SuppliersSumInfoVM>();
+            if (datas == null || datas.Count == 0)
+            return null;
+            datas.ForEach(e =>
+            {
+                var dd = CertificateDictionary(e.SupplierId);
+                e.EnvironmentalInvestigation = dd[certificateName.EnvironmentalInvestigation];
+                e.HonestCommitment = dd[certificateName.HonestCommitment];
+                e.QualityAssuranceProtocol =dd[certificateName.QualityAssuranceProtocol];
+                e.SupplierBaseDocument=dd[certificateName.SupplierBaseDocument];
+                e.SupplierComment= dd[certificateName.SupplierComment];
+                e.NotUseChildLabor =dd[certificateName.NotUseChildLabor];
+                e.PCN_Protocol =dd[certificateName.PCN_Protocol];
+                e.HSF_Guarantee=dd[certificateName.HSF_Guarantee];
+                e.REACH_Guarantee =dd[certificateName.REACH_Guarantee];
+                e.SVHC_Guarantee =dd[certificateName.SVHC_Guarantee];
+                e.ISO14001=dd[certificateName.ISO14001];
+                e.ISO9001 =dd[certificateName.ISO9001];
+                retrundatas.Add(e);
+            });
+            return retrundatas;
+        }
 
         #region   Private Method
 
@@ -225,18 +245,18 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 new FileFieldMapping ("UpperPurchaseDate","上次采购时间") ,
                 new FileFieldMapping ("LastPurchaseDate","最近采购时间") ,
                 new FileFieldMapping ("PurchaseType","采购类型") ,
-                new FileFieldMapping ("ISO9001","ISO9001") ,
-                new FileFieldMapping ("ISO14001","ISO14001") ,
-                new FileFieldMapping ("SupplierBaseDocument","供应商基本资料表") ,
-                new FileFieldMapping ("SupplierComment","供应商评鉴表") ,
-                new FileFieldMapping ("NotUseChildLabor","不使用童工申明") ,
-                new FileFieldMapping ("EnvironmentalInvestigation","供应商环境调查表") ,
-                new FileFieldMapping ("HonestCommitment","廉洁承诺书") ,
-                new FileFieldMapping ("PCN_Protocol","PCN协议") ,
-                new FileFieldMapping ("QualityAssuranceProtocol","质量保证协议") ,
-                new FileFieldMapping ("HSF_Guarantee","HSF保证书") ,
-                new FileFieldMapping ("REACH_Guarantee","REACH保证书") ,
-                new FileFieldMapping ("SVHC_Guarantee","SVHC调查表")
+                new FileFieldMapping ("ISO9001",certificateName.ISO9001) ,
+                new FileFieldMapping ("ISO14001",certificateName.ISO14001) ,
+                new FileFieldMapping ("SupplierBaseDocument",certificateName.SupplierBaseDocument ) ,
+                new FileFieldMapping ("SupplierComment",certificateName.SupplierComment) ,
+                new FileFieldMapping ("NotUseChildLabor",certificateName.NotUseChildLabor ) ,
+                new FileFieldMapping ("EnvironmentalInvestigation",certificateName.EnvironmentalInvestigation ) ,
+                new FileFieldMapping ("HonestCommitment",certificateName.HonestCommitment ) ,
+                new FileFieldMapping ("PCN_Protocol",certificateName.PCN_Protocol) ,
+                new FileFieldMapping ("QualityAssuranceProtocol",certificateName.QualityAssuranceProtocol ) ,
+                new FileFieldMapping ("HSF_Guarantee",certificateName.HSF_Guarantee) ,
+                new FileFieldMapping ("REACH_Guarantee",certificateName.REACH_Guarantee) ,
+                new FileFieldMapping ("SVHC_Guarantee",certificateName.SVHC_Guarantee )
 
             };
             return fieldmappping;
@@ -299,19 +319,18 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         private Dictionary<string, string> CertificateDictionary(string supplierId)
         {
             Dictionary<string, string> certificateDictionary = new Dictionary<string, string>();
+            certificateDictionary.Add(certificateName.EnvironmentalInvestigation, string.Empty);
             certificateDictionary.Add(certificateName.QualityAssuranceProtocol, string.Empty);
             certificateDictionary.Add(certificateName.SupplierBaseDocument, string.Empty);
             certificateDictionary.Add(certificateName.SupplierComment, string.Empty);
             certificateDictionary.Add(certificateName.NotUseChildLabor, string.Empty);
             certificateDictionary.Add(certificateName.PCN_Protocol, string.Empty);
             certificateDictionary.Add(certificateName.HonestCommitment, string.Empty);
-            certificateDictionary.Add(certificateName.QualityAssuranceProtocol, string.Empty);
             certificateDictionary.Add(certificateName.HSF_Guarantee, string.Empty);
             certificateDictionary.Add(certificateName.REACH_Guarantee, string.Empty);
             certificateDictionary.Add(certificateName.SVHC_Guarantee, string.Empty);
             certificateDictionary.Add(certificateName.ISO14001, string.Empty);
             certificateDictionary.Add(certificateName.ISO9001, string.Empty);
-
             var suppliersQualifiedCertificate = GetSupplierQualifiedCertificateListBy(supplierId);
             if (suppliersQualifiedCertificate != null || suppliersQualifiedCertificate.Count > 0)
             {
