@@ -78,20 +78,20 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
             set { _workPriority = value; }
             get { return _workPriority; }
         }
-        private string _startDate;
+        private DateTime _startDate;
         /// <summary>
         ///开始日期
         /// </summary>
-        public string StartDate
+        public DateTime StartDate
         {
             set { _startDate = value; }
             get { return _startDate; }
         }
-        private string _endDate;
+        private DateTime _endDate;
         /// <summary>
         ///完成日期
         /// </summary>
-        public string EndDate
+        public DateTime EndDate
         {
             set { _endDate = value; }
             get { return _endDate; }
@@ -143,6 +143,15 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
             get { return _remark; }
         }
         private string _opperson;
+
+        private int _isdelete;
+        public int IsDelete
+        {
+            set { _isdelete = value; }
+            get { return _isdelete; }
+        }
+
+
         /// <summary>
         ///操作人
         /// </summary>
@@ -186,6 +195,55 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
         {
             set { _id_key = value; }
             get { return _id_key; }
+        }
+        public partial class QueryWorkTaskDto
+        {
+            public string department;
+            public string Department
+            {
+                get { return department; }
+                set { if (department != value) { department = value; } }
+            }
+            int _isDelete = 1;
+            /// <summary>
+            /// 联系人是否失效  1：表示有效， 0：表示无效
+            /// </summary>
+            public int IsDelete
+            {
+                get { return _isDelete; }
+                set { if (_isDelete != value) { _isDelete = value; } }
+            }
+            string queryContent = string.Empty;
+         
+            /// <summary>
+            /// 查询内容
+            /// </summary>
+            public string QueryContent
+            {
+                get { return queryContent; }
+                set { if (queryContent != value) { queryContent = value; } }
+            }
+            /// <summary>
+            /// 是否精确查询
+            /// </summary>
+            bool isExactQuery = false;
+            public bool IsExactQuery
+            {
+                get { return isExactQuery; }
+                set { if (isExactQuery != value) { isExactQuery = value; } }
+            }
+            private int searchMode = 0;
+            /// <summary>
+            /// 搜索模式
+            /// </summary>
+            public int SearchMode
+            {
+                get { return searchMode; }
+                set { if (searchMode != value) { searchMode = value; } }
+            }
+
+
+
         }
 
     }

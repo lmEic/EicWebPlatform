@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline;
 using Lm.Eic.Framework.ProductMaster.Model.Tools;
+using static Lm.Eic.Framework.ProductMaster.Model.Tools.WorkTaskManageModel;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -54,16 +55,26 @@ namespace EicWorkPlatfrom.Controllers
         }
         [HttpGet]
         [NoAuthenCheck]
-        public JsonResult GetWorkTaskManageDatas(string department, int searchMode, string systemName, string moduleName)
+        public ContentResult GetWorkTaskManageDatas(string department, int searchMode, string queryContent)
         {
-            var datas = ToolOnlineMockDatas.WorkTaskManageDataSet;
-            return Json(datas, JsonRequestBehavior.AllowGet);
+            // var datas = ToolOnlineMockDatas.WorkTaskManageDataSet;
+           department = "EIC";
+           QueryWorkTaskDto queryDto = new QueryWorkTaskDto()
+            {
+                SearchMode = searchMode,
+                Department = department,
+                QueryContent = queryContent,
+                IsExactQuery = false,
+
+            };
+            var datas = ToolOnlineService.WorkTaskManage.GetWorkTaskDatasBy(queryDto);
+            return DateJsonResult(datas);
         }
         [HttpPost]
         [NoAuthenCheck]
         public JsonResult StoreWorkTaskManageDatas(WorkTaskManageModel model)
         {
-            var opResult =1;
+            var opResult =ToolOnlineService.WorkTaskManage.StoreTaskData(model);
             return Json(opResult);
         }
 

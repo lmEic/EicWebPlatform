@@ -60,14 +60,14 @@
     <Compile Include="Business\Itil\ItilService.cs" />
     <Compile Include="Business\Tools\tlOnline\CollaborateContacManager.cs" />
     <Compile Include="Business\Tools\tlOnline\CollaborateCrudFactorty.cs" />
-    <Compile Include="Business\Tools\tlOnline\ToolOnlineMockDatas.cs" />
     <Compile Include="Business\Tools\tlOnline\ToolOnlineService.cs" />
-    <Compile Include="Business\Tools\tlOnline\WorkTaskManageFactory.cs" />
+    <Compile Include="Business\Tools\tlOnline\WorkTaskCrudFactorty.cs" />
     <Compile Include="DbAccess\Mapping\LmProMasterDbContext.cs" />
     <Compile Include="DbAccess\Mapping\LmProMasterDbMapping.cs" />
     <Compile Include="DbAccess\Repository\CollaborateContactLibRepository.cs" />
     <Compile Include="DbAccess\Repository\ConfigDataDictionaryRepository.cs" />
     <Compile Include="DbAccess\Repository\ItilDevelopModuleManageRepository.cs" />
+    <Compile Include="DbAccess\Repository\WorkTaskRepository.cs" />
     <Compile Include="Model\ConfigDataDictionaryModel.cs" />
     <Compile Include="Model\ITIL\ItilDevelopModuleManageModel.cs" />
     <Compile Include="Model\ITIL\ItilDevelopModuleManageChangeRecordModel.cs" />

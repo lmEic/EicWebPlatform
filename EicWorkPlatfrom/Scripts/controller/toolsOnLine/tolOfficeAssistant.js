@@ -24,13 +24,12 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
     };
 
     ///获取工作任务数据
-    oAssistant.getWorkTaskManageDatas = function (department, searchMode, systemName, moduleName) {
+    oAssistant.getWorkTaskManageDatas = function (department, searchMode, queryContent) {
         var url = oaUrlPrefix + 'GetWorkTaskManageDatas';
         return ajaxService.getData(url, {
             department: department,
             searchMode: searchMode,
-            systemName: systemName,
-            moduleName: moduleName
+            queryContent: queryContent
         });
     };
     ///存储工作任务数据
@@ -167,26 +166,31 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         activeTab: 'initTab',
         init: function () {
             uiVm = _.clone(initVm);
+            leeHelper.setUserData(uiVm)
             uiVm.OpSign = leeDataHandler.dataOpMode.add;
             $scope.vm = uiVm;
         },
+        dataSource:[],
         editDatas: [],
         //载入信息
-        loadDatas: function (department, searchMode, systemName, moduleName) {
+        loadDatas: function (department, searchMode, queryContent) {
             vmManager.editDatas = [];
             //获取工作内容数据
-            $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(department, searchMode, systemName, moduleName).then(function (datas) {
+            $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(department, searchMode, queryContent).then(function (datas) {
                 if (angular.isArray(datas))
                     vmManager.editDatas = datas;
+                    vmManager.dataSource = datas;
             });
         },
         //按系统名查询
         getDatasBySystemName: function () {
-            vmManager.loadDatas("", 1, qryVm.systemName, null);
+            leeHelper.setUserData(uiVm);
+            vmManager.loadDatas(uiVm.Department, 1, qryVm.systemName);
         },
         //按模块名查询
         getDatasByModuleName: function () {
-            vmManager.loadDatas("", 2, null, qryVm.moduleName);
+            leeHelper.setUserData(uiVm);
+            vmManager.loadDatas(uiVm.Department, 2, qryVm.moduleName);
         }
     };
     //新增
@@ -203,6 +207,13 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         $scope.vm = uiVm = item;
         dialog.show();
     },
+        //删除
+        operate.deleteItem = function (item) {
+        item.OpSign = leeDataHandler.dataOpMode.delete;
+        $scope.vm = uiVm = item;
+        deleteDialog.show();
+
+        };
     //保存
     operate.saveAll = function (isValid) {
             leeHelper.setUserData(uiVm);
