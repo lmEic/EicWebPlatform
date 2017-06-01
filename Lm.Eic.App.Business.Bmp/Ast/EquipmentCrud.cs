@@ -607,17 +607,20 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             if (equipment.IsScrapped == "是")
                 return OpResult.SetErrorResult("操作失败！\r\n设备报废为已报废，不能重复报废！");
 
-            //修改设备报废状态
-            equipment.IsScrapped = "是";
-            equipment.OpSign = OpMode.Edit;
-            var equipmentOpResult = EquipmentCrudFactory.EquipmentCrud.Store(equipment);
-            if (!equipmentOpResult.Result)
-                return OpResult.SetErrorResult("修改设备报废状态失败！");
-
             model.DiscardMonth = DateTime.Now.ToString("yyyyMM");
             //存储记录
             model.EquipmentName = equipment.EquipmentName;
             result = irep.Insert(model).ToOpResult_Add(OpContext, model.Id_Key);
+            ///如果存储成功 更新主表
+            if (result.Result)
+            {
+                //修改设备报废状态
+                equipment.IsScrapped = "是";
+                equipment.OpSign = OpMode.Edit;
+                var equipmentOpResult = EquipmentCrudFactory.EquipmentCrud.Store(equipment);
+                if (!equipmentOpResult.Result)
+                    return OpResult.SetErrorResult("修改设备报废状态失败！");
+            }
             return result;
         }
 
