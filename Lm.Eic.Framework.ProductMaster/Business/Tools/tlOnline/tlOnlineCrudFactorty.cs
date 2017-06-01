@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
 {
-    internal class CollaborateCrudFactorty
+    internal class tlOnlineCrudFactorty
     {
         internal static CollaborateContatCrud ContatCrud
         {
@@ -23,7 +23,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
     {
         public CollaborateContatCrud() : base(new CollaborateContactLibRepository(), "合作联系人列表")
         {
+
         }
+
         #region  CRUD
         protected override void AddCrudOpItems()
         {
@@ -50,15 +52,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         #endregion
 
         #region  Find
-        /// <summary>
-        ///部门查找
-        /// </summary>
-        /// <param name="department"></param>
-        /// <returns></returns>
-        internal List<CollaborateContactLibModel> GetContactLibDatasBy(string department)
-        {
-            return irep.Entities.Where(e => e.Department == department).ToList();
-        }
         /// <summary>
         /// 是否存在联系人
         /// </summary>
