@@ -248,7 +248,16 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return irep.Delete(model.Id_Key).ToOpResult_Delete("设备档案");
         }
-
+        /// <summary>
+        /// 更新报费状态
+        /// </summary>
+        /// <param name="assetNumber"></param>
+        /// <param name="isScrapped"></param>
+        /// <returns></returns>
+        public OpResult UpdateIsScrapped(string assetNumber, string isScrapped)
+        {
+            return irep.Update(e => e.AssetNumber== assetNumber, m => new EquipmentModel {IsScrapped= isScrapped }).ToOpResult_Eidt("设备档案");
+        }
         #endregion Store
 
         #region Rule
@@ -615,9 +624,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             if (result.Result)
             {
                 //修改设备报废状态
-                equipment.IsScrapped = "是";
-                equipment.OpSign = OpMode.Edit;
-                var equipmentOpResult = EquipmentCrudFactory.EquipmentCrud.Store(equipment);
+                var equipmentOpResult = EquipmentCrudFactory.EquipmentCrud.UpdateIsScrapped(equipment.AssetNumber,"是");
                 if (!equipmentOpResult.Result)
                     return OpResult.SetErrorResult("修改设备报废状态失败！");
             }
