@@ -335,6 +335,7 @@
     <Content Include="Content\print\print.min.js" />
     <Content Include="Content\underscore\underscore-min.js" />
     <Content Include="Content\underscore\underscore.js" />
+    <Content Include="Content\WorkTask\WorkTask.css" />
     <Content Include="Content\ztree\dist\css\zTreeStyle\img\diy\1_close.png" />
     <Content Include="Content\ztree\dist\css\zTreeStyle\img\diy\1_open.png" />
     <Content Include="Content\ztree\dist\css\zTreeStyle\img\diy\2.png" />

@@ -2,6 +2,7 @@
     <div class="panel-heading">
         <h6 class="panel-title">员工档案登记</h6>
     </div>
+
     <div class="panel-body">
         <div bs-tabs bs-active-pane="archive.activeTab">
                <div bs-pane data-title="档案登记" data-name="inputTab">
@@ -124,9 +125,11 @@
                                                             <small ng-message="required">作业工号数字类型不能为空</small>
                                                         </div>
                                                     </div>
+
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-ellipsis-v"></i>
                                                     </div>
+
                                                     <div class="input-group-btn">
                                                         <button type="button" class="btn btn-success" ng-model="vm.WorkerIdType"
                                                                 data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择工号类别"
@@ -384,6 +387,7 @@
                             </div>
                         </form>
                     </div>
+
                     <div class="col-md-2">
                         <ul class="list-group">
                             <li ng-repeat="emp in archive.inputedEmployeeDatas" class="list-group-item list-group-item-info">
@@ -402,7 +406,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+               </div>
             <div bs-pane data-title="档案查询" data-name="queryTab">
                 <div bs-tabs bs-active-pane="archive.queryActiveTab">
                     @*全部查询*@

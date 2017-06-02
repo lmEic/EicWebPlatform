@@ -24,18 +24,19 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
 
 
         public DbSet<CollaborateContactLibModel> CollaborateContactLib { get; set; }
-    
+
+        public DbSet<WorkTaskManageModel> WorkTaskBoard { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Configurations.Add(new ConfigDataDictionaryModelMapping());
             modelBuilder.Configurations.Add(new ConfigFilePathModelMapping());
-
             modelBuilder.Configurations.Add(new ItilDevelopModuleManageModelMapping());
             modelBuilder.Configurations.Add(new ItilDevelopModuleManageChangeRecordModelMapping());
             modelBuilder.Configurations.Add(new CollaborateContactLibModelMapping());
-      
+
+            modelBuilder.Configurations.Add(new WorkTaskManageModelMapping());
         }
     }
 

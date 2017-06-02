@@ -72,4 +72,16 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             this.ToTable("Tool_CollaborateContactLib");
         }
     }
+
+    public class WorkTaskManageModelMapping : EntityTypeConfiguration<WorkTaskManageModel>
+    {
+        public WorkTaskManageModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Tool_TaskBoard");
+        }
+
+    }
+
 }

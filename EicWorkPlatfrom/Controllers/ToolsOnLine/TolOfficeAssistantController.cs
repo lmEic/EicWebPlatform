@@ -51,6 +51,31 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        [HttpGet]
+        [NoAuthenCheck]
+        public ContentResult GetWorkTaskManageDatas(string department, int searchMode, string queryContent)
+        {
+            // var datas = ToolOnlineMockDatas.WorkTaskManageDataSet;
+           department = "EIC";
+           QueryWorkTaskManageDto queryDto = new QueryWorkTaskManageDto()
+            {
+                SearchMode = searchMode,
+                Department = department,
+                QueryContent = queryContent,
+
+            };
+            var datas = ToolOnlineService.WorkTaskManage.GetWorkTaskDatasBy(queryDto);
+            return DateJsonResult(datas);
+        }
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StoreWorkTaskManageDatas(WorkTaskManageModel model)
+        {
+            var opResult =ToolOnlineService.WorkTaskManage.StoreTaskData(model);
+            return Json(opResult);
+        }
+
+
         #endregion
     }
 }

@@ -149,7 +149,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         }
         #endregion
     }
-
     internal class RmaInspectionManageCrud : CrudBase<RmaInspectionManageModel, IRmaInspectionManageRepository>
     {
         public RmaInspectionManageCrud() : base(new RmaInspectionManageRepository(), "检验处理")

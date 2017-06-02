@@ -11,10 +11,11 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
         templateUrl: oAssistantUrlPrefix + 'CollaborateContactLib'
     })
     ///工作任务管理
-    .state('workTaskManage', {
+    $stateProvider.state('workTaskManage', {
         templateUrl: oAssistantUrlPrefix + 'WorkTaskManage'
     });
-})
+    })
+
 .controller('moduleNavCtrl', function ($scope, navDataService, $state) {
     ///模块导航布局视图对象
     var moduleNavLayoutVm = {
