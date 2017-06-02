@@ -27,7 +27,6 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetCollaborateContactDatas(string department, int searchMode, string queryContent)
         {
-            department = "品保部";
             QueryContactDto queryDto = new QueryContactDto()
             {
                 SearchMode = searchMode,
@@ -35,7 +34,7 @@ namespace EicWorkPlatfrom.Controllers
                 QueryContent = queryContent,
                 IsExactQuery = false,
             };
-            var datas = 0; /*ToolOnlineService.ContactManager.GetContactLibDatasBy(queryDto);*/
+            var datas = ToolOnlineService.ContactManager.GetContactLibDatas(queryDto);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]

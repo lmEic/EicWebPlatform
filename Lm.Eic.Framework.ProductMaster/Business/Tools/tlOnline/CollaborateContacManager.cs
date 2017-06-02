@@ -30,6 +30,10 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
             }
 
         }
+        public List<CollaborateContactLibModel> GetContactLibDatas(QueryContactDto queryDto)
+        {
+            return tlOnlineCrudFactorty.ContatCrud.FindBy(queryDto);
+        }
     }
 
 }

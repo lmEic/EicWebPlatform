@@ -82,14 +82,7 @@
             </div>
         </div>
 
-        <dialog ng-if="deleteDialog.open" modal data-close="deleteDialog.close()" style="width:55%">
-            <content dialog-title>
-                <i class="fa fa-pencil-square">删除数据</i>
-            </content>
-            <content dialog-content style="width:90%;">
 
-            </content>
-        </dialog>
 
         <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
             <content dialog-title>
@@ -205,6 +198,14 @@
             </content>
         </dialog>
 
+        <dialog ng-if="deleteDialog.open" data-close="deleteDialog.close()" style="width:55%">
+            <content dialog-title>
+                <i class="fa fa-pencil-square">删除数据</i>
+            </content>
+            <content dialog-content style="width:90%;">
+
+            </content>
+        </dialog>
     </div>
     <div class="panel-footer">
 

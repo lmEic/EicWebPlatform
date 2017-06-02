@@ -248,7 +248,16 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             return irep.Delete(model.Id_Key).ToOpResult_Delete("设备档案");
         }
-
+        /// <summary>
+        /// 更新报费状态
+        /// </summary>
+        /// <param name="assetNumber"></param>
+        /// <param name="isScrapped"></param>
+        /// <returns></returns>
+        public OpResult UpdateIsScrapped(string assetNumber, string isScrapped)
+        {
+            return irep.Update(e => e.AssetNumber== assetNumber, m => new EquipmentModel {IsScrapped= isScrapped }).ToOpResult_Eidt("设备档案");
+        }
         #endregion Store
 
         #region Rule
@@ -607,17 +616,18 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             if (equipment.IsScrapped == "是")
                 return OpResult.SetErrorResult("操作失败！\r\n设备报废为已报废，不能重复报废！");
 
-            //修改设备报废状态
-            equipment.IsScrapped = "是";
-            equipment.OpSign = OpMode.Edit;
-            var equipmentOpResult = EquipmentCrudFactory.EquipmentCrud.Store(equipment);
-            if (!equipmentOpResult.Result)
-                return OpResult.SetErrorResult("修改设备报废状态失败！");
-
             model.DiscardMonth = DateTime.Now.ToString("yyyyMM");
             //存储记录
             model.EquipmentName = equipment.EquipmentName;
             result = irep.Insert(model).ToOpResult_Add(OpContext, model.Id_Key);
+            ///如果存储成功 更新主表
+            if (result.Result)
+            {
+                //修改设备报废状态
+                var equipmentOpResult = EquipmentCrudFactory.EquipmentCrud.UpdateIsScrapped(equipment.AssetNumber,"是");
+                if (!equipmentOpResult.Result)
+                    return OpResult.SetErrorResult("修改设备报废状态失败！");
+            }
             return result;
         }
 
