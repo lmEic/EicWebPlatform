@@ -51,8 +51,34 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
     };
     var initVm = _.clone(uiVm);
 
-    var deleteDialog = $scope.deleteDialog = Object.create(leeDialog);
-    var dialog = $scope.dialog = Object.create(leeDialog);
+    var deleteDialog = $scope.deleteDialog = {
+        title: "消息提示",
+        content: '',
+        //打开关闭标志
+        open: false,
+        //打开窗体
+        show: function () {
+            deleteDialog.open = true;
+        },
+        //关闭窗体
+        close: function () {
+            deleteDialog.open = false;
+        }
+    };
+    var dialog = $scope.dialog = {
+        title: "消息提示",
+        content: '',
+        //打开关闭标志
+        open: false,
+        //打开窗体
+        show: function () {
+            dialog.open = true;
+        },
+        //关闭窗体
+        close: function () {
+            dialog.open = false;
+        }
+    };
     var qryVm = $scope.qryVm = {
         contactPerson: null,
         telephone: null
