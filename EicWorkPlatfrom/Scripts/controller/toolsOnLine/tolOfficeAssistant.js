@@ -67,14 +67,11 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         Id_Key: null
     };
     var initVm = _.clone(uiVm);
-
     var dialog = $scope.dialog = Object.create(leeDialog);
-
     var qryVm = $scope.qryVm = {
         contactPerson: null,
         telephone: null
     };
-
     var vmManager = {
         activeTab: 'initTab',
         init: function () {
