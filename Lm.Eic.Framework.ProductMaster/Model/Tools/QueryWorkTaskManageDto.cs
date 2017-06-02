@@ -44,5 +44,9 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
             get { return _searchMode; }
             set { if (_searchMode != value) { _searchMode = value; } }
         }
+
+        public string QueryContent { get; set; }
+
+        public int IsDelete { get; set; }
     }
 }

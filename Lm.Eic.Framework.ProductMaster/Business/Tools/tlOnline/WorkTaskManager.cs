@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using Lm.Eic.Uti.Common.YleeOOMapper;
-using static Lm.Eic.Framework.ProductMaster.Model.Tools.WorkTaskManageModel;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
@@ -14,21 +13,19 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
     /// </summary>
     public class WorkTaskManager
     {
-        public List<WorkTaskManageModel> GetWorkTaskDatasBy(QueryWorkTaskDto queryDto)
+        public List<WorkTaskManageModel> GetWorkTaskDatasBy(QueryWorkTaskManageDto queryDto)
         {
             try
             {
-                if (queryDto == null) return new DataList<WorkTaskManageModel>();
-                return WorkTaskCrudFactorty.WorkCrud.FindBy(queryDto);
+                if (queryDto == null) return new List<WorkTaskManageModel>();
+                return tlOnlineCrudFactorty.WorkCrud.FindBy(queryDto);
 
                 //_workTaskModelList= WorkTaskCrudFactorty.WorkCrud.FindBy(queryDto);
                 //return _workTaskModelList;
             }
             catch (Exception ex)
             {
-
-                return ex.ExDataList<WorkTaskManageModel>();
-                //throw new Exception(ex.InnerException.Message);
+                throw new Exception(ex.Message);
             }
         }
         /// <summary>
@@ -40,12 +37,10 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         {
             try
             {
-                return WorkTaskCrudFactorty.WorkCrud.Store(model);
-
+                return tlOnlineCrudFactorty.WorkCrud.Store(model);
             }
             catch (System.Exception ex)
             {
-
                 return ex.ExOpResult();
             }
 

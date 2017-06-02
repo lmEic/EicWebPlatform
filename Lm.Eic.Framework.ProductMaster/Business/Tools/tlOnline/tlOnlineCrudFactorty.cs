@@ -11,11 +11,16 @@ using System.Text;
 
 namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
 {
-    internal class CollaborateCrudFactorty
+    internal class tlOnlineCrudFactorty
     {
         internal static CollaborateContatCrud ContatCrud
         {
             get { return OBulider.BuildInstance<CollaborateContatCrud>(); }
+        }
+
+        internal static WorkTaskManageCrud WorkCrud
+        {
+            get { return OBulider.BuildInstance<WorkTaskManageCrud>(); }
         }
     }
 

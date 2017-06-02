@@ -196,55 +196,5 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
             set { _id_key = value; }
             get { return _id_key; }
         }
-        public partial class QueryWorkTaskDto
-        {
-            public string department;
-            public string Department
-            {
-                get { return department; }
-                set { if (department != value) { department = value; } }
-            }
-            int _isDelete = 1;
-            /// <summary>
-            /// 联系人是否失效  1：表示有效， 0：表示无效
-            /// </summary>
-            public int IsDelete
-            {
-                get { return _isDelete; }
-                set { if (_isDelete != value) { _isDelete = value; } }
-            }
-            string queryContent = string.Empty;
-         
-            /// <summary>
-            /// 查询内容
-            /// </summary>
-            public string QueryContent
-            {
-                get { return queryContent; }
-                set { if (queryContent != value) { queryContent = value; } }
-            }
-            /// <summary>
-            /// 是否精确查询
-            /// </summary>
-            bool isExactQuery = false;
-            public bool IsExactQuery
-            {
-                get { return isExactQuery; }
-                set { if (isExactQuery != value) { isExactQuery = value; } }
-            }
-            private int searchMode = 0;
-            /// <summary>
-            /// 搜索模式
-            /// </summary>
-            public int SearchMode
-            {
-                get { return searchMode; }
-                set { if (searchMode != value) { searchMode = value; } }
-            }
-
-
-
-        }
-
     }
 }

@@ -133,7 +133,7 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
 officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssistantDataOpService) {
     ///工作任务管理模型
     var uiVm = $scope.vm = {
-        Department: null,
+        Department: 'EIC',
         SystemName: null,
         ModuleName: null,
         WorkItem: null,
@@ -232,5 +232,5 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         };
     operate.refresh = function () { leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); }); };
 
-    vmManager.loadDatas("1", 0, null, null);
+    vmManager.loadDatas(uiVm.Department, 0, null);
 });

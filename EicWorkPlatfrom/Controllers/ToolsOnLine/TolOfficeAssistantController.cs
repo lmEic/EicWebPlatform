@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline;
 using Lm.Eic.Framework.ProductMaster.Model.Tools;
-using static Lm.Eic.Framework.ProductMaster.Model.Tools.WorkTaskManageModel;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -59,12 +58,11 @@ namespace EicWorkPlatfrom.Controllers
         {
             // var datas = ToolOnlineMockDatas.WorkTaskManageDataSet;
            department = "EIC";
-           QueryWorkTaskDto queryDto = new QueryWorkTaskDto()
+           QueryWorkTaskManageDto queryDto = new QueryWorkTaskManageDto()
             {
                 SearchMode = searchMode,
                 Department = department,
                 QueryContent = queryContent,
-                IsExactQuery = false,
 
             };
             var datas = ToolOnlineService.WorkTaskManage.GetWorkTaskDatasBy(queryDto);

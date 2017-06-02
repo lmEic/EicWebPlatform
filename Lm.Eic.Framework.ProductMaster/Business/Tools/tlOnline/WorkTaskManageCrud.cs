@@ -14,15 +14,12 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
 {
    internal class WorkTaskCrudFactorty
     {
-        internal static WorkTaskCrud WorkCrud
-        {
-            get { return OBulider.BuildInstance<WorkTaskCrud>(); }
-        }
+        
 
     }
-    internal class WorkTaskCrud : CrudBase<WorkTaskManageModel, IWorkTaskRepository>
+    internal class WorkTaskManageCrud : CrudBase<WorkTaskManageModel, IWorkTaskRepository>
     {
-        public WorkTaskCrud() : base(new WorkTaskRepository(), "工作任务列表")
+        public WorkTaskManageCrud() : base(new WorkTaskRepository(), "工作任务列表")
         {
         }
         #region 工作任务Crud操作
@@ -62,12 +59,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         /// </summary>
         /// <param name="queryDto"></param>
         /// <returns></returns>
-        internal List<WorkTaskManageModel> FindBy(QueryWorkTaskDto queryDto)
+        internal List<WorkTaskManageModel> FindBy(QueryWorkTaskManageDto queryDto)
         {          
                 try
                 {
                     if (queryDto.Department == null || queryDto.Department == string.Empty)
                     return new List<WorkTaskManageModel>();
+                queryDto.IsDelete = 0;
                 switch (queryDto.SearchMode)
                 {
                     ///部门
@@ -97,15 +95,12 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
                     ///审核人
                     case 6:
                         return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.CheckPerson.Contains(queryDto.QueryContent)).ToList();
-
-
-
-                    default: return new List<WorkTaskManageModel>() as DataList<WorkTaskManageModel>;
+                    default: return new List<WorkTaskManageModel>();
                 }
             }
             catch (Exception ex)
             {
-                return ex.ExDataList<WorkTaskManageModel>();
+                throw new Exception(ex.Message);
             }
 
             #endregion
