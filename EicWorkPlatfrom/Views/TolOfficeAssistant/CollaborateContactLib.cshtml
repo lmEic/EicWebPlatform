@@ -65,7 +65,7 @@
                                 <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
                                     修改
                                 </button>|
-                                <button class="btn btn-xs btn-primary" ng-click="operate.deleteItem(item)" title="修改">
+                                <button class="btn btn-xs btn-warning" ng-click="operate.deleteItem(item)" title="修改">
                                     删除
                                 </button>
                             </td>
@@ -81,16 +81,6 @@
                 </div>
             </div>
         </div>
-
-        <dialog ng-if="deleteDialog.open" modal data-close="deleteDialog.close()" style="width:55%">
-            <content dialog-title>
-                <i class="fa fa-pencil-square">删除数据</i>
-            </content>
-            <content dialog-content style="width:90%;">
-
-            </content>
-        </dialog>
-
         <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
             <content dialog-title>
                 <i class="fa fa-pencil-square">数据编辑</i>

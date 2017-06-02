@@ -50,8 +50,6 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         Id_Key: null
     };
     var initVm = _.clone(uiVm);
-
-    var deleteDialog = $scope.deleteDialog = Object.create(leeDialog);
     var dialog = $scope.dialog = Object.create(leeDialog);
     var qryVm = $scope.qryVm = {
         contactPerson: null,
@@ -83,6 +81,7 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
             leeHelper.setUserData(uiVm);
             vmManager.loadDatas(uiVm.Department, 2, qryVm.telephone);
         }
+
     };
     $scope.vmManager = vmManager;
 
@@ -97,11 +96,33 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         $scope.vm = uiVm = item;
         dialog.show();
     },
+
+
+
     operate.deleteItem = function (item) {
-        item.OpSign = leeDataHandler.dataOpMode.delete;
         $scope.vm = uiVm = item;
-        deleteDialog.show();
-    },
+        delModal: $modal({
+            title: "删除提示",
+            content: "你确定要删除此数据吗?",
+            templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
+            controller: function ($scope) {
+                $scope.confirmDelete = function () {
+                    oAssistantDataOpService.storeCollaborateContactDatas(uiVm).then(function (opresult) {
+                        leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                            if (opresult.Result || uiVm.Id_key === null) {
+                                leeHelper.remove(vmManager.editDatas, item);
+                                var ds = _.clone(vmManager.dataSource);
+                                leeHelper.remove(ds, vmManager.Item);
+                                vmManager.dataSource = ds;
+                            }
+                            vmManager.delModal.$promise.then(vmManager.delModal.hide);
+                        });
+                    });
+                };
+            },
+            show: false,
+        });
+    };
     operate.saveAll = function (isValid) {
         leeHelper.setUserData(uiVm);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
