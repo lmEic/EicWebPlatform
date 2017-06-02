@@ -173,9 +173,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             if (model == null || model.CertificateFileName == null || model.FilePath == null)
                 return dlfm.Default();
 
-            return dlfm.CreateInstance(model.CertificateFileName,
-                siteRootPath.GetDownLoadFilePath(model.FilePath),
-                model.CertificateFileName.GetDownLoadContentType());
+            return dlfm.CreateInstance
+                (siteRootPath.GetDownLoadFilePath(model.FilePath),
+                model.CertificateFileName.GetDownLoadContentType(),
+                model.CertificateFileName);
         }
         /// <summary>
         /// 生成合格供应商清单
