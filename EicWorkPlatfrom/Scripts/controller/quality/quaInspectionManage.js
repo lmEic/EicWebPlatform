@@ -1106,12 +1106,15 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             show: false,
         }),
         getMasterDatasBy: function (qryField, mode) {
+            vmManager.dataSource = [];
+            vmManager.dataSets = [];
             $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormManageOfIqcDatas(qryField, mode, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
                 if (editDatas.length >= 100) {
                     vmManager.showTips.$promise.then(vmManager.showTips.show);
                 }
                 vmManager.dataSource = editDatas;
                 vmManager.dataSets = editDatas;
+                console.log(editDatas);
                 vmManager.selectedFormStatus = null;
                 vmManager.querySupplierId = null;
                 vmManager.selecteInspectionItem = null;

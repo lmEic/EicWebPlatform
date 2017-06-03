@@ -207,7 +207,7 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
             get { return department; }
             set { if (department != value) { department = value; } }
         }
-        int _isDelete = 1;
+        int _isDelete = 0;
         /// <summary>
         /// 联系人是否失效  1：表示有效， 0：表示无效
         /// </summary>

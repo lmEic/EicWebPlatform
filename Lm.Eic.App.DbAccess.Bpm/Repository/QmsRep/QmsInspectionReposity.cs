@@ -41,8 +41,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
     public interface IIqcInspectionMasterRepository : IRepository<InspectionIqcMasterModel>
     {
         int UpAuditDetailData(string orderId, string materialId, string upAuditData);
-
-
     }
     public class IqcInspectionMasterRepository : BpmRepositoryBase<InspectionIqcMasterModel>, IIqcInspectionMasterRepository
     {
@@ -51,6 +49,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
             string upDetailsql = string.Format("Update   Qms_IqcInspectionDetail   Set  InspectionItemStatus='{0}'  Where OrderId='{1}' and  MaterialId='{2}'", inspectionItemStatus, orderId, materialId);
             return DbHelper.Bpm.ExecuteNonQuery(upDetailsql);
         }
+       
     }
 
     public interface IIqcInspectionDetailRepository : IRepository<InspectionIqcDetailModel> { }
