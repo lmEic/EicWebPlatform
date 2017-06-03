@@ -491,9 +491,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return irep.Update(e => e.ParameterKey == entity.ParameterKey, e => new SupplierGradeInfoModel
             {
                 SecondGradeScore = entity.SecondGradeScore,
+                SecondGradeDate =entity.SecondGradeDate,
                 FirstGradeScore = entity.FirstGradeScore,
                 FirstGradeDate = entity.FirstGradeDate,
-
             }).ToOpResult_Eidt(OpContext);
         }
 
