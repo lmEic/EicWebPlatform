@@ -166,7 +166,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         CustomerShortName: null
     };
 
-    var dialog = $scope.dialog = Object.create(leeDialog);
+    var dialog = $scope.dialog = leePopups.dialog();
 
     var vmManager = {
         init: function () {
@@ -400,7 +400,7 @@ qualityModule.controller('rmaReportQueryCtrl', function ($scope, rmaDataOpServic
     };
     $scope.vmManager = vmManager;
 
-    var dialog = $scope.dialog = Object.create(leeDialog);
+    var dialog = $scope.dialog = leePopups.dialog();
 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;

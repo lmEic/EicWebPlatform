@@ -7,10 +7,9 @@ namespace EicWorkPlatfrom
     {
         static AuthenCheckManager()
         {
-            IsCheck = true;
+            //IsCheck = true;
         }
         private static bool isCheck = false;
-
         /// <summary>
         /// 是否进行权限检测
         /// 在开发测试中，可将此属性设置为false

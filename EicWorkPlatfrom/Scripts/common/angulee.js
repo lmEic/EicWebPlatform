@@ -485,24 +485,24 @@ var leeHelper = (function () {
         }
     };
 })();
-/// 对话框助手
-var leeDialog = (function () {
-    var dialog = {
-        title: "消息提示",
-        content: '',
-        //打开关闭标志
-        open: false,
-        //打开窗体
-        show: function () {
-            dialog.open = true;
-        },
-        //关闭窗体
-        close: function () {
-            dialog.open = false;
+/// 弹出框助手
+var leePopups = (function () {
+    var mmPopup = {
+        ///对话框
+        dialog: function (title, content) {
+            return new myDialog(title, content);
         }
     };
-    return dialog;
+    function myDialog(title, content) {
+        this.open = false;
+        this.title = title;
+        this.content = content;
+    };
+    myDialog.prototype.show = function () { this.open = true; };
+    myDialog.prototype.close = function () { this.open = false; };
+    return mmPopup;
 })();
+
 /// 登陆用户
 var leeLoginUser = (function () {
     var user = {
