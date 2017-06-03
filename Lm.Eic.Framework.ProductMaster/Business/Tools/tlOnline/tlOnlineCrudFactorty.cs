@@ -50,7 +50,12 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         OpResult UpdateIsDelete(CollaborateContactLibModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key,
-                f => new CollaborateContactLibModel { IsDelete = model.IsDelete }).ToOpResult_Delete(OpContext);
+                f => new CollaborateContactLibModel {
+                    IsDelete = 1,
+                    OpDate =model.OpDate ,
+                    OpTime=model.OpTime,
+                    OpPerson =model.OpPerson ,
+                    OpSign =model.OpSign }).ToOpResult_Delete(OpContext);
         }
         #endregion
 

@@ -22,7 +22,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         {
             try
             {
-                return tlOnlineCrudFactorty.ContatCrud.Store(model);
+                return tlOnlineCrudFactorty.ContatCrud.Store(model,true);
             }
             catch (System.Exception ex)
             {

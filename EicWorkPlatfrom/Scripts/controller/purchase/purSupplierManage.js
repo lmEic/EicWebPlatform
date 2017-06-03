@@ -562,7 +562,6 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
             console.log(item.SupplierId);
             supplierDataOpService.getPurSupGradeInfoList(item.SupplierId, vmManager.yearQuarter).then(function (datas) {
                 vmManager.supGradeInfoEditDatas = datas;
-                console.log(datas);
                 dialog.show();
             });
         },

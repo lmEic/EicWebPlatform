@@ -91,18 +91,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private List<InspectionIqcMasterModel> GetERPOrderAndMaterialBy(DateTime startTime, DateTime endTime)
         {
             List<InspectionIqcMasterModel> retrunList = new List<InspectionIqcMasterModel>();
+            InspectionIqcMasterModel model = null;
             var OrderIdList = GetOrderIdList(startTime, endTime);
             if (OrderIdList == null || OrderIdList.Count <= 0) return retrunList;
             OrderIdList.ForEach(e =>
             {
                 if (InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(e.OrderID, e.ProductID))
-                {
-                    retrunList.Add(InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(e.OrderID, e.ProductID));
-                }
-                else
-                {
-                    retrunList.Add(MaterialModelToInspectionIqcMasterModel(e));
-                }
+                    model = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(e.OrderID, e.ProductID);
+                else model = MaterialModelToInspectionIqcMasterModel(e);
+                if (!retrunList.Contains(model)&&model !=null )
+                    retrunList.Add(model);
             });
             return retrunList;
         }
@@ -143,7 +141,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionResult = string.Empty,
                 InspectionItems = "还没有抽检",
                 InspectionMode = "正常"
-            }) : new InspectionIqcMasterModel();
+            }) : null;
         }
         private List<MaterialModel> GetOrderIdList(DateTime starDate, DateTime endDate)
         {
