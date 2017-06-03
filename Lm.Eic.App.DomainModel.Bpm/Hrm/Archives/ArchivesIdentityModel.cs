@@ -599,6 +599,17 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             get { return _classtype; }
         }
 
+        private string _workplace;
+
+        /// <summary>
+        ///工作地
+        /// </summary>
+        public string WorkPlace
+        {
+            set { _workplace = value; }
+            get { return _workplace; }
+        }
+
         private string _opperson;
 
         /// <summary>
@@ -1824,7 +1835,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
             get { return _classtype; }
         }
 
-        private byte[] _personalpicture=null ;
+        private byte[] _personalpicture = null;
 
         /// <summary>
         ///照片
@@ -1837,7 +1848,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Archives
 
         public string PersonImageUrl
         {
-            get 
+            get
             {
                 return "data:image/jpg;base64," + (this.PersonalPicture != null ? Convert.ToBase64String(this.PersonalPicture) : "");
             }

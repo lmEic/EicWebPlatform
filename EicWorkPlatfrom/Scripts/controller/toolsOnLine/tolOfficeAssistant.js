@@ -39,7 +39,7 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
             model: model
         });
     };
- 
+
     return oAssistant;
 });
 ///名片夹控制器
@@ -68,6 +68,7 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
     };
     var initVm = _.clone(uiVm);
     var dialog = $scope.dialog = Object.create(leeDialog);
+
     var qryVm = $scope.qryVm = {
         contactPerson: null,
         telephone: null
@@ -146,7 +147,7 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         ProgressDescription: null,
         OrderPerson: null,
         CheckPerson: null,
-        Remark: null,      
+        Remark: null,
         OpPerson: null,
         OpDate: null,
         OpTime: null,
@@ -167,7 +168,7 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
             uiVm.OpSign = leeDataHandler.dataOpMode.add;
             $scope.vm = uiVm;
         },
-        dataSource:[],
+        dataSource: [],
         editDatas: [],
         //载入信息
         loadDatas: function (department, searchMode, queryContent) {
@@ -176,7 +177,7 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
             $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(department, searchMode, queryContent).then(function (datas) {
                 if (angular.isArray(datas))
                     vmManager.editDatas = datas;
-                    vmManager.dataSource = datas;
+                vmManager.dataSource = datas;
             });
         },
         //按系统名查询
@@ -204,32 +205,32 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         $scope.vm = uiVm = item;
         dialog.show();
     },
-        //删除
+    //删除
         operate.deleteItem = function (item) {
-        item.OpSign = leeDataHandler.dataOpMode.delete;
-        $scope.vm = uiVm = item;
-        deleteDialog.show();
+            item.OpSign = leeDataHandler.dataOpMode.delete;
+            $scope.vm = uiVm = item;
+            deleteDialog.show();
 
         };
     //保存
     operate.saveAll = function (isValid) {
-            leeHelper.setUserData(uiVm);
-            leeDataHandler.dataOperate.add(operate, isValid, function () {
-                oAssistantDataOpService.storeWorkTaskManageDatas(uiVm).then(function (opresult) {
-                    leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                        if (opresult.Result) {
-                            var dataItem = _.clone(uiVm);
-                            dataItem.Id_Key = opresult.Id_Key;
-                            if (dataItem.OpSign === leeDataHandler.dataOpMode.add) {
-                                vmManager.editDatas.push(dataItem);
-                            }
-                            vmManager.init();
-                            dialog.close();
+        leeHelper.setUserData(uiVm);
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            oAssistantDataOpService.storeWorkTaskManageDatas(uiVm).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    if (opresult.Result) {
+                        var dataItem = _.clone(uiVm);
+                        dataItem.Id_Key = opresult.Id_Key;
+                        if (dataItem.OpSign === leeDataHandler.dataOpMode.add) {
+                            vmManager.editDatas.push(dataItem);
                         }
-                    })
+                        vmManager.init();
+                        dialog.close();
+                    }
                 })
             })
-        };
+        })
+    };
     operate.refresh = function () { leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); }); };
 
     vmManager.loadDatas(uiVm.Department, 0, null);
