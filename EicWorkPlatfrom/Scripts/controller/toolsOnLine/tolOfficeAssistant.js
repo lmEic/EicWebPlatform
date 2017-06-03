@@ -69,24 +69,8 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
     };
     var initVm = _.clone(uiVm);
 
-    var deleteDialog = $scope.deleteDialog = (function (item) {
-        var dialog = {
-            title: "删除警告提示",
-            content: '',
-            //打开关闭标志
-            open: false,
-            //打开窗体
-            show: function () {
-                dialog.open = true;
-            },
-            //关闭窗体
-            close: function () {
-                dialog.open = false;
-            }
-        };
-        return dialog;
-    })();
-    var dialog = $scope.dialog = Object.create(leeDialog);
+    var deleteDialog = $scope.deleteDialog = leePopups.dialog("删除提示", "删除后数据将不存在，你确定要删除吗？");
+    var dialog = $scope.dialog = leePopups.dialog();
 
     var qryVm = $scope.qryVm = {
         contactPerson: null,
@@ -138,8 +122,7 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         deleteDialog.show();
     };
     ///取消删除
-    operate.cancelDelete = function (isValid)
-    {
+    operate.cancelDelete = function (isValid) {
         deleteDialog.close();
     };
     ///确认删除
@@ -149,15 +132,15 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         uiVm.OpSign = leeDataHandler.dataOpMode.delete;
         leeHelper.setUserData(uiVm);
         oAssistantDataOpService.storeCollaborateContactDatas(uiVm).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                    if (opresult.Result) {
-                        leeHelper.remove(ds, deleteItem);
-                        console.log(ds);
-                        vmManager.editDatas = ds;
-                        deleteDialog.close();
-                    }
-                })
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                if (opresult.Result) {
+                    leeHelper.remove(ds, deleteItem);
+                    console.log(ds);
+                    vmManager.editDatas = ds;
+                    deleteDialog.close();
+                }
             })
+        })
     };
     ///保存联系人
     operate.saveAll = function (isValid) {
@@ -210,7 +193,7 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         Id_Key: null
     };
     var initVm = _.clone(uiVm);
-    var dialog = $scope.dialog = Object.create(leeDialog);
+    var dialog = $scope.dialog = leePopups.dialog();
     var qryVm = $scope.qryVm = {
         systemName: null,
         moduleName: null

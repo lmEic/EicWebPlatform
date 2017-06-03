@@ -541,8 +541,7 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
     };
     var uiVm = $scope.vm;
     var operate = Object.create(leeDataHandler.operateStatus);
-    var dialog = $scope.dialog = Object.create(leeDialog);
-    var editDialog = $scope.editDialog = Object.create(leeDialog);
+    var dialog = $scope.dialog = leePopups.dialog();
     $scope.operate = operate;
     operate.saveAll = function (isValid) { };
     operate.refresh = function () { };
