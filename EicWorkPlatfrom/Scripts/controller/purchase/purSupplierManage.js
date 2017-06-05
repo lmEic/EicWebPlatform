@@ -531,6 +531,7 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
         FirstGradeScore: null,
         FirstGradeDate: null,
         SecondGradeScore: null,
+        SecondGradeDate: null,
         GradeYear: null,
         OpPerson: null,
         OpSign: null,
