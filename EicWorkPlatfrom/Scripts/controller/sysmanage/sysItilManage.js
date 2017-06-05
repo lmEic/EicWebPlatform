@@ -41,7 +41,12 @@ smModule.factory('sysitilService', function (ajaxService) {
         return ajaxService.getData(url, {
         });
     };
-
+    ///保存  通知地址配置 
+    itil.storeItilNotifyAddress = function () {
+        var url = urlPrefix + 'StoreItilNotifyAddress';
+        return ajaxService.getData(url, {
+        });
+    };
     return itil;
 });
 smModule.controller('supTelManageCtrl', function ($scope, $modal, sysitilService) {
@@ -216,6 +221,76 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
     };
 });
 //消息通知模块控制器
-smModule.controller('itilMessageNotifyManageCtrl', function ($scope, sysitilService) {
+smModule.controller('itilNotifyAddressManageCtrl', function ($scope, sysitilService) {
+    ///视图模型
+    ///通知邮件配置 
+    var uiVm = {
+        ModuleName: "通知邮件配置 ",
+        BusinessName: "通知邮件配置",
+        TransactionName: "通知邮件配置 ",
+        EmailList: "通知邮件配置 ",
+        TelMessageList: "通知邮件配置 ",
+        MicroMessageList: "通知邮件配置 ",
+        NotifyMode: 1,
+        OpStatus: "完成",
+        OpPerson: null,
+        OpDate: null,
+        OpTime: null,
+        OpSign: 'add',
+        Id_Key: 0,
+    }
 
+    $scope.vm = uiVm;
+
+    var originalVM = _.clone(uiVm);
+
+    var queryFields = {
+        selectedProgressStatuses: [],
+        functionName: null
+    };
+    $scope.query = queryFields;
+
+    var vmManager = {
+        activeTab: 'initTab',
+        isLocal: true,
+        init: function () {
+          
+        },
+        OpStatus: [{ name: '完成', text: '完成' }, { name: '进行中', text: '进行中' }, { name: '未完成', text: '未完成' }],
+        datasource: [],
+        datasets: [],
+        searchBy: function () {
+            vmManager.isUpdate = true;
+            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses, queryFields.functionName, 2).then(function (datas) {
+                vmManager.developModules = datas;
+            });
+        },
+        getDevelopModules: function () {
+            vmManager.datasets = [];
+            vmManager.datasource = [];
+            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses, queryFields.functionName, 1).then(function (datas) {
+                vmManager.datasource = datas;
+            });
+        },
+        showDetailsBoard: false,//显示明细面板
+        editModal: null,
+        functionName: null,
+      
+    };
+    $scope.vmManager = vmManager;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveAll = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            sysitilService.storeItilNotifyAddress().then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                   
+                });
+            });
+        });
+    };
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+        });
+    };
 });
