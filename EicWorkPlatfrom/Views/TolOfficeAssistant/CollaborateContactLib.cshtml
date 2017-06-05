@@ -196,21 +196,15 @@
             </content>
         </dialog>
         @* 删除联系人 dialog *@
-        <dialog ng-if="deleteDialog.open" data-close="deleteDialog.close()" style="width:45%">
+        <dialog ng-if="deleteDialog.open" modal data-close="deleteDialog.close()" style="width:45%">
             <content dialog-title>
-                <span style="background:red;"><i class="fa fa-bell">{{deleteDialog.title}}</i></span>
+                <span><i class="fa fa-bell">{{deleteDialog.title}}</i></span>
             </content>
-            <content dialog-content style="width:40%;">
+            <content dialog-content style="width:42%;">
                 {{deleteDialog.content}}
-                @*<div class="form-group">
-                        <label class="col-md-4 control-label">删除联系人:</label>
-                        <input type="text" ng-model="vm.ContactPerson" readonly />
-                        <button class="btn btn-warning" ng-click="operate.confirmDelete(formCollaborateContact.$valid)"><i class="fa am-fade-remove"></i>确认删除</button>
-                        <button class="btn btn-primary" ng-click="operate.cancelDelete(formCollaborateContact.$valid)"><i class="fa fa-undo"></i>取消删除</button>
-                    </div>*@
             </content>
             <content dialog-buttons>
-                <button class="btn btn-primary" autofocus>确定</button>
+                <button class="btn btn-primary" autofocus ng-click="operate.deleteConfirm()">确定</button>
                 <button class="btn btn-default" ng-click="deleteDialog.close()">取消</button>
             </content>
         </dialog>
