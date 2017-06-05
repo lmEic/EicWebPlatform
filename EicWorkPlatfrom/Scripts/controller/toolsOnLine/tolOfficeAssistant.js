@@ -22,14 +22,14 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
             model: model,
         });
     };
-
-    ///获取工作任务数据
-    oAssistant.getWorkTaskManageDatas = function (department, searchMode, queryContent) {
+    ///查询工作任务数据
+    oAssistant.getWorkTaskManageDatas = function (department, systemName, moduleName, mode) {
         var url = oaUrlPrefix + 'GetWorkTaskManageDatas';
         return ajaxService.getData(url, {
             department: department,
-            searchMode: searchMode,
-            queryContent: queryContent
+            systemName: systemName,
+            moduleName: moduleName,
+            mode: mode
         });
     };
     ///存储工作任务数据
@@ -133,7 +133,7 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
 officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssistantDataOpService) {
     ///工作任务管理模型
     var uiVm = $scope.vm = {
-        Department: 'EIC',
+        Department: null,
         SystemName: null,
         ModuleName: null,
         WorkItem: null,
@@ -155,12 +155,14 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
     };
     var initVm = _.clone(uiVm);
     var dialog = $scope.dialog = Object.create(leeDialog);
+    ///定义查询字段
     var qryVm = $scope.qryVm = {
+        department:null,
         systemName: null,
         moduleName: null
     };
-    var vmManager = {
-        activeTab: 'initTab',
+  
+    var vmManager = {       
         init: function () {
             uiVm = _.clone(initVm);
             leeHelper.setUserData(uiVm)
@@ -169,6 +171,8 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         },
         dataSource:[],
         editDatas: [],
+        searchDataset: [],
+        storeDataset:[],
         //载入信息
         loadDatas: function (department, searchMode, queryContent) {
             vmManager.editDatas = [];
@@ -179,16 +183,18 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
                     vmManager.dataSource = datas;
             });
         },
-        //按系统名查询
-        getDatasBySystemName: function () {
-            leeHelper.setUserData(uiVm);
-            vmManager.loadDatas(uiVm.Department, 1, qryVm.systemName);
+        searchBy: function () {
+            $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(qryVm.department,qryVm.systemName,qryVm.moduleName, 1).then(function (datas) {
+                vmManager.storeDataset = datas;
+            });
         },
-        //按模块名查询
-        getDatasByModuleName: function () {
-            leeHelper.setUserData(uiVm);
-            vmManager.loadDatas(uiVm.Department, 2, qryVm.moduleName);
-        }
+        
+        //按分类查询
+        getDatasByName: function (mode) {
+            oAssistantDataOpService.getWorkTaskManageDatas(qryVm.department,qryVm.systemName,qryVm.moduleName, mode).then(function (datas) {
+                vmManager.searchDataset = datas;
+            });
+        },       
     };
     //新增
     $scope.vmManager = vmManager;
@@ -232,5 +238,5 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         };
     operate.refresh = function () { leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); }); };
 
-    vmManager.loadDatas(uiVm.Department, 0, null);
+   // vmManager.loadDatas(uiVm.Department, 0, null);
 });
