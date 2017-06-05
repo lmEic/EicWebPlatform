@@ -44,10 +44,11 @@ namespace EicWorkPlatfrom
                 //HR
                 //Purchase
                 //Quality
+                //ToolsOnLine
                 routes.MapRoute(
                              name: "Default",
                              url: "{controller}/{action}/{id}",
-                             defaults: new { controller = "ToolsOnLine", action = "Index", id = UrlParameter.Optional }
+                             defaults: new { controller = "Purchase", action = "Index", id = UrlParameter.Optional }
                          );
             }
         }

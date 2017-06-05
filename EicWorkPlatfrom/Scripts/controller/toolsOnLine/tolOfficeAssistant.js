@@ -129,19 +129,19 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
     operate.confirmDelete = function (isValid) {
         var deleteItem = _.clone(uiVm);
         var ds = _.clone(vmManager.editDatas);
-        leeHelper.remove(ds, deleteItem);
-        vmManager.editDatas = ds;
-        //uiVm.OpSign = leeDataHandler.dataOpMode.delete;
-        //leeHelper.setUserData(uiVm);
-        //oAssistantDataOpService.storeCollaborateContactDatas(uiVm).then(function (opresult) {
-        //    leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-        //        if (opresult.Result) {
-        //            leeHelper.remove(ds, deleteItem);
-        //            vmManager.editDatas = ds;
-        //            deleteDialog.close();
-        //        }
-        //    })
-        //})
+        //leeHelper.remove(ds, deleteItem);
+        //vmManager.editDatas = ds;
+        uiVm.OpSign = leeDataHandler.dataOpMode.delete;
+        leeHelper.setUserData(uiVm);
+        oAssistantDataOpService.storeCollaborateContactDatas(uiVm).then(function (opresult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                if (opresult.Result) {
+                    leeHelper.remove(ds, deleteItem);
+                    vmManager.editDatas = ds;
+                    deleteDialog.close();
+                }
+            })
+        })
     };
     ///保存联系人
     operate.saveAll = function (isValid) {
