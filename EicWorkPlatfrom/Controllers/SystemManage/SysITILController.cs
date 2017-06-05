@@ -17,7 +17,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+        #region ItilProjectDevelopManage
         public ActionResult ItilProjectDevelopManage()
         {
             return View();
@@ -70,6 +70,23 @@ namespace EicWorkPlatfrom.Controllers
             var datas = ItilService.ItilDevelopModuleManager.GetChangeRecordListBy(entity);
             return DateJsonResult(datas);
         }
+        #endregion
+
+        #region ItilMessageNotifyManage
+        public ActionResult ItilMessageNotifyManage()
+        {
+            return View();
+        }
+        #endregion
+
+
+        #region ItilEmailManage
+        public ActionResult ItilEmailManage()
+        {
+            return View();
+        }
+        #endregion
+
         /// <summary>
         /// 发送邮件通知
         /// </summary>

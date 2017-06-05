@@ -215,3 +215,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
         });
     };
 });
+//消息通知模块控制器
+smModule.controller('itilMessageNotifyManageCtrl', function ($scope, sysitilService) {
+
+});

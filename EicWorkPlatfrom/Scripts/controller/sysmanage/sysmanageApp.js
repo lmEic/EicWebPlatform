@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
-angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
+angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'pageslide-directive', 'angular-popups'])
 
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
@@ -45,13 +45,20 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
        //供应商管理
     .state('itilSupTelManage', {
         templateUrl: itilUrlPrefix + 'ItilSupTelManage'
-    })//项目开发管理
+    })
+    //项目开发管理
     .state('itilProjectDevelopManage', {
         templateUrl: itilUrlPrefix + 'ItilProjectDevelopManage'
     })
-    .state('proClassManage', {
-        templateUrl: 'ProEmployee/ProClassManage'
-    }).state('workHoursManage', {
+    //消息通知模块管理
+    .state('itilMessageNotifyManage', {
+        templateUrl: itilUrlPrefix + 'ItilMessageNotifyManage'
+    })
+    //邮箱配置管理
+    .state('itilEmailManage', {
+        templateUrl: itilUrlPrefix + 'ItilEmailManage'
+    })
+    .state('workHoursManage', {
         templateUrl: 'ProEmployee/WorkHoursManage'
     });
     ////--------------基本配置管理--------------------------
