@@ -1353,6 +1353,8 @@
     <Content Include="Views\ToolsOnLine\Index.cshtml" />
     <Content Include="Views\TolOfficeAssistant\WorkTaskManage.cshtml" />
     <Content Include="Views\QuaRmaManage\RmaReportQuery.cshtml" />
+    <Content Include="Views\SysITIL\ItilMessageNotifyManage.cshtml" />
+    <Content Include="Views\SysITIL\ItilEmailManage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

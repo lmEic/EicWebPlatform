@@ -170,7 +170,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal InspectionIqcMasterModel GetIqcInspectionMasterDatasBy(string orderId, string materialId)
         {
-            return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.MaterialId == materialId);
+            
+            return irep.FirstOfDefault(e => e.OrderId == orderId && e.MaterialId == materialId);
         }
         internal bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
         {
@@ -196,6 +197,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             DateTime starttime = startTime.ToDate();
             DateTime endtime = endTime.ToDate();
+            if (starttime== endtime)
+             return irep.Entities.Where(e => e.MaterialInDate == starttime ).OrderBy(e => e.MaterialInDate).ToList(); 
             return irep.Entities.Where(e => e.MaterialInDate >= starttime && e.MaterialInDate <= endtime).OrderBy(e => e.MaterialInDate).ToList();
         }
     }

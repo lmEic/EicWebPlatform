@@ -12,12 +12,12 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+      
         public ActionResult ItilSupTelManage()
         {
             return View();
         }
-
+        #region ItilProjectDevelopManage
         public ActionResult ItilProjectDevelopManage()
         {
             return View();
@@ -70,6 +70,21 @@ namespace EicWorkPlatfrom.Controllers
             var datas = ItilService.ItilDevelopModuleManager.GetChangeRecordListBy(entity);
             return DateJsonResult(datas);
         }
+        #endregion
+
+        #region ItilMessageNotifyManage
+        public ActionResult ItilMessageNotifyManage()
+        {
+            return View();
+        }
+        #endregion
+
+
+        #region ItilEmailManage
+        public ActionResult ItilEmailManage()
+        {
+            return View();
+        }
         /// <summary>
         /// 发送邮件通知
         /// </summary>
@@ -80,5 +95,24 @@ namespace EicWorkPlatfrom.Controllers
             var result = 0;/*ItilService.ItilDevelopModuleManager.SendMail();*/
             return Json(result);
         }
+        #endregion
+
+        #region  NotifyAddress  通知地址
+
+        public ActionResult FormNotifyManage()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 保存数据
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult StoreitilNotifyAddress()
+        {
+            var result = 0;
+            return Json(result);
+        }
+        #endregion 
     }
 }

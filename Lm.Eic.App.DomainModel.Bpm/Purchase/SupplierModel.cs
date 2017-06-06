@@ -8,11 +8,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
 
 
     #region   映射到数据库模型
-
     /// <summary>
     /// 供应商合格证书
     /// SuppliersQualifiedCertificate
     /// </summary>
+    [Serializable]
     public class SupplierQualifiedCertificateModel
     {
         #region Model
@@ -126,7 +126,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         #endregion Model
     }
-
     /// <summary>
     ///供应商信息Model
     /// </summary>
@@ -322,8 +321,11 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     /// 季度审查总览表
     /// SuppliersSeasonAuditTable
     /// </summary>
+    [Serializable]
     public class SupplierSeasonAuditModel
     {
+        public SupplierSeasonAuditModel()
+        { }
         #region Model
         private string _supplierid;
         /// <summary>
@@ -528,8 +530,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     /// <summary>
     ///品质考核——实地辅导计划/执行表
     /// </summary>
+    [Serializable]
     public class SupplierSeasonTutorModel
     {
+        public SupplierSeasonTutorModel() { }
         #region Model
         private string _supplierid;
         /// <summary>
@@ -786,14 +790,17 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         #endregion Model
     }
     /// <summary>
-    /// 供应商自评复评明细表 
+    ///供应商稽核自评复评明细表 
     /// </summary>
-    public class SupplierGradeInfoModel
+    [Serializable]
+    public partial class SupplierGradeInfoModel
     {
+        public SupplierGradeInfoModel()
+        { }
         #region Model
         private string _supplierid;
         /// <summary>
-        ///供应商编号
+        ///供应商ID
         /// </summary>
         public string SupplierId
         {
@@ -811,7 +818,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _supplierproperty;
         /// <summary>
-        ///供应商类别
+        ///供应商属性
         /// </summary>
         public string SupplierProperty
         {
@@ -820,7 +827,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _purchasetype;
         /// <summary>
-        ///采购类别
+        ///供应商类型
         /// </summary>
         public string PurchaseType
         {
@@ -829,16 +836,25 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _purchasematerial;
         /// <summary>
-        ///采购料件
+        ///采购物料
         /// </summary>
         public string PurchaseMaterial
         {
             set { _purchasematerial = value; }
             get { return _purchasematerial; }
         }
+        private string _parameterkey;
+        /// <summary>
+        ///关键字段
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterkey = value; }
+            get { return _parameterkey; }
+        }
         private DateTime _lastpurchasedate;
         /// <summary>
-        ///上次采购日期
+        ///最后一次采购时间
         /// </summary>
         public DateTime LastPurchaseDate
         {
@@ -847,7 +863,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _supgradetype;
         /// <summary>
-        ///评分类别
+        ///供应商稽核类型
         /// </summary>
         public string SupGradeType
         {
@@ -856,7 +872,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private double _firstgradescore;
         /// <summary>
-        ///首评分数
+        ///第一次评分
         /// </summary>
         public double FirstGradeScore
         {
@@ -865,7 +881,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private DateTime _firstgradedate;
         /// <summary>
-        ///首评日期
+        ///第一次评分日期
         /// </summary>
         public DateTime FirstGradeDate
         {
@@ -874,25 +890,25 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private double _secondgradescore;
         /// <summary>
-        ///复评分数
+        ///第二次平分
         /// </summary>
         public double SecondGradeScore
         {
             set { _secondgradescore = value; }
             get { return _secondgradescore; }
         }
-        private string _parameterkey;
+        private DateTime _secondgradedate;
         /// <summary>
-        ///关建字
+        ///第二次平分日期
         /// </summary>
-        public string ParameterKey
+        public DateTime SecondGradeDate
         {
-            set { _parameterkey = value; }
-            get { return _parameterkey; }
+            set { _secondgradedate = value; }
+            get { return _secondgradedate; }
         }
         private string _gradeyear;
         /// <summary>
-        ///评估年限
+        ///年份
         /// </summary>
         public string GradeYear
         {
@@ -910,7 +926,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         private string _opsign;
         /// <summary>
-        ///操作标志
+        ///操作标识
         /// </summary>
         public string OpSign
         {
@@ -935,14 +951,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _optime = value; }
             get { return _optime; }
         }
-        private decimal _id_Key;
+        private decimal _id_key;
         /// <summary>
         ///自增键
         /// </summary>
         public decimal Id_Key
         {
-            set { _id_Key = value; }
-            get { return _id_Key; }
+            set { _id_key = value; }
+            get { return _id_key; }
         }
         #endregion Model
     }
@@ -1053,7 +1069,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         /// </summary>
         public decimal Id_Key { get; set; }
         #endregion Model
-
     }
 
 
@@ -1328,6 +1343,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
     }
 
     #endregion
+    /// <summary>
+    /// 最近采购日期
+    /// </summary>
     public class SupplierLatestTwoPurchaseCell
     {
         private string _purchaseuser;
@@ -1339,6 +1357,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _purchaseuser = value; }
             get { return _purchaseuser; }
         }
+
         private DateTime _upperpurchasedate;
         /// <summary>
         ///上次采购时间
@@ -1348,6 +1367,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _upperpurchasedate = value; }
             get { return _upperpurchasedate; }
         }
+
         private DateTime _lastpurchasedate;
         /// <summary>
         ///最近采购时间

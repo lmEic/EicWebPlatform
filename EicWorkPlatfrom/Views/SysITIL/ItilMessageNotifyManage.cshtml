@@ -1,0 +1,146 @@
+﻿
+<div class="panel panel-default" ng-controller="itilNotifyAddressManageCtrl">
+ @* 标题 *@
+       <div class="panel-heading">
+        <h6 class="panel-title">
+            消息通知模块管理
+        </h6>
+    </div>
+  @* Body *@
+      <div class="panel-body" cg-busy="{promise:promise}">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="well">
+                        <form role="form" name="formNotifyManage" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                            @* 模块名称 *@
+                            <div class="form-group">
+                                <label for="moduleName" class="col-md-2 control-label">模块名称</label>
+                                <div class="col-md-8">
+                                    <input name="moduleName" class="form-control" ng-model="vm.ModuleName" required />
+                                    <div class="error-messages" ng-messages="formDevelopModuleManage.moduleName.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">模块名称不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            @* 业务类名称/事务名称名称 *@
+                            <div class="form-group">
+                                <label for="businessName" class="col-md-2 control-label">业务类名称</label>
+                                <div class="col-md-4">
+                                    <input name="businessName" class="form-control" ng-model="vm.BusinessName" required />
+                                    <div class="error-messages" ng-messages="formDevelopModuleManage.mClassName.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">业务类名称不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="transactionName" class="col-md-2 control-label">事务名称名称</label>
+                                <div class="col-md-4">
+                                    <input name="transactionName" class="form-control" ng-model="vm.TransactionName" required />
+                                    <div class="error-messages" ng-messages="formDevelopModuleManage.mFunctionName.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">事务名称名称不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            @* 邮箱列表 *@
+                            <div class="form-group">
+                                <label for="emailList" class="col-md-2 control-label">邮箱列表</label>
+                                <div class="col-md-10">
+                                    <textarea name="emailList" rows="2" class="form-control" ng-model="vm.EmailList" required />
+                                    <div class="error-messages" ng-messages="formDevelopModuleManage.functionDescription.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">功能描述不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            @* 联系人消息列表 *@
+                            <div class="form-group">
+                                <label for="telMessageList" class="col-md-2 control-label">联系人消息列表</label>
+                                <div class="col-md-10">
+                                    <textarea name="telMessageList" rows="2" class="form-control" ng-model="vm.TelMessageList" required />
+                                    <div class="error-messages" ng-messages="formDevelopModuleManage.functionDescription.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">功能描述不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            @* 微信号列表 *@
+                            <div class="form-group">
+                                <label for="microMessageList" class="col-md-2 control-label">微信号列表</label>
+                                <div class="col-md-10">
+                                    <textarea name="microMessageList" rows="2" class="form-control" ng-model="vm.MicroMessageList" required />
+                                    <div class="error-messages" ng-messages="formDevelopModuleManage.functionDescription.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">功能描述不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            @* 通知模式 /操作状态*@
+                            <div class="form-group">
+                                <label for="difficultyCoefficient" class="col-md-2 control-label">通知模式</label>
+                                <div class="col-md-4">
+                                    <input name="notifyModet" type="number" max="5" min="1" class="form-control" ng-model="vm.NotifyMode" required />
+                                    <div class="error-messages" ng-messages="formDevelopModuleManage.difficultyCoefficient.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">通知模式不能为空</small>
+                                    </div>
+                                </div>
+                                <label for="devPriority" class="col-md-2 control-label">操作状态</label>
+                                <div class="col-md-4">
+                                    <input name="opStatus" type="text"  class="form-control"  ng-model="vm.OpStatus" required />
+                                    <button>
+
+                                    </button>
+                                    <div class="error-messages" ng-messages="formDevelopModuleManage.devPriority.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">操作状态不能为空</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            @* 保存/ 取消 *@
+                            <div class="alert alert-info">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-10">
+                                        <button class="btn btn-primary" ng-click="operate.saveAll(formNotifyManage.$valid)"><i class="fa fa-save"></i>保存</button>
+                                        <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                        <span yl-operatemsg-board></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                @* 本地 远程查询 *@
+                <div class="col-md-4">
+                    <ul class="list-group">
+                        <li class="list-group-item active">
+                            <form class="form-inline" novalidate>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-btn">
+                                            <button type="button" ng-class="vmManager.isLocal===false?'btn btn-warning':'btn btn-success'"
+                                                    ng-model="vmManager.isLocal" bs-checkbox>
+                                                <i ng-class="vmManager.isLocal===false?'fa fa-toggle-off':'fa fa-toggle-on'"></i>
+                                                <span ng-show="vmManager.isLocal===false">远程</span>
+                                                <span ng-show="vmManager.isLocal">本地</span>
+                                            </button>
+                                        </div>
+                                        <input type="text" class="form-control" ng-model="query.functionName" placeholder="输入函数名称" />
+                                        <div class="input-group-btn" ng-show="!vmManager.isLocal">
+                                            <button class="btn btn-success" ng-click="vmManager.searchBy()"><i class="fa fa-search"></i>查询</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                        <li class="list-group-item" ng-click="vmManager.selectDevelopModule(item)" cg-busy="{promise:searchPromise}"
+                            ng-repeat="item in vmManager.developModules|filter:query.functionName track by $index">
+                            <h5>
+                                <span class="label label-default" style="cursor:pointer">{{item.ModuleName}}</span>
+                                <span class="label label-primary">{{item.BusinessName}}</span>
+                                <span class="label label-default">{{item.TransactionName}}</span>
+                            </h5>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    </div>
+  @* Foot *@
+    <div class="panel-footer">
+    </div>
+</div>
