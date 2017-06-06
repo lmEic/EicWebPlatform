@@ -45,9 +45,9 @@
                             <col width="50" />
                             <col width="50" />
                             <col width="100" />
-                            <col width="100" />
-                            <col width="100" />
-                            <col width="100" />
+                            <col width="180" />
+                            <col width="200" />
+                            <col width="300" />
                             <col width="100" />
                             <col width="100" />
                             <col width="100" />
@@ -102,12 +102,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    @* 分页显示 *@
-                    <div ng-if="vmManager.dataSource.length>0"
-                         yl-pagination
-                         data-dataset="vmManager.editDatas"
-                         data-datasource="vmManager.dataSource">
-                    </div>
+                
                 </div>           
         </div>
         <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:85%">
@@ -142,29 +137,22 @@
                                     <small ng-message="required">具体功能不能为空</small>
                                 </div>
                             </div>
-                            <label for="workDescription" class="col-md-2 control-label">功能描述</label>
-                            <div class="col-md-4">
-                                <input name="workDescription" placeholder="必填" class="form-control" ng-model="vm.WorkDescription" required />
-                                <div class="error-messages" ng-messages="formWorkTaskManager.workDescription.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">功能描述不能为空</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="department" class="col-md-2 control-label">部门</label>
-                            <div class="col-md-4">
-                                <input name="department" placeholder="必填" class="form-control" ng-model="vm.Department" required />
-                                <div class="error-messages" ng-messages="formWorkTaskManager.department.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">部门不能为空</small>
-                                </div>
-                            </div>
                             <label for="difficultyCoefficient" class="col-md-2 control-label">难度系数</label>
                             <div class="col-md-4">
-                                <input name="difficultyCoefficient" placeholder="必填" class="form-control" ng-model="vm.DifficultyCoefficient" required />
+                                <input type="number" max="5" min="1" name="difficultyCoefficient" placeholder="必填" class="form-control" ng-model="vm.DifficultyCoefficient" required />
                                 <div class="error-messages" ng-messages="formWorkTaskManager.difficultyCoefficient.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">难度系数不能为空</small>
                                 </div>
+                            </div> 
+
+                        </div>
+
+                        <div class="form-group">                         
+                            <label for="workDescription" class="col-md-2 control-label">功能描述</label>
+                            <div class="col-md-10">
+                                <textarea rows="2" name="workDescription" class="form-control" ng-model="vm.WorkDescription" />                           
                             </div>
+                                  
                         </div>
                     </fieldset>
                     <fieldset>                   
@@ -172,14 +160,14 @@
                             <div class="form-group">
                                 <label for="workPriority" class="col-md-2 control-label">优先级</label>
                                 <div class="col-md-4">
-                                    <input name="workPriority" placeholder="必填" class="form-control" ng-model="vm.WorkPriority" />
+                                    <input type="number" max="5" min="1" name="workPriority" placeholder="必填" class="form-control" ng-model="vm.WorkPriority" required />
                                     <div class="error-messages" ng-messages="formWorkTaskManager.workPriority.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">优先级不能为空</small>
                                     </div>
                                 </div>
                                 <label for="startDate" class="col-md-2 control-label">开始时间</label>
                                 <div class="col-md-4">
-                                    <input name="startDate" type="text" placeholder="必填" class="form-control" ng-model="vm.StartDate" />
+                                    <input name="startDate" type="date" placeholder="必填" class="form-control" ng-model="vm.StartDate" format-date />
                                     <div class="error-messages" ng-messages="formWorkTaskManager.startDate.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">开始时间不能为空</small>
                                     </div>
@@ -188,14 +176,14 @@
                             <div class="form-group">
                                 <label for="endDate" class="col-md-2 control-label">结束时间</label>
                                 <div class="col-md-4">
-                                    <input name="endDate" type="text" placeholder="必填" class="form-control" ng-model="vm.EndDate" />
+                                    <input name="endDate" type="date" placeholder="必填" class="form-control" ng-model="vm.EndDate" format-date />
                                     <div class="error-messages" ng-messages="formWorkTaskManager.endDate.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">结束时间不能为空</small>
                                     </div>
                                 </div>
                                 <label for="progressStatus" class="col-md-2 control-label">进度状态</label>
                                 <div class="col-md-4">
-                                    <input name="progressStatus" placeholder="必填" class="form-control" ng-model="vm.ProgressStatus" />
+                                    <input name="progressStatus"  class="form-control" ng-model="vm.ProgressStatus" />
                                     <div class="error-messages" ng-messages="formWorkTaskManager.progressStatus.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">进度状态不能为空</small>
                                     </div>
@@ -204,30 +192,30 @@
                             <div class="form-group">
                                 <label for="progressDescription" class="col-md-2 control-label">进度描述</label>
                                 <div class="col-md-4">
-                                    <input name="progressDescription" placeholder="必填" class="form-control" ng-model="vm.ProgressDescription" />
+                                    <input name="progressDescription"  class="form-control" ng-model="vm.ProgressDescription" />
                                     <div class="error-messages" ng-messages="formWorkTaskManager.progressDescription.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">进度状态不能为空</small>
                                     </div>
                                 </div>
                                 <label for="orderPerson" class="col-md-2 control-label">执行人</label>
                                 <div class="col-md-4">
-                                    <input name="orderPerson" placeholder="必填" class="form-control" ng-model="vm.OrderPerson" />
-                                    <div class="error-messages" ng-messages="formWorkTaskManager.orderPerson.$error" ng-show="operate.showValidation">
+                                    <input name="orderPerson"  class="form-control" ng-model="vm.OrderPerson" />
+                                    @*<div class="error-messages" ng-messages="formWorkTaskManager.orderPerson.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">执行人不能为空</small>
-                                    </div>
+                                    </div>*@
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="checkPerson" class="col-md-2 control-label">审核人</label>
                                 <div class="col-md-4">
-                                    <input name="checkPerson" placeholder="必填" class="form-control" ng-model="vm.CheckPerson" />
-                                    <div class="error-messages" ng-messages="formWorkTaskManager.checkPerson.$error" ng-show="operate.showValidation">
+                                    <input name="checkPerson"  class="form-control" ng-model="vm.CheckPerson" />
+                                    @*<div class="error-messages" ng-messages="formWorkTaskManager.checkPerson.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">审核人不能为空</small>
-                                    </div>
+                                    </div>*@
                                 </div>
                                 <label for="remark" class="col-md-2 control-label">备注</label>
                                 <div class="col-md-4">
-                                    <input name="remark" placeholder="可填" class="form-control" ng-model="vm.Remark" />                      
+                                    <input name="remark"  class="form-control" ng-model="vm.Remark" />                      
                                 </div>
                             </div>
                         </div>

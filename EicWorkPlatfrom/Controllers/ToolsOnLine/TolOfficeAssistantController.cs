@@ -54,7 +54,8 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         [NoAuthenCheck]
         public ContentResult GetWorkTaskManageDatas(string department, string systemName, string moduleName,int mode)
-        {        
+        {
+              
            QueryWorkTaskManageDto queryDto = new QueryWorkTaskManageDto()
             {
                Department=department,

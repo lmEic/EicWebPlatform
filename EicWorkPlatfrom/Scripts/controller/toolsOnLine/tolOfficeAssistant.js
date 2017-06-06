@@ -174,11 +174,12 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         searchDataset: [],
         storeDataset:[],
         //载入信息
-        loadDatas: function (department, searchMode, queryContent) {
+        loadDatas: function () {
             vmManager.editDatas = [];
+            vmManager.dataSource = [];
             //获取工作内容数据
-            $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(department, searchMode, queryContent).then(function (datas) {
-                if (angular.isArray(datas))
+            $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(qryVm.department, qryVm.systemName, qryVm.moduleName, 1).then(function (datas) {
+               
                     vmManager.editDatas = datas;
                     vmManager.dataSource = datas;
             });
@@ -186,6 +187,7 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         searchBy: function () {
             $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(qryVm.department,qryVm.systemName,qryVm.moduleName, 1).then(function (datas) {
                 vmManager.storeDataset = datas;
+               
             });
         },
         
@@ -223,20 +225,24 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
             leeDataHandler.dataOperate.add(operate, isValid, function () {
                 oAssistantDataOpService.storeWorkTaskManageDatas(uiVm).then(function (opresult) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                        if (opresult.Result) {
-                            var dataItem = _.clone(uiVm);
-                            dataItem.Id_Key = opresult.Id_Key;
-                            if (dataItem.OpSign === leeDataHandler.dataOpMode.add) {
-                                vmManager.editDatas.push(dataItem);
+                        var dataItem = _.clone(uiVm);
+                        dataItem.Id_Key = opresult.Id_Key;
+                        if (dataItem.OpSign === leeDataHandler.dataOpMode.add) {
+                            vmManager.storeDataset.push(dataItem);
+                        }                       
+                        else if (dataItem.OpSign === leeDataHandler.dataOpMode.edit) {
+                            var item = _.find(vmManager.storeDataset, { Id_Key: uiVm.Id_Key });
+
+                            leeHelper.copyVm(item);
                             }
                             vmManager.init();
-                            dialog.close();
-                        }
+                           
+                        
                     })
                 })
             })
         };
     operate.refresh = function () { leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); }); };
+    //vmManager.loadDatas("1", 0, null);
 
-   // vmManager.loadDatas(uiVm.Department, 0, null);
 });
