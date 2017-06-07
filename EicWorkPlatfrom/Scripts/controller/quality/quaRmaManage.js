@@ -259,7 +259,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
     var uiVm = $scope.vm = {
         RmaId: null,
         RmaIdNumber: 0,
-        RmaBussesesNumberStr:null,
+        RmaBussesesNumberStr:'',
         BadPhenomenon: null,
         BadDescription: null,
         ParameterKey: null,
@@ -300,6 +300,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         businessHandleDatas: [],
         dataSets: [],
         businessHandleNumberDatas: [],
+        selectedBusinessRmaNumberStr: [],
     };
     var rmaNumberDatasDialog = $scope.rmaNumberDatasDialog = leePopups.dialog();
     var dialog = $scope.dialog = leePopups.dialog();
@@ -308,10 +309,10 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
     ///显示业务处理序号
     operate.getSelectedRmaIdData = function (item) {
         if (vmManager.businessHandleDatas.length > 0) {
+            vmManager.selectedBusinessRmaNumberStr = [];
             vmManager.businessHandleNumberDatas = [];
-                var dataitems = _.clone(vmManager.businessHandleDatas);
+            var dataitems = _.clone(vmManager.businessHandleDatas);
                 angular.forEach(dataitems, function (item) {
-                    console.log(item);
                     var dataItem = { value: item.RmaIdNumber, label:'<i class="fa fa-calendar-o"></i>'+item.ReturnHandleOrder+'-'+ item.RmaIdNumber};
                     vmManager.businessHandleNumberDatas.push(dataItem);
                 })
@@ -333,10 +334,25 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         $scope.vm = uiVm = dataitem;
         dialog.show();
     };
+    ///数组合并用逗号分开
+    var toString = function (target) {
+        return Object
+            .keys(target)
+            .map(function (key) {
+                var val = target[key];
+                if (typeof val === 'object') {
+                    return toString(val);
+                }
+                return val;
+            })
+            .join(',');
+    };
+
     operate.saveAll = function (isValid) {
         leeHelper.setUserData(uiVm);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            console.log(uiVm.RmaBussesesNumberStr);
+            if (vmManager.selectedBusinessRmaNumberStr.length>0)
+            { uiVm.RmaBussesesNumberStr = toString(vmManager.selectedBusinessRmaNumberStr);}
             rmaDataOpService.storeRmaInspectionHandleDatas(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
