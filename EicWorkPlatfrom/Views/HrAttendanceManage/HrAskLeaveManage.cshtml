@@ -4,6 +4,43 @@
     </div>
     <div class="panel-body" cg-busy="{promise:promise}">
         <div bs-tabs bs-active-pane="vmManager.activeTab">
+            <div bs-pane data-title="请假处理" data-name="handleAskLeave">
+                <div class="well">
+                    <div class="row">
+
+                    </div>
+                </div>
+                <div>
+                    <table class="table table-bordered" style="table-layout:fixed;margin-bottom:5px;" cg-busy="{promise:promise}">
+                        <thead>
+                            <tr>
+                                <th>Week</th>
+                                <th>Sun</th>
+                                <th>Mon</th>
+                                <th>Tue</th>
+                                <th>Wed</th>
+                                <th>Thu</th>
+                                <th>Fri</th>
+                                <th>Sat</th>
+                            </tr>
+                        </thead>
+                        <tbody style="text-align:center;">
+                            <tr ng-repeat="week in vmManager.calendarWeeks">
+                                <td style="background:#d9edf7;">
+                                    {{week}}
+                                </td>
+                                <td style="background-color:{{item.DateColor}};padding-left:0;padding-right:0;"
+                                    ng-repeat="item in vmManager.calendarDatas" ng-show="item.YearWeekNumber=={{week}}"
+                                    title="{{item.Title}}" ng-dblclick="vmManager.editItem(item)">
+                                    {{item.CalendarDay}}
+                                    <br />
+                                    <span style="font-size:12px;">{{item.ChineseCalendar}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div bs-pane data-title="登记请假信息" data-name="initTab">
                 <div class="row">
                     <div class="col-md-12">
