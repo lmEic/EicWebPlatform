@@ -169,9 +169,11 @@ var leeHelper = (function () {
         treeSelectTplUrl: '/CommonTpl/TreeSelectTpl'
     };
     var controllerNames = {
+        //设备管理
         equipment: 'Equipment',
         systemManage: 'EicSystemManage',
         configManage: 'SysConfig',
+        //进程管理
         itilManage: 'SysITIL',
         //生产看板
         productBoard: 'ProBoard',

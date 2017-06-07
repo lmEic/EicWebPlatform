@@ -31,7 +31,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             string nowYaer = DateTime.Now.ToString("yy");
             string nowMonth = DateTime.Now.ToString("MM");
-            var count = RmaCurdFactory.RmaReportInitiate.CountNowYaerMonthRmaIdNumber(nowYaer ,nowMonth) + 1;
+            var count = RmaCurdFactory.RmaReportInitiate.CountNowYaerMonthRmaIdNumber(nowYaer) + 1;
             return "R" + nowYaer + nowMonth + count.ToString("000");
         }
       

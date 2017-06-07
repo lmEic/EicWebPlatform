@@ -259,6 +259,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
     var uiVm = $scope.vm = {
         RmaId: null,
         RmaIdNumber: 0,
+        RmaBussesesNumberStr:null,
         BadPhenomenon: null,
         BadDescription: null,
         ParameterKey: null,
@@ -273,9 +274,8 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: null
     };
-
     var initVM = _.clone(uiVm);
-    var vmManager = {
+    var vmManager = $scope.vmManager = {
         init: function () {
             uiVm = _.clone(initVM);
             uiVm.OpSign = leeDataHandler.dataOpMode.add;
@@ -283,7 +283,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         },
         activeTab: 'businessTab',
         //获取表单数据
-        getRmaInspectionHandleDatas: function () {
+        getRmaInspectionHandleDatas: function (){
             if (uiVm.RmaId === null || uiVm.RmaId === "") return;
             $scope.searchPromise = rmaDataOpService.getRmaInspectionHandleDatas(uiVm.RmaId).then(function (data) {
                 if (angular.isObject(data)) {
@@ -298,23 +298,34 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
             });
         },
         businessHandleDatas: [],
-        dataSets: []
+        dataSets: [],
+        businessHandleNumberDatas: [],
     };
-    $scope.vmManager = vmManager;
-
-    var dialog = $scope.dialog = Object.create(leeDialog);
-
+    var rmaNumberDatasDialog = $scope.rmaNumberDatasDialog = leePopups.dialog();
+    var dialog = $scope.dialog = leePopups.dialog();
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
+    ///显示业务处理序号
+    operate.getSelectedRmaIdData = function (item) {
+        if (vmManager.businessHandleDatas.length > 0) {
+            vmManager.businessHandleNumberDatas = [];
+                var dataitems = _.clone(vmManager.businessHandleDatas);
+                angular.forEach(dataitems, function (item) {
+                    console.log(item);
+                    var dataItem = { value: item.RmaIdNumber, label:'<i class="fa fa-calendar-o"></i>'+item.ReturnHandleOrder+'-'+ item.RmaIdNumber};
+                    vmManager.businessHandleNumberDatas.push(dataItem);
+                })
+                dataitems = [];
+        };
+    };
     operate.handleItem = function (item) {
-        console.log(item);
         var dataitem = _.clone(item);
         uiVm.ParameterKey = item.RmaId + "&" + item.ReturnHandleOrder + "&" + item.ProductId;
         dataitem.OpSign = leeDataHandler.dataOpMode.add;
         leeHelper.copyVm(dataitem, uiVm);
-
         $scope.vm = uiVm;
         dialog.show();
+   
     };
     operate.editItem = function (item) {
         var dataitem = item;
@@ -325,6 +336,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
     operate.saveAll = function (isValid) {
         leeHelper.setUserData(uiVm);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
+            console.log(uiVm.RmaBussesesNumberStr);
             rmaDataOpService.storeRmaInspectionHandleDatas(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
@@ -345,9 +357,9 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
     };
 });
 
-////检验处置
+////检验Rma查询处置
 qualityModule.controller('rmaReportQueryCtrl', function ($scope, rmaDataOpService) {
-    leeHelper.setWebSiteTitle("质量管理", "RMA检验处置");
+    leeHelper.setWebSiteTitle("质量管理", "RMA查询检验处置");
     ///视图模型
     var rmavm = $scope.rmavm = {
         RmaId: null,
@@ -404,13 +416,13 @@ qualityModule.controller('rmaReportQueryCtrl', function ($scope, rmaDataOpServic
 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
+   
     operate.handleItem = function (item) {
         console.log(item);
         var dataitem = _.clone(item);
         uiVm.ParameterKey = item.RmaId + "&" + item.ReturnHandleOrder + "&" + item.ProductId;
         dataitem.OpSign = leeDataHandler.dataOpMode.add;
         leeHelper.copyVm(dataitem, uiVm);
-
         $scope.vm = uiVm;
         dialog.show();
     };

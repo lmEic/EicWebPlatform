@@ -348,10 +348,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         ///序号
         /// </summary>
-        public int RmaIdNumber
+        public int  RmaIdNumber
         {
             set { _rmaidnumber = value; }
             get { return _rmaidnumber; }
+        }
+
+        private string  _rmaBussesesNumberStr;
+        /// <summary>
+        ///业务单序列序号 ‘，’分开
+        /// </summary>
+        public string  RmaBussesesNumberStr
+        {
+            set { _rmaBussesesNumberStr = value; }
+            get { return _rmaBussesesNumberStr; }
         }
         // ProductId
 
