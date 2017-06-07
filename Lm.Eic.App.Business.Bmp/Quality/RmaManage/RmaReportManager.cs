@@ -180,6 +180,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             if (result.Result && model.OpSign == OpMode.Add)
             {
                 RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, RmaHandleStatus.InspecitonStatus);
+                if (model.RmaBussesesNumberStr.Contains(",")&& !string.IsNullOrEmpty( model.RmaBussesesNumberStr)) { 
+                var number = model.RmaBussesesNumberStr.Split(',');
+                if(number.Count()>0)
+                   foreach (var i in number)
+                    {
+                        int m = Convert.ToInt32(i);
+                        RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, m, RmaHandleStatus.InspecitonStatus);
+                    }
+                }
+                else { RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, Convert.ToInt32(model.RmaBussesesNumberStr), RmaHandleStatus.InspecitonStatus); }
                 RmaCurdFactory.RmaInspectionManage.UpdateHandleStatus(model.ParameterKey);
             }
             return result;

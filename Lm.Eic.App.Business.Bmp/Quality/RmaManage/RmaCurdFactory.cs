@@ -150,6 +150,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                    HandleStatus = RmaHandleStatus.BusinessStatus
                }).ToOpResult_Eidt(OpContext);
         }
+        internal OpResult UpdateHandleStatus(string rmaId, int rmaIdNumber, string businessStatus)
+        {
+            return irep.Update(e => e.RmaId == rmaId && e.RmaIdNumber == rmaIdNumber,
+               u => new RmaBusinessDescriptionModel
+               {
+                   HandleStatus = businessStatus
+               }).ToOpResult_Eidt(OpContext);
+        }
         internal int RmaIdCount(string rmaId)
         {
             return irep.Entities.Count(e => e.RmaId == rmaId);
