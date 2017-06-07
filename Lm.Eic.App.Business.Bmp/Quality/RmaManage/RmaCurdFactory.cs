@@ -68,9 +68,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// 
         /// </summary>
         /// <returns></returns>
-        internal int CountNowYaerMonthRmaIdNumber(string nowYaer,string nowMonth)
+        internal int CountNowYaerMonthRmaIdNumber(string nowYaer)
         {
-            return irep.Entities.Count(e => e.RmaYear == nowYaer && e.RmaMonth == nowMonth);
+            return irep.Entities.Count(e => e.RmaYear == nowYaer);
         }
         internal List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
         {
@@ -115,7 +115,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         OpResult AddModel(RmaBusinessDescriptionModel model)
         {
             if (!IsExist(model.RmaId, model.ProductId, model.ReturnHandleOrder))
+            {     //序号自动计算出来
+                model.RmaIdNumber = RmaIdCount(model.RmaId) + 1;
                 return irep.Insert(model).ToOpResult_Add(OpContext);
+            }
             return OpResult.SetErrorResult("该记录已经存在！");
         }
         OpResult UpdateModel(RmaBusinessDescriptionModel model)
@@ -147,6 +150,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                    HandleStatus = RmaHandleStatus.BusinessStatus
                }).ToOpResult_Eidt(OpContext);
         }
+        internal OpResult UpdateHandleStatus(string rmaId, int rmaIdNumber, string businessStatus)
+        {
+            return irep.Update(e => e.RmaId == rmaId && e.RmaIdNumber == rmaIdNumber,
+               u => new RmaBusinessDescriptionModel
+               {
+                   HandleStatus = businessStatus
+               }).ToOpResult_Eidt(OpContext);
+        }
+        internal int RmaIdCount(string rmaId)
+        {
+            return irep.Entities.Count(e => e.RmaId == rmaId);
+        }
         #endregion
     }
     internal class RmaInspectionManageCrud : CrudBase<RmaInspectionManageModel, IRmaInspectionManageRepository>
@@ -165,6 +180,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             if (!IsExist(model.RmaId, model.ParameterKey))
                 return irep.Insert(model).ToOpResult_Add(OpContext);
+             ///序号自动计算出来
+            model.RmaIdNumber = RmaIdCount(model.RmaId ) + 1;
             return OpResult.SetErrorResult("该记录已经存在！");
         }
         OpResult Update(RmaInspectionManageModel model)
@@ -190,6 +207,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         internal bool IsExist(string rmaId, string productId)
         {
             return irep.IsExist(e => e.RmaId == rmaId && e.ParameterKey == productId);
+        }
+        internal int RmaIdCount(string rmaId)
+        {
+            return irep.Entities.Count(e => e.RmaId == rmaId);
         }
     }
 }

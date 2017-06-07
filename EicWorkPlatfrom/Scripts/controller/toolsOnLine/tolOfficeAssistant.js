@@ -6,13 +6,12 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
     var oaUrlPrefix = '/' + leeHelper.controllers.TolOfficeAssistant + '/';
 
     ///获取联系人数据
-    oAssistant.getCollaborateContactDatas = function (department, searchMode, contactPerson, telPhone) {
+    oAssistant.getCollaborateContactDatas = function (department, searchMode, queryContent) {
         var url = oaUrlPrefix + 'GetCollaborateContactDatas';
         return ajaxService.getData(url, {
             department: department,
             searchMode: searchMode,
-            contactPerson: contactPerson,
-            telPhone: telPhone
+            queryContent: queryContent
         });
     };
     ///存储联系人数据
@@ -85,20 +84,23 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         },
         editDatas: [],
         ///查询函数
-        loadDatas: function (department, searchMode, contactPerson, telPhone) {
+        loadDatas: function (department, searchMode, queryContent) {
             vmManager.editDatas = [];
-            $scope.searchPromise = oAssistantDataOpService.getCollaborateContactDatas(department, searchMode, contactPerson, telPhone).then(function (datas) {
+            console.log(department);
+            console.log(searchMode);
+            console.log(queryContent);
+            $scope.searchPromise = oAssistantDataOpService.getCollaborateContactDatas(department, searchMode, queryContent).then(function (datas) {
                 if (angular.isArray(datas))
                     vmManager.editDatas = datas;
             });
         },
         ///按联系人查询
         getDatasByName: function () {
-            vmManager.loadDatas(uiVm.Department, 1, qryVm.contactPerson, null);
+            vmManager.loadDatas(uiVm.Department, 1, qryVm.contactPerson);
         },
         ///按电话查询
         getDatasByTelPhone: function () {
-            vmManager.loadDatas(uiVm.Department, 2, null, qryVm.telephone);
+            vmManager.loadDatas(uiVm.Department, 2, qryVm.telephone);
         }
     };
     $scope.vmManager = vmManager;

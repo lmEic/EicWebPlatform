@@ -5,6 +5,8 @@ smModule.factory('sysitilService', function (ajaxService) {
     var itil = {};
     var urlPrefix = '/' + leeHelper.controllers.itilManage + '/';
 
+    //SystemManage/  SysITILController
+
     ///存储项目开发记录
     itil.storeProjectDevelopRecord = function (entity) {
         var url = urlPrefix + 'StoreProjectDevelopRecord';
@@ -41,11 +43,19 @@ smModule.factory('sysitilService', function (ajaxService) {
         return ajaxService.getData(url, {
         });
     };
-
+    ///保存  通知地址配置 
+    itil.storeItilNotifyAddress = function (entity) {
+        var url = urlPrefix + 'StoreitilNotifyAddress';
+        return ajaxService.getData(url, {
+            entity: entity
+        });
+    };
     return itil;
 });
+///联系人
 smModule.controller('supTelManageCtrl', function ($scope, $modal, sysitilService) {
 });
+/// 开发进程
 smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sysitilService) {
     ///视图模型
     var uiVM = {
@@ -153,8 +163,6 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
     };
 
     $scope.vmManager = vmManager;
-
-
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 
@@ -167,8 +175,6 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
             var op = Object.create(leeDataHandler.operateStatus);
             $scope.operate = op;
             $scope.vmManager = vmManager;
-
-
             $scope.save = function (isvalidate) {
                 leeDataHandler.dataOperate.add(op, isvalidate, function () {
                     sysitilService.changeDevelopModuleProgressStatus($scope.vm).then(function (opresult) {
@@ -216,6 +222,64 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
     };
 });
 //消息通知模块控制器
-smModule.controller('itilMessageNotifyManageCtrl', function ($scope, sysitilService) {
-
+smModule.controller('itilNotifyAddressManageCtrl', function ($scope,sysitilService) {
+    ///视图模型
+    ///通知邮件配置 
+    var uiVm = $scope.vm = {
+        ModuleName: "通知邮件配置 ",
+        BusinessName: "通知邮件配置",
+        TransactionName: "通知邮件配置 ",
+        EmailList: "通知邮件配置 ",
+        TelMessageList: "通知邮件配置 ",
+        MicroMessageList: "通知邮件配置 ",
+        NotifyMode: 1,
+        OpStatus: "完成",
+        OpPerson: null,
+        OpDate: null,
+        OpTime: null,
+        OpSign: leeDataHandler.dataOpMode.add,
+        Id_Key: 0,
+    };
+    var originalVM = _.clone(uiVm);
+    var vmManager = {
+        activeTab: 'initTab',
+        isLocal: true,
+        init: function () {
+          
+        },
+        OpStatus: [{ name: '完成', text: '完成' }, { name: '进行中', text: '进行中' }, { name: '未完成', text: '未完成' }],
+        datasource: [],
+        datasets: [],
+        searchBy: function () {
+            vmManager.isUpdate = true;
+            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses, queryFields.functionName, 2).then(function (datas) {
+                vmManager.developModules = datas;
+            });
+        },
+        getDevelopModules: function () {
+            vmManager.datasets = [];
+            vmManager.datasource = [];
+            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses, queryFields.functionName, 1).then(function (datas) {
+                vmManager.datasource = datas;
+            });
+        },
+        showDetailsBoard: false,//显示明细面板
+        editModal: null,
+        functionName: null,
+      
+    };
+    $scope.vmManager = vmManager;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveAll = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            sysitilService.storeItilNotifyAddress(uiVm).then(function (opresult) {
+                console.log(1);
+            });
+        });
+    };
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+        });
+    };
 });

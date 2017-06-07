@@ -12,7 +12,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+      
         public ActionResult ItilSupTelManage()
         {
             return View();
@@ -85,8 +85,6 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-        #endregion
-
         /// <summary>
         /// 发送邮件通知
         /// </summary>
@@ -97,5 +95,24 @@ namespace EicWorkPlatfrom.Controllers
             var result = 0;/*ItilService.ItilDevelopModuleManager.SendMail();*/
             return Json(result);
         }
+        #endregion
+
+        #region  NotifyAddress  通知地址
+
+        public ActionResult FormNotifyManage()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 保存数据
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult StoreitilNotifyAddress(string entity)
+        {
+            var result = 0;
+            return Json(result);
+        }
+        #endregion 
     }
 }
