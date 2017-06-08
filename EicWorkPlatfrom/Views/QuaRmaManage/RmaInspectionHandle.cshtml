@@ -127,10 +127,15 @@
                             </div>
                             <label for="rmaIdNumber" class="col-md-2 control-label">序号</label>
                             <div class="col-md-4">
+                                @*<input
+                                       type="button" class="btn btn-default"  ng-model="vmManager.selectedBusinessRmaNumberStr"  ng-click="operate.getSelectedRmaIdData(item)"
+                                        data-html="2" data-multiple="1" data-animation="am-flip-x" data-placeholder="选择业务处理单..."
+                                        data-bs-options="datas.value as datas.label for datas in vmManager.businessHandleNumberDatas track by $index"  data-bs-select=
+                                     />*@
                                 @*<input type="text"  class="form-control" ng-keypress="operate.getSelectedRmaIdData(item)" ng-model="vmManager.selectedRmaIdNumber" required />*@
                                 <button type="button" class="btn btn-default"  ng-model="vmManager.selectedBusinessRmaNumberStr"  ng-click="operate.getSelectedRmaIdData(item)"
-                                        data-html="1" data-multiple="1" data-animation="am-flip-x" data-placeholder="选择业务处理单..."
-                                        data-bs-options="datas.value as datas.label for datas in vmManager.businessHandleNumberDatas track by $index" data-bs-select>
+                                        data-html="2" data-multiple="1" data-animation="am-flip-x" data-placeholder="选择业务处理单..."
+                                        data-bs-options="datas.value as datas.label for datas in vmManager.businessHandleNumberDatas track by $index"  data-bs-select>
                                     <span class="caret"></span>
                                 </button>
                                 
