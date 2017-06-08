@@ -259,7 +259,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
     var uiVm = $scope.vm = {
         RmaId: null,
         RmaIdNumber: 0,
-        RmaBussesesNumberStr:'',
+        RmaBussesesNumberStr: '',
         BadPhenomenon: null,
         BadDescription: null,
         ParameterKey: null,
@@ -283,7 +283,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         },
         activeTab: 'businessTab',
         //获取表单数据
-        getRmaInspectionHandleDatas: function (){
+        getRmaInspectionHandleDatas: function () {
             if (uiVm.RmaId === null || uiVm.RmaId === "") return;
             $scope.searchPromise = rmaDataOpService.getRmaInspectionHandleDatas(uiVm.RmaId).then(function (data) {
                 if (angular.isObject(data)) {
@@ -312,11 +312,11 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
             vmManager.selectedBusinessRmaNumberStr = [];
             vmManager.businessHandleNumberDatas = [];
             var dataitems = _.clone(vmManager.businessHandleDatas);
-                angular.forEach(dataitems, function (item) {
-                    var dataItem = { value: item.RmaIdNumber, label:'<i class="fa fa-calendar-o"></i>'+item.ReturnHandleOrder+'-'+ item.RmaIdNumber};
-                    vmManager.businessHandleNumberDatas.push(dataItem);
-                })
-                dataitems = [];
+            angular.forEach(dataitems, function (item) {
+                var dataItem = { value: item.RmaIdNumber, label: '序号：' + item.RmaIdNumber + "工单号：" + item.ReturnHandleOrder };
+                vmManager.businessHandleNumberDatas.push(dataItem);
+            })
+            dataitems = [];
         };
     };
     operate.handleItem = function (item) {
@@ -326,7 +326,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         leeHelper.copyVm(dataitem, uiVm);
         $scope.vm = uiVm;
         dialog.show();
-   
+
     };
     operate.editItem = function (item) {
         var dataitem = item;
@@ -351,8 +351,8 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
     operate.saveAll = function (isValid) {
         leeHelper.setUserData(uiVm);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            if (vmManager.selectedBusinessRmaNumberStr.length>0)
-            { uiVm.RmaBussesesNumberStr = toString(vmManager.selectedBusinessRmaNumberStr);}
+            if (vmManager.selectedBusinessRmaNumberStr.length > 0)
+            { uiVm.RmaBussesesNumberStr = toString(vmManager.selectedBusinessRmaNumberStr); }
             rmaDataOpService.storeRmaInspectionHandleDatas(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
@@ -432,7 +432,7 @@ qualityModule.controller('rmaReportQueryCtrl', function ($scope, rmaDataOpServic
 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-   
+
     operate.handleItem = function (item) {
         console.log(item);
         var dataitem = _.clone(item);
