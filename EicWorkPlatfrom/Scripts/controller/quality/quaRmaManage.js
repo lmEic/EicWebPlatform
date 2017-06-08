@@ -313,7 +313,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
             vmManager.businessHandleNumberDatas = [];
             var dataitems = _.clone(vmManager.businessHandleDatas);
                 angular.forEach(dataitems, function (item) {
-                    var dataItem = { value: item.RmaIdNumber, label:'<i class="fa fa-calendar-o"></i>'+item.ReturnHandleOrder+'-'+ item.RmaIdNumber};
+                    var dataItem = { value: item.RmaIdNumber, label:'序号:'+item.RmaIdNumber+'工单:'+item.ReturnHandleOrder };
                     vmManager.businessHandleNumberDatas.push(dataItem);
                 })
                 dataitems = [];
@@ -335,24 +335,11 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         dialog.show();
     };
     ///数组合并用逗号分开
-    var toString = function (target) {
-        return Object
-            .keys(target)
-            .map(function (key) {
-                var val = target[key];
-                if (typeof val === 'object') {
-                    return toString(val);
-                }
-                return val;
-            })
-            .join(',');
-    };
-
     operate.saveAll = function (isValid) {
         leeHelper.setUserData(uiVm);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             if (vmManager.selectedBusinessRmaNumberStr.length>0)
-            { uiVm.RmaBussesesNumberStr = toString(vmManager.selectedBusinessRmaNumberStr);}
+            { uiVm.RmaBussesesNumberStr = vmManager.selectedBusinessRmaNumberStr.join(',');}
             rmaDataOpService.storeRmaInspectionHandleDatas(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
