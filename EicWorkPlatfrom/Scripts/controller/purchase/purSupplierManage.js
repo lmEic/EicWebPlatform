@@ -547,7 +547,16 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
     ///显示编辑列表
     var editModelDialog = $scope.editModelDialog = leePopups.dialog();
     $scope.operate = operate;
-    operate.saveAll = function (isValid) { };
+    //保存供应商辅导信息
+    operate.savePurSupGradeDatas = function (isValid) {
+            console.log(4);
+            $scope.vm.GradeYear = vmManager.yearQuarter.substring(0, 4);
+            $scope.vm.ParameterKey = vmManager.editItem.SupplierId + "&" + vmManager.editItem.GradeYear + "&" + vmManager.editItem.SupGradeType;
+            supplierDataOpService.savePurSupGradeInfo($scope.vm).then(function (opResult) {
+                leeDataHandler.dataOperate.displayMessage(operate, opresult);
+                });
+        };
+  
     operate.refresh = function () { };
     //视图管理器
     var vmManager = $scope.vmManager = {
@@ -557,8 +566,8 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
         yearQuarter: '',
         dataSource: [],
         gradeTypes : [{ id: '供应商系统稽核评估', text: '供应商系统稽核评估' },
-                                     { id: '供应商产品无有害物质系统稽核评估', text: '供应商产品无有害物质系统稽核评估' },
-                                     { id: '系统评估表-针对小供应商', text: '系统评估表-针对小供应商' }],
+                      { id: '供应商产品无有害物质系统稽核评估', text: '供应商产品无有害物质系统稽核评估' },
+                      { id: '系统评估表-针对小供应商', text: '系统评估表-针对小供应商' }],
         ///根据供应商编号查询供应商辅导数据信息
         ///详细列表
         editSupGradeInfoTable: function (item) {
