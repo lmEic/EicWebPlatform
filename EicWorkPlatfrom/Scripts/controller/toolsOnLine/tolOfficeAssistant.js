@@ -67,16 +67,19 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         Id_Key: null,
     };
     var initVm = _.clone(uiVm);
-
+    //删除联系人对话框
     var deleteDialog = $scope.deleteDialog = leePopups.dialog("删除提示", "删除后数据将不存在，你确定要删除吗？");
+    //编辑对话框
     var dialog = $scope.dialog = leePopups.dialog();
-
+    // 查询条件
     var qryVm = $scope.qryVm = {
         contactPerson: null,
         telephone: null
     };
+    ///界面管理
     var vmManager = {
         activeTab: 'initTab',
+        //初始化
         init: function () {
             uiVm = _.clone(initVm);
             uiVm.OpSign = leeDataHandler.dataOpMode.add;
@@ -104,7 +107,7 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         }
     };
     $scope.vmManager = vmManager;
-
+    ///
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     ///创建新的联系人
@@ -169,7 +172,7 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
     ///载入登录人信息
     leeHelper.setUserData(uiVm);
     ///初始载入本部门所有联系人
-    vmManager.loadDatas(uiVm.Department, 0, null, null);
+    vmManager.loadDatas(uiVm.Department, 0, null);
 });
 ///工作任务管理控制器
 officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssistantDataOpService) {
