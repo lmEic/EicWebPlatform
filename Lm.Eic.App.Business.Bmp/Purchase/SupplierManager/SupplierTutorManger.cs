@@ -62,7 +62,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             if (datas == null || datas.Count == 0) new DownLoadFileModel().Default(); 
             var dataGroupping = datas.GetGroupList<SupplierSeasonTutorModel>();
-           return  dataGroupping.ExportToExcelMultiSheets<SupplierSeasonTutorModel>(CreateFieldSeasonTutorMapping()).CreateDownLoadExcelFileModel("供应商辅导管理");
+           return  dataGroupping.ExportToExcelMultiSheets<SupplierSeasonTutorModel>(null).CreateDownLoadExcelFileModel("供应商辅导管理");
         }
         private List<FileFieldMapping> CreateFieldSeasonTutorMapping()
         {
