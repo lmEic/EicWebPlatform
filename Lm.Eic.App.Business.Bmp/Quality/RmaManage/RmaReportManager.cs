@@ -13,9 +13,25 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
     /// </summary>
     public class RmaHandleStatus
     {
-        public const string InitiateStatus = "未结案";
-        public const string BusinessStatus = "业务处理中";
+        /// <summary>
+        /// 初始建立RMA单时为空单号
+        /// </summary>
+        public const string InitiateStatus = "空单号";
+        /// <summary>
+        /// RMA 单只有负数
+        /// </summary>
+        public const string BusinessMinusStatus = "已补货";
+        /// <summary>
+        /// RMA 单只有正数
+        /// </summary>
+        public const string BusinessPlusStatus = "已收货";
+        /// <summary>
+        /// RMA 单有正负数 业务处理完成转化到品保处理中
+        /// </summary>
         public const string InspecitonStatus = "品保处理中";
+        /// <summary>
+        /// RMA 单 品处理完成 就结案
+        /// </summary>
         public const string FinishStatus = "已结案";
     }
     /// <summary>
@@ -138,20 +154,47 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 var result = RmaCurdFactory.RmaBussesDescription.Store(model, true);
                 if (result.Result && model.OpSign == OpMode.Add)
                 {
-                    RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, RmaHandleStatus.BusinessStatus);
-                    RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, model.ProductId, model.ReturnHandleOrder);
+                    string rmaHandleStatus = GetBusinessStatus(model.RmaId);
+                    if (rmaHandleStatus!=string.Empty)
+                    RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, rmaHandleStatus);
                 }
-
                 return result;
             }
             catch (Exception ex)
             {
-                ex.ExOpResult();
-                return null;
+               return  ex.ExOpResult();
             }
-
         }
-
+        private string  GetBusinessStatus(string rmaId)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(rmaId)) return string.Empty;
+                var getRmaBusinessDescriptionData = RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(rmaId);
+                if (getRmaBusinessDescriptionData == null || getRmaBusinessDescriptionData.Count == 0)
+                    return string.Empty;
+                List<double> minusNumberList = new List<double>();
+                List<double> plusNumberList = new List<double>();
+                getRmaBusinessDescriptionData.ForEach(e =>
+                {
+                    if (e.ProductCount < 0)
+                    { minusNumberList.Add(e.ProductCount); }
+                    else plusNumberList.Add(e.ProductCount);
+                });
+                if (minusNumberList.Count > 0 && plusNumberList.Count == 0)
+                    ///只有负数时
+                    return  RmaHandleStatus.BusinessMinusStatus;
+                if (minusNumberList.Count == 0 && plusNumberList.Count > 0)
+                    ///只有正数时
+                    return RmaHandleStatus.BusinessPlusStatus;
+                if (minusNumberList.Count > 0 && plusNumberList.Count > 0)
+                    ///有正数又有负数
+                    return  RmaHandleStatus.InspecitonStatus;
+                return string.Empty ;
+            }
+            catch (Exception ex)
+            {  ex.ExOpResult();return string.Empty; }
+        }
     }
     /// <summary>
     /// Rma单 品保部操作处理器
@@ -185,8 +228,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 if(number.Count()>0)
                    foreach (var i in number)
                     {
-                        int m = Convert.ToInt32(i);
-                        RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, m, RmaHandleStatus.InspecitonStatus);
+                        int bussesIndexNumber = Convert.ToInt32(i);
+                        RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, bussesIndexNumber, RmaHandleStatus.InspecitonStatus);
                     }
                 }
                 else { RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, Convert.ToInt32(model.RmaBussesesNumberStr), RmaHandleStatus.InspecitonStatus); }
