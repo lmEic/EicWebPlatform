@@ -343,88 +343,43 @@ hrModule.controller('hrSumerizeAttendanceDataCtrl', function ($scope, $modal, hr
 });
 //请假设置管理
 hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService, hrArchivesDataOpService) {
-
-    ///视图模型
-    var uiVM = {
-        WorkerId: null,
-        WorkerName: null,
-        Department: null,
-        LeaveType: null,
-        LeaveHours: null,
-        LeaveTimeRegion: null,
-        LeaveDescription: null,
-        LeaveMark: 0,
-        LeaveMemo: null,
-        StartLeaveDate: null,
-        EndLeaveDate: null,
-        LeaveTimeRegionStart: null,
-        LeaveTimeRegionEnd: null,
-        DepartmentText: null,
-        OpSign: null,
-        ClassType: null,
-        OpCmdVisible: -1,
-        ///请假数据集
-        LeaveDataSet: [],
-        id: 0
-    };
     var askLeaveVM = {
         AttendanceDate: null,
         SlotCardTime: null,
         LeaveType: null,
         LeaveHours: null,
         LeaveTimeRegion: null,
-        LeaveDescription: null,
+        LeaveTimeRegionStart: null,
+        LeaveTimeRegionEnd: null,
         LeaveMemo: null,
-        LeaveMark: 0,
         WorkerId: null,
         WorkerName: null,
         Department: null,
-        DepartmentText: null,
-        OpCmdVisible: false,
-        OpSign: null
     };
+
+    var uiVM = $scope.vm = _.clone(askLeaveVM);
+
+    var msgDialog = $scope.msgDialog = leePopups.dialog();
+    var editDialog = $scope.editDialog = leePopups.dialog();
+    //查询字段视图
+    var queryVM = $scope.qryvm = {
+        year: null,
+        month: null,
+        yearMonth: null,
+        dateFrom: new Date(),//请假其实日期
+        dateTo: new Date(),//请假结束日期
+        leaveType: '年休假',
+    };
+
+
     //视图管理器
     var vmManager = {
         activeTab: 'initTab',
-        workerId: null,
-        yearMonth: null,
-        opSign: null,
+        workerInfo: null,
         //部门信息
         departments: [],
         leaveTypes: [],
         changeDatas: [],
-        //存储到数据库中的数据集
-        dbDataSet: [],
-        workerIdList: [],
-        addWorkerId: function ($event) {
-            if ($event.keyCode === 13) {
-                var item = _.findWhere(vmManager.changeDatas, { WorkerId: vmManager.workerId });
-                if (item === undefined) {
-                    item = {
-                        WorkerId: _.clone(vmManager.workerId),
-                        WorkerName: null,
-                        Department: null,
-                        LeaveType: null,
-                        LeaveHours: null,
-                        LeaveTimeRegion: null,
-                        LeaveDescription: null,
-                        LeaveMark: 0,
-                        StartLeaveDate: null,
-                        EndLeaveDate: null,
-                        LeaveTimeRegionStart: null,
-                        LeaveTimeRegionEnd: null,
-                        DepartmentText: null,
-                        ClassType: null,
-                        OpSign: null,
-                        OpCmdVisible: -1,
-                        LeaveDataSet: []
-                    };
-                    vmManager.changeDatas.push(item);
-                    vmManager.workerIdList.push(item.WorkerId);
-                    vmManager.workerId = null;
-                }
-            }
-        },
         searchLeaveData: function ($event) {
             if ($event.keyCode === 13) {
                 vmManager.askLeaveDatas = [];
@@ -441,7 +396,41 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
             }
         },
         //请假数据
-        askLeaveDatas: []
+        askLeaveDatas: [],
+        calendar: null,
+        loadCalendarDatas: function () {
+            $scope.promise = connDataOpService.getCalendarDatas(queryVM.year, queryVM.month).then(function (datas) {
+                vmManager.calendar = datas;
+            });
+        },
+        //生成请假记录
+        createAskLeaveRecord: function (item) {
+            if (vmManager.workerInfo === null) return;
+            var workerItem = _.clone(askLeaveVM);
+            workerItem.WorkerId = vmManager.workerInfo.WorkerId;
+            workerItem.WorkerName = vmManager.workerInfo.Name;
+            workerItem.LeaveHours = 8;
+            workerItem.LeaveType = queryVM.leaveType;
+            workerItem.LeaveTimeRegionStart = new Date(queryVM.year, queryVM.month, item.Day, 7, 50);
+            workerItem.LeaveTimeRegionEnd = new Date(queryVM.year, queryVM.month, item.Day, 17, 10);
+            workerItem.LeaveTimeRegion = workerItem.LeaveTimeRegionStart.pattern("HH:mm") + "-" + workerItem.LeaveTimeRegionEnd.pattern("HH:mm");
+            item.workerAskLeave = workerItem;
+        },
+        removeAskLeaveRecord: function (item) {
+            if (vmManager.workerInfo === null) return;
+            item.workerAskLeave = null;
+        },
+        editAskLeaveRecord: function (item) {
+            if (vmManager.workerInfo === null) return;
+            var askLeaveItem = item.workerAskLeave;
+
+            $scope.vm = askLeaveItem;
+
+
+
+
+            editDialog.show();
+        },
     };
     $scope.vmManager = vmManager;
 

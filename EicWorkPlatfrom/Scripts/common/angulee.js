@@ -502,6 +502,11 @@ var leePopups = (function () {
     };
     myDialog.prototype.show = function () { this.open = true; };
     myDialog.prototype.close = function () { this.open = false; };
+    myDialog.prototype.alert = function (title, content) {
+        this.open = true;
+        this.title = title;
+        this.content = content;
+    };
     return mmPopup;
 })();
 

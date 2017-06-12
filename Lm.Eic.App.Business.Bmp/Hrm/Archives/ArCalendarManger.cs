@@ -176,7 +176,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// <returns></returns>
         public MonthCalendarModel GetMonthCalendar(int qryYear, int qryMonth)
         {
-            MonthCalendarModel monthCalendar = new MonthCalendarModel() { QryYear = qryYear, QryMonth = qryMonth };
+            MonthCalendarModel monthCalendar = new MonthCalendarModel()
+            { QryYear = qryYear, QryMonth = qryMonth, WeekCalendars = new List<WeekCalendarModel>() };
             WeekCalendarModel weekCalendar = null;
             var datas = FindCalendarDateListBy(qryYear, qryMonth);
             if (datas == null || datas.Count == 0) return monthCalendar;
@@ -187,16 +188,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             {
                 int week = weekList[i];
                 weekCalendar = new WeekCalendarModel() { Week = week, WeekDays = new List<WeekDayModel>() };
+                var weekDatas = datas.FindAll(e => e.YearWeekNumber == week);
                 WeekDayModel day = null;
                 for (int w = 0; w <= 6; w++)
                 {
                     day = new WeekDayModel() { Id = w };
-                    var m = datas.FirstOrDefault(e => e.CalendarWeek == w);
+                    var m = weekDatas.FirstOrDefault(e => e.CalendarWeek == w);
                     if (m != null)
                     {
                         day.ChineseCalendar = m.ChineseCalendar;
                         day.Day = m.CalendarDay;
-
+                        day.DateColor = m.DateColor;
+                        day.Title = m.Title;
                     }
                     else
                     {
@@ -205,6 +208,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     }
                     weekCalendar.WeekDays.Add(day);
                 }
+                monthCalendar.WeekCalendars.Add(weekCalendar);
             }
             return monthCalendar;
         }
@@ -329,6 +333,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public int Id { get; set; }
         public string Day { get; set; }
         public string ChineseCalendar { get; set; }
+        /// <summary>
+        /// 日期背景色
+        /// </summary>
+        public string DateColor { get; set; }
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public string Title { get; set; }
     }
 }
 

@@ -154,6 +154,18 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Attendance
         }
     }
 
+    /// <summary>
+    ///请假数据持久化
+    /// </summary>
+    public interface IAttendAskLeaveRepository : IRepository<AttendAskLeaveModel> { }
+    /// <summary>
+    ///请假数据持久化
+    /// </summary>
+    public class AttendAskLeaveRepository : HrmRepositoryBase<AttendAskLeaveModel>, IAttendAskLeaveRepository
+    { }
+
+
+
     public class AttendanceDbHelpHandler
     {
         private static int InsertDataTo(AttendFingerPrintDataInTimeModel entity)
