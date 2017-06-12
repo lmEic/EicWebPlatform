@@ -296,7 +296,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public ContentResult GetPurSupGradeInfoList(string supplierId, string yearQuarter)
         {
-            var datas = PurchaseService.PurSupplierManager.GradeManager.GetPurSupGradeInfoDataBy(supplierId, yearQuarter);
+            var datas = PurchaseService.PurSupplierManager.GradeManager.GetPurSupGradeInfoDataBy(supplierId);
             return DateJsonResult(datas);
         }
         /// <summary>

@@ -26,14 +26,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             List<SupplierGradeInfoVm> returnDatas = new List<SupplierGradeInfoVm>();
             SupplierGradeInfoVm model = null;
-            //格式是yyyyMM
-            string gradeYear = yearQuarter.Substring(0, 4);
             ///  加供应商信息
             List<SuppliersSumInfoVM> SupplierInfoDatas = HaveCertificateSupplierManager.GetQualifiedSupplierList(yearQuarter);
             if (SupplierInfoDatas == null || SupplierInfoDatas.Count == 0) return returnDatas;
             SupplierInfoDatas.ForEach(m =>
             {
-                List<string> supGradeTypes = GetPurSupGradeInfoDataBy(m.SupplierId, gradeYear).Select(e => e.SupGradeType).ToList();
+                List<string> supGradeTypes = GetPurSupGradeInfoDataBy(m.SupplierId).Select(e => e.SupGradeType).ToList();
                 model = new SupplierGradeInfoVm
                 {
                     SupplierId = m.SupplierId,
@@ -48,11 +46,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             });
             return returnDatas;
         }
-        public List<SupplierGradeInfoModel> GetPurSupGradeInfoDataBy(string supplierId, string yearQuarter)
+        public List<SupplierGradeInfoModel> GetPurSupGradeInfoDataBy(string supplierId)
         {
             //格式是yyyyMM
-            string gradeYear = yearQuarter.Substring(0, 4);
-            return SupplierCrudFactory.SupplierGradeInfoCrud.GetPurSupGradeInfoBy(supplierId, gradeYear);
+            return SupplierCrudFactory.SupplierGradeInfoCrud.GetPurSupGradeInfoBy(supplierId);
         }
         public OpResult SavePurSupGradeData(SupplierGradeInfoModel entity)
         {

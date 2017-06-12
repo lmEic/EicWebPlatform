@@ -149,14 +149,14 @@
                                      <div>
                                          @* 评分类别 *@
                                          <div class="form-group">
-                                             <label for="supGradeType" class="col-md-2 control-label">评分类别</label>
+                                             <label for="supGradeType" class="col-md-2 control-label">评分类别:</label>
                                              <div class="col-md-6">
                                                 <button  name="supGradeType" type="button" class="btn btn-default" ng-model="vm.SupGradeType" i data-html="1"  data-placeholder="评分类别"
                                                          data-toggle="true" bs-options="grade.id as grade.text for grade in vmManager.gradeTypes" bs-select>
                                                      评分类别 <span class="caret"></span>
                                                  </button>
                                              </div>
-                                             <label for="isFirstGrade" class="col-md-2 control-label">评分属性</label>
+                                             <label for="isFirstGrade" class="col-md-2 control-label">评分属性:</label>
                                              <div class="col-md-2"> 
                                                  <button type="button" class="btn btn-default" ng-model="vm.IsFirstGrade" data-html="1" data-placeholder="属性"  
                                                          data-toggle="true" bs-options="property.id as property.text for property in vmManager.GradeScorePropertys" bs-select>
@@ -167,11 +167,11 @@
                                          <div class="row">
                                              @* 评分信息 *@
                                              <div class="form-group">
-                                                 <label for="gradeScore" class="col-md-2 control-label">评分</label>
+                                                 <label for="gradeScore" class="col-md-2 control-label">评分:</label>
                                                  <div class="col-md-4">
-                                                     <input name="gradeScore" type="number" value="0"  max="100" min="1" class="form-control" ng-model="vm.GradeScore" required />
+                                                     <input  type="number" value="0"  max="100" min="0" class="form-control" ng-model="vm.GradeScore" required />
                                                  </div>
-                                                 <label for="gradeDate" class="col-md-2 control-label">首评日期</label>
+                                                 <label for="gradeDate" class="col-md-2 control-label">日 期:</label>
                                                  <div class="col-md-4">
                                                      <input name="gradeDate" type="date" class="form-control" format-date ng-model="vm.GradeDate" required />
                                                      <div class="error-messages" ng-messages="formSupGrade.gradeDate.$error" ng-show="operate.showValidation">
@@ -180,9 +180,9 @@
                                                  </div>
                                              </div>
                                              <div class="form-group">
-                                                 <label for="gradeExplain" class="col-md-2 control-label">评份说明</label>
+                                                 <label for="gradeExplain" class="col-md-2 control-label">评份说明:</label>
                                                  <div class="col-md-8">
-                                                     <input name="gradeExplain" type="text"  value="空" class="form-control" ng-model="vm.GradeExplain" required />
+                                                     <input  type="text" value=""  class="form-control" ng-model="vm.GradeExplain" required />
                                                  </div>
                                              </div>
 

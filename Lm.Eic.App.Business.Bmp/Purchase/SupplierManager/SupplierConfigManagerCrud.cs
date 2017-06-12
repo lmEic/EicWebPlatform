@@ -62,7 +62,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// <summary>
     /// 供应商合格证书Curd
     /// </summary>
-    internal class SupplierQualifiedCertificateCrud : CrudBase<SupplierQualifiedCertificateModel, ISupplierQualifiedCertificateRepository>
+    internal  class SupplierQualifiedCertificateCrud : CrudBase<SupplierQualifiedCertificateModel, ISupplierQualifiedCertificateRepository>
     {
         public SupplierQualifiedCertificateCrud() : base(new SupplierQualifiedCertifcateRepository(), "供应商合格文件")
         { }
@@ -301,6 +301,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
+
                 return irep.Entities.FirstOrDefault(m => m.SupplierId == supplierId);
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
@@ -451,15 +452,16 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         OpResult AddSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
             ///首评只能有一次
+            entity.GradeYear = entity.GradeDate.Year.ToString();
             if (entity.IsFirstGrade == "首评")
             {
-                entity.ParameterKey = entity.SupplierId + "&" + entity.SupGradeType + "&" + entity.IsFirstGrade;
-                if (!IsExist(entity.ParameterKey)) return irep.Insert(entity).ToOpResult_Add(OpContext);
-                return OpResult.SetErrorResult("供应商:" + entity.SupplierId + "[" + entity.SupGradeType + "]" + entity.GradeYear + "年,首评" + "已评！不能添加只能修改！"); ;
+                entity.ParameterKey = entity.SupplierId + "&" + entity.SupGradeType+"&"+ entity.IsFirstGrade;
+                if (!IsExist(entity.ParameterKey))  return irep.Insert(entity).ToOpResult_Add(OpContext); 
+                return OpResult.SetErrorResult("供应商:" + entity.SupplierId + "[" + entity.SupGradeType + "]" + entity.GradeYear + "年,首评"+ "已评！不能添加只能修改！"); ;
             }
-            entity.ParameterKey = entity.SupplierId + "&" + entity.GradeYear + DateTime.Now.Month.ToString("00") + "&" + entity.SupGradeType + "&" + entity.IsFirstGrade;
-            if (!IsExist(entity.ParameterKey)) return irep.Insert(entity).ToOpResult_Add(OpContext);
-            return OpResult.SetErrorResult("供应商:" + entity.SupplierId + "[" + entity.SupGradeType + "]" + entity.GradeYear + "年" + DateTime.Now.Month.ToString("00") + "月,复评" + "已评！不能添加只能修改！"); ;
+            entity.ParameterKey = entity.SupplierId + "&" + entity.GradeYear + entity.GradeDate.Month.ToString("00") + "&" + entity.SupGradeType + "&" + entity.IsFirstGrade;
+            if (!IsExist(entity.ParameterKey))  return irep.Insert(entity).ToOpResult_Add(OpContext);
+              return OpResult.SetErrorResult("供应商:" + entity.SupplierId  + "[" + entity.SupGradeType + "]" + entity.GradeYear + "年"+ entity.GradeDate.Month.ToString("00")+ "月,复评" + "已评！不能添加只能修改！"); ;
         }
         OpResult DeleteSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
@@ -472,9 +474,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         //{
         //    return irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
         //}
-        internal List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string supplierId, string gradeYear)
+        internal List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string supplierId)
         {
-            return irep.Entities.Where(e => e.SupplierId == supplierId & e.GradeYear == gradeYear).ToList();
+            return irep.Entities.Where(e => e.SupplierId == supplierId).OrderBy(e=>e.GradeDate).ToList();
         }
         /// <summary>
         ///
@@ -483,15 +485,16 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         OpResult EditSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
+            entity.GradeYear = entity.GradeDate.Year.ToString();
             return irep.Update(e => e.Id_Key == entity.Id_Key, entity).ToOpResult_Eidt(OpContext); ;
         }
         OpResult UpdateSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
             return irep.Update(e => e.ParameterKey == entity.ParameterKey, e => new SupplierGradeInfoModel
             {
-                GradeScore = entity.GradeScore,
-                GradeExplain = entity.GradeExplain,
-                GradeDate = entity.GradeDate
+               GradeScore=entity.GradeScore ,
+               GradeExplain=entity.GradeExplain ,
+               GradeDate=entity.GradeDate 
             }).ToOpResult_Eidt(OpContext);
         }
 

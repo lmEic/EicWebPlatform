@@ -117,6 +117,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             if (!IsExist(model.RmaId, model.ProductId, model.ReturnHandleOrder))
             {     //序号自动计算出来
                 model.RmaIdNumber = RmaIdCount(model.RmaId) + 1;
+                model.HandleStatus = GetHandleStatus(model.ProductCount);
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
             return OpResult.SetErrorResult("该记录已经存在！");
@@ -124,6 +125,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         OpResult UpdateModel(RmaBusinessDescriptionModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+
+        public string GetHandleStatus(double ProductCount)
+        {
+            if (ProductCount > 0)
+                return RmaHandleStatus.BusinessPlusStatus;
+            if (ProductCount < 0)
+                return RmaHandleStatus.BusinessMinusStatus;
+            return RmaHandleStatus.InitiateStatus;
         }
         #endregion
 
@@ -142,12 +152,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId && e.ReturnHandleOrder == returnHandleOrder);
         }
-        internal OpResult UpdateHandleStatus(string rmaId, string productId, string returnHandleOrder)
+        internal OpResult UpdateHandleStatus(string rmaId, string productId, string returnHandleOrder,string businessStatus)
         {
             return irep.Update(e => e.RmaId == rmaId && e.ProductId == productId && e.ReturnHandleOrder == returnHandleOrder,
                u => new RmaBusinessDescriptionModel
                {
-                   HandleStatus = RmaHandleStatus.BusinessStatus
+                   HandleStatus = businessStatus
                }).ToOpResult_Eidt(OpContext);
         }
         internal OpResult UpdateHandleStatus(string rmaId, int rmaIdNumber, string businessStatus)
@@ -197,7 +207,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         internal OpResult UpdateHandleStatus(string parameterKey)
         {
-
             if (string.IsNullOrEmpty(parameterKey)) return OpResult.SetErrorResult("ramId或者productId不能为空!");
             return irep.Update(f => f.ParameterKey == parameterKey, u => new RmaInspectionManageModel
             {
