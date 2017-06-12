@@ -55,7 +55,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             {
                 //先从已存的数据信息中找
                 SupplierInfoModel supplierInfo = SupplierCrudFactory.SuppliersInfoCrud.GetSupplierInfoBy(supplierId);
-                if (supplierInfo != null) return supplierInfo;
+                if (supplierInfo != null&& supplierInfo.IsCooperate == "True") return supplierInfo;
                 //没有找到再从ERP中找
                 supplierInfo = GetSuppplierInfoFromErpBy(supplierId);
                 if (supplierInfo != null && supplierInfo.IsCooperate == "True")

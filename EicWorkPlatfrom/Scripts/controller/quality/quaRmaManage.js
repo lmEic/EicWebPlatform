@@ -75,7 +75,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
         RmaId: null,
         ProductName: null,
         CustomerShortName: null,
-        RmaIdStatus: "未结案",
+        RmaIdStatus: "空单号",
         OpPerson: null,
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: 0
@@ -364,96 +364,4 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
 qualityModule.controller('rmaReportQueryCtrl', function ($scope, rmaDataOpService) {
     leeHelper.setWebSiteTitle("质量管理", "RMA查询检验处置");
     ///视图模型
-    var rmavm = $scope.rmavm = {
-        RmaId: null,
-        ProductName: null,
-        CustomerShortName: null
-    };
-    var uiVm = $scope.vm = {
-        RmaId: null,
-        RmaIdNumber: 0,
-        BadPhenomenon: null,
-        BadDescription: null,
-        ParameterKey: null,
-        BadReadson: null,
-        HandleWay: null,
-        ResponsiblePerson: null,
-        FinishDate: null,
-        PayTime: null,
-        LiabilityBelongTo: null,
-        HandleStatus: null,
-        OpPerson: null,
-        OpSign: leeDataHandler.dataOpMode.add,
-        Id_Key: null
-    };
-
-    var initVM = _.clone(uiVm);
-    var vmManager = {
-        init: function () {
-            uiVm = _.clone(initVM);
-            uiVm.OpSign = leeDataHandler.dataOpMode.add;
-            $scope.vm = uiVm;
-        },
-        activeTab: 'businessTab',
-        //获取表单数据
-        getRmaInspectionHandleDatas: function () {
-            if (uiVm.RmaId === null || uiVm.RmaId === "") return;
-            $scope.searchPromise = rmaDataOpService.getRmaInspectionHandleDatas(uiVm.RmaId).then(function (data) {
-                if (angular.isObject(data)) {
-                    leeHelper.copyVm(data.rmaInitiateData, rmavm);
-                    vmManager.businessHandleDatas = data.bussesDescriptionDatas;
-                    vmManager.dataSets = data.inspectionHandleDatas;
-                    uiVm.ParameterKey = uiVm.RmaId + "&" + vmManager.businessHandleDatas.ReturnHandleOrder + "&" + vmManager.businessHandleDatas.ProductId;
-                    angular.forEach(vmManager.businessHandleDatas, function (item) {
-                        item.isHandle = _.find(vmManager.dataSets, { RmaId: item.RmaId, ParameterKey: item.ParameterKey }) !== undefined;
-                    });
-                }
-            });
-        },
-        businessHandleDatas: [],
-        dataSets: []
-    };
-    $scope.vmManager = vmManager;
-
-    var dialog = $scope.dialog = leePopups.dialog();
-
-    var operate = Object.create(leeDataHandler.operateStatus);
-    $scope.operate = operate;
-   
-    operate.handleItem = function (item) {
-        console.log(item);
-        var dataitem = _.clone(item);
-        uiVm.ParameterKey = item.RmaId + "&" + item.ReturnHandleOrder + "&" + item.ProductId;
-        dataitem.OpSign = leeDataHandler.dataOpMode.add;
-        leeHelper.copyVm(dataitem, uiVm);
-        $scope.vm = uiVm;
-        dialog.show();
-    };
-    operate.editItem = function (item) {
-        var dataitem = item;
-        dataitem.OpSign = leeDataHandler.dataOpMode.edit;
-        $scope.vm = uiVm = dataitem;
-        dialog.show();
-    };
-    operate.saveAll = function (isValid) {
-        leeHelper.setUserData(uiVm);
-        leeDataHandler.dataOperate.add(operate, isValid, function () {
-            rmaDataOpService.storeRmaInspectionHandleDatas(uiVm).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                    if (opresult.Result) {
-                        var dataItem = _.clone(uiVm);
-                        dataItem.Id_Key = opresult.Id_Key;
-                        if (dataItem.OpSign === 'add') {
-                            vmManager.dataSets.push(dataItem);
-                        }
-                        vmManager.init();
-                        dialog.close();
-                    }
-                });
-            });
-        });
-    };
-    operate.refresh = function () {
-        leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); });
-    };
 });

@@ -58,6 +58,9 @@
     <Compile Include="Business\Itil\ItilDevelopModuleCrud.cs" />
     <Compile Include="Business\Itil\ItilDevelopModuleManager.cs" />
     <Compile Include="Business\Itil\ItilService.cs" />
+    <Compile Include="Business\MessageNotify\NotifyModuleCrud.cs" />
+    <Compile Include="Business\MessageNotify\NotifyModuleManager.cs" />
+    <Compile Include="Business\MessageNotify\NotifyService.cs" />
     <Compile Include="Business\Tools\tlOnline\CollaborateContacManager.cs" />
     <Compile Include="Business\Tools\tlOnline\tlOnlineCrudFactorty.cs" />
     <Compile Include="Business\Tools\tlOnline\ToolOnlineService.cs" />
@@ -67,12 +70,14 @@
     <Compile Include="DbAccess\Repository\CollaborateContactLibRepository.cs" />
     <Compile Include="DbAccess\Repository\ConfigDataDictionaryRepository.cs" />
     <Compile Include="DbAccess\Repository\ItilDevelopModuleManageRepository.cs" />
+    <Compile Include="DbAccess\Repository\MesageNotifyRepository.cs" />
     <Compile Include="DbAccess\Repository\WorkTaskRepository.cs" />
     <Compile Include="Model\ConfigDataDictionaryModel.cs" />
     <Compile Include="Model\ITIL\ItilDevelopModuleManageModel.cs" />
     <Compile Include="Model\ITIL\ItilDevelopModuleManageChangeRecordModel.cs" />
     <Compile Include="Model\ITIL\ItilDto.cs" />
     <Compile Include="Model\ITIL\ItilSupplierTelModel.cs" />
+    <Compile Include="Model\MessageNotify\ConfigNotifyAddressModel.cs" />
     <Compile Include="Model\Tools\CollaborateContactLibModel.cs" />
     <Compile Include="Business\Tools\tlOnline\WorkTaskManager.cs" />
     <Compile Include="Model\Tools\QueryWorkTaskManageDto.cs" />

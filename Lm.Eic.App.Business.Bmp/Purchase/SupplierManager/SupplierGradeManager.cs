@@ -57,29 +57,14 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public OpResult SavePurSupGradeData(SupplierGradeInfoModel entity)
         {
             ///操作符在界面没有确定
-            if (entity == null) return OpResult.SetErrorResult("实体不能为空");
-
-            if (SupplierCrudFactory.SupplierGradeInfoCrud.IsExist(entity.ParameterKey))
-            {
-                if (entity.OpSign == OpMode.Add)
-                    return OpResult.SetErrorResult("供应商:" + entity.SupplierId
-                        + "[" + entity.SupGradeType + "]" + entity.GradeYear + "年"
-                        + "已评！不能添加只能修改！");
-            }
             return SupplierCrudFactory.SupplierGradeInfoCrud.Store(entity);
         }
         private string ConvertStringBy(List<string> listDatas)
         {
             string convertString = string.Empty;
-            if (listDatas == null || listDatas.Count <= 0)
-                return convertString;
-            listDatas.ForEach(s =>
-            {
-                convertString += s + ",";
-            });
+            if (listDatas == null || listDatas.Count <= 0)  return convertString;
+            listDatas.ForEach(s =>{convertString += s + ","; });
             return convertString;
-
-
         }
         #endregion
     }

@@ -29,7 +29,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public string AutoBuildingRmaId()
         {
-            string nowYaer = DateTime.Now.ToString("yy");
+            string nowYaer = DateTime.Now.ToString("yyyy");
             string nowMonth = DateTime.Now.ToString("MM");
             var count = RmaCurdFactory.RmaReportInitiate.CountNowYaerMonthRmaIdNumber(nowYaer) + 1;
             return "R" + nowYaer + nowMonth + count.ToString("000");

@@ -1,6 +1,7 @@
 ﻿using Lm.Eic.Framework.ProductMaster.Model;
 
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
+using Lm.Eic.Framework.ProductMaster.Model.MessageNotify;
 using Lm.Eic.Framework.ProductMaster.Model.Tools;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
@@ -57,6 +58,20 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("ITIL_DevelopModuleManageChangeRecord");
+        }
+    }
+
+
+    /// <summary>
+    ///ConfigNotifyAddressModel
+    /// </summary>
+    public class ConfigNotifyAddressModelMapping : EntityTypeConfiguration<ConfigNotifyAddressModel>
+    {
+        public ConfigNotifyAddressModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Config_NotifyAddress");
         }
     }
 
