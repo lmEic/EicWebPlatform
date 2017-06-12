@@ -238,7 +238,7 @@ var leeHelper = (function () {
                 }
             }
         },
-        ///从数组中移除指定选项
+        ///从数组中移除指定选项,Item对象与数组中的对象需要一样，即每个属性值都没有变化的情况
         remove: function (ary, item) {
             if (!Array.isArray(ary)) return;
             for (var i = 0, len = ary.length; i < len; i++) {
@@ -247,6 +247,13 @@ var leeHelper = (function () {
                     break;
                 }
             }
+        },
+        ///从数组中删除指定选项,Item对象中必须包含Id属性
+        delete: function (ary, item) {
+            if (!Array.isArray(ary)) return;
+            var data = _.findWhere(ary, { Id: item.Id });
+            if (data !== undefined)
+                leeHelper.remove(data);
         },
         ///在数组指定位置插入项
         insert: function (ary, index, item) {
@@ -484,7 +491,17 @@ var leeHelper = (function () {
                 fileIcon = "fa fa-file-image-o";
             }
             return fileIcon;
-        }
+        },
+        //生成全局唯一标识符
+        newGuid: function () {
+            var d = new Date().getTime();
+            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+            return uuid;
+        },
     };
 })();
 /// 弹出框助手

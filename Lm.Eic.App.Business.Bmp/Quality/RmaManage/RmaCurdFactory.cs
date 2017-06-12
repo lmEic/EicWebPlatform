@@ -88,7 +88,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// 改Rma状态
         /// </summary>
         /// <param name="rmaId"></param>
-        /// <param name="rmaIdStatus"></param>
+        /// <param name="handleStatus"></param>
         /// <returns></returns>
         internal OpResult UpdateHandleStatus(string rmaId, string handleStatus)
         {
@@ -180,8 +180,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             if (!IsExist(model.RmaId, model.ParameterKey))
                 return irep.Insert(model).ToOpResult_Add(OpContext);
-             ///序号自动计算出来
-            model.RmaIdNumber = RmaIdCount(model.RmaId ) + 1;
+            ///序号自动计算出来
+            model.RmaIdNumber = RmaIdCount(model.RmaId) + 1;
             return OpResult.SetErrorResult("该记录已经存在！");
         }
         OpResult Update(RmaInspectionManageModel model)

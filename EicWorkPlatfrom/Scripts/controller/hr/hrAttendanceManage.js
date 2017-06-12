@@ -344,6 +344,7 @@ hrModule.controller('hrSumerizeAttendanceDataCtrl', function ($scope, $modal, hr
 //请假设置管理
 hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService, hrArchivesDataOpService) {
     var askLeaveVM = {
+        Id: null,
         AttendanceDate: null,
         SlotCardTime: null,
         LeaveType: null,
@@ -355,6 +356,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         WorkerId: null,
         WorkerName: null,
         Department: null,
+        OpSign: null,
     };
 
     var uiVM = $scope.vm = _.clone(askLeaveVM);
@@ -407,14 +409,19 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         createAskLeaveRecord: function (item) {
             if (vmManager.workerInfo === null) return;
             var workerItem = _.clone(askLeaveVM);
+            workerItem.Id = leeHelper.newGuid();
             workerItem.WorkerId = vmManager.workerInfo.WorkerId;
             workerItem.WorkerName = vmManager.workerInfo.Name;
             workerItem.LeaveHours = 8;
             workerItem.LeaveType = queryVM.leaveType;
+            workerItem.AttendanceDate = new Date(queryVM.year, queryVM.month, item.Day, 0, 0);
             workerItem.LeaveTimeRegionStart = new Date(queryVM.year, queryVM.month, item.Day, 7, 50);
             workerItem.LeaveTimeRegionEnd = new Date(queryVM.year, queryVM.month, item.Day, 17, 10);
             workerItem.LeaveTimeRegion = workerItem.LeaveTimeRegionStart.pattern("HH:mm") + "-" + workerItem.LeaveTimeRegionEnd.pattern("HH:mm");
+            workerItem.OpSign = leeDataHandler.dataOpMode.add;
             item.workerAskLeave = workerItem;
+
+            vmManager.askLeaveDatas.push(workerItem);
         },
         removeAskLeaveRecord: function (item) {
             if (vmManager.workerInfo === null) return;
@@ -435,146 +442,30 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
     $scope.vmManager = vmManager;
 
     //业务逻辑操作对象
-    var operate = Object.create(leeDataHandler.operateStatus);
-    operate.vm = uiVM;
-    $scope.operate = operate;
+    var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
 
-
-    operate.search = function () {
-        $scope.workerPromise = hrArchivesDataOpService.getEmployeeByWorkerIds(vmManager.workerIdList, 0).then(function (data) {
-            angular.forEach(data, function (item) {
-                var queryItem = _.find(vmManager.changeDatas, { WorkerId: item.WorkerId });
-                if (queryItem !== undefined) {
-                    if (queryItem.OpCmdVisible !== 0) {
-                        leeHelper.copyVm(item, queryItem);
-                        queryItem.OpCmdVisible = 1;
-                        queryItem.WorkerName = item.Name;
-                        queryItem.OpSign = "init";
-                        queryItem.DepartmentText = leeHelper.getDepartmentText(vmManager.departments, item.Department);
-                    }
-                }
+    operate.saveAll = function () {
+        hrDataOpService.handleAskForLeave(vmManager.askLeaveDatas).then(function (opResult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
+                vmManager.loadCalendarDatas();
             });
         });
     };
 
-    operate.editModal = $modal({
-        title: "操作窗口",
-        templateUrl: 'HR/AskLeaveEditSelectTpl/',
-        controller: function ($scope) {
-            $scope.vm = uiVM;
-            $scope.leaveTypes = vmManager.leaveTypes;
-
-            var op = Object.create(leeDataHandler.operateStatus);
-            op.vm = uiVM;
-            $scope.operate = op;
-
-            $scope.save = function (isvalidate) {
-                leeDataHandler.dataOperate.add(op, isvalidate, function () {
-                    var leaveItem = {
-                        WorkerId: null,
-                        WorkerName: null,
-                        Department: null,
-                        LeaveType: null,
-                        LeaveHours: null,
-                        LeaveTimeRegion: null,
-                        LeaveDescription: null,
-                        LeaveMark: 0,
-                        LeaveMemo: null,
-                        StartLeaveDate: null,
-                        EndLeaveDate: null,
-                        LeaveTimeRegionStart: null,
-                        LeaveTimeRegionEnd: null,
-                        DepartmentText: null,
-                        ClassType: null,
-                        id: 0
-                    };
-                    var item = _.clone(uiVM);
-                    if (vmManager.opSign === "handle" || vmManager.opSign === "add") {
-                        item.LeaveMark = 1;
-                        item.OpCmdVisible = 0;
-                        var rowItem = _.find(vmManager.changeDatas, { WorkerId: item.WorkerId });
-                        leeHelper.copyVm(item, rowItem);
-                        leeHelper.copyVm(item, leaveItem);
-                        rowItem.LeaveDataSet.push(leaveItem);
-                        leaveItem.id = rowItem.LeaveDataSet.length;
-
-                        var litem = _.findWhere(vmManager.dbDataSet, { WorkerId: item.WorkerId, LeaveType: item.LeaveType, StartLeaveDate: item.StartLeaveDate, EndLeaveDate: item.EndLeaveDate });
-                        if (litem === undefined)
-                            litem = _.clone(leaveItem);
-                        vmManager.dbDataSet.push(litem);
-                    }
-                    else if (vmManager.opSign === 'edit') {
-                        var rowItem = _.find(vmManager.changeDatas, { WorkerId: item.WorkerId });
-                        leaveItem = _.find(rowItem.LeaveDataSet, { id: item.id });
-                        leeHelper.copyVm(item, leaveItem);
-                    }
-                    else if (vmManager.opSign === 'handleEdit') {
-                        var rowItem = _.find(vmManager.askLeaveDatas, { WorkerId: item.WorkerId, AttendanceDate: item.StartLeaveDate });
-                        if (rowItem !== undefined) {
-                            leeHelper.copyVm(item, rowItem);
-                            rowItem.LeaveTimeRegion = item.LeaveTimeRegionStart + '--' + item.LeaveTimeRegionEnd;
-                        }
-                    }
-                    operate.editModal.$promise.then(operate.editModal.hide);
-                });
-            };
-        },
-        show: false
-    });
-    operate.handleAskForLeave = function (item, opSign) {
-        leeHelper.clearVM(uiVM);
-        vmManager.opSign = opSign;
-        if (opSign === 'handle' || opSign === 'edit') {
-            leeHelper.copyVm(item, uiVM);
-        }
-        else if (opSign === 'add') {
-            leeHelper.copyVm(item, uiVM, ['LeaveType', 'LeaveHours', 'StartLeaveDate', 'EndLeaveDate']);
-        }
-        else if (opSign === 'del') {
-            var rowItem = _.findWhere(vmManager.changeDatas, { WorkerId: item.WorkerId });
-            if (rowItem !== undefined) {
-                leeHelper.remove(rowItem.LeaveDataSet, item);
-                leeHelper.remove(vmManager.dbDataSet, item);
-
-            }
-        }
-        else if (opSign === 'handleEdit') {
-            leeHelper.copyVm(item, uiVM);
-            uiVM.StartLeaveDate = item.AttendanceDate;
-            uiVM.EndLeaveDate = item.AttendanceDate;
-            uiVM.OpSign = opSign;
-        }
-
-        if (opSign !== 'del')
-            operate.editModal.$promise.then(operate.editModal.show);
-    };
-
-    operate.save = function () {
-        if (vmManager.activeTab === 'initTab') {
-            hrDataOpService.handleAskForLeave(vmManager.dbDataSet).then(function (opResult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
-                    vmManager.changeDatas = [];
-                    vmManager.dbDataSet = [];
-                });
-            });
-        }
-        else if (vmManager.activeTab === 'manageTab') {
-            hrDataOpService.updateAskForLeave(vmManager.askLeaveDatas).then(function (opResult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
-                    vmManager.askLeaveDatas = [];
-                });
-            });
-        }
-    };
-
     $scope.promise = hrDataOpService.getLeaveTypesConfigs().then(function (datas) {
-        var leaveTypes = _.where(datas, { ModuleName: "AttendanceConfig", AboutCategory: "AskForLeaveType" });
+        var leaveTypes = _.where(datas, {
+            ModuleName: "AttendanceConfig", AboutCategory: "AskForLeaveType"
+        });
         if (leaveTypes !== undefined) {
             angular.forEach(leaveTypes, function (item) {
-                vmManager.leaveTypes.push({ name: item.DataNodeText, text: item.DataNodeText });
+                vmManager.leaveTypes.push({
+                    name: item.DataNodeText, text: item.DataNodeText
+                });
             });
         }
-        var departments = _.where(datas, { TreeModuleKey: "Organization" });
+        var departments = _.where(datas, {
+            TreeModuleKey: "Organization"
+        });
         if (departments !== undefined) {
             vmManager.departments = departments;
         }
@@ -670,7 +561,9 @@ hrModule.controller('attendExceptionHandleCtrl', function ($scope, $modal, hrDat
             $scope.operate = op;
             $scope.save = function (isvalid) {
                 leeDataHandler.dataOperate.add(op, isvalid, function () {
-                    var dataitem = _.find(vmManager.dbDataSet, { Id_Key: vmManager.selectedItem.Id_Key });
+                    var dataitem = _.find(vmManager.dbDataSet, {
+                        Id_Key: vmManager.selectedItem.Id_Key
+                    });
                     if (dataitem !== undefined) {
                         leeHelper.copyVm($scope.vm, dataitem);
                         dataitem.OpSign = vmManager.opSign;
@@ -695,7 +588,9 @@ hrModule.controller('attendExceptionHandleCtrl', function ($scope, $modal, hrDat
             $scope.operate = op;
             $scope.save = function (isvalid) {
                 leeDataHandler.dataOperate.add(op, isvalid, function () {
-                    var dataitem = _.find(vmManager.dbDataSet, { Id_Key: vmManager.selectedItem.Id_Key });
+                    var dataitem = _.find(vmManager.dbDataSet, {
+                        Id_Key: vmManager.selectedItem.Id_Key
+                    });
                     if (dataitem !== undefined) {
                         leeHelper.copyVm($scope.vm, dataitem);
                         dataitem.OpSign = vmManager.opSign;
@@ -713,7 +608,9 @@ hrModule.controller('attendExceptionHandleCtrl', function ($scope, $modal, hrDat
     });
 
     var handleAttendExceptionData = function (exceptionMemo) {
-        var dataitem = _.find(vmManager.dbDataSet, { Id_Key: vmManager.selectedItem.Id_Key });
+        var dataitem = _.find(vmManager.dbDataSet, {
+            Id_Key: vmManager.selectedItem.Id_Key
+        });
         if (dataitem !== undefined) {
             dataitem.OpSign = vmManager.opSign;
             dataitem.SlotExceptionMemo = exceptionMemo;
@@ -776,13 +673,19 @@ hrModule.controller('attendExceptionHandleCtrl', function ($scope, $modal, hrDat
     };
 
     $scope.promise = hrDataOpService.getLeaveTypesConfigs().then(function (datas) {
-        var leaveTypes = _.where(datas, { ModuleName: "AttendanceConfig", AboutCategory: "AskForLeaveType" });
+        var leaveTypes = _.where(datas, {
+            ModuleName: "AttendanceConfig", AboutCategory: "AskForLeaveType"
+        });
         if (leaveTypes !== undefined) {
             angular.forEach(leaveTypes, function (item) {
-                vmManager.leaveTypes.push({ name: item.DataNodeText, text: item.DataNodeText });
+                vmManager.leaveTypes.push({
+                    name: item.DataNodeText, text: item.DataNodeText
+                });
             });
         }
-        var departments = _.where(datas, { TreeModuleKey: "Organization" });
+        var departments = _.where(datas, {
+            TreeModuleKey: "Organization"
+        });
         if (departments !== undefined) {
             vmManager.departments = departments;
         }
@@ -837,22 +740,64 @@ hrModule.controller('workClothesManageCtrl', function ($scope, $modal, hrDataOpS
         closeSpecifies: [],
         productNames: [
             {
-                id: "夏季厂服", text: "夏季厂服", specifyList: [{ id: "34", text: "34" }, { id: "35", text: "35" }, { id: "36", text: "36" }, { id: "37", text: "37" }, { id: "38", text: "38" }, { id: "39", text: "39" }, { id: "40", text: "40" }, { id: "41", text: "41" }, { id: "42", text: "42" }, { id: "43", text: "43" }, { id: "44", text: "44" }]
+                id: "夏季厂服", text: "夏季厂服", specifyList: [{
+                    id: "34", text: "34"
+                }, {
+                    id: "35", text: "35"
+                }, {
+                    id: "36", text: "36"
+                }, {
+                    id: "37", text: "37"
+                }, {
+                    id: "38", text: "38"
+                }, {
+                    id: "39", text: "39"
+                }, {
+                    id: "40", text: "40"
+                }, {
+                    id: "41", text: "41"
+                }, {
+                    id: "42", text: "42"
+                }, {
+                    id: "43", text: "43"
+                }, {
+                    id: "44", text: "44"
+                }]
             },
             {
-                id: "冬季厂服", text: "冬季厂服", specifyList: [{ id: "S", text: "S" }, { id: "M", text: "M" }, { id: "L", text: "L" }, { id: "XL", text: "XL" }, { id: "XXL", text: "XXL" }, { id: "XXXL", text: "XXXL" }]
+                id: "冬季厂服", text: "冬季厂服", specifyList: [{
+                    id: "S", text: "S"
+                }, {
+                    id: "M", text: "M"
+                }, {
+                    id: "L", text: "L"
+                }, {
+                    id: "XL", text: "XL"
+                }, {
+                    id: "XXL", text: "XXL"
+                }, {
+                    id: "XXXL", text: "XXXL"
+                }]
             }
         ],
         selectProductName: function () {
-            var product = _.find(vmManager.productNames, { id: uiVM.ProductName });
+            var product = _.find(vmManager.productNames, {
+                id: uiVM.ProductName
+            });
             if (!angular.isUndefined(product)) {
                 vmManager.closeSpecifies = product.specifyList;
             }
         },
         dealwithTypes: [
-            { id: "领取新衣", text: "领取新衣" },
-            { id: "以旧换新", text: "以旧换新" },
-            { id: "以旧换旧", text: "以旧换旧" },
+            {
+                id: "领取新衣", text: "领取新衣"
+            },
+            {
+                id: "以旧换新", text: "以旧换新"
+            },
+            {
+                id: "以旧换旧", text: "以旧换旧"
+            },
             { id: "购买新衣", text: "购买新衣" }
         ],
         getWorkerInfo: function () {
@@ -941,7 +886,9 @@ hrModule.controller('workClothesManageCtrl', function ($scope, $modal, hrDataOpS
                     vmManager.storeDataset.push(mdl);
                 }
                 else if (mdl.OpSign === 'edit') {
-                    var item = _.find(vmManager.storeDataset, { Id_Key: uiVM.Id_Key });
+                    var item = _.find(vmManager.storeDataset, {
+                        Id_Key: uiVM.Id_Key
+                    });
                     leeHelper.copyVm(uiVM, item);
                 }
                 vmManager.init();

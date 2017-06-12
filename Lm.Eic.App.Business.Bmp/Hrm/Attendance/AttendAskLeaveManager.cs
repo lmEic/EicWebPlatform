@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
+using Lm.Eic.Uti.Common.YleeOOMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -111,5 +113,19 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         //{
         //    return this.irep.Entities.Where(e => e.WorkerId == workerId && e.YearMonth == qryMonth && e.LeaveMark == 1).ToList();
         //}
+
+        public OpResult HandleAskForLeave(List<AttendAskLeaveModel> askForLeaves)
+        {
+            if (askForLeaves == null) return OpResult.SetErrorResult("askForLeaves 不能为null");
+            bool result = true;
+            askForLeaves.ForEach(m =>
+            {
+                if (AttendCrudFactory.AskLeaveCrud.Store(m).Result)
+                {
+
+                }
+            });
+            return OpResult.SetSuccessResult("存储请假数据成功！");
+        }
     }
 }

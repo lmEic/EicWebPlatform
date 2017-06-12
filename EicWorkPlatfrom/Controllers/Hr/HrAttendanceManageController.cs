@@ -129,7 +129,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [HttpPost]
         public JsonResult UpdateAskForLeave(List<AttendSlodFingerDataCurrentMonthModel> askForLeaves)
         {
-            var result = AttendanceService.AttendAskLeaveManager.HandleAskForLeave(askForLeaves);
+            var result = 0;//AttendanceService.AttendAskLeaveManager.HandleAskForLeave(askForLeaves);
             return Json(result);
         }
 
@@ -141,7 +141,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public ContentResult GetAskLeaveDataAbout(string workerId, string yearMonth)
         {
-            var datas = AttendanceService.AttendAskLeaveManager.GetAskLeaveDataAbout(workerId, yearMonth);
+            var datas = 0;//AttendanceService.AttendAskLeaveManager.GetAskLeaveDataAbout(workerId, yearMonth);
             return DateJsonResult(datas);
         }
 
