@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
-angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap'])
+angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', 'angular-popups'])
 
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
 

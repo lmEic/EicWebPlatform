@@ -72,7 +72,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         /// <summary>
         /// 行事历列表
         /// </summary>
-        public DbSet<CalendarModel> Calendarlist{ set; get; }
+        public DbSet<CalendarModel> Calendarlist { set; get; }
 
         #endregion dbset
 
@@ -89,13 +89,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
 
             modelBuilder.Configurations.Add(new ProWorkerInfoMapping());
             //离职人员信息
-            modelBuilder.Configurations.Add(new ArWorkerLeaveOfficeInfoMapping ());
+            modelBuilder.Configurations.Add(new ArWorkerLeaveOfficeInfoMapping());
 
             //考勤模块
             modelBuilder.Configurations.Add(new AttendClassTypeModelMapping());
             modelBuilder.Configurations.Add(new AttendClassTypeDetailModelMapping());
             modelBuilder.Configurations.Add(new AttendSlodFingerDataCurrentMonthModelMapping());
             modelBuilder.Configurations.Add(new AttendFingerPrintDataInTimeModelMapping());
+            modelBuilder.Configurations.Add(new AttendAskLeaveModelMapping());
 
             //总务
             modelBuilder.Configurations.Add(new WorkClothesManageModelMapping());

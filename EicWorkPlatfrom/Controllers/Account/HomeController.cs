@@ -59,17 +59,7 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult GetCalendarDatas(int nowYear, int nowMonth)
         {
             var data = ArchiveService.ArCalendarManger.GetMonthCalendar(nowYear, nowMonth);
-            return Json(data);
-        }
-        /// <summary>
-        /// 保存行事历
-        /// </summary>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult SaveCalendarDatas(CalendarModel vm)
-        {
-            var result = ArchiveService.ArCalendarManger.store(vm);
-            return Json(result);
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

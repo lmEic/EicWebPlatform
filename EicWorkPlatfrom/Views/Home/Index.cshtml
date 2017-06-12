@@ -94,46 +94,27 @@
                                 <table class="table table-bordered" style="table-layout:fixed;margin-bottom:5px;" cg-busy="{promise:promise}">
                                     <thead>
                                         <tr>
-                                            <th>Week</th>
-                                            <th>Sun</th>
-                                            <th>Mon</th>
-                                            <th>Tue</th>
-                                            <th>Wed</th>
-                                            <th>Thu</th>
-                                            <th>Fri</th>
-                                            <th>Sat</th>
+                                            <th ng-repeat="headerItem in vmManager.calendar.WeekDays">
+                                                {{headerItem.Day}}
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody style="text-align:center;">
-                                        <tr ng-repeat="week in vmManager.calendarWeeks">
+                                        <tr ng-repeat="data in vmManager.calendar.WeekCalendars">
                                             <td style="background:#d9edf7;">
-                                                {{week}}
+                                                {{data.Week}}
                                             </td>
                                             <td style="background-color:{{item.DateColor}};padding-left:0;padding-right:0;"
-                                                ng-repeat="item in vmManager.calendarDatas" ng-show="item.YearWeekNumber=={{week}}"
-                                                title="{{item.Title}}" ng-dblclick="vmManager.editItem(item)">
-                                                {{item.CalendarDay}}
+                                                ng-repeat="item in data.WeekDays"
+                                                title="{{item.Title}}">
+                                                {{item.Day}}
                                                 <br />
                                                 <span style="font-size:12px;">{{item.ChineseCalendar}}</span>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="col-md-3" style="background:#29B8CB;border:1px solid black;">
-                                    法定假日
-                                </div>
-                                <div class="col-md-2" style="background:yellow;border:1px solid black;">
-                                    补班
-                                </div>
-                                <div class="col-md-2" style="background:violet;border:1px solid black;">
-                                    休假
-                                </div>
-                                <div class="col-md-3" style="background:red;border:1px solid black;">
-                                    星期六日
-                                </div>
-                                <div class="col-md-2" style="background:#d9edf7;border:1px solid black;">
-                                    周数
-                                </div>
+                                <div yl-calendar-color-tip></div>
                             </div>
                         </div>
 
