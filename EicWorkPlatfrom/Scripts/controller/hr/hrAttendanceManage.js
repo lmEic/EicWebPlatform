@@ -346,6 +346,8 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
     var askLeaveVM = {
         Id: null,
         AttendanceDate: null,
+        Day: null,
+        YearMonth: null,
         SlotCardTime: null,
         LeaveType: null,
         LeaveHours: null,
@@ -412,11 +414,14 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
             workerItem.Id = leeHelper.newGuid();
             workerItem.WorkerId = vmManager.workerInfo.WorkerId;
             workerItem.WorkerName = vmManager.workerInfo.Name;
+            workerItem.Department = vmManager.workerInfo.Department;
             workerItem.LeaveHours = 8;
             workerItem.LeaveType = queryVM.leaveType;
-            workerItem.AttendanceDate = new Date(queryVM.year, queryVM.month, item.Day, 0, 0);
-            workerItem.LeaveTimeRegionStart = new Date(queryVM.year, queryVM.month, item.Day, 7, 50);
-            workerItem.LeaveTimeRegionEnd = new Date(queryVM.year, queryVM.month, item.Day, 17, 10);
+            var day = parseInt(item.Day), year = queryVM.year, month = queryVM.month - 1;
+            workerItem.Day = day;
+            workerItem.YearMonth = queryVM.yearMonth;
+            workerItem.LeaveTimeRegionStart = new Date(year, month, day, 7, 50, 0);
+            workerItem.LeaveTimeRegionEnd = new Date(year, month, day, 17, 10, 0);
             workerItem.LeaveTimeRegion = workerItem.LeaveTimeRegionStart.pattern("HH:mm") + "-" + workerItem.LeaveTimeRegionEnd.pattern("HH:mm");
             workerItem.OpSign = leeDataHandler.dataOpMode.add;
             item.workerAskLeave = workerItem;
@@ -448,6 +453,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         hrDataOpService.handleAskForLeave(vmManager.askLeaveDatas).then(function (opResult) {
             leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
                 vmManager.loadCalendarDatas();
+                vmManager.askLeaveDatas = [];
             });
         });
     };

@@ -16,7 +16,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
 
         private IAttendClassTypeRepository irep = null;
         private IAttendClassTypeDetailRepository irepDetail = null;
-        private AttendSlodFingerDataCurrentMonthHandler attendanceHandler = null;
+        private AttendSlodFingerDataCurrentMonthCurd attendanceHandler = null;
         #endregion member
 
         #region constructure
@@ -25,7 +25,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         {
             this.irep = new AttendClassTypeRepository();
             this.irepDetail = new AttendClassTypeDetailRepository();
-            this.attendanceHandler = new AttendSlodFingerDataCurrentMonthHandler();
+            this.attendanceHandler = new AttendSlodFingerDataCurrentMonthCurd();
         }
 
         #endregion constructure
