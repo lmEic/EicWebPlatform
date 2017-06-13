@@ -42,24 +42,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             if (!IsExist(model.RmaId))
             {
-                SetModelVaule(model, RmaHandleStatus.InitiateStatus);
+                model.RmaYear = DateTime.Now.ToString("yy");
+                model.RmaMonth = DateTime.Now.ToString("MM");
+                model.RmaIdStatus = RmaHandleStatus.InitiateStatus;
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
             return OpResult.SetErrorResult("该RMA单号记录已经存在");
         }
         internal OpResult Eidt(RmaReportInitiateModel model)
         {
-            SetModelVaule(model, model.RmaIdStatus);
+            if (!IsExist(model.RmaId)||model.Id_Key ==0) return OpResult.SetErrorResult("该RMA单号记录不存在，编辑失败");
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
-        }
-        private void SetModelVaule(RmaReportInitiateModel model, string InitiateStatus)
-        {
-            if (model.RmaId != null && model.RmaId.Length == 8)
-            {
-                model.RmaYear = model.RmaId.Substring(1, 2);
-                model.RmaMonth = model.RmaId.Substring(3, 2);
-            }
-            model.RmaIdStatus = InitiateStatus;
         }
         #endregion
 

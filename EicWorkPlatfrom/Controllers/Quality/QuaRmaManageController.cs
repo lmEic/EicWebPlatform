@@ -147,6 +147,8 @@ namespace EicWorkPlatfrom.Controllers.Quality
         #endregion
 
         #region RmaReportQuery
+       
+        [NoAuthenCheck]
         public ActionResult RmaReportQuery()
         {
             return View();

@@ -45,7 +45,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public string AutoBuildingRmaId()
         {
-            string nowYaer = DateTime.Now.ToString("yyyy");
+            string nowYaer = DateTime.Now.ToString("yy");
             string nowMonth = DateTime.Now.ToString("MM");
             var count = RmaCurdFactory.RmaReportInitiate.CountNowYaerMonthRmaIdNumber(nowYaer) + 1;
             return "R" + nowYaer + nowMonth + count.ToString("000");
@@ -58,7 +58,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public OpResult StoreRamReortInitiate(RmaReportInitiateModel model)
         {
-            return RmaCurdFactory.RmaReportInitiate.Store(model);
+            return RmaCurdFactory.RmaReportInitiate.Store(model,true);
         }
         /// <summary>
         /// 得到初始Rma表单

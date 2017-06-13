@@ -62,35 +62,35 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             if (datas == null || datas.Count == 0) new DownLoadFileModel().Default(); 
             var dataGroupping = datas.GetGroupList<SupplierSeasonTutorModel>();
-           return  dataGroupping.ExportToExcelMultiSheets<SupplierSeasonTutorModel>(CreateFieldSeasonTutorMapping()).CreateDownLoadExcelFileModel("供应商辅导管理");
+           return  dataGroupping.ExportToExcelMultiSheets<SupplierSeasonTutorModel>(CreateFieldSeasonTutorMapping).CreateDownLoadExcelFileModel("供应商辅导管理");
         }
-        private List<FileFieldMapping> CreateFieldSeasonTutorMapping()
+        private List<FileFieldMapping> CreateFieldSeasonTutorMapping
         {
-            List<FileFieldMapping> fieldmappping = new List<FileFieldMapping>(){
+            get
+            {
+                return new List<FileFieldMapping>(){
                 new FileFieldMapping ("Number","项次") ,
-                new FileFieldMapping ("SupplierId","供应商Id") , 
-                new FileFieldMapping ("SupplierShortName","供应商简称") ,    
-                new FileFieldMapping ("SupplierName","供应商全称") ,   
-                new FileFieldMapping ("QualityCheck","质量考核") ,   
-                new FileFieldMapping ("AuditPrice","价格考核") ,   
-                new FileFieldMapping ("DeliveryDate","交期考核") ,    
-                new FileFieldMapping ("ActionLiven","配合度考核") , 
-                new FileFieldMapping ("HSFGrade","HSF能力考核") ,   
-                new FileFieldMapping ("TotalCheckScore","考核总分") ,      
-                new FileFieldMapping ("CheckLevel","考核等级") ,   
-                new FileFieldMapping ("RewardsWay ","处理方式") , 
-                new FileFieldMapping ("MaterialGrade","等级风险") ,    
-                new FileFieldMapping ("ManagerRisk","处理方式") ,  
-                new FileFieldMapping ("SeasonNum","季度") , 
-                new FileFieldMapping ("PlanTutorDate","计划辅导日期") ,      
-                new FileFieldMapping ("PlanTutorContent","计划辅导内容" ) , 
-                new FileFieldMapping ("ActionTutorDate","实际辅导日期") ,   
-                new FileFieldMapping ("ActionTutorContent","实际辅导内容" ) , 
-                new FileFieldMapping ("TutorResult","辅导结果" ) ,  
-                new FileFieldMapping ("TutorCategory","辅导类别" ) ,
-                new FileFieldMapping ("Remark","备注" )
-            };
-            return fieldmappping;
+                new FileFieldMapping ("SupplierId","供应商Id") ,
+                new FileFieldMapping ("SupplierName","供应商全称") ,
+                new FileFieldMapping ("AuditPrice","价格考核") ,
+                new FileFieldMapping ("DeliveryDate","交期考核") ,
+                new FileFieldMapping ("ActionLiven","配合度考核") ,
+                new FileFieldMapping ("HSFGrade","HSF考核") ,
+                new FileFieldMapping ("TotalCheckScore","考核总分") ,
+                new FileFieldMapping ("CheckLevel","考核等级") ,
+                new FileFieldMapping ("RewardsWay","处理方式") ,
+                new FileFieldMapping ("MaterialGrade","风险等险") ,
+                new FileFieldMapping ("ManagerRisk","管理风险") ,
+                new FileFieldMapping ("SeasonNum","季度") ,
+                new FileFieldMapping ("PlanTutorDate","计划辅导日期") ,
+                new FileFieldMapping ("PlanTutorContent","计划辅导内容") ,
+                new FileFieldMapping ("ActionTutorDate","实际辅导日期") ,
+                new FileFieldMapping ("ActionTutorContent","实际辅导内容") ,
+                new FileFieldMapping ("TutorResult","辅导结果") ,
+                new FileFieldMapping ("TutorCategory","辅导范畴") ,
+                new FileFieldMapping ("Remark","备注") ,
+                new FileFieldMapping ("YearMonth","年份") };
+            }
         }
         #region  Internet
         /// <summary>
