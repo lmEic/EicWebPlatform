@@ -1,17 +1,20 @@
-﻿<div class="panel panel-primary" ng-controller="rmaInspectionHandleCtrl">
+﻿<div class="panel panel-primary" ng-controller="rmaReportQueryCtrl">
     <div class="panel-heading">
-        <h6 class="panel-title">RMA检验处置</h6>
+        <h6 class="panel-title">RMA检验查询管理</h6>
     </div>
     <div class="panel-body">
         <div class="row">
-            <div class="col-md-6">
-                <form class="form-inline" cg-busy="{promise:searchPromise}">
+            <div class="col-md-10">
+                <form class="form-inline" novalidate>
                     <div class="form-group">
-                        <label>RMA单号</label>
-                        <input type="text" placeholder="按RMA单号查询" ng-model="vm.RmaId" ng-keypress="($event.which === 13)?vmManager.getRmaInspectionHandleDatas():0">
-                        <button class="btn btn-xs btn-primary" ng-click="vmManager.getRmaInspectionHandleDatas()" type="button">查询</button>
+                        <div yl-date-range date-from="vmManager.dateFrom" date-to="vmManager.dateTo"></div>
                     </div>
                 </form>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-warning" type="button" ng-click="vmManager.showCheckModal()" ng-show="vmManager.currentItem.InspectionStatus==='未审核'"><i class="fa  fa-eyedropper"></i>审核</button>
+                <button class="btn btn-success" type="button"><i class="fa fa-file-text"></i>导出</button>
+                <button class="btn btn-default" type="button" ng-click="vmManager.refresh()"><i class="fa fa-reply"></i>返回</button>
             </div>
         </div>
         <div class="h-split"></div>

@@ -57,6 +57,10 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     .state('rmaInspectionHandle', {
         templateUrl: rmaUrlPrefix + 'RmaInspectionHandle'
     })
+    ////------------RMA查询-----------------------
+     .state('rmaReportQuery', {
+         templateUrl: rmaUrlPrefix + 'RmaReportQuery'
+     })
     ////-------------看板管理-------------------
     //.state('jumperWireBoard', {//线材看板管理
     //    templateUrl: boardUrlPrefix + 'JumperWireBoard'
