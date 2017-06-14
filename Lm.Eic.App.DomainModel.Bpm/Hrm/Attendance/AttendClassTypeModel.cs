@@ -882,6 +882,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _leavememo = value; }
             get { return _leavememo; }
         }
+        private int _day;
+        /// <summary>
+        ///天
+        /// </summary>
+        public int Day
+        {
+            set { _day = value; }
+            get { return _day; }
+        }
+        private string _yearmonth;
+        /// <summary>
+        ///请假年月
+        /// </summary>
+        public string YearMonth
+        {
+            set { _yearmonth = value; }
+            get { return _yearmonth; }
+        }
         private DateTime _opdate;
         /// <summary>
         ///操作日期
