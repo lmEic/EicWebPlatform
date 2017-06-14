@@ -31,13 +31,13 @@
         </div>
         <div class="h-split"></div>
         <div class="row">
-            <div class="col-md-8 well">
+            <div class="col-md-8 well" >
                 <form role="form" name="formRmaBussesDescription" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                     <div class="form-group">
                         <label for="returnHandleOrder" class="col-md-2 control-label">ERP单号</label>
                         <div class="col-md-10">
-                            <input name="returnHandleOrder" id="returnHandleOrder" placeholder="输入ERP单号按回车键"
-                                   class="form-control" ng-keypress="vmManager.getReturnOrderData($event)" ng-model="vm.ReturnHandleOrder" required />
+                            <input name="returnHandleOrder" id="returnHandleOrder" placeholder="输入ERP单号按回车键" 
+                                   class="form-control" ng-keypress="vmManager.getReturnOrderData($event)" ng-model="vm.ReturnHandleOrder"  required  />
                             <div class="error-messages" ng-messages="formRmaBussesDescription.returnHandleOrder.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">ERP单号不能为空</small>
                             </div>
@@ -95,11 +95,11 @@
                     <div class="form-group">
                         <label for="salesOrder" class="col-md-2 control-label">订单号</label>
                         <div class="col-md-4">
-                            <input name="salesOrder" class="form-control" ng-model="vm.SalesOrder" />
+                            <input name="salesOrder" class="form-control" ng-model="vm.SalesOrder"   />
                         </div>
                         <label for="productsShipDate" class="col-md-2 control-label">原出货日期</label>
                         <div class="col-md-4">
-                            <input name="productsShipDate" type="date" class="form-control" format-date ng-model="vm.ProductsShipDate" required />
+                            <input name="productsShipDate" type="date" class="form-control" format-date ng-model="vm.ProductsShipDate"  required />
                             <div class="error-messages" ng-messages="formRmaBussesDescription.productsShipDate.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">原出货日期不能为空</small>
                             </div>
@@ -108,14 +108,14 @@
                     <div class="form-group">
                         <label for="badDescription" class="col-md-2 control-label">不良现象</label>
                         <div class="col-md-4">
-                            <textarea rows="3" name="badDescription" class="form-control" ng-model="vm.BadDescription" required />
+                            <textarea rows="3" name="badDescription" class="form-control" ng-model="vm.BadDescription"   required />
                             <div class="error-messages" ng-messages="formRmaBussesDescription.badDescription.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">不良现象不能为空</small>
                             </div>
                         </div>
                         <label for="customerHandleSuggestion" class="col-md-2 control-label">处理意见</label>
                         <div class="col-md-4">
-                            <textarea rows="3" name="customerHandleSuggestion" class="form-control" ng-model="vm.CustomerHandleSuggestion" required />
+                            <textarea rows="3" name="customerHandleSuggestion" class="form-control" ng-model="vm.CustomerHandleSuggestion"   required />
                             <div class="error-messages" ng-messages="formRmaBussesDescription.customerHandleSuggestion.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">处理意见不能为空</small>
                             </div>
@@ -125,7 +125,7 @@
                     <div class="form-group">
                         <label for="feePaymentWay" class="col-md-2 control-label">付费方工式</label>
                         <div class="col-md-4">
-                            <input name="feePaymentWay" class="form-control" ng-model="vm.FeePaymentWay" required />
+                            <input name="feePaymentWay" class="form-control" ng-model="vm.FeePaymentWay"    required />
                             <div class="error-messages" ng-messages="formRmaBussesDescription.feePaymentWay.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">付费方工式不能为空</small>
                             </div>
@@ -162,17 +162,26 @@
                                 <td>{{item.ProductId}}</td>
                                 <td>{{item.ProductsShipDate}}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">
-                                        <i class="fa fa-pencil-square-o"></i>
+                                    <button class="btn btn-xs btn-info" ng-click="operate.editItem(item)" title="编辑">
+                                        <i class="fa fa-edit"></i>
                                     </button>
                                     <button class="btn btn-xs btn-success" ng-click="operate.copyItem(item)" title="复制">
                                         <i class="fa fa-files-o"></i>
+                                    </button>
+                                    <button class="btn btn-xs btn-danger"name="deletebut" ng-click="operate.deleteItem(item)" title="删除">
+                                        <i class="fa fa-remove"></i>
                                     </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <dialog  ng-if="deleteDialog.open" for="deletebut" align="bottom right" data-close="deleteDialog.close()">
+                    <content dialog-title class="info "><i class="fa fa-th-list"></i>删除数据</content>
+                    <content dialog-content>
+                        <i class="fa fa-th-list"></i>
+                    </content>
+                </dialog>
             </div>
         </div>
     </div>

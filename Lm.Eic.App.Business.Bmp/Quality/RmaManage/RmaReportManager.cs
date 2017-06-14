@@ -68,6 +68,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         public List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
         {
             return RmaCurdFactory.RmaReportInitiate.GetInitiateDatas(rmaId);
+          
+        }
+        public List<RmaReportInitiateModel> GetInitiateDatas(DateTime formDate,DateTime toDate)
+        {
+            return RmaCurdFactory.RmaReportInitiate.GetInitiateDatasBy(formDate, toDate);
         }
         /// <summary>
         /// 通过年月份得到RamId
