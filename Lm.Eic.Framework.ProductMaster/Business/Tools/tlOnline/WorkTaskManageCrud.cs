@@ -43,66 +43,35 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         }
         #endregion
 
-        #region 分类查询
-        /// <summary>
-        ///部门查找
-        /// </summary>
-        /// <param name="department"></param>
-        /// <returns></returns>
-        internal List<WorkTaskManageModel> GetWorkTaskDatasBy(string department)
-        {
-            return irep.Entities.Where(e => e.Department == department).ToList();
-        }
-
+        #region 分类查询      
         /// <summary>
         ///分类查询
         /// </summary>
         /// <param name="queryDto"></param>
         /// <returns></returns>
         internal List<WorkTaskManageModel> FindBy(QueryWorkTaskManageDto queryDto)
-        {          
-                try
-                {
-                    if (queryDto.Department == null || queryDto.Department == string.Empty)
-                    return new List<WorkTaskManageModel>();
+        {
+            if (queryDto == null) return new List<WorkTaskManageModel>();
+            try
+            {
                 queryDto.IsDelete = 0;
                 switch (queryDto.SearchMode)
                 {
-                    ///部门
-                    case 0:
-                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department).ToList();
-
-                    ///系统名称
-                    case 1:
-                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.SystemName.Contains(queryDto.QueryContent)).ToList();
-
-                    ///模块类别
-                    case 2:
-                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.ModuleName.Contains(queryDto.QueryContent)).ToList();
-
-                    ///具体功能
-                    case 3:
-                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.WorkItem.Contains(queryDto.QueryContent)).ToList();
-
-                    ///进度状态
-                    case 4:
-                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.ProgressStatus.Contains(queryDto.QueryContent)).ToList();
-
-                    ///执行人
-                    case 5:
-                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.OrderPerson.Contains(queryDto.QueryContent)).ToList();
-
-                    ///审核人
-                    case 6:
-                        return irep.Entities.Where(e => e.IsDelete == queryDto.IsDelete && e.Department == queryDto.Department && e.CheckPerson.Contains(queryDto.QueryContent)).ToList();
-                    default: return new List<WorkTaskManageModel>();
+                    //按部门查询
+                    case 1:return irep.Entities.Where(m => m.Department.Equals (queryDto.Department)).ToList();
+                    //按系统名称查询
+                    case 2:return irep.Entities.Where(m => m.SystemName.Equals(queryDto.SystemName)).ToList();
+                    //按模块类别查询
+                    case 3:return irep.Entities.Where(m => m.ModuleName.Equals(queryDto.ModuleName)).ToList();
+                    default:
+                        return new List<WorkTaskManageModel>();
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }
-
+            }                
+              
             #endregion
         }
     }

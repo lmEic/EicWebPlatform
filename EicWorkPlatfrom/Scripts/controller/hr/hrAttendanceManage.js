@@ -61,13 +61,6 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
             askForLeaves: askForLeaves
         });
     };
-    //修改请假信息
-    hr.updateAskForLeave = function (askForLeaves) {
-        var url = attendUrl + "UpdateAskForLeave";
-        return ajaxService.postData(url, {
-            askForLeaves: askForLeaves
-        });
-    };
 
     //自动检测考勤异常数据
     hr.autoCheckExceptionSlotData = function (yearMonth) {
@@ -345,6 +338,7 @@ hrModule.controller('hrSumerizeAttendanceDataCtrl', function ($scope, $modal, hr
 hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService, hrArchivesDataOpService) {
     var askLeaveVM = {
         Id: null,
+        IsServer: false,//是否是从服务器端获取的数据标志
         AttendanceDate: null,
         Day: null,
         YearMonth: null,
@@ -359,6 +353,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         WorkerName: null,
         Department: null,
         OpSign: null,
+        Id_Key: 0
     };
 
     var uiVM = $scope.vm = _.clone(askLeaveVM);
@@ -375,30 +370,64 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         leaveType: '年休假',
     };
 
-
     //视图管理器
     var vmManager = {
         activeTab: 'initTab',
         workerInfo: null,
-        //部门信息
-        departments: [],
-        leaveTypes: [],
-        changeDatas: [],
-        searchLeaveData: function ($event) {
-            if ($event.keyCode === 13) {
+        putData: function (datas, item, isAlert) {
+            var data = _.findWhere(datas, { LeaveType: item.LeaveType, Day: item.Day });
+            if (data !== undefined) {
+                if (isAlert)
+                    msgDialog.alert("特别提醒", "假别：" + item.LeaveType + ",日期：" + item.Day + "已经添加过了啊！");
+            }
+            datas.push(item);
+        },
+        setData: function (weekDay, askLeaveItem) {
+            var dataItem = _.clone(askLeaveVM);
+            leeHelper.copyVm(askLeaveItem, dataItem);
+
+            var timeResgions = dataItem.LeaveTimeRegion.split('-');
+            if (timeResgions.length == 2) {
+                var timeStart = timeResgions[0];
+                var timeEnd = timeResgions[1];
+                dataItem.LeaveTimeRegionStart = new Date(dataItem.AttendanceDate + " " + timeStart);
+                dataItem.LeaveTimeRegionEnd = new Date(dataItem.AttendanceDate + " " + timeEnd);
+            }
+            dataItem.Id = leeHelper.newGuid();
+            dataItem.IsServer = true;
+            vmManager.putData(vmManager.askLeaveDatas, dataItem);//插入到批量处理的数据集合中
+            vmManager.putData(weekDay.askLeaveDatas, dataItem);
+        },
+        setAskLeaveDatas: function () {
+            if (vmManager.workerInfo !== null) {
                 vmManager.askLeaveDatas = [];
-                $scope.askLeavePromise = hrDataOpService.getAskLeaveDataAbout(vmManager.workerId, vmManager.yearMonth).then(function (datas) {
-                    angular.forEach(datas, function (item) {
-                        var dataItem = _.clone(askLeaveVM);
-                        leeHelper.copyVm(item, dataItem);
-                        dataItem.OpCmdVisible = true;
-                        dataItem.DepartmentText = leeHelper.getDepartmentText(vmManager.departments, item.Department);
-                        vmManager.askLeaveDatas.push(dataItem);
-                        vmManager.workerId = null;
-                    });
+                hrDataOpService.getAskLeaveDataAbout(vmManager.workerInfo.WorkerId, queryVM.yearMonth).then(function (datas) {
+                    if (angular.isArray(datas)) {
+                        angular.forEach(vmManager.calendar.WeekCalendars, function (weekItem) {
+                            angular.forEach(weekItem.WeekDays, function (weekDay) {
+                                var askLeaveDatas = _.where(datas, { Day: parseInt(weekDay.Day) });
+                                if (askLeaveDatas !== undefined && askLeaveDatas.length > 0) {
+                                    weekDay.askLeaveDatas = [];
+                                    //这一天是否有多条请假记录
+                                    if (angular.isArray(askLeaveDatas) && askLeaveDatas.length > 1) {
+                                        angular.forEach(askLeaveDatas, function (askLeaveItem) {
+                                            askLeaveItem.OpSign = leeDataHandler.dataOpMode.none;
+                                            vmManager.setData(weekDay, askLeaveItem);
+                                        })
+                                    }
+                                    else {
+                                        var askLeaveItem = askLeaveDatas[0];
+                                        askLeaveItem.OpSign = leeDataHandler.dataOpMode.none;
+                                        vmManager.setData(weekDay, askLeaveItem);
+                                    }
+                                }
+                            });
+                        });
+                    }
                 });
             }
         },
+        leaveTypes: [],
         //请假数据
         askLeaveDatas: [],
         calendar: null,
@@ -407,42 +436,56 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
                 vmManager.calendar = datas;
             });
         },
+        setAskLeaveTimeRegion: function (item, askDay, isFirst) {
+            var day = parseInt(askDay), year = queryVM.year, month = queryVM.month - 1;
+            item.Day = day;
+            item.YearMonth = queryVM.yearMonth;
+            if (isFirst) {
+                item.LeaveTimeRegionStart = new Date(year, month, day, 7, 50, 0);
+                item.LeaveTimeRegionEnd = new Date(year, month, day, 17, 10, 0);
+            }
+            item.LeaveTimeRegion = item.LeaveTimeRegionStart.pattern("HH:mm") + "-" + item.LeaveTimeRegionEnd.pattern("HH:mm");
+        },
         //生成请假记录
         createAskLeaveRecord: function (item) {
             if (vmManager.workerInfo === null) return;
             var workerItem = _.clone(askLeaveVM);
+
             workerItem.Id = leeHelper.newGuid();
+            workerItem.IsServer = false;//由客户端创建的数据
             workerItem.WorkerId = vmManager.workerInfo.WorkerId;
             workerItem.WorkerName = vmManager.workerInfo.Name;
             workerItem.Department = vmManager.workerInfo.Department;
             workerItem.LeaveHours = 8;
             workerItem.LeaveType = queryVM.leaveType;
-            var day = parseInt(item.Day), year = queryVM.year, month = queryVM.month - 1;
-            workerItem.Day = day;
-            workerItem.YearMonth = queryVM.yearMonth;
-            workerItem.LeaveTimeRegionStart = new Date(year, month, day, 7, 50, 0);
-            workerItem.LeaveTimeRegionEnd = new Date(year, month, day, 17, 10, 0);
-            workerItem.LeaveTimeRegion = workerItem.LeaveTimeRegionStart.pattern("HH:mm") + "-" + workerItem.LeaveTimeRegionEnd.pattern("HH:mm");
+            vmManager.setAskLeaveTimeRegion(workerItem, item.Day, true);
             workerItem.OpSign = leeDataHandler.dataOpMode.add;
-            item.workerAskLeave = workerItem;
-
-            vmManager.askLeaveDatas.push(workerItem);
+            if (angular.isUndefined(item.askLeaveDatas) || !angular.isArray(item.askLeaveDatas)) {
+                item.askLeaveDatas = [];
+            }
+            vmManager.putData(item.askLeaveDatas, workerItem, true);
+            vmManager.putData(vmManager.askLeaveDatas, workerItem, true);
         },
-        removeAskLeaveRecord: function (item) {
+        removeAskLeaveRecord: function (weekDay, item) {
             if (vmManager.workerInfo === null) return;
-            item.workerAskLeave = null;
+            if (item.IsServer) {
+                item.OpSign = leeDataHandler.dataOpMode.delete;
+            }
+            else {
+                leeHelper.delWithId(vmManager.askLeaveDatas, item);//从数据操作库中移除
+            }
+            leeHelper.delWithId(weekDay.askLeaveDatas, item);//移除临时数据
         },
         editAskLeaveRecord: function (item) {
             if (vmManager.workerInfo === null) return;
-            var askLeaveItem = item.workerAskLeave;
-
-            $scope.vm = askLeaveItem;
-
-
-
-
+            item.OpSign = (item.IsServer) ? leeDataHandler.dataOpMode.edit : leeDataHandler.dataOpMode.add;
+            $scope.vm = item;
             editDialog.show();
         },
+        confirmEdit: function () {
+            vmManager.setAskLeaveTimeRegion($scope.vm, $scope.vm.Day, false);
+            editDialog.close();
+        }
     };
     $scope.vmManager = vmManager;
 
@@ -468,12 +511,6 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
                     name: item.DataNodeText, text: item.DataNodeText
                 });
             });
-        }
-        var departments = _.where(datas, {
-            TreeModuleKey: "Organization"
-        });
-        if (departments !== undefined) {
-            vmManager.departments = departments;
         }
     });
 });

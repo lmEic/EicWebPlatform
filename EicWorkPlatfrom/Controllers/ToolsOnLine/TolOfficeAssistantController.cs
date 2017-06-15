@@ -53,15 +53,15 @@ namespace EicWorkPlatfrom.Controllers
         }
         [HttpGet]
         [NoAuthenCheck]
-        public ContentResult GetWorkTaskManageDatas(string department, int searchMode, string queryContent)
+        public ContentResult GetWorkTaskManageDatas(string department, string systemName, string moduleName,int mode)
         {
-            // var datas = ToolOnlineMockDatas.WorkTaskManageDataSet;
-           department = "EIC";
+              
            QueryWorkTaskManageDto queryDto = new QueryWorkTaskManageDto()
             {
-                SearchMode = searchMode,
-                Department = department,
-                QueryContent = queryContent,
+               Department=department,
+               SystemName=systemName,
+               ModuleName=moduleName,
+               SearchMode=mode
 
             };
             var datas = ToolOnlineService.WorkTaskManage.GetWorkTaskDatasBy(queryDto);

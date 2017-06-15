@@ -140,6 +140,8 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
                 PropertyInfo pi = IsHasProperty(entity, "OpSign");
                 if (pi != null)
                     opSign = pi.GetValue(entity, null) as string;
+                if (opSign == "none")
+                    return OpResult.SetSuccessResult("操作成功!");
                 //是否包含指定的方法
                 if (!crudOpDics.ContainsKey(opSign))
                     AddCrudOpItems();

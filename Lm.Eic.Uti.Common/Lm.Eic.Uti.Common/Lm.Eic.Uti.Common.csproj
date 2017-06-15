@@ -41,6 +41,10 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\libs\Interop.Excel.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI">
       <HintPath>..\..\libs\NPOI.dll</HintPath>
     </Reference>
@@ -78,6 +82,7 @@
     <Compile Include="YleeMessage\Log\MessageLogger.cs" />
     <Compile Include="YleeMessage\Windows\WinMessageHelper.cs" />
     <Compile Include="YleeObjectBuilder\OBulider.cs" />
+    <Compile Include="YleeOOMapper\ObjectSerializer.cs" />
     <Compile Include="YleeOOMapper\OpResult.cs" />
     <Compile Include="YleeOOMapper\OOMaper.cs" />
     <Compile Include="YleeTimer\LeeTimerBase.cs" />

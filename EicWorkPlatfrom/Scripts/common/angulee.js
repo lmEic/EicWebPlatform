@@ -135,6 +135,7 @@ var leeDataHandler = (function () {
     };
     ///数据操作类型
     var leeDataOpMode = {
+        none: 'none',
         add: 'add',
         edit: 'edit',
         update: 'update',
@@ -225,6 +226,7 @@ var leeHelper = (function () {
         ///将srcObj对象中各个属性值赋值到desObj中去
         ///notKeys表示不包含要复制的键值集合
         copyVm: function (srcObj, desObj, notKeys) {
+            if (srcObj === undefined) return;
             for (var key in desObj) {
                 if (_.isArray(notKeys)) {
                     if (!_.contains(notKeys, key)) {
@@ -249,11 +251,24 @@ var leeHelper = (function () {
             }
         },
         ///从数组中删除指定选项,Item对象中必须包含Id属性
-        delete: function (ary, item) {
+        delWithId: function (ary, item) {
             if (!Array.isArray(ary)) return;
             var data = _.findWhere(ary, { Id: item.Id });
             if (data !== undefined)
-                leeHelper.remove(data);
+                leeHelper.remove(ary, data);
+        },
+        ///将Item插入到数组ary中，Item对象中必须包含Id属性
+        insertWithId: function (ary, item) {
+            if (!Array.isArray(ary)) return;
+            var data = _.findWhere(ary, { Id: item.Id });
+            if (data === undefined)
+                ary.push(item);
+        },
+        ///数组中是否存在含有Id属性的item
+        isExist: function (ary, item) {
+            if (!Array.isArray(ary)) return false;
+            var data = _.findWhere(ary, { Id: item.Id });
+            return (data !== undefined)
         },
         ///在数组指定位置插入项
         insert: function (ary, index, item) {
