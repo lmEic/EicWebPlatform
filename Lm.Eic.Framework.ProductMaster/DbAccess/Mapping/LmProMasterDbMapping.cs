@@ -103,7 +103,7 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
     /// <summary>
     /// 邮箱模块开发Mapping
     /// </summary>
-    public class ItilEmailManageModelMapping:EntityTypeConfiguration<ItilEmailManageModel>
+    public class ItilEmailManageModelMapping:EntityTypeConfiguration<ConfigMailInfoModel>
     {
            public ItilEmailManageModelMapping()
            {
