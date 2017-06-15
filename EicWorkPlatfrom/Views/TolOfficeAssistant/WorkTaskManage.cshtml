@@ -3,16 +3,16 @@
         <h6 class="panel-title">工作任务管理</h6>
     </div>
 
-    <div class="panel-body"> 
-        <div class="row" ng-click="vmManager.activeTab=null;">
+    <div class="panel-body">
+        <div class="row" ng-click="vmManager.activeTab">
             <div class="col-md-4">
                 <button class="btn btn-md btn-primary " ng-click="operate.createNew()" type="button">新增作业</button>
             </div>
             <div class="col-md-8">
             </div>
-        </div>    
-        <div class="h-split"></div>          
-        <div bs-tabs bs-active-pane="vmManager.activeTab">       
+        </div>
+        <div class="h-split"></div>
+        <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
             @*系统名称*@
             <div bs-pane data-title="系统名称查询" data-name="getDatasBySystemNameTab">
                 <div class="well">
@@ -40,70 +40,75 @@
         </div>
         <div class="well" cg-busy="{promise:searchPromise}">
             <div class="table-responsive">
-                    <table class="table table-striped table-hover table-bordered " style="table-layout:fixed;">
-                        <colgroup>
-                            <col width="50" />
-                            <col width="50" />
-                            <col width="100" />
-                            <col width="180" />
-                            <col width="200" />
-                            <col width="300" />
-                            <col width="100" />
-                            <col width="100" />
-                            <col width="100" />
-                            <col width="100" />
-                            <col width="100" />
-                            <col width="100" />
-                            <col width="100" />
-                            <col width="100" />
-                            <col width="100" />
-                            <col width="80" />
-                        </colgroup>
-                        <thead>
-                            <tr class="info">
-                                <th>项次</th>
-                                <th>部门</th>
-                                <th>系统名称</th>
-                                <th>模块类别</th>
-                                <th>具体功能</th>
-                                <th>功能描述</th>
-                                <th>难度系数</th>
-                                <th>优先级别</th>
-                                <th>开始日期</th>
-                                <th>完成日期</th>
-                                <th>进度状态</th>
-                                <th>进度描述</th>
-                                <th>执行人</th>
-                                <th>审核人</th>
-                                <th>备注</th>
-                                <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="item in vmManager.searchDataset track by $index" class="active">
-                                <td ng-bind="$index"></td>
-                                <td ng-bind="item.Department"></td>
-                                <td ng-bind="item.SystemName"></td>
-                                <td ng-bind="item.ModuleName"></td>
-                                <td ng-bind="item.WorkItem"></td>
-                                <td ng-bind="item.WorkDescription"></td>
-                                <td ng-bind="item.DifficultyCoefficient"></td>
-                                <td ng-bind="item.WorkPriority"></td>
-                                <td ng-bind="item.StartDate"></td>
-                                <td ng-bind="item.EndDate"></td>
-                                <td ng-bind="item.ProgressStatus"></td>
-                                <td ng-bind="item.ProgressDescription"></td>
-                                <td ng-bind="item.OrderPerson"></td>
-                                <td ng-bind="item.CheckPerson"></td>
-                                <td ng-bind="item.Remark"></td>
-                                <td>
-                                    <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">修改</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                
-                </div>           
+                <table class="table table-striped table-hover table-bordered " style="table-layout:fixed;">
+                    <colgroup>
+                        <col width="50" />
+                        <col width="50" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="80" />
+                    </colgroup>
+                    <thead>
+                        <tr class="info">
+                            <th>项次</th>
+                            <th>部门</th>
+                            <th>系统名称</th>
+                            <th>模块类别</th>
+                            <th>具体功能</th>
+                            <th>功能描述</th>
+                            <th>难度系数</th>
+                            <th>优先级别</th>
+                            <th>开始日期</th>
+                            <th>完成日期</th>
+                            <th>进度状态</th>
+                            <th>进度描述</th>
+                            <th>执行人</th>
+                            <th>审核人</th>
+                            <th>备注</th>
+                            <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in vmManager.searchDataset track by $index" class="active">
+                            <td ng-bind="$index"></td>
+                            <td ng-bind="item.Department"></td>
+                            <td ng-bind="item.SystemName"></td>
+                            <td ng-bind="item.ModuleName"></td>
+                            <td ng-bind="item.WorkItem"></td>
+                            <td ng-bind="item.WorkDescription"></td>
+                            <td ng-bind="item.DifficultyCoefficient"></td>
+                            <td ng-bind="item.WorkPriority"></td>
+                            <td ng-bind="item.StartDate"></td>
+                            <td ng-bind="item.EndDate"></td>
+                            <td ng-bind="item.ProgressStatus"></td>
+                            <td ng-bind="item.ProgressDescription"></td>
+                            <td ng-bind="item.OrderPerson"></td>
+                            <td ng-bind="item.CheckPerson"></td>
+                            <td ng-bind="item.Remark"></td>
+                            <td>
+                                <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改">修改</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                @* 分页显示 *@
+                @*<div ng-if="vmManager.dataSource.length>0"
+                     yl-pagination
+                     data-dataset="vmManager.editDatas"
+                     data-datasource="vmManager.dataSource">
+                </div>*@
+            </div>
         </div>
         <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:85%">
             <content dialog-title>
@@ -137,30 +142,37 @@
                                     <small ng-message="required">具体功能不能为空</small>
                                 </div>
                             </div>
+                            <label for="workDescription" class="col-md-2 control-label">功能描述</label>
+                            <div class="col-md-4">
+                                <input name="workDescription" class="form-control" ng-model="vm.WorkDescription" />
+                                @*<div class="error-messages" ng-messages="formWorkTaskManager.workDescription.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">功能描述不能为空</small>
+                                    </div>*@
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="department" class="col-md-2 control-label">部门</label>
+                            <div class="col-md-4">
+                                <input name="department" placeholder="必填" class="form-control" ng-model="vm.Department" required />
+                                <div class="error-messages" ng-messages="formWorkTaskManager.department.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">部门不能为空</small>
+                                </div>
+                            </div>
                             <label for="difficultyCoefficient" class="col-md-2 control-label">难度系数</label>
                             <div class="col-md-4">
                                 <input type="number" max="5" min="1" name="difficultyCoefficient" placeholder="必填" class="form-control" ng-model="vm.DifficultyCoefficient" required />
                                 <div class="error-messages" ng-messages="formWorkTaskManager.difficultyCoefficient.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">难度系数不能为空</small>
                                 </div>
-                            </div> 
-
-                        </div>
-
-                        <div class="form-group">                         
-                            <label for="workDescription" class="col-md-2 control-label">功能描述</label>
-                            <div class="col-md-10">
-                                <textarea rows="2" name="workDescription" class="form-control" ng-model="vm.WorkDescription" />                           
                             </div>
-                                  
                         </div>
                     </fieldset>
-                    <fieldset>                   
+                    <fieldset>
                         <div>
                             <div class="form-group">
                                 <label for="workPriority" class="col-md-2 control-label">优先级</label>
                                 <div class="col-md-4">
-                                    <input type="number" max="5" min="1" name="workPriority" placeholder="必填" class="form-control" ng-model="vm.WorkPriority" required />
+                                    <input type="number" max="5" min="1" name="workPriority" placeholder="必填" class="form-control" ng-model="vm.WorkPriority" />
                                     <div class="error-messages" ng-messages="formWorkTaskManager.workPriority.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">优先级不能为空</small>
                                     </div>
@@ -183,7 +195,7 @@
                                 </div>
                                 <label for="progressStatus" class="col-md-2 control-label">进度状态</label>
                                 <div class="col-md-4">
-                                    <input name="progressStatus"  class="form-control" ng-model="vm.ProgressStatus" />
+                                    <input name="progressStatus" placeholder="必填" class="form-control" ng-model="vm.ProgressStatus" />
                                     <div class="error-messages" ng-messages="formWorkTaskManager.progressStatus.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">进度状态不能为空</small>
                                     </div>
@@ -192,30 +204,30 @@
                             <div class="form-group">
                                 <label for="progressDescription" class="col-md-2 control-label">进度描述</label>
                                 <div class="col-md-4">
-                                    <input name="progressDescription"  class="form-control" ng-model="vm.ProgressDescription" />
+                                    <input name="progressDescription" placeholder="必填" class="form-control" ng-model="vm.ProgressDescription" />
                                     <div class="error-messages" ng-messages="formWorkTaskManager.progressDescription.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">进度状态不能为空</small>
                                     </div>
                                 </div>
                                 <label for="orderPerson" class="col-md-2 control-label">执行人</label>
                                 <div class="col-md-4">
-                                    <input name="orderPerson"  class="form-control" ng-model="vm.OrderPerson" />
+                                    <input name="orderPerson" class="form-control" ng-model="vm.OrderPerson" />
                                     @*<div class="error-messages" ng-messages="formWorkTaskManager.orderPerson.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">执行人不能为空</small>
-                                    </div>*@
+                                            <small ng-message="required">执行人不能为空</small>
+                                        </div>*@
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="checkPerson" class="col-md-2 control-label">审核人</label>
                                 <div class="col-md-4">
-                                    <input name="checkPerson"  class="form-control" ng-model="vm.CheckPerson" />
+                                    <input name="checkPerson" class="form-control" ng-model="vm.CheckPerson" />
                                     @*<div class="error-messages" ng-messages="formWorkTaskManager.checkPerson.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">审核人不能为空</small>
-                                    </div>*@
+                                            <small ng-message="required">审核人不能为空</small>
+                                        </div>*@
                                 </div>
                                 <label for="remark" class="col-md-2 control-label">备注</label>
                                 <div class="col-md-4">
-                                    <input name="remark"  class="form-control" ng-model="vm.Remark" />                      
+                                    <input name="remark" class="form-control" ng-model="vm.Remark" />
                                 </div>
                             </div>
                         </div>

@@ -47,6 +47,24 @@ smModule.factory('sysitilService', function (ajaxService) {
         return ajaxService.getData(url, {
         });
     };
+    ///保存邮箱记录
+    itil.storeEmailManageRecord = function (model) {
+        var url = urlPrefix + 'StoreEmailManageRecord';
+        return ajaxService.postData(url,{
+                model: model
+            });
+    }
+    //查询邮箱记录
+    itil.getEmailManageRecord = function (workerId,email, mode) {
+        var url = urlPrefix + 'GetEmailManageRecord';
+        return ajaxService.getData(url, {
+            workerId: workerId,
+            email: email,
+            mode: mode
+        });
+        
+    }
+
     return itil;
 });
 smModule.controller('supTelManageCtrl', function ($scope, $modal, sysitilService) {
@@ -96,6 +114,8 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
             vmManager.canEdit = false;
         },
         executors: [{ name: '万晓桥', text: '万晓桥' }, { name: '张文明', text: '张文明' }, { name: '杨垒', text: '杨垒' }],
+
+     
 
         progressStatuses: [
                 { value: '待开发', label: '<i class="fa fa-calendar-o"></i>  待开发' },
@@ -294,3 +314,106 @@ smModule.controller('itilNotifyAddressManageCtrl', function ($scope, sysitilServ
         });
     };
 });
+///EmailManageController
+smModule.controller('itilEmailManageCtrl', function ($scope,sysitilService)
+{
+    ///View
+ var uiVM = {
+     WorkerId:null,
+     Name:null,
+     Department:null,
+     Email:null,
+     NickName:'nick',
+     ReceiveGrade:1,
+     IsSender:1,
+     Password:null,
+     IsValidity:1,
+     SmtpHost:'smtp.exmail.qq.com',
+     Pop3Host:'pop.exmail.qq.com',
+     SmtpPost:25,
+     Pop3Post:110,
+     RegDate:null,     
+     OpSign: 'add',
+     Id_Key: 0
+    };
+    $scope.vm = uiVM;
+    var originalVM = _.clone(uiVM);
+    var queryFields = {
+        workerId: null,    
+        email:null
+    };
+    $scope.query = queryFields;
+    var vmManager = {
+        activeTab: 'initTab',
+        //isLocal: true,
+        init: function () {   
+           
+            uiVM.OpSign = 'add';
+            $scope.vm = uiVM; 
+            vmManager.canEdit = false;
+        },
+        departments: [
+            { id: "管理部", text: "管理部" },
+            { id: "生管部", text: "生管部" },
+            { id: "品保部", text: "品保部" },
+            { id: "开发部", text: "开发部" },
+            { id: "生技部", text: "生技部" },
+            { id: "采购室", text: "采购室" },
+            { id: "业务室", text: "业务室" },
+            { id: "环安课", text: "环安课" },
+            { id: "制一部", text: "制一部" },
+            { id: "制二部", text: "制二部" },
+            { id: "制三部", text: "制三部" },
+            { id: "制五部", text: "制五部" },
+            { id: "企业讯息", text: "企业讯息" },
+            { id: "自动化", text: "自动化" },
+        ],
+        receiveGrades: [{ name: "1", text: "1" }, { name: "2", text: "2" }, { name: "3", text: "3" }, { name: "4", text: "4" }, { name: "5", text: "5" },],        
+        storeModules: [],             
+        //isUpdate: false,   
+        datasource: [],
+        searchDataset:[],
+        searchBy: function () {         
+            $scope.searchPromise = sysitilService.getEmailManageRecord(queryFields.workerId,queryFields.email, 1).then(function (datas) {
+                vmManager.storeModules = datas;
+            })
+        },
+        getEmailRecords: function (mode) {
+           
+            sysitilService.getEmailManageRecord(queryFields.workerId,queryFields.email, mode).then(function (datas) {
+                vmManager.searchDataset = datas;                    
+            });        
+        }
+    };
+    $scope.vmManager = vmManager;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    operate.saveAll = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            sysitilService.storeEmailManageRecord(uiVM).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    var mode = _.clone(uiVM);
+                    mode.Id_Key = opresult.Id_Key;
+                    if (mdl.OpSign === 'add') {
+                        vmManager.storeModules.push(mode);
+                        //vmManager.isUpdate = false;
+                    }
+                    else if (mdl.OpSign === 'edit') {
+                        var item = _.find(vmManager.storeModules, { Id_Key: uiVM.Id_Key });
+                        leeHelper.copyVm(uiVM, item);
+                    }
+                    vmManager.init();
+                   
+                  
+                    
+                });
+            });
+        });
+    };
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.inti();
+        });
+    };
+  
+})

@@ -27,6 +27,8 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
 
         public DbSet<WorkTaskManageModel> WorkTaskBoard { get; set; }
 
+        public DbSet<ItilEmailManageModel> ItilEmailManage { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -35,8 +37,8 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             modelBuilder.Configurations.Add(new ItilDevelopModuleManageModelMapping());
             modelBuilder.Configurations.Add(new ItilDevelopModuleManageChangeRecordModelMapping());
             modelBuilder.Configurations.Add(new CollaborateContactLibModelMapping());
-
             modelBuilder.Configurations.Add(new WorkTaskManageModelMapping());
+            modelBuilder.Configurations.Add(new ItilEmailManageModelMapping());
         }
     }
 

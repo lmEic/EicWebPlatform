@@ -75,7 +75,7 @@
                                         <small ng-message="required">开始日期不能为空</small>
                                     </div>
                                 </div>
-                                <label for="mExecutor" class="col-md-2 control-label">执行人</label>
+                                <label for="executor" class="col-md-2 control-label">执行人</label>
                                 <div class="col-md-4">
                                     <button type="button" class="btn btn-primary" ng-model="vm.Executor"
                                             data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择执行人"
@@ -83,7 +83,7 @@
                                         <span class="caret"></span>
                                     </button>
                                     <input name="executor" class="form-control" ng-model="vm.Executor" ng-show="false" required />
-                                    <div class="error-messages" ng-messages="formDevelopModuleManage.executor.$error" ng-show="operate.showValidation">
+                                    <div class="error-messages" ng-messages="formDevelopModuleManage.department.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">执行人不能为空</small>
                                     </div>
                                 </div>
@@ -95,6 +95,8 @@
                                     <textarea name="memo" class="form-control" ng-model="vm.Memo" rows="2"/>
                                 </div>
                             </div>
+
+                            
 
                             <hr />
                             <div class="alert alert-info">

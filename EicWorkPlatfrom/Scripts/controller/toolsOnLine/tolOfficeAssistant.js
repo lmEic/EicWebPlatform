@@ -24,12 +24,13 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
     };
 
     ///获取工作任务数据
-    oAssistant.getWorkTaskManageDatas = function (department, searchMode, queryContent) {
+    oAssistant.getWorkTaskManageDatas = function (department, systemName, moduleName,mode) {
         var url = oaUrlPrefix + 'GetWorkTaskManageDatas';
         return ajaxService.getData(url, {
             department: department,
-            searchMode: searchMode,
-            queryContent: queryContent
+            systemName: systemName,
+            moduleName: moduleName,
+            mode:mode
         });
     };
     ///存储工作任务数据
@@ -173,7 +174,7 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
 officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssistantDataOpService) {
     ///工作任务管理模型
     var uiVm = $scope.vm = {
-        Department: 'EIC',
+        Department: null,
         SystemName: null,
         ModuleName: null,
         WorkItem: null,
@@ -193,14 +194,19 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: null
     };
+    $scope.vm = uiVM;
     var initVm = _.clone(uiVm);
-    var dialog = $scope.dialog = leePopups.dialog();
-    var qryVm = $scope.qryVm = {
+    var dialog = $scope.dialog = Object.create(leeDialog);
+    ///定义查询字段
+    var qryVm = {
+        department: null,
         systemName: null,
         moduleName: null
     };
+    $scope.query = qryVm;
+
     var vmManager = {
-        activeTab: 'initTab',
+        activeTab:'initTab',
         init: function () {
             uiVm = _.clone(initVm);
             leeHelper.setUserData(uiVm)
@@ -209,26 +215,31 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         },
         dataSource: [],
         editDatas: [],
+        searchDataset: [],
+        storeDataset: [],
         //载入信息
-        loadDatas: function (department, searchMode, queryContent) {
-            vmManager.editDatas = [];
-            //获取工作内容数据
-            $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(department, searchMode, queryContent).then(function (datas) {
-                if (angular.isArray(datas))
-                    vmManager.editDatas = datas;
-                vmManager.dataSource = datas;
+        //loadDatas: function (department, searchMode, queryContent) {
+        //    vmManager.editDatas = [];
+        //    //获取工作内容数据
+        //    $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(department, searchMode, queryContent).then(function (datas) {
+        //        if (angular.isArray(datas))
+        //            vmManager.editDatas = datas;
+        //        vmManager.dataSource = datas;
+        //    });
+        //},
+        searchBy: function () {
+            $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(qryVm.department, qryVm.systemName, qryVm.moduleName, 1).then(function (datas) {
+                vmManager.storeDataset = datas;
+                
             });
         },
-        //按系统名查询
-        getDatasBySystemName: function () {
-            leeHelper.setUserData(uiVm);
-            vmManager.loadDatas(uiVm.Department, 1, qryVm.systemName);
+
+        //按分类查询
+        getDatasByName: function (mode) {
+            oAssistantDataOpService.getWorkTaskManageDatas(qryVm.department, qryVm.systemName, qryVm.moduleName, mode).then(function (datas) {
+                vmManager.searchDataset = datas;
+            });
         },
-        //按模块名查询
-        getDatasByModuleName: function () {
-            leeHelper.setUserData(uiVm);
-            vmManager.loadDatas(uiVm.Department, 2, qryVm.moduleName);
-        }
     };
     //新增
     $scope.vmManager = vmManager;
@@ -244,7 +255,7 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         $scope.vm = uiVm = item;
         dialog.show();
     },
-    //删除
+        //删除
         operate.deleteItem = function (item) {
             item.OpSign = leeDataHandler.dataOpMode.delete;
             $scope.vm = uiVm = item;
@@ -272,5 +283,5 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
     };
     operate.refresh = function () { leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); }); };
 
-    vmManager.loadDatas(uiVm.Department, 0, null);
+ 
 });
