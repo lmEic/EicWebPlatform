@@ -35,6 +35,8 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Log
         /// </summary>
         private static string errorLogFilePath = @"C:\EicSystem\WebPlatform\UtiCommon\";
         #endregion
+
+
         /// <summary>
         /// 将错误消息记录到文件中
         /// </summary>

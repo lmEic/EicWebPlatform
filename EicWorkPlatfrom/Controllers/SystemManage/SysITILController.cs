@@ -135,7 +135,7 @@ namespace EicWorkPlatfrom.Controllers
         /// 保存数据
         /// </summary>
         /// <returns></returns>
-        public JsonResult StoreitilNotifyAddress()
+        public JsonResult StoreitilNotifyAddress(string entity)
         {
             var result = 0;
             return Json(result);

@@ -53,4 +53,17 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             this.ToTable("Attendance_SlodFingerDataCurrentMonth");
         }
     }
+
+    /// <summary>
+    ///AttendAskLeaveModel
+    /// </summary>
+    public class AttendAskLeaveModelMapping : EntityTypeConfiguration<AttendAskLeaveModel>
+    {
+        public AttendAskLeaveModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Attendance_AskLeaveInfo");
+        }
+    }
 }

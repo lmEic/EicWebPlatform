@@ -7,34 +7,46 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         templateUrl: '/CommonTpl/MonthButtonTpl',
         replace: false,
         scope: {
+            year: '=',//选择年份
+            month: '=',//选择月份
             yearmonth: '=',//年月属性
-            titleVisible: '='//是否显示标题
+            titleVisible: '=',//是否显示标题
+            changed: '&'//选择事件
         },
         link: function (scope, element, attrs) {
-            scope.months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+            scope.months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
             scope.titleVisible = true;
             var mydate = new Date();
-            scope.currentYear = mydate.getFullYear();
-
-            var cmonth = mydate.getMonth() + 1;
+            scope.year = scope.currentYear = mydate.getFullYear();
+            var cmonth = scope.month = mydate.getMonth() + 1;
             scope.currentMonth = cmonth >= 10 ? cmonth.toString() : '0' + cmonth.toString();
-
             scope.yearmonth = scope.currentYear + scope.currentMonth;
-
+            var BindValue = function () {
+                scope.yearmonth = scope.currentYear + scope.currentMonth;
+                scope.year = scope.currentYear;
+                scope.month = cmonth;
+            };
             scope.selectMonth = function (m) {
                 cmonth = m;
                 scope.currentMonth = cmonth >= 10 ? cmonth.toString() : '0' + cmonth.toString();
-                scope.yearmonth = scope.currentYear + scope.currentMonth;
+                BindValue();
             };
-
             scope.upYear = function () {
                 scope.currentYear += 1;
-                scope.yearmonth = scope.currentYear + scope.currentMonth;
+                BindValue();
             };
             scope.downYear = function () {
                 scope.currentYear -= 1;
-                scope.yearmonth = scope.currentYear + scope.currentMonth;
+                BindValue();
             };
+
+            scope.$watch('month', function () {
+                if (!angular.isUndefined(scope.month)) {
+                    if (angular.isFunction(scope.changed)) {
+                        scope.changed();
+                    }
+                }
+            });
         }
     };
 })
@@ -77,6 +89,17 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                 scope.currentYear -= 1;
                 scope.yearquarter = getCurrentQuarter();
             };
+        }
+    };
+})
+//日历颜色提醒指令
+.directive('ylCalendarColorTip', function () {
+    return {
+        restrict: 'EA',
+        templateUrl: '/CommonTpl/CalendarColorTipTpl',
+        replace: false,
+        link: function (scope, element, attrs) {
+
         }
     };
 })
@@ -126,7 +149,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             dateTo: '='//结束日期
         },
         link: function (scope, element, attrs) {
-            scope.dateFrom = new Date;
+            scope.dateFrom = new Date();
             scope.dateTo = new Date();
         }
     };
@@ -585,6 +608,39 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         }
     };
 }])
+.directive('ylWorkeridInput', function (connDataOpService) {
+    return {
+        restrict: 'EA',
+        template: '<input type="text" class="form-control" ng-model="workerId" ng-keypress="getWorkerInfo($event)"' +
+                   'placeholder="输入人员工号" />',
+        replace: true,
+        scope: {
+            worker: '=',
+            changed: '&'
+        },
+        link: function (scope, element, attrs) {
+            //获取人员信息
+            scope.getWorkerInfo = function ($event) {
+                if ($event.keyCode === 13) {
+                    if (scope.workerId === null || scope.workerId === undefined || scope.workerId.length < 6) {
+                        alert("作业工号不能为空或者作业工号长度不能小于6位数字！");
+                        return;
+                    }
+                    connDataOpService.getWorkersBy(scope.workerId).then(function (workerDatas) {
+                        if (angular.isArray(workerDatas) && workerDatas.length > 0) {
+                            scope.worker = workerDatas[0];
+                        }
+                    });
+                }
+            };
+            scope.$watch('worker', function () {
+                if (scope.changed !== undefined && angular.isFunction(scope.changed)) {
+                    scope.changed();
+                }
+            });
+        }
+    };
+})
 //-------------------ztree directive------------------------------
 .directive('ylTree', function () {
     return {
@@ -919,6 +975,14 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             workerIdOrName: workerIdOrName
         });
     };
+    //获取日历数据
+    conn.getCalendarDatas = function (qryYear, qryMonth) {
+        var url = "/home/GetCalendarDatas";
+        return ajaxService.getData(url, {
+            nowYear: qryYear,
+            nowMonth: qryMonth
+        });
+    }
     ///根据树模块键值获取配置数据
     conn.getConfigDicData = function (treeModuleKey) {
         var url = urlPrefix.configManage + "GetConfigDicData";

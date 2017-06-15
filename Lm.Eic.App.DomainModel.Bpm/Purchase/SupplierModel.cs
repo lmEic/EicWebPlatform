@@ -789,8 +789,183 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         #endregion Model
     }
+    ///// <summary>
+    /////供应商稽核自评复评明细表 
+    ///// </summary>
+    //[Serializable]
+    //public partial class SupplierGradeInfoModel
+    //{
+    //    public SupplierGradeInfoModel()
+    //    { }
+    //    #region Model
+    //    private string _supplierid;
+    //    /// <summary>
+    //    ///供应商ID
+    //    /// </summary>
+    //    public string SupplierId
+    //    {
+    //        set { _supplierid = value; }
+    //        get { return _supplierid; }
+    //    }
+    //    private string _suppliername;
+    //    /// <summary>
+    //    ///供应商名称
+    //    /// </summary>
+    //    public string SupplierName
+    //    {
+    //        set { _suppliername = value; }
+    //        get { return _suppliername; }
+    //    }
+    //    private string _supplierproperty;
+    //    /// <summary>
+    //    ///供应商属性
+    //    /// </summary>
+    //    public string SupplierProperty
+    //    {
+    //        set { _supplierproperty = value; }
+    //        get { return _supplierproperty; }
+    //    }
+    //    private string _purchasetype;
+    //    /// <summary>
+    //    ///供应商类型
+    //    /// </summary>
+    //    public string PurchaseType
+    //    {
+    //        set { _purchasetype = value; }
+    //        get { return _purchasetype; }
+    //    }
+    //    private string _purchasematerial;
+    //    /// <summary>
+    //    ///采购物料
+    //    /// </summary>
+    //    public string PurchaseMaterial
+    //    {
+    //        set { _purchasematerial = value; }
+    //        get { return _purchasematerial; }
+    //    }
+    //    private string _parameterkey;
+    //    /// <summary>
+    //    ///关键字段
+    //    /// </summary>
+    //    public string ParameterKey
+    //    {
+    //        set { _parameterkey = value; }
+    //        get { return _parameterkey; }
+    //    }
+    //    private DateTime _lastpurchasedate;
+    //    /// <summary>
+    //    ///最后一次采购时间
+    //    /// </summary>
+    //    public DateTime LastPurchaseDate
+    //    {
+    //        set { _lastpurchasedate = value; }
+    //        get { return _lastpurchasedate; }
+    //    }
+    //    private string _supgradetype;
+    //    /// <summary>
+    //    ///供应商稽核类型
+    //    /// </summary>
+    //    public string SupGradeType
+    //    {
+    //        set { _supgradetype = value; }
+    //        get { return _supgradetype; }
+    //    }
+    //    private double _firstgradescore;
+    //    /// <summary>
+    //    ///第一次评分
+    //    /// </summary>
+    //    public double FirstGradeScore
+    //    {
+    //        set { _firstgradescore = value; }
+    //        get { return _firstgradescore; }
+    //    }
+    //    private DateTime _firstgradedate;
+    //    /// <summary>
+    //    ///第一次评分日期
+    //    /// </summary>
+    //    public DateTime FirstGradeDate
+    //    {
+    //        set { _firstgradedate = value; }
+    //        get { return _firstgradedate; }
+    //    }
+    //    private double _secondgradescore;
+    //    /// <summary>
+    //    ///第二次平分
+    //    /// </summary>
+    //    public double SecondGradeScore
+    //    {
+    //        set { _secondgradescore = value; }
+    //        get { return _secondgradescore; }
+    //    }
+    //    private DateTime _secondgradedate;
+    //    /// <summary>
+    //    ///第二次平分日期
+    //    /// </summary>
+    //    public DateTime SecondGradeDate
+    //    {
+    //        set { _secondgradedate = value; }
+    //        get { return _secondgradedate; }
+    //    }
+    //    private string _gradeyear;
+    //    /// <summary>
+    //    ///年份
+    //    /// </summary>
+    //    public string GradeYear
+    //    {
+    //        set { _gradeyear = value; }
+    //        get { return _gradeyear; }
+    //    }
+    //    private string _opperson;
+    //    /// <summary>
+    //    ///操作人
+    //    /// </summary>
+    //    public string OpPerson
+    //    {
+    //        set { _opperson = value; }
+    //        get { return _opperson; }
+    //    }
+    //    private string _opsign;
+    //    /// <summary>
+    //    ///操作标识
+    //    /// </summary>
+    //    public string OpSign
+    //    {
+    //        set { _opsign = value; }
+    //        get { return _opsign; }
+    //    }
+    //    private DateTime _opdate;
+    //    /// <summary>
+    //    ///操作日期
+    //    /// </summary>
+    //    public DateTime OpDate
+    //    {
+    //        set { _opdate = value; }
+    //        get { return _opdate; }
+    //    }
+    //    private DateTime _optime;
+    //    /// <summary>
+    //    ///操作时间
+    //    /// </summary>
+    //    public DateTime OpTime
+    //    {
+    //        set { _optime = value; }
+    //        get { return _optime; }
+    //    }
+    //    private decimal _id_key;
+    //    /// <summary>
+    //    ///自增键
+    //    /// </summary>
+    //    public decimal Id_Key
+    //    {
+    //        set { _id_key = value; }
+    //        get { return _id_key; }
+    //    }
+    //    #endregion Model
+    //}
+
+
     /// <summary>
-    ///供应商稽核自评复评明细表 
+    ///供应商稽核明细表
     /// </summary>
     [Serializable]
     public partial class SupplierGradeInfoModel
@@ -798,6 +973,42 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         public SupplierGradeInfoModel()
         { }
         #region Model
+        private string _isFirstGrade;
+        /// <summary>
+        ///稽核属性
+        /// </summary>
+        public string IsFirstGrade
+        {
+            set { _isFirstGrade = value; }
+            get { return _isFirstGrade; }
+        }
+        private double _gradescore;
+        /// <summary>
+        ///稽核分数
+        /// </summary>
+        public double GradeScore
+        {
+            set { _gradescore = value; }
+            get { return _gradescore; }
+        }
+        private string _gradeexplain;
+        /// <summary>
+        ///稽核说明
+        /// </summary>
+        public string GradeExplain
+        {
+            set { _gradeexplain = value; }
+            get { return _gradeexplain; }
+        }
+        private DateTime _gradedate;
+        /// <summary>
+        ///稽核日期
+        /// </summary>
+        public DateTime GradeDate
+        {
+            set { _gradedate = value; }
+            get { return _gradedate; }
+        }
         private string _supplierid;
         /// <summary>
         ///供应商ID
@@ -834,15 +1045,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _purchasetype = value; }
             get { return _purchasetype; }
         }
-        private string _purchasematerial;
-        /// <summary>
-        ///采购物料
-        /// </summary>
-        public string PurchaseMaterial
-        {
-            set { _purchasematerial = value; }
-            get { return _purchasematerial; }
-        }
         private string _parameterkey;
         /// <summary>
         ///关键字段
@@ -869,42 +1071,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         {
             set { _supgradetype = value; }
             get { return _supgradetype; }
-        }
-        private double _firstgradescore;
-        /// <summary>
-        ///第一次评分
-        /// </summary>
-        public double FirstGradeScore
-        {
-            set { _firstgradescore = value; }
-            get { return _firstgradescore; }
-        }
-        private DateTime _firstgradedate;
-        /// <summary>
-        ///第一次评分日期
-        /// </summary>
-        public DateTime FirstGradeDate
-        {
-            set { _firstgradedate = value; }
-            get { return _firstgradedate; }
-        }
-        private double _secondgradescore;
-        /// <summary>
-        ///第二次平分
-        /// </summary>
-        public double SecondGradeScore
-        {
-            set { _secondgradescore = value; }
-            get { return _secondgradescore; }
-        }
-        private DateTime _secondgradedate;
-        /// <summary>
-        ///第二次平分日期
-        /// </summary>
-        public DateTime SecondGradeDate
-        {
-            set { _secondgradedate = value; }
-            get { return _secondgradedate; }
         }
         private string _gradeyear;
         /// <summary>
@@ -962,6 +1128,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         }
         #endregion Model
     }
+
+
     #endregion
 
     #region  展示模型

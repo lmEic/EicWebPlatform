@@ -42,24 +42,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             if (!IsExist(model.RmaId))
             {
-                SetModelVaule(model, RmaHandleStatus.InitiateStatus);
+                model.RmaYear = DateTime.Now.ToString("yy");
+                model.RmaMonth = DateTime.Now.ToString("MM");
+                model.RmaIdStatus = RmaHandleStatus.InitiateStatus;
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
             return OpResult.SetErrorResult("该RMA单号记录已经存在");
         }
         internal OpResult Eidt(RmaReportInitiateModel model)
         {
-            SetModelVaule(model, model.RmaIdStatus);
+            if (!IsExist(model.RmaId)||model.Id_Key ==0) return OpResult.SetErrorResult("该RMA单号记录不存在，编辑失败");
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
-        }
-        private void SetModelVaule(RmaReportInitiateModel model, string InitiateStatus)
-        {
-            if (model.RmaId != null && model.RmaId.Length == 8)
-            {
-                model.RmaYear = model.RmaId.Substring(1, 2);
-                model.RmaMonth = model.RmaId.Substring(3, 2);
-            }
-            model.RmaIdStatus = InitiateStatus;
         }
         #endregion
 
@@ -68,13 +61,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// 
         /// </summary>
         /// <returns></returns>
-        internal int CountNowYaerMonthRmaIdNumber(string nowYaer,string nowMonth)
+        internal int CountNowYaerMonthRmaIdNumber(string nowYaer)
         {
-            return irep.Entities.Count(e => e.RmaYear == nowYaer && e.RmaMonth == nowMonth);
+            return irep.Entities.Count(e => e.RmaYear == nowYaer);
         }
         internal List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
+        }
+        internal List<RmaReportInitiateModel> GetInitiateDatasBy(DateTime  formYearMonth, DateTime toYearMonth)
+        {
+            return irep.Entities.Where(e => e.OpDate>= formYearMonth &&e.OpDate <= toYearMonth).ToList();
         }
         internal bool IsExist(string rmaId)
         {
@@ -88,7 +85,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// 改Rma状态
         /// </summary>
         /// <param name="rmaId"></param>
-        /// <param name="rmaIdStatus"></param>
+        /// <param name="handleStatus"></param>
         /// <returns></returns>
         internal OpResult UpdateHandleStatus(string rmaId, string handleStatus)
         {
@@ -110,17 +107,35 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             this.AddOpItem(OpMode.Add, AddModel);
             this.AddOpItem(OpMode.Edit, UpdateModel);
+            this.AddOpItem (OpMode.Delete, DeleteModel);
         }
 
         OpResult AddModel(RmaBusinessDescriptionModel model)
         {
             if (!IsExist(model.RmaId, model.ProductId, model.ReturnHandleOrder))
+            {     //序号自动计算出来
+                model.RmaIdNumber = RmaIdCount(model.RmaId) + 1;
+                model.HandleStatus = GetHandleStatus(model.ProductCount);
                 return irep.Insert(model).ToOpResult_Add(OpContext);
+            }
             return OpResult.SetErrorResult("该记录已经存在！");
         }
         OpResult UpdateModel(RmaBusinessDescriptionModel model)
         {
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+
+        OpResult DeleteModel(RmaBusinessDescriptionModel model)
+        {
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+        }
+        public string GetHandleStatus(double ProductCount)
+        {
+            if (ProductCount > 0)
+                return RmaHandleStatus.BusinessPlusStatus;
+            if (ProductCount < 0)
+                return RmaHandleStatus.BusinessMinusStatus;
+            return RmaHandleStatus.InitiateStatus;
         }
         #endregion
 
@@ -139,13 +154,25 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId && e.ReturnHandleOrder == returnHandleOrder);
         }
-        internal OpResult UpdateHandleStatus(string rmaId, string productId, string returnHandleOrder)
+        internal OpResult UpdateHandleStatus(string rmaId, string productId, string returnHandleOrder,string businessStatus)
         {
             return irep.Update(e => e.RmaId == rmaId && e.ProductId == productId && e.ReturnHandleOrder == returnHandleOrder,
                u => new RmaBusinessDescriptionModel
                {
-                   HandleStatus = RmaHandleStatus.BusinessStatus
+                   HandleStatus = businessStatus
                }).ToOpResult_Eidt(OpContext);
+        }
+        internal OpResult UpdateHandleStatus(string rmaId, int rmaIdNumber, string businessStatus)
+        {
+            return irep.Update(e => e.RmaId == rmaId && e.RmaIdNumber == rmaIdNumber,
+               u => new RmaBusinessDescriptionModel
+               {
+                   HandleStatus = businessStatus
+               }).ToOpResult_Eidt(OpContext);
+        }
+        internal int RmaIdCount(string rmaId)
+        {
+            return irep.Entities.Count(e => e.RmaId == rmaId);
         }
         #endregion
     }
@@ -165,6 +192,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             if (!IsExist(model.RmaId, model.ParameterKey))
                 return irep.Insert(model).ToOpResult_Add(OpContext);
+            ///序号自动计算出来
+            model.RmaIdNumber = RmaIdCount(model.RmaId) + 1;
             return OpResult.SetErrorResult("该记录已经存在！");
         }
         OpResult Update(RmaInspectionManageModel model)
@@ -180,7 +209,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         internal OpResult UpdateHandleStatus(string parameterKey)
         {
-
             if (string.IsNullOrEmpty(parameterKey)) return OpResult.SetErrorResult("ramId或者productId不能为空!");
             return irep.Update(f => f.ParameterKey == parameterKey, u => new RmaInspectionManageModel
             {
@@ -190,6 +218,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         internal bool IsExist(string rmaId, string productId)
         {
             return irep.IsExist(e => e.RmaId == rmaId && e.ParameterKey == productId);
+        }
+        internal int RmaIdCount(string rmaId)
+        {
+            return irep.Entities.Count(e => e.RmaId == rmaId);
         }
     }
 }

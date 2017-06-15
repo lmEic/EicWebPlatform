@@ -5,6 +5,8 @@ smModule.factory('sysitilService', function (ajaxService) {
     var itil = {};
     var urlPrefix = '/' + leeHelper.controllers.itilManage + '/';
 
+    //SystemManage/  SysITILController
+
     ///存储项目开发记录
     itil.storeProjectDevelopRecord = function (entity) {
         var url = urlPrefix + 'StoreProjectDevelopRecord';
@@ -42,9 +44,10 @@ smModule.factory('sysitilService', function (ajaxService) {
         });
     };
     ///保存  通知地址配置 
-    itil.storeItilNotifyAddress = function () {
-        var url = urlPrefix + 'StoreItilNotifyAddress';
+    itil.storeItilNotifyAddress = function (entity) {
+        var url = urlPrefix + 'StoreitilNotifyAddress';
         return ajaxService.getData(url, {
+            entity: entity
         });
     };
     ///保存邮箱记录
@@ -67,8 +70,10 @@ smModule.factory('sysitilService', function (ajaxService) {
 
     return itil;
 });
+///联系人
 smModule.controller('supTelManageCtrl', function ($scope, $modal, sysitilService) {
 });
+/// 开发进程
 smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sysitilService) {
     ///视图模型
     var uiVM = {
@@ -178,8 +183,6 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
     };
 
     $scope.vmManager = vmManager;
-
-
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 
@@ -192,8 +195,6 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
             var op = Object.create(leeDataHandler.operateStatus);
             $scope.operate = op;
             $scope.vmManager = vmManager;
-
-
             $scope.save = function (isvalidate) {
                 leeDataHandler.dataOperate.add(op, isvalidate, function () {
                     sysitilService.changeDevelopModuleProgressStatus($scope.vm).then(function (opresult) {
@@ -241,10 +242,10 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
     };
 });
 //消息通知模块控制器
-smModule.controller('itilNotifyAddressManageCtrl', function ($scope, sysitilService) {
+smModule.controller('itilNotifyAddressManageCtrl', function ($scope,sysitilService) {
     ///视图模型
     ///通知邮件配置 
-    var uiVm = {
+    var uiVm = $scope.vm = {
         ModuleName: "通知邮件配置 ",
         BusinessName: "通知邮件配置",
         TransactionName: "通知邮件配置 ",
@@ -256,20 +257,10 @@ smModule.controller('itilNotifyAddressManageCtrl', function ($scope, sysitilServ
         OpPerson: null,
         OpDate: null,
         OpTime: null,
-        OpSign: 'add',
+        OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: 0,
-    }
-
-    $scope.vm = uiVm;
-
-    var originalVM = _.clone(uiVm);
-
-    var queryFields = {
-        selectedProgressStatuses: [],
-        functionName: null
     };
-    $scope.query = queryFields;
-
+    var originalVM = _.clone(uiVm);
     var vmManager = {
         activeTab: 'initTab',
         isLocal: true,
@@ -302,10 +293,8 @@ smModule.controller('itilNotifyAddressManageCtrl', function ($scope, sysitilServ
     $scope.operate = operate;
     operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            sysitilService.storeItilNotifyAddress().then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                   
-                });
+            sysitilService.storeItilNotifyAddress(uiVm).then(function (opresult) {
+                console.log(1);
             });
         });
     };

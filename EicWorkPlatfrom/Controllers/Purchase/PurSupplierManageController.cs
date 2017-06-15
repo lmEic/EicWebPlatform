@@ -18,7 +18,6 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             return View();
         }
-
         /// <summary>
         /// 供应商录入
         /// </summary>
@@ -297,7 +296,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public ContentResult GetPurSupGradeInfoList(string supplierId, string yearQuarter)
         {
-            var datas = PurchaseService.PurSupplierManager.GradeManager.GetPurSupGradeInfoDataBy(supplierId, yearQuarter);
+            var datas = PurchaseService.PurSupplierManager.GradeManager.GetPurSupGradeInfoDataBy(supplierId);
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -325,10 +324,6 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         }
         #endregion
     }
-
-
-
-
     #region view model
     /// <summary>
     /// 上传文件附件数据模型

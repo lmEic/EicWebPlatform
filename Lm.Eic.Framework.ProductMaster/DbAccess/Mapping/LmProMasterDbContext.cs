@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.Framework.ProductMaster.Model;
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
+using Lm.Eic.Framework.ProductMaster.Model.MessageNotify;
 using Lm.Eic.Framework.ProductMaster.Model.Tools;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
@@ -26,8 +27,7 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
         public DbSet<CollaborateContactLibModel> CollaborateContactLib { get; set; }
 
         public DbSet<WorkTaskManageModel> WorkTaskBoard { get; set; }
-
-        public DbSet<ItilEmailManageModel> ItilEmailManage { get; set; }
+        public DbSet<ConfigNotifyAddressModel> WConfigNotifyAddress { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -38,7 +38,8 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             modelBuilder.Configurations.Add(new ItilDevelopModuleManageChangeRecordModelMapping());
             modelBuilder.Configurations.Add(new CollaborateContactLibModelMapping());
             modelBuilder.Configurations.Add(new WorkTaskManageModelMapping());
-            modelBuilder.Configurations.Add(new ItilEmailManageModelMapping());
+            modelBuilder.Configurations.Add(new ConfigNotifyAddressModelMapping());
+
         }
     }
 

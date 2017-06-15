@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Quality.RmaManage;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace EicWorkPlatfrom.Controllers.Quality
 {
@@ -147,9 +148,27 @@ namespace EicWorkPlatfrom.Controllers.Quality
         #endregion
 
         #region RmaReportQuery
+       
+        [NoAuthenCheck]
         public ActionResult RmaReportQuery()
         {
             return View();
+        }
+        /// <summary>
+        /// 查询数据
+        /// </summary>
+        /// <param name="dateFrom"></param>
+        /// <param name="dateTo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [NoAuthenCheck]
+        public ContentResult GetRmaDatas(string dateFrom,string  dateTo)
+        {
+            DateTime fromDate = (dateFrom + "01").ToDate ();
+            DateTime toDate = (dateTo + "30").ToDate();
+            var rmaInitiateDatas = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(fromDate, toDate);
+          
+            return DateJsonResult(rmaInitiateDatas);
         }
         #endregion
     }

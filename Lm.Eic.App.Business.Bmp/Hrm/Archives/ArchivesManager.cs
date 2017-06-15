@@ -508,20 +508,20 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                         WorkerArchivesInfoList = irep.Entities.Where(m => m.PostNature == qryDto.PostNature).ToList();
                         return WorkerArchivesInfoList;
                     case 5://职工属性
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkerIdType.StartsWith(qryDto.WorkerIdType, StringComparison.CurrentCulture)).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkerIdType.StartsWith(qryDto.WorkerIdType)).ToList();
                         return WorkerArchivesInfoList;
 
                     case 6://出生年月
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.BirthMonth.StartsWith(qryDto.BirthMonth, StringComparison.CurrentCulture)).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.BirthMonth.StartsWith(qryDto.BirthMonth)).ToList();
                         return WorkerArchivesInfoList;
                     case 7://婚姻状况
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.MarryStatus.StartsWith(qryDto.MarryStatus, StringComparison.CurrentCulture)).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.MarryStatus.StartsWith(qryDto.MarryStatus)).ToList();
                         return WorkerArchivesInfoList;
                     case 8: //在职状态
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith(qryDto.WorkingStatus, StringComparison.CurrentCulture)).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith(qryDto.WorkingStatus)).ToList();
                         return WorkerArchivesInfoList;
                     case 0: //在职全部人员
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith("在职", StringComparison.CurrentCulture)).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkingStatus.StartsWith("在职")).ToList();
                         return WorkerArchivesInfoList;
                     default:
                         return WorkerArchivesInfoList;
@@ -529,7 +529,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.InnerException.Message);
+                throw new Exception(ex.Message);
             }
 
         }

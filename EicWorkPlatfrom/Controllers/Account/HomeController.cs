@@ -16,7 +16,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-        
+
         /// <summary>
         /// 获取模块导航列表
         /// </summary>
@@ -56,20 +56,10 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="nowMonth"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetCalendarDatas(int nowYear, int nowMonth)
+        public JsonResult GetCalendarDatas(int nowYear, int nowMonth)
         {
-            var datas = ArchiveService.ArCalendarManger.GetDateDictionary(nowYear, nowMonth); ;
-            return DateJsonResult(datas);
-        }
-        /// <summary>
-        /// 保存行事历
-        /// </summary>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult SaveCalendarDatas(CalendarModel vm)
-        {
-            var result = ArchiveService.ArCalendarManger.store(vm);
-            return Json(result);
+            var data = ArchiveService.ArCalendarManger.GetMonthCalendar(nowYear, nowMonth);
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

@@ -43,10 +43,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libs\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI, Version=2.0.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\libs\NPOI.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -61,10 +57,10 @@
     <Compile Include="Business\Config\PmConfigService.cs" />
     <Compile Include="Business\Itil\ItilDevelopModuleCrud.cs" />
     <Compile Include="Business\Itil\ItilDevelopModuleManager.cs" />
-    <Compile Include="Business\Itil\ItilMailManage\ItilEmailManageFactory.cs" />
-    <Compile Include="Business\Itil\ItilMailManage\ItilEmailManager.cs" />
-    <Compile Include="Business\Itil\ItilMailManage\ItilEmailMangeService.cs" />
     <Compile Include="Business\Itil\ItilService.cs" />
+    <Compile Include="Business\MessageNotify\NotifyModuleCrud.cs" />
+    <Compile Include="Business\MessageNotify\NotifyModuleManager.cs" />
+    <Compile Include="Business\MessageNotify\NotifyService.cs" />
     <Compile Include="Business\Tools\tlOnline\CollaborateContacManager.cs" />
     <Compile Include="Business\Tools\tlOnline\tlOnlineCrudFactorty.cs" />
     <Compile Include="Business\Tools\tlOnline\ToolOnlineService.cs" />
@@ -74,15 +70,14 @@
     <Compile Include="DbAccess\Repository\CollaborateContactLibRepository.cs" />
     <Compile Include="DbAccess\Repository\ConfigDataDictionaryRepository.cs" />
     <Compile Include="DbAccess\Repository\ItilDevelopModuleManageRepository.cs" />
-    <Compile Include="DbAccess\Repository\EmailManageRep\ItilEmailManageRepository.cs" />
+    <Compile Include="DbAccess\Repository\MesageNotifyRepository.cs" />
     <Compile Include="DbAccess\Repository\WorkTaskRepository.cs" />
     <Compile Include="Model\ConfigDataDictionaryModel.cs" />
     <Compile Include="Model\ITIL\ItilDevelopModuleManageModel.cs" />
     <Compile Include="Model\ITIL\ItilDevelopModuleManageChangeRecordModel.cs" />
     <Compile Include="Model\ITIL\ItilDto.cs" />
-    <Compile Include="Model\ITIL\ItilEmailManageDto.cs" />
-    <Compile Include="Model\ITIL\ItilEmailManageModel.cs" />
     <Compile Include="Model\ITIL\ItilSupplierTelModel.cs" />
+    <Compile Include="Model\MessageNotify\ConfigNotifyAddressModel.cs" />
     <Compile Include="Model\Tools\CollaborateContactLibModel.cs" />
     <Compile Include="Business\Tools\tlOnline\WorkTaskManager.cs" />
     <Compile Include="Model\Tools\QueryWorkTaskManageDto.cs" />

@@ -16,7 +16,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
 
         private IAttendClassTypeRepository irep = null;
         private IAttendClassTypeDetailRepository irepDetail = null;
-        private AttendSlodFingerDataCurrentMonthHandler attendanceHandler = null;
+        private AttendSlodFingerDataCurrentMonthCurd attendanceHandler = null;
         #endregion member
 
         #region constructure
@@ -25,7 +25,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         {
             this.irep = new AttendClassTypeRepository();
             this.irepDetail = new AttendClassTypeDetailRepository();
-            this.attendanceHandler = new AttendSlodFingerDataCurrentMonthHandler();
+            this.attendanceHandler = new AttendSlodFingerDataCurrentMonthCurd();
         }
 
         #endregion constructure
@@ -41,7 +41,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             int record = 0;
             if (this.irepDetail.IsExist(e => e.WorkerId == entity.WorkerId))
             {
-                this.irepDetail.Delete (e => e.WorkerId == entity.WorkerId);
+                this.irepDetail.Delete(e => e.WorkerId == entity.WorkerId);
             }
             record = this.irepDetail.Insert(entity);
             return record;
@@ -158,7 +158,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             }
             return OpResult.SetSuccessResult("设置班别成功!", record > 0);
         }
-        private void StoreClassTypeData(ref int record,AttendClassTypeModel ctMdl,AttendClassTypeModel dto)
+        private void StoreClassTypeData(ref int record, AttendClassTypeModel ctMdl, AttendClassTypeModel dto)
         {
             ctMdl = this.irep.Entities.FirstOrDefault(e => e.WorkerId == dto.WorkerId);
             if (ctMdl != null)
@@ -197,8 +197,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                         OpPerson = dto.OpPerson,
                         WorkerId = dto.WorkerId,
                         WorkerName = dto.WorkerName,
-                        OpDate=dto.DateFrom,
-                        OpSign="add"
+                        OpDate = dto.DateFrom,
+                        OpSign = "add"
                     };
                     //不存在，则直接添加
                     record += this.irepDetail.Insert(mdl);
@@ -208,16 +208,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                 dateFrom = dateFrom.AddDays(1);
             }
         }
-        /// <summary>
-        /// 获取班次日期模型
-        /// </summary>
-        /// <param name="workerId"></param>
-        /// <param name="dateAt"></param>
-        /// <returns></returns>
-        internal AttendClassTypeDetailModel GetClassTypeDetailModel(string workerId, DateTime dateAt)
-        {
-            return this.irepDetail.FirstOfDefault(e => e.WorkerId == workerId && e.DateAt == dateAt);
-        }
+
         #endregion method
     }
 }

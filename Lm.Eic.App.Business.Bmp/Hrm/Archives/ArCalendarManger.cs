@@ -15,16 +15,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
     public class ArCalendarManger
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        ArcalendarCurd ArcalendarCurd
+        ArcalendarCurd curd
         {
             get { return OBulider.BuildInstance<ArcalendarCurd>(); }
         }
-        public  List<CalendarModel> GetDateDictionary(int nowYear, int nowMonth)
+
+
+        public List<CalendarModel> GetDateDictionary(int nowYear, int nowMonth)
         {
             List<CalendarModel> returnDateDictionary = new List<CalendarModel>();
-            var ListModel = ArcalendarCurd.FindCalendarDateListBy(nowYear, nowMonth);
+            var ListModel = curd.FindCalendarDateListBy(nowYear, nowMonth);
             if (ListModel == null || ListModel.Count <= 0) return returnDateDictionary;
             //得到当月所有日期周次
             var nowMonthWeeksList = ListModel.Select(e => e.NowMonthWeekNumber).Distinct().ToList();
@@ -43,18 +45,25 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 models.ForEach(e =>
                 {
                     if (e.CalendarDay != string.Empty)
-                    { e.ChineseCalendar = new ChineseCalendar(e.CalendarDate).ChineseDayString;}
+                    { e.ChineseCalendar = new ChineseCalendar(e.CalendarDate).ChineseDayString; }
                     returnDateDictionary.Add(e);
                 });
             });
             return returnDateDictionary;
         }
-
-
-
+        /// <summary>
+        /// 获取该月日历模型
+        /// </summary>
+        /// <param name="qryYear"></param>
+        /// <param name="qryMonth"></param>
+        /// <returns></returns>
+        public MonthCalendarModel GetMonthCalendar(int qryYear, int qryMonth)
+        {
+            return this.curd.GetMonthCalendar(qryYear, qryMonth);
+        }
         public OpResult store(CalendarModel model)
-        { 
-            return ArcalendarCurd.Store(model);
+        {
+            return curd.Store(model);
         }
     }
 
@@ -71,12 +80,12 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
         private OpResult EditReportAttendece(CalendarModel model)
         {
-              model.DateColor = CalendarColor(model.DateProperty);
-              return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+            model.DateColor = CalendarColor(model.DateProperty);
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
-        private  string CalendarColor (string CalendarProty)
+        private string CalendarColor(string CalendarProty)
         {
-            switch(CalendarProty)
+            switch (CalendarProty)
             {
                 case "法定假日":
                     return "#29B8CB";
@@ -89,7 +98,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 case "正常":
                     return "white";
                 default:
-                    return "white";  
+                    return "white";
             }
         }
         /// <summary>
@@ -110,7 +119,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 List<DateTime> adlldate = new List<DateTime>();
                 while (beginDate <= endDate)
                 {
-                    adlldate.Add(beginDate); 
+                    adlldate.Add(beginDate);
                     beginDate = beginDate.AddDays(1);
                 }
                 adlldate.ForEach(d =>
@@ -145,10 +154,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 
                 throw;
             }
-          
+
         }
 
-        private string GetDateProperty(int  CalendarWeek)
+        private string GetDateProperty(int CalendarWeek)
         {
             if (CalendarWeek == 0 | CalendarWeek == 6)
                 return "星期六日";
@@ -158,6 +167,50 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public List<CalendarModel> FindCalendarDateListBy(int nowYear, int nowMonth)
         {
             return irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMonth == nowMonth).ToList();
+        }
+        /// <summary>
+        /// 获取月日历模型
+        /// </summary>
+        /// <param name="qryYear"></param>
+        /// <param name="qryMonth"></param>
+        /// <returns></returns>
+        public MonthCalendarModel GetMonthCalendar(int qryYear, int qryMonth)
+        {
+            MonthCalendarModel monthCalendar = new MonthCalendarModel()
+            { QryYear = qryYear, QryMonth = qryMonth, WeekCalendars = new List<WeekCalendarModel>() };
+            WeekCalendarModel weekCalendar = null;
+            var datas = FindCalendarDateListBy(qryYear, qryMonth);
+            if (datas == null || datas.Count == 0) return monthCalendar;
+            //该月份周次列表
+            List<int> weekList = datas.OrderBy(o => o.YearWeekNumber).Select(s => s.YearWeekNumber).Distinct().ToList();
+            int weekCount = weekList.Count;
+            for (int i = 0; i < weekCount; i++)
+            {
+                int week = weekList[i];
+                weekCalendar = new WeekCalendarModel() { Week = week, WeekDays = new List<WeekDayModel>() };
+                var weekDatas = datas.FindAll(e => e.YearWeekNumber == week);
+                WeekDayModel day = null;
+                for (int w = 0; w <= 6; w++)
+                {
+                    day = new WeekDayModel() { Id = w };
+                    var m = weekDatas.FirstOrDefault(e => e.CalendarWeek == w);
+                    if (m != null)
+                    {
+                        day.ChineseCalendar = m.ChineseCalendar;
+                        day.Day = m.CalendarDay;
+                        day.DateColor = m.DateColor;
+                        day.Title = m.Title;
+                    }
+                    else
+                    {
+                        day.ChineseCalendar = "";
+                        day.Day = "";
+                    }
+                    weekCalendar.WeekDays.Add(day);
+                }
+                monthCalendar.WeekCalendars.Add(weekCalendar);
+            }
+            return monthCalendar;
         }
         /// <summary>
         /// 获取日期是当月中的第几周
@@ -202,7 +255,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         /// <param name="sundayFirstDay">星期天是否本周第一天</param>
         /// <returns></returns>
 
-       public  int GetWeekOfYear(DateTime dt ,bool sundayFirstDay)
+        public int GetWeekOfYear(DateTime dt, bool sundayFirstDay)
         {
             try
             {
@@ -211,23 +264,83 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                     return gc.GetWeekOfYear(dt, CalendarWeekRule.FirstDay, DayOfWeek.Sunday);
                 else return gc.GetWeekOfYear(dt, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
             }
-            catch (Exception )
+            catch (Exception)
             {
 
                 throw;
             }
-          
-           
-        }
 
+
+        }
 
         private static string GetchineseCalendar(DateTime date)
         {
             return new ChineseCalendar(date).ChineseDayString;
         }
     }
- 
+    /// <summary>
+    /// 月日历模型
+    /// </summary>
+    public class MonthCalendarModel
+    {
+        /// <summary>
+        /// 查询年份
+        /// </summary>
+        public int QryYear { get; set; }
+        /// <summary>
+        /// 查询月份
+        /// </summary>
+        public int QryMonth { get; set; }
+        /// <summary>
+        /// 一周天数
+        /// </summary>
+        public List<WeekDayModel> WeekDays
+        {
+            get
+            {
+                return new List<WeekDayModel>() {
+                    new WeekDayModel() { Id=-1, Day="Week" },
+                    new WeekDayModel() { Id=0,Day="Sun" },
+                    new WeekDayModel() { Id=1,Day="Mon" },
+                    new WeekDayModel() { Id=2,Day="Tue" },
+                    new WeekDayModel() { Id=3,Day="Wed" },
+                    new WeekDayModel() { Id=4,Day="Thu" },
+                    new WeekDayModel() { Id=5,Day="Fri" },
+                    new WeekDayModel() { Id=6,Day="Sat" }
+                };
+            }
+        }
+        /// <summary>
+        /// 周历列表
+        /// </summary>
+        public List<WeekCalendarModel> WeekCalendars { get; set; }
+    }
+    /// <summary>
+    /// 周历模型
+    /// </summary>
+    public class WeekCalendarModel
+    {
+        /// <summary>
+        /// 周次
+        /// </summary>
+        public int Week { get; set; }
+        public List<WeekDayModel> WeekDays { get; set; }
 
-  
+    }
+
+    public class WeekDayModel
+    {
+        public int Id { get; set; }
+        public string Day { get; set; }
+        public string ChineseCalendar { get; set; }
+        /// <summary>
+        /// 日期背景色
+        /// </summary>
+        public string DateColor { get; set; }
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public string Title { get; set; }
+    }
 }
 

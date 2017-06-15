@@ -775,14 +775,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
     }
 
     /// <summary>
-    /// 请假信息模型
+    ///请假领域模型
     /// </summary>
+    [Serializable]
     public class AttendAskLeaveModel
     {
+        public AttendAskLeaveModel()
+        { }
         #region Model
-
         private string _workerid;
-
         /// <summary>
         ///作业工号
         /// </summary>
@@ -791,9 +792,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _workerid = value; }
             get { return _workerid; }
         }
-
         private string _workername;
-
         /// <summary>
         ///姓名
         /// </summary>
@@ -802,9 +801,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _workername = value; }
             get { return _workername; }
         }
-
         private string _department;
-
         /// <summary>
         ///部门
         /// </summary>
@@ -813,20 +810,34 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _department = value; }
             get { return _department; }
         }
-
-        private string _leavetype;
-
+        private DateTime _attendancedate;
         /// <summary>
-        ///假别名称
+        ///出勤日期
+        /// </summary>
+        public DateTime AttendanceDate
+        {
+            set { _attendancedate = value; }
+            get { return _attendancedate; }
+        }
+        private string _slotcardtime;
+        /// <summary>
+        ///刷卡时间
+        /// </summary>
+        public string SlotCardTime
+        {
+            set { _slotcardtime = value; }
+            get { return _slotcardtime; }
+        }
+        private string _leavetype;
+        /// <summary>
+        ///请假类别
         /// </summary>
         public string LeaveType
         {
             set { _leavetype = value; }
             get { return _leavetype; }
         }
-
         private double _leavehours;
-
         /// <summary>
         ///请假时数
         /// </summary>
@@ -835,130 +846,133 @@ namespace Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance
             set { _leavehours = value; }
             get { return _leavehours; }
         }
-
         private string _leavetimeregion;
-
-        private string _LeaveTimeRegionStart;
-
-        public string LeaveTimeRegionStart
-        {
-            get
-            {
-                return _LeaveTimeRegionStart;
-            }
-            set
-            {
-                if (_LeaveTimeRegionStart != value)
-                {
-                    _LeaveTimeRegionStart = value;
-                }
-            }
-        }
-
-        private string _LeaveTimeRegionEnd;
-
-        public string LeaveTimeRegionEnd
-        {
-            get
-            {
-                return _LeaveTimeRegionEnd;
-            }
-            set
-            {
-                if (_LeaveTimeRegionEnd != value)
-                {
-                    _LeaveTimeRegionEnd = value;
-                }
-            }
-        }
-
         /// <summary>
-        ///请假时段
+        ///时间段
         /// </summary>
         public string LeaveTimeRegion
         {
             set { _leavetimeregion = value; }
             get { return _leavetimeregion; }
         }
-
-        private string _leavedescription;
-
+        private DateTime _leavetimeregionstart;
         /// <summary>
-        ///请假详述
+        ///开始时间
         /// </summary>
-        public string LeaveDescription
+        public DateTime LeaveTimeRegionStart
         {
-            set { _leavedescription = value; }
-            get { return _leavedescription; }
+            set { _leavetimeregionstart = value; }
+            get { return _leavetimeregionstart; }
         }
-
-        private int _leavemark;
-
+        private DateTime _leavetimeregionend;
         /// <summary>
-        ///请假标识
+        ///结束时间
         /// </summary>
-        public int LeaveMark
+        public DateTime LeaveTimeRegionEnd
         {
-            set { _leavemark = value; }
-            get { return _leavemark; }
+            set { _leavetimeregionend = value; }
+            get { return _leavetimeregionend; }
         }
-
         private string _leavememo;
-
         /// <summary>
-        ///请假备注
+        ///备注
         /// </summary>
         public string LeaveMemo
         {
             set { _leavememo = value; }
             get { return _leavememo; }
         }
-
-        private DateTime _startLeaveDate;
-
-        public DateTime StartLeaveDate
-        {
-            get
-            {
-                return _startLeaveDate;
-            }
-            set
-            {
-                if (_startLeaveDate != value)
-                {
-                    _startLeaveDate = value;
-                }
-            }
-        }
-
-        private DateTime _endLeaveDate;
-
-        public DateTime EndLeaveDate
-        {
-            get
-            {
-                return _endLeaveDate;
-            }
-            set
-            {
-                if (_endLeaveDate != value)
-                {
-                    _endLeaveDate = value;
-                }
-            }
-        }
-
-        private string _classtype;
-
+        private int _day;
         /// <summary>
-        ///班别
+        ///天
         /// </summary>
-        public string ClassType
+        public int Day
         {
-            set { _classtype = value; }
-            get { return _classtype; }
+            set { _day = value; }
+            get { return _day; }
         }
-
+        private string _yearmonth;
+        /// <summary>
+        ///请假年月
+        /// </summary>
+        public string YearMonth
+        {
+            set { _yearmonth = value; }
+            get { return _yearmonth; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标志
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _field1;
+        /// <summary>
+        ///预留字段1
+        /// </summary>
+        public string Field1
+        {
+            set { _field1 = value; }
+            get { return _field1; }
+        }
+        private string _field2;
+        /// <summary>
+        ///预留字段2
+        /// </summary>
+        public string Field2
+        {
+            set { _field2 = value; }
+            get { return _field2; }
+        }
+        private string _field3;
+        /// <summary>
+        ///预留字段3
+        /// </summary>
+        public string Field3
+        {
+            set { _field3 = value; }
+            get { return _field3; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
         #endregion Model
     }
+
 }

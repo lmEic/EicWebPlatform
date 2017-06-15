@@ -62,7 +62,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// <summary>
     /// 供应商合格证书Curd
     /// </summary>
-    public class SupplierQualifiedCertificateCrud : CrudBase<SupplierQualifiedCertificateModel, ISupplierQualifiedCertificateRepository>
+    internal  class SupplierQualifiedCertificateCrud : CrudBase<SupplierQualifiedCertificateModel, ISupplierQualifiedCertificateRepository>
     {
         public SupplierQualifiedCertificateCrud() : base(new SupplierQualifiedCertifcateRepository(), "供应商合格文件")
         { }
@@ -192,7 +192,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// <summary>
     /// 供应商信息Curd
     /// </summary>
-    public class SuppliersInfoCrud : CrudBase<SupplierInfoModel, ISupplierInfoRepository>
+    internal class SuppliersInfoCrud : CrudBase<SupplierInfoModel, ISupplierInfoRepository>
     {
 
         public SuppliersInfoCrud()
@@ -297,7 +297,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="supplierId">供应商ID</param>
         /// <returns></returns>
-        public SupplierInfoModel GetSupplierInfoBy(string supplierId)
+        internal SupplierInfoModel GetSupplierInfoBy(string supplierId)
         {
             try
             {
@@ -312,7 +312,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// <summary>
     /// 供应商季度审查表Curd
     /// </summary>
-    public class SuppliersSeasonAuditCrud : CrudBase<SupplierSeasonAuditModel, ISupplierSeasonAuditRepository>
+    internal class SuppliersSeasonAuditCrud : CrudBase<SupplierSeasonAuditModel, ISupplierSeasonAuditRepository>
     {
         public SuppliersSeasonAuditCrud()
             : base(new SupplierSeasonAuditRepository(), "供应商季度审计考核表")
@@ -332,7 +332,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <param name="seasonDateNum">季度</param>
         /// <param name="limitScore">限制的分数线</param>
         /// <returns></returns>
-        public List<SupplierSeasonAuditModel> GetlimitScoreSupplierAuditInfo(string seasonDateNum, double limitTotalCheckScore, double limitQualityCheck)
+        internal List<SupplierSeasonAuditModel> GetlimitScoreSupplierAuditInfo(string seasonDateNum, double limitTotalCheckScore, double limitQualityCheck)
         {
             return this.irep.Entities.Where(e => (e.TotalCheckScore < limitTotalCheckScore || e.QualityCheck < limitQualityCheck) && e.SeasonDateNum == seasonDateNum).OrderBy(e => e.SupplierId).ToList();
         }
@@ -341,7 +341,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="parameterKey"></param>
         /// <returns></returns>
-        public SupplierSeasonAuditModel GetSupplierSeasonAuditInfo(string parameterKey)
+        internal SupplierSeasonAuditModel GetSupplierSeasonAuditInfo(string parameterKey)
         {
             return this.irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
         }
@@ -376,18 +376,13 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             return irep.Update(e => e.ParameterKey == model.ParameterKey, model).ToOpResult_Add(OpContext); ;
         }
-
-        public bool IsExist(string parameterKey)
-        {
-            return irep.IsExist(e => e.ParameterKey == parameterKey);
-        }
     }
 
     /// <summary>
     /// 季度考核实地辅导计划/执行Crud
     /// </summary>
 
-    public class SuppliersSeasonTutorCrud : CrudBase<SupplierSeasonTutorModel, ISupplierSeasonAuditTutorRepository>
+    internal class SuppliersSeasonTutorCrud : CrudBase<SupplierSeasonTutorModel, ISupplierSeasonAuditTutorRepository>
     {
         public SuppliersSeasonTutorCrud() : base(new SupplierSeasonAuditTutorRepository(), "季度考核实地辅导计划/执行")
         { }
@@ -442,7 +437,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// <summary>
     /// 供应商稽核自评复评明细表 Crud
     /// </summary>
-    public class SupplierGradeInfoCrud : CrudBase<SupplierGradeInfoModel, ISupplierGradeInfoRepository>
+    internal class SupplierGradeInfoCrud : CrudBase<SupplierGradeInfoModel, ISupplierGradeInfoRepository>
     {
         public SupplierGradeInfoCrud() : base(new SupplierGradeInfoRepository(), "供应商自评复评明细表 ")
         { }
@@ -456,26 +451,32 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         OpResult AddSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
-            entity.LastPurchaseDate = DateTime.Now.Date;
-
-            if (!IsExist(entity.ParameterKey))
-                return irep.Insert(entity).ToOpResult_Add(OpContext);
-            return UpdateSupplierGradeInfo(entity);
+            ///首评只能有一次
+            entity.GradeYear = entity.GradeDate.Year.ToString();
+            if (entity.IsFirstGrade == "首评")
+            {
+                entity.ParameterKey = entity.SupplierId + "&" + entity.SupGradeType+"&"+ entity.IsFirstGrade;
+                if (!IsExist(entity.ParameterKey))  return irep.Insert(entity).ToOpResult_Add(OpContext); 
+                return OpResult.SetErrorResult("供应商:" + entity.SupplierId + "[" + entity.SupGradeType + "]" + entity.GradeYear + "年,首评"+ "已评！不能添加只能修改！"); ;
+            }
+            entity.ParameterKey = entity.SupplierId + "&" + entity.GradeYear + entity.GradeDate.Month.ToString("00") + "&" + entity.SupGradeType + "&" + entity.IsFirstGrade;
+            if (!IsExist(entity.ParameterKey))  return irep.Insert(entity).ToOpResult_Add(OpContext);
+              return OpResult.SetErrorResult("供应商:" + entity.SupplierId  + "[" + entity.SupGradeType + "]" + entity.GradeYear + "年"+ entity.GradeDate.Month.ToString("00")+ "月,复评" + "已评！不能添加只能修改！"); ;
         }
         OpResult DeleteSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
-            if (IsExist(entity.ParameterKey) && entity.Id_Key == 0)
-                return irep.Delete(e => e.ParameterKey == entity.ParameterKey).ToOpResult_Delete(OpContext);
+            //if (IsExist(entity.ParameterKey) && entity.Id_Key == 0)
+            //    return irep.Delete(e => e.ParameterKey == entity.ParameterKey).ToOpResult_Delete(OpContext);
             return irep.Delete(e => e.Id_Key == entity.Id_Key).ToOpResult_Delete(OpContext);
         }
 
-        public SupplierGradeInfoModel GetPurSupGradeInfoBy(string parameterKey)
+        //internal SupplierGradeInfoModel GetPurSupGradeInfoBy(string parameterKey)
+        //{
+        //    return irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
+        //}
+        internal List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string supplierId)
         {
-            return irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
-        }
-        public List<SupplierGradeInfoModel> GetPurSupGradeInfoBy(string supplierId, string gradeYear)
-        {
-            return irep.Entities.Where(e => e.SupplierId == supplierId & e.GradeYear == gradeYear).ToList();
+            return irep.Entities.Where(e => e.SupplierId == supplierId).OrderBy(e=>e.GradeDate).ToList();
         }
         /// <summary>
         ///
@@ -484,16 +485,16 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         OpResult EditSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
+            entity.GradeYear = entity.GradeDate.Year.ToString();
             return irep.Update(e => e.Id_Key == entity.Id_Key, entity).ToOpResult_Eidt(OpContext); ;
         }
         OpResult UpdateSupplierGradeInfo(SupplierGradeInfoModel entity)
         {
             return irep.Update(e => e.ParameterKey == entity.ParameterKey, e => new SupplierGradeInfoModel
             {
-                SecondGradeScore = entity.SecondGradeScore,
-                SecondGradeDate =entity.SecondGradeDate,
-                FirstGradeScore = entity.FirstGradeScore,
-                FirstGradeDate = entity.FirstGradeDate,
+               GradeScore=entity.GradeScore ,
+               GradeExplain=entity.GradeExplain ,
+               GradeDate=entity.GradeDate 
             }).ToOpResult_Eidt(OpContext);
         }
 

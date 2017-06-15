@@ -17,7 +17,6 @@
             </form>
         </nav>
 
-
         <div class="h-split"></div>
         <div class="well" cg-busy="{promise:searchPromise}">
             <div class="table-responsive">
@@ -81,9 +80,10 @@
                                     <th>供应商Id</th>
                                     <th>供应商品名</th>
                                     <th>评份项目</th>
-                                    <th>首评分</th>
-                                    <th>复评分</th>
-                                    <th>评分年份</th>
+                                    <th>属性</th>
+                                    <th>分数</th>
+                                    <th>说明</th>
+                                    <th>年份</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -94,8 +94,9 @@
                                     <td>{{item.SupplierId}}</td>
                                     <td>{{item.SupplierName}}</td>
                                     <td>{{item.SupGradeType}}</td>
-                                    <td>{{item.FirstGradeScore}}</td>
-                                    <td>{{item.SecondGradeScore}}</td>
+                                    <td>{{item.IsFirstGrade}}</td>
+                                    <td>{{item.GradeScore}}</td>
+                                    <td>{{item.GradeExplain}}</td>
                                     <td>{{item.GradeYear}}</td>
                                     <td>
                                         <button class="btn btn-xs btn-primary" ng-click="vmManager.editSupGradeInfo(item)"
@@ -115,34 +116,95 @@
 
                 @* 填写评分信息 *@
                 <dialog  ng-if="editModelDialog.open"  modal data-close="editModelDialog.close()" style="width:40%">
-                    <content dialog-title class="editInfo"><i class="fa fa-th-list"></i> 填写评分信息</content>
+                    <content dialog-title class="editInfo"><i class="fa fa-th-list"></i> 供应商稽核评分信息</content>
                      <content  dialog-content>
-                         <fieldset>
-                             <div class="col-md-4">
-                                 <label for="supplierId" class="col-md-4 control-label">供应商编号:</label>
-                                 <label class="label label-primary">{{vm.SupplierId}}</label>
-                             </div>
-                             <div class="col-md-4">
-                                 <label for="supplierName" class="col-smd-2 control-label">供应商名称:</label>
-                                 <label class="label label-success">{{vm.SupplierName}}</label>
-                             </div>
-                            </fieldset> 
-                         <fieldset>
-                            <label for="supGradeType" class="col-md-4 control-label">评分类别</label>
-                             <div class="col-md-4">
-                                     <button type="button" class="btn  btn-default" ng-model="vm.gradeType"
-                                             data-html="1" data-multiple="0"
-                                             data-animation="am-flip-x" data-placeholder="评分类别"
-                                             bs-options="item.id as item.text for item in vmManager.gradeTypes"  bs-select>
-                                         <span class="caret"></span>
-                                     </button>
+                         <div class="modal-body">
+                             <form  role="form" name="formSupGrade" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                               <fieldset class="alert alert-info">
+                                     @* 供应商名称 编号 *@
+                                     <div class="form-group">
+                                         <label for="supplierId" class="col-md-2 control-label">编号: </label>
+                                         <div class="col-md-4">
+                                             <input name="supplierId" type="text" placeholder="供应商编号" class="form-control" ng-model="vm.SupplierId" readonly />
+                                         </div>
+                                         <label for="supplierName" class="col-md-2 control-label">名称:</label>
+                                         <div class="col-md-4">
+                                             <input name="supplierName" type="text" placeholder="供应商名称" class="form-control" ng-model="vm.SupplierName" readonly />
+                                         </div>
+                                     </div>
+                                     @* 采购类别 供应商属性 *@
+                                     <div class="form-group">
+                                         <label for="supplierProperty" class="col-md-2 control-label">类别:</label>
+                                         <div class="col-md-4">
+                                             <input name="supplierProperty" type="text" placeholder="供应商类别" class="form-control" ng-model="vm.SupplierProperty" readonly />
+                                         </div>
+                                         <label for="purchaseType" class="col-md-2 control-label">属性:</label>
+                                         <div class="col-md-4">
+                                             <input name="purchaseType" type="text" placeholder="供应商属性" class="form-control" ng-model="vm.PurchaseType" readonly />
+                                         </div>
+                                     </div>
+                               </fieldset>
+                               <fieldset>
+                                     <legend>填定评分信息</legend>
+                                     <div>
+                                         @* 评分类别 *@
+                                         <div class="form-group">
+                                             <label for="supGradeType" class="col-md-2 control-label">评分类别:</label>
+                                             <div class="col-md-6">
+                                                <button  name="supGradeType" type="button" class="btn btn-default" ng-model="vm.SupGradeType" i data-html="1"  data-placeholder="评分类别"
+                                                         data-toggle="true" bs-options="grade.id as grade.text for grade in vmManager.gradeTypes" bs-select>
+                                                     评分类别 <span class="caret"></span>
+                                                 </button>
+                                             </div>
+                                             <label for="isFirstGrade" class="col-md-2 control-label">评分属性:</label>
+                                             <div class="col-md-2"> 
+                                                 <button type="button" class="btn btn-default" ng-model="vm.IsFirstGrade" data-html="1" data-placeholder="属性"  
+                                                         data-toggle="true" bs-options="property.id as property.text for property in vmManager.GradeScorePropertys" bs-select>
+                                                     属性 <span class="caret"></span>
+                                                 </button>
+                                             </div>
+                                         </div>
+                                         <div class="row">
+                                             @* 评分信息 *@
+                                             <div class="form-group">
+                                                 <label for="gradeScore" class="col-md-2 control-label">评分:</label>
+                                                 <div class="col-md-4">
+                                                     <input  type="number" value="0"  max="100" min="0" class="form-control" ng-model="vm.GradeScore" required />
+                                                 </div>
+                                                 <label for="gradeDate" class="col-md-2 control-label">日 期:</label>
+                                                 <div class="col-md-4">
+                                                     <input name="gradeDate" type="date" class="form-control" format-date ng-model="vm.GradeDate" required />
+                                                     <div class="error-messages" ng-messages="formSupGrade.gradeDate.$error" ng-show="operate.showValidation">
+                                                         <small ng-message="required">评分日期不能为空</small>
+                                                     </div>
+                                                 </div>
+                                             </div>
+                                             <div class="form-group">
+                                                 <label for="gradeExplain" class="col-md-2 control-label">评份说明:</label>
+                                                 <div class="col-md-8">
+                                                     <input  type="text" value=""  class="form-control" ng-model="vm.GradeExplain" required />
+                                                 </div>
+                                             </div>
+
+                                         </div>
+                                     </div>
+                                 </fieldset>
+                             </form>
+                         </div>
+                         <div class="modal-footer">
+                             <hr />
+                             @*保存 取消 *@
+                             <div class="alert alert-info">
+                                 <div class="row">
+                                     <div class="col-md-10">
+                                         <button class="btn btn-primary " ng-click="operate.savePurSupGradeDatas(formSupGrade.$valid)"><i class="fa fa-save"></i>保存</button>
+                                         <button class="btn btn-default" ng-click="operate.cannel(formSupGrade.$valid)"><i class="fa fa-undo"></i>取消</button>
+                                         <span yl-operatemsg-board></span>
+                                     </div>
                                  </div>
-                             <label for="firstGradeScore" class="col-md-4 control-label">首评分数</label>
-                             <div class="col-md-4">
-                               <input type="text" class="label label-success"/>
-                              </div>
-                         </fieldset>
-                    </content>
+                             </div>
+                         </div>
+                     </content>
                 </dialog>
             </div>
         </div>

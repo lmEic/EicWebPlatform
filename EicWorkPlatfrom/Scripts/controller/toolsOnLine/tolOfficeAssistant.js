@@ -6,13 +6,12 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
     var oaUrlPrefix = '/' + leeHelper.controllers.TolOfficeAssistant + '/';
 
     ///获取联系人数据
-    oAssistant.getCollaborateContactDatas = function (department, searchMode, contactPerson, telPhone) {
+    oAssistant.getCollaborateContactDatas = function (department, searchMode, queryContent) {
         var url = oaUrlPrefix + 'GetCollaborateContactDatas';
         return ajaxService.getData(url, {
             department: department,
             searchMode: searchMode,
-            contactPerson: contactPerson,
-            telPhone: telPhone
+            queryContent: queryContent
         });
     };
     ///存储联系人数据
@@ -69,16 +68,19 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         Id_Key: null,
     };
     var initVm = _.clone(uiVm);
-
+    //删除联系人对话框
     var deleteDialog = $scope.deleteDialog = leePopups.dialog("删除提示", "删除后数据将不存在，你确定要删除吗？");
+    //编辑对话框
     var dialog = $scope.dialog = leePopups.dialog();
-
+    // 查询条件
     var qryVm = $scope.qryVm = {
         contactPerson: null,
         telephone: null
     };
+    ///界面管理
     var vmManager = {
         activeTab: 'initTab',
+        //初始化
         init: function () {
             uiVm = _.clone(initVm);
             uiVm.OpSign = leeDataHandler.dataOpMode.add;
@@ -86,24 +88,27 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         },
         editDatas: [],
         ///查询函数
-        loadDatas: function (department, searchMode, contactPerson, telPhone) {
+        loadDatas: function (department, searchMode, queryContent) {
             vmManager.editDatas = [];
-            $scope.searchPromise = oAssistantDataOpService.getCollaborateContactDatas(department, searchMode, contactPerson, telPhone).then(function (datas) {
+            console.log(department);
+            console.log(searchMode);
+            console.log(queryContent);
+            $scope.searchPromise = oAssistantDataOpService.getCollaborateContactDatas(department, searchMode, queryContent).then(function (datas) {
                 if (angular.isArray(datas))
                     vmManager.editDatas = datas;
             });
         },
         ///按联系人查询
         getDatasByName: function () {
-            vmManager.loadDatas(uiVm.Department, 1, qryVm.contactPerson, null);
+            vmManager.loadDatas(uiVm.Department, 1, qryVm.contactPerson);
         },
         ///按电话查询
         getDatasByTelPhone: function () {
-            vmManager.loadDatas(uiVm.Department, 2, null, qryVm.telephone);
+            vmManager.loadDatas(uiVm.Department, 2, qryVm.telephone);
         }
     };
     $scope.vmManager = vmManager;
-
+    ///
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     ///创建新的联系人
@@ -168,7 +173,7 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
     ///载入登录人信息
     leeHelper.setUserData(uiVm);
     ///初始载入本部门所有联系人
-    vmManager.loadDatas(uiVm.Department, 0, null, null);
+    vmManager.loadDatas(uiVm.Department, 0, null);
 });
 ///工作任务管理控制器
 officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssistantDataOpService) {

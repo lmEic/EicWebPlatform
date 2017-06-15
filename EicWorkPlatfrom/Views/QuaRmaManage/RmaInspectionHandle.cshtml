@@ -1,6 +1,6 @@
-﻿<div class="panel panel-primary" ng-controller="rmaReportQueryCtrl">
+﻿<div class="panel panel-primary" ng-controller="rmaInspectionHandleCtrl">
     <div class="panel-heading">
-        <h6 class="panel-title">RMA表单查询</h6>
+        <h6 class="panel-title">RMA表单品保查询处理</h6>
     </div>
     <div class="panel-body">
         <div class="row">
@@ -110,8 +110,8 @@
                     </table>
                 </div>
             </div>
-
-            <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%;">
+            @* 处理Rma业务处理单 *@
+            <dialog ng-if="dialog.open"   modal data-close="dialog.close()" style="width:65%;">
                 <content dialog-title>
                     <i class="fa fa-pencil-square">数据编辑</i>
                 </content>
@@ -127,7 +127,22 @@
                             </div>
                             <label for="rmaIdNumber" class="col-md-2 control-label">序号</label>
                             <div class="col-md-4">
-                                <input name="rmaIdNumber" class="form-control" readonly ng-model="vm.RmaIdNumber" required />
+                                @*<input
+                                       type="button" class="btn btn-default"  ng-model="vmManager.selectedBusinessRmaNumberStr"  ng-click="operate.getSelectedRmaIdData(item)"
+                                        data-html="2" data-multiple="1" data-animation="am-flip-x" data-placeholder="选择业务处理单..."
+                                        data-bs-options="datas.value as datas.label for datas in vmManager.businessHandleNumberDatas track by $index"  data-bs-select=
+                                     />*@
+                                @*<input type="text"  class="form-control" ng-keypress="operate.getSelectedRmaIdData(item)" ng-model="vmManager.selectedRmaIdNumber" required />*@
+                                <button type="button" class="btn btn-default"  ng-model="vmManager.selectedBusinessRmaNumberStr"  ng-click="operate.getSelectedRmaIdData(item)"
+                                        data-html="2" data-multiple="1" data-animation="am-flip-x" data-placeholder="选择业务处理单..."
+                                        data-bs-options="datas.value as datas.label for datas in vmManager.businessHandleNumberDatas track by $index"  data-bs-select>
+                                    <span class="caret"></span>
+                                </button>
+                                
+                                @*<button  class="btn btn-xs btn-primary"  id="selectedRmaId" ng-click="operate.getSelectedRmaIdData(item)" title="填写处理序号">
+                                    选业务处理序号
+                                </button>*@
+                                 @*<input name="rmaIdNumber" class="form-control" readonly ng-model="vm.RmaIdNumber" required />*@
                                 <div class="error-messages" ng-messages="formRmaInspectionManage.rmaIdNumber.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">序号不能为空</small>
                                 </div>
@@ -206,7 +221,39 @@
                     </form>
                 </content>
             </dialog>
-        </div>
+            @* 选择Rma业务处理单序号 *@
+            <dialog ng-if="rmaNumberDatasDialog.open"  for="selectedRmaId" align="bottom below " data-close="rmaNumberDatasDialog.close()" style="width:65%;" >
+                <content dialog-title>
+                    <i class="fa fa-pencil-square">选择业务处理单</i>
+                </content>
+                <content dialog-content style="width:45%;">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>品号</th>
+                                <th>品名</th>
+                                <th>规格</th>
+                                <th>数量</th>
+                                <th>客户编号</th>
+                                <th>客户名称</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.returnOrderDatas track by $index"
+                                title="双击选择项"
+                                ng-dblclick="vmManager.selectReturnOrderItem(item)">
+                                <td>{{item.ProductId}}</td>
+                                <td>{{item.ProductName}}</td>
+                                <td>{{item.ProductSpec}}</td>
+                                <td>{{item.ProductCount}}</td>
+                                <td>{{item.CustomerId}}</td>
+                                <td>{{item.CustomerName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </content>
+            </dialog>
+</div>
     </div>
 </div>
 <div class="panel-footer">
