@@ -112,9 +112,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         OpResult AddModel(RmaBusinessDescriptionModel model)
         {
-            if (!IsExist(model.RmaId, model.ProductId, model.ReturnHandleOrder))
+            if (!IsExist(model.RmaId, 
+                model.ProductId,
+                model.ReturnHandleOrder,
+                model.CustomerId ,
+                model.RealityHandleProductCount))
             {     //序号自动计算出来
-                model.RmaIdNumber = RmaIdCount(model.RmaId) + 1;
+                model.RmaIdNumber = GetRmaIdNumber(model.RmaId);
                 model.HandleStatus = GetHandleStatus(model.ProductCount);
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
@@ -147,12 +151,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         internal List<RmaBusinessDescriptionModel> GetRmaBussesDescriptionDatasBy(string rmaId)
         {
-            return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
+            return irep.Entities.Where(e => e.RmaId == rmaId).OrderBy(e=>e.RmaIdNumber).ToList();
         }
 
-        internal bool IsExist(string rmaid, string productId, string returnHandleOrder)
+        internal bool IsExist(string rmaid,
+            string productId, 
+            string returnHandleOrder ,
+            string customerId, 
+            double realityHandleProductCount)
         {
-            return irep.IsExist(e => e.RmaId == rmaid && e.ProductId == productId && e.ReturnHandleOrder == returnHandleOrder);
+            return irep.IsExist(e => e.RmaId == rmaid && 
+            e.ProductId == productId &&
+            e.ReturnHandleOrder == returnHandleOrder&&
+            e.RealityHandleProductCount == realityHandleProductCount
+            && e.CustomerId== customerId);
         }
         internal OpResult UpdateHandleStatus(string rmaId, string productId, string returnHandleOrder,string businessStatus)
         {
@@ -170,9 +182,44 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                    HandleStatus = businessStatus
                }).ToOpResult_Eidt(OpContext);
         }
-        internal int RmaIdCount(string rmaId)
+        internal OpResult UpdateHandleStatus(string rmaId)
         {
-            return irep.Entities.Count(e => e.RmaId == rmaId);
+            var mm = irep.Entities.Where(e => e.RmaId == rmaId).Select(e => e.HandleStatus).Distinct().ToList();
+            if (mm == null || mm.Count == 0) return OpResult.SetErrorResult("不变化");
+            if(mm.Count==1&&mm.LastOrDefault()== RmaHandleStatus.InspecitonStatus)
+                return irep.Update(e => e.RmaId == rmaId ,
+               u => new RmaBusinessDescriptionModel
+               {
+                   HandleStatus = RmaHandleStatus.FinishStatus
+               }).ToOpResult_Eidt(OpContext);
+            return OpResult.SetErrorResult("不变化");
+        }
+        internal int GetRmaIdNumber(string rmaId)
+        {
+            var mlist = irep.Entities.Where(f => f.RmaId == rmaId);
+            List<int> indexNumber = new List<int>();
+            int retNumber = 1;
+            if (mlist == null) return retNumber;
+            int countNumber = mlist.Count();
+            if (countNumber == 0) return retNumber;
+            foreach (var m in mlist)
+            {
+                if (!indexNumber.Contains(m.RmaIdNumber))
+                    indexNumber.Add(m.RmaIdNumber);
+            }
+            int maxNumber = mlist.Max(e => e.RmaIdNumber);
+            if (maxNumber == countNumber) return countNumber + 1;
+            for (int i = 1; i <= maxNumber; i++)
+            {
+                if (!indexNumber.Contains(i))
+                {
+                    retNumber = i;
+                    break;
+                }
+            }
+            return retNumber;
+
+
         }
         #endregion
     }
@@ -190,11 +237,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         }
         OpResult Add(RmaInspectionManageModel model)
         {
-            if (!IsExist(model.RmaId, model.ParameterKey))
-                return irep.Insert(model).ToOpResult_Add(OpContext);
             ///序号自动计算出来
-            model.RmaIdNumber = RmaIdCount(model.RmaId) + 1;
-            return OpResult.SetErrorResult("该记录已经存在！");
+            model.RmaIdNumber = GetRmaIdNumber(model.RmaId);
+            if(!model.ParameterKey.Contains(model.RmaBussesesNumberStr))
+            model.ParameterKey = model.ParameterKey + "&" + model.RmaBussesesNumberStr;
+            if (!IsExist(model.RmaId, model.ParameterKey))
+            return irep.Insert(model).ToOpResult_Add(OpContext);
+            return OpResult.SetErrorResult("该记录已经存在!");
         }
         OpResult Update(RmaInspectionManageModel model)
         {
@@ -215,13 +264,44 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 HandleStatus = RmaHandleStatus.InspecitonStatus
             }).ToOpResult_Eidt(OpContext);
         }
+        internal OpResult UpdateFinishStatus(string rmaId)
+        {
+            if (string.IsNullOrEmpty(rmaId)) return OpResult.SetErrorResult("ramId不能为空!");
+            return irep.Update(f => f.RmaId == rmaId, u => new RmaInspectionManageModel
+            {
+                HandleStatus = RmaHandleStatus.FinishStatus
+            }).ToOpResult_Eidt(OpContext);
+        }
         internal bool IsExist(string rmaId, string productId)
         {
             return irep.IsExist(e => e.RmaId == rmaId && e.ParameterKey == productId);
         }
-        internal int RmaIdCount(string rmaId)
+        internal int GetRmaIdNumber(string rmaId)
         {
-            return irep.Entities.Count(e => e.RmaId == rmaId);
+            var mlist = irep.Entities.Where(f => f.RmaId == rmaId);
+            List<int> indexNumber = new List<int>();
+            int retNumber = 1;
+            if (mlist == null) return retNumber;
+            int countNumber = mlist.Count();
+            if(countNumber==0) return retNumber;
+            foreach (var m in mlist)
+            {
+                if (!indexNumber.Contains(m.RmaIdNumber))
+                indexNumber.Add(m.RmaIdNumber);
+            }
+            int maxNumber = mlist.Max(e => e.RmaIdNumber);
+            if (maxNumber== countNumber)  return  countNumber + 1;
+            for(int i=1;i<= maxNumber;i++)
+                {
+                    if (!indexNumber.Contains(i))
+                    {
+                        retNumber = i;
+                        break;
+                    }
+                }
+            return retNumber;
+
+
         }
     }
 }
