@@ -189,11 +189,30 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
     /// </summary>
     public class OpMode
     {
+        /// <summary>
+        /// 没有做任何数据操作
+        /// </summary>
+        public const string None = "none";
+        /// <summary>
+        /// 添加操作
+        /// </summary>
         public const string Add = "add";
+        /// <summary>
+        /// 修改操作
+        /// </summary>
         public const string Edit = "edit";
+        /// <summary>
+        /// 删除操作
+        /// </summary>
         public const string Delete = "delete";
         public const string UpDate = "update";
+        /// <summary>
+        /// 上传文件操作
+        /// </summary>
         public const string UploadFile = "uploadFile";
+        /// <summary>
+        /// 删除文件操作
+        /// </summary>
         public const string DeleteFile = "deleteFile";
     }
     /// <summary>

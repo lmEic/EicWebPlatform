@@ -3,148 +3,125 @@
         <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>请假管理</h6>
     </div>
     <div class="panel-body" cg-busy="{promise:promise}">
-        <div bs-tabs bs-active-pane="vmManager.activeTab">
-            <div bs-pane data-title="请假处理" data-name="initTab">
-                <div class="bs-callout bs-callout-info">
-                    <div class="row">
-                        <div class="col-md-10">
-                            <form class="form-inline">
-                                <div class="form-group">
-                                    <div yl-month-button
-                                         data-yearmonth="qryvm.yearMonth"
-                                         year="qryvm.year"
-                                         month="qryvm.month"
-                                         changed="vmManager.loadCalendarDatas()"
-                                         title-visible="true"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">作业工号</label>
-                                    <span yl-workerid-input data-worker="vmManager.workerInfo"></span>
-                                    <span style="margin-top:5px;margin-bottom:1px;padding-bottom:3px;padding-left:3px;padding-right:3px;
-                                          border-radius:3px;border-bottom-style:groove;" ng-if="vmManager.workerInfo">
-                                        <label>工号</label><span class="label label-info">{{vmManager.workerInfo.WorkerId}}</span>
-                                        <label>姓名</label><span class="label label-success">{{vmManager.workerInfo.Name}}</span>
-                                        <label>部门</label><span class="label label-warning">{{vmManager.workerInfo.Department}}</span>
-                                        <label>岗位</label><span class="label label-primary">{{vmManager.workerInfo.Post}}</span>
-                                    </span>
-                                </div>
-                            </form>
+        <div class="bs-callout bs-callout-info">
+            <div class="row">
+                <div class="col-md-10">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div yl-month-button
+                                 data-yearmonth="qryvm.yearMonth"
+                                 year="qryvm.year"
+                                 month="qryvm.month"
+                                 changed="vmManager.loadCalendarDatas()"
+                                 title-visible="true"></div>
                         </div>
-                        <div class="col-md-2">
-                            <span class="pull-right">
-                                <button class="btn btn-info pull-right" ng-click="operate.saveAll()"><i class="fa fa-save"></i>批量保存</button>
+                        <div class="form-group">
+                            <label class="control-label">作业工号</label>
+                            <span yl-workerid-input data-changed="vmManager.setAskLeaveDatas()"
+                                  data-worker="vmManager.workerInfo"></span>
+                            <span style="margin-top:5px;margin-bottom:1px;padding-bottom:3px;padding-left:3px;padding-right:3px;
+                                          border-radius:3px;border-bottom-style:groove;" ng-if="vmManager.workerInfo">
+                                <label>工号</label><span class="label label-info">{{vmManager.workerInfo.WorkerId}}</span>
+                                <label>姓名</label><span class="label label-success">{{vmManager.workerInfo.Name}}</span>
+                                <label>部门</label><span class="label label-warning">{{vmManager.workerInfo.Department}}</span>
+                                <label>岗位</label><span class="label label-primary">{{vmManager.workerInfo.Post}}</span>
                             </span>
                         </div>
-                    </div>
+                    </form>
                 </div>
-                <span yl-operatemsg-board></span>
-                <div>
-                    <table class="table table-bordered" style="table-layout:fixed;margin-bottom:5px;">
+                <div class="col-md-2">
+                    <span class="pull-right">
+                        <button class="btn btn-info pull-right" ng-click="operate.saveAll()"><i class="fa fa-save"></i>批量保存</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <span yl-operatemsg-board></span>
+        <div bs-tabs bs-active-pane="vmManager.activeTab">
+            <div bs-pane data-title="业务视图" data-name="initTab">
+                <table class="table table-bordered" style="table-layout:fixed;margin-bottom:5px;">
+                    <thead>
+                        <tr>
+                            <th ng-repeat="headerItem in vmManager.calendar.WeekDays" class="text-center info">
+                                {{headerItem.Day}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in vmManager.calendar.WeekCalendars">
+                            <td style="background:#d9edf7;text-align:center">
+                                {{data.Week}}
+                            </td>
+                            <td style="padding-left:5px;padding-right:0;text-align:left;"
+                                ng-repeat="item in data.WeekDays"
+                                title="{{item.Title}}">
+                                <div class="pull-left">
+                                    {{item.Day}}
+                                    <br />
+                                    <span style="font-size:12px;">{{item.ChineseCalendar}}</span>
+                                    <div ng-if="item.Day!==''">
+                                        <div class="h-split"></div>
+                                        <a class="text-success" title="请假业务办理" ng-click="vmManager.createAskLeaveRecord(item)">
+                                            <i class="fa fa-calendar-plus-o"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="bs-callout bs-callout-success pull-right" title="{{m.LeaveMemo}}"
+                                     ng-repeat="m in item.askLeaveDatas track by $index"
+                                     ng-if="item.askLeaveDatas && item.askLeaveDatas.length>0">
+                                    假别：{{m.LeaveType}}<br />
+                                    时段：{{m.LeaveTimeRegion}}<br />
+                                    小时：{{m.LeaveHours}}<br />
+                                    <div class="h-split"></div>
+                                    <span class="pull-right">
+                                        <a class="text-primary" title="编辑请假数据" ng-click="vmManager.editAskLeaveRecord(m)">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </a>|
+                                        <a class="text-danger" title="删除请假数据" ng-click="vmManager.removeAskLeaveRecord(item,m)">
+                                            <i class="fa fa-calendar-times-o"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div bs-pane data-title="数据视图" data-name="dataViewTab">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
                         <thead>
-                            <tr>
-                                <th ng-repeat="headerItem in vmManager.calendar.WeekDays" class="text-center info">
-                                    {{headerItem.Day}}
-                                </th>
+                            <tr class="info">
+                                <th>作业工号</th>
+                                <th>姓名</th>
+                                <th>部门</th>
+                                <th>出勤日期</th>
+                                <th>刷卡时间</th>
+                                <th>请假类别</th>
+                                <th>请假时数</th>
+                                <th>时间段</th>
+                                <th>开始时间</th>
+                                <th>结束时间</th>
+                                <th>备注</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="data in vmManager.calendar.WeekCalendars">
-                                <td style="background:#d9edf7;text-align:center">
-                                    {{data.Week}}
-                                </td>
-                                <td style="padding-left:5px;padding-right:0;text-align:left;"
-                                    ng-repeat="item in data.WeekDays"
-                                    title="{{item.Title}}">
-                                    <div class="pull-left">
-                                        {{item.Day}}
-                                        <br />
-                                        <span style="font-size:12px;">{{item.ChineseCalendar}}</span>
-                                        <div ng-if="item.Day!==''">
-                                            <div class="h-split"></div>
-                                            <a class="text-success" title="请假业务办理" ng-click="vmManager.createAskLeaveRecord(item)">
-                                                <i class="fa fa-calendar-plus-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="bs-callout bs-callout-success pull-right" ng-if="item.workerAskLeave">
-                                        假别：{{item.workerAskLeave.LeaveType}}<br />
-                                        时段：{{item.workerAskLeave.LeaveTimeRegion}}<br />
-                                        小时：{{item.workerAskLeave.LeaveHours}}<br />
-                                        <div class="h-split"></div>
-                                        <span class="pull-right">
-                                            <a class="text-primary" title="编辑请假数据" ng-click="vmManager.editAskLeaveRecord(item)">
-                                                <i class="fa fa-pencil-square-o"></i>
-                                            </a>|
-                                            <a class="text-danger" title="删除请假数据" ng-click="vmManager.removeAskLeaveRecord(item)">
-                                                <i class="fa fa-calendar-times-o"></i>
-                                            </a>
-                                        </span>
-                                    </div>
-                                </td>
+                            <tr ng-repeat="item in vmManager.askLeaveDatas track by $index">
+                                <td>{{item.WorkerId}}</td>
+                                <td>{{item.WorkerName}}</td>
+                                <td>{{item.Department}}</td>
+                                <td>{{item.AttendanceDate}}</td>
+                                <td>{{item.SlotCardTime}}</td>
+                                <td>{{item.LeaveType}}</td>
+                                <td>{{item.LeaveHours}}</td>
+                                <td>{{item.LeaveTimeRegion}}</td>
+                                <td>{{item.LeaveTimeRegionStart}}</td>
+                                <td>{{item.LeaveTimeRegionEnd}}</td>
+                                <td>{{item.LeaveMemo}}</td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
-            </div>
-            <div bs-pane data-title="管理请假信息" data-name="manageTab">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="well">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    @*<div yl-month-button data-yearmonth="vmManager.yearMonth" data-title-visible="true"></div>*@
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <label>作业工号</label>
-                                        </div>
-                                        <input type="text" class="form-control" ng-model="vmManager.workerId" ng-keypress="vmManager.searchLeaveData($event)" placeholder="请输入作工号按下回车键查询请假信息" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="well" cg-busy="{promise:askLeavePromise}">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-hover">
-                                    <thead>
-                                        <tr class="info">
-                                            <th>工号</th>
-                                            <th>姓名</th>
-                                            <th>部门</th>
-                                            <th>刷卡时间</th>
-                                            <th>请假日期</th>
-                                            <th>请假类别</th>
-                                            <th>请假时数</th>
-                                            <th>请假时段</th>
-                                            <th>备注信息</th>
-                                            <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="item in vmManager.askLeaveDatas track by $index">
-                                            <td>{{item.WorkerId}}</td>
-                                            <td>{{item.WorkerName}}</td>
-                                            <td class="text-info">{{item.DepartmentText}}</td>
-                                            <td>{{item.SlotCardTime}}</td>
-                                            <td>{{item.AttendanceDate}}</td>
-                                            <td>{{item.LeaveType}}</td>
-                                            <td>{{item.LeaveHours}}</td>
-                                            <td>{{item.LeaveTimeRegion}}</td>
-                                            <td>{{item.LeaveMemo}}</td>
-                                            <td ng-show="item.OpCmdVisible">
-                                                <button class="btn btn-xs btn-primary" ng-click="operate.handleAskForLeave(item,'handleEdit')"
-                                                        title="修改请假信息">
-                                                    修改
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -187,7 +164,7 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <input name="leaveTimeRegionStart" type="text" class="form-control" size="8" bs-timepicker data-time-format="HH:mm"
-                                   ng-model="vm.LeaveTimeRegionStart" data-length="1" data-minute-step="1" data-format-time
+                                   ng-model="vm.LeaveTimeRegionStart" data-length="1" data-minute-step="1"
                                    required data-arrow-behavior="picker" />
                             <div class="error-messages" ng-messages="modalForm.leaveTimeRegionStart.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">请假时段不能为空</small>
@@ -196,7 +173,7 @@
                                 <label>-</label>
                             </div>
                             <input name="leaveTimeRegionEnd" type="text" class="form-control" size="8" data-length="1" data-minute-step="1"
-                                   bs-timepicker data-time-format="HH:mm" data-format-time
+                                   bs-timepicker data-time-format="HH:mm"
                                    ng-model="vm.LeaveTimeRegionEnd" required data-arrow-behavior="picker" />
                             <div class="error-messages" ng-messages="modalForm.leaveTimeRegionEnd.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">请假时段不能为空</small>
@@ -211,6 +188,9 @@
                     </div>
                 </div>
             </form>
+        </content>
+        <content dialog-buttons>
+            <button class="btn btn-primary" ng-click="vmManager.confirmEdit()" autofocus>确定</button>
         </content>
     </dialog>
 

@@ -104,9 +104,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public JsonResult GetLeaveTypesConfigs()
         {
             List<ConfigDataDictionaryModel> leaveConfigTypes = PmConfigService.DataDicManager.LoadConfigDatasBy("AttendanceConfig", "AskForLeaveType");
-            List<ConfigDataDictionaryModel> departments = PmConfigService.DataDicManager.FindConfigDatasBy("Organization");
-            departments.AddRange(leaveConfigTypes);
-            return Json(departments, JsonRequestBehavior.AllowGet);
+            return Json(leaveConfigTypes, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -122,18 +120,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         }
 
         /// <summary>
-        /// 处理请假数据
-        /// </summary>
-        /// <param name="askForLeaves"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult UpdateAskForLeave(List<AttendSlodFingerDataCurrentMonthModel> askForLeaves)
-        {
-            var result = 0;//AttendanceService.AttendAskLeaveManager.HandleAskForLeave(askForLeaves);
-            return Json(result);
-        }
-
-        /// <summary>
         /// 获取某人的当月请假数据
         /// </summary>
         /// <param name="workerId"></param>
@@ -141,7 +127,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public ContentResult GetAskLeaveDataAbout(string workerId, string yearMonth)
         {
-            var datas = 0;//AttendanceService.AttendAskLeaveManager.GetAskLeaveDataAbout(workerId, yearMonth);
+            var datas = AttendanceService.AttendAskLeaveManager.GetAskLeaveDatas(workerId, yearMonth);
             return DateJsonResult(datas);
         }
 

@@ -108,7 +108,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
             SetPrimaryPropertyValue(mdl);
             SetPrimaryPropertyValue(oldMdl);
             //1.更新自身记录
-            record = irep.Update(u => u.PrimaryKey == oldMdl.PrimaryKey, mdl);
+            record = irep.Update(u => u.Id_Key == oldMdl.Id_Key, mdl);
             return OpResult.SetSuccessResult("修改配置成功！", record > 0);
         }
     }

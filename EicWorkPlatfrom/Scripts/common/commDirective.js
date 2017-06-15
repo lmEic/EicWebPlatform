@@ -615,7 +615,8 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                    'placeholder="输入人员工号" />',
         replace: true,
         scope: {
-            worker: '='
+            worker: '=',
+            changed: '&'
         },
         link: function (scope, element, attrs) {
             //获取人员信息
@@ -632,6 +633,11 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                     });
                 }
             };
+            scope.$watch('worker', function () {
+                if (scope.changed !== undefined && angular.isFunction(scope.changed)) {
+                    scope.changed();
+                }
+            });
         }
     };
 })

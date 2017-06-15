@@ -29,8 +29,14 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         {
             get { return OBulider.BuildInstance<AttendSlodFingerDataCurrentMonthCurd>(); }
         }
+        internal static AttendClassTypeDetailCrud ClassTypeDetailCrud
+        {
+            get { return OBulider.BuildInstance<AttendClassTypeDetailCrud>(); }
+        }
     }
-
+    /// <summary>
+    /// 请假数据操作助手
+    /// </summary>
     internal class AttendAskLeaveCrud : CrudBase<AttendAskLeaveModel, IAttendAskLeaveRepository>
     {
         public AttendAskLeaveCrud() : base(new AttendAskLeaveRepository(), "请假处理")
@@ -38,28 +44,65 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
 
         }
 
+        #region crud
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, Add);
             this.AddOpItem(OpMode.Edit, Upate);
+            this.AddOpItem(OpMode.Delete, Delete);
         }
 
         internal OpResult Add(AttendAskLeaveModel entity)
         {
-            if (!this.irep.IsExist(e => e.WorkerId == entity.WorkerId && e.AttendanceDate == entity.AttendanceDate && e.LeaveType == entity.LeaveType))
-            {
-                return this.irep.Insert(entity).ToOpResult_Add(this.OpContext);
-            }
-            return Upate(entity);
+            return this.irep.Insert(entity).ToOpResult_Add(this.OpContext);
         }
         internal OpResult Upate(AttendAskLeaveModel entity)
         {
             return irep.Update(e => e.Id_Key == entity.Id_Key, entity).ToOpResult_Eidt(OpContext);
         }
+        internal OpResult Delete(AttendAskLeaveModel entity)
+        {
+            return irep.Delete(e => e.Id_Key == entity.Id_Key).ToOpResult_Delete(OpContext);
+        }
+        #endregion
+
+        #region query
+        internal List<AttendAskLeaveModel> GetAskLeaveDatas(string workerId, string yearMonth)
+        {
+            return irep.Entities.Where(e => e.YearMonth == yearMonth && e.WorkerId == workerId).ToList();
+        }
+        #endregion
     }
 
     /// <summary>
-    /// 当月考勤时间数据处理器
+    /// 班别管理数据操作助手
+    /// </summary>
+    internal class AttendClassTypeDetailCrud : CrudBase<AttendClassTypeDetailModel, IAttendClassTypeDetailRepository>
+    {
+        public AttendClassTypeDetailCrud() : base(new AttendClassTypeDetailRepository(), "班别操作")
+        {
+        }
+
+        protected override void AddCrudOpItems()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 获取班次日期模型
+        /// </summary>
+        /// <param name="workerId"></param>
+        /// <param name="dateAt"></param>
+        /// <returns></returns>
+        internal AttendClassTypeDetailModel GetClassTypeDetailModel(string workerId, DateTime dateAt)
+        {
+            var mdl = this.irep.FirstOfDefault(e => e.WorkerId == workerId && e.DateAt == dateAt);
+            return mdl;
+        }
+    }
+
+    /// <summary>
+    /// 当月考勤时间数据操作助手
     /// </summary>
     public class AttendSlodFingerDataCurrentMonthCurd : CrudBase<AttendSlodFingerDataCurrentMonthModel, IAttendSlodFingerDataCurrentMonthRepository>
     {
@@ -80,6 +123,18 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
 
         #region method
         #region handle attend method
+        /// <summary>
+        /// 获取该员工的考勤数据
+        /// </summary>
+        /// <param name="workerId"></param>
+        /// <param name="attendDate"></param>
+        /// <returns></returns>
+        internal AttendSlodFingerDataCurrentMonthModel GetAttendanceDataBy(string workerId, DateTime attendDate)
+        {
+            return this.irep.FirstOfDefault(e => e.WorkerId == workerId && e.AttendanceDate == attendDate);
+        }
+
+
         /// <summary>
         /// searchMode:
         /// 0:按考勤日期查询
@@ -318,6 +373,8 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             return record;
         }
 
+
+
         private AttendSlodFingerDataCurrentMonthModel CreateAttendDataModel(AttendFingerPrintDataInTimeModel attendTimeMdl, ArWorkerInfo worker, DateTime slodCardTime)
         {
             var mdl = new AttendSlodFingerDataCurrentMonthModel()
@@ -353,6 +410,170 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             return this.irep.UpdateClassTypeInfo(classType, slodCardDate);
         }
         #endregion handle attend method
+
+        #region handle attend askleave method
+        /// <summary>
+        /// 初始化空考勤数据
+        /// </summary>
+        /// <param name="askLeaveMdl"></param>
+        /// <param name="classMdl"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        internal int InitEmptyAttendData(AttendAskLeaveModel askLeaveMdl, AttendClassTypeDetailModel classMdl, ref AttendSlodFingerDataCurrentMonthModel data)
+        {
+            data = new AttendSlodFingerDataCurrentMonthModel()
+            {
+                AttendanceDate = askLeaveMdl.AttendanceDate,
+                WorkerId = askLeaveMdl.WorkerId,
+                CardID = "",
+                CardType = "",
+                ClassType = classMdl == null ? "白班" : classMdl.ClassType,
+                Department = askLeaveMdl.Department,
+                WorkerName = askLeaveMdl.WorkerName,
+                WeekDay = askLeaveMdl.AttendanceDate.DayOfWeek.ToString().ToChineseWeekDay(),
+                LeaveHours = askLeaveMdl.LeaveHours,
+                LeaveMark = 1,
+                LeaveType = askLeaveMdl.LeaveType,
+                LeaveTimeRegion = askLeaveMdl.LeaveTimeRegion,
+                LeaveMemo = askLeaveMdl.LeaveMemo,
+                LeaveDescription = GetAskLeaveDescription(askLeaveMdl, data),
+                YearMonth = askLeaveMdl.YearMonth,
+                SlotCardTime = "",
+                HandleSlotExceptionStatus = 0,
+                SlotExceptionMark = 0,
+                OpSign = "initEmpty",
+                OpPerson = "system",
+            };
+            return irep.Insert(data);
+        }
+        /// <summary>
+        /// 更新考勤中的请假区域
+        /// </summary>
+        /// <param name="askLeaveMdl"></param>
+        /// <param name="hours"></param>
+        /// <param name="askLeaveDescription"></param>
+        /// <returns></returns>
+        private int UpdateAskLeaveArea(AttendAskLeaveModel askLeaveMdl, double hours, string askLeaveDescription)
+        {
+            return irep.Update(e => e.WorkerId == askLeaveMdl.WorkerId && e.AttendanceDate == askLeaveMdl.AttendanceDate, u => new AttendSlodFingerDataCurrentMonthModel()
+            {
+                LeaveHours = hours,
+                LeaveType = askLeaveMdl.LeaveType,
+                LeaveTimeRegion = askLeaveMdl.LeaveTimeRegion,
+                LeaveMemo = askLeaveMdl.LeaveMemo,
+                LeaveDescription = askLeaveDescription
+            });
+        }
+        private string GetAskLeaveDescription(AttendAskLeaveModel askLeaveMdl, AttendSlodFingerDataCurrentMonthModel data)
+        {
+            string leaveDescription = string.Empty;
+            AskLeaveCell cell = new AskLeaveCell()
+            {
+                LeaveHours = askLeaveMdl.LeaveHours,
+                LeaveMemo = askLeaveMdl.LeaveMemo,
+                LeaveTimeRegion = askLeaveMdl.LeaveTimeRegion,
+                LeaveType = askLeaveMdl.LeaveType
+            };
+            if (data == null)
+            {
+                cell.Id = 1;
+                leaveDescription = "[" + ObjectSerializer.SerializeObject(cell) + "]";
+            }
+            else
+            {
+                List<AskLeaveCell> descriptions = ObjectSerializer.DeserializeObject<List<AskLeaveCell>>(data.LeaveDescription);
+                var m = descriptions.FirstOrDefault(e => e.LeaveType == cell.LeaveType && e.LeaveTimeRegion == cell.LeaveTimeRegion);
+                if (m != null)
+                {
+                    if (askLeaveMdl.OpSign == OpMode.Edit)
+                        m = cell;
+                }
+                else
+                {
+                    cell.Id = descriptions.Count + 1;
+                    descriptions.Add(cell);
+                }
+                leaveDescription = ObjectSerializer.SerializeObject(descriptions);
+            }
+            return leaveDescription;
+        }
+        private int SetAskLeaveDataToAttendData(AttendAskLeaveModel askLeaveMdl, AttendSlodFingerDataCurrentMonthModel data)
+        {
+            string leaveDescription = GetAskLeaveDescription(askLeaveMdl, data);
+            if (data.LeaveMark == 1)
+            {
+                return UpdateAskLeaveArea(askLeaveMdl, askLeaveMdl.LeaveHours + data.LeaveHours, leaveDescription);
+            }
+            else
+            {
+                return UpdateAskLeaveArea(askLeaveMdl, askLeaveMdl.LeaveHours, leaveDescription);
+            }
+        }
+        private int ClearAskLeaveDataToAttendData(AttendAskLeaveModel askLeaveMdl, AttendSlodFingerDataCurrentMonthModel data)
+        {
+            AskLeaveCell cell = null;
+            string description = string.Empty;
+            if (string.IsNullOrEmpty(data.LeaveDescription))
+            {
+                cell = new AskLeaveCell() { LeaveHours = 0, LeaveMemo = "", LeaveTimeRegion = "", LeaveType = "" };
+            }
+            else
+            {
+                List<AskLeaveCell> descriptions = ObjectSerializer.DeserializeObject<List<AskLeaveCell>>(data.LeaveDescription);
+                var m = descriptions.FirstOrDefault(e => e.LeaveType == askLeaveMdl.LeaveType && e.LeaveTimeRegion == askLeaveMdl.LeaveTimeRegion);
+                if (m != null)
+                {
+                    descriptions.Remove(m);
+                }
+                if (descriptions.Count > 0)
+                {
+                    cell = descriptions[descriptions.Count - 1];
+                    cell.LeaveHours = descriptions.Sum(s => s.LeaveHours);
+                    description = ObjectSerializer.SerializeObject(descriptions);
+                }
+                else
+                {
+                    cell = new AskLeaveCell() { LeaveHours = 0, LeaveMemo = "", LeaveTimeRegion = "", LeaveType = "" };
+                }
+            }
+
+            return irep.Update(e => e.WorkerId == askLeaveMdl.WorkerId && e.AttendanceDate == askLeaveMdl.AttendanceDate, u => new AttendSlodFingerDataCurrentMonthModel()
+            {
+                LeaveHours = cell.LeaveHours,
+                LeaveMark = cell.LeaveHours > 0 ? 1 : 0,
+                LeaveType = cell.LeaveType,
+                LeaveTimeRegion = cell.LeaveTimeRegion,
+                LeaveMemo = cell.LeaveMemo,
+                LeaveDescription = description
+            });
+        }
+        /// <summary>
+        /// 同步请假信息到考勤数据中
+        /// </summary>
+        /// <param name="askLeaveMdl"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        internal int SyncAskLeaveDataToAttendData(AttendAskLeaveModel askLeaveMdl, AttendClassTypeDetailModel classMdl, ref AttendSlodFingerDataCurrentMonthModel data)
+        {
+            if (data == null)
+            {
+                if (askLeaveMdl.OpSign == OpMode.Add || askLeaveMdl.OpSign == OpMode.Edit)
+                    return this.InitEmptyAttendData(askLeaveMdl, classMdl, ref data);
+                else
+                    return 1;
+            }
+            else
+            {
+                if (askLeaveMdl.OpSign == OpMode.Add || askLeaveMdl.OpSign == OpMode.Edit)
+                    return this.SetAskLeaveDataToAttendData(askLeaveMdl, data);
+                else if (askLeaveMdl.OpSign == OpMode.None)
+                    return 1;
+                else
+                    return this.ClearAskLeaveDataToAttendData(askLeaveMdl, data);
+            }
+        }
+        #endregion
+
         #region handle attend exception method
 
         //---------------------------------------异常处理--------------------------------------------
@@ -407,7 +628,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                     if (attendSd == null)//如果不存在考勤数据
                     {
                         //初始化该日期的考勤数据
-                        ctdMdl = classTypeSetter.GetClassTypeDetailModel(attendSd.WorkerId, attendSd.AttendanceDate);
+                        ctdMdl = AttendCrudFactory.ClassTypeDetailCrud.GetClassTypeDetailModel(attendSd.WorkerId, attendSd.AttendanceDate);
                         var mdl = new AttendSlodFingerDataCurrentMonthModel()
                         {
                             AttendanceDate = currentDay,
@@ -706,5 +927,53 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         #endregion handle attend exception method
 
         #endregion method
+    }
+
+
+    internal class AskLeaveCell
+    {
+        private int _id;
+        public int Id
+        {
+            set { _id = value; }
+            get { return _id; }
+        }
+
+        private string _leavetype;
+        /// <summary>
+        ///请假类别
+        /// </summary>
+        public string LeaveType
+        {
+            set { _leavetype = value; }
+            get { return _leavetype; }
+        }
+        private double _leavehours;
+        /// <summary>
+        ///请假时数
+        /// </summary>
+        public double LeaveHours
+        {
+            set { _leavehours = value; }
+            get { return _leavehours; }
+        }
+        private string _leavetimeregion;
+        /// <summary>
+        ///时间段
+        /// </summary>
+        public string LeaveTimeRegion
+        {
+            set { _leavetimeregion = value; }
+            get { return _leavetimeregion; }
+        }
+        private string _leavememo;
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string LeaveMemo
+        {
+            set { _leavememo = value; }
+            get { return _leavememo; }
+        }
     }
 }
