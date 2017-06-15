@@ -13,20 +13,11 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
     /// </summary>
     public class WorkTaskManager
     {
+        List<WorkTaskManageModel> _workTaskManageModelList = new List<WorkTaskManageModel>();
         public List<WorkTaskManageModel> GetWorkTaskDatasBy(QueryWorkTaskManageDto queryDto)
         {
-            try
-            {
-                if (queryDto == null) return new List<WorkTaskManageModel>();
-                return tlOnlineCrudFactorty.WorkCrud.FindBy(queryDto);
-
-                //_workTaskModelList= WorkTaskCrudFactorty.WorkCrud.FindBy(queryDto);
-                //return _workTaskModelList;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            _workTaskManageModelList = tlOnlineCrudFactorty.WorkCrud.FindBy(queryDto);
+            return _workTaskManageModelList;     
         }
         /// <summary>
         ///存储数据

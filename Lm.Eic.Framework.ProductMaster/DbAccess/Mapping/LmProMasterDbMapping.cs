@@ -87,7 +87,9 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             this.ToTable("Tool_CollaborateContactLib");
         }
     }
-
+    /// <summary>
+    /// WorkTskManage
+    /// </summary>
     public class WorkTaskManageModelMapping : EntityTypeConfiguration<WorkTaskManageModel>
     {
         public WorkTaskManageModelMapping()
@@ -97,6 +99,19 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             this.ToTable("Tool_TaskBoard");
         }
 
+    }
+    /// <summary>
+    /// 邮箱模块开发Mapping
+    /// </summary>
+    public class ItilEmailManageModelMapping:EntityTypeConfiguration<ItilEmailManageModel>
+    {
+           public ItilEmailManageModelMapping()
+           {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Config_MailInfo");
+
+        }
     }
 
 }

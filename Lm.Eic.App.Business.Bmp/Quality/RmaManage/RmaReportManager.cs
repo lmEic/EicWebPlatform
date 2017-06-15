@@ -228,19 +228,38 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             if (result.Result && model.OpSign == OpMode.Add)
             {
                 RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, RmaHandleStatus.InspecitonStatus);
-                if (model.RmaBussesesNumberStr.Contains(",")&& !string.IsNullOrEmpty( model.RmaBussesesNumberStr)) { 
-                var number = model.RmaBussesesNumberStr.Split(',');
-                if(number.Count()>0)
-                   foreach (var i in number)
-                    {
-                        int bussesIndexNumber = Convert.ToInt32(i);
-                        RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, bussesIndexNumber, RmaHandleStatus.InspecitonStatus);
-                    }
+                if (model.RmaBussesesNumberStr.Contains(",") && !string.IsNullOrEmpty(model.RmaBussesesNumberStr))
+                {
+                    var number = model.RmaBussesesNumberStr.Split(',');
+                    if (number.Count() > 0)
+                        foreach (var i in number)
+                        {
+                            int bussesIndexNumber = Convert.ToInt32(i);
+                            RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, bussesIndexNumber, RmaHandleStatus.InspecitonStatus);
+                        }
                 }
-                else { RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, Convert.ToInt32(model.RmaBussesesNumberStr), RmaHandleStatus.InspecitonStatus); }
+                else
+                {
+                    RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, Convert.ToInt32(model.RmaBussesesNumberStr), RmaHandleStatus.InspecitonStatus);
+                }
                 RmaCurdFactory.RmaInspectionManage.UpdateHandleStatus(model.ParameterKey);
             }
+            HandleFinishRmaId(model.RmaId);
             return result;
+        }
+        /// <summary>
+        /// 处理完成的RMD单
+        /// </summary>
+        /// <param name="rmaId"></param>
+        private  void HandleFinishRmaId(string rmaId)
+        {
+            var updateResult = RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(rmaId);
+            if (updateResult.Result)
+            {
+                updateResult= RmaCurdFactory.RmaInspectionManage.UpdateFinishStatus(rmaId);
+                if (updateResult.Result)
+                    updateResult= RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(rmaId, RmaHandleStatus.FinishStatus);
+            }
         }
     }
 }

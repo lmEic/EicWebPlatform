@@ -158,6 +158,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         ProductName: null,
         ProductSpec: null,
         ProductCount: null,
+        RealityHandleProductCount: null,
         CustomerId: null,
         CustomerName: null,
         SalesOrder: null,
@@ -181,6 +182,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
     var dialog = $scope.dialog = leePopups.dialog();
     ///删除对话框
     var deleteDialog = $scope.deleteDialog = leePopups.dialog();
+
     var vmManager = {
         //初始化
         init: function () {
@@ -213,35 +215,16 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         //选ERP订单信息
         selectReturnOrderItem: function (item) {
             leeHelper.copyVm(item, uiVm);
+            uiVm.RealityHandleProductCount = uiVm.ProductCount;
             $scope.vm = uiVm;
             dialog.close();
         },
         
         dataSets: [],
-        ///删除对话框
-        delModal: $modal({
-            title: "删除提示",
-            content: "你确定要删除此数据吗?",
-            templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
-            controller: function ($scope) {
-                $scope.confirmDelete = function () {
-                   rmaDataOpService.storeRmaInputDescriptionData(uiVm).then(function (opresult) {
-                            leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                                if (opresult.Result) {
-                                    var dataItem = _.clone(uiVm);
-                                    dataItem.Id_Key = opresult.Id_Key;
-                                    if (dataItem.OpSign === leeDataHandler.dataOpMode.delete) {
-                                        vmManager.dataSets.push(dataItem);
-                                    }
-                                    vmManager.init();
-                                    show: false;
-                                }
-                            });
-                        });
-                };
-            },
-            show: false,
-        }),
+        ///删除数据
+        deleteItemReturnHandleOrder: null,
+        deleteItemProductName:null,
+        deleteItemProductCount:null,
     };
     $scope.vmManager = vmManager;
 
@@ -256,8 +239,15 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
     operate.deleteItem = function (item) {
         item.OpSign = leeDataHandler.dataOpMode.delete;
         $scope.vm = uiVm = item;
-        vmManager.delModal.$promise.then(vmManager.delModal.show);
-        //deleteDialog.show;
+        vmManager.deleteItemReturnHandleOrder = item.ReturnHandleOrder;
+        vmManager.deleteItemProductName = item.ProductName;
+        vmManager.deleteItemProductCount = item.ProductCount;
+        deleteDialog.show();
+    };
+    //取消删除
+    operate.cancelDeleteItem = function () {
+        item.OpSign = leeDataHandler.dataOpMode.add;
+        deleteDialog.close();
     };
     //复制
     operate.copyItem = function (item) {
@@ -288,13 +278,15 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                         if (dataItem.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.dataSets.push(dataItem);
                         }
+                        if (dataItem.OpSign === leeDataHandler.dataOpMode.delete) {
+                            deleteDialog.close();
+                        }
                         vmManager.init();
                     }
                 });
             });
         });
-    };
-
+    }
     //刷新
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); });
@@ -341,18 +333,16 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         getRmaInspectionHandleDatas: function (){
             if (uiVm.RmaId === null || uiVm.RmaId === "") return;
             $scope.searchPromise = rmaDataOpService.getRmaInspectionHandleDatas(uiVm.RmaId).then(function (data) {
-                if (angular.isObject(data)) {
+                if (angular.isObject(data))
+                {
                     ///把rmaInitiateData赋值到rmavm中
                     leeHelper.copyVm(data.rmaInitiateData, rmavm);
                     ///业务数据
                     vmManager.businessHandleDatas = data.bussesDescriptionDatas;
                     ///品保数据
                     vmManager.dataSets = data.inspectionHandleDatas;
-                   
-                   ///
-                    angular.forEach(vmManager.businessHandleDatas, function (item) {
-                        item.isHandle = _.find(vmManager.dataSets, { RmaId: item.RmaId, ParameterKey: item.ParameterKey }) !== undefined;
-                    });
+                    /// 对已经处理
+                    vmManager.isHanldlestatus();
                 }
             });
         },
@@ -360,6 +350,22 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         dataSets: [],
         businessHandleNumberDatas: [],
         selectedBusinessRmaNumberStr: [],
+        isHanldlestatus: function () {
+            if (vmManager.businessHandleDatas.length > 0 && vmManager.dataSets.length > 0) {
+                angular.forEach(vmManager.businessHandleDatas, function (item) {
+                    angular.forEach(vmManager.dataSets, function (Handleitem) {
+                        var str = Handleitem.RmaBussesesNumberStr;
+                        if (str == null || str.length==0) return;
+                        var stringstr = str.split(',');
+                        stringstr.forEach(function (i) {
+                            if (i == item.RmaIdNumber) {
+                                item.isHandle = true;
+                            }
+                        });
+                    });
+                });
+            }
+        },
     };
     var rmaNumberDatasDialog = $scope.rmaNumberDatasDialog = leePopups.dialog();
     var dialog = $scope.dialog = leePopups.dialog();
@@ -380,7 +386,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
     };
     operate.handleItem = function (item) {
         var dataitem = _.clone(item);
-        uiVm.ParameterKey = item.RmaId + "&" + item.ReturnHandleOrder + "&" + item.ProductId;
+        uiVm.ParameterKey = item.RmaId + "&" + item.ReturnHandleOrder + "&" + item.ProductId ;
         dataitem.OpSign = leeDataHandler.dataOpMode.add;
         leeHelper.copyVm(dataitem, uiVm);
         $scope.vm = uiVm;
@@ -397,9 +403,9 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
     operate.saveAll = function (isValid) {
         leeHelper.setUserData(uiVm);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            if (vmManager.selectedBusinessRmaNumberStr.length>0)
-            { uiVm.RmaBussesesNumberStr = vmManager.selectedBusinessRmaNumberStr.join(','); }
-           
+            if (vmManager.selectedBusinessRmaNumberStr.length>0){
+                uiVm.RmaBussesesNumberStr = vmManager.selectedBusinessRmaNumberStr.join(',');
+            }
             rmaDataOpService.storeRmaInspectionHandleDatas(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
@@ -407,21 +413,17 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
                         dataItem.Id_Key = opresult.Id_Key;
                         if (dataItem.OpSign === 'add') {
                             vmManager.dataSets.push(dataItem);
-                        }
-
-                        angular.forEach(vmManager.businessHandleDatas, function (item) {
-                            item.isHandle = _.find(vmManager.dataSets, { RmaId: item.RmaId, ParameterKey: item.ParameterKey }) !== undefined;
-                        });
-
+                        };
+                        vmManager.isHanldlestatus();
                         vmManager.init();
                         dialog.close();
                     }
-
                 });
                
             });
         });
     };
+    
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); });
     };
