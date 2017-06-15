@@ -69,6 +69,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
+        internal List<RmaReportInitiateModel> GetInitiateDatasBy(DateTime  formYearMonth, DateTime toYearMonth)
+        {
+            return irep.Entities.Where(e => e.OpDate>= formYearMonth &&e.OpDate <= toYearMonth).ToList();
+        }
         internal bool IsExist(string rmaId)
         {
             return irep.IsExist(e => e.RmaId == rmaId);
@@ -103,6 +107,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             this.AddOpItem(OpMode.Add, AddModel);
             this.AddOpItem(OpMode.Edit, UpdateModel);
+            this.AddOpItem (OpMode.Delete, DeleteModel);
         }
 
         OpResult AddModel(RmaBusinessDescriptionModel model)
@@ -120,6 +125,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
+        OpResult DeleteModel(RmaBusinessDescriptionModel model)
+        {
+            return irep.Delete(e => e.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext);
+        }
         public string GetHandleStatus(double ProductCount)
         {
             if (ProductCount > 0)
