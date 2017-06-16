@@ -8,11 +8,14 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
     var supplierUrlPrefix = leeHelper.controllers.supplierManage + "/";
     //--------------供应商管理----------------------------
 
-    $stateProvider.state('purSupplierInput', {
+    $stateProvider.state('supplierArchiveOverview', {
+        templateUrl: supplierUrlPrefix + 'SupplierArchiveOverview'//供应商档案总览
+    })
+    .state('purSupplierInput', {
         templateUrl: supplierUrlPrefix + 'PurSupplierInput'
-    });
+    })
     //供应商证书管理
-    $stateProvider.state('supplierCertificateManage', {
+    .state('supplierCertificateManage', {
         templateUrl: supplierUrlPrefix + 'SupplierCertificateManage'
     })
     //供应商考核管理

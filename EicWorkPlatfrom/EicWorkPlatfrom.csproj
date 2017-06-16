@@ -1356,6 +1356,7 @@
     <Content Include="Views\SysITIL\ItilMessageNotifyManage.cshtml" />
     <Content Include="Views\SysITIL\ItilEmailManage.cshtml" />
     <Content Include="Views\CommonTpl\CalendarColorTipTpl.cshtml" />
+    <Content Include="Views\PurSupplierManage\SupplierArchiveOverview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
