@@ -279,7 +279,9 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                             vmManager.dataSets.push(dataItem);
                         }
                         if (dataItem.OpSign === leeDataHandler.dataOpMode.delete) {
+                            console.log(11);
                             deleteDialog.close();
+                            leeHelper.delWithId(vmManager.dataSets, dataItem);//移除临时数据 
                         }
                         vmManager.init();
                     }
@@ -411,7 +413,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
                     if (opresult.Result) {
                         var dataItem = _.clone(uiVm);
                         dataItem.Id_Key = opresult.Id_Key;
-                        if (dataItem.OpSign === 'add') {
+                        if (dataItem.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.dataSets.push(dataItem);
                         };
                         vmManager.isHanldlestatus();

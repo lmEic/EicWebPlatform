@@ -665,3 +665,8 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
     };
 });
 
+//供应商综合查询
+purchaseModule.controller('supplierGatherInfoCtrl', function ($scope, supplierDataOpService, $modal) {
+    
+});
+
