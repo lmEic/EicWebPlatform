@@ -53,18 +53,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             if (!IsExist(model.RmaId)||model.Id_Key ==0) return OpResult.SetErrorResult("该RMA单号记录不存在，编辑失败");
 
-            return irep.Update(e => e.Id_Key == model.Id_Key, f=>  new RmaReportInitiateModel {
-                ProductName=model.ProductName,
-                OpDate=model.OpDate,
-                CustomerShortName=model.CustomerShortName,
-                OpPerson=model.OpPerson,
-                OpSign=model.OpSign,
-                OpTime=model.OpTime,
-                RmaIdStatus=model.RmaIdStatus,
-                RmaId=model.RmaId,
-                RmaMonth=model.RmaMonth,
-                RmaYear =model.RmaYear 
-            }).ToOpResult_Eidt(OpContext);
+            return irep.Update(e => e.Id_Key == model.Id_Key,model).ToOpResult_Eidt(OpContext);
         }
         #endregion
 
