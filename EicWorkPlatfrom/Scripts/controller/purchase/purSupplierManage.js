@@ -4,7 +4,7 @@
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
 
 var purchaseModule = angular.module('bpm.purchaseApp');
-//获取供应商信息
+//获取供应商信息操作工厂
 purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     var purDb = {};
     var purUrlPrefix = "/" + leeHelper.controllers.supplierManage + "/";
@@ -122,6 +122,14 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
         return ajaxService.getData(url, {
             supplierId: supplierId,
             yearQuarter: yearQuarter
+        });
+    };
+    //------------------供应商档案管理-------------------------------
+    /////供应商档案管理
+    purDb.getPurSupplierAllInfoDatas = function (supplierId) {
+        var url = purUrlPrefix + 'GetPurSupplierAllInfoDatasBy';
+        return ajaxService.getData(url, {
+            supplierId: supplierId
         });
     };
     return purDb;
@@ -667,6 +675,17 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
 
 //供应商综合查询
 purchaseModule.controller('supplierGatherInfoCtrl', function ($scope, supplierDataOpService, $modal) {
-    
+    var vmManager = $scope.vmManager = {
+        supplierId: 'D10048',
+        SupplierInfoDatas: [],
+        ///根据供应商编号查询供应商数据信息
+        searchSupplierDatas: function () {
+            console.log(1111);
+            $scope.searchPromise = supplierDataOpService.getPurSupplierAllInfoDatas(vmManager.supplierId).then(function (datas) {
+                console.log(datas);
+                vmManager.SupplierInfoDatas = datas;
+            });
+        },
+    }
 });
 

@@ -42,8 +42,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             if (!IsExist(model.RmaId))
             {
-                model.RmaYear = DateTime.Now.ToString("yy");
-                model.RmaMonth = DateTime.Now.ToString("MM");
+                model.RmaYear = DateTime.Now.Year ;
+                model.RmaMonth = DateTime.Now.Month;
                 model.RmaIdStatus = RmaHandleStatus.InitiateStatus;
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
@@ -52,7 +52,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         internal OpResult Eidt(RmaReportInitiateModel model)
         {
             if (!IsExist(model.RmaId)||model.Id_Key ==0) return OpResult.SetErrorResult("该RMA单号记录不存在，编辑失败");
-            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+
+            return irep.Update(e => e.Id_Key == model.Id_Key, f=>  new RmaReportInitiateModel {
+                ProductName=model.ProductName,
+                OpDate=model.OpDate,
+                CustomerShortName=model.CustomerShortName,
+                OpPerson=model.OpPerson,
+                OpSign=model.OpSign,
+                OpTime=model.OpTime,
+                RmaIdStatus=model.RmaIdStatus,
+                RmaId=model.RmaId,
+                RmaMonth=model.RmaMonth,
+                RmaYear =model.RmaYear 
+            }).ToOpResult_Eidt(OpContext);
         }
         #endregion
 
@@ -61,7 +73,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// 
         /// </summary>
         /// <returns></returns>
-        internal int CountNowYaerMonthRmaIdNumber(string nowYaer)
+        internal int CountNowYaerMonthRmaIdNumber(int nowYaer)
         {
             return irep.Entities.Count(e => e.RmaYear == nowYaer);
         }
@@ -69,15 +81,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             return irep.Entities.Where(e => e.RmaId == rmaId).ToList();
         }
-        internal List<RmaReportInitiateModel> GetInitiateDatasBy(DateTime  formYearMonth, DateTime toYearMonth)
+        internal List<RmaReportInitiateModel> GetInitiateDatasBy(int formRmaYear,int formRmaMonth,int toRmaYear,int toRmaMonth)
         {
-            return irep.Entities.Where(e => e.OpDate>= formYearMonth &&e.OpDate <= toYearMonth).ToList();
+            var date= irep.Entities.Where(e => e.RmaYear >= formRmaYear && e.RmaYear <= toRmaYear).ToList();
+            return date.Where(e => e.RmaMonth >= formRmaMonth&& e.RmaMonth <= toRmaMonth).OrderBy(e=>e.RmaId).ToList();
         }
         internal bool IsExist(string rmaId)
         {
             return irep.IsExist(e => e.RmaId == rmaId);
         }
-        internal List<RmaReportInitiateModel> GetRmaReportInitiateDatas(string year, string month)
+        internal List<RmaReportInitiateModel> GetRmaReportInitiateDatas(int  year, int  month)
         {
             return irep.Entities.Where(e => e.RmaYear == year && e.RmaMonth == month).ToList();
         }
@@ -192,6 +205,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                {
                    HandleStatus = RmaHandleStatus.FinishStatus
                }).ToOpResult_Eidt(OpContext);
+            if (mm.Count == 1 && mm.LastOrDefault() == RmaHandleStatus.FinishStatus) return OpResult.SetSuccessResult("已结案");
             return OpResult.SetErrorResult("不变化");
         }
         internal int GetRmaIdNumber(string rmaId)

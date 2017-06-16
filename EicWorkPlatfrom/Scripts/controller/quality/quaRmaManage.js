@@ -202,6 +202,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                     vmManager.dataSets = data.bussesDescriptionDatas;
                     vmManager.isdisabled = true;
                 }
+                vmManager.init();
             });
         },
         //获取ERP退货单信息
@@ -439,11 +440,13 @@ qualityModule.controller('rmaReportQueryCtrl', function ($scope, rmaDataOpServic
            vmManager. dateFrom= null;
            vmManager. dateTo= null;
         },
+        dataSource:[],
         //获取表单数据
         getRmaDatas: function () {
             if (vmManager.dateFrom === null || vmManager.dateTo === "") return;
-            $scope.searchPromise = rmaDataOpService.queryRmaDatas(vmManager.searchFromYear, vmManager.searchToYear).then(function (data) {
-                vmManager.dataSets = data;
+            $scope.searchPromise = rmaDataOpService.queryRmaDatas(vmManager.searchFromYear, vmManager.searchToYear).then(function (datas) {
+                vmManager.dataSets = datas;
+                vmManager.dataSource = datas;
             });
         },
         dataSets: [],

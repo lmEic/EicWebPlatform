@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="h-split"></div>
-            <div class="well" >
+        <div class="well"  cg-busy="{promise:searchPromise}"  style="padding:10px;overflow-y:scroll;min-height:280px;max-height:680px;">
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead>
@@ -41,6 +41,11 @@
                             </tr>
                         </tbody>
                     </table>
+                    @*  *@
+                    <div yl-pagination
+                         data-dataset="vmManager.dataSets"
+                         data-datasource="vmManager.dataSource">
+                    </div>
                 </div>
             </div>   
     </div>

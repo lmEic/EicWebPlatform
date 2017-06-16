@@ -24,7 +24,7 @@
             <div class="col-md-4">
                 编号/客户简称：<label class="label label-default">{{rmavm.CustomerShortName}}</label>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 品名：<label class="label label-success">{{rmavm.ProductName}}</label>
             </div>
 
@@ -159,7 +159,7 @@
                             <tr class="info">
                                 <th>ERP单号</th>
                                 <th>料号</th>
-                                <th>原出货日期</th>
+                                <th>处理数量</th>
                                 <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                             </tr>
                         </thead>
@@ -167,7 +167,7 @@
                             <tr ng-repeat="item in vmManager.dataSets track by $index">
                                 <td>{{item.ReturnHandleOrder}}</td>
                                 <td>{{item.ProductId}}</td>
-                                <td>{{item.ProductsShipDate}}</td>
+                                <td>{{item.RealityHandleProductCount}}</td>
                                 <td>
                                     <button class="btn btn-xs btn-info" ng-click="operate.editItem(item)" title="编辑">
                                         <i class="fa fa-edit"></i>

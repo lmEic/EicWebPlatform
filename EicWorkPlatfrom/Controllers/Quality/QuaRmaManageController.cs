@@ -164,9 +164,8 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public ContentResult GetRmaDatas(string dateFrom,string  dateTo)
         {
-            DateTime fromDate = (dateFrom + "01").ToDate ();
-            DateTime toDate = (dateTo + "30").ToDate();
-            var rmaInitiateDatas = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(fromDate, toDate);
+           
+            var rmaInitiateDatas = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(dateFrom, dateTo);
           
             return DateJsonResult(rmaInitiateDatas);
         }

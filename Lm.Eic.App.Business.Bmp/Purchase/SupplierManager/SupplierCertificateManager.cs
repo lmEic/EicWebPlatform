@@ -69,6 +69,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
+
         /// <summary>
         /// 同步供应商信息
         /// </summary>

@@ -105,7 +105,8 @@
                 <div class="col-md-12" id="editWindow">
 
                     <div class="table-responsive" style="min-height:500px;" cg-busy="{promise:searchPromise}">
-                        <div ng-if="vmManager.dataSource.length>0"
+                       @* 分页显示 *@
+                         <div ng-if="vmManager.dataSource.length>0"
                              yl-pagination data-dataset="vmManager.dataSets"
                              data-datasource="vmManager.dataSource">
                         </div>
