@@ -26,6 +26,13 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             return View();
         }
+        #region SupplierArchiveOverview 供应商档案总览
+        public ActionResult SupplierArchiveOverview()
+        {
+            return View();
+        }
+        #endregion
+
 
         #region PurQualifiedSupplier 供应商证书管理
         /// <summary>
@@ -238,9 +245,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public FileResult CreateSupplierTourToExcel()
         {
             var datas = TempData["SupplierTourData"] as List<SupplierSeasonTutorModel>;
-           
+
             var dlfm = PurchaseService.PurSupplierManager.TutorManger.DownLoadTourSupplier(datas);
-           
+
             return this.DownLoadFile(dlfm);
         }
         /// <summary>
