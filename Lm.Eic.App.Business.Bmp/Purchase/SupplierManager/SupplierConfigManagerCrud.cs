@@ -297,12 +297,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="supplierId">供应商ID</param>
         /// <returns></returns>
-        internal SupplierInfoModel GetSupplierInfoBy(string supplierId)
+        internal List<SupplierInfoModel> GetSupplierInfoBy(string supplierId)
         {
             try
             {
-
-                return irep.Entities.FirstOrDefault(m => m.SupplierId == supplierId);
+                return irep.Entities.Where(m => m.SupplierId == supplierId).ToList();
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
@@ -341,11 +340,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="parameterKey"></param>
         /// <returns></returns>
-        internal SupplierSeasonAuditModel GetSupplierSeasonAuditInfo(string parameterKey)
+        internal SupplierSeasonAuditModel GetSupplierSeasonAuditDataBy(string parameterKey)
         {
             return this.irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
         }
 
+        internal List<SupplierSeasonAuditModel> GetSupplierSeasonAuditInfoDatesBy(string supplierId)
+        {
+            return this.irep.Entities.Where(e => e.SupplierId == supplierId).ToList();
+        }
         OpResult AddSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
         {
             model.ParameterKey = model.SupplierId.Trim() + "&" + model.SeasonDateNum;

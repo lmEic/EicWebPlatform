@@ -563,7 +563,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
         /// </summary>
         /// <param name="SupplierId">供应商ID</param>
         /// <returns></returns>
-        public SupplierModel FindSpupplierInfoBy(string SupplierId)
+        public List<SupplierModel> FindSpupplierInfoBy(string SupplierId)
         {
             string whereSql = string.Format("where MA001='{0}'", SupplierId);
             var listModels = ErpDbAccessHelper.FindDataBy<SupplierModel>(SqlFields, whereSql, (dr, m) =>
@@ -581,7 +581,7 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
                   m.BillAddress = dr["MA051"].ToString().Trim();
                   m.IsCooperate = HandelIsConnparate(dr["MA004"].ToString().Trim());
               });
-            return listModels.FirstOrDefault();
+            return listModels;
         }
 
 

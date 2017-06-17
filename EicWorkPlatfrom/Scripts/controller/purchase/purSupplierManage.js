@@ -677,13 +677,28 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
 purchaseModule.controller('supplierGatherInfoCtrl', function ($scope, supplierDataOpService, $modal) {
     var vmManager = $scope.vmManager = {
         supplierId: 'D10048',
+        //供应商基本信息
         SupplierInfoDatas: [],
+        //供应商证书
+        supplierEligibleCertificateDatas: [],
+        ///季度考核分数
+        supplierAuditDatas:[],
+        ///辅导信息
+
+        ///稽核信息
+        supplierGradeDatas: [],
+
         ///根据供应商编号查询供应商数据信息
         searchSupplierDatas: function () {
             console.log(1111);
             $scope.searchPromise = supplierDataOpService.getPurSupplierAllInfoDatas(vmManager.supplierId).then(function (datas) {
                 console.log(datas);
-                vmManager.SupplierInfoDatas = datas;
+                vmManager.SupplierInfoDatas = datas.supplierBaseInfoDatas;
+                vmManager.supplierEligibleCertificateDatas = datas.supplierEligibleCertificateDatas;
+                vmManager.supplierAuditDatas = datas.supplierAuditDatas;
+
+
+
             });
         },
     }

@@ -34,7 +34,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="seasonDateNum">Year-Season</param>
         /// <returns></returns>
-        public List<SupplierSeasonAuditModel> GetSeasonSupplierList(string seasonDateNum)
+        public List<SupplierSeasonAuditModel> GetSeasonSupplierDatasBy(string seasonDateNum)
         {
             string startDate = string.Empty, endDate = string.Empty;
             ///处理季度数
@@ -56,6 +56,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return supplierSeasonAuditModelList;
 
         }
+        /// <summary>
+        /// 得到供应商季度考核分数
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        public List<SupplierSeasonAuditModel> GetSupplierAuditInfoDatasBy(string supplierId)
+        {
+            return SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditInfoDatesBy(supplierId); ;
+        }
 
 
         /// <summary>
@@ -67,10 +76,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         private SupplierSeasonAuditModel GetSupplierSeasonAuditModelBy(string supplierId, string seasonDateNum)
         {
             ///如果已存在，直接导出信息 返回
-            SupplierSeasonAuditModel supplierSeasonAuditInfo = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditInfo(supplierId.Trim() + "&&" + seasonDateNum);
+            SupplierSeasonAuditModel supplierSeasonAuditInfo = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditDataBy(supplierId.Trim() + "&&" + seasonDateNum);
             if (supplierSeasonAuditInfo != null) return supplierSeasonAuditInfo;
             /// 从得到供应商信息
-            var supplierInfo = HaveCertificateSupplierManager.GetSuppplierInfoBy(supplierId);
+            var supplierInfo = HaveCertificateSupplierManager.GetSuppplierInfoBy(supplierId).FirstOrDefault();
 
             if (supplierInfo == null || !(supplierInfo.IsCooperate.ToString() == "True")) return null;
             supplierSeasonAuditInfo = new SupplierSeasonAuditModel()
@@ -89,9 +98,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public OpResult SaveAuditSupplierInfo(SupplierSeasonAuditModel model)
         {
-            //if (SupplierCrudFactory.SuppliersSeasonAuditCrud.IsExist(model.ParameterKey))
-            //    model.OpSign = OpMode.Edit;
-            //else model.OpSign = OpMode.Add;
             return SupplierCrudFactory.SuppliersSeasonAuditCrud.Store(model);
         }
 
@@ -110,7 +116,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.InnerException.Message);
+                throw new Exception(ex.Message);
             }
         }
 

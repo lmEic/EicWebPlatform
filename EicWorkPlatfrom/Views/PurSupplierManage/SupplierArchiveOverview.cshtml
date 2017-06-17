@@ -83,48 +83,32 @@
                 @* 供应商证信息 *@
                 <div bs-pane data-title="证书信息" data-name="maintenanceInfoTab">
                     <div class="well">
-                        <div>
-                            <label>是否保养</label>
-                            <input ng-model="vmManager.isMaintenance" placeholder="是否保养" />
-                            <button class="btn btn-primary btn-sm" ng-click="vmManager.searchMaintenanceDatas()">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </div>
                         <div class="table-responsive">
                             <table class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr class="info">
                                         <th>编号</th>
-                                        <th>全称</th>
-                                        <th>供应商类型</th>
-                                        <th>采购类型</th>
-                                        <th>地址</th>
-                                        <th>联系人</th>
-                                        <th>最近采购时间</th>
-                                        <th>负责人</th>
-                                        <th>备注</th>
-                                        <th>操作<i></i></th>
+                                        <th>证书名称</th>
+                                        <th>文件类型</th>
+                                        <th>获取证书日期</th>
+                                        <th>文件名称</th>
+                                        <th>上传人</th>
+                                        <th>上传时间</th>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="item in vmManager.datasets track by $index">
-                                        <td>{{item.AssetNumber}}</td>
-                                        <td>{{item.EquipmentName}}</td>
-                                        <td>{{item.EquipmentSpec}}</td>
-                                        <td>{{item.ManufacturingNumber}}</td>
-                                        <td>{{item.AssetType}}</td>
-                                        <td>{{item.EquipmentType}}</td>
-                                        <td>{{item.TaxType}}</td>
-                                        <td>{{item.Unit}}</td>
-                                        <td>{{item.Manufacturer}}</td>
-                                        <td>{{item.DeliveryDate}}</td>
-                                        <td>{{item.SafekeepUser}}</td>
-                                        <td>{{item.SafekeepDepartment}}</td>
+                                    <tr ng-repeat="item in vmManager.supplierEligibleCertificateDatas track by $index">
+                                        <td>{{item.SupplierId}}</td>
+                                        <td>{{item.EligibleCertificate}}</td>
+                                        <td>{{item.DateOfCertificate}}</td>
+                                        <td>{{item.CertificateFileName}}</td>
+                                        <td>{{item.OpPerson}}</td>
+                                        <td>{{item.OpDate}}</td>
                                     </tr>
                                 </tbody>
                             </table>
                             <div yl-pagination
-                                 data-datasource="vmManager.maintenanceDataSource"
-                                 data-dataset="vmManager.maintenanceDataSets">
+                                 data-datasource="vmManager.supplierEligibleCertificateDatas"
+                                 data-dataset="vmManager.supplierEligibleCertificateDatas">
                             </div>
                         </div>
                     </div>
