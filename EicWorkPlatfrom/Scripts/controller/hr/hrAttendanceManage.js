@@ -367,7 +367,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         yearMonth: null,
         dateFrom: new Date(),//请假其实日期
         dateTo: new Date(),//请假结束日期
-        leaveType: '年休假',
+        leaveType: '事假',
     };
 
     //视图管理器
@@ -375,12 +375,14 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         activeTab: 'initTab',
         workerInfo: null,
         putData: function (datas, item, isAlert) {
-            var data = _.findWhere(datas, { LeaveType: item.LeaveType, Day: item.Day });
+            var data = _.findWhere(datas, { LeaveTimeRegion: item.LeaveTimeRegion, Day: item.Day });
             if (data !== undefined) {
                 if (isAlert)
-                    msgDialog.alert("特别提醒", "假别：" + item.LeaveType + ",日期：" + item.Day + "已经添加过了啊！");
+                    msgDialog.alert("特别提醒", "请假时间段：" + item.LeaveTimeRegion + ",日期：" + item.Day + "已经添加过了！");
             }
-            datas.push(item);
+            else {
+                datas.push(item);
+            }
         },
         setData: function (weekDay, askLeaveItem) {
             var dataItem = _.clone(askLeaveVM);

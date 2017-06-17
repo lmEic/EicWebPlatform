@@ -25,6 +25,7 @@ angular.module('bpm.homeApp', ['eicomm.directive', 'ngAnimate', 'ui.router', 'ng
 .controller('mainCtrl', function ($scope) {
     var user = $scope.loginUser = Object.create(leeLoginUser);
     user.loadHeadPortrait();
+
 })
 .controller('moduleNavCtrl', function ($scope, $http, navDataService) {
     var moduleNav = {
