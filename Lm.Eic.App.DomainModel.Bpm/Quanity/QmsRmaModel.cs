@@ -50,20 +50,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _rmaidstatus = value; }
             get { return _rmaidstatus; }
         }
-        private string _rmayear;
+        private int _rmayear;
         /// <summary>
         ///年份
         /// </summary>
-        public string RmaYear
+        public int RmaYear
         {
             set { _rmayear = value; }
             get { return _rmayear; }
         }
-        private string _rmamonth;
+        private int _rmamonth;
         /// <summary>
         ///月份
         /// </summary>
-        public string RmaMonth
+        public int RmaMonth
         {
             set { _rmamonth = value; }
             get { return _rmamonth; }

@@ -73,6 +73,7 @@
     <Compile Include="DbAccess\Repository\MesageNotifyRepository.cs" />
     <Compile Include="DbAccess\Repository\WorkTaskRepository.cs" />
     <Compile Include="Model\ConfigDataDictionaryModel.cs" />
+    <Compile Include="Model\ITIL\ItilConfigMailInfoModel.cs" />
     <Compile Include="Model\ITIL\ItilDevelopModuleManageModel.cs" />
     <Compile Include="Model\ITIL\ItilDevelopModuleManageChangeRecordModel.cs" />
     <Compile Include="Model\ITIL\ItilDto.cs" />

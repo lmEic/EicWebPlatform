@@ -31,6 +31,21 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             return View();
         }
+        [NoAuthenCheck]
+        public ContentResult GetPurSupplierAllInfoDatasBy(string supplierId)
+        {
+            ///供应商稽核评分信息
+            var supplierGradeDatas = PurchaseService.PurSupplierManager.GradeManager.GetPurSupGradeInfoDataBy(supplierId);
+            ///供应商合格证收信息EligibleCertificate
+            var supplierEligibleCertificateDatas = PurchaseService.PurSupplierManager.CertificateManager.GetSupplierQualifiedCertificateListBy(supplierId);
+            ///供应商信息
+            var supplierBaseInfoDatas = PurchaseService.PurSupplierManager.CertificateManager.GetSuppplierInfoBy(supplierId);
+            /// 季度考核分
+            var supplierAuditDatas = PurchaseService.PurSupplierManager.AuditManager.GetSupplierAuditInfoDatasBy(supplierId);
+
+            var datas = new { supplierBaseInfoDatas , supplierEligibleCertificateDatas, supplierAuditDatas };
+            return DateJsonResult(datas);
+        }
         #endregion
 
 
@@ -183,7 +198,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult GetAuditSupplierList(string yearSeason)
         {
-            var datas = PurchaseService.PurSupplierManager.AuditManager.GetSeasonSupplierList(yearSeason);
+            var datas = PurchaseService.PurSupplierManager.AuditManager.GetSeasonSupplierDatasBy(yearSeason);
             TempData["SupplierSeasonDatas"] = datas;
             return Json(datas, JsonRequestBehavior.AllowGet);
         }

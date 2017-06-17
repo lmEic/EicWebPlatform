@@ -9,8 +9,10 @@ angular.module('bpm.purchaseApp', ['eicomm.directive', 'ngAnimate', 'ui.router',
     //--------------供应商管理----------------------------
 
     $stateProvider.state('supplierArchiveOverview', {
-        templateUrl: supplierUrlPrefix + 'SupplierArchiveOverview'//供应商档案总览
+        //供应商档案总览
+        templateUrl: supplierUrlPrefix + 'SupplierArchiveOverview'
     })
+     ///供应商信息
     .state('purSupplierInput', {
         templateUrl: supplierUrlPrefix + 'PurSupplierInput'
     })

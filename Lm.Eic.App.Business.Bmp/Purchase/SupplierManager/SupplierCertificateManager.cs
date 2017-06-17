@@ -49,25 +49,26 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <param name="supplierId"></param>
         /// <returns></returns>
         /// </summary>
-      public  SupplierInfoModel GetSuppplierInfoBy(string supplierId)
+      public  List<SupplierInfoModel> GetSuppplierInfoBy(string supplierId)
         {
             try
             {
                 //先从已存的数据信息中找
-                SupplierInfoModel supplierInfo = SupplierCrudFactory.SuppliersInfoCrud.GetSupplierInfoBy(supplierId);
-                if (supplierInfo != null&& supplierInfo.IsCooperate == "True") return supplierInfo;
-                //没有找到再从ERP中找
-                supplierInfo = GetSuppplierInfoFromErpBy(supplierId);
-                if (supplierInfo != null && supplierInfo.IsCooperate == "True")
-                //添加至供应商信息表中  上传到数据库中
+                var datas = SupplierCrudFactory.SuppliersInfoCrud.GetSupplierInfoBy(supplierId);
+                if (datas == null || datas.Count == 0)
                 {
-                    SupplierCrudFactory.SuppliersInfoCrud.Init(supplierInfo);
-                    return supplierInfo;
-                }
-                else return null;
+                    //没有找到再从ERP中找
+                    List<SupplierInfoModel> supplierInfos = GetSuppplierInfoFromErpBy(supplierId);
+                    if (supplierInfos == null || supplierInfos.Count == 0) return null;
+                    supplierInfos.ForEach(m => { SupplierCrudFactory.SuppliersInfoCrud.Init(m); });
+                    return supplierInfos.Where(e => e != null && e.IsCooperate == "True").ToList();
+                }; 
+                SupplierInfoModel supplierInfo = datas.FirstOrDefault();
+                return datas.Where(e => e != null && e.IsCooperate == "True").ToList();
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
+
 
         /// <summary>
         /// 同步供应商信息
@@ -78,7 +79,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         private SupplierInfoModel SysnSupplierInfo(InPutSupplieCertificateInfoModel supplier, string supplierId)
         {
             ///从ERP中得到相应的SupplierId供应商信息 便与下面保存时更新数据库信息
-            var supplierfromErp = GetSuppplierInfoFromErpBy(supplierId);
+            var supplierfromErp = GetSuppplierInfoFromErpBy(supplierId).FirstOrDefault();
             if (supplierfromErp == null) return supplierfromErp;
             supplierfromErp.PurchaseType = supplier.PurchaseType;
             supplierfromErp.SupplierProperty = supplier.SupplierProperty;
@@ -277,7 +278,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             if (supplierListFromErp == null || supplierListFromErp.Count <= 0) return null;
             supplierListFromErp.ForEach(supplierId =>
             {
-                m = GetSuppplierInfoBy(supplierId);
+                m = GetSuppplierInfoBy(supplierId).FirstOrDefault ();
                 if (m != null && !SupplierInfoDatas.Contains(m))
                     SupplierInfoDatas.Add(m);
             });
@@ -289,27 +290,33 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="supplierId"></param>
         /// <returns></returns>
-        private SupplierInfoModel GetSuppplierInfoFromErpBy(string supplierId)
+        private List<SupplierInfoModel> GetSuppplierInfoFromErpBy(string supplierId)
         {
-            var erpSupplierInfo = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
-            if (erpSupplierInfo == null) return null;
-            string Principal = erpSupplierInfo.Principal.Trim() == string.Empty ? erpSupplierInfo.Contact : erpSupplierInfo.Principal;
-            return new SupplierInfoModel
-            {
-                SupplierId = supplierId.Trim(),
-                SupplierEmail = erpSupplierInfo.Email,
-                SupplierAddress = erpSupplierInfo.Address,
-                /// 负责人
-                SupplierPrincipal = Principal.Trim(),
-                SupplierFaxNo = erpSupplierInfo.FaxNo,
-                SupplierName = erpSupplierInfo.SupplierName,
-                SupplierShortName = erpSupplierInfo.SupplierShortName,
-                SupplierUser = erpSupplierInfo.Contact,
-                SupplierTel = erpSupplierInfo.Tel,
-                PayCondition = erpSupplierInfo.PayCondition,
-                IsCooperate = erpSupplierInfo.IsCooperate,
+            var erpSupplierInfos = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
+            if (erpSupplierInfos == null|| erpSupplierInfos.Count==0) return null;
+            List<SupplierInfoModel> datas = new List<SupplierInfoModel>();
+            SupplierInfoModel model = null;
+            erpSupplierInfos.ForEach(m => {
+                string principal = m.Principal.Trim() == string.Empty ? m.Contact : m.Principal;
+                model= new SupplierInfoModel
+                {
+                    SupplierId = supplierId.Trim(),
+                    SupplierEmail = m.Email,
+                    SupplierAddress = m.Address,
+                    /// 负责人
+                    SupplierPrincipal = principal.Trim(),
+                    SupplierFaxNo = m.FaxNo,
+                    SupplierName = m.SupplierName,
+                    SupplierShortName = m.SupplierShortName,
+                    SupplierUser = m.Contact,
+                    SupplierTel = m.Tel,
+                    PayCondition = m.PayCondition,
+                    IsCooperate = m.IsCooperate
+                };
+                datas.Add(model);
+            });
 
-            };
+            return datas;
         }
 
         /// <summary>

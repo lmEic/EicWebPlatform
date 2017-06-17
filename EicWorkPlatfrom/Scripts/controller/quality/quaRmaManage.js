@@ -202,6 +202,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                     vmManager.dataSets = data.bussesDescriptionDatas;
                     vmManager.isdisabled = true;
                 }
+                vmManager.init();
             });
         },
         //获取ERP退货单信息
@@ -279,7 +280,9 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                             vmManager.dataSets.push(dataItem);
                         }
                         if (dataItem.OpSign === leeDataHandler.dataOpMode.delete) {
+                            console.log(11);
                             deleteDialog.close();
+                            leeHelper.delWithId(vmManager.dataSets, dataItem);//移除临时数据 
                         }
                         vmManager.init();
                     }
@@ -411,7 +414,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
                     if (opresult.Result) {
                         var dataItem = _.clone(uiVm);
                         dataItem.Id_Key = opresult.Id_Key;
-                        if (dataItem.OpSign === 'add') {
+                        if (dataItem.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.dataSets.push(dataItem);
                         };
                         vmManager.isHanldlestatus();
@@ -437,11 +440,13 @@ qualityModule.controller('rmaReportQueryCtrl', function ($scope, rmaDataOpServic
            vmManager. dateFrom= null;
            vmManager. dateTo= null;
         },
+        dataSource:[],
         //获取表单数据
         getRmaDatas: function () {
             if (vmManager.dateFrom === null || vmManager.dateTo === "") return;
-            $scope.searchPromise = rmaDataOpService.queryRmaDatas(vmManager.searchFromYear, vmManager.searchToYear).then(function (data) {
-                vmManager.dataSets = data;
+            $scope.searchPromise = rmaDataOpService.queryRmaDatas(vmManager.searchFromYear, vmManager.searchToYear).then(function (datas) {
+                vmManager.dataSets = datas;
+                vmManager.dataSource = datas;
             });
         },
         dataSets: [],
