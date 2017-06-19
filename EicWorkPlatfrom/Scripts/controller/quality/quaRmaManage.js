@@ -270,6 +270,8 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
     //保存
     operate.saveAll = function (isValid) {
         leeHelper.setUserData(uiVm);
+        console.log(uiVm);
+        uiVm.RmaId = rmavm.RmaId;
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             rmaDataOpService.storeRmaInputDescriptionData(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
@@ -280,9 +282,8 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                             vmManager.dataSets.push(dataItem);
                         }
                         if (dataItem.OpSign === leeDataHandler.dataOpMode.delete) {
-                            console.log(11);
                             deleteDialog.close();
-                            leeHelper.delWithId(vmManager.dataSets, dataItem);//移除临时数据 
+                            leeHelper.remove(vmManager.dataSets, dataItem);//移除临时数据 
                         }
                         vmManager.init();
                     }
