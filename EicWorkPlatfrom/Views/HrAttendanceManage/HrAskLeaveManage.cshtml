@@ -193,15 +193,4 @@
             <button class="btn btn-primary" ng-click="vmManager.confirmEdit()" autofocus>确定</button>
         </content>
     </dialog>
-
-    <dialog ng-if="msgDialog.open" modal data-close="msgDialog.close()" style="width:40%">
-        <content dialog-title class="text-info">
-            <span><i class="fa fa-bell">{{msgDialog.title}}</i></span>
-        </content>
-        <content dialog-content style="width:100%;" class="bs-callout bs-callout-info">
-            <h2>
-                {{msgDialog.content}}
-            </h2>
-        </content>
-    </dialog>
 </div>

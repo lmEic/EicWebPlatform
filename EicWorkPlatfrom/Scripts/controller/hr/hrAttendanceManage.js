@@ -359,7 +359,6 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
     var uiVM = $scope.vm = _.clone(askLeaveVM);
 
     var msgDialog = $scope.msgDialog = leePopups.dialog();
-    var editDialog = $scope.editDialog = leePopups.dialog();
     //查询字段视图
     var queryVM = $scope.qryvm = {
         year: null,
@@ -378,7 +377,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
             var data = _.findWhere(datas, { LeaveTimeRegion: item.LeaveTimeRegion, Day: item.Day });
             if (data !== undefined) {
                 if (isAlert)
-                    msgDialog.alert("特别提醒", "请假时间段：" + item.LeaveTimeRegion + ",日期：" + item.Day + "已经添加过了！");
+                    leePopups.alert("特别提醒", "请假时间段：" + item.LeaveTimeRegion + ",日期：" + item.Day + "已经添加过了！");
             }
             else {
                 datas.push(item);
