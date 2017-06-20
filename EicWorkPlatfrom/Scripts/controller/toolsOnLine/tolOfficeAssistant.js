@@ -89,13 +89,13 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         editDatas: [],
         ///查询函数
         loadDatas: function (searchMode, queryContent) {
-            var userOrganization = leeHelper.getUserOrganization();
-            var department = userOrganization.B;
+            //var userOrganization = leeHelper.getUserOrganization();
+            var department = leeHelper.getUserOrganization().B;
             vmManager.editDatas = [];
-            console.log(department);
+            console.log(uiVm.Department);
             console.log(searchMode);
             console.log(queryContent);
-            $scope.searchPromise = oAssistantDataOpService.getCollaborateContactDatas(department, searchMode, queryContent).then(function (datas) {
+            $scope.searchPromise = oAssistantDataOpService.getCollaborateContactDatas(uiVm.Department, searchMode, queryContent).then(function (datas) {
                 if (angular.isArray(datas))
                     vmManager.editDatas = datas;
             });
@@ -140,8 +140,8 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
         //leeHelper.remove(ds, deleteItem);
         //vmManager.editDatas = ds;
         uiVm.OpSign = leeDataHandler.dataOpMode.delete;
-        leeHelper.setUserData(uiVm);
-        uiVm.Department = leeHelper.getUserOrganization().B;
+        //leeHelper.setUserData(uiVm);
+        //uiVm.Department = leeHelper.getUserOrganization().B;
         oAssistantDataOpService.storeCollaborateContactDatas(uiVm).then(function (opresult) {
             leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                 if (opresult.Result) {
@@ -154,7 +154,8 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
     };
     ///保存联系人
     operate.saveAll = function (isValid) {
-        leeHelper.setUserData(uiVm);
+        //leeHelper.setUserData(uiVm);
+        //uiVm.Department = leeHelper.getUserOrganization().B;
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             oAssistantDataOpService.storeCollaborateContactDatas(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
@@ -174,6 +175,8 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
     ///刷新数据
     operate.refresh = function () { leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); }); };
     ///初始载入本部门所有联系人
+    leeHelper.setUserData(uiVm);
+    uiVm.Department = leeHelper.getUserOrganization().B;
     vmManager.loadDatas(0, null);
 });
 ///工作任务管理控制器
