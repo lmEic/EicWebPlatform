@@ -141,7 +141,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Controllers\Account\AccountController.cs" />
     <Compile Include="Controllers\BaseController\EicCommonUIHelper.cs" />
     <Compile Include="Controllers\BusinessController.cs" />
@@ -333,11 +332,6 @@
     <Content Include="Content\pdfmaker\vfs_fonts.js" />
     <Content Include="Content\print\print.min.css" />
     <Content Include="Content\print\print.min.js" />
-    <Content Include="Content\sweetalert2\dist\sweetalert2.common.js" />
-    <Content Include="Content\sweetalert2\dist\sweetalert2.css" />
-    <Content Include="Content\sweetalert2\dist\sweetalert2.js" />
-    <Content Include="Content\sweetalert2\dist\sweetalert2.min.css" />
-    <Content Include="Content\sweetalert2\dist\sweetalert2.min.js" />
     <Content Include="Content\underscore\underscore-min.js" />
     <Content Include="Content\underscore\underscore.js" />
     <Content Include="Content\WorkTask\WorkTask.css" />
@@ -1365,6 +1359,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\pnotify\dist\" />
     <Folder Include="FileLibrary\PreviewFiles\" />
     <Folder Include="Models\" />
   </ItemGroup>

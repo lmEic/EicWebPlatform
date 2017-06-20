@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../Content/ztree/dist/js/jquery.ztree.all.min.js" />
 ///数据处理器
-/// <reference path="../../Content/sweetalert2/dist/sweetalert2.js" />
+/// <reference path="../../Content/pnotify/dist/pnotify.js" />
 /// <reference path="../../Content/underscore/underscore-min.js" />
 /// <reference path="../jquery-2.1.4.min.js" />
 var leeDataHandler = (function () {
@@ -571,38 +571,37 @@ var leePopups = (function () {
                 infoType = "error";
             else
                 infoType = "info";
-            swal({
-                type: infoType,
-                text: text,
-                allowOutsideClick: false
+            new PNotify({
+                title: "提示",
+                text: text
             });
         },
         //询问对话框，title:标题;text:文本内容;okFn:确认函数；cancelFn:取消Fn
         question: function (title, text, okFn, cancelFn) {
-            swal({
-                title: title,
-                text: text,
-                type: 'question',
-                allowOutsideClick: false,
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: '<i class="fa fa-thumbs-up"></i>  确   定',
-                cancelButtonText: '<i class="fa fa-undo"></i>  取   消',
-                confirmButtonClass: 'btn btn-success',
-                cancelButtonClass: 'btn btn-danger',
-                buttonsStyling: false
-            }).then(function () {
-                if (!_.isUndefined(okFn) && _.isFunction(okFn))
-                    okFn();
-            }, function (dismiss) {
-                // dismiss can be 'cancel', 'overlay',
-                // 'close', and 'timer'
-                if (dismiss === 'cancel') {
-                    if (!_.isUndefined(cancelFn) && _.isFunction(cancelFn))
-                        cancelFn();
-                }
-            })
+            //swal({
+            //    title: title,
+            //    text: text,
+            //    type: 'question',
+            //    allowOutsideClick: false,
+            //    showCancelButton: true,
+            //    confirmButtonColor: '#3085d6',
+            //    cancelButtonColor: '#d33',
+            //    confirmButtonText: '<i class="fa fa-thumbs-up"></i>  确   定',
+            //    cancelButtonText: '<i class="fa fa-undo"></i>  取   消',
+            //    confirmButtonClass: 'btn btn-success',
+            //    cancelButtonClass: 'btn btn-danger',
+            //    buttonsStyling: false
+            //}).then(function () {
+            //    if (!_.isUndefined(okFn) && _.isFunction(okFn))
+            //        okFn();
+            //}, function (dismiss) {
+            //    // dismiss can be 'cancel', 'overlay',
+            //    // 'close', and 'timer'
+            //    if (dismiss === 'cancel') {
+            //        if (!_.isUndefined(cancelFn) && _.isFunction(cancelFn))
+            //            cancelFn();
+            //    }
+            //})
         },
     };
     function myDialog(title, content) {
