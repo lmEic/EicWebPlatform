@@ -680,13 +680,14 @@ purchaseModule.controller('supplierGatherInfoCtrl', function ($scope, supplierDa
         SupplierId: '',
         SupplierShortName: '',
         PurchaseType: '',
-        UpperPurchaseDate:'',
+        SupplierProperty:'',
+        UpperPurchaseDate:''
     };
     var vmManager = $scope.vmManager = {
         //激活当前的Tab
         activeTab: 'baseInfoTab',
 
-        supplierId: 'D10048',
+        supplierId: '',
         //供应商基本信息
         SupplierInfoDatas: [],
         //供应商证书
@@ -694,7 +695,7 @@ purchaseModule.controller('supplierGatherInfoCtrl', function ($scope, supplierDa
         ///季度考核分数
         supplierAuditDatas:[],
         ///辅导信息
-     
+        supplierSeasonTutorInfo:[],
         ///稽核信息
         supplierGradeDatas: [],
 
@@ -711,6 +712,8 @@ purchaseModule.controller('supplierGatherInfoCtrl', function ($scope, supplierDa
                 vmManager.supplierAuditDatas = datas.supplierAuditDatas;
                 //稽核评分
                 vmManager.supplierGradeDatas = datas.supplierGradeDatas;
+                //辅导信息
+                vmManager.supplierSeasonTutorInfo = datas.supplierSeasonTutorInfo;
             });
         },
     }

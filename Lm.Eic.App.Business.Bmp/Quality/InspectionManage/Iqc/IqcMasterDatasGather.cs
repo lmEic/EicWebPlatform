@@ -21,7 +21,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             masterModel.MaterialCount = model.MaterialInCount;
             masterModel.FinishDate = DateTime.Now.Date;
             masterModel.InspectionStatus = "未完成";
-            masterModel.InspectionResult = model.InspectionItemResult;
+            masterModel.InspectionResult = string.Empty;
             masterModel.OpSign = OpMode.Add;
             if (IsExistOrderIdAndMaterailId(model.OrderId, model.MaterialId))
                 return ChangeMasterModelStatus(masterModel);
@@ -44,8 +44,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         private OpResult ChangeMasterModelStatus(InspectionIqcMasterModel masterModel)
         {
             var haveStoreMasterModel = GetMasterModel(masterModel.OrderId, masterModel.MaterialId);
-            if (haveStoreMasterModel.InspectionStatus != "未完成") return OpResult.SetSuccessResult("已保存", true);
-            string inspecitonItem = masterModel.InspectionItems.Trim();
+            if (haveStoreMasterModel == null) return OpResult.SetErrorResult("数据不存在");
+                //if (haveStoreMasterModel.InspectionStatus != "未完成") return OpResult.SetSuccessResult("已保存", true);
+
+                string inspecitonItem = masterModel.InspectionItems.Trim();
             if (!haveStoreMasterModel.InspectionItems.Contains(inspecitonItem))
                 masterModel.InspectionItems = haveStoreMasterModel.InspectionItems + "," + inspecitonItem;
             /// 如果完成了，处理待审核状态 那就判断所有的测试项是不是 Pass

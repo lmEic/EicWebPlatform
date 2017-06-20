@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
@@ -43,8 +44,25 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 opReulst = MasterDatasGather.StoreInspectionIqcMasterModelForm(model);
             return opReulst;
         }
-
-
+        /// <summary>
+        /// 得到下载路经
+        /// </summary>
+        /// <param name="siteRootPath"></param>
+        /// <param name="orderId"></param>
+        /// <param name="materialId"></param>
+        /// <param name="inspectionItem"></param>
+        /// <returns></returns>
+       public DownLoadFileModel GetIqcDatasDownLoadFileModel(string siteRootPath, string orderId, string materialId,string  inspectionItem)
+        {
+            DownLoadFileModel dlfm = new DownLoadFileModel();
+            var model = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelBy(orderId,  materialId, inspectionItem);
+            if (model == null || model.FileName == null || model.DocumentPath == null)
+                return dlfm.Default();
+            return dlfm.CreateInstance
+                (siteRootPath.GetDownLoadFilePath(model.DocumentPath),
+                model.FileName.GetDownLoadContentType(),
+                 model.FileName);
+        }
         /// <summary>
         /// 生成IQC检验项目所有的信息
         /// </summary>
