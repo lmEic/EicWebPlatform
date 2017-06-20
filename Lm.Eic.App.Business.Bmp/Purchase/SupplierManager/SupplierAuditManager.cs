@@ -79,7 +79,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             SupplierSeasonAuditModel supplierSeasonAuditInfo = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditDataBy(supplierId.Trim() + "&&" + seasonDateNum);
             if (supplierSeasonAuditInfo != null) return supplierSeasonAuditInfo;
             /// 从得到供应商信息
-            var supplierInfo = HaveCertificateSupplierManager.GetSuppplierInfoBy(supplierId).FirstOrDefault();
+            var supplierInfo = HaveCertificateSupplierManager.GetSuppplierInfoBy(supplierId);
 
             if (supplierInfo == null || !(supplierInfo.IsCooperate.ToString() == "True")) return null;
             supplierSeasonAuditInfo = new SupplierSeasonAuditModel()

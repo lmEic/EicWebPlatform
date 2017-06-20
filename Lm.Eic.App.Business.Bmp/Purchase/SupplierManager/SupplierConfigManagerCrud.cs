@@ -297,11 +297,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="supplierId">供应商ID</param>
         /// <returns></returns>
-        internal List<SupplierInfoModel> GetSupplierInfoBy(string supplierId)
+        internal SupplierInfoModel GetSupplierInfoBy(string supplierId)
         {
             try
             {
-                return irep.Entities.Where(m => m.SupplierId == supplierId).ToList();
+                return irep.Entities.FirstOrDefault(m => m.SupplierId == supplierId);
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
@@ -404,7 +404,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             return irep.Entities.Where(e => e.ParameterKey == parameterKey).ToList().FirstOrDefault();
         }
-
+        /// <summary>
+        /// 得到供应商辅导信息
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        public List<SupplierSeasonTutorModel> GetSupplierSeasonTutorDatasBy(string supplierId)
+        {
+            return irep.Entities.Where(e => e.SupplierId == supplierId).ToList();
+        }
         /// <summary>
         /// 添加季度辅导
         /// </summary>

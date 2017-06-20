@@ -72,8 +72,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         }
         internal List<RmaReportInitiateModel> GetInitiateDatasBy(int formRmaYear,int formRmaMonth,int toRmaYear,int toRmaMonth)
         {
-            var date= irep.Entities.Where(e => e.RmaYear >= formRmaYear && e.RmaYear <= toRmaYear).ToList();
-            return date.Where(e => e.RmaMonth >= formRmaMonth&& e.RmaMonth <= toRmaMonth).OrderBy(e=>e.RmaId).ToList();
+            return irep.GetInitiateDatasBy(formRmaYear, formRmaMonth, toRmaYear, toRmaMonth);
         }
         internal bool IsExist(string rmaId)
         {
