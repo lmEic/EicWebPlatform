@@ -265,7 +265,6 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         $scope.vm = uiVm;
         var dataItem = _.clone(uiVm);
         $scope.vm = uiVm = dataItem;
-
     };
     //保存
     operate.saveAll = function (isValid) {
