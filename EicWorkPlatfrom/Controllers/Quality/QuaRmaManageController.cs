@@ -44,7 +44,6 @@ namespace EicWorkPlatfrom.Controllers.Quality
         public JsonResult StoreinitiateDataData(RmaReportInitiateModel initiateData)
         {
             var result = RmaService.RmaManager.RmaReportBuilding.StoreRamReortInitiate(initiateData);
-
             return Json(result);
         }
         /// <summary>

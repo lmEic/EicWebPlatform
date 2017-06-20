@@ -9,6 +9,7 @@ using Lm.Eic.App.Erp.Domain.QuantityModel;
 using System.IO;
 using Lm.Eic.App.Erp.Bussiness.QmsManage;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -318,6 +319,7 @@ namespace EicWorkPlatfrom.Controllers
             this.SaveFileToServer(file, filePath, addchangeFileName);
             return Json("OK");
         }
+      
         /// <summary>
         /// 存储采集的数据
         /// </summary>
@@ -440,6 +442,19 @@ namespace EicWorkPlatfrom.Controllers
         {
             var datas = InspectionService.DataGatherManager.IqcDataGather.FindIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 下载数据文档
+        /// </summary>
+        /// <param name="suppliserId"></param>
+        /// <param name="eligibleCertificate"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult LoadQualifiedCertificateFile(string orderId, string materialId,string inspectionItem)
+        {
+            DownLoadFileModel dlfm = InspectionService.DataGatherManager.IqcDataGather.GetIqcDatasDownLoadFileModel(SiteRootPath, orderId, materialId, inspectionItem);
+            return this.DownLoadFile(dlfm);
         }
         [NoAuthenCheck]
         public JsonResult PostInspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model)
