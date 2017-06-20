@@ -560,24 +560,57 @@ var leePopups = (function () {
         dialog: function (title, content) {
             return new myDialog(title, content);
         },
-        //提醒信息,type：消息类型 1：info;2:warning;3:error
+        //提醒信息,type：消息类型 1：info;2:notice;3:error;4:success
         alert: function (text, type) {
             var infoType;
             if (type === 1)
                 infoType = "info";
             else if (type === 2)
-                infoType = "warning";
+                infoType = "notice";
             else if (type === 3)
                 infoType = "error";
+            else if (type === 4)
+                infoType = "notice";
             else
-                infoType = "info";
+                infoType = "notice";
+
             new PNotify({
                 title: "提示",
-                text: text
+                text_escape: true,
+                text: text,
+                type: infoType,
+                delay: 5000,
+                width: '460px',
+                styling: 'brighttheme',
+                addclass: 'stack-modal',
+                stack: { "dir1": "down", "dir2": "right", "push": "top", "modal": true, "overlay_close": true }
+                //addclass: "stack-bar-top",
+                //cornerclass: "",
+                //width: "100%",
+                //stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 }
             });
         },
         //询问对话框，title:标题;text:文本内容;okFn:确认函数；cancelFn:取消Fn
-        question: function (title, text, okFn, cancelFn) {
+        confirm: function (title, text, okFn, cancelFn) {
+            (new PNotify({
+                title: title,
+                text: text,
+                icon: 'glyphicon glyphicon-question-sign',
+                hide: false,
+                confirm: {
+                    confirm: true
+                },
+                buttons: {
+                    closer: false,
+                    sticker: false
+                },
+            })).get().on('pnotify.confirm', function () {
+                if (!_.isUndefined(okFn) && _.isFunction(okFn))
+                    okFn();
+            }).on('pnotify.cancel', function () {
+                if (!_.isUndefined(cancelFn) && _.isFunction(cancelFn))
+                    cancelFn();
+            });
             //swal({
             //    title: title,
             //    text: text,
