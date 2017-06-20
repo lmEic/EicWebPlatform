@@ -494,12 +494,13 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
     var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
 
     operate.saveAll = function () {
-        hrDataOpService.handleAskForLeave(vmManager.askLeaveDatas).then(function (opResult) {
-            leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
-                vmManager.loadCalendarDatas();
-                vmManager.askLeaveDatas = [];
-            });
-        });
+        //hrDataOpService.handleAskForLeave(vmManager.askLeaveDatas).then(function (opResult) {
+        //    leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
+        //        vmManager.loadCalendarDatas();
+        //        vmManager.askLeaveDatas = [];
+        //    });
+        //});
+        leePopups.alert("asdfasfdsdafasf");
     };
 
     $scope.promise = hrDataOpService.getLeaveTypesConfigs().then(function (datas) {
