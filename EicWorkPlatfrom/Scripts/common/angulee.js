@@ -1,5 +1,6 @@
 ﻿/// <reference path="../../Content/ztree/dist/js/jquery.ztree.all.min.js" />
 ///数据处理器
+/// <reference path="../../Content/sweetalert2/dist/sweetalert2.js" />
 /// <reference path="../../Content/underscore/underscore-min.js" />
 /// <reference path="../jquery-2.1.4.min.js" />
 var leeDataHandler = (function () {
@@ -39,6 +40,8 @@ var leeDataHandler = (function () {
             opstatus.result = opresult.Result;
             opstatus.message = opresult.Message;
             opstatus.msgDisplay = true;
+
+
 
             (function () {
                 setTimeout(function () {
@@ -178,7 +181,7 @@ var leeDataHandler = (function () {
         dataOpMode: leeDataOpMode
     };
 })();
-///常用操作助手
+//常用操作助手
 var leeHelper = (function () {
     var modalTpl = {
         //消息提示窗口
@@ -550,13 +553,57 @@ var leeHelper = (function () {
         },
     };
 })();
-/// 弹出框助手
+// 弹出框助手
 var leePopups = (function () {
     var mmPopup = {
-        ///对话框
+        //对话框
         dialog: function (title, content) {
             return new myDialog(title, content);
-        }
+        },
+        //提醒信息,type：消息类型 1：info;2:warning;3:error
+        alert: function (text, type) {
+            var infoType;
+            if (type === 1)
+                infoType = "info";
+            else if (type === 2)
+                infoType = "warning";
+            else if (type === 3)
+                infoType = "error";
+            else
+                infoType = "info";
+            swal({
+                type: infoType,
+                text: text,
+                allowOutsideClick: false
+            });
+        },
+        //询问对话框，title:标题;text:文本内容;okFn:确认函数；cancelFn:取消Fn
+        question: function (title, text, okFn, cancelFn) {
+            swal({
+                title: title,
+                text: text,
+                type: 'question',
+                allowOutsideClick: false,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '<i class="fa fa-thumbs-up"></i>  确   定',
+                cancelButtonText: '<i class="fa fa-undo"></i>  取   消',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false
+            }).then(function () {
+                if (!_.isUndefined(okFn) && _.isFunction(okFn))
+                    okFn();
+            }, function (dismiss) {
+                // dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+                if (dismiss === 'cancel') {
+                    if (!_.isUndefined(cancelFn) && _.isFunction(cancelFn))
+                        cancelFn();
+                }
+            })
+        },
     };
     function myDialog(title, content) {
         this.open = false;
@@ -565,15 +612,10 @@ var leePopups = (function () {
     };
     myDialog.prototype.show = function () { this.open = true; };
     myDialog.prototype.close = function () { this.open = false; };
-    myDialog.prototype.alert = function (title, content) {
-        this.open = true;
-        this.title = title;
-        this.content = content;
-    };
     return mmPopup;
 })();
 
-/// 登陆用户
+// 登陆用户
 var leeLoginUser = (function () {
     var user = {
         //账号
