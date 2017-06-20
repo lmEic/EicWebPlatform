@@ -14,74 +14,16 @@
         <div class="clearfix"></div>
         <div class="h-split"></div>
         <div id="equipmentDataWindow">
+            <div ng-if="vm.SupplierShortName!=''">
+                <label>供应商ID: <span class="label label-primary">{{vm.SupplierId}}</span></label>
+                <label>供应商简称:<span class="label label-default">{{vm.SupplierShortName}}</span></label>
+                <label>供应商类型:<span class="label label-success">{{vm.PurchaseType}}</span></label>
+                <label>最新采购时间:<span class="label label-default">{{vm.UpperPurchaseDate}}</span></label>
+            </div>
             <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
-                @*供应商基础信息*@
-                <div bs-pane data-title="供应商信息" data-name="baseInfoTab">
-                    <div class="well">
-                        <div class="table-responsive">
-                            <table class="table table-condensed table-bordered table-hover" style="table-layout:fixed">
-                                <colgroup>
-                                    @*编号  *@
-                                    <col width="30" />
-                                    @* 采购类型 *@
-                                    <col width="50" />
-                                    @* 供应商类型 *@
-                                    <col width="60" />
-                                    @* 简称 *@
-                                    <col width="100" />
-                                    @* 全称 *@
-                                    <col width="200" />
-                                    @* 联系人 *@
-                                    <col width="50" />
-                                    @* 地址 *@
-                                    <col width="150" />
-                                    @* 付款方式 *@
-                                    <col width="50" />
-                                    @*负责人  *@
-                                    <col width="40" />
-                                    @* 备注 *@
-                                    <col width="30" />
-                                    @* 操作 *@
-                                    <col width="30" />
-                                </colgroup>
-                                <thead>
-                                    <tr class="info">
-                                        <th>编号</th>
-                                        <th>采购类型</th>
-                                        <th>供应商类型</th>
-                                        <th>简称</th>
-                                        <th>全称</th>
-                                        <th>联系人</th>
-                                        <th>地址</th>
-                                        <th>付款方式</th>
-                                        <th>负责人</th>
-                                        <th>备注</th>
-                                        <th>操作<i></i></th>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="item in vmManager.SupplierInfoDatas track by $index">
-                                        <td>{{item.SupplierId}}</td>
-                                        <td>{{item.SupplierType}}</td>
-                                        <td>{{item.SupplierProperty}}</td>
-                                        <td>{{item.SupplierShortName}}</td>
-                                        <td>{{item.SupplierName}}</td>
-                                        <td>{{item.SupplierUser}}</td>
-                                        <td>{{item.SupplierAddress}}</td>
-                                        <td>{{item.PayCondition}}</td>
-                                        <td>{{item.Remark}}</td>
-                                        <td>{{item.DeliveryDate}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div yl-pagination
-                                 data-datasource="vmManager.datasource"
-                                 data-dataset="vmManager.datasets">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+             
                 @* 供应商证信息 *@
-                <div bs-pane data-title="证书信息" data-name="maintenanceInfoTab">
+                <div bs-pane data-title="证书信息" data-name="supplierEligibleCertificateDatasInfoTab">
                     <div class="well">
                         <div class="table-responsive">
                             <table class="table table-condensed table-bordered table-hover">
@@ -96,8 +38,9 @@
                                         <th>上传时间</th>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="item in vmManager.supplierEligibleCertificateDatas track by $index">
+                                    <tr ng-repeat="item in vmManager.supplierEligibleCertificateDatas  track by $index">
                                         <td>{{item.SupplierId}}</td>
+                                        <td>{{item.EligibleCertificate}}</td>
                                         <td>{{item.EligibleCertificate}}</td>
                                         <td>{{item.DateOfCertificate}}</td>
                                         <td>{{item.CertificateFileName}}</td>
@@ -106,10 +49,10 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div yl-pagination
+                            @*<div yl-pagination
                                  data-datasource="vmManager.supplierEligibleCertificateDatas"
                                  data-dataset="vmManager.supplierEligibleCertificateDatas">
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                 </div>
@@ -122,30 +65,42 @@
                                     <thead>
                                         <tr class="info">
                                             <th>编号</th>
-                                            <th>全称</th>
-                                            <th>供应商类型</th>
-                                            <th>采购类型</th>
-                                            <th>地址</th>
-                                            <th>联系人</th>
-                                            <th>最近采购时间</th>
-                                            <th>负责人</th>
+                                            <th>简称</th>
+                                            <th>供应商全称</th>
+                                            <th>质量</th>
+                                            <th>价格</th>
+                                            <th>交期</th>
+                                            <th>配合度</th>
+                                            <th>HSF能力</th>
+                                            <th>总分</th>
+                                            <th>等级</th>
+                                            <th>惩罚方式</th>
+                                            <th>物料等级</th>
+                                            <th>管理风险</th>
+                                            <th>替代厂商</th>
+                                            <th>评份季度</th>
+                                            <th>评份人</th>
                                             <th>备注</th>
-                                            <th>操作<i></i></th>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="item in vmManager.datasets track by $index">
-                                            <td>{{item.AssetNumber}}</td>
-                                            <td>{{item.EquipmentName}}</td>
-                                            <td>{{item.EquipmentSpec}}</td>
-                                            <td>{{item.ManufacturingNumber}}</td>
-                                            <td>{{item.AssetType}}</td>
-                                            <td>{{item.EquipmentType}}</td>
-                                            <td>{{item.TaxType}}</td>
-                                            <td>{{item.Unit}}</td>
-                                            <td>{{item.Manufacturer}}</td>
+                                        <tr ng-repeat="item in  vmManager.supplierAuditDatas track by $index">
+                                            <td>{{item.SupplierId}}</td>
+                                            <td>{{item.SupplierShortName}}</td>
+                                            <td>{{item.SupplierName}}</td>
+                                            <td>{{item.QualityCheck}}</td>
+                                            <td>{{item.AuditPrice}}</td>
                                             <td>{{item.DeliveryDate}}</td>
-                                            <td>{{item.SafekeepUser}}</td>
-                                            <td>{{item.SafekeepDepartment}}</td>
+                                            <td>{{item.ActionLiven}}</td>
+                                            <td>{{item.HSFGrade}}</td>
+                                            <td>{{item.TotalCheckScore}}</td>
+                                            <td>{{item.CheckLevel}}</td>
+                                            <td>{{item.RewardsWay}}</td>
+                                            <td>{{item.MaterialGrade}}</td>
+                                            <td>{{item.ManagerRisk}}</td>
+                                            <td>{{item.SubstitutionSupplierId}}</td>
+                                            <td>{{item.SeasonDateNum}}</td>
+                                            <td>{{item.OpPserson}}</td>
+                                            <td>{{item.Remark}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -154,7 +109,8 @@
                         </div>
                     </div>
                 </div>
-                @* 辅导信息 *@
+              
+                  @* 辅导信息 *@
                 <div bs-pane data-title="辅导信息" data-name="scrapInfoTab">
                    <div class="well">
                        <div role="tabpanel" class="tab-pane active" id="Repaired">
@@ -163,40 +119,47 @@
                                    <thead>
                                        <tr class="info">
                                            <th>编号</th>
-                                           <th>全称</th>
-                                           <th>供应商类型</th>
-                                           <th>采购类型</th>
-                                           <th>地址</th>
-                                           <th>联系人</th>
-                                           <th>最近采购时间</th>
-                                           <th>负责人</th>
+                                           <th>简称</th>
+                                           <th>等级</th>
+                                           <th>处理方式</th>
+                                           <th>物料风险</th>
+                                           <th>季度</th>
+                                           <th>计划辅导日期</th>
+                                           <th>计划辅导内容</th>
+                                           <th>实际辅导日期</th>
+                                           <th>实际辅导内容</th>
+                                           <th>辅导结果</th>
+                                           <th>辅导原因</th>
                                            <th>备注</th>
-                                           <th>操作<i></i></th>
                                    </thead>
                                    <tbody>
-                                       <tr ng-repeat="item in vmManager.datasets track by $index">
-                                           <td>{{item.AssetNumber}}</td>
-                                           <td>{{item.EquipmentName}}</td>
-                                           <td>{{item.EquipmentSpec}}</td>
-                                           <td>{{item.ManufacturingNumber}}</td>
-                                           <td>{{item.AssetType}}</td>
-                                           <td>{{item.EquipmentType}}</td>
-                                           <td>{{item.TaxType}}</td>
-                                           <td>{{item.Unit}}</td>
-                                           <td>{{item.Manufacturer}}</td>
-                                           <td>{{item.DeliveryDate}}</td>
-                                           <td>{{item.SafekeepUser}}</td>
-                                           <td>{{item.SafekeepDepartment}}</td>
+                                       <tr ng-repeat="item in vmManager.supplierSeasonTutorInfo track by $index">
+                                           <td>{{item.SupplierId}}</td>
+                                           <td>{{item.SuppilerShortName}}</td>
+                                           <td>{{item.CheckLevel}}</td>
+                                           <td>{{item.RewardsWay}}</td>
+                                           <td>{{item.MaterialGrade}}</td>
+                                           <td>{{item.SeasonNum}}</td>
+                                           <td>{{item.PlanTutorDate}}</td>
+                                           <td>{{item.PlanTutorContent}}</td>
+                                           <td>{{item.ActionTutorDate}}</td>
+                                           <td>{{item.ActionTutorContent}}</td>
+                                           <td>{{item.TutorResult}}</td>
+                                           <td>{{item.TutorCategory}}</td>
+                                           <td>{{item.Remark}}</td>
                                        </tr>
                                    </tbody>
                                </table>
-                               <div yl-pagination ng-if="vmManager.discardDataSource.length>0"
-                                    data-dataset="vmManager.discardDataSets" data-datasource="vmManager.discardDataSource"></div>
+                               @*<div yl-pagination ng-if="vmManager.discardDataSource.length>0"
+                                    data-dataset="vmManager.discardDataSets" data-datasource="vmManager.discardDataSource">
+
+                               </div>*@
                            </div>
                        </div>
                     </div>
                 </div>
-                @* 稽核信息 *@
+               
+                 @* 稽核信息 *@
                 <div bs-pane data-title="稽核信息" data-name="supGradeInfoTab">
                     <div role="tabpanel" class="tab-pane active" id="Repaired">
                         <dir class="well">
@@ -205,35 +168,36 @@
                                     <thead>
                                         <tr class="info">
                                             <th>编号</th>
-                                            <th>全称</th>
-                                            <th>供应商类型</th>
+                                            <th>供应商简称</th>
+                                            <th>供应商属性</th>
                                             <th>采购类型</th>
-                                            <th>地址</th>
-                                            <th>联系人</th>
-                                            <th>最近采购时间</th>
-                                            <th>负责人</th>
-                                            <th>备注</th>
-                                            <th>操作<i></i></th>
+                                            <th>采购时间</th>
+                                            <th>稽核类型</th>
+                                            <th>评分属性</th>
+                                            <th>分数/签名</th>
+                                            <th>评分日期</th>
+                                            <th>评分年份</th>
+                                            <th>评分人</th>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="item in vmManager.datasets track by $index">
-                                            <td>{{item.AssetNumber}}</td>
-                                            <td>{{item.EquipmentName}}</td>
-                                            <td>{{item.EquipmentSpec}}</td>
-                                            <td>{{item.ManufacturingNumber}}</td>
-                                            <td>{{item.AssetType}}</td>
-                                            <td>{{item.EquipmentType}}</td>
-                                            <td>{{item.TaxType}}</td>
-                                            <td>{{item.Unit}}</td>
-                                            <td>{{item.Manufacturer}}</td>
-                                            <td>{{item.DeliveryDate}}</td>
-                                            <td>{{item.SafekeepUser}}</td>
-                                            <td>{{item.SafekeepDepartment}}</td>
+                                        <tr ng-repeat="item in vmManager.supplierGradeDatas track by $index">
+                                            <td>{{item.SupplierId}}</td>
+                                            <td>{{item.SupplierName}}</td>
+                                            <td>{{item.SupplierProperty}}</td>
+                                            <td>{{item.PurchaseType}}</td>
+                                            <td>{{item.LastPurchaseDate}}</td>
+                                            <td>{{item.SupGradeType}}</td>
+                                            <td>{{item.IsFirstGrade}}</td>
+                                            <td>{{item.GradeScore}}|{{item.GradeExplain}}</td>
+                                            <td>{{item.GradeDate}}</td>
+                                            <td>{{item.GradeYear}}</td>
+                                            <td>{{item.OpPerson}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div yl-pagination ng-if="vmManager.discardDataSource.length>0"
-                                     data-dataset="vmManager.discardDataSets" data-datasource="vmManager.discardDataSource"></div>
+                                @*<div yl-pagination ng-if="vmManager.discardDataSource.length>0"
+                                     data-dataset="vmManager.discardDataSets" data-datasource="vmManager.discardDataSource">
+                                </div>*@
                             </div>
                         </dir>
                     </div>

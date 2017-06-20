@@ -34,16 +34,22 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public ContentResult GetPurSupplierAllInfoDatasBy(string supplierId)
         {
-            ///供应商稽核评分信息
-            var supplierGradeDatas = PurchaseService.PurSupplierManager.GradeManager.GetPurSupGradeInfoDataBy(supplierId);
+            ///供应商信息
+            var supplierBaseInfoData = PurchaseService.PurSupplierManager.CertificateManager.GetSupplierBaseInfoBy(supplierId);
             ///供应商合格证收信息EligibleCertificate
             var supplierEligibleCertificateDatas = PurchaseService.PurSupplierManager.CertificateManager.GetSupplierQualifiedCertificateListBy(supplierId);
-            ///供应商信息
-            var supplierBaseInfoDatas = PurchaseService.PurSupplierManager.CertificateManager.GetSuppplierInfoBy(supplierId);
             /// 季度考核分
             var supplierAuditDatas = PurchaseService.PurSupplierManager.AuditManager.GetSupplierAuditInfoDatasBy(supplierId);
-
-            var datas = new { supplierBaseInfoDatas , supplierEligibleCertificateDatas, supplierAuditDatas };
+            ///供应商稽核评分信息
+            var supplierGradeDatas = PurchaseService.PurSupplierManager.GradeManager.GetPurSupGradeInfoDataBy(supplierId);
+            ///辅导信息
+            var supplierSeasonTutorInfo = PurchaseService.PurSupplierManager.TutorManger.GetSupplierSeasonTutorDatasBy(supplierId);
+            var datas = new {
+                supplierBaseInfoData ,
+                supplierEligibleCertificateDatas,
+                supplierAuditDatas,
+                supplierSeasonTutorInfo,
+                supplierGradeDatas };
             return DateJsonResult(datas);
         }
         #endregion

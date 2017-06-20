@@ -272,6 +272,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         leeHelper.setUserData(uiVm);
         console.log(uiVm);
         uiVm.RmaId = rmavm.RmaId;
+        if (uiVm.RmaId === '' || uiVm.RmaId === null) return;
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             rmaDataOpService.storeRmaInputDescriptionData(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {

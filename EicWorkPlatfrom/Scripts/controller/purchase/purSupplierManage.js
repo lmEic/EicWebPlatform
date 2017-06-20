@@ -675,7 +675,17 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
 
 //供应商综合查询
 purchaseModule.controller('supplierGatherInfoCtrl', function ($scope, supplierDataOpService, $modal) {
+
+    var vm = $scope.vm = {
+        SupplierId: '',
+        SupplierShortName: '',
+        PurchaseType: '',
+        UpperPurchaseDate:'',
+    };
     var vmManager = $scope.vmManager = {
+        //激活当前的Tab
+        activeTab: 'baseInfoTab',
+
         supplierId: 'D10048',
         //供应商基本信息
         SupplierInfoDatas: [],
@@ -684,21 +694,23 @@ purchaseModule.controller('supplierGatherInfoCtrl', function ($scope, supplierDa
         ///季度考核分数
         supplierAuditDatas:[],
         ///辅导信息
-
+     
         ///稽核信息
         supplierGradeDatas: [],
 
         ///根据供应商编号查询供应商数据信息
         searchSupplierDatas: function () {
-            console.log(1111);
             $scope.searchPromise = supplierDataOpService.getPurSupplierAllInfoDatas(vmManager.supplierId).then(function (datas) {
                 console.log(datas);
-                vmManager.SupplierInfoDatas = datas.supplierBaseInfoDatas;
+                //基础信息
+                leeHelper.copyVm(datas.supplierBaseInfoData, $scope.vm);
+                console.log(vm);
+                //证书
                 vmManager.supplierEligibleCertificateDatas = datas.supplierEligibleCertificateDatas;
+                //考核
                 vmManager.supplierAuditDatas = datas.supplierAuditDatas;
-
-
-
+                //稽核评分
+                vmManager.supplierGradeDatas = datas.supplierGradeDatas;
             });
         },
     }

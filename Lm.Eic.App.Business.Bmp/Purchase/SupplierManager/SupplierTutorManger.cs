@@ -44,6 +44,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             }
             return waittingTourSupplierList;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+       public List<SupplierSeasonTutorModel> GetSupplierSeasonTutorDatasBy(string supplierId)
+        {
+            return SupplierCrudFactory.SuppliersSeasonTutorCrud.GetSupplierSeasonTutorDatasBy(supplierId);
+        }
 
         /// <summary>
         /// 保存供应商辅导\计划管理
