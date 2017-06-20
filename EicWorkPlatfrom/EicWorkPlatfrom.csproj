@@ -141,6 +141,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Controllers\Account\AccountController.cs" />
     <Compile Include="Controllers\BaseController\EicCommonUIHelper.cs" />
     <Compile Include="Controllers\BusinessController.cs" />
@@ -330,6 +331,8 @@
     <Content Include="Content\pdfmaker\pdfmake.js" />
     <Content Include="Content\pdfmaker\pdfmake.min.js" />
     <Content Include="Content\pdfmaker\vfs_fonts.js" />
+    <Content Include="Content\pnotify\dist\pnotify.custom.css" />
+    <Content Include="Content\pnotify\dist\pnotify.custom.js" />
     <Content Include="Content\print\print.min.css" />
     <Content Include="Content\print\print.min.js" />
     <Content Include="Content\underscore\underscore-min.js" />
@@ -1359,7 +1362,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\pnotify\dist\" />
     <Folder Include="FileLibrary\PreviewFiles\" />
     <Folder Include="Models\" />
   </ItemGroup>

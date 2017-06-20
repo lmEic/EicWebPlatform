@@ -500,7 +500,8 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         //        vmManager.askLeaveDatas = [];
         //    });
         //});
-        leePopups.alert("asdfasfdsdafasf");
+
+        leePopups.confirm("", "");
     };
 
     $scope.promise = hrDataOpService.getLeaveTypesConfigs().then(function (datas) {
