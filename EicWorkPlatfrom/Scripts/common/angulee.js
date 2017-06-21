@@ -41,13 +41,24 @@ var leeDataHandler = (function () {
             opstatus.message = opresult.Message;
             opstatus.msgDisplay = true;
 
-
-
-            (function () {
-                setTimeout(function () {
+            var msgtype = opstatus.result === true ? "success" : "error";
+            new PNotify({
+                title: "提示",
+                text_escape: true,
+                text: opresult.Message,
+                type: msgtype,
+                delay: 3000,
+                width: '460px',
+                styling: 'brighttheme',
+                addclass: "stack-bar-top",
+                cornerclass: "",
+                width: "100%",
+                stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 },
+                after_close: function (notice, timer_hide) {
                     opstatus.msgDisplay = false;
-                }, 2000);
-            })();
+                }
+            });
+
             if (opresult.Result === true) {
                 if (successFn !== undefined && _.isFunction(successFn))
                     successFn();
@@ -570,7 +581,7 @@ var leePopups = (function () {
             else if (type === 3)
                 infoType = "error";
             else if (type === 4)
-                infoType = "notice";
+                infoType = "success";
             else
                 infoType = "notice";
 
@@ -583,11 +594,7 @@ var leePopups = (function () {
                 width: '460px',
                 styling: 'brighttheme',
                 addclass: 'stack-modal',
-                stack: { "dir1": "down", "dir2": "right", "push": "top", "modal": true, "overlay_close": true }
-                //addclass: "stack-bar-top",
-                //cornerclass: "",
-                //width: "100%",
-                //stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 }
+                stack: { "dir1": "down", "dir2": "right", "push": "top", "modal": true, "overlay_close": true },
             });
         },
         //询问对话框，title:标题;text:文本内容;okFn:确认函数；cancelFn:取消Fn
@@ -597,8 +604,31 @@ var leePopups = (function () {
                 text: text,
                 icon: 'glyphicon glyphicon-question-sign',
                 hide: false,
+                type: 'error',
+                width: '460px',
+                styling: 'brighttheme',
                 confirm: {
-                    confirm: true
+                    confirm: true,
+                    buttons: [
+                      {
+                          text: '确   定',
+                          addClass: 'btn-info',
+                          click: function (notice) {
+                              if (!_.isUndefined(okFn) && _.isFunction(okFn))
+                                  okFn();
+                              notice.remove();
+                          }
+                      },
+                      {
+                          text: '取   消',
+                          addClass: 'btn-default',
+                          click: function (notice) {
+                              if (!_.isUndefined(cancelFn) && _.isFunction(cancelFn))
+                                  cancelFn();
+                              notice.remove();
+                          }
+                      },
+                    ]
                 },
                 buttons: {
                     closer: false,
@@ -609,37 +639,7 @@ var leePopups = (function () {
                 },
                 addclass: 'stack-modal',
                 stack: { 'dir1': 'down', 'dir2': 'right', 'modal': true }
-            })).get().on('pnotify.confirm', function () {
-                if (!_.isUndefined(okFn) && _.isFunction(okFn))
-                    okFn();
-            }).on('pnotify.cancel', function () {
-                if (!_.isUndefined(cancelFn) && _.isFunction(cancelFn))
-                    cancelFn();
-            });
-            //swal({
-            //    title: title,
-            //    text: text,
-            //    type: 'question',
-            //    allowOutsideClick: false,
-            //    showCancelButton: true,
-            //    confirmButtonColor: '#3085d6',
-            //    cancelButtonColor: '#d33',
-            //    confirmButtonText: '<i class="fa fa-thumbs-up"></i>  确   定',
-            //    cancelButtonText: '<i class="fa fa-undo"></i>  取   消',
-            //    confirmButtonClass: 'btn btn-success',
-            //    cancelButtonClass: 'btn btn-danger',
-            //    buttonsStyling: false
-            //}).then(function () {
-            //    if (!_.isUndefined(okFn) && _.isFunction(okFn))
-            //        okFn();
-            //}, function (dismiss) {
-            //    // dismiss can be 'cancel', 'overlay',
-            //    // 'close', and 'timer'
-            //    if (dismiss === 'cancel') {
-            //        if (!_.isUndefined(cancelFn) && _.isFunction(cancelFn))
-            //            cancelFn();
-            //    }
-            //})
+            }));
         },
     };
     function myDialog(title, content) {

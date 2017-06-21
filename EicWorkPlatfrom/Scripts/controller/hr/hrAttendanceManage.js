@@ -469,13 +469,17 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         },
         removeAskLeaveRecord: function (weekDay, item) {
             if (vmManager.workerInfo === null) return;
-            if (item.IsServer) {
-                item.OpSign = leeDataHandler.dataOpMode.delete;
-            }
-            else {
-                leeHelper.delWithId(vmManager.askLeaveDatas, item);//从数据操作库中移除
-            }
-            leeHelper.delWithId(weekDay.askLeaveDatas, item);//移除临时数据
+            leePopups.confirm("删除提示", "您确定要删除请假数据吗？", function () {
+                $scope.$apply(function () {
+                    if (item.IsServer) {
+                        item.OpSign = leeDataHandler.dataOpMode.delete;
+                    }
+                    else {
+                        leeHelper.delWithId(vmManager.askLeaveDatas, item);//从数据操作库中移除
+                    }
+                    leeHelper.delWithId(weekDay.askLeaveDatas, item);//移除临时数据
+                });
+            });
         },
         editAskLeaveRecord: function (item) {
             if (vmManager.workerInfo === null) return;
@@ -494,14 +498,12 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
     var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
 
     operate.saveAll = function () {
-        //hrDataOpService.handleAskForLeave(vmManager.askLeaveDatas).then(function (opResult) {
-        //    leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
-        //        vmManager.loadCalendarDatas();
-        //        vmManager.askLeaveDatas = [];
-        //    });
-        //});
-
-        leePopups.confirm("", "");
+        hrDataOpService.handleAskForLeave(vmManager.askLeaveDatas).then(function (opResult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
+                vmManager.loadCalendarDatas();
+                vmManager.askLeaveDatas = [];
+            });
+        });
     };
 
     $scope.promise = hrDataOpService.getLeaveTypesConfigs().then(function (datas) {
