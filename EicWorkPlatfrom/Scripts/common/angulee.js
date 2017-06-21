@@ -604,6 +604,11 @@ var leePopups = (function () {
                     closer: false,
                     sticker: false
                 },
+                history: {
+                    history: false
+                },
+                addclass: 'stack-modal',
+                stack: { 'dir1': 'down', 'dir2': 'right', 'modal': true }
             })).get().on('pnotify.confirm', function () {
                 if (!_.isUndefined(okFn) && _.isFunction(okFn))
                     okFn();
