@@ -1160,6 +1160,18 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             vmManager.isShowDetailWindow = false;
         },
     };
+
+    var editManager = $scope.editManager = {
+        ///下载文件
+        loadFile: function (item) {
+            var loadUrl = "/QuaInspectionManage/LoadIqcDatasDownLoadFile?OrderId =" + item.OrderId + "&MaterialId =" + item.MaterialId + "&InspectionItem" + item.inspectionItem;
+            return loadUrl;
+        },
+        ///获取文件扩展名图标
+        getFileExtentionIcon: function (item) {
+            return leeHelper.getFileExtensionIcon(item.FileName);
+        }
+    };
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
 })

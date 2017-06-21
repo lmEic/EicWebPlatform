@@ -17,9 +17,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// </summary>
     public class SupplierCertificateManager
     {
-
-        
-        
         /// <summary>
         /// 从ERP中获取截止到给定月份的合格供应商清册列表
         /// </summary>
@@ -27,12 +24,16 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public List<SuppliersSumInfoVM> GetQualifiedSupplierList(string endYearMonth)
         {
-            List<SuppliersSumInfoVM> SupplierInfoVmDatas = new List<SuppliersSumInfoVM>();
-
-            SuppliersSumInfoVM modelVm = null;
             string startYearMonth = (int.Parse(endYearMonth) - 100).ToString();
+            return GetQualifiedSupplierDates(  startYearMonth, endYearMonth);
+        }
+
+        public List<SuppliersSumInfoVM> GetQualifiedSupplierDates( string startYearMonth,string endYearMonth)
+        {
+            SuppliersSumInfoVM modelVm = null;
+            List<SuppliersSumInfoVM> SupplierInfoVmDatas = new List<SuppliersSumInfoVM>();
             //获取供应商信息
-            var supplierInfoList = GetSupplierInformationListBy(startYearMonth, endYearMonth);
+            var supplierInfoList = GetSupplierInformationDatasBy(startYearMonth, endYearMonth);
             if (supplierInfoList == null || supplierInfoList.Count == 0) return SupplierInfoVmDatas;
             supplierInfoList.ForEach(supplierInfo =>
             {
@@ -44,6 +45,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             });
             return SupplierInfoVmDatas.OrderBy(e => e.SupplierId).ToList();
         }
+
         public SuppliersSumInfoVM GetSupplierBaseInfoBy(string supplierId)
         {
             var supplierInfo = GetSuppplierInfoBy(supplierId);
@@ -271,7 +273,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="yearMoth">年份格式yyyyMM</param>
         /// <returns></returns>
-        private List<SupplierInfoModel> GetSupplierInformationListBy(string startYearMonth, string endYearMonth)
+       public  List<SupplierInfoModel> GetSupplierInformationDatasBy(string startYearMonth, string endYearMonth)
         {
             List<SupplierInfoModel> SupplierInfoDatas = new List<SupplierInfoModel>();
             SupplierInfoModel m = null;

@@ -147,19 +147,19 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Validation
                 switch (DateNum)
                 {
                     case 1:
-                        startdate = startYear + "0101";
+                        startdate = startYear + "0401";
                         enddate = endYear + "0331";
                         break;
                     case 2:
-                        startdate = startYear + "0401";
+                        startdate = startYear + "0701";
                         enddate = endYear + "0630";
                         break;
                     case 3:
-                        startdate = startYear + "0701";
+                        startdate = startYear + "1001";
                         enddate = endYear + "0931";
                         break;
                     case 4:
-                        startdate = startYear + "1001";
+                        startdate = endYear + "0101";
                         enddate = endYear + "1231";
                         break;
                     default:
