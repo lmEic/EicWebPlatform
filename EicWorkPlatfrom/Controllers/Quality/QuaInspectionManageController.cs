@@ -451,7 +451,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="eligibleCertificate"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public FileResult LoadQualifiedCertificateFile(string orderId, string materialId,string inspectionItem)
+        public FileResult LoadIqcDatasDownLoadFile(string orderId, string materialId,string inspectionItem)
         {
             DownLoadFileModel dlfm = InspectionService.DataGatherManager.IqcDataGather.GetIqcDatasDownLoadFileModel(SiteRootPath, orderId, materialId, inspectionItem);
             return this.DownLoadFile(dlfm);
@@ -501,5 +501,16 @@ namespace EicWorkPlatfrom.Controllers
         #endregion
         #endregion
 
+    }
+
+    /// <summary>
+    /// 上传文件附件数据模型
+    /// </summary>
+    public class FileAttatchData
+    {
+        public string OrderId { get; set; }
+
+        public string MaterialId { get; set; }
+        public string InspectionItem { get; set; }
     }
 }
