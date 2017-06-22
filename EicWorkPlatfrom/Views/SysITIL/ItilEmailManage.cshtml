@@ -43,19 +43,23 @@
                             <div class="form-group">
                                 <label for="department" class="col-md-2 control-label">部门</label>
                                 <div class="col-md-4">
-                                    <input name="department" class="form-control" ng-model="vm.Department" ng-show="false" required />
-                                    <div class="error-messages" ng-messages="formEmailManage.department.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">部门不能为空</small>
-                                    </div>
-                                    <button type="button" class="btn btn-default" ng-model="vm.Department"
-                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
-                                            data-bs-options="item.id as item.text for item in vmManager.departments" data-bs-select>
-                                        <span class="caret"></span>
-                                    </button>
+                                    <div class="input-group">
+                                        <input name="department" class="form-control" ng-model="vm.Department" required />
+                                        <div class="error-messages" ng-messages="formEmailManage.department.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">部门不能为空</small>
+                                        </div>
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-primary " ng-model="vm.Department"
+                                                    data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
+                                                    data-bs-options="item.id as item.text for item in vmManager.departments" data-bs-select>
+                                                <span class="caret"></span>
+                                            </button>
+                                        </div>
+                                    </div>                             
                                 </div>
                                 <label for="regDate" class="col-md-2 control-label">注册日期</label>
                                 <div class="col-md-4">
-                                    <input type="date" name="regDate" class="form-control" ng-model="vm.RegDate" placeholder="注册日期" format-data required />
+                                    <input type="date" name="regDate" class="form-control" ng-model="vm.RegDate" placeholder="注册日期" format-date required />
                                     <div class="error-messages" ng-messages="formEmailManage.regDate.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">注册日期不能为空</small>
                                     </div>
@@ -99,13 +103,20 @@
                             <div class="form-group">
                                 <label for="receiveGrade" class="col-md-2 control-label">邮箱等级</label>
                                 <div class="col-md-4">
-                                    <input type="text" name="receiveGrade" class="form-control" ng-model="vm.ReceiveGrade" placeholder="邮箱等级" ng-show="false" required />
-                                    <div class="error-messages" ng-messages="formEmailManage.receiveGrade.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">等级不能为空</small>
+                                    <div class="input-group">
+                                        <input type="text" name="receiveGrade" class="form-control" ng-model="vm.ReceiveGrade" placeholder="邮箱等级" required />
+                                        <div class="error-messages" ng-messages="formEmailManage.receiveGrade.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">等级不能为空</small>
+                                        </div>
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-primary" ng-model="vm.ReceiveGrade"
+                                                    data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择邮等级"
+                                                    data-bs-options="item.name as item.text for item in vmManager.receiveGrades" data-bs-select>
+
+                                            </button>
+                                        </div>
                                     </div>
-                                    <button type="button" class="btn btn-default" ng-model="vm.ReceiveGrade"
-                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择邮等级"
-                                            data-bs-options="item.name as item.text for item in vmManager.receiveGrades" data-bs-select></button>
+                                                                                                   
                                 </div>
                                 <label for="isSender" class="col-md-2 control-label">是否可发</label>
                                 <div class="col-md-4">
@@ -133,6 +144,7 @@
                 </div>
             </div>
         </div>
+
         <div bs-pane data-title="邮箱查询" data-name="editTab">
             <div class="well">
                 <div bs-tabs >
@@ -150,7 +162,7 @@
                             <div class="form-group">
                                 <label>邮箱账户</label>
                                 <input  type="email" class="form-control" ng-model="query.email" placeholder="邮箱账户" />
-                                <button class="btn btn-primary" ng-class="vmManager.getEmailRecords(2)"><i class="fa fa-search"></i>查询</button>
+                                <button class="btn btn-primary" ng-click="vmManager.getEmailRecords(2)"><i class="fa fa-search"></i>查询</button>
                             </div>
                         </form>
                     </div>
@@ -160,29 +172,201 @@
             <div class="well" cg-busy="{promise:searchPromise}">
                 <div class="h-split"></div>
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover table-bordered">
+                    <table class="table table-striped table-hover table-bordered" style="table-layout:fixed;">
+                        <colgroup>
+                            <col width="60" />
+                            <col width="80" />
+                            <col width="80" />
+                            <col width="120" />
+                            <col width="100" />
+                            <col width="100" />
+                            <col width="150" />
+                            <col width="200" />                        
+                            <col width="200" />             
+                            <col width="100" />
+                        </colgroup>
                         <thead>
                             <tr class="info">
+                                <th>序号</th>
                                 <th>工号</th>
                                 <th>姓名</th>
                                 <th>部门</th>
                                 <th>帐号</th>
+                                <th>等级</th>
                                 <th>注册日期</th>
+                                <th>POP地址</th>                          
+                                <th>SMTP地址</th>                             
+                                <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in vmManager.searchDataset track by $index">
+                                <td ng-bind="$index">
                                 <td ng-bind="item.WorkerId"></td>
                                 <td ng-bind="item.Name"></td>
                                 <td ng-bind="item.Department"></td>
                                 <td ng-bind="item.Email"></td>
+                                <td ng-bind="item.ReceiveGrade"></td>
                                 <td ng-bind="item.RegDate"></td>
+                                <td ng-bind="item.Pop3Host"></td>
+                             
+                                <td ng-bind="item.SmtpHost"></td>
+                             
+                                <td>
+                                    <button class="btn btn-xs btn-primary"ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i>修改</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
+                    
+                    <div ng-if="vmManager.datasource.length>0"
+                         yl-pagination
+                         data-dataset="vmManager.searchDataset"
+                         data-datasource="vmManager.datasource">
+                    </div>
                 </div>
-            </div>
+            </div>  
+
+            <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
+                <content dialog-title>
+                    <i class="fa fa-pencil-square">用户编辑</i>
+                </content>
+                <content dialog-content style="width:100%;">
+                    <form role="form" name="formEmailManage" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                        <div class="form-group">
+                            <label for="workerId" class="col-md-2 control-label">工号</label>
+                            <div class="col-md-4">
+                                <input name="workerId" class="form-control" ng-model="vm.WorkerId" placeholder="工号" required />
+                                <div class="error-messages" ng-messages="formEmailManage.workerId.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">工号不能为空</small>
+                                </div>
+                            </div>
+                            <label for="name" class="col-md-2 control-label">姓名</label>
+                            <div class="col-md-4">
+                                <input type="text" name="name" class="form-control" ng-model="vm.Name" placeholder="姓名" required />
+                                <div class="error-messages" ng-messages="formEmailManage.name.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">姓名不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="col-md-2 control-label">邮箱帐号</label>
+                            <div class="col-md-4">
+                                <input type="email" name="email" class="form-control" ng-model="vm.Email" placeholder="邮箱帐号" readonly required />
+                                <div class="error-messages" ng-messages="formEmailManage.email.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">账号不能为空</small>
+                                </div>
+                            </div>
+                            <label for="password" class="col-md-2 control-label">邮箱密码</label>
+                            <div class="col-md-4">
+                                <input type="password" name="password" class="form-control" ng-model="vm.Password" placeholder="邮箱密码" required />
+                                <div class="error-messages" ng-messages="formEmailManage.password.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">密码不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="department" class="col-md-2 control-label">部门</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input name="department" class="form-control" ng-model="vm.Department" required />
+                                    <div class="error-messages" ng-messages="formEmailManage.department.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">部门不能为空</small>
+                                    </div>  
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-model="vm.Department"
+                                                data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
+                                                data-bs-options="item.id as item.text for item in vmManager.departments" data-bs-select>
+                                            <span class="caret"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="regDate" class="col-md-2 control-label">注册日期</label>
+                            <div class="col-md-4">
+                                <input type="date" name="regDate" class="form-control" ng-model="vm.RegDate" format-date placeholder="注册日期" required />
+                                <div class="error-messages" ng-messages="formEmailManage.regDate.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">注册日期不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="smtpHost" class="col-md-2 control-label">SMTP</label>
+                            <div class="col-md-4">
+                                <input type="text" name="stmpHost" class="form-control" ng-model="vm.SmtpHost" placeholder="发送服务器" required />
+                                <div class="error-messages" ng-messages="formEmailManage.stmpHost.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">SMTP不能为空</small>
+                                </div>
+                            </div>
+                            <label for="stmpPost" class="col-md-2 control-label">端口号</label>
+                            <div class="col-md-4">
+                                <input type="text" name="stmpPost" class="form-control" ng-model="vm.SmtpPost" placeholder="服务器端口" required />
+                                <div class="error-messages" ng-messages="formEmailManage.isSender.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">端口不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pop3Host" class="col-md-2 control-label">POP3</label>
+                            <div class="col-md-4">
+                                <input type="text" name="stmpHost" class="form-control" ng-model="vm.Pop3Host" placeholder="接收服务器" required />
+                                <div class="error-messages" ng-messages="formEmailManage.pop3Host.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">POP3不能为空</small>
+                                </div>
+                            </div>
+                            <label for="pop3Post" class="col-md-2 control-label">端口号</label>
+                            <div class="col-md-4">
+                                <input type="text" name="pop3Post" class="form-control" ng-model="vm.Pop3Post" placeholder="服务器端口" required />
+                                <div class="error-messages" ng-messages="formEmailManage.pop3Post.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">端口不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="receiveGrade" class="col-md-2 control-label">邮箱等级</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input type="text" name="receiveGrade" class="form-control" ng-model="vm.ReceiveGrade" placeholder="邮箱等级" required />
+                                    <div class="error-messages" ng-messages="formEmailManage.receiveGrade.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">等级不能为空</small>
+                                    </div>
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-model="vm.ReceiveGrade"
+                                                data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择邮等级"
+                                                data-bs-options="item.name as item.text for item in vmManager.receiveGrades" data-bs-select></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="isSender" class="col-md-2 control-label">是否可发</label>
+                            <div class="col-md-4">
+                                <input type="text" name="isSender" class="form-control" ng-model="vm.IsSender" placeholder="是否可发" required />
+                                <div class="error-messages" ng-messages="formEmailManage.isSender.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">是否可发不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="alert alert-info">
+                            <div class="row">
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-10">
+                                    <button class="btn btn-primary" ng-click="operate.saveAll(formEmailManage.$valid)"><i class="fa fa-save"></i>保存</button>
+                                    <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                    <span yl-operatemsg-board></span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </content>
+            </dialog>          
         </div>
+
     </div>
     <div class="panel-footer">
 

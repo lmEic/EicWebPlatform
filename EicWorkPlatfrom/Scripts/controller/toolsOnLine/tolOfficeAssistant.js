@@ -23,10 +23,9 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
     };
 
     ///获取工作任务数据
-    oAssistant.getWorkTaskManageDatas = function (department, systemName, moduleName,mode) {
+    oAssistant.getWorkTaskManageDatas = function (systemName,moduleName,mode) {
         var url = oaUrlPrefix + 'GetWorkTaskManageDatas';
-        return ajaxService.getData(url, {
-            department: department,
+        return ajaxService.getData(url, {        
             systemName: systemName,
             moduleName: moduleName,
             mode:mode
@@ -177,8 +176,8 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
 });
 ///工作任务管理控制器
 officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssistantDataOpService) {
-    ///工作任务管理模型
-    var uiVm = $scope.vm = {
+ //view model
+    var uiVM = {
         Department: null,
         SystemName: null,
         ModuleName: null,
@@ -197,96 +196,75 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         OpDate: null,
         OpTime: null,
         OpSign: leeDataHandler.dataOpMode.add,
-        Id_Key: null
+        Id_Key: 0
     };
     $scope.vm = uiVM;
-    var initVm = _.clone(uiVm);
-    var dialog = $scope.dialog = Object.create(leeDialog);
-    ///定义查询字段
-    var qryVm = {
-        department: null,
+    var orginalVM = _.clone(uiVM);
+    var dialog = $scope.dialog = leePopups.dialog();
+
+    var queryFields = {
         systemName: null,
         moduleName: null
     };
-    $scope.query = qryVm;
+    $scope.query = queryFields;
 
     var vmManager = {
-        activeTab:'initTab',
+        activeTab: 'initTab',
         init: function () {
-            uiVm = _.clone(initVm);
-            leeHelper.setUserData(uiVm)
-            uiVm.OpSign = leeDataHandler.dataOpMode.add;
-            $scope.vm = uiVm;
+            uiVM = _.clone(orginalVM);
+            uiVM.OpSign = leeDataHandler.dataOpMode.add;
+            $scope.vm = uiVM;
         },
-        dataSource: [],
-        editDatas: [],
+        datasource: [],
         searchDataset: [],
-        storeDataset: [],
-        //载入信息
-        //loadDatas: function (department, searchMode, queryContent) {
-        //    vmManager.editDatas = [];
-        //    //获取工作内容数据
-        //    $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(department, searchMode, queryContent).then(function (datas) {
-        //        if (angular.isArray(datas))
-        //            vmManager.editDatas = datas;
-        //        vmManager.dataSource = datas;
-        //    });
-        //},
         searchBy: function () {
-            $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(qryVm.department, qryVm.systemName, qryVm.moduleName, 1).then(function (datas) {
-                vmManager.storeDataset = datas;
-                
-            });
-        },
-
-        //按分类查询
-        getDatasByName: function (mode) {
-            oAssistantDataOpService.getWorkTaskManageDatas(qryVm.department, qryVm.systemName, qryVm.moduleName, mode).then(function (datas) {
+            $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(queryFields.systemName, queryFields.moduleName, 1).then(function (datas) {
                 vmManager.searchDataset = datas;
-            });
+
+            })
+        },
+        getTaskRecords: function (mode) {
+            vmManager.searchDataset = [];
+            vmManager.datasource = [];
+            oAssistantDataOpService.getWorkTaskManageDatas(queryFields.systemName, queryFields.moduleName, mode).then(function (datas) {
+                vmManager.datasource = datas;
+            })
         },
     };
-    //新增
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.createNew = function () {
-        $scope.vm = uiVm = _.clone(initVm);
-        dialog.show();
-    };
-    //编辑
-    operate.editItem = function (item) {
-        item.OpSign = leeDataHandler.dataOpMode.edit;
-        $scope.vm = uiVm = item;
+        $scope.vm = uiVM = _.clone(orginalVM);
         dialog.show();
     },
-        //删除
-        operate.deleteItem = function (item) {
-            item.OpSign = leeDataHandler.dataOpMode.delete;
-            $scope.vm = uiVm = item;
-            deleteDialog.show();
+        operate.editItem = function (item) {
+            item.OpSign = leeDataHandler.dataOpMode.edit;
+            $scope.vm = uiVM = item;
+            dialog.show();
+        },
+        operate.saveAll = function (isValid) {
+            leeDataHandler.dataOperate.add(operate, isValid, function () {
+                oAssistantDataOpService.storeWorkTaskManageDatas(uiVM).then(function (opresult) {
+                    leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                        if (opresult.Result) {
+                            var mode = _.clone(uiVM)
+                            mode.Id_Key == opresult.Id_Key;
+                            if (mode.OpSign === leeDataHandler.dataOperate.add) {
+                                vmManager.datasource.push(mode);
+                            }
+                            vmManager.init();
+                            dialog.close();
+                        }
+                    });
+                });
+            });
 
         };
-    //保存
-    operate.saveAll = function (isValid) {
-        leeHelper.setUserData(uiVm);
-        leeDataHandler.dataOperate.add(operate, isValid, function () {
-            oAssistantDataOpService.storeWorkTaskManageDatas(uiVm).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                    if (opresult.Result) {
-                        var dataItem = _.clone(uiVm);
-                        dataItem.Id_Key = opresult.Id_Key;
-                        if (dataItem.OpSign === leeDataHandler.dataOpMode.add) {
-                            vmManager.editDatas.push(dataItem);
-                        }
-                        vmManager.init();
-                        dialog.close();
-                    }
-                })
-            })
-        })
+       operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.init();
+        });
     };
-    operate.refresh = function () { leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); }); };
-
- 
+         
 });

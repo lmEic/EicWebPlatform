@@ -18,10 +18,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
             get { return OBulider.BuildInstance<CollaborateContatCrud>(); }
         }
 
-        internal static WorkTaskManageCrud WorkCrud
-        {
-            get { return OBulider.BuildInstance<WorkTaskManageCrud>(); }
-        }
+      
     }
 
     internal class CollaborateContatCrud : CrudBase<CollaborateContactLibModel, ICollaborateContactLibRepository>
@@ -135,4 +132,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         }
         #endregion
     }
+
+   
 }

@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.Collections.Generic;
 using Lm.Eic.Framework.ProductMaster.Business.Itil;
-using Lm.Eic.Framework.ProductMaster.Business.Itil.ItilMailManage;
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
 namespace EicWorkPlatfrom.Controllers
 {
@@ -86,12 +85,12 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-        
+        [HttpPost]
         [NoAuthenCheck]
         //邮箱登记存储
         public JsonResult StoreEmailManageRecord(ItilEmailManageModel model)
         {   
-            var opresult = ItilEmailMangeService.ItilEmailManager.StoreEmailManage(model);
+            var opresult = ItilEmailMangeService.ItilEmailManager.StoreItilEmailManage(model);
             return Json(opresult);
 
         }
@@ -100,7 +99,7 @@ namespace EicWorkPlatfrom.Controllers
         //邮箱查询
         public ContentResult GetEmailManageRecord(string workerId, string  email,int mode)
         {
-            var datas = ItilEmailMangeService.ItilEmailManager.FindEmailRecords(new ItilEmailManageDto()
+            var datas = ItilEmailMangeService.ItilEmailManager.GetItilEmailManage(new ItilEmailManageModelDto()
             {        
                 WorkerId = workerId,
                 Email = email,
