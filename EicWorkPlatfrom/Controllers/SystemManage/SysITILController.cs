@@ -108,9 +108,7 @@ namespace EicWorkPlatfrom.Controllers
             });
             return DateJsonResult(datas);
 
-        }
-       
-
+        }    
         /// <summary>
         /// 发送邮件通知
         /// </summary>
