@@ -217,6 +217,14 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         selectReturnOrderItem: function (item) {
             leeHelper.copyVm(item, uiVm);
             uiVm.RealityHandleProductCount = uiVm.ProductCount;
+            console.log(uiVm.ProductCount);
+            if (uiVm.ProductCount < 0)
+            {
+                uiVm.SalesOrder = '/';
+                uiVm.ProductsShipDate = Date.now();
+                uiVm.BadDescription= '/';
+                uiVm.CustomerHandleSuggestion = '/';
+                };
             $scope.vm = uiVm;
             dialog.close();
         },
