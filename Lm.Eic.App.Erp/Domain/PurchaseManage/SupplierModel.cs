@@ -1,4 +1,6 @@
-﻿namespace Lm.Eic.App.Erp.Domain.PurchaseManage
+﻿using System;
+
+namespace Lm.Eic.App.Erp.Domain.PurchaseManage
 {
     /// <summary>
     /// 供应商信息模型 PURMA:供应商信息基本档
@@ -61,6 +63,11 @@
         ///是否在合作 MA004
         /// </summary>
         public string IsCooperate { get; set; }
+
+        public void ForEach(Func<object, object> p)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     /// <summary>

@@ -297,32 +297,27 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         private SupplierInfoModel GetSuppplierInfoFromErpBy(string supplierId)
         {
-            var erpSupplierInfos = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
-            if (erpSupplierInfos == null|| erpSupplierInfos.Count==0) return null;
-            List<SupplierInfoModel> datas = new List<SupplierInfoModel>();
-            SupplierInfoModel model = null;
-            erpSupplierInfos.ForEach(m => 
-            {
-                string principal = m.Principal.Trim() == string.Empty ? m.Contact : m.Principal;
-                model= new SupplierInfoModel
+            var erpSupplierInfo = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
+            string purchaseUser =  PurchaseDbManager.PurchaseDb.PurchaseUserBy(supplierId);
+            if (erpSupplierInfo == null) return null;
+                string principal = erpSupplierInfo.Principal.Trim() == string.Empty ? erpSupplierInfo.Contact : erpSupplierInfo.Principal;
+                return  new SupplierInfoModel
                 {
                     SupplierId = supplierId.Trim(),
-                    SupplierEmail = m.Email,
-                    SupplierAddress = m.Address,
+                    SupplierEmail = erpSupplierInfo.Email,
+                    SupplierAddress = erpSupplierInfo.Address,
+                    //采购人员
+                    PurchaseUser= purchaseUser,
                     // 负责人
                     SupplierPrincipal = principal.Trim(),
-                    SupplierFaxNo = m.FaxNo,
-                    SupplierName = m.SupplierName,
-                    SupplierShortName = m.SupplierShortName,
-                    SupplierUser = m.Contact,
-                    SupplierTel = m.Tel,
-                    PayCondition = m.PayCondition,
-                    IsCooperate = m.IsCooperate
+                    SupplierFaxNo = erpSupplierInfo.FaxNo,
+                    SupplierName = erpSupplierInfo.SupplierName,
+                    SupplierShortName = erpSupplierInfo.SupplierShortName,
+                    SupplierUser = erpSupplierInfo.Contact,
+                    SupplierTel = erpSupplierInfo.Tel,
+                    PayCondition = erpSupplierInfo.PayCondition,
+                    IsCooperate = erpSupplierInfo.IsCooperate
                 };
-                datas.Add(model);
-            });
-
-            return datas.FirstOrDefault();
         }
 
         /// <summary>

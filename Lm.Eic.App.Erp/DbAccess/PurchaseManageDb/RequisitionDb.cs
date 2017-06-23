@@ -202,6 +202,37 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
                 throw new Exception(ex.InnerException.Message);
             }
         }
+
+        /// <summary>
+        /// 获取采购供应商ID （331 333）
+        /// </summary>
+        /// <param name="startYearMonth">年份格式yyyy</param>
+        /// <returns></returns>
+        public string  PurchaseUserBy(string sppuerId)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT  DISTINCT TC011  ")
+                  .Append("FROM   PURTC  ")
+                  .Append("WHERE   (TC004 = '{0}') AND (TC003 =   (SELECT   MAX(TC003) AS Expr1  FROM   PURTC AS PURTC_1  WHERE   (TC004 = '{0}')))");
+                DataTable dt = DbHelper.Erp.LoadTable(string.Format(sb.ToString(), sppuerId));
+                List<string> purchaseUserDatas = new List<string>();
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        string purchaseUser = dr[0].ToString().Trim();
+                        if (!purchaseUserDatas.Contains(purchaseUser))
+                            purchaseUserDatas.Add(purchaseUser);
+                    }
+                }
+                return purchaseUserDatas.FirstOrDefault();
+            }
+            catch (Exception ex)
+            { throw new Exception(ex.Message); }
+            
+        }
         /// <summary>
         /// 根据查询条件获取采购单单头数据信息
         /// </summary>
@@ -556,14 +587,14 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
 
         private string SqlFields
         {
-            get { return "SELECT MA001,MA002, MA004,MA003,MA008,MA010,MA011,MA012,MA013,MA014,MA025,MA051   FROM   PURMA "; }
+            get { return " SELECT MA001,MA002,MA004,MA003,MA008,MA010,MA011,MA012,MA013,MA014,MA025,MA051   FROM   PURMA "; }
         }
         /// <summary>
         /// 获得供应商信息
         /// </summary>
         /// <param name="SupplierId">供应商ID</param>
         /// <returns></returns>
-        public List<SupplierModel> FindSpupplierInfoBy(string SupplierId)
+        public SupplierModel FindSpupplierInfoBy(string SupplierId)
         {
             string whereSql = string.Format("where MA001='{0}'", SupplierId);
             var listModels = ErpDbAccessHelper.FindDataBy<SupplierModel>(SqlFields, whereSql, (dr, m) =>
@@ -581,31 +612,27 @@ namespace Lm.Eic.App.Erp.DbAccess.PurchaseManageDb
                   m.BillAddress = dr["MA051"].ToString().Trim();
                   m.IsCooperate = HandelIsConnparate(dr["MA004"].ToString().Trim());
               });
-            return listModels;
+            return listModels.FirstOrDefault();
         }
 
 
         private string HandelIsConnparate(string Erpstring)
         {
-            // 01  01Y   01YH  01H    02   02Y 02YH 
+            // 01  01Y   01YH  01H    02   02Y  02YH 
             switch (Erpstring)
             {
                 case "01":
                     return "True";
                 case "01Y":
                     return "True";
-                case "01H":
-                    return "True";
                 case "01YH":
-                    return "True";
-                case "02":
                     return "True";
                 case "02Y":
                     return "False";
                 case "02YH":
                     return "False";
                 default:
-                    return "True";
+                    return "False";
             }
         }
 

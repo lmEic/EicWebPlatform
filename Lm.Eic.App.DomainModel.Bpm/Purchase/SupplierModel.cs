@@ -480,14 +480,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _remark = value; }
             get { return _remark; }
         }
-        private string _oppserson;
+        private string _opPerson;
         /// <summary>
         ///操作人
         /// </summary>
-        public string OpPserson
+        public string OpPerson
         {
-            set { _oppserson = value; }
-            get { return _oppserson; }
+            set { _opPerson = value; }
+            get { return _opPerson; }
         }
         private DateTime _opdate;
         /// <summary>
@@ -742,14 +742,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _yearmonth = value; }
             get { return _yearmonth; }
         }
-        private string _oppserson;
+        private string _opPerson;
         /// <summary>
         ///操作人
         /// </summary>
-        public string OpPserson
+        public string OpPerson
         {
-            set { _oppserson = value; }
-            get { return _oppserson; }
+            set { _opPerson = value; }
+            get { return _opPerson; }
         }
         private DateTime _opdate;
         /// <summary>
