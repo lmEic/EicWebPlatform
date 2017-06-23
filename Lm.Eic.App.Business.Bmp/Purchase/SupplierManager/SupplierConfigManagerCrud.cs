@@ -421,7 +421,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         OpResult AddSupplierSeasonAuditTutorInfo(SupplierSeasonTutorModel model)
         {
             model.YearMonth = model.PlanTutorDate.ToDate().Year.ToString() + model.PlanTutorDate.ToDate().Month.ToString("00");
-            model.ParameterKey = model.SupplierId.Trim() + "&" + model.SeasonNum;
             if (IsExist(model.ParameterKey))
             {
                 model.Id_Key  = GetSupplierSeasonTutorIdKeyBy(model.ParameterKey);

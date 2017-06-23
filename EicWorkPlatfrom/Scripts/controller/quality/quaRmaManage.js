@@ -455,7 +455,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
             console.log(fd);
-            //qualityInspectionDataOpService.uploadFile(fd).then(function (result) {
+            rmaDataOpService.uploadFile(fd).then(function (result) {
             //    if (result === 'OK') {
             //        var nowDate = new Date().getDate();
             //        var nowHour = new Date().getHours();
@@ -470,7 +470,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
             //        //    }
             //        //})
             //    }
-            //})
+            })
         });
     }
 
