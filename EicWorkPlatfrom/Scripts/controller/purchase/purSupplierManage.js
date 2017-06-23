@@ -124,6 +124,12 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
             yearQuarter: yearQuarter
         });
     };
+    purDb.getLastAuditSupplierData = function (supplierId) {
+        var url = purUrlPrefix + 'GetLastAuditSupplierData';
+        return ajaxService.getData(url, {
+            supplierId: supplierId,
+        });
+    };
     //------------------供应商档案管理-------------------------------
     /////供应商档案管理
     purDb.getPurSupplierAllInfoDatas = function (supplierId) {
@@ -345,6 +351,13 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         OpSign: leeDataHandler.dataOpMode.add,
         Id_key: null
     };
+    var lastData = {
+         ManagerRisk:null,
+         MaterialGrade:null,
+         Remark:null,
+         RewardsWay:null,
+         SubstitutionSupplierId: null,
+    };
     var initVm = _.clone(uiVM);
     //操作部分
     var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
@@ -369,8 +382,6 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
             vmManager.init();
         });
     };
-
-
     //视图管理器
     var vmManager = $scope.vmManager = {
         init: function () {
@@ -388,6 +399,12 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         displayEditForm: false,
         editSupplierAuditData: function (item) {
             vmManager.displayEditForm = true;
+            if (item.TotalCheckScore == 0) {
+                supplierDataOpService.getLastAuditSupplierData(item.SupplierId).then(function (data) {
+                    leeHelper.copyVm(data, lastData);
+                    leeHelper.copyVm(lastData, item);
+                });
+            }
             vmManager.editItem = $scope.vm = uiVM = item;
             console.log(item);
         }

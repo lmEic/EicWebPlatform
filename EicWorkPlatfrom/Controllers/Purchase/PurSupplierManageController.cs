@@ -229,7 +229,6 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <returns></returns>
         /// SaveAuditSupplierInfo
         [NoAuthenCheck]
-
         public JsonResult SaveAuditSupplierInfo(SupplierSeasonAuditModel entity)
         {
             var datas = PurchaseService.PurSupplierManager.AuditManager.SaveAuditSupplierInfo(entity);
@@ -242,10 +241,10 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <param name="supplierId"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetUpSupplierSeasonAuditData(string supplierId)
+        public ContentResult GetLastAuditSupplierData(string supplierId)
         {
             var data = PurchaseService.PurSupplierManager.AuditManager.GetSupplierAuditInfoDataBy(supplierId);
-            return Json(data);
+            return DateJsonResult(data);
         }
         #endregion
 
