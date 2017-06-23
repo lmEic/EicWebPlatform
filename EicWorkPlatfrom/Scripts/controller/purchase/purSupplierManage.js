@@ -488,14 +488,15 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
                         leeHelper.setUserData($scope.vm);
                         $scope.vm.OpSign = leeDataHandler.dataOpMode.add;
                         supplierDataOpService.savePurSupTourInfo($scope.vm).then(function (opResult) {
-                            if (opResult) {
-                                vmManager.editItem = $scope.vm;
-                                vmManager.supTourEditModal.$promise.then(vmManager.supTourEditModal.hide);
-                            }
+                            leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
+                                if (opResult) {
+                                    vmManager.editItem = $scope.vm;
+                                    //vmManager.supTourEditModal.$promise.then(vmManager.supTourEditModal.hide);
+                                }
+                            });
                         });
                     });
                 };
-
             },
             show: false
         })

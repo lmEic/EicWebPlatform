@@ -451,6 +451,30 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         });
     };
     
+    //上传附件
+    $scope.selectFile = function (el) {
+        leeHelper.upoadFile(el, function (fd) {
+            console.log(fd);
+            //qualityInspectionDataOpService.uploadFile(fd).then(function (result) {
+            //    if (result === 'OK') {
+            //        var nowDate = new Date().getDate();
+            //        var nowHour = new Date().getHours();
+            //        if (nowDate < 10) { nowDate += '0' };
+            //        if (nowHour < 10) { nowHour += '0' };
+
+            //        //vmManager.currentInspectionItem.FileName = $scope.uploadFileName = nowDate.toString() + nowHour.toString() + fd.name;
+            //        //vmManager.currentInspectionItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
+            //        //rmaDataOpService.storeRmaInspectionHandleDatas(vmManager.currentInspectionItem).then(function (opResult) {
+            //        //    if (opResult.Result) {
+            //        //        alert("上传文件成功");
+            //        //    }
+            //        //})
+            //    }
+            //})
+        });
+    }
+
+
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); });
     };
