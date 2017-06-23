@@ -363,7 +363,6 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
     var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
     //数据操作
     var crud = leeDataHandler.dataOperate;
-
     $scope.operate = operate;
     operate.save = function (isValid) {
         leeHelper.setUserData(uiVM);

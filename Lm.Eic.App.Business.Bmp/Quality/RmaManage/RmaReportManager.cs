@@ -260,6 +260,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             HandleFinishRmaId(model.RmaId);
             return result;
         }
+        
         /// <summary>
         /// 处理完成的RMD单
         /// </summary>

@@ -200,9 +200,10 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                 if (angular.isObject(data)) {
                     vmManager.dataSets = [];
                     leeHelper.copyVm(data.rmaInitiateData, rmavm);
+                   
                     if (angular.isArray(data.bussesDescriptionDatas) && data.bussesDescriptionDatas.length > 0)
                     {
-                        bussesDescriptionDatas.forEach(function (da) {
+                        data.bussesDescriptionDatas.forEach(function (da) {
                             leeHelper.copyVm(da, item);
                             item.id = leeHelper.newGuid();
                             vmManager.dataSets.push(item);
@@ -255,10 +256,8 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
     };
     //删除
     operate.deleteItem = function (item) {
-
         item.OpSign = leeDataHandler.dataOpMode.delete;
         $scope.vm = uiVm = item;
-        uiVm.Id = leeHelper.newGuid();
         vmManager.deleteItemReturnHandleOrder = item.ReturnHandleOrder;
         vmManager.deleteItemProductName = item.ProductName;
         vmManager.deleteItemProductCount = item.ProductCount;
@@ -329,10 +328,9 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
     var uiVm = $scope.vm = {
         RmaId: null,
         RmaIdNumber: 0,
-        RmaBussesesNumberStr:'',
+        RmaBussesesNumberStr: '',
         BadPhenomenon: null,
         BadDescription: null,
-        ParameterKey: null,
         BadReadson: null,
         HandleWay: null,
         ResponsiblePerson: null,
@@ -340,7 +338,12 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         PayTime: null,
         LiabilityBelongTo: null,
         HandleStatus: null,
+        FilePath: null,
+        CertificateFileName: null,
+        ParameterKey: null,
         OpPerson: null,
+        OpDate: null,
+        OpTime: null,
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: null
     };
