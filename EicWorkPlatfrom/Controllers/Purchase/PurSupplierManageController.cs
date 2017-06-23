@@ -236,6 +236,17 @@ namespace EicWorkPlatfrom.Controllers.Purchase
 
             return Json(datas);
         }
+        /// <summary>
+        /// 得到供应商季度考核上次数据
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetUpSupplierSeasonAuditData(string supplierId)
+        {
+            var data = PurchaseService.PurSupplierManager.AuditManager.GetSupplierAuditInfoDataBy(supplierId);
+            return Json(data);
+        }
         #endregion
 
         #region SupplierToturManage 供应商辅导管理

@@ -339,15 +339,13 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         SubstitutionSupplierId: null,
         SeasonNum: 0,
         Remark: null,
-        OpPserson: null,
+        OpPerson:null,
         OpDate: null,
         Optime: null,
-        OpSign: 'add',
+        OpSign: leeDataHandler.dataOpMode.add,
         Id_key: null
     };
-
     var initVm = _.clone(uiVM);
-
     //操作部分
     var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
     //数据操作
@@ -358,8 +356,6 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         leeHelper.setUserData(uiVM);
         crud.add(operate, isValid, function () {
             uiVM.TotalCheckScore = (uiVM.QualityCheck * 0.3 + uiVM.AuditPrice * 0.2 + uiVM.DeliveryDate * 0.15 + uiVM.ActionLiven * 0.15 + uiVM.HSFGrade * 0.2).toFixed(2);
-            uiVM.ParameterKey = uiVM.SupplierId + "&&" + uiVM.SeasonDateNum;
-            uiVM.OpSign = "add";
             $scope.promise = supplierDataOpService.saveAuditSupplierInfo($scope.vm).then(function (opResult) {
                 crud.handleSuccessResult(operate, opResult, function () {
                     leeHelper.copyVm($scope.vm, vmManager.editItem);
@@ -393,6 +389,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         editSupplierAuditData: function (item) {
             vmManager.displayEditForm = true;
             vmManager.editItem = $scope.vm = uiVM = item;
+            console.log(item);
         }
     };
 
@@ -400,41 +397,11 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
 });
 //供应商辅导管理
 purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierDataOpService, $modal) {
-    var item = {
-        SupplierId: 'D10069',
-        SupplierShortName: '双溪橡胶',
-        SupplierName: null,
-        QualityCheck: null,
-        AuditPrice: null,
-        DeliveryDate: null,
-        ActionLiven: null,
-        HSFGrade: null,
-        TotalCheckScore: null,
-        CheckLevel: null,
-        RewardsWay: null,
-        MaterialGrade: null,
-        ManagerRisk: null,
-        SeasonNum: 0,
-        PlanTutorDate: '2016-12-12',
-        PlanTutorContent: 'hhassdf',
-        ActionTutorDate: null,
-        ActionTutorContent: null,
-        TutorResult: null,
-        QualityCheckProperty: null,
-        Remark: null,
-        YearMonth: null,
-        OpPserson: null,
-        OpDate: null,
-        Optime: null,
-        OpSign: null,
-        Id_key: null,
-        isEditting: false
-    };
-
+    
     ///供应商辅导视图模型
-    var uiVM = $scope.vm = {
-        SuppilerShortName: null,
+    var uiVM = item = $scope.vm = {
         SupplierId: null,
+        SuppilerShortName: null,
         SupplierName: null,
         QualityCheck: null,
         AuditPrice: null,
@@ -446,31 +413,31 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         RewardsWay: null,
         MaterialGrade: null,
         ManagerRisk: null,
-        SeasonNum: 0,
-        PlanTutorDate: '2016-12-12',
-        PlanTutorContent: 'hhassdf',
+        SeasonNum: null,
+        PlanTutorDate: null,
+        PlanTutorContent: null,
         ActionTutorDate: null,
         ActionTutorContent: null,
         TutorResult: null,
-        QualityCheckProperty: null,
+        TutorCategory: null,
+        ParameterKey: null,
         Remark: null,
         YearMonth: null,
-        OpPserson: null,
+        OpPerson: null,
         OpDate: null,
-        Optime: null,
-        OpSign: null,
-        Id_key: null
-    };
-
+        OpTime: null,
+        OpSign:leeDataHandler.dataOpMode.add,
+        Id_Key: null,
+    }
     var initVm = _.clone(uiVM);
-
-
     //视图管理器
     var vmManager = $scope.vmManager = {
         supplierId: null,
         editDatas: [item],
         yearQuarter: '',
+        //限制不合格总分
         limitTotalCheckScore: 80,
+        //限制不合格质量分
         limitQualityCheck: 90,
         //获取要考核的供应商数据列表
         getWaittingTourSupplier: function () {
@@ -502,6 +469,8 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
                 //保存供应商辅导信息
                 operate.savePurSupTurDatas = function (isValid) {
                     crud.add(operate, isValid, function () {
+                        leeHelper.setUserData($scope.vm);
+                        $scope.vm.OpSign = leeDataHandler.dataOpMode.add;
                         supplierDataOpService.savePurSupTourInfo($scope.vm).then(function (opResult) {
                             if (opResult) {
                                 vmManager.editItem = $scope.vm;

@@ -62,6 +62,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             return SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditInfoDatesBy(supplierId); ;
         }
+        public SupplierSeasonAuditModel GetSupplierAuditInfoDataBy(string supplierId)
+        {
+             var datas = GetSupplierAuditInfoDatasBy(supplierId);
+             if (datas == null || datas.Count == 0) return new SupplierSeasonAuditModel();
+             return  datas.FirstOrDefault();
+        }
         /// <summary>
         /// 获得厂商季度考核信息
         /// </summary>
@@ -71,7 +77,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         private SupplierSeasonAuditModel GetSupplierSeasonAuditModelBy(SupplierInfoModel supplierInfo, string seasonDateNum)
         {
             ///如果已存在，直接导出信息 返回
-            SupplierSeasonAuditModel supplierSeasonAuditInfo = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditDataBy(supplierInfo.SupplierId.Trim() + "&&" + seasonDateNum);
+            SupplierSeasonAuditModel supplierSeasonAuditInfo = SupplierCrudFactory.SuppliersSeasonAuditCrud.GetSupplierSeasonAuditDataBy(supplierInfo.SupplierId.Trim() + "&" + seasonDateNum);
             if (supplierSeasonAuditInfo != null) return supplierSeasonAuditInfo;
             /// 从得到供应商信息
             if (supplierInfo == null || !(supplierInfo.IsCooperate.ToString() == "True")) return null;
