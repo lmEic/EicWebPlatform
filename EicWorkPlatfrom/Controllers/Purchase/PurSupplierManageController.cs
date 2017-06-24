@@ -91,6 +91,12 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             var dlfm = PurchaseService.PurSupplierManager.CertificateManager.BuildQualifiedSupplierInfoList(datas);
             return this.DownLoadFile(dlfm);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="suppliserId"></param>
+        /// <param name="eligibleCertificate"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public FileResult LoadQualifiedCertificateFile(string suppliserId, string eligibleCertificate)
         {
@@ -107,7 +113,6 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public ContentResult GetErpSuppplierInfoBy(string supplierId)
         {
             var datas = PurchaseService.PurSupplierManager.CertificateManager.GetSuppplierInfoBy(supplierId);
-
             return DateJsonResult(datas);
         }
         /// <summary>
