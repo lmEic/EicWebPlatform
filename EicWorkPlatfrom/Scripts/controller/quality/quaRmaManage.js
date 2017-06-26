@@ -200,15 +200,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                 if (angular.isObject(data)) {
                     vmManager.dataSets = [];
                     leeHelper.copyVm(data.rmaInitiateData, rmavm);
-                   
-                    if (angular.isArray(data.bussesDescriptionDatas) && data.bussesDescriptionDatas.length > 0)
-                    {
-                        data.bussesDescriptionDatas.forEach(function (da) {
-                            leeHelper.copyVm(da, item);
-                            item.id = leeHelper.newGuid();
-                            vmManager.dataSets.push(item);
-                        })
-                    }
+                    vmManager.dataSets = data.bussesDescriptionDatas;
                     vmManager.isdisabled = true;
                 }
                 vmManager.init();

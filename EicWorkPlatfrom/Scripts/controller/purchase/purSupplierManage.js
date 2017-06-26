@@ -149,6 +149,22 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
         SupplierProperty: '',
         SupplierId: ''
     };
+    var qualifiedCertificateDataVm = {
+        SupplierId: null,
+        EligibleCertificate: null,
+        EligibleCertificateIndex: 0,
+        DateOfCertificate: null,
+        IsEfficacy: null,
+        FilePath: null,
+        CertificateFileName: null,
+        Remark: null,
+        OpPerson: null,
+        OpDate: null,
+        OpTime: null,
+        OpSign: null,
+        Id_Key: null,
+    };
+    ///
 
     var vmManager = $scope.vmManager = {
         searchYear: new Date().getFullYear(),
@@ -169,6 +185,7 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
         ],
         datasets: [],
         datasource: [],
+        qualifiedCertificateDatas:[],
         datasourceCopy: [],
         editWindowShow: false,
         goToEdit: function (item) {
@@ -208,7 +225,6 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
         filterBySupplierId: function () {
             vmManager.datasource = _.clone(vmManager.datasourceCopy);
             if (vmManager.filterSupplierId !== null && vmManager.filterSupplierId.length > 0) {
-
                 vmManager.datasource = _.clone(_.where(vmManager.datasource, { SupplierId: vmManager.filterSupplierId }));
             }
         }
@@ -216,8 +232,14 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
     //上传文件项目
     var uploadFileVM = $scope.fileItem = {
         EligibleCertificate: '',
-        PurchaseType: '', SupplierProperty: '', SupplierId: null, FilePath: '',
-        CertificateFileName: '', DateOfCertificate: null, OpSign: 'add', OpPerson: ''
+        PurchaseType: '',
+        SupplierProperty: '',
+        SupplierId: null,
+        FilePath: '',
+        CertificateFileName: '',
+        DateOfCertificate: null,
+        OpSign: 'add',
+        OpPerson: ''
     };
     var uploadFileVmCopy = _.clone(uploadFileVM);
     var editManager = $scope.editManager = {
@@ -658,7 +680,6 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
         }),
     };
 });
-
 //供应商综合查询
 purchaseModule.controller('supplierGatherInfoCtrl', function ($scope, supplierDataOpService, $modal) {
 

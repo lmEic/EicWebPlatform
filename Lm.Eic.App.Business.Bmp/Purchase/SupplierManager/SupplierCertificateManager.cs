@@ -22,7 +22,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="endYearMonth">年份格式yyyyMM</param>
         /// <returns></returns>
-        public List<SuppliersSumInfoVM> GetQualifiedSupplierList(string endYearMonth)
+        public List<SuppliersSumInfoVM> GetQualifiedSumInfoDatas(string endYearMonth)
         {
             string startYearMonth = (int.Parse(endYearMonth) - 100).ToString();
             return GetQualifiedSupplierDates(  startYearMonth, endYearMonth);
@@ -215,19 +215,19 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return null;
             datas.ForEach(e =>
             {
-                var dd = CertificateDictionary(e.SupplierId,e.QualifiedCertificateDatas);
-                e.EnvironmentalInvestigation = dd[certificateName.EnvironmentalInvestigation];
-                e.HonestCommitment = dd[certificateName.HonestCommitment];
-                e.QualityAssuranceProtocol = dd[certificateName.QualityAssuranceProtocol];
-                e.SupplierBaseDocument = dd[certificateName.SupplierBaseDocument];
-                e.SupplierComment = dd[certificateName.SupplierComment];
-                e.NotUseChildLabor = dd[certificateName.NotUseChildLabor];
-                e.PCN_Protocol = dd[certificateName.PCN_Protocol];
-                e.HSF_Guarantee = dd[certificateName.HSF_Guarantee];
-                e.REACH_Guarantee = dd[certificateName.REACH_Guarantee];
-                e.SVHC_Guarantee = dd[certificateName.SVHC_Guarantee];
-                e.ISO14001 = dd[certificateName.ISO14001];
-                e.ISO9001 = dd[certificateName.ISO9001];
+                //var dd = CertificateDictionary(e.SupplierId,e.QualifiedCertificateDatas);
+                //e.EnvironmentalInvestigation = dd[certificateName.EnvironmentalInvestigation];
+                //e.HonestCommitment = dd[certificateName.HonestCommitment];
+                //e.QualityAssuranceProtocol = dd[certificateName.QualityAssuranceProtocol];
+                //e.SupplierBaseDocument = dd[certificateName.SupplierBaseDocument];
+                //e.SupplierComment = dd[certificateName.SupplierComment];
+                //e.NotUseChildLabor = dd[certificateName.NotUseChildLabor];
+                //e.PCN_Protocol = dd[certificateName.PCN_Protocol];
+                //e.HSF_Guarantee = dd[certificateName.HSF_Guarantee];
+                //e.REACH_Guarantee = dd[certificateName.REACH_Guarantee];
+                //e.SVHC_Guarantee = dd[certificateName.SVHC_Guarantee];
+                //e.ISO14001 = dd[certificateName.ISO14001];
+                //e.ISO9001 = dd[certificateName.ISO9001];
                 retrundatas.Add(e);
             });
             return retrundatas;
@@ -364,10 +364,20 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             // var certificateDictionary = CertificateDictionary(supplierInfo.SupplierId);
             SuppliersSumInfoVM returnData = new SuppliersSumInfoVM();
             OOMaper.Mapper<SupplierInfoModel, SuppliersSumInfoVM>(supplierInfo, returnData);
-            returnData.QualifiedCertificateDatas = GetSupplierQualifiedCertificateListBy(supplierInfo.SupplierId);
+            returnData.QualifiedCertificateCount = GetQualifiedCertificateCount(supplierInfo.SupplierId);
             var  LatestTwoPurchaseModel = LatestTwoPurchaseData(supplierInfo.SupplierId);
             OOMaper.Mapper<SupplierLatestTwoPurchaseCell, SuppliersSumInfoVM>(LatestTwoPurchaseModel, returnData);
             return returnData;
+        }
+        private int GetQualifiedCertificateCount(string supplierId)
+        {
+            int i = 0;
+           var datas= GetSupplierQualifiedCertificateListBy(supplierId);
+            if (datas == null|| datas.Count==0) return i;
+            datas.ForEach(e =>
+            {if (e.IsEfficacy.Trim() == "是")  i++; });
+            return i;
+
         }
         /// <summary>
         /// 得到最后二次采购的日期和采购人员

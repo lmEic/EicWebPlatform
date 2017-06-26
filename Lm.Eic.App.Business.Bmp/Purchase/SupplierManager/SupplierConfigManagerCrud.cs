@@ -167,7 +167,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
-                return irep.Entities.Where(m => m.SupplierId == supplierId).ToList();
+                return irep.Entities.Where(m => m.SupplierId == supplierId).OrderBy(e=>e.EligibleCertificateIndex).ToList();
             }
             catch (Exception ex)
             {

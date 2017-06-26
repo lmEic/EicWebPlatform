@@ -155,7 +155,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.InnerException.Message);
+                throw new Exception(ex.Message);
             }
 
         }
