@@ -15,9 +15,6 @@
                             <label for="planToturDate" class="col-md-3 control-label">计划辅导日期</label>
                             <div class="col-md-4">
                                 <input name="planToturDate" type="date" class="form-control" ng-model="vm.PlanTutorDate" format-date />
-                                @*<div class="error-messages" ng-messages="formSupTour.planToturDate.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">计划辅导日期不能为空</small>
-                                </div>*@
                             </div>
                         </div>
                         <div class="form-group">
@@ -33,27 +30,18 @@
                             <label for="actionToturDate" class="col-md-3 control-label">实际辅导日期</label>
                             <div class="col-md-4">
                                 <input name="actionToturDate" type="date" class="form-control" format-date ng-model="vm.ActionTutorDate" />
-                                @*<div class="error-messages" ng-messages="formSupTour.actionToturDate.$error" ng-show="operate.showValidation">
-                    <small ng-message="required">实际辅导日期不能为空</small>
-                </div>*@
                             </div>
                         </div>
                         <div class="form-group" ng-if="edittingItem.PlanTutorContent">
                             <label for="actionToturContent" class="col-md-3 control-label">实际辅导内容</label>
                             <div class="col-md-9">
                                 <textarea name="actionToturContent" rows="2" class="form-control" ng-model="vm.ActionTutorContent" />
-                                @*<div class="error-messages" ng-messages="formSupTour.actionToturContent.$error" ng-show="operate.showValidation">
-                    <small ng-message="required">实际辅导内容不能为空</small>
-                </div>*@
                             </div>
                         </div>
                         <div class="form-group" ng-if="edittingItem.PlanTutorContent">
                             <label for="toturResult" class="col-md-3 control-label">辅导结果</label>
                             <div class="col-md-9">
                                 <textarea name="toturResult" rows="2" class="form-control" ng-model="vm.TutorResult" />
-                                @*<div class="error-messages" ng-messages="formSupTour.toturResult.$error" ng-show="operate.showValidation">
-                    <small ng-message="required">辅导结果不能为空</small>
-                </div>*@
                             </div>
                         </div>
                         <div class="form-group">
@@ -65,10 +53,11 @@
                     </fieldset>
                 </form>
             </div>
-
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" ng-click="$hide()"><i class="fa fa-undo"></i>取消</button>
                 <button type="button" class="btn btn-primary" ng-click="operate.savePurSupTurDatas(formSupTour.$valid)"><i class="fa fa-save"></i>确定</button>
+            </div>
+            <div class="panel-footer">
             </div>
         </div>
     </div>

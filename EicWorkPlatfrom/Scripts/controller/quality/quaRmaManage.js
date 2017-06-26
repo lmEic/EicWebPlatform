@@ -150,7 +150,8 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
 qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpService, $modal) {
     leeHelper.setWebSiteTitle("质量管理", "RMA表单描述登记");
     //需要存诸Model信息
-    var uiVm = $scope.vm = {
+    var uiVm =item= $scope.vm = {
+        Id: null,
         RmaId: null,
         RmaIdNumber: 0,
         ReturnHandleOrder: null,
@@ -216,12 +217,13 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         //选ERP订单信息
         selectReturnOrderItem: function (item) {
             leeHelper.copyVm(item, uiVm);
+            uiVm.Id = leeHelper.newGuid();
             uiVm.RealityHandleProductCount = uiVm.ProductCount;
             console.log(uiVm.ProductCount);
             if (uiVm.ProductCount < 0)
             {
                 uiVm.SalesOrder = '/';
-                uiVm.ProductsShipDate = Date.now();
+                uiVm.ProductsShipDate =  new Date();
                 uiVm.BadDescription= '/';
                 uiVm.CustomerHandleSuggestion = '/';
                 };
@@ -229,7 +231,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
             dialog.close();
         },
         
-        dataSets: [],
+        dataSets: [item],
         ///删除数据
         deleteItemReturnHandleOrder: null,
         deleteItemProductName:null,
@@ -261,6 +263,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
     //复制
     operate.copyItem = function (item) {
         var oldItem = _.clone(item);
+        uiVm.Id = leeHelper.newGuid();
         uiVm = oldItem;
         uiVm.Id_Key = null;
         uiVm.ProductId = null;
@@ -291,7 +294,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                         }
                         if (dataItem.OpSign === leeDataHandler.dataOpMode.delete) {
                             deleteDialog.close();
-                            leeHelper.remove(vmManager.dataSets, dataItem);//移除临时数据 
+                            leeHelper.delWithId(vmManager.dataSets, dataItem)//移除界面上数据 
                         }
                         vmManager.init();
                     }
@@ -317,10 +320,9 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
     var uiVm = $scope.vm = {
         RmaId: null,
         RmaIdNumber: 0,
-        RmaBussesesNumberStr:'',
+        RmaBussesesNumberStr: '',
         BadPhenomenon: null,
         BadDescription: null,
-        ParameterKey: null,
         BadReadson: null,
         HandleWay: null,
         ResponsiblePerson: null,
@@ -328,7 +330,12 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         PayTime: null,
         LiabilityBelongTo: null,
         HandleStatus: null,
+        FilePath: null,
+        CertificateFileName: null,
+        ParameterKey: null,
         OpPerson: null,
+        OpDate: null,
+        OpTime: null,
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: null
     };
@@ -436,6 +443,30 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         });
     };
     
+    //上传附件
+    $scope.selectFile = function (el) {
+        leeHelper.upoadFile(el, function (fd) {
+            console.log(fd);
+            rmaDataOpService.uploadFile(fd).then(function (result) {
+            //    if (result === 'OK') {
+            //        var nowDate = new Date().getDate();
+            //        var nowHour = new Date().getHours();
+            //        if (nowDate < 10) { nowDate += '0' };
+            //        if (nowHour < 10) { nowHour += '0' };
+
+            //        //vmManager.currentInspectionItem.FileName = $scope.uploadFileName = nowDate.toString() + nowHour.toString() + fd.name;
+            //        //vmManager.currentInspectionItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
+            //        //rmaDataOpService.storeRmaInspectionHandleDatas(vmManager.currentInspectionItem).then(function (opResult) {
+            //        //    if (opResult.Result) {
+            //        //        alert("上传文件成功");
+            //        //    }
+            //        //})
+            //    }
+            })
+        });
+    }
+
+
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); });
     };

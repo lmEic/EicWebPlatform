@@ -70,7 +70,9 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult CheckIqcspectionItemConfigMaterialId(string materialId)
         {
             var result = InspectionService.ConfigManager.IqcItemConfigManager.IsExistInspectionConfigMaterailId(materialId);
-            return Json(result, JsonRequestBehavior.AllowGet);
+            var productMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
+            var datas = new { result, productMaterailModel };
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 删除进料检验配置数据

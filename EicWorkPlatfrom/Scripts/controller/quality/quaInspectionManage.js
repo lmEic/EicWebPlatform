@@ -311,6 +311,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     var initVM = _.clone(uiVM);
     var vmManager = {
         insert: false,
+        copyMaterialId:'',
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
         InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }, { id: "E", text: "E" }, { id: "F", text: "F" }],
         dataSource: [],
@@ -348,20 +349,26 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
         },
         //显示批量复制操作窗口
         showCopyLotWindow: function () {
+            vmManager.copyMaterialId = uiVM.MaterialId;
             vmManager.copyLotWindowDisplay = true;
         },
         //批量复制
         copyAll: function () {
-            qualityInspectionDataOpService.checkIqcspectionItemConfigMaterialId(vmManager.targetMaterialId).then(function (opresult) {
-                if (opresult.Result) {
+            qualityInspectionDataOpService.checkIqcspectionItemConfigMaterialId(vmManager.targetMaterialId).then(function (datas) {
+                console.log(datas);
+                if (datas.result.Result) {
                     alert(vmManager.targetMaterialId + "已经存在")
                 } else {
-                    angular.forEach(vmManager.dataSource, function (item) {
-                        item.Id_key = null;
-                        item.MaterialId = vmManager.targetMaterialId;
-                    });
+                    $scope.tableVm = datas.productMaterailModel;
+                    if (datas.productMaterailMode != null && datas.productMaterailMode.length >0) { 
+                        console.log(datas.productMaterailModel);
+                        angular.forEach(vmManager.dataSource, function (item) {
+                            item.Id_key = null;
+                            uiVM.MaterialId = item.MaterialId = vmManager.targetMaterialId;
+                        });
+                    }
+                    else { alert("此物料【" + vmManager.targetMaterialId + "】不存在") }
                 }
-
             })
         },
         delModal: $modal({

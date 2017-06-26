@@ -605,30 +605,46 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         private OpResult AddEquipmentDiscardRecord(EquipmentDiscardRecordModel model)
         {
-            OpResult result = OpResult.SetErrorResult("未执行任何操作");
-
-            //设备是否存在
-            var equipment = EquipmentCrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber, SearchMode = 1 }).FirstOrDefault();
-
-            if (equipment == null)
-                return OpResult.SetErrorResult("未找到报废单上的设备\r\n请确定财产编号是否正确！");
-
-            if (equipment.IsScrapped == "是")
-                return OpResult.SetErrorResult("操作失败！\r\n设备报废为已报废，不能重复报废！");
-
-            model.DiscardMonth = DateTime.Now.ToString("yyyyMM");
-            //存储记录
-            model.EquipmentName = equipment.EquipmentName;
-            result = irep.Insert(model).ToOpResult_Add(OpContext, model.Id_Key);
-            ///如果存储成功 更新主表
-            if (result.Result)
+            try
             {
-                //修改设备报废状态
-                var equipmentOpResult = EquipmentCrudFactory.EquipmentCrud.UpdateIsScrapped(equipment.AssetNumber,"是");
-                if (!equipmentOpResult.Result)
-                    return OpResult.SetErrorResult("修改设备报废状态失败！");
+                OpResult result = OpResult.SetErrorResult("未执行任何操作");
+                ///设备是否存在
+                var equipment = EquipmentCrudFactory.EquipmentCrud.FindBy(new QueryEquipmentDto() { AssetNumber = model.AssetNumber, SearchMode = 1 }).FirstOrDefault();
+                if (equipment == null)
+                    return OpResult.SetErrorResult("未找到报废单上的设备\r\n请确定财产编号是否正确！");
+                model.DiscardMonth = DateTime.Now.ToString("yyyyMM");
+                ///存储记录
+                model.EquipmentName = equipment.EquipmentName;
+                if (equipment.IsScrapped == "是")
+                {
+                    ///判断记是不是已经存在  如果存在记录 更新
+                    if (irep.IsExist(e => e.AssetNumber == model.AssetNumber && e.DocumentId == model.DocumentId))
+                    {
+                        model.Id_Key = irep.FirstOfDefault((e => e.AssetNumber == model.AssetNumber && e.DocumentId == model.DocumentId)).Id_Key;
+                        return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+                    }
+                    ///如果不存在 就添加报费记录
+                    result = irep.Insert(model).ToOpResult_Add(OpContext);
+                    if (result.Result) return result;
+                    return OpResult.SetErrorResult("操作失败！\r\n设备报废为已报废，不能重复报废！");
+
+                }
+                result = irep.Insert(model).ToOpResult_Add(OpContext, model.Id_Key);
+                ///如果存储成功 更新主表
+                if (result.Result)
+                {
+                   ///修改设备报废状态
+                    var equipmentOpResult = EquipmentCrudFactory.EquipmentCrud.UpdateIsScrapped(equipment.AssetNumber, "是");
+                    if (!equipmentOpResult.Result)
+                        return OpResult.SetErrorResult("修改设备报废状态失败！");
+                }
+                return result;
             }
-            return result;
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+ 
         }
 
         /// <summary>
