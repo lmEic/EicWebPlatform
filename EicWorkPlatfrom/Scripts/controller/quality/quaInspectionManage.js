@@ -360,8 +360,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
                     alert(vmManager.targetMaterialId + "已经存在")
                 } else {
                     $scope.tableVm = datas.productMaterailModel;
-                    if (datas.productMaterailMode != null && datas.productMaterailMode.length > 0) {
-                        console.log(datas.productMaterailModel);
+                    if (datas.productMaterailModel != null) {
                         angular.forEach(vmManager.dataSource, function (item) {
                             item.Id_key = null;
                             uiVM.MaterialId = item.MaterialId = vmManager.targetMaterialId;
@@ -1154,12 +1153,12 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             vmManager.currentItem = item;
             qualityInspectionDataOpService.getInspectionFormDetailOfIqcDatas(item.OrderId, item.MaterialId).then(function (datas) {
                 vmManager.isShowDetailWindow = true;
+                vmManager.detailDatas = datas;
                 console.log(datas);
                 angular.forEach(datas, function (item) {
                     var dataItems = item.InspectionItemDatas.split(",");
                     item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
                 })
-                vmManager.detailDatas = datas;
             })
         },
         //返回
