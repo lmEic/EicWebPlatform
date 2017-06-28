@@ -85,33 +85,30 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        [HttpPost]
+        [NoAuthenCheck]
+        //邮箱登记存储
+        public JsonResult StoreEmailManageRecord(ItilEmailManageModel model)
+        {
+            var opresult = ItilEmailMangeService.ItilEmailManager.StoreItilEmailManage(model);
+            return Json(opresult);
 
-        //[NoAuthenCheck]
-        ////邮箱登记存储
-        //public JsonResult StoreEmailManageRecord(ItilEmailManageModel model)
-        //{
-        //    var opresult = ItilEmailMangeService.ItilEmailManager.StoreEmailManage(model);
-        //    return Json(opresult);
+        }
+        [HttpGet]
+        [NoAuthenCheck]
+        //邮箱查询
+        public ContentResult GetEmailManageRecord(string workerId, string email, int mode)
+        {
+            var datas = ItilEmailMangeService.ItilEmailManager.GetItilEmailManage(new ItilEmailManageModelDto()
+            {
+                WorkerId = workerId,
+                Email = email,
+                SearchMode = mode
 
-        //}
-        //[HttpGet]
-        //[NoAuthenCheck]
-        ////邮箱查询
-        //public ContentResult GetEmailManageRecord(string workerId, string email, int mode)
-        //{
-        //    //var datas = ItilEmailMangeService.ItilEmailManager.FindEmailRecords(new ItilEmailManageDto()
-        //    //{
-        //    //    WorkerId = workerId,
-        //    //    Email = email,
-        //    //    SearchMode = mode
+            });
+            return DateJsonResult(datas);
 
-        //    //});
-        //    var datas = 0;
-        //    return DateJsonResult(datas);
-
-        //}
-
-
+        }
         /// <summary>
         /// 发送邮件通知
         /// </summary>
@@ -140,6 +137,6 @@ namespace EicWorkPlatfrom.Controllers
             var result = 0;
             return Json(result);
         }
-        #endregion
+        #endregion 
     }
 }

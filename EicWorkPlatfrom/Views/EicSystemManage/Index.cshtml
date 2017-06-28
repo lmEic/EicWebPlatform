@@ -8,9 +8,9 @@
 <head>
     <meta http-equiv="Content-Type" />
     <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1,user-scalable=no" />
-    <title>系统管理</title>
+    <title>系统管理</title>  
+    <script src="~/Scripts/jquery-2.1.4.js"></script>
     <link rel="shortcut icon" href="@Url.Content("~/Content/login/lmlogo.png")" />
-
     <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/bootwatch/cerulean.bootstrap.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/font-awesome/css/font-awesome.min.css")" type="text/css" rel="stylesheet" />
@@ -19,6 +19,7 @@
     <link href="@Url.Content("~/Content/zTree/dist/css/zTreeStyle/zTreeStyle.css")" type="text/css" rel="stylesheet" />
 
     @Styles.Render("~/css/anstrap")
+   
 </head>
 <body ng-controller="moduleNavCtrl">
     @if (ViewBag.IsLoginMode)
@@ -110,5 +111,17 @@
     <script src="@Url.Content("~/Scripts/controller/sysmanage/sysConfigManage.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/sysmanage/sysItilManage.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/sysmanage/sysAccountManage.js")"></script>
+    <script type="text/javascript">
+         function addezconn() {
+           email = document.getElementById("myemail");
+           email.value = email.value + "@@ezconn.cn";        
+        };
+      
+           
+
+         
+       
+        
+    </script>
 </body>
 </html>

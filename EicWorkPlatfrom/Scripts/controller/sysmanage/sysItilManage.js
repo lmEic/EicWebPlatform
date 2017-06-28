@@ -55,7 +55,7 @@ smModule.factory('sysitilService', function (ajaxService) {
         var url = urlPrefix + 'StoreEmailManageRecord';
         return ajaxService.postData(url,{
                 model: model
-            });
+         });
     }
     //查询邮箱记录
     itil.getEmailManageRecord = function (workerId,email, mode) {
@@ -304,42 +304,45 @@ smModule.controller('itilNotifyAddressManageCtrl', function ($scope,sysitilServi
     };
 });
 ///EmailManageController
-smModule.controller('itilEmailManageCtrl', function ($scope,sysitilService)
-{
+smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService) {
     ///View
- var uiVM = {
-     WorkerId:null,
-     Name:null,
-     Department:null,
-     Email:null,
-     NickName:'nick',
-     ReceiveGrade:1,
-     IsSender:1,
-     Password:null,
-     IsValidity:1,
-     SmtpHost:'smtp.exmail.qq.com',
-     Pop3Host:'pop.exmail.qq.com',
-     SmtpPost:25,
-     Pop3Post:110,
-     RegDate:null,     
-     OpSign: 'add',
-     Id_Key: 0
+    var uiVM = {
+        WorkerId: null,
+        Name: null,
+        Department: null,
+        Email: null,
+        NickName: 'nick',
+        ReceiveGrade: 1,
+        IsSender: 1,
+        Password: null,
+        IsValidity: 1,
+        SmtpHost: 'smtp.exmail.qq.com',
+        Pop3Host: 'pop.exmail.qq.com',
+        SmtpPost: 25,
+        Pop3Post: 110,
+        RegDate: null,
+        OpDate: null,
+        OpTime: null,
+        OpPerson: null,
+        OpSign: leeDataHandler.dataOpMode.add,
+        Id_Key: 0
     };
     $scope.vm = uiVM;
     var originalVM = _.clone(uiVM);
+
+    var dialog = $scope.dialog = leePopups.dialog();
+
     var queryFields = {
-        workerId: null,    
-        email:null
+        workerId: null,
+        email: null
     };
     $scope.query = queryFields;
     var vmManager = {
-        activeTab: 'initTab',
-        //isLocal: true,
-        init: function () {   
-           
-            uiVM.OpSign = 'add';
-            $scope.vm = uiVM; 
-            vmManager.canEdit = false;
+        activeTab: 'initTab',     
+        init: function () {
+            uiVM = _.clone(originalVM);
+            uiVM.OpSign = leeDataHandler.dataOpMode.add;
+            $scope.vm = uiVM;
         },
         departments: [
             { id: "管理部", text: "管理部" },
@@ -357,52 +360,59 @@ smModule.controller('itilEmailManageCtrl', function ($scope,sysitilService)
             { id: "企业讯息", text: "企业讯息" },
             { id: "自动化", text: "自动化" },
         ],
-        receiveGrades: [{ name: "1", text: "1" }, { name: "2", text: "2" }, { name: "3", text: "3" }, { name: "4", text: "4" }, { name: "5", text: "5" },],        
-        storeModules: [],             
-        //isUpdate: false,   
+        receiveGrades: [{ name: "1", text: "1" }, { name: "2", text: "2" }, { name: "3", text: "3" }, { name: "4", text: "4" }, { name: "5", text: "5" },],
+        storeModules: [],     
         datasource: [],
-        searchDataset:[],
-        searchBy: function () {         
-            $scope.searchPromise = sysitilService.getEmailManageRecord(queryFields.workerId,queryFields.email, 1).then(function (datas) {
-                vmManager.storeModules = datas;
+        searchDataset: [],
+        searchBy: function () {    
+            $scope.searchPromise = sysitilService.getEmailManageRecord(queryFields.workerId, queryFields.email, 1).then(function (datas) {
+                vmManager.searchDataset = datas;
             })
         },
-        getEmailRecords: function (mode) {
-           
-            sysitilService.getEmailManageRecord(queryFields.workerId,queryFields.email, mode).then(function (datas) {
-                vmManager.searchDataset = datas;                    
-            });        
-        }
+       
+        getEmailRecords: function (mode)
+        {
+            vmManager.searchDataset = [];
+            vmManager.datasource = [];
+            sysitilService.getEmailManageRecord(queryFields.workerId, queryFields.email, mode).then(function (datas) {
+                vmManager.datasource = datas;
+            });
+        },
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    operate.saveAll = function (isValid) {
+ 
+    operate.editItem = function (item) {
+        item.OpSign = leeDataHandler.dataOpMode.edit;
+        $scope.vm = uiVM = item;
+        dialog.show();
+    };
+    operate.saveAll = function (isValid) {      
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             sysitilService.storeEmailManageRecord(uiVM).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                    var mode = _.clone(uiVM);
-                    mode.Id_Key = opresult.Id_Key;
-                    if (mdl.OpSign === 'add') {
-                        vmManager.storeModules.push(mode);
-                        //vmManager.isUpdate = false;
-                    }
-                    else if (mdl.OpSign === 'edit') {
-                        var item = _.find(vmManager.storeModules, { Id_Key: uiVM.Id_Key });
-                        leeHelper.copyVm(uiVM, item);
-                    }
-                    vmManager.init();
-                   
-                  
-                    
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function ()
+                {
+                    if (opresult.Result)
+                    {
+                        var mode = _.clone(uiVM)
+                        mode.Id_Key == opresult.Id_Key;
+                        if (mode.OpSign === leeDataHandler.dataOpMode.add) {
+                            vmManager.datasource.push(mode);
+                        }
+                        
+                        vmManager.init();
+                        dialog.close();
+                    }                                  
                 });
             });
         });
     };
     operate.refresh = function () {
-        leeDataHandler.dataOperate.refresh(operate, function () {
-            vmManager.inti();
+        leeDataHandler.dataOperate.refresh(operate, function ()
+        {
+            vmManager.init();
         });
     };
-  
-})
+
+});
