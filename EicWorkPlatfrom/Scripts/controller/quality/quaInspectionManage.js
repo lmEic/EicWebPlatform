@@ -1156,8 +1156,10 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                 vmManager.detailDatas = datas;
                 console.log(datas);
                 angular.forEach(datas, function (item) {
-                    var dataItems = item.InspectionItemDatas.split(",");
-                    item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
+                    if (item.InspectionItemDatas != null && item.InspectionItemDatas != '') {
+                        var dataItems = item.InspectionItemDatas.split(",");
+                        item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
+                    }
                 })
             })
         },
@@ -1170,12 +1172,16 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
     var editManager = $scope.editManager = {
         ///下载文件
         loadFile: function (item) {
-            console(item);
-            var loadUrl = "/QuaInspectionManage/LoadIqcDatasDownLoadFile?OrderId =" + item.OrderId + "&MaterialId =" + item.MaterialId + "&InspectionItem" + item.inspectionItem;
+            if (item.OrderId === null || item.MaterialId === null) return null;
+            console.log(item.OrderId);
+            console.log(item.MaterialId);
+            console.log(item.InspectionItem);
+            var loadUrl = "/QuaInspectionManage/LoadIqcDatasDownLoadFile?OrderId=" + item.OrderId + "&MaterialId=" + item.MaterialId + "&InspectionItem=" + item.InspectionItem;
             return loadUrl;
         },
         ///获取文件扩展名图标
         getFileExtentionIcon: function (item) {
+            if (item.FileName == null) return null;
             return leeHelper.getFileExtensionIcon(item.FileName);
         }
     };
@@ -1191,7 +1197,6 @@ qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityIn
         switchModeList: [],
         inspectionModeTypes: [{ name: "IQC", text: "IQC" }, { name: "IQC", text: "FQC" }, { name: "IPQC", text: "IPQC" }],
         getModeSwitchDatas: function () {
-
             vmManager.switchModeList = [];
             $scope.searchPromise = qualityInspectionDataOpService.getModeSwitchDatas($scope.vmManager.inspectionModeType).then(function (datas) {
                 angular.forEach(datas, function (item) {
