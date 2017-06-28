@@ -111,7 +111,7 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Config_MailInfo");
 
-        }
+            }
     }
 
 }

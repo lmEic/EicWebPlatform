@@ -14,7 +14,11 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
 {
    internal class WorkTaskCrudFactorty
     {
-        
+        internal static WorkTaskManageCrud WorkCrud
+        {
+            get { return OBulider.BuildInstance<WorkTaskManageCrud>(); }
+        }
+
 
     }
     internal class WorkTaskManageCrud : CrudBase<WorkTaskManageModel, IWorkTaskRepository>
@@ -39,7 +43,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         }
         OpResult UpdateIsDelete(WorkTaskManageModel model)
         {
-            return irep.Update(e => e.Id_Key == model.Id_Key, s => new WorkTaskManageModel { IsDelete = model.IsDelete }).ToOpResult_Delete(OpContext);
+            return irep.Update(e => e.Id_Key == model.Id_Key, s => new WorkTaskManageModel { Id_Key=model.Id_Key }).ToOpResult_Delete(OpContext);
         }
         #endregion
 
@@ -54,15 +58,15 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
             if (queryDto == null) return new List<WorkTaskManageModel>();
             try
             {
-                queryDto.IsDelete = 0;
+                
                 switch (queryDto.SearchMode)
-                {
-                    //按部门查询
-                    case 1:return irep.Entities.Where(m => m.Department.Equals (queryDto.Department)).ToList();
+                {    
                     //按系统名称查询
-                    case 2:return irep.Entities.Where(m => m.SystemName.Equals(queryDto.SystemName)).ToList();
+                    case 1:
+                        return irep.Entities.Where(m => m.SystemName==queryDto.SystemName).ToList();
                     //按模块类别查询
-                    case 3:return irep.Entities.Where(m => m.ModuleName.Equals(queryDto.ModuleName)).ToList();
+                    case 2:
+                        return irep.Entities.Where(m => m.ModuleName==queryDto.ModuleName).ToList();
                     default:
                         return new List<WorkTaskManageModel>();
                 }
