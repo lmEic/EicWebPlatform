@@ -526,14 +526,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _filepath = value; }
             get { return _filepath; }
         }
-        private string _certificatefilename;
+        private string _filename;
         /// <summary>
         ///文件名
         /// </summary>
-        public string CertificateFileName
+        public string FileName
         {
-            set { _certificatefilename = value; }
-            get { return _certificatefilename; }
+            set { _filename = value; }
+            get { return _filename; }
         }
         private string _parameterkey;
         /// <summary>
