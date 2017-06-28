@@ -153,7 +153,7 @@
                             <div class="form-group">
                                 <label>员工工号</label>
                                 <input  type="text" class="form-control" ng-model="query.workerId" placeholder="输入员工工号" />
-                                <button class="btn btn-primary" ng-click="vmManager.getEmailRecords(1)"><i class="fa fa-search"></i>查询</button>
+                                <button onclick="email()" class="btn btn-primary" ng-click="vmManager.getEmailRecords(1)"><i class="fa fa-search"></i>查询</button>
                             </div>
                         </form>
                     </div>
@@ -161,8 +161,9 @@
                         <form class="form-inline" novalidate>
                             <div class="form-group">
                                 <label>邮箱账户</label>
-                                <input  type="email" class="form-control" ng-model="query.email" placeholder="邮箱账户" />
-                                <button class="btn btn-primary" ng-click="vmManager.getEmailRecords(2)"><i class="fa fa-search"></i>查询</button>
+                             
+                                    <input id="myemail" type="text" class="form-control" ng-model="query.email" placeholder="邮箱账户" onchange="addezconn()" />                                                                            
+                                   <button class="btn btn-primary" ng-click="vmManager.getEmailRecords(2)"><i class="fa fa-search"></i>查询</button>                                                   
                             </div>
                         </form>
                     </div>

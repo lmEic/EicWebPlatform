@@ -103,15 +103,14 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
     /// <summary>
     /// 邮箱模块开发Mapping
     /// </summary>
-    public class ItilEmailManageModelMapping:EntityTypeConfiguration<ConfigMailInfoModel>
+    public class ItilEmailManageModelMapping : EntityTypeConfiguration<Model.ITIL.ItilEmailManageModel>
     {
-           public ItilEmailManageModelMapping()
-           {
+        public ItilEmailManageModelMapping()
+        {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Config_MailInfo");
 
-            }
+        }
     }
-
 }
