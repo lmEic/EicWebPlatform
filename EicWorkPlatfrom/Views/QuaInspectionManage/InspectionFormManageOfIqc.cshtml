@@ -105,8 +105,8 @@
                 <div class="col-md-12" id="editWindow">
 
                     <div class="table-responsive" style="min-height:500px;" cg-busy="{promise:searchPromise}">
-                       @* 分页显示 *@
-                         <div ng-if="vmManager.dataSource.length>0"
+                        @* 分页显示 *@
+                        <div ng-if="vmManager.dataSource.length>0"
                              yl-pagination data-dataset="vmManager.dataSets"
                              data-datasource="vmManager.dataSource">
                         </div>
@@ -235,15 +235,14 @@
                                                 <tr ng-show="item.Memo!==null">
                                                     <td>
                                                         <label>描述:</label>{{item.Memo}}
-                                                        <span class="text-primary"><i class="{{editManager.getFileExtentionIcon(item)}}"></i></span>
-                                                        <span class="btn btn-danger btn-xs pull-right" ng-click="editManager.removeCertificateFile(item)"><i class="fa fa-remove"></i></span>
-                                                        <a class="btn btn-success btn-xs pull-right" ng-href="{{editManager.loadFile(item)}}"><i class="fa fa-download"></i></a>
+                                                        @* <span class="btn btn-danger btn-xs pull-right" ng-click="editManager.removeCertificateFile(item)"><i class="fa fa-remove"></i></span>*@
                                                     </td>
                                                 </tr>
                                                 <tr ng-show="item.FileName!==null">
                                                     <td>
                                                         <label>上传文件:</label>{{item.FileName}}
-                                                       
+                                                        <span class="text-primary"><i class="{{editManager.getFileExtentionIcon(item)}}"></i></span>
+                                                        <a class="btn btn-success btn-xs pull-right" ng-href="{{editManager.loadFile(item)}}"><i class="fa fa-download"></i></a>
                                                     </td>
                                                 </tr>
                                             </tbody>

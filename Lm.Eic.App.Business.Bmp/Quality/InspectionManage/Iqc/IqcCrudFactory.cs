@@ -135,13 +135,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
         public OpResult Update(InspectionIqcMasterModel model)
         {
-            return irep.Update(e => e.OrderId == model.OrderId && e.MaterialId == model.MaterialId,
-                  f => new InspectionIqcMasterModel
-                  {
-                      InspectionItems = model.InspectionItems,
-                      InspectionResult = model.InspectionResult,
-                      InspectionStatus = model.InspectionStatus
-                  }).ToOpResult_Eidt(OpContext);
+            return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
         /// <summary>
         /// 更新详细列表SQl语句
@@ -170,8 +164,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal InspectionIqcMasterModel GetIqcInspectionMasterDatasBy(string orderId, string materialId)
         {
-            
+
             return irep.FirstOfDefault(e => e.OrderId == orderId && e.MaterialId == materialId);
+        }
+        internal InspectionIqcMasterModel GetIqcInspectionMasterDatasBy11111(string orderId, string materialId)
+        {
+            return null;
         }
         internal bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
         {
@@ -197,11 +195,46 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             DateTime starttime = startTime.ToDate();
             DateTime endtime = endTime.ToDate();
-            if (starttime== endtime)
-             return irep.Entities.Where(e => e.MaterialInDate == starttime ).OrderBy(e => e.MaterialInDate).ToList(); 
+            if (starttime == endtime)
+                return irep.Entities.Where(e => e.MaterialInDate == starttime).OrderBy(e => e.MaterialInDate).ToList();
             return irep.Entities.Where(e => e.MaterialInDate >= starttime && e.MaterialInDate <= endtime).OrderBy(e => e.MaterialInDate).ToList();
         }
+
+        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterStatusDatasBy(DateTime startTime, DateTime endTime, string inspectionStatus)
+        {
+            DateTime starttime = startTime.ToDate();
+            DateTime endtime = endTime.ToDate();
+            if (starttime == endtime)
+                return irep.Entities.Where(e => e.MaterialInDate == starttime && e.InspectionStatus == inspectionStatus).OrderBy(e => e.MaterialInDate).ToList();
+            return irep.Entities.Where(e => e.MaterialInDate >= starttime && e.MaterialInDate <= endtime && e.InspectionStatus == inspectionStatus).OrderBy(e => e.MaterialInDate).ToList();
+        }
+        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterMaterialIdDatasBy(DateTime startTime, DateTime endTime, string materialId)
+        {
+            DateTime starttime = startTime.ToDate();
+            DateTime endtime = endTime.ToDate();
+            if (starttime == endtime)
+                return irep.Entities.Where(e => e.MaterialInDate == starttime && e.MaterialId == materialId).OrderBy(e => e.MaterialInDate).ToList();
+            return irep.Entities.Where(e => e.MaterialInDate >= starttime && e.MaterialInDate <= endtime && e.MaterialId == materialId).OrderBy(e => e.MaterialInDate).ToList();
+        }
+        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterMaterialSupplierDatasBy(DateTime startTime, DateTime endTime, string materialSupplier)
+        {
+            DateTime starttime = startTime.ToDate();
+            DateTime endtime = endTime.ToDate();
+            if (starttime == endtime)
+                return irep.Entities.Where(e => e.MaterialInDate == starttime && e.MaterialSupplier.Contains(materialSupplier)).OrderBy(e => e.MaterialInDate).ToList();
+            return irep.Entities.Where(e => e.MaterialInDate >= starttime && e.MaterialInDate <= endtime && e.MaterialSupplier.Contains(materialSupplier)).OrderBy(e => e.MaterialInDate).ToList();
+        }
+        internal List<InspectionIqcMasterModel> GetIqcInspectionMasterInspectionItemsDatasBy(DateTime startTime, DateTime endTime, string inspectionItems)
+        {
+            DateTime starttime = startTime.ToDate();
+            DateTime endtime = endTime.ToDate();
+            if (starttime == endtime)
+                return irep.Entities.Where(e => e.MaterialInDate == starttime && e.InspectionItems.Contains(inspectionItems)).OrderBy(e => e.MaterialInDate).ToList();
+            return irep.Entities.Where(e => e.MaterialInDate >= starttime && e.MaterialInDate <= endtime && e.InspectionItems.Contains(inspectionItems)).OrderBy(e => e.MaterialInDate).ToList();
+        }
+
     }
+
 
     /// <summary>
     ///进料检验单（ERP） 物料检验项次录入数据

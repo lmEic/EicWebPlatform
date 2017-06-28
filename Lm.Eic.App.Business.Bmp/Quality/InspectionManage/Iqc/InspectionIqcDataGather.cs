@@ -52,10 +52,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="materialId"></param>
         /// <param name="inspectionItem"></param>
         /// <returns></returns>
-       public DownLoadFileModel GetIqcDatasDownLoadFileModel(string siteRootPath, string orderId, string materialId,string  inspectionItem)
+        public DownLoadFileModel GetIqcDatasDownLoadFileModel(string siteRootPath, string orderId, string materialId, string inspectionItem)
         {
             DownLoadFileModel dlfm = new DownLoadFileModel();
-            var model = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelBy(orderId,  materialId, inspectionItem);
+            var model = InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailModelBy(orderId, materialId, inspectionItem);
             if (model == null || model.FileName == null || model.DocumentPath == null)
                 return dlfm.Default();
             return dlfm.CreateInstance
@@ -155,7 +155,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                    HaveFinishDataNumber = this.GetHaveFinishDataNumber(m.InspectionItemDatas),
                    InspectionItemResult = m.InspectionItemResult,
                    FileName = m.FileName,
-                   DocumentPath = m.FileName,
+                   DocumentPath = m.DocumentPath,
                    Memo = m.Memo,
                    InspectionMethod = string.Empty,
                    InspectionMode = m.InspectionMode,

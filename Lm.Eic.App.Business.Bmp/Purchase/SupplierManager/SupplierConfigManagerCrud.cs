@@ -167,7 +167,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
-                return irep.Entities.Where(m => m.SupplierId == supplierId).ToList();
+                return irep.Entities.Where(m => m.SupplierId == supplierId).OrderBy(e=>e.EligibleCertificateIndex).ToList();
             }
             catch (Exception ex)
             {
@@ -421,7 +421,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         OpResult AddSupplierSeasonAuditTutorInfo(SupplierSeasonTutorModel model)
         {
             model.YearMonth = model.PlanTutorDate.ToDate().Year.ToString() + model.PlanTutorDate.ToDate().Month.ToString("00");
-            model.ParameterKey = model.SupplierId.Trim() + "&" + model.SeasonNum +"&"+ model.YearMonth;
             if (IsExist(model.ParameterKey))
             {
                 model.Id_Key  = GetSupplierSeasonTutorIdKeyBy(model.ParameterKey);

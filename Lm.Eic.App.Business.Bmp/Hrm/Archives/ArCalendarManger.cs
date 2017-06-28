@@ -26,7 +26,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         public List<CalendarModel> GetDateDictionary(int nowYear, int nowMonth)
         {
             List<CalendarModel> returnDateDictionary = new List<CalendarModel>();
-            var ListModel = curd.FindCalendarDateListBy(nowYear, nowMonth);
+            var ListModel = curd.FindCalendarDateDatasBy(nowYear, nowMonth);
             if (ListModel == null || ListModel.Count <= 0) return returnDateDictionary;
             //得到当月所有日期周次
             var nowMonthWeeksList = ListModel.Select(e => e.NowMonthWeekNumber).Distinct().ToList();
@@ -164,7 +164,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             else return "正常";
         }
 
-        public List<CalendarModel> FindCalendarDateListBy(int nowYear, int nowMonth)
+        public List<CalendarModel> FindCalendarDateDatasBy(int nowYear, int nowMonth)
         {
             return irep.Entities.Where(e => e.CalendarYear == nowYear && e.CalendarMonth == nowMonth).ToList();
         }
@@ -179,7 +179,7 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             MonthCalendarModel monthCalendar = new MonthCalendarModel()
             { QryYear = qryYear, QryMonth = qryMonth, WeekCalendars = new List<WeekCalendarModel>() };
             WeekCalendarModel weekCalendar = null;
-            var datas = FindCalendarDateListBy(qryYear, qryMonth);
+            var datas = FindCalendarDateDatasBy(qryYear, qryMonth);
             if (datas == null || datas.Count == 0) return monthCalendar;
             //该月份周次列表
             List<int> weekList = datas.OrderBy(o => o.YearWeekNumber).Select(s => s.YearWeekNumber).Distinct().ToList();

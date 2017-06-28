@@ -400,7 +400,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         #endregion Model
     }
     #endregion
-
     /// <summary>
     ///品保Rma处理模型
     /// </summary>
@@ -423,33 +422,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         ///序号
         /// </summary>
-        public int  RmaIdNumber
+        public int RmaIdNumber
         {
             set { _rmaidnumber = value; }
             get { return _rmaidnumber; }
         }
-
-        private string  _rmaBussesesNumberStr;
+        private string _rmabussesesnumberstr;
         /// <summary>
-        ///业务单序列序号 ‘，’分开
+        ///处理业务序号
         /// </summary>
-        public string  RmaBussesesNumberStr
+        public string RmaBussesesNumberStr
         {
-            set { _rmaBussesesNumberStr = value; }
-            get { return _rmaBussesesNumberStr; }
+            set { _rmabussesesnumberstr = value; }
+            get { return _rmabussesesnumberstr; }
         }
-        // ProductId
-
-        private string _parameterKey;
-        /// <summary>
-        ///物料料号
-        /// </summary>
-        public string ParameterKey
-        {
-            set { _parameterKey = value; }
-            get { return _parameterKey; }
-        }
-
         private string _badphenomenon;
         /// <summary>
         ///不良现象
@@ -530,6 +516,33 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _handlestatus = value; }
             get { return _handlestatus; }
+        }
+        private string _filepath;
+        /// <summary>
+        ///文档路径
+        /// </summary>
+        public string FilePath
+        {
+            set { _filepath = value; }
+            get { return _filepath; }
+        }
+        private string _filename;
+        /// <summary>
+        ///文件名
+        /// </summary>
+        public string FileName
+        {
+            set { _filename = value; }
+            get { return _filename; }
+        }
+        private string _parameterkey;
+        /// <summary>
+        ///关键字
+        /// </summary>
+        public string ParameterKey
+        {
+            set { _parameterkey = value; }
+            get { return _parameterkey; }
         }
         private string _opperson;
         /// <summary>
