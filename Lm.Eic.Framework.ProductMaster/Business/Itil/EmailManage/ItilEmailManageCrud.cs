@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.Framework.ProductMaster.DbAccess.Repository;
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
+using Lm.Eic.Framework.ProductMaster.Model.Tools;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
@@ -19,7 +20,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         }
     }
 
-    internal class ItilEmailManageCrud:CrudBase<ItilEmailManageModel, IItilEmailManageRepository>
+    internal class ItilEmailManageCrud:CrudBase<Model.ITIL.ItilEmailManageModel, IItilEmailManageRepository>
     {
       public ItilEmailManageCrud():base(new ItilEmailManageRepository(),"邮箱管理")
         {
@@ -33,10 +34,10 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             this.AddOpItem(OpMode.Delete, DeleteEmailRecord);
         }
 
-        private OpResult DeleteEmailRecord(ItilEmailManageModel model)
+        private OpResult DeleteEmailRecord(Model.ITIL.ItilEmailManageModel model)
         {
             return irep.Update(m => m.Id_Key == model.Id_Key,
-                f => new ItilEmailManageModel
+                f => new Model.ITIL.ItilEmailManageModel
                 {
                     OpDate = model.OpDate,
                     OpTime = model.OpTime,
@@ -45,12 +46,12 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 }).ToOpResult_Delete(OpContext);
         }
 
-        private OpResult Edit(ItilEmailManageModel model)
+        private OpResult Edit(Model.ITIL.ItilEmailManageModel model)
         {
             return irep.Update(m=>m.Id_Key==model.Id_Key,model).ToOpResult_Eidt(OpContext);
         }
 
-        private OpResult Add(ItilEmailManageModel model)
+        private OpResult Add(Model.ITIL.ItilEmailManageModel model)
         {
             if(irep.IsExist(m=>m.Email.Equals(model.Email)))
             {
@@ -61,9 +62,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
               
         }
 
-        public List<ItilEmailManageModel>FindBy(ItilEmailManageModelDto dto)
+        public List<Model.ITIL.ItilEmailManageModel> FindBy(ItilEmailManageModelDto dto)
         {
-            if (dto== null) return new List<ItilEmailManageModel>();
+            if (dto== null) return new List<Model.ITIL.ItilEmailManageModel>();
             try
             {
                 switch (dto.SearchMode)
@@ -75,7 +76,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                         return irep.Entities.Where(m => m.Email == dto.Email ).ToList();
                        
                     default:
-                        return new List<ItilEmailManageModel>();
+                        return new List<Model.ITIL.ItilEmailManageModel>();
                         
                 }
 

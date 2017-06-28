@@ -28,7 +28,7 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
 
         public DbSet<WorkTaskManageModel> WorkTaskBoard { get; set; }
         public DbSet<ConfigNotifyAddressModel> WConfigNotifyAddress { get; set; }
-        public DbSet<ItilEmailManageModel> MailInfo { get; set; }
+        public DbSet<Model.ITIL.ItilEmailManageModel> MailInfo { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
