@@ -651,7 +651,6 @@ var leePopups = (function () {
     myDialog.prototype.close = function () { this.open = false; };
     return mmPopup;
 })();
-
 // 登陆用户
 var leeLoginUser = (function () {
     var user = {

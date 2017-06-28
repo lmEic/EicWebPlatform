@@ -30,6 +30,7 @@ var eloam = (function () {
             obj.addEventListener(name, func, false);
         }
     }
+
     function OpenVideo() {
         CloseVideo();
 

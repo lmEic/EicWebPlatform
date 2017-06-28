@@ -311,7 +311,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     var initVM = _.clone(uiVM);
     var vmManager = {
         insert: false,
-        copyMaterialId:'',
+        copyMaterialId: '',
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
         InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }, { id: "E", text: "E" }, { id: "F", text: "F" }],
         dataSource: [],
@@ -360,7 +360,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
                     alert(vmManager.targetMaterialId + "已经存在")
                 } else {
                     $scope.tableVm = datas.productMaterailModel;
-                    if (datas.productMaterailMode != null && datas.productMaterailMode.length >0) { 
+                    if (datas.productMaterailMode != null && datas.productMaterailMode.length > 0) {
                         console.log(datas.productMaterailModel);
                         angular.forEach(vmManager.dataSource, function (item) {
                             item.Id_key = null;
@@ -1122,7 +1122,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                 }
                 vmManager.dataSource = editDatas;
                 vmManager.dataSets = editDatas;
-                
+
                 //vmManager.selectedFormStatus = null;
                 //vmManager.querySupplierId = null;
                 //vmManager.selecteInspectionItem = null;
@@ -1171,6 +1171,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
     var editManager = $scope.editManager = {
         ///下载文件
         loadFile: function (item) {
+            console(item);
             var loadUrl = "/QuaInspectionManage/LoadIqcDatasDownLoadFile?OrderId =" + item.OrderId + "&MaterialId =" + item.MaterialId + "&InspectionItem" + item.inspectionItem;
             return loadUrl;
         },
