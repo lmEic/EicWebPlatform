@@ -28,22 +28,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionIqcMasterModel> GetInspectionFormManagerDatas(string formQueryString, int queryOpModel, DateTime startTime, DateTime endTime)
         {
             //查询所有物料和单号 
-            var datas = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(startTime, endTime);
-            if (formQueryString == null || formQueryString == string.Empty) return datas;
+            if (formQueryString == null || formQueryString == string.Empty) return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(startTime, endTime); ;
             switch (queryOpModel)
             {
                 case 0:
-                    return GetInspectionFormManagerListBy(datas, formQueryString, startTime, endTime);
+                    return GetInspectionFormManagerListBy(formQueryString, startTime, endTime);
                 case 1:
-                    return datas.Where(e => e.MaterialId == formQueryString).ToList();
+                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterMaterialIdDatasBy(startTime, endTime, formQueryString);
                 case 2:
-                    return datas.Where(e => e.MaterialSupplier.Contains(formQueryString)).ToList();
+                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterMaterialSupplierDatasBy(startTime, endTime, formQueryString);
                 case 3:
-                    return datas.Where(e => e.InspectionItems.Contains(formQueryString)).ToList();
+                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterInspectionItemsDatasBy(startTime, endTime, formQueryString);
                 default:
                     return new List<InspectionIqcMasterModel>();
             }
-
         }
 
         /// <summary>
@@ -68,18 +66,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="startTime"></param>
         /// <param name="endTime"></param>
         /// <returns></returns>
-        private List<InspectionIqcMasterModel> GetInspectionFormManagerListBy(List<InspectionIqcMasterModel> datas, string inspectionStatus, DateTime startTime, DateTime endTime)
+        private List<InspectionIqcMasterModel> GetInspectionFormManagerListBy(string inspectionStatus, DateTime startTime, DateTime endTime)
         {
+
             switch (inspectionStatus)
             {
                 case "待检验":
                     return GetMasterTableDatasToSqlOrderAndMaterialBy(startTime, endTime);
                 case "未完成":
-                    return datas.Where(e => e.InspectionStatus == "未完成").ToList();
+                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterStatusDatasBy(startTime, endTime, "未完成");
                 case "待审核":
-                    return datas.Where(e => e.InspectionStatus == "待审核").ToList();
+                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterStatusDatasBy(startTime, endTime, "待审核");
                 case "已审核":
-                    return datas.Where(e => e.InspectionStatus == "已审核").ToList();
+                    return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterStatusDatasBy(startTime, endTime, "已审核");
                 case "全部":
                     return GetERPOrderAndMaterialBy(startTime, endTime);
                 default:
@@ -99,7 +98,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 if (InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(e.OrderID, e.ProductID))
                     model = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(e.OrderID, e.ProductID);
                 else model = MaterialModelToInspectionIqcMasterModel(e);
-                if (!retrunList.Contains(model)&&model !=null )
+                if (!retrunList.Contains(model) && model != null)
                     retrunList.Add(model);
             });
             return retrunList;
@@ -135,10 +134,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 MaterialSupplier = model.ProductSupplier,
                 MaterialDrawId = model.ProductDrawID,
                 MaterialId = model.ProductID,
-                InspectionStatus = "未完成",
+                InspectionStatus = "侍检验",
                 MaterialCount = model.ProduceNumber,
                 MaterialInDate = model.ProduceInDate,
-                InspectionResult = string.Empty,
+                InspectionResult = "侍检验",
                 InspectionItems = "还没有抽检",
                 InspectionMode = "正常"
             }) : null;

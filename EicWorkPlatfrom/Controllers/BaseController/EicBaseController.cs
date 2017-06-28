@@ -525,6 +525,10 @@ namespace EicWorkPlatfrom.Controllers
         /// IQC检验采集数据附件文件夹
         /// </summary>
         public const string IqcInspectionGatherDataFile = "IqcInspectionGatherDataFile";
+        /// <summary>
+        /// RMA文档文件夹
+        /// </summary>
+        public const string RmaHandleDataFile = "RmaInpectionHandleDataFile";
     }
 
 

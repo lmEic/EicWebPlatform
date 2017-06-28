@@ -55,9 +55,6 @@
     <Compile Include="Business\Config\DataDictionaryManager.cs" />
     <Compile Include="Business\Config\FilePathManager.cs" />
     <Compile Include="Business\Config\PmConfigService.cs" />
-    <Compile Include="Business\Itil\EmailManage\ItilEmailManageCrud.cs" />
-    <Compile Include="Business\Itil\EmailManage\ItilEmailManager.cs" />
-    <Compile Include="Business\Itil\EmailManage\ItilEmailMangeService.cs" />
     <Compile Include="Business\Itil\ItilDevelopModuleCrud.cs" />
     <Compile Include="Business\Itil\ItilDevelopModuleManager.cs" />
     <Compile Include="Business\Itil\ItilService.cs" />
@@ -72,13 +69,11 @@
     <Compile Include="DbAccess\Mapping\LmProMasterDbMapping.cs" />
     <Compile Include="DbAccess\Repository\CollaborateContactLibRepository.cs" />
     <Compile Include="DbAccess\Repository\ConfigDataDictionaryRepository.cs" />
-    <Compile Include="DbAccess\Repository\EmailManageRepository\ItilEmailManageRepository.cs" />
     <Compile Include="DbAccess\Repository\ItilDevelopModuleManageRepository.cs" />
     <Compile Include="DbAccess\Repository\MesageNotifyRepository.cs" />
     <Compile Include="DbAccess\Repository\WorkTaskRepository.cs" />
     <Compile Include="Model\ConfigDataDictionaryModel.cs" />
-    <Compile Include="Model\ITIL\EmailManageModel\ItilEmailManageModel.cs" />
-    <Compile Include="Model\ITIL\EmailManageModel\ItilEmailManageModelDto.cs" />
+    <Compile Include="Model\ITIL\ItilConfigMailInfoModel.cs" />
     <Compile Include="Model\ITIL\ItilDevelopModuleManageModel.cs" />
     <Compile Include="Model\ITIL\ItilDevelopModuleManageChangeRecordModel.cs" />
     <Compile Include="Model\ITIL\ItilDto.cs" />

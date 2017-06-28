@@ -167,7 +167,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
-                return irep.Entities.Where(m => m.SupplierId == supplierId).ToList();
+                return irep.Entities.Where(m => m.SupplierId == supplierId).OrderBy(e=>e.EligibleCertificateIndex).ToList();
             }
             catch (Exception ex)
             {
@@ -301,7 +301,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             try
             {
-
                 return irep.Entities.FirstOrDefault(m => m.SupplierId == supplierId);
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
@@ -341,11 +340,15 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="parameterKey"></param>
         /// <returns></returns>
-        internal SupplierSeasonAuditModel GetSupplierSeasonAuditInfo(string parameterKey)
+        internal SupplierSeasonAuditModel GetSupplierSeasonAuditDataBy(string parameterKey)
         {
             return this.irep.FirstOfDefault(e => e.ParameterKey == parameterKey);
         }
 
+        internal List<SupplierSeasonAuditModel> GetSupplierSeasonAuditInfoDatesBy(string supplierId)
+        {
+            return this.irep.Entities.Where(e => e.SupplierId == supplierId).ToList();
+        }
         OpResult AddSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
         {
             model.ParameterKey = model.SupplierId.Trim() + "&" + model.SeasonDateNum;
@@ -363,7 +366,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
                 SubstitutionSupplierId = model.SubstitutionSupplierId,
                 HSFGrade = model.HSFGrade,
                 TotalCheckScore = model.TotalCheckScore,
-                OpPserson = model.OpPserson,
+                OpPerson = model.OpPerson,
                 Remark = model.Remark
             }).ToOpResult_Eidt(OpContext);
         }
@@ -397,11 +400,19 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="parameterKey"></param>
         /// <returns></returns>
-        public SupplierSeasonTutorModel GetSupplierSeasonTutorModelBy(string parameterKey)
+        public List<SupplierSeasonTutorModel> GetSupplierSeasonTutorModelBy(string parameterKey)
         {
-            return irep.Entities.Where(e => e.ParameterKey == parameterKey).ToList().FirstOrDefault();
+            return irep.Entities.Where(e => e.ParameterKey.Contains(parameterKey)).ToList();
         }
-
+        /// <summary>
+        /// 得到供应商辅导信息
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        public List<SupplierSeasonTutorModel> GetSupplierSeasonTutorDatasBy(string supplierId)
+        {
+            return irep.Entities.Where(e => e.SupplierId == supplierId).ToList();
+        }
         /// <summary>
         /// 添加季度辅导
         /// </summary>
@@ -409,8 +420,12 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         OpResult AddSupplierSeasonAuditTutorInfo(SupplierSeasonTutorModel model)
         {
-            model.ParameterKey = model.SupplierId.Trim() + "&&" + model.SeasonNum;
-            model.YearMonth = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString();
+            model.YearMonth = model.PlanTutorDate.ToDate().Year.ToString() + model.PlanTutorDate.ToDate().Month.ToString("00");
+            if (IsExist(model.ParameterKey))
+            {
+                model.Id_Key  = GetSupplierSeasonTutorIdKeyBy(model.ParameterKey);
+                return irep.Update(e => e.Id_Key ==model.Id_Key, model).ToOpResult_Add(OpContext);
+            } 
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
         /// <summary>
@@ -429,7 +444,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         public bool IsExist(string parameterKey)
         {
-            return irep.IsExist(e => e.ParameterKey == parameterKey);
+            return irep.IsExist(e => e.ParameterKey.Contains(parameterKey));
+        }
+        public  decimal GetSupplierSeasonTutorIdKeyBy(string parameterKey)
+        {
+            return irep.Entities.FirstOrDefault(e => e.ParameterKey == parameterKey).Id_Key;
         }
     }
 

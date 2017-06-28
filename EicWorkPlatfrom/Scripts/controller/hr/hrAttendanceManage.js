@@ -359,7 +359,6 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
     var uiVM = $scope.vm = _.clone(askLeaveVM);
 
     var msgDialog = $scope.msgDialog = leePopups.dialog();
-    var editDialog = $scope.editDialog = leePopups.dialog();
     //查询字段视图
     var queryVM = $scope.qryvm = {
         year: null,
@@ -367,7 +366,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         yearMonth: null,
         dateFrom: new Date(),//请假其实日期
         dateTo: new Date(),//请假结束日期
-        leaveType: '年休假',
+        leaveType: '事假',
     };
 
     //视图管理器
@@ -375,12 +374,14 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         activeTab: 'initTab',
         workerInfo: null,
         putData: function (datas, item, isAlert) {
-            var data = _.findWhere(datas, { LeaveType: item.LeaveType, Day: item.Day });
+            var data = _.findWhere(datas, { LeaveTimeRegion: item.LeaveTimeRegion, Day: item.Day });
             if (data !== undefined) {
                 if (isAlert)
-                    msgDialog.alert("特别提醒", "假别：" + item.LeaveType + ",日期：" + item.Day + "已经添加过了啊！");
+                    leePopups.alert("特别提醒", "请假时间段：" + item.LeaveTimeRegion + ",日期：" + item.Day + "已经添加过了！");
             }
-            datas.push(item);
+            else {
+                datas.push(item);
+            }
         },
         setData: function (weekDay, askLeaveItem) {
             var dataItem = _.clone(askLeaveVM);
@@ -468,13 +469,17 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         },
         removeAskLeaveRecord: function (weekDay, item) {
             if (vmManager.workerInfo === null) return;
-            if (item.IsServer) {
-                item.OpSign = leeDataHandler.dataOpMode.delete;
-            }
-            else {
-                leeHelper.delWithId(vmManager.askLeaveDatas, item);//从数据操作库中移除
-            }
-            leeHelper.delWithId(weekDay.askLeaveDatas, item);//移除临时数据
+            leePopups.confirm("删除提示", "您确定要删除请假数据吗？", function () {
+                $scope.$apply(function () {
+                    if (item.IsServer) {
+                        item.OpSign = leeDataHandler.dataOpMode.delete;
+                    }
+                    else {
+                        leeHelper.delWithId(vmManager.askLeaveDatas, item);//从数据操作库中移除
+                    }
+                    leeHelper.delWithId(weekDay.askLeaveDatas, item);//移除临时数据
+                });
+            });
         },
         editAskLeaveRecord: function (item) {
             if (vmManager.workerInfo === null) return;

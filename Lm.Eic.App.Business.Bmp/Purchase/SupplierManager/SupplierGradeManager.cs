@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Purchase;
+using Lm.Eic.Uti.Common.YleeExtension.Validation;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
@@ -26,8 +27,11 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             List<SupplierGradeInfoVm> returnDatas = new List<SupplierGradeInfoVm>();
             SupplierGradeInfoVm model = null;
+            string startDate = string.Empty, endDate = string.Empty;
+            ///处理季度数
+            yearQuarter.SeasonNumConvertStartDateAndEndDate(out startDate, out endDate);
             ///  加供应商信息
-            List<SuppliersSumInfoVM> SupplierInfoDatas = HaveCertificateSupplierManager.GetQualifiedSupplierList(yearQuarter);
+            List<SuppliersSumInfoVM> SupplierInfoDatas = HaveCertificateSupplierManager.GetQualifiedSupplierDates(startDate, endDate);
             if (SupplierInfoDatas == null || SupplierInfoDatas.Count == 0) return returnDatas;
             SupplierInfoDatas.ForEach(m =>
             {

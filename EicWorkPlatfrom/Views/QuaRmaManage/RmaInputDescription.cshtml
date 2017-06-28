@@ -24,7 +24,7 @@
             <div class="col-md-4">
                 编号/客户简称：<label class="label label-default">{{rmavm.CustomerShortName}}</label>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 品名：<label class="label label-success">{{rmavm.ProductName}}</label>
             </div>
 
@@ -130,6 +130,13 @@
                                 <small ng-message="required">付费方工式不能为空</small>
                             </div>
                         </div>
+                        <label for="feePaymentWay" class="col-md-2 control-label">实际处理数量</label>
+                        <div class="col-md-4">
+                            <input name="realityHandleProductCount" type="number" class="form-control" ng-model="vm.RealityHandleProductCount" required />
+                            <div class="error-messages" ng-messages="formRmaBussesDescription.realityHandleProductCount.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">实际数量不能为空</small>
+                            </div>
+                        </div>
                     </div>
                     <hr />
                     <div class="alert alert-info">
@@ -152,7 +159,7 @@
                             <tr class="info">
                                 <th>ERP单号</th>
                                 <th>料号</th>
-                                <th>原出货日期</th>
+                                <th>处理数量</th>
                                 <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                             </tr>
                         </thead>
@@ -160,7 +167,7 @@
                             <tr ng-repeat="item in vmManager.dataSets track by $index">
                                 <td>{{item.ReturnHandleOrder}}</td>
                                 <td>{{item.ProductId}}</td>
-                                <td>{{item.ProductsShipDate}}</td>
+                                <td>{{item.RealityHandleProductCount}}</td>
                                 <td>
                                     <button class="btn btn-xs btn-info" ng-click="operate.editItem(item)" title="编辑">
                                         <i class="fa fa-edit"></i>
@@ -176,10 +183,16 @@
                         </tbody>
                     </table>
                 </div>
-                <dialog  ng-if="deleteDialog.open" for="deletebut" align="bottom right" data-close="deleteDialog.close()">
-                    <content dialog-title class="info "><i class="fa fa-th-list"></i>删除数据</content>
+                <dialog  ng-if="deleteDialog.open"  modal data-close="deleteDialog.close()" style="width:40%">
+                    <content dialog-title class="fa fa-bell">
+                        <i class="fa fa-th-list">删除数据</i>
+                    </content>
                     <content dialog-content>
-                        <i class="fa fa-th-list"></i>
+                        <label>删除：</label> 单号:{{vmManager.deleteItemReturnHandleOrder}}|品号:{{vmManager.deleteItemProductName}}    |数量:{{vmManager.deleteItemProductCount}}
+                    </content>
+                    <content dialog-buttons>
+                        <button autofocus ng-click="operate.saveAll(formRmaBussesDescription.$valid)">确定</button>
+                        <button ng-click="$close()">取消</button>
                     </content>
                 </dialog>
             </div>

@@ -9,6 +9,7 @@ using Lm.Eic.App.Erp.Domain.QuantityModel;
 using System.IO;
 using Lm.Eic.App.Erp.Bussiness.QmsManage;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -69,7 +70,9 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult CheckIqcspectionItemConfigMaterialId(string materialId)
         {
             var result = InspectionService.ConfigManager.IqcItemConfigManager.IsExistInspectionConfigMaterailId(materialId);
-            return Json(result, JsonRequestBehavior.AllowGet);
+            var productMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
+            var datas = new { result, productMaterailModel };
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 删除进料检验配置数据
@@ -318,6 +321,7 @@ namespace EicWorkPlatfrom.Controllers
             this.SaveFileToServer(file, filePath, addchangeFileName);
             return Json("OK");
         }
+      
         /// <summary>
         /// 存储采集的数据
         /// </summary>
@@ -441,6 +445,19 @@ namespace EicWorkPlatfrom.Controllers
             var datas = InspectionService.DataGatherManager.IqcDataGather.FindIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// 下载数据文档
+        /// </summary>
+        /// <param name="suppliserId"></param>
+        /// <param name="eligibleCertificate"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult LoadIqcDatasDownLoadFile(string orderId, string materialId,string inspectionItem)
+        {
+            DownLoadFileModel dlfm = InspectionService.DataGatherManager.IqcDataGather.GetIqcDatasDownLoadFileModel(SiteRootPath, orderId, materialId, inspectionItem);
+            return this.DownLoadFile(dlfm);
+        }
         [NoAuthenCheck]
         public JsonResult PostInspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model)
         {
@@ -486,5 +503,16 @@ namespace EicWorkPlatfrom.Controllers
         #endregion
         #endregion
 
+    }
+
+    /// <summary>
+    /// 上传文件附件数据模型
+    /// </summary>
+    public class FileAttatchData
+    {
+        public string OrderId { get; set; }
+
+        public string MaterialId { get; set; }
+        public string InspectionItem { get; set; }
     }
 }

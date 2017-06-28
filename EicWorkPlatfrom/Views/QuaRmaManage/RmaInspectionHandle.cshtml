@@ -22,7 +22,7 @@
             <div class="col-md-4">
                 编号/客户简称<label class="label label-default">{{rmavm.CustomerShortName}}</label>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 品名<label class="label label-success">{{rmavm.ProductName}}</label>
             </div>
 
@@ -40,6 +40,7 @@
                                 <th>数量</th>
                                 <th>客户编号</th>
                                 <th>客户名称</th>
+                                <th>处理数量</th>
                                 <th>订单号</th>
                                 <th>原出货日期</th>
                                 <th>不良现象</th>
@@ -58,6 +59,7 @@
                                 <td>{{item.ProductCount}}</td>
                                 <td>{{item.CustomerId}}</td>
                                 <td>{{item.CustomerName}}</td>
+                                <td>{{item.RealityHandleProductCount}}</td>
                                 <td>{{item.SalesOrder}}</td>
                                 <td>{{item.ProductsShipDate}}</td>
                                 <td>{{item.BadDescription}}</td>
@@ -80,12 +82,13 @@
                         <thead>
                             <tr class="info">
                                 <th>序号</th>
+                                <th>处理序号</th>
                                 <th>不良现象</th>
                                 <th>不良原因</th>
                                 <th>处理方式</th>
                                 <th>责任人</th>
                                 <th>完成日期</th>
-                                <th>话费工时</th>
+                                <th>工时</th>
                                 <th>责任归属</th>
                                 <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                             </tr>
@@ -93,6 +96,7 @@
                         <tbody>
                             <tr ng-repeat="item in vmManager.dataSets track by $index">
                                 <td>{{item.RmaIdNumber}}</td>
+                                <td>{{item.RmaBussesesNumberStr}}</td>
                                 <td>{{item.BadDescription}}</td>
                                 <td>{{item.BadReadson}}</td>
                                 <td>{{item.HandleWay}}</td>
@@ -111,7 +115,7 @@
                 </div>
             </div>
             @* 处理Rma业务处理单 *@
-            <dialog ng-if="dialog.open"   modal data-close="dialog.close()" style="width:65%;">
+            <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%;">
                 <content dialog-title>
                     <i class="fa fa-pencil-square">数据编辑</i>
                 </content>
@@ -127,22 +131,11 @@
                             </div>
                             <label for="rmaIdNumber" class="col-md-2 control-label">序号</label>
                             <div class="col-md-4">
-                                @*<input
-                                       type="button" class="btn btn-default"  ng-model="vmManager.selectedBusinessRmaNumberStr"  ng-click="operate.getSelectedRmaIdData(item)"
+                                <button type="button" class="btn btn-default" ng-model="vmManager.selectedBusinessRmaNumberStr" ng-click="operate.getSelectedRmaIdData(item)"
                                         data-html="2" data-multiple="1" data-animation="am-flip-x" data-placeholder="选择业务处理单..."
-                                        data-bs-options="datas.value as datas.label for datas in vmManager.businessHandleNumberDatas track by $index"  data-bs-select=
-                                     />*@
-                                @*<input type="text"  class="form-control" ng-keypress="operate.getSelectedRmaIdData(item)" ng-model="vmManager.selectedRmaIdNumber" required />*@
-                                <button type="button" class="btn btn-default"  ng-model="vmManager.selectedBusinessRmaNumberStr"  ng-click="operate.getSelectedRmaIdData(item)"
-                                        data-html="2" data-multiple="1" data-animation="am-flip-x" data-placeholder="选择业务处理单..."
-                                        data-bs-options="datas.value as datas.label for datas in vmManager.businessHandleNumberDatas track by $index"  data-bs-select>
+                                        data-bs-options="datas.value as datas.label for datas in vmManager.businessHandleNumberDatas track by $index" data-bs-select>
                                     <span class="caret"></span>
                                 </button>
-                                
-                                @*<button  class="btn btn-xs btn-primary"  id="selectedRmaId" ng-click="operate.getSelectedRmaIdData(item)" title="填写处理序号">
-                                    选业务处理序号
-                                </button>*@
-                                 @*<input name="rmaIdNumber" class="form-control" readonly ng-model="vm.RmaIdNumber" required />*@
                                 <div class="error-messages" ng-messages="formRmaInspectionManage.rmaIdNumber.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">序号不能为空</small>
                                 </div>
@@ -205,6 +198,11 @@
                                     <small ng-message="required">责任归属不能为空</small>
                                 </div>
                             </div>
+                            @* 上传附件 *@
+                            <div class="col-md-3 col-md-offset-2">
+                                <div yl-upload-file></div>
+                                <div ng-if="vmManager.isdisabled ">{{vm.FileName}}</div>
+                            </div>
                         </div>
                         <hr />
                         <div class="alert alert-info">
@@ -222,7 +220,7 @@
                 </content>
             </dialog>
             @* 选择Rma业务处理单序号 *@
-            <dialog ng-if="rmaNumberDatasDialog.open"  for="selectedRmaId" align="bottom below " data-close="rmaNumberDatasDialog.close()" style="width:65%;" >
+            <dialog ng-if="rmaNumberDatasDialog.open" for="selectedRmaId" align="bottom below " data-close="rmaNumberDatasDialog.close()" style="width:65%;">
                 <content dialog-title>
                     <i class="fa fa-pencil-square">选择业务处理单</i>
                 </content>
@@ -253,7 +251,7 @@
                     </table>
                 </content>
             </dialog>
-</div>
+        </div>
     </div>
 </div>
 <div class="panel-footer">

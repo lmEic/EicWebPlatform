@@ -1,5 +1,6 @@
 ﻿/// <reference path="../../Content/ztree/dist/js/jquery.ztree.all.min.js" />
 ///数据处理器
+/// <reference path="../../Content/pnotify/dist/pnotify.js" />
 /// <reference path="../../Content/underscore/underscore-min.js" />
 /// <reference path="../jquery-2.1.4.min.js" />
 var leeDataHandler = (function () {
@@ -40,11 +41,24 @@ var leeDataHandler = (function () {
             opstatus.message = opresult.Message;
             opstatus.msgDisplay = true;
 
-            (function () {
-                setTimeout(function () {
+            var msgtype = opstatus.result === true ? "success" : "error";
+            new PNotify({
+                title: "提示",
+                text_escape: true,
+                text: opresult.Message,
+                type: msgtype,
+                delay: 3000,
+                width: '460px',
+                styling: 'brighttheme',
+                addclass: "stack-bar-top",
+                cornerclass: "",
+                width: "100%",
+                stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 },
+                after_close: function (notice, timer_hide) {
                     opstatus.msgDisplay = false;
-                }, 2000);
-            })();
+                }
+            });
+
             if (opresult.Result === true) {
                 if (successFn !== undefined && _.isFunction(successFn))
                     successFn();
@@ -101,6 +115,15 @@ var leeDataHandler = (function () {
                 headPortrait: null,
                 //部门
                 department: null,
+                //组织
+                organization: {
+                    //课级
+                    K: null,
+                    //部级
+                    B: null,
+                    //处级
+                    C: null
+                },
                 //网站物理路径
                 webSitePhysicalApplicationPath: null,
                 serverName: null
@@ -118,6 +141,20 @@ var leeDataHandler = (function () {
                             loginedUser.headPortrait = user.LoginedUser.HeadPortrait;
                             if (!_.isUndefined(user.LoginedUser.Department))
                                 loginedUser.department = user.LoginedUser.Department;
+                            if (!_.isUndefined(user.LoginedUser.Organizetion)) {
+                                var fds = user.LoginedUser.Organizetion.split(',');
+                                var organization;
+                                if (fds.length === 1) {
+                                    organization = { K: user.LoginedUser.Organizetion, B: user.LoginedUser.Organizetion, C: user.LoginedUser.Organizetion };
+                                }
+                                else if (fds.length === 2) {
+                                    organization = { K: fds[0], B: fds[0], C: fds[1] };
+                                }
+                                else if (fds.length === 3) {
+                                    organization = { K: fds[0], B: fds[1], C: fds[2] };
+                                }
+                                loginedUser.organization = organization;
+                            }
                         }
 
                     }
@@ -155,7 +192,7 @@ var leeDataHandler = (function () {
         dataOpMode: leeDataOpMode
     };
 })();
-///常用操作助手
+//常用操作助手
 var leeHelper = (function () {
     var modalTpl = {
         //消息提示窗口
@@ -195,7 +232,7 @@ var leeHelper = (function () {
         //办公助手控制器
         TolOfficeAssistant: 'TolOfficeAssistant',
         ///在线工具
-        ToolsOnLine: 'ToolsOnLine',
+        ToolsOnLine: 'ToolsOnLine'
 
     };
     return {
@@ -268,7 +305,7 @@ var leeHelper = (function () {
         isExist: function (ary, item) {
             if (!Array.isArray(ary)) return false;
             var data = _.findWhere(ary, { Id: item.Id });
-            return (data !== undefined)
+            return data !== undefined;
         },
         ///在数组指定位置插入项
         insert: function (ary, index, item) {
@@ -378,6 +415,14 @@ var leeHelper = (function () {
                 }
             }
         },
+        //获取用户组织信息
+        getUserOrganization: function () {
+            var user = leeDataHandler.dataStorage.getLoginedUser();
+            if (user !== null) {
+                return user.organization;
+            }
+            return "";
+        },
         ///打印视图
         printView: function (elId) {
             if (confirm('确定打印吗？')) {
@@ -475,7 +520,7 @@ var leeHelper = (function () {
         },
         ///max规格上限,min规格下限,targetValue目标值，compareSign比较操作符
         checkValue: function (max, min, targetValue, compareSign) {
-            return (targetValue >= min && targetValue <= max);
+            return targetValue >= min && targetValue <= max;
         },
         ///设置网站标题
         setWebSiteTitle: function (title, subTitle) {
@@ -513,19 +558,89 @@ var leeHelper = (function () {
             var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
                 var r = (d + Math.random() * 16) % 16 | 0;
                 d = Math.floor(d / 16);
-                return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
             });
             return uuid;
         },
     };
 })();
-/// 弹出框助手
+// 弹出框助手
 var leePopups = (function () {
     var mmPopup = {
-        ///对话框
+        //对话框
         dialog: function (title, content) {
             return new myDialog(title, content);
-        }
+        },
+        //提醒信息,type：消息类型 1：info;2:notice;3:error;4:success
+        alert: function (text, type) {
+            var infoType;
+            if (type === 1)
+                infoType = "info";
+            else if (type === 2)
+                infoType = "notice";
+            else if (type === 3)
+                infoType = "error";
+            else if (type === 4)
+                infoType = "success";
+            else
+                infoType = "notice";
+
+            new PNotify({
+                title: "提示",
+                text_escape: true,
+                text: text,
+                type: infoType,
+                delay: 5000,
+                width: '460px',
+                styling: 'brighttheme',
+                addclass: 'stack-modal',
+                stack: { "dir1": "down", "dir2": "right", "push": "top", "modal": true, "overlay_close": true },
+            });
+        },
+        //询问对话框，title:标题;text:文本内容;okFn:确认函数；cancelFn:取消Fn
+        confirm: function (title, text, okFn, cancelFn) {
+            (new PNotify({
+                title: title,
+                text: text,
+                icon: 'glyphicon glyphicon-question-sign',
+                hide: false,
+                type: 'error',
+                width: '460px',
+                styling: 'brighttheme',
+                confirm: {
+                    confirm: true,
+                    buttons: [
+                      {
+                          text: '确   定',
+                          addClass: 'btn-info',
+                          click: function (notice) {
+                              if (!_.isUndefined(okFn) && _.isFunction(okFn))
+                                  okFn();
+                              notice.remove();
+                          }
+                      },
+                      {
+                          text: '取   消',
+                          addClass: 'btn-default',
+                          click: function (notice) {
+                              if (!_.isUndefined(cancelFn) && _.isFunction(cancelFn))
+                                  cancelFn();
+                              notice.remove();
+                          }
+                      },
+                    ]
+                },
+                buttons: {
+                    closer: false,
+                    sticker: false
+                },
+                history: {
+                    history: false
+                },
+                addclass: 'stack-modal',
+                stack: { 'dir1': 'down', 'dir2': 'right', 'modal': true }
+            }));
+        },
     };
     function myDialog(title, content) {
         this.open = false;
@@ -534,15 +649,9 @@ var leePopups = (function () {
     };
     myDialog.prototype.show = function () { this.open = true; };
     myDialog.prototype.close = function () { this.open = false; };
-    myDialog.prototype.alert = function (title, content) {
-        this.open = true;
-        this.title = title;
-        this.content = content;
-    };
     return mmPopup;
 })();
-
-/// 登陆用户
+// 登陆用户
 var leeLoginUser = (function () {
     var user = {
         //账号

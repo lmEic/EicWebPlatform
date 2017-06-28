@@ -29,7 +29,8 @@ namespace EicWorkPlatfrom
                 //"~/Content/ng-file-upload/dist/ng-file-upload.min.js",
                 "~/Content/angular-strap/dist/angular-strap.min.js",
                 "~/Content/angular-strap/dist/angular-strap.tpl.min.js",
-                "~/Content/angular-popups/dist/angular-popups.js"));
+                "~/Content/angular-popups/dist/angular-popups.js",
+                "~/Content/pnotify/dist/pnotify.custom.js"));
 
 
 
@@ -37,6 +38,7 @@ namespace EicWorkPlatfrom
                          "~/Content/print/print.min.css",
                         "~/Content/angular-motion/dist/angular-motion.css",
                         "~/Content/bootstrap-additions/dist/bootstrap-additions.css",
+                        "~/Content/pnotify/dist/pnotify.custom.css",
                         "~/Content/angular-busy/dist/angular-busy.css"));
             //"~/Content/angular-pageloadingeffect/me-pageloading.min.css"));
         }

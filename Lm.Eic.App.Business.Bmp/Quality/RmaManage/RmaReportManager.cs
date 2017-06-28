@@ -45,10 +45,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public string AutoBuildingRmaId()
         {
-            string nowYaer = DateTime.Now.ToString("yy");
-            string nowMonth = DateTime.Now.ToString("MM");
+            int  nowYaer = DateTime.Now.Year;
             var count = RmaCurdFactory.RmaReportInitiate.CountNowYaerMonthRmaIdNumber(nowYaer) + 1;
-            return "R" + nowYaer + nowMonth + count.ToString("000");
+            return "R" + DateTime.Now.ToString("yy") +DateTime.Now.ToString("MM") + count.ToString("000");
         }
       
         /// <summary>
@@ -70,9 +69,23 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             return RmaCurdFactory.RmaReportInitiate.GetInitiateDatas(rmaId);
           
         }
-        public List<RmaReportInitiateModel> GetInitiateDatas(DateTime formDate,DateTime toDate)
+        public List<RmaReportInitiateModel> GetInitiateDatas(string  formDate,string  toDate)
         {
-            return RmaCurdFactory.RmaReportInitiate.GetInitiateDatasBy(formDate, toDate);
+            try
+            {
+                if (formDate.Length != 6 && toDate.Length != 0) return null;
+                if (Convert.ToInt32(formDate) > Convert.ToInt32(toDate)) return null;
+                int formDateYear = Convert.ToInt32(formDate.Substring(0, 4));
+                int formDateMonth = Convert.ToInt32(formDate.Substring(4, 2));
+                int toDateYear = Convert.ToInt32(toDate.Substring(0, 4));
+                int toDateMonth = Convert.ToInt32(toDate.Substring(4, 2));
+                return RmaCurdFactory.RmaReportInitiate.GetInitiateDatasBy(formDateYear, formDateMonth, toDateYear, toDateMonth);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+          
         }
         /// <summary>
         /// 通过年月份得到RamId
@@ -85,8 +98,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             {
                 if (yearMonth.Length != 6) return null;
                 //201701
-                string year = yearMonth.Substring(0, 4);
-                string month = yearMonth.Substring(4, 2);
+                int year =Convert.ToInt16( yearMonth.Substring(0, 4));
+                int  month = Convert.ToInt16(yearMonth.Substring(4, 2));
                 return RmaCurdFactory.RmaReportInitiate.GetRmaReportInitiateDatas(year, month);
             }
             catch (Exception ex)
@@ -142,7 +155,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.InnerException.Message);
+                throw new Exception(ex.Message);
             }
 
         }
@@ -228,19 +241,39 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             if (result.Result && model.OpSign == OpMode.Add)
             {
                 RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, RmaHandleStatus.InspecitonStatus);
-                if (model.RmaBussesesNumberStr.Contains(",")&& !string.IsNullOrEmpty( model.RmaBussesesNumberStr)) { 
-                var number = model.RmaBussesesNumberStr.Split(',');
-                if(number.Count()>0)
-                   foreach (var i in number)
-                    {
-                        int bussesIndexNumber = Convert.ToInt32(i);
-                        RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, bussesIndexNumber, RmaHandleStatus.InspecitonStatus);
-                    }
+                if (model.RmaBussesesNumberStr.Contains(",") && !string.IsNullOrEmpty(model.RmaBussesesNumberStr))
+                {
+                    var number = model.RmaBussesesNumberStr.Split(',');
+                    if (number.Count() > 0)
+                        foreach (var i in number)
+                        {
+                            int bussesIndexNumber = Convert.ToInt32(i);
+                            RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, bussesIndexNumber, RmaHandleStatus.InspecitonStatus);
+                        }
                 }
-                else { RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, Convert.ToInt32(model.RmaBussesesNumberStr), RmaHandleStatus.InspecitonStatus); }
+                else
+                {
+                    RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, Convert.ToInt32(model.RmaBussesesNumberStr), RmaHandleStatus.InspecitonStatus);
+                }
                 RmaCurdFactory.RmaInspectionManage.UpdateHandleStatus(model.ParameterKey);
             }
+            HandleFinishRmaId(model.RmaId);
             return result;
+        }
+        
+        /// <summary>
+        /// 处理完成的RMD单
+        /// </summary>
+        /// <param name="rmaId"></param>
+        private  void HandleFinishRmaId(string rmaId)
+        {
+            var updateResult = RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(rmaId);
+            if (updateResult.Result)
+            {
+                updateResult= RmaCurdFactory.RmaInspectionManage.UpdateFinishStatus(rmaId);
+                if (updateResult.Result)
+                    updateResult= RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(rmaId, RmaHandleStatus.FinishStatus);
+            }
         }
     }
 }

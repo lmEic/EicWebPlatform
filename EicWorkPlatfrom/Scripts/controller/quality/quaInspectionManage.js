@@ -311,6 +311,7 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
     var initVM = _.clone(uiVM);
     var vmManager = {
         insert: false,
+        copyMaterialId: '',
         inspectionMode: [{ id: "正常", text: "正常" }, { id: "加严", text: "加严" }, { id: "放宽", text: "放宽" }],
         InspectionDataGatherTypes: [{ id: "A", text: "A" }, { id: "B", text: "B" }, { id: "C", text: "C" }, { id: "D", text: "D" }, { id: "E", text: "E" }, { id: "F", text: "F" }],
         dataSource: [],
@@ -348,20 +349,26 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
         },
         //显示批量复制操作窗口
         showCopyLotWindow: function () {
+            vmManager.copyMaterialId = uiVM.MaterialId;
             vmManager.copyLotWindowDisplay = true;
         },
         //批量复制
         copyAll: function () {
-            qualityInspectionDataOpService.checkIqcspectionItemConfigMaterialId(vmManager.targetMaterialId).then(function (opresult) {
-                if (opresult.Result) {
+            qualityInspectionDataOpService.checkIqcspectionItemConfigMaterialId(vmManager.targetMaterialId).then(function (datas) {
+                console.log(datas);
+                if (datas.result.Result) {
                     alert(vmManager.targetMaterialId + "已经存在")
                 } else {
-                    angular.forEach(vmManager.dataSource, function (item) {
-                        item.Id_key = null;
-                        item.MaterialId = vmManager.targetMaterialId;
-                    });
+                    $scope.tableVm = datas.productMaterailModel;
+                    if (datas.productMaterailMode != null && datas.productMaterailMode.length > 0) {
+                        console.log(datas.productMaterailModel);
+                        angular.forEach(vmManager.dataSource, function (item) {
+                            item.Id_key = null;
+                            uiVM.MaterialId = item.MaterialId = vmManager.targetMaterialId;
+                        });
+                    }
+                    else { alert("此物料【" + vmManager.targetMaterialId + "】不存在") }
                 }
-
             })
         },
         delModal: $modal({
@@ -1084,7 +1091,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         isShowTips: false,
         //数据超过100条提示框
         showTips: $alert({ content: '亲~查询数量太多，只能显示100条信息哟', placement: 'top', type: 'info', show: false, duration: "3", container: '.tipBox' }),
-        //模态框
+        // 审核对话框 模态框
         checkModal: $modal({
             title: "审核提示",
             content: "亲~您确定要审核吗",
@@ -1105,6 +1112,7 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
             },
             show: false,
         }),
+
         getMasterDatasBy: function (qryField, mode) {
             vmManager.dataSource = [];
             vmManager.dataSets = [];
@@ -1114,11 +1122,10 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                 }
                 vmManager.dataSource = editDatas;
                 vmManager.dataSets = editDatas;
-                console.log(editDatas);
-                vmManager.selectedFormStatus = null;
-                vmManager.querySupplierId = null;
-                vmManager.selecteInspectionItem = null;
-                vmManager.queryMaterialId = [];
+
+                //vmManager.selectedFormStatus = null;
+                //vmManager.querySupplierId = null;
+                //vmManager.selecteInspectionItem = null;
             })
         },
         //获取检验表单主数据
@@ -1159,6 +1166,19 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         refresh: function () {
             vmManager.isShowDetailWindow = false;
         },
+    };
+
+    var editManager = $scope.editManager = {
+        ///下载文件
+        loadFile: function (item) {
+            console(item);
+            var loadUrl = "/QuaInspectionManage/LoadIqcDatasDownLoadFile?OrderId =" + item.OrderId + "&MaterialId =" + item.MaterialId + "&InspectionItem" + item.inspectionItem;
+            return loadUrl;
+        },
+        ///获取文件扩展名图标
+        getFileExtentionIcon: function (item) {
+            return leeHelper.getFileExtensionIcon(item.FileName);
+        }
     };
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;

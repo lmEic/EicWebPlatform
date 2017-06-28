@@ -27,7 +27,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var datas = AttendanceService.ClassTypeSetter.LoadDatasBy(department, workerId, classType);
             return DateJsonResult(datas);
         }
-
+        [NoAuthenCheck]
         [HttpPost]
         public JsonResult SaveClassTypeDatas(List<AttendClassTypeModel> classTypes)
         {
@@ -113,6 +113,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <param name="askForLeaves"></param>
         /// <returns></returns>
         [HttpPost]
+        [NoAuthenCheck]
         public JsonResult HandleAskForLeave(List<AttendAskLeaveModel> askForLeaves)
         {
             var result = AttendanceService.AttendAskLeaveManager.HandleAskForLeave(askForLeaves);

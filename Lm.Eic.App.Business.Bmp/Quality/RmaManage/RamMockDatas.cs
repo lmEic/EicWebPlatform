@@ -14,8 +14,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             get
             {
                 List<RmaReportInitiateModel> mockDataSet = new List<RmaReportInitiateModel>();
-                mockDataSet.Add(new RmaReportInitiateModel() { RmaId = "11", CustomerShortName = "25", ProductName = "44", RmaIdStatus = "12", RmaYear = "2", RmaMonth = "5" });
-                mockDataSet.Add(new RmaReportInitiateModel() { RmaId = "21", CustomerShortName = "25", ProductName = "44", RmaIdStatus = "12", RmaYear = "2", RmaMonth = "5" });
+                mockDataSet.Add(new RmaReportInitiateModel() { RmaId = "11", CustomerShortName = "25", ProductName = "44", RmaIdStatus = "12", RmaYear = 2017, RmaMonth =5 });
+                mockDataSet.Add(new RmaReportInitiateModel() { RmaId = "21", CustomerShortName = "25", ProductName = "44", RmaIdStatus = "12", RmaYear = 2017, RmaMonth = 5 });
                 return mockDataSet;
             }
         }

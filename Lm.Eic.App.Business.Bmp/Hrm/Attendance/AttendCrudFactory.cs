@@ -481,17 +481,25 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             }
             else
             {
-                List<AskLeaveCell> descriptions = ObjectSerializer.DeserializeObject<List<AskLeaveCell>>(data.LeaveDescription);
-                var m = descriptions.FirstOrDefault(e => e.LeaveType == cell.LeaveType && e.LeaveTimeRegion == cell.LeaveTimeRegion);
-                if (m != null)
+                List<AskLeaveCell> descriptions = new List<AskLeaveCell>();
+                if (string.IsNullOrEmpty(data.LeaveDescription))
                 {
-                    if (askLeaveMdl.OpSign == OpMode.Edit)
-                        m = cell;
+                    descriptions.Add(cell);
                 }
                 else
                 {
-                    cell.Id = descriptions.Count + 1;
-                    descriptions.Add(cell);
+                    descriptions = ObjectSerializer.DeserializeObject<List<AskLeaveCell>>(data.LeaveDescription);
+                    var m = descriptions.FirstOrDefault(e => e.LeaveType == cell.LeaveType && e.LeaveTimeRegion == cell.LeaveTimeRegion);
+                    if (m != null)
+                    {
+                        if (askLeaveMdl.OpSign == OpMode.Edit)
+                            m = cell;
+                    }
+                    else
+                    {
+                        cell.Id = descriptions.Count + 1;
+                        descriptions.Add(cell);
+                    }
                 }
                 leaveDescription = ObjectSerializer.SerializeObject(descriptions);
             }

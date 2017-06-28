@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Quality.RmaManage;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace EicWorkPlatfrom.Controllers.Quality
 {
@@ -44,7 +46,6 @@ namespace EicWorkPlatfrom.Controllers.Quality
         public JsonResult StoreinitiateDataData(RmaReportInitiateModel initiateData)
         {
             var result = RmaService.RmaManager.RmaReportBuilding.StoreRamReortInitiate(initiateData);
-
             return Json(result);
         }
         /// <summary>
@@ -137,7 +138,6 @@ namespace EicWorkPlatfrom.Controllers.Quality
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPost]
         [NoAuthenCheck]
         public JsonResult StoreRmaInspectionHandleDatas(RmaInspectionManageModel model)
         {
@@ -145,10 +145,35 @@ namespace EicWorkPlatfrom.Controllers.Quality
 
             return Json(opReult);
         }
+        /// <summary>
+        /// 上传Rma 处理文档
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult UploadRmaHandleFile(HttpPostedFileBase file)
+        {
+            var FailResult = new { Result = "FAIL" };
+            if (file != null)
+            {
+                if (file.ContentLength > 0)
+                {
+                    FileAttatchData data = JsonConvert.DeserializeObject<FileAttatchData>(Request.Params["fileAttachData"]);
+                    //待加入验证文件名称逻辑:
+                    if (data == null) return Json(FailResult);
+                    string extensionName = System.IO.Path.GetExtension(file.FileName);
+                    string fileName = String.Format("{0}-{1}{2}", data.RmaId, data.RmaIdNumber, extensionName);
+                    string fullFileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.RmaHandleDataFile), fileName);
+                    file.DeleteExistFile(fullFileName).SaveAs(fullFileName);
+                    return Json(new { Result = "OK", FullFileName= fullFileName, FileName = fileName });
+                }
+            }
+            return Json(FailResult);
+        }
         #endregion
 
         #region RmaReportQuery
-       
+
         [NoAuthenCheck]
         public ActionResult RmaReportQuery()
         {
@@ -164,12 +189,23 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public ContentResult GetRmaDatas(string dateFrom,string  dateTo)
         {
-            DateTime fromDate = (dateFrom + "01").ToDate ();
-            DateTime toDate = (dateTo + "30").ToDate();
-            var rmaInitiateDatas = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(fromDate, toDate);
+           
+            var rmaInitiateDatas = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(dateFrom, dateTo);
           
             return DateJsonResult(rmaInitiateDatas);
         }
         #endregion
     }
+
+    #region view model
+    /// <summary>
+    /// 上传文件附件数据模型
+    /// </summary>
+    public class FileAttatchData
+    {
+        public string RmaId { get; set; }
+
+        public string RmaIdNumber { get; set; }
+    }
+    #endregion
 }

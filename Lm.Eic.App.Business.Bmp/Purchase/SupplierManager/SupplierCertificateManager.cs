@@ -17,24 +17,25 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
     /// </summary>
     public class SupplierCertificateManager
     {
-
-        
-        
         /// <summary>
         /// 从ERP中获取截止到给定月份的合格供应商清册列表
         /// </summary>
         /// <param name="endYearMonth">年份格式yyyyMM</param>
         /// <returns></returns>
-        public List<SuppliersSumInfoVM> GetQualifiedSupplierList(string endYearMonth)
+        public List<SuppliersSumInfoVM> GetQualifiedSumInfoDatas(string endYearMonth)
         {
-            List<SuppliersSumInfoVM> SupplierInfoVmDatas = new List<SuppliersSumInfoVM>();
-
-            SuppliersSumInfoVM modelVm = null;
             string startYearMonth = (int.Parse(endYearMonth) - 100).ToString();
+            return GetQualifiedSupplierDates(  startYearMonth, endYearMonth);
+        }
+
+        public List<SuppliersSumInfoVM> GetQualifiedSupplierDates( string startYearMonth,string endYearMonth)
+        {
+            SuppliersSumInfoVM modelVm = null;
+            List<SuppliersSumInfoVM> SupplierInfoVmDatas = new List<SuppliersSumInfoVM>();
             //获取供应商信息
-            var supplierInfoList = GetSupplierInformationListBy(startYearMonth, endYearMonth);
-            if (supplierInfoList == null || supplierInfoList.Count == 0) return SupplierInfoVmDatas;
-            supplierInfoList.ForEach(supplierInfo =>
+            var supplierInfoDatas = GetSupplierInformationDatasBy(startYearMonth, endYearMonth);
+            if (supplierInfoDatas == null || supplierInfoDatas.Count == 0) return SupplierInfoVmDatas;
+            supplierInfoDatas.ForEach(supplierInfo =>
             {
                 if (supplierInfo.IsCooperate.ToString() == "True")
                     ///供应商信息加载最后二次采购信息
@@ -44,30 +45,35 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             });
             return SupplierInfoVmDatas.OrderBy(e => e.SupplierId).ToList();
         }
+
+        public SuppliersSumInfoVM GetSupplierBaseInfoBy(string supplierId)
+        {
+            var supplierInfo = GetSuppplierInfoBy(supplierId);
+            if (supplierInfo!=null && supplierInfo.IsCooperate.ToString() == "True")
+                    return  GetSuppliersInfoAddrLatestTwoPurchaseInfo(supplierInfo);
+            return null;
+        }
         /// <summary>
         /// 获取供应商信息
         /// <param name="supplierId"></param>
         /// <returns></returns>
         /// </summary>
-      public  SupplierInfoModel GetSuppplierInfoBy(string supplierId)
+        public  SupplierInfoModel GetSuppplierInfoBy(string supplierId)
         {
             try
             {
                 //先从已存的数据信息中找
-                SupplierInfoModel supplierInfo = SupplierCrudFactory.SuppliersInfoCrud.GetSupplierInfoBy(supplierId);
-                if (supplierInfo != null&& supplierInfo.IsCooperate == "True") return supplierInfo;
-                //没有找到再从ERP中找
-                supplierInfo = GetSuppplierInfoFromErpBy(supplierId);
-                if (supplierInfo != null && supplierInfo.IsCooperate == "True")
-                //添加至供应商信息表中  上传到数据库中
-                {
-                    SupplierCrudFactory.SuppliersInfoCrud.Init(supplierInfo);
-                    return supplierInfo;
-                }
-                else return null;
+                var data = SupplierCrudFactory.SuppliersInfoCrud.GetSupplierInfoBy(supplierId);
+                if (data != null) return data;
+                    //没有找到再从ERP中找
+                SupplierInfoModel supplierInfo = GetSuppplierInfoFromErpBy(supplierId);
+               if(supplierInfo != null&&supplierInfo.IsCooperate== "True")
+                   SupplierCrudFactory.SuppliersInfoCrud.Init(supplierInfo); 
+                return supplierInfo;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
+
 
         /// <summary>
         /// 同步供应商信息
@@ -209,19 +215,19 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             return null;
             datas.ForEach(e =>
             {
-                var dd = CertificateDictionary(e.SupplierId);
-                e.EnvironmentalInvestigation = dd[certificateName.EnvironmentalInvestigation];
-                e.HonestCommitment = dd[certificateName.HonestCommitment];
-                e.QualityAssuranceProtocol =dd[certificateName.QualityAssuranceProtocol];
-                e.SupplierBaseDocument=dd[certificateName.SupplierBaseDocument];
-                e.SupplierComment= dd[certificateName.SupplierComment];
-                e.NotUseChildLabor =dd[certificateName.NotUseChildLabor];
-                e.PCN_Protocol =dd[certificateName.PCN_Protocol];
-                e.HSF_Guarantee=dd[certificateName.HSF_Guarantee];
-                e.REACH_Guarantee =dd[certificateName.REACH_Guarantee];
-                e.SVHC_Guarantee =dd[certificateName.SVHC_Guarantee];
-                e.ISO14001=dd[certificateName.ISO14001];
-                e.ISO9001 =dd[certificateName.ISO9001];
+                //var dd = CertificateDictionary(e.SupplierId,e.QualifiedCertificateDatas);
+                //e.EnvironmentalInvestigation = dd[certificateName.EnvironmentalInvestigation];
+                //e.HonestCommitment = dd[certificateName.HonestCommitment];
+                //e.QualityAssuranceProtocol = dd[certificateName.QualityAssuranceProtocol];
+                //e.SupplierBaseDocument = dd[certificateName.SupplierBaseDocument];
+                //e.SupplierComment = dd[certificateName.SupplierComment];
+                //e.NotUseChildLabor = dd[certificateName.NotUseChildLabor];
+                //e.PCN_Protocol = dd[certificateName.PCN_Protocol];
+                //e.HSF_Guarantee = dd[certificateName.HSF_Guarantee];
+                //e.REACH_Guarantee = dd[certificateName.REACH_Guarantee];
+                //e.SVHC_Guarantee = dd[certificateName.SVHC_Guarantee];
+                //e.ISO14001 = dd[certificateName.ISO14001];
+                //e.ISO9001 = dd[certificateName.ISO9001];
                 retrundatas.Add(e);
             });
             return retrundatas;
@@ -267,7 +273,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="yearMoth">年份格式yyyyMM</param>
         /// <returns></returns>
-        private List<SupplierInfoModel> GetSupplierInformationListBy(string startYearMonth, string endYearMonth)
+       public  List<SupplierInfoModel> GetSupplierInformationDatasBy(string startYearMonth, string endYearMonth)
         {
             List<SupplierInfoModel> SupplierInfoDatas = new List<SupplierInfoModel>();
             SupplierInfoModel m = null;
@@ -292,24 +298,26 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         private SupplierInfoModel GetSuppplierInfoFromErpBy(string supplierId)
         {
             var erpSupplierInfo = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
+            string purchaseUser =  PurchaseDbManager.PurchaseDb.PurchaseUserBy(supplierId);
             if (erpSupplierInfo == null) return null;
-            string Principal = erpSupplierInfo.Principal.Trim() == string.Empty ? erpSupplierInfo.Contact : erpSupplierInfo.Principal;
-            return new SupplierInfoModel
-            {
-                SupplierId = supplierId.Trim(),
-                SupplierEmail = erpSupplierInfo.Email,
-                SupplierAddress = erpSupplierInfo.Address,
-                /// 负责人
-                SupplierPrincipal = Principal.Trim(),
-                SupplierFaxNo = erpSupplierInfo.FaxNo,
-                SupplierName = erpSupplierInfo.SupplierName,
-                SupplierShortName = erpSupplierInfo.SupplierShortName,
-                SupplierUser = erpSupplierInfo.Contact,
-                SupplierTel = erpSupplierInfo.Tel,
-                PayCondition = erpSupplierInfo.PayCondition,
-                IsCooperate = erpSupplierInfo.IsCooperate,
-
-            };
+                string principal = erpSupplierInfo.Principal.Trim() == string.Empty ? erpSupplierInfo.Contact : erpSupplierInfo.Principal;
+                return  new SupplierInfoModel
+                {
+                    SupplierId = supplierId.Trim(),
+                    SupplierEmail = erpSupplierInfo.Email,
+                    SupplierAddress = erpSupplierInfo.Address,
+                    //采购人员
+                    PurchaseUser= purchaseUser,
+                    // 负责人
+                    SupplierPrincipal = principal.Trim(),
+                    SupplierFaxNo = erpSupplierInfo.FaxNo,
+                    SupplierName = erpSupplierInfo.SupplierName,
+                    SupplierShortName = erpSupplierInfo.SupplierShortName,
+                    SupplierUser = erpSupplierInfo.Contact,
+                    SupplierTel = erpSupplierInfo.Tel,
+                    PayCondition = erpSupplierInfo.PayCondition,
+                    IsCooperate = erpSupplierInfo.IsCooperate
+                };
         }
 
         /// <summary>
@@ -317,7 +325,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="supplierId"></param>
         /// <returns></returns>
-        private Dictionary<string, string> CertificateDictionary(string supplierId)
+        private Dictionary<string, string> CertificateDictionary(string supplierId, List<SupplierQualifiedCertificateModel> QualifiedCertificateDatas)
         {
             Dictionary<string, string> certificateDictionary = new Dictionary<string, string>();
             certificateDictionary.Add(certificateName.EnvironmentalInvestigation, string.Empty);
@@ -332,10 +340,9 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             certificateDictionary.Add(certificateName.SVHC_Guarantee, string.Empty);
             certificateDictionary.Add(certificateName.ISO14001, string.Empty);
             certificateDictionary.Add(certificateName.ISO9001, string.Empty);
-            var suppliersQualifiedCertificate = GetSupplierQualifiedCertificateListBy(supplierId);
-            if (suppliersQualifiedCertificate != null || suppliersQualifiedCertificate.Count > 0)
+            if (QualifiedCertificateDatas != null || QualifiedCertificateDatas.Count > 0)
             {
-                suppliersQualifiedCertificate.ForEach(e =>
+                QualifiedCertificateDatas.ForEach(e =>
                {
                    if (certificateDictionary.ContainsKey(e.EligibleCertificate))
                    {
@@ -353,25 +360,42 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <returns></returns>
         private SuppliersSumInfoVM GetSuppliersInfoAddrLatestTwoPurchaseInfo(SupplierInfoModel supplierInfo)
         {
-            //从ERP中得到最新二次采购信息
-
-
             //// 获取供应商证书字典
-            //var certificateDictionary = CertificateDictionary(supplierInfo.SupplierId);
-            SuppliersSumInfoVM m = new SuppliersSumInfoVM();
-            OOMaper.Mapper<SupplierInfoModel, SuppliersSumInfoVM>(supplierInfo, m);
-            SupplierLatestTwoPurchaseCell LatestTwoPurchaseModel = new SupplierLatestTwoPurchaseCell();
+            // var certificateDictionary = CertificateDictionary(supplierInfo.SupplierId);
+            SuppliersSumInfoVM returnData = new SuppliersSumInfoVM();
+            OOMaper.Mapper<SupplierInfoModel, SuppliersSumInfoVM>(supplierInfo, returnData);
+            returnData.QualifiedCertificateCount = GetQualifiedCertificateCount(supplierInfo.SupplierId);
+            var  LatestTwoPurchaseModel = LatestTwoPurchaseData(supplierInfo.SupplierId);
+            OOMaper.Mapper<SupplierLatestTwoPurchaseCell, SuppliersSumInfoVM>(LatestTwoPurchaseModel, returnData);
+            return returnData;
+        }
+        private int GetQualifiedCertificateCount(string supplierId)
+        {
+            int i = 0;
+           var datas= GetSupplierQualifiedCertificateListBy(supplierId);
+            if (datas == null|| datas.Count==0) return i;
+            datas.ForEach(e =>
+            {if (e.IsEfficacy.Trim() == "是")  i++; });
+            return i;
 
+        }
+        /// <summary>
+        /// 得到最后二次采购的日期和采购人员
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        private SupplierLatestTwoPurchaseCell LatestTwoPurchaseData(string supplierId)
+        {
+            SupplierLatestTwoPurchaseCell LatestTwoPurchaseModel = new SupplierLatestTwoPurchaseCell();
             //从ERP中得到最新二次采购信息
-            var supplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierInfo.SupplierId);
+            var supplierLatestTwoPurchase = PurchaseDbManager.PurchaseDb.FindSupplierLatestTwoPurchaseBy(supplierId);
             if (supplierLatestTwoPurchase != null)
             {
                 LatestTwoPurchaseModel.LastPurchaseDate = supplierLatestTwoPurchase[0].PurchaseDate.Trim().ToDate();
                 LatestTwoPurchaseModel.UpperPurchaseDate = supplierLatestTwoPurchase[1].PurchaseDate.Trim().ToDate();
                 LatestTwoPurchaseModel.PurchaseUser = supplierLatestTwoPurchase[0].PurchasePerson.Trim();
             }
-            OOMaper.Mapper<SupplierLatestTwoPurchaseCell, SuppliersSumInfoVM>(LatestTwoPurchaseModel, m);
-            return m;
+            return LatestTwoPurchaseModel;
         }
         #endregion
     }

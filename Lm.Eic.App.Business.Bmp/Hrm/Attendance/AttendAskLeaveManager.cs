@@ -19,20 +19,27 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             if (askForLeaves == null) return OpResult.SetErrorResult("askForLeaves 不能为null");
             bool result = true;
             AttendSlodFingerDataCurrentMonthModel attendMdl = null;
-            askForLeaves.ForEach(m =>
+            try
             {
-
-                m = EncodeAskLeaveDateData(m);
-                attendMdl = AttendCrudFactory.CurrentMonthAttendDataCrud.GetAttendanceDataBy(m.WorkerId, m.AttendanceDate);
-                var classTypeMdl = AttendCrudFactory.ClassTypeDetailCrud.GetClassTypeDetailModel(m.WorkerId, m.AttendanceDate);
-                //同步考勤数据
-                int record = AttendCrudFactory.CurrentMonthAttendDataCrud.SyncAskLeaveDataToAttendData(m, classTypeMdl, ref attendMdl);
-                if (record > 0)
+                askForLeaves.ForEach(m =>
                 {
-                    m.SlotCardTime = attendMdl.SlotCardTime;
-                    result = result && AttendCrudFactory.AskLeaveCrud.Store(m).Result;
-                }
-            });
+
+                    m = EncodeAskLeaveDateData(m);
+                    attendMdl = AttendCrudFactory.CurrentMonthAttendDataCrud.GetAttendanceDataBy(m.WorkerId, m.AttendanceDate);
+                    var classTypeMdl = AttendCrudFactory.ClassTypeDetailCrud.GetClassTypeDetailModel(m.WorkerId, m.AttendanceDate);
+                    //同步考勤数据
+                    int record = AttendCrudFactory.CurrentMonthAttendDataCrud.SyncAskLeaveDataToAttendData(m, classTypeMdl, ref attendMdl);
+                    if (record > 0)
+                    {
+                        m.SlotCardTime = attendMdl.SlotCardTime;
+                        result = result && AttendCrudFactory.AskLeaveCrud.Store(m).Result;
+                    }
+                });
+            }
+            catch (System.Exception ex)
+            {
+                return ex.ExOpResult();
+            }
             return OpResult.SetResult("存储请假数据成功！", result);
         }
         /// <summary>

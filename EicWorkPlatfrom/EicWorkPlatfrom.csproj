@@ -331,6 +331,8 @@
     <Content Include="Content\pdfmaker\pdfmake.js" />
     <Content Include="Content\pdfmaker\pdfmake.min.js" />
     <Content Include="Content\pdfmaker\vfs_fonts.js" />
+    <Content Include="Content\pnotify\dist\pnotify.custom.css" />
+    <Content Include="Content\pnotify\dist\pnotify.custom.js" />
     <Content Include="Content\print\print.min.css" />
     <Content Include="Content\print\print.min.js" />
     <Content Include="Content\underscore\underscore-min.js" />
@@ -1356,6 +1358,7 @@
     <Content Include="Views\SysITIL\ItilMessageNotifyManage.cshtml" />
     <Content Include="Views\SysITIL\ItilEmailManage.cshtml" />
     <Content Include="Views\CommonTpl\CalendarColorTipTpl.cshtml" />
+    <Content Include="Views\PurSupplierManage\SupplierArchiveOverview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

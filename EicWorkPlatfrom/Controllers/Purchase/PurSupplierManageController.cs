@@ -26,6 +26,34 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         {
             return View();
         }
+        #region SupplierArchiveOverview 供应商档案总览
+        public ActionResult SupplierArchiveOverview()
+        {
+            return View();
+        }
+        [NoAuthenCheck]
+        public ContentResult GetPurSupplierAllInfoDatasBy(string supplierId)
+        {
+            ///供应商信息
+            var supplierBaseInfoData = PurchaseService.PurSupplierManager.CertificateManager.GetSupplierBaseInfoBy(supplierId);
+            ///供应商合格证收信息EligibleCertificate
+            var supplierEligibleCertificateDatas = PurchaseService.PurSupplierManager.CertificateManager.GetSupplierQualifiedCertificateListBy(supplierId);
+            /// 季度考核分
+            var supplierAuditDatas = PurchaseService.PurSupplierManager.AuditManager.GetSupplierAuditInfoDatasBy(supplierId);
+            ///供应商稽核评分信息
+            var supplierGradeDatas = PurchaseService.PurSupplierManager.GradeManager.GetPurSupGradeInfoDataBy(supplierId);
+            ///辅导信息
+            var supplierSeasonTutorInfo = PurchaseService.PurSupplierManager.TutorManger.GetSupplierSeasonTutorDatasBy(supplierId);
+            var datas = new {
+                supplierBaseInfoData ,
+                supplierEligibleCertificateDatas,
+                supplierAuditDatas,
+                supplierSeasonTutorInfo,
+                supplierGradeDatas };
+            return DateJsonResult(datas);
+        }
+        #endregion
+
 
         #region PurQualifiedSupplier 供应商证书管理
         /// <summary>
@@ -46,7 +74,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public ContentResult GetPurQualifiedSupplierListBy(string yearMonth)
         {
-            var datas = PurchaseService.PurSupplierManager.CertificateManager.GetQualifiedSupplierList(yearMonth);
+            var datas = PurchaseService.PurSupplierManager.CertificateManager.GetQualifiedSumInfoDatas(yearMonth);
             TempData["QualifiedSupplierDatas"] = datas;
             return DateJsonResult(datas);
 
@@ -63,6 +91,12 @@ namespace EicWorkPlatfrom.Controllers.Purchase
             var dlfm = PurchaseService.PurSupplierManager.CertificateManager.BuildQualifiedSupplierInfoList(datas);
             return this.DownLoadFile(dlfm);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="suppliserId"></param>
+        /// <param name="eligibleCertificate"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public FileResult LoadQualifiedCertificateFile(string suppliserId, string eligibleCertificate)
         {
@@ -79,20 +113,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public ContentResult GetErpSuppplierInfoBy(string supplierId)
         {
             var datas = PurchaseService.PurSupplierManager.CertificateManager.GetSuppplierInfoBy(supplierId);
-
             return DateJsonResult(datas);
-        }
-        /// <summary>
-        /// 获取采购供应商用户数据列表
-        /// </summary>
-        /// <param name="supplierId"></param>
-        /// <param name="dataType"></param>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult GetPurSupplierDataList(string supplierId, string dataType)
-        {
-            var datas = 0;
-            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 上传采购供应商证书文件
@@ -176,7 +197,7 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         [NoAuthenCheck]
         public JsonResult GetAuditSupplierList(string yearSeason)
         {
-            var datas = PurchaseService.PurSupplierManager.AuditManager.GetSeasonSupplierList(yearSeason);
+            var datas = PurchaseService.PurSupplierManager.AuditManager.GetSeasonSupplierDatasBy(yearSeason);
             TempData["SupplierSeasonDatas"] = datas;
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
@@ -201,12 +222,22 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         /// <returns></returns>
         /// SaveAuditSupplierInfo
         [NoAuthenCheck]
-
         public JsonResult SaveAuditSupplierInfo(SupplierSeasonAuditModel entity)
         {
             var datas = PurchaseService.PurSupplierManager.AuditManager.SaveAuditSupplierInfo(entity);
 
             return Json(datas);
+        }
+        /// <summary>
+        /// 得到供应商季度考核上次数据
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetLastAuditSupplierData(string supplierId)
+        {
+            var data = PurchaseService.PurSupplierManager.AuditManager.GetSupplierAuditInfoDataBy(supplierId);
+            return DateJsonResult(data);
         }
         #endregion
 
@@ -238,9 +269,9 @@ namespace EicWorkPlatfrom.Controllers.Purchase
         public FileResult CreateSupplierTourToExcel()
         {
             var datas = TempData["SupplierTourData"] as List<SupplierSeasonTutorModel>;
-           
+
             var dlfm = PurchaseService.PurSupplierManager.TutorManger.DownLoadTourSupplier(datas);
-           
+
             return this.DownLoadFile(dlfm);
         }
         /// <summary>
