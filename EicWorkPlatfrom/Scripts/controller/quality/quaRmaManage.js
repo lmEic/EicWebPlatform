@@ -302,7 +302,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                         }
                         if (dataItem.OpSign === leeDataHandler.dataOpMode.delete) {
                             deleteDialog.close();
-                            leeHelper.delWithId(vmManager.dataSets, dataItem)//移除界面上数据 
+                            leeHelper.delWithId(vmManager.dataSets, dataItem)//移除界面上数据
                         }
                         vmManager.init();
                     }

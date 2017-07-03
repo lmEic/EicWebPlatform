@@ -397,21 +397,21 @@ hrModule.controller('archiveInputCtrl', function ($scope, $modal, dataDicConfigT
     };
 
 
-    //var getDepartmentOrganization = function (department) {
-    //    var organizations = [];
-    //    var depItem = _.find(archiveInput.departments, { DataNodeText: department });
-    //    while (depItem !== undefined) {
-    //        organizations.push(depItem.DataNodeName);
-    //        if (depItem.ParentDataNodeText === "光圣科技") {
-    //            depItem = undefined;
-    //        }
-    //        else {
-    //            depItem = _.find(archiveInput.departments, { DataNodeText: depItem.ParentDataNodeText });
-    //        }
+    var getDepartmentOrganization = function (department) {
+        var organizations = [];
+        var depItem = _.find(archiveInput.departments, { DataNodeText: department });
+        while (depItem !== undefined) {
+            organizations.push(depItem.DataNodeName);
+            if (depItem.ParentDataNodeText === "光圣科技") {
+                depItem = undefined;
+            }
+            else {
+                depItem = _.find(archiveInput.departments, { DataNodeText: depItem.ParentDataNodeText });
+            }
 
-    //    }
-    //    return organizations.join(',');
-    //};
+        }
+        return organizations.join(',');
+    };
 
     $scope.archive = archiveInput;
     $scope.vm = employeeIdentity;
