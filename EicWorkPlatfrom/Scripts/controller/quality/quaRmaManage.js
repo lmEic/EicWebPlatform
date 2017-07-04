@@ -394,6 +394,9 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         },
         isdisabled: false,
         dataitems: [],
+        getDetailDatas: function (item) {
+
+        }
     };
     var rmaNumberDatasDialog = $scope.rmaNumberDatasDialog = leePopups.dialog();
     var dialog = $scope.dialog = leePopups.dialog();
@@ -412,33 +415,6 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
             dataitems = [];
         };
     };
-
-
-    $scope.dropdown = [
-             {
-                 "text": "<i class=\"fa fa-download\"></i>&nbsp;Another action",
-                 "href": "#anotherAction",
-                 "active": true
-             },
-             {
-                 "text": "<i class=\"fa fa-globe\"></i>&nbsp;Display an alert",
-                 "click": "$alert(\"Holy guacamole!\")"
-             },
-             {
-                 "text": "<i class=\"fa fa-external-link\"></i>&nbsp;External link",
-                 "href": "/auth/facebook",
-                 "target": "_self"
-             },
-            {
-                "divider": true
-            },
-            {
-                "text": "Separated link",
-                "href": "#separatedLink"
-            }
-    ];
-
-
     operate.handleItem = function (item) {
         var dataitem = _.clone(item);
         uiVm.ParameterKey = item.RmaId + "&" + item.ReturnHandleOrder + "&" + item.ProductId;
@@ -478,7 +454,6 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
             });
         });
     };
-
     // //上传附件
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
