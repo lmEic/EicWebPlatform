@@ -1,12 +1,11 @@
 ﻿<div class="panel panel-default" ng-controller="workClothesManageCtrl">
     <div bs-tabs bs-active-pane="vmManager.activeTab" cg-busy="{promise:promise}">
-
-        <div bs-pane data-title="厂服领用登记" data-name="initTab">
-           
+        <div bs-pane data-title="厂服领用登记" data-name="initTab">        
             <div class="row">
                 <div class="col-md-7">
                     <div class="well">
                         <form role="form" name="formWorkClothes" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+
                                 <div class="form-group">
                                     <label for="workerId" class="col-md-2 control-label">工号</label>
                                     <div class="col-md-4">
@@ -77,6 +76,7 @@
                                         </button>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="unit" class="col-md-2 control-label">单位</label>
                                     <div class="col-md-4">
@@ -123,6 +123,7 @@
                         </form>
                     </div>
                 </div>
+
                 <div class="col-md-5">
                     <ul class="list-group">
                         <li class="list-group-item active">
@@ -165,6 +166,7 @@
         </div>
 
         <div bs-pane data-title="厂服领用查询" data-name="editTab">
+
             <div class="well">
                <div bs-tabs>
                    <div bs-pane data-title="工号">
@@ -206,6 +208,7 @@
                    </div>
                </div>
             </div>
+
             <div class="well" cg-busy="{promise:searchPromise}">
                 <a class="btn btn-sm btn-success" href="@Url.Action("BuildReceiveWorkClothesList", "HrGeneralAffairsManage")"><i class="fa fa-file-excel-o"></i>导出</a>
                 <div class="h-split"></div>

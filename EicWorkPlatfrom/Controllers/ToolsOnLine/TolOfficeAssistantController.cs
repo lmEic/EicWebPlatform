@@ -53,13 +53,14 @@ namespace EicWorkPlatfrom.Controllers
         }
         [HttpGet]
         [NoAuthenCheck]
-        public ContentResult GetWorkTaskManageDatas( string systemName,string moduleName,int mode)
+        public ContentResult GetWorkTaskManageDatas( string systemName,string moduleName,string progressStatus,int mode)
         {
 
             QueryWorkTaskManageDto queryDto = new QueryWorkTaskManageDto()
             {
                 SystemName=systemName,
                 ModuleName=moduleName,
+                ProgressStatus=progressStatus,
                 SearchMode=mode    
             };
             var datas = ToolOnlineService.WorkTaskManage.GetWorkTaskDatasBy(queryDto);

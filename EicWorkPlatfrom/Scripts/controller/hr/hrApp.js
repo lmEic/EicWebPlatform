@@ -6,6 +6,7 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
 .config(function ($stateProvider, $urlRouterProvider, $compileProvider) {
 
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
+    
     //--------------人员管理--------------------------
     $stateProvider.state('workerInfoManage', {
         templateUrl: 'ProEmployee/WorkerInfoManage'
@@ -63,7 +64,8 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
      .state('gaWorkerClothesManage', {
          templateUrl: 'HrGeneralAffairsManage/GaWorkerClothesManage'
      });
-})
+    })
+
 .controller('moduleNavCtrl', function ($scope, navDataService, $state) {
     ///模块导航布局视图对象
     var moduleNavLayoutVm = {

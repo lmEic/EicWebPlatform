@@ -1,4 +1,5 @@
-﻿/// <reference path="../../common/angulee.js" />
+﻿/// <reference path="../../common/eloam.js" />
+/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 var smModule = angular.module('bpm.sysmanageApp');
 smModule.factory('sysitilService', function (ajaxService) {
@@ -304,7 +305,8 @@ smModule.controller('itilNotifyAddressManageCtrl', function ($scope,sysitilServi
     };
 });
 ///EmailManageController
-smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService) {
+smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dataDicConfigTreeSet, connDataOpService) {
+    leeHelper.setWebSiteTitle("系统管理","邮箱配置管理")
     ///View
     var uiVM = {
         WorkerId: null,
@@ -334,16 +336,20 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService) {
 
     var queryFields = {
         workerId: null,
+
         email: null
     };
     $scope.query = queryFields;
     var vmManager = {
-        activeTab: 'initTab',     
+        activeTab: 'initTab', 
+        isLocal: true,
         init: function () {
             uiVM = _.clone(originalVM);
             uiVM.OpSign = leeDataHandler.dataOpMode.add;
             $scope.vm = uiVM;
         },
+        searchedWorkers: [],
+        isSingle: true,//是否搜寻人员或部门
         departments: [
             { id: "管理部", text: "管理部" },
             { id: "生管部", text: "生管部" },
@@ -378,6 +384,42 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService) {
                 vmManager.datasource = datas;
             });
         },
+        getWorkerInfo: function () {
+            if (uiVM.WorkerId === undefined) return;
+            var strLen = leeHelper.checkIsChineseValue(uiVM.WorkerId) ? 2 : 6;
+            if (uiVM.WorkerId.length >= strLen) {
+                vmManager.searchedWorkers = [];
+                $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.WorkerId).then(function (datas) {
+                    if (datas.length > 0) {
+                        vmManager.searchedWorkers = datas;
+                        if (vmManager.searchedWorkers.length === 1) {
+                            vmManager.isSingle = true;
+                            vmManager.selectWorker(vmManager.searchedWorkers[0]);
+                        }
+                        else {
+                            vmManager.isSingle = false;
+                        }
+                    }
+                    else {
+                        vmManager.selectWorker(null);
+                    }
+                });
+            }
+        },
+
+        selectWorker: function (worker) {
+            if (worker !== null) {
+                uiVM.Name = worker.Name;
+                uiVM.WorkerId = worker.WorkerId;
+                uiVM.Department = worker.Department;
+            }
+            else {
+                uiVM.Department = null;
+            }
+        },
+
+
+
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -414,5 +456,16 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService) {
             vmManager.init();
         });
     };
+    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
+        departmentTreeSet.setTreeDataset(datas);
+    });
+    var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
+    departmentTreeSet.bindNodeToVm = function () {
+        var dto = _.clone(departmentTreeSet.treeNode.vm);
+        queryFields.department = dto.DataNodeText;
+    };
+    $scope.ztree = departmentTreeSet;
+
+
 
 });
