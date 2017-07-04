@@ -1167,16 +1167,11 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
     var editManager = $scope.editManager = {
         ///下载文件
         loadFile: function (item) {
-            if (item.OrderId === null || item.MaterialId === null) return null;
-            console.log(item.OrderId);
-            console.log(item.MaterialId);
-            console.log(item.InspectionItem);
             var loadUrl = "/QuaInspectionManage/LoadIqcDatasDownLoadFile?OrderId=" + item.OrderId + "&MaterialId=" + item.MaterialId + "&InspectionItem=" + item.InspectionItem;
             return loadUrl;
         },
         ///获取文件扩展名图标
         getFileExtentionIcon: function (item) {
-            if (item.FileName == null) return null;
             return leeHelper.getFileExtensionIcon(item.FileName);
         }
     };
