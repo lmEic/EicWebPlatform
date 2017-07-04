@@ -24,71 +24,71 @@
 
     @Styles.Render("~/css/anstrap")
 </head>
-<body ng-controller="moduleNavCtrl">
+<body>
     @if (ViewBag.IsLoginMode)
     {
-        <div ng-include="'@Url.Action("ModuleLayoutIndexTpl", "CommonTpl")'"></div>
+    <div yl-navigation-layout data-module-text="设备管理" data-module-name="EquipmentManage"></div>
     }
     else
     {
-        <div>
-            <header role="banner">
-                <nav role="navigation" class="navbar navbar-static-top navbar-inverse">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <a class="navbar-brand" href="@Url.Action("Index","Home")">
-                                <span>
-                                    <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司"
-                                         src="@Url.Content("~/Content/login/lmlogo.png")" />企业信息化平台(V1.0)
-                                </span>
-                            </a>
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                        </div>
-                        <div class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav">
+    <div>
+        <header role="banner">
+            <nav role="navigation" class="navbar navbar-static-top navbar-inverse">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="@Url.Action("Index","Home")">
+                            <span>
+                                <img alt="光圣科技（宁波）有限公司" title="光圣科技（宁波）有限公司"
+                                     src="@Url.Content("~/Content/login/lmlogo.png")" />企业信息化平台(V1.0)
+                            </span>
+                        </a>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="#">配置管理</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <main class="container-fluid">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="bs-callout bs-callout-info">
+                        <h4><span class="fa fa-list-ul">导航菜单</span></h4>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <ol class="rounded-list">
                                 <li>
-                                    <a href="#">配置管理</a>
+                                    <a data-ui-sref-active="active" data-ui-sref="astEquipmentInfoView">设备信息查询</a>
+                                    <a data-ui-sref-active="active" data-ui-sref="astArchiveOverview">设备档案总览</a>
+                                    <a data-ui-sref-active="active" data-ui-sref="astArchiveInput">设备档案登记</a>
+                                    <a data-ui-sref-active="active" data-ui-sref="astScrapInput">设备报废登记</a>
+                                    <a data-ui-sref-active="active" data-ui-sref="astBuildCheckList">生成校验清单</a>
+                                    <a data-ui-sref-active="active" data-ui-sref="astBuildMaintenanceList">生成保养清单</a>
+                                    <a data-ui-sref-active="active" data-ui-sref="astInputCheckRecord">登记校验记录</a>
+                                    <a data-ui-sref-active="active" data-ui-sref="astInputMaintenanceRecord">登记保养记录</a>
+                                    <a data-ui-sref-active="active" data-ui-sref="astInputRepairRecord">登记设备维修</a>
                                 </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-            </header>
-            <main class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="bs-callout bs-callout-info">
-                            <h4><span class="fa fa-list-ul">导航菜单</span></h4>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <ol class="rounded-list">
-                                    <li>
-                                        <a data-ui-sref-active="active" data-ui-sref="astEquipmentInfoView">设备信息查询</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="astArchiveOverview">设备档案总览</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="astArchiveInput">设备档案登记</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="astScrapInput">设备报废登记</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="astBuildCheckList">生成校验清单</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="astBuildMaintenanceList">生成保养清单</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="astInputCheckRecord">登记校验记录</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="astInputMaintenanceRecord">登记保养记录</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="astInputRepairRecord">登记设备维修</a>
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-10">
-                        <div data-ui-view>
+                            </ol>
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
+                <div class="col-md-10">
+                    <div data-ui-view>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
     }
 
     @Scripts.Render("~/bundles/bootstrap")

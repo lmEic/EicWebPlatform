@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{46EE4727-9D40-44C8-961B-C832CD21DB4F}"
 EndProject
@@ -46,6 +46,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lm.Eic.Uti.Common.YleeDbHandler", "Lm.Eic.Uti.Common.YleeDbHandler\Lm.Eic.Uti.Common.YleeDbHandler\Lm.Eic.Uti.Common.YleeDbHandler.csproj", "{8301C71A-AFDE-4853-8C05-39FF96B207C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lm.Eic.App.Mes", "Lm.Eic.App.Mes\Lm.Eic.App.Mes.csproj", "{AD7947FD-9283-4AC1-9F7D-FC53932150A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lm.Eic.App.Business.Bmp.Tests", "Lm.Eic.App.Business.Bmp.Tests01\Lm.Eic.App.Business.Bmp.Tests.csproj", "{8243D367-DE7C-46BD-90CE-5669097DCE88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +111,10 @@ Global
 		{AD7947FD-9283-4AC1-9F7D-FC53932150A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD7947FD-9283-4AC1-9F7D-FC53932150A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD7947FD-9283-4AC1-9F7D-FC53932150A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8243D367-DE7C-46BD-90CE-5669097DCE88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8243D367-DE7C-46BD-90CE-5669097DCE88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8243D367-DE7C-46BD-90CE-5669097DCE88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8243D367-DE7C-46BD-90CE-5669097DCE88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

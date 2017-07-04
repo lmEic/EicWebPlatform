@@ -85,7 +85,6 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
 });
 ////创建RMA表单
 qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService) {
-    leeHelper.setWebSiteTitle("质量管理", "创建RMA表单");
     ///视图模型
     var uiVm = $scope.vm = {
         RmaId: null,
@@ -157,7 +156,6 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
 });
 //// 描述RMA登记
 qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpService, $modal) {
-    leeHelper.setWebSiteTitle("质量管理", "RMA表单描述登记");
     //需要存诸Model信息
     var uiVm = item = $scope.vm = {
         Id: null,
@@ -317,7 +315,6 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
 });
 ////检验处置
 qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpService) {
-    leeHelper.setWebSiteTitle("质量管理", "RMA检验处置");
     ///视图模型
     var rmavm = $scope.rmavm = {
         RmaId: null,
@@ -502,7 +499,6 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
 });
 ////检验Rma查询管理
 qualityModule.controller('rmaReportQueryCtrl', function ($scope, rmaDataOpService) {
-    leeHelper.setWebSiteTitle("质量管理", "RMA查询检验管理");
     var vmManager = $scope.vmManager = {
         init: function () {
             vmManager.dataSets = [];

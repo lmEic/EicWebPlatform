@@ -15,10 +15,10 @@
     <link href="@Url.Content("~/Content/zTree/dist/css/zTreeStyle/zTreeStyle.css")" type="text/css" rel="stylesheet" />
     @Styles.Render("~/css/anstrap")
 </head>
-<body ng-controller="moduleNavCtrl">
+<body>
     @if (ViewBag.IsLoginMode)
     {
-        <div ng-include="'@Url.Action("ModuleLayoutIndexTpl", "CommonTpl")'"></div>
+        <div yl-navigation-layout data-module-text="质量管理" data-module-name="QualityManage"></div>
     }
     else
     {

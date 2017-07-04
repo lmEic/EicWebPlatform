@@ -64,45 +64,5 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
          templateUrl: 'HrGeneralAffairsManage/GaWorkerClothesManage'
      });
 })
-.controller('moduleNavCtrl', function ($scope, navDataService, $state) {
-    ///模块导航布局视图对象
-    var moduleNavLayoutVm = {
-        menus: [],
-        navList: [],
-        navItems: [],
-        navTo: function (navMenu) {
-            moduleNavLayoutVm.navItems = [];
-            angular.forEach(navMenu.Childrens, function (childNav) {
-                var navItem = _.findWhere(moduleNavLayoutVm.menus, { Name: childNav.ModuleName, AtLevel: 3 });
-                if (!angular.isUndefined(navItem)) {
-                    moduleNavLayoutVm.navItems.push(navItem);
-                }
-            });
-        },
-        stateTo: function (navItem) {
-            $state.go(navItem.UiSerf);
-        },
-        navViewSwitch: true,//左侧视图导航开关
-        switchView: function () {
-            moduleNavLayoutVm.navViewSwitch = !moduleNavLayoutVm.navViewSwitch;
-            if (moduleNavLayoutVm.navViewSwitch) {
-                moduleNavLayoutVm.navLeftSize = '16%';
-                moduleNavLayoutVm.navMainSize = '83%';
-            }
-            else {
-                moduleNavLayoutVm.navLeftSize = '3%';
-                moduleNavLayoutVm.navMainSize = '96%';
-            }
-        },
-        navLeftSize: '16%',
-        navMainSize: '83%'
-    };
-    $scope.navLayout = moduleNavLayoutVm;
-    $scope.promise = navDataService.getSubModuleNavs('人力资源管理', 'HrManage').then(function (datas) {
-        moduleNavLayoutVm.menus = datas;
-        moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
-    });
-    var user = $scope.loginUser = Object.create(leeLoginUser);
-    user.loadHeadPortrait();
-});
+
 

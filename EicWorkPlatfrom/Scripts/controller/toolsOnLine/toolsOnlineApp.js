@@ -14,7 +14,7 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
     $stateProvider.state('workTaskManage', {
         templateUrl: oAssistantUrlPrefix + 'WorkTaskManage'
     });
-    })
+})
 
 .controller('moduleNavCtrl', function ($scope, navDataService, $state) {
     ///模块导航布局视图对象
@@ -23,6 +23,7 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
         navList: [],
         navItems: [],
         navTo: function (navMenu) {
+            sessionStorage.setItem("navMenuModuleText", navMenu.Item.ModuleText);
             moduleNavLayoutVm.navItems = [];
             angular.forEach(navMenu.Childrens, function (childNav) {
                 var navItem = _.findWhere(moduleNavLayoutVm.menus, { Name: childNav.ModuleName, AtLevel: 3 });
@@ -32,6 +33,8 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
             });
         },
         stateTo: function (navItem) {
+            var navMenuModuleText = sessionStorage.getItem("navMenuModuleText");
+            leeHelper.setWebSiteTitle(navMenuModuleText, navItem.ModuleText);
             $state.go(navItem.UiSerf);
         },
         navViewSwitch: true,//左侧视图导航开关

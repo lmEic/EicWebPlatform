@@ -1,4 +1,5 @@
-﻿/// <reference path="../angular.js" />
+﻿/// <reference path="angulee.js" />
+/// <reference path="../angular.js" />
 angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
 //月份控件
 .directive('ylMonthButton', function () {
@@ -90,6 +91,67 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                 scope.yearquarter = getCurrentQuarter();
             };
         }
+    };
+})
+.directive("ylNavigationLayout", function (navDataService, $state) {
+    return {
+        restrict: 'EA',
+        templateUrl: '/CommonTpl/ModuleLayoutIndexTpl',
+        replace: false,
+        scope: true,
+        link: function (scope, element, attrs) {
+            scope.moduleText = attrs["moduleText"];
+            if (scope.moduleText === undefined)
+                scope.moduleText = "在线工具";
+            scope.moduleName = attrs["moduleName"];
+            if (scope.moduleName === undefined)
+                scope.moduleName = "ToolOnLine";
+
+            ///模块导航布局视图对象
+            var moduleNavLayoutVm = {
+                menus: [],
+                navList: [],
+                navItems: [],
+                navTo: function (navMenu) {
+                    sessionStorage.setItem("navMenuModuleText", navMenu.Item.ModuleText);
+                    moduleNavLayoutVm.navItems = [];
+                    angular.forEach(navMenu.Childrens, function (childNav) {
+                        var navItem = _.findWhere(moduleNavLayoutVm.menus, { Name: childNav.ModuleName, AtLevel: 3 });
+                        if (!angular.isUndefined(navItem)) {
+                            moduleNavLayoutVm.navItems.push(navItem);
+                        }
+                    });
+                },
+                stateTo: function (navItem) {
+                    var navMenuModuleText = sessionStorage.getItem("navMenuModuleText");
+                    leeHelper.setWebSiteTitle(navMenuModuleText, navItem.ModuleText);
+                    $state.go(navItem.UiSerf);
+                },
+                navViewSwitch: true,//左侧视图导航开关
+                switchView: function () {
+                    moduleNavLayoutVm.navViewSwitch = !moduleNavLayoutVm.navViewSwitch;
+                    if (moduleNavLayoutVm.navViewSwitch) {
+                        moduleNavLayoutVm.navLeftSize = '16%';
+                        moduleNavLayoutVm.navMainSize = '83%';
+                    }
+                    else {
+                        moduleNavLayoutVm.navLeftSize = '3%';
+                        moduleNavLayoutVm.navMainSize = '96%';
+                    }
+                },
+                navLeftSize: '16%',
+                navMainSize: '83%'
+            };
+            scope.navLayout = moduleNavLayoutVm;
+            scope.promise = navDataService.getSubModuleNavs(scope.moduleText, scope.moduleName).then(function (datas) {
+                moduleNavLayoutVm.menus = datas;
+                moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
+            });
+        },
+        controller: function ($scope, navDataService, $state) {
+            var user = $scope.loginUser = Object.create(leeLoginUser);
+            user.loadHeadPortrait();
+        },
     };
 })
 //日历颜色提醒指令
