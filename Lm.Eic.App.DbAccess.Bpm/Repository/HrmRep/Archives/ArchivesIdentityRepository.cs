@@ -61,7 +61,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
         {
             return DbHelper.Hrm.LoadEntities<LeaveOfficeMapEntity>("Select WorkerId,Name as WorkerName,Department,RegistedDate as LeaveDate from Archives_EmployeeIdentityInfo where WorkingStatus='在职'");
         }
-        
+
     }
 
     /// <summary>
@@ -189,7 +189,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.Archives
                     "Archives_Study",
                     "Archives_TelInfo",
                     "Archives_WorkerInfo",
-                    "Attendance_CardSet",
                     "Attendance_ClassType",
                     "Archives_IdentitySumerize",
                     "Archives_Department",

@@ -278,7 +278,6 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 
 //iqc检验项目配置模块
 qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
-    leeHelper.setWebSiteTitle("质量管理", "IQC检验项目配置");
     var uiVM = {
         //表单变量
         MaterialId: null,
@@ -477,7 +476,6 @@ qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspe
 
 //iqc检验方式配置模块
 qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
-    leeHelper.setWebSiteTitle("质量管理", "IQC检验方式配置");
     $scope.states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Dakota", "North Carolina", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
 
     var uiVM = {
@@ -615,7 +613,6 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
 
 ///iqc数据采集控制器
 qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService) {
-    leeHelper.setWebSiteTitle("质量管理", "IQC检验数据采集");
     var vmManager = {
         orderId: null,
         currentMaterialIdItem: null,
@@ -837,7 +834,6 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
 
 ///fqc数据采集控制器
 qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService, connDataOpService) {
-    leeHelper.setWebSiteTitle("质量管理", "FQC检验数据采集");
     $scope.opPersonInfo = { Department: '', ClassType: '' };
 
     var vmManager = {
@@ -1069,7 +1065,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
 
 ///iqc检验单管理
 qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qualityInspectionDataOpService, $modal, $alert) {
-    leeHelper.setWebSiteTitle("质量管理", "IQC检验单管理");
     var vmManager = $scope.vmManager = {
         queryActiveTab: null,
         queryMaterialId: null,
@@ -1172,16 +1167,11 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
     var editManager = $scope.editManager = {
         ///下载文件
         loadFile: function (item) {
-            if (item.OrderId === null || item.MaterialId === null) return null;
-            console.log(item.OrderId);
-            console.log(item.MaterialId);
-            console.log(item.InspectionItem);
             var loadUrl = "/QuaInspectionManage/LoadIqcDatasDownLoadFile?OrderId=" + item.OrderId + "&MaterialId=" + item.MaterialId + "&InspectionItem=" + item.InspectionItem;
             return loadUrl;
         },
         ///获取文件扩展名图标
         getFileExtentionIcon: function (item) {
-            if (item.FileName == null) return null;
             return leeHelper.getFileExtensionIcon(item.FileName);
         }
     };
@@ -1191,7 +1181,6 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
 
 //检验方式转换配置
 qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityInspectionDataOpService) {
-    leeHelper.setWebSiteTitle("质量管理", "检验方式配置");
     var vmManager = $scope.vmManager = {
         isEnable: false,
         switchModeList: [],
@@ -1233,7 +1222,6 @@ qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityIn
 
 //fqc检验项目配置
 qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
-    leeHelper.setWebSiteTitle("质量管理", "FQC检验项目配置");
     var uiVM = {
         MaterialId: null,
         ProductDepartment: null,
@@ -1410,7 +1398,6 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
 
 //fqc检验单管理
 qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qualityInspectionDataOpService, $modal, $alert) {
-    leeHelper.setWebSiteTitle("质量管理", "FQC检验单管理");
     var vmManager = $scope.vmManager = {
         dateFrom: null,
         dateTo: null,

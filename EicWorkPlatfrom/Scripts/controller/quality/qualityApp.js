@@ -59,8 +59,8 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     })
     ////------------RMA查询-----------------------
     .state('rmaReportQuery', {
-         templateUrl: rmaUrlPrefix + 'RmaReportQuery'
-     })
+        templateUrl: rmaUrlPrefix + 'RmaReportQuery'
+    })
     ////-------------看板管理-------------------
     //.state('jumperWireBoard', {//线材看板管理
     //    templateUrl: boardUrlPrefix + 'JumperWireBoard'
@@ -72,67 +72,10 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
 })
 .factory('qualityDataService', function (ajaxService) {
     var dataAccess = {};
-    //var urlPrefix = '/ProEmployee/'
-
-    //dataAccess.getWorkers = function () {
-    //    return ajaxService.getData(urlPrefix + 'GetWorkers', {});
-    //};
-
-    //dataAccess.GetWorkerBy = function (workerId) {
-    //    return ajaxService.getData(urlPrefix + 'GetWorkerBy', {
-    //        workerId: workerId
-    //    });
-    //};
-
-    //dataAccess.registWorker = function (worker) {
-    //    return ajaxService.postData(urlPrefix + 'RegistWorker', {
-    //        worker: worker
-    //    });
-    //};
 
     return dataAccess;
 })
-.controller('moduleNavCtrl', function ($scope, navDataService, $state) {
-    ///模块导航布局视图对象
-    var moduleNavLayoutVm = {
-        menus: [],
-        navList: [],
-        navItems: [],
-        navTo: function (navMenu) {
-            moduleNavLayoutVm.navItems = [];
-            angular.forEach(navMenu.Childrens, function (childNav) {
-                var navItem = _.findWhere(moduleNavLayoutVm.menus, { Name: childNav.ModuleName, AtLevel: 3 });
-                if (!angular.isUndefined(navItem)) {
-                    moduleNavLayoutVm.navItems.push(navItem);
-                }
-            });
-        },
-        stateTo: function (navItem) {
-            $state.go(navItem.UiSerf);
-        },
-        navViewSwitch: true,//左侧视图导航开关
-        switchView: function () {
-            moduleNavLayoutVm.navViewSwitch = !moduleNavLayoutVm.navViewSwitch;
-            if (moduleNavLayoutVm.navViewSwitch) {
-                moduleNavLayoutVm.navLeftSize = '16%';
-                moduleNavLayoutVm.navMainSize = '83%';
-            }
-            else {
-                moduleNavLayoutVm.navLeftSize = '3%';
-                moduleNavLayoutVm.navMainSize = '96%';
-            }
-        },
-        navLeftSize: '16%',
-        navMainSize: '83%'
-    };
-    $scope.navLayout = moduleNavLayoutVm;
-    $scope.promise = navDataService.getSubModuleNavs('质量管理', 'QuantityManage').then(function (datas) {
-        moduleNavLayoutVm.menus = datas;
-        moduleNavLayoutVm.navList = _.where(datas, { AtLevel: 2 });
-    });
-    var user = $scope.loginUser = Object.create(leeLoginUser);
-    user.loadHeadPortrait();
-});
+
 
 
 

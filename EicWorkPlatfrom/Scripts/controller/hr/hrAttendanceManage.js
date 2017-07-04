@@ -358,7 +358,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
 
     var uiVM = $scope.vm = _.clone(askLeaveVM);
 
-    var msgDialog = $scope.msgDialog = leePopups.dialog();
+    var editDialog = $scope.editDialog = leePopups.dialog();
     //查询字段视图
     var queryVM = $scope.qryvm = {
         year: null,

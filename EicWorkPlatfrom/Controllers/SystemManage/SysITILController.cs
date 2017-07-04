@@ -12,7 +12,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-      
+
         public ActionResult ItilSupTelManage()
         {
             return View();
@@ -89,7 +89,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         //邮箱登记存储
         public JsonResult StoreEmailManageRecord(ItilEmailManageModel model)
-        {   
+        {
             var opresult = ItilEmailMangeService.ItilEmailManager.StoreItilEmailManage(model);
             return Json(opresult);
 
@@ -97,10 +97,10 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         [NoAuthenCheck]
         //邮箱查询
-        public ContentResult GetEmailManageRecord(string workerId, string  email,int mode)
+        public ContentResult GetEmailManageRecord(string workerId, string email, int mode)
         {
             var datas = ItilEmailMangeService.ItilEmailManager.GetItilEmailManage(new ItilEmailManageModelDto()
-            {        
+            {
                 WorkerId = workerId,
                 Email = email,
                 SearchMode = mode
@@ -108,7 +108,7 @@ namespace EicWorkPlatfrom.Controllers
             });
             return DateJsonResult(datas);
 
-        }    
+        }
         /// <summary>
         /// 发送邮件通知
         /// </summary>

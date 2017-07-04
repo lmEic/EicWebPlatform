@@ -524,7 +524,7 @@ var leeHelper = (function () {
         },
         ///设置网站标题
         setWebSiteTitle: function (title, subTitle) {
-            document.title = title + "---" + subTitle;
+            document.title = title + "---【" + subTitle + "】";
         },
         //获取文件后缀名 fileName:包含后缀名的文件名
         getFileExtensionIcon: function (fileName) {

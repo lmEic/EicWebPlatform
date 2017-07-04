@@ -490,10 +490,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
                 switch (qryDto.SearchMode)
                 {
                     case 1: //依工号查询
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkerId.StartsWith(qryDto.WorkerId, StringComparison.CurrentCulture)).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.WorkerId.StartsWith(qryDto.WorkerId)).ToList();
                         return WorkerArchivesInfoList;
                     case 2: //依部门查询
-                        WorkerArchivesInfoList = irep.Entities.Where(m => m.Department.StartsWith(qryDto.Department, StringComparison.CurrentCulture)).ToList();
+                        WorkerArchivesInfoList = irep.Entities.Where(m => m.Department.StartsWith(qryDto.Department)).ToList();
                         return WorkerArchivesInfoList;
                     case 3: //依入职时间段查询
                         DateTime StartDate = qryDto.RegistedDateStart.ToDate();
