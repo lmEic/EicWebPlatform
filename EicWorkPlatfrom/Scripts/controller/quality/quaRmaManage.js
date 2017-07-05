@@ -471,9 +471,9 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         },
         isdisabled: false,
         dataitems: [],
-        getDetailDatas: function (item) {
-
-        }
+        printDetailDatas: function () {
+            console.log(uiVm.RmaId);
+        },
     };
     var rmaNumberDatasDialog = $scope.rmaNumberDatasDialog = leePopups.dialog();
     var dialog = $scope.dialog = leePopups.dialog();
