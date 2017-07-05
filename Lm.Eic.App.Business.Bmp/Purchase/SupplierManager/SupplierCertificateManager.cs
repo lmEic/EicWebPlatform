@@ -25,10 +25,10 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public List<SuppliersSumInfoVM> GetQualifiedSumInfoDatas(string endYearMonth)
         {
             string startYearMonth = (int.Parse(endYearMonth) - 100).ToString();
-            return GetQualifiedSupplierDates(  startYearMonth, endYearMonth);
+            return GetQualifiedSupplierDates(startYearMonth, endYearMonth);
         }
 
-        public List<SuppliersSumInfoVM> GetQualifiedSupplierDates( string startYearMonth,string endYearMonth)
+        public List<SuppliersSumInfoVM> GetQualifiedSupplierDates(string startYearMonth, string endYearMonth)
         {
             SuppliersSumInfoVM modelVm = null;
             List<SuppliersSumInfoVM> SupplierInfoVmDatas = new List<SuppliersSumInfoVM>();
@@ -49,8 +49,8 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         public SuppliersSumInfoVM GetSupplierBaseInfoBy(string supplierId)
         {
             var supplierInfo = GetSuppplierInfoBy(supplierId);
-            if (supplierInfo!=null && supplierInfo.IsCooperate.ToString() == "True")
-                    return  GetSuppliersInfoAddrLatestTwoPurchaseInfo(supplierInfo);
+            if (supplierInfo != null && supplierInfo.IsCooperate.ToString() == "True")
+                return GetSuppliersInfoAddrLatestTwoPurchaseInfo(supplierInfo);
             return null;
         }
         /// <summary>
@@ -58,17 +58,17 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// <param name="supplierId"></param>
         /// <returns></returns>
         /// </summary>
-        public  SupplierInfoModel GetSuppplierInfoBy(string supplierId)
+        public SupplierInfoModel GetSuppplierInfoBy(string supplierId)
         {
             try
             {
                 //先从已存的数据信息中找
                 var data = SupplierCrudFactory.SuppliersInfoCrud.GetSupplierInfoBy(supplierId);
                 if (data != null) return data;
-                    //没有找到再从ERP中找
+                //没有找到再从ERP中找
                 SupplierInfoModel supplierInfo = GetSuppplierInfoFromErpBy(supplierId);
-               if(supplierInfo != null&&supplierInfo.IsCooperate== "True")
-                   SupplierCrudFactory.SuppliersInfoCrud.Init(supplierInfo); 
+                if (supplierInfo != null && supplierInfo.IsCooperate == "True")
+                    SupplierCrudFactory.SuppliersInfoCrud.Init(supplierInfo);
                 return supplierInfo;
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
@@ -212,22 +212,22 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         {
             List<SuppliersSumInfoVM> retrundatas = new List<SuppliersSumInfoVM>();
             if (datas == null || datas.Count == 0)
-            return null;
+                return null;
             datas.ForEach(e =>
             {
-                //var dd = CertificateDictionary(e.SupplierId,e.QualifiedCertificateDatas);
-                //e.EnvironmentalInvestigation = dd[certificateName.EnvironmentalInvestigation];
-                //e.HonestCommitment = dd[certificateName.HonestCommitment];
-                //e.QualityAssuranceProtocol = dd[certificateName.QualityAssuranceProtocol];
-                //e.SupplierBaseDocument = dd[certificateName.SupplierBaseDocument];
-                //e.SupplierComment = dd[certificateName.SupplierComment];
-                //e.NotUseChildLabor = dd[certificateName.NotUseChildLabor];
-                //e.PCN_Protocol = dd[certificateName.PCN_Protocol];
-                //e.HSF_Guarantee = dd[certificateName.HSF_Guarantee];
-                //e.REACH_Guarantee = dd[certificateName.REACH_Guarantee];
-                //e.SVHC_Guarantee = dd[certificateName.SVHC_Guarantee];
-                //e.ISO14001 = dd[certificateName.ISO14001];
-                //e.ISO9001 = dd[certificateName.ISO9001];
+                var dd = CertificateDictionary(e.SupplierId, e.QualifiedCertificateDatas);
+                e.EnvironmentalInvestigation = dd[certificateName.EnvironmentalInvestigation];
+                e.HonestCommitment = dd[certificateName.HonestCommitment];
+                e.QualityAssuranceProtocol = dd[certificateName.QualityAssuranceProtocol];
+                e.SupplierBaseDocument = dd[certificateName.SupplierBaseDocument];
+                e.SupplierComment = dd[certificateName.SupplierComment];
+                e.NotUseChildLabor = dd[certificateName.NotUseChildLabor];
+                e.PCN_Protocol = dd[certificateName.PCN_Protocol];
+                e.HSF_Guarantee = dd[certificateName.HSF_Guarantee];
+                e.REACH_Guarantee = dd[certificateName.REACH_Guarantee];
+                e.SVHC_Guarantee = dd[certificateName.SVHC_Guarantee];
+                e.ISO14001 = dd[certificateName.ISO14001];
+                e.ISO9001 = dd[certificateName.ISO9001];
                 retrundatas.Add(e);
             });
             return retrundatas;
@@ -273,7 +273,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         /// </summary>
         /// <param name="yearMoth">年份格式yyyyMM</param>
         /// <returns></returns>
-       public  List<SupplierInfoModel> GetSupplierInformationDatasBy(string startYearMonth, string endYearMonth)
+        public List<SupplierInfoModel> GetSupplierInformationDatasBy(string startYearMonth, string endYearMonth)
         {
             List<SupplierInfoModel> SupplierInfoDatas = new List<SupplierInfoModel>();
             SupplierInfoModel m = null;
@@ -298,26 +298,26 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
         private SupplierInfoModel GetSuppplierInfoFromErpBy(string supplierId)
         {
             var erpSupplierInfo = PurchaseDbManager.SupplierDb.FindSpupplierInfoBy(supplierId);
-            string purchaseUser =  PurchaseDbManager.PurchaseDb.PurchaseUserBy(supplierId);
+            string purchaseUser = PurchaseDbManager.PurchaseDb.PurchaseUserBy(supplierId);
             if (erpSupplierInfo == null) return null;
-                string principal = erpSupplierInfo.Principal.Trim() == string.Empty ? erpSupplierInfo.Contact : erpSupplierInfo.Principal;
-                return  new SupplierInfoModel
-                {
-                    SupplierId = supplierId.Trim(),
-                    SupplierEmail = erpSupplierInfo.Email,
-                    SupplierAddress = erpSupplierInfo.Address,
-                    //采购人员
-                    PurchaseUser= purchaseUser,
-                    // 负责人
-                    SupplierPrincipal = principal.Trim(),
-                    SupplierFaxNo = erpSupplierInfo.FaxNo,
-                    SupplierName = erpSupplierInfo.SupplierName,
-                    SupplierShortName = erpSupplierInfo.SupplierShortName,
-                    SupplierUser = erpSupplierInfo.Contact,
-                    SupplierTel = erpSupplierInfo.Tel,
-                    PayCondition = erpSupplierInfo.PayCondition,
-                    IsCooperate = erpSupplierInfo.IsCooperate
-                };
+            string principal = erpSupplierInfo.Principal.Trim() == string.Empty ? erpSupplierInfo.Contact : erpSupplierInfo.Principal;
+            return new SupplierInfoModel
+            {
+                SupplierId = supplierId.Trim(),
+                SupplierEmail = erpSupplierInfo.Email,
+                SupplierAddress = erpSupplierInfo.Address,
+                //采购人员
+                PurchaseUser = purchaseUser,
+                // 负责人
+                SupplierPrincipal = principal.Trim(),
+                SupplierFaxNo = erpSupplierInfo.FaxNo,
+                SupplierName = erpSupplierInfo.SupplierName,
+                SupplierShortName = erpSupplierInfo.SupplierShortName,
+                SupplierUser = erpSupplierInfo.Contact,
+                SupplierTel = erpSupplierInfo.Tel,
+                PayCondition = erpSupplierInfo.PayCondition,
+                IsCooperate = erpSupplierInfo.IsCooperate
+            };
         }
 
         /// <summary>
@@ -364,18 +364,18 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             // var certificateDictionary = CertificateDictionary(supplierInfo.SupplierId);
             SuppliersSumInfoVM returnData = new SuppliersSumInfoVM();
             OOMaper.Mapper<SupplierInfoModel, SuppliersSumInfoVM>(supplierInfo, returnData);
-            returnData.QualifiedCertificateCount = GetQualifiedCertificateCount(supplierInfo.SupplierId);
-            var  LatestTwoPurchaseModel = LatestTwoPurchaseData(supplierInfo.SupplierId);
+            returnData.QualifiedCertificateDatas = GetSupplierQualifiedCertificateListBy(supplierInfo.SupplierId);
+            returnData.QualifiedCertificateCount = GetQualifiedCertificateCount(returnData.QualifiedCertificateDatas);
+            var LatestTwoPurchaseModel = LatestTwoPurchaseData(supplierInfo.SupplierId);
             OOMaper.Mapper<SupplierLatestTwoPurchaseCell, SuppliersSumInfoVM>(LatestTwoPurchaseModel, returnData);
             return returnData;
         }
-        private int GetQualifiedCertificateCount(string supplierId)
+        private int GetQualifiedCertificateCount(List<SupplierQualifiedCertificateModel> datas)
         {
             int i = 0;
-           var datas= GetSupplierQualifiedCertificateListBy(supplierId);
-            if (datas == null|| datas.Count==0) return i;
+            if (datas == null || datas.Count == 0) return i;
             datas.ForEach(e =>
-            {if (e.IsEfficacy.Trim() == "是")  i++; });
+            { if (e.IsEfficacy.Trim() == "是") i++; });
             return i;
 
         }

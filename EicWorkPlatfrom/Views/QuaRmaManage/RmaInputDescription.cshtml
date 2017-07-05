@@ -105,6 +105,7 @@
                                                        placeholder="订单号" />
                                             </div>
                                         </td>
+                                        <td> <label style="height :35px;width:200px;" data-placement="left">日期</label></td>
                                         <td title="订单日期" ng-dblclick="">
                                             <div class="input-group" cg-busy="{promise:searchPromise}">
                                                 <input name="productsShipDate" type="date" class="form-control" format-date ng-model="item.ProductsShipDate" required
@@ -116,7 +117,7 @@
                                         <td class="text-center">
                                             <button type="button" class="btn btn-xs btn-success"
                                                     data-animation="am-flip-x" data-placement="right"
-                                                    bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                                    bs-dropdown aria-haspopup="true" aria-expanded="false" style="height :35px;width :auto">
                                                 <span class="fa fa-indent" title="新增"></span>
                                             </button>
                                             <div class="dropdown-menu" role="menu">
@@ -134,13 +135,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        @*<label for="productsShipDate" class="col-md-2 control-label">原出货日期</label>
-                            <div class="col-md-4">
-                                <input name="productsShipDate" type="date" class="form-control" format-date ng-model="vm.ProductsShipDate"  required />
-                                <div class="error-messages" ng-messages="formRmaBussesDescription.productsShipDate.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">原出货日期不能为空</small>
-                                </div>
-                            </div>*@
                     </div>
                     <div class="form-group">
                         <label for="badDescription" class="col-md-2 control-label">不良现象</label>
