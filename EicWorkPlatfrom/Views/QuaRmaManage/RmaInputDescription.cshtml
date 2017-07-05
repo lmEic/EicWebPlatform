@@ -101,12 +101,12 @@
                                         <td title="订单号" ng-dblclick="">
                                             <div class="input-group" cg-busy="{promise:searchPromise}">
                                                 <input name="salesOrder" class="form-control" ng-model="item.SalesOrder" required
-                                                       focus-if="focus.salesOrder" focus-setter data-ensure-user-exist style="width:185px;"
+                                                       focus-if="focus.salesOrder" focus-setter data-ensure-user-exist style="width:250px;"
                                                        placeholder="订单号" />
                                             </div>
                                         </td>
-                                        <td> <label style="height :35px;width:200px;" data-placement="left">日期</label></td>
-                                        <td title="订单日期" ng-dblclick="">
+                                        <td> <label style="padding:10px 0 0 0;width:180px;text-align:center;">日期:</label></td>
+                                        <td title="订单日期">
                                             <div class="input-group" cg-busy="{promise:searchPromise}">
                                                 <input name="productsShipDate" type="date" class="form-control" format-date ng-model="item.ProductsShipDate" required
                                                        focus-if="focus.salesOrder" focus-setter data-ensure-user-exist style="width:200px;"
