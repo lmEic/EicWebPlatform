@@ -8,6 +8,7 @@ using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Newtonsoft.Json;
 using System.IO;
+using Lm.Eic.Framework.ProductMaster.Model;
 
 namespace EicWorkPlatfrom.Controllers.Quality
 {
@@ -59,7 +60,26 @@ namespace EicWorkPlatfrom.Controllers.Quality
             var datas = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(rmaId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="archiveConfig"></param>
+        /// <param name="rmaCustomerShortName"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetCustomerShortNameDatas(string archiveConfig, string rmaCustomerShortName)
+        {
+            List<ConfigDataDictionaryModel> CustomerShortNameData = new List<ConfigDataDictionaryModel>();
+            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "AAAA", DataNodeText = "供应商A" });
+            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "BBBB", DataNodeText = "供应商B" });
+            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "CCCC", DataNodeText = "供应商C" });
+            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "DDDD", DataNodeText = "供应商D" });
+            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "EEEE", DataNodeText = "供应商E" });
+            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "FFFF", DataNodeText = "供应商F" });
+            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "GGGG", DataNodeText = "供应商G" });
+            var datas = CustomerShortNameData;
+            return Json(datas, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region RmaInputDescription
@@ -165,7 +185,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
                     string fileName = String.Format("{0}-{1}{2}", data.RmaId, data.RmaIdNumber, extensionName);
                     string fullFileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.RmaHandleDataFile), fileName);
                     file.DeleteExistFile(fullFileName).SaveAs(fullFileName);
-                    return Json(new { Result = "OK", FullFileName= fullFileName, FileName = fileName });
+                    return Json(new { Result = "OK", FullFileName = fullFileName, FileName = fileName });
                 }
             }
             return Json(FailResult);
@@ -187,11 +207,11 @@ namespace EicWorkPlatfrom.Controllers.Quality
         /// <returns></returns>
         [HttpPost]
         [NoAuthenCheck]
-        public ContentResult GetRmaDatas(string dateFrom,string  dateTo)
+        public ContentResult GetRmaDatas(string dateFrom, string dateTo)
         {
-           
+
             var rmaInitiateDatas = RmaService.RmaManager.RmaReportBuilding.GetInitiateDatas(dateFrom, dateTo);
-          
+
             return DateJsonResult(rmaInitiateDatas);
         }
         #endregion

@@ -298,23 +298,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _customername = value; }
             get { return _customername; }
         }
-        private string _salesorder;
+        private string _salesorders;
         /// <summary>
         ///订单号
         /// </summary>
-        public string SalesOrder
+        public string SalesOrders
         {
-            set { _salesorder = value; }
-            get { return _salesorder; }
+            set { _salesorders = value; }
+            get { return _salesorders; }
         }
-        private DateTime _productsshipdate;
+        private string _productsshipdates;
         /// <summary>
         ///原出货日期
         /// </summary>
-        public DateTime ProductsShipDate
+        public string ProductsShipDates
         {
-            set { _productsshipdate = value; }
-            get { return _productsshipdate; }
+            set { _productsshipdates = value; }
+            get { return _productsshipdates; }
         }
         private string _baddescription;
         /// <summary>

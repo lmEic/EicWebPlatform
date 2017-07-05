@@ -31,13 +31,13 @@
         </div>
         <div class="h-split"></div>
         <div class="row">
-            <div class="col-md-8 well" >
+            <div class="col-md-8 well">
                 <form role="form" name="formRmaBussesDescription" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                     <div class="form-group">
                         <label for="returnHandleOrder" class="col-md-2 control-label">ERP单号</label>
                         <div class="col-md-10">
-                            <input name="returnHandleOrder" id="returnHandleOrder" placeholder="输入ERP单号按回车键" 
-                                   class="form-control" ng-keypress="vmManager.getReturnOrderData($event)" ng-model="vm.ReturnHandleOrder"  required  />
+                            <input name="returnHandleOrder" id="returnHandleOrder" placeholder="输入ERP单号按回车键"
+                                   class="form-control" ng-keypress="vmManager.getReturnOrderData($event)" ng-model="vm.ReturnHandleOrder" required />
                             <div class="error-messages" ng-messages="formRmaBussesDescription.returnHandleOrder.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">ERP单号不能为空</small>
                             </div>
@@ -93,29 +93,66 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="salesOrder" class="col-md-2 control-label">订单号</label>
-                        <div class="col-md-4">
-                            <input name="salesOrder" class="form-control" ng-model="vm.SalesOrder"   />
+                        <label for="salesOrder" class="col-md-2 control-label">订单/日期</label>
+                        <div class="col-md-8">
+                            <table>
+                                <tbody>
+                                    <tr ng-repeat="item in vmManager.salersOrdersDatas track by $index">
+                                        <td title="订单号" ng-dblclick="">
+                                            <div class="input-group" cg-busy="{promise:searchPromise}">
+                                                <input name="salesOrder" class="form-control" ng-model="item.SalesOrder" required
+                                                       focus-if="focus.salesOrder" focus-setter data-ensure-user-exist style="width:185px;"
+                                                       placeholder="订单号" />
+                                            </div>
+                                        </td>
+                                        <td title="订单日期" ng-dblclick="">
+                                            <div class="input-group" cg-busy="{promise:searchPromise}">
+                                                <input name="productsShipDate" type="date" class="form-control" format-date ng-model="item.ProductsShipDate" required
+                                                       focus-if="focus.salesOrder" focus-setter data-ensure-user-exist style="width:200px;"
+                                                       placeholder="订单日期" />
+                                            </div>
+                                        </td>
+                                        @*工具按钮*@
+                                        <td class="text-center">
+                                            <button type="button" class="btn btn-xs btn-success"
+                                                    data-animation="am-flip-x" data-placement="right"
+                                                    bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                                <span class="fa fa-indent" title="新增"></span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <ul class="nav nav-pills" role="tablist">
+                                                    <li role="presentation">
+                                                        <a href="#" ng-click="vmManager.insertRow(item)" title="插入行"><i class="fa fa-pencil"></i>插入</a>
+                                                    </li>
+                                                    <li role="presentation">
+                                                        <a href="#" ng-click="vmManager.removeRow(item)" title="删除此行"><i class="fa fa-remove"></i>删除</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <label for="productsShipDate" class="col-md-2 control-label">原出货日期</label>
-                        <div class="col-md-4">
-                            <input name="productsShipDate" type="date" class="form-control" format-date ng-model="vm.ProductsShipDate"  required />
-                            <div class="error-messages" ng-messages="formRmaBussesDescription.productsShipDate.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">原出货日期不能为空</small>
-                            </div>
-                        </div>
+                        @*<label for="productsShipDate" class="col-md-2 control-label">原出货日期</label>
+                            <div class="col-md-4">
+                                <input name="productsShipDate" type="date" class="form-control" format-date ng-model="vm.ProductsShipDate"  required />
+                                <div class="error-messages" ng-messages="formRmaBussesDescription.productsShipDate.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">原出货日期不能为空</small>
+                                </div>
+                            </div>*@
                     </div>
                     <div class="form-group">
                         <label for="badDescription" class="col-md-2 control-label">不良现象</label>
                         <div class="col-md-4">
-                            <textarea rows="3" name="badDescription" class="form-control" ng-model="vm.BadDescription"   required />
+                            <textarea rows="3" name="badDescription" class="form-control" ng-model="vm.BadDescription" required />
                             <div class="error-messages" ng-messages="formRmaBussesDescription.badDescription.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">不良现象不能为空</small>
                             </div>
                         </div>
                         <label for="customerHandleSuggestion" class="col-md-2 control-label">处理意见</label>
                         <div class="col-md-4">
-                            <textarea rows="3" name="customerHandleSuggestion" class="form-control" ng-model="vm.CustomerHandleSuggestion"   required />
+                            <textarea rows="3" name="customerHandleSuggestion" class="form-control" ng-model="vm.CustomerHandleSuggestion" required />
                             <div class="error-messages" ng-messages="formRmaBussesDescription.customerHandleSuggestion.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">处理意见不能为空</small>
                             </div>
@@ -125,7 +162,7 @@
                     <div class="form-group">
                         <label for="feePaymentWay" class="col-md-2 control-label">付费方工式</label>
                         <div class="col-md-4">
-                            <input name="feePaymentWay" class="form-control" ng-model="vm.FeePaymentWay"    required />
+                            <input name="feePaymentWay" class="form-control" ng-model="vm.FeePaymentWay" required />
                             <div class="error-messages" ng-messages="formRmaBussesDescription.feePaymentWay.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">付费方工式不能为空</small>
                             </div>
@@ -175,7 +212,7 @@
                                     <button class="btn btn-xs btn-success" ng-click="operate.copyItem(item)" title="复制">
                                         <i class="fa fa-files-o"></i>
                                     </button>
-                                    <button class="btn btn-xs btn-danger"name="deletebut" ng-click="operate.deleteItem(item)" title="删除">
+                                    <button class="btn btn-xs btn-danger" name="deletebut" ng-click="operate.deleteItem(item)" title="删除">
                                         <i class="fa fa-remove"></i>
                                     </button>
                                 </td>
@@ -183,7 +220,7 @@
                         </tbody>
                     </table>
                 </div>
-                <dialog  ng-if="deleteDialog.open"  modal data-close="deleteDialog.close()" style="width:40%">
+                <dialog ng-if="deleteDialog.open" modal data-close="deleteDialog.close()" style="width:40%">
                     <content dialog-title class="fa fa-bell">
                         <i class="fa fa-th-list">删除数据</i>
                     </content>
