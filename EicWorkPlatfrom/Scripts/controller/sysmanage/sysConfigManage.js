@@ -115,8 +115,8 @@ smModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfig
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
         departmentDto = _.clone(departmentTreeSet.treeNode.vm);
-        departmentDto.ModuleName = "smconfigManage";
-        departmentDto.AboutCategory = "smDepartmentSet";
+        departmentDto.ModuleName = "HrBaseInfoManage";
+        departmentDto.AboutCategory = "HrDepartmentSet";
         oldDepartmentDto = _.clone(departmentDto);
         $scope.vm = departmentDto;
     };
