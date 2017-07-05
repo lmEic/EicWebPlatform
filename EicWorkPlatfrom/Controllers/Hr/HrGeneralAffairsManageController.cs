@@ -67,5 +67,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var dlfm = GeneralAffairsService.WorkerClothesManager.DownLaodBuildReceiveWorkClothesFile();
             return this.DownLoadFile(dlfm);
         }
+       
     }
 }
