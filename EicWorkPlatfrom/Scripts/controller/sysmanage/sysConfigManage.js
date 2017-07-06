@@ -1,12 +1,6 @@
 ﻿/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 var smModule = angular.module('bpm.sysmanageApp');
-smModule.factory('sysConfigService', function ($http, $q) {
-    var config = {};
-    var urlPrefix = '/' + leeHelper.controllers.configManage + '/';
-
-    return config;
-});
 smModule.controller('DepartmentSetCtrl', function ($scope, $modal, dataDicConfigTreeSet, connDataOpService) {
     var departmentDto = {
         TreeModuleKey: 'Organization',

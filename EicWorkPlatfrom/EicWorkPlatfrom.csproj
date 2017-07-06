@@ -1360,6 +1360,8 @@
     <Content Include="Views\CommonTpl\CalendarColorTipTpl.cshtml" />
     <Content Include="Views\PurSupplierManage\SupplierArchiveOverview.cshtml" />
     <Content Include="Views\TolOfficeAssistant\ReportImproveProblem.cshtml" />
+    <Content Include="Views\CommonTpl\DataTreeConfigTpl.cshtml" />
+    <Content Include="Views\SysConfig\BusiCommonDataSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

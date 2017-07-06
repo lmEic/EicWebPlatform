@@ -115,5 +115,10 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        [NoAuthenCheck]
+        public ActionResult DataTreeConfigTpl()
+        {
+            return View();
+        }
     }
 }
