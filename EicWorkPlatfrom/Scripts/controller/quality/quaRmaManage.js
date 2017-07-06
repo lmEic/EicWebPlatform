@@ -71,6 +71,15 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
         var url = quaRmaManageUrl + 'UploadRmaHandleFile';
         return ajaxService.uploadFile(url, files);
     };
+    ///
+    ///打印文档
+    ///
+    rma.printDetailsDatas = function (rmaId) {
+        var url = quaRmaManageUrl + 'PrintDetailsDatas';
+        return ajaxService.getData(url, {
+            rmaId: rmaId
+        });
+    };
 
     //========================== 查询=============================================
     //查询 从年月 到年月
@@ -231,14 +240,6 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                     leeHelper.copyVm(data.rmaInitiateData, rmavm);
                     vmManager.dataSets = data.bussesDescriptionDatas;
                     vmManager.isdisabled = true;
-                    angular.forEach(vmManager.dataSets, function (item) {
-                        var SalesOrders = item.SalesOrders.split(',');
-                        var ProductsShipDateStr = item.SalesOrders.split(',');
-                        salesOrderItem.SalesOrder = item.SalesOrders;
-                        salesOrderItem.ProductsShipDate = item.ProductsShipDates;
-                        vmManager.salersOrdersDatas.push(salesOrderItem);
-                        salesOrderItem = [];
-                    })
                 }
                 vmManager.init();
             });
@@ -325,6 +326,18 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
     ///编辑
     operate.editItem = function (item) {
         item.OpSign = leeDataHandler.dataOpMode.edit;
+        var SalesOrders = item.SalesOrders.split(',');
+        var ProductsShipDateStr = item.ProductsShipDates.split(',');
+        console.log(SalesOrders);
+        console.log(ProductsShipDateStr);
+        vmManager.salersOrdersDatas = [];
+        for (var i = 0; i < SalesOrders.length; i++) {
+            salesOrderItem = [];
+            salesOrderItem.SalesOrder = SalesOrders[i];
+            salesOrderItem.ProductsShipDate = ProductsShipDateStr[i];
+            console.log(salesOrderItem);
+            vmManager.salersOrdersDatas.push(salesOrderItem);
+        }
         $scope.vm = uiVm = item;
     };
     //删除
@@ -467,9 +480,6 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         },
         isdisabled: false,
         dataitems: [],
-        getDetailDatas: function (item) {
-
-        }
     };
     var rmaNumberDatasDialog = $scope.rmaNumberDatasDialog = leePopups.dialog();
     var dialog = $scope.dialog = leePopups.dialog();

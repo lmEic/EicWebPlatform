@@ -28,7 +28,7 @@ purchaseModule.factory('supplierDataOpService', function (ajaxService) {
     //        导出得到EXCEL            //
     //                                //
     ////////////////////////////////////
-    purDb.CreateQualifiedSupplierInfoList = function (data) {
+    purDb.createQualifiedSupplierInfoList = function (data) {
         var url = purUrlPrefix + 'CreateQualifiedSupplierInfoList';
         return ajaxService.getData(url, {
             data: data
@@ -185,7 +185,7 @@ purchaseModule.controller('buildQualifiedSupplierInventoryCtrl', function ($scop
         ],
         datasets: [],
         datasource: [],
-        qualifiedCertificateDatas:[],
+        qualifiedCertificateDatas: [],
         datasourceCopy: [],
         editWindowShow: false,
         goToEdit: function (item) {
@@ -367,18 +367,18 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         SubstitutionSupplierId: null,
         SeasonNum: 0,
         Remark: null,
-        OpPerson:null,
+        OpPerson: null,
         OpDate: null,
         Optime: null,
         OpSign: leeDataHandler.dataOpMode.add,
         Id_key: null
     };
     var lastData = {
-         ManagerRisk:null,
-         MaterialGrade:null,
-         Remark:null,
-         RewardsWay:null,
-         SubstitutionSupplierId: null,
+        ManagerRisk: null,
+        MaterialGrade: null,
+        Remark: null,
+        RewardsWay: null,
+        SubstitutionSupplierId: null,
     };
     var initVm = _.clone(uiVM);
     //操作部分
@@ -435,7 +435,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
 });
 //供应商辅导管理
 purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierDataOpService, $modal) {
-    
+
     ///供应商辅导视图模型
     var uiVM = item = $scope.vm = {
         SupplierId: null,
@@ -464,7 +464,7 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         OpPerson: null,
         OpDate: null,
         OpTime: null,
-        OpSign:leeDataHandler.dataOpMode.add,
+        OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: null,
     }
     var initVm = _.clone(uiVM);
@@ -570,28 +570,26 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.savePurSupGradeDatas = function (isValid) {
-             uiVm = $scope.vm;
-             leeHelper.setUserData(uiVm);
-             console.log(uiVm)
-            leeDataHandler.dataOperate.add(operate, isValid, function () {
-               uiVm.GradeYear = vmManager.yearQuarter.substring(0, 4);
-               supplierDataOpService.savePurSupGradeInfo(uiVm).then(function (opResult) {
-                   leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
-                       if (opResult.Result)
-                       {
-                           
-                       }
-                       console.log(opResult);
-                   });
-               });
-          }); 
-        };
+        uiVm = $scope.vm;
+        leeHelper.setUserData(uiVm);
+        console.log(uiVm)
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+            uiVm.GradeYear = vmManager.yearQuarter.substring(0, 4);
+            supplierDataOpService.savePurSupGradeInfo(uiVm).then(function (opResult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
+                    if (opResult.Result) {
+
+                    }
+                    console.log(opResult);
+                });
+            });
+        });
+    };
     operate.cannel = function (isValid) {
-            if(vmManager.editItem.OpSign==leeDataHandler.dataOpMode.edit)
-            {
-                editModelDialog.close();
-                dialog.show();
-            }
+        if (vmManager.editItem.OpSign == leeDataHandler.dataOpMode.edit) {
+            editModelDialog.close();
+            dialog.show();
+        }
         editModelDialog.close();
         leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); });
     };
@@ -602,7 +600,7 @@ purchaseModule.controller('supplierAuditToGradeCtrl', function ($scope, supplier
         supGradeInfoEditDatas: [],
         yearQuarter: '',
         dataSource: [],
-        gradeTypes : [{ id: '供应商系统稽核评估', text: '供应商系统稽核评估' },
+        gradeTypes: [{ id: '供应商系统稽核评估', text: '供应商系统稽核评估' },
                       { id: '供应商产品无有害物质系统稽核评估', text: '供应商产品无有害物质系统稽核评估' },
                       { id: '系统评估表-针对小供应商', text: '系统评估表-针对小供应商' }],
         GradeScorePropertys: [{ id: '首评', text: '首评' },
@@ -687,8 +685,8 @@ purchaseModule.controller('supplierGatherInfoCtrl', function ($scope, supplierDa
         SupplierId: '',
         SupplierShortName: '',
         PurchaseType: '',
-        SupplierProperty:'',
-        UpperPurchaseDate:''
+        SupplierProperty: '',
+        UpperPurchaseDate: ''
     };
     var vmManager = $scope.vmManager = {
         //激活当前的Tab
@@ -700,9 +698,9 @@ purchaseModule.controller('supplierGatherInfoCtrl', function ($scope, supplierDa
         //供应商证书
         supplierEligibleCertificateDatas: [],
         ///季度考核分数
-        supplierAuditDatas:[],
+        supplierAuditDatas: [],
         ///辅导信息
-        supplierSeasonTutorInfo:[],
+        supplierSeasonTutorInfo: [],
         ///稽核信息
         supplierGradeDatas: [],
 
