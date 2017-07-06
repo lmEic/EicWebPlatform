@@ -9,6 +9,7 @@ using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 using Newtonsoft.Json;
 using System.IO;
 using Lm.Eic.Framework.ProductMaster.Model;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace EicWorkPlatfrom.Controllers.Quality
 {
@@ -189,6 +190,18 @@ namespace EicWorkPlatfrom.Controllers.Quality
                 }
             }
             return Json(FailResult);
+        }
+        /// <summary>
+        /// 打印导出EXCEL数据模板
+        /// </summary>
+        /// <param name="rmaId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult PrintDetailsDatas(string rmaId)
+        {
+            //Excel
+            DownLoadFileModel dlfm = RmaService.RmaManager.InspecitonManageProcessor.GetPrintDatialDataDLFM(SiteRootPath, rmaId);
+            return this.DownLoadFile(dlfm);
         }
         #endregion
 

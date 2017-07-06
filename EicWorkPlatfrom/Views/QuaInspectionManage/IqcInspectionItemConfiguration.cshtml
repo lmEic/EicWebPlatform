@@ -37,7 +37,7 @@
         </div>
         <div class="h-split"></div>
         <div class="row">
-            <div class="col-md-9 well">
+            <div class="col-md-8 well">
                 <form role="form" name="iqcInspectionItemForm" class="form-horizontal" novalidate onkeypress="if (event.keyCode == 13) return false;">
                     <div class="form-group">
                         <label class="col-md-2 control-label">品号</label>
@@ -153,7 +153,7 @@
                 </div>
 
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <span ng-if="vmManager.dataSource.length>0" cg-busy="{promise:opPromise}">
                     <span class="btn btn-success btn-xs" ng-click="operate.saveAll()">批量保存</span>
                     <span yl-operatemsg-board></span>
@@ -171,7 +171,7 @@
                         <tbody>
                             <tr ng-repeat="item in vmManager.dataSets track by $index">
                                 <td>
-                                    {{item.InspectionItemIndex}}   
+                                    {{item.InspectionItemIndex}}
                                 </td>
                                 <td>
                                     <span title="{{item.MaterialId}}">

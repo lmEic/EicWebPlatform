@@ -71,6 +71,15 @@ qualityModule.factory("rmaDataOpService", function (ajaxService) {
         var url = quaRmaManageUrl + 'UploadRmaHandleFile';
         return ajaxService.uploadFile(url, files);
     };
+    ///
+    ///打印文档
+    ///
+    rma.printDetailsDatas = function (rmaId) {
+        var url = quaRmaManageUrl + 'PrintDetailsDatas';
+        return ajaxService.getData(url, {
+            rmaId: rmaId
+        });
+    };
 
     //========================== 查询=============================================
     //查询 从年月 到年月
@@ -471,9 +480,6 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         },
         isdisabled: false,
         dataitems: [],
-        printDetailDatas: function () {
-            console.log(uiVm.RmaId);
-        },
     };
     var rmaNumberDatasDialog = $scope.rmaNumberDatasDialog = leePopups.dialog();
     var dialog = $scope.dialog = leePopups.dialog();

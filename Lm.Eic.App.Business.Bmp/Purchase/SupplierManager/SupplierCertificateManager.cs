@@ -178,7 +178,6 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             var model = SupplierCrudFactory.SupplierQualifiedCertificateCrud.GetQualifiedCertificateModelBy(supplierId, eligibleCertificate);
             if (model == null || model.CertificateFileName == null || model.FilePath == null)
                 return dlfm.Default();
-
             return dlfm.CreateInstance
                 (siteRootPath.GetDownLoadFilePath(model.FilePath),
                 model.CertificateFileName.GetDownLoadContentType(),

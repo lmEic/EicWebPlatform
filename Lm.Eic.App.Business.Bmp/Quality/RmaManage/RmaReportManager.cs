@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
@@ -274,6 +275,21 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 if (updateResult.Result)
                     updateResult = RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(rmaId, RmaHandleStatus.FinishStatus);
             }
+        }
+
+
+        public DownLoadFileModel GetPrintDatialDataDLFM(string siteRootPath, string rmaId)
+        {
+            DownLoadFileModel dlfm = new DownLoadFileModel();
+            string filePath = "";
+            string certificateFileName = "RMASD1.1-11-01.xls";
+            var model = GetDatasBy(rmaId);
+            if (model == null)
+                return dlfm.Default();
+            return dlfm.CreateInstance
+                (siteRootPath.GetDownLoadFilePath(filePath),
+                certificateFileName.GetDownLoadContentType(),
+                certificateFileName);
         }
     }
 }
