@@ -156,6 +156,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             finally
             {
+                // Dispose();
             }
         }
 
@@ -175,6 +176,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             Context.Dispose();
         }
+
 
         /// <summary>
         ///   为指定的类型返回 System.Data.Entity.DbSet，这将允许对上下文中的给定实体执行 CRUD 操作。
@@ -251,7 +253,9 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="updateExpression"></param>
         public int RegisterModified<TEntity>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression) where TEntity : class
         {
-            return Context.Set<TEntity>().Where(predicate).Update(updateExpression);
+            int record = Context.Set<TEntity>().Where(predicate).Update(updateExpression);
+            IsCommitted = false;
+            return record;
         }
 
         /// <summary>

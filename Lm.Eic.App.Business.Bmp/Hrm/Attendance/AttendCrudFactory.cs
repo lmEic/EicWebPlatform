@@ -421,13 +421,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         /// <returns></returns>
         internal int InitEmptyAttendData(AttendAskLeaveModel askLeaveMdl, AttendClassTypeDetailModel classMdl, ref AttendSlodFingerDataCurrentMonthModel data)
         {
+            string classType = "白班";
+            if (classMdl != null)
+                classType = classMdl.ClassType;
             data = new AttendSlodFingerDataCurrentMonthModel()
             {
                 AttendanceDate = askLeaveMdl.AttendanceDate,
                 WorkerId = askLeaveMdl.WorkerId,
                 CardID = "",
                 CardType = "",
-                ClassType = classMdl == null ? "白班" : classMdl.ClassType,
+                ClassType = classType,
                 Department = askLeaveMdl.Department,
                 WorkerName = askLeaveMdl.WorkerName,
                 WeekDay = askLeaveMdl.AttendanceDate.DayOfWeek.ToString().ToChineseWeekDay(),
@@ -544,7 +547,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
                     cell = new AskLeaveCell() { LeaveHours = 0, LeaveMemo = "", LeaveTimeRegion = "", LeaveType = "" };
                 }
             }
-
             return irep.Update(e => e.WorkerId == askLeaveMdl.WorkerId && e.AttendanceDate == askLeaveMdl.AttendanceDate, u => new AttendSlodFingerDataCurrentMonthModel()
             {
                 LeaveHours = cell.LeaveHours,

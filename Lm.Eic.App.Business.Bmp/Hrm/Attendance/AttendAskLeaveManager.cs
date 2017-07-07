@@ -18,21 +18,26 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
         {
             if (askForLeaves == null) return OpResult.SetErrorResult("askForLeaves 不能为null");
             bool result = true;
-            AttendSlodFingerDataCurrentMonthModel attendMdl = null;
             try
             {
+                AttendClassTypeDetailModel classTypeMdl = null;
+                AttendSlodFingerDataCurrentMonthModel attendMdl = null;
                 askForLeaves.ForEach(m =>
                 {
-
-                    m = EncodeAskLeaveDateData(m);
-                    attendMdl = AttendCrudFactory.CurrentMonthAttendDataCrud.GetAttendanceDataBy(m.WorkerId, m.AttendanceDate);
-                    var classTypeMdl = AttendCrudFactory.ClassTypeDetailCrud.GetClassTypeDetailModel(m.WorkerId, m.AttendanceDate);
-                    //同步考勤数据
-                    int record = AttendCrudFactory.CurrentMonthAttendDataCrud.SyncAskLeaveDataToAttendData(m, classTypeMdl, ref attendMdl);
-                    if (record > 0)
+                    if (m.OpSign == OpMode.None)
+                        result = result && true;
+                    else
                     {
-                        m.SlotCardTime = attendMdl.SlotCardTime;
-                        result = result && AttendCrudFactory.AskLeaveCrud.Store(m).Result;
+                        m = EncodeAskLeaveDateData(m);
+                        attendMdl = AttendCrudFactory.CurrentMonthAttendDataCrud.GetAttendanceDataBy(m.WorkerId, m.AttendanceDate);
+                        classTypeMdl = attendMdl == null ? AttendCrudFactory.ClassTypeDetailCrud.GetClassTypeDetailModel(m.WorkerId, m.AttendanceDate) : null;
+                        //同步考勤数据
+                        int record = AttendCrudFactory.CurrentMonthAttendDataCrud.SyncAskLeaveDataToAttendData(m, classTypeMdl, ref attendMdl);
+                        if (record > 0)
+                        {
+                            m.SlotCardTime = attendMdl.SlotCardTime;
+                            result = result && AttendCrudFactory.AskLeaveCrud.Store(m).Result;
+                        }
                     }
                 });
             }
