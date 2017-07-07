@@ -20,18 +20,17 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Attendance
             bool result = true;
             try
             {
+                AttendClassTypeDetailModel classTypeMdl = null;
+                AttendSlodFingerDataCurrentMonthModel attendMdl = null;
                 askForLeaves.ForEach(m =>
                 {
-                    AttendClassTypeDetailModel classTypeMdl = null;
-                    AttendSlodFingerDataCurrentMonthModel attendMdl = null;
                     if (m.OpSign == OpMode.None)
                         result = result && true;
                     else
                     {
                         m = EncodeAskLeaveDateData(m);
                         attendMdl = AttendCrudFactory.CurrentMonthAttendDataCrud.GetAttendanceDataBy(m.WorkerId, m.AttendanceDate);
-                        if (attendMdl == null)
-                            classTypeMdl = AttendCrudFactory.ClassTypeDetailCrud.GetClassTypeDetailModel(m.WorkerId, m.AttendanceDate);
+                        classTypeMdl = attendMdl == null ? AttendCrudFactory.ClassTypeDetailCrud.GetClassTypeDetailModel(m.WorkerId, m.AttendanceDate) : null;
                         //同步考勤数据
                         int record = AttendCrudFactory.CurrentMonthAttendDataCrud.SyncAskLeaveDataToAttendData(m, classTypeMdl, ref attendMdl);
                         if (record > 0)
