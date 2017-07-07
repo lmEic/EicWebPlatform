@@ -15,14 +15,14 @@
     <link href="@Url.Content("~/Content/bootwatch/cerulean.bootstrap.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/font-awesome/css/font-awesome.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/main.css")" type="text/css" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/zTree/dist/css/zTreeStyle/zTreeStyle.css")" type="text/css" rel="stylesheet" />   
+    <link href="@Url.Content("~/Content/zTree/dist/css/zTreeStyle/zTreeStyle.css")" type="text/css" rel="stylesheet" />
     @Styles.Render("~/css/anstrap")
 </head>
 
-<body ng-controller="moduleNavCtrl">
+<body>
     @if (ViewBag.IsLoginMode)
     {
-        <div ng-include="'@Url.Action("ModuleLayoutIndexTpl", "CommonTpl")'"></div>
+        <div yl-navigation-layout data-module-text="在线工具" data-module-name="ToolsOnLine"></div>
     }
     else
     {
@@ -65,7 +65,8 @@
                                 <ol class="rounded-list">
                                     <li>
                                         <a data-ui-sref-active="active" data-ui-sref="workTaskManage" style="cursor:pointer">工作任务管理</a>
-                                        <a data-ui-sref-active="active" data-ui-sref="collaborateContactLib" style="cursor:pointer">名片夹</a
+                                        <a data-ui-sref-active="active" data-ui-sref="collaborateContactLib" style="cursor:pointer">名片夹</a>
+                                        <a data-ui-sref-active="active" data-ui-sref="reportImproveProblem" style="cursor:pointer">上报改善问题</a>
                                     </li>
                                 </ol>
                             </div>
@@ -101,6 +102,6 @@
 
 
 
-   
+
 </body>
 </html>

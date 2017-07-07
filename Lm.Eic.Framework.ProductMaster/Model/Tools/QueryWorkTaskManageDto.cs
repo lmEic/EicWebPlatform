@@ -9,6 +9,7 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
     {
         public string SystemName { get; set; }
         public string ModuleName { get; set; }
+        public string ProgressStatus { get; set; }
         private int _searchMode = 0;
         /// <summary>
         /// 根据搜索模式查询

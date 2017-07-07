@@ -188,7 +188,9 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.GeneralAffairs
         /// <returns></returns>
         private bool IsOldChangeNew(WorkClothesManageModel model)
         {
-            var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto { WorkerId = model.WorkerId, SearchMode = 1 });
+            var workClothesList = CrudFactory.WorkerClothesCrud.FindBy(new QueryGeneralAffairsDto {
+                WorkerId = model.WorkerId, SearchMode = 1
+            });
             DateTime yearDate = DateTime.Now.Date.AddYears(-2);
             if (workClothesList == null || workClothesList.Count() <= 0) return true;
             if (model.ProductName == "冬季厂服")

@@ -12,10 +12,10 @@ using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
 {
- public   class ArWorkerIdChangeManager
+    public class ArWorkerIdChangeManager
     {
         ArWorkerIdChangeCurd crud = null;
-       
+
         public ArWorkerIdChangeManager()
         {
             crud = new ArWorkerIdChangeCurd();
@@ -32,11 +32,11 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
         }
     }
 
-internal class ArWorkerIdChangeCurd:CrudBase <WorkerChangedModel,IArWorkerIdChangedRepository>
+    public class ArWorkerIdChangeCurd : CrudBase<WorkerChangedModel, IArWorkerIdChangedRepository>
     {
         public ArWorkerIdChangeCurd()
-            : base(new ArworkerIdChangedRepository(),"职工更变工号")
-      { }
+            : base(new ArworkerIdChangedRepository(), "职工更变工号")
+        { }
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, AddWorkerIdChange);
@@ -46,10 +46,16 @@ internal class ArWorkerIdChangeCurd:CrudBase <WorkerChangedModel,IArWorkerIdChan
             int record = this.irep.Insert(entity);
             if (record > 0)
             {
-                return this.irep.UpdateAllTableWorkerId(entity.OldWorkerId,entity.NewWorkerId).ToOpResult("工号变更操作成功", "工号变更更变失败");
+                return this.irep.UpdateAllTableWorkerId(entity.OldWorkerId, entity.NewWorkerId).ToOpResult("工号变更操作成功", "工号变更更变失败");
             }
             else return OpResult.SetSuccessResult("工号变更失败", true);
 
+        }
+
+
+        public void TestUpdate(string oldWorkerId, string newWorkerId)
+        {
+            this.irep.UpdateAllTableWorkerId(oldWorkerId, newWorkerId);
         }
 
         internal WorkerChangedModel GetModel(string oldWorkerId)

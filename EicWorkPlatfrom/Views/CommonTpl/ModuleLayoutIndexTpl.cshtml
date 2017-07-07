@@ -46,9 +46,9 @@
                         </span>
                     </h5>
                 </li>
-                <li class="list-group-item" ng-if="navLayout.navItems.length>0">
-                    <ol class="rounded-list">
-                        <li ng-repeat="navItem in navLayout.navItems track by $index">
+                <li class="list-group-item " ng-if="navLayout.navItems.length>0" >
+                    <ol class="rounded-list"  >
+                        <li ng-repeat="navItem in navLayout.navItems track by $index" >
                             <a><span class="text-primary">{{navItem.Item.ModuleText}}</span> </a>
                             <ol>
                                 <li ng-repeat="subItem in navItem.Childrens track by $index" ng-click="navLayout.stateTo(subItem)">

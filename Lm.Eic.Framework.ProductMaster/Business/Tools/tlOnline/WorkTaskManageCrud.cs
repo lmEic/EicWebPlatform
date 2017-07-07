@@ -67,6 +67,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
                     //按模块类别查询
                     case 2:
                         return irep.Entities.Where(m => m.ModuleName==queryDto.ModuleName).ToList();
+                    case 3:
+                        return irep.Entities.Where(m => m.ProgressStatus == queryDto.ProgressStatus).ToList();
+                        
                     default:
                         return new List<WorkTaskManageModel>();
                 }

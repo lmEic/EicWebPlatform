@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
@@ -45,11 +46,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public string AutoBuildingRmaId()
         {
-            int  nowYaer = DateTime.Now.Year;
-            var count = RmaCurdFactory.RmaReportInitiate.CountNowYaerMonthRmaIdNumber(nowYaer) + 1;
-            return "R" + DateTime.Now.ToString("yy") +DateTime.Now.ToString("MM") + count.ToString("000");
+            int nowYaer = DateTime.Now.Year;
+            string maxRmaId = RmaCurdFactory.RmaReportInitiate.CountNowYaerMonthRmaIdNumber(nowYaer);
+            int count = Convert.ToInt16(maxRmaId.Substring(maxRmaId.Length - 3, 3)) + 1;
+            return "R" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + count.ToString("000");
         }
-      
+
         /// <summary>
         /// 存储初始Rma表单
         /// </summary>
@@ -57,7 +59,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public OpResult StoreRamReortInitiate(RmaReportInitiateModel model)
         {
-            return RmaCurdFactory.RmaReportInitiate.Store(model,true);
+            return RmaCurdFactory.RmaReportInitiate.Store(model, true);
         }
         /// <summary>
         /// 得到初始Rma表单
@@ -67,9 +69,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         public List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
         {
             return RmaCurdFactory.RmaReportInitiate.GetInitiateDatas(rmaId);
-          
+
         }
-        public List<RmaReportInitiateModel> GetInitiateDatas(string  formDate,string  toDate)
+        public List<RmaReportInitiateModel> GetInitiateDatas(string formDate, string toDate)
         {
             try
             {
@@ -85,7 +87,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             {
                 throw new Exception(ex.Message);
             }
-          
+
         }
         /// <summary>
         /// 通过年月份得到RamId
@@ -98,8 +100,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             {
                 if (yearMonth.Length != 6) return null;
                 //201701
-                int year =Convert.ToInt16( yearMonth.Substring(0, 4));
-                int  month = Convert.ToInt16(yearMonth.Substring(4, 2));
+                int year = Convert.ToInt16(yearMonth.Substring(0, 4));
+                int month = Convert.ToInt16(yearMonth.Substring(4, 2));
                 return RmaCurdFactory.RmaReportInitiate.GetRmaReportInitiateDatas(year, month);
             }
             catch (Exception ex)
@@ -168,22 +170,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         {
             try
             {
-                if (model.ProductsShipDate == DateTime.MinValue) return OpResult.SetErrorResult("存储的完成日期不对");
+                if (model.ProductsShipDates == string.Empty) return OpResult.SetErrorResult("存储的完成日期不对");
                 var result = RmaCurdFactory.RmaBussesDescription.Store(model, true);
                 if (result.Result && model.OpSign == OpMode.Add)
                 {
                     string rmaHandleStatus = GetBusinessStatus(model.RmaId);
-                    if (rmaHandleStatus!=string.Empty)
-                    RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, rmaHandleStatus);
+                    if (rmaHandleStatus != string.Empty)
+                        RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, rmaHandleStatus);
                 }
                 return result;
             }
             catch (Exception ex)
             {
-               return  ex.ExOpResult();
+                return ex.ExOpResult();
             }
         }
-        private string  GetBusinessStatus(string rmaId)
+        private string GetBusinessStatus(string rmaId)
         {
             try
             {
@@ -201,17 +203,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 });
                 if (minusNumberList.Count > 0 && plusNumberList.Count == 0)
                     ///只有负数时
-                    return  RmaHandleStatus.BusinessMinusStatus;
+                    return RmaHandleStatus.BusinessMinusStatus;
                 if (minusNumberList.Count == 0 && plusNumberList.Count > 0)
                     ///只有正数时
                     return RmaHandleStatus.BusinessPlusStatus;
                 if (minusNumberList.Count > 0 && plusNumberList.Count > 0)
                     ///有正数又有负数
-                    return  RmaHandleStatus.InspecitonStatus;
-                return string.Empty ;
+                    return RmaHandleStatus.InspecitonStatus;
+                return string.Empty;
             }
             catch (Exception ex)
-            {  ex.ExOpResult();return string.Empty; }
+            { ex.ExOpResult(); return string.Empty; }
         }
     }
     /// <summary>
@@ -260,20 +262,35 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             HandleFinishRmaId(model.RmaId);
             return result;
         }
-        
+
         /// <summary>
         /// 处理完成的RMD单
         /// </summary>
         /// <param name="rmaId"></param>
-        private  void HandleFinishRmaId(string rmaId)
+        private void HandleFinishRmaId(string rmaId)
         {
             var updateResult = RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(rmaId);
             if (updateResult.Result)
             {
-                updateResult= RmaCurdFactory.RmaInspectionManage.UpdateFinishStatus(rmaId);
+                updateResult = RmaCurdFactory.RmaInspectionManage.UpdateFinishStatus(rmaId);
                 if (updateResult.Result)
-                    updateResult= RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(rmaId, RmaHandleStatus.FinishStatus);
+                    updateResult = RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(rmaId, RmaHandleStatus.FinishStatus);
             }
+        }
+
+
+        public DownLoadFileModel GetPrintDatialDataDLFM(string siteRootPath, string rmaId)
+        {
+            DownLoadFileModel dlfm = new DownLoadFileModel();
+            string filePath = "";
+            string certificateFileName = "RMASD1.1-11-01.xls";
+            var model = GetDatasBy(rmaId);
+            if (model == null)
+                return dlfm.Default();
+            return dlfm.CreateInstance
+                (siteRootPath.GetDownLoadFilePath(filePath),
+                certificateFileName.GetDownLoadContentType(),
+                certificateFileName);
         }
     }
 }

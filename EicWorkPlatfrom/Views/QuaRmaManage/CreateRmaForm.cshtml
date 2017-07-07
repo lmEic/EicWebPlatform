@@ -1,12 +1,15 @@
 ﻿<div class="panel panel-primary" ng-controller="createRmaFormCtrl">
+
     <div class="panel-heading">
         <h6 class="panel-title">创建RMA表单</h6>
     </div>
+
     <div class="panel-body">
         <div class="row">
             <div class="col-md-4">
                 <button class="btn btn-xs btn-success" ng-click="vmManager.autoCreateRmaId()" type="button">新增</button>
             </div>
+
             <div class="col-md-8">
                 <form class="form-inline pull-right">
                     <div class="form-group">
@@ -18,10 +21,9 @@
             </div>
         </div>
         <div class="h-split"></div>
-
         <div class="row">
             <div class="col-md-6">
-                <div class="bs-callout bs-callout-default" cg-busy="{promise:doPromise}">
+                <div class="bs-callout bs-callout-info" cg-busy="{promise:doPromise}">
                     <form role="form" name="formRma" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
 
                         <div class="form-group">
@@ -33,15 +35,24 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
-                            <label for="customerShortName" class="col-md-2 control-label">客户简称</label>
-                            <div class="col-md-6">
-                                <input name="customerShortName" class="form-control" ng-model="vm.CustomerShortName" required />
+                            <label for="leaveReason" class="col-md-2 control-label">客户简称</label>
+                            <div class="col-md-4">
+                                <input name="inspectionLevel" class="form-control" ng-model="vm.CustomerShortName" required ng-focus="vmManager.getInspectionLevelValues()"
+                                       bs-options="CustomerShortName.name as CustomerShortName.text for CustomerShortName in vmManager.customerShortNames" limit="30" placeholder="Enter value" bs-typeahead />
+                                @*<button type="button" class="btn btn-primary" ng-model="vm.CustomerShortName"
+                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择客户简称"
+                                            data-bs-options="CustomerShortName.name as CustomerShortName.text for CustomerShortName in vmManager.customerShortNames" data-bs-select>
+                                        <span class="caret"></span>
+                                    </button>*@
+                                <input name="customerShortName" class="form-control" ng-model="vm.CustomerShortName" ng-show="false" required />
                                 <div class="error-messages" ng-messages="formRma.customerShortName.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">客户简称不能为空</small>
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="productName" class="col-md-2 control-label">品名</label>
                             <div class="col-md-6">
@@ -51,7 +62,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr />
                         <div class="alert alert-info">
                             <div class="row">
@@ -67,6 +77,7 @@
                     </form>
                 </div>
             </div>
+
             <div class="col-md-6">
                 <div class="bs-callout bs-callout-info" cg-busy="{promise:searchPromise}">
                     <div class="table-responsive">
@@ -96,6 +107,7 @@
             </div>
         </div>
     </div>
+
     <div class="panel-footer">
 
     </div>

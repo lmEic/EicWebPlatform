@@ -7,7 +7,7 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
 
     var attendUrl = "/HrAttendanceManage/";
 
-    var generalAffairsUrl = "/HrGeneralAffairsManage/";
+    var generalAffairsUrl = "/HrGeneralAffairsManage/";//控制器名称
 
     ///获取请假配置信息
     hr.getLeaveTypesConfigs = function () {
@@ -358,7 +358,7 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
 
     var uiVM = $scope.vm = _.clone(askLeaveVM);
 
-    var msgDialog = $scope.msgDialog = leePopups.dialog();
+    var editDialog = $scope.editDialog = leePopups.dialog();
     //查询字段视图
     var queryVM = $scope.qryvm = {
         year: null,
@@ -851,6 +851,7 @@ hrModule.controller('workClothesManageCtrl', function ($scope, $modal, hrDataOpS
         getWorkerInfo: function () {
             if (uiVM.WorkerId === undefined) return;
             var strLen = leeHelper.checkIsChineseValue(uiVM.WorkerId) ? 2 : 6;
+            
             if (uiVM.WorkerId.length >= strLen) {
                 vmManager.searchedWorkers = [];
                 $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.WorkerId).then(function (datas) {

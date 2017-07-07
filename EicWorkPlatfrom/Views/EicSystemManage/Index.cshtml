@@ -8,7 +8,7 @@
 <head>
     <meta http-equiv="Content-Type" />
     <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1,user-scalable=no" />
-    <title>系统管理</title>  
+    <title>系统管理</title>
     <script src="~/Scripts/jquery-2.1.4.js"></script>
     <link rel="shortcut icon" href="@Url.Content("~/Content/login/lmlogo.png")" />
     <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
@@ -19,12 +19,12 @@
     <link href="@Url.Content("~/Content/zTree/dist/css/zTreeStyle/zTreeStyle.css")" type="text/css" rel="stylesheet" />
 
     @Styles.Render("~/css/anstrap")
-   
+
 </head>
-<body ng-controller="moduleNavCtrl">
+<body>
     @if (ViewBag.IsLoginMode)
     {
-        <div ng-include="'@Url.Action("ModuleLayoutIndexTpl", "CommonTpl")'"></div>
+        <div yl-navigation-layout data-module-text="系统管理" data-module-name="EicSystemManage"></div>
     }
     else
     {
@@ -71,6 +71,9 @@
 
                                         <a data-ui-sref-active="active" data-ui-sref="itilEmailManage" style="cursor:pointer">邮箱管理</a>
 
+
+                                        <a data-ui-sref-active="active" data-ui-sref="busiCommonDataSet" style="cursor:pointer">常规配置(busi)</a>
+
                                         @*<a data-ui-sref-active="active" data-ui-sref="accRegistUser" style="cursor:pointer">用户注册</a>
                                             <a data-ui-sref-active="active" data-ui-sref="sysRoleManage" style="cursor:pointer">角色管理</a>
                                             <a data-ui-sref-active="active" data-ui-sref="sysRoleAssignManage" style="cursor:pointer">角色分配</a>
@@ -111,17 +114,5 @@
     <script src="@Url.Content("~/Scripts/controller/sysmanage/sysConfigManage.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/sysmanage/sysItilManage.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/sysmanage/sysAccountManage.js")"></script>
-    <script type="text/javascript">
-         function addezconn() {
-           email = document.getElementById("myemail");
-           email.value = email.value + "@@ezconn.cn";        
-        };
-      
-           
-
-         
-       
-        
-    </script>
 </body>
 </html>
