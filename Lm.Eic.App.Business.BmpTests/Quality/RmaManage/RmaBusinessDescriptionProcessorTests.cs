@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage.Tests
 {
@@ -37,6 +38,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage.Tests
                 OpSign = "add"
             });
             Assert.Fail();
+        }
+        [TestMethod]
+        public void testExcel()
+        {
+            ExcelImportService mme = new ExcelImportService(@"E:\RMASD1.1-11-01.xlsx", @"");
         }
     }
 }
