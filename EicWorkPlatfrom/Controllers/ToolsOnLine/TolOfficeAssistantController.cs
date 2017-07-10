@@ -76,5 +76,15 @@ namespace EicWorkPlatfrom.Controllers
 
 
         #endregion
+
+        #region ReportImproveProblem
+       public ActionResult ReportImproveProblem()
+        {
+            return View();
+        }
+
+        #endregion
+
+
     }
 }
