@@ -1362,6 +1362,7 @@
     <Content Include="Views\TolOfficeAssistant\ReportImproveProblem.cshtml" />
     <Content Include="Views\CommonTpl\DataTreeConfigTpl.cshtml" />
     <Content Include="Views\SysConfig\BusiCommonDataSet.cshtml" />
+    <Content Include="Views\Account\AssignModuleToRolers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

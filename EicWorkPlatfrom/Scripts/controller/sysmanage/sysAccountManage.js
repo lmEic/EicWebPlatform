@@ -869,3 +869,7 @@ smModule.controller("assignUserPowerLotCtrl", function ($scope, vmService, accou
         });
     });
 })
+smModule.controller("AssignModuleToRolers", function ($scope, vmService, accountService, treeSetService) {
+
+})
+

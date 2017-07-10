@@ -1,0 +1,104 @@
+﻿<div class="panel panel-default" ng-controller="assignUserPowerLotCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>分配权限给角色</h6>
+    </div>
+    <div class="panel-body">
+        <div cg-busy="{promise:promise}">
+            <div class="row">
+                <div class="col-md-4">
+                    <ul class="list-group">
+                        <li class="list-group-item active">
+                            <i class="fa fa-user"></i>
+                            <span>角色列表</span>
+                            <span class="pull-right">
+                                <button type="button" ng-class="vmManager.roleDisplay!==false?'btn btn-xs btn-defulat':'btn btn-xs btn-success'"
+                                        ng-model="vmManager.roleDisplay" bs-checkbox>
+                                    <i ng-class="vmManager.roleDisplay===false?'fa fa-caret-square-o-down':'fa fa-caret-square-o-up'"></i>
+                                    <span ng-show="vmManager.roleDisplay===false">展开</span>
+                                    <span ng-show="vmManager.roleDisplay">折叠</span>
+                                </button>
+                            </span>
+                        </li>
+                        <li class="list-group-item" ng-show="vmManager.roleDisplay">
+                            <div class="page-header">
+                                <input type="text" placeholder="快速搜索" ng-model="roleFilter" />
+                            </div>
+                            <ul class="nav nav-pills" style="max-height:420px;overflow-y:auto">
+                                <li ng-repeat="role in vmManager.roles|filter:roleFilter track by $index">
+                                    <div class="well well-sm" style="width:140px;cursor:pointer">
+                                        <span ng-class="vmManager.selectedRole!==role?'label label-default':'label label-warning'"
+                                              ng-click="vmManager.selectRole(role)">
+                                            {{role.RoleId}}
+                                            <span class="badge" data-title="角色等级" data-bs-tooltip>{{role.RoleLevel}}</span>
+                                        </span>
+                                        <br />
+                                        <span>
+                                            <i class="fa fa-user"></i>
+                                            {{role.RoleName}}
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="list-group-item list-group-item-info">
+                            <span><i class="glyphicon glyphicon-apple"></i>模块菜单</span>
+                            <span class="pull-right">
+                                <button type="button" ng-class="vmManager.treeDisplay!==false?'btn btn-xs btn-default':'btn btn-xs btn-success'"
+                                        ng-model="vmManager.treeDisplay" bs-checkbox>
+                                    <i ng-class="vmManager.treeDisplay===false?'fa fa-caret-square-o-down':'fa fa-caret-square-o-up'"></i>
+                                    <span ng-show="vmManager.treeDisplay===false">展开</span>
+                                    <span ng-show="vmManager.treeDisplay">折叠</span>
+                                </button>
+                            </span>
+                        </li>
+                        <li class="list-group-item" ng-show="vmManager.treeDisplay">
+                            <div style="max-height:515px;overflow:auto">
+                                <ul data-yl-check-tree cg-busy="{promise:promise}"
+                                    data-tree-dataset="ztree.navMenus"
+                                    data-start-load="ztree.startLoad"
+                                    ng-model="ztree.treeNode"
+                                    data-binding-nodevm="ztree.bindNodeToVm()"
+                                    data-on-check="ztree.checkNode()"
+                                    id="{{ztree.treeId}}" class="ztree"></ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-8">
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-info">
+                            <span><i class="glyphicon glyphicon-apple"></i>角色权限</span>
+                            <span class="pull-right">
+                                <span class="btn btn-xs btn-info" ng-click="operate.saveDatas()">
+                                    <i class="fa fa-save"></i> 批量保存
+                                </span>
+                            </span>
+                        </li>
+                        <li class="list-group-item" cg-busy="{promise:savePromise}" style="max-height:450px;overflow-y:auto">
+                            <div ng-show="vmManager.roleMatchModules.length>0">
+                                <div class="page-header">
+                                    <input type="text" placeholder="快速搜索" ng-model="roleModule" />
+                                </div>
+                                <ul class="nav nav-pills info" style="max-height:400px;overflow-y:auto">
+                                    <li ng-repeat="m in vmManager.roleMatchModules|filter:roleModule track by $index">
+                                        <div class="well well-sm" style="width:155px;">
+                                            <span ng-class="{'label label-info':m.OpSign==='init','label label-success':m.OpSign==='add'}">
+                                                {{m.RoleName}}
+                                            </span>
+                                            <br />
+                                            <span>
+                                                <i class="fa fa-user"></i>
+                                                {{m.ModuleText}}
+                                            </span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div yl-operatemsg-board></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
