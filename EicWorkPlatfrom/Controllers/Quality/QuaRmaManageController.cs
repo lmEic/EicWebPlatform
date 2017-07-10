@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System.IO;
 using Lm.Eic.Framework.ProductMaster.Model;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.Framework.ProductMaster.Business.Config;
 
 namespace EicWorkPlatfrom.Controllers.Quality
 {
@@ -70,14 +71,9 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public JsonResult GetCustomerShortNameDatas(string archiveConfig, string rmaCustomerShortName)
         {
-            List<ConfigDataDictionaryModel> CustomerShortNameData = new List<ConfigDataDictionaryModel>();
-            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "AAAA", DataNodeText = "供应商A" });
-            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "BBBB", DataNodeText = "供应商B" });
-            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "CCCC", DataNodeText = "供应商C" });
-            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "DDDD", DataNodeText = "供应商D" });
-            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "EEEE", DataNodeText = "供应商E" });
-            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "FFFF", DataNodeText = "供应商F" });
-            CustomerShortNameData.Add(new ConfigDataDictionaryModel() { DataNodeName = "GGGG", DataNodeText = "供应商G" });
+            
+            List<ConfigDataDictionaryModel> CustomerShortNameData = PmConfigService.DataDicManager.LoadConfigDatasBy("CustomerConfigDataSet", "CustomerName");
+
             var datas = CustomerShortNameData;
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
