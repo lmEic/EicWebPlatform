@@ -118,7 +118,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="predicate">过滤条件</param>
         /// <param name="updateExpression">按需更新实体值</param>
         /// <returns></returns>
-        int Update(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression);
+        int Update(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression, bool isSave = true);
 
         /// <summary>
         /// 查找指定主键的实体记录
@@ -127,7 +127,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <returns> 符合编号的记录，不存在返回null </returns>
         TEntity GetByKey(object key);
 
-        
+
         /// <summary>
 
         /// <summary>
@@ -340,12 +340,14 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         /// <param name="predicate">更新条件</param>
         /// <param name="updateExpression">按需给实体赋值</param>
         /// <returns></returns>
-        public int Update(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression)
+        public int Update(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression, bool isSave = true)
         {
-            return EFContext.RegisterModified<TEntity>(predicate, updateExpression);
+            int record = EFContext.RegisterModified<TEntity>(predicate, updateExpression);
+            EFContext.Commit();
+            return record;
         }
 
-        
+
 
         /// <summary>
         ///     查找指定主键的实体记录

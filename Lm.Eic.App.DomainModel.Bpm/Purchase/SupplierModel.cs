@@ -1184,65 +1184,65 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
         // ISO9001 ISO14001 供应商基本资料表 供应商评鉴表  不使用童工申明 
         //供应商环境调查表  廉洁承诺书  PCN协议
         // 质量保证协议 	HSF保证书  REACH保证书	SVHC调查表 
-        //  #region model
-        //  /// <summary>
-        //  /// 供应商环境调查表
-        //  /// </summary>
-        //  public string EnvironmentalInvestigation
-        //  { set; get; }
-        //  /// <summary>
-        //  /// 供应商基本资料表
-        //  /// </summary>
-        //  public  string SupplierBaseDocument { set; get; }
-        //  /// <summary>
-        //  /// 供应商评鉴表
-        //  /// </summary>
-        //  public  string SupplierComment { set; get; }
-        //  /// <summary>
-        //  /// 不使用童工申明
-        //  /// </summary>
-        //  public  string NotUseChildLabor { set; get; }
-        //  /// <summary>
-        //  /// PCN协议
-        //  /// </summary>
-        //  public  string PCN_Protocol { set; get; }
-        //  /// <summary>
-        //  /// 廉洁承诺书
-        //  /// </summary>
-        //  public string HonestCommitment { set; get; }
-        //  /// <summary>
-        //  /// 质量保证协议
-        //  /// </summary>
-        //  public  string QualityAssuranceProtocol   { set; get; }
-        ///// <summary>
-        ///// HSF保证书
-        ///// </summary>
-        //public  string HSF_Guarantee { set; get; }
-        // /// <summary>
-        ///// REACH保证书
-        ///// </summary>
-        // public  string REACH_Guarantee { set; get; }
-        //  /// <summary>
-        //  /// SVHC调查表
-        //  /// </summary>
-        //  public string SVHC_Guarantee { set; get; }
-        //  /// <summary>
-        //  /// ISO14001
-        //  /// </summary>
-        //  public  string ISO9001 { set; get; }
-        //  /// <summary>
-        //  /// ISO9001
-        //  /// </summary>
-        //  public  string ISO14001 { set; get; }
-        //  #endregion
+        #region model
+        /// <summary>
+        /// 供应商环境调查表
+        /// </summary>
+        public string EnvironmentalInvestigation
+        { set; get; }
+        /// <summary>
+        /// 供应商基本资料表
+        /// </summary>
+        public string SupplierBaseDocument { set; get; }
+        /// <summary>
+        /// 供应商评鉴表
+        /// </summary>
+        public string SupplierComment { set; get; }
+        /// <summary>
+        /// 不使用童工申明
+        /// </summary>
+        public string NotUseChildLabor { set; get; }
+        /// <summary>
+        /// PCN协议
+        /// </summary>
+        public string PCN_Protocol { set; get; }
+        /// <summary>
+        /// 廉洁承诺书
+        /// </summary>
+        public string HonestCommitment { set; get; }
+        /// <summary>
+        /// 质量保证协议
+        /// </summary>
+        public string QualityAssuranceProtocol { set; get; }
+        /// <summary>
+        /// HSF保证书
+        /// </summary>
+        public string HSF_Guarantee { set; get; }
+        /// <summary>
+        /// REACH保证书
+        /// </summary>
+        public string REACH_Guarantee { set; get; }
+        /// <summary>
+        /// SVHC调查表
+        /// </summary>
+        public string SVHC_Guarantee { set; get; }
+        /// <summary>
+        /// ISO14001
+        /// </summary>
+        public string ISO9001 { set; get; }
+        /// <summary>
+        /// ISO9001
+        /// </summary>
+        public string ISO14001 { set; get; }
+        #endregion
 
         /// <summary>
         /// 供应商证列表
         /// </summary>
-      
+        public List<SupplierQualifiedCertificateModel> QualifiedCertificateDatas { set; get; }
         public int QualifiedCertificateCount
         {
-            set;get;
+            set; get;
         }
     }
 

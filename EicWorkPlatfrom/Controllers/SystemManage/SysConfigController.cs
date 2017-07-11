@@ -13,7 +13,6 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
         public ActionResult HrDepartmentSet()
         {
             return View();
@@ -23,7 +22,17 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 业务管理常规配置
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult BusiCommonDataSet()
+        {
+            return View();
+        }
 
+
+        #region config dictionary data operate
         public JsonResult SaveConfigDicData(ConfigDataDictionaryModel model, ConfigDataDictionaryModel oldModel, string opType)
         {
             var result = PmConfigService.DataDicManager.Store(model, oldModel, opType);
@@ -43,5 +52,18 @@ namespace EicWorkPlatfrom.Controllers
             var modules = PmConfigService.DataDicManager.LoadConfigDatasBy(moduleName, aboutCategory);
             return Json(modules, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 获取某一模块类别的配置字典数据
+        /// </summary>
+        /// <param name="treeModuleKey"></param>
+        /// <param name="moduleName"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetConfigDicDataAbout(string treeModuleKey, string moduleName)
+        {
+            var modules = PmConfigService.DataDicManager.FindConfigDatasBy(treeModuleKey, moduleName);
+            return Json(modules, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

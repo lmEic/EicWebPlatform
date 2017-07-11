@@ -13,7 +13,7 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
         [TestMethod()]
         public void AutoTest()
         {
-     
+
         }
 
 
@@ -39,7 +39,7 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
         public void ItilDevelopModuleManageFindByTest()
         {
             List<string> stateList = new List<string>() { "待开发", "待审核" };
-            var devList = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(new ItilDto() {  ProgressSignList = stateList,SearchMode=1});
+            var devList = ItilService.ItilDevelopModuleManager.GetDevelopModuleManageListBy(new ItilDto() { ProgressSignList = stateList, SearchMode = 1 });
             if (devList.Count <= 0) { Assert.Fail(); }
         }
 
@@ -52,7 +52,7 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
             model.CurrentProgress = "待审核";
             var result = ItilService.ItilDevelopModuleManager.ChangeProgressStatus(model);
             if (!result.Result) { Assert.Fail(); }
-            ItilService.ItilDevelopModuleManager.SendMail();
+            //ItilService.ItilDevelopModuleManager.SendMail();
         }
 
         [TestMethod()]
@@ -63,7 +63,7 @@ namespace Lm.Eic.App.Business.BmpTests.ProductMaster
             var model = devList[0];
             model.CurrentProgress = "待审核";
             var result = ItilService.ItilDevelopModuleManager.GetChangeRecordListBy(model);
-            if (result.Count<0) { Assert.Fail(); }
+            if (result.Count < 0) { Assert.Fail(); }
         }
     }
 }

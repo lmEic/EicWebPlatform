@@ -53,15 +53,15 @@ namespace EicWorkPlatfrom.Controllers
         }
         [HttpGet]
         [NoAuthenCheck]
-        public ContentResult GetWorkTaskManageDatas( string systemName,string moduleName,string progressStatus,int mode)
+        public ContentResult GetWorkTaskManageDatas(string systemName, string moduleName, string progressStatus, int mode)
         {
 
             QueryWorkTaskManageDto queryDto = new QueryWorkTaskManageDto()
             {
-                SystemName=systemName,
-                ModuleName=moduleName,
-                ProgressStatus=progressStatus,
-                SearchMode=mode    
+                SystemName = systemName,
+                ModuleName = moduleName,
+                ProgressStatus = progressStatus,
+                SearchMode = mode
             };
             var datas = ToolOnlineService.WorkTaskManage.GetWorkTaskDatasBy(queryDto);
             return DateJsonResult(datas);
@@ -70,7 +70,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreWorkTaskManageDatas(WorkTaskManageModel model)
         {
-            var opResult =ToolOnlineService.WorkTaskManage.StoreTaskData(model);
+            var opResult = ToolOnlineService.WorkTaskManage.StoreTaskData(model);
             return Json(opResult);
         }
 
@@ -78,13 +78,10 @@ namespace EicWorkPlatfrom.Controllers
         #endregion
 
         #region ReportImproveProblem
-       public ActionResult ReportImproveProblem()
+        public ActionResult ReportImproveProblem()
         {
             return View();
         }
-
         #endregion
-
-
     }
 }

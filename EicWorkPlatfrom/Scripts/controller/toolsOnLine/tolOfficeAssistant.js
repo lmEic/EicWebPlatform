@@ -23,12 +23,12 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
     };
 
     ///获取工作任务数据
-    oAssistant.getWorkTaskManageDatas = function (systemName,moduleName,progressStatus,mode) {
+    oAssistant.getWorkTaskManageDatas = function (systemName, moduleName, progressStatus, mode) {
         var url = oaUrlPrefix + 'GetWorkTaskManageDatas';
-        return ajaxService.getData(url, {        
+        return ajaxService.getData(url, {
             systemName: systemName,
             moduleName: moduleName,
-            progressstatus:progressStatus,
+            progressstatus: progressStatus,
             mode: mode
         });
     };
@@ -181,7 +181,7 @@ officeAssistantModule.controller('collaborateContactLibCtrl', function ($scope, 
 });
 ///工作任务管理控制器
 officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssistantDataOpService, dataDicConfigTreeSet, connDataOpService) {
- //view model
+    //view model
     var uiVM = {
         Department: null,
         SystemName: null,
@@ -208,9 +208,9 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
     var dialog = $scope.dialog = leePopups.dialog();
 
     var queryFields = {
-        systemName:null,
+        systemName: null,
         moduleName: null,
-        progressStatus:null
+        progressStatus: null
     };
     $scope.query = queryFields;
 
@@ -224,11 +224,11 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         datasource: [],
         searchDataset: [],
         showmoduleNameList: [],
-        querymoduleNameList:[],
+        querymoduleNameList: [],
         searchBy: function () {
-            $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(qryVm.department, qryVm.systemName, qryVm.moduleName,qryVm.progressStatus,1).then(function (datas) {
+            $scope.searchPromise = oAssistantDataOpService.getWorkTaskManageDatas(qryVm.department, qryVm.systemName, qryVm.moduleName, qryVm.progressStatus, 1).then(function (datas) {
                 vmManager.storeDataset = datas;
-                
+
             });
         },
         systemNames: [
@@ -236,7 +236,7 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
                 id: "人力资源管理", text: "人力资源管理", moduleNameList: [
                     { id: "员工档案管理", text: "员工档案管理" },
                     { id: "考勤管理", text: "考勤管理" },
-                    { id: "总务管理", text: "总务管理" }                 
+                    { id: "总务管理", text: "总务管理" }
                 ]
             },
             {
@@ -245,7 +245,7 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
                     { id: "日报管理", text: "日报管理" },
                     { id: "排程管理", text: "排程管理" },
                     { id: "出货管理", text: "出货管理" },
-                    { id: "看板管理", text: "看板管理" }                  
+                    { id: "看板管理", text: "看板管理" }
                 ]
             },
             {
@@ -258,7 +258,7 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
             },
             {
                 id: "采购管理", text: "采购管理", moduleNameList: [
-                    { id: "供应商管理", text:"供应商管理"}
+                    { id: "供应商管理", text: "供应商管理" }
                 ]
             },
             {
@@ -280,20 +280,19 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
                 id: "在线工具", text: "在线工具", moduleNameList: [
                     { id: "办公助手", text: "办公助手" }
                 ]
-            }         
+            }
         ],
         selectSystemName: function () {
             var systemName = _.find(vmManager.systemNames, {
                 id: uiVM.SystemName
             });
-            if (!angular.isUndefined(systemName))
-            {
+            if (!angular.isUndefined(systemName)) {
                 vmManager.showmoduleNameList = systemName.moduleNameList;
             }
         },
         querySystemName: function () {
             var systemName = _.find(vmManager.systemNames, {
-                id:queryFields.systemName
+                id: queryFields.systemName
             });
             if (!angular.isUndefined(systemName)) {
                 vmManager.querymoduleNameList = systemName.moduleNameList;
@@ -304,7 +303,7 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         getTaskRecords: function (mode) {
             vmManager.searchDataset = [];
             vmManager.datasource = [];
-            oAssistantDataOpService.getWorkTaskManageDatas(queryFields.systemName, queryFields.moduleName, queryFields.progressStatus,mode).then(function (datas) {
+            oAssistantDataOpService.getWorkTaskManageDatas(queryFields.systemName, queryFields.moduleName, queryFields.progressStatus, mode).then(function (datas) {
                 vmManager.datasource = datas;
             })
         },
@@ -326,7 +325,7 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         $scope.vm = uiVm = item;
         dialog.show();
     },
-        //删除
+    //删除
         operate.deleteItem = function (item) {
             item.OpSign = leeDataHandler.dataOpMode.delete;
             $scope.vm = uiVm = item;
@@ -353,17 +352,8 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
         })
     };
     operate.refresh = function () { leeDataHandler.dataOperate.refresh(operate, function () { vmManager.init(); }); };
-    //var departmentTreeSet = dataTreeSet.getTreeSet('department', '组织架构');
-    //departmentTreeSet.bindNodeToVm = function () {
-    //    var dto = _.clone(departmentTreeSet.treeNode.vm);
-    //    queryFields.department = dto.dataNodeText;
-    //}
-    //$scope.ztree = departmentTreeSet;
-    //$scope.searchPromise = connDataOpService.getConfigDicDate('Organization').then(function (datas) {
-    //    departmentTreeSet.setTreeDataset(datas);
-    //});
 
-  $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
+    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
         departmentTreeSet.setTreeDataset(datas);
     });
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");

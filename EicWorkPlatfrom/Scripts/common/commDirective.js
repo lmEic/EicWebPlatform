@@ -93,6 +93,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         }
     };
 })
+//导航布局指令
 .directive("ylNavigationLayout", function (navDataService, $state) {
     return {
         restrict: 'EA',
@@ -151,6 +152,145 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         controller: function ($scope, navDataService, $state) {
             var user = $scope.loginUser = Object.create(leeLoginUser);
             user.loadHeadPortrait();
+        },
+    };
+})
+//数据字典树配置器
+.directive("ylTreeConfig", function ($modal, dataDicConfigTreeSet, connDataOpService) {
+    return {
+        restrict: 'EA',
+        templateUrl: '/CommonTpl/DataTreeConfigTpl',
+        replace: false,
+        scope: {
+            treeModuleKey: '@',
+            treeId: '@'
+        },
+        link: function (scope, element, attrs) {
+
+        },
+        controller: function ($scope, $modal, dataDicConfigTreeSet, connDataOpService) {
+            var configDto = {
+                TreeModuleKey: 'CommonConfigDataSet',
+                ModuleName: null,
+                DataNodeName: null,
+                DataNodeText: null,
+                ParentDataNodeText: null,
+                IsHasChildren: 0,
+                AtLevel: 0,
+                AboutCategory: null,
+                Icon: null,
+                DisplayOrder: 0,
+                Memo: null,
+                HasChildren: false
+            };
+            var oldConfigDto = _.clone(configDto);
+
+            $scope.vm = configDto;
+
+            $scope.CheckIsHasChildren = function () {
+                configDto.IsHasChildren = configDto.HasChildren === true ? 1 : 0;
+            };
+
+            var operate = Object.create(leeDataHandler.operateStatus);
+            operate.vm = configDto;
+            $scope.operate = operate;
+
+            operate.delNode = function () {
+                if (angular.isUndefined(commonConfigTreeSet.treeNode) || commonConfigTreeSet.treeNode === null) {
+                    alert("请先选择要删除的节点!")
+                }
+                else {
+                    operate.deleteModal.$promise.then(operate.deleteModal.show);
+                }
+            };
+            operate.addChildNode = function (isValid) {
+                saveDataDicNode(isValid, 'add', 'addChildNode');
+            };
+            operate.addNode = function (isValid) {
+                saveDataDicNode(isValid, 'add', 'addNode');
+            };
+            operate.updateNode = function (isValid) {
+                saveDataDicNode(isValid, 'edit', 'updateNode');
+            };
+
+            var saveDataDicNode = function (isValid, opType, opNodeType) {
+                leeDataHandler.dataOperate.add(operate, isValid, function () {
+                    connDataOpService.saveConfigDicData(configDto, oldConfigDto, opType).then(function (opresult) {
+                        leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                            if (opresult.Result) {
+                                var vm = _.clone($scope.vm);
+                                if (opType === 'add') {
+                                    vm.Id_Key = opresult.Id_Key;
+                                    var newNode = {
+                                        name: vm.DataNodeText,
+                                        children: [],
+                                        vm: vm
+                                    };
+                                    if (opNodeType === "addChildNode")
+                                        leeTreeHelper.addChildrenNode(commonConfigTreeSet.treeId, commonConfigTreeSet.treeNode, newNode);
+                                    else if (opNodeType === "addNode")
+                                        leeTreeHelper.addNode(commonConfigTreeSet.treeId, commonConfigTreeSet.treeNode, newNode);
+                                }
+                                    //修改节点
+                                else if (opType === 'edit') {
+                                    if (opNodeType === "updateNode") {
+                                        commonConfigTreeSet.treeNode.name = vm.DataNodeText;
+                                        commonConfigTreeSet.treeNode.vm = vm;
+                                        var childrens = commonConfigTreeSet.treeNode.children;
+                                        angular.forEach(childrens, function (childrenNode) {
+                                            childrenNode.vm.ParentDataNodeText = vm.DataNodeText;
+                                        })
+                                        leeTreeHelper.updateNode(commonConfigTreeSet.treeId, commonConfigTreeSet.treeNode);
+                                    }
+                                }
+                                pHelper.clearVM();
+                            }
+                        });
+                    });
+                });
+            };
+
+            operate.refresh = function () {
+                leeDataHandler.dataOperate.refresh(operate, function () {
+                    pHelper.clearVM();
+                });
+            };
+
+            var pHelper = {
+                clearVM: function () {
+                    leeHelper.clearVM(configDto, ['TreeModuleKey']);
+                }
+            };
+
+            operate.deleteModal = $modal({
+                title: "删除提示",
+                content: "你确定要删除此节点数据吗?",
+                templateUrl: leeHelper.modalTplUrl.deleteModalUrl,
+                controller: function ($scope) {
+                    $scope.confirmDelete = function () {
+                        connDataOpService.saveConfigDicData(configDto, oldConfigDto, 'delete').then(function (opresult) {
+                            if (opresult.Result) {
+                                operate.deleteModal.$promise.then(operate.deleteModal.hide);
+                                leeTreeHelper.removeNode(commonConfigTreeSet.treeId, commonConfigTreeSet.treeNode);
+                                operate.refresh();
+                            }
+                        })
+                    };
+                },
+                show: false
+            });
+
+            var commonConfigTreeSet = dataDicConfigTreeSet.getTreeSet($scope.treeId, '数据配置字典');
+            commonConfigTreeSet.bindNodeToVm = function () {
+                configDto = _.clone(commonConfigTreeSet.treeNode.vm);
+                oldConfigDto = _.clone(configDto);
+                $scope.vm = configDto;
+            };
+            $scope.ztree = commonConfigTreeSet;
+
+            $scope.promise = connDataOpService.getConfigDicData($scope.treeModuleKey).then(function (datas) {
+                commonConfigTreeSet.setTreeDataset(datas);
+            });
         },
     };
 })
@@ -1052,6 +1192,14 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             treeModuleKey: treeModuleKey
         });
     };
+    ///根据树模块键值与功能模块键值获取配置数据
+    conn.getConfigDicDataAbout = function (treeModuleKey, moduleName) {
+        var url = urlPrefix.configManage + "getConfigDicDataAbout";
+        return ajaxService.getData(url, {
+            treeModuleKey: treeModuleKey,
+            moduleName: moduleName
+        });
+    };
     ///根据模块名称与所属类别载入配置数据
     conn.loadConfigDicData = function (moduleName, aboutCategory) {
         var url = urlPrefix.configManage + "LoadConfigDicData";
@@ -1070,6 +1218,46 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         });
     };
     return conn;
+})
+.factory('dataDicConfigTreeSet', function () {
+    var ztreeSets = [];
+    var createTreeDataset = function (datas, root) {
+        var treeNodes = [];
+        var childrenNodes = _.where(datas, { ParentDataNodeText: root });
+        if (childrenNodes !== undefined && childrenNodes.length > 0) {
+            angular.forEach(childrenNodes, function (node) {
+                var trnode = {
+                    name: node.DataNodeText,
+                    children: createTreeDataset(datas, node.DataNodeText),
+                    vm: node
+                };
+                treeNodes.push(trnode);
+            });
+        }
+        return treeNodes;
+    };
+    return {
+        getTreeSet: function (treeId, treeNodeRoot) {
+            var ztreeSetItem = _.find(ztreeSets, { treeId: treeId });
+            if (ztreeSetItem === undefined) {
+                var zTreeSet = {
+                    root: treeNodeRoot,
+                    treeId: treeId,
+                    configDataNodes: [],
+                    startLoad: false,
+                    treeNode: null,
+                    setTreeDataset: function (datas) {
+                        zTreeSet.configDataNodes = createTreeDataset(datas, zTreeSet.root);
+                        zTreeSet.startLoad = true;
+                    }
+                };
+
+                ztreeSetItem = { treeId: treeId, ztreeSet: zTreeSet };
+                ztreeSets.push(ztreeSetItem);
+            }
+            return ztreeSetItem.ztreeSet;
+        }
+    };
 });
 
 

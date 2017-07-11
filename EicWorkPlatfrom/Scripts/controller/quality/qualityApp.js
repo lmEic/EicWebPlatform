@@ -10,8 +10,8 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     ////RMAUrl前缀
     var rmaUrlPrefix = leeHelper.controllers.quaRmaManage + "/";
 
-    ////工单Url前缀
-    //var mocUrlPrefix = leeHelper.controllers.mocManage + "/";
+    //8D报告Url前缀
+    var BaDUrlPrefix = leeHelper.controllers.qua8DManage + "/";
 
     //--------------IQC检验项目管理-------------------------
     $stateProvider.state('iqcInspectionItemConfiguration', {
@@ -61,14 +61,16 @@ angular.module('bpm.qualityApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
     .state('rmaReportQuery', {
         templateUrl: rmaUrlPrefix + 'RmaReportQuery'
     })
-    ////-------------看板管理-------------------
-    //.state('jumperWireBoard', {//线材看板管理
-    //    templateUrl: boardUrlPrefix + 'JumperWireBoard'
-    //})
-    ////-------------工单管理-------------------
-    //.state('checkOrderBills', {//工单订单对比
-    //    templateUrl: mocUrlPrefix + 'CheckOrderBills'
-    //})
+    ////-------------8D报告管理-------------------
+    .state('create8DForm', {//创建表单
+        templateUrl: BaDUrlPrefix + 'Create8DForm'
+    })
+    .state('handle8DFolw', {//处理登记
+        templateUrl: BaDUrlPrefix + 'Handle8DFolw'
+    })
+    .state('close8DForm', {//结案签核
+        templateUrl: BaDUrlPrefix + 'Close8DForm'
+    })
 })
 .factory('qualityDataService', function (ajaxService) {
     var dataAccess = {};

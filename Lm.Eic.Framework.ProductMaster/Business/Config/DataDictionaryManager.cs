@@ -16,6 +16,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
             this.irep = new ConfigDataDictionaryRepository();
         }
 
+        #region  crud method
         public OpResult Store(ConfigDataDictionaryModel entity, ConfigDataDictionaryModel oldEntity, string opType)
         {
             OpResult result = OpResult.SetSuccessResult("待进行操作", false);
@@ -111,5 +112,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Config
             record = irep.Update(u => u.Id_Key == oldMdl.Id_Key, mdl);
             return OpResult.SetSuccessResult("修改配置成功！", record > 0);
         }
+        #endregion
     }
 }
