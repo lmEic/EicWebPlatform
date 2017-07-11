@@ -12,13 +12,13 @@ namespace Lm.Eic.App.Business.BmpTests.Purchase
         [TestMethod]
         public void QualifiedSupplierTest()
         {
-            var mm = PurchaseService.PurSupplierManager.CertificateManager.GetQualifiedSupplierList("2016");
+            //var mm = PurchaseService.PurSupplierManager.CertificateManager.GetQualifiedSupplierList("2016");
 
-            if (mm != null || mm.Count > 0)
-            {
-                //var tem=  PurchaseService.PurSupplierManager.SavaQualifiedSupplierInfoList(mm);
-                //if (!tem.Result) { Assert.Fail(); }
-            }
+            //if (mm != null || mm.Count > 0)
+            //{
+            //    //var tem=  PurchaseService.PurSupplierManager.SavaQualifiedSupplierInfoList(mm);
+            //    //if (!tem.Result) { Assert.Fail(); }
+            //}
 
         }
 
