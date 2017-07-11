@@ -12,7 +12,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
     /// </summary>
     public interface IRmaReportInitiateRepository : IRepository<RmaReportInitiateModel>
     {
-      List<RmaReportInitiateModel>  GetInitiateDatasBy(int formRmaYear, int formRmaMonth, int toRmaYear, int toRmaMonth);
+        List<RmaReportInitiateModel> GetInitiateDatasBy(int formRmaYear, int formRmaMonth, int toRmaYear, int toRmaMonth);
     }
     public class RmaReportInitiateRepository : BpmRepositoryBase<RmaReportInitiateModel>, IRmaReportInitiateRepository
     {
