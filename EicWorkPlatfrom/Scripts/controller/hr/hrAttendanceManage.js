@@ -851,7 +851,7 @@ hrModule.controller('workClothesManageCtrl', function ($scope, $modal, hrDataOpS
         getWorkerInfo: function () {
             if (uiVM.WorkerId === undefined) return;
             var strLen = leeHelper.checkIsChineseValue(uiVM.WorkerId) ? 2 : 6;
-            
+
             if (uiVM.WorkerId.length >= strLen) {
                 vmManager.searchedWorkers = [];
                 $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.WorkerId).then(function (datas) {

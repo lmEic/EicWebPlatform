@@ -41,6 +41,9 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
      .state('assignPowerToRole', {
          templateUrl: 'Account/AssignPowerToRole'
      })
+     .state('assignModuleToRolers', {
+         templateUrl: 'Account/AssignModuleToRolers'
+     })
      .state('assignModuleToRole', {
          templateUrl: 'Account/AssignModuleToRole'
      })

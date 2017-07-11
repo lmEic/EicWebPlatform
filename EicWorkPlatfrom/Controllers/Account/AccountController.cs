@@ -219,7 +219,14 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
-
+        /// <summary>
+        /// 分配模块给角色
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AssignModuleToRolers()
+        {
+            return View();
+        }
         /// <summary>
         /// 分配角色
         /// </summary>

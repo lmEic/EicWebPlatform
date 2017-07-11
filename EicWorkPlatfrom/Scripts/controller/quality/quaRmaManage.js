@@ -147,8 +147,18 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
         item.OpSign = leeDataHandler.dataOpMode.edit;
         $scope.vm = uiVm = item;
     };
+
     operate.saveAll = function (isValid) {
+        var isContainCustomerShortName = false;
         leeHelper.setUserData(uiVm);
+        angular.forEach(vmManager.customerShortNames, function (customerShortName) {
+            if (uiVm.CustomerShortName == customerShortName.text)
+            { isContainCustomerShortName = true; }
+        });
+        if (!isContainCustomerShortName) {
+            alert("供应商不在列表中");
+            return;
+        };
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             rmaDataOpService.storeRmaBuildRmaIdData(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {

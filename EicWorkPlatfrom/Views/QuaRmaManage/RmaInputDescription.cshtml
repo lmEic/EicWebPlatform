@@ -103,14 +103,21 @@
                                                 <input name="salesOrder" class="form-control" ng-model="item.SalesOrder" required
                                                        focus-if="focus.salesOrder" focus-setter data-ensure-user-exist style="width:250px;"
                                                        placeholder="订单号" />
+                                                <div class="error-messages" ng-messages="formRmaBussesDescription.salesOrder.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">订单号不能为空</small>
+                                                </div>
                                             </div>
                                         </td>
-                                        <td> <label style="padding:10px 0 0 0;width:180px;text-align:center;">日期:</label></td>
+                                        <td> <label style="padding:10px 0 0 0;width:150px;text-align:right;">日期</label></td>
+                                        <td> <label style="padding:10px 0 0 0;width:40px;text-align:right;"></label></td>
                                         <td title="订单日期">
                                             <div class="input-group" cg-busy="{promise:searchPromise}">
                                                 <input name="productsShipDate" type="date" class="form-control" format-date ng-model="item.ProductsShipDate" required
                                                        focus-if="focus.salesOrder" focus-setter data-ensure-user-exist style="width:200px;"
                                                        placeholder="订单日期" />
+                                                <div class="error-messages" ng-messages="formRmaBussesDescription.productsShipDate.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">订单日期不能为空</small>
+                                                </div>
                                             </div>
                                         </td>
                                         @*工具按钮*@
