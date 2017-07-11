@@ -373,3 +373,5 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
     };
     $scope.ztree = departmentTreeSet;
 });
+officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope, oAssistantDataOpService, dataDicConfigTreeSet, connDataOpService) {
+})
