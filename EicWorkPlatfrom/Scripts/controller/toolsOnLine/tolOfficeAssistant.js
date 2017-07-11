@@ -364,4 +364,47 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
     $scope.ztree = departmentTreeSet;
 });
 officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope, oAssistantDataOpService, dataDicConfigTreeSet, connDataOpService) {
+    leeHelper.setWebSiteTitle('在线助手', '上报问题');
+    var uiVM = {
+        CaseId: null,
+        WorkerId: null,
+        Name: null,
+        Department: null,
+        SystemName: null,
+        ModuleName: null,
+        ProblemDate: new Date(),
+        ProblemDesc: null,
+        ProblemAttach: null,
+        ProblemDegree: null,
+        ProblemSolve: null,
+        OpPerson: null,
+        OpSign: leeDataHandler.dataOpMode.add,
+        OpDate: null,
+        OpTime: null,
+        Id_Key: 0
+    };
+    $scope.vm = uiVM;
+    var originalVM = _.clone(uiVM);
+    var dialog = $scope.dialog = leePopups.dialog();
+    var queryField = {
+        caseId: null,
+        moduleName: null,
+        probleSovle: null
+    };
+    $scope.queyr = queryField;
+    var vmManager = {
+        activeTab: 'initTab',
+        isLocal: true,
+        init: function () {
+            uiVM = _.clone(orginalVM),
+                uiVM.OpSign = leeDataHandler.dataOpMode.add;
+            $scope.vm = uiVM;
+        },
+     
+    },
+
+
+    
+
+
 })
