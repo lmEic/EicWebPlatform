@@ -151,6 +151,7 @@
     <Compile Include="Controllers\Product\ProMocManageController.cs" />
     <Compile Include="Controllers\Product\ProBoardController.cs" />
     <Compile Include="Controllers\Purchase\PurSupplierManageController.cs" />
+    <Compile Include="Controllers\Quality\Qua8DManageController.cs" />
     <Compile Include="Controllers\Quality\QuaInspectionManageController.cs" />
     <Compile Include="Controllers\Quality\QualityController.cs" />
     <Compile Include="Controllers\Quality\QuaRmaManageController.cs" />
@@ -407,6 +408,7 @@
     <Content Include="Scripts\controller\product\proDailyReport.js" />
     <Content Include="Scripts\controller\product\proMocManage.js" />
     <Content Include="Scripts\controller\purchase\purSupplierManage.js" />
+    <Content Include="Scripts\controller\quality\qua8DManage.js" />
     <Content Include="Scripts\controller\quality\quaInspectionManage.js" />
     <Content Include="Scripts\controller\quality\qualityApp.js" />
     <Content Include="Scripts\controller\quality\quaRmaManage.js" />
@@ -1363,6 +1365,9 @@
     <Content Include="Views\CommonTpl\DataTreeConfigTpl.cshtml" />
     <Content Include="Views\SysConfig\BusiCommonDataSet.cshtml" />
     <Content Include="Views\Account\AssignModuleToRolers.cshtml" />
+    <Content Include="Views\Qua8DManage\Create8DForm.cshtml" />
+    <Content Include="Views\Qua8DManage\Handle8DFolw.cshtml" />
+    <Content Include="Views\Qua8DManage\Close8DForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
