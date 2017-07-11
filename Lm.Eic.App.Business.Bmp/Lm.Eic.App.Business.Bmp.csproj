@@ -114,6 +114,9 @@
     <Compile Include="Purchase\SupplierManager\SupplierConfigManagerCrud.cs" />
     <Compile Include="Purchase\SupplierManager\SupplierConfigManager.cs" />
     <Compile Include="Purchase\SupplierManager\SupplierGradeManager.cs" />
+    <Compile Include="Quality\EightDReportManage\EightDCurdFactory.cs" />
+    <Compile Include="Quality\EightDReportManage\EightDManager.cs" />
+    <Compile Include="Quality\EightDReportManage\EightDService.cs" />
     <Compile Include="Quality\InspectionManage\Fqc\FqcCrudFactory.cs" />
     <Compile Include="Quality\InspectionManage\Fqc\FqcDetailDatasGather.cs" />
     <Compile Include="Quality\InspectionManage\Fqc\FqcMasterDatasGather.cs" />
