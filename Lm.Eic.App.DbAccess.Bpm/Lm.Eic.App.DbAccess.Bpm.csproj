@@ -64,6 +64,7 @@
     <Compile Include="Mapping\QmsMapping\Qua8DReportMapping.cs" />
     <Compile Include="Mapping\QmsMapping\QmsInspectionMapping.cs" />
     <Compile Include="Mapping\QmsMapping\QmsRmaMapping.cs" />
+    <Compile Include="Mapping\WorkFlowMapping\InternalContactFormModelMapping .cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AstRep\EquipmentRepository.cs" />
     <Compile Include="Repository\HrmRep\Archives\CalendarsRepository.cs" />
