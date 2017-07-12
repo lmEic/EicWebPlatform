@@ -651,7 +651,6 @@
                         </tfoot>
                     </table>
                 </div>
-
                 <div class="table-responsive" style="min-height:430px;max-height:435px;overflow-y:auto" ng-if="!vmManager.displayMachineSumerizeBoard">
                     <table class="table table-bordered table-condensed table-hover" style="table-layout:fixed;">
                         @*工单信息*@
@@ -812,20 +811,19 @@
                 </div>
             </div>
         </div>
-
         <div pageslide ps-open="vmManager.workerAttendBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
                 <div class="nav">
                     <label>类别：</label>
                     <button type="button" class="btn btn-xs btn-primary" ng-model="vmManager.attendenceStation" data-html="1" data-placeholder="机台"
-                            data-multiple="0" 
-                            data-animation="am-flip-x" 
-                            bs-options="item.text as item.text for item in vmManager.attendanceReportTypes" 
-                            bs-select >
+                            data-multiple="0"
+                            data-animation="am-flip-x"
+                            bs-options="item.text as item.text for item in vmManager.attendanceReportTypes"
+                            bs-select>
                         机台 <span class="caret"></span>
                     </button>
                     <label>  日期:</label>
-                    <input type="date" ng-model="vmManager.InputDate" format-date class="ng-pristine ng-valid ng-touched"/>
+                    <input type="date" ng-model="vmManager.InputDate" format-date class="ng-pristine ng-valid ng-touched" />
                     <button type="button" class="btn btn-warning btn-sm" ng-click="operate.referWorkerAttendanceVM()">查询</button>
                     <a href="#" ng-click="vmManager.workerAttendBoardDisplay=false;workerAttendanceVM.WorkerAttendBoardVisible = false;" class="pull-right">
                         <span class="label label-success">取消</span>
@@ -837,168 +835,158 @@
                 </div>
                 <div class="h-split"></div>
                 <div class="table-responsive">
-                        <table class="table table-condensed table-bordered table-hover" style="table-layout:fixed">
-                            @*<colgroup>
-                <col width="90" />
-                <col width="90" />
-                <col width="120" />
-                <col width="120" />
-            </colgroup>*@
-                            <tbody>
-                                <tr>
-                                    <td rowspan="4" class="text-center info" style="vertical-align:middle;">出勤状况</td>
-                                    <td rowspan="2" class="warning"></td>
-                                    <td colspan="6" class="text-center info">本单位职工</td>
-                                    <td colspan="4" class="text-center info">援入</td>
-                                    <td rowspan="2" class="text-center info" style="padding:2.0em 0.5em">加班</td>
-                                    <td rowspan="2" class="text-center info" style="padding:2.0em 0.5em">总投入</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center info">应到</td>
-                                    <td class="text-center info">请假</td>
-                                    <td class="text-center info">旷工</td>
-                                    <td class="text-center info">援出</td>
-                                    <td class="text-center info">实到</td>
-                                    <td class="text-center info">新员</td>
+                    <table class="table table-condensed table-bordered table-hover" style="table-layout:fixed">
+                        <tbody>
+                            <tr>
+                                <td rowspan="4" class="text-center info" style="vertical-align:middle;">出勤状况</td>
+                                <td rowspan="2" class="warning"></td>
+                                <td colspan="6" class="text-center info">本单位职工</td>
+                                <td colspan="4" class="text-center info">援入</td>
+                                <td rowspan="2" class="text-center info" style="padding:2.0em 0.5em">加班</td>
+                                <td rowspan="2" class="text-center info" style="padding:2.0em 0.5em">总投入</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center info">应到</td>
+                                <td class="text-center info">请假</td>
+                                <td class="text-center info">旷工</td>
+                                <td class="text-center info">援出</td>
+                                <td class="text-center info">实到</td>
+                                <td class="text-center info">新员</td>
 
-                                    <td class="text-center info">应到</td>
-                                    <td class="text-center info">实到</td>
-                                    <td class="text-center info">请假</td>
-                                    <td class="text-center info">旷工</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center info">人数</td>
-                                    <td>
-                                        <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.ShouldAttendenceUserCount}}</span>
-                                        <input type="text" style="width:68px;" ng-model="workerAttendanceVM.ShouldAttendenceUserCount" 
-                                               ng-show="workerAttendanceVM.WorkerAttendBoardVisible"  
-                                               ng-keydown="focus.changeEnter($event,'shouldAttendenceUserCountFocus', 'askLeaveUserCountFocus')" />
-                                    </td>
-                                    <td>
-                                        <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.AskLeaveUserCount}}</span>
-                                        <input type="text" style="width:68px;"  ng-model="workerAttendanceVM.AskLeaveUserCount"  
-                                               ng-show="workerAttendanceVM.WorkerAttendBoardVisible"  
-                                               ng-keydown="focus.changeEnter($event,'askLeaveUserCountFocus', 'haveLeaveUserCountFocus')" 
-                                               focus-setter focus-if="focus.askLeaveUserCountFocus" />
-                                    </td>
-                                    <td>
-                                        <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.HaveLeaveUserCount}}</span>
-                                        <input type="text" style="width:68px;" ng-model="workerAttendanceVM.HaveLeaveUserCount" 
-                                               ng-show="workerAttendanceVM.WorkerAttendBoardVisible" 
-                                               ng-keydown="focus.changeEnter($event,'haveLeaveUserCountFocus', 'supportOutUserCountFocus')" 
-                                               focus-setter focus-if="focus.haveLeaveUserCountFocus"/>
-                                    </td>
-                                    <td>
-                                        <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.SupportOutUserCount}}</span>
-                                        <input type="text" style="width:68px;" ng-model="workerAttendanceVM.SupportOutUserCount" 
-                                               ng-show="workerAttendanceVM.WorkerAttendBoardVisible" 
-                                               ng-keydown="focus.changeEnter($event,'supportOutUserCountFocus', 'realityWorkingUserCountFocus')" 
-                                               focus-setter focus-if="focus.supportOutUserCountFocus" />
-                                    </td>
-                                    <td>
-                                        <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.RealityWorkingUserCount}}</span>
-                                        <input type="text" style="width:68px;" ng-model="workerAttendanceVM.RealityWorkingUserCount" 
-                                               ng-show="workerAttendanceVM.WorkerAttendBoardVisible" 
-                                               ng-keydown="focus.changeEnter($event,'realityWorkingUserCountFocus', 'inNewWorkerCountFocus')" 
-                                               focus-setter focus-if="focus.realityWorkingUserCountFocus"/>
-                                    </td>
-                                    <td>
-                                        <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.InNewWorkerCount}}</span>
-                                        <input type="text" style="width:68px;" ng-model="workerAttendanceVM.InNewWorkerCount" 
-                                               ng-show="workerAttendanceVM.WorkerAttendBoardVisible" 
-                                               ng-keydown="focus.changeEnter($event,'inNewWorkerCountFocus', 'supportInShoutAbsentCount')" 
-                                               focus-setter focus-if="focus.inNewWorkerCountFocus"/>
-                                    </td>
-                                    <td>
-                                        <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.SupportInShoutAbsentCount}}</span>
-                                        <input type="text" style="width:68px;" ng-model="workerAttendanceVM.SupportInShoutAbsentCount" 
-                                               ng-show="workerAttendanceVM.WorkerAttendBoardVisible" 
-                                               ng-keydown="focus.changeEnter($event,'supportInShoutAbsentCount', 'supportInRealityWorkingCountFocus')"
-                                                focus-setter focus-if="focus.supportInShoutAbsentCount" />
-                                    </td>
-                                    <td>
-                                        <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.SupportInRealityWorkingCount}}</span>
-                                        <input type="text" style="width:68px;" ng-model="workerAttendanceVM.SupportInRealityWorkingCount" 
-                                               ng-show="workerAttendanceVM.WorkerAttendBoardVisible"  
-                                               ng-keydown="focus.changeEnter($event,'supportInRealityWorkingCountFocus', 'supportInAskLeaveCountFocus')" 
-                                               focus-setter focus-if="focus.supportInRealityWorkingCountFocus"/>
-                                    </td>
-                                    <td>
-                                        <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.SupportInAskLeaveCount}}</span>
-                                        <input type="text" style="width:68px;" ng-model="workerAttendanceVM.SupportInAskLeaveCount" 
-                                               ng-show="workerAttendanceVM.WorkerAttendBoardVisible" 
-                                               ng-keydown="focus.changeEnter($event,'supportInAskLeaveCountFocus', 'supportInHaveLeaveCountFocus')" 
-                                               focus-setter focus-if="focus.supportInAskLeaveCountFocus"/>
-                                    </td>
-                                    <td>
-                                        <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.SupportInHaveLeaveCount}}</span>
-                                        <input type="text" style="width:68px;" ng-model="workerAttendanceVM.SupportInHaveLeaveCount"
-                                               ng-show="workerAttendanceVM.WorkerAttendBoardVisible" 
-                                               ng-keydown="focus.changeEnter($event,'supportInHaveLeaveCountFocus', 'overWorkUserCountFocus')"
-                                                focus-setter focus-if="focus.supportInHaveLeaveCountFocus"/>
-                                    </td>
-                                    <td>
-                                        <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.OverWorkUserCount}}</span>
-                                        <input type="text" style="width:68px;" ng-model="workerAttendanceVM.OverWorkUserCount" 
-                                               ng-show="workerAttendanceVM.WorkerAttendBoardVisible"  
-                                               ng-keydown="focus.changeEnter($event,'overWorkUserCountFocus', 'attendenceTotalCountFocus')"
-                                                focus-setter  focus-if="focus.overWorkUserCountFocus"/>
-                                    </td>
-                                    <td>
-                                        <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.AttendenceTotalCount}}</span>
-                                        <input type="text" style="width:68px;" ng-model="workerAttendanceVM.AttendenceTotalCount" 
-                                               ng-show="workerAttendanceVM.WorkerAttendBoardVisible" 
-                                               focus-setter focus-if="focus.attendenceTotalCountFocus"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center info">时数</td>
-                                    <td>
-                                        {{workerAttendanceVM.ShouldAttendenceUserCount * 8}}
-                                    </td>
-                                    <td>
-                                        {{workerAttendanceVM.AskLeaveUserCount * 8}}
-                                    </td>
-                                    <td>
-                                        {{workerAttendanceVM.HaveLeaveUserCount * 8}}
-                                    </td>
-                                    <td>
-                                        {{workerAttendanceVM.SupportOutUserCount * 8}}
-                                    </td>
-                                    <td>
-                                        {{workerAttendanceVM.RealityWorkingUserCount * 8}}
-                                    </td>
-                                    <td>
-                                        {{workerAttendanceVM.InNewWorkerCount * 8}}
-                                    </td>
-                                    <td>
-                                        {{workerAttendanceVM.SupportInShoutAbsentCount * 8}}
-                                    </td>
-                                    <td>
-                                        {{workerAttendanceVM.SupportInRealityWorkingCount * 8}}
-                                    </td>
-                                    <td>
-                                        {{ workerAttendanceVM.SupportInAskLeaveCount * 8}}
-                                    </td>
-                                    <td>
-                                        {{workerAttendanceVM.SupportInHaveLeaveCount * 8}}
-                                    </td>
-                                    <td>
-                                        {{workerAttendanceVM.OverWorkUserCount * 8}}
-                                    </td>
-                                    <td>
-                                        {{workerAttendanceVM.AttendenceTotalCount * 8}}
-                                    </td>   
-                                </tr>
-                            </tbody>
-                        </table>
+                                <td class="text-center info">应到</td>
+                                <td class="text-center info">实到</td>
+                                <td class="text-center info">请假</td>
+                                <td class="text-center info">旷工</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center info">人数</td>
+                                <td>
+                                    <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.ShouldAttendenceUserCount}}</span>
+                                    <input type="text" style="width:68px;" ng-model="workerAttendanceVM.ShouldAttendenceUserCount"
+                                           ng-show="workerAttendanceVM.WorkerAttendBoardVisible"
+                                           ng-keydown="focus.changeEnter($event,'shouldAttendenceUserCountFocus', 'askLeaveUserCountFocus')" />
+                                </td>
+                                <td>
+                                    <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.AskLeaveUserCount}}</span>
+                                    <input type="text" style="width:68px;" ng-model="workerAttendanceVM.AskLeaveUserCount"
+                                           ng-show="workerAttendanceVM.WorkerAttendBoardVisible"
+                                           ng-keydown="focus.changeEnter($event,'askLeaveUserCountFocus', 'haveLeaveUserCountFocus')"
+                                           focus-setter focus-if="focus.askLeaveUserCountFocus" />
+                                </td>
+                                <td>
+                                    <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.HaveLeaveUserCount}}</span>
+                                    <input type="text" style="width:68px;" ng-model="workerAttendanceVM.HaveLeaveUserCount"
+                                           ng-show="workerAttendanceVM.WorkerAttendBoardVisible"
+                                           ng-keydown="focus.changeEnter($event,'haveLeaveUserCountFocus', 'supportOutUserCountFocus')"
+                                           focus-setter focus-if="focus.haveLeaveUserCountFocus" />
+                                </td>
+                                <td>
+                                    <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.SupportOutUserCount}}</span>
+                                    <input type="text" style="width:68px;" ng-model="workerAttendanceVM.SupportOutUserCount"
+                                           ng-show="workerAttendanceVM.WorkerAttendBoardVisible"
+                                           ng-keydown="focus.changeEnter($event,'supportOutUserCountFocus', 'realityWorkingUserCountFocus')"
+                                           focus-setter focus-if="focus.supportOutUserCountFocus" />
+                                </td>
+                                <td>
+                                    <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.RealityWorkingUserCount}}</span>
+                                    <input type="text" style="width:68px;" ng-model="workerAttendanceVM.RealityWorkingUserCount"
+                                           ng-show="workerAttendanceVM.WorkerAttendBoardVisible"
+                                           ng-keydown="focus.changeEnter($event,'realityWorkingUserCountFocus', 'inNewWorkerCountFocus')"
+                                           focus-setter focus-if="focus.realityWorkingUserCountFocus" />
+                                </td>
+                                <td>
+                                    <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.InNewWorkerCount}}</span>
+                                    <input type="text" style="width:68px;" ng-model="workerAttendanceVM.InNewWorkerCount"
+                                           ng-show="workerAttendanceVM.WorkerAttendBoardVisible"
+                                           ng-keydown="focus.changeEnter($event,'inNewWorkerCountFocus', 'supportInShoutAbsentCount')"
+                                           focus-setter focus-if="focus.inNewWorkerCountFocus" />
+                                </td>
+                                <td>
+                                    <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.SupportInShoutAbsentCount}}</span>
+                                    <input type="text" style="width:68px;" ng-model="workerAttendanceVM.SupportInShoutAbsentCount"
+                                           ng-show="workerAttendanceVM.WorkerAttendBoardVisible"
+                                           ng-keydown="focus.changeEnter($event,'supportInShoutAbsentCount', 'supportInRealityWorkingCountFocus')"
+                                           focus-setter focus-if="focus.supportInShoutAbsentCount" />
+                                </td>
+                                <td>
+                                    <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.SupportInRealityWorkingCount}}</span>
+                                    <input type="text" style="width:68px;" ng-model="workerAttendanceVM.SupportInRealityWorkingCount"
+                                           ng-show="workerAttendanceVM.WorkerAttendBoardVisible"
+                                           ng-keydown="focus.changeEnter($event,'supportInRealityWorkingCountFocus', 'supportInAskLeaveCountFocus')"
+                                           focus-setter focus-if="focus.supportInRealityWorkingCountFocus" />
+                                </td>
+                                <td>
+                                    <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.SupportInAskLeaveCount}}</span>
+                                    <input type="text" style="width:68px;" ng-model="workerAttendanceVM.SupportInAskLeaveCount"
+                                           ng-show="workerAttendanceVM.WorkerAttendBoardVisible"
+                                           ng-keydown="focus.changeEnter($event,'supportInAskLeaveCountFocus', 'supportInHaveLeaveCountFocus')"
+                                           focus-setter focus-if="focus.supportInAskLeaveCountFocus" />
+                                </td>
+                                <td>
+                                    <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.SupportInHaveLeaveCount}}</span>
+                                    <input type="text" style="width:68px;" ng-model="workerAttendanceVM.SupportInHaveLeaveCount"
+                                           ng-show="workerAttendanceVM.WorkerAttendBoardVisible"
+                                           ng-keydown="focus.changeEnter($event,'supportInHaveLeaveCountFocus', 'overWorkUserCountFocus')"
+                                           focus-setter focus-if="focus.supportInHaveLeaveCountFocus" />
+                                </td>
+                                <td>
+                                    <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.OverWorkUserCount}}</span>
+                                    <input type="text" style="width:68px;" ng-model="workerAttendanceVM.OverWorkUserCount"
+                                           ng-show="workerAttendanceVM.WorkerAttendBoardVisible"
+                                           ng-keydown="focus.changeEnter($event,'overWorkUserCountFocus', 'attendenceTotalCountFocus')"
+                                           focus-setter focus-if="focus.overWorkUserCountFocus" />
+                                </td>
+                                <td>
+                                    <span ng-hide="workerAttendanceVM.WorkerAttendBoardVisible">{{workerAttendanceVM.AttendenceTotalCount}}</span>
+                                    <input type="text" style="width:68px;" ng-model="workerAttendanceVM.AttendenceTotalCount"
+                                           ng-show="workerAttendanceVM.WorkerAttendBoardVisible"
+                                           focus-setter focus-if="focus.attendenceTotalCountFocus" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center info">时数</td>
+                                <td>
+                                    {{workerAttendanceVM.ShouldAttendenceUserCount * 8}}
+                                </td>
+                                <td>
+                                    {{workerAttendanceVM.AskLeaveUserCount * 8}}
+                                </td>
+                                <td>
+                                    {{workerAttendanceVM.HaveLeaveUserCount * 8}}
+                                </td>
+                                <td>
+                                    {{workerAttendanceVM.SupportOutUserCount * 8}}
+                                </td>
+                                <td>
+                                    {{workerAttendanceVM.RealityWorkingUserCount * 8}}
+                                </td>
+                                <td>
+                                    {{workerAttendanceVM.InNewWorkerCount * 8}}
+                                </td>
+                                <td>
+                                    {{workerAttendanceVM.SupportInShoutAbsentCount * 8}}
+                                </td>
+                                <td>
+                                    {{workerAttendanceVM.SupportInRealityWorkingCount * 8}}
+                                </td>
+                                <td>
+                                    {{ workerAttendanceVM.SupportInAskLeaveCount * 8}}
+                                </td>
+                                <td>
+                                    {{workerAttendanceVM.SupportInHaveLeaveCount * 8}}
+                                </td>
+                                <td>
+                                    {{workerAttendanceVM.OverWorkUserCount * 8}}
+                                </td>
+                                <td>
+                                    {{workerAttendanceVM.AttendenceTotalCount * 8}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-
-
-
-
         <div pageslide ps-open="vmManager.personBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
                 <div class="pull-left" style="width:29%;">
@@ -1063,10 +1051,8 @@
                                     <td class="text-center info">
                                         <span>机台/工艺</span>
                                     </td>
-
                                     <td class="text-center info"><span>产量</span></td>
                                     <td class="text-center info"><span>不良数</span></td>
-
                                     <td class="text-center info"><span>设置时数</span></td>
                                     <td class="text-center info"><span>投入工时</span></td>
                                     <td class="text-center info"><span>出勤时数</span></td>
@@ -1082,14 +1068,11 @@
                                     <td>{{item.QtyBad}}</td>
                                     <td>{{item.SetHours}}</td>
                                     <td>{{item.InputHours}}</td>
-
                                     <td ng-dblclick="vmManager.enterEditAttendanceHoursMode(item)">
                                         <span ng-hide="item.edittingAttendanceHours">{{item.AttendanceHours}}</span>
                                         <input ng-model="vmManager.editAttendanceHours" ng-keydown="vmManager.exitEditAttendanceHoursMode($event,item)" style="width:75px;"
                                                placeholder="出勤时数" ng-show="item.edittingAttendanceHours" />
                                     </td>
-
-
                                     <td>{{item.NonProductionHours}}</td>
                                     <td>{{item.ProductionHours}}</td>
                                 </tr>
@@ -1099,19 +1082,12 @@
                 </div>
             </div>
         </div>
-
-
-
-
         <div pageslide ps-open="vmManager.orderIdBoardDisplay" ps-side="bottom" ps-size="{{vmManager.boardViewSize}}" ps-speed="0.25" ps-container='editWindow'>
             <div style="padding:10px;overflow-y:auto">
-
             </div>
         </div>
     </div>
-
     <div class="panel-footer">
-
     </div>
 </div>
 <style>

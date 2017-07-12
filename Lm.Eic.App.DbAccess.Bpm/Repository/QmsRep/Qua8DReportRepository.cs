@@ -11,22 +11,19 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
     /// <summary>
     ///8D记录详表
     /// </summary>
-    public interface IEightDReportDetailsRepository : IRepository<EightDReportDetailModel> { }
+    public interface IQua8DReportDetailsRepository : IRepository<Qua8DReportDetailModel> { }
     /// <summary>
     ///8D记录详表
     /// </summary>
-    public class EightDReportDetailsRepository : BpmRepositoryBase<EightDReportDetailModel>, IEightDReportDetailsRepository
+    public class Qua8DReportDetailsRepository : BpmRepositoryBase<Qua8DReportDetailModel>, IQua8DReportDetailsRepository
     { }
-
-
     /// <summary>
     ///8D记录处理主表
     /// </summary>
-    public interface IEightDReportMasterRepository : IRepository<EightReportMasterModel> { }
+    public interface IQua8DReportMasterRepository : IRepository<Qua8DReportMasterModel> { }
     /// <summary>
     ///8D记录处理主表
     /// </summary>
-    public class EightDReportMasterRepository : BpmRepositoryBase<EightReportMasterModel>, IEightDReportMasterRepository
+    public class Qua8DReportMasterRepository : BpmRepositoryBase<Qua8DReportMasterModel>, IQua8DReportMasterRepository
     { }
-
 }

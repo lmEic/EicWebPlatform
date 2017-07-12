@@ -13,9 +13,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
     /// <summary>
     ///EightReportMaster
     /// </summary>
-    public class EightReportMasterMapping : EntityTypeConfiguration<EightReportMasterModel>
+    public class Qua8DReportMasterMapping : EntityTypeConfiguration<Qua8DReportMasterModel>
     {
-        public EightReportMasterMapping()
+        public Qua8DReportMasterMapping()
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
@@ -26,9 +26,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
     /// <summary>
     ///EightDReportDetail
     /// </summary>
-    public class EightDReportDetailMapping : EntityTypeConfiguration<EightDReportDetailModel>
+    public class Qua8DReportDetailMapping : EntityTypeConfiguration<Qua8DReportDetailModel>
     {
-        public EightDReportDetailMapping()
+        public Qua8DReportDetailMapping()
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);

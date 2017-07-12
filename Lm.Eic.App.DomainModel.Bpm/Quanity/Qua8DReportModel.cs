@@ -9,9 +9,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     ///8D记录处理主表
     /// </summary>
     [Serializable]
-    public partial class EightReportMasterModel
+    public partial class Qua8DReportMasterModel
     {
-        public EightReportMasterModel()
+        public Qua8DReportMasterModel()
         { }
         #region Model
         private string _reportid;
@@ -174,9 +174,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     ///8D记录处理详表
     /// </summary>
     [Serializable]
-    public partial class EightDReportDetailModel
+    public partial class Qua8DReportDetailModel
     {
-        public EightDReportDetailModel()
+        public Qua8DReportDetailModel()
         { }
         #region Model
         private string _reportid;
