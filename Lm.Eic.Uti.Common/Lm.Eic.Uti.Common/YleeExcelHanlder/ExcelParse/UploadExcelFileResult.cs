@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
 {
-    // <summary>
+    ///<summary>
     /// EXCEL文件上传检查返回数据
     /// </summary>
     public class UploadExcelFileResult

@@ -1,1 +1,26 @@
-﻿<h1>创建8D表单</h1>
+﻿<div class="panel panel-primary" ng-controller="create8DFormCtrl">
+
+    <div class="panel-heading">
+        <h6 class="panel-title">创建8D报告单</h6>
+    </div>
+
+    <div class="panel-body">
+        <div style="position:relative;">
+            <span>
+                <select name="select" style="width:80px;left:0px" onchange="this.parentNode.nextSibling.value=this.value">
+                    <option value=""></option>
+                    <option value="1">aaa</option>
+                    <option value="2">bbb</option>
+                    <option value="3">ccc</option>
+                    <option value="4">ddd</option>
+                    <option value="5">eee</option>
+                </select>
+            </span>
+            <input type="text" name="editbox" value="" style="top:1px;width:61px;position:absolute;left:0px;" size="30" maxlength="32" />
+        </div>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+
+</div>

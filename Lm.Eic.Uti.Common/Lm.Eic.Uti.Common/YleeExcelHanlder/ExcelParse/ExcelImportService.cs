@@ -95,6 +95,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
             {
                 ISheet sheet = workbook.GetSheetAt(i);
                 string sheetName = sheet.SheetName;
+                _rowCount.Add(1, 1);
                 Dictionary<int, string> dict = this.GetExcelHeaders(sheet, ref uploadExcelFileResult, _list);
                 var sheetLists = this.GetExcelDatas<TableDTO>(sheet, sheetName, _list, dict, _rowCount[i]);
                 resultList.AddRange(sheetLists);

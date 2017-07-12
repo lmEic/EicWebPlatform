@@ -76,26 +76,22 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
             var reader = new XmlTextReader(xmlpath);
             var doc = new XmlDocument();
             doc.Load(reader);
-
             var headerList = new List<Regular>();
             foreach (XmlNode node in doc.DocumentElement.ChildNodes)
             {
                 var header = new Regular();
-
                 if (node.Attributes["firstHeaderRow"] != null)
                     header.HeaderRegular.Add("firstHeaderRow", int.Parse(node.Attributes["firstHeaderRow"].Value));
                 if (node.Attributes["lastHeaderRow"] != null)
                     header.HeaderRegular.Add("lastHeaderRow", int.Parse(node.Attributes["lastHeaderRow"].Value));
                 if (node.Attributes["sheetCount"] != null)
                     header.HeaderRegular.Add("sheetCount", int.Parse(node.Attributes["sheetCount"].Value));
-
                 if (node.Attributes["headerText"] != null)
                     header.HeaderText = node.Attributes["headerText"].Value;
                 if (node.Attributes["propertyName"] != null)
                     header.PropertyName = node.Attributes["propertyName"].Value;
                 if (node.Attributes["dataType"] != null)
                     header.DataType = node.Attributes["dataType"].Value;
-
                 headerList.Add(header);
             }
             return headerList;

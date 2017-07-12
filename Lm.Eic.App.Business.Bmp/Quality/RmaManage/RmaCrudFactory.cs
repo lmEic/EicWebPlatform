@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
-    internal class RmaCurdFactory
+    internal class RmaCrudFactory
     {
         internal static RmaReportInitiateCrud RmaReportInitiate
         {
