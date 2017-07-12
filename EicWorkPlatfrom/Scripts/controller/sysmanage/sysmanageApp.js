@@ -38,14 +38,11 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
      .state('sysAssemblyEdit', {
          templateUrl: 'Account/SysAssemblyEdit'
      })
-     .state('assignPowerToRole', {
-         templateUrl: 'Account/AssignPowerToRole'
-     })
      .state('assignModuleToRolers', {
          templateUrl: 'Account/AssignModuleToRolers'
      })
-     .state('assignModuleToRole', {
-         templateUrl: 'Account/AssignModuleToRole'
+     .state('assignRolersToModule', {
+         templateUrl: 'Account/AssignRolersToModule'
      })
     //--------------ITIL管理--------------------------
        //供应商管理

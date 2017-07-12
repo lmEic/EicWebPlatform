@@ -619,122 +619,7 @@ smModule.controller('assignUserToRoleCtrl', function ($scope, accountService) {
     });
 })
 //------------------权限分配---------------------
-smModule.controller("assignUserPowerCtrl", function ($scope, vmService, accountService, treeSetService) {
-    var Vm = vmService.moduleNavVm;
-    $scope.vm = Vm;
-    var operate = {
-        saveDatas: function () {
-            accountService.saveRoleMatchModule(roleInfo.dataList).then(function (opresult) {
-                if (opresult.Result) {
-                    roleInfo.assignRoles = [];
-                    roleInfo.dataList = [];
-                    roleInfo.resetRoleList();
-                }
-                else {
-                    alert("保存数据失败，请检查后重试！");
-                }
-            })
-        },
-    };
-    $scope.operate = operate;
-
-    //树的配置
-    var zTreeSet = treeSetService;
-    zTreeSet.bindNodeToVm = function () {
-        Vm = _.clone(zTreeSet.treeNode.vm);
-        $scope.vm = Vm;
-        roleInfo.loadRoleMatchModules();
-    };
-    $scope.ztree = zTreeSet;
-
-    $scope.promise = accountService.getNavMenusAndRoles().then(function (datas) {
-        zTreeSet.setTreeDataset(datas.modules);
-
-        roleInfo.roles = [];
-        angular.forEach(datas.roles, function (role) {
-            roleInfo.roles.push({ roleId: role.RoleId, roleName: role.RoleName, roleLevel: role.RoleLevel, isSelect: false });
-        });
-    });
-
-    var roleInfo = {
-        roles: [],
-        assignRoles: [],//初始载入数据列表
-        dataList: [],//存储要上传的数据列表
-        //全部重置为未选择状态
-        resetRoleList: function () {
-            angular.forEach(roleInfo.roles, function (role) { role.isSelect = false; });
-            //设置该模块的已经操作状态
-            var arole = _.findWhere(roleInfo.assignRoles, { moduleText: Vm.ModuleText });
-            if (!angular.isUndefined(arole)) {
-                angular.forEach(arole.roles, function (role) {
-                    var r = _.findWhere(roleInfo.roles, { roleId: role.roleId });
-                    r.isSelect = true;
-                })
-            }
-        },
-        checkChange: function (role) {
-            if (Vm.ModuleName === null) return;
-            var arole = _.findWhere(roleInfo.assignRoles, { moduleText: Vm.ModuleText });
-            if (angular.isUndefined(arole)) { //若数据库中不存在
-                if (!role.isSelect) return;//如果是未选定，则直接退出
-                var roles = [role];
-                roleInfo.assignRoles.push({ moduleText: Vm.ModuleText, roles: roles });//否则添加到显示队列中
-                roleInfo.changeDataList(role, 'add');//并添加到上传数据库的新增队列中
-            }
-                //如果存在于数据库中
-            else {
-                if (role.isSelect) {//如果选定
-                    arole.roles.push(role);//添加到显示队列中
-                    roleInfo.changeDataList(role, 'add');//并添加到上传数据库的新增队列中
-                }
-                else {//如果取消选定
-                    leeHelper.remove(arole.roles, role);//则从显示队列中移除
-                    roleInfo.changeDataList(role, 'delete');//并添加到上传数据库的移除队列中
-                }
-            }
-        },
-        changeDataList: function (role, opSign) {
-            var id = role.roleId + '_' + Vm.AssemblyName + '_' + Vm.ModuleName + '_' + Vm.CtrlName + '_' + Vm.ActionName + '_' + opSign;
-            var arole = _.findWhere(roleInfo.dataList, { id: id });
-            if (angular.isUndefined(arole)) {
-                //直接生成扁平模型
-                var mdlrole = angular.copy(Vm);
-                mdlrole.RoleId = role.roleId;
-                mdlrole.OpSign = opSign;
-                mdlrole.id = id;
-                roleInfo.dataList.push(mdlrole);
-            }
-        },
-        removeRoleFromDataList: function (role) {
-            role.isSelect = false;
-            roleInfo.checkChange(role);
-        },
-        loadRoleMatchModules: function () {
-            $scope.roleModulePromise = accountService.findRoleMatchModules(Vm.AssemblyName, Vm.ModuleName, Vm.CtrlName).then(function (datas) {
-                if (angular.isArray(datas)) {
-                    roleInfo.assignRoles = [];
-                    angular.forEach(datas, function (rm) {
-                        //从角色列表中找到匹配的角色信息
-                        var role = _.findWhere(roleInfo.roles, { roleId: rm.RoleId });
-                        var arole = _.findWhere(roleInfo.assignRoles, { moduleText: Vm.ModuleText });
-                        if (angular.isUndefined(arole)) {
-                            var roles = [role];
-                            roleInfo.assignRoles.push({ moduleText: Vm.ModuleText, roles: roles, vm: Vm });
-                        }
-                        else {
-                            arole.roles.push(role);
-                        }
-                    });
-                }
-                roleInfo.resetRoleList();
-            }, function (errData) {
-                roleInfo.resetRoleList();
-            });
-        },
-    };
-    $scope.roleInfo = roleInfo;
-})
-smModule.controller("assignUserPowerLotCtrl", function ($scope, vmService, accountService, treeSetService) {
+smModule.controller("assignRolersToModuleCtrl", function ($scope, vmService, accountService, treeSetService) {
     var uiVm = {
         RoleId: null,
         RoleName: null,
@@ -747,128 +632,98 @@ smModule.controller("assignUserPowerLotCtrl", function ($scope, vmService, accou
         ModuleNavPrimaryKey: null,
         OpSign: null,
     };
-
     var roleVm = {
         RoleId: null,
         RoleName: null,
         RoleLevel: 0,
-    }
-
-    vmManager = {
-        roles: [],
-        selectedRole: null,
-        roleDisplay: true,
-        treeDisplay: true,
-        checkTreeNode: function (checked) {
-            var treeNodes = leeTreeHelper.transformToArray(zTreeSet.treeId, leeTreeHelper.getTreeNodes(zTreeSet.treeId));
-            angular.forEach(treeNodes, function (treenode) {
-                var trnode = _.find(vmManager.dbDataset, { ModuleName: treenode.vm.ModuleName, AssemblyName: treenode.vm.AssemblyName });
-                if (trnode !== undefined) {
-                    leeTreeHelper.checkNode(zTreeSet.treeId, treenode, true, false, false);
-                }
-            });
-        },
-        selectRole: function (role) {
-            vmManager.selectedRole = role;
-            vmManager.roleMatchModules = [];
-            vmManager.dbDataset = [];
-            leeTreeHelper.checkAllNodes(zTreeSet.treeId, false);
-            $scope.promise = accountService.findRoleMatchModulesBy(role.RoleId).then(function (datas) {
-                angular.forEach(datas, function (item) {
-                    var dataitem = _.clone(uiVm);
-                    leeHelper.copyVm(item, dataitem);
-                    var roleitem = _.find(vmManager.roles, { RoleId: item.RoleId });
-                    if (roleitem !== null) {
-                        dataitem.RoleId = roleitem.RoleId;
-                        dataitem.RoleName = roleitem.RoleName;
-                        dataitem.OpSign = 'init';
-                    }
-                    vmManager.dbDataset.push(dataitem);
-                    vmManager.roleMatchModules.push(dataitem);
-                });
-                vmManager.checkTreeNode(true);
-            })
-        },
-        //显示集
-        roleMatchModules: [],
-        //数据集
-        dbDataset: [],
     };
-    $scope.vmManager = vmManager;
-
-    var operate = Object.create(leeDataHandler.operateStatus);
-
-    operate.saveDatas = function () {
-        var dataList = _.where(vmManager.dbDataset, { IsNew: true });
-        if (_.isArray(dataList) && dataList.length > 0) {
-            accountService.saveRoleMatchModule(dataList).then(function (opresult) {
-                if (opresult.Result) {
-                    leeTreeHelper.checkAllNodes(zTreeSet.treeId, false);
-                    vmManager.dbDataset = [];
-                    vmManager.roleMatchModules = [];
-                }
-            });
-        }
-    };
-    $scope.operate = operate;
-
     //树的配置
     var zTreeSet = treeSetService;
     zTreeSet.bindNodeToVm = function () {
-    };
-    zTreeSet.checkNode = function () {
-        var isChecked = zTreeSet.treeNode.isChecked;
-        var vm = _.clone(zTreeSet.treeNode.vm);
-
-        var item = _.clone(uiVm);
-        leeHelper.copyVm(vm, item);
-        item.RoleId = vmManager.selectedRole.RoleId;
-        item.RoleName = vmManager.selectedRole.RoleName;
-        item.OpSign = 'add';
-        item.IsNew = true;
-
-        var rm = _.find(vmManager.roleMatchModules, { ModuleName: vm.ModuleName, AssemblyName: vm.AssemblyName });
-        var dataitem = _.find(vmManager.dbDataset, { ModuleName: vm.ModuleName, AssemblyName: vm.AssemblyName });
-        if (isChecked) {
-            if (rm === undefined) {
-                leeHelper.insert(vmManager.roleMatchModules, 0, item);
-            }
-            if (dataitem === undefined) {
-                leeHelper.insert(vmManager.dbDataset, 0, item);
-            }
-            else {
-                if (dataitem.OpSign === 'delete') {
-                    dataitem.OpSign = 'add';
-                }
-            }
-        }
-        else {
-            if (rm !== undefined) {
-                leeHelper.remove(vmManager.roleMatchModules, rm);
-            }
-            if (dataitem !== undefined) {
-                item.OpSign = 'delete';
-                leeHelper.insert(vmManager.dbDataset, 0, item);
-            }
-            else {
-                dataitem.OpSign = 'delete';
-            }
-        }
+        uiVm = _.clone(zTreeSet.treeNode.vm);
+        vmManager.loadRoleMatchModules();
     };
     $scope.ztree = zTreeSet;
+    var vmManager = $scope.vmManager = {
+        roles: [],
+        initRolesData: function (roles) {
+            angular.forEach(roles, function (role) {
+                var roleItem = _.clone(roleVm);
+                leeHelper.copyVm(role, roleItem);
+                roleItem.isCheck = false;
+                vmManager.roles.push(roleItem);
+            });
+        },
+        resetRoles: function () {
+            vmManager.roles.forEach(function (r) { r.isCheck = false; });
+        },
+        dbDataset: [],
+        loadRoleMatchModules: function () {
+            $scope.searchPromise = accountService.findRoleMatchModules(uiVm.AssemblyName, uiVm.ModuleName, uiVm.CtrlName).then(function (datas) {
+                if (angular.isArray(datas)) {
+                    vmManager.dbDataset = [];
+                    vmManager.resetRoles();
+                    angular.forEach(datas, function (rm) {
+                        var role = _.find(vmManager.roles, { RoleId: rm.RoleId });
+                        if (!_.isUndefined(role)) {
+                            role.isCheck = true;
+                        }
+                        leeHelper.setObjectGuid(rm);
+                        leeHelper.setObjectServerSign(rm);
+                        rm.OpSign = leeDataHandler.dataOpMode.none;
+                        vmManager.dbDataset.push(rm);
+                    });
+                }
 
+            });
+        },
+        selectRole: function (role) {
+            var isChecked = role.isCheck;
+            var vm = _.clone(zTreeSet.treeNode.vm);
+            var dataItem = _.clone(uiVm);
+            leeHelper.copyVm(vm, dataItem);
+
+            dataItem.ModuleNavPrimaryKey = vm.PrimaryKey;
+            dataItem.RoleId = role.RoleId;
+            dataItem.RoleName = role.RoleName;
+            dataItem.PrimaryKey = dataItem.ModuleNavPrimaryKey + "&" + dataItem.RoleId;
+            leeHelper.setObjectGuid(dataItem);
+            leeHelper.setObjectClentSign(dataItem);
+
+            //处理数据库对应数据
+            var dbItem = _.find(vmManager.dbDataset, { PrimaryKey: dataItem.PrimaryKey });
+            if (_.isUndefined(dbItem)) {
+                if (isChecked) {
+                    dataItem.OpSign = leeDataHandler.dataOpMode.add;
+                    vmManager.dbDataset.push(dataItem);
+                }
+            }
+            else {
+                if (!isChecked) {
+                    if (leeHelper.isServerObject(dbItem))
+                        dbItem.OpSign = leeDataHandler.dataOpMode.delete;
+                    else
+                        leeHelper.remove(vmManager.dbDataset, dbItem);
+                }
+            }
+            console.log(vmManager.dbDataset);
+        }
+    };
+
+    var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
+    operate.saveDatas = function () {
+        $scope.savePromise = accountService.saveRoleMatchModule(vmManager.dbDataset).then(function (opresult) {
+            leeDataHandler.dataOperate.displayMessage(operate, opresult);
+            vmManager.resetRoles();
+            vmManager.dbDataset = [];
+        });
+    };
     $scope.promise = accountService.getNavMenusAndRoles().then(function (datas) {
         zTreeSet.setTreeDataset(datas.modules);
-        vmManager.roles = [];
-
-        angular.forEach(datas.roles, function (role) {
-            var roleItem = _.clone(roleVm);
-            leeHelper.copyVm(role, roleItem);
-            vmManager.roles.push(roleItem);
-        });
+        vmManager.initRolesData(datas.roles);
     });
 })
-smModule.controller("assignModuleToRolers", function ($scope, vmService, accountService, treeSetService) {
+smModule.controller("assignModuleToRolersCtrl", function ($scope, vmService, accountService, treeSetService) {
     var uiVm = {
         RoleId: null,
         RoleName: null,
@@ -881,7 +736,6 @@ smModule.controller("assignModuleToRolers", function ($scope, vmService, account
         ModuleNavPrimaryKey: null,
         OpSign: null,
     };
-
     var roleVm = {
         RoleId: null,
         RoleName: null,
@@ -889,6 +743,14 @@ smModule.controller("assignModuleToRolers", function ($scope, vmService, account
     };
     $scope.vmManager = vmManager = {
         roles: [],
+        setRoleCheckStatus: function (roles) {
+            angular.forEach(roles, function (role) {
+                var roleItem = _.clone(roleVm);
+                leeHelper.copyVm(role, roleItem);
+                roleItem.isCheck = false;
+                vmManager.roles.push(roleItem);
+            });
+        },
         roleDisplay: true,
         treeDisplay: true,
         selectedRole: null,
@@ -909,6 +771,10 @@ smModule.controller("assignModuleToRolers", function ($scope, vmService, account
         },
         addToDbDataset: function (dataItem, isCheck) {
             var item = _.findWhere(vmManager.dbDataset, { PrimaryKey: dataItem.PrimaryKey });
+
+            if (dataItem.ModuleText == "系统集成平台") {
+                console.log(dataItem);
+            }
             if (_.isUndefined(item))
                 vmManager.dbDataset.push(dataItem);
             else {
@@ -949,24 +815,23 @@ smModule.controller("assignModuleToRolers", function ($scope, vmService, account
     };
     //树的配置
     var zTreeSet = treeSetService;
-    zTreeSet.bindNodeToVm = function () {
-    };
+    zTreeSet.bindNodeToVm = function () { };
+    //选择树的节点
     zTreeSet.checkNode = function () {
         var isChecked = zTreeSet.treeNode.isChecked;
         var vm = _.clone(zTreeSet.treeNode.vm);
-        var dataItem = _.clone(uiVm);
-        leeHelper.copyVm(vm, dataItem);
-        dataItem.ModuleNavPrimaryKey = vm.PrimaryKey;
-
         vmManager.viewDataset.forEach(function (moduleRole, index) {
-            var mr = vmManager.viewDataset[index];
+            var mr = moduleRole;
+            var dataItem = _.clone(uiVm);
+            leeHelper.copyVm(vm, dataItem);
+            dataItem.ModuleNavPrimaryKey = vm.PrimaryKey;
             dataItem.RoleId = mr.roleId;
             dataItem.RoleName = mr.role.RoleName;
             dataItem.PrimaryKey = dataItem.ModuleNavPrimaryKey + "&" + dataItem.RoleId;
             leeHelper.setObjectGuid(dataItem);
             leeHelper.setObjectClentSign(dataItem);
             var findItem = _.find(mr.dataset, { PrimaryKey: dataItem.PrimaryKey });
-            //如果不存在
+            //处理ＵＩ数据
             if (_.isUndefined(findItem)) {
                 //如果是选中节点，则进行添加操作
                 if (isChecked) {
@@ -980,6 +845,7 @@ smModule.controller("assignModuleToRolers", function ($scope, vmService, account
                 }
             }
 
+            //处理数据库对应数据
             var dbItem = _.find(vmManager.dbDataset, { PrimaryKey: dataItem.PrimaryKey });
             if (_.isUndefined(dbItem)) {
                 if (isChecked) {
@@ -995,32 +861,24 @@ smModule.controller("assignModuleToRolers", function ($scope, vmService, account
                         leeHelper.remove(vmManager.dbDataset, dbItem);
                 }
             }
-
-            console.log(vmManager.viewDataset);
-
-            //angular.forEach(vmManager.dbDataset, function (d) { console.log(d); })
         });
-
-
-
-
-
-
-        console.log(vmManager.dbDataset);
     };
     $scope.ztree = zTreeSet;
 
-
+    var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
+    operate.saveDatas = function () {
+        $scope.savePromise = accountService.saveRoleMatchModule(vmManager.dbDataset).then(function (opresult) {
+            leeDataHandler.dataOperate.displayMessage(operate, opresult);
+            leeTreeHelper.checkAllNodes(zTreeSet.treeId, false);
+            vmManager.dbDataset = [];
+            vmManager.viewDataset = [];
+            vmManager.roles.forEach(function (r) { r.isCheck = false; });
+        });
+    };
     $scope.promise = accountService.getNavMenusAndRoles().then(function (datas) {
         zTreeSet.setTreeDataset(datas.modules);
         vmManager.roles = [];
-
-        angular.forEach(datas.roles, function (role) {
-            var roleItem = _.clone(roleVm);
-            leeHelper.copyVm(role, roleItem);
-            roleItem.isCheck = false;
-            vmManager.roles.push(roleItem);
-        });
+        vmManager.setRoleCheckStatus(datas.roles);
     });
 })
 

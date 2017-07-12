@@ -57,6 +57,7 @@
     <Compile Include="Quanity555\QuantitySampleRecordModel.cs" />
     <Compile Include="Hrm\GeneralAffairs\WorkClothesManageModel.cs" />
     <Compile Include="Quanity\QmsRmaModel.cs" />
+    <Compile Include="WorkFlow\GeneralForm\InternalContactFormModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.Uti.Common\Lm.Eic.Uti.Common\Lm.Eic.Uti.Common.csproj">

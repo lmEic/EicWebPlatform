@@ -41,18 +41,17 @@ var leeDataHandler = (function () {
             opstatus.message = opresult.Message;
             opstatus.msgDisplay = true;
 
-            var msgtype = opstatus.result === true ? "success" : "error";
+            var msgtype = opresult.Result === true ? "success" : "error";
             new PNotify({
                 title: "提示",
                 text_escape: true,
                 text: opresult.Message,
                 type: msgtype,
                 delay: 3000,
-                width: '460px',
                 styling: 'brighttheme',
                 addclass: "stack-bar-top",
                 cornerclass: "",
-                width: "100%",
+                width: "82%",
                 stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 },
                 after_close: function (notice, timer_hide) {
                     opstatus.msgDisplay = false;
@@ -72,25 +71,23 @@ var leeDataHandler = (function () {
         },
         ///显示信息
         displayMessage: function (opstatus, opresult, message) {
-            opstatus.result = false;
             if (message == undefined) {
                 opstatus.message = opresult.Message;
             }
             else {
                 opstatus.message = message;
             }
-            var msgtype = opstatus.result === true ? "success" : "error";
+            var msgtype = opresult.Result === true ? "success" : "error";
             new PNotify({
                 title: "提示",
                 text_escape: true,
                 text: opresult.Message,
                 type: msgtype,
                 delay: 3000,
-                width: '460px',
                 styling: 'brighttheme',
                 addclass: "stack-bar-top",
                 cornerclass: "",
-                width: "100%",
+                width: "82%",
                 stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 },
                 after_close: function (notice, timer_hide) {
                     opstatus.msgDisplay = false;
@@ -245,6 +242,8 @@ var leeHelper = (function () {
         qua8DManage: 'Qua8DManage',
         //办公助手控制器
         TolOfficeAssistant: 'TolOfficeAssistant',
+        //工作流电子签核控制器
+        TolWorkFlow: 'TolWorkFlow',
         ///在线工具
         ToolsOnLine: 'ToolsOnLine'
 

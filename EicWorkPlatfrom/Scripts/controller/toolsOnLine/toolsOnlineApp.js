@@ -6,6 +6,9 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data):/);
 
     var oAssistantUrlPrefix = leeHelper.controllers.TolOfficeAssistant + "/";
+
+    var wfUrlPrefix = leeHelper.controllers.TolWorkFlow + "/";
+
     //--------------名片夹管理--------------------------
     $stateProvider.state('collaborateContactLib', {
         templateUrl: oAssistantUrlPrefix + 'CollaborateContactLib'
@@ -17,5 +20,10 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
     ///工作任务管理
     $stateProvider.state('reportImproveProblem', {
         templateUrl: oAssistantUrlPrefix + 'ReportImproveProblem'
+    });
+    //--------------电子签核--------------------------
+    ///内部联络单
+    $stateProvider.state('wFInternalContactForm', {
+        templateUrl: wfUrlPrefix + 'WFInternalContactForm'
     });
 })

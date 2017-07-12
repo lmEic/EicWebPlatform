@@ -147,7 +147,9 @@
     <Compile Include="Quality\RmaManage\RmaManager.cs" />
     <Compile Include="Quality\RmaManage\RmaService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="WorkFlow\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.App.Business.Mes\Lm.Eic.App.Business.Mes.csproj">
       <Project>{25616437-5761-4fe5-8dcc-d76b4641b6a7}</Project>
@@ -190,7 +192,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
