@@ -210,21 +210,19 @@ namespace EicWorkPlatfrom.Controllers
         #endregion user match roles
 
         #region assign power
-
         /// <summary>
-        /// 分配角色
+        /// 分配模块给角色
         /// </summary>
         /// <returns></returns>
-        public ActionResult AssignPowerToRole()
+        public ActionResult AssignModuleToRolers()
         {
             return View();
         }
-
         /// <summary>
         /// 分配角色
         /// </summary>
         /// <returns></returns>
-        public ActionResult AssignModuleToRole()
+        public ActionResult AssignRolersToModule()
         {
             return View();
         }

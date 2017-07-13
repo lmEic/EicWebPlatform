@@ -139,9 +139,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
         }
     };
     $scope.vmManager = vmManager;
-
     var operate = Object.create(leeDataHandler.operateStatus);
-
     $scope.operate = operate;
     operate.edit = function (item) {
         item.OpSign = leeDataHandler.dataOpMode.edit;
@@ -152,7 +150,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
         var isContainCustomerShortName = false;
         leeHelper.setUserData(uiVm);
         angular.forEach(vmManager.customerShortNames, function (customerShortName) {
-            if (uiVm.CustomerShortName == customerShortName.name)
+            if (uiVm.CustomerShortName == customerShortName.text)
             { isContainCustomerShortName = true; }
         });
         if (!isContainCustomerShortName) {

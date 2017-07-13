@@ -41,18 +41,17 @@ var leeDataHandler = (function () {
             opstatus.message = opresult.Message;
             opstatus.msgDisplay = true;
 
-            var msgtype = opstatus.result === true ? "success" : "error";
+            var msgtype = opresult.Result === true ? "success" : "error";
             new PNotify({
                 title: "提示",
                 text_escape: true,
                 text: opresult.Message,
                 type: msgtype,
                 delay: 3000,
-                width: '460px',
                 styling: 'brighttheme',
                 addclass: "stack-bar-top",
                 cornerclass: "",
-                width: "100%",
+                width: "82%",
                 stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 },
                 after_close: function (notice, timer_hide) {
                     opstatus.msgDisplay = false;
@@ -70,20 +69,30 @@ var leeDataHandler = (function () {
                 }
             }
         },
-        ///显示错误信息
-        displayMessage: function (opstatus, message, customFn) {
-            opstatus.showValidation = false;
-            opstatus.result = false;
-            opstatus.message = message;
-            opstatus.msgDisplay = true;
-
-            (function () {
-                setTimeout(function () {
+        ///显示信息
+        displayMessage: function (opstatus, opresult, message) {
+            if (message == undefined) {
+                opstatus.message = opresult.Message;
+            }
+            else {
+                opstatus.message = message;
+            }
+            var msgtype = opresult.Result === true ? "success" : "error";
+            new PNotify({
+                title: "提示",
+                text_escape: true,
+                text: opresult.Message,
+                type: msgtype,
+                delay: 3000,
+                styling: 'brighttheme',
+                addclass: "stack-bar-top",
+                cornerclass: "",
+                width: "82%",
+                stack: { "dir1": "down", "dir2": "right", "push": "top", "spacing1": 0, "spacing2": 0 },
+                after_close: function (notice, timer_hide) {
                     opstatus.msgDisplay = false;
-                }, 100);
-            })();
-            if (customFn !== undefined)
-                customFn();
+                }
+            });
         },
         ///刷新操作
         refresh: function (opstatus, cancelfn) {
@@ -229,8 +238,12 @@ var leeHelper = (function () {
         quaInspectionManage: 'QuaInspectionManage',
         //质量RMA控制器
         quaRmaManage: 'QuaRmaManage',
+        //质量8D控制器
+        qua8DManage: 'Qua8DManage',
         //办公助手控制器
         TolOfficeAssistant: 'TolOfficeAssistant',
+        //工作流电子签核控制器
+        TolWorkFlow: 'TolWorkFlow',
         ///在线工具
         ToolsOnLine: 'ToolsOnLine'
 
@@ -290,14 +303,14 @@ var leeHelper = (function () {
         ///从数组中删除指定选项,Item对象中必须包含Id属性
         delWithId: function (ary, item) {
             if (!Array.isArray(ary)) return;
-            var data = _.findWhere(ary, { Id: item.Id });
+            var data = _.find(ary, { Id: item.Id });
             if (data !== undefined)
                 leeHelper.remove(ary, data);
         },
         ///将Item插入到数组ary中，Item对象中必须包含Id属性
         insertWithId: function (ary, item) {
             if (!Array.isArray(ary)) return;
-            var data = _.findWhere(ary, { Id: item.Id });
+            var data = _.find(ary, { Id: item.Id });
             if (data === undefined)
                 ary.push(item);
         },
@@ -562,6 +575,32 @@ var leeHelper = (function () {
             });
             return uuid;
         },
+        //给对象设置唯一键值Id
+        setObjectGuid: function (obj) {
+            if (_.isUndefined(obj.Id)) {
+                obj.Id = 0;
+            }
+            obj.Id = leeHelper.newGuid();
+        },
+        //给对象设置服务器标志，标志该对象是从服务器端传来的数据
+        setObjectServerSign: function (obj) {
+            if (_.isUndefined(obj.isServer)) {
+                obj.isServer = true;
+            }
+            obj.isServer = true;
+        },
+        //给对象设置客户端标志，标志该对象是从客户端端本地产生的数据
+        setObjectClentSign: function (obj) {
+            if (_.isUndefined(obj.isServer)) {
+                obj.isServer = false;
+            }
+            obj.isServer = false;
+        },
+        //判断是否是服务器端数据对象
+        isServerObject: function (obj) {
+            if (_.isUndefined(obj.isServer)) return false;
+            return obj.isServer;
+        }
     };
 })();
 // 弹出框助手

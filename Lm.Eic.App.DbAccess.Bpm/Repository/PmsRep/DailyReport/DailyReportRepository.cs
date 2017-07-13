@@ -20,7 +20,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
         /// <param name="department">部门</param>
         /// <returns></returns>
         List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department);
-        List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department,string containsProductName);
+        List<ProductFlowOverviewModel> GetProductFlowOverviewListBy(string department, string containsProductName);
         /// <summary>
         /// 获取产品工艺总览 =》品名和部门是必须的
         /// </summary>
@@ -67,7 +67,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
         {
             try
             {
-                
+
                 StringBuilder sb = new StringBuilder();
                 sb.Append("SELECT   ProductName, COUNT(ProductName) AS ProductFlowCount, CAST(SUM(CASE StandardHoursType WHEN '1' THEN StandardHours / 60 WHEN '3' THEN 60 / StandardHours ELSE StandardHours END) AS decimal(10, 2)) AS StandardHoursCount ")
                 .Append("FROM   Pms_DReportsProductFlow ")
@@ -96,7 +96,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
             try
             {
                 if (containsProductName == null) containsProductName = string.Empty;
-                 StringBuilder sbFront = new StringBuilder();
+                StringBuilder sbFront = new StringBuilder();
                 sbFront.Append("SELECT   ProductName, COUNT(ProductName) AS ProductFlowCount, CAST(SUM(CASE StandardHoursType WHEN '1' THEN StandardHours / 60 WHEN '3' THEN 60 / StandardHours ELSE StandardHours END) AS decimal(10, 2)) AS StandardHoursCount ")
                        .Append("FROM   Pms_DReportsProductFlow ");
                 StringBuilder sbBack = new StringBuilder();
@@ -134,7 +134,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     /// <summary>
     ///
     /// </summary>
-    public interface IDailyReportTempRepository : IRepository<DailyReportTempModel> 
+    public interface IDailyReportTempRepository : IRepository<DailyReportTempModel>
     {
         int ChangeCheckSign(string department, DateTime dailyReportDate, string checkSign);
 
@@ -152,9 +152,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
                 sb.Append("Update   Pms_DailyReportsTemp ")
                   .Append("Set CheckSign ='" + checkSign + "'")
                   .Append("WHERE   (Department = '" + department + "')  AND (DailyReportDate = '" + dailyReportDate.ToShortDateString() + "')");
-             
+
                 string sqltext = sb.ToString();
-              return  DbHelper.Bpm.ExecuteNonQuery(sqltext);
+                return DbHelper.Bpm.ExecuteNonQuery(sqltext);
             }
             catch (Exception ex)
             {
@@ -197,10 +197,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.DailyReport
     public class DReportsOrderModelRepository : BpmRepositoryBase<DReportsOrderModel>, IDReportsOrderModelRepository
     { }
 
-    public interface IReportsAttendenceModelRepository:IRepository<ReportsAttendenceModel> { }
+    public interface IReportsAttendenceModelRepository : IRepository<ReportsAttendenceModel> { }
     /// <summary>
     /// 日报表出勤信息仓储
     /// </summary>
-    public class ReportsAttendenceModelRepository:BpmRepositoryBase <ReportsAttendenceModel>, IReportsAttendenceModelRepository
+    public class ReportsAttendenceModelRepository : BpmRepositoryBase<ReportsAttendenceModel>, IReportsAttendenceModelRepository
     { }
 }

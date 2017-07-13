@@ -1,6 +1,6 @@
-﻿<div class="panel panel-default" ng-controller="assignUserPowerLotCtrl">
+﻿<div class="panel panel-primary" ng-controller="assignModuleToRolersCtrl">
     <div class="panel-heading">
-        <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>分配权限给角色</h6>
+        <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>分配模块给角色</h6>
     </div>
     <div class="panel-body">
         <div cg-busy="{promise:promise}">
@@ -25,12 +25,14 @@
                             </div>
                             <ul class="nav nav-pills" style="max-height:420px;overflow-y:auto">
                                 <li ng-repeat="role in vmManager.roles|filter:roleFilter track by $index">
-                                    <div class="well well-sm" style="width:140px;cursor:pointer">
-                                        <span ng-class="vmManager.selectedRole!==role?'label label-default':'label label-warning'"
-                                              ng-click="vmManager.selectRole(role)">
+                                    <div class="bs-callout bs-callout-success" style="width:auto;margin:2px;cursor:pointer">
+                                        <span ng-if="!role.isCheck"><i class="fa fa-square-o" ng-click="role.isCheck=true;vmManager.selectRole(role)"></i></span>
+                                        <span class="text-success" ng-if="role.isCheck" ng-click="role.isCheck=false;vmManager.selectRole(role)"><i class="fa fa-check-square"></i></span>
+
+                                        <span ng-class="vmManager.selectedRole!==role?'label label-default':'label label-warning'">
                                             {{role.RoleId}}
-                                            <span class="badge" data-title="角色等级" data-bs-tooltip>{{role.RoleLevel}}</span>
                                         </span>
+                                        <span class="label label-primary" data-title="角色等级" data-bs-tooltip>{{role.RoleLevel}}</span>
                                         <br />
                                         <span>
                                             <i class="fa fa-user"></i>
@@ -69,34 +71,42 @@
                         <li class="list-group-item list-group-item-info">
                             <span><i class="glyphicon glyphicon-apple"></i>角色权限</span>
                             <span class="pull-right">
-                                <span class="btn btn-xs btn-info" ng-click="operate.saveDatas()">
+                                <span class="btn btn-xs btn-info" ng-click="operate.saveDatas()" cg-busy="{promise:savePromise}">
                                     <i class="fa fa-save"></i> 批量保存
                                 </span>
                             </span>
                         </li>
-                        <li class="list-group-item" cg-busy="{promise:savePromise}" style="max-height:450px;overflow-y:auto">
-                            <div ng-show="vmManager.roleMatchModules.length>0">
-                                <div class="page-header">
-                                    <input type="text" placeholder="快速搜索" ng-model="roleModule" />
-                                </div>
-                                <ul class="nav nav-pills info" style="max-height:400px;overflow-y:auto">
-                                    <li ng-repeat="m in vmManager.roleMatchModules|filter:roleModule track by $index">
-                                        <div class="well well-sm" style="width:155px;">
-                                            <span ng-class="{'label label-info':m.OpSign==='init','label label-success':m.OpSign==='add'}">
-                                                {{m.RoleName}}
-                                            </span>
-                                            <br />
-                                            <span>
-                                                <i class="fa fa-user"></i>
-                                                {{m.ModuleText}}
-                                            </span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div yl-operatemsg-board></div>
-                        </li>
                     </ul>
+                    <div class="panel-group" role="tablist" ng-model="vmManager.viewDataset.activePanel" style="max-height:650px;overflow-y:auto" aria-multiselectable="true" bs-collapse>
+                        <div class="panel panel-primary" ng-repeat="mrole in vmManager.viewDataset|filter:roleFilter track by $index">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a bs-collapse-toggle>
+                                        {{mrole.role.RoleName}}
+                                    </a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                                <div class="panel-body">
+                                    <div ng-show="mrole.dataset.length>0">
+                                        <div class="page-header">
+                                            <input type="text" placeholder="快速搜索" ng-model="roleModule" />
+                                        </div>
+                                        <ul class="nav nav-pills info" style="max-height:400px;overflow-y:auto">
+                                            <li ng-repeat="m in mrole.dataset|filter:roleModule track by $index">
+                                                <div class="bs-callout bs-callout-success" style="width:auto;margin:1px;">
+                                                    <span ng-class="{'label label-default':m.OpSign==='none','label label-success':m.OpSign==='add'}">
+                                                        <i class="fa fa-user"></i>
+                                                        {{m.ModuleText}}
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

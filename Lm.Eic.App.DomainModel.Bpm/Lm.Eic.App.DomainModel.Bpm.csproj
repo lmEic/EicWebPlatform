@@ -53,10 +53,11 @@
     <Compile Include="Pms\DailyReport\QueryDailyReportDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchase\SupplierModel.cs" />
+    <Compile Include="Quanity\Qua8DReportModel.cs" />
     <Compile Include="Quanity\InspectionoModel.cs" />
-    <Compile Include="Quanity555\QuantitySampleRecordModel.cs" />
     <Compile Include="Hrm\GeneralAffairs\WorkClothesManageModel.cs" />
     <Compile Include="Quanity\QmsRmaModel.cs" />
+    <Compile Include="WorkFlow\GeneralForm\InternalContactFormModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.Uti.Common\Lm.Eic.Uti.Common\Lm.Eic.Uti.Common.csproj">

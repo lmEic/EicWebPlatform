@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse;
 
+
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage.Tests
 {
     [TestClass()]
@@ -28,9 +29,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage.Tests
                 ProductCount = 11,
                 CustomerId = "11",
                 CustomerName = "11",
-                SalesOrder = "11",
                 BadDescription = "11",
-                ProductsShipDate = DateTime.Now,
                 CustomerHandleSuggestion = "11",
                 FeePaymentWay = "11",
                 HandleStatus = "11",
@@ -40,9 +39,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage.Tests
             Assert.Fail();
         }
         [TestMethod]
-        public void testExcel()
+        public void testexcele()
         {
-            ExcelImportService mme = new ExcelImportService(@"E:\RMASD1.1-11-01.xlsx", @"");
+            ExcelImportService mm = new ExcelImportService(@"E:\RMASD1.1-11-01.xlsx", @"E:\121.xml");
+            var qqq = mm.Import<RmaReportInitiateModel>();
         }
+
     }
 }

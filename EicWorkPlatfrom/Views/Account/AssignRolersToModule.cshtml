@@ -1,0 +1,69 @@
+﻿<div class="row" ng-controller="assignRolersToModuleCtrl">
+    <div class="col-md-3">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h6 class="panel-title"><i class="glyphicon glyphicon-apple"></i>模块导航</h6>
+            </div>
+            <div class="panel-body" style="max-height:515px;overflow:auto">
+                <ul data-yl-tree cg-busy="{promise:promise}"
+                    data-tree-dataset="ztree.navMenus"
+                    data-start-load="ztree.startLoad"
+                    ng-model="ztree.treeNode"
+                    data-binding-nodevm="ztree.bindNodeToVm()"
+                    id="{{ztree.treeId}}" class="ztree"></ul>
+            </div>
+            <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h6 class="panel-title"><i class="glyphicon glyphicon-pencil"></i>分配角色给模块</h6>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-info">
+                                <span><i class="glyphicon glyphicon-apple"></i>角色列表</span>
+                                <span class="pull-right">
+                                    <span class="btn btn-xs btn-info" ng-click="operate.saveDatas()" cg-busy="{promise:savePromise}">
+                                        <i class="fa fa-save"></i> 批量保存
+                                    </span>
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="page-header">
+                                    <input type="text" placeholder="快速搜索" ng-model="roleFilter" />
+                                </div>
+                                <ul class="nav nav-pills" style="max-height:520px;overflow-y:auto">
+                                    <li ng-repeat="role in vmManager.roles|filter:roleFilter track by $index">
+                                        <div class="bs-callout bs-callout-success" style="width:220px;margin:2px;cursor:pointer">
+                                            <span ng-if="!role.isCheck"><i class="fa fa-square-o" ng-click="role.isCheck=true;vmManager.selectRole(role)"></i></span>
+                                            <span class="text-success" ng-if="role.isCheck" ng-click="role.isCheck=false;vmManager.selectRole(role)"><i class="fa fa-check-square"></i></span>
+
+                                            <span ng-class="{'label label-default':role.isCheck===false,'label label-success':role.isCheck===true}">
+                                                {{role.RoleId}}
+                                            </span>
+                                            <span class="label label-primary" data-title="角色等级" data-bs-tooltip>{{role.RoleLevel}}</span>
+                                            <br />
+                                            <span>
+                                                <span ng-class="{'text-info':role.isCheck===false,'text-success':role.isCheck===true}">
+                                                    <i class="fa fa-user"></i>
+                                                </span>
+                                                {{role.RoleName}}
+                                            </span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+</div>

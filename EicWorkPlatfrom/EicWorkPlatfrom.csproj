@@ -145,12 +145,13 @@
     <Compile Include="Controllers\Account\AccountController.cs" />
     <Compile Include="Controllers\BaseController\EicCommonUIHelper.cs" />
     <Compile Include="Controllers\BusinessController.cs" />
-    <Compile Include="Controllers\DevelopmentController.cs" />
+    <Compile Include="Controllers\Development\DevelopmentController.cs" />
     <Compile Include="Controllers\BaseController\EicBaseController.cs" />
     <Compile Include="Controllers\Hr\HrGeneralAffairsManageController.cs" />
     <Compile Include="Controllers\Product\ProMocManageController.cs" />
     <Compile Include="Controllers\Product\ProBoardController.cs" />
     <Compile Include="Controllers\Purchase\PurSupplierManageController.cs" />
+    <Compile Include="Controllers\Quality\Qua8DManageController.cs" />
     <Compile Include="Controllers\Quality\QuaInspectionManageController.cs" />
     <Compile Include="Controllers\Quality\QualityController.cs" />
     <Compile Include="Controllers\Quality\QuaRmaManageController.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Controllers\Purchase\PurchaseController.cs" />
     <Compile Include="Controllers\Product\ShippingController.cs" />
     <Compile Include="Controllers\SystemManage\SysConfigController.cs" />
+    <Compile Include="Controllers\ToolsOnLine\TolWorkFlowController.cs" />
     <Compile Include="Controllers\ToolsOnLine\ToolsOnLineController.cs" />
     <Compile Include="Controllers\ToolsOnLine\TolOfficeAssistantController.cs" />
     <Compile Include="Global.asax.cs">
@@ -407,6 +409,7 @@
     <Content Include="Scripts\controller\product\proDailyReport.js" />
     <Content Include="Scripts\controller\product\proMocManage.js" />
     <Content Include="Scripts\controller\purchase\purSupplierManage.js" />
+    <Content Include="Scripts\controller\quality\qua8DManage.js" />
     <Content Include="Scripts\controller\quality\quaInspectionManage.js" />
     <Content Include="Scripts\controller\quality\qualityApp.js" />
     <Content Include="Scripts\controller\quality\quaRmaManage.js" />
@@ -419,6 +422,7 @@
     <Content Include="Scripts\controller\sysmanage\sysConfigManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysmanageApp.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolOfficeAssistant.js" />
+    <Content Include="Scripts\controller\toolsOnLine\tolWorkFlow.js" />
     <Content Include="Scripts\controller\toolsOnLine\toolsOnlineApp.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
@@ -1251,7 +1255,6 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\RegistUser.cshtml" />
-    <Content Include="Views\Account\AssignPowerToRole.cshtml" />
     <Content Include="Views\Account\SysModuleEdit.cshtml" />
     <Content Include="Views\Account\SysRoleManage.cshtml" />
     <Content Include="Views\Account\SysAssemblyEdit.cshtml" />
@@ -1293,7 +1296,7 @@
     <Content Include="Views\CommonTpl\MonthButtonTpl.cshtml" />
     <Content Include="Views\CommonTpl\ToggleButtonTpl.cshtml" />
     <Content Include="Views\CommonTpl\OperateMsgBoardTpl.cshtml" />
-    <Content Include="Views\Account\AssignModuleToRole.cshtml" />
+    <Content Include="Views\Account\AssignRolersToModule.cshtml" />
     <Content Include="Views\Account\AssignRoleToUser.cshtml" />
     <Content Include="Views\HrArchivesManage\HrPrintWorkerCard.cshtml" />
     <Content Include="Views\SysITIL\ItilSupTelManage.cshtml" />
@@ -1362,6 +1365,11 @@
     <Content Include="Views\TolOfficeAssistant\ReportImproveProblem.cshtml" />
     <Content Include="Views\CommonTpl\DataTreeConfigTpl.cshtml" />
     <Content Include="Views\SysConfig\BusiCommonDataSet.cshtml" />
+    <Content Include="Views\Account\AssignModuleToRolers.cshtml" />
+    <Content Include="Views\Qua8DManage\Create8DForm.cshtml" />
+    <Content Include="Views\Qua8DManage\Handle8DFolw.cshtml" />
+    <Content Include="Views\Qua8DManage\Close8DForm.cshtml" />
+    <Content Include="Views\TolWorkFlow\WFInternalContactForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

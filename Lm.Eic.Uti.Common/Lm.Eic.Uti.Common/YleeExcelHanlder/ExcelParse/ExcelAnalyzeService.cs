@@ -214,8 +214,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
         }
 
 
-        public List<TableDTO> GetExcelDatas<TableDTO>(ISheet sheet, string sheetName, List<Regular> list,
-            Dictionary<int, string> dict, int rowCount)
+        public List<TableDTO> GetExcelDatas<TableDTO>(ISheet sheet, string sheetName, List<Regular> list, Dictionary<int, string> dict, int rowCount)
         {
             // 返回数据对象集合
             var resultList = new List<TableDTO>();

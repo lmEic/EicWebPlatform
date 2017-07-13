@@ -80,6 +80,7 @@
     <Compile Include="YleeExcelHanlder\ExcelParse\Regular.cs" />
     <Compile Include="YleeExcelHanlder\ExcelParse\UploadExcelFileResult.cs" />
     <Compile Include="YleeExcelHanlder\NPOIHelper.cs" />
+    <Compile Include="YleeExcelHanlder\XmlHelper.cs" />
     <Compile Include="YleeExtension\Conversion\BaseTypeExtension.cs" />
     <Compile Include="YleeExtension\FileOperation\FileOperationExtension.cs" />
     <Compile Include="YleeExtension\Validation\BaseValidationExtension.cs" />

@@ -1,0 +1,125 @@
+﻿
+<div class="panel panel-primary" ng-controller="Handle8DFormCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>8D处理模块</h6>
+    </div>
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-inline" cg-busy="{promise:searchPromise}">
+                    <div class="form-group">
+                        <label>单号</label>
+                        <input type="text" placeholder="按8D单号查询" ng-model="vm.ReportId" ng-keypress="($event.which === 13)?vmManager.getQua8DCreateDatas():0">
+                        <button class="btn btn-xs btn-primary" ng-click="vmManager.getQua8DCreateDatas()" type="button">查询</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="h-split"></div>
+        <div class="row">
+            <div class="table-responsive" cg-busy="{promise:searchPromise}">
+                <table>
+                    @*表格主题*@
+                    <caption> </caption>
+                    @*表格行*@
+                    <tr>
+                        @* 表格列 *@
+                        <td>row 1, cell 1</td>
+                        <td>row 1, cell 2</td>
+                    </tr>
+                    <tr>
+                        @*  *@
+                        <td>&nbsp;</td>
+                        <td>row 2, cell 2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div cg-busy="{promise:promise}">
+            <div class="row">
+                <div class="col-md-4">
+                    <ul class="list-group">
+                        <li class="list-group-item active">
+                            <i class="fa fa-user"></i>
+                            <span>处理歩聚列表</span>
+                            <span class="pull-right">
+                                <button type="button" ng-class="vmManager.stepDisplay!==false?'btn btn-xs btn-defulat':'btn btn-xs btn-success'"
+                                        ng-model="vmManager.stepDisplay" bs-checkbox>
+                                    <i ng-class="vmManager.stepDisplay===false?'fa fa-caret-square-o-down':'fa fa-caret-square-o-up'"></i>
+                                    <span ng-show="vmManager.stepDisplay===false">展开</span>
+                                    <span ng-show="vmManager.stepDisplay">折叠</span>
+                                </button>
+                            </span>
+                        </li>
+                        <li class="list-group-item" ng-show="vmManager.stepDisplay">
+                            <div class="page-header">
+                                <input type="text" placeholder="快速搜索" ng-model="roleFilter" />
+                            </div>
+                            <ul class="nav nav-pills" style="max-height:420px;overflow-y:auto">
+                                <li ng-repeat="step in vmManager.steps|filter:roleFilter track by $index">
+                                    <div class="bs-callout bs-callout-success" style="width:auto;margin:2px;cursor:pointer">
+                                        <span ng-if="!step.isCheck"><i class="fa fa-square-o" ng-click="step.isCheck=true;vmManager.selectStep(step)"></i></span>
+                                        <span class="text-success" ng-if="step.isCheck" ng-click="step.isCheck=false;vmManager.selectStep(step)"><i class="fa fa-check-square"></i></span>
+
+                                        <span ng-class="vmManager.selectStep!==step?'label label-default':'label label-warning'">
+                                            {{step.StepId}}
+                                        </span>
+                                        <span class="label label-primary" data-title="完成的等级" data-bs-tooltip>{{step.StepLevel}}</span>
+                                        <br />
+                                        <span>
+                                            <i class="fa fa-pencil-square-o"></i>
+                                            {{step.StepDescription}}
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-8">
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-info">
+                            <span><i class="glyphicon glyphicon-apple"></i>处理步骤详情</span>
+                            <span class="pull-right">
+                                <span class="btn btn-xs btn-info" ng-click="operate.saveDatas()" cg-busy="{promise:savePromise}">
+                                    <i class="fa fa-save"></i> 批量保存
+                                </span>
+                            </span>
+                        </li>
+                    </ul>
+                    <div class="panel-group" role="tablist" ng-model="vmManager.viewDataset.activePanel" style="max-height:650px;overflow-y:auto" aria-multiselectable="true" bs-collapse>
+                        <div class="panel panel-primary" ng-repeat="mrole in vmManager.viewDataset|filter:roleFilter track by $index">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a bs-collapse-toggle>
+                                        {{mrole.role.RoleName}}
+                                    </a>
+                                </h4>
+                            </div>
+                            <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                                <div class="panel-body">
+                                    <div ng-show="mrole.dataset.length>0">
+                                        <div class="page-header">
+                                            <input type="text" placeholder="快速搜索" ng-model="roleModule" />
+                                        </div>
+                                        <ul class="nav nav-pills info" style="max-height:400px;overflow-y:auto">
+                                            <li ng-repeat="m in mrole.dataset|filter:roleModule track by $index">
+                                                <div class="bs-callout bs-callout-success" style="width:auto;margin:1px;">
+                                                    <span ng-class="{'label label-default':m.OpSign==='none','label label-success':m.OpSign==='add'}">
+                                                        <i class="fa fa-user"></i>
+                                                        {{m.ModuleText}}
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
