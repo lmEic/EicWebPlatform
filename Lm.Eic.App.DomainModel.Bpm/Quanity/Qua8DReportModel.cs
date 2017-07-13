@@ -34,52 +34,61 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _accountabilitydepartment;
         /// <summary>
-        ///负责部门
+        ///负责单位
         /// </summary>
         public string AccountabilityDepartment
         {
             set { _accountabilitydepartment = value; }
             get { return _accountabilitydepartment; }
         }
-        private string _productname;
+        private string _orderid;
         /// <summary>
-        ///产品名称
+        ///产生8D来源的单号
         /// </summary>
-        public string ProductName
+        public string OrderId
         {
-            set { _productname = value; }
-            get { return _productname; }
+            set { _orderid = value; }
+            get { return _orderid; }
         }
-        private string _productspec;
+        private string _materialname;
         /// <summary>
-        ///产品规格
+        ///品名
         /// </summary>
-        public string ProductSpec
+        public string MaterialName
         {
-            set { _productspec = value; }
-            get { return _productspec; }
+            set { _materialname = value; }
+            get { return _materialname; }
+        }
+        private string _materialspec;
+        /// <summary>
+        ///规格
+        /// </summary>
+        public string MaterialSpec
+        {
+            set { _materialspec = value; }
+            get { return _materialspec; }
         }
         private string _inputhouseorder;
         /// <summary>
-        ///交货单/入库单号
+        ///入库单号
         /// </summary>
         public string InPutHouseOrder
         {
             set { _inputhouseorder = value; }
             get { return _inputhouseorder; }
         }
-        private int _batchnumber;
+        private double _materialcount;
         /// <summary>
-        ///批量
+        ///数量
         /// </summary>
-        public int BatchNumber
+        public double MaterialCount
         {
-            set { _batchnumber = value; }
-            get { return _batchnumber; }
+            set { _materialcount = value; }
+            get { return _materialcount; }
         }
         private int _inspectnumber;
         /// <summary>
-        ///抽检数量
+        ///抽验数量
         /// </summary>
         public int InspectNumber
         {
@@ -97,7 +106,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _failclass;
         /// <summary>
-        ///不良类
+        ///不良类型
         /// </summary>
         public string FailClass
         {
@@ -106,7 +115,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private DateTime _createreportdate;
         /// <summary>
-        ///创建日期
+        ///产生8D的日期
         /// </summary>
         public DateTime CreateReportDate
         {
@@ -115,7 +124,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _status;
         /// <summary>
-        ///单号状态
+        ///目前处理状态
         /// </summary>
         public string Status
         {
@@ -169,6 +178,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+
 
     /// <summary>
     ///8D记录处理详表

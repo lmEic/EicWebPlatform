@@ -32,9 +32,6 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Email
         }
         #endregion
         public SmtpClient SmtpClient { get; private set; }
-
-
-
         #region method
         /// <summary>
         /// 发送邮件

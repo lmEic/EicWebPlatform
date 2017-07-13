@@ -1,26 +1,202 @@
 ﻿<div class="panel panel-primary" ng-controller="create8DFormCtrl">
-
     <div class="panel-heading">
         <h6 class="panel-title">创建8D报告单</h6>
     </div>
-
     <div class="panel-body">
-        <div style="position:relative;">
-            <span>
-                <select name="select" style="width:80px;left:0px" onchange="this.parentNode.nextSibling.value=this.value">
-                    <option value=""></option>
-                    <option value="1">aaa</option>
-                    <option value="2">bbb</option>
-                    <option value="3">ccc</option>
-                    <option value="4">ddd</option>
-                    <option value="5">eee</option>
-                </select>
-            </span>
-            <input type="text" name="editbox" value="" style="top:1px;width:61px;position:absolute;left:0px;" size="30" maxlength="32" />
+        <div bs-tabs bs-active-pane="vmManager.activeTab" style="position:relative;" cg-busy="{promise:promise}">
+            <div bs-pane data-title="IQC资料查询" data-name="initTab">
+                <div bs-tabs bs-active-pane="vmManager.queryActiveTab">
+                    @*单据状态*@
+                    <div bs-pane data-title="进度" data-name="qryFormProcessTab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="well">
+                                    <form class="form-inline" role="form">
+                                        <div class="form-group">
+                                            <label>单据状态:</label>
+                                            <button class="btn btn-success " ng-model="vmManager.selectedFormStatus"
+                                                    data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="未完成"
+                                                    data-bs-options="formStatus.value as formStatus.label for formStatus in vmManager.formStatuses track by $index" data-bs-select>
+                                                <span class="caret"></span>
+                                            </button>
+                                            <button role="button" class="btn btn-primary"
+                                                    ng-click="vmManager.getMasterDatasByFormStatus()">
+                                                <i class="fa fa-search"></i>查询
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*料号查询*@
+                    <div bs-pane data-title="料号" data-name="qryMaterialIdTab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="well">
+                                    <form class="form-inline" role="form">
+                                        <div class="form-group ">
+                                            <label class="control-label">料号:</label>
+                                            <input type="text" placeholder="料号查询" ng-model="vmManager.queryMaterialId" class="form-control" />
+                                            <button role="button" class="btn btn-primary" ng-click="vmManager.getMasterDatasByMaterialId()"><i class="fa fa-search"></i>查询</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @* 供应商查询*@
+                    <div bs-pane data-title="供应商" data-name="qrySupperilIdTab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="well">
+                                    <form class="form-inline" role="form">
+                                        <div class="form-group ">
+                                            <label class="control-label">供应商Id:</label>
+                                            <input type="text" placeholder="供应商Id查询" ng-model="vmManager.querySupplierId" class="form-control" />
+                                            <button role="button" class="btn btn-primary" ng-click="vmManager.getMasterDatasBySupplierId()"><i class="fa fa-search"></i>查询</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @* 检验项目查询*@
+                    <div bs-pane data-title="检验项目" data-name="qryInspectionItemTab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="well">
+                                    <form class="form-inline" role="form">
+                                        <div class="form-group ">
+                                            <label class="control-label">检验项目:</label>
+                                            <button type="button" class="btn btn-default" ng-model="vmManager.selecteInspectionItem"
+                                                    data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="检验项目"
+                                                    data-bs-options="queryInspectionItems.value as queryInspectionItems.label for queryInspectionItems in vmManager.queryInspectionItems track by $index" data-bs-select>
+
+                                                检验项目<span class="caret"></span>
+                                            </button>
+                                            <button role="button" class="btn btn-primary tipBox" ng-click="vmManager.getMasterDatasByInspectionItem()"><i class="fa fa-search"></i>查询</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="editWindow">
+
+                        <div class="table-responsive" style="min-height:500px;" cg-busy="{promise:searchPromise}">
+                            @* 分页显示 *@
+                            <div ng-if="vmManager.dataSource.length>0"
+                                 yl-pagination data-dataset="vmManager.dataSets"
+                                 data-datasource="vmManager.dataSource">
+                            </div>
+                            <table class="table table-striped table-hover table-bordered" style="table-layout:fixed;">
+                                <thead>
+                                    <tr class="info">
+                                        <th>单号</th>
+                                        <th>品号</th>
+                                        <th>品名</th>
+                                        <th>供应商</th>
+                                        <th>进货数量</th>
+                                        <th>检测状态</th>
+                                        <th>进货日期</th>
+                                        <th>结果</th>
+                                        <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in vmManager.dataSets track by $index">
+                                        <td>{{item.OrderId}}</td>
+                                        <td>{{item.MaterialId}}</td>
+                                        <td>
+                                            <span title="规格:{{item.MaterialSpec}}">{{item.MaterialName}}</span>
+                                        </td>
+                                        <td>{{item.MaterialSupplier}}</td>
+                                        <td>{{item.MaterialCount}}</td>
+                                        <td>
+                                            <span title="检测方式:{{item.InspectionMode}}，检测日期:{{item.MaterialInDate}}">
+                                                {{item.InspectionStatus}}
+                                            </span>
+                                        </td>
+                                        <td>{{item.MaterialInDate}}</td>
+                                        <td>{{item.InspectionResult}}</td>
+
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getDetailDatas(item)" ng-show="item.InspectionStatus !== '未完成'">明细</button>
+                                            <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)" ng-show="item.InspectionStatus === '待审核'">审核</button>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div bs-pane data-title="FQC资料查询" data-name="FQCTab">
+                <div class="well">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr class="info">
+                                    <th>序号</th>
+                                    <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vmManager.businessHandleDatas track by $index">
+                                    <td>{{item.RmaIdNumber}}</td>
+                                    <td>
+                                        <span ng-if="item.isHandle" class="label label-success">已处理</span>
+                                        <button ng-if="!item.isHandle" class="btn btn-xs btn-primary" ng-click="operate.handleItem(item)" title="填写处理结果">
+                                            待处理
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div bs-pane data-title="FPQC资料查询" data-name="FPQCTab">
+                <div class="well">
+
+                </div>
+            </div>
+            <div bs-pane data-title="其它" data-name="AntherTab">
+                <div class="well">
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-10">
+                <form class="form-inline" cg-busy="{promise:searchPromise}"></form>
+            </div>
+
+            <dialog ng-if="Dialog.open" modal data-close="deleteDialog.close()" style="width:40%">
+                <content dialog-title class="fa fa-bell">
+
+                </content>
+                <content dialog-content>
+
+                </content>
+                <content dialog-buttons>
+                    <button autofocus ng-click="operate.saveAll(formRmaBussesDescription.$valid)">确定</button>
+                    <button ng-click="$close()">取消</button>
+                </content>
+            </dialog>
+        </div>
+
+        <div class="panel-footer">
+
+        </div>
+        <div>
+
         </div>
     </div>
-    <div class="panel-footer">
-
-    </div>
-
 </div>
