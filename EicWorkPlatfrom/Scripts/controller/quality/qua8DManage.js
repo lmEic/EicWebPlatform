@@ -19,10 +19,11 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, q
         ReportId: null,
         DiscoverPosition: null,
         AccountabilityDepartment: null,
-        ProductName: null,
-        ProductSpec: null,
+        OrderId: null,
+        MaterialName: null,
+        MaterialSpec: null,
         InPutHouseOrder: null,
-        BatchNumber: 0,
+        MaterialCount: null,
         InspectNumber: 0,
         FailQty: 0,
         FailClass: null,
@@ -34,6 +35,9 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, q
         OpTime: null,
         Id_Key: null,
     };
+    ///视图处理
+
+
     $scope.vm = uiVm;
     //初始化原型
     var initVM = _.clone(uiVm);
@@ -49,6 +53,52 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, q
 ////处理8D表单
 qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
     ///视图模型
+    ///
+    var uiVm = $scope.vm = {
+        ReportId: null,
+        StepId: 0,
+        StepDescription: null,
+        DescribeType: null,
+        DescribeContent: null,
+        FilePath: null,
+        FileName: null,
+        AboutDepartment: null,
+        SignaturePeoples: null,
+        ParameterKey: null,
+        OpPerson: null,
+        OpDate: null,
+        OpTime: null,
+        OpSign: null,
+        Id_Key: null,
+    }
+    var uiInitBaseInfoVm = $scope.baseInfoVm = {
+        ReportId: null,
+        DiscoverPosition: null,
+        AccountabilityDepartment: null,
+        OrderId: null,
+        MaterialName: null,
+        MaterialSpec: null,
+        InPutHouseOrder: null,
+        MaterialCount: null,
+        InspectNumber: 0,
+        FailQty: 0,
+        FailClass: null,
+    }
+    var vmManager = {
+        stepDisplay: false,
+        // isCheck   selectStep  StepDescription
+        steps: [step],
+        selectStep: function (step) {
+
+        },
+    };
+    $scope.vmManager = vmManager;
+    var step = {
+        isCheck: true,
+        StepId: "M154545",
+        StepDescription: "48798456468564",
+        StepLevel: 7,
+    };
 
 });
 ////8D结案处理表单
