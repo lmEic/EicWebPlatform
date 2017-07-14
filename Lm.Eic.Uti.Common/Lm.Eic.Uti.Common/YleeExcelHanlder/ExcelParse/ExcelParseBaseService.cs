@@ -71,6 +71,44 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
         /// </summary>
         /// <param name="xmlpath"></param>
         /// <returns></returns>
+        public List<FixInsertRegular> GetXMLInterInfo(string xmlpath)
+        {
+            var reader = new XmlTextReader(xmlpath);
+            var doc = new XmlDocument();
+            doc.Load(reader);
+            var headerList = new List<FixInsertRegular>();
+            foreach (XmlNode node in doc.DocumentElement.ChildNodes)
+            {
+                // HeaderText PropertyName DataType FillText RowIndexStart RowIndexEnd 
+                // ColumnIndexStart  ColumnIndexEnd  Ismerge 
+                var header = new FixInsertRegular();
+                if (node.Attributes["HeaderText"] != null)
+                    header.HeaderText = node.Attributes["HeaderText"].Value;
+                if (node.Attributes["PropertyName"] != null)
+                    header.PropertyName = node.Attributes["PropertyName"].Value;
+                if (node.Attributes["DataType"] != null)
+                    header.DataType = node.Attributes["DataType"].Value;
+                if (node.Attributes["FillText"] != null)
+                    header.FillText = node.Attributes["FillText"].Value;
+                if (node.Attributes["RowIndexStart"] != null)
+                    header.RowIndexStart = int.Parse(node.Attributes["RowIndexStart"].Value);
+                if (node.Attributes["RowIndexEnd"] != null)
+                    header.RowIndexEnd = int.Parse(node.Attributes["RowIndexEnd"].Value);
+                if (node.Attributes["ColumnIndexStart"] != null)
+                    header.ColumnIndexStart = int.Parse(node.Attributes["ColumnIndexStart"].Value);
+                if (node.Attributes["ColumnIndexEnd"] != null)
+                    header.ColumnIndexEnd = int.Parse(node.Attributes["ColumnIndexEnd"].Value);
+                if (node.Attributes["Ismerge"] != null)
+                    header.Ismerge = bool.Parse(node.Attributes["Ismerge"].Value);
+                headerList.Add(header);
+            }
+            return headerList;
+        }
+        /// <summary>
+        /// 读取XML配置信息集
+        /// </summary>
+        /// <param name="xmlpath"></param>
+        /// <returns></returns>
         public List<Regular> GetXMLInfo(string xmlpath)
         {
             var reader = new XmlTextReader(xmlpath);

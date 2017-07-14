@@ -41,7 +41,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage.Tests
         [TestMethod]
         public void testexcele()
         {
-            ExcelImportService mm = new ExcelImportService(@"E:\RMASD1.1-11-01.xlsx", @"E:\121.xml");
+            ExcelImportService mm = new ExcelImportService(@"E:\RMASD1.1-11-01.xlsx", @"E:\121.xml", @"E:\4567.xml");
             var qqq = mm.Import<RmaReportInitiateModel>();
         }
 

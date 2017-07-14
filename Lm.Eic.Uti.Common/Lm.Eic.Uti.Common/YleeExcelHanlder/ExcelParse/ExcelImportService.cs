@@ -16,25 +16,22 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
     {
         private string _filePath;
         private string _xmlPath;
+        private string _xmlInsertPath;
         private Dictionary<int, int> _rowCount = new Dictionary<int, int>();
         private List<Regular> _list;// 规则集
-
         /// <summary>
         /// 构造方法
         /// </summary>
         /// <param name="filePath">excel文件路径</param>
         /// <param name="xmlPath">配置文件路径</param>
-
-        public ExcelImportService(string filePath, string xmlPath)
+        public ExcelImportService(string filePath, string xmlPath, string xmlInsertPath)
         {
             _filePath = filePath;
             _xmlPath = xmlPath;
+            _xmlInsertPath = xmlInsertPath;
+            var mm = this.GetXMLInterInfo(_xmlInsertPath);
             _list = this.GetXMLInfo(_xmlPath);
         }
-
-
-
-
         /// <summary>
         /// excel所有单元格数据验证
         /// </summary>
@@ -43,9 +40,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
         {
             var result = new UploadExcelFileResult();
             result.Success = true;
-
             _rowCount = new Dictionary<int, int>();
-
             Stream fileStream = new FileStream(_filePath, FileMode.Open);
             int edition = this.GetExcelEdition(_filePath);
             if (edition != 0)
@@ -54,7 +49,6 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
                 IWorkbook workbook = this.CreateWorkBook(edition, fileStream);
                 ///多少行
                 int sheetCount = _list.Find(e => e.HeaderRegular != null).HeaderRegular["sheetCount"];
-
                 for (int i = 0; i < sheetCount; i++)
                 {
                     ISheet sheet = workbook.GetSheetAt(i);
@@ -75,17 +69,14 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
                 result.Success = false;
                 result.Message = "文件类型错误!";
             }
-
             fileStream.Close();
             return result;
         }
-
         // 解析excel数据到DTO
         public List<TableDTO> Import<TableDTO>()
         {
             var uploadExcelFileResult = new UploadExcelFileResult();
             var resultList = new List<TableDTO>();
-
             Stream fileStream = new FileStream(_filePath, FileMode.Open);
             int edition = this.GetExcelEdition(_filePath);
             IWorkbook workbook = this.CreateWorkBook(edition, fileStream);
@@ -100,12 +91,9 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
                 var sheetLists = this.GetExcelDatas<TableDTO>(sheet, sheetName, _list, dict, _rowCount[i]);
                 resultList.AddRange(sheetLists);
             }
-
             fileStream.Close();
             return resultList;
         }
-
-
     }
 
 }
