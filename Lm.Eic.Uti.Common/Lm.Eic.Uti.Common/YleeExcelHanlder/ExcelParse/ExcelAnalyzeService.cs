@@ -8,6 +8,7 @@ using NPOI.SS.UserModel;
 using System.Reflection;
 using NPOI.XSSF.UserModel;
 using NPOI.HSSF.UserModel;
+using NPOI.SS.Util;
 
 namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
 {
@@ -171,10 +172,8 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
                             value = dataRow.GetCell(j).ToString();
                             break;
                     }
-
                     // 记录可能出错数据
                     rowDatas.Add(value);
-
                     // 检查空值
                     if (!this.CheckNull(value, ref nullcount))
                     {
@@ -213,6 +212,17 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
 
         }
 
+        public ISheet MergedRegion(ISheet sheet, int rowStart, int rowEnd, int columnStart, int columnEnd, bool ismereg, string textValue)
+        {
+            IRow row = sheet.CreateRow(0);
+            //在行中：建立单元格，参数为列号，从0计
+            ICell cell = row.CreateCell(rowStart);
+            //设置单元格内容
+            cell.SetCellValue(textValue);
+            //起始行号，终止行号， 起始列号，终止列号
+            sheet.AddMergedRegion(new CellRangeAddress(rowStart, rowEnd, columnStart, columnEnd));
+            return sheet;
+        }
 
         public List<TableDTO> GetExcelDatas<TableDTO>(ISheet sheet, string sheetName, List<Regular> list, Dictionary<int, string> dict, int rowCount)
         {

@@ -19,6 +19,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
         private string _xmlInsertPath;
         private Dictionary<int, int> _rowCount = new Dictionary<int, int>();
         private List<Regular> _list;// 规则集
+        private List<FixInsertRegular> _insertList;
         /// <summary>
         /// 构造方法
         /// </summary>
@@ -29,8 +30,8 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
             _filePath = filePath;
             _xmlPath = xmlPath;
             _xmlInsertPath = xmlInsertPath;
-            var mm = this.GetXMLInterInfo(_xmlInsertPath);
-            _list = this.GetXMLInfo(_xmlPath);
+            _insertList = this.GetXMLInterInfo(_xmlInsertPath);
+            // _list = this.GetXMLInfo(_xmlPath);
         }
         /// <summary>
         /// excel所有单元格数据验证
@@ -89,6 +90,29 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
                 _rowCount.Add(1, 1);
                 Dictionary<int, string> dict = this.GetExcelHeaders(sheet, ref uploadExcelFileResult, _list);
                 var sheetLists = this.GetExcelDatas<TableDTO>(sheet, sheetName, _list, dict, _rowCount[i]);
+                resultList.AddRange(sheetLists);
+            }
+            fileStream.Close();
+            return resultList;
+        }
+
+
+        public List<T> GetExcel<T>()
+        {
+            var uploadExcelFileResult = new UploadExcelFileResult();
+            var resultList = new List<T>();
+            Stream fileStream = new FileStream(_filePath, FileMode.Open);
+            int edition = this.GetExcelEdition(_filePath);
+            IWorkbook workbook = this.CreateWorkBook(edition, fileStream);
+            int sheetCount = _insertList.Count;
+
+            for (int i = 0; i < sheetCount; i++)
+            {
+                ISheet sheet = workbook.GetSheetAt(i);
+                string sheetName = sheet.SheetName;
+                _rowCount.Add(1, 1);
+                Dictionary<int, string> dict = this.GetExcelHeaders(sheet, ref uploadExcelFileResult, _list);
+                var sheetLists = this.GetExcelDatas<T>(sheet, sheetName, _list, dict, _rowCount[i]);
                 resultList.AddRange(sheetLists);
             }
             fileStream.Close();

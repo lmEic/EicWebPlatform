@@ -119,17 +119,20 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
             {
                 var header = new Regular();
                 if (node.Attributes["firstHeaderRow"] != null)
-                    header.HeaderRegular.Add("firstHeaderRow", int.Parse(node.Attributes["firstHeaderRow"].Value));
+                {
+                    int ddd = int.Parse(node.Attributes["firstHeaderRow"].Value);
+                    header.HeaderRegular.Add("firstHeaderRow", ddd);
+                }
                 if (node.Attributes["lastHeaderRow"] != null)
-                    header.HeaderRegular.Add("lastHeaderRow", int.Parse(node.Attributes["lastHeaderRow"].Value));
+                    header.HeaderRegular.Add("lastHeaderRow", int.Parse(node.Attributes["lastHeaderRow"].Value.ToString()));
                 if (node.Attributes["sheetCount"] != null)
-                    header.HeaderRegular.Add("sheetCount", int.Parse(node.Attributes["sheetCount"].Value));
+                    header.HeaderRegular.Add("sheetCount", int.Parse(node.Attributes["sheetCount"].Value.ToString()));
                 if (node.Attributes["headerText"] != null)
-                    header.HeaderText = node.Attributes["headerText"].Value;
+                    header.HeaderText = node.Attributes["headerText"].Value.ToString();
                 if (node.Attributes["propertyName"] != null)
-                    header.PropertyName = node.Attributes["propertyName"].Value;
+                    header.PropertyName = node.Attributes["propertyName"].Value.ToString();
                 if (node.Attributes["dataType"] != null)
-                    header.DataType = node.Attributes["dataType"].Value;
+                    header.DataType = node.Attributes["dataType"].Value.ToString();
                 headerList.Add(header);
             }
             return headerList;
