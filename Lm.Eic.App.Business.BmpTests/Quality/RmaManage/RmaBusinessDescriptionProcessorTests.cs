@@ -41,8 +41,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage.Tests
         [TestMethod]
         public void testexcele()
         {
-            ExcelImportService mm = new ExcelImportService(@"E:\RMASD1.1-11-01.xlsx", @"E:\121.xml", @"E:\4567.xml");
-            var qqq = mm.Import<RmaReportInitiateModel>();
+            ExcelImportService mm = new ExcelImportService(@"E:\RMASD1.1-11-01.xls", @"E:\121.xml", @"E:\4567.xml");
+            //var qqq = mm.Import<RmaReportInitiateModel>();
+            System.IO.MemoryStream stream = mm.GetInseerFixModel();
+            #region 输出到Excel
+            string path = @"E:\\IQC.xls";
+            using (System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+            {
+                byte[] bArr = stream.ToArray();
+                fs.Write(bArr, 0, bArr.Length);
+                fs.Flush();
+
+            }
+            #endregion
         }
 
     }
