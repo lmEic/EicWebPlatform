@@ -75,8 +75,6 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
         /// 是否合并
         /// </summary>
         public bool Ismerge { set; get; }
-
-
         #endregion
 
 
