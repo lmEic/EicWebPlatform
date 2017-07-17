@@ -78,6 +78,28 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
         /// 是否合并
         /// </summary>
         public bool Ismerge { set; get; }
+
+
+        /// <summary>
+        /// 字体高度
+        /// </summary>
+        public int fontHeight { set; get; }
+        /// <summary>
+        /// 字体
+        /// </summary>
+        public string FontName { set; get; }
+        /// <summary>
+        /// 字体色
+        /// </summary>
+        public short Color { set; get; }
+        /// <summary>
+        /// 垂直对齐方式
+        /// </summary>
+        public int VerticalAlignment { set; get; }
+        /// <summary>
+        /// 水平对齐式
+        /// </summary>
+        public int Alignment { set; get; }
         #endregion
 
     }

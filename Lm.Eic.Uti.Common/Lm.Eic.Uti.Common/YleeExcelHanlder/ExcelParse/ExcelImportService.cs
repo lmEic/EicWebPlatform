@@ -53,23 +53,49 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
 
         public MemoryStream GetInseerFixModel()
         {
+
+            // IWorkbook workbook = this.CreateWorkBook(edition, fileStream);
             MemoryStream stream = new MemoryStream();
-            HSSFWorkbook workbook = new HSSFWorkbook();
             int edition = this.GetExcelEdition(_filePath);
             if (edition != 0)
             {
-                // workbook.CreateSheet(xlsSheetName);
-                ISheet sheet = workbook.CreateSheet("Sheet1");
-                _insertList.ForEach(e =>
+                if (edition == 7)
                 {
-                    sheet = this.MergedRegion(sheet, e.RowIndexStart, e.RowIndexEnd, e.ColumnIndexStart, e.ColumnIndexEnd, e.Ismerge, e.FillText);
-
-                });
+                    XSSFWorkbook workbook = new XSSFWorkbook();
+                    sheetMergedRegion(stream, workbook);
+                }
+                if (edition == 3)
+                {
+                    HSSFWorkbook workbook = new HSSFWorkbook();
+                    sheetMergedRegion(stream, workbook);
+                }
             }
-            workbook.Write(stream);
+
             return stream;
         }
 
+        private void sheetMergedRegion(MemoryStream stream, HSSFWorkbook workbook)
+        {
+
+            ISheet sheet = workbook.CreateSheet("Sheet1");
+            _insertList.ForEach(e =>
+            {
+                sheet = this.MergedRegion(workbook, sheet, e);
+            });
+            workbook.Write(stream);
+        }
+
+
+        private void sheetMergedRegion(MemoryStream stream, XSSFWorkbook workbook)
+        {
+
+            ISheet sheet = workbook.CreateSheet("Sheet1");
+            _insertList.ForEach(e =>
+            {
+                sheet = this.MergedRegion(workbook, sheet, e);
+            });
+            workbook.Write(stream);
+        }
         /// <summary>
         /// excel所有单元格数据验证
         /// </summary>
