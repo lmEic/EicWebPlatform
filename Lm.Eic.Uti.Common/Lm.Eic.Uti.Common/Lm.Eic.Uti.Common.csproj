@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="YleeExcelHanlder\ExcelHelper.cs" />
+    <Compile Include="YleeExcelHanlder\ExcelParse\ExcelExtension.cs" />
     <Compile Include="YleeExcelHanlder\ExcelParse\ExcelAnalyzeService.cs" />
     <Compile Include="YleeExcelHanlder\ExcelParse\ExcelImportService.cs" />
     <Compile Include="YleeExcelHanlder\ExcelParse\ExcelParseBaseService.cs" />

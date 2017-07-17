@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Data;
+using NPOI.HSSF.Util;
+using NPOI.SS.Util;
+using NPOI.XSSF.UserModel;
+
 namespace Lm.Eic.Uti.Common.YleeExcelHanlder
 {
     /// <summary>
@@ -133,25 +137,25 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
             }
         }
 
-            /// <summary>
-            /// 一组实体数据 到Excel内存流
-            /// </summary>
-            /// <typeparam name="T">实体</typeparam>
-            /// <param name="DicDataSources">数据字典</param>
-            /// <returns></returns>
+        /// <summary>
+        /// 一组实体数据 到Excel内存流
+        /// </summary>
+        /// <typeparam name="T">实体</typeparam>
+        /// <param name="DicDataSources">数据字典</param>
+        /// <returns></returns>
         public static MemoryStream ExportToExcelMultiSheets<T>(Dictionary<string, List<T>> DicDataSources) where T : class
         {
             try
             {
                 MemoryStream stream = new MemoryStream();
                 HSSFWorkbook workbook = new HSSFWorkbook();
-              foreach (string i in DicDataSources.Keys)
-               {
-                  if (DicDataSources[i] == null || DicDataSources[i].Count == 0) continue;
-                   ISheet sheet = CreateSheet<T>(DicDataSources[i], i, workbook);
-                  sheet.ForceFormulaRecalculation = true;
-               }
-             
+                foreach (string i in DicDataSources.Keys)
+                {
+                    if (DicDataSources[i] == null || DicDataSources[i].Count == 0) continue;
+                    ISheet sheet = CreateSheet<T>(DicDataSources[i], i, workbook);
+                    sheet.ForceFormulaRecalculation = true;
+                }
+
                 workbook.Write(stream);
                 return stream;
             }
@@ -259,8 +263,8 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
             #endregion 填充内容区域
             return sheet;
         }
-        
-    
+
+
         /// <summary>
         /// 导入到现有的Excel模板文件中
         /// </summary>
@@ -308,13 +312,13 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
             return stream;
         }
 
-       
-       /// <summary>
-       ///  一组DataTable导入到Excel内存流
-       /// </summary>
-       /// <param name="dicDataSources">DataTable组</param>
-       /// <returns></returns>
-        public static MemoryStream ExportDataTableToExcelMultiSheets(Dictionary<string, DataTable> dicDataSources) 
+
+        /// <summary>
+        ///  一组DataTable导入到Excel内存流
+        /// </summary>
+        /// <param name="dicDataSources">DataTable组</param>
+        /// <returns></returns>
+        public static MemoryStream ExportDataTableToExcelMultiSheets(Dictionary<string, DataTable> dicDataSources)
         {
             try
             {
@@ -400,7 +404,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
         public static void CopySheet(IWorkbook wb, ISheet fromSheet, ISheet toSheet, bool copyValueFlag)
         {
             //合并区域处理  
-            MergerRegion(fromSheet, toSheet);
+            CopyMergerRegion(fromSheet, toSheet);
             System.Collections.IEnumerator rows = fromSheet.GetRowEnumerator();
             while (rows.MoveNext())
             {
@@ -505,7 +509,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
         /// </summary>  
         /// <param name="fromSheet"></param>  
         /// <param name="toSheet"></param>  
-        public static void MergerRegion(ISheet fromSheet, ISheet toSheet)
+        public static void CopyMergerRegion(ISheet fromSheet, ISheet toSheet)
         {
             int sheetMergerCount = fromSheet.NumMergedRegions;
             for (int i = 0; i < sheetMergerCount; i++)
@@ -518,8 +522,125 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
             }
         }
 
-       
 
+        /// <summary>
+        /// 合并单元格
+        /// </summary>
+        /// <param name="sheet">录入的ISheet</param>
+        /// <param name="rowStart">Row开始</param>
+        /// <param name="rowEnd">Row结束</param>
+        /// <param name="columnStart">column开始</param>
+        /// <param name="columnEnd">column结束</param>
+        /// <param name="textValue">填充值</param>
+        /// <returns>返回合并后的SHeet表</returns>
+        public static ISheet MergedRegion(ISheet sheet,
+            int rowStart, int rowEnd,
+            int columnStart, int columnEnd)
+        {
+            //起始行号，终止行号， 起始列号，终止列号
+            sheet.AddMergedRegion(new CellRangeAddress(rowStart - 1, rowEnd - 1, columnStart - 1, columnEnd - 1));
+            return sheet;
+        }
+        /// <summary>
+        /// 单元格赋值
+        /// </summary>
+        /// <param name="sheet"></param>
+        /// <param name="columnNum"></param>
+        /// <param name="rowNum"></param>
+        /// <param name="textValue"></param>
+        /// <returns></returns>
+        public static ISheet SetCellValue(ISheet sheet,
+          int rowNum, int columnNum,
+          string textValue)
+        {
+            IRow row = sheet.CreateRow(rowNum - 1);
+            //在行中：建立单元格，参数为列号，从0计
+            ICell cell = row.CreateCell(columnNum - 1);
+            //设置单元格内容
+            cell.SetCellValue(textValue);
+            return sheet;
+        }
+        /// <summary>
+        /// 设置单元格样式
+        /// </summary>
+        /// <param name="workbook"></param>
+        /// <param name="cell"></param>
+        public static void setCellStyle(HSSFWorkbook workbook, ICell cell, int fontHeight,
+            string fontName = "宋体", short color = 8,
+            int verticalAlignment = 2,
+            int alignment = 2)
+        {
+            HSSFCellStyle fCellStyle = (HSSFCellStyle)workbook.CreateCellStyle();
+            HSSFFont ffont = (HSSFFont)workbook.CreateFont();
+            ffont.FontHeight = fontHeight;
+            ffont.FontName = fontName;
+            //HSSFColor.Black.Index;
+            ffont.Color = color;
+            fCellStyle.SetFont(ffont);
+            fCellStyle.VerticalAlignment = GetVerticalAlignmentStyle(verticalAlignment);//垂直对齐
+            fCellStyle.Alignment = GetHorizontalAlignmentStyle(alignment);//水平对齐
+            cell.CellStyle = fCellStyle;
+        }
+        public static void setCellStyle(XSSFWorkbook workbook, ICell cell, int fontHeight, short fontWeight,
+          string fontName = "宋体", short color = 8,
+          int verticalAlignment = 2,
+          int alignment = 2)
+        {
+            XSSFCellStyle fCellStyle = (XSSFCellStyle)workbook.CreateCellStyle();
+            XSSFFont ffont = (XSSFFont)workbook.CreateFont();
+            ffont.FontHeight = fontHeight;
+            ffont.Boldweight = fontWeight;
+            ffont.FontName = fontName;
+            //HSSFColor.Black.Index;
+            ffont.Color = color;
+            fCellStyle.SetFont(ffont);
+            fCellStyle.VerticalAlignment = GetVerticalAlignmentStyle(verticalAlignment);//垂直对齐
+            fCellStyle.Alignment = GetHorizontalAlignmentStyle(alignment);//水平对齐
+            cell.CellStyle = fCellStyle;
+        }
+
+        private static NPOI.SS.UserModel.VerticalAlignment GetVerticalAlignmentStyle(int numberIndex)
+        {
+            switch (numberIndex)
+            {
+                case 1:
+                    return VerticalAlignment.Top;
+                case 2:
+                    return VerticalAlignment.Center;
+                case 3:
+                    return VerticalAlignment.Bottom;
+                case 4:
+                    return VerticalAlignment.Justify;
+                case 5:
+                    return VerticalAlignment.Distributed;
+                default:
+                    return VerticalAlignment.Center;
+            }
+        }
+        private static NPOI.SS.UserModel.HorizontalAlignment GetHorizontalAlignmentStyle(int numberIndex)
+        {
+            switch (numberIndex)
+            {
+                case 0:
+                    return HorizontalAlignment.General;
+                case 1:
+                    return HorizontalAlignment.Left;
+                case 2:
+                    return HorizontalAlignment.Center;
+                case 3:
+                    return HorizontalAlignment.Right;
+                case 4:
+                    return HorizontalAlignment.Fill;
+                case 5:
+                    return HorizontalAlignment.Justify;
+                case 6:
+                    return HorizontalAlignment.CenterSelection;
+                case 7:
+                    return HorizontalAlignment.Distributed;
+                default:
+                    return HorizontalAlignment.Center;
+            }
+        }
         #endregion
     }
 }
