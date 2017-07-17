@@ -482,6 +482,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _parameterkey = value; }
             get { return _parameterkey; }
         }
+        private string _auditPeople;
+        /// <summary>
+        ///审计人
+        /// </summary>
+        public string AuditPeople
+        {
+            set { _auditPeople = value; }
+            get { return _auditPeople; }
+        }
         private string _remark;
         /// <summary>
         ///备注

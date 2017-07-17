@@ -36,8 +36,11 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
     /// </summary>
     public class FixInsertRegular
     {
-        #region  填充内容  固定输入的内空
+        // HeaderText PropertyName DataType FillText RowIndexStart RowIndexEnd 
+        //ColumnIndexStart RowIndexEnd ColumnIndexStart  Ismerge 
 
+
+        #region  填充内容  固定输入的内空
         /// <summary>
         /// 表头文本
         /// </summary>
@@ -77,11 +80,27 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
         public bool Ismerge { set; get; }
 
 
+        /// <summary>
+        /// 字体高度
+        /// </summary>
+        public int fontHeight { set; get; }
+        /// <summary>
+        /// 字体
+        /// </summary>
+        public string FontName { set; get; }
+        /// <summary>
+        /// 字体色
+        /// </summary>
+        public short Color { set; get; }
+        /// <summary>
+        /// 垂直对齐方式
+        /// </summary>
+        public int VerticalAlignment { set; get; }
+        /// <summary>
+        /// 水平对齐式
+        /// </summary>
+        public int Alignment { set; get; }
         #endregion
-
-
-
-
 
     }
 }

@@ -8,6 +8,8 @@ using NPOI.SS.UserModel;
 using System.Reflection;
 using NPOI.XSSF.UserModel;
 using NPOI.HSSF.UserModel;
+using NPOI.SS.Util;
+using NPOI.HSSF.Util;
 
 namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
 {
@@ -47,6 +49,18 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
                     return new XSSFWorkbook(excelFileStream);
                 case 3:
                     return new HSSFWorkbook(excelFileStream);
+                default:
+                    return null;
+            }
+        }
+        public IWorkbook CreateWorkBook(int edition)
+        {
+            switch (edition)
+            {
+                case 7:
+                    return new XSSFWorkbook();
+                case 3:
+                    return new HSSFWorkbook();
                 default:
                     return null;
             }
@@ -171,10 +185,8 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
                             value = dataRow.GetCell(j).ToString();
                             break;
                     }
-
                     // 记录可能出错数据
                     rowDatas.Add(value);
-
                     // 检查空值
                     if (!this.CheckNull(value, ref nullcount))
                     {
@@ -212,7 +224,62 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
             return result;
 
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="workbook"></param>
+        /// <param name="sheet"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        public ISheet MergedRegion(HSSFWorkbook workbook, ISheet sheet, FixInsertRegular e)
+        {
+            //XSSFWorkbook
+            ///是否合并
+            if (e.Ismerge)
+                NPOIHelper.MergedRegion(sheet, e.RowIndexStart, e.RowIndexEnd, e.ColumnIndexStart, e.ColumnIndexEnd);
+            ///赋值
+            NPOIHelper.SetCellValue(sheet, e.RowIndexStart, e.ColumnIndexStart, e.FillText);
+            ///设置字体
+            ///设置样式
+            IRow row = sheet.GetRow(e.ColumnIndexStart - 1);
+            ICell cell = null;
+            if (row != null)
+            {
+                cell = row.GetCell(e.RowIndexStart - 1);
+            }
+            else
+            {
+                row = sheet.CreateRow(e.ColumnIndexStart - 1);
+                cell = row.CreateCell(e.RowIndexStart - 1);
+            }
 
+            NPOIHelper.setCellStyle(workbook, cell, e.fontHeight, e.FontName, e.Color, e.VerticalAlignment, e.Alignment);
+            /// int fontHeight, string fontName = "宋体", short color = 8, int verticalAlignment = 2, int alignment = 2
+            return sheet;
+        }
+        public ISheet MergedRegion(XSSFWorkbook workbook, ISheet sheet, FixInsertRegular e)
+        {
+            //XSSFWorkbook
+            if (e.Ismerge)
+                NPOIHelper.MergedRegion(sheet, e.RowIndexStart, e.RowIndexEnd, e.ColumnIndexStart, e.ColumnIndexEnd);
+            ///赋值
+            NPOIHelper.SetCellValue(sheet, e.RowIndexStart, e.ColumnIndexStart, e.FillText);
+            ///设置样式
+            IRow row = sheet.GetRow(e.ColumnIndexStart - 1);
+            ICell cell = null;
+            if (row != null)
+            {
+                cell = row.GetCell(e.RowIndexStart - 1);
+            }
+            else
+            {
+                row = sheet.CreateRow(e.ColumnIndexStart - 1);
+                cell = row.CreateCell(e.RowIndexStart - 1);
+            }
+            ////  int fontHeight,  string fontName = "宋体", short color = 8, int verticalAlignment = 2, int alignment = 2
+            NPOIHelper.setCellStyle(workbook, cell, e.fontHeight, 8, e.FontName, e.Color, e.VerticalAlignment, e.Alignment);
+            return sheet;
+        }
 
         public List<TableDTO> GetExcelDatas<TableDTO>(ISheet sheet, string sheetName, List<Regular> list, Dictionary<int, string> dict, int rowCount)
         {

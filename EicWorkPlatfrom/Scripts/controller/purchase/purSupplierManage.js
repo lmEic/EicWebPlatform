@@ -339,6 +339,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         ManagerRisk: null,
         SubstitutionSupplierId: null,
         SeasonNum: 0,
+        AuditPeople: null,
         Remark: null,
         OpPserson: null,
         OpDate: null,
@@ -366,6 +367,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         ManagerRisk: null,
         SubstitutionSupplierId: null,
         SeasonNum: 0,
+        AuditPeople: null,
         Remark: null,
         OpPerson: null,
         OpDate: null,
@@ -376,6 +378,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
     var lastData = {
         ManagerRisk: null,
         MaterialGrade: null,
+        AuditPeople: null,
         Remark: null,
         RewardsWay: null,
         SubstitutionSupplierId: null,

@@ -8,8 +8,13 @@ var qualityModule = angular.module('bpm.qualityApp');
 qualityModule.factory("BDataOpService", function (ajaxService) {
     var bugd = {};
     var quabugDManageUrl = "/qua8DManage/";
-
-
+    ///获取RMA表单单头
+    bugd.getRua8DReportDatas = function (reportId) {
+        var url = quabugDManageUrl + 'GgetRmaReportDatas';
+        return ajaxService.getData(url, {
+            reportId: reportId
+        });
+    };
     return bugd;
 });
 ////创建8D表单
@@ -85,22 +90,29 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
         FailClass: null,
     }
     var vmManager = {
-        stepDisplay: false,
+        stepDisplay: true,
         // isCheck   selectStep  StepDescription
         steps: [step],
-        selectStep: function (step) {
+        selectStep: function (item) {
 
         },
+        getQua8DCreateDatas: function () {
+            $scope.doPromise = BDataOpService.getRua8DReportDatas(uiVm.ReportId).then(function (datas) {
+                steps = datas;
+                console.log(datas);
+            });
+        },
     };
-    $scope.vmManager = vmManager;
     var step = {
-        isCheck: true,
-        StepId: "M154545",
-        StepDescription: "48798456468564",
+        isCheck: false,
+        StepId: "45454",
+        StepDescription: "1212121",
         StepLevel: 7,
-    };
-
+    }
+    $scope.vmManager = vmManager;
+    vmManager.getQua8DCreateDatas();
 });
+
 ////8D结案处理表单
 qualityModule.controller('Colse8DFormCtrl', function ($scope, BDataOpService) {
     ///视图模型

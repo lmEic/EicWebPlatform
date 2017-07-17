@@ -53,18 +53,13 @@
                             </span>
                         </li>
                         <li class="list-group-item" ng-show="vmManager.stepDisplay">
-                            <div class="page-header">
-                                <input type="text" placeholder="快速搜索" ng-model="roleFilter" />
-                            </div>
                             <ul class="nav nav-pills" style="max-height:420px;overflow-y:auto">
-                                <li ng-repeat="step in vmManager.steps|filter:roleFilter track by $index">
+                                <li ng-repeat="step in vmManager.steps">
                                     <div class="bs-callout bs-callout-success" style="width:auto;margin:2px;cursor:pointer">
                                         <span ng-if="!step.isCheck"><i class="fa fa-square-o" ng-click="step.isCheck=true;vmManager.selectStep(step)"></i></span>
                                         <span class="text-success" ng-if="step.isCheck" ng-click="step.isCheck=false;vmManager.selectStep(step)"><i class="fa fa-check-square"></i></span>
 
-                                        <span ng-class="vmManager.selectStep!==step?'label label-default':'label label-warning'">
-                                            {{step.StepId}}
-                                        </span>
+                                        <span ng-class="vmManager.selectStep!==step?'label label-default':'label label-warning'"> {{step.StepId}} </span>
                                         <span class="label label-primary" data-title="完成的等级" data-bs-tooltip>{{step.StepLevel}}</span>
                                         <br />
                                         <span>
