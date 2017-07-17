@@ -277,7 +277,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
                 cell = row.CreateCell(e.RowIndexStart - 1);
             }
             ////  int fontHeight,  string fontName = "宋体", short color = 8, int verticalAlignment = 2, int alignment = 2
-            NPOIHelper.setCellStyle(workbook, cell, e.fontHeight, e.fontHeight, e.FontName, e.Color, e.VerticalAlignment, e.Alignment);
+            NPOIHelper.setCellStyle(workbook, cell, e.fontHeight, 8, e.FontName, e.Color, e.VerticalAlignment, e.Alignment);
             return sheet;
         }
 
