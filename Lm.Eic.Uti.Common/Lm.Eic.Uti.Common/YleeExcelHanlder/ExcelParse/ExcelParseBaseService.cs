@@ -100,10 +100,11 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
                     header.ColumnIndexEnd = int.Parse(node.Attributes["ColumnIndexEnd"].Value);
                 if (node.Attributes["Ismerge"] != null)
                     header.Ismerge = bool.Parse(node.Attributes["Ismerge"].Value);
-
                 //int fontHeight,  string fontName = "宋体", short color = 8, int verticalAlignment = 2, int alignment = 2
                 if (node.Attributes["FontName"] != null)
                     header.FontName = node.Attributes["FontName"].Value;
+                if (node.Attributes["FontHeightInPoints"] != null)
+                    header.FontHeightInPoints = short.Parse(node.Attributes["FontHeightInPoints"].Value);
                 if (node.Attributes["Color"] != null)
                     header.Color = short.Parse(node.Attributes["Color"].Value);
                 if (node.Attributes["Alignment"] != null)

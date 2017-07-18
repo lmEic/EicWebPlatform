@@ -83,7 +83,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
         /// <summary>
         /// 字体高度
         /// </summary>
-        public int fontHeight { set; get; }
+        public short FontHeightInPoints { set; get; }
         /// <summary>
         /// 字体
         /// </summary>

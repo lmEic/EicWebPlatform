@@ -565,33 +565,37 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
         /// </summary>
         /// <param name="workbook"></param>
         /// <param name="cell"></param>
-        public static void setCellStyle(HSSFWorkbook workbook, ICell cell, int fontHeight,
+        public static void setCellStyle(HSSFWorkbook workbook, ICell cell, short fontHeightInPoints,
             string fontName = "宋体", short color = 8,
             int verticalAlignment = 2,
             int alignment = 2)
         {
+            if (cell == null) return;
             HSSFCellStyle fCellStyle = (HSSFCellStyle)workbook.CreateCellStyle();
             HSSFFont ffont = (HSSFFont)workbook.CreateFont();
-            ffont.FontHeight = fontHeight;
+            ffont.FontHeight = 20 * 20;
+            //字体大小
+            ffont.FontHeightInPoints = fontHeightInPoints;
             ffont.FontName = fontName;
-            //HSSFColor.Black.Index;
+            //HSSFColor.Black.Index 8; HSSFColor.Red.Index 10
             ffont.Color = color;
             fCellStyle.SetFont(ffont);
             fCellStyle.VerticalAlignment = GetVerticalAlignmentStyle(verticalAlignment);//垂直对齐
             fCellStyle.Alignment = GetHorizontalAlignmentStyle(alignment);//水平对齐
             cell.CellStyle = fCellStyle;
         }
-        public static void setCellStyle(XSSFWorkbook workbook, ICell cell, int fontHeight, short fontWeight,
+        public static void setCellStyle(XSSFWorkbook workbook, ICell cell, short fontHeightInPoints,
           string fontName = "宋体", short color = 8,
           int verticalAlignment = 2,
           int alignment = 2)
         {
             XSSFCellStyle fCellStyle = (XSSFCellStyle)workbook.CreateCellStyle();
             XSSFFont ffont = (XSSFFont)workbook.CreateFont();
-            ffont.FontHeight = fontHeight;
-            ffont.Boldweight = fontWeight;
+            ffont.FontHeight = 20 * 20;
+            //字体大小
+            ffont.FontHeightInPoints = fontHeightInPoints;
             ffont.FontName = fontName;
-            //HSSFColor.Black.Index;
+            //HSSFColor.Black.Index 8; HSSFColor.Red.Index 10
             ffont.Color = color;
             fCellStyle.SetFont(ffont);
             fCellStyle.VerticalAlignment = GetVerticalAlignmentStyle(verticalAlignment);//垂直对齐

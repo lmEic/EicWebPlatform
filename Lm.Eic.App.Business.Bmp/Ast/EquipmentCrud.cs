@@ -178,7 +178,16 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             catch (Exception ex) { throw new Exception(ex.InnerException.Message); }
             return opResult;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newDate"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult UpdateCheckDate(DateTime newDate, decimal id_Key)
+        {
+            return irep.Update(m => m.Id_Key == id_Key, u => new EquipmentModel { InputDate = newDate }).ToOpResult_Eidt("设置数据校对日期更新");
+        }
         /// <summary>
         /// 修改数据仓库 model.OpSign = add/edit/delete
         /// </summary>
@@ -256,7 +265,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         /// <returns></returns>
         public OpResult UpdateIsScrapped(string assetNumber, string isScrapped)
         {
-            return irep.Update(e => e.AssetNumber== assetNumber, m => new EquipmentModel {IsScrapped= isScrapped }).ToOpResult_Eidt("设备档案");
+            return irep.Update(e => e.AssetNumber == assetNumber, m => new EquipmentModel { IsScrapped = isScrapped }).ToOpResult_Eidt("设备档案");
         }
         #endregion Store
 
@@ -434,7 +443,8 @@ namespace Lm.Eic.App.Business.Bmp.Ast
         {
             equipment.CheckDate = model.CheckDate;
             equipment.OpSign = OpMode.Edit;
-            return OpResult.SetResult("更新设备校验日期成功！", "更新设备校验日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
+            return EquipmentCrudFactory.EquipmentCrud.UpdateCheckDate(model.CheckDate, equipment.Id_Key);
+            //   return OpResult.SetResult("更新设备校验日期成功！", "更新设备校验日期失败！", EquipmentCrudFactory.EquipmentCrud.Store(equipment).Result);
         }
 
         #endregion Store
@@ -633,7 +643,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
                 ///如果存储成功 更新主表
                 if (result.Result)
                 {
-                   ///修改设备报废状态
+                    ///修改设备报废状态
                     var equipmentOpResult = EquipmentCrudFactory.EquipmentCrud.UpdateIsScrapped(equipment.AssetNumber, "是");
                     if (!equipmentOpResult.Result)
                         return OpResult.SetErrorResult("修改设备报废状态失败！");
@@ -644,7 +654,7 @@ namespace Lm.Eic.App.Business.Bmp.Ast
             {
                 throw new Exception(ex.Message);
             }
- 
+
         }
 
         /// <summary>

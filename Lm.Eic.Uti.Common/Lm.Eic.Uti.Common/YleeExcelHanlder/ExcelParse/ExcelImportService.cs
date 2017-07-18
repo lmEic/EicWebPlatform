@@ -51,50 +51,30 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
         }
 
 
-        public MemoryStream GetInseerFixModel()
+        public MemoryStream GetInseerFixModel<T>(T dataSoure) where T : class, new()
         {
-
             // IWorkbook workbook = this.CreateWorkBook(edition, fileStream);
             MemoryStream stream = new MemoryStream();
-            int edition = this.GetExcelEdition(_filePath);
-            if (edition != 0)
-            {
-                if (edition == 7)
-                {
-                    XSSFWorkbook workbook = new XSSFWorkbook();
-                    sheetMergedRegion(stream, workbook);
-                }
-                if (edition == 3)
-                {
-                    HSSFWorkbook workbook = new HSSFWorkbook();
-                    sheetMergedRegion(stream, workbook);
-                }
-            }
-
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            ISheet sheet = CreateSheetXls<T>(workbook, dataSoure);
+            workbook.Write(stream);
             return stream;
         }
-
-        private void sheetMergedRegion(MemoryStream stream, HSSFWorkbook workbook)
+        /// <summary>
+        /// 处理数据
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="workbook"></param>
+        private ISheet CreateSheetXls<T>(HSSFWorkbook workbook, T dataSource) where T : class, new()
         {
-
             ISheet sheet = workbook.CreateSheet("Sheet1");
+            Type t = dataSource.GetType();
+            PropertyInfo[] pis = t.GetProperties();
             _insertList.ForEach(e =>
             {
-                sheet = this.MergedRegion(workbook, sheet, e);
+                sheet = this.HandleFixInsertRegular(workbook, sheet, e);
             });
-            workbook.Write(stream);
-        }
-
-
-        private void sheetMergedRegion(MemoryStream stream, XSSFWorkbook workbook)
-        {
-
-            ISheet sheet = workbook.CreateSheet("Sheet1");
-            _insertList.ForEach(e =>
-            {
-                sheet = this.MergedRegion(workbook, sheet, e);
-            });
-            workbook.Write(stream);
+            return sheet;
         }
         /// <summary>
         /// excel所有单元格数据验证
