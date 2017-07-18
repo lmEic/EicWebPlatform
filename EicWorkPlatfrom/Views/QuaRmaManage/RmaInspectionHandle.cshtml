@@ -12,7 +12,7 @@
                         <button class="btn btn-xs btn-primary" ng-click="vmManager.getRmaInspectionHandleDatas()" type="button">查询</button>
                     </div>
                     <div class="pull-right">
-                        <a class="btn btn-xs btn-default" href="@Url.Action("printDetailsDatas", "quaRmaManage")"><i class="fa fa-file-excel-o"></i> 导出RMA打印Excel表格</a>
+                        <a class="btn btn-xs btn-default" href="@Url.Action("printDetailsDatas", "quaRmaManage", new { RmaId = "vm.RmaId" })"><i class="fa fa-file-excel-o"></i> 导出RMA打印Excel表格</a>
                     </div>
                 </form>
             </div>

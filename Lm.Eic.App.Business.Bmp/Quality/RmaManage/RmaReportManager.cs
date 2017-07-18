@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
@@ -281,16 +282,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 
         public DownLoadFileModel GetPrintDatialDataDLFM(string siteRootPath, string rmaId)
         {
-            DownLoadFileModel dlfm = new DownLoadFileModel();
-            string filePath = "";
-            string certificateFileName = "RMASD1.1-11-01.xls";
-            var model = GetDatasBy(rmaId);
-            if (model == null)
-                return dlfm.Default();
-            return dlfm.CreateInstance
-                (siteRootPath.GetDownLoadFilePath(filePath),
-                certificateFileName.GetDownLoadContentType(),
-                certificateFileName);
+            //DownLoadFileModel dlfm = new DownLoadFileModel();
+            //string filePath = "";
+            //string certificateFileName = "RMASD1.1-11-01.xls";
+            var modelDatas = RmaCrudFactory.RmaReportInitiate.GetInitiateDatas("R1707067").FirstOrDefault();
+            //if (model == null)
+            //    return dlfm.Default();
+            // RmaInspectionManageModel 
+
+            ExcelImportService mm = new ExcelImportService(@"E:\RMASD1.1-11-01.xls", @"E:\121.xml", @"E:\4567.xml");
+            //var qqq = mm.Import<RmaReportInitiateModel>();
+            System.IO.MemoryStream stream = mm.GetInseerFixModel<RmaReportInitiateModel>(modelDatas);
+            return stream.CreateDownLoadExcelFileModel("Rma模板");
+
         }
     }
 }
