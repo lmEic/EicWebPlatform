@@ -40,6 +40,34 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
         });
     };
 
+    ///上报问题登记Save
+    oAssistant.storeReportImproveProblemDatas = function (model) {
+        var url = oaUrlPrefix + 'StoreReportImproveProblemDatas';
+        return ajaxService.postData(url, {
+            model: model
+        });
+    };
+    ///自动生成上报问题编号 
+    oAssistant.autoCreateCaseId = function () {
+        var url = oaUrlPrefix + 'AutoCreateCaseId';
+        return ajaxService.getData(url, {
+
+        })
+    }
+    ///查询上报问题处理状态
+    oAssistant.getReportImproveProbleDatas = function (problemSove, mode) {
+        var url = oaUrlPrefix + 'GetReportImproveProbleDatas';
+        return ajaxService.getData(url, {
+            problemSolve: problemSove,
+            mode:mode
+        })
+    }
+    //上传附件
+    oAssistant.uploadReportProblemFile = function (file) {
+        var url = oaUrlPrefix + 'UploadReportProblemFile';
+        return ajaxService.uploadFile(url, file);
+    }
+  
     return oAssistant;
 });
 ///名片夹控制器
@@ -363,48 +391,275 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
     };
     $scope.ztree = departmentTreeSet;
 });
-officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope, oAssistantDataOpService, dataDicConfigTreeSet, connDataOpService) {
-    leeHelper.setWebSiteTitle('在线助手', '上报问题');
+officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oAssistantDataOpService, dataDicConfigTreeSet, connDataOpService) {
+    ///View
     var uiVM = {
-        CaseId: null,
-        WorkerId: null,
-        Name: null,
-        Department: null,
+        WorkerId: leeLoginUser.userId,
+        Name:leeLoginUser.userName,
+        Department: leeLoginUser.department,
+        CaseId: null,      
+        CaseIdYear:new Date().getFullYear(),
         SystemName: null,
         ModuleName: null,
         ProblemDate: new Date(),
-        ProblemDesc: null,
+        ProblemDesc: null, 
+        ProblemSolveMethod: null,
+        ProblemProcess:null,
         ProblemAttach: null,
         ProblemDegree: null,
-        ProblemSolve: null,
-        OpPerson: null,
-        OpSign: leeDataHandler.dataOpMode.add,
+        ProblemSolve: '待解决',
         OpDate: null,
         OpTime: null,
+        OpPerson: leeLoginUser.userName,
+        OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: 0
     };
     $scope.vm = uiVM;
     var originalVM = _.clone(uiVM);
     var dialog = $scope.dialog = leePopups.dialog();
-    var queryField = {
-        caseId: null,
-        moduleName: null,
-        probleSovle: null
+    var queryFields = {      
+        problemSolve:null
+
     };
-    $scope.queyr = queryField;
+    $scope.query = queryFields;
     var vmManager = {
+        currentInspectionItem: null,
         activeTab: 'initTab',
         isLocal: true,
         init: function () {
-            uiVM = _.clone(orginalVM),
-                uiVM.OpSign = leeDataHandler.dataOpMode.add;
+            uiVM = _.clone(originalVM);
+            uiVM.OpSign = leeDataHandler.dataOpMode.add;
             $scope.vm = uiVM;
         },
-     
+        searchedWorkers: [],
+        isSingle: true,//是否搜寻人员或部门   
+        isdisabled: false,
+        datasource: [],
+        searchDataset: [],
+        getWorkerInfo: function () {
+            if (uiVM.WorkerId === undefined) return;
+            var strLen = leeHelper.checkIsChineseValue(uiVM.WorkerId) ? 2 : 6;
+            if (uiVM.WorkerId.length >= strLen) {
+                vmManager.searchedWorkers = [];
+                $scope.searchedWorkersPrommise = connDataOpService.getWorkersBy(uiVM.WorkerId).then(function (datas) {
+                    if (datas.length > 0) {
+                        vmManager.searchedWorkers = datas;
+                        if (vmManager.searchedWorkers.length === 1) {
+                            vmManager.isSingle = true;
+                            vmManager.selectWorker(vmManager.searchedWorkers[0]);
+                        }
+                        else {
+                            vmManager.isSingle = false;
+                        }
+                    }
+                    else {
+                        vmManager.selectWorker(null);
+                    }
+                });
+            }
+        },
+        selectWorker: function (worker) {
+            if (worker !== null) {
+                uiVM.Name = worker.Name;
+                uiVM.WorkerId = worker.WorkerId;
+                uiVM.Department = worker.Department;
+
+            }
+            else {
+                uiVM.Department = null;
+            }
+        },
+        systemNames: [
+            {
+                id: "人力资源管理", text: "人力资源管理", moduleNameList: [
+                    { id: "员工档案管理", text: "员工档案管理" },
+                    { id: "考勤管理", text: "考勤管理" },
+                    { id: "总务管理", text: "总务管理" }
+                ]
+            },
+            {
+                id: "生产管理", text: "生产管理", moduleNameList: [
+                    { id: "人员管理", text: "人员管理" },
+                    { id: "日报管理", text: "日报管理" },
+                    { id: "排程管理", text: "排程管理" },
+                    { id: "出货管理", text: "出货管理" },
+                    { id: "看板管理", text: "看板管理" }
+                ]
+            },
+            {
+                id: "质量管理", text: "质量管理", moduleNameList: [
+                    { id: "检验管理", text: "检验管理" },
+                    { id: "RMA管理", text: "RMA管理" },
+                    { id: "8D报告管理", text: "8D报告管理" }
+
+                ]
+            },
+            {
+                id: "采购管理", text: "采购管理", moduleNameList: [
+                    { id: "供应商管理", text: "供应商管理" }
+                ]
+            },
+            {
+                id: "设备管理", text: "设备管理", moduleNameList: [
+                    { id: "设备总览", text: "设备总览" },
+                    { id: "设备校验", text: "设备校验" },
+                    { id: "设备保养", text: "设备保养" },
+                    { id: "设备维修", text: "设备维修" }
+                ]
+            },
+            {
+                id: "系统管理", text: "系统管理", moduleNameList: [
+                    { id: "帐户管理", text: "帐户管理" },
+                    { id: "配置管理", text: "配置管理" },
+                    { id: "ITIL", text: "ITIL" }
+                ]
+            },
+            {
+                id: "在线工具", text: "在线工具", moduleNameList: [
+                    { id: "办公助手", text: "办公助手" },
+                    { id: "电子签核", text: "电子签核" }
+                ]
+            },
+
+        ],
+        selectSystemName: function () {
+            var systemName = _.find(vmManager.systemNames, {
+                id: uiVM.SystemName
+            });
+            if (!angular.isUndefined(systemName)) {
+                vmManager.showmoduleNameList = systemName.moduleNameList;
+            }
+        },
+        querySystemName: function () {
+            var systemName = _.find(vmManager.systemNames, {
+                id: queryFields.systemName
+            });
+            if (!angular.isUndefined(systemName)) {
+                vmManager.querymoduleNameList = systemName.moduleNameList;
+            }
+        },
+        problemDegrees: [
+            { id: '一般', text: '一般' },
+            { id: '紧急不重要', text: '紧急不重要' },
+            { id: '重要不紧急', text: '重要不紧急' },
+            { id: '重要紧急', text: '重要紧急' }
+        ],
+        problemSolves: [
+            { value: '己解决', label: '<i class="fa fa-check-square-o"></i>  己解决' },
+            { value: '待解决', label: '<i class="fa fa-bug"></i>  待解决' }
+
+        ],
+        problemProcesss: [{ name: '万晓桥', text: '万晓桥' }, { name: '林旺雷', text: '林旺雷' }, { name: '杨垒', text: '杨垒' }],
+        //s查询
+        searchBy: function () {
+            $scope.searchPromise = oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve, 1).then(function (datas) {
+                vmManager.storeDataset = datas;
+            })
+        },
+        getReportImproveProblemData: function (mode) {
+
+            vmManager.searchDataset = [];
+            vmManager.datasource = [];
+            oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve, mode).then(function (datas) {
+                vmManager.datasource = datas;
+            })
+        },
+
+        //自动生成编号
+        autoCreateCaseid: function () {
+            $scope.doPromise = oAssistantDataOpService.autoCreateCaseId().then(function (caseId) {
+                uiVM.CaseId = caseId;
+                uiVM.OpSign = leeDataHandler.dataOpMode.add;
+            })
+
+
+        },
+
+    };
+    $scope.vmManager = vmManager;
+    var dialog = $scope.dialog = leePopups.dialog();
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+  
+    operate.handleItem = function (item) {
+        var dataitem = _.clone(item);
+        dataitem.OpSign = leeDataHandler.dataOpMode.edit;
+        leeHelper.copyVm(dataitem, uiVM);
+        $scope.vm = uiVM;
+        dialog.show();
+
+    };
+   
+
+    //修改
+    operate.editItem = function (item) {
+        item.OpSign = leeDataHandler.dataOpMode.edit;
+        $scope.vm = uiVM = item;
+   
+    };
+    //保存
+    operate.saveAll = function (isValid) {
+        leeDataHandler.dataOperate.add(operate, isValid, function () {
+
+            oAssistantDataOpService.storeReportImproveProblemDatas(uiVM).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    if (opresult.Result) {
+                        var mode = _.clone(uiVM)
+                        mode.Id_Key == opresult.Id_Key;
+                        if (mode.OpSign === leeDataHandler.dataOpMode.add) {
+                            vmManager.datasource.push(mode);
+                        }
+                        vmManager.init();
+                        dialog.close();
+                       
+                    }
+                })
+            })
+        })
+
+    };
+    //更新
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.init();
+        })
+    };
+
+   // 上传附件
+    $scope.selectFile = function (el) {
+        leeHelper.upoadFile(el, function (fd) {
+            oAssistantDataOpService.uploadReportProblemFile(fd).then(function (result) {
+                if (result === 'OK') {
+                    var nowDate = new Date().getDate();
+                    var nowHour = new Date().getHours();
+                    if (nowDate < 10) { nowDate += '0' };
+                    if (nowHour < 10) { nowHour += '0' };
+                    uiVM.ProblemAttach.FileName = $scope.uploadFileName = nowDate.toString() + nowHour.toString() + fd.name;
+                    uiVM.ProblemAttach.OpSign = leeDataHandler.dataOpMode.uploadFile;
+                    oAssistantDataOpService.storeReportImproveProblemDatas(uiVM.ProblemAttach).then(function (opResult) {
+                        if (opResult.Result==="OK") {                       
+                            vmManager.isdisabled = true;
+                            uiVM.ProblemAttach = opResult.FileName;
+                                alert("上传文件成功");
+                            
+                        }
+                    })
+                }
+            })
+        });
+      
     },
+  //组织架构
+    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
+        departmentTreeSet.setTreeDataset(datas);
+    });
+    var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
+    departmentTreeSet.bindNodeToVm = function () {
+        var dto = _.clone(departmentTreeSet.treeNode.vm);
+        queryFields.department = dto.DataNodeText;
+    };
+    $scope.ztree = departmentTreeSet;
+
+});
 
 
-    
-
-
-})

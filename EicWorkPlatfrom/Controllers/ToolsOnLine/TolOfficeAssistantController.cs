@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline;
 using Lm.Eic.Framework.ProductMaster.Model.Tools;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -77,11 +79,63 @@ namespace EicWorkPlatfrom.Controllers
 
         #endregion
 
-        #region ReportImproveProblem
+        #region ReportImproveProblem    
         public ActionResult ReportImproveProblem()
         {
             return View();
         }
+
+        [NoAuthenCheck]
+        public JsonResult StoreReportImproveProblemDatas(ReportImproveProblemModels model)
+        {
+            var opresult = ToolOnlineService.ReportImproveProblemManager.StoreReportImproveProblem(model);
+            return Json(opresult);
+        }
+        /// <summary>
+        /// 自动生成编号
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]       
+        public JsonResult AutoCreateCaseId()
+        {
+            var data = ToolOnlineService.ReportImproveProblemManager.AutoCreateCaseIdBuild();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        [NoAuthenCheck]
+        public ContentResult GetReportImproveProbleDatas(string problemSolve,int mode)
+        {
+            ReportImproveProblemModelsDto queryDto = new ReportImproveProblemModelsDto()
+            {
+                ProblemSolve = problemSolve,
+                SearchMode = mode
+            };
+            var datas = ToolOnlineService.ReportImproveProblemManager.GetReportImproveProbleDataBy(queryDto);
+            return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// 上传附件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public JsonResult UploadReportProblemFile(HttpPostedFileBase file)
+        {
+
+            string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.ReportProblemDataFile, DateTime.Now.ToString("yyyyMM"));
+            this.SaveFileToServer(file, filePath, addchangeFileName);
+            return Json("OK");
+           
+
+        }
+        public class FileAttatchData
+        {
+            public string CaseId { get; set; }
+            public string CaseIdNumber { get; set; }
+        }
+
+
+       
         #endregion
     }
 }

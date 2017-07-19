@@ -26,5 +26,15 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
         {
             get { return OBulider.BuildInstance<WorkTaskManager>(); }
         }
+        /// <summary>
+        /// 上报问题改善管理器
+        /// </summary>
+
+        public static ReportImproveProblemManager ReportImproveProblemManager
+        {
+            get { return OBulider.BuildInstance<ReportImproveProblemManager>(); }
+        }
+
+
     }
 }

@@ -113,4 +113,16 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
 
         }
     }
+    /// <summary>
+    /// 上报问题改善模块Mapping
+    /// </summary>
+    public class ReportImproveProblemMapping : EntityTypeConfiguration<ReportImproveProblemModels>
+    {
+        public ReportImproveProblemMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Tool_ReportImproveProblem");
+        }
+    }
 }
