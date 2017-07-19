@@ -529,6 +529,10 @@ namespace EicWorkPlatfrom.Controllers
         /// RMA文档文件夹
         /// </summary>
         public const string RmaHandleDataFile = "RmaInpectionHandleDataFile";
+        /// <summary>
+        /// ReportProblem上报改善问题文件夹
+        /// </summary>
+        public const string ReportProblemDataFile = "ReportProblemHandleDataFile";
     }
 
 

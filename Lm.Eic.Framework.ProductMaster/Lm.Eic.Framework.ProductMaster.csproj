@@ -65,6 +65,8 @@
     <Compile Include="Business\MessageNotify\NotifyModuleManager.cs" />
     <Compile Include="Business\MessageNotify\NotifyService.cs" />
     <Compile Include="Business\Tools\tlOnline\CollaborateContacManager.cs" />
+    <Compile Include="Business\Tools\tlOnline\ReportImproveProblemManager\ReportImproveProblemCrud.cs" />
+    <Compile Include="Business\Tools\tlOnline\ReportImproveProblemManager\ReportImproveProblemManager.cs" />
     <Compile Include="Business\Tools\tlOnline\tlOnlineCrudFactorty.cs" />
     <Compile Include="Business\Tools\tlOnline\ToolOnlineService.cs" />
     <Compile Include="Business\Tools\tlOnline\WorkTaskManageCrud.cs" />
@@ -75,8 +77,9 @@
     <Compile Include="DbAccess\Repository\EmailManageRepository\ItilEmailManageRepository.cs" />
     <Compile Include="DbAccess\Repository\ItilDevelopModuleManageRepository.cs" />
     <Compile Include="DbAccess\Repository\MesageNotifyRepository.cs" />
+    <Compile Include="DbAccess\Repository\ReportImproveProblemRepository\ReportImproveProblemRepository.cs" />
     <Compile Include="DbAccess\Repository\WorkTaskRepository.cs" />
-    <Compile Include="Model\ConfigDataDictionaryModel.cs" />
+    <Compile Include="Model\Tools\ConfigDataDictionaryModel.cs" />
     <Compile Include="Model\ITIL\EmailManageModel\ItilEmailManageModel.cs" />
     <Compile Include="Model\ITIL\EmailManageModel\ItilEmailManageModelDto.cs" />
     <Compile Include="Model\ITIL\ItilConfigMailInfoModel.cs" />
@@ -88,6 +91,8 @@
     <Compile Include="Model\Tools\CollaborateContactLibModel.cs" />
     <Compile Include="Business\Tools\tlOnline\WorkTaskManager.cs" />
     <Compile Include="Model\Tools\QueryWorkTaskManageDto.cs" />
+    <Compile Include="Model\Tools\ReportImproveProbleModels\ReportImproveProblemModelsDto.cs" />
+    <Compile Include="Model\Tools\ReportImproveProbleModels\ReportImproveProblemModels.cs" />
     <Compile Include="Model\Tools\WorkTaskManageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -838,7 +838,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
 
     var vmManager = {
         orderId: null,
-        orderInfo: null,
+        orderInfo: null,   
         //抽样批次数量
         sampleCount: 0,
         currentOrderSubIdItem: null,
@@ -1032,7 +1032,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
     //上传附件
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
-            qualityInspectionDataOpService.uploadFqcGatherDataAttachFile(fd).then(function (result) {
+           qualityInspectionDataOpService.SuploadFqcGatherDataAttachFile(fd).then(function (result) {
                 if (result === 'OK') {
                     var nowDate = new Date().getDate();
                     var nowHour = new Date().getHours();

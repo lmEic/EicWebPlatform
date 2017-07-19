@@ -17,7 +17,7 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
     $stateProvider.state('workTaskManage', {
         templateUrl: oAssistantUrlPrefix + 'WorkTaskManage'
     });
-    ///工作任务管理
+    ///上报改善问题
     $stateProvider.state('reportImproveProblem', {
         templateUrl: oAssistantUrlPrefix + 'ReportImproveProblem'
     });
