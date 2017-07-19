@@ -10,16 +10,13 @@
     <meta http-equiv="Content-Type" />
     <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1,user-scalable=no" />
     <title>在线工具</title>
-  
     <link rel="shortcut icon" href="@Url.Content("~/Content/login/lmlogo.png")" />
     <link href="@Url.Content("~/Content/bootstrap/dist/css/bootstrap.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/bootwatch/cerulean.bootstrap.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/font-awesome/css/font-awesome.min.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/main.css")" type="text/css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/zTree/dist/css/zTreeStyle/zTreeStyle.css")" type="text/css" rel="stylesheet" />
-   
     @Styles.Render("~/css/anstrap")
- 
 </head>
 
 <body>
@@ -70,6 +67,8 @@
                                         <a data-ui-sref-active="active" data-ui-sref="workTaskManage" style="cursor:pointer">工作任务管理</a>
                                         <a data-ui-sref-active="active" data-ui-sref="collaborateContactLib" style="cursor:pointer">名片夹</a>
                                         <a data-ui-sref-active="active" data-ui-sref="reportImproveProblem" style="cursor:pointer">上报改善问题</a>
+
+                                        <a data-ui-sref-active="active" data-ui-sref="wFInternalContactForm" style="cursor:pointer">内部联络单</a>
                                     </li>
                                 </ol>
                             </div>
@@ -102,15 +101,7 @@
 
     <script src="@Url.Content("~/Scripts/controller/toolsOnLine/toolsOnlineApp.js")"></script>
     <script src="@Url.Content("~/Scripts/controller/toolsOnLine/tolOfficeAssistant.js")"></script>
-
- 
-   
-        
-     
-  
-
-
-
+    <script src="@Url.Content("~/Scripts/controller/toolsOnLine/tolWorkFlow.js")"></scri></script>
 
 </body>
 </html>

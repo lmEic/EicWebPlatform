@@ -2,6 +2,7 @@
 using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.BoardManagment;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.DailyReport;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.PurchaseMapping;
+using Lm.Eic.App.DbAccess.Bpm.Mapping.WorkFlowMapping;
 using Lm.Eic.App.DomainModel.Bpm.Purchase;
 using Lm.Eic.App.DomainModel.Bpm.Ast;
 using Lm.Eic.App.DomainModel.Bpm.Pms.BoardManagment;
@@ -71,7 +72,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         public DbSet<SupplierSeasonAuditModel> SupplieSeasonAudit { set; get; }
         //季度考核 实地辅导计划/执行表
         public DbSet<SupplierSeasonTutorModel> SupplierSeasonAuditTutor { set; get; }
-        //供应商自评复评明细表 
+        //供应商自评复评明细表
         public DbSet<SupplierGradeInfoModel> SupplierGradeInfo { set; get; }
 
 
@@ -158,10 +159,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new SupplierSeasonAuditMapping());
             //季度考核 实地辅导计划/执行表
             modelBuilder.Configurations.Add(new SupplierSeasonTutorMapping());
-            //供应商自评复评明细表 
+            //供应商自评复评明细表
             modelBuilder.Configurations.Add(new SupplierGradeInfoMapping());
             #endregion
-
 
 
             #region 质量管理
@@ -173,7 +173,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new IqcInspectionItemConfigMapping());
             modelBuilder.Configurations.Add(new IqcInspectionMasterMapping());
             modelBuilder.Configurations.Add(new IqcInspectionDetailMapping());
-            //FQC 
+            //FQC
             modelBuilder.Configurations.Add(new FqcInspectionItemConfigMapping());
             modelBuilder.Configurations.Add(new FqcInspectionMasterMapping());
             modelBuilder.Configurations.Add(new FqcInspectionDetailMapping());
@@ -182,6 +182,11 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new RmaInspectionManageMapping());
             modelBuilder.Configurations.Add(new RmaReportInitiateMapping());
 
+            #endregion
+
+
+            #region 电子签核管理
+            modelBuilder.Configurations.Add(new InternalContactFormModelMapping());
             #endregion
         }
     }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
 {
@@ -47,7 +48,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         public string AutoBuildingRmaId()
         {
             int nowYaer = DateTime.Now.Year;
-            string maxRmaId = RmaCurdFactory.RmaReportInitiate.CountNowYaerMonthRmaIdNumber(nowYaer);
+            string maxRmaId = RmaCrudFactory.RmaReportInitiate.CountNowYaerMonthRmaIdNumber(nowYaer);
             int count = Convert.ToInt16(maxRmaId.Substring(maxRmaId.Length - 3, 3)) + 1;
             return "R" + DateTime.Now.ToString("yy") + DateTime.Now.ToString("MM") + count.ToString("000");
         }
@@ -59,7 +60,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public OpResult StoreRamReortInitiate(RmaReportInitiateModel model)
         {
-            return RmaCurdFactory.RmaReportInitiate.Store(model, true);
+            return RmaCrudFactory.RmaReportInitiate.Store(model, true);
         }
         /// <summary>
         /// 得到初始Rma表单
@@ -68,7 +69,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public List<RmaReportInitiateModel> GetInitiateDatas(string rmaId)
         {
-            return RmaCurdFactory.RmaReportInitiate.GetInitiateDatas(rmaId);
+            return RmaCrudFactory.RmaReportInitiate.GetInitiateDatas(rmaId);
 
         }
         public List<RmaReportInitiateModel> GetInitiateDatas(string formDate, string toDate)
@@ -81,7 +82,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 int formDateMonth = Convert.ToInt32(formDate.Substring(4, 2));
                 int toDateYear = Convert.ToInt32(toDate.Substring(0, 4));
                 int toDateMonth = Convert.ToInt32(toDate.Substring(4, 2));
-                return RmaCurdFactory.RmaReportInitiate.GetInitiateDatasBy(formDateYear, formDateMonth, toDateYear, toDateMonth);
+                return RmaCrudFactory.RmaReportInitiate.GetInitiateDatasBy(formDateYear, formDateMonth, toDateYear, toDateMonth);
             }
             catch (Exception ex)
             {
@@ -102,7 +103,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                 //201701
                 int year = Convert.ToInt16(yearMonth.Substring(0, 4));
                 int month = Convert.ToInt16(yearMonth.Substring(4, 2));
-                return RmaCurdFactory.RmaReportInitiate.GetRmaReportInitiateDatas(year, month);
+                return RmaCrudFactory.RmaReportInitiate.GetRmaReportInitiateDatas(year, month);
             }
             catch (Exception ex)
             {
@@ -123,7 +124,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         public List<RmaBusinessDescriptionModel> GetRmaBusinessDescriptionDatasBy(string rmaId)
         {
             if (rmaId != null && rmaId == string.Empty) return null;
-            return RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(rmaId);
+            return RmaCrudFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(rmaId);
         }
         /// <summary>
         /// 通过退料单或换货单得到相应的物料信息
@@ -171,12 +172,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             try
             {
                 if (model.ProductsShipDates == string.Empty) return OpResult.SetErrorResult("存储的完成日期不对");
-                var result = RmaCurdFactory.RmaBussesDescription.Store(model, true);
+                var result = RmaCrudFactory.RmaBussesDescription.Store(model, true);
                 if (result.Result && model.OpSign == OpMode.Add)
                 {
                     string rmaHandleStatus = GetBusinessStatus(model.RmaId);
                     if (rmaHandleStatus != string.Empty)
-                        RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, rmaHandleStatus);
+                        RmaCrudFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, rmaHandleStatus);
                 }
                 return result;
             }
@@ -190,7 +191,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             try
             {
                 if (string.IsNullOrEmpty(rmaId)) return string.Empty;
-                var getRmaBusinessDescriptionData = RmaCurdFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(rmaId);
+                var getRmaBusinessDescriptionData = RmaCrudFactory.RmaBussesDescription.GetRmaBussesDescriptionDatasBy(rmaId);
                 if (getRmaBusinessDescriptionData == null || getRmaBusinessDescriptionData.Count == 0)
                     return string.Empty;
                 List<double> minusNumberList = new List<double>();
@@ -229,7 +230,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         public List<RmaInspectionManageModel> GetDatasBy(string rmaId)
         {
             if (rmaId != null && rmaId == string.Empty) return null;
-            return RmaCurdFactory.RmaInspectionManage.GetInspectionManageDatasBy(rmaId);
+            return RmaCrudFactory.RmaInspectionManage.GetInspectionManageDatasBy(rmaId);
         }
 
         /// <summary>
@@ -239,10 +240,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <returns></returns>
         public OpResult StoreInspectionManageData(RmaInspectionManageModel model)
         {
-            var result = RmaCurdFactory.RmaInspectionManage.Store(model, true);
+            var result = RmaCrudFactory.RmaInspectionManage.Store(model, true);
             if (result.Result && model.OpSign == OpMode.Add)
             {
-                RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, RmaHandleStatus.InspecitonStatus);
+                RmaCrudFactory.RmaReportInitiate.UpdateHandleStatus(model.RmaId, RmaHandleStatus.InspecitonStatus);
                 if (model.RmaBussesesNumberStr.Contains(",") && !string.IsNullOrEmpty(model.RmaBussesesNumberStr))
                 {
                     var number = model.RmaBussesesNumberStr.Split(',');
@@ -250,14 +251,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
                         foreach (var i in number)
                         {
                             int bussesIndexNumber = Convert.ToInt32(i);
-                            RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, bussesIndexNumber, RmaHandleStatus.InspecitonStatus);
+                            RmaCrudFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, bussesIndexNumber, RmaHandleStatus.InspecitonStatus);
                         }
                 }
                 else
                 {
-                    RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, Convert.ToInt32(model.RmaBussesesNumberStr), RmaHandleStatus.InspecitonStatus);
+                    RmaCrudFactory.RmaBussesDescription.UpdateHandleStatus(model.RmaId, Convert.ToInt32(model.RmaBussesesNumberStr), RmaHandleStatus.InspecitonStatus);
                 }
-                RmaCurdFactory.RmaInspectionManage.UpdateHandleStatus(model.ParameterKey);
+                RmaCrudFactory.RmaInspectionManage.UpdateHandleStatus(model.ParameterKey);
             }
             HandleFinishRmaId(model.RmaId);
             return result;
@@ -269,28 +270,31 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
         /// <param name="rmaId"></param>
         private void HandleFinishRmaId(string rmaId)
         {
-            var updateResult = RmaCurdFactory.RmaBussesDescription.UpdateHandleStatus(rmaId);
+            var updateResult = RmaCrudFactory.RmaBussesDescription.UpdateHandleStatus(rmaId);
             if (updateResult.Result)
             {
-                updateResult = RmaCurdFactory.RmaInspectionManage.UpdateFinishStatus(rmaId);
+                updateResult = RmaCrudFactory.RmaInspectionManage.UpdateFinishStatus(rmaId);
                 if (updateResult.Result)
-                    updateResult = RmaCurdFactory.RmaReportInitiate.UpdateHandleStatus(rmaId, RmaHandleStatus.FinishStatus);
+                    updateResult = RmaCrudFactory.RmaReportInitiate.UpdateHandleStatus(rmaId, RmaHandleStatus.FinishStatus);
             }
         }
 
 
         public DownLoadFileModel GetPrintDatialDataDLFM(string siteRootPath, string rmaId)
         {
-            DownLoadFileModel dlfm = new DownLoadFileModel();
-            string filePath = "";
-            string certificateFileName = "RMASD1.1-11-01.xls";
-            var model = GetDatasBy(rmaId);
-            if (model == null)
-                return dlfm.Default();
-            return dlfm.CreateInstance
-                (siteRootPath.GetDownLoadFilePath(filePath),
-                certificateFileName.GetDownLoadContentType(),
-                certificateFileName);
+            //DownLoadFileModel dlfm = new DownLoadFileModel();
+            //string filePath = "";
+            //string certificateFileName = "RMASD1.1-11-01.xls";
+            var modelDatas = RmaCrudFactory.RmaReportInitiate.GetInitiateDatas("R1707067").FirstOrDefault();
+            //if (model == null)
+            //    return dlfm.Default();
+            // RmaInspectionManageModel 
+
+            ExcelImportService mm = new ExcelImportService(@"E:\RMASD1.1-11-01.xls", @"E:\121.xml", @"E:\4567.xml");
+            //var qqq = mm.Import<RmaReportInitiateModel>();
+            System.IO.MemoryStream stream = mm.GetInseerFixModel<RmaReportInitiateModel>(modelDatas);
+            return stream.CreateDownLoadExcelFileModel("Rma模板");
+
         }
     }
 }

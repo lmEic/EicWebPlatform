@@ -165,10 +165,10 @@ namespace Lm.Eic.Framework.Authenticate.Business
         {
             if (entities == null || entities.Count == 0) return OpResult.SetSuccessResult("entities can't be null", false);
             int record = 0;
-            entities = entities.FindAll(e => e.OpSign != "init");
+            entities = entities.FindAll(e => e.OpSign != OpMode.None);
             entities.ForEach(mdl =>
             {
-                if (mdl.OpSign == "add")
+                if (mdl.OpSign == OpMode.Add)
                 {
                     SetPrimaryPropertyValue(mdl);
                     if (!irep.IsExist(m => m.PrimaryKey == mdl.PrimaryKey))
@@ -176,7 +176,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
                         record += irep.Insert(mdl);
                     }
                 }
-                else if (mdl.OpSign == "delete")
+                else if (mdl.OpSign == OpMode.Delete)
                 {
                     SetPrimaryPropertyValue(mdl);
                     record += irep.Delete(d => d.PrimaryKey == mdl.PrimaryKey);
@@ -189,8 +189,7 @@ namespace Lm.Eic.Framework.Authenticate.Business
         /// 删除记录，在模块管理中删除模块时进行调用此函数
         /// 删除此模块对应的角色匹配信息
         /// </summary>
-        /// <param name="assemblyName"></param>
-        /// <param name="moduleName"></param>
+        /// <param name="primaryName"></param>
         /// <returns></returns>
         internal int Delete(string primaryName)
         {

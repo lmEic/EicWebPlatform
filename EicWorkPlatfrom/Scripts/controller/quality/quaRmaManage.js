@@ -139,9 +139,7 @@ qualityModule.controller('createRmaFormCtrl', function ($scope, rmaDataOpService
         }
     };
     $scope.vmManager = vmManager;
-
     var operate = Object.create(leeDataHandler.operateStatus);
-
     $scope.operate = operate;
     operate.edit = function (item) {
         item.OpSign = leeDataHandler.dataOpMode.edit;

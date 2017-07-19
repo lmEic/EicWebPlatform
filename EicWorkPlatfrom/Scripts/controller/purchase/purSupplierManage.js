@@ -339,11 +339,12 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         ManagerRisk: null,
         SubstitutionSupplierId: null,
         SeasonNum: 0,
+        AuditPeople: null,
         Remark: null,
         OpPserson: null,
         OpDate: null,
         Optime: null,
-        OpSign: null,
+        OpSign: leeDataHandler.dataOpMode.add,
         Id_key: null,
         isEditting: false
     };
@@ -366,6 +367,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
         ManagerRisk: null,
         SubstitutionSupplierId: null,
         SeasonNum: 0,
+        AuditPeople: null,
         Remark: null,
         OpPerson: null,
         OpDate: null,
@@ -376,6 +378,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
     var lastData = {
         ManagerRisk: null,
         MaterialGrade: null,
+        AuditPeople: null,
         Remark: null,
         RewardsWay: null,
         SubstitutionSupplierId: null,
@@ -424,6 +427,7 @@ purchaseModule.controller('supplierEvaluationManageCtrl', function ($scope, supp
                 supplierDataOpService.getLastAuditSupplierData(item.SupplierId).then(function (data) {
                     leeHelper.copyVm(data, lastData);
                     leeHelper.copyVm(lastData, item);
+                    item.OpSign = leeDataHandler.dataOpMode.add;
                 });
             }
             vmManager.editItem = $scope.vm = uiVM = item;

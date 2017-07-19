@@ -17,7 +17,8 @@
                     <label>产品品名</label>
                     <input placeholder="输产品品名按下回车键查找" ng-model="vmManager.productName" ng-keypress="vmManager.getProductFlowList($event)" />
                     <button class="btn btn-sm btn-primary" title="模糊查找品号" ng-click="vmManager.getProductFlowDatails()">
-                                 <i class="fa fa-search"></i>模糊查找</button>
+                        <i class="fa fa-search"></i>模糊查找
+                    </button>
                     <div class="h-split"></div>
                 </div>
             </div>
@@ -100,7 +101,6 @@
                         </table>
                     </div>
                 </div>
-
                 <div pageslide ps-open="vmManager.editWindowDisplay" ps-side="left" ps-size="{{vmManager.editWindowWidth}}" ps-speed="0.25" ps-container='editWindow'>
                     <div style="padding:10px;overflow-y:auto">
                         <form role="form" name="formProductFlow" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
@@ -120,7 +120,7 @@
                                             <small ng-message="required">工艺标示不能为空</small>
                                         </div>
                                     </div>
-                                 </div>
+                                </div>
                                 <div class="form-group">
                                     <label for="productFlowId" class="col-md-3 control-label">工艺编号</label>
                                     <div class="col-md-3">
@@ -156,7 +156,7 @@
                                 <div class="form-group">
                                     <label for="maxMachineCount" class="col-md-3 control-label">最大机台数</label>
                                     <div class="col-md-3">
-                                        <input name="maxMachineCount" type="number" class="form-control" ng-model="vm.MaxMachineCount"/>
+                                        <input name="maxMachineCount" type="number" class="form-control" ng-model="vm.MaxMachineCount" />
                                     </div>
                                     <label for="relaxCoefficient" class="col-md-3 control-label">宽放系数</label>
                                     <div class="col-md-3">
@@ -169,7 +169,7 @@
                                 <div class="form-group">
                                     <label for="mouldId" class="col-md-3 control-label">磨具编号</label>
                                     <div class="col-md-3">
-                                        <input name="mouldId" class="form-control" ng-model="vm.MouldId"/>
+                                        <input name="mouldId" class="form-control" ng-model="vm.MouldId" />
                                     </div>
                                     <label for="mouldName" class="col-md-3 control-label">磨具名称</label>
                                     <div class="col-md-3">
@@ -179,7 +179,7 @@
                                 <div class="form-group">
                                     <label for="mouldCavityCount" class="col-md-3 control-label">模穴数</label>
                                     <div class="col-md-3">
-                                        <input name="mouldCavityCount" class="form-control" ng-model="vm.MouldCavityCount"/>
+                                        <input name="mouldCavityCount" class="form-control" ng-model="vm.MouldCavityCount" />
                                     </div>
                                     <label for="remark" class="col-md-3 control-label">备注</label>
                                     <div class="col-md-3">
@@ -201,7 +201,6 @@
                         </form>
                     </div>
                 </div>
-
                 <div pageslide ps-open="vmManager.copyWindowDisplay" ps-side="right" ps-size="{{vmManager.editWindowWidth}}" ps-speed="0.25" ps-container='editWindow'>
                     <div style="padding:10px;overflow-y:auto">
                         <div class="panel panel-primary">
@@ -249,7 +248,7 @@
             </div>
         </div>
     </div>
-  
+
     <div class="panel-footer">
 
     </div>

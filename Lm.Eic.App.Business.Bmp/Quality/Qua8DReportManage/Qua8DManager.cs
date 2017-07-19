@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.App.Business.Bmp.Quality
+namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
 {
-    public class QualityService
+    class EightDManager
     {
     }
 }

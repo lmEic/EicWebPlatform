@@ -71,6 +71,55 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
         /// </summary>
         /// <param name="xmlpath"></param>
         /// <returns></returns>
+        public List<FixInsertRegular> GetXMLInterInfo(string xmlpath)
+        {
+            var reader = new XmlTextReader(xmlpath);
+            var doc = new XmlDocument();
+            doc.Load(reader);
+            var headerList = new List<FixInsertRegular>();
+            foreach (XmlNode node in doc.DocumentElement.ChildNodes)
+            {
+                // HeaderText PropertyName DataType FillText RowIndexStart RowIndexEnd 
+                // ColumnIndexStart  ColumnIndexEnd  Ismerge 
+                var header = new FixInsertRegular();
+                if (node.Attributes["HeaderText"] != null)
+                    header.HeaderText = node.Attributes["HeaderText"].Value;
+                if (node.Attributes["PropertyName"] != null)
+                    header.PropertyName = node.Attributes["PropertyName"].Value;
+                if (node.Attributes["DataType"] != null)
+                    header.DataType = node.Attributes["DataType"].Value;
+                if (node.Attributes["FillText"] != null)
+                    header.FillText = node.Attributes["FillText"].Value;
+                if (node.Attributes["RowIndexStart"] != null)
+                    header.RowIndexStart = int.Parse(node.Attributes["RowIndexStart"].Value);
+                if (node.Attributes["RowIndexEnd"] != null)
+                    header.RowIndexEnd = int.Parse(node.Attributes["RowIndexEnd"].Value);
+                if (node.Attributes["ColumnIndexStart"] != null)
+                    header.ColumnIndexStart = int.Parse(node.Attributes["ColumnIndexStart"].Value);
+                if (node.Attributes["ColumnIndexEnd"] != null)
+                    header.ColumnIndexEnd = int.Parse(node.Attributes["ColumnIndexEnd"].Value);
+                if (node.Attributes["Ismerge"] != null)
+                    header.Ismerge = bool.Parse(node.Attributes["Ismerge"].Value);
+                //int fontHeight,  string fontName = "宋体", short color = 8, int verticalAlignment = 2, int alignment = 2
+                if (node.Attributes["FontName"] != null)
+                    header.FontName = node.Attributes["FontName"].Value;
+                if (node.Attributes["FontHeightInPoints"] != null)
+                    header.FontHeightInPoints = short.Parse(node.Attributes["FontHeightInPoints"].Value);
+                if (node.Attributes["Color"] != null)
+                    header.Color = short.Parse(node.Attributes["Color"].Value);
+                if (node.Attributes["Alignment"] != null)
+                    header.Alignment = int.Parse(node.Attributes["Alignment"].Value);
+                if (node.Attributes["VerticalAlignment"] != null)
+                    header.VerticalAlignment = int.Parse(node.Attributes["VerticalAlignment"].Value);
+                headerList.Add(header);
+            }
+            return headerList;
+        }
+        /// <summary>
+        /// 读取XML配置信息集
+        /// </summary>
+        /// <param name="xmlpath"></param>
+        /// <returns></returns>
         public List<Regular> GetXMLInfo(string xmlpath)
         {
             var reader = new XmlTextReader(xmlpath);
@@ -81,17 +130,20 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
             {
                 var header = new Regular();
                 if (node.Attributes["firstHeaderRow"] != null)
-                    header.HeaderRegular.Add("firstHeaderRow", int.Parse(node.Attributes["firstHeaderRow"].Value));
+                {
+                    int ddd = int.Parse(node.Attributes["firstHeaderRow"].Value);
+                    header.HeaderRegular.Add("firstHeaderRow", ddd);
+                }
                 if (node.Attributes["lastHeaderRow"] != null)
-                    header.HeaderRegular.Add("lastHeaderRow", int.Parse(node.Attributes["lastHeaderRow"].Value));
+                    header.HeaderRegular.Add("lastHeaderRow", int.Parse(node.Attributes["lastHeaderRow"].Value.ToString()));
                 if (node.Attributes["sheetCount"] != null)
-                    header.HeaderRegular.Add("sheetCount", int.Parse(node.Attributes["sheetCount"].Value));
+                    header.HeaderRegular.Add("sheetCount", int.Parse(node.Attributes["sheetCount"].Value.ToString()));
                 if (node.Attributes["headerText"] != null)
-                    header.HeaderText = node.Attributes["headerText"].Value;
+                    header.HeaderText = node.Attributes["headerText"].Value.ToString();
                 if (node.Attributes["propertyName"] != null)
-                    header.PropertyName = node.Attributes["propertyName"].Value;
+                    header.PropertyName = node.Attributes["propertyName"].Value.ToString();
                 if (node.Attributes["dataType"] != null)
-                    header.DataType = node.Attributes["dataType"].Value;
+                    header.DataType = node.Attributes["dataType"].Value.ToString();
                 headerList.Add(header);
             }
             return headerList;
