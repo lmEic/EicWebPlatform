@@ -87,9 +87,25 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
                 throw;
             }
         }
+        internal List<ReportImproveProblemModels> CaseIdFindBy(string caseId)
+        {
+            if (caseId == null) return new List<ReportImproveProblemModels>();
+            try
+            {
+              
+                    
+                        return irep.Entities.Where(m => m.CaseId == caseId).ToList();
+                   
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
 
-      
         #endregion
 
     }

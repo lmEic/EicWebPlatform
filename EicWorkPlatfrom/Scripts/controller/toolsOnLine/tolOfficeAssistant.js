@@ -563,6 +563,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
             vmManager.searchDataset = [];
             vmManager.datasource = [];
             oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve, mode).then(function (datas) {
+              
                 vmManager.datasource = datas;
             })
         },
@@ -576,6 +577,10 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
 
 
         },
+        //下载文件
+        //loadFile: function (item) {
+        //    var loadUrl ="TolOfficeAssistant/LoadReportImproveProblemFile"
+        //}
 
     };
     $scope.vmManager = vmManager;
@@ -639,7 +644,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                     uiVM.FileName = datas.FileName;
                     uiVM.FilePath = datas.FullFileName;
                     vmManager.isdisabled = true;
-                    alert("上传文件成功!");
+                    alert("上传"+fd.name+"文件成功!");
                 }
             })
         })     

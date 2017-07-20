@@ -91,7 +91,6 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             inspectionAQL: inspectionAQL
         });
     };
-
     ////////////////////////////////////////////fqc数据采集控制器////////////////////////////////////////
     //fqc数据采集控制器    获得检验项目数据
     quality.getFqcInspectionItemDataSummaryLabelList = function (orderId, materialId) {

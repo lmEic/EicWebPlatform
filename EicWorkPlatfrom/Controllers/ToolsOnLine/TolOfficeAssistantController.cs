@@ -139,6 +139,10 @@ namespace EicWorkPlatfrom.Controllers
             }
             return Json(FailResult);
         }
+        //public  FileResult LoadReportImproveProblemFile(string caseId)
+        //{
+        //    DownLoadFile dlfm=ToolOnlineService.ReportImproveProblemManager.
+        //}
         public class FileAttatchData
         {
             public string CaseId { get; set; }

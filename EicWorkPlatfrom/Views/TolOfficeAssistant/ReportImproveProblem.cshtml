@@ -6,158 +6,168 @@
                     <form role="form" name="formReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                         <div class="bs-callout bs-callout-info">
                             <fieldset>
-                                <legend>提报人信息</legend>
-                                <div class="form-group">
-                                    <label for="workerId" class="col-md-2 control-label">工号</label>
-                                    <div class="col-md-4">
-                                        <div class="input-group">
-                                            <input name="workerId" class="form-control" ng-model="vm.WorkerId" placeholder="请输入您工号" ng-change="vmManager.getWorkerInfo()" data-ensure-user-exist required />
-                                            <div class="error-messages" ng-messages="fromReport.workerId.$error" ng-show="operate.showValidation">
-                                                <small ng-message="required">工号不能为空</small>
+                                <legend><a class="label label-success" data-toggle="collapse" data-parent="#div1" href="#collapseOne">提报人信息<i class="glyphicon glyphicon-sort"></i></a></legend>
+                                <div id="collapseOne" class="panel-collapse collapse in active">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label for="workerId" class="col-md-2 control-label">工号</label>
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <input name="workerId" class="form-control" ng-model="vm.WorkerId" placeholder="请输入您工号" ng-change="vmManager.getWorkerInfo()" data-ensure-user-exist required />
+                                                    <div class="error-messages" ng-messages="fromReport.workerId.$error" ng-show="operate.showValidation">
+                                                        <small ng-message="required">工号不能为空</small>
+                                                    </div>
+                                                    <div class="input-group-addon" ng-show="vmManager.isSingle">
+                                                        <label class="label label-primary"> <i class="fa fa-user"></i> {{vm.Name}}</label>
+                                                    </div>
+                                                    <div class="input-group-btn" ng-hide="vmManager.isSingle">
+                                                        <button type="button" class="btn btn-primary"
+                                                                data-animation="am-flip-x"
+                                                                bs-dropdown aria-haspopup="true" aria-expanded="false">
+                                                            <span class="fa fa-chevron-circle-down"></span>
+                                                        </button>
+                                                        <div class="dropdown-menu" role="menu">
+                                                            <ul class="list-group">
+                                                                <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker)"
+                                                                    ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
+                                                                    <i class="fa fa-user"></i>
+                                                                    <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
+                                                                    <span>姓名：{{worker.Name}}</span>|
+                                                                    <span>部门：{{worker.Department}}</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="input-group-addon" ng-show="vmManager.isSingle">
-                                                <label class="label label-primary"> <i class="fa fa-user"></i> {{vm.Name}}</label>
+                                            <label for="name" class="col-md-2 control-label">姓名</label>
+                                            <div class="col-md-4">
+                                                <input type="text" name="name" class="form-control" ng-model="vm.Name" placeholder="姓名" readonly required />
+                                                <div class="error-messages" ng-messages="formReport.name.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">姓名不能为空</small>
+                                                </div>
                                             </div>
-                                            <div class="input-group-btn" ng-hide="vmManager.isSingle">
-                                                <button type="button" class="btn btn-primary"
-                                                        data-animation="am-flip-x"
-                                                        bs-dropdown aria-haspopup="true" aria-expanded="false">
-                                                    <span class="fa fa-chevron-circle-down"></span>
-                                                </button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <ul class="list-group">
-                                                        <li class="list-group-item" style="cursor:pointer" ng-click="vmManager.selectWorker(worker)"
-                                                            ng-repeat="worker in vmManager.searchedWorkers track by $index" data-title="岗位：{{worker.Post}}" data-bs-tooltip>
-                                                            <i class="fa fa-user"></i>
-                                                            <span class="label label-primary">工号：{{worker.WorkerId}}</span>|
-                                                            <span>姓名：{{worker.Name}}</span>|
-                                                            <span>部门：{{worker.Department}}</span>
-                                                        </li>
-                                                    </ul>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="department" class="col-md-2 control-label">部门</label>
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <input name="department" class="form-control" ng-model="vm.Department" readonly required />
+                                                    <div class="error-messages" ng-messages="formReport.department.$error" ng-show="operate.showValidation">
+                                                        <small ng-message="required">部门不能为空</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <label for="problemDate" class="col-md-2 control-label">提报日期</label>
+                                            <div class="col-md-4">
+                                                <input type="date" name="problemDate" class="form-control" ng-model="vm.ProblemDate" placeholder="提报日期" format-date required />
+                                                <div class="error-messages" ng-messages="formReport.problemDate.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">提报日期不能为空</small>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <label for="name" class="col-md-2 control-label">姓名</label>
-                                    <div class="col-md-4">
-                                        <input type="text" name="name" class="form-control" ng-model="vm.Name" placeholder="姓名" readonly required />
-                                        <div class="error-messages" ng-messages="formReport.name.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">姓名不能为空</small>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="department" class="col-md-2 control-label">部门</label>
-                                    <div class="col-md-4">
-                                        <div class="input-group">
-                                            <input name="department" class="form-control" ng-model="vm.Department" readonly required />
-                                            <div class="error-messages" ng-messages="formReport.department.$error" ng-show="operate.showValidation">
-                                                <small ng-message="required">部门不能为空</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <label for="problemDate" class="col-md-2 control-label">提报日期</label>
-                                    <div class="col-md-4">
-                                        <input type="date" name="problemDate" class="form-control" ng-model="vm.ProblemDate" placeholder="提报日期" format-date required />
-                                        <div class="error-messages" ng-messages="formReport.problemDate.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">提报日期不能为空</small>
-                                        </div>
-                                    </div>
-                                </div>
+                                </div>   
+                               
                                 <br />
+                                <legend ><a class="label label-success"  data-toggle="collapse"data-parent="#div12" href="#collapseTwo">问题描述信息<i class="glyphicon glyphicon-sort"></i></a></legend>
+                                <div id="collapseTwo" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label for="systemName" class="col-md-2 control-label">系统名称</label>
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <input name="systemName" placeholder="请选择系统名称" class="form-control" ng-model="vm.SystemName" required />
+                                                    <div class="error-messages" ng-messages="formReport.systemName.$error" ng-show="operate.showValidation">
+                                                        <small ng-message="required">系统名称不能为空</small>
+                                                    </div>
+                                                    <span class="input-group-btn">
 
-                                <legend >问题描述信息</legend>
-
-                                <div class="form-group">
-                                    <label for="systemName" class="col-md-2 control-label">系统名称</label>
-                                    <div class="col-md-4">
-                                        <div class="input-group">
-                                            <input name="systemName" placeholder="请选择系统名称" class="form-control" ng-model="vm.SystemName" required />
-                                            <div class="error-messages" ng-messages="formReport.systemName.$error" ng-show="operate.showValidation">
-                                                <small ng-message="required">系统名称不能为空</small>
+                                                        <button type="button" class="btn btn-primary" ng-model="vm.SystemName" ng-change="vmManager.selectSystemName()"
+                                                                data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="选择系统名称"
+                                                                data-bs-options="item.id as item.text for item in vmManager.systemNames" data-bs-select></button>
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <span class="input-group-btn">
-
-                                                <button type="button" class="btn btn-primary" ng-model="vm.SystemName" ng-change="vmManager.selectSystemName()"
-                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="选择系统名称"
-                                                        data-bs-options="item.id as item.text for item in vmManager.systemNames" data-bs-select></button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <label for="moduleName" class="col-md-2 control-label">模块类别</label>
-                                    <div class="col-md-4">
-                                        <div class="input-group">
-                                            <input name="moduleName" class="form-control" placeholder="请选择模块类别" ng-model="vm.ModuleName" required />
-                                            <div class="error-messages" ng-messages="formReport.moduleName.$error" ng-show="operate.showValidation">
-                                                <small ng-message="required">模块类别不能为空</small>
+                                            <label for="moduleName" class="col-md-2 control-label">模块类别</label>
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <input name="moduleName" class="form-control" placeholder="请选择模块类别" ng-model="vm.ModuleName" required />
+                                                    <div class="error-messages" ng-messages="formReport.moduleName.$error" ng-show="operate.showValidation">
+                                                        <small ng-message="required">模块类别不能为空</small>
+                                                    </div>
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-primary" ng-model="vm.ModuleName"
+                                                                data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="选择模块类别" ng-change="vmManager.autoCreateCaseid()"
+                                                                data-bs-options="module.id as module.text for module in vmManager.showmoduleNameList" data-bs-select></button>
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary" ng-model="vm.ModuleName"
-                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="选择模块类别" ng-change="vmManager.autoCreateCaseid()"
-                                                        data-bs-options="module.id as module.text for module in vmManager.showmoduleNameList" data-bs-select></button>
-                                            </span>
                                         </div>
-                                    </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="problemDesc" class="col-md-2 control-label">问题描述</label>
-                                    <div class="col-md-10">
-                                        <textarea rows="8" name="problemDesc" class="form-control" ng-model="vm.ProblemDesc" placeholder="问题描述" />
-                                     
+                                        <div class="form-group">
+                                            <label for="problemDesc" class="col-md-2 control-label">问题描述</label>
+                                            <div class="col-md-10">
+                                                <textarea rows="8" name="problemDesc" class="form-control" ng-model="vm.ProblemDesc" placeholder="问题描述" />
+
+
+                                            </div>
+                                            <div class="error-messages" ng-messages="formReport.problemDesc.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">问题描述不能为空</small>
+                                            </div>
+                                            <div class="col-md-3 col-md-offset-2">
+                                                <div yl-upload-file></div>
+                                                <div ng-if="vmManager.isdisabled">{{vm.FileName}}</div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="problemDegree" class="col-md-2 control-label">问题性质</label>
+                                            <div class="col-md-4">
+                                                <div class="input-group">
+                                                    <input name="problemDegree" class="form-control" placeholder="请选择性质" ng-model="vm.ProblemDegree" required />
+                                                    <div class="error-messages" ng-messages="formReport.problemDegree.$error" ng-show="operate.showValidation">
+                                                        <small ng-message="required">问题性质不能为空</small>
+                                                    </div>
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-primary" ng-model="vm.ProblemDegree"
+                                                                data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="选择性质"
+                                                                data-bs-options="degree.id as degree.text for degree in vmManager.problemDegrees" data-bs-select></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <label for="caseId" class="col-md-2 control-label">编号</label>
+                                            <div class="col-md-4">
+                                                <input name="caseId" class="form-control" ng-model="vm.CaseId" placeholder="编号自动生成" readonly required />
+                                                <div class="error-messages" ng-messages="formReport.caseId.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">编号不能为空</small>
+                                                </div>
+                                            </div>
+                                        </div>
                                        
-                                    </div>
-                                    <div class="error-messages" ng-messages="formReport.problemDesc.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">问题描述不能为空</small>
-                                    </div>
-                                    <div class="col-md-3 col-md-offset-2">
-                                        <div yl-upload-file></div>
-                                        <div ng-if="vmManager.isdisabled">{{vm.FileName}}</div>
-                                       
-                                    </div>
+                                      </div>                     
+                                    </div>  
+                                <br />
+                               <legend><a class="label label-success" data-toggle="collapse" href="#collapseThree">确认提交信息<i class="glyphicon glyphicon-sort"></i></a></legend>
+                                <div id="collapseThree" class="panel-collapse collapse in ">
+                                    <div class="panel-body">
 
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="problemDegree" class="col-md-2 control-label">问题性质</label>
-                                    <div class="col-md-4">
-                                        <div class="input-group">
-                                            <input name="problemDegree" class="form-control" placeholder="请选择性质" ng-model="vm.ProblemDegree" required />
-                                            <div class="error-messages" ng-messages="formReport.problemDegree.$error" ng-show="operate.showValidation">
-                                                <small ng-message="required">问题性质不能为空</small>
+                                        <div class="alert alert-info ">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                </div>
+                                                <div class="col-md-10 col-lg-offset-4">
+                                                    <button id="btnsave" class="btn btn-primary" ng-click="operate.saveAll(formReport.$valid)"><i class="fa fa-save"></i>保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <button class="btn btn-primary" ng-click="operate.refresh()"><i class="fa fa-undo"></i>重置</button>
+                                                    <span yl-operatemsg-board></span>
+                                                </div>
                                             </div>
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary" ng-model="vm.ProblemDegree"
-                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="选择性质"
-                                                        data-bs-options="degree.id as degree.text for degree in vmManager.problemDegrees" data-bs-select></button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <label for="caseId" class="col-md-2 control-label">编号</label>
-                                    <div class="col-md-4">
-                                        <input name="caseId" class="form-control" ng-model="vm.CaseId" placeholder="编号自动生成" readonly required />
-                                        <div class="error-messages" ng-messages="formReport.caseId.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">编号不能为空</small>
                                         </div>
                                     </div>
                                 </div>
-                                <br/>
-                                <br />                        
-                               <legend>确认提交信息</legend>
-
-                                <div class="alert alert-info ">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                        </div>
-                                        <div class="col-md-10 col-lg-offset-4">
-                                            <button id="btnsave" class="btn btn-primary" ng-click="operate.saveAll(formReport.$valid)"><i class="fa fa-save"></i>保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <button class="btn btn-primary" ng-click="operate.refresh()"><i class="fa fa-undo"></i>重置</button>
-                                            <span yl-operatemsg-board></span>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </fieldset>
                         </div>
                     </form>
@@ -263,6 +273,7 @@
                                         <label for="problemDesc" class="col-md-2 control-label">问题描述</label>
                                         <div class="col-md-10">
                                             <textarea rows="6" name="problemDesc" class="form-control" ng-model="vm.ProblemDesc" readonly />
+                                            @*<a class="btn btn-successt" ng-href=""><i class="fa fa-download"></i></a>*@
                                         </div>
 
                                     </div>
