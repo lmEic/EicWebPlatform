@@ -214,13 +214,15 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: 0
     };
+    //初始化数据
     var initVM = _.clone(uiVm);
-    ///视图模型
+    ///视图模型（初始化基本信息）
     var rmavm = $scope.rmavm = {
         RmaId: null,
         ProductName: null,
         CustomerShortName: null
     };
+    ///插入新销货订单和日期数据
     var salesOrderItem = {
         SalesOrder: '',
         ProductsShipDate: ''
@@ -284,10 +286,12 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         salesOrders: [],
         productsShipDates: [],
         salersOrdersDatas: [salesOrderItem],
+        //添加新一列
         createRowItem: function () {
             var vm = _.clone(salesOrderItem);
             return vm;
         },
+        //添加新一项
         createNewRow: function () {
             vmManager.edittingRowIndex = vmManager.salersOrdersDatas.length > 0 ? vmManager.salersOrdersDatas.length + 1 : 1;
             var vm = vmManager.createRowItem();
@@ -312,6 +316,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
                 leeHelper.remove(vmManager.salersOrdersDatas, item);
             }
         },
+        //处理消货单号和日期
         handleSalsesOrdersAndShipDate: function () {
             uiVm.SalesOrders = [];
             vmManager.productsShipDates = [];
@@ -334,10 +339,14 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
     ///编辑
     operate.editItem = function (item) {
         item.OpSign = leeDataHandler.dataOpMode.edit;
-        var SalesOrders = item.SalesOrders.split(',');
-        var ProductsShipDateStr = item.ProductsShipDates.split(',');
-        console.log(SalesOrders);
-        console.log(ProductsShipDateStr);
+        var SalesOrders = [];
+        if (item.SalesOrders !== null) {
+            SalesOrders = item.SalesOrders.split(',');
+        }
+        var ProductsShipDateStr = [];
+        if (item.ProductsShipDates !== null) {
+            ProductsShipDateStr = item.ProductsShipDates.split(',');
+        }
         vmManager.salersOrdersDatas = [];
         for (var i = 0; i < SalesOrders.length; i++) {
             salesOrderItem = [];
@@ -374,6 +383,8 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
         uiVm.ProductCount = null;
         uiVm.CustomerId = null;
         uiVm.CustomerName = null;
+        uiVm.SalesOrders = '/';
+        uiVm.ProductsShipDate = new Date();
         uiVm.OpSign = leeDataHandler.dataOpMode.add;
         $scope.vm = uiVm;
         var dataItem = _.clone(uiVm);
