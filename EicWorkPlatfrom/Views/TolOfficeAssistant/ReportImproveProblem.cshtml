@@ -67,7 +67,7 @@
                                 </div>
                                 <br />
 
-                                <legend>问题描述信息</legend>
+                                <legend >问题描述信息</legend>
 
                                 <div class="form-group">
                                     <label for="systemName" class="col-md-2 control-label">系统名称</label>
@@ -105,15 +105,16 @@
                                     <label for="problemDesc" class="col-md-2 control-label">问题描述</label>
                                     <div class="col-md-10">
                                         <textarea rows="8" name="problemDesc" class="form-control" ng-model="vm.ProblemDesc" placeholder="问题描述" />
+                                     
+                                       
                                     </div>
                                     <div class="error-messages" ng-messages="formReport.problemDesc.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">问题描述不能为空</small>
                                     </div>
-
-
                                     <div class="col-md-3 col-md-offset-2">
                                         <div yl-upload-file></div>
-                                        <div ng-if="vmManager.isdisabled">{{vm.ProblemAttach}}</div>
+                                        <div ng-if="vmManager.isdisabled">{{vm.FileName}}</div>
+                                       
                                     </div>
 
                                 </div>

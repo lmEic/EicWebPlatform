@@ -7,6 +7,7 @@ using Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline;
 using Lm.Eic.Framework.ProductMaster.Model.Tools;
 using Newtonsoft.Json;
 using System.IO;
+using Lm.Eic.Uti.Common.YleeOOMapper;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -88,6 +89,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult StoreReportImproveProblemDatas(ReportImproveProblemModels model)
         {
+          
             var opresult = ToolOnlineService.ReportImproveProblemManager.StoreReportImproveProblem(model);
             return Json(opresult);
         }
@@ -118,20 +120,36 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
+        [NoAuthenCheck]
         public JsonResult UploadReportProblemFile(HttpPostedFileBase file)
         {
+            var FailResult = new { Result = "FAIL" };
+            if(file!=null)
+            {
+                if(file.ContentLength>0)
+                {
+                    FileAttatchData data = JsonConvert.DeserializeObject<FileAttatchData>(Request.Params["fileAttachData"]);
+                    if (data == null) return Json(FailResult);
+                    string extensionName = Path.GetExtension(file.FileName);
+                    string fileName = string.Format("{0}{1}", data.CaseId,extensionName);
+                    string fullFileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.ReportProblemDataFile), fileName);
+                    file.DeleteExistFile(fullFileName).SaveAs(fullFileName);
+                    return Json(new { Result = "OK", FullFileName = fullFileName, FileName = fileName });
+                }
+            }
+            return Json(FailResult);
 
-            string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
-            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.ReportProblemDataFile, DateTime.Now.ToString("yyyyMM"));
-            this.SaveFileToServer(file, filePath, addchangeFileName);
-            return Json("OK");
-           
+            //string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
+            //string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.ReportProblemDataFile, DateTime.Now.ToString("yyyyMM"));
+            //this.SaveFileToServer(file, filePath, addchangeFileName);
+            //return Json("OK");
+
 
         }
         public class FileAttatchData
         {
             public string CaseId { get; set; }
-            public string CaseIdNumber { get; set; }
+           
         }
 
 
