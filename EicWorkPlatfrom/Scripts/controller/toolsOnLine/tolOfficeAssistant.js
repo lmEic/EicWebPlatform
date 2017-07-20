@@ -66,7 +66,7 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
     oAssistant.uploadReportProblemFile = function (file) {
         var url = oaUrlPrefix + 'UploadReportProblemFile';
         return ajaxService.uploadFile(url, file);
-    }
+    };
   
     return oAssistant;
 });
@@ -398,6 +398,8 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
         Name:leeLoginUser.userName,
         Department: leeLoginUser.department,
         CaseId: null,      
+        FilePath: null,//
+        FileName: null,//
         CaseIdYear:new Date().getFullYear(),
         SystemName: null,
         ModuleName: null,
@@ -413,7 +415,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
         OpPerson: leeLoginUser.userName,
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: 0
-    };
+    }
     $scope.vm = uiVM;
     var originalVM = _.clone(uiVM);
     var dialog = $scope.dialog = leePopups.dialog();
@@ -628,26 +630,19 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
    // 上传附件
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
-            oAssistantDataOpService.uploadReportProblemFile(fd).then(function (result) {
-                if (result === 'OK') {
-                    var nowDate = new Date().getDate();
-                    var nowHour = new Date().getHours();
-                    if (nowDate < 10) { nowDate += '0' };
-                    if (nowHour < 10) { nowHour += '0' };
-                    uiVM.ProblemAttach.FileName = $scope.uploadFileName = nowDate.toString() + nowHour.toString() + fd.name;
-                    uiVM.ProblemAttach.OpSign = leeDataHandler.dataOpMode.uploadFile;
-                    oAssistantDataOpService.storeReportImproveProblemDatas(uiVM.ProblemAttach).then(function (opResult) {
-                        if (opResult.Result==="OK") {                       
-                            vmManager.isdisabled = true;
-                            uiVM.ProblemAttach = opResult.FileName;
-                                alert("上传文件成功");
-                            
-                        }
-                    })
+            var fileItem = uiVM;
+            var fileAttachData = { CaseId: fileItem.CaseId };
+            fd.append('fileAttachData', JSON.stringify(fileAttachData));
+            oAssistantDataOpService.uploadReportProblemFile(fd).then(function (datas) {
+                if (datas.Result === 'OK')
+                {
+                    uiVM.FileName = datas.FileName;
+                    uiVM.FilePath = datas.FullFileName;
+                    vmManager.isdisabled = true;
+                    alert("上传文件成功!");
                 }
             })
-        });
-      
+        })     
     },
   //组织架构
     $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {

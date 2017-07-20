@@ -52,6 +52,11 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
 
         private OpResult ReportImproveProblemAdd(ReportImproveProblemModels model)
         {
+            if (irep.IsExist(m => m.CaseId.Equals(model.CaseId)))
+            {
+                return OpResult.SetErrorResult("亲，案件编号己存在！不可重复添加");
+
+            }
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
         #endregion

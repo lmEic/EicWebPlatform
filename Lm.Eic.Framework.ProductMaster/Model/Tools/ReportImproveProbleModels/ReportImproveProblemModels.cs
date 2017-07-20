@@ -179,53 +179,24 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
             set { _problemProcess = value; }
             get { return _problemProcess; }
         }
-
-        private int _caseIdnumber=0;
+        private string _filepath;
         /// <summary>
-        ///序号
+        ///文档路径
         /// </summary>
-
-        //public int CaseIdNumber 
-        //{
-        //    set { _caseIdnumber = value; }
-        //    get { return _caseIdnumber; }
-        //}
-        //private string _problemBussesesNumberStr;
-        ///// <summary>
-        /////处理问题序号
-        ///// </summary>
-        //public string ProblemBussesesNumberStr
-        //{
-        //    set { _problemBussesesNumberStr = value; }
-        //    get { return _problemBussesesNumberStr; }
-        //}
-
-        //private string _filepath;
-        ///// <summary>
-        /////文档路径
-        ///// </summary>
-        //public string FilePath
-        //{
-        //    set { _filepath = value; }
-        //    get { return _filepath; }
-        //}
-        //private string _filename;
-        ///// <summary>
-        /////文件名
-        ///// </summary>
-        //public string FileName
-        //{
-        //    set { _filename = value; }
-        //    get { return _filename; }
-        //}
-        //private string _parameterkey;
-        ///// <summary>
-        /////关键字
-        ///// </summary>
-        //public string ParameterKey
-        //{
-        //    set { _parameterkey = value; }
-        //    get { return _parameterkey; }
-        //}
+        public string FilePath
+        {
+            set { _filepath = value; }
+            get { return _filepath; }
+        }
+        private string _filename;
+        /// <summary>
+        ///文件名
+        /// </summary>
+        public string FileName
+        {
+            set { _filename = value; }
+            get { return _filename; }
+        }
+       
     }
 }
