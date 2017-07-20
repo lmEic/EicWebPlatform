@@ -138,13 +138,6 @@ namespace EicWorkPlatfrom.Controllers
                 }
             }
             return Json(FailResult);
-
-            //string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
-            //string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.ReportProblemDataFile, DateTime.Now.ToString("yyyyMM"));
-            //this.SaveFileToServer(file, filePath, addchangeFileName);
-            //return Json("OK");
-
-
         }
         public class FileAttatchData
         {
