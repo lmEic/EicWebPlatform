@@ -92,23 +92,56 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
     var vmManager = {
         stepDisplay: true,
         // isCheck   selectStep  StepDescription
-        steps: [step],
-        selectStep: function (item) {
-
+        steps: [],
+        //对应界面显示的数据集
+        viewDataset: [],
+        selectStep: function (step) {
+            console.log(step);
+            var stepItem = _.findWhere(vmManager.viewDataset, { StepId: step.StepId });
+            if (_.isUndefined(stepItem)) {
+                console.log(stepItem);
+                stepItem = {
+                    StepId: step.StepId,
+                    step: step,
+                    dataset: [],
+                    getQua8DCreateDatas: function () {
+                        $scope.doPromise = BDataOpService.getRua8DReportDatas(uiVm.ReportId).then(function (datas) {
+                            stepItem.dataset = datas;
+                            console.log(datas);
+                        });
+                    }
+                };
+                leeHelper.setObjectGuid(stepItem);
+                vmManager.viewDataset.push(stepItem);
+                console.log(stepItem.dataset);
+            }
+            else {
+                stepItem.dataset = [];
+                if (!stepItem.isCheck)
+                    leeHelper.delWithId(vmManager.viewDataset, stepItem);
+            }
+            //$scope.promise = accountService.findRoleMatchModulesBy(role.RoleId).then(function (datas) {
+            //   angular.forEach(datas, function (item) {
+            //     var mroleItem = _.clone(uiVm);
+            //     leeHelper.copyVm(item, mroleItem);
+            //     leeHelper.setObjectGuid(mroleItem);
+            //     leeHelper.setObjectServerSign(mroleItem);
+            //     mroleItem.OpSign = leeDataHandler.dataOpMode.none;
+            //     mroleItem.RoleName = role.RoleName;
+            //     leeHelper.insertWithId(roleItem.dataset, mroleItem);
+            //       vmManager.addToDbDataset(mroleItem, role.isCheck);
+            //   });
+            //   vmManager.checkTreeNode(true, roleItem);
+            //    vmManager.viewDataset.activePanel = vmManager.viewDataset.length - 1;
+            //})
         },
         getQua8DCreateDatas: function () {
             $scope.doPromise = BDataOpService.getRua8DReportDatas(uiVm.ReportId).then(function (datas) {
-                steps = datas;
+                vmManager.steps = datas;
                 console.log(datas);
             });
         },
     };
-    var step = {
-        isCheck: false,
-        StepId: "45454",
-        StepDescription: "1212121",
-        StepLevel: 7,
-    }
     $scope.vmManager = vmManager;
     vmManager.getQua8DCreateDatas();
 });
