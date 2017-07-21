@@ -273,7 +273,10 @@
                                         <label for="problemDesc" class="col-md-2 control-label">问题描述</label>
                                         <div class="col-md-10">
                                             <textarea rows="6" name="problemDesc" class="form-control" ng-model="vm.ProblemDesc" readonly />
-                                            @*<a class="btn btn-successt" ng-href=""><i class="fa fa-download"></i></a>*@
+                                          
+                                            <br>
+                                            <label for="fileName" class="control-label">附件</label>
+                                            <a href="~/FileLibrary/ReportProblemHandleDataFile/{{vm.FileName}}" class="control-label label label-danger"target="_blank">{{vm.FileName}}</a>
                                         </div>
 
                                     </div>
@@ -386,7 +389,7 @@
                                     <th>系统名称</th>
                                     <th>模块类别</th>
                                     <th>问题描述</th>
-                                    <th>问题附件</th>
+                                    <th>附件名</th>
                                     <th>问题性质</th>
                                     <th>提报时期</th>
                                     <th>问题状态</th>
@@ -402,7 +405,7 @@
                                     <td ng-bind="item.SystemName"></td>
                                     <td ng-bind="item.ModuleName"></td>
                                     <td ng-bind="item.ProblemDesc"></td>
-                                    <td ng-bind="item.ProblemAttach"></td>
+                                    <td ng-bind="item.FileName"></td>
                                     <td ng-bind="item.ProblemDegree"></td>
                                     <td ng-bind="item.ProblemDate"></td>
                                     <td ng-bind="item.ProblemSolve"></td>
