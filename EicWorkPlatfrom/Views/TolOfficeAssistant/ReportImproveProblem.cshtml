@@ -6,15 +6,15 @@
                     <form role="form" name="formReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                         <div class="bs-callout bs-callout-info">
                             <fieldset>
-                                <legend><a class="label label-success" data-toggle="collapse" data-parent="#div1" href="#collapseOne">提报人信息:</a>
-                                <i class="glyphicon glyphicon-flag"></i><a class="label label-danger" ng-bind="vm.WorkerId"></a>
-                              <i class="glyphicon glyphicon-user"></i><a class="label label-success"ng-bind="vm.Name"></a>
-                                <i class="glyphicon glyphicon-home"></i><a class="label label-primary"ng-bind="vm.Department"></a>
-
+                                <legend><a class="label label-success">提报人信息:</a>
+                                <i class="glyphicon glyphicon-flag"></i><a class="label label-primary" ng-bind="vm.WorkerId" title="工号"></a>
+                                <i class="glyphicon glyphicon-user"></i><a class="label label-success"ng-bind="vm.Name" title="姓名"></a>
+                                <i class="glyphicon glyphicon-home"></i><a class="label label-warning"ng-bind="vm.Department" title="部门"></a>   
+                               
                                 </legend>
-                                <div id="collapseOne" class="panel-collapse collapse ">
+                                <div id="collapseOne" class="panel-collapse collapse ">                                 
                                     <div class="panel-body">
-                                        <div class="form-group">
+                                        @*<div class="form-group">
                                             <label for="workerId" class="col-md-2 control-label">工号</label>
                                             <div class="col-md-4">
                                                 <div class="input-group">
@@ -52,9 +52,9 @@
                                                     <small ng-message="required">姓名不能为空</small>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>*@
 
-                                        <div class="form-group">
+                                        @*<div class="form-group">
                                             <label for="department" class="col-md-2 control-label">部门</label>
                                             <div class="col-md-4">
                                                 <div class="input-group">
@@ -62,7 +62,7 @@
                                                     <div class="error-messages" ng-messages="formReport.department.$error" ng-show="operate.showValidation">
                                                         <small ng-message="required">部门不能为空</small>
                                                     </div>
-                                                    @*<span class="input-group-btn">
+                                                    <span class="input-group-btn">
                                                         <button class="btn btn-primary"
                                                                 data-title="请选择部门"
                                                                 data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
@@ -70,18 +70,12 @@
                                                                 data-bs-popover>
                                                             <i class="fa fa-sitemap"></i>
                                                         </button>
-                                                    </span>*@
+                                                    </span>
                                                 </div>
                                             </div>
-                                            <label for="problemDate" class="col-md-2 control-label">提报日期</label>
-                                            <div class="col-md-4">
-                                                <input type="date" name="problemDate" class="form-control" ng-model="vm.ProblemDate" placeholder="提报日期" format-date required />
-                                                <div class="error-messages" ng-messages="formReport.problemDate.$error" ng-show="operate.showValidation">
-                                                    <small ng-message="required">提报日期不能为空</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                          
+                                        </div>*@
+                                    </div>                                      
                                 </div>                       
                                 <br />
                                 <legend ><a class="label label-success"  data-toggle="collapse"data-parent="#div2" href="#collapseTwo">问题描述信息<i class="glyphicon glyphicon-sort"></i></a></legend>
@@ -93,6 +87,14 @@
                                                 <input name="caseId" class="form-control" ng-model="vm.CaseId" placeholder="编号自动生成" readonly required />
                                                 <div class="error-messages" ng-messages="formReport.caseId.$error" ng-show="operate.showValidation">
                                                     <small ng-message="required">编号不能为空</small>
+                                                </div>
+                                            </div>
+
+                                            <label for="problemDate" class="col-md-2 control-label">上报日期</label>
+                                            <div class="col-md-4">
+                                                <input type="date" name="problemDate" class="form-control" ng-model="vm.ProblemDate" placeholder="提报日期" format-date required />
+                                                <div class="error-messages" ng-messages="formReport.problemDate.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">上报日期不能为空</small>
                                                 </div>
                                             </div>
                                         </div>
