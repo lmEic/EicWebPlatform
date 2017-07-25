@@ -51,12 +51,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     }
                 }
             }
-            
             return needInsepctionItems;
         }
 
         /// <summary>
-        ///  判定是否需要测试 盐雾测试
+        ///  判定是否需要测试 盐雾测试 True 为除掉，False 为不用除掉
         /// </summary>
         /// <param name="materialId">物料料号</param>
         /// <param name="materialInDate">当前物料进料日期</param>

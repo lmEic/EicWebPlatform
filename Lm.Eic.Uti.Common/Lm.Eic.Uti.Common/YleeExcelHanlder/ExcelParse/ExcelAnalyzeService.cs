@@ -117,7 +117,7 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 uploadExcelFileResult.Success = false;
                 uploadExcelFileResult.Message = "读取EXCEL表头模板时发生错误，可能造成原因是：EXCEL模板被修改！请下载最新EXCEL模板！";
@@ -232,14 +232,9 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder.ExcelParse
             ExcelExtension.IsMergeCell(sheet, e.RowIndexStart - 1, e.ColumnIndexStart - 1, out dimension);
             ///设置字体 ///设置样式
             IRow row = sheet.GetRow(e.ColumnIndexStart - 1);
-            ICell cell = null;
-            if (row != null) cell = row.GetCell(e.RowIndexStart - 1);
-            else
-            {
-                row = sheet.CreateRow(e.ColumnIndexStart - 1);
-                cell = row.CreateCell(e.RowIndexStart - 1);
-            }
-            if (cell == null) return sheet;
+            if (row == null) row = sheet.CreateRow(e.ColumnIndexStart - 1);
+            ICell cell = row.GetCell(e.RowIndexStart - 1);
+            if (cell == null) cell = row.GetCell(e.RowIndexStart - 1);
             NPOIHelper.setCellStyle(workbook, cell, e.FontHeightInPoints, e.FontName, e.Color, e.VerticalAlignment, e.Alignment);
             /// int fontHeight, string fontName = "宋体", short color = 8, int verticalAlignment = 2, int alignment = 2
             return sheet;

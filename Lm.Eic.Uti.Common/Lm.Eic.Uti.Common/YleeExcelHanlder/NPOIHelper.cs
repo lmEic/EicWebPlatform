@@ -553,9 +553,11 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
           int rowNum, int columnNum,
           string textValue)
         {
-            IRow row = sheet.CreateRow(rowNum - 1);
+            IRow row = sheet.GetRow(rowNum - 1);
+            if (row == null) row = sheet.CreateRow(rowNum - 1);
             //在行中：建立单元格，参数为列号，从0计
-            ICell cell = row.CreateCell(columnNum - 1);
+            ICell cell = row.GetCell(columnNum - 1);
+            if (cell == null) cell = row.CreateCell(columnNum - 1);
             //设置单元格内容
             cell.SetCellValue(textValue);
             return sheet;

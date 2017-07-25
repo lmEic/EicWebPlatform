@@ -290,7 +290,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.RmaManage
             //    return dlfm.Default();
             // RmaInspectionManageModel 
 
-            ExcelImportService mm = new ExcelImportService(@"E:\RMASD1.1-11-01.xls", @"E:\121.xml", @"E:\4567.xml");
+            ExcelImportService mm = new ExcelImportService(@"E:\RMASD1.1-11-01.xls", @"E:\121.xml", siteRootPath+ @"RmateExcleMplate.xml");
             //var qqq = mm.Import<RmaReportInitiateModel>();
             System.IO.MemoryStream stream = mm.GetInseerFixModel<RmaReportInitiateModel>(modelDatas);
             return stream.CreateDownLoadExcelFileModel("Rma模板");
