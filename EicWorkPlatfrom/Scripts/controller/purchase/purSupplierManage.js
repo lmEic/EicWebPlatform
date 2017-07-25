@@ -485,6 +485,7 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         getWaittingTourSupplier: function () {
             $scope.searchPromise = supplierDataOpService.getWaittingTourSupplier(vmManager.yearQuarter, vmManager.limitTotalCheckScore, vmManager.limitQualityCheck).then(function (datas) {
                 vmManager.editDatas = datas;
+                console.log(datas);
             });
         },
         editItem: null,
@@ -492,6 +493,7 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
         editSupplierToturInfo: function (item) {
             vmManager.displayEditForm = true;
             vmManager.editItem = item;
+            console.log(item);
             vmManager.supTourEditModal.$promise.then(vmManager.supTourEditModal.show);
         },
         ///根据供应商编号查询供应商辅导数据信息
@@ -508,6 +510,7 @@ purchaseModule.controller('supplierToturManageCtrl', function ($scope, supplierD
                 var editItem = $scope.vm = vmManager.editItem;
                 var crud = leeDataHandler.dataOperate;
                 var operate = $scope.operate = Object.create(leeDataHandler.dataOperate);
+                console.log($scope.vm);
                 //保存供应商辅导信息
                 operate.savePurSupTurDatas = function (isValid) {
                     crud.add(operate, isValid, function () {

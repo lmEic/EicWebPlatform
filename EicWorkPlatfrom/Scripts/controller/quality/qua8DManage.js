@@ -10,9 +10,16 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
     var quabugDManageUrl = "/qua8DManage/";
     ///获取RMA表单单头
     bugd.getRua8DReportDatas = function (reportId) {
-        var url = quabugDManageUrl + 'GgetRmaReportDatas';
+        var url = quabugDManageUrl + 'GetRmaReportDatas';
         return ajaxService.getData(url, {
             reportId: reportId
+        });
+    };
+    bugd.getRua8DReportStepData = function (reportId, stepId) {
+        var url = quabugDManageUrl + 'GetRua8DReportStepData';
+        return ajaxService.getData(url, {
+            reportId: reportId,
+            stepId: stepId,
         });
     };
     return bugd;
@@ -93,6 +100,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
         stepDisplay: true,
         // isCheck   selectStep  StepDescription
         steps: [],
+        selecteStepdata: [],
         //对应界面显示的数据集
         viewDataset: [],
         selectStep: function (step) {
@@ -102,24 +110,25 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
                 console.log(stepItem);
                 stepItem = {
                     StepId: step.StepId,
-                    step: step,
-                    dataset: [],
-                    getQua8DCreateDatas: function () {
-                        $scope.doPromise = BDataOpService.getRua8DReportDatas(uiVm.ReportId).then(function (datas) {
-                            stepItem.dataset = datas;
-                            console.log(datas);
-                        });
-                    }
+                    step: step
                 };
                 leeHelper.setObjectGuid(stepItem);
                 vmManager.viewDataset.push(stepItem);
-                console.log(stepItem.dataset);
+                console.log(stepItem);
             }
             else {
                 stepItem.dataset = [];
                 if (!stepItem.isCheck)
                     leeHelper.delWithId(vmManager.viewDataset, stepItem);
             }
+            if (step.isCheck) step.isCheck = false;
+            else step.isCheck = true;
+
+            $scope.doPromise = BDataOpService.getRua8DReportStepData("M1707004-2", 1).then(function (datas) {
+                vmManager.selecteStepdata = datas;
+                console.log(vmManager.selecteStepdata);
+            });
+
             //$scope.promise = accountService.findRoleMatchModulesBy(role.RoleId).then(function (datas) {
             //   angular.forEach(datas, function (item) {
             //     var mroleItem = _.clone(uiVm);

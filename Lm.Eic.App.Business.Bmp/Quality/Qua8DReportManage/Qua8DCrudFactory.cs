@@ -44,5 +44,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         {
             throw new NotImplementedException();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <returns></returns>
+        public List<Qua8DReportDetailModel> GetQua8DDetailDatasBy(string reportId)
+        {
+            return irep.Entities.Where(e => e.ReportId == reportId).ToList();
+        }
     }
 }

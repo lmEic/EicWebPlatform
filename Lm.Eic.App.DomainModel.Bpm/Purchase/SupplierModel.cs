@@ -564,14 +564,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _supplierid = value; }
             get { return _supplierid; }
         }
-        private string _suppilershortname;
+        private string _suppliershortname;
         /// <summary>
         ///供应商简称
         /// </summary>
-        public string SuppilerShortName
+        public string SupplierShortName
         {
-            set { _suppilershortname = value; }
-            get { return _suppilershortname; }
+            set { _suppliershortname = value; }
+            get { return _suppliershortname; }
         }
         private string _suppliername;
         /// <summary>
@@ -672,14 +672,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Purchase
             set { _managerrisk = value; }
             get { return _managerrisk; }
         }
-        private string _seasonnum;
+        private string _seasonDateNum;
         /// <summary>
         ///季度
         /// </summary>
-        public string SeasonNum
+        public string SeasonDateNum
         {
-            set { _seasonnum = value; }
-            get { return _seasonnum; }
+            set { _seasonDateNum = value; }
+            get { return _seasonDateNum; }
         }
         private string _plantutordate;
         /// <summary>

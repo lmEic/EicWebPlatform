@@ -17,7 +17,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 {
 
     /// <summary>
-    /// 设备管理数据库
+    /// 管理数据库
     /// </summary>
     public class BpmDbContext : DbContext
     {
@@ -80,6 +80,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         #endregion
 
+
         #region  质理管理
         public DbSet<InspectionModeConfigModel> InspectionModeConfig { set; get; }
         public DbSet<InspectionModeSwitchConfigModel> InspectionModeSwithConfig { set; get; }
@@ -91,9 +92,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         #endregion
 
-
-
-
         #region  Fqc
         public DbSet<InspectionFqcItemConfigModel> FqcInspectionItemConfig { set; get; }
         public DbSet<InspectionFqcMasterModel> FqcInspectionMaster { set; get; }
@@ -101,14 +99,12 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
         #endregion
 
-
         #region  RMA
 
         public DbSet<RmaBusinessDescriptionModel> RmaBussesDescription { set; get; }
         public DbSet<RmaInspectionManageModel> RmaInspectionManage { set; get; }
         public DbSet<RmaReportInitiateModel> RmaReportInitiate { set; get; }
         #endregion
-
         #endregion
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -123,8 +119,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new EquipmentRepairedRecordModelMapping());
 
             #endregion
-
-
 
             #region 日报管理
             //日报表
@@ -143,12 +137,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new ReportsAttendenceModelMapping());
             #endregion
 
-
             #region  物料看板
             modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
             #endregion
-
-
 
             #region  供应商管理
             //供应商信息
@@ -162,7 +153,6 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             //供应商自评复评明细表
             modelBuilder.Configurations.Add(new SupplierGradeInfoMapping());
             #endregion
-
 
             #region 质量管理
 
@@ -181,9 +171,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new RmaBussesDescriptionMapping());
             modelBuilder.Configurations.Add(new RmaInspectionManageMapping());
             modelBuilder.Configurations.Add(new RmaReportInitiateMapping());
-
+            // 8D 
+            modelBuilder.Configurations.Add(new Qua8DReportDetailMapping());
+            modelBuilder.Configurations.Add(new Qua8DReportMasterMapping());
             #endregion
-
 
             #region 电子签核管理
             modelBuilder.Configurations.Add(new InternalContactFormModelMapping());
@@ -192,7 +183,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
     }
 
     /// <summary>
-    /// 设备管理中心数据库工作单元
+    /// 管理中心数据库工作单元
     /// </summary>
     public class BpmUnitOfWorkContext : UnitOfWorkContextBase, IUnitOfWorkContext
     {

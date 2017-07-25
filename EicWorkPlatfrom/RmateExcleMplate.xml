@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="GB2312"?>
+<module>
+  <add  HeaderText="抬头"      PropertyName="CompanyName"   DataType="string"   FillText="光圣科技（宁波）有限公司"   RowIndexStart="1"  RowIndexEnd="1"     ColumnIndexStart="1"  ColumnIndexEnd="15"    Ismerge="True"  FontHeightInPoints="22"  FontName = "Arial Unicode MS" Color = "8"  VerticalAlignment = "2"  Alignment = "2"/>
+  <add  HeaderText="标题"      PropertyName="表单"    DataType="string"    FillText="RMA记录表"                  RowIndexStart="2"  RowIndexEnd="2"     ColumnIndexStart="1"  ColumnIndexEnd="15"    Ismerge="True"    FontHeightInPoints="24" FontName = "Arial Unicode MS" Color ="8"   VerticalAlignment = "2"   Alignment = "2"/>
+  <add  HeaderText="单号"      PropertyName="RmaIdName"    DataType="string"    FillText="单号："               RowIndexStart="3"  RowIndexEnd="3"     ColumnIndexStart="1"  ColumnIndexEnd="4"    Ismerge="False"   FontHeightInPoints="16"  FontName = "Arial Unicode MS"  Color = "2"  VerticalAlignment = "2"   Alignment = "2"/>
+ <add  HeaderText="小标题"      PropertyName="RmaIdSign"    DataType="string"    FillText="RMA描述"           RowIndexStart="4"  RowIndexEnd="4"     ColumnIndexStart="1"  ColumnIndexEnd="15"    Ismerge="True"   FontHeightInPoints="14"  FontName = "Arial Unicode MS"  Color = "2"  VerticalAlignment = "2"   Alignment = "2"/>
+</module>
