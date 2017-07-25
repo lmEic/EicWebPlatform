@@ -6,7 +6,12 @@
                     <form role="form" name="formReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                         <div class="bs-callout bs-callout-info">
                             <fieldset>
-                                <legend><a class="label label-success" data-toggle="collapse" data-parent="#div1" href="#collapseOne">提报人信息<i class="glyphicon glyphicon-sort"></i></a></legend>
+                                <legend><a class="label label-success" data-toggle="collapse" data-parent="#div1" href="#collapseOne">提报人信息:</a>
+                                <i class="glyphicon glyphicon-flag"></i><a class="label label-danger" ng-bind="vm.WorkerId"></a>
+                              <i class="glyphicon glyphicon-user"></i><a class="label label-success"ng-bind="vm.Name"></a>
+                                <i class="glyphicon glyphicon-home"></i><a class="label label-primary"ng-bind="vm.Department"></a>
+
+                                </legend>
                                 <div id="collapseOne" class="panel-collapse collapse ">
                                     <div class="panel-body">
                                         <div class="form-group">
@@ -57,6 +62,15 @@
                                                     <div class="error-messages" ng-messages="formReport.department.$error" ng-show="operate.showValidation">
                                                         <small ng-message="required">部门不能为空</small>
                                                     </div>
+                                                    @*<span class="input-group-btn">
+                                                        <button class="btn btn-primary"
+                                                                data-title="请选择部门"
+                                                                data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
+                                                                data-animation="am-flip-x" data-auto-close="1"
+                                                                data-bs-popover>
+                                                            <i class="fa fa-sitemap"></i>
+                                                        </button>
+                                                    </span>*@
                                                 </div>
                                             </div>
                                             <label for="problemDate" class="col-md-2 control-label">提报日期</label>
@@ -73,6 +87,15 @@
                                 <legend ><a class="label label-success"  data-toggle="collapse"data-parent="#div2" href="#collapseTwo">问题描述信息<i class="glyphicon glyphicon-sort"></i></a></legend>
                                 <div id="collapseTwo" class="panel-collapse collapse in">
                                     <div class="panel-body">
+                                        <div class="form-group">
+                                            <label for="caseId" class="col-md-2 control-label">编号</label>
+                                            <div class="col-md-4">
+                                                <input name="caseId" class="form-control" ng-model="vm.CaseId" placeholder="编号自动生成" readonly required />
+                                                <div class="error-messages" ng-messages="formReport.caseId.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">编号不能为空</small>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label for="systemName" class="col-md-2 control-label">系统名称</label>
                                             <div class="col-md-4">
@@ -137,35 +160,23 @@
                                                                 data-bs-options="degree.id as degree.text for degree in vmManager.problemDegrees" data-bs-select></button>
                                                     </span>
                                                 </div>
-                                            </div>
-                                            <label for="caseId" class="col-md-2 control-label">编号</label>
-                                            <div class="col-md-4">
-                                                <input name="caseId" class="form-control" ng-model="vm.CaseId" placeholder="编号自动生成" readonly required />
-                                                <div class="error-messages" ng-messages="formReport.caseId.$error" ng-show="operate.showValidation">
-                                                    <small ng-message="required">编号不能为空</small>
-                                                </div>
-                                            </div>
+                                            </div>                                      
                                         </div>
                                        
-                                      </div>                     
-                                    </div>  
-                                <br />
-                               <legend><a class="label label-success" data-toggle="collapse" data-parent="#div3" href="#collapseThree">确认提交信息<i class="glyphicon glyphicon-sort"></i></a></legend>
-                                <div id="collapseThree" class="panel-collapse collapse  ">
-                                    <div class="panel-body">
-                                        <div class="alert alert-info ">
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                </div>
-                                                <div class="col-md-10 col-lg-offset-4">
-                                                    <button id="btnsave" class="btn btn-primary" ng-click="operate.saveAll(formReport.$valid)"><i class="fa fa-save"></i>保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <button class="btn btn-primary" ng-click="operate.refresh()"><i class="fa fa-undo"></i>重置</button>
-                                                    <span yl-operatemsg-board></span>
-                                                </div>
+                                      </div>  
+                                    <hr/>
+                                    <div class="alert alert-info ">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                            </div>
+                                            <div class="col-md-10 col-lg-offset-4">
+                                                <button id="btnsave" class="btn btn-primary" ng-click="operate.saveAll(formReport.$valid)"><i class="fa fa-save"></i>保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <button class="btn btn-primary" ng-click="operate.refresh()"><i class="fa fa-undo"></i>重置</button>
+                                                <span yl-operatemsg-board></span>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    </div>                                                      
                             </fieldset>
                         </div>
                     </form>
@@ -344,6 +355,7 @@
                 </div>
             </div>
         </div>
+
         <div bs-pane data-title="上报问题查询" data-name="editTab">
             <div bs-tabs>
                 <div bs-pane data-title="处理状态">

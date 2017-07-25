@@ -650,15 +650,40 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
         })     
     },
   //组织架构
+
+       
+
+
+
+
+
+
     $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
         departmentTreeSet.setTreeDataset(datas);
     });
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);
-        queryFields.department = dto.DataNodeText;
+        vm.Department = dto.DataNodeText;
     };
     $scope.ztree = departmentTreeSet;
+
+    ///////////////////////////
+    //var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
+    //departmentTreeSet.bindNodeToVm = function () {
+    //    var dto = _.clone(departmentTreeSet.treeNode.vm);
+    //    vmManager.department = dto.DataNodeText;
+    //};
+
+    //$scope.promise = dReportDataOpService.getDReportInitData(vmManager.department).then(function (datas) {
+    //    departmentTreeSet.setTreeDataset(datas.departments);
+    //    vmManager.machines = datas.machines;
+    //    vmManager.unproductReasons = datas.unproductReasons;
+    //});
+
+    //$scope.ztree = departmentTreeSet;
+
+
 
 });
 
