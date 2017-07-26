@@ -36,6 +36,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(orderId, materialId);
         }
+        public List<InspectionIqcMasterModel> GetIqcMasterContainDatasBy(string orderId)
+        {
+            return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcMasterContainDatasBy(orderId);
+        }
         /// <summary>
         ///更新Master结果和状态
         /// </summary>
@@ -63,7 +67,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 }
                 else haveStoreMasterModel.InspectionStatus = "未完成";
                 ///测试所以项目只要有一项为 Ng 
-                
+
             }
             return InspectionManagerCrudFactory.IqcMasterCrud.Update(haveStoreMasterModel);
         }
