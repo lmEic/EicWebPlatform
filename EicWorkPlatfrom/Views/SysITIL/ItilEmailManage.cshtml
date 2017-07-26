@@ -241,9 +241,6 @@
                                 </div>
                             </form>
                         </div>
-
-
-
                     </div>
                     <div class="h-split"></div>
                     <div class="well" cg-busy="{promise:searchPromise}">
@@ -254,7 +251,7 @@
                                     <col width="80" />
                                     <col width="80" />
                                     <col width="120" />
-                                    <col width="100" />
+                                    <col width="150" />
                                     <col width="100" />
                                     <col width="150" />
                                     <col width="200" />
@@ -280,7 +277,7 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="item in vmManager.searchDataset track by $index">
-                                        <td ng-bind="$index">
+                                        <td ng-bind="$index+1">
                                         <td ng-bind="item.WorkerId"></td>
                                         <td ng-bind="item.Name"></td>
                                         <td ng-bind="item.Department"></td>
@@ -288,16 +285,13 @@
                                         <td ng-bind="item.ReceiveGrade"></td>
                                         <td ng-bind="item.RegDate"></td>
                                         <td ng-bind="item.Pop3Host"></td>
-
                                         <td ng-bind="item.SmtpHost"></td>
-
                                         <td>
                                             <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i>修改</button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-
                             <div ng-if="vmManager.datasource.length>0"
                                  yl-pagination
                                  data-dataset="vmManager.searchDataset"
@@ -363,10 +357,10 @@
                                     </div>
                                     <label for="password" class="col-md-2 control-label">邮箱密码</label>
                                     <div class="col-md-4">
-                                        <input type="password" name="password" class="form-control" ng-model="vm.Password" placeholder="邮箱密码" required />
-                                        <div class="error-messages" ng-messages="formEmailManage.password.$error" ng-show="operate.showValidation">
+                                        <input type="password" name="password" class="form-control" ng-model="vm.Password" placeholder="邮箱密码"  />
+                                        @*<div class="error-messages" ng-messages="formEmailManage.password.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">密码不能为空</small>
-                                        </div>
+                                        </div>*@
                                     </div>
                                 </div>
 
@@ -470,8 +464,8 @@
                                         <div class="col-md-2">
                                         </div>
                                         <div class="col-md-10">
-                                            <button class="btn btn-primary" ng-click="operate.saveAll(formEmailManage.$valid)"><i class="fa fa-save"></i>保存</button>
-                                            <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                            &nbsp; &nbsp;&nbsp;<button class="btn btn-primary" ng-click="operate.saveAll(formEmailManage.$valid)"><i class="fa fa-save"></i>保存</button>&nbsp;&nbsp;
+                                            <button class="btn btn-primary" ng-click="operate.refresh()"><i class="fa fa-undo"></i>重置</button>
                                             <span yl-operatemsg-board></span>
                                         </div>
                                     </div>
