@@ -17,7 +17,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             List<InspectionIqcItemConfigModel> needInsepctionItems = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
             /// 针对所有需测试的项
-            var item = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy("AllMaterialId").FirstOrDefault();
+            var item = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy("JudgeROHSTest").FirstOrDefault();
             if (item != null) item.MaterialId = materialId;
             bool IsAddAllMaterialId = true;
 
@@ -25,8 +25,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             var isAddOrRemoveItemDic = JudgeIsAddOrRemoveItemDic(orderId, materialId, materialInDate);
             needInsepctionItems.ForEach(m =>
             {
+                /// 检验的项目中是否包含有 条件的项目 主要ROHS测试 和　　NOT　ROHS测试　　
                 if (isAddOrRemoveItemDic.ContainsKey(m.InspectionItem))
                 {
+                    // 如有 判断是否要移去此项
                     if (isAddOrRemoveItemDic[m.InspectionItem])
                     {
                         needInsepctionItems.Remove(m);
@@ -37,19 +39,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 {
                     IsAddAllMaterialId = false;
                 }
-
             });
             ///判定是否应该 添加 AllMaterial
             if (IsAddAllMaterialId)
             {
-                if (isAddOrRemoveItemDic.ContainsKey("AllMaterialId"))
-                {
-                    if (isAddOrRemoveItemDic["AllMaterialId"])
-                    {
-                        if (item != null)
-                            needInsepctionItems.Add(item);
-                    }
-                }
+                if (isAddOrRemoveItemDic.ContainsKey("JudgeROHSTest") && !isAddOrRemoveItemDic["JudgeROHSTest"] && item != null)
+                    needInsepctionItems.Add(item);
             }
             return needInsepctionItems;
         }
@@ -69,7 +64,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             itemDic.Add("全尺寸", JudgeMaterialTwoYearIsRecord(datas));
             itemDic.Add("ROHS", false);
             itemDic.Add("NOT ROHS", true);
-            itemDic.Add("AllMaterialId", JudgeROHSTest(datas));
+            itemDic.Add("JudgeROHSTest", JudgeROHSTest(datas));
             return itemDic;
         }
 
@@ -121,7 +116,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
             if (datas == null | datas.Count() <= 0)
                 return false;
-            var returnitem = datas.Where(e => e.MaterialInDate >= DateTime.Now.AddYears(-2));
+            var ddd = datas.Where(e => e.InspecitonItem.Contains("全尺寸"));
+            if (ddd == null || ddd.Count() == 0)
+                return false;
+            var returnitem = ddd.Where(e => e.MaterialInDate >= DateTime.Now.AddYears(-2));
             if (returnitem != null && returnitem.Count() > 0)
                 return true;
             return false;
@@ -135,9 +133,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         private bool JudgeROHSTest(List<InspectionIqcDetailModel> datas)
         {
-            if (datas == null | datas.Count() <= 0)
-                return true;
-            if (datas.Count() / 2 == 0)
+            if (datas == null || datas.Count() == 0)
+                return false;
+            var ddd = datas.Where(e => e.InspecitonItem.Contains("ROHS检验"));
+            if (ddd == null || ddd.Count() == 0)
+                return false;
+            if (ddd.Count() / 2 == 0)
                 return true;
             else return false;
         }

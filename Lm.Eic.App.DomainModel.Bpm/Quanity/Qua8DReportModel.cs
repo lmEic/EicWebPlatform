@@ -326,7 +326,35 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+    /// <summary>
+    /// Show
+    /// </summary>
+    public class ShowStepViewModel
+    {
+        public ShowStepViewModel()
+        {
+            HandelQua8DStepDatas = new Qua8DReportDetailModel();
+        }
+        public bool isCheck
+        { set; get; }
+        public string StepId
+        {
+            get { return HandelQua8DStepDatas == null ? "空" : "第" + HandelQua8DStepDatas.StepId.ToString() + "歩"; }
+        }
 
+        public string StepDescription
+        {
+            get { return HandelQua8DStepDatas == null ? "空" : HandelQua8DStepDatas.StepDescription; }
+        }
+        public int StepLevel
+        {
+            get { return HandelQua8DStepDatas == null ? 0 : HandelQua8DStepDatas.StepId; }
+        }
+        public Qua8DReportDetailModel HandelQua8DStepDatas
+        {
+            set; get;
+        }
+    }
 
 
 }
