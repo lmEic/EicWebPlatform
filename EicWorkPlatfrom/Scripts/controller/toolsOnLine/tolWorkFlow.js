@@ -43,6 +43,10 @@ officeAssistantModule.factory('wfDataOpService', function (ajaxService) {
     return oAssistant;
 });
 ///内部联络单
-officeAssistantModule.controller('wFInternalContactFormCtrl', function ($scope, wfDataOpService) {
+officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, wfDataOpService) {
+    var ue = leeUeditor.getEditor('formContent');
 
+    $scope.show = function () {
+        alert(ue.getContent());
+    };
 });
