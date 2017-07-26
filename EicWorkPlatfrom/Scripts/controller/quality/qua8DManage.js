@@ -110,7 +110,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
                 console.log(stepItem);
                 stepItem = {
                     StepId: step.StepId,
-                    step: step
+                    stepData: step.HandelQua8DStepDatas,
                 };
                 leeHelper.setObjectGuid(stepItem);
                 vmManager.viewDataset.push(stepItem);
@@ -124,10 +124,10 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
             if (step.isCheck) step.isCheck = false;
             else step.isCheck = true;
 
-            $scope.doPromise = BDataOpService.getRua8DReportStepData("M1707004-2", 1).then(function (datas) {
-                vmManager.selecteStepdata = datas;
-                console.log(vmManager.selecteStepdata);
-            });
+            //$scope.doPromise = BDataOpService.getRua8DReportStepData("M1707004-2", 1).then(function (datas) {
+            //    vmManager.selecteStepdata = datas;
+            //    console.log(vmManager.selecteStepdata);
+            //});
 
             //$scope.promise = accountService.findRoleMatchModulesBy(role.RoleId).then(function (datas) {
             //   angular.forEach(datas, function (item) {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -37,15 +38,13 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetRmaReportDatas(string reportId)
         {
-            List<step> steps = new List<step>();
+            List<ShowStepViewModel> steps = new List<ShowStepViewModel>();
+            ShowStepViewModel data = null;
             var HanldeStepInfodatas = Qua8DService.Qua8DManager.Qua8DDatail.GetQua8DDetailDatasBy("M1707004-2");
             HanldeStepInfodatas.ForEach(m =>
             {
-                step data = new step { isCheck = false, StepDescription = m.DescribeType, StepId = "第" + m.StepId.ToString() + "歩", StepLevel = m.StepId };
-                if (!steps.Contains(data))
-                {
-                    steps.Add(data);
-                }
+                data = new ShowStepViewModel { isCheck = false, HandelQua8DStepDatas = m };
+                if (!steps.Contains(data)) steps.Add(data);
             });
             var datas = steps;
             return Json(datas, JsonRequestBehavior.AllowGet);
@@ -66,23 +65,4 @@ namespace EicWorkPlatfrom.Controllers
         #endregion
 
     }
-
-    public class step
-    {
-        public bool isCheck
-        { set; get; }
-        public string StepId
-        { set; get; }
-
-        public string StepDescription
-        {
-            set; get;
-        }
-        public int StepLevel
-        {
-            set; get;
-        }
-    }
-
-
 }
