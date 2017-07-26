@@ -458,10 +458,10 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
     departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);
         queryFields.department = dto.DataNodeText;
-       
+        vmManager.getEmailRecords(4);      
     };
     $scope.ztree = departmentTreeSet;
 
-
+    
 
 });

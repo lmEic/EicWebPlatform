@@ -474,6 +474,7 @@ smModule.controller('moduleNavManageCtrl', function ($scope, $modal, vmService, 
         moduleNavVm = _.clone(zTreeSet.treeNode.vm);
         oldModuleNavVm = _.clone(zTreeSet.treeNode.vm);
         $scope.vm = moduleNavVm;
+        alert("hello")
     };
     $scope.ztree = zTreeSet;
 
