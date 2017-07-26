@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -22,6 +23,12 @@ namespace EicWorkPlatfrom.Controllers
         public ActionResult Create8DForm()
         {
             return View();
+        }
+        [NoAuthenCheck]
+        public JsonResult GetQueryDatas(string searchModel, string orderId)
+        {
+            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionDetailDatasBy(orderId);
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

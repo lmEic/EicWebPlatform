@@ -22,6 +22,14 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
             stepId: stepId,
         });
     };
+
+    bugd.getQueryDatas = function (searchModel, orderId) {
+        var url = quabugDManageUrl + 'GetQueryDatas';
+        return ajaxService.getData(url, {
+            orderId: orderId,
+            searchModel: searchModel,
+        });
+    };
     return bugd;
 });
 ////创建8D表单
@@ -48,14 +56,19 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, q
         Id_Key: null,
     };
     ///视图处理
-
-
     $scope.vm = uiVm;
     //初始化原型
     var initVM = _.clone(uiVm);
     var vmManager = {
-
-
+        orderInfo: [],
+        dataSets: [],
+        iqcOrderId: '341-170327011',
+        getQua8DCreateDatas: function () {
+            $scope.searchPromise = BDataOpService.getQueryDatas("21", vmManager.iqcOrderId).then(function (datas) {
+                console.log(datas);
+                vmManager.dataSets = datas;
+            });
+        }
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);

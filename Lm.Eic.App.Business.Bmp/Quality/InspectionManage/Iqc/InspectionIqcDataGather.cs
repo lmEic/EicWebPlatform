@@ -350,6 +350,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
+
+
+        public List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderId)
+        {
+            return DetailDatasGather.GetIqcInspectionDetailDatasBy(orderId);
+        }
     }
 
 
