@@ -7,18 +7,18 @@
                         <form role="form" name="formWorkTaskManager" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                             <div class="form-group">
                                 <label for="systemName" class="col-md-2 control-label">系统名称</label>
-                                <div class="col-md-4">                  
-                                        <input name="systemName" placeholder="必填" class="form-control" ng-model="vm.SystemName" ng-show="false" style="background-color:red" required />
-                                        <div class="error-messages" ng-messages="formWorkTaskManager.systemName.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">系统名称不能为空</small>
-                                        </div>
-                           
-                                        <button type="button" class="btn btn-default" ng-model="vm.SystemName" ng-change="vmManager.selectSystemName()"
-                                                data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="选择系统名称"
-                                                data-bs-options="item.id as item.text for item in vmManager.systemNames" data-bs-select>
-                                            <span class="caret"></span>
+                                <div class="col-md-4">
+                                    <input name="systemName" placeholder="必填" class="form-control" ng-model="vm.SystemName" ng-show="false" style="background-color:red" required />
+                                    <div class="error-messages" ng-messages="formWorkTaskManager.systemName.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">系统名称不能为空</small>
+                                    </div>
 
-                                        </button>                                                         
+                                    <button type="button" class="btn btn-default" ng-model="vm.SystemName" ng-change="vmManager.selectSystemName()"
+                                            data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="选择系统名称"
+                                            data-bs-options="item.id as item.text for item in vmManager.systemNames" data-bs-select>
+                                        <span class="caret"></span>
+
+                                    </button>
                                 </div>
                                 <label for="moduleName" class="col-md-2 control-label">模块类别</label>
                                 <div class="col-md-4">
@@ -26,8 +26,8 @@
                                     <div class="error-messages" ng-messages="formWorkTaskManager.moduleName.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">模块类别不能为空</small>
                                     </div>
-                                    <button type="button" class="btn btn-default"ng-model="vm.ModuleName"
-                                            data-html="1" data-ng-multiple="0"data-animation="am-flip-x" data-placeholder="选择模块类别"
+                                    <button type="button" class="btn btn-default" ng-model="vm.ModuleName"
+                                            data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="选择模块类别"
                                             data-bs-options="module.id as module.text for module in vmManager.showmoduleNameList" data-bs-select>
                                         <span class="caret"></span>
                                     </button>
@@ -53,13 +53,13 @@
                                             </button>
                                         </div>
                                     </div>
-                                </div>   
+                                </div>
                                 <label for="checkPerson" class="col-md-2 control-label">审核人</label>
                                 <div class="col-md-4">
                                     <input name="checkPerson" class="form-control" ng-model="vm.CheckPerson" />
                                     @*<div class="error-messages" ng-messages="formWorkTaskManager.checkPerson.$error" ng-show="operate.showValidation">
-            <small ng-message="required">审核人不能为空</small>
-             </div>*@
+                                        <small ng-message="required">审核人不能为空</small>
+                                         </div>*@
                                 </div>
                             </div>
                             <div class="form-group">
@@ -75,7 +75,7 @@
                                     <div class="error-messages" ng-messages="formWorkTaskManager.workItem.$error" ng-show="operate.showValidation">
                                         <small ng-message="required">具体功能不能为空</small>
                                     </div>
-                                </div>                
+                                </div>
                                 <label for="difficultyCoefficient" class="col-md-2 control-label">难度系数</label>
                                 <div class="col-md-4">
                                     <input type="number" max="5" min="1" name="difficultyCoefficient" placeholder="必填" class="form-control" ng-model="vm.DifficultyCoefficient" required />
@@ -125,31 +125,29 @@
                             <div class="form-group">
                                 <label for="progressDescription" class="col-md-2 control-label">进度描述</label>
                                 <div class="col-md-4">
-                                    <input name="progressDescription"  class="form-control" ng-model="vm.ProgressDescription" />
+                                    <input name="progressDescription" class="form-control" ng-model="vm.ProgressDescription" />
                                     @*<div class="error-messages" ng-messages="formWorkTaskManager.progressDescription.$error" ng-show="operate.showValidation">
-                                        <small ng-message="required">进度状态不能为空</small>
-                                    </div>*@
+                                            <small ng-message="required">进度状态不能为空</small>
+                                        </div>*@
                                 </div>
                                 <label for="orderPerson" class="col-md-2 control-label">执行人</label>
                                 <div class="col-md-4">
                                     <div class="input-group">
                                         <input name="orderPerson" class="form-control" ng-model="vm.OrderPerson" ng-show="false" />
-                                        <button type="button" class="btn btn-default"ng-model="vm.OrderPerson"
-                                                data-html="1"data-multiple="0"data-placeholder="选择执行人"
-                                                data-bs-options="person.name as person.text for person in vmManager.orderpersons" data-bs-select>
-
-                                        </button>
+                                        <button type="button" class="btn btn-default" ng-model="vm.OrderPerson"
+                                                data-html="1" data-multiple="0" data-placeholder="选择执行人"
+                                                data-bs-options="person.name as person.text for person in vmManager.orderpersons" data-bs-select></button>
 
                                     </div>
-                                  
+
                                     @*<div class="error-messages" ng-messages="formWorkTaskManager.orderPerson.$error" ng-show="operate.showValidation">
-                                       <small ng-message="required">执行人不能为空</small>
-                                    </div>*@
+                                           <small ng-message="required">执行人不能为空</small>
+                                        </div>*@
 
                                 </div>
                             </div>
                             <div class="form-group">
-                               
+
                                 <label for="remark" class="col-md-2 control-label">备注</label>
                                 <div class="col-md-10">
                                     <textarea name="remark" class="form-control" ng-model="vm.Remark" />
@@ -171,8 +169,8 @@
                     </div>
                 </div>
             </div>
-        </div> 
-        
+        </div>
+
         <div bs-pane data-title="系统查询" data-name="editTab">
 
             <div class="well">
@@ -207,7 +205,7 @@
                                     <div class="input-group">
 
                                         @*<input type="text" class="form-control" placeholder="按模块名称查询" ng-model="query.moduleName" />
-                                        <div class="input-group-btn">*@
+                                            <div class="input-group-btn">*@
                                         <input type="text" class="form-control" placeholder="按模块名称查询" ng-model="query.moduleName" ng-show="false" />
                                         <button type="button" class="btn btn-default" ng-model="query.moduleName"
                                                 data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="选择模块类别"
@@ -231,7 +229,7 @@
                                     <div class="input-group">
 
                                         @*<input type="text" class="form-control" placeholder="按模块名称查询" ng-model="query.moduleName" />
-                                          <div class="input-group-btn">*@
+                                            <div class="input-group-btn">*@
                                         <input type="text" class="form-control" placeholder="按进度状态查询" ng-model="query.progressStatus" ng-show="false" />
                                         <button type="button" class="btn btn-default" ng-model="query.progressStatus"
                                                 data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="选择进度状态"
@@ -326,13 +324,15 @@
                 </div>
             </div>
 
-        </div>      
+        </div>
     </div>
- </div>
 
     <div class="panel-footer">
 
     </div>
- 
+</div>
+
+
+
 
 
