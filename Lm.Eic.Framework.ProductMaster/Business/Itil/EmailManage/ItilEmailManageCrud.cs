@@ -74,7 +74,11 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                         
                     case 2:
                         return irep.Entities.Where(m => m.Email == dto.Email ).ToList();
-                       
+                    case 3:
+                        return irep.Entities.Where(m => m.ReceiveGrade == dto.ReceiveGrade).ToList();
+                    case 4:
+                        return irep.Entities.Where(m => m.Department == dto.Department).ToList();
+
                     default:
                         return new List<Model.ITIL.ItilEmailManageModel>();
                         
