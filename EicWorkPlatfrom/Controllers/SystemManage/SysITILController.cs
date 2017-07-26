@@ -97,12 +97,14 @@ namespace EicWorkPlatfrom.Controllers
         [HttpGet]
         [NoAuthenCheck]
         //邮箱查询
-        public ContentResult GetEmailManageRecord(string workerId, string email, int mode)
+        public ContentResult GetEmailManageRecord(string workerId, string email,int receiveGrade,string department, int mode)
         {
             var datas = ItilEmailMangeService.ItilEmailManager.GetItilEmailManage(new ItilEmailManageModelDto()
             {
                 WorkerId = workerId,
                 Email = email,
+                ReceiveGrade=receiveGrade, 
+                Department=department,
                 SearchMode = mode
 
             });
