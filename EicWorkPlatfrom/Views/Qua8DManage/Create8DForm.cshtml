@@ -108,13 +108,69 @@
 
 
             <div class="row">
-                <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:40%">
+                <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:60%">
                     <content dialog-title class="fa fa-bell">
                         <i class="fa fa-pencil-square">生成8D数据表</i>
                     </content>
-                    <content dialog-buttons>
-                        <button autofocus ng-click="operate.saveAll(formRmaBussesDescription.$valid)">确定</button>
-                        <button ng-click="$close()">取消</button>
+                    <content dialog-content>
+                        <div class="modal-body">
+                            <form role="form" name="formSupGrade" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                                <div class="form-group">
+                                    <label for="1" class="col-md-2 control-label">日期1</label>
+                                    <div class="col-md-2">
+                                        <input name="1" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                    </div>
+                                    <label for="2" class="col-md-2 control-label">日期2</label>
+                                    <div class="col-md-2">
+                                        <input name="2" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                    </div>
+                                    <label for="3" class="col-md-2 control-label">日期3</label>
+                                    <div class="col-md-2">
+                                        <input name="3" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="11" class="col-md-2 control-label">日期11</label>
+                                    <div class="col-md-2">
+                                        <input name="11" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                    </div>
+                                    <label for="22" class="col-md-2 control-label">日期12</label>
+                                    <div class="col-md-2">
+                                        <input name="22" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                    </div>
+                                    <label for="33" class="col-md-2 control-label">日期13</label>
+                                    <div class="col-md-2">
+                                        <input name="33" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="44" class="col-md-2 control-label">日期1</label>
+                                    <div class="col-md-2">
+                                        <input name="44" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                    </div>
+                                    <label for="55" class="col-md-2 control-label">日期2</label>
+                                    <div class="col-md-2">
+                                        <input name="55" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                    </div>
+                                    <label for="66" class="col-md-2 control-label">日期3</label>
+                                    <div class="col-md-2">
+                                        <input name="66" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            @*保存 取消 *@
+                            <div class="alert alert-info">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-primary " ng-click="operate.savePurSupGradeDatas(formSupGrade.$valid)"><i class="fa fa-save"></i>保存</button>
+                                        <button class="btn btn-default" ng-click="operate.cannel(formSupGrade.$valid)"><i class="fa fa-undo"></i>取消</button>
+                                        <span yl-operatemsg-board></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </content>
                 </dialog>
             </div>
