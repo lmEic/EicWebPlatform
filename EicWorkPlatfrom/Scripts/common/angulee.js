@@ -185,7 +185,7 @@ var leeDataHandler = (function () {
         add: 'add',
         edit: 'edit',
         update: 'update',
-        'delete': 'delete',
+        delete: 'delete',
         uploadFile: 'uploadFile',
         deleteFile: 'deleteFile',
         IdKey: 'Id_Key'
