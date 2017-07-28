@@ -36,7 +36,7 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
 qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, qualityInspectionDataOpService) {
     ///视图模型
     var uiVm = $scope.vm = {
-        ReportId: null,
+        ReportId: 'M201705',
         DiscoverPosition: null,
         AccountabilityDepartment: null,
         OrderId: null,
