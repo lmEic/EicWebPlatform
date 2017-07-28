@@ -88,23 +88,7 @@
                                                 <div class="error-messages" ng-messages="formEmailManage.department.$error" ng-show="operate.showValidation">
                                                     <small ng-message="required">部门不能为空</small>
                                                 </div>
-                                                @*<div class="input-group-btn">
-                                                    <button class="btn btn-primary" style="margin-bottom:6px;" id="departmentPopover"
-                                                            data-title="选择部门名称"
-                                                            data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
-                                                            data-animation="am-flip-x" data-auto-close="1"
-                                                            data-keyboard="false"
-                                                            data-bs-popover>
-                                                        <i class="fa fa-sitemap"></i>
-                                                    </button>
-                                                </div>*@
-                                                @*<div class="input-group-btn">
-                                                    <button type="button" class="btn btn-primary " ng-model="vm.Department"
-                                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
-                                                            data-bs-options="item.id as item.text for item in vmManager.departments" data-bs-select>
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                </div>*@
+                                              
                                             </div>
                                         </div>
                                         <label for="regDate" class="col-md-2 control-label">注册日期</label>
@@ -196,6 +180,7 @@
                 <div bs-pane data-title="邮箱查询" data-name="editTab">
 
                     <div bs-tabs>
+
                         <div bs-pane data-title="工号">
                             <form class="form-inline">
                                 <div class="form-group">
@@ -249,7 +234,7 @@
                                     <col width="150" />
                                     <col width="200" />
                                     <col width="200" />
-                                    <col width="100" />
+                                    <col width="130" />
                                 </colgroup>
                                 <thead>
                                     <tr class="info">
@@ -280,7 +265,8 @@
                                         <td ng-bind="item.Pop3Host"></td>
                                         <td ng-bind="item.SmtpHost"></td>
                                         <td>
-                                            <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i>修改</button>
+                                            <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i></button>
+                                            <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item) " title="删除"><i class="fa fa-remove"></i></button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -351,9 +337,7 @@
                                     <label for="password" class="col-md-2 control-label">邮箱密码</label>
                                     <div class="col-md-4">
                                         <input type="password" name="password" class="form-control" ng-model="vm.Password" placeholder="邮箱密码"  />
-                                        @*<div class="error-messages" ng-messages="formEmailManage.password.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">密码不能为空</small>
-                                        </div>*@
+                                    
                                     </div>
                                 </div>
 
@@ -365,23 +349,7 @@
                                             <div class="error-messages" ng-messages="formEmailManage.department.$error" ng-show="operate.showValidation">
                                                 <small ng-message="required">部门不能为空</small>
                                             </div>
-                                            @*<div class="input-group-btn">
-                        <button class="btn btn-primary" style="margin-bottom:6px;" id="departmentPopover"
-                                data-title="选择部门名称"
-                                data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
-                                data-animation="am-flip-x" data-auto-close="1"
-                                data-keyboard="false"
-                                data-bs-popover>
-                            <i class="fa fa-sitemap"></i>
-                        </button>
-                    </div>*@
-                                            @*<div class="input-group-btn">
-                        <button type="button" class="btn btn-primary " ng-model="vm.Department"
-                                data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
-                                data-bs-options="item.id as item.text for item in vmManager.departments" data-bs-select>
-                            <span class="caret"></span>
-                        </button>
-                    </div>*@
+                                         
                                         </div>
                                     </div>
                                     <label for="regDate" class="col-md-2 control-label">注册日期</label>
@@ -466,6 +434,10 @@
                             </form>
                         </content>
                     </dialog>
+
+                   
+
+                    
                 </div>
             </div>
         </div>

@@ -90,10 +90,19 @@ namespace EicWorkPlatfrom.Controllers
         //邮箱登记存储
         public JsonResult StoreEmailManageRecord(ItilEmailManageModel model)
         {
-            var opresult = ItilEmailMangeService.ItilEmailManager.StoreItilEmailManage(model);
-            return Json(opresult);
+            try
+            {
+                var opresult = ItilEmailMangeService.ItilEmailManager.StoreItilEmailManage(model);
+                return Json(opresult);
+            }
+            catch (System.Exception ex)
+            {
+
+                throw new System.Exception(ex.Message);
+            }
 
         }
+       
         [HttpGet]
         [NoAuthenCheck]
         //邮箱查询
