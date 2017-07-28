@@ -115,46 +115,63 @@
                     <content dialog-content>
                         <div class="modal-body">
                             <form role="form" name="formSupGrade" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                                @*ReportId, DiscoverPosition, AccountabilityDepartment, OrderId, MaterialName, MaterialSpec,
+                                    InPutHouseOrder, MaterialCount, InspectNumber, FailQty, FailClass, CreateReportDate, Status,*@
                                 <div class="form-group">
-                                    <label for="1" class="col-md-2 control-label">日期1</label>
+                                    <label for="reportId" class="col-md-2 control-label"> No.</label>
                                     <div class="col-md-2">
-                                        <input name="1" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                        <input name="reportId" type="text" readonly="readonly" class="form-control" ng-model="vm.ReportId" />
                                     </div>
-                                    <label for="2" class="col-md-2 control-label">日期2</label>
-                                    <div class="col-md-2">
-                                        <input name="2" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                    <label for="createReportDate" class="col-md-2 control-label">日期：</label>
+                                    <div class="col-lg-2">
+                                        <input name="createReportDate" type="date" class="form-control" ng-model="vm.CreateReportDate" format-date />
                                     </div>
-                                    <label for="3" class="col-md-2 control-label">日期3</label>
+                                    <label for="discoverPosition" class="col-md-2 control-label">来源：</label>
                                     <div class="col-md-2">
-                                        <input name="3" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                        <input name="discoverPosition" type="text" class="form-control" ng-model="vm.DiscoverPosition" format-date />
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="accountabilityDepartment" class="col-md-2 control-label">责任单位:</label>
+                                    <div class="col-md-2">
+                                        <input name="accountabilityDepartment" type="text" class="form-control" ng-model="vm.AccountabilityDepartment" format-date />
+                                    </div>
+                                    <label for="materialName" class="col-md-2 control-label">品名:</label>
+                                    <div class="col-md-2">
+                                        <input name="materialName" type="text" class="form-control" ng-model="vm.MaterialName" format-date />
+                                    </div>
+                                    <label for="materialSpec" class="col-md-2 control-label">规格:</label>
+                                    <div class="col-md-2">
+                                        <input name="materialSpec" type="text" class="form-control" ng-model="vm.MaterialSpec" format-date />
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="11" class="col-md-2 control-label">日期11</label>
+                                    <label for="inPutHouseOrder" class="col-md-2 control-label">交货单/入库单号: </label>
                                     <div class="col-md-2">
-                                        <input name="11" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                        <input name="inPutHouseOrder" type="text" class="form-control" ng-model="vm.InPutHouseOrder" format-date />
                                     </div>
-                                    <label for="22" class="col-md-2 control-label">日期12</label>
+                                    <label for="materialCount" class="col-md-2 control-label">批 量:</label>
                                     <div class="col-md-2">
-                                        <input name="22" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                        <input name="materialCount" type="text" class="form-control" ng-model="vm.MaterialCount" format-date />
                                     </div>
-                                    <label for="33" class="col-md-2 control-label">日期13</label>
+                                    <label for="inspectNumber" class="col-md-2 control-label">检验数</label>
                                     <div class="col-md-2">
-                                        <input name="33" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                        <input name="inspectNumber" type="text" class="form-control" ng-model="vm.InspectNumber" format-date />
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="44" class="col-md-2 control-label">日期1</label>
+                                    <label for="failQty" class="col-md-2 control-label">不良数:</label>
                                     <div class="col-md-2">
-                                        <input name="44" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                        <input name="failQty" type="text" class="form-control" ng-model="vm.FailQty" format-date />
                                     </div>
-                                    <label for="55" class="col-md-2 control-label">日期2</label>
+                                    <label for="failClass" class="col-md-2 control-label">不良类别:</label>
                                     <div class="col-md-2">
-                                        <input name="55" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                        <input name="failClass" type="text" class="form-control" ng-model="vm.FailClass" format-date />
                                     </div>
-                                    <label for="66" class="col-md-2 control-label">日期3</label>
+                                    <label for="66" class="col-md-2  control-label">检验数:</label>
                                     <div class="col-md-2">
-                                        <input name="66" type="text" class="form-control" ng-model="vm.PlanTutorDate" format-date />
+                                        <input name="66" type="text" class="form-control" ng-model="vm.InspectNumber" format-date />
                                     </div>
                                 </div>
                             </form>

@@ -8,6 +8,7 @@ namespace Lm.Eic.Framework.ProductMaster.Model.Tools
    public class ReportImproveProblemModelsDto
     {
         public string ProblemSolve { get; set; }
+        public string Department { get; set; }
         private int _searchMode = 0;
         public int SearchMode
         {

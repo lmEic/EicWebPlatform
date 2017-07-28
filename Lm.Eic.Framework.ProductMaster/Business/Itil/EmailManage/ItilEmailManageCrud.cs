@@ -31,19 +31,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             this.AddOpItem(OpMode.Add, Add);
             this.AddOpItem(OpMode.Edit, Edit);
-            this.AddOpItem(OpMode.Delete, DeleteEmailRecord);
+            this.AddOpItem(OpMode.Delete,DeleteRecord);
         }
 
-        private OpResult DeleteEmailRecord(Model.ITIL.ItilEmailManageModel model)
+        private OpResult DeleteRecord(Model.ITIL.ItilEmailManageModel model)
         {
-            return irep.Update(m => m.Id_Key == model.Id_Key,
-                f => new Model.ITIL.ItilEmailManageModel
-                {
-                    OpDate = model.OpDate,
-                    OpTime = model.OpTime,
-                    OpPerson = model.OpPerson,
-                    OpSign = model.OpSign
-                }).ToOpResult_Delete(OpContext);
+            
+            return irep.Delete(e => e.Email == model.Email).ToOpResult_Delete(OpContext);
         }
 
         private OpResult Edit(Model.ITIL.ItilEmailManageModel model)

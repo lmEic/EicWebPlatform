@@ -105,11 +105,12 @@ namespace EicWorkPlatfrom.Controllers
         }
         [HttpGet]
         [NoAuthenCheck]
-        public ContentResult GetReportImproveProbleDatas(string problemSolve,int mode)
+        public ContentResult GetReportImproveProbleDatas(string problemSolve,string department, int mode)
         {
             ReportImproveProblemModelsDto queryDto = new ReportImproveProblemModelsDto()
             {
                 ProblemSolve = problemSolve,
+                Department=department,
                 SearchMode = mode
             };
             var datas = ToolOnlineService.ReportImproveProblemManager.GetReportImproveProbleDataBy(queryDto);
