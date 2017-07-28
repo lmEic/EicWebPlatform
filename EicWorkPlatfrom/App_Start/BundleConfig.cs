@@ -32,11 +32,6 @@ namespace EicWorkPlatfrom
                 "~/Content/angular-popups/dist/angular-popups.js",
                 "~/Content/pnotify/dist/pnotify.custom.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/ueditor").Include(
-                "~/Content/ueditor/ueditor.config.js",
-                "~/Content/ueditor/ueditor.all.js",
-                "~/Content/ueditor/lang/zh-cn/zh-cn.js"));
-
             bundles.Add(new StyleBundle("~/css/anstrap").Include(
                          "~/Content/print/print.min.css",
                         "~/Content/angular-motion/dist/angular-motion.css",
