@@ -176,7 +176,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     }
 
     ////////////////////////////////////////////fqc进料检验数据采集模块//////////////////////////////////////////////////
-    //fqc进料检验数据采集模块   获取工单信息数据
+    ///fqc进料检验数据采集模块   获取工单信息数据
     quality.getFqcOrderInfoDatas = function (orderId) {
         var url = quaInspectionManageUrl + 'GetFqcOrderInfoDatas';
         return ajaxService.getData(url, {
@@ -837,7 +837,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
 
     var vmManager = {
         orderId: null,
-        orderInfo: null,   
+        orderInfo: null,
         //抽样批次数量
         sampleCount: 0,
         currentOrderSubIdItem: null,
@@ -1031,7 +1031,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
     //上传附件
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
-           qualityInspectionDataOpService.SuploadFqcGatherDataAttachFile(fd).then(function (result) {
+            qualityInspectionDataOpService.SuploadFqcGatherDataAttachFile(fd).then(function (result) {
                 if (result === 'OK') {
                     var nowDate = new Date().getDate();
                     var nowHour = new Date().getHours();
@@ -1115,10 +1115,6 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                 }
                 vmManager.dataSource = editDatas;
                 vmManager.dataSets = editDatas;
-
-                //vmManager.selectedFormStatus = null;
-                //vmManager.querySupplierId = null;
-                //vmManager.selecteInspectionItem = null;
             })
         },
         //获取检验表单主数据

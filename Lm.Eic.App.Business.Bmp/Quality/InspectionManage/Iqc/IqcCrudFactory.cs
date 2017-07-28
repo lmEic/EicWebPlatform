@@ -156,6 +156,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
         }
+        internal List<InspectionIqcMasterModel> GetIqcMasterContainDatasBy(string orderId)
+        {
+            return irep.Entities.Where(e => e.OrderId.Contains(orderId)).ToList();
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -367,6 +371,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         internal List<InspectionIqcDetailModel> GetIqcInspectionDetailOrderIdModelBy(string orderid, string materialId)
         {
             return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId).ToList();
+        }
+        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailOrderIdModelBy(string orderid)
+        {
+            return irep.Entities.Where(e => e.OrderId == orderid).ToList();
         }
 
 

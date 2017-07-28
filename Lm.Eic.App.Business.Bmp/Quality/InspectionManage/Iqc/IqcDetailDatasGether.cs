@@ -11,9 +11,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
     public class IqcDetailDatasGather
     {
-
-
-
         public List<InspectionIqcDetailModel> GetIqcDetailModeDatasBy(string materailId, string inspecitonItem)
         {
 
@@ -28,7 +25,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
         }
-
         /// <summary>
         /// 通过总表 存储Iqc检验详细数据
         /// </summary>
@@ -132,6 +128,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderId, string materailId)
         {
             return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailOrderIdModelBy(orderId, materailId);
+        }
+
+        /// <summary>
+        ///  得到副表的详细参数List
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="materailId"></param>
+        /// <returns></returns>
+        public List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderId)
+        {
+            return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailOrderIdModelBy(orderId);
         }
     }
 }
