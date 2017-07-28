@@ -76,6 +76,8 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
                 {
                     case 1:
                         return irep.Entities.Where(m => m.ProblemSolve == queryDto.ProblemSolve).ToList();
+                    case 2:
+                        return irep.Entities.Where(m => m.Department == queryDto.Department).ToList();
                     default:
                         return new List<ReportImproveProblemModels>();
                 }

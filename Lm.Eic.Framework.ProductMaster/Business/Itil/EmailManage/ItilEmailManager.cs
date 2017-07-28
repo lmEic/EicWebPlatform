@@ -21,7 +21,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             try
             {
-                return ItilEmailFactory.ItilEmailManageCrud.Store(model, true);
+                return ItilEmailFactory.ItilEmailManageCrud.Store(model);
             }
             catch (Exception ex)
             {
@@ -29,5 +29,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 throw new Exception(ex.Message);
             }
         }
+       
     }
 }

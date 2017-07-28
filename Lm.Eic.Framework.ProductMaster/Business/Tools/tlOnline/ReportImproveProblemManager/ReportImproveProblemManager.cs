@@ -43,15 +43,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Tools.tlOnline
             return ReportImproveProblemFactory.ReportImproveProblemCrud.FindBy(queryDto);
         }
 
-       //public DownLoadFileModel GetReportImproveProblemDLFM(string siteRootPath, string caseId)
-       // {
-       //     DownLoadFileModel dlfm = new DownLoadFileModel();
-          
-               
-       //     var model = ReportImproveProblemFactory.ReportImproveProblemCrud.CaseIdFindBy(caseId);
-           
-       //     return dlfm.CreateInstance(siteRootPath.GetDownLoadFilePath(model.FilePath),)
-       // }
-
+       
     }
 }
