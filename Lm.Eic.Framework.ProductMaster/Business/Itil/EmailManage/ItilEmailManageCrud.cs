@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 {
-   internal class ItilEmailFactory
+    internal class ItilEmailFactory
     {
         public static ItilEmailManageCrud ItilEmailManageCrud
         {
@@ -20,16 +20,16 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         }
     }
 
-    internal class ItilEmailManageCrud:CrudBase<Model.ITIL.ItilEmailManageModel, IItilEmailManageRepository>
+    internal class ItilEmailManageCrud : CrudBase<Model.ITIL.ItilEmailManageModel, IItilEmailManageRepository>
     {
-      public ItilEmailManageCrud():base(new ItilEmailManageRepository(),"邮箱管理")
+        public ItilEmailManageCrud() : base(new ItilEmailManageRepository(), "邮箱管理")
         {
 
         }
 
         protected override void AddCrudOpItems()
         {
-            this.AddOpItem(OpMode.Add,Add);
+            this.AddOpItem(OpMode.Add, Add);
             this.AddOpItem(OpMode.Edit, Edit);
             this.AddOpItem(OpMode.Delete, DeleteEmailRecord);
         }
@@ -48,32 +48,32 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 
         private OpResult Edit(Model.ITIL.ItilEmailManageModel model)
         {
-            return irep.Update(m=>m.Id_Key==model.Id_Key,model).ToOpResult_Eidt(OpContext);
+            return irep.Update(m => m.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
         private OpResult Add(Model.ITIL.ItilEmailManageModel model)
         {
-            if(irep.IsExist(m=>m.Email.Equals(model.Email)))
+            if (irep.IsExist(m => m.Email.Equals(model.Email)))
             {
                 return OpResult.SetErrorResult("亲，邮箱帐号己存在！无法新增");
 
             }
             return irep.Insert(model).ToOpResult_Add(OpContext);
-              
+
         }
 
         public List<Model.ITIL.ItilEmailManageModel> FindBy(ItilEmailManageModelDto dto)
         {
-            if (dto== null) return new List<Model.ITIL.ItilEmailManageModel>();
+            if (dto == null) return new List<Model.ITIL.ItilEmailManageModel>();
             try
             {
                 switch (dto.SearchMode)
                 {
                     case 1:
                         return irep.Entities.Where(m => m.WorkerId == dto.WorkerId).ToList();
-                        
+
                     case 2:
-                        return irep.Entities.Where(m => m.Email == dto.Email ).ToList();
+                        return irep.Entities.Where(m => m.Email == dto.Email).ToList();
                     case 3:
                         return irep.Entities.Where(m => m.ReceiveGrade == dto.ReceiveGrade).ToList();
                     case 4:
@@ -81,7 +81,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 
                     default:
                         return new List<Model.ITIL.ItilEmailManageModel>();
-                        
+
                 }
 
             }

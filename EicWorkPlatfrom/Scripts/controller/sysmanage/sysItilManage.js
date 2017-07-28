@@ -54,21 +54,21 @@ smModule.factory('sysitilService', function (ajaxService) {
     ///保存邮箱记录
     itil.storeEmailManageRecord = function (model) {
         var url = urlPrefix + 'StoreEmailManageRecord';
-        return ajaxService.postData(url,{
-                model: model
-         });
+        return ajaxService.postData(url, {
+            model: model
+        });
     }
     //查询邮箱记录
-    itil.getEmailManageRecord = function (workerId, email, receiveGrade,department, mode) {
+    itil.getEmailManageRecord = function (workerId, email, receiveGrade, department, mode) {
         var url = urlPrefix + 'GetEmailManageRecord';
         return ajaxService.getData(url, {
             workerId: workerId,
             email: email,
-            receiveGrade: receiveGrade,   
-            department:department,
+            receiveGrade: receiveGrade,
+            department: department,
             mode: mode
         });
-        
+
     }
 
     return itil;
@@ -123,7 +123,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
         },
         executors: [{ name: '万晓桥', text: '万晓桥' }, { name: '张文明', text: '张文明' }, { name: '杨垒', text: '杨垒' }],
 
-     
+
 
         progressStatuses: [
                 { value: '待开发', label: '<i class="fa fa-calendar-o"></i>  待开发' },
@@ -245,7 +245,7 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
     };
 });
 //消息通知模块控制器
-smModule.controller('itilNotifyAddressManageCtrl', function ($scope,sysitilService) {
+smModule.controller('itilNotifyAddressManageCtrl', function ($scope, sysitilService) {
     ///视图模型
     ///通知邮件配置 
     var uiVm = $scope.vm = {
@@ -268,7 +268,7 @@ smModule.controller('itilNotifyAddressManageCtrl', function ($scope,sysitilServi
         activeTab: 'initTab',
         isLocal: true,
         init: function () {
-          
+
         },
         OpStatus: [{ name: '完成', text: '完成' }, { name: '进行中', text: '进行中' }, { name: '未完成', text: '未完成' }],
         datasource: [],
@@ -289,7 +289,7 @@ smModule.controller('itilNotifyAddressManageCtrl', function ($scope,sysitilServi
         showDetailsBoard: false,//显示明细面板
         editModal: null,
         functionName: null,
-      
+
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -315,7 +315,7 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
         Name: null,
         Department: null,
         Email: null,
-        NickName:null,
+        NickName: null,
         ReceiveGrade: null,
         IsSender: 1,
         Password: null,
@@ -340,7 +340,7 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
         workerId: null,
         email: null,
         receiveGrade: 0,
-        department:null
+        department: null
     };
     $scope.query = queryFields;
     var vmManager = {
@@ -369,19 +369,19 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
             { id: "企业讯息", text: "企业讯息" },
             { id: "自动化", text: "自动化" },
         ],
-        receiveGrades: [{ name: "1", text: "1" }, { name: "2", text: "2" }, { name: "3", text: "3" }, { name: "4", text: "4" }, { name: "5", text: "5" },],
+        receiveGrades: [{ name: "1", text: "1" }, { name: "2", text: "2" }, { name: "3", text: "3" }, { name: "4", text: "4" }, { name: "5", text: "5" }, ],
         storeModules: [],
         datasource: [],
         searchDataset: [],
         searchBy: function () {
-            $scope.searchPromise = sysitilService.getEmailManageRecord(queryFields.workerId, queryFields.email,queryFields.receiveGrade,queryFields.department, 1).then(function (datas) {
+            $scope.searchPromise = sysitilService.getEmailManageRecord(queryFields.workerId, queryFields.email, queryFields.receiveGrade, queryFields.department, 1).then(function (datas) {
                 vmManager.searchDataset = datas;
             })
         },
         getEmailRecords: function (mode) {
             vmManager.searchDataset = [];
             vmManager.datasource = [];
-            sysitilService.getEmailManageRecord(queryFields.workerId, queryFields.email,queryFields.receiveGrade,queryFields.department, mode).then(function (datas) {
+            sysitilService.getEmailManageRecord(queryFields.workerId, queryFields.email, queryFields.receiveGrade, queryFields.department, mode).then(function (datas) {
                 vmManager.datasource = datas;
             });
         },
@@ -458,10 +458,7 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
     departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);
         queryFields.department = dto.DataNodeText;
-        vmManager.getEmailRecords(4);      
+        vmManager.getEmailRecords(4);
     };
     $scope.ztree = departmentTreeSet;
-
-    
-
 });
