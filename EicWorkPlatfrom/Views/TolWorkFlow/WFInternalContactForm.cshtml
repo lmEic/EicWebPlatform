@@ -73,7 +73,7 @@
                                     <small ng-message="required">相关人不能为空</small>
                                 </div>
                                 <div class="input-group-btn">
-                                    <span class="btn btn-primary"><i class="fa fa-location-arrow"></i></span>
+                                    <span class="btn btn-primary" ng-click="vmManager.selectDerpartment()"><i class="fa fa-location-arrow"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -115,6 +115,16 @@
 
             </div>
         </div>
+
+
+        <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
+            <content dialog-title>
+                <i class="fa fa-pencil-square">选择用人单位及人员</i>
+            </content>
+            <content dialog-content style="width:100%;">
+
+            </content>
+        </dialog>
     </div>
 
 
