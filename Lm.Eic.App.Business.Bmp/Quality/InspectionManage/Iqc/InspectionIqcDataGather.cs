@@ -20,15 +20,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     {
 
         #region LoadClass
-        IqcMasterDatasGather MasterDatasGather
+        public IqcMasterDatasGather MasterDatasGather
         {
             get { return OBulider.BuildInstance<IqcMasterDatasGather>(); }
         }
-        IqcDetailDatasGather DetailDatasGather
+        public IqcDetailDatasGather DetailDatasGather
         {
             get { return OBulider.BuildInstance<IqcDetailDatasGather>(); }
         }
-        InspectionItemCondition ItemCondition
+        public InspectionItemCondition ItemCondition
         {
             get { return OBulider.BuildInstance<InspectionItemCondition>(); }
         }
@@ -350,6 +350,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
+
+
+        public List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderId)
+        {
+            return DetailDatasGather.GetIqcInspectionDetailDatasBy(orderId);
+        }
     }
 
 

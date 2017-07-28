@@ -22,6 +22,14 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
             stepId: stepId,
         });
     };
+
+    bugd.getQueryDatas = function (searchModel, orderId) {
+        var url = quabugDManageUrl + 'GetQueryDatas';
+        return ajaxService.getData(url, {
+            orderId: orderId,
+            searchModel: searchModel,
+        });
+    };
     return bugd;
 });
 ////创建8D表单
@@ -48,14 +56,27 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, q
         Id_Key: null,
     };
     ///视图处理
-
-
     $scope.vm = uiVm;
     //初始化原型
     var initVM = _.clone(uiVm);
+    var dialog = $scope.dialog = leePopups.dialog();
     var vmManager = {
-
-
+        orderInfo: [],
+        dataSets: [],
+        dataSource: [],
+        iqcOrderId: '341-170327011',
+        ///查询表单
+        getQua8DCreateDatas: function () {
+            $scope.searchPromise = BDataOpService.getQueryDatas("21", vmManager.iqcOrderId).then(function (datas) {
+                vmManager.dataSets = datas;
+                vmManager.dataSource = datas;
+            });
+        },
+        ///创建8D表单
+        create8DReportMaster: function (item) {
+            console.log(item);
+            dialog.show();
+        },
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -150,6 +171,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
                 console.log(datas);
             });
         },
+
     };
     $scope.vmManager = vmManager;
     vmManager.getQua8DCreateDatas();
