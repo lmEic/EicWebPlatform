@@ -90,16 +90,25 @@ namespace EicWorkPlatfrom.Controllers
         //邮箱登记存储
         public JsonResult StoreEmailManageRecord(ItilEmailManageModel model)
         {
-            var opresult = ItilEmailMangeService.ItilEmailManager.StoreItilEmailManage(model);
-            return Json(opresult);
+            try
+            {
+                var opresult = ItilService.ItilEmailManager.StoreItilEmailManage(model);
+                return Json(opresult);
+            }
+            catch (System.Exception ex)
+            {
+
+                throw new System.Exception(ex.Message);
+            }
 
         }
+       
         [HttpGet]
         [NoAuthenCheck]
         //邮箱查询
         public ContentResult GetEmailManageRecord(string workerId, string email,int receiveGrade,string department, int mode)
         {
-            var datas = ItilEmailMangeService.ItilEmailManager.GetItilEmailManage(new ItilEmailManageModelDto()
+            var datas = ItilService.ItilEmailManager.GetItilEmailManage(new ItilEmailManageModelDto()
             {
                 WorkerId = workerId,
                 Email = email,

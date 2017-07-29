@@ -55,10 +55,11 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
         })
     }
     ///查询上报问题处理状态
-    oAssistant.getReportImproveProbleDatas = function (problemSove, mode) {
+    oAssistant.getReportImproveProbleDatas = function (problemSove, department,mode) {
         var url = oaUrlPrefix + 'GetReportImproveProbleDatas';
         return ajaxService.getData(url, {
             problemSolve: problemSove,
+            department: department,
             mode:mode
         })
     }
@@ -420,7 +421,8 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
     var originalVM = _.clone(uiVM);
     var dialog = $scope.dialog = leePopups.dialog();
     var queryFields = {      
-        problemSolve:null
+        problemSolve: null,
+        department:null
 
     };
     $scope.query = queryFields;
@@ -554,7 +556,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
         problemProcesss: [{ name: '万晓桥', text: '万晓桥' }, { name: '林旺雷', text: '林旺雷' }, { name: '杨垒', text: '杨垒' }],
         //s查询
         searchBy: function () {
-            $scope.searchPromise = oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve, 1).then(function (datas) {
+            $scope.searchPromise = oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve,queryFields.department ,1).then(function (datas) {
                 vmManager.storeDataset = datas;
             })
         },
@@ -562,7 +564,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
 
             vmManager.searchDataset = [];
             vmManager.datasource = [];
-            oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve, mode).then(function (datas) {
+            oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve,queryFields.department, mode).then(function (datas) {
               
                 vmManager.datasource = datas;
             })
@@ -577,11 +579,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
 
 
         },
-        //下载文件
-        //loadFile: function (item) {
-        //    var loadUrl ="TolOfficeAssistant/LoadReportImproveProblemFile"
-        //}
-
+      
     };
     $scope.vmManager = vmManager;
     var dialog = $scope.dialog = leePopups.dialog();
@@ -649,40 +647,17 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
             })
         })     
     },
-  //组织架构
-
-       
-
-
-
-
-
-
+  //组织架构   
     $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
         departmentTreeSet.setTreeDataset(datas);
     });
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);
-        vm.Department = dto.DataNodeText;
+        queryFields.department = dto.DataNodeText;
+        vmManager.getReportImproveProblemData(2);
     };
     $scope.ztree = departmentTreeSet;
-
-    ///////////////////////////
-    //var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
-    //departmentTreeSet.bindNodeToVm = function () {
-    //    var dto = _.clone(departmentTreeSet.treeNode.vm);
-    //    vmManager.department = dto.DataNodeText;
-    //};
-
-    //$scope.promise = dReportDataOpService.getDReportInitData(vmManager.department).then(function (datas) {
-    //    departmentTreeSet.setTreeDataset(datas.departments);
-    //    vmManager.machines = datas.machines;
-    //    vmManager.unproductReasons = datas.unproductReasons;
-    //});
-
-    //$scope.ztree = departmentTreeSet;
-
 
 
 });

@@ -73,7 +73,7 @@
                                     <small ng-message="required">相关人不能为空</small>
                                 </div>
                                 <div class="input-group-btn">
-                                    <span class="btn btn-primary" ng-click="vmManager.selectDerpartment()"><i class="fa fa-location-arrow"></i></span>
+                                    <span class="btn btn-primary" ng-click="vmManager.selectDepartmentAndPerson('apply')"><i class="fa fa-location-arrow"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -117,12 +117,69 @@
         </div>
 
 
-        <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
+        <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%;">
             <content dialog-title>
                 <i class="fa fa-pencil-square">选择用人单位及人员</i>
             </content>
             <content dialog-content style="width:100%;">
-
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h6 class="panel-title"><i class="glyphicon glyphicon-home"></i>组织架构图</h6>
+                            </div>
+                            <div class="panel-body" style="max-height:515px;overflow:auto">
+                                <ul data-yl-tree cg-busy="{promise:promise}"
+                                    data-tree-dataset="ztree.configDataNodes"
+                                    data-start-load="ztree.startLoad"
+                                    ng-model="ztree.treeNode"
+                                    data-binding-nodevm="ztree.bindNodeToVm()"
+                                    id="{{ztree.treeId}}" class="ztree"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="bs-callout bs-callout-info" cg-busy="{promise:searchPromise}" style="height:480px;">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-bordered" style="table-layout:fixed;">
+                                    <colgroup>
+                                        <col width="60" />
+                                        <col width="80" />
+                                        <col width="80" />
+                                        <col width="120" />
+                                        <col width="150" />
+                                    </colgroup>
+                                    <thead>
+                                        <tr class="info">
+                                            <th>
+                                                操作(
+                                                <i class="fa fa-pencil-square-o"></i>)
+                                            </th>
+                                            <th>工号</th>
+                                            <th>姓名</th>
+                                            <th>部门</th>
+                                            <th>Email</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vmManager.searchDataset track by $index">
+                                            <td ng-bind="$index+1">
+                                            <td ng-bind="item.WorkerId"></td>
+                                            <td ng-bind="item.Name"></td>
+                                            <td ng-bind="item.Department"></td>
+                                            <td ng-bind="item.Email"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div ng-if="vmManager.datasource.length>0"
+                                     yl-pagination
+                                     data-dataset="vmManager.searchDataset"
+                                     data-datasource="vmManager.datasource">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </content>
         </dialog>
     </div>

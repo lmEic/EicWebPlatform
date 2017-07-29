@@ -57,7 +57,6 @@
     <Compile Include="Business\Config\PmConfigService.cs" />
     <Compile Include="Business\Itil\EmailManage\ItilEmailManageCrud.cs" />
     <Compile Include="Business\Itil\EmailManage\ItilEmailManager.cs" />
-    <Compile Include="Business\Itil\EmailManage\ItilEmailMangeService.cs" />
     <Compile Include="Business\Itil\ItilDevelopModuleCrud.cs" />
     <Compile Include="Business\Itil\ItilDevelopModuleManager.cs" />
     <Compile Include="Business\Itil\ItilService.cs" />

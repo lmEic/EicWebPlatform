@@ -51,6 +51,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         [NoAuthenCheck]
         public ContentResult GetWorkerClothesReceiveRecords(string workerId, string department, string receiveMonth, int mode)
         {
+            
             var datas = GeneralAffairsService.WorkerClothesManager.FindReceiveRecordBy(new QueryGeneralAffairsDto()
             {
                 Department = department,
