@@ -65,6 +65,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, q
         dataSets: [],
         dataSource: [],
         iqcOrderId: '341-170327011',
+        DiscoverPositions: [{ id: "外来文件", text: "外来文件" }, { id: "内部文件", text: "内部文件" }],
         ///查询表单
         getQua8DCreateDatas: function () {
             $scope.searchPromise = BDataOpService.getQueryDatas("21", vmManager.iqcOrderId).then(function (datas) {
