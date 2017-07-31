@@ -20,7 +20,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         }
     }
 
-    internal class ItilEmailManageCrud : CrudBase<Model.ITIL.ItilEmailManageModel, IItilEmailManageRepository>
+    internal class ItilEmailManageCrud : CrudBase<ItilEmailManageModel, IItilEmailManageRepository>
     {
         public ItilEmailManageCrud() : base(new ItilEmailManageRepository(), "邮箱管理")
         {
@@ -31,21 +31,21 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         {
             this.AddOpItem(OpMode.Add, Add);
             this.AddOpItem(OpMode.Edit, Edit);
-            this.AddOpItem(OpMode.Delete,DeleteRecord);
+            this.AddOpItem(OpMode.Delete, DeleteRecord);
         }
 
-        private OpResult DeleteRecord(Model.ITIL.ItilEmailManageModel model)
+        private OpResult DeleteRecord(ItilEmailManageModel model)
         {
-            
+
             return irep.Delete(e => e.Email == model.Email).ToOpResult_Delete(OpContext);
         }
 
-        private OpResult Edit(Model.ITIL.ItilEmailManageModel model)
+        private OpResult Edit(ItilEmailManageModel model)
         {
             return irep.Update(m => m.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
 
-        private OpResult Add(Model.ITIL.ItilEmailManageModel model)
+        private OpResult Add(ItilEmailManageModel model)
         {
             if (irep.IsExist(m => m.Email.Equals(model.Email)))
             {
@@ -55,8 +55,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             return irep.Insert(model).ToOpResult_Add(OpContext);
 
         }
-
-        public List<Model.ITIL.ItilEmailManageModel> FindBy(ItilEmailManageModelDto dto)
+        public List<ItilEmailManageModel> FindBy(ItilEmailManageModelDto dto)
         {
             if (dto == null) return new List<Model.ITIL.ItilEmailManageModel>();
             try

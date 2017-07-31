@@ -141,10 +141,11 @@
     <Compile Include="Quality\RmaManage\RmaReportManager.cs" />
     <Compile Include="Quality\RmaManage\RmaManager.cs" />
     <Compile Include="Quality\RmaManage\RmaService.cs" />
+    <Compile Include="WorkFlow\GeneralForm\GeneralFormCrudFactory.cs" />
+    <Compile Include="WorkFlow\GeneralForm\GeneralFormService.cs" />
+    <Compile Include="WorkFlow\GeneralForm\InternalContactFormManager.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WorkFlow\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Lm.Eic.App.Business.Mes\Lm.Eic.App.Business.Mes.csproj">
       <Project>{25616437-5761-4fe5-8dcc-d76b4641b6a7}</Project>

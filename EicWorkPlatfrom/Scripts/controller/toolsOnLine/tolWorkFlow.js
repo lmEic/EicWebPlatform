@@ -45,7 +45,7 @@ officeAssistantModule.factory('wfDataOpService', function (ajaxService) {
 ///内部联络单
 officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, wfDataOpService) {
     var ue = leeUeditor.getEditor('formContent');
-      
+
 
     ///联络单视图模型
     var uiVM = {
