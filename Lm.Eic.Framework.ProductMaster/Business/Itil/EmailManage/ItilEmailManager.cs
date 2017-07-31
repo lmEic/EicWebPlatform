@@ -10,14 +10,14 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
    public class ItilEmailManager
     {
 
-       // List<ItilEmailManageModel> _ItilEmailManageModelList = new List<ItilEmailManageModel>();
-        public List<ItilEmailManageModel>GetItilEmailManage(ItilEmailManageModelDto dto)
+       
+        public List<ItilEmailManageModel>GetMails(ItilEmailManageModelDto dto)
         {
 
             return ItilEmailFactory.ItilEmailManageCrud.FindBy(dto);
          
         }
-        public OpResult StoreItilEmailManage(ItilEmailManageModel model)
+        public OpResult StoreMails(ItilEmailManageModel model)
         {
             try
             {

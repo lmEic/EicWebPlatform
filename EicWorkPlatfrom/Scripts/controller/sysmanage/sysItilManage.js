@@ -122,9 +122,6 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
             vmManager.canEdit = false;
         },
         executors: [{ name: '万晓桥', text: '万晓桥' }, { name: '张文明', text: '张文明' }, { name: '杨垒', text: '杨垒' }],
-
-     
-
         progressStatuses: [
                 { value: '待开发', label: '<i class="fa fa-calendar-o"></i>  待开发' },
                 { value: '待审核', label: '<i class="fa fa-feed"></i>  待审核' },
@@ -434,21 +431,14 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
                         leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                             if (opresult.Result) {    
                                 vmManager.searchBy();  
-                                vmManager.del();
-                               
+                                vmManager.del();                            
                             }
-
                         })
-
-                    })   
-                   
+                    })                    
                     vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.hide);
                 };
             },
-        }),
-
-
-       
+        }),       
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
