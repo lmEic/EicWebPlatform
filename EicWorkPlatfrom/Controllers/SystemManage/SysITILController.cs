@@ -92,7 +92,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             try
             {
-                var opresult = ItilService.ItilEmailManager.StoreMails(model);
+                var opresult = ItilService.EmailManager.StoreItilEmailManage(model);
                 return Json(opresult);
             }
             catch (System.Exception ex)
@@ -108,15 +108,17 @@ namespace EicWorkPlatfrom.Controllers
         //邮箱查询
         public ContentResult GetEmailManageRecord(string workerId, string email,int receiveGrade,string department, int mode)
         {
-            var datas = ItilService.ItilEmailManager.GetMails(new ItilEmailManageModelDto()
+            var datas = ItilService.EmailManager.GetEmails(new ItilEmailManageModelDto()
             {
                 WorkerId = workerId,
                 Email = email,
                 ReceiveGrade=receiveGrade, 
                 Department=department,
                 SearchMode = mode
+
             });
             return DateJsonResult(datas);
+
         }
         /// <summary>
         /// 发送邮件通知
@@ -125,8 +127,8 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult SendMail()
         {
-          var result = 0;/*ItilService.ItilDevelopModuleManager.SendMail();*/
-          return Json(result);
+            var result = 0;/*ItilService.ItilDevelopModuleManager.SendMail();*/
+            return Json(result);
         }
         #endregion
 
