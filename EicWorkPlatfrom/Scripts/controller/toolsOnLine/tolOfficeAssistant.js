@@ -396,8 +396,8 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
     ///View
     var uiVM = {
         WorkerId: leeLoginUser.userId,
-        Name:null,
-        Department:null,
+        Name:leeLoginUser.userName,
+        Department:leeLoginUser.department,
         CaseId: null,      
         FilePath: null,//
         FileName: null,//
@@ -468,7 +468,6 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                 uiVM.Name = worker.Name;
                 uiVM.WorkerId = worker.WorkerId;
                 uiVM.Department = worker.Department;
-
             }
             else
             {
@@ -697,7 +696,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                 uiVM.CaseId = caseId;
                 uiVM.OpSign = leeDataHandler.dataOpMode.add;
             })
-            vmManager.getWorkerInfo();
+           vmManager.getWorkerInfo();
            
         },
     };
@@ -729,8 +728,9 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                         if (mode.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.datasource.push(mode);
                         }
-                        vmManager.init();
-                        dialog.close();                 
+                        vmManager.init();                    
+                        dialog.close();  
+                        vmManager.getReportImproveProblemData(1);
                     }
                 })
             })
@@ -762,7 +762,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
     },
   //组织架构   
     $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
-        vmManager.departmentDatas = datas;
+      //  vmManager.departmentDatas = datas;
         departmentTreeSet.setTreeDataset(datas);
     });
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
