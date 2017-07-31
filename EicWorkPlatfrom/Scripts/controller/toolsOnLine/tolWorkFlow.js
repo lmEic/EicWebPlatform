@@ -2,45 +2,17 @@
 /// <reference path="../../angular.min.js" />
 var officeAssistantModule = angular.module('bpm.toolsOnlineApp');
 officeAssistantModule.factory('wfDataOpService', function (ajaxService) {
-    var oAssistant = {};
-    var oaUrlPrefix = '/' + leeHelper.controllers.TolOfficeAssistant + '/';
-
-    ///获取联系人数据
-    oAssistant.getCollaborateContactDatas = function (department, searchMode, queryContent) {
-        var url = oaUrlPrefix + 'GetCollaborateContactDatas';
+    var wfDataOp = {};
+    var wfUrlPrefix = '/' + leeHelper.controllers.TolWorkFlow + '/';
+    //获取人员邮箱信息
+    wfDataOp.getWorkerMails = function (department) {
+        var url = wfUrlPrefix + 'GetWorkerMails';
         return ajaxService.getData(url, {
             department: department,
-            searchMode: searchMode,
-            queryContent: queryContent
-        });
-    };
-    ///存储联系人数据
-    oAssistant.storeCollaborateContactDatas = function (model) {
-        var url = oaUrlPrefix + 'StoreCollaborateContactDatas';
-        return ajaxService.postData(url, {
-            model: model,
         });
     };
 
-    ///获取工作任务数据
-    oAssistant.getWorkTaskManageDatas = function (systemName, moduleName, progressStatus, mode) {
-        var url = oaUrlPrefix + 'GetWorkTaskManageDatas';
-        return ajaxService.getData(url, {
-            systemName: systemName,
-            moduleName: moduleName,
-            progressstatus: progressStatus,
-            mode: mode
-        });
-    };
-    ///存储工作任务数据
-    oAssistant.storeWorkTaskManageDatas = function (model) {
-        var url = oaUrlPrefix + 'StoreWorkTaskManageDatas';
-        return ajaxService.postData(url, {
-            model: model
-        });
-    };
-
-    return oAssistant;
+    return wfDataOp;
 });
 ///内部联络单
 officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, wfDataOpService) {
@@ -78,10 +50,8 @@ officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, 
             dialog.show();
         },
 
-        datasets: [],
+        dataset: [],
     };
-
-
 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
@@ -94,9 +64,12 @@ officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, 
     });
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
-        //var dto = _.clone(departmentTreeSet.treeNode.vm);
-        //queryFields.department = dto.DataNodeText;
-        //vmManager.getEmailRecords(4);
+        var dto = _.clone(departmentTreeSet.treeNode.vm);
+        var department = dto.DataNodeText;
+        vmManager.dataset = [];
+        $scope.searchPromise = wfDataOpService.getWorkerMails(department).then(function (datas) {
+            vmManager.dataset = datas;
+        });
     };
     $scope.ztree = departmentTreeSet;
 
