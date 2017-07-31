@@ -42,12 +42,14 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 
         private OpResult Edit(Model.ITIL.ItilEmailManageModel model)
         {
+            DicDatas.Remove(Ckey);
             return irep.Update(m=>m.Id_Key==model.Id_Key,model).ToOpResult_Eidt(OpContext);
         }
 
         private OpResult Add(Model.ITIL.ItilEmailManageModel model)
         {
-            if(irep.IsExist(m=>m.Email.Equals(model.Email)))
+             DicDatas.Remove(Ckey);
+            if (irep.IsExist(m=>m.Email.Equals(model.Email)))
             {
                 return OpResult.SetErrorResult("亲，邮箱帐号己存在！无法新增");
 
@@ -69,7 +71,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
         public List<Model.ITIL.ItilEmailManageModel> FindBy(ItilEmailManageModelDto dto)
         {
             if (dto== null) return new List<Model.ITIL.ItilEmailManageModel>();
-
             if (!DicDatas.ContainsKey(Ckey))
             {
                 DicDatas[Ckey] = irep.Entities.ToList();
@@ -79,10 +80,11 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 switch (dto.SearchMode)
                 {
                     case 1:
-                        return irep.Entities.Where(m => m.WorkerId == dto.WorkerId).ToList();
-                        
+                        //  return irep.Entities.Where(m => m.WorkerId == dto.WorkerId).ToList();
+                        return DicDatas[Ckey].Where(m => m.WorkerId == dto.WorkerId).ToList();
                     case 2:
-                        return irep.Entities.Where(m => m.Email == dto.Email ).ToList();
+                        //return irep.Entities.Where(m => m.Email == dto.Email ).ToList();
+                        return DicDatas[Ckey].Where(m => m.Email == dto.Email).ToList();
                     case 3:
                         // return irep.Entities.Where(m => m.ReceiveGrade == dto.ReceiveGrade).ToList();
                         return DicDatas[Ckey].Where(m => m.ReceiveGrade == dto.ReceiveGrade).ToList();
