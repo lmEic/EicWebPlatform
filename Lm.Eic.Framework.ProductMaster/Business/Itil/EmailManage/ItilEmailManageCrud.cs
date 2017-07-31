@@ -45,7 +45,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             DicDatas.Remove(Ckey);
             return irep.Update(m=>m.Id_Key==model.Id_Key,model).ToOpResult_Eidt(OpContext);
         }
-
         private OpResult Add(Model.ITIL.ItilEmailManageModel model)
         {
              DicDatas.Remove(Ckey);
