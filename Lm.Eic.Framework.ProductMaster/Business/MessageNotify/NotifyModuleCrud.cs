@@ -36,7 +36,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.MessageNotify
         {
             AddOpItem(OpMode.Add, Add);
             AddOpItem(OpMode.Edit, Edit);
-            AddOpItem(OpMode.Delete ,Delete );
+            AddOpItem(OpMode.Delete, DeleteData);
         }
         /// <summary>
         /// 添加一条记录
@@ -61,7 +61,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.MessageNotify
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult Delete(ConfigNotifyAddressModel model)
+        private OpResult DeleteData(ConfigNotifyAddressModel model)
         {
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }

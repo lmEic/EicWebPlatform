@@ -92,7 +92,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             try
             {
-                var opresult = ItilService.ItilEmailManager.StoreItilEmailManage(model);
+                var opresult = ItilService.EmailManager.StoreItilEmailManage(model);
                 return Json(opresult);
             }
             catch (System.Exception ex)
@@ -108,7 +108,7 @@ namespace EicWorkPlatfrom.Controllers
         //邮箱查询
         public ContentResult GetEmailManageRecord(string workerId, string email,int receiveGrade,string department, int mode)
         {
-            var datas = ItilService.ItilEmailManager.GetItilEmailManage(new ItilEmailManageModelDto()
+            var datas = ItilService.EmailManager.GetEmails(new ItilEmailManageModelDto()
             {
                 WorkerId = workerId,
                 Email = email,

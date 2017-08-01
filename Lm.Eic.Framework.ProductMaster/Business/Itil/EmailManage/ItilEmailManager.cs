@@ -7,15 +7,14 @@ using System.Text;
 
 namespace Lm.Eic.Framework.ProductMaster.Business.Itil
 {
-   public class ItilEmailManager
+    public class ItilEmailManager
     {
 
-       // List<ItilEmailManageModel> _ItilEmailManageModelList = new List<ItilEmailManageModel>();
-        public List<ItilEmailManageModel>GetItilEmailManage(ItilEmailManageModelDto dto)
+        // List<ItilEmailManageModel> _ItilEmailManageModelList = new List<ItilEmailManageModel>();
+        public List<ItilEmailManageModel> GetEmails(ItilEmailManageModelDto dto)
         {
-
             return ItilEmailFactory.ItilEmailManageCrud.FindBy(dto);
-         
+
         }
         public OpResult StoreItilEmailManage(ItilEmailManageModel model)
         {
@@ -29,6 +28,6 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
                 throw new Exception(ex.Message);
             }
         }
-       
+
     }
 }

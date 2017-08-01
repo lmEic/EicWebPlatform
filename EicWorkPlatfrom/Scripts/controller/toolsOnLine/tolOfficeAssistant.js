@@ -397,7 +397,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
     var uiVM = {
         WorkerId: leeLoginUser.userId,
         Name:leeLoginUser.userName,
-        Department: leeLoginUser.department,
+        Department:leeLoginUser.department,
         CaseId: null,      
         FilePath: null,//
         FileName: null,//
@@ -435,6 +435,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
             uiVM.OpSign = leeDataHandler.dataOpMode.add;
             $scope.vm = uiVM;
         },
+        departmentDatas:[],
         searchedWorkers: [],
         isSingle: true,//是否搜寻人员或部门   
         isdisabled: false,
@@ -467,22 +468,24 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                 uiVM.Name = worker.Name;
                 uiVM.WorkerId = worker.WorkerId;
                 uiVM.Department = worker.Department;
-
             }
-            else {
+            else
+            {
                 uiVM.Department = null;
             }
         },
         systemNames: [
             {
-                id: "人力资源管理", text: "人力资源管理", moduleNameList: [
+                id: "人力资源管理", text: "人力资源管理", moduleNameList:
+                [
                     { id: "员工档案管理", text: "员工档案管理" },
                     { id: "考勤管理", text: "考勤管理" },
                     { id: "总务管理", text: "总务管理" }
                 ]
             },
             {
-                id: "生产管理", text: "生产管理", moduleNameList: [
+                id: "生产管理", text: "生产管理", moduleNameList:
+                [
                     { id: "人员管理", text: "人员管理" },
                     { id: "日报管理", text: "日报管理" },
                     { id: "排程管理", text: "排程管理" },
@@ -491,7 +494,8 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                 ]
             },
             {
-                id: "质量管理", text: "质量管理", moduleNameList: [
+                id: "质量管理", text: "质量管理", moduleNameList:
+                [
                     { id: "检验管理", text: "检验管理" },
                     { id: "RMA管理", text: "RMA管理" },
                     { id: "8D报告管理", text: "8D报告管理" }
@@ -499,12 +503,14 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                 ]
             },
             {
-                id: "采购管理", text: "采购管理", moduleNameList: [
+                id: "采购管理", text: "采购管理", moduleNameList:
+                [
                     { id: "供应商管理", text: "供应商管理" }
                 ]
             },
             {
-                id: "设备管理", text: "设备管理", moduleNameList: [
+                id: "设备管理", text: "设备管理", moduleNameList:
+                [
                     { id: "设备总览", text: "设备总览" },
                     { id: "设备校验", text: "设备校验" },
                     { id: "设备保养", text: "设备保养" },
@@ -512,18 +518,131 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                 ]
             },
             {
-                id: "系统管理", text: "系统管理", moduleNameList: [
+                id: "系统管理", text: "系统管理", moduleNameList:
+                [
                     { id: "帐户管理", text: "帐户管理" },
                     { id: "配置管理", text: "配置管理" },
                     { id: "ITIL", text: "ITIL" }
                 ]
             },
             {
-                id: "在线工具", text: "在线工具", moduleNameList: [
-                    { id: "办公助手", text: "办公助手" },
-                    { id: "电子签核", text: "电子签核" }
+                id: "在线工具", text: "在线工具", moduleNameList:
+                [
+                    { id: "办公助手", text: "办公助手" }
+                ]
+            }
+        ],
+        systemNames1:
+        [
+            {
+                id: "人力资源管理", text: "人力资源管理", moduleNameList:
+                [
+                    { id: "录入档案", text: "录入档案" },
+                    { id: "部门变更", text: "部门变更" },
+                    { id: "岗位变更", text: "岗位变更" },
+                    { id: "学习信息管理", text: "学习信息管理" },
+                    { id: "联系方式管理", text: "联系方式管理" },
+                    { id: "离职管理", text: "离职管理" },
+                    { id: "变理工号", text: "变理工号" },
+                    { id: "打印厂牌", text: "打印厂牌" },
+                    { id: "汇总考勤数据", text: "汇总考勤数据" },
+                    { id: "班别管理", text: "班别管理" },
+                    { id: "请假管理", text: "请假管理" },
+                    { id: "异常处理", text: "异常处理" },
+                    { id: "厂服管理", text: "厂服管理" }
+                   
+
                 ]
             },
+            //{
+            //    id: "生产管理", text: "生产管理", moduleNameList:
+            //    [
+            //        { id: "站别管理", text: "站别管理" },
+            //        { id: "转班管理", text: "转班管理" },
+            //        { id: "出勤管理", text: "出勤管理" },
+            //        { id: "工艺设置", text: "工艺设置" },
+            //        { id: "日报录入", text: "日报录入" },
+            //        { id: "工单订单对比", text: "工单订单对比" },
+            //        { id: "跳线规格看板", text: "跳线规格看板" }
+                  
+
+            //    ]
+            //},
+            //{
+            //    id: "质量管理", text: "质量管理", moduleNameList:
+            //    [
+            //        { id: "IQC检验项目配置", text: "IQC检验项目配置" },
+            //        { id: "IQC检验方式配置", text: "IQC检验方式配置" },
+            //        { id: "检验方式转换配置", text: "检验方式转换配置" },
+            //        { id: "FQC检验项目配置", text: "FQC检验项目配置" },
+            //        { id: "IQC数据采集", text: "IQC数据采集" },
+            //        { id: "FQC数据采集", text: "FQC数据采" },
+            //        { id: "IPQC数据采集", text: "IPQC数据采集" },
+            //        { id: "IQC检验单管理", text: "IQC检验单管理" },
+            //        { id: "FQC检验单管理", text: "FQC检验单管理" },
+            //        { id: "RMA创建表单", text: "RMA创建表" },
+            //        { id: "RMA描述登记", text: "RMA描述登记" },
+            //        { id: "RMA单据查询", text: "RMA单据查询" },
+            //        { id: "8D创建表单", text: "8D创建表单" },
+            //        { id: "8D处理登记", text: "8D处理登记" },
+            //        { id: "8D结案签核", text: "8D结案签核" },              
+            //    ]
+            //},
+            //{
+            //    id: "采购管理", text: "采购管理", moduleNameList:
+            //    [
+            //        { id: "供应商档案总览", text: "供应商档案总览" },
+            //        { id: "供应商证书管理", text: "供应商证书管理" },
+            //         { id: "供应商考核管理", text: "供应商考核管理" },
+            //          { id: "供应商辅导管理", text: "供应商辅导管理" },
+            //          { id: "供应商稽核管理", text: "供应商稽核管理" }
+            //    ]
+            //},
+            //{
+            //    id: "设备管理", text: "设备管理", moduleNameList:
+            //    [
+            //        { id: "设备档案总览", text: "设备档案总览" },
+            //        { id: "设备档案查询", text: "设备档案查询" },
+            //        { id: "设备档案登记", text: "设备档案登记" },
+            //        { id: "设备报废登记", text: "设备报废登记" },                   
+            //        { id: "生成校验清单", text: "生成校验清单" },
+            //        { id: "登记校验记录", text: "登记校验记录" },
+            //        { id: "生成保养清单", text: "生成保养清单" },
+            //        { id: "登记保养记录", text: "登记保养记录" },
+            //        { id: "维修履历登记", text: "维修履历登记" }
+                 
+            //    ]
+            //},
+            //{
+            //    id: "系统管理", text: "系统管理", moduleNameList:
+            //    [
+            //        { id: "用户注册", text: "用户注册" },
+            //        { id: "分配角色", text: "分配角色" },
+            //        { id: "角色编辑", text: "角色编辑" },
+            //        { id: "程序集编辑", text: "程序集编辑" },
+            //        { id: "模块编辑", text: "模块编辑" },
+            //        { id: "分配角色给模块", text: "分配角色给模块" },
+            //        { id: "分配模块给角色", text: "分配模块给角色" },
+            //        { id: "常规设置", text: "常规设置" },
+            //        { id: "部门设置", text: "部门设置" },
+            //        { id: "常规配置", text: "常规配置" },
+            //        { id: "Ast数据配置", text: "数据配置" },
+            //        { id: "邮箱管理配置", text: "邮箱管理配置" },
+            //        { id: "项目开发管理", text: "项目开发管理" },
+            //        { id: "消息通知管理", text: "消息通知管理" }
+                   
+                    
+            //    ]
+            //},
+            //{
+            //    id: "在线工具", text: "在线工具", moduleNameList:
+            //    [
+            //        { id: "内部联络单", text: "内部联络单" },
+            //        { id: "名片夹", text: "名片夹" },
+            //        { id: "工作任务管理", text: "工作任务管理" },
+            //        { id: "上报改善问题", text: "上报改善问题" }          
+            //    ]
+            //}
 
         ],
         selectSystemName: function () {
@@ -558,6 +677,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
         searchBy: function () {
             $scope.searchPromise = oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve,queryFields.department ,1).then(function (datas) {
                 vmManager.storeDataset = datas;
+                
             })
         },
         getReportImproveProblemData: function (mode) {
@@ -576,16 +696,14 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                 uiVM.CaseId = caseId;
                 uiVM.OpSign = leeDataHandler.dataOpMode.add;
             })
-
-
+           vmManager.getWorkerInfo();
+           
         },
-      
     };
     $scope.vmManager = vmManager;
     var dialog = $scope.dialog = leePopups.dialog();
     var operate = Object.create(leeDataHandler.operateStatus);
-    $scope.operate = operate;
-  
+    $scope.operate = operate; 
     operate.handleItem = function (item) {
         var dataitem = _.clone(item);
         dataitem.OpSign = leeDataHandler.dataOpMode.edit;
@@ -594,18 +712,14 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
         dialog.show();
 
     };
-   
-
     //修改
-    operate.editItem = function (item) {
+     operate.editItem = function (item) {
         item.OpSign = leeDataHandler.dataOpMode.edit;
-        $scope.vm = uiVM = item;
-   
+        $scope.vm = uiVM = item;  
     };
     //保存
-    operate.saveAll = function (isValid) {
+    operate.saveAll = function (isValid) { 
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-
             oAssistantDataOpService.storeReportImproveProblemDatas(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
@@ -614,14 +728,13 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                         if (mode.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.datasource.push(mode);
                         }
-                        vmManager.init();
-                        dialog.close();
-                       
+                        vmManager.init();                    
+                        dialog.close();  
+                        vmManager.getReportImproveProblemData(1);
                     }
                 })
             })
         })
-
     };
     //更新
     operate.refresh = function () {
@@ -642,13 +755,14 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                     uiVM.FileName = datas.FileName;
                     uiVM.FilePath = datas.FullFileName;
                     vmManager.isdisabled = true;
-                    alert("上传"+fd.name+"文件成功!");
+                    //alert("上传"+fd.name+"文件成功!");
                 }
             })
         })     
     },
   //组织架构   
     $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
+      //  vmManager.departmentDatas = datas;
         departmentTreeSet.setTreeDataset(datas);
     });
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
@@ -658,8 +772,6 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
         vmManager.getReportImproveProblemData(2);
     };
     $scope.ztree = departmentTreeSet;
-
-
 });
 
 
