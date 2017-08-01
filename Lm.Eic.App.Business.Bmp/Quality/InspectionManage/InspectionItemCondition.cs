@@ -135,10 +135,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             if (datas == null || datas.Count() == 0)
                 return false;
-            var ddd = datas.Where(e => e.InspecitonItem.Contains("ROHS检验"));
-            if (ddd == null || ddd.Count() == 0)
-                return false;
-            if (ddd.Count() / 2 == 0)
+            var LastOrder = datas.Select(e => e.OrderId).Distinct().LastOrDefault();
+            ///最后一个录入的抽测项中有没有 ROHS检验 有不用  没有需要
+            ///
+            var ddd = datas.Where(e => e.OrderId == LastOrder && e.InspecitonItem.Contains("ROHS检验"));
+            if (ddd != null && ddd.Count() > 0)
                 return true;
             else return false;
         }
