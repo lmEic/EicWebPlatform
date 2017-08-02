@@ -1517,6 +1517,7 @@
     <Content Include="Views\Qua8DManage\Handle8DFolw.cshtml" />
     <Content Include="Views\Qua8DManage\Close8DForm.cshtml" />
     <Content Include="Views\TolWorkFlow\WFInternalContactForm.cshtml" />
+    <Content Include="Views\HrAttendanceManage\HrWorkOverHoursManage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

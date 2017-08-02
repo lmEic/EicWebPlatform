@@ -238,6 +238,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
             uiVm = _.clone(initVM);
             uiVm.OpSign = leeDataHandler.dataOpMode.add;
             $scope.vm = uiVm;
+            salersOrdersDatas = [];
         },
         //是否为输入状态
         isdisabled: false,
@@ -375,6 +376,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
     operate.copyItem = function (item) {
         var oldItem = _.clone(item);
         uiVm.Id = leeHelper.newGuid();
+        vmManager.salersOrdersDatas = [];
         uiVm = oldItem;
         uiVm.Id_Key = null;
         uiVm.ProductId = null;

@@ -72,6 +72,12 @@ namespace EicWorkPlatfrom.Controllers
             var data = Qua8DService.Qua8DManager.Qua8DDatail.GetQua8DDetailDatasBy(reportId, stepId);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        [NoAuthenCheck]
+        public JsonResult StoreQua8DCreateDatas(Qua8DReportMasterModel vUmdoelData)
+        {
+            var data = "";
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
 

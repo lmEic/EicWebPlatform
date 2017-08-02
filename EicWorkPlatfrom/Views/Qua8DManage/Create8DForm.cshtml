@@ -303,8 +303,7 @@
                     </content>
                     <content dialog-content>
                         <div class="gridster">
-
-                            <form role="form" name="formSupGrade" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                            <form role="form" name="form8DCreateData" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                                 @*ReportId, DiscoverPosition, AccountabilityDepartment, OrderId, MaterialName, MaterialSpec,
                                     InPutHouseOrder, MaterialCount, InspectNumber, FailQty, FailClass, CreateReportDate, Status,*@
                                 <div class="form-group">
@@ -390,8 +389,8 @@
                             <div class="alert alert-info">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <button class="btn btn-primary " ng-click="operate.savePurSupGradeDatas(formSupGrade.$valid)"><i class="fa fa-save"></i>保存</button>
-                                        <button class="btn btn-default" ng-click="operate.cannel(formSupGrade.$valid)"><i class="fa fa-undo"></i>取消</button>
+                                        <button class="btn btn-primary " ng-click="operate.saveAll(form8DCreateData.$valid)"><i class="fa fa-save"></i>保存</button>
+                                        <button class="btn btn-default" ng-click="operate.cannel8DMasterDatas(form8DCreateData.$valid)"><i class="fa fa-undo"></i>取消</button>
                                         <span yl-operatemsg-board></span>
                                     </div>
                                 </div>

@@ -519,6 +519,10 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
         }
     });
 });
+//加班管理
+hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService, hrArchivesDataOpService) {
+
+});
 //考勤异常数据处理
 hrModule.controller('attendExceptionHandleCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService) {
     ///视图模型
