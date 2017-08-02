@@ -58,8 +58,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-
-
         /// <summary>
         /// 在数据库中是否存在此料号
         /// </summary>

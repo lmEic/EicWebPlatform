@@ -9,13 +9,16 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
-    public class InspectionFqcItemConfigManager 
+    public class InspectionFqcItemConfigManager
     {
         public List<InspectionFqcItemConfigModel> GetFqcspectionItemConfigDatasBy(string materialId)
         {
             return InspectionManagerCrudFactory.FqcItemConfigCrud.FindFqcInspectionItemConfigDatasBy(materialId);
         }
-
+        public MaterialOrtConfigModel GetMaterialORTConfigBy(string materialId)
+        {
+            return InspectionManagerCrudFactory.OrtMaterialConfigCrud.FindOrtMaterialDatasBy(materialId);
+        }
         /// <summary>
         ///  在数据库中是否存在此料号
         /// </summary>
@@ -41,7 +44,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public OpResult StoreFqcInspectionItemConfig(List<InspectionFqcItemConfigModel> modelList)
         {
             return InspectionManagerCrudFactory.FqcItemConfigCrud.StoreFqcItemConfigList(modelList);
-         
+
         }
 
         /// <summary>

@@ -63,6 +63,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             get { return OBulider.BuildInstance<FqcMasterDatasGather>(); }
         }
+
         #endregion
 
 
@@ -200,6 +201,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return returnOpResult;
         }
         #endregion
+
 
         #region  对内处理 Private
 

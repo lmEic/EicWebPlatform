@@ -158,8 +158,9 @@ namespace EicWorkPlatfrom.Controllers
             var InspectionItemConfigModelList = InspectionService.ConfigManager.FqcItemConfigManager.GetFqcspectionItemConfigDatasBy(materialId);
             //得到此物料的品名 ，规格 ，供应商，图号
             var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
-
-            var datas = new { ProductMaterailModel, InspectionItemConfigModelList };
+            //得到ORT信息
+            var OrtDatas = InspectionService.ConfigManager.FqcItemConfigManager.GetMaterialORTConfigBy(materialId);
+            var datas = new { ProductMaterailModel, InspectionItemConfigModelList, OrtDatas };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -200,6 +201,28 @@ namespace EicWorkPlatfrom.Controllers
 
             var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(fqcInspectionConfigItems);
             return Json(opResult);
+        }
+        /// <summary>
+        /// 存ORT数据
+        /// </summary>
+        /// <param name="ortModel"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveOrtModel(MaterialOrtConfigModel ortModel)
+        {
+            var datas = "";
+            return Json(datas);
+        }
+        /// <summary>
+        /// 得到ORT配置数据
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetOrtMaterialConfigData(string materialId)
+        {
+            var datas = InspectionService.ConfigManager.FqcItemConfigManager.GetMaterialORTConfigBy(materialId);
+            return Json(datas);
         }
 
         #endregion
@@ -321,7 +344,7 @@ namespace EicWorkPlatfrom.Controllers
             this.SaveFileToServer(file, filePath, addchangeFileName);
             return Json("OK");
         }
-      
+
         /// <summary>
         /// 存储采集的数据
         /// </summary>
@@ -418,7 +441,7 @@ namespace EicWorkPlatfrom.Controllers
             var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
         }
-
+        
         #endregion
         #endregion
 
@@ -453,7 +476,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="eligibleCertificate"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public FileResult LoadIqcDatasDownLoadFile(string orderId, string materialId,string inspectionItem)
+        public FileResult LoadIqcDatasDownLoadFile(string orderId, string materialId, string inspectionItem)
         {
             DownLoadFileModel dlfm = InspectionService.DataGatherManager.IqcDataGather.GetIqcDatasDownLoadFileModel(SiteRootPath, orderId, materialId, inspectionItem);
             return this.DownLoadFile(dlfm);

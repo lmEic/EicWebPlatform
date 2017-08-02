@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
-using  Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.App.DomainModel.Bpm.Quanity;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
 {
@@ -79,7 +79,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
 
 
     #region  FQC
-    public class FqcInspectionItemConfigMapping :  EntityTypeConfiguration<InspectionFqcItemConfigModel>
+    public class FqcInspectionItemConfigMapping : EntityTypeConfiguration<InspectionFqcItemConfigModel>
     {
         public FqcInspectionItemConfigMapping()
         {
@@ -98,6 +98,16 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping
             this.ToTable("Qms_FqcInspectionDetail");
         }
 
+    }
+    public class OrtMaterialConfigMapping : EntityTypeConfiguration<MaterialOrtConfigModel>
+    {
+        public OrtMaterialConfigMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Qms_ORT_MaterialConfig");
+
+        }
     }
 
 

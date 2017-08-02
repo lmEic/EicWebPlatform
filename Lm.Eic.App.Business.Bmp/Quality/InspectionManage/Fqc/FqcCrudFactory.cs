@@ -248,5 +248,21 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.UpAuditDetailData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);
         }
     }
+
+    internal class OrtMaterialConfigCrud : CrudBase<MaterialOrtConfigModel, IOrtMaterailConfigRepository>
+    {
+        public OrtMaterialConfigCrud() : base(new OrtMaterailConfigRepository(), "ORT配置")
+        {
+        }
+
+        protected override void AddCrudOpItems()
+        {
+            throw new NotImplementedException();
+        }
+        internal MaterialOrtConfigModel FindOrtMaterialDatasBy(string masterialId)
+        {
+            return irep.Entities.FirstOrDefault(e => e.MaterialId == masterialId);
+        }
+    }
     #endregion
 }

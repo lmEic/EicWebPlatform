@@ -167,6 +167,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new FqcInspectionItemConfigMapping());
             modelBuilder.Configurations.Add(new FqcInspectionMasterMapping());
             modelBuilder.Configurations.Add(new FqcInspectionDetailMapping());
+            // ORT
+            modelBuilder.Configurations.Add(new OrtMaterialConfigMapping());
             // RMA
             modelBuilder.Configurations.Add(new RmaBussesDescriptionMapping());
             modelBuilder.Configurations.Add(new RmaInspectionManageMapping());
