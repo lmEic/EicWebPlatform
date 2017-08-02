@@ -12,6 +12,7 @@ using System;
 using System.Data.Entity;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 {
@@ -107,6 +108,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
         #endregion
         #endregion
 
+        #region 电子签核管理
+        public DbSet<InternalContactFormModel> InternalContactForm { get; set; }
+        public DbSet<WfFormCheckFlowModel> FormCheckFlow { get; set; }
+        #endregion
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -173,13 +178,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             modelBuilder.Configurations.Add(new RmaBussesDescriptionMapping());
             modelBuilder.Configurations.Add(new RmaInspectionManageMapping());
             modelBuilder.Configurations.Add(new RmaReportInitiateMapping());
-            // 8D 
+            // 8D
             modelBuilder.Configurations.Add(new Qua8DReportDetailMapping());
             modelBuilder.Configurations.Add(new Qua8DReportMasterMapping());
             #endregion
 
             #region 电子签核管理
             modelBuilder.Configurations.Add(new InternalContactFormModelMapping());
+            modelBuilder.Configurations.Add(new WfFormCheckFlowModelMapping());
             #endregion
         }
     }

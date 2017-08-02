@@ -147,9 +147,12 @@ var leeDataHandler = (function () {
                         if (user.LoginedUser !== null) {
                             loginedUser.userId = user.LoginedUser.UserId;
                             loginedUser.userName = user.LoginedUser.UserName;
+                          
                             loginedUser.headPortrait = user.LoginedUser.HeadPortrait;
                             if (!_.isUndefined(user.LoginedUser.Department))
                                 loginedUser.department = user.LoginedUser.Department;
+                            if (!_.isUndefined(user.LoginedUser.DepartmentText))
+                                loginedUser.departmentText = user.LoginedUser.DepartmentText;
                             if (!_.isUndefined(user.LoginedUser.Organizetion)) {
                                 var fds = user.LoginedUser.Organizetion.split(',');
                                 var organization;
@@ -699,6 +702,8 @@ var leeLoginUser = (function () {
         userName: null,
         //部门
         department: null,
+        //部门标题名称
+        departmentText: null,
         ///个人头像
         headPortrait: "../Content/login/profilepicture.jpg",
         ///载入个人头像
@@ -708,6 +713,7 @@ var leeLoginUser = (function () {
                 user.userId = loginUser.userId;
                 user.userName = loginUser.userName;
                 user.department = loginUser.department;
+                user.departmentText = loginUser.departmentText;
             }
             user.headPortrait = loginUser === null ? '../Content/login/profilepicture.jpg' : loginUser.headPortrait;
         },

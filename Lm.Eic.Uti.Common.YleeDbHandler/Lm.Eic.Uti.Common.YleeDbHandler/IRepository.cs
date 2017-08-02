@@ -16,7 +16,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         #region 属性
 
         /// <summary>
-        /// 获取 当前实体的查询数据集
+        /// 获取当前实体的查询数据集
         /// </summary>
         IQueryable<TEntity> Entities { get; }
 

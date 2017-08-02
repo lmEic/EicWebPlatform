@@ -7,11 +7,11 @@
             <div class="col-md-10">
                 <form role="form" name="formContact" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                     <div class="form-group">
-                        <label for="orderId" class="col-md-2 control-label">单号</label>
+                        <label for="orderId" class="col-md-2 control-label">表单编号</label>
                         <div class="col-md-6">
                             <input name="orderId" class="form-control" ng-model="vm.OrderId" readonly required />
                             <div class="error-messages" ng-messages="formContact.orderId.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">单号不能为空</small>
+                                <small ng-message="required">表单编号不能为空</small>
                             </div>
                         </div>
                     </div>
@@ -31,58 +31,37 @@
                             </script>
                         </div>
                     </div>
-                    <hr />
                     <div class="form-group">
-                        <label for="applyDepartment" class="col-md-2 control-label">申请人及单位</label>
+                        <label for="applicant" class="col-md-2 control-label">申请人及单位</label>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input name="applyDepartment" class="form-control" ng-model="vm.ApplyDepartment" readonly required />
-                                <div class="error-messages" ng-messages="formContact.applyDepartment.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">申请单位不能为空</small>
+                                <input name="applicant" class="form-control" ng-model="checkPerson.applicant" readonly required />
+                                <div class="error-messages" ng-messages="formContact.applicant.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">申请人及单位不能为空</small>
                                 </div>
                                 <div class="input-group-btn">
                                     <span class="btn btn-primary"><i class="fa fa-location-arrow"></i></span>
                                 </div>
                             </div>
-
                         </div>
-                        <label for="applyDate" class="col-md-2 control-label">申请日期</label>
-                        <div class="col-md-2">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="applyDate" class="col-md-2 control-label">需求日期</label>
+                        <div class="col-md-3">
                             <input name="applyDate" type="date" format-date class="form-control" ng-model="vm.ApplyDate" required />
                             <div class="error-messages" ng-messages="formContact.applyDate.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">申请日期不能为空</small>
+                                <small ng-message="required">需求日期不能为空</small>
                             </div>
                         </div>
                     </div>
-                    @*<div class="form-group">
-                            <label for="applyPerson" class="col-md-2 control-label">申请人</label>
-                            <div class="col-md-4">
-                                <input name="applyPerson" class="form-control" ng-model="vm.ApplyPerson" required />
-                                <div class="error-messages" ng-messages="formContact.applyPerson.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">申请人不能为空</small>
-                                </div>
-                            </div>
-                        </div>*@
-                    <hr />
                     <div class="form-group">
-                        <label for="relatedToPerson" class="col-md-2 control-label">相关人及单位</label>
-                        <div class="col-md-6">
+                        <label for="approver" class="col-md-2 control-label">确认人</label>
+                        <div class="col-md-3">
                             <div class="input-group">
-                                <input name="relatedToPerson" class="form-control" readonly ng-model="vm.RelatedToPerson" required />
-                                <div class="error-messages" ng-messages="formContact.relatedToPerson.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">相关人不能为空</small>
-                                </div>
-                                <div class="input-group-btn">
-                                    <span class="btn btn-primary" ng-click="vmManager.selectDepartmentAndPerson('apply')"><i class="fa fa-location-arrow"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                        <label for="approver" class="col-md-2 control-label">核准人</label>
-                        <div class="col-md-2">
-                            <div class="input-group">
-                                <input name="approver" class="form-control" readonly ng-model="vm.Approver" required />
-                                <div class="error-messages" ng-messages="formContact.approver.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">核准人不能为空</small>
+                                <input name="confirmor" class="form-control" readonly ng-model="vm.Confirmor" required />
+                                <div class="error-messages" ng-messages="formContact.confirmor.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">确认人不能为空</small>
                                 </div>
                                 <div class="input-group-btn">
                                     <span class="btn btn-primary"><i class="fa fa-location-arrow"></i></span>
@@ -90,15 +69,8 @@
                             </div>
                         </div>
                     </div>
-                    @*<div class="form-group">
-                            <label for="relatedToDepartment" class="col-md-2 control-label">相关单位</label>
-                            <div class="col-md-4">
-                                <input name="relatedToDepartment" class="form-control" ng-model="vm.RelatedToDepartment" required />
-                                <div class="error-messages" ng-messages="formContact.relatedToDepartment.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">相关单位不能为空</small>
-                                </div>
-                            </div>
-                        </div>*@
+
+
                     <div class="alert alert-info">
                         <div class="row">
                             <div class="col-md-2">
@@ -162,7 +134,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="item in vmManager.searchDataset track by $index">
+                                        <tr ng-repeat="item in vmManager.dataset track by $index">
                                             <td ng-bind="$index+1">
                                             <td ng-bind="item.WorkerId"></td>
                                             <td ng-bind="item.Name"></td>

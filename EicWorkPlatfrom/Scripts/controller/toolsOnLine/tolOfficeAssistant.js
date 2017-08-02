@@ -47,7 +47,7 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
             model: model
         });
     };
-    ///自动生成上报问题编号 
+    ///自动生成上报问题编号
     oAssistant.autoCreateCaseId = function () {
         var url = oaUrlPrefix + 'AutoCreateCaseId';
         return ajaxService.getData(url, {
@@ -55,12 +55,12 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
         })
     }
     ///查询上报问题处理状态
-    oAssistant.getReportImproveProbleDatas = function (problemSove, department,mode) {
+    oAssistant.getReportImproveProbleDatas = function (problemSove, department, mode) {
         var url = oaUrlPrefix + 'GetReportImproveProbleDatas';
         return ajaxService.getData(url, {
             problemSolve: problemSove,
             department: department,
-            mode:mode
+            mode: mode
         })
     }
     //上传附件
@@ -68,7 +68,7 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
         var url = oaUrlPrefix + 'UploadReportProblemFile';
         return ajaxService.uploadFile(url, file);
     };
-  
+
     return oAssistant;
 });
 ///名片夹控制器
@@ -392,22 +392,22 @@ officeAssistantModule.controller('workTaskManageCtrl', function ($scope, oAssist
     };
     $scope.ztree = departmentTreeSet;
 });
-officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oAssistantDataOpService, dataDicConfigTreeSet, connDataOpService) {
+officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope, oAssistantDataOpService, dataDicConfigTreeSet, connDataOpService) {
     ///View
     var uiVM = {
         WorkerId: leeLoginUser.userId,
-        Name:leeLoginUser.userName,
-        Department:leeLoginUser.department,
-        CaseId: null,      
+        Name: leeLoginUser.userName,
+        Department: leeLoginUser.departmentText,
+        CaseId: null,
         FilePath: null,//
         FileName: null,//
-        CaseIdYear:new Date().getFullYear(),
+        CaseIdYear: new Date().getFullYear(),
         SystemName: null,
         ModuleName: null,
         ProblemDate: new Date(),
-        ProblemDesc: null, 
+        ProblemDesc: null,
         ProblemSolveMethod: null,
-        ProblemProcess:null,
+        ProblemProcess: null,
         ProblemAttach: null,
         ProblemDegree: null,
         ProblemSolve: '待解决',
@@ -420,13 +420,13 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
     $scope.vm = uiVM;
     var originalVM = _.clone(uiVM);
     var dialog = $scope.dialog = leePopups.dialog();
-    var queryFields = {      
+    var queryFields = {
         problemSolve: null,
-        department:null
+        department: null
 
     };
     $scope.query = queryFields;
-    var vmManager = {
+    var vmManager = $scope.vmManager = {
         currentInspectionItem: null,
         activeTab: 'initTab',
         isLocal: true,
@@ -435,9 +435,8 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
             uiVM.OpSign = leeDataHandler.dataOpMode.add;
             $scope.vm = uiVM;
         },
-        departmentDatas:[],
         searchedWorkers: [],
-        isSingle: true,//是否搜寻人员或部门   
+        isSingle: true,//是否搜寻人员或部门
         isdisabled: false,
         datasource: [],
         searchDataset: [],
@@ -469,8 +468,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                 uiVM.WorkerId = worker.WorkerId;
                 uiVM.Department = worker.Department;
             }
-            else
-            {
+            else {
                 uiVM.Department = null;
             }
         },
@@ -550,7 +548,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                     { id: "请假管理", text: "请假管理" },
                     { id: "异常处理", text: "异常处理" },
                     { id: "厂服管理", text: "厂服管理" }
-                   
+
 
                 ]
             },
@@ -564,7 +562,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
             //        { id: "日报录入", text: "日报录入" },
             //        { id: "工单订单对比", text: "工单订单对比" },
             //        { id: "跳线规格看板", text: "跳线规格看板" }
-                  
+
 
             //    ]
             //},
@@ -585,7 +583,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
             //        { id: "RMA单据查询", text: "RMA单据查询" },
             //        { id: "8D创建表单", text: "8D创建表单" },
             //        { id: "8D处理登记", text: "8D处理登记" },
-            //        { id: "8D结案签核", text: "8D结案签核" },              
+            //        { id: "8D结案签核", text: "8D结案签核" },
             //    ]
             //},
             //{
@@ -604,13 +602,13 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
             //        { id: "设备档案总览", text: "设备档案总览" },
             //        { id: "设备档案查询", text: "设备档案查询" },
             //        { id: "设备档案登记", text: "设备档案登记" },
-            //        { id: "设备报废登记", text: "设备报废登记" },                   
+            //        { id: "设备报废登记", text: "设备报废登记" },
             //        { id: "生成校验清单", text: "生成校验清单" },
             //        { id: "登记校验记录", text: "登记校验记录" },
             //        { id: "生成保养清单", text: "生成保养清单" },
             //        { id: "登记保养记录", text: "登记保养记录" },
             //        { id: "维修履历登记", text: "维修履历登记" }
-                 
+
             //    ]
             //},
             //{
@@ -630,8 +628,8 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
             //        { id: "邮箱管理配置", text: "邮箱管理配置" },
             //        { id: "项目开发管理", text: "项目开发管理" },
             //        { id: "消息通知管理", text: "消息通知管理" }
-                   
-                    
+
+
             //    ]
             //},
             //{
@@ -640,7 +638,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
             //        { id: "内部联络单", text: "内部联络单" },
             //        { id: "名片夹", text: "名片夹" },
             //        { id: "工作任务管理", text: "工作任务管理" },
-            //        { id: "上报改善问题", text: "上报改善问题" }          
+            //        { id: "上报改善问题", text: "上报改善问题" }
             //    ]
             //}
 
@@ -675,17 +673,17 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
         problemProcesss: [{ name: '万晓桥', text: '万晓桥' }, { name: '林旺雷', text: '林旺雷' }, { name: '杨垒', text: '杨垒' }],
         //s查询
         searchBy: function () {
-            $scope.searchPromise = oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve,queryFields.department ,1).then(function (datas) {
+            $scope.searchPromise = oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve, queryFields.department, 1).then(function (datas) {
                 vmManager.storeDataset = datas;
-                
+
             })
         },
         getReportImproveProblemData: function (mode) {
 
             vmManager.searchDataset = [];
             vmManager.datasource = [];
-            oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve,queryFields.department, mode).then(function (datas) {
-              
+            oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve, queryFields.department, mode).then(function (datas) {
+
                 vmManager.datasource = datas;
             })
         },
@@ -696,14 +694,12 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                 uiVM.CaseId = caseId;
                 uiVM.OpSign = leeDataHandler.dataOpMode.add;
             })
-           vmManager.getWorkerInfo();
-           
         },
     };
-    $scope.vmManager = vmManager;
+
     var dialog = $scope.dialog = leePopups.dialog();
     var operate = Object.create(leeDataHandler.operateStatus);
-    $scope.operate = operate; 
+    $scope.operate = operate;
     operate.handleItem = function (item) {
         var dataitem = _.clone(item);
         dataitem.OpSign = leeDataHandler.dataOpMode.edit;
@@ -713,12 +709,12 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
 
     };
     //修改
-     operate.editItem = function (item) {
+    operate.editItem = function (item) {
         item.OpSign = leeDataHandler.dataOpMode.edit;
-        $scope.vm = uiVM = item;  
+        $scope.vm = uiVM = item;
     };
     //保存
-    operate.saveAll = function (isValid) { 
+    operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             oAssistantDataOpService.storeReportImproveProblemDatas(uiVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
@@ -728,8 +724,8 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                         if (mode.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.datasource.push(mode);
                         }
-                        vmManager.init();                    
-                        dialog.close();  
+                        vmManager.init();
+                        dialog.close();
                         vmManager.getReportImproveProblemData(1);
                     }
                 })
@@ -743,26 +739,24 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
         })
     };
 
-   // 上传附件
+    // 上传附件
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
             var fileItem = uiVM;
             var fileAttachData = { CaseId: fileItem.CaseId };
             fd.append('fileAttachData', JSON.stringify(fileAttachData));
             oAssistantDataOpService.uploadReportProblemFile(fd).then(function (datas) {
-                if (datas.Result === 'OK')
-                {
+                if (datas.Result === 'OK') {
                     uiVM.FileName = datas.FileName;
                     uiVM.FilePath = datas.FullFileName;
                     vmManager.isdisabled = true;
                     //alert("上传"+fd.name+"文件成功!");
                 }
             })
-        })     
+        })
     },
-  //组织架构   
+    //组织架构
     $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
-      //  vmManager.departmentDatas = datas;
         departmentTreeSet.setTreeDataset(datas);
     });
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
