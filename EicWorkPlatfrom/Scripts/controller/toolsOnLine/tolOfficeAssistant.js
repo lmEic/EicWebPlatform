@@ -416,6 +416,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
         OpPerson: leeLoginUser.userName,
         OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: 0
+      
     }
     $scope.vm = uiVM;
     var originalVM = _.clone(uiVM);
@@ -426,7 +427,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
 
     };
     $scope.query = queryFields;
-    var vmManager = {
+    var vmManager = {     
         currentInspectionItem: null,
         activeTab: 'initTab',
         isLocal: true,
@@ -699,6 +700,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
            vmManager.getWorkerInfo();
            
         },
+       
     };
     $scope.vmManager = vmManager;
     var dialog = $scope.dialog = leePopups.dialog();
@@ -755,7 +757,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope,oA
                     uiVM.FileName = datas.FileName;
                     uiVM.FilePath = datas.FullFileName;
                     vmManager.isdisabled = true;
-                    //alert("上传"+fd.name+"文件成功!");
+                   
                 }
             })
         })     
