@@ -30,6 +30,13 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
             searchModel: searchModel,
         });
     };
+    bugd.storeQua8DCreateData = function (vUmodelData) {
+        var url = quabugDManageUrl + 'StoreQua8DCreateDatas';
+        return ajaxService.getData(url, {
+
+            vUmodelData: vUmodelData,
+        });
+    };
     return bugd;
 });
 ////创建8D表单
@@ -71,6 +78,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, q
             $scope.searchPromise = BDataOpService.getQueryDatas("21", vmManager.iqcOrderId).then(function (datas) {
                 vmManager.dataSets = datas;
                 vmManager.dataSource = datas;
+                console.log(datas);
             });
         },
         ///创建8D表单
@@ -78,11 +86,35 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, q
             console.log(item);
             dialog.show();
         },
+        Cancel8DReportMaster: function () {
+            dialog.close();
+        },
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-
+    //保存
+    operate.saveAll = function (isValid) {
+        leeHelper.setUserData(uiVm);
+        leeDataHandler.dataOperate.add(operate, true, function () {
+            BDataOpService.storeQua8DCreateData(uiVm).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    if (opresult.Result) {
+                        var dataItem = _.clone(uiVm);
+                        dataItem.Id_Key = opresult.Id_Key;
+                        if (dataItem.OpSign === leeDataHandler.dataOpMode.add) {
+                            vmManager.dataSets.push(dataItem);
+                        }
+                        if (dataItem.OpSign === leeDataHandler.dataOpMode.delete) {
+                            deleteDialog.close();
+                            leeHelper.delWithId(vmManager.dataSets, dataItem)//移除界面上数据
+                        }
+                        vmManager.init();
+                    }
+                });
+            });
+        });
+    }
 });
 ////处理8D表单
 qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {

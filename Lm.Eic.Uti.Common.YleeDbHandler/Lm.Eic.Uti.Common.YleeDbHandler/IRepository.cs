@@ -182,6 +182,8 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         bool IsExist(Expression<Func<TEntity, bool>> predicate);
 
         #endregion 查询方法
+
+
     }
 
     /// <summary>

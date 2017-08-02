@@ -45,7 +45,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private OpResult EidtInspectionItemConfig(InspectionIqcItemConfigModel model)
         {
-
+            ///公用不能添加修改 
+            if (model.SizeMemo == "条件ROHS检验") return OpResult.SetErrorResult("符合条件ROHS检验，不能修改操作!");
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
         /// <summary>
@@ -55,7 +56,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private OpResult AddInspectionItemConfig(InspectionIqcItemConfigModel model)
         {
-
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
 
@@ -380,7 +380,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         internal List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderid, string materialId)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId && e.OrderId != orderid).Distinct().ToList();
+            return irep.Entities.Where(e => e.MaterialId == materialId && e.OrderId != orderid).Distinct().OrderBy(f => f.MaterialInDate).ToList();
         }
 
         ///// <summary>
