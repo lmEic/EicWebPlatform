@@ -14,7 +14,7 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
             titleVisible: '=',//是否显示标题
             changed: '&'//选择事件
         },
-        link: function (scope, element, attrs) {
+            link: function (scope, element, attrs) {
             scope.months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
             scope.titleVisible = true;
             var mydate = new Date();

@@ -147,6 +147,7 @@ var leeDataHandler = (function () {
                         if (user.LoginedUser !== null) {
                             loginedUser.userId = user.LoginedUser.UserId;
                             loginedUser.userName = user.LoginedUser.UserName;
+                          
                             loginedUser.headPortrait = user.LoginedUser.HeadPortrait;
                             if (!_.isUndefined(user.LoginedUser.Department))
                                 loginedUser.department = user.LoginedUser.Department;
