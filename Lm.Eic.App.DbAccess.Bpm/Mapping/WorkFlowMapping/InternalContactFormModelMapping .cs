@@ -21,4 +21,17 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.WorkFlowMapping
         }
     }
 
+    /// <summary>
+    ///WfFormCheckFlowModel
+    /// </summary>
+    public class WfFormCheckFlowModelMapping : EntityTypeConfiguration<WfFormCheckFlowModel>
+    {
+        public WfFormCheckFlowModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Wf_FormCheckFlowTable");
+        }
+    }
+
 }

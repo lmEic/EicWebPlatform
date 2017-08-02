@@ -9,7 +9,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm
     ///内部联络单模型
     /// </summary>
     [Serializable]
-    public class InternalContactFormModel
+    public partial class InternalContactFormModel
     {
         public InternalContactFormModel()
         { }
@@ -86,6 +86,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm
             set { _relatedtodepartment = value; }
             get { return _relatedtodepartment; }
         }
+        private string _confirmor;
+        /// <summary>
+        ///确认人
+        /// </summary>
+        public string Confirmor
+        {
+            set { _confirmor = value; }
+            get { return _confirmor; }
+        }
         private string _approver;
         /// <summary>
         ///核准人
@@ -94,15 +103,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm
         {
             set { _approver = value; }
             get { return _approver; }
-        }
-        private string _field1;
-        /// <summary>
-        ///1
-        /// </summary>
-        public string Field1
-        {
-            set { _field1 = value; }
-            get { return _field1; }
         }
         private string _field2;
         /// <summary>
@@ -169,5 +169,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm
         }
         #endregion Model
     }
+
 
 }

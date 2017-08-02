@@ -10,6 +10,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
 {
     public class HrAttendanceManageController : EicBaseController
     {
+        #region 班别管理
         //
         // GET: /HrAttendanceManage/
         /// <summary>
@@ -34,6 +35,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var result = AttendanceService.ClassTypeSetter.SetClassType(classTypes, OnLineUser.UserName);
             return Json(result);
         }
+        #endregion
+
+        #region 考勤数据汇总管理
         /// <summary>
         /// 今日考勤
         /// </summary>
@@ -78,6 +82,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var dlfm = AttendanceService.AttendSlodPrintManager.BuildAttendanceDataBy(yearMonth);
             return this.DownLoadFile(dlfm);
         }
+        #endregion
+
+        #region 请假管理
         /// <summary>
         /// 请假管理
         /// </summary>
@@ -86,16 +93,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
-
-        /// <summary>
-        /// 异常处理
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult HrHandleException()
-        {
-            return View();
-        }
-
         /// <summary>
         /// 载入请假类别，同时载入部门信息
         /// </summary>
@@ -119,7 +116,6 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var result = AttendanceService.AttendAskLeaveManager.HandleAskForLeave(askForLeaves);
             return Json(result);
         }
-
         /// <summary>
         /// 获取某人的当月请假数据
         /// </summary>
@@ -131,7 +127,9 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var datas = AttendanceService.AttendAskLeaveManager.GetAskLeaveDatas(workerId, yearMonth);
             return DateJsonResult(datas);
         }
+        #endregion
 
+        #region 考勤异常检测管理
         /// <summary>
         /// 自动检测考勤异常数据
         /// </summary>
@@ -164,5 +162,21 @@ namespace EicWorkPlatfrom.Controllers.Hr
             var datas = AttendanceService.AttendSlodPrintManager.LoadExceptionSlotData();
             return DateJsonResult(datas);
         }
+        /// <summary>
+        /// 异常处理
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult HrHandleException()
+        {
+            return View();
+        }
+        #endregion
+
+        #region 加班管理
+        public ActionResult HrWorkOverHoursManage()
+        {
+            return View();
+        }
+        #endregion
     }
 }

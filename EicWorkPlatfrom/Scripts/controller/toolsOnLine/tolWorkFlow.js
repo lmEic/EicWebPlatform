@@ -18,6 +18,11 @@ officeAssistantModule.factory('wfDataOpService', function (ajaxService) {
 officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, wfDataOpService) {
     var ue = leeUeditor.getEditor('formContent');
 
+    //签核人员信息
+    var checkPerson = $scope.checkPerson = {
+        applicant: null,//申请,
+        confirmor: null,
+    }
 
     ///联络单视图模型
     var uiVM = {
@@ -29,7 +34,8 @@ officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, 
         ApplyPerson: null,
         RelatedToPerson: null,
         RelatedToDepartment: null,
-        Approver: null,
+        Confirmor: null,//确认人
+        Approver: null,//审核人
         Field1: null,
         Field2: null,
         Field3: null,
@@ -61,6 +67,8 @@ officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, 
 
     $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
         departmentTreeSet.setTreeDataset(datas);
+        var user = leeLoginUser;
+        checkPerson.applicant = user.userName + "(" + user.departmentText + ")";
     });
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
