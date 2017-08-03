@@ -1133,6 +1133,9 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
             });
         });
     }
+    operateORT.cannelORT = function (isValid) {
+        dialog.close();
+    };
 })
 ///fqc数据采集控制器
 qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspectionDataOpService, connDataOpService) {
