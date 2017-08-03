@@ -232,10 +232,11 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     }
 
     //fqc检验项目配置模块  保存
-    quality.saveFqcInspectionItemConfigDatas = function (fqcInspectionConfigItems) {
+    quality.saveFqcInspectionItemConfigDatas = function (fqcInspectionConfigItems, isNeedORt) {
         var url = quaInspectionManageUrl + 'SaveFqcInspectionItemConfigDatas';
         return ajaxService.postData(url, {
-            fqcInspectionConfigItems: fqcInspectionConfigItems
+            fqcInspectionConfigItems: fqcInspectionConfigItems,
+            isNeedORt: isNeedORt,
         })
     }
     // fqc检验项目配置模块  删除
@@ -914,11 +915,11 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
         Id_Key: null,
     }
     $scope.vm = uiVM;
-    var uiVmORT = {
-        MaterialId: "14J02160740M0RN",
-        MaterailName: "",
-        MaterialSpecify: "",
-        OrtType: "ESR131-R509",
+    var uiVmORT = $scope.vmORT = {
+        MaterialId: null,
+        MaterailName: null,
+        MaterialSpecify: null,
+        OrtType: null,
         OrtCoefficient: 0,
         IsValid: null,
         Memo: null,
@@ -928,7 +929,6 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
         OpSign: 'add',
         Id_Key: null,
     }
-    $scope.vmORT = uiVmORT;
     var tableVM = {
         MaterialName: null,
         MaterialBelongDepartment: null,
@@ -962,14 +962,15 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
             uiVM.OpSign = 'add';
             $scope.vm = uiVM;
         },
-
         //根据品号查询
         getConfigDatas: function () {
             $scope.searchPromise = qualityInspectionDataOpService.getfqcInspectionItemConfigDatas($scope.vm.MaterialId).then(function (datas) {
                 if (datas !== null) {
                     $scope.tableVm = datas.ProductMaterailModel;
-                    $scope.vmORT = datas.OrtDatas;
-                    vmManager.isNeedORt = $scope.vmORT.IsValid;
+                    leeHelper.copyVm(datas.OrtDatas, uiVmORT);
+                    console.log(tableVM);
+                    console.log(999999);
+                    console.log($scope.vmORT);
                     vmManager.dataSource = datas.InspectionItemConfigModelList;
                 }
             });
@@ -1007,6 +1008,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
                 }
             })
         },
+        //删除
         delModal: $modal({
             title: "删除提示",
             content: "你确定要删除此数据吗?",
@@ -1031,10 +1033,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
         //选择 是否 在添加 ORT项目
         changeIsNeedORT: function () {
             if (vmManager.isNeedORt === 'True') {
-                console.log($scope.tableVm);
-                uiVmORT.MaterialId = $scope.tableVm.ProductMaterailId;
-                uiVmORT.MaterailName = $scope.tableVm.MaterailName;
-                uiVmORT.MaterialSpecify = $scope.tableVm.MaterialSpecify;
+                leeHelper.copyVm($scope.tableVm, uiVmORT);
                 uiVmORT.IsValid = vmManager.isNeedOR;
                 //$scope.searchPromise = qualityInspectionDataOpService.getOrtMaterialConfigData(uiVmORT.MaterialId).then(function (datas) {
                 //});
@@ -1085,8 +1084,6 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
         vmManager.dataSource = ds;
 
     };
-
-
     // 清空数据
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
@@ -1108,10 +1105,9 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
             operate.refresh();
         })
     };
-
     //批量保存所有数据
     operate.saveAll = function () {
-        $scope.opPromise = qualityInspectionDataOpService.saveFqcInspectionItemConfigDatas(vmManager.dataSource).then(function (opresult) {
+        $scope.opPromise = qualityInspectionDataOpService.saveFqcInspectionItemConfigDatas(vmManager.dataSource, vmManager.isNeedORt).then(function (opresult) {
             leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                 if (opresult.Result) {
                     vmManager.dataSource = [];
@@ -1127,12 +1123,10 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
     $scope.operateORT = operateORT;
     //批量保存ORT数据
     operateORT.saveORTData = function (isValid) {
-        console.log(operateORT);
-        console.log(isValid);
-        console.log(454564564);
         leeHelper.setUserData(uiVmORT);
         $scope.opPromise = qualityInspectionDataOpService.savMaterialOrtConfigData(uiVmORT).then(function (opresult) {
             leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                console.log(opresult);
                 if (opresult.Result) {
                     dialog.close();
                 }

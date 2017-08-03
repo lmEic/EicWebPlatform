@@ -144,7 +144,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             catch (Exception ex)
             {
                 return new List<InspectionItemDataSummaryVM>();
-                throw new Exception(ex.InnerException.Message);
+                throw new Exception(ex.Message);
             }
 
         }
@@ -201,6 +201,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return returnOpResult;
         }
         #endregion
+
+
+
 
 
         #region  对内处理 Private
@@ -486,7 +489,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
         }
-
 
         /// <summary>
         /// 判断是否按提正常还

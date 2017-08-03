@@ -13,7 +13,9 @@ using System.Text;
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     #region  FQC检验配置管理 Crud
-
+    /// <summary>
+    /// FQC 应用工厂
+    /// </summary>
     internal class InspectionFqcItemConfigCrud : CrudBase<InspectionFqcItemConfigModel, IFqcInspectionItemConfigRepository>
     {
         public InspectionFqcItemConfigCrud() : base(new FqcInspectionItemConfigRepository(), "Fqc料物配置")
@@ -74,7 +76,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
     }
 
-
+    /// <summary>
+    /// FQC详细表
+    /// </summary>
     internal class InspectionFqcDatailCrud : CrudBase<InspectionFqcDetailModel, IFqcInspectionDatailRepository>
     {
         public InspectionFqcDatailCrud() : base(new FqcInspectionDatailRepository(), "FQC详细表单")
@@ -181,9 +185,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
         #endregion
     }
-
-
-
+    /// <summary>
+    /// FQC主表
+    /// </summary>
     internal class InspectionFqcMasterCrud : CrudBase<InspectionFqcMasterModel, IFqcInspectionMasterRepository>
     {
         public InspectionFqcMasterCrud() : base(new FqcInspectionMasterRepository(), "FQC总表信息")
@@ -248,7 +252,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.UpAuditDetailData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);
         }
     }
-
+    /// <summary>
+    /// ORT物料配置
+    /// </summary>
     internal class OrtMaterialConfigCrud : CrudBase<MaterialOrtConfigModel, IOrtMaterailConfigRepository>
     {
         public OrtMaterialConfigCrud() : base(new OrtMaterailConfigRepository(), "ORT配置")
@@ -262,6 +268,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         internal MaterialOrtConfigModel FindOrtMaterialDatasBy(string masterialId)
         {
             return irep.Entities.FirstOrDefault(e => e.MaterialId == masterialId);
+        }
+        internal OpResult ChangeMaterialIsValid(string masterialId, string isValid)
+        {
+            return irep.Update(e => e.MaterialId == masterialId, u => new MaterialOrtConfigModel { IsValid = isValid }).ToOpResult_Eidt(OpContext);
+        }
+        internal OpResult StoreMaterialOrtConfigModel(MaterialOrtConfigModel data)
+        {
+            if (irep.IsExist(e => e.MaterialId == data.MaterialId))
+            {
+                return irep.Update(e => e.Id_Key == data.Id_Key, data).ToOpResult_Eidt(OpContext);
+            }
+            return irep.Insert(data).ToOpResult_Add(OpContext);
         }
     }
     #endregion

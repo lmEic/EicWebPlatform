@@ -15,7 +15,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             //查询ERP中所有物料和单号 
             var list = InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(formStatus, dateFrom, dateTo);
-       
+
             switch (formStatus)
             {
                 case "待检测":
@@ -35,11 +35,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
-        public List<InspectionFqcDetailModel> GetInspectionDatailListBy(string orderId,int orderIdNumber)
+        public List<InspectionFqcDetailModel> GetInspectionDatailListBy(string orderId, int orderIdNumber)
         {
             return InspectionManagerCrudFactory.FqcDetailCrud.GetFqcInspectionDetailDatasBy(orderId, orderIdNumber);
         }
-
         /// <summary>
         ///审核主表数据
         /// </summary>
@@ -52,7 +51,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 var retrunResult = InspectionManagerCrudFactory.FqcMasterCrud.Store(model, true);
                 if (retrunResult.Result)
                     ///主要更新成功 再   更新详细表的信息
-                    retrunResult= InspectionManagerCrudFactory.FqcMasterCrud.UpAuditDetailData(model.OrderId, model.OrderIdNumber, "Done");
+                    retrunResult = InspectionManagerCrudFactory.FqcMasterCrud.UpAuditDetailData(model.OrderId, model.OrderIdNumber, "Done");
                 return retrunResult;
             }
             catch (Exception ex)
@@ -60,8 +59,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 return new OpResult(ex.InnerException.Message);
                 throw new Exception(ex.InnerException.Message);
             }
-          
+
         }
+
         List<InspectionFqcMasterModel> GetERPOrderAndMaterialBy(DateTime startTime, DateTime endTime)
         {
             List<InspectionFqcMasterModel> retrunList = new List<InspectionFqcMasterModel>();
@@ -81,7 +81,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (OrderIdList == null || OrderIdList.Count <= 0) return retrunList;
             OrderIdList.ForEach(e =>
             {
-                    retrunList.Add(MaterialModelToInspectionFqcMasterModel(e));
+                retrunList.Add(MaterialModelToInspectionFqcMasterModel(e));
             });
             return retrunList.OrderByDescending(e => e.MaterialInDate).ToList();
         }

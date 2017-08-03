@@ -155,7 +155,7 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult GetFqcInspectionItemConfigDatas(string materialId)
         {
             //添加物料检验项
-            var InspectionItemConfigModelList = InspectionService.ConfigManager.FqcItemConfigManager.GetFqcspectionItemConfigDatasBy(materialId);
+            var InspectionItemConfigModelList = InspectionService.ConfigManager.FqcItemConfigManager.GetFqcInspectionItemConfigDatasBy(materialId);
             //得到此物料的品名 ，规格 ，供应商，图号
             var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
             //得到ORT信息
@@ -196,10 +196,9 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="fqcInspectionConfigItems"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult SaveFqcInspectionItemConfigDatas(List<InspectionFqcItemConfigModel> fqcInspectionConfigItems)
+        public JsonResult SaveFqcInspectionItemConfigDatas(List<InspectionFqcItemConfigModel> fqcInspectionConfigItems, string isNeedORt)
         {
-
-            var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(fqcInspectionConfigItems);
+            var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(fqcInspectionConfigItems, isNeedORt);
             return Json(opResult);
         }
         /// <summary>
@@ -210,8 +209,8 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult SaveOrtModel(MaterialOrtConfigModel ortModel)
         {
-            var datas = "";
-            return Json(datas);
+            var returnResult = InspectionService.ConfigManager.FqcItemConfigManager.SaveOrtData(ortModel);
+            return Json(returnResult);
         }
         /// <summary>
         /// 得到ORT配置数据
@@ -441,7 +440,7 @@ namespace EicWorkPlatfrom.Controllers
             var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);
         }
-        
+
         #endregion
         #endregion
 

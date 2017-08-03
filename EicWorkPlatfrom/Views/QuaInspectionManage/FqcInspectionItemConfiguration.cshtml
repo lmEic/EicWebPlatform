@@ -64,7 +64,7 @@
                             </div>
                         </div>
                         @*检验方式*@
-                        <label class="col-md-2 control-label">检验方式</label>
+                        <label for="inspectionMode" class="col-md-2 control-label">检验方式</label>
                         <div class="col-md-4">
                             <div class="col-lg-9 input-group">
                                 <input class="form-control" name="inspectionMode" placeholder="检验方式" ng-model="vm.InspectionMode" required />
@@ -102,9 +102,9 @@
                         @*检验方法*@
                         <label for="inspectionMethod" class="col-md-2 control-label">检验方法</label>
                         <div class="col-md-4">
-                            <input name="inspectionMethod" class="form-control" ng-model="vm.InspectionMethod" required />
+                            <input name="inspectionMethod" type="text" class="form-control" ng-model="vm.InspectionMethod" />
                             <div class="error-messages" ng-messages="fqcInspectionItemForm.inspectionMethod.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">检验方法不能为空</small>
+                                <small ng-message="required">检验方法不能为空!!</small>
                             </div>
                         </div>
                         @*采集类型*@
@@ -192,10 +192,7 @@
                         @*备注*@
                         <label for="memo" class="col-md-2 control-label">备注</label>
                         <div class="col-md-8">
-                            <textarea required name="inspectionMethod" ng-model="vm.Memo" class="form-control" rows="2"></textarea>
-                            <div class="error-messages" ng-messages="fqcInspectionItemForm.memo.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">备注不能为空</small>
-                            </div>
+                            <textarea required name="memo" ng-model="vm.Memo" class="form-control" rows="2"></textarea>
                         </div>
                     </div>
                     <hr />
@@ -253,14 +250,11 @@
                      data-datasource="vmManager.dataSource">
                 </div>
             </div>
-
-
             <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:60%">
                 <content dialog-title>
                     <i class="fa fa-tasks">编辑ORT数据</i>
                 </content>
                 <content dialog-content>
-                    @*MaterialId, MaterailName, MaterialSpecify, OrtType, OrtCoefficient, Memo,*@
                     <div class="gridster">
                         <form role="form" name="formCreateORTdatas" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                             <div class="well form-group">
@@ -282,11 +276,10 @@
                                         <input name="materialSpecify" type="text" readonly="readonly" class="form-control" ng-model="vmORT.MaterialSpecify" />
                                     </div>
                                 </div>
-
                             </div>
                             <div class="form-group">
                                 <div class="col-md-4">
-                                    <label for="ortType" class="col-md-4 control-label">ORT数据：</label>
+                                    <label for="ortType" class="col-md-4 control-label">ORT数据:</label>
                                     <div class="col-md-8">
                                         <input name="ortType" type="text" class="form-control" ng-model="vmORT.OrtType" required />
                                         <div class="error-messages" ng-messages="formCreateORTdatas.ortType.$error" ng-show="operateORT.showValidation">
@@ -295,21 +288,33 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="ortCoefficient" class="col-md-4 control-label">系数：</label>
-                                    <div class="col-md-8">
+                                    <label for="ortCoefficient" class="col-md-4 control-label">系数:</label>
+                                    <div class="col-md-6">
                                         <input name="ortCoefficient" type="number" class="form-control" ng-model="vmORT.OrtCoefficient" required />
                                         <div class="error-messages" ng-messages="formCreateORTdatas.ortCoefficient.$error" ng-show="operateORT.showValidation">
                                             <small ng-message="required">系数不能为空</small>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 ">
-                                    <label for="IsValid" class="col-md-4 control-label">是否有效：</label>
-                                    <input name="IsValid" type="text" class="form-control" ng-model="vmORT.IsValid" required />
-                                    <button type="button" class="btn  btn-default" ng-model="vmORT.IsValid"
-                                            data-html="1" data-multiple="0"
-                                            data-animation="am-flip-x" data-placeholder="False"
-                                            bs-options="item.id as item.text for item in vmManager.isNeedORTs" bs-select></button>
+                                <div class="col-md-4">
+                                    <label for="IsValid" class="col-lg-4 control-label">有效:</label>
+                                    <div class="col-lg-6 input-group">
+                                        <input name="IsValid" type="text" class="form-control" ng-model="vmORT.IsValid" required />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn  btn-primary" ng-model="vmORT.IsValid"
+                                                    data-html="1" data-multiple="0"
+                                                    data-animation="am-flip-x" data-placeholder="False"
+                                                    bs-options="item.id as item.text for item in vmManager.isNeedORTs" bs-select></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label for="oRTmemo" class="col-md-2 control-label">备注:</label>
+                                    <div class="col-md-10">
+                                        <textarea required name="oRTmemo" ng-model="vmORT.Memo" class="form-control" rows="2"></textarea>
+                                    </div>
                                 </div>
                             </div>
                             <hr />
