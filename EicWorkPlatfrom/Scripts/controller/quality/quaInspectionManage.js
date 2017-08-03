@@ -1497,6 +1497,10 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
                 }
                 vmManager.dataSource = editDatas;
                 vmManager.dataSets = editDatas;
+
+                //vmManager.selectedFormStatus = null;
+                //vmManager.querySupplierId = null;
+                //vmManager.selecteInspectionItem = null;
             })
         },
         //获取检验表单主数据
