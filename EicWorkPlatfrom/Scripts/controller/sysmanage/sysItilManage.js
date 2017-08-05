@@ -47,7 +47,7 @@ smModule.factory('sysitilService', function (ajaxService) {
     ///保存  通知地址配置 
     itil.storeItilNotifyAddress = function (entity) {
         var url = urlPrefix + 'StoreitilNotifyAddress';
-        return ajaxService.getData(url, {
+        return ajaxService.postData(url, {
             entity: entity
         });
     };
@@ -95,17 +95,13 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
         OpSign: 'add',
         Id_Key: 0
     };
-
     $scope.vm = uiVM;
-
     var originalVM = _.clone(uiVM);
-
     var queryFields = {
         selectedProgressStatuses: [],
         functionName: null
     };
     $scope.query = queryFields;
-
     var vmManager = {
         activeTab: 'initTab',
         isLocal: true,
@@ -122,9 +118,6 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
             vmManager.canEdit = false;
         },
         executors: [{ name: '万晓桥', text: '万晓桥' }, { name: '张文明', text: '张文明' }, { name: '杨垒', text: '杨垒' }],
-
-
-
         progressStatuses: [
                 { value: '待开发', label: '<i class="fa fa-calendar-o"></i>  待开发' },
                 { value: '待审核', label: '<i class="fa fa-feed"></i>  待审核' },
@@ -184,11 +177,9 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
             });
         }
     };
-
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-
     //模态窗口选项
     var editModalOption = {
         title: "状态变更窗口",
@@ -249,12 +240,12 @@ smModule.controller('itilNotifyAddressManageCtrl', function ($scope, sysitilServ
     ///视图模型
     ///通知邮件配置 
     var uiVm = $scope.vm = {
-        ModuleName: "通知邮件配置 ",
-        BusinessName: "通知邮件配置",
-        TransactionName: "通知邮件配置 ",
-        EmailList: "通知邮件配置 ",
-        TelMessageList: "通知邮件配置 ",
-        MicroMessageList: "通知邮件配置 ",
+        ModuleName: null,
+        BusinessName: null,
+        TransactionName: null,
+        EmailList: null,
+        TelMessageList: null,
+        MicroMessageList: null,
         NotifyMode: 1,
         OpStatus: "完成",
         OpPerson: null,
@@ -270,7 +261,7 @@ smModule.controller('itilNotifyAddressManageCtrl', function ($scope, sysitilServ
         init: function () {
 
         },
-        OpStatus: [{ name: '完成', text: '完成' }, { name: '进行中', text: '进行中' }, { name: '未完成', text: '未完成' }],
+        OpStatusDatas: [{ name: '完成', text: '完成' }, { name: '进行中', text: '进行中' }, { name: '未完成', text: '未完成' }],
         datasource: [],
         datasets: [],
         searchBy: function () {
@@ -296,7 +287,7 @@ smModule.controller('itilNotifyAddressManageCtrl', function ($scope, sysitilServ
     $scope.operate = operate;
     operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            sysitilService.storeItilNotifyAddress(uiVm).then(function (opresult) {
+            $scope.searchPromise = sysitilService.storeItilNotifyAddress(uiVm).then(function (opresult) {
                 console.log(1);
             });
         });
@@ -307,7 +298,7 @@ smModule.controller('itilNotifyAddressManageCtrl', function ($scope, sysitilServ
     };
 });
 ///EmailManageController
-smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dataDicConfigTreeSet, connDataOpService,$modal) {
+smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dataDicConfigTreeSet, connDataOpService, $modal) {
     leeHelper.setWebSiteTitle("系统管理", "邮箱配置管理")
     ///View
     var uiVM = {
@@ -355,7 +346,7 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
             $scope.vm = uiVM;
 
         },
-        
+
         searchedWorkers: [],
         isSingle: true,//是否搜寻人员或部门
         departments: [
@@ -427,28 +418,28 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
         delModalWindow: $modal({
             title: "删除提示", content: "您确定要删除此信息吗?",
             templateUrl: leeHelper.modalTplUrl.deleteModalUrl, show: false,
-            controller: function ($scope) {        
-                $scope.confirmDelete = function () {             
+            controller: function ($scope) {
+                $scope.confirmDelete = function () {
                     uiVM.OpSign = leeDataHandler.dataOpMode.delete;
                     sysitilService.storeEmailManageRecord(uiVM).then(function (opresult) {
                         leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                            if (opresult.Result) {    
-                                vmManager.searchBy();  
+                            if (opresult.Result) {
+                                vmManager.searchBy();
                                 vmManager.del();
-                               
+
                             }
 
                         })
 
-                    })   
-                   
+                    })
+
                     vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.hide);
                 };
             },
         }),
 
 
-       
+
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -459,11 +450,11 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
         $scope.vm = uiVM = item;
         dialog.show();
     };
-    operate.deleteItem = function (item) {    
+    operate.deleteItem = function (item) {
         vmManager.delItem = item;
-       $scope.vm = uiVM = item;    
+        $scope.vm = uiVM = item;
         vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.show);
-    }  
+    }
     operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             sysitilService.storeEmailManageRecord(uiVM).then(function (opresult) {
@@ -473,12 +464,12 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
                         mode.Id_Key == opresult.Id_Key;
                         if (mode.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.datasource.push(mode);
-                            
+
                         }
-                        vmManager.searchBy();  
-                        vmManager.init();                    
+                        vmManager.searchBy();
+                        vmManager.init();
                         dialog.close();
-                       
+
                     }
                 });
             });

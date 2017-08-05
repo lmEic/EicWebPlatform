@@ -36,15 +36,28 @@ namespace Lm.Eic.Framework.ProductMaster.Business.MessageNotify
         {
             AddOpItem(OpMode.Add, Add);
             AddOpItem(OpMode.Edit, Edit);
-            AddOpItem(OpMode.Delete, DeleteData);
+            AddOpItem(OpMode.Delete, Delete);
         }
+
+
+        #region Crud
         /// <summary>
         /// 添加一条记录
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult Add(ConfigNotifyAddressModel model)
+        OpResult Add(ConfigNotifyAddressModel model)
         {
+            model.ParameterKey = model.ModuleName + "&&" + model.BusinessName + "&&" + model.TransactionName;
+            if (isExistParameterKey(model.ParameterKey))
+                return irep.Update(e => e.ParameterKey == model.ParameterKey, u => new ConfigNotifyAddressModel
+                {
+                    EmailList = model.EmailList,
+                    MicroMessageList = model.MicroMessageList,
+                    TelMessageList = model.TelMessageList,
+                    NotifyMode = model.NotifyMode,
+                    OpStatus = model.OpStatus
+                }).ToOpResult_Eidt(OpContext);
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
         /// <summary>
@@ -52,7 +65,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.MessageNotify
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult Edit(ConfigNotifyAddressModel model)
+        OpResult Edit(ConfigNotifyAddressModel model)
         {
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
@@ -61,10 +74,14 @@ namespace Lm.Eic.Framework.ProductMaster.Business.MessageNotify
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private OpResult DeleteData(ConfigNotifyAddressModel model)
+        OpResult Delete(ConfigNotifyAddressModel model)
         {
             return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
+        #endregion
+
+
+        #region  Find
         /// <summary>
         /// 根据约束键值查找
         /// </summary>
@@ -74,6 +91,10 @@ namespace Lm.Eic.Framework.ProductMaster.Business.MessageNotify
         {
             return irep.Entities.Where(m => m.ParameterKey == parameterKey).ToList();
         }
-
+        bool isExistParameterKey(string parameterKey)
+        {
+            return irep.IsExist(e => e.ParameterKey == parameterKey);
+        }
+        #endregion
     }
 }
