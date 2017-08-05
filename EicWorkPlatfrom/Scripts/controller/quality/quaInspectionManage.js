@@ -968,9 +968,6 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
                 if (datas !== null) {
                     $scope.tableVm = datas.ProductMaterailModel;
                     leeHelper.copyVm(datas.OrtDatas, uiVmORT);
-                    console.log(tableVM);
-                    console.log(999999);
-                    console.log($scope.vmORT);
                     vmManager.dataSource = datas.InspectionItemConfigModelList;
                 }
             });
@@ -1054,10 +1051,8 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
         }
     };
     $scope.vmManager = vmManager;
-
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-
     //编辑项目
     operate.editItem = function (item) {
         uiVM = item;
@@ -1118,7 +1113,6 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
             });
         });
     }
-
     var operateORT = Object.create(leeDataHandler.operateStatus);
     $scope.operateORT = operateORT;
     //批量保存ORT数据

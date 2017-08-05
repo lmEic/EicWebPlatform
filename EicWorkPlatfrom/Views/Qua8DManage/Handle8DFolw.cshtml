@@ -6,6 +6,7 @@
 
     <div class="panel-body">
         <div class="row">
+            @*查询所得数据列表*@
             <div class="col-md-12">
                 <form class="form-inline" cg-busy="{promise:searchPromise}">
                     <div class="form-group">
@@ -17,6 +18,7 @@
             </div>
         </div>
         <div class="h-split"></div>
+        @*查询所得初建表头信息*@
         <div class="row">
             <div class="table-responsive" cg-busy="{promise:searchPromise}">
                 <table>
@@ -36,6 +38,7 @@
                 </table>
             </div>
         </div>
+        @*8步骤信息展示*@
         <div cg-busy="{promise:promise}">
             <div class="row">
                 <div class="pull-left">
@@ -64,12 +67,13 @@
                                             <tbody>
                                                 <tr ng-repeat="step in vmManager.steps track by $index">
                                                     <td>
-                                                        <span ng-class="step.isCheck==true?'label label-default':'label label-warning'"> {{step.StepId}} </span>
+                                                        <label class="label-success"></label>
+                                                        <span ng-class="step.isCheck==true?'label label-warning':'label label-info'"> {{step.StepId}} </span>
                                                     </td>
                                                     <td>{{step.StepDescription}}</td>
                                                     <td>
-                                                        <button type="button" ng-show="step.isCheck==false" class="btn btn-primary btn-xs" ng-click="vmManager.selectStep(step)"><i class=""></i> 明细</button>
-                                                        <button type="button" ng-show="step.isCheck==true" class="btn btn-default btn-xs" ng-click="vmManager.selectStep(step)">明细</button>
+                                                        <button type="button" ng-show="step.isCheck==false" class="btn btn-info btn-xs" ng-click="vmManager.selectStep(step)"><i class="fa fa-share"></i></button>
+                                                        <button type="button" ng-show="step.isCheck==true" class="btn btn-primary btn-xs" ng-click="vmManager.selectStep(step)"><i class="fa fa-pencil-square-o" /></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -91,8 +95,10 @@
                                 </span>*@
                         </li>
                     </ul>
+                    @*展示*@
                     <div class="panel-group" role="tablist" ng-model="vmManager.viewDataset.activePanel" style="max-height:650px;overflow-y:auto" aria-multiselectable="true" bs-collapse>
                         <div class="panel panel-primary" ng-repeat="stepItem in vmManager.viewDataset track by $index">
+                            @*列表标题*@
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a bs-collapse-toggle>
@@ -100,6 +106,7 @@
                                     </a>
                                 </h4>
                             </div>
+                            @*列表展示详细部分*@
                             <div class="panel-collapse" role="tabpanel" bs-collapse-target>
                                 <div class="panel-body">
                                     <div ng-show="stepItem.stepData.length>0">
