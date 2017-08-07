@@ -152,6 +152,18 @@ namespace EicWorkPlatfrom.Controllers
             var result = NotifyService.NotifyManager.StoreNotifyInfo(entity);
             return Json(result);
         }
+
+        /// <summary>
+        /// 根据开发进度状态查找开发模块
+        /// </summary>
+        /// <param name="progressStatuses"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetNotifyAddressManageModuleBy(string functionName)
+        {
+            var result = NotifyService.NotifyManager.GetConfigNotifyAddressBy(functionName);
+            return DateJsonResult(result);
+        }
         #endregion 
     }
 }

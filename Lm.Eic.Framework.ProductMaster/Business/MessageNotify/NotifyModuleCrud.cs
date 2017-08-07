@@ -53,8 +53,8 @@ namespace Lm.Eic.Framework.ProductMaster.Business.MessageNotify
                 return irep.Update(e => e.ParameterKey == model.ParameterKey, u => new ConfigNotifyAddressModel
                 {
                     EmailList = model.EmailList,
-                    MicroMessageList = model.MicroMessageList,
-                    TelMessageList = model.TelMessageList,
+                    WeChatList = model.WeChatList,
+                    ContactsList = model.ContactsList,
                     NotifyMode = model.NotifyMode,
                     OpStatus = model.OpStatus
                 }).ToOpResult_Eidt(OpContext);
@@ -94,6 +94,15 @@ namespace Lm.Eic.Framework.ProductMaster.Business.MessageNotify
         bool isExistParameterKey(string parameterKey)
         {
             return irep.IsExist(e => e.ParameterKey == parameterKey);
+        }
+        /// <summary>
+        /// 查询所得到事务通知所通知的信息
+        /// </summary>
+        /// <param name="transactionName"></param>
+        /// <returns></returns>
+        internal List<ConfigNotifyAddressModel> GetNotifyInfoBy(string transactionName)
+        {
+            return irep.Entities.Where(e => e.TransactionName == transactionName).ToList();
         }
         #endregion
     }

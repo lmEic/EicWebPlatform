@@ -13,9 +13,9 @@ namespace Lm.Eic.Framework.ProductMaster.Business.MessageNotify
         {
             return ConfigNotifyAddressCrudFactory.ConfigNotifyAddressCrud.Store(modelData);
         }
-        public List<ConfigNotifyAddressModel> GetConfigNotifyAddressBy(string finddata)
+        public List<ConfigNotifyAddressModel> GetConfigNotifyAddressBy(string transactionName)
         {
-            return null;
+            return ConfigNotifyAddressCrudFactory.ConfigNotifyAddressCrud.GetNotifyInfoBy(transactionName);
         }
     }
 }

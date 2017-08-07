@@ -27,15 +27,25 @@
                             <label for="businessName" class="col-md-2 control-label">业务类名称</label>
                             <div class="col-md-4">
                                 <input name="businessName" class="form-control" ng-model="vm.BusinessName" required />
-                                <div class="error-messages" ng-messages="formNotifyManage.mClassName.$error" ng-show="operate.showValidation">
+                                <div class="error-messages" ng-messages="formNotifyManage.businessName.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">业务类名称不能为空</small>
                                 </div>
                             </div>
-                            <label for="transactionName" class="col-md-2 control-label">事务名称名称</label>
+                            <label for="transactionName" class="col-md-2 control-label">事务名称</label>
                             <div class="col-md-4">
                                 <input name="transactionName" class="form-control" ng-model="vm.TransactionName" required />
-                                <div class="error-messages" ng-messages="formNotifyManage.mFunctionName.$error" ng-show="operate.showValidation">
+                                <div class="error-messages" ng-messages="formNotifyManage.transactionName.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">事务名称名称不能为空</small>
+                                </div>
+                            </div>
+                        </div>
+                        @* 联系人消息列表 *@
+                        <div class="form-group">
+                            <label for="contactsList" class="col-md-2 control-label">联系人消息列表</label>
+                            <div class="col-md-10">
+                                <textarea name="contactsList" rows="2" class="form-control" placeholder="添加多项以逗号隔开" ng-model="vm.ContactsList" required />
+                                <div class="error-messages" ng-messages="formNotifyManage.contactsList.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">联系人不能为空</small>
                                 </div>
                             </div>
                         </div>
@@ -43,19 +53,9 @@
                         <div class="form-group">
                             <label for="emailList" class="col-md-2 control-label">邮箱列表</label>
                             <div class="col-md-10">
-                                <textarea name="emailList" rows="2" class="form-control" ng-model="vm.EmailList" required />
-                                <div class="error-messages" ng-messages="formNotifyManage.functionDescription.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">功能描述不能为空</small>
-                                </div>
-                            </div>
-                        </div>
-                        @* 联系人消息列表 *@
-                        <div class="form-group">
-                            <label for="telMessageList" class="col-md-2 control-label">联系人消息列表</label>
-                            <div class="col-md-10">
-                                <textarea name="telMessageList" rows="2" class="form-control" ng-model="vm.TelMessageList" required />
-                                <div class="error-messages" ng-messages="formNotifyManage.functionDescription.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">功能描述不能为空</small>
+                                <textarea name="emailList" rows="2" class="form-control" placeholder="添加多项以逗号隔开" ng-model="vm.EmailList" required />
+                                <div class="error-messages" ng-messages="formNotifyManage.emailList.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">邮箱列表不能为空</small>
                                 </div>
                             </div>
                         </div>
@@ -63,26 +63,26 @@
                         <div class="form-group">
                             <label for="microMessageList" class="col-md-2 control-label">微信号列表</label>
                             <div class="col-md-10">
-                                <textarea name="microMessageList" rows="2" class="form-control" ng-model="vm.MicroMessageList" required />
-                                <div class="error-messages" ng-messages="formNotifyManage.functionDescription.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">功能描述不能为空</small>
-                                </div>
+                                <textarea name="weChatList" rows="2" class="form-control" placeholder="添加多项以逗号隔开" ng-model="vm.WeChatList" required />
+                                @*<div class="error-messages" ng-messages="formNotifyManage.microMessageList.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">功能描述不能为空</small>
+                                    </div>*@
                             </div>
                         </div>
                         @* 通知模式 /操作状态*@
                         <div class="form-group">
-                            <label for="difficultyCoefficient" class="col-md-2 control-label">通知模式</label>
+                            <label for="notifyModet" class="col-md-2 control-label">通知模式</label>
                             <div class="col-md-4">
                                 <input name="notifyModet" type="number" max="5" min="1" class="form-control" ng-model="vm.NotifyMode" required />
-                                <div class="error-messages" ng-messages="formNotifyManage.difficultyCoefficient.$error" ng-show="operate.showValidation">
+                                <div class="error-messages" ng-messages="formNotifyManage.notifyModet.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">通知模式不能为空</small>
                                 </div>
                             </div>
-                            <label for="devPriority" class="col-md-2 control-label">操作状态</label>
+                            <label for="opStatus" class="col-md-2 control-label">操作状态</label>
                             <div class="col-md-4">
                                 <input name="opStatus" type="text" class="form-control" ng-model="vm.OpStatus" required />
                                 <button></button>
-                                <div class="error-messages" ng-messages="formNotifyManage.devPriority.$error" ng-show="operate.showValidation">
+                                <div class="error-messages" ng-messages="formNotifyManage.opStatus.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">操作状态不能为空</small>
                                 </div>
                             </div>
@@ -118,7 +118,7 @@
                                             <span ng-show="vmManager.isLocal">本地</span>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control" ng-model="query.functionName" placeholder="输入函数名称" />
+                                    <input type="text" class="form-control" ng-model="query.functionName" placeholder="输入事务名称" />
                                     <div class="input-group-btn" ng-show="!vmManager.isLocal">
                                         <button class="btn btn-success" ng-click="vmManager.searchBy()"><i class="fa fa-search"></i>查询</button>
                                     </div>
@@ -126,12 +126,12 @@
                             </div>
                         </form>
                     </li>
-                    <li class="list-group-item" ng-click="vmManager.selectDevelopModule(item)" cg-busy="{promise:searchPromise}"
-                        ng-repeat="item in vmManager.developModules|filter:query.functionName track by $index">
+                    <li class="list-group-item" ng-click="vmManager.selectQueryInfo(item)" cg-busy="{promise:searchPromise}"
+                        ng-repeat="item in vmManager.TransactionInfos|filter:query.functionName track by $index">
                         <h5>
-                            <span class="label label-default" style="cursor:pointer">{{item.ModuleName}}</span>
-                            <span class="label label-primary">{{item.BusinessName}}</span>
-                            <span class="label label-default">{{item.TransactionName}}</span>
+                            <span class="label label-default" style="cursor:pointer">{{item.emailList}}</span>
+                            <span class="label label-primary">{{item.ContactsList}}</span>
+                            <span class="label label-default">{{item.WeChatList}}</span>
                         </h5>
                     </li>
                 </ul>
