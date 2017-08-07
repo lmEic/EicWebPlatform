@@ -169,7 +169,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
+        public List<InspectionFqcDetailModel> GetFqcDetailDatasBy(string orderId, int orderIdNumber)
+        {
+            try
+            {
+                return irep.Entities.Where(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber).ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw new Exception(ex.InnerException.Message);
+            }
 
+        }
         public InspectionFqcDetailModel GetFqcDetailModelBy(decimal id_key)
         {
             try
@@ -216,17 +228,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.IsExist(e => e.OrderId == newModel.OrderId && e.OrderIdNumber == newModel.OrderIdNumber && e.MaterialId == newModel.MaterialId);
         }
 
-        internal InspectionFqcMasterModel GetStroeOldModel(InspectionFqcMasterModel newModel)
+        internal InspectionFqcMasterModel GetStroeOldModel(string orderId, int orderIdNumber, string materialId)
         {
             try
             {
-                if (!IsExsitStoreModel(newModel)) return null;
-                return irep.Entities.FirstOrDefault(e => e.OrderId == newModel.OrderId && e.OrderIdNumber == newModel.OrderIdNumber && e.MaterialId == newModel.MaterialId);
+                if (!irep.IsExist(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.MaterialId == materialId)) return null;
+                return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.MaterialId == materialId);
             }
             catch (Exception ex)
             {
                 return null;
-                throw new Exception(ex.InnerException.Message);
+                throw new Exception(ex.Message);
             }
         }
         private OpResult AddFqcInspectionMaster(InspectionFqcMasterModel model)
@@ -257,9 +269,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     /// </summary>
     internal class OrtMaterialConfigCrud : CrudBase<MaterialOrtConfigModel, IOrtMaterailConfigRepository>
     {
-        public OrtMaterialConfigCrud() : base(new OrtMaterailConfigRepository(), "ORT配置")
-        {
-        }
+        public OrtMaterialConfigCrud() : base(new OrtMaterailConfigRepository(), "ORT配置") { }
 
         protected override void AddCrudOpItems()
         {
