@@ -1,4 +1,4 @@
-﻿<div class="row"ng-controller="itilEmailManageCtrl">
+﻿<div class="row" ng-controller="itilEmailManageCtrl">
     <div class="col-md-3">
         <div class="panel panel-success">
             <div class="panel-heading">
@@ -88,7 +88,7 @@
                                                 <div class="error-messages" ng-messages="formEmailManage.department.$error" ng-show="operate.showValidation">
                                                     <small ng-message="required">部门不能为空</small>
                                                 </div>
-                                              
+
                                             </div>
                                         </div>
                                         <label for="regDate" class="col-md-2 control-label">注册日期</label>
@@ -207,7 +207,7 @@
                                 <div class="form-group">
                                     <label>账户等级</label>
                                     <div class="input-group">
-                                    <input type="text" class="form-control" ng-model="query.receiveGrade" placeholder="账户等级" ng-keypress="($even.which==13)?vmManager.getEmailRecord(3):0" />
+                                        <input type="text" class="form-control" ng-model="query.receiveGrade" placeholder="账户等级" ng-keypress="($even.which==13)?vmManager.getEmailRecord(3):0" />
                                         <div class="input-group-btn">
                                             <button type="button" class="btn btn-primary" ng-model="query.receiveGrade"
                                                     data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择邮等级"
@@ -218,7 +218,7 @@
                                 </div>
                             </form>
                         </div>
-                       
+
                     </div>
                     <div class="h-split"></div>
                     <div class="well" cg-busy="{promise:searchPromise}">
@@ -336,8 +336,8 @@
                                     </div>
                                     <label for="password" class="col-md-2 control-label">邮箱密码</label>
                                     <div class="col-md-4">
-                                        <input type="password" name="password" class="form-control" ng-model="vm.Password" placeholder="邮箱密码"  />
-                                    
+                                        <input type="password" name="password" class="form-control" ng-model="vm.Password" placeholder="邮箱密码" />
+
                                     </div>
                                 </div>
 
@@ -349,7 +349,7 @@
                                             <div class="error-messages" ng-messages="formEmailManage.department.$error" ng-show="operate.showValidation">
                                                 <small ng-message="required">部门不能为空</small>
                                             </div>
-                                         
+
                                         </div>
                                     </div>
                                     <label for="regDate" class="col-md-2 control-label">注册日期</label>
@@ -435,9 +435,9 @@
                         </content>
                     </dialog>
 
-                   
 
-                    
+
+
                 </div>
             </div>
         </div>

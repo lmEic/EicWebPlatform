@@ -354,6 +354,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 this.MapProductRowAndModel(dr, m);
             });
         }
+        
     }
 
 }

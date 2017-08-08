@@ -155,11 +155,12 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult GetFqcInspectionItemConfigDatas(string materialId)
         {
             //添加物料检验项
-            var InspectionItemConfigModelList = InspectionService.ConfigManager.FqcItemConfigManager.GetFqcspectionItemConfigDatasBy(materialId);
+            var InspectionItemConfigModelList = InspectionService.ConfigManager.FqcItemConfigManager.GetFqcInspectionItemConfigDatasBy(materialId);
             //得到此物料的品名 ，规格 ，供应商，图号
             var ProductMaterailModel = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materialId).FirstOrDefault();
-
-            var datas = new { ProductMaterailModel, InspectionItemConfigModelList };
+            //得到ORT信息
+            var OrtDatas = InspectionService.ConfigManager.FqcItemConfigManager.GetMaterialORTConfigBy(materialId);
+            var datas = new { ProductMaterailModel, InspectionItemConfigModelList, OrtDatas };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -195,11 +196,32 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="fqcInspectionConfigItems"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult SaveFqcInspectionItemConfigDatas(List<InspectionFqcItemConfigModel> fqcInspectionConfigItems)
+        public JsonResult SaveFqcInspectionItemConfigDatas(List<InspectionFqcItemConfigModel> fqcInspectionConfigItems, string isNeedORt)
         {
-
-            var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(fqcInspectionConfigItems);
+            var opResult = InspectionService.ConfigManager.FqcItemConfigManager.StoreFqcInspectionItemConfig(fqcInspectionConfigItems, isNeedORt);
             return Json(opResult);
+        }
+        /// <summary>
+        /// 存ORT数据
+        /// </summary>
+        /// <param name="ortModel"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveOrtModel(MaterialOrtConfigModel ortModel)
+        {
+            var returnResult = InspectionService.ConfigManager.FqcItemConfigManager.SaveOrtData(ortModel);
+            return Json(returnResult);
+        }
+        /// <summary>
+        /// 得到ORT配置数据
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetOrtMaterialConfigData(string materialId)
+        {
+            var datas = InspectionService.ConfigManager.FqcItemConfigManager.GetMaterialORTConfigBy(materialId);
+            return Json(datas);
         }
 
         #endregion
@@ -321,7 +343,7 @@ namespace EicWorkPlatfrom.Controllers
             this.SaveFileToServer(file, filePath, addchangeFileName);
             return Json("OK");
         }
-      
+
         /// <summary>
         /// 存储采集的数据
         /// </summary>
@@ -453,7 +475,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="eligibleCertificate"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public FileResult LoadIqcDatasDownLoadFile(string orderId, string materialId,string inspectionItem)
+        public FileResult LoadIqcDatasDownLoadFile(string orderId, string materialId, string inspectionItem)
         {
             DownLoadFileModel dlfm = InspectionService.DataGatherManager.IqcDataGather.GetIqcDatasDownLoadFileModel(SiteRootPath, orderId, materialId, inspectionItem);
             return this.DownLoadFile(dlfm);
@@ -493,10 +515,14 @@ namespace EicWorkPlatfrom.Controllers
 
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 审核
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult PostInspectionFormManageCheckedOfFqcData(InspectionFqcMasterModel model)
         {
-
             var opResult = InspectionService.InspectionFormManager.FqcFromManager.AuditFqcInspectionMasterModel(model);
             return Json(opResult);
         }

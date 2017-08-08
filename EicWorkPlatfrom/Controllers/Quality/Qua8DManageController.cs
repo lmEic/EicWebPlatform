@@ -32,6 +32,18 @@ namespace EicWorkPlatfrom.Controllers
             var datas = InspectionService.DataGatherManager.IqcDataGather.MasterDatasGather.GetIqcMasterContainDatasBy(orderId);
             return DateJsonResult(datas);
         }
+
+        /// <summary>
+        /// 保存 初始8Dp初始数据
+        /// </summary>
+        /// <param name="initiateData"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult StoreCraet8DInitialData(Qua8DReportMasterModel initialData)
+        {
+            var result = Qua8DService.Qua8DManager.Qua8DMaster.StoreQua8DMaster(initialData);
+            return Json(result);
+        }
         #endregion
 
         #region Handle8DFolw

@@ -1,5 +1,6 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
     }
     public class Qua8DMasterManager
     {
+        public OpResult StoreQua8DMaster(Qua8DReportMasterModel model)
+        {
+            return Qua8DCrudFactory.MasterCrud.Store(model);
+        }
 
     }
     public class Qua8DDatailManager

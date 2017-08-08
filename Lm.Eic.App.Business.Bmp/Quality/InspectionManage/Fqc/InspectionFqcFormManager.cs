@@ -15,7 +15,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             //查询ERP中所有物料和单号 
             var list = InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(formStatus, dateFrom, dateTo);
-       
+
             switch (formStatus)
             {
                 case "待检测":
@@ -35,11 +35,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
-        public List<InspectionFqcDetailModel> GetInspectionDatailListBy(string orderId,int orderIdNumber)
+        public List<InspectionFqcDetailModel> GetInspectionDatailListBy(string orderId, int orderIdNumber)
         {
             return InspectionManagerCrudFactory.FqcDetailCrud.GetFqcInspectionDetailDatasBy(orderId, orderIdNumber);
         }
-
         /// <summary>
         ///审核主表数据
         /// </summary>
@@ -48,20 +47,23 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
-                if (model == null) return null;
+                if (model == null) return OpResult.SetErrorResult("FQC主表不能为空"); ;
+                //先改变主表的状态
                 var retrunResult = InspectionManagerCrudFactory.FqcMasterCrud.Store(model, true);
-                if (retrunResult.Result)
-                    ///主要更新成功 再   更新详细表的信息
-                    retrunResult= InspectionManagerCrudFactory.FqcMasterCrud.UpAuditDetailData(model.OrderId, model.OrderIdNumber, "Done");
+                if (!retrunResult.Result) return OpResult.SetErrorResult("FQC主表审核状态更新失败");
+                //主要更新成功 再   更新详细表的信息
+                retrunResult = InspectionManagerCrudFactory.FqcMasterCrud.UpAuditDetailData(model.OrderId, model.OrderIdNumber, "Done");
+                if (!retrunResult.Result) return OpResult.SetErrorResult("FQC详细表审核状态更新失败");
                 return retrunResult;
             }
             catch (Exception ex)
             {
-                return new OpResult(ex.InnerException.Message);
-                throw new Exception(ex.InnerException.Message);
+                return OpResult.SetErrorResult(ex.Message);
+                throw new Exception(ex.Message);
             }
-          
+
         }
+
         List<InspectionFqcMasterModel> GetERPOrderAndMaterialBy(DateTime startTime, DateTime endTime)
         {
             List<InspectionFqcMasterModel> retrunList = new List<InspectionFqcMasterModel>();
@@ -81,7 +83,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (OrderIdList == null || OrderIdList.Count <= 0) return retrunList;
             OrderIdList.ForEach(e =>
             {
-                    retrunList.Add(MaterialModelToInspectionFqcMasterModel(e));
+                retrunList.Add(MaterialModelToInspectionFqcMasterModel(e));
             });
             return retrunList.OrderByDescending(e => e.MaterialInDate).ToList();
         }

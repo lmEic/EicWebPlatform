@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using Lm.Eic.Framework.ProductMaster.Business.Itil;
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
+using Lm.Eic.Framework.ProductMaster.Model.MessageNotify;
+using Lm.Eic.Framework.ProductMaster.Business.MessageNotify;
+
 namespace EicWorkPlatfrom.Controllers
 {
     public class SysITILController : EicBaseController
@@ -102,18 +105,18 @@ namespace EicWorkPlatfrom.Controllers
             }
 
         }
-       
+
         [HttpGet]
         [NoAuthenCheck]
         //邮箱查询
-        public ContentResult GetEmailManageRecord(string workerId, string email,int receiveGrade,string department, int mode)
+        public ContentResult GetEmailManageRecord(string workerId, string email, int receiveGrade, string department, int mode)
         {
             var datas = ItilService.EmailManager.GetEmails(new ItilEmailManageModelDto()
             {
                 WorkerId = workerId,
                 Email = email,
-                ReceiveGrade=receiveGrade, 
-                Department=department,
+                ReceiveGrade = receiveGrade,
+                Department = department,
                 SearchMode = mode
 
             });
@@ -143,10 +146,23 @@ namespace EicWorkPlatfrom.Controllers
         /// 保存数据
         /// </summary>
         /// <returns></returns>
-        public JsonResult StoreitilNotifyAddress(string entity)
+        [NoAuthenCheck]
+        public JsonResult StoreitilNotifyAddress(ConfigNotifyAddressModel entity)
         {
-            var result = 0;
+            var result = NotifyService.NotifyManager.StoreNotifyInfo(entity);
             return Json(result);
+        }
+
+        /// <summary>
+        /// 根据开发进度状态查找开发模块
+        /// </summary>
+        /// <param name="progressStatuses"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetNotifyAddressManageModuleBy(string functionName)
+        {
+            var result = NotifyService.NotifyManager.GetConfigNotifyAddressBy(functionName);
+            return DateJsonResult(result);
         }
         #endregion 
     }
