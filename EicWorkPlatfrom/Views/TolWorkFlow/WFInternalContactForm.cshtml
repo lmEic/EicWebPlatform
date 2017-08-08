@@ -3,14 +3,17 @@
         <h6 class="panel-title">创建内部联络单</h6>
     </div>
     <div class="panel-body">
+        <div class="page-header">
+            <span class="btn btn-primary" ng-click="vmManager.createFormId()"><i class="fa fa-pencil"></i>创建</span>
+        </div>
         <div class="row">
             <div class="col-md-10">
                 <form role="form" name="formContact" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                     <div class="form-group">
                         <label for="orderId" class="col-md-2 control-label">表单编号</label>
                         <div class="col-md-6">
-                            <input name="orderId" class="form-control" ng-model="vm.OrderId" readonly required />
-                            <div class="error-messages" ng-messages="formContact.orderId.$error" ng-show="operate.showValidation">
+                            <input name="formId" class="form-control" ng-model="vm.FormId" readonly required />
+                            <div class="error-messages" ng-messages="formContact.formId.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">表单编号不能为空</small>
                             </div>
                         </div>
@@ -35,12 +38,12 @@
                         <label for="applicant" class="col-md-2 control-label">申请人及单位</label>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input name="applicant" class="form-control" ng-model="checkPerson.applicant" readonly required />
+                                <input name="applicant" class="form-control" ng-model="participantInfo.Applicant" readonly required />
                                 <div class="error-messages" ng-messages="formContact.applicant.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">申请人及单位不能为空</small>
                                 </div>
                                 <div class="input-group-btn">
-                                    <span class="btn btn-primary"><i class="fa fa-location-arrow"></i></span>
+                                    <span class="btn btn-primary" ng-click="vmManager.showParticipantView('Applicant')"><i class="fa fa-location-arrow"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -49,8 +52,8 @@
                     <div class="form-group">
                         <label for="applyDate" class="col-md-2 control-label">需求日期</label>
                         <div class="col-md-3">
-                            <input name="applyDate" type="date" format-date class="form-control" ng-model="vm.ApplyDate" required />
-                            <div class="error-messages" ng-messages="formContact.applyDate.$error" ng-show="operate.showValidation">
+                            <input name="needDate" type="date" format-date class="form-control" ng-model="vm.NeedDate" required />
+                            <div class="error-messages" ng-messages="formContact.needDate.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">需求日期不能为空</small>
                             </div>
                         </div>
@@ -59,12 +62,12 @@
                         <label for="approver" class="col-md-2 control-label">确认人</label>
                         <div class="col-md-3">
                             <div class="input-group">
-                                <input name="confirmor" class="form-control" readonly ng-model="vm.Confirmor" required />
+                                <input name="confirmor" class="form-control" readonly ng-model="participantInfo.Confirmor" required />
                                 <div class="error-messages" ng-messages="formContact.confirmor.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">确认人不能为空</small>
                                 </div>
                                 <div class="input-group-btn">
-                                    <span class="btn btn-primary"><i class="fa fa-location-arrow"></i></span>
+                                    <span class="btn btn-primary" ng-click="vmManager.showParticipantView('Confirmor')"><i class="fa fa-location-arrow"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +79,7 @@
                             <div class="col-md-2">
                             </div>
                             <div class="col-md-10">
-                                <button class="btn btn-primary" ng-click="operate.saveAll(formContact.$valid)"><i class="fa fa-save"></i>创建</button>
+                                <button class="btn btn-primary" ng-click="operate.save(formContact.$valid)"><i class="fa fa-save"></i>确定</button>
                                 <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
                             </div>
                         </div>
@@ -111,7 +114,7 @@
                         </div>
                     </div>
                     <div class="col-md-9">
-                        <div class="bs-callout bs-callout-info" cg-busy="{promise:searchPromise}" style="height:480px;">
+                        <div class="bs-callout bs-callout-info" cg-busy="{promise:searchPromise}" style="height:480px;max-height:485px;overflow-y:auto;">
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-bordered" style="table-layout:fixed;">
                                     <colgroup>
@@ -135,7 +138,10 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="item in vmManager.dataset track by $index">
-                                            <td ng-bind="$index+1">
+                                            <td class="text-center">
+                                                <span ng-if="!item.IsChecked" ng-click="vmManager.selectParticipant(item)"><i class="fa fa-2x fa-square-o"></i></span>
+                                                <span class="text-success" ng-if="item.IsChecked" ng-click="vmManager.selectParticipant(item)"><i class="fa fa-2x fa-check-square"></i></span>
+                                            </td>
                                             <td ng-bind="item.WorkerId"></td>
                                             <td ng-bind="item.Name"></td>
                                             <td ng-bind="item.Department"></td>

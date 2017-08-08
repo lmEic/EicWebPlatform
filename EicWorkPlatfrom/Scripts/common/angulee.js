@@ -147,7 +147,7 @@ var leeDataHandler = (function () {
                         if (user.LoginedUser !== null) {
                             loginedUser.userId = user.LoginedUser.UserId;
                             loginedUser.userName = user.LoginedUser.UserName;
-                          
+
                             loginedUser.headPortrait = user.LoginedUser.HeadPortrait;
                             if (!_.isUndefined(user.LoginedUser.Department))
                                 loginedUser.department = user.LoginedUser.Department;
@@ -639,7 +639,7 @@ var leePopups = (function () {
                 stack: { "dir1": "down", "dir2": "right", "push": "top", "modal": true, "overlay_close": true },
             });
         },
-        //询问对话框，title:标题;text:文本内容;okFn:确认函数；cancelFn:取消Fn
+        //错误信息提示确认对话框，title:标题;text:文本内容;okFn:确认函数；cancelFn:取消Fn
         confirm: function (title, text, okFn, cancelFn) {
             (new PNotify({
                 title: title,
@@ -647,6 +647,50 @@ var leePopups = (function () {
                 icon: 'glyphicon glyphicon-question-sign',
                 hide: false,
                 type: 'error',
+                width: '460px',
+                styling: 'brighttheme',
+                confirm: {
+                    confirm: true,
+                    buttons: [
+                      {
+                          text: '确   定',
+                          addClass: 'btn-info',
+                          click: function (notice) {
+                              if (!_.isUndefined(okFn) && _.isFunction(okFn))
+                                  okFn();
+                              notice.remove();
+                          }
+                      },
+                      {
+                          text: '取   消',
+                          addClass: 'btn-default',
+                          click: function (notice) {
+                              if (!_.isUndefined(cancelFn) && _.isFunction(cancelFn))
+                                  cancelFn();
+                              notice.remove();
+                          }
+                      },
+                    ]
+                },
+                buttons: {
+                    closer: false,
+                    sticker: false
+                },
+                history: {
+                    history: false
+                },
+                addclass: 'stack-modal',
+                stack: { 'dir1': 'down', 'dir2': 'right', 'modal': true }
+            }));
+        },
+        //消息询问对话框，title:标题;text:文本内容;okFn:确认函数；cancelFn:取消Fn
+        inquire: function (title, text, okFn, cancelFn) {
+            (new PNotify({
+                title: title,
+                text: text,
+                icon: 'glyphicon glyphicon-question-sign',
+                hide: false,
+                type: 'info',
                 width: '460px',
                 styling: 'brighttheme',
                 confirm: {
@@ -719,6 +763,59 @@ var leeLoginUser = (function () {
         },
     };
     return user;
+})();
+//电子流程操作模块助手
+var leeWorkFlow = (function () {
+    var convertToParticipant = function (participant) {
+        if (participant.hasOwnProperty("userName") && participant.hasOwnProperty("departmentText")) {
+            return participant.userName + "(" + participant.departmentText + ")";
+        }
+        else if (participant.hasOwnProperty("Name") && participant.hasOwnProperty("Department")) {
+            return participant.Name + "(" + participant.Department + ")";
+        }
+        else {
+            return "";
+        }
+    };
+
+    return {
+        //参与者角色
+        participantRole: {
+            Approver: "Approver",//核准人
+            Confirmor: "Confirmor",//确认人
+            Applicant: "Applicant",//申请人
+        },
+        //转换成参与者的信息
+        toParticipant: convertToParticipant,
+        //将多个参与者信息连接成字符串形式
+        concatParticipant: function (participants) {
+            if (_.isArray(participants)) {
+                var persons = [];
+                _.forEach(participants, function (p) {
+                    var pstr = convertToParticipant(p);
+                    persons.push(pstr);
+                })
+                return persons.join('|');
+            }
+            return "";
+        },
+        //获取对应角色的参与者信息
+        getParticipantMappedRole(participants, role) {
+            var datas = _.where(participants, { Role: role });
+            if (datas.length > 0) {
+                return leeWorkFlow.concatParticipant(datas);
+            }
+            return "";
+        },
+        //将参与者添加到集合中
+        addParticipant(dataset, participant) {
+            var item = _.find(dataset, { WorkerId: participant.WorkerId, Role: participant.Role });
+            if (item === undefined) {
+                delete participant.IsChecked;
+                dataset.push(participant);
+            };
+        },
+    };
 })();
 ///zTree 助手
 var leeTreeHelper = (function () {

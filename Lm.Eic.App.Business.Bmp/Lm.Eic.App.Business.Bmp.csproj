@@ -143,6 +143,7 @@
     <Compile Include="Quality\RmaManage\RmaService.cs" />
     <Compile Include="WorkFlow\GeneralForm\GeneralFormCrudFactory.cs" />
     <Compile Include="WorkFlow\GeneralForm\GeneralFormService.cs" />
+    <Compile Include="WorkFlow\GeneralForm\InternalContactFormCrud.cs" />
     <Compile Include="WorkFlow\GeneralForm\InternalContactFormManager.cs" />
   </ItemGroup>
   <ItemGroup />

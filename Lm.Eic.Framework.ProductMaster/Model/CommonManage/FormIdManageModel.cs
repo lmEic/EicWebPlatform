@@ -3,17 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm
+namespace Lm.Eic.Framework.ProductMaster.Model.CommonManage
 {
     /// <summary>
-    ///内部联络单模型
+    ///表单编号管理模型
     /// </summary>
     [Serializable]
-    public partial class InternalContactFormModel
+    public partial class FormIdManageModel
     {
-        public InternalContactFormModel()
+        public FormIdManageModel()
         { }
         #region Model
+        private string _modulename;
+        /// <summary>
+        ///模块名称
+        /// </summary>
+        public string ModuleName
+        {
+            set { _modulename = value; }
+            get { return _modulename; }
+        }
         private string _formid;
         /// <summary>
         ///表单编号
@@ -23,50 +32,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm
             set { _formid = value; }
             get { return _formid; }
         }
-        private string _formsubject;
+        private string _yearmonth;
         /// <summary>
-        ///表单主题
+        ///年月分
         /// </summary>
-        public string FormSubject
+        public string YearMonth
         {
-            set { _formsubject = value; }
-            get { return _formsubject; }
-        }
-        private string _formcontent;
-        /// <summary>
-        ///表单内容
-        /// </summary>
-        public string FormContent
-        {
-            set { _formcontent = value; }
-            get { return _formcontent; }
-        }
-        private DateTime _applydate;
-        /// <summary>
-        ///申请日期
-        /// </summary>
-        public DateTime ApplyDate
-        {
-            set { _applydate = value; }
-            get { return _applydate; }
-        }
-        private DateTime _needdate;
-        /// <summary>
-        ///需求日期
-        /// </summary>
-        public DateTime NeedDate
-        {
-            set { _needdate = value; }
-            get { return _needdate; }
-        }
-        private string _participantinfo;
-        /// <summary>
-        ///参与者信息
-        /// </summary>
-        public string ParticipantInfo
-        {
-            set { _participantinfo = value; }
-            get { return _participantinfo; }
+            set { _yearmonth = value; }
+            get { return _yearmonth; }
         }
         private string _department;
         /// <summary>
@@ -77,14 +50,41 @@ namespace Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm
             set { _department = value; }
             get { return _department; }
         }
-        private string _yearmonth;
+        private DateTime _createdate;
         /// <summary>
-        ///年月分
+        ///创建日期
         /// </summary>
-        public string YearMonth
+        public DateTime CreateDate
         {
-            set { _yearmonth = value; }
-            get { return _yearmonth; }
+            set { _createdate = value; }
+            get { return _createdate; }
+        }
+        private string _formstatus;
+        /// <summary>
+        ///表单状态
+        /// </summary>
+        public string FormStatus
+        {
+            set { _formstatus = value; }
+            get { return _formstatus; }
+        }
+        private int _subid;
+        /// <summary>
+        ///子序列号
+        /// </summary>
+        public int SubId
+        {
+            set { _subid = value; }
+            get { return _subid; }
+        }
+        private string _primarykey;
+        /// <summary>
+        ///表查询主键
+        /// </summary>
+        public string PrimaryKey
+        {
+            set { _primarykey = value; }
+            get { return _primarykey; }
         }
         private DateTime _opdate;
         /// <summary>
