@@ -480,6 +480,11 @@ namespace EicWorkPlatfrom.Controllers
             DownLoadFileModel dlfm = InspectionService.DataGatherManager.IqcDataGather.GetIqcDatasDownLoadFileModel(SiteRootPath, orderId, materialId, inspectionItem);
             return this.DownLoadFile(dlfm);
         }
+        /// <summary>
+        /// IQC审核
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult PostInspectionFormManageCheckedOfIqcData(InspectionIqcMasterModel model)
         {
