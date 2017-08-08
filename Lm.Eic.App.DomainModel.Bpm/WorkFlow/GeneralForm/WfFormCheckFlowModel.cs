@@ -80,4 +80,27 @@ namespace Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm
         #endregion Model
     }
 
+    /// <summary>
+    /// 工作流参与者模型
+    /// </summary>
+    public class WfFormParticipantModel
+    {
+        /// <summary>
+        /// 参与的角色，例如Confirmor(确认人)，Approver(核准人)
+        /// </summary>
+        public string Role { get; set; }
+        /// <summary>
+        /// 工号
+        /// </summary>
+        public string WorkerId { get; set; }
+        public string Name { get; set; }
+        /// <summary>
+        /// 单位或者部门
+        /// </summary>
+        public string Department { get; set; }
+        /// <summary>
+        /// 邮箱，用来做消息发送使用
+        /// </summary>
+        public string Email { get; set; }
+    }
 }

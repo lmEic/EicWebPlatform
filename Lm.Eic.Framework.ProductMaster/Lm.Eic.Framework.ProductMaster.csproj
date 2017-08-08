@@ -52,6 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\Common\CommonManageCurdFactory.cs" />
+    <Compile Include="Business\Common\CommonService.cs" />
+    <Compile Include="Business\Common\FormIdCrud.cs" />
+    <Compile Include="Business\Common\FormIdManager.cs" />
     <Compile Include="Business\Config\DataDictionaryManager.cs" />
     <Compile Include="Business\Config\FilePathManager.cs" />
     <Compile Include="Business\Config\PmConfigService.cs" />
@@ -72,12 +76,14 @@
     <Compile Include="DbAccess\Mapping\LmProMasterDbContext.cs" />
     <Compile Include="DbAccess\Mapping\LmProMasterDbMapping.cs" />
     <Compile Include="DbAccess\Repository\CollaborateContactLibRepository.cs" />
+    <Compile Include="DbAccess\Repository\CommonManageRepository\IFormIdManageRepository.cs" />
     <Compile Include="DbAccess\Repository\ConfigDataDictionaryRepository.cs" />
     <Compile Include="DbAccess\Repository\EmailManageRepository\ItilEmailManageRepository.cs" />
     <Compile Include="DbAccess\Repository\ItilDevelopModuleManageRepository.cs" />
     <Compile Include="DbAccess\Repository\MesageNotifyRepository.cs" />
     <Compile Include="DbAccess\Repository\ReportImproveProblemRepository\ReportImproveProblemRepository.cs" />
     <Compile Include="DbAccess\Repository\WorkTaskRepository.cs" />
+    <Compile Include="Model\CommonManage\FormIdManageModel.cs" />
     <Compile Include="Model\Tools\ConfigDataDictionaryModel.cs" />
     <Compile Include="Model\ITIL\EmailManageModel\ItilEmailManageModel.cs" />
     <Compile Include="Model\ITIL\EmailManageModel\ItilEmailManageModelDto.cs" />
