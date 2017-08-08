@@ -384,79 +384,63 @@
                                                 <input name="materialSpec" type="text" class="form-control" ng-model="vm.MaterialSpec" />
                                             </td>
                                         </tr>
+
                                         <tr>
                                             <td colspan="2">
-                                                <label for="inPutHouseOrder" class="control-label">交货单/入库单号: </label>
+                                                <label for="accountabilityDepartment" class="control-label">交货单/入库单号:</label>
                                             </td>
                                             <td colspan="2">
-                                                <input name="inPutHouseOrder" type="text" class="form-control" ng-model="vm.OrderId" />
+                                                <input name="accountabilityDepartment" type="text" class="form-control" ng-model="vm.AccountabilityDepartment" />
                                             </td>
+
+
                                             <td>
-                                                <label for="materialCount" class="control-label">批 量:</label>
+                                                <label for="materialSpec" class="control-label">品名:</label>
                                             </td>
-                                            <td colspan="2">
-                                                <input name="materialCount" type="number" class="form-control" ng-model="vm.MaterialCount" />
-                                            </td>
-                                            <td>
-                                                <label for="inspectNumber" class="control-label">检验数</label>
-                                            </td>
-                                            <td>
-                                                <input name="inspectNumber" type="text" class="form-control" ng-model="vm.InspectNumber" />
+                                            <td colspan="4">
+                                                <input name="materialSpec" type="text" class="form-control" ng-model="vm.MaterialSpec" />
                                             </td>
 
                                             <td>
-                                                <label for="failQty" class="control-label">不良数:</label>
+                                                <label for="materialSpec" class="control-label">规格:</label>
                                             </td>
                                             <td colspan="2">
+                                                <input name="materialSpec" type="text" class="form-control" ng-model="vm.MaterialSpec" />
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="2">
+                                                <label for="inPutHouseOrder" class="control-label">不良类别: </label>
+                                            </td>
+                                            <td colspan="8">
+                                                <input name="inPutHouseOrder" type="text" class="form-control" ng-model="vm.OrderId" />
+                                            </td>
+                                            <td>
+                                                <label for="failQty" class="control-label ">不良率:</label>
+                                            </td>
+                                            <td>
                                                 <input name="failQty" type="text" class="form-control" ng-model="vm.FailQty" />
                                             </td>
 
                                         </tr>
-
                                         @*提报单位*@
                                         <tr>
-                                            <td rowspan="5">
+                                            <td rowspan="4">
                                                 <label>(一)异常说明</label>
                                             </td>
-                                            <td rowspan="4" colspan="10" style="height:inherit; text-overflow: ellipsis;">
+                                            <td rowspan="3" colspan="10" style="height:inherit; text-overflow: ellipsis;">
                                                 <textarea rows="3" name="badDescription" class="form-control" required />
                                             </td>
 
-                                            <td rowspan="5" style="vertical-align: middle !important;text-align: center;">
+                                            <td rowspan="4" style="vertical-align: middle !important;text-align: center;">
                                                 提报单位
                                             </td>
                                         </tr>
                                         <tr></tr>
                                         <tr></tr>
-                                        <tr></tr>
                                         <tr>
-                                            <td colspan="7"></td>
-                                            <td>
-                                                <label>提报人：</label>
-                                            </td>
-                                            <td>
-                                                <input type="text" />
-                                            </td>
-                                        </tr>
-
-                                        @*提报单位*@
-                                        <tr>
-                                            <td rowspan="5">
-                                                <label>(一)异常说明</label>
-                                            </td>
-                                            <td rowspan="4" colspan="10" style="height:inherit; text-overflow: ellipsis;">
-                                                <textarea rows="3" name="badDescription" class="form-control" required />
-                                            </td>
-
-                                            <td rowspan="5" style="vertical-align: middle !important;text-align: center;">
-                                                提报单位
-                                            </td>
-                                        </tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr>
-                                            <td colspan="7"></td>
+                                            <td colspan="8"></td>
                                             <td>
                                                 <label>提报人：</label>
                                             </td>
@@ -466,22 +450,21 @@
                                         </tr>
                                         @*责任 单 位*@
                                         <tr>
-                                            <td rowspan="5">
+                                            <td rowspan="4">
                                                 <label>(二)处理人员</label>
                                             </td>
-                                            <td rowspan="4" colspan="10" style="height:inherit; text-overflow: ellipsis;">
+                                            <td rowspan="3" colspan="10" style="height:inherit; text-overflow: ellipsis;">
                                                 <textarea rows="3" name="badDescription" class="form-control" required />
                                             </td>
 
-                                            <td rowspan="5" style="vertical-align: middle !important;text-align: center;">
+                                            <td rowspan="4" style="vertical-align: middle !important;text-align: center;">
                                                 责任单位
                                             </td>
                                         </tr>
                                         <tr></tr>
                                         <tr></tr>
-                                        <tr></tr>
                                         <tr>
-                                            <td colspan="7"></td>
+                                            <td colspan="8"></td>
                                             <td>
                                                 <label>提报人：</label>
                                             </td>
