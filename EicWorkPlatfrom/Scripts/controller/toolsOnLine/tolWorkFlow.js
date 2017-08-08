@@ -96,40 +96,40 @@ officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, 
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.save = function (isValid) {
-        leeDataHandler.dataOperate.add(operate, isValid, function () {
-            uiVM.ParticipantInfo = JSON.stringify(vmManager.participants);
-            uiVM.OpSign = leeDataHandler.dataOpMode.add;
-            uiVM.FormContent = ue.getContent();
-            leeHelper.setUserData(uiVM);
-            $scope.opPromise = wfDataOpService.createInternalForm(uiVM).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+        //leeDataHandler.dataOperate.add(operate, isValid, function () {
+        //    uiVM.ParticipantInfo = JSON.stringify(vmManager.participants);
+        //    uiVM.OpSign = leeDataHandler.dataOpMode.add;
+        //    uiVM.FormContent = ue.getContent();
+        //    leeHelper.setUserData(uiVM);
+        $scope.opPromise = wfDataOpService.createInternalForm(uiVM).then(function(opresult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
 
-                })
+            })
             });
-        })
+            //})
     };
     operate.refresh = function () { };
 
 
-    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
+    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function(datas) {
         departmentTreeSet.setTreeDataset(datas);
         var user = leeLoginUser;
-        participantInfo[leeWorkFlow.participantRole.Applicant] = leeWorkFlow.toParticipant(user);
-    });
+        participantInfo[leeWorkFlow.participantRole.Applicant]= leeWorkFlow.toParticipant(user);
+        });
 
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);
         var department = dto.DataNodeText;
-        vmManager.dataset = [];
-        $scope.searchPromise = wfDataOpService.getWorkerMails(department).then(function (datas) {
-            angular.forEach(datas, function (dataitem) {
+        vmManager.dataset =[];
+        $scope.searchPromise = wfDataOpService.getWorkerMails(department).then(function(datas) {
+            angular.forEach(datas, function(dataitem) {
                 var item = _.clone(participantVM);
                 leeHelper.copyVm(dataitem, item);
                 vmManager.dataset.push(item);
+                });
             });
-        });
-    };
+        };
     $scope.ztree = departmentTreeSet;
 
 
