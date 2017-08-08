@@ -97,7 +97,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             //如果存在 (Id_key 已经赋值） 
             if (IsExist(model.OrderId, model.OrderIdNumber, model.InspectionItem))
             {
-                if (model.Id_Key <= 0) return new OpResult("Id_key 没有赋值", false);
+                if (model.Id_Key == 0)
+                    model.Id_Key = irep.FirstOfDefault(e =>
+                    e.OrderId == model.OrderId
+                    && e.OrderIdNumber == model.OrderIdNumber
+                    && e.InspectionItem == model.InspectionItem).Id_Key;
                 return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
             }
             return irep.Insert(model).ToOpResult_Add(OpContext);

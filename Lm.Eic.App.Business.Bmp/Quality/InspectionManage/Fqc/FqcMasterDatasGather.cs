@@ -41,43 +41,26 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             var haveStoreMasterModel = InspectionManagerCrudFactory.FqcMasterCrud.GetStroeOldModel(masterModel.OrderId, masterModel.OrderIdNumber, masterModel.MaterialId);
             if (haveStoreMasterModel == null) return InspectionManagerCrudFactory.FqcMasterCrud.Store(masterModel);
-            //if (haveStoreMasterModel.InspectionStatus != "未完工") return OpResult.SetSuccessResult("已保存", true);
-            string inspecitonItem = masterModel.InspectionItems.Trim();
-            if (!haveStoreMasterModel.InspectionItems.Contains(inspecitonItem))
-                haveStoreMasterModel.InspectionItems = haveStoreMasterModel.InspectionItems + "," + inspecitonItem;
+            ///初始化数据
+            if (masterModel.OpPerson == "StartSetValue") return OpResult.SetSuccessResult("初始已经保存", true);
+
+            string inspecitonItem = masterModel.InspectionItems != null ? masterModel.InspectionItems.Trim() : string.Empty;
+            if (!haveStoreMasterModel.InspectionItems.Contains(inspecitonItem) && inspecitonItem != string.Empty)
+                masterModel.InspectionItems = haveStoreMasterModel.InspectionItems + "," + inspecitonItem;
             var detailDatas = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailDatasBy(masterModel.OrderId, masterModel.OrderIdNumber);
             if (detailDatas != null && detailDatas.Count > 0)
             {
-                if (detailDatas.Count() == GetHaveFinishDataNumber(haveStoreMasterModel.InspectionItems))
+                if (detailDatas.Count() == GetHaveFinishDataNumber(masterModel.InspectionItems))
                 {
-                    haveStoreMasterModel.InspectionStatus = "待审核";
-                    haveStoreMasterModel.InspectionResult = (detailDatas.Count(e => e.InspectionItemResult == "NG") > 0 ? "NG" : "OK");
+                    masterModel.InspectionStatus = "待审核";
+                    masterModel.InspectionResult = (detailDatas.Count(e => e.InspectionItemResult == "NG") > 0 ? "NG" : "OK");
                 }
-                else haveStoreMasterModel.InspectionStatus = "未完工";
+                else masterModel.InspectionStatus = "未完工";
             }
-            return InspectionManagerCrudFactory.FqcMasterCrud.UpdateMasterData(masterModel.OrderId, masterModel.OrderIdNumber,
-                haveStoreMasterModel.InspectionItems,
-                haveStoreMasterModel.InspectionStatus,
-                haveStoreMasterModel.InspectionResult
-                );
-
-            //    /// model 如果是新加的  model.OpPerson为StartSetValue
-            //    /// 先排除是否是新增的
-            //    if (haveStoreMasterModel != null && haveStoreMasterModel.Id_Key != 0 && haveStoreMasterModel.OpPerson != "StartSetValue")
-            //{
-            //    if (haveStoreMasterModel.InspectionItems.Contains(masterModel.InspectionItems))
-            //        masterModel.InspectionItems = haveStoreMasterModel.InspectionItems;
-            //    else masterModel.InspectionItems = haveStoreMasterModel.InspectionItems + "," + masterModel.InspectionItems;
-            //    if (masterModel.InspectionItemCount == this.GetHaveFinishDataNumber(masterModel.InspectionItems))
-            //    { masterModel.InspectionResult = "已完成"; }
-            //    masterModel.Id_Key = haveStoreMasterModel.Id_Key;
-            //    masterModel.OpSign = OpMode.Edit;
-            //    return InspectionManagerCrudFactory.FqcMasterCrud.Store(masterModel);
-            //}
             /// 如果 是新增 只添加一次 
-            //masterModel.Id_Key = haveStoreMasterModel.Id_Key;
-            //masterModel.OpSign = OpMode.Edit;
-            //return InspectionManagerCrudFactory.FqcMasterCrud.Store(masterModel);
+            masterModel.Id_Key = haveStoreMasterModel.Id_Key;
+            masterModel.OpSign = OpMode.Edit;
+            return InspectionManagerCrudFactory.FqcMasterCrud.Store(masterModel);
 
         }
         /// <summary>

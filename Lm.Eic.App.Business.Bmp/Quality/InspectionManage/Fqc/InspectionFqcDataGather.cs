@@ -51,8 +51,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
         #endregion
-
-
         #region LoadClass 
         public FqcDetailDatasGather DetailDatasGather
         {
@@ -422,34 +420,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 masterModel = new InspectionFqcMasterModel();
                 OOMaper.Mapper<InspectionItemDataSummaryVM, InspectionFqcMasterModel>(sumModel, masterModel);
                 masterModel.InspectionItemCount = sumModel.InspectionItemSumCount;
+                masterModel.InspectionItems = sumModel.InspectionItem;
                 masterModel.FinishDate = DateTime.Now.Date;
                 masterModel.InspectionStatus = "未完工";
                 masterModel.InspectionResult = "未完工";
                 masterModel.InspectionCount = sumModel.MaterialCount;
-                //masterModel = new InspectionFqcMasterModel()
-                //{
-                //    OrderId = sumModel.OrderId,
-                //    OrderIdNumber = sumModel.OrderIdNumber,
-                //    MaterialId = sumModel.MaterialId,
-                //    MaterialName = sumModel.MaterialName,
-                //    MaterialSpec = sumModel.MaterialSpec,
-                //    MaterialDrawId = sumModel.MaterialDrawId,
-                //    MaterialSupplier = sumModel.MaterialSupplier,
-                //    InspectionItemCount = sumModel.InspectionItemSumCount,
-                //    ///订单数量
-                //    MaterialCount = sumModel.MaterialInCount,
-                //    MaterialInDate = sumModel.MaterialInDate,
-                //    InspectionMode = sumModel.InspectionMode,
-                //    InspectionItems = sumModel.InspectionItem,
-                //    FinishDate = DateTime.Now.Date,
-                //    InspectionStatus = "待审核",
-                //    InspectionResult = "未完工",
-                //    ///检验批次数量
-                //    InspectionCount = sumModel.MaterialCount,
-                //    Department = sumModel.Department,
-                //    OpPerson = sumModel.OpPerson,
-                //    OpSign = sumModel.OpSign
-                //};
                 detailModel = new InspectionFqcDetailModel();
                 OOMaper.Mapper<InspectionItemDataSummaryVM, InspectionFqcDetailModel>(sumModel, detailModel);
                 detailModel.OrderIdCount = sumModel.MaterialInCount;
@@ -457,40 +432,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 detailModel.InspectionRefuseCount = sumModel.RefuseCount;
                 detailModel.InspectionDate = DateTime.Now.ToDate();
                 detailModel.NeedPutInDataCount = (int)sumModel.NeedFinishDataNumber;
-                //detailModel = new InspectionFqcDetailModel()
-                //{
-                //    OrderId = sumModel.OrderId,
-                //    OrderIdNumber = sumModel.OrderIdNumber,
-                //    EquipmentId = sumModel.EquipmentId,
-                //    OrderIdCount = sumModel.MaterialInCount,
-                //    InspectionMethod = sumModel.InspectionMethod,
-                //    ///物料批次数量
-                //    MaterialCount = sumModel.MaterialCount,
-                //    InspectionItem = sumModel.InspectionItem,
-                //    InspectionAcceptCount = sumModel.AcceptCount,
-                //    InspectionCount = sumModel.InspectionCount,
-                //    InspectionRefuseCount = sumModel.RefuseCount,
-                //    InspectionDate = DateTime.Now.ToDate(),
-                //    InspectionItemDatas = sumModel.InspectionItemDatas,
-                //    InspectionItemResult = sumModel.InspectionItemResult,
-                //    InspectionItemStatus = sumModel.InspectionItemStatus,
-                //    MaterialId = sumModel.MaterialId,
-                //    MaterialInDate = sumModel.MaterialInDate,
-                //    InspectionMode = sumModel.InspectionMode,
-                //    NeedPutInDataCount = (int)sumModel.NeedFinishDataNumber,
-                //    Memo = sumModel.Memo,
-                //    ClassType = sumModel.ClassType,
-                //    Department = sumModel.Department,
-                //    DocumentPath = sumModel.DocumentPath,
-                //    FileName = sumModel.FileName,
-                //    InspectionDataTimeRegion = sumModel.InspectionDataTimeRegion,
-                //    InStorageOrderId = sumModel.InStorageOrderId,
-                //    InspectionNGCount = sumModel.InspectionNGCount,
-                //    OpSign = sumModel.OpSign,
-                //    Id_Key = sumModel.Id_Key,
-                //    OpPerson = sumModel.OpPerson
-                //};
-
             }
             catch (Exception ex)
             {
