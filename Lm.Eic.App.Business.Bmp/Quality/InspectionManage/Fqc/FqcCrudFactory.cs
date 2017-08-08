@@ -259,10 +259,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
         }
 
+        internal OpResult UpdateMasterData(string orderId, int orderIdNumber,
+            string updateInspectionItems,
+            string updateInspectionStatus,
+            string updateInspectionResult)
+        {
+            return irep.Update(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber, n => new InspectionFqcMasterModel
+            {
+                InspectionItems = updateInspectionItems,
+                InspectionStatus = updateInspectionStatus,
+                InspectionResult = updateInspectionResult
+            }).ToOpResult_Eidt(OpContext);
+        }
+
         internal OpResult UpAuditDetailData(string orderId, int orderIdNumber, string Updatestring)
         {
             return irep.UpAuditDetailData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);
         }
+
     }
     /// <summary>
     /// ORT物料配置

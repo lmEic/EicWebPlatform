@@ -47,17 +47,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
-                if (model == null) return null;
+                if (model == null) return OpResult.SetErrorResult("FQC主表不能为空"); ;
+                //先改变主表的状态
                 var retrunResult = InspectionManagerCrudFactory.FqcMasterCrud.Store(model, true);
-                if (retrunResult.Result)
-                    ///主要更新成功 再   更新详细表的信息
-                    retrunResult = InspectionManagerCrudFactory.FqcMasterCrud.UpAuditDetailData(model.OrderId, model.OrderIdNumber, "Done");
+                if (!retrunResult.Result) return OpResult.SetErrorResult("FQC主表审核状态更新失败");
+                //主要更新成功 再   更新详细表的信息
+                retrunResult = InspectionManagerCrudFactory.FqcMasterCrud.UpAuditDetailData(model.OrderId, model.OrderIdNumber, "Done");
+                if (!retrunResult.Result) return OpResult.SetErrorResult("FQC详细表审核状态更新失败");
                 return retrunResult;
             }
             catch (Exception ex)
             {
-                return new OpResult(ex.InnerException.Message);
-                throw new Exception(ex.InnerException.Message);
+                return OpResult.SetErrorResult(ex.Message);
+                throw new Exception(ex.Message);
             }
 
         }

@@ -515,10 +515,14 @@ namespace EicWorkPlatfrom.Controllers
 
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 审核
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult PostInspectionFormManageCheckedOfFqcData(InspectionFqcMasterModel model)
         {
-
             var opResult = InspectionService.InspectionFormManager.FqcFromManager.AuditFqcInspectionMasterModel(model);
             return Json(opResult);
         }
