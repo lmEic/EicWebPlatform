@@ -129,8 +129,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
 
 
         /// <summary>
-
-        /// <summary>
         /// 全部提交
         /// </summary>
         /// <returns></returns>
