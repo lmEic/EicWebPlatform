@@ -55,6 +55,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
         InspectNumber: 0,
         FailQty: 0,
         FailClass: null,
+        FailRatio: 0.0,
         CreateReportDate: new Date(),
         Status: null,
         OpPerson: null,
@@ -133,6 +134,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);
+        console.log(dto);
         var getString = dto.DataNodeText;
         if (vmManager.AccountabilityDepartment != null || vmManager.AccountabilityDepartment != "")
         { vmManager.AccountabilityDepartment += "," + getString; }
