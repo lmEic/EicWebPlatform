@@ -307,8 +307,8 @@
                             <h1>光圣科技(宁波)有限公司</h1>
                             <h1> <small>产品不合格处理单(单头)</small> </h1>
                         </div>
-                        <div class="row clearfix">
-                            <div class="col-md-12 well" name="form8DCreateData">
+                        <div class="col-md-12 well">
+                            <form role="form" name="form8DCreateData" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
 
                                 <div class="form-group">
                                     <label class="text-right col-md-2" for="createReportDate">日期:</label>
@@ -332,7 +332,6 @@
                                             </span>
                                         </div>
                                     </div>
-
                                 </div>
 
                                 <div class="form-group">
@@ -349,16 +348,15 @@
                                     </div>
 
                                 </div>
-                                <div class="form-group">
-                                    <label for="materialSpec" class="text-right  col-md-2">品名:</label>
-                                    <div class="col-md-4">
 
-                                        <input name="materialSpec" type="text" class="form-control" ng-model="vm.MaterialSpec" />
+                                <div class="form-group">
+                                    <label for="materialName" class="text-right  col-md-2">品名:</label>
+                                    <div class="col-md-4">
+                                        <input name="materialName" type="text" class="form-control" ng-model="vm.MaterialName" />
                                     </div>
                                     <label for="materialSpec" class="text-right  col-md-2">规格:</label>
                                     <div class="col-md-4">
-
-                                        <input name="materialSpec" type="text" class="form-control" ng-model="vm.MaterialSpec" />
+                                        <input name="materialSpec" type="text" class="form-control col-md-4" ng-model="vm.MaterialSpec" />
                                     </div>
                                 </div>
 
@@ -369,15 +367,28 @@
                                     </div>
                                     <label for="materialCount" class="text-right  col-md-2">批量:</label>
                                     <div class="col-md-4">
-                                        <input name="materialCount" type="text" class="form-control" ng-model="vm. MaterialCount" />
+                                        <div class="input-group">
+                                            <input name="materialCount" type="text" class="form-control" ng-model="vm.MaterialCount" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-model="vm.MaterialCountUnit"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="单位"
+                                                        data-bs-options="item.id as item.text for item in vmManager.unitDatas" data-bs-select></button>
+                                            </span>
+                                        </div>
                                     </div>
-
                                 </div>
 
                                 <div class="form-group">
                                     <label for="inspectNumber" class="text-right  col-md-2">检验数:</label>
                                     <div class="col-md-4">
-                                        <input name="inspectNumber" type="text" class="form-control" ng-model="vm.InspectNumber" />
+                                        <div class="input-group">
+                                            <input name="inspectNumber" type="text" class="form-control" ng-model="vm.InspectCount" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-model="vm.InspectCountUnit"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="单位"
+                                                        data-bs-options="item.id as item.text for item in vmManager.unitDatas" data-bs-select></button>
+                                            </span>
+                                        </div>
                                     </div>
                                     <label for="inPutHouseOrder" class="text-right  col-md-2">不良类别: </label>
                                     <div class="col-md-4">
@@ -385,17 +396,25 @@
                                             <input name="FailClass" type="text" class="form-control" ng-model="vm.FailClass" />
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-primary" ng-model="vm.FailClass"
-                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="内部制造"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="不良类别"
                                                         data-bs-options="item.id as item.text for item in vmManager.failClassDatas" data-bs-select></button>
                                             </span>
                                         </div>
                                     </div>
 
                                 </div>
+
                                 <div class="form-group">
                                     <label for="failQty" class="text-right  col-md-2">不良数:</label>
                                     <div class="col-md-4">
-                                        <input name="failQty" type="text" class="form-control" ng-model="vm.FailQty" />
+                                        <div class="input-group">
+                                            <input name="failQty" type="text" class="form-control" ng-model="vm.FailQty" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-model="vm.FailQtyUnit"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="单位"
+                                                        data-bs-options="item.id as item.text for item in vmManager.unitDatas" data-bs-select></button>
+                                            </span>
+                                        </div>
                                     </div>
                                     <label for="failQty" class="text-right  col-md-2">不良率:</label>
                                     <div class="col-md-4">
@@ -405,9 +424,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+
+                            </form>
                         </div>
-                        <div class="modal-footer">
+                        <div class="col-md-12 modal-footer">
                             @*保存 取消 *@
                             <div class="alert alert-info">
                                 <div class="row">

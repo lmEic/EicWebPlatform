@@ -8,6 +8,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     ///8D记录处理主表
     /// </summary>
+ 
+    /// <summary>
+    ///8D记录处理主表
+    /// </summary>
     [Serializable]
     public partial class Qua8DReportMasterModel
     {
@@ -68,15 +72,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _materialspec = value; }
             get { return _materialspec; }
         }
-        private string _inputhouseorder;
-        /// <summary>
-        ///入库单号
-        /// </summary>
-        public string InPutHouseOrder
-        {
-            set { _inputhouseorder = value; }
-            get { return _inputhouseorder; }
-        }
         private double _materialcount;
         /// <summary>
         ///数量
@@ -86,14 +81,32 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _materialcount = value; }
             get { return _materialcount; }
         }
-        private int _inspectnumber;
+        private string _materialCountunit;
+        /// <summary>
+        ///物料数量单位
+        /// </summary>
+        public string MaterialCountUnit
+        {
+            set { _materialCountunit = value; }
+            get { return _materialCountunit; }
+        }
+        private int _inspectcount;
         /// <summary>
         ///抽验数量
         /// </summary>
-        public int InspectNumber
+        public int InspectCount
         {
-            set { _inspectnumber = value; }
-            get { return _inspectnumber; }
+            set { _inspectcount = value; }
+            get { return _inspectcount; }
+        }
+        private string _inspectcountuint;
+        /// <summary>
+        ///抽样数量单位
+        /// </summary>
+        public string InspectCountUint
+        {
+            set { _inspectcountuint = value; }
+            get { return _inspectcountuint; }
         }
         private int _failqty;
         /// <summary>
@@ -103,6 +116,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _failqty = value; }
             get { return _failqty; }
+        }
+        private string _failqtyunit;
+        /// <summary>
+        ///不良数量单位
+        /// </summary>
+        public string FailQtyUnit
+        {
+            set { _failqtyunit = value; }
+            get { return _failqtyunit; }
         }
         private string _failclass;
         /// <summary>
