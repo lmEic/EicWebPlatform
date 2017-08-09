@@ -13,7 +13,9 @@ using System.Text;
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     #region  FQC检验配置管理 Crud
-
+    /// <summary>
+    /// FQC 应用工厂
+    /// </summary>
     internal class InspectionFqcItemConfigCrud : CrudBase<InspectionFqcItemConfigModel, IFqcInspectionItemConfigRepository>
     {
         public InspectionFqcItemConfigCrud() : base(new FqcInspectionItemConfigRepository(), "Fqc料物配置")
@@ -74,7 +76,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
     }
 
-
+    /// <summary>
+    /// FQC详细表
+    /// </summary>
     internal class InspectionFqcDatailCrud : CrudBase<InspectionFqcDetailModel, IFqcInspectionDatailRepository>
     {
         public InspectionFqcDatailCrud() : base(new FqcInspectionDatailRepository(), "FQC详细表单")
@@ -93,7 +97,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             //如果存在 (Id_key 已经赋值） 
             if (IsExist(model.OrderId, model.OrderIdNumber, model.InspectionItem))
             {
-                if (model.Id_Key <= 0) return new OpResult("Id_key 没有赋值", false);
+                if (model.Id_Key == 0)
+                    model.Id_Key = irep.FirstOfDefault(e =>
+                    e.OrderId == model.OrderId
+                    && e.OrderIdNumber == model.OrderIdNumber
+                    && e.InspectionItem == model.InspectionItem).Id_Key;
                 return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
             }
             return irep.Insert(model).ToOpResult_Add(OpContext);
@@ -165,7 +173,19 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
+        public List<InspectionFqcDetailModel> GetFqcDetailDatasBy(string orderId, int orderIdNumber)
+        {
+            try
+            {
+                return irep.Entities.Where(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber).ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw new Exception(ex.InnerException.Message);
+            }
 
+        }
         public InspectionFqcDetailModel GetFqcDetailModelBy(decimal id_key)
         {
             try
@@ -181,9 +201,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
         #endregion
     }
-
-
-
+    /// <summary>
+    /// FQC主表
+    /// </summary>
     internal class InspectionFqcMasterCrud : CrudBase<InspectionFqcMasterModel, IFqcInspectionMasterRepository>
     {
         public InspectionFqcMasterCrud() : base(new FqcInspectionMasterRepository(), "FQC总表信息")
@@ -212,17 +232,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.IsExist(e => e.OrderId == newModel.OrderId && e.OrderIdNumber == newModel.OrderIdNumber && e.MaterialId == newModel.MaterialId);
         }
 
-        internal InspectionFqcMasterModel GetStroeOldModel(InspectionFqcMasterModel newModel)
+        internal InspectionFqcMasterModel GetStroeOldModel(string orderId, int orderIdNumber, string materialId)
         {
             try
             {
-                if (!IsExsitStoreModel(newModel)) return null;
-                return irep.Entities.FirstOrDefault(e => e.OrderId == newModel.OrderId && e.OrderIdNumber == newModel.OrderIdNumber && e.MaterialId == newModel.MaterialId);
+                if (!irep.IsExist(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.MaterialId == materialId)) return null;
+                return irep.Entities.FirstOrDefault(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber && e.MaterialId == materialId);
             }
             catch (Exception ex)
             {
                 return null;
-                throw new Exception(ex.InnerException.Message);
+                throw new Exception(ex.Message);
             }
         }
         private OpResult AddFqcInspectionMaster(InspectionFqcMasterModel model)
@@ -243,9 +263,51 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
         }
 
+        internal OpResult UpdateMasterData(string orderId, int orderIdNumber,
+            string updateInspectionItems,
+            string updateInspectionStatus,
+            string updateInspectionResult)
+        {
+            return irep.Update(e => e.OrderId == orderId && e.OrderIdNumber == orderIdNumber, n => new InspectionFqcMasterModel
+            {
+                InspectionItems = updateInspectionItems,
+                InspectionStatus = updateInspectionStatus,
+                InspectionResult = updateInspectionResult
+            }).ToOpResult_Eidt(OpContext);
+        }
+
         internal OpResult UpAuditDetailData(string orderId, int orderIdNumber, string Updatestring)
         {
             return irep.UpAuditDetailData(orderId, orderIdNumber, Updatestring).ToOpResult_Eidt(OpContext);
+        }
+
+    }
+    /// <summary>
+    /// ORT物料配置
+    /// </summary>
+    internal class OrtMaterialConfigCrud : CrudBase<MaterialOrtConfigModel, IOrtMaterailConfigRepository>
+    {
+        public OrtMaterialConfigCrud() : base(new OrtMaterailConfigRepository(), "ORT配置") { }
+
+        protected override void AddCrudOpItems()
+        {
+            throw new NotImplementedException();
+        }
+        internal MaterialOrtConfigModel FindOrtMaterialDatasBy(string masterialId)
+        {
+            return irep.Entities.FirstOrDefault(e => e.MaterialId == masterialId);
+        }
+        internal OpResult ChangeMaterialIsValid(string masterialId, string isValid)
+        {
+            return irep.Update(e => e.MaterialId == masterialId, u => new MaterialOrtConfigModel { IsValid = isValid }).ToOpResult_Eidt(OpContext);
+        }
+        internal OpResult StoreMaterialOrtConfigModel(MaterialOrtConfigModel data)
+        {
+            if (irep.IsExist(e => e.MaterialId == data.MaterialId))
+            {
+                return irep.Update(e => e.Id_Key == data.Id_Key, data).ToOpResult_Eidt(OpContext);
+            }
+            return irep.Insert(data).ToOpResult_Add(OpContext);
         }
     }
     #endregion

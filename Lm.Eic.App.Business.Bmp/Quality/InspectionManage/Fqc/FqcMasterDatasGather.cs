@@ -35,31 +35,32 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <summary>
         /// 存储主表信息
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="masterModel"></param>
         /// <returns></returns>
-        public OpResult storeInspectionMasterial(InspectionFqcMasterModel model)
+        public OpResult storeInspectionMasterial(InspectionFqcMasterModel masterModel)
         {
+            var haveStoreMasterModel = InspectionManagerCrudFactory.FqcMasterCrud.GetStroeOldModel(masterModel.OrderId, masterModel.OrderIdNumber, masterModel.MaterialId);
+            if (haveStoreMasterModel == null) return InspectionManagerCrudFactory.FqcMasterCrud.Store(masterModel);
+            ///初始化数据
+            if (masterModel.OpPerson == "StartSetValue") return OpResult.SetSuccessResult("初始已经保存", true);
 
-            var oldModel = InspectionManagerCrudFactory.FqcMasterCrud.GetStroeOldModel(model);
-            /// model 如果是新加的  model.OpPerson为StartSetValue
-            /// 先排除是否是新增的
-            if (oldModel != null && oldModel.Id_Key != 0 && model.OpPerson != "StartSetValue")
+            string inspecitonItem = masterModel.InspectionItems != null ? masterModel.InspectionItems.Trim() : string.Empty;
+            if (!haveStoreMasterModel.InspectionItems.Contains(inspecitonItem) && inspecitonItem != string.Empty)
+                masterModel.InspectionItems = haveStoreMasterModel.InspectionItems + "," + inspecitonItem;
+            var detailDatas = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailDatasBy(masterModel.OrderId, masterModel.OrderIdNumber);
+            if (detailDatas != null && detailDatas.Count > 0)
             {
-                if (oldModel.InspectionItems.Contains(model.InspectionItems))
-                    model.InspectionItems = oldModel.InspectionItems;
-                else model.InspectionItems = oldModel.InspectionItems + "," + model.InspectionItems;
-                if (model.InspectionItemCount == this.GetHaveFinishDataNumber(model.InspectionItems))
-                { model.InspectionResult = "已完成"; }
-                model.Id_Key = oldModel.Id_Key;
-                model.OpSign = OpMode.Edit;
-                return InspectionManagerCrudFactory.FqcMasterCrud.Store(model);
+                if (detailDatas.Count() == GetHaveFinishDataNumber(masterModel.InspectionItems))
+                {
+                    masterModel.InspectionStatus = "待审核";
+                    masterModel.InspectionResult = (detailDatas.Count(e => e.InspectionItemResult == "NG") > 0 ? "NG" : "OK");
+                }
+                else masterModel.InspectionStatus = "未完工";
             }
             /// 如果 是新增 只添加一次 
-            if (oldModel == null && model.OpPerson == "StartSetValue")
-                return InspectionManagerCrudFactory.FqcMasterCrud.Store(model);
-            return new OpResult("不必添加了");
-
-
+            masterModel.Id_Key = haveStoreMasterModel.Id_Key;
+            masterModel.OpSign = OpMode.Edit;
+            return InspectionManagerCrudFactory.FqcMasterCrud.Store(masterModel);
 
         }
         /// <summary>

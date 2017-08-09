@@ -51,8 +51,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         }
 
         #endregion
-
-
         #region LoadClass 
         public FqcDetailDatasGather DetailDatasGather
         {
@@ -63,6 +61,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             get { return OBulider.BuildInstance<FqcMasterDatasGather>(); }
         }
+
         #endregion
 
 
@@ -143,7 +142,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             catch (Exception ex)
             {
                 return new List<InspectionItemDataSummaryVM>();
-                throw new Exception(ex.InnerException.Message);
+                throw new Exception(ex.Message);
             }
 
         }
@@ -200,6 +199,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return returnOpResult;
         }
         #endregion
+
+
+
+
 
         #region  对内处理 Private
 
@@ -268,13 +271,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         NeedFinishDataNumber = 0,
                         HaveFinishDataNumber = 0,
                         OpSign = OpMode.Add,
-                        InspectionItemResult = string.Empty
+                        InspectionItemResult = "未完工"
                     };
                     ///如果没有得到抽检验方案 侧为空
                     if (inspectionModeConfigModelData != null)
                     {
                         model.InspectionMode = inspectionModeConfigModelData.InspectionMode;
-
                         model.InspectionLevel = inspectionModeConfigModelData.InspectionLevel;
                         model.InspectionAQL = inspectionModeConfigModelData.InspectionAQL;
                         model.InspectionCount = inspectionModeConfigModelData.InspectionCount;
@@ -414,68 +416,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             try
             {
                 if (sumModel == null)
-                {
-                    masterModel = null;
-                    detailModel = null;
-                }
-                masterModel = new InspectionFqcMasterModel()
-                {
-                    OrderId = sumModel.OrderId,
-                    OrderIdNumber = sumModel.OrderIdNumber,
-                    MaterialId = sumModel.MaterialId,
-                    MaterialName = sumModel.MaterialName,
-                    MaterialSpec = sumModel.MaterialSpec,
-                    MaterialDrawId = sumModel.MaterialDrawId,
-                    MaterialSupplier = sumModel.MaterialSupplier,
-                    InspectionItemCount = sumModel.InspectionItemSumCount,
-                    ///订单数量
-                    MaterialCount = sumModel.MaterialInCount,
-                    MaterialInDate = sumModel.MaterialInDate,
-                    InspectionMode = sumModel.InspectionMode,
-                    InspectionItems = sumModel.InspectionItem,
-                    FinishDate = DateTime.Now.Date,
-                    InspectionStatus = "待审核",
-                    InspectionResult = "未完工",
-                    ///检验批次数量
-                    InspectionCount = sumModel.MaterialCount,
-                    Department = sumModel.Department,
-                    OpPerson = sumModel.OpPerson,
-                    OpSign = sumModel.OpSign
-                };
-                detailModel = new InspectionFqcDetailModel()
-                {
-                    OrderId = sumModel.OrderId,
-                    OrderIdNumber = sumModel.OrderIdNumber,
-                    EquipmentId = sumModel.EquipmentId,
-                    OrderIdCount = sumModel.MaterialInCount,
-                    InspectionMethod = sumModel.InspectionMethod,
-                    ///物料批次数量
-                    MaterialCount = sumModel.MaterialCount,
-                    InspectionItem = sumModel.InspectionItem,
-                    InspectionAcceptCount = sumModel.AcceptCount,
-                    InspectionCount = sumModel.InspectionCount,
-                    InspectionRefuseCount = sumModel.RefuseCount,
-                    InspectionDate = DateTime.Now.ToDate(),
-                    InspectionItemDatas = sumModel.InspectionItemDatas,
-                    InspectionItemResult = sumModel.InspectionItemResult,
-                    InspectionItemStatus = sumModel.InspectionItemStatus,
-                    MaterialId = sumModel.MaterialId,
-                    MaterialInDate = sumModel.MaterialInDate,
-                    InspectionMode = sumModel.InspectionMode,
-                    NeedPutInDataCount = (int)sumModel.NeedFinishDataNumber,
-                    Memo = sumModel.Memo,
-                    ClassType = sumModel.ClassType,
-                    Department = sumModel.Department,
-                    DocumentPath = sumModel.DocumentPath,
-                    FileName = sumModel.FileName,
-                    InspectionDataTimeRegion = sumModel.InspectionDataTimeRegion,
-                    InStorageOrderId = sumModel.InStorageOrderId,
-                    InspectionNGCount = sumModel.InspectionNGCount,
-                    OpSign = sumModel.OpSign,
-                    Id_Key = sumModel.Id_Key,
-                    OpPerson = sumModel.OpPerson
-                };
-
+                { masterModel = null; detailModel = null; }
+                masterModel = new InspectionFqcMasterModel();
+                OOMaper.Mapper<InspectionItemDataSummaryVM, InspectionFqcMasterModel>(sumModel, masterModel);
+                masterModel.InspectionItemCount = sumModel.InspectionItemSumCount;
+                masterModel.InspectionItems = sumModel.InspectionItem;
+                masterModel.FinishDate = DateTime.Now.Date;
+                masterModel.InspectionStatus = "未完工";
+                masterModel.InspectionResult = "未完工";
+                masterModel.InspectionCount = sumModel.MaterialCount;
+                detailModel = new InspectionFqcDetailModel();
+                OOMaper.Mapper<InspectionItemDataSummaryVM, InspectionFqcDetailModel>(sumModel, detailModel);
+                detailModel.OrderIdCount = sumModel.MaterialInCount;
+                detailModel.InspectionAcceptCount = sumModel.AcceptCount;
+                detailModel.InspectionRefuseCount = sumModel.RefuseCount;
+                detailModel.InspectionDate = DateTime.Now.ToDate();
+                detailModel.NeedPutInDataCount = (int)sumModel.NeedFinishDataNumber;
             }
             catch (Exception ex)
             {
@@ -484,7 +440,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
         }
-
 
         /// <summary>
         /// 判断是否按提正常还

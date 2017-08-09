@@ -6,6 +6,8 @@ using Lm.Eic.Uti.Common.YleeDbHandler;
 using Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm;
 using Lm.Eic.App.DbAccess.Bpm.Repository.WorkFlow.GeneralForm;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
+using Lm.Eic.Uti.Common.YleeExtension.Conversion;
+using Lm.Eic.Framework.ProductMaster.Business.Common;
 
 namespace Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm
 {
@@ -29,20 +31,7 @@ namespace Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm
             get { return OBulider.BuildInstance<FormCheckFlowTableCrud>(); }
         }
     }
-    /// <summary>
-    /// 内部联络单数据操作Crud
-    /// </summary>
-    public class InternalContactFormCrud : CrudBase<InternalContactFormModel, IInternalContactFormRepository>
-    {
-        public InternalContactFormCrud() : base(new InternalContactFormRepository(), "内部联络单")
-        {
-        }
 
-        protected override void AddCrudOpItems()
-        {
-            throw new NotImplementedException();
-        }
-    }
     /// <summary>
     /// 表单签核流程数据操作助手
     /// </summary>

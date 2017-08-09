@@ -7,11 +7,8 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
-
-
     public class FqcDetailDatasGather
     {
-
         /// <summary>
         ///  存储副表信息
         /// </summary>
@@ -23,7 +20,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 return InspectionManagerCrudFactory.FqcDetailCrud.UploadFileFqcInspectionDetail(model, siteRootPath);
             return InspectionManagerCrudFactory.FqcDetailCrud.Store(model);
         }
-
         /// <summary>
         /// 得到副表的详细记录
         /// </summary>

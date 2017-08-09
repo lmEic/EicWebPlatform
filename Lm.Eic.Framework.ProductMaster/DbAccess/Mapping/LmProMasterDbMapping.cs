@@ -1,5 +1,5 @@
 ﻿using Lm.Eic.Framework.ProductMaster.Model;
-
+using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
 using Lm.Eic.Framework.ProductMaster.Model.MessageNotify;
 using Lm.Eic.Framework.ProductMaster.Model.Tools;
@@ -123,6 +123,20 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.ToTable("Tool_ReportImproveProblem");
+        }
+    }
+
+
+    /// <summary>
+    ///FormIdManageModel
+    /// </summary>
+    public class FormIdManageModelMapping : EntityTypeConfiguration<FormIdManageModel>
+    {
+        public FormIdManageModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Common_FormIdManager");
         }
     }
 }

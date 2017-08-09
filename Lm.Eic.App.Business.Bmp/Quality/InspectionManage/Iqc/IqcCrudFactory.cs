@@ -58,8 +58,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-
-
         /// <summary>
         /// 在数据库中是否存在此料号
         /// </summary>
@@ -146,8 +144,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal OpResult UpAuditDetailData(string orderId, string materialId, string inspectionStatus)
         {
-            return irep.UpAuditDetailData(orderId, materialId, inspectionStatus).ToOpResult_Eidt(OpContext);
+            // return irep.UpAuditDetailData(orderId, materialId, inspectionStatus).ToOpResult_Eidt(OpContext);
+            return irep.Update(e => e.OrderId == orderId && e.MaterialId == materialId, u => new InspectionIqcMasterModel { InspectionStatus = inspectionStatus }).ToOpResult_Eidt(OpContext);
         }
+
         private OpResult AddIqcInspectionMaster(InspectionIqcMasterModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);

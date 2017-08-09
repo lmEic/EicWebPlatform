@@ -95,11 +95,11 @@
                 <div class="panel-group" ng-model="panels.activePanel" role="tablist" cg-busy="{promise:searchPromise}" aria-multiselectable="true" bs-collapse>
                     <div class="panel panel-default" ng-repeat="item in vmManager.panelDataSource" ng-show="vmManager.panelDataSource.length>0">
                         <div class="panel-heading" role="tab" ng-click="vmManager.selectOrderSubIdItem(item)">
-                            <a bs-collapse-toggle style="cursor:pointer;color:#000">
+                            <a bs-collapse-toggle style="cursor:pointer;color:#000" title="{{item.productId}}">
                                 {{item.orderId}}-{{item.orderIdNumber}}
                                 <span class="pull-right">
-                                    <i ng-show="item.inspectionStatus==='done'" class="badge-success fa fa-check"></i>
-                                    <i ng-hide="item.inspectionStatus==='done'" class="badge-fail fa fa-close"></i>
+                                    <i ng-show="item.inspectionStatus==='未完工'" title="结果判定标志" class="badge-fail fa fa-close"></i>
+                                    <i ng-show="item.inspectionStatus==='待审核'" title="结果判定标志" class="badge-success fa fa-check"></i>
                                 </span>
                             </a>
                         </div>

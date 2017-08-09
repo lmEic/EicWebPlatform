@@ -5,9 +5,11 @@ using System.Text;
 
 namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 {
+    #region  共公配置
     /// <summary>
     /// 检验方式配置文件
     /// </summary>
+    [Serializable]
     public class InspectionModeConfigModel
     {
         public InspectionModeConfigModel()
@@ -135,6 +137,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     ///  检验方式转换配置文件
     /// </summary>
+    [Serializable]
     public class InspectionModeSwitchConfigModel
     {
         public InspectionModeSwitchConfigModel()
@@ -251,10 +254,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         #endregion Model
 
     }
-    /// <summary>
-    ///  产品物料信息
-    /// </summary>
-    [Serializable]
+
+    #endregion
 
 
     #region IQC
@@ -828,14 +829,25 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     #endregion
 
 
-    #region FQC 
-    public class InspectionFqcItemConfigModel
+    #region FQC
+    /// <summary>
+    ///FQC项目配置
+    /// </summary>
+    [Serializable]
+    public partial class InspectionFqcItemConfigModel
     {
         public InspectionFqcItemConfigModel()
-        {
-
-        }
+        { }
         #region Model
+        private string _isneedort;
+        /// <summary>
+        ///是否要ORT
+        /// </summary>
+        public string IsNeedORT
+        {
+            set { _isneedort = value; }
+            get { return _isneedort; }
+        }
         private string _materialid;
         /// <summary>
         ///料号
@@ -844,6 +856,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _materialid = value; }
             get { return _materialid; }
+        }
+        private string _inspectiondatagathertype;
+        /// <summary>
+        ///数据录入方式
+        /// </summary>
+        public string InspectionDataGatherType
+        {
+            set { _inspectiondatagathertype = value; }
+            get { return _inspectiondatagathertype; }
         }
         private string _productdepartment;
         /// <summary>
@@ -925,15 +946,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _inspectionmethod = value; }
             get { return _inspectionmethod; }
-        }
-        private string _inspectiondatagathertype;
-        /// <summary>
-        ///数据录入方式
-        /// </summary>
-        public string InspectionDataGatherType
-        {
-            set { _inspectiondatagathertype = value; }
-            get { return _inspectiondatagathertype; }
         }
         private string _sipinspectionstandard;
         /// <summary>
@@ -1027,8 +1039,129 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
+    // <summary>
+    ///物料ORT配置
+    /// </summary>
+    [Serializable]
+    public partial class MaterialOrtConfigModel
+    {
+        public MaterialOrtConfigModel()
+        { }
+        #region Model
+        private string _materialid;
+        /// <summary>
+        ///品号
+        /// </summary>
+        public string MaterialId
+        {
+            set { _materialid = value; }
+            get { return _materialid; }
+        }
+        private string _materailname;
+        /// <summary>
+        ///品名
+        /// </summary>
+        public string MaterailName
+        {
+            set { _materailname = value; }
+            get { return _materailname; }
+        }
+        private string _materialspecify;
+        /// <summary>
+        ///规格
+        /// </summary>
+        public string MaterialSpecify
+        {
+            set { _materialspecify = value; }
+            get { return _materialspecify; }
+        }
+        private string _orttype;
+        /// <summary>
+        ///类别
+        /// </summary>
+        public string OrtType
+        {
+            set { _orttype = value; }
+            get { return _orttype; }
+        }
+        private int _ortcoefficient;
+        /// <summary>
+        ///系数
+        /// </summary>
+        public int OrtCoefficient
+        {
+            set { _ortcoefficient = value; }
+            get { return _ortcoefficient; }
+        }
+        private string _isvalid;
+        /// <summary>
+        ///是否有效
+        /// </summary>
+        public string IsValid
+        {
+            set { _isvalid = value; }
+            get { return _isvalid; }
+        }
+        private string _memo;
+        /// <summary>
+        ///备注
+        /// </summary>
+        public string Memo
+        {
+            set { _memo = value; }
+            get { return _memo; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人员
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class InspectionFqcDetailModel
     {
         public InspectionFqcDetailModel()
@@ -1318,7 +1451,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         #endregion Model
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class InspectionFqcMasterModel
     {
         public InspectionFqcMasterModel()
@@ -1592,9 +1727,12 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
         #endregion Model
     }
+
+
     #endregion
 
 
+    #region  数据展示
     /// <summary>
     /// 检验物料信息
     /// </summary>
@@ -1636,7 +1774,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public string Memo { get; set; }
 
     }
-
     /// <summary>
     /// 检验项目界面输入输出总表
     /// </summary>
@@ -1811,6 +1948,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
 
         #endregion Model
     }
-
+    #endregion
 
 }

@@ -23,7 +23,18 @@ namespace Lm.Eic.Uti.Common.YleeExtension.Conversion
         {
             return DateTime.Parse(dt.ToString("yyyy-MM-dd"));
         }
-
+        /// <summary>
+        /// 转换为yyyyMM 年月份
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static string ToYearMonth(this DateTime dt, string concatChar = null)
+        {
+            if (concatChar == null)
+                return dt.ToString("yyyyMM");
+            else
+                return string.Format("{0}{1}{2}", dt.Year.ToString(), concatChar, dt.Month.ToString().PadLeft(2, '0'));
+        }
         /// <summary>
         /// 转换为yyyy-MM-dd 字符串
         /// </summary>

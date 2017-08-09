@@ -50,23 +50,23 @@ namespace Lm.Eic.Framework.ProductMaster.Model.MessageNotify
             set { _emaillist = value; }
             get { return _emaillist; }
         }
-        private string _telmessagelist;
+        private string _contactslist;
         /// <summary>
         ///联系人消息列表
         /// </summary>
-        public string TelMessageList
+        public string ContactsList
         {
-            set { _telmessagelist = value; }
-            get { return _telmessagelist; }
+            set { _contactslist = value; }
+            get { return _contactslist; }
         }
-        private string _micromessagelist;
+        private string _weChatlist;
         /// <summary>
         ///微信号列表
         /// </summary>
-        public string MicroMessageList
+        public string WeChatList
         {
-            set { _micromessagelist = value; }
-            get { return _micromessagelist; }
+            set { _weChatlist = value; }
+            get { return _weChatlist; }
         }
         private int _notifymode;
         /// <summary>

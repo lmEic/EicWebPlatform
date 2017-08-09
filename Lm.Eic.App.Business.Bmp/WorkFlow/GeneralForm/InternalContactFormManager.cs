@@ -5,6 +5,7 @@ using System.Text;
 using Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm;
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
 using Lm.Eic.Framework.ProductMaster.Business.Itil;
+using Lm.Eic.Uti.Common.YleeOOMapper;
 
 namespace Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm
 {
@@ -13,6 +14,7 @@ namespace Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm
     /// </summary>
     public class InternalContactFormManager
     {
+
         /// <summary>
         /// 获取人员邮箱信息
         /// </summary>
@@ -21,6 +23,25 @@ namespace Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm
         public List<ItilEmailManageModel> GetWorkerMails(string department)
         {
             return ItilService.EmailManager.GetEmails(new ItilEmailManageModelDto() { SearchMode = 4, Department = department });
+        }
+        /// <summary>
+        /// 自动创建内部联络单表单
+        /// </summary>
+        /// <param name="department">部门信息</param>
+        /// <returns></returns>
+        public string AutoCreateFormId(string department)
+        {
+            return GeneralFormCrudFactory.IContctFormCrud.CreateFormId(department);
+        }
+
+        /// <summary>
+        /// 创建内部联络单
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public OpResult CreateInternalForm(InternalContactFormModel entity)
+        {
+            return GeneralFormCrudFactory.IContctFormCrud.Store(entity);
         }
     }
 }
