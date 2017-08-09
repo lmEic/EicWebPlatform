@@ -30,15 +30,15 @@ namespace Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm
 
         private OpResult Add(InternalContactFormModel entity)
         {
-            //entity.ApplyDate = DateTime.Now.ToDate();
-            //entity.YearMonth = DateTime.Now.ToYearMonth();
-            //if (!this.irep.IsExist(e => e.FormId == entity.FormId))
-            //{
-            //    var opresult = irep.Insert(entity).ToOpResult_Add(OpContext);
-            //    if (opresult.Result)
-            entity.FormId.SetFormIdNormalStatus(formModuleName);
-            //    return opresult;
-            //}
+            entity.ApplyDate = DateTime.Now.ToDate();
+            entity.YearMonth = DateTime.Now.ToYearMonth();
+            if (!this.irep.IsExist(e => e.FormId == entity.FormId))
+            {
+                var opresult = irep.Insert(entity).ToOpResult_Add(OpContext);
+                if (opresult.Result)
+                    entity.FormId.NormalizeFormId(formModuleName);
+                return opresult;
+            }
             return OpResult.SetSuccessResult("创建成功！");
         }
 

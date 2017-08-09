@@ -131,8 +131,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Common
         }
         private List<FormIdManageModel> GetFormIds(string department, string moduleName)
         {
-            string yearMonth = DateTime.Now.ToString("yyyyMM");
-            return this.irep.Entities.Where(e => e.Department == department && e.ModuleName == moduleName && e.YearMonth == yearMonth).ToList();
+            return this.irep.GetFormIds(department, moduleName);
         }
         /// <summary>
         /// 删除上个月份非正常的表单单号
@@ -168,7 +167,7 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Common
             });
         }
         /// <summary>
-        /// 更改表单编号
+        /// 更改表单编号的状态
         /// </summary>
         /// <param name="formId"></param>
         /// <param name="moduleName"></param>
@@ -193,10 +192,10 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Common
             return CommonManageCurdFactory.FormIdCrud.UpdateFormId(formId, primaryKey);
         }
         /// <summary>
-        /// 设置表单编号的状态为正常
+        /// 正常化表单编号
         /// </summary>
         /// <param name="formId"></param>
-        public static int SetFormIdNormalStatus(this string formId, string moduleName)
+        public static int NormalizeFormId(this string formId, string moduleName)
         {
             return CommonManageCurdFactory.FormIdCrud.UpdateFormIdStatus(formId, moduleName, FormIdStatus.Normal);
         }
