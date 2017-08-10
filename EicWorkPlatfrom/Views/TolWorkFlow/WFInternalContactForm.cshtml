@@ -4,7 +4,7 @@
     </div>
     <div class="panel-body">
         <div class="page-header">
-            <span class="btn btn-primary" ng-click="vmManager.createFormId()"><i class="fa fa-pencil"></i>创建</span>
+            <span class="btn btn-info" ng-click="vmManager.createFormId()"><i class="fa fa-pencil"></i>创建表单</span>
         </div>
         <div class="row">
             <div class="col-md-10">
@@ -47,6 +47,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                     <div class="form-group">
@@ -56,6 +57,9 @@
                             <div class="error-messages" ng-messages="formContact.needDate.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">需求日期不能为空</small>
                             </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div yl-upload-file style="margin:8px 2px;"></div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -73,7 +77,6 @@
                         </div>
                     </div>
 
-
                     <div class="alert alert-info">
                         <div class="row">
                             <div class="col-md-2">
@@ -90,7 +93,6 @@
 
             </div>
         </div>
-
 
         <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%;">
             <content dialog-title>
@@ -161,7 +163,4 @@
             </content>
         </dialog>
     </div>
-
-
-    <button id="btnShow" ng-click="show()">显示</button>
 </div>

@@ -809,10 +809,11 @@ var leeWorkFlow = (function () {
         },
         //将参与者添加到集合中
         addParticipant(dataset, participant) {
-            var item = _.find(dataset, { WorkerId: participant.WorkerId, Role: participant.Role });
+            var actor = _.clone(participant);
+            var item = _.find(dataset, { WorkerId: participant.WorkerId, Role: actor.Role });
             if (item === undefined) {
-                delete participant.IsChecked;
-                dataset.push(participant);
+                delete actor.IsChecked;
+                dataset.push(actor);
             };
         },
     };

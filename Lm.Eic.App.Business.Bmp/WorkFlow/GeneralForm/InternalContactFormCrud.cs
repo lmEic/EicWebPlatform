@@ -36,7 +36,7 @@ namespace Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm
             {
                 var opresult = irep.Insert(entity).ToOpResult_Add(OpContext);
                 if (opresult.Result)
-                    entity.FormId.SetFormIdNormalStatus();
+                    entity.FormId.NormalizeFormId(formModuleName);
                 return opresult;
             }
             return OpResult.SetSuccessResult("创建成功！");

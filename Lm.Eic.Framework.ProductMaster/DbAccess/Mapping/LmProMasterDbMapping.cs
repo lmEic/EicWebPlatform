@@ -32,9 +32,6 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
         }
     }
 
-
-
-
     /// <summary>
     ///ItilDevelopModuleManageModel
     /// </summary>
@@ -125,8 +122,6 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             this.ToTable("Tool_ReportImproveProblem");
         }
     }
-
-
     /// <summary>
     ///FormIdManageModel
     /// </summary>

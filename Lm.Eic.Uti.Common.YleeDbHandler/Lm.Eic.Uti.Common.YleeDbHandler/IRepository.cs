@@ -128,7 +128,6 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         TEntity GetByKey(object key);
 
 
-        /// <summary>
 
         /// <summary>
         /// 全部提交
