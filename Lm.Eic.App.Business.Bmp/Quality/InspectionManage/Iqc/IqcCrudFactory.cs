@@ -136,7 +136,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
         /// <summary>
-        /// 更新详细列表SQl语句
+        /// 更新（审核）信息详细列表SQl语句
         /// </summary>
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
@@ -160,26 +160,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.OrderId.Contains(orderId)).ToList();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="orderId"></param>
-        /// <param name="materialId"></param>
-        /// <returns></returns>
-        internal InspectionIqcMasterModel GetIqcInspectionMasterDatasBy(string orderId, string materialId)
-        {
-
-            return irep.FirstOfDefault(e => e.OrderId == orderId && e.MaterialId == materialId);
-        }
-        internal InspectionIqcMasterModel GetIqcInspectionMasterDatasBy11111(string orderId, string materialId)
-        {
-            return null;
-        }
         internal bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
         {
             return irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId);
         }
-
 
         /// <summary>
         /// 
