@@ -160,6 +160,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                    FileName = m.FileName,
                    DocumentPath = m.DocumentPath,
                    Memo = m.Memo,
+                   OpPerson = m.OpPerson,
                    InspectionMethod = string.Empty,
                    InspectionMode = m.InspectionMode,
                    Id_Key = m.Id_Key,

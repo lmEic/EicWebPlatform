@@ -1185,7 +1185,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         },
         //按物料品号获取检验项目信息
         selectOrderSubIdItem: function (item) {
-            console.log(888);
             vmManager.currentOrderSubIdItem = item;
             if (item.inspectionItemDatas.length > 0) return;
             var key = item.orderId + item.orderIdNumber;
@@ -1322,10 +1321,11 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         leeHelper.setUserData(dataItem);
         leeHelper.copyVm($scope.opPersonInfo, dataItem);
         dataItem.OpSign = leeDataHandler.dataOpMode.add;
-
+        console.log(888888);
+        console.log(dataItem);
         $scope.opPromise = qualityInspectionDataOpService.storeFqcInspectionGatherDatas(dataItem).then(function (opResult) {
             if (opResult.Result) {
-                console.log(dataItem.DocumentPath);
+                console.log(vmManager.panelDataSource);
                 //更新界面检测项目列表
                 vmManager.updateInspectionItemList(dataItem);
                 vmManager.inputDatas = [];

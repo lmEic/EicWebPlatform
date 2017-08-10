@@ -111,19 +111,8 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
             $scope.doPromise = BDataOpService.storeCraet8DInitialData(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
-
                         vmManager.init();
                         dialog.close();
-                        /// var dataItem = _.clone(uiVm);
-                        //dataItem.Id_Key = opresult.Id_Key;
-                        // if (dataItem.OpSign === leeDataHandler.dataOpMode.add) {
-                        // vmManager.dataSets.push(dataItem);
-                        // }
-                        //if (dataItem.OpSign === leeDataHandler.dataOpMode.delete) {
-
-                        // leeHelper.delWithId(vmManager.dataSets, dataItem)//移除界面上数据
-                        // }
-
                     }
                 });
             });
@@ -179,7 +168,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
         FailQty: 0,
         FailClass: null,
     }
-    ///比较排序
+    ///比较排序 (失败)
     var compare = function (prop) {
         return function (obj1, obj2) {
             var val1 = obj1[prop];
@@ -227,6 +216,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
                 stepItem.dataset = datas;
             });
             vmManager.viewDataset.activePanel = vmManager.viewDataset.length - 1;
+            console.log(vmManager.viewDataset);
             //$scope.promise = accountService.findRoleMatchModulesBy(role.RoleId).then(function (datas) {
             //   angular.forEach(datas, function (item) {
             //     var mroleItem = _.clone(uiVm);
