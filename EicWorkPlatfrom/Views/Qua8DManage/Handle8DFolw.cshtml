@@ -43,6 +43,7 @@
             <div class="row">
                 <div class="pull-left">
                     <ul class="list-group">
+                        @*抬头*@
                         <li class="list-group-item active">
                             <h5 class="list-group-item-heading">
                                 @*<i class="fa fa-user"></i>*@
@@ -57,7 +58,7 @@
                                 </span>
                             </h5>
                         </li>
-
+                        @*下面展示内容*@
                         <li class="list-group-item" ng-show="vmManager.stepDisplay">
                             <ul class="nav nav-pills" style="max-height:420px;overflow-y:auto">
                                 @*<li ng-repeat="step in vmManager.steps track by $index">*@
@@ -88,11 +89,6 @@
                     <ul class="list-group">
                         <li class="list-group-item list-group-item-info">
                             <span><i class="glyphicon glyphicon-apple"></i>处理步骤详情</span>
-                            @*<span class="pull-right">
-                                    <span class="btn btn-xs btn-info" ng-click="operate.saveDatas()" cg-busy="{promise:savePromise}">
-                                        <i class="fa fa-save"></i> 批量保存
-                                    </span>
-                                </span>*@
                         </li>
                     </ul>
                     @*展示*@
@@ -110,11 +106,16 @@
                             <div class="panel-collapse" role="tabpanel" bs-collapse-target>
                                 <div class="panel-body">
                                     <div ng-show="stepItem.stepData.length>0">
+                                        @*<ul class="nav nav-pills info" style="max-height:400px;overflow-y:auto">*@
                                         <ul class="nav nav-pills info" style="max-height:400px;overflow-y:auto">
-                                            <li ng-repeat="m in vmManager.viewDataset track by $index">
+                                            <li ng-repeat="m in stepItem .viewDataset track by $index">
                                                 <div class="bs-callout bs-callout-success" style="width:auto;margin:1px;">
                                                     <div class="form-group">
-
+                                                        <span class="pull-right">
+                                                            <span class="btn btn-xs btn-info" ng-click="operate.saveDatas()" cg-busy="{promise:savePromise}">
+                                                                <i class="fa fa-save"></i> 保存
+                                                            </span>
+                                                        </span>
                                                         <input type="text" placeholder="描述" ng-model="m.StepId" class="form-control" />
                                                     </div>
                                                 </div>
