@@ -18,7 +18,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
                 return InspectionManagerCrudFactory.FqcDetailCrud.UploadFileFqcInspectionDetail(model, siteRootPath);
-            return InspectionManagerCrudFactory.FqcDetailCrud.Store(model);
+            return InspectionManagerCrudFactory.FqcDetailCrud.Store(model, true);
         }
         /// <summary>
         /// 得到副表的详细记录

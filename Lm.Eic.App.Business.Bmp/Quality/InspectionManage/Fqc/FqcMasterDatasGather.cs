@@ -40,17 +40,25 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public OpResult storeInspectionMasterial(InspectionFqcMasterModel masterModel)
         {
             var haveStoreMasterModel = InspectionManagerCrudFactory.FqcMasterCrud.GetStroeOldModel(masterModel.OrderId, masterModel.OrderIdNumber, masterModel.MaterialId);
-            if (haveStoreMasterModel == null) return InspectionManagerCrudFactory.FqcMasterCrud.Store(masterModel);
+            if (haveStoreMasterModel == null) return InspectionManagerCrudFactory.FqcMasterCrud.Store(masterModel, true);
             ///初始化数据
+            List<string> haveFinishData = new List<string>();
             if (masterModel.OpPerson == "StartSetValue") return OpResult.SetSuccessResult("初始已经保存", true);
-
             string inspecitonItem = masterModel.InspectionItems != null ? masterModel.InspectionItems.Trim() : string.Empty;
-            if (!haveStoreMasterModel.InspectionItems.Contains(inspecitonItem) && inspecitonItem != string.Empty)
+
+            if (haveStoreMasterModel.InspectionItems != null && haveStoreMasterModel.InspectionItems != string.Empty)
+            { haveFinishData = this.GetHaveFinishDatas(haveStoreMasterModel.InspectionItems); }
+            if (!haveFinishData.Contains(inspecitonItem) && inspecitonItem != string.Empty)
+            {
                 masterModel.InspectionItems = haveStoreMasterModel.InspectionItems + "," + inspecitonItem;
+                haveFinishData.Add(inspecitonItem);
+            }
+            else masterModel.InspectionItems = haveStoreMasterModel.InspectionItems;
+
             var detailDatas = InspectionManagerCrudFactory.FqcDetailCrud.GetFqcDetailDatasBy(masterModel.OrderId, masterModel.OrderIdNumber);
             if (detailDatas != null && detailDatas.Count > 0)
             {
-                if (detailDatas.Count() == GetHaveFinishDataNumber(masterModel.InspectionItems))
+                if (detailDatas.Count() == haveFinishData.Count)
                 {
                     masterModel.InspectionStatus = "待审核";
                     masterModel.InspectionResult = (detailDatas.Count(e => e.InspectionItemResult == "NG") > 0 ? "NG" : "OK");
@@ -60,7 +68,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             /// 如果 是新增 只添加一次 
             masterModel.Id_Key = haveStoreMasterModel.Id_Key;
             masterModel.OpSign = OpMode.Edit;
-            return InspectionManagerCrudFactory.FqcMasterCrud.Store(masterModel);
+            return InspectionManagerCrudFactory.FqcMasterCrud.Store(masterModel, true);
 
         }
         /// <summary>

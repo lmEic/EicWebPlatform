@@ -50,12 +50,14 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
         OrderId: null,
         MaterialName: null,
         MaterialSpec: null,
-        InPutHouseOrder: null,
-        MaterialCount: null,
-        InspectNumber: 0,
+        MaterialCount: 0,
+        MaterialCountUnit: null,
+        InspectCount: 0,
+        InspectCountUnit: null,
         FailQty: 0,
+        FailQtyUnit: null,
         FailClass: null,
-        FailRatio: 0.0,
+        FailRatio: 100,
         CreateReportDate: new Date(),
         Status: null,
         OpPerson: null,
@@ -78,6 +80,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
         dataSets: [],
         dataSource: [],
         iqcOrderId: '341-170327011',
+        unitDatas: [{ id: "Kg", text: "Kg" }, { id: "包", text: "包" }, { id: "个", text: "个" }],
         DiscoverPositions: [{ id: "客户抱怨", text: "客户抱怨" }, { id: "内部制造", text: "内部制造" }, { id: "供应商", text: "供应商" }],
         failClassDatas: [{ id: "品质不合格", text: "品质不合格" }, { id: "HSF不合格", text: "HSF不合格" }],
         ///查询表单
@@ -108,19 +111,8 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
             $scope.doPromise = BDataOpService.storeCraet8DInitialData(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
-
                         vmManager.init();
                         dialog.close();
-                        /// var dataItem = _.clone(uiVm);
-                        //dataItem.Id_Key = opresult.Id_Key;
-                        // if (dataItem.OpSign === leeDataHandler.dataOpMode.add) {
-                        // vmManager.dataSets.push(dataItem);
-                        // }
-                        //if (dataItem.OpSign === leeDataHandler.dataOpMode.delete) {
-
-                        // leeHelper.delWithId(vmManager.dataSets, dataItem)//移除界面上数据
-                        // }
-
                     }
                 });
             });
@@ -176,7 +168,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
         FailQty: 0,
         FailClass: null,
     }
-    ///比较排序
+    ///比较排序 (失败)
     var compare = function (prop) {
         return function (obj1, obj2) {
             var val1 = obj1[prop];
@@ -224,6 +216,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
                 stepItem.dataset = datas;
             });
             vmManager.viewDataset.activePanel = vmManager.viewDataset.length - 1;
+            console.log(vmManager.viewDataset);
             //$scope.promise = accountService.findRoleMatchModulesBy(role.RoleId).then(function (datas) {
             //   angular.forEach(datas, function (item) {
             //     var mroleItem = _.clone(uiVm);

@@ -90,6 +90,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             string[] mm = inspectionDatas.Split(',');
             return mm.Count();
         }
+        public List<string> GetHaveFinishDatas(string inspectionDatas)
+        {
+            if (inspectionDatas == null || inspectionDatas == string.Empty) return new List<string>();
+            if ((!inspectionDatas.Contains(","))) return new List<string>() { inspectionDatas };
+            string[] mm = inspectionDatas.Split(',');
+            return mm.ToList();
+        }
+
         /// <summary>
         /// 得到抽样物料信息
         /// </summary>

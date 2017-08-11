@@ -113,23 +113,10 @@
                                         <ul class="nav nav-pills info" style="max-height:400px;overflow-y:auto">
                                             <li ng-repeat="m in vmManager.viewDataset track by $index">
                                                 <div class="bs-callout bs-callout-success" style="width:auto;margin:1px;">
-                                                    <form>
+                                                    <div class="form-group">
+
                                                         <input type="text" placeholder="描述" ng-model="m.StepId" class="form-control" />
-                                                    </form>
-                                                    @*<table class="table table-striped table-hover">
-                                                            <tbody>
-                                                                <tr ng-repeat="step in vmManager.selecteStepdata track by $index">
-                                                                    <td>{{step.DescribeContent}} </td>
-                                                                    <td>{{step.FileName}}</td>
-                                                                    <td>{{step.StepLevel}}</td>
-                                                                    <td>{{step.StepDescription}}</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>*@
-                                                    @*<span ng-class="{'label label-default':m.OpSign==='none','label label-success':m.OpSign==='add'}">
-                                                            <i class="fa fa-user"></i>
-                                                            {{m.ModuleText}}
-                                                        </span>*@
+                                                    </div>
                                                 </div>
                                             </li>
                                         </ul>
