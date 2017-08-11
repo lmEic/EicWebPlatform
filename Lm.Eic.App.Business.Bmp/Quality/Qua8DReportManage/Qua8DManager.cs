@@ -30,9 +30,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
     }
     public class Qua8DDatailManager
     {
-        public List<Qua8DReportDetailModel> GetQua8DDetailDatasBy(string reportId)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <returns></returns>
+        public List<ShowStepViewModel> ShowQua8DDetailDatasBy(string reportId)
         {
-            return Qua8DCrudFactory.DetailsCrud.GetQua8DDetailDatasBy(reportId);
+            List<ShowStepViewModel> steps = new List<ShowStepViewModel>();
+            ShowStepViewModel data = null;
+            var HanldeStepInfodatas = Qua8DCrudFactory.DetailsCrud.GetQua8DDetailDatasBy(reportId);
+            HanldeStepInfodatas.ForEach(m =>
+            {
+                data = new ShowStepViewModel { isCheck = true, HandelQua8DStepDatas = m };
+                if (!steps.Contains(data)) steps.Add(data);
+            });
+            return steps;
         }
         public Qua8DReportDetailModel GetQua8DDetailDatasBy(string reportId, int stepId)
         {

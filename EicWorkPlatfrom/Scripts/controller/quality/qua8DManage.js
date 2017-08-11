@@ -9,9 +9,9 @@ var qualityModule = angular.module('bpm.qualityApp');
 qualityModule.factory("BDataOpService", function (ajaxService) {
     var bugd = {};
     var quabugDManageUrl = "/qua8DManage/";
-    ///获取RMA表单单头
-    bugd.getRua8DReportDatas = function (reportId) {
-        var url = quabugDManageUrl + 'GetRmaReportDatas';
+    ///展示8D详细数据
+    bugd.showQua8DDetailDatas = function (reportId) {
+        var url = quabugDManageUrl + 'ShowQua8DDetailDatas';
         return ajaxService.getData(url, {
             reportId: reportId
         });
@@ -139,7 +139,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
     ///视图模型
     ///
     var uiVm = $scope.vm = {
-        ReportId: null,
+        ReportId: 'M1707004-2',
         StepId: 0,
         StepDescription: null,
         DescribeType: null,
@@ -168,19 +168,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
         FailQty: 0,
         FailClass: null,
     }
-    ///比较排序 (失败)
-    var compare = function (prop) {
-        return function (obj1, obj2) {
-            var val1 = obj1[prop];
-            var val2 = obj2[prop]; if (val1 < val2) {
-                return -1;
-            } else if (val1 > val2) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-    };
+
     var vmManager = {
         stepDisplay: true,
         // isCheck   selectStep  StepDescription
@@ -189,24 +177,20 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
         //对应界面显示的数据集
         viewDataset: [],
         selectStep: function (step) {
-            console.log(step);
             var stepItem = _.findWhere(vmManager.viewDataset, { StepId: step.StepId });
             if (_.isUndefined(stepItem)) {
                 console.log(stepItem);
                 stepItem = {
                     StepId: step.StepId,
                     StepLevel: step.StepLevel,
-                    stepData: step.HandelQua8DStepDatas,
-                    dataset: []
+                    stepDatas: step.HandelQua8DStepDatas,
                 };
+                console.log(stepItem);
                 leeHelper.setObjectGuid(stepItem);
                 vmManager.viewDataset.push(stepItem);
-                vmManager.viewDataset.sort(compare(stepItem));
-                console.log(stepItem);
             }
             else {
-                stepItem.dataset = [];
-                if (!stepItem.isCheck)
+                if (!step.isCheck)
                     leeHelper.delWithId(vmManager.viewDataset, stepItem);
             }
             if (step.isCheck) step.isCheck = false;
@@ -232,16 +216,14 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
             //    vmManager.viewDataset.activePanel = vmManager.viewDataset.length - 1;
             //})
         },
-        getQua8DCreateDatas: function () {
-            $scope.doPromise = BDataOpService.getRua8DReportDatas(uiVm.ReportId).then(function (datas) {
+        query8DStepDatas: function () {
+            $scope.doPromise = BDataOpService.showQua8DDetailDatas(uiVm.ReportId).then(function (datas) {
                 vmManager.steps = datas;
-                console.log(datas);
             });
         },
-
     };
     $scope.vmManager = vmManager;
-    vmManager.getQua8DCreateDatas();
+    //vmManager.query8DStepDatas();
 });
 
 ////8D结案处理表单
