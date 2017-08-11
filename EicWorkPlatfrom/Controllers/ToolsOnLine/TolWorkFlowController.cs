@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm;
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
 using Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm;
+using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -37,6 +38,20 @@ namespace EicWorkPlatfrom.Controllers
             string formId = GeneralFormService.InternalContactFormManager.AutoCreateFormId(department);
             return Json(formId, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 上传内部联络单附件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult UploadInternalContactFormAttachFile(HttpPostedFileBase file)
+        {
+
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.ElectronicForm, DateTime.Now.ToString("yyyyMM"));
+            this.SaveFileToServer(file, filePath);
+            return Json("OK");
+        }
+
         [NoAuthenCheck]
         public JsonResult CreateInternalForm(InternalContactFormModel entity)
         {

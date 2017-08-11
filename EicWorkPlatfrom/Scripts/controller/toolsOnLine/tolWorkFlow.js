@@ -26,6 +26,11 @@ officeAssistantModule.factory('wfDataOpService', function (ajaxService) {
             entity: entity,
         });
     };
+    //上传内部联络单附件
+    wfDataOp.uploadInternalContactFormAttachFile = function (file) {
+        var url = wfUrlPrefix + 'UploadInternalContactFormAttachFile';
+        return ajaxService.uploadFile(url, file);
+    };
     return wfDataOp;
 });
 ///内部联络单
@@ -64,6 +69,16 @@ officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, 
     }
     $scope.vm = uiVM;
     var initVM = _.clone(uiVM);
+
+    ///表单附件模型
+    var attachFileVM = {
+        ModuleName: null,
+        FormId: null,
+        FileName: null,
+        DocumentFilePath: null,
+        OpSign: leeDataHandler.dataOpMode.uploadFile,
+        OpPerson: null,
+    }
 
     var dialog = $scope.dialog = leePopups.dialog();
     var vmManager = $scope.vmManager = {
@@ -141,4 +156,13 @@ officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, 
         });
     };
     $scope.ztree = departmentTreeSet;
+    //上传文件
+    $scope.selectFile = function (el) {
+        leeHelper.upoadFile(el, function (fd) {
+            fd.append("FormId", uiVM.FormId);
+            wfDataOpService.uploadInternalContactFormAttachFile(fd).then(function () {
+
+            });
+        });
+    };
 });

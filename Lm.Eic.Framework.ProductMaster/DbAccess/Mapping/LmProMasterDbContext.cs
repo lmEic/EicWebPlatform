@@ -34,6 +34,8 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
 
         public DbSet<FormIdManageModel> FormIdManage { get; set; }
 
+        public DbSet<FormAttachFileManageModel> FormAttachFile { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -48,6 +50,7 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             modelBuilder.Configurations.Add(new ReportImproveProblemMapping());
 
             modelBuilder.Configurations.Add(new FormIdManageModelMapping());
+            modelBuilder.Configurations.Add(new FormAttachFileManageModelMapping());
         }
     }
 

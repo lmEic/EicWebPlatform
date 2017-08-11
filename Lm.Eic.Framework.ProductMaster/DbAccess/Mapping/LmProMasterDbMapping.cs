@@ -134,4 +134,17 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             this.ToTable("Common_FormIdManager");
         }
     }
+
+    /// <summary>
+    ///FormAttachFileManageModel
+    /// </summary>
+    public class FormAttachFileManageModelMapping : EntityTypeConfiguration<FormAttachFileManageModel>
+    {
+        public FormAttachFileManageModelMapping()
+        {
+            this.HasKey(t => t.Id_Key);
+            this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            this.ToTable("Common_FormIAttachFileManager");
+        }
+    }
 }

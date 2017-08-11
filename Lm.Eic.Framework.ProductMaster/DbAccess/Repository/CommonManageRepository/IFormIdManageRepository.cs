@@ -37,4 +37,13 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Repository.CommonManageReposit
         }
     }
 
+    /// <summary>
+    ///表单附件管理持久化
+    /// </summary>
+    public interface IFormIAttachFileManageRepository : IRepository<FormAttachFileManageModel> { }
+    /// <summary>
+    ///表单附件管理持久化
+    /// </summary>
+    public class FormIAttachFileManageRepository : LmProMasterRepositoryBase<FormAttachFileManageModel>, IFormIAttachFileManageRepository
+    { }
 }
