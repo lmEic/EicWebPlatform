@@ -230,7 +230,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         protected FileResult DownLoadFile(DownLoadFileModel downLoadFileModel)
         {
-            
+
             try
             {
                 switch (downLoadFileModel.HandleMode)
@@ -533,7 +533,33 @@ namespace EicWorkPlatfrom.Controllers
         /// ReportProblem上报改善问题文件夹
         /// </summary>
         public const string ReportProblemDataFile = "ReportProblemHandleDataFile";
+        /// <summary>
+        /// 电子表单
+        /// </summary>
+        public const string ElectronicForm = "ElectronicForm";
     }
-
-
+    /// <summary>
+    /// 上传文件结果
+    /// </summary>
+    public class UploadFileResult
+    {
+        /// <summary>
+        /// 上传结果
+        /// </summary>
+        public bool Result { get; private set; }
+        /// <summary>
+        /// 文件名称
+        /// </summary>
+        public string FileName { get; private set; }
+        /// <summary>
+        /// 创建实例
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static UploadFileResult CreateInstance(bool result, string fileName)
+        {
+            return new UploadFileResult() { Result = result, FileName = fileName };
+        }
+    }
 }

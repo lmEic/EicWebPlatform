@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="Business\Common\CommonManageCurdFactory.cs" />
     <Compile Include="Business\Common\CommonService.cs" />
+    <Compile Include="Business\Common\FormAttachFileCrud.cs" />
+    <Compile Include="Business\Common\FormAttachFileManager.cs" />
     <Compile Include="Business\Common\FormIdCrud.cs" />
     <Compile Include="Business\Common\FormIdManager.cs" />
     <Compile Include="Business\Config\DataDictionaryManager.cs" />

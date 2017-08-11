@@ -18,5 +18,12 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Common
         {
             get { return OBulider.BuildInstance<FormIdManager>(); }
         }
+        /// <summary>
+        /// 表单附件管理器
+        /// </summary>
+        public static FormAttachFileManager FormAttachFileManager
+        {
+            get { return OBulider.BuildInstance<FormAttachFileManager>(); }
+        }
     }
 }

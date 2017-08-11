@@ -23,6 +23,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Common
         {
             get { return OBulider.BuildInstance<FormIdManageCrud>(); }
         }
+        /// <summary>
+        /// 表单附件管理Crud数据操作助手
+        /// </summary>
+        internal static FormAttachFileCrud FormAttachFileCrud
+        {
+            get { return OBulider.BuildInstance<FormAttachFileCrud>(); }
+        }
     }
 
 
