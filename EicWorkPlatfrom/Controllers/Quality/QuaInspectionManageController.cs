@@ -471,8 +471,6 @@ namespace EicWorkPlatfrom.Controllers
         /// <summary>
         /// 下载数据文档
         /// </summary>
-        /// <param name="suppliserId"></param>
-        /// <param name="eligibleCertificate"></param>
         /// <returns></returns>
         [NoAuthenCheck]
         public FileResult LoadIqcDatasDownLoadFile(string orderId, string materialId, string inspectionItem)

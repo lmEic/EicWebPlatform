@@ -31,6 +31,14 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 品保常规配置管理
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult QualityCommonDataSet()
+        {
+            return View();
+        }
 
         #region config dictionary data operate
         public JsonResult SaveConfigDicData(ConfigDataDictionaryModel model, ConfigDataDictionaryModel oldModel, string opType)

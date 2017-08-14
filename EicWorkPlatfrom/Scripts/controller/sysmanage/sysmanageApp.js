@@ -19,6 +19,10 @@ angular.module('bpm.sysmanageApp', ['eicomm.directive', 'mp.configApp', 'ngAnima
     .state('busiCommonDataSet', {
         templateUrl: configUrlPrefix + 'BusiCommonDataSet'
     })
+    //品保常规配置
+    .state('qualityCommonDataSet', {
+        templateUrl: configUrlPrefix + 'QualityCommonDataSet'
+    })
     //--------------账户管理--------------------------
     .state('accRegistUser', {
         templateUrl: 'Account/RegistUser'
