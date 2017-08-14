@@ -8,7 +8,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     ///8D记录处理主表
     /// </summary>
- 
+
     /// <summary>
     ///8D记录处理主表
     /// </summary>
@@ -211,6 +211,42 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public Qua8DReportDetailModel()
         { }
         #region Model
+        private string _steptitle;
+        /// <summary>
+        ///标题
+        /// </summary>
+        public string StepTitle
+        {
+            set { _steptitle = value; }
+            get { return _steptitle; }
+        }
+        private string _stephandlecontent;
+        /// <summary>
+        ///处理内容
+        /// </summary>
+        public string StepHandleContent
+        {
+            set { _stephandlecontent = value; }
+            get { return _stephandlecontent; }
+        }
+        private string _handledepartment;
+        /// <summary>
+        ///处理部门
+        /// </summary>
+        public string HandleDepartment
+        {
+            set { _handledepartment = value; }
+            get { return _handledepartment; }
+        }
+        private string _signaturepersons;
+        /// <summary>
+        ///签核人员
+        /// </summary>
+        public string SignaturePersons
+        {
+            set { _signaturepersons = value; }
+            get { return _signaturepersons; }
+        }
         private string _reportid;
         /// <summary>
         ///编号
@@ -238,24 +274,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _stepdescription = value; }
             get { return _stepdescription; }
         }
-        private string _describetype;
-        /// <summary>
-        ///描述类型
-        /// </summary>
-        public string DescribeType
-        {
-            set { _describetype = value; }
-            get { return _describetype; }
-        }
-        private string _describecontent;
-        /// <summary>
-        ///描述内容
-        /// </summary>
-        public string DescribeContent
-        {
-            set { _describecontent = value; }
-            get { return _describecontent; }
-        }
         private string _filepath;
         /// <summary>
         ///路径
@@ -273,33 +291,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _filename = value; }
             get { return _filename; }
-        }
-        private string _aboutdepartment;
-        /// <summary>
-        ///单位部门
-        /// </summary>
-        public string AboutDepartment
-        {
-            set { _aboutdepartment = value; }
-            get { return _aboutdepartment; }
-        }
-        private string _signaturepeoples;
-        /// <summary>
-        ///签名
-        /// </summary>
-        public string SignaturePeoples
-        {
-            set { _signaturepeoples = value; }
-            get { return _signaturepeoples; }
-        }
-        private string _parameterkey;
-        /// <summary>
-        ///关键字
-        /// </summary>
-        public string ParameterKey
-        {
-            set { _parameterkey = value; }
-            get { return _parameterkey; }
         }
         private string _opperson;
         /// <summary>
@@ -347,6 +338,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             get { return _id_key; }
         }
         #endregion Model
+
     }
     /// <summary>
     /// Show
@@ -357,16 +349,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             HandelQua8DStepDatas = new Qua8DReportDetailModel();
         }
-        public bool isCheck
-        { set; get; }
+        bool _ischeck = true;
+        public bool IsCheck
+        {
+            set { value = _ischeck; }
+            get { return _ischeck; }
+        }
         public string StepId
         {
             get { return HandelQua8DStepDatas == null ? "空" : "第" + HandelQua8DStepDatas.StepId.ToString() + "歩"; }
         }
 
-        public string StepDescription
+        public string StepTitle
         {
-            get { return HandelQua8DStepDatas == null ? "空" : HandelQua8DStepDatas.StepDescription; }
+            get { return HandelQua8DStepDatas == null ? "空" : HandelQua8DStepDatas.StepTitle; }
         }
         public int StepLevel
         {

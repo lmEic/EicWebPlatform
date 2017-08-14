@@ -63,6 +63,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         {
             return irep.IsExist(e => e.ReportId == reportId);
         }
+
+        internal Qua8DReportMasterModel getDReportMasterInfo(string reportId)
+        {
+            return irep.Entities.FirstOrDefault(e => e.ReportId == reportId);
+        }
     }
 
     internal class Qua8DReportDetailsCrud : CrudBase<Qua8DReportDetailModel, IQua8DReportDetailsRepository>

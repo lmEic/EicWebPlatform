@@ -22,11 +22,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
     }
     public class Qua8DMasterManager
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public OpResult StoreQua8DMaster(Qua8DReportMasterModel model)
         {
             return Qua8DCrudFactory.MasterCrud.Store(model);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <returns></returns>
+        public Qua8DReportMasterModel Show8DReportMasterInfo(string reportId)
+        {
+            return Qua8DCrudFactory.MasterCrud.getDReportMasterInfo(reportId);
+        }
     }
     public class Qua8DDatailManager
     {
@@ -42,8 +55,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
             var HanldeStepInfodatas = Qua8DCrudFactory.DetailsCrud.GetQua8DDetailDatasBy(reportId);
             HanldeStepInfodatas.ForEach(m =>
             {
-                data = new ShowStepViewModel { isCheck = true, HandelQua8DStepDatas = m };
-                if (!steps.Contains(data)) steps.Add(data);
+                data = new ShowStepViewModel
+                {
+                    HandelQua8DStepDatas = m
+                };
+                if (!steps.Contains(data))
+                    steps.Add(data);
             });
             return steps;
         }

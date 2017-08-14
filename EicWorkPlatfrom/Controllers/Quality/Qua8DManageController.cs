@@ -60,8 +60,10 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult ShowQua8DDetailDatas(string reportId)
         {
-            
-            var datas = Qua8DService.Qua8DManager.Qua8DDatail.ShowQua8DDetailDatasBy("M1707004-2");
+            var ShowQua8DMasterData = Qua8DService.Qua8DManager.Qua8DMaster.Show8DReportMasterInfo(reportId);
+
+            var Stepdatas = Qua8DService.Qua8DManager.Qua8DDatail.ShowQua8DDetailDatasBy(reportId);
+            var datas = new { Stepdatas, ShowQua8DMasterData };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
 

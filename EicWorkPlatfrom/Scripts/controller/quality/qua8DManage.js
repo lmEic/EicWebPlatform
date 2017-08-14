@@ -139,20 +139,19 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
     ///视图模型
     ///
     var uiVm = $scope.vm = {
-        ReportId: 'M1707004-2',
+        ReportId: 'M1707001',
         StepId: 0,
+        StepTitle: null,
         StepDescription: null,
-        DescribeType: null,
-        DescribeContent: null,
+        StepHandleContent: null,
         FilePath: null,
         FileName: null,
-        AboutDepartment: null,
+        HandleDepartment: null,
         SignaturePeoples: null,
-        ParameterKey: null,
         OpPerson: null,
         OpDate: null,
         OpTime: null,
-        OpSign: null,
+        OpSign: leeDataHandler.dataOpMode.add,
         Id_Key: null,
     }
     var uiInitBaseInfoVm = $scope.baseInfoVm = {
@@ -171,6 +170,8 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
 
     var vmManager = {
         stepDisplay: true,
+        IsShowMasterData: true,
+        reportMasterInfo: [],
         // isCheck   selectStep  StepDescription
         steps: [],
         selecteStepdata: [],
@@ -183,24 +184,24 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
                 stepItem = {
                     StepId: step.StepId,
                     StepLevel: step.StepLevel,
-                    stepDatas: step.HandelQua8DStepDatas,
+                    VmDatas: step.HandelQua8DStepDatas,
                 };
-                console.log(stepItem);
                 leeHelper.setObjectGuid(stepItem);
                 vmManager.viewDataset.push(stepItem);
             }
             else {
-                if (!step.isCheck)
+                if (!step.IsCheck)
                     leeHelper.delWithId(vmManager.viewDataset, stepItem);
             }
-            if (step.isCheck) step.isCheck = false;
-            else step.isCheck = true;
 
-            $scope.doPromise = BDataOpService.getRua8DReportStepData("M1707004-2", 1).then(function (datas) {
-                stepItem.dataset = datas;
-            });
+            if (step.IsCheck) step.IsCheck = false;
+            else step.IsCheck = true;
+
+            //$scope.doPromise = BDataOpService.getRua8DReportStepData(uiVm.ReportId, 1).then(function (datas) {
+            //    stepItem.dataset = datas;
+            //});
             vmManager.viewDataset.activePanel = vmManager.viewDataset.length - 1;
-            console.log(vmManager.viewDataset);
+            leeHelper.copyVm(stepItem.VmDatas, uiVm);
             //$scope.promise = accountService.findRoleMatchModulesBy(role.RoleId).then(function (datas) {
             //   angular.forEach(datas, function (item) {
             //     var mroleItem = _.clone(uiVm);
@@ -218,9 +219,21 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
         },
         query8DStepDatas: function () {
             $scope.doPromise = BDataOpService.showQua8DDetailDatas(uiVm.ReportId).then(function (datas) {
-                vmManager.steps = datas;
+
+                angular.forEach(datas, function (d) {
+                    if (d != null)
+                    { isContainCustomerShortName = true; }
+                });
+
+                vmManager.steps = datas.Stepdatas;
+                vmManager.reportMasterInfo = datas.ShowQua8DMasterData;
+                console.log(vmManager.reportMasterInfo);
             });
         },
+        showMasterData: function () {
+            if (vmManager.IsShowMasterData) vmManager.IsShowMasterData = false;
+            else vmManager.IsShowMasterData = true;
+        }
     };
     $scope.vmManager = vmManager;
     //vmManager.query8DStepDatas();
