@@ -41,18 +41,5 @@ namespace Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm
             }
             return OpResult.SetSuccessResult("创建成功！");
         }
-
-        /// <summary>
-        /// 生成该部门的表单编号
-        /// </summary>
-        /// <param name="department"></param>
-        /// <returns></returns>
-        internal string CreateFormId(string department)
-        {
-            var data = CommonService.FormIdManager.CreateFormIdData(formModuleName, department);
-            string formId = string.Format("{0}-{1}{2}", data.Department, data.YearMonth, data.SubId);
-            formId.SynchronizeFormId(data.PrimaryKey);
-            return formId;
-        }
     }
 }

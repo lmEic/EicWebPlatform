@@ -71,7 +71,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public JsonResult GetCustomerShortNameDatas(string archiveConfig, string rmaCustomerShortName)
         {
-            
+
             List<ConfigDataDictionaryModel> CustomerShortNameData = PmConfigService.DataDicManager.LoadConfigDatasBy("CustomerConfigDataSet", "CustomerName");
 
             var datas = CustomerShortNameData;
@@ -144,10 +144,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
             var bussesDescriptionDatas = RmaService.RmaManager.BusinessManageProcessor.GetRmaBusinessDescriptionDatasBy(rmaId);
             /// 检验处理数据
             var inspectionHandleDatas = RmaService.RmaManager.InspecitonManageProcessor.GetDatasBy(rmaId);
-
-
             var datas = new { rmaInitiateData, inspectionHandleDatas, bussesDescriptionDatas };
-
             return DateJsonResult(datas);
         }
         /// <summary>

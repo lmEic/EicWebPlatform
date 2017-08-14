@@ -141,6 +141,7 @@
     <Compile Include="Quality\RmaManage\RmaReportManager.cs" />
     <Compile Include="Quality\RmaManage\RmaManager.cs" />
     <Compile Include="Quality\RmaManage\RmaService.cs" />
+    <Compile Include="WorkFlow\ElectronicFormBase.cs" />
     <Compile Include="WorkFlow\GeneralForm\GeneralFormCrudFactory.cs" />
     <Compile Include="WorkFlow\GeneralForm\GeneralFormService.cs" />
     <Compile Include="WorkFlow\GeneralForm\InternalContactFormCrud.cs" />

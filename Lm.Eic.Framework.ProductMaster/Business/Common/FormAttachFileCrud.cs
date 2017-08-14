@@ -18,7 +18,16 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Common
 
         protected override void AddCrudOpItems()
         {
-            throw new NotImplementedException();
+            this.AddOpItem(OpMode.Add, Add);
+        }
+
+        public OpResult Add(FormAttachFileManageModel entity)
+        {
+            if (!irep.IsExist(e => e.ModuleName == entity.ModuleName && e.FormId == entity.FormId))
+            {
+                return irep.Insert(entity).ToOpResult_Add(OpContext);
+            }
+            return OpResult.SetSuccessResult("上传文件成功！");
         }
     }
 }

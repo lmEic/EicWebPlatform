@@ -135,13 +135,11 @@ officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, 
         });
     };
 
-
     $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
         departmentTreeSet.setTreeDataset(datas);
         var user = leeLoginUser;
         participantInfo[leeWorkFlow.participantRole.Applicant] = leeWorkFlow.toParticipant(user);
     });
-
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);
@@ -159,9 +157,12 @@ officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, 
     //上传文件
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
-            fd.append("FormId", uiVM.FormId);
-            wfDataOpService.uploadInternalContactFormAttachFile(fd).then(function () {
-
+            var dto = leeWorkFlow.createFormFileAttachDto(attachFileVM, uiVM.FormId, "InternalContactForm");
+            fd.append("attachFileDto", JSON.stringify(dto));
+            wfDataOpService.uploadInternalContactFormAttachFile(fd).then(function (uploadResult) {
+                if (uploadResult.Result) {
+                    $scope.uploadFileName = uploadResult.FileName;
+                }
             });
         });
     };

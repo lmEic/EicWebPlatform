@@ -143,6 +143,15 @@ namespace Lm.Eic.Framework.ProductMaster.Model.CommonManage
         public FormAttachFileManageModel()
         { }
         #region Model
+        private string _department;
+        /// <summary>
+        ///部门
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
         private string _modulename;
         /// <summary>
         ///模块名称
@@ -235,4 +244,5 @@ namespace Lm.Eic.Framework.ProductMaster.Model.CommonManage
         }
         #endregion Model
     }
+
 }

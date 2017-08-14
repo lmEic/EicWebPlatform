@@ -46,10 +46,13 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult UploadInternalContactFormAttachFile(HttpPostedFileBase file)
         {
-
-            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.ElectronicForm, DateTime.Now.ToString("yyyyMM"));
-            this.SaveFileToServer(file, filePath);
-            return Json("OK");
+            FormAttachFileManageModel dto = ConvertFormDataToTEntity<FormAttachFileManageModel>("attachFileDto");
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.ElectronicForm, dto.ModuleName);
+            string customizeFileName = GeneralFormService.InternalContactFormManager.AttachFileHandler.SetAttachFileName(dto.ModuleName, dto.FormId);
+            UploadFileResult result = SaveFileToServer(file, filePath, customizeFileName);
+            //if (result.Result)
+            //    GeneralFormService.InternalContactFormManager.StoreFormAttachFile(dto);
+            return Json(result);
         }
 
         [NoAuthenCheck]
