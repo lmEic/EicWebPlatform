@@ -503,7 +503,6 @@
     <Content Include="Content\ztree\dist\js\jquery.ztree.exedit.min.js" />
     <Content Include="Content\ztree\dist\js\jquery.ztree.exhide.js" />
     <Content Include="Content\ztree\dist\js\jquery.ztree.exhide.min.js" />
-    <Content Include="FileLibrary\ReportProblemHandleDataFile\1707001.jpg" />
     <Content Include="Global.asax" />
     <Content Include="Content\underscore\underscore-min.map" />
     <Content Include="Content\login\lightmaster.png" />
@@ -1518,10 +1517,12 @@
     <Content Include="Views\Qua8DManage\Close8DForm.cshtml" />
     <Content Include="Views\TolWorkFlow\WFInternalContactForm.cshtml" />
     <Content Include="Views\HrAttendanceManage\HrWorkOverHoursManage.cshtml" />
+    <Content Include="Views\SysConfig\QualityCommonDataSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="FileLibrary\PreviewFiles\" />
+    <Folder Include="FileLibrary\ReportProblemHandleDataFile\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

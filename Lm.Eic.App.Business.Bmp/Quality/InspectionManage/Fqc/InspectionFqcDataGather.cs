@@ -162,7 +162,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 var orderMaterialInfo = orderMaterialInfoList[0];
                 ///得到FQC已经检验详表
                 var fqcHaveInspectionDatas = DetailDatasGather.GetFqcInspectionDetailDatasBy(orderId, orderIdNumber);
-                if (fqcHaveInspectionDatas == null || fqcHaveInspectionDatas.Count <= 0)
+                if (fqcHaveInspectionDatas == null || fqcHaveInspectionDatas.Count == 0)
                     return new List<InspectionItemDataSummaryVM>();
                 ///得到需要检验的项目
                 var fqcInspectionsItemdatas = GetFqcNeedInspectionItemDatas(orderMaterialInfo.ProductID);
@@ -345,21 +345,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         InsptecitonItemIsFinished = false,
                         /// 分析已完成的数据的数量
                         HaveFinishDataNumber = this.DoHaveFinishDataNumber(m.InspectionItemResult, m.InspectionItemDatas, (int)m.InspectionCount),
-
-
-
                         InStorageOrderId = m.InStorageOrderId,
                         InspectionItemSumCount = inspectionItemSumCount,
-
                         InspectionDataTimeRegion = inspectionDataTimeRegion,
-
                         InspectionMode = string.Empty,
                         InspectionLevel = string.Empty,
                         InspectionAQL = string.Empty,
                         InspectionCount = 0,
                         AcceptCount = 0,
                         RefuseCount = 0,
-
                         InspectionDataGatherType = string.Empty,
                         SizeLSL = 0,
                         SizeUSL = 0,
@@ -375,21 +369,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         model.SizeUSL = InspectionsItemdata.SizeUSL;
                         model.SizeMemo = InspectionsItemdata.SizeMemo;
 
-                    }
-                    ///得到检验方案
-                    var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(InspectionsItemdata.InspectionLevel, InspectionsItemdata.InspectionAQL, m.MaterialCount, m.InspectionMode);
-                    if (inspectionModeConfigModelData != null)
-                    {
-                        ///如果检验方法 不为空 侧不需要赋值
-                        if (model.InspectionMode == string.Empty)
-                            model.InspectionMode = inspectionModeConfigModelData.InspectionMode;
-                        model.InspectionLevel = inspectionModeConfigModelData.InspectionLevel;
-                        model.InspectionAQL = inspectionModeConfigModelData.InspectionAQL;
-                        model.InspectionCount = inspectionModeConfigModelData.InspectionCount;
-                        model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
-                        model.RefuseCount = inspectionModeConfigModelData.RefuseCount;
-                        //需要录入的数据个数 暂时为抽样的数量
-                        //model.NeedFinishDataNumber = inspectionModeConfigModelData.InspectionCount;
+
+                        ///得到检验方案
+                        var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(InspectionsItemdata.InspectionLevel, InspectionsItemdata.InspectionAQL, m.MaterialCount, m.InspectionMode);
+                        if (inspectionModeConfigModelData != null)
+                        {
+                            ///如果检验方法 不为空 侧不需要赋值
+                            if (model.InspectionMode == string.Empty)
+                                model.InspectionMode = inspectionModeConfigModelData.InspectionMode;
+                            model.InspectionLevel = inspectionModeConfigModelData.InspectionLevel;
+                            model.InspectionAQL = inspectionModeConfigModelData.InspectionAQL;
+                            model.InspectionCount = inspectionModeConfigModelData.InspectionCount;
+                            model.AcceptCount = inspectionModeConfigModelData.AcceptCount;
+                            model.RefuseCount = inspectionModeConfigModelData.RefuseCount;
+                            //需要录入的数据个数 暂时为抽样的数量
+                            //model.NeedFinishDataNumber = inspectionModeConfigModelData.InspectionCount;
+                        }
                     }
                     returnList.Add(model);
                 });

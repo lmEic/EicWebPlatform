@@ -307,179 +307,127 @@
                             <h1>光圣科技(宁波)有限公司</h1>
                             <h1> <small>产品不合格处理单(单头)</small> </h1>
                         </div>
-                        <div class="row clearfix">
-                            <div class="col-md-12 column">
-                                <table class="table table-bordered table-striped">
-                                    <colgroup>
-                                        <col />
-                                        <col />
-                                        <col />
-                                        <col style="width:10%" />
-                                        <col style="width:50%" />
-                                        <col />
-                                        <col />
-                                        <col />
-                                    </colgroup>
-                                    <tbody class="col-md-12">
-                                        <tr>
-                                            <td colspan="2" class="text-left">
-                                                <label class="text-right col-md-1" for="createReportDate">日期:</label>
-                                            </td>
-                                            <td colspan="2">
-                                                <input name="createReportDate" type="date" class="form-control col-md-3" ng-model="vm.CreateReportDate" format-date required />
-                                                <div class="error-messages" ng-messages="form8DCreateData.createReportDate.$error" ng-show="operate.showValidation">
-                                                    <small ng-message="required">日期不能为空</small>
-                                                </div>
-                                            </td>
+                        <div class="col-md-12 well">
+                            <form role="form" name="form8DCreateData" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
 
+                                <div class="form-group">
+                                    <label class="text-right col-md-2" for="createReportDate">日期:</label>
+                                    <div class="col-md-4">
+                                        <input name="createReportDate" type="date" class="form-control col-md-3" ng-model="vm.CreateReportDate" format-date required />
+                                        <div class="error-messages" ng-messages="form8DCreateData.createReportDate.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">日期不能为空</small>
+                                        </div>
+                                    </div>
+                                    <label for="discoverPosition" class="text-right col-md-2 ">来源:</label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <input name="discoverPositionName" placeholder="来源名称" class="form-control col-md-3" ng-model="vm.DiscoverPosition" required />
+                                            <div class="error-messages" ng-messages="form8DCreateData.discoverPositionName.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">来源不能为空</small>
+                                            </div>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary" ng-model="vm.DiscoverPosition"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="内部制造"
+                                                        data-bs-options="item.id as item.text for item in vmManager.DiscoverPositions" data-bs-select></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                            <td>
-                                                <label for="discoverPosition" class="text-right col-md-1">来源:</label>
-                                            </td>
-                                            <td colspan="4">
-                                                <div class="input-group">
-                                                    <input name="discoverPositionName" placeholder="来源名称" class="form-control col-md-3" ng-model="vm.DiscoverPosition" required />
-                                                    <div class="error-messages" ng-messages="form8DCreateData.discoverPositionName.$error" ng-show="operate.showValidation">
-                                                        <small ng-message="required">来源不能为空</small>
-                                                    </div>
-                                                    <span class="input-group-btn">
-                                                        <checkbox type="checkbox" class="btn btn-primary" ng-model="vm.DiscoverPosition"
-                                                                  data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="内部制造"
-                                                                  data-bs-options="item.id as item.text for item in vmManager.DiscoverPositions" data-bs-select></checkbox>
-                                                    </span>
-                                                </div>
-                                            </td>
+                                <div class="form-group">
+                                    <label for="reportId" class="text-right col-md-2">No:</label>
+                                    <div class="col-md-4">
+                                        <input name="reportId" type="text" readonly="readonly" class="form-control col-md-3" ng-model="vm.ReportId" />
+                                        <div class="error-messages" ng-messages="form8DCreateData.reportId.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">单号不能为空</small>
+                                        </div>
+                                    </div>
+                                    <label for="accountabilityDepartment" class="text-right  col-md-2">责任单位:</label>
+                                    <div class="col-md-4">
+                                        <input name="accountabilityDepartment" type="text" class="form-control" ng-model="vm.AccountabilityDepartment" />
+                                    </div>
 
+                                </div>
 
-                                            <td>
-                                                <label for="reportId" class="text-right col-md-1">No:</label>
-                                            </td>
-                                            <td colspan="2">
-                                                <input name="reportId" type="text" readonly="readonly" class="form-control col-md-3" ng-model="vm.ReportId" />
-                                                <div class="error-messages" ng-messages="form8DCreateData.reportId.$error" ng-show="operate.showValidation">
-                                                    <small ng-message="required">单号不能为空</small>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <label for="accountabilityDepartment" class="control-label">责任单位:</label>
-                                            </td>
-                                            <td colspan="2">
-                                                <input name="accountabilityDepartment" type="text" class="form-control" ng-model="vm.AccountabilityDepartment" />
-                                            </td>
+                                <div class="form-group">
+                                    <label for="materialName" class="text-right  col-md-2">品名:</label>
+                                    <div class="col-md-4">
+                                        <input name="materialName" type="text" class="form-control" ng-model="vm.MaterialName" />
+                                    </div>
+                                    <label for="materialSpec" class="text-right  col-md-2">规格:</label>
+                                    <div class="col-md-4">
+                                        <input name="materialSpec" type="text" class="form-control col-md-4" ng-model="vm.MaterialSpec" />
+                                    </div>
+                                </div>
 
+                                <div class="form-group">
+                                    <label for="orderId" class="text-right  col-md-2">交货单/入库单号:</label>
+                                    <div class="col-md-4">
+                                        <input name="orderId" type="text" class="form-control" ng-model="vm.OrderId" />
+                                    </div>
+                                    <label for="materialCount" class="text-right  col-md-2">批量:</label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <input name="materialCount" type="text" class="form-control" ng-model="vm.MaterialCount" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-model="vm.MaterialCountUnit"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="单位"
+                                                        data-bs-options="item.id as item.text for item in vmManager.unitDatas" data-bs-select></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                            <td>
-                                                <label for="materialSpec" class="control-label">品名:</label>
-                                            </td>
-                                            <td colspan="4">
-                                                <input name="materialSpec" type="text" class="form-control" ng-model="vm.MaterialSpec" />
-                                            </td>
+                                <div class="form-group">
+                                    <label for="inspectNumber" class="text-right  col-md-2">检验数:</label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <input name="inspectNumber" type="text" class="form-control" ng-model="vm.InspectCount" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-model="vm.InspectCountUnit"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="单位"
+                                                        data-bs-options="item.id as item.text for item in vmManager.unitDatas" data-bs-select></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <label for="inPutHouseOrder" class="text-right  col-md-2">不良类别: </label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <input name="FailClass" type="text" class="form-control" ng-model="vm.FailClass" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary" ng-model="vm.FailClass"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="不良类别"
+                                                        data-bs-options="item.id as item.text for item in vmManager.failClassDatas" data-bs-select></button>
+                                            </span>
+                                        </div>
+                                    </div>
 
-                                            <td>
-                                                <label for="materialSpec" class="control-label">规格:</label>
-                                            </td>
-                                            <td colspan="2">
-                                                <input name="materialSpec" type="text" class="form-control" ng-model="vm.MaterialSpec" />
-                                            </td>
-                                        </tr>
+                                </div>
 
-                                        <tr>
-                                            <td colspan="2">
-                                                <label for="accountabilityDepartment" class="control-label">交货单/入库单号:</label>
-                                            </td>
-                                            <td colspan="2">
-                                                <input name="accountabilityDepartment" type="text" class="form-control" ng-model="vm.AccountabilityDepartment" />
-                                            </td>
+                                <div class="form-group">
+                                    <label for="failQty" class="text-right  col-md-2">不良数:</label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <input name="failQty" type="text" class="form-control" ng-model="vm.FailQty" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-model="vm.FailQtyUnit"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="单位"
+                                                        data-bs-options="item.id as item.text for item in vmManager.unitDatas" data-bs-select></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <label for="failQty" class="text-right  col-md-2">不良率:</label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <input name="FailRatio" type="text" class="form-control" ng-model="vm.FailRatio" />
+                                            <span class="input-group-addon">%</span>
+                                        </div>
+                                    </div>
+                                </div>
 
-
-                                            <td>
-                                                <label for="materialSpec" class="control-label">品名:</label>
-                                            </td>
-                                            <td colspan="4">
-                                                <input name="materialSpec" type="text" class="form-control" ng-model="vm.MaterialSpec" />
-                                            </td>
-
-                                            <td>
-                                                <label for="materialSpec" class="control-label">规格:</label>
-                                            </td>
-                                            <td colspan="2">
-                                                <input name="materialSpec" type="text" class="form-control" ng-model="vm.MaterialSpec" />
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td colspan="2">
-                                                <label for="inPutHouseOrder" class="control-label">不良类别: </label>
-                                            </td>
-                                            <td colspan="8">
-                                                <input name="inPutHouseOrder" type="text" class="form-control" ng-model="vm.OrderId" />
-                                            </td>
-                                            <td>
-                                                <label for="failQty" class="control-label ">不良率:</label>
-                                            </td>
-                                            <td>
-                                                <input name="failQty" type="text" class="form-control" ng-model="vm.FailQty" />
-                                            </td>
-
-                                        </tr>
-                                        @*提报单位*@
-                                        <tr>
-                                            <td rowspan="4">
-                                                <label>(一)异常说明</label>
-                                            </td>
-                                            <td rowspan="3" colspan="10" style="height:inherit; text-overflow: ellipsis;">
-                                                <textarea rows="3" name="badDescription" class="form-control" required />
-                                            </td>
-
-                                            <td rowspan="4" style="vertical-align: middle !important;text-align: center;">
-                                                提报单位
-                                            </td>
-                                        </tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr>
-                                            <td colspan="8"></td>
-                                            <td>
-                                                <label>提报人：</label>
-                                            </td>
-                                            <td>
-                                                <input type="text" />
-                                            </td>
-                                        </tr>
-                                        @*责任 单 位*@
-                                        <tr>
-                                            <td rowspan="4">
-                                                <label>(二)处理人员</label>
-                                            </td>
-                                            <td rowspan="3" colspan="10" style="height:inherit; text-overflow: ellipsis;">
-                                                <textarea rows="3" name="badDescription" class="form-control" required />
-                                            </td>
-
-                                            <td rowspan="4" style="vertical-align: middle !important;text-align: center;">
-                                                责任单位
-                                            </td>
-                                        </tr>
-                                        <tr></tr>
-                                        <tr></tr>
-                                        <tr>
-                                            <td colspan="8"></td>
-                                            <td>
-                                                <label>提报人：</label>
-                                            </td>
-                                            <td>
-                                                <input type="text" />
-                                            </td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
+                            </form>
                         </div>
-
-
-                        <div class="modal-footer">
+                        <div class="col-md-12 modal-footer">
                             @*保存 取消 *@
                             <div class="alert alert-info">
                                 <div class="row">

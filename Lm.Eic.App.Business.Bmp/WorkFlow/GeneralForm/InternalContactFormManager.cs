@@ -5,25 +5,22 @@ using System.Text;
 using Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm;
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
 using Lm.Eic.Framework.ProductMaster.Business.Itil;
+using Lm.Eic.App.Business.Bmp.WorkFlow;
 using Lm.Eic.Uti.Common.YleeOOMapper;
+using Lm.Eic.Framework.ProductMaster.Business.Common;
+using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
 
 namespace Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm
 {
     /// <summary>
     /// 内部联络单管理器
     /// </summary>
-    public class InternalContactFormManager
+    public class InternalContactFormManager : ElectronicFormBase
     {
-
-        /// <summary>
-        /// 获取人员邮箱信息
-        /// </summary>
-        /// <param name="department">部门</param>
-        /// <returns></returns>
-        public List<ItilEmailManageModel> GetWorkerMails(string department)
+        public InternalContactFormManager() : base("InternalContactForm")
         {
-            return ItilService.EmailManager.GetEmails(new ItilEmailManageModelDto() { SearchMode = 4, Department = department });
         }
+
         /// <summary>
         /// 自动创建内部联络单表单
         /// </summary>
@@ -31,7 +28,10 @@ namespace Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm
         /// <returns></returns>
         public string AutoCreateFormId(string department)
         {
-            return GeneralFormCrudFactory.IContctFormCrud.CreateFormId(department);
+            var data = CommonService.FormIdManager.CreateFormIdData(this.FormModuleName, department);
+            string formId = string.Format("{0}-{1}{2}", data.Department, data.YearMonth, data.SubId);
+            formId.SynchronizeFormId(data.PrimaryKey);
+            return formId;
         }
 
         /// <summary>
@@ -43,5 +43,8 @@ namespace Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm
         {
             return GeneralFormCrudFactory.IContctFormCrud.Store(entity);
         }
+
+
+
     }
 }

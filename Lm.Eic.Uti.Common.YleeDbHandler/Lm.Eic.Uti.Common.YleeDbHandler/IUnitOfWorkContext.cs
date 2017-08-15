@@ -156,7 +156,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             finally
             {
-                // Dispose();
+                //Dispose();
             }
         }
 
@@ -254,7 +254,8 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         public int RegisterModified<TEntity>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> updateExpression) where TEntity : class
         {
             int record = Context.Set<TEntity>().Where(predicate).Update(updateExpression);
-            IsCommitted = false;
+            if (record >= 1)
+                IsCommitted = false;
             return record;
         }
 

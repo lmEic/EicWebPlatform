@@ -142,6 +142,7 @@
                                     <td>{{item.InspectionResult}}</td>
 
                                     <td>
+                                        <label ng-show="item.InspectionStatus === '已审核'">审核人:{{item.OpPerson}}</label>
                                         <button type="button" class="btn btn-primary btn-xs" ng-click="vmManager.getDetailDatas(item)" ng-show="item.InspectionStatus !== '未完成'">明细</button>
                                         <button type="button" class="btn btn-warning btn-xs" ng-click="vmManager.showCheckModal(item)" ng-show="item.InspectionStatus === '待审核'">审核</button>
                                     </td>
@@ -247,6 +248,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        <label>记录人：{{item.OpPerson}}</label>
                                     </td>
                                 </tr>
                             </tbody>

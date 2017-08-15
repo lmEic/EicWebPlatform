@@ -808,13 +808,22 @@ var leeWorkFlow = (function () {
             return "";
         },
         //将参与者添加到集合中
-        addParticipant(dataset, participant) {
-            var item = _.find(dataset, { WorkerId: participant.WorkerId, Role: participant.Role });
+        addParticipant: function (dataset, participant) {
+            var actor = _.clone(participant);
+            var item = _.find(dataset, { WorkerId: participant.WorkerId, Role: actor.Role });
             if (item === undefined) {
-                delete participant.IsChecked;
-                dataset.push(participant);
+                delete actor.IsChecked;
+                dataset.push(actor);
             };
         },
+        //创建表单附件Dto
+        createFormFileAttachDto: function (vm, formId, moduleName) {
+            var dto = _.clone(vm);
+            leeHelper.setUserData(dto);
+            dto.FormId = uiVM.FormId;
+            dto.ModuleName = moduleName;
+            return dto;
+        }
     };
 })();
 ///zTree 助手

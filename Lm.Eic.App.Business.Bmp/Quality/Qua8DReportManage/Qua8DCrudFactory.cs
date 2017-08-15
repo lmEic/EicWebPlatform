@@ -41,7 +41,17 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
             {
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
-            return OpResult.SetErrorResult("该单号记录已经存在");
+            return irep.Update(e => e.ReportId == model.ReportId, u => new Qua8DReportMasterModel
+            {
+                AccountabilityDepartment = model.AccountabilityDepartment,
+                MaterialCountUnit = model.MaterialCountUnit,
+                InspectCount = model.InspectCount,
+                InspectCountUint = model.InspectCountUint,
+                FailQty = model.FailQty,
+                FailQtyUnit = model.FailQtyUnit,
+                FailClass = model.FailClass
+            }
+               ).ToOpResult_Eidt(OpContext);
         }
         OpResult Eidt(Qua8DReportMasterModel model)
         {
@@ -52,6 +62,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         bool IsExist(string reportId)
         {
             return irep.IsExist(e => e.ReportId == reportId);
+        }
+
+        internal Qua8DReportMasterModel getDReportMasterInfo(string reportId)
+        {
+            return irep.Entities.FirstOrDefault(e => e.ReportId == reportId);
         }
     }
 

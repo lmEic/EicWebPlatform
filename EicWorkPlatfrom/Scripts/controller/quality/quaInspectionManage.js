@@ -469,9 +469,6 @@ qualityModule.controller("iqcInspectionModeCtrl", function ($scope, qualityInspe
         vmManager.deleteModalWindow.$promise.then(vmManager.deleteModalWindow.show)
     }
 })
-
-
-
 //iqc检验项目配置模块
 qualityModule.controller("iqcInspectionItemCtrl", function ($scope, qualityInspectionDataOpService, $modal) {
     var uiVM = {
@@ -880,7 +877,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                     qualityInspectionDataOpService.storeIqcInspectionGatherDatas(vmManager.currentInspectionItem).then(function (opResult) {
                         if (opResult.Result) {
                             if (opResult.Result) {
-                                alert("上传文件成功");
+                                leePopups.alert("上传文件成功", 4);
                             }
                         }
                     })
@@ -1185,7 +1182,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         },
         //按物料品号获取检验项目信息
         selectOrderSubIdItem: function (item) {
-            console.log(888);
             vmManager.currentOrderSubIdItem = item;
             if (item.inspectionItemDatas.length > 0) return;
             var key = item.orderId + item.orderIdNumber;
@@ -1322,10 +1318,11 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         leeHelper.setUserData(dataItem);
         leeHelper.copyVm($scope.opPersonInfo, dataItem);
         dataItem.OpSign = leeDataHandler.dataOpMode.add;
-
+        console.log(888888);
+        console.log(dataItem);
         $scope.opPromise = qualityInspectionDataOpService.storeFqcInspectionGatherDatas(dataItem).then(function (opResult) {
             if (opResult.Result) {
-                console.log(dataItem.DocumentPath);
+                console.log(vmManager.panelDataSource);
                 //更新界面检测项目列表
                 vmManager.updateInspectionItemList(dataItem);
                 vmManager.inputDatas = [];

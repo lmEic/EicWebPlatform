@@ -196,33 +196,6 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         #region file operate method
-
-        ///// <summary>
-        ///// 导出数据到Excel文件中
-        ///// </summary>
-        ///// <typeparam name="T">泛型类型</typeparam>
-        ///// <param name="dataSource">数据源</param>
-        ///// <param name="xlsSheetName">Sheet表名称</param>
-        ///// <param name="xlsFileName">Excel文件名称,包括扩展名</param>
-        ///// <returns></returns>
-        //protected FileResult ExportToExcel<T>(List<T> dataSource, string xlsSheetName, string xlsFileName) where T : class
-        //{
-        //    MemoryStream ms = dataSource.ExportToExcel<T>(xlsSheetName);
-        //    ms.Seek(0, SeekOrigin.Begin);
-        //    return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
-        //}
-        ///// <summary>
-        ///// 导出数据到Excel文件中
-        ///// </summary>
-        ///// <param name="ms">文件流</param>
-        ///// <param name="xlsSheetName">Sheet表名称</param>
-        ///// <param name="xlsFileName">Excel文件名称,包括扩展名</param>
-        ///// <returns></returns>
-        //protected FileResult ExportToExcel(MemoryStream ms, string xlsSheetName, string xlsFileName)
-        //{
-        //    ms.Seek(0, SeekOrigin.Begin);
-        //    return File(ms, "application/vnd.ms-excel", xlsFileName + ".xls");
-        //}
         /// <summary>
         /// 下载文件
         /// </summary>
@@ -230,7 +203,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <returns></returns>
         protected FileResult DownLoadFile(DownLoadFileModel downLoadFileModel)
         {
-            
+
             try
             {
                 switch (downLoadFileModel.HandleMode)
@@ -303,38 +276,54 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="file"></param>
         /// <param name="filePath"></param>
         /// <param name="handler"></param>
-        protected void SaveFileToServer(HttpPostedFileBase file, string filePath, Action handler = null)
+        protected UploadFileResult SaveFileToServer(HttpPostedFileBase file, string filePath, Action handler = null)
+        {
+            return SaveFileToServer(file, filePath, null, handler);
+        }
+        /// <summary>
+        /// 将文件保存到服务器上
+        /// </summary>
+        /// <param name="file">文件元素</param>
+        /// <param name="filePath">文件路径</param>
+        /// <param name="fileNamePreSub">文件名称自定义前半部分</param>
+        /// <param name="handler"></param>
+        protected UploadFileResult SaveFileToServer(HttpPostedFileBase file, string filePath, string fileNamePreSub, Action handler)
         {
             if (file != null)
             {
                 if (file.ContentLength > 0)
                 {
-                    string fileName = Path.Combine(filePath, file.FileName);
+                    string fileName = file.FileName;
+                    if (fileNamePreSub != null)
+                        fileName = Path.Combine(filePath, fileNamePreSub + file.FileName);
                     file.SaveAs(fileName);
                     if (handler != null) handler();
+                    return UploadFileResult.CreateInstance(true, Path.GetFileName(fileName));
                 }
             }
+            return UploadFileResult.CreateInstance(false, "noFileExist");
         }
-
         /// <summary>
         /// 将文件保存到服务器上
         /// </summary>
         /// <param name="file"></param>
         /// <param name="filePath"></param>
-        /// <param name="handler"></param>
-        protected void SaveFileToServer(HttpPostedFileBase file, string filePath, string changeFileName, Action handler = null)
+        /// <param name="customizeFileName"></param>
+        /// <returns></returns>
+        protected UploadFileResult SaveFileToServer(HttpPostedFileBase file, string filePath, string customizeFileName)
         {
             if (file != null)
             {
                 if (file.ContentLength > 0)
                 {
-                    string fileName = Path.Combine(filePath, changeFileName + file.FileName);
+                    string extensionName = Path.GetExtension(file.FileName);
+                    string fileName = Path.Combine(filePath, string.Format("{0}{1}", customizeFileName, extensionName));
                     file.SaveAs(fileName);
-                    if (handler != null) handler();
+                    return UploadFileResult.CreateInstance(true, Path.GetFileName(fileName));
                 }
             }
+            return UploadFileResult.CreateInstance(false, "noFileExist");
         }
-
         #region CombinedFilePath
         protected string CombinedFilePath(string path1)
         {
@@ -379,6 +368,20 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         #endregion file operate method
+
+        #region form data handle method
+        /// <summary>
+        /// 根据表单键值将Form表单对象数据转换为指定模型实体数据
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="formParaKey"></param>
+        /// <returns></returns>
+        protected TEntity ConvertFormDataToTEntity<TEntity>(string formParaKey)
+            where TEntity : class, new()
+        {
+            return JsonConvert.DeserializeObject<TEntity>(Request.Params[formParaKey]);
+        }
+        #endregion
     }
 
     public class LoginUser
@@ -533,7 +536,33 @@ namespace EicWorkPlatfrom.Controllers
         /// ReportProblem上报改善问题文件夹
         /// </summary>
         public const string ReportProblemDataFile = "ReportProblemHandleDataFile";
+        /// <summary>
+        /// 电子表单
+        /// </summary>
+        public const string ElectronicForm = "ElectronicForm";
     }
-
-
+    /// <summary>
+    /// 上传文件结果
+    /// </summary>
+    public class UploadFileResult
+    {
+        /// <summary>
+        /// 上传结果
+        /// </summary>
+        public bool Result { get; private set; }
+        /// <summary>
+        /// 文件名称
+        /// </summary>
+        public string FileName { get; private set; }
+        /// <summary>
+        /// 创建实例
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static UploadFileResult CreateInstance(bool result, string fileName)
+        {
+            return new UploadFileResult() { Result = result, FileName = fileName };
+        }
+    }
 }
