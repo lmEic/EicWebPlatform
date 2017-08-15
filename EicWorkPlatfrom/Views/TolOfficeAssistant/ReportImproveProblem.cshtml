@@ -338,18 +338,14 @@
                                             <div class="col-md-2">
                                             </div>
                                             <div class="col-md-10 col-lg-offset-4">
-                                                <button id="btnsave" class="btn btn-primary" ng-click="operate.saveAll(formReport.$valid)" ng-show="vm.ProblemSolve=='待解决'"><i class="fa fa-save"></i>保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <button class="btn btn-primary" ng-click="operate.refresh()" ng-show="vm.ProblemSolve=='待解决'"><i class="fa fa-undo"></i>重置</button>
+                                                <button id="btnsave" class="btn btn-primary" ng-click="operate.saveAll(formReport.$valid)"><i class="fa fa-save"></i>保存</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <button class="btn btn-primary" ng-click="operate.refresh()"><i class="fa fa-undo"></i>重置</button>
                                                 <span yl-operatemsg-board></span>
                                             </div>
                                         </div>
                                     </div>
-
-
-
                                 </div>
                             </form>
-
                         </content>
                     </dialog>
 
@@ -447,7 +443,7 @@
                                            
                                             <td>
                                                 @*<button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="修改"><i class="fa fa-edit"></i>{{item.ProblemSolve}}</button>*@
-                                                <button class="btn btn-xs btn-primary" ng-click="vmManager.showDetailData(item)" title="明细"><i class="fa fa-check"></i>明细</button>
+                                                <button class="btn btn-xs btn-primary" ng-click="operate.handleItem(item)" title="明细"><i class="fa fa-check"></i>明细</button>
 
                                             </td>
                                         </tr>
