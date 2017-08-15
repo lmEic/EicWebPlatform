@@ -209,36 +209,39 @@
                             <div class="panel-collapse" role="tabpanel" bs-collapse-target>
                                 <div class="panel-body">
                                     @*<ul class="nav nav-pills info" style="max-height:400px;overflow-y:auto">*@
-                                    <div class="bs-callout bs-callout-success" style="width:auto;margin:2px;">
-                                        <div class="form-group">
-                                            <from name="form8DHandelData" role="form">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">题目：</span>
-                                                    <input type="text" class="form-control" ng-model="vm.StepDescription" />
-                                                </div>
-                                                <div class="form-group">
-                                                    <textarea rows="4" name="stepHandleContent" class="form-control" ng-model="vm.StepHandleContent" required />
-                                                    <div class="error-messages" ng-messages="form8DHandelData.stepHandleContent.$error" ng-show="operate.showValidation">
-                                                        <small ng-message="required">不能为空</small>
-                                                    </div>
-                                                </div>
-                                                <div class="form-inline" role="form">
-                                                    @* 上传附件 *@
-                                                    <div class="col-md-offset-2 pull-left">
-                                                        <div yl-upload-file></div>
-                                                        <div ng-if="vmManager.isdisabled ">{{vm.FileName}}</div>
-                                                    </div>
-                                                    <label class="col-md-2">责任单位:</label>
-                                                    <input type="text" class="col-md-4" placeholder="签名" ng-model="vm.SignaturePersons" />
-                                                </div>
-                                            </from>
-                                            <div class="pull-right">
-                                                <div class="btn btn-xs btn-info" ng-click="operate.saveDatas()" cg-busy="{promise:savePromise}">
-                                                    <i class="fa fa-save"></i> 保存
+
+                                    <div class="form-group">
+                                        <from name="form8DHandelData" role="form">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">填充内容标题：</span>
+                                                <input type="text" class="form-control" ng-model="vm.StepDescription" />
+                                            </div>
+                                            <div class="form-group">
+                                                <textarea rows="4" name="stepHandleContent" class="form-control" placeholder="依标题填充详细内容" ng-model="vm.StepHandleContent" required />
+                                                <div class="error-messages" ng-messages="form8DHandelData.stepHandleContent.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">不能为空</small>
                                                 </div>
                                             </div>
+                                            <div class="form-inline" role="form">
+                                                @* 上传附件 *@
+                                                <div class="col-md-offset-2 pull-left">
+                                                    <div yl-upload-file></div>
+                                                    <div ng-if="vmManager.isdisabled ">{{vm.FileName}}</div>
+                                                </div>
+                                                <label class="col-md-2" name="signaturePersons" role="form">责任单位:</label>
+                                                <input type="text" name="signaturePersons" role="form" class="col-md-4 " placeholder="签名(以逗号隔开)" ng-model="vm.SignaturePersons" required />
+                                                <div class="error-messages" ng-messages="form8DHandelData.signaturePersons.$error" ng-show="operate.showValidation">
+                                                    <small ng-message="required">不能为空</small>
+                                                </div>
+                                            </div>
+                                        </from>
+                                        <div class="pull-right">
+                                            <button class="btn btn-xs btn-info" ng-click="operate.saveDatas()" cg-busy="{promise:savePromise}">
+                                                <i class="fa fa-save"></i> 保存
+                                            </button>
                                         </div>
                                     </div>
+
 
 
 
