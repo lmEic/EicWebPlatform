@@ -3,15 +3,18 @@
         <h6 class="panel-title">创建内部联络单</h6>
     </div>
     <div class="panel-body">
+        <div class="page-header">
+            <span class="btn btn-info" ng-click="vmManager.createFormId()"><i class="fa fa-pencil"></i>创建表单</span>
+        </div>
         <div class="row">
             <div class="col-md-10">
                 <form role="form" name="formContact" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                     <div class="form-group">
-                        <label for="orderId" class="col-md-2 control-label">单号</label>
+                        <label for="orderId" class="col-md-2 control-label">表单编号</label>
                         <div class="col-md-6">
-                            <input name="orderId" class="form-control" ng-model="vm.OrderId" readonly required />
-                            <div class="error-messages" ng-messages="formContact.orderId.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">单号不能为空</small>
+                            <input name="formId" class="form-control" ng-model="vm.FormId" readonly required />
+                            <div class="error-messages" ng-messages="formContact.formId.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">表单编号不能为空</small>
                             </div>
                         </div>
                     </div>
@@ -29,82 +32,55 @@
                         <div class="col-md-10">
                             <script id="formContent" type="text/plain">
                             </script>
+                            <div yl-upload-file style="margin:8px 2px;"></div>
                         </div>
                     </div>
-                    <hr />
                     <div class="form-group">
-                        <label for="applyDepartment" class="col-md-2 control-label">申请人及单位</label>
+                        <label for="applicant" class="col-md-2 control-label">申请人及单位</label>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input name="applyDepartment" class="form-control" ng-model="vm.ApplyDepartment" readonly required />
-                                <div class="error-messages" ng-messages="formContact.applyDepartment.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">申请单位不能为空</small>
+                                <input name="applicant" class="form-control" ng-model="participantInfo.Applicant" readonly required />
+                                <div class="error-messages" ng-messages="formContact.applicant.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">申请人及单位不能为空</small>
                                 </div>
                                 <div class="input-group-btn">
-                                    <span class="btn btn-primary"><i class="fa fa-location-arrow"></i></span>
+                                    <span class="btn btn-primary" ng-click="vmManager.showParticipantView('Applicant')"><i class="fa fa-location-arrow"></i></span>
                                 </div>
                             </div>
+                        </div>
 
-                        </div>
-                        <label for="applyDate" class="col-md-2 control-label">申请日期</label>
-                        <div class="col-md-2">
-                            <input name="applyDate" type="date" format-date class="form-control" ng-model="vm.ApplyDate" required />
-                            <div class="error-messages" ng-messages="formContact.applyDate.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">申请日期不能为空</small>
-                            </div>
-                        </div>
                     </div>
-                    @*<div class="form-group">
-                            <label for="applyPerson" class="col-md-2 control-label">申请人</label>
-                            <div class="col-md-4">
-                                <input name="applyPerson" class="form-control" ng-model="vm.ApplyPerson" required />
-                                <div class="error-messages" ng-messages="formContact.applyPerson.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">申请人不能为空</small>
-                                </div>
-                            </div>
-                        </div>*@
-                    <hr />
+
                     <div class="form-group">
-                        <label for="relatedToPerson" class="col-md-2 control-label">相关人及单位</label>
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <input name="relatedToPerson" class="form-control" readonly ng-model="vm.RelatedToPerson" required />
-                                <div class="error-messages" ng-messages="formContact.relatedToPerson.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">相关人不能为空</small>
-                                </div>
-                                <div class="input-group-btn">
-                                    <span class="btn btn-primary"><i class="fa fa-location-arrow"></i></span>
-                                </div>
+                        <label for="applyDate" class="col-md-2 control-label">需求日期</label>
+                        <div class="col-md-3">
+                            <input name="needDate" type="date" format-date class="form-control" ng-model="vm.NeedDate" required />
+                            <div class="error-messages" ng-messages="formContact.needDate.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">需求日期不能为空</small>
                             </div>
                         </div>
-                        <label for="approver" class="col-md-2 control-label">核准人</label>
-                        <div class="col-md-2">
+                    </div>
+                    <div class="form-group">
+                        <label for="approver" class="col-md-2 control-label">确认人</label>
+                        <div class="col-md-3">
                             <div class="input-group">
-                                <input name="approver" class="form-control" readonly ng-model="vm.Approver" required />
-                                <div class="error-messages" ng-messages="formContact.approver.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">核准人不能为空</small>
+                                <input name="confirmor" class="form-control" readonly ng-model="participantInfo.Confirmor" required />
+                                <div class="error-messages" ng-messages="formContact.confirmor.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">确认人不能为空</small>
                                 </div>
                                 <div class="input-group-btn">
-                                    <span class="btn btn-primary"><i class="fa fa-location-arrow"></i></span>
+                                    <span class="btn btn-primary" ng-click="vmManager.showParticipantView('Confirmor')"><i class="fa fa-location-arrow"></i></span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    @*<div class="form-group">
-                            <label for="relatedToDepartment" class="col-md-2 control-label">相关单位</label>
-                            <div class="col-md-4">
-                                <input name="relatedToDepartment" class="form-control" ng-model="vm.RelatedToDepartment" required />
-                                <div class="error-messages" ng-messages="formContact.relatedToDepartment.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">相关单位不能为空</small>
-                                </div>
-                            </div>
-                        </div>*@
+
                     <div class="alert alert-info">
                         <div class="row">
                             <div class="col-md-2">
                             </div>
                             <div class="col-md-10">
-                                <button class="btn btn-primary" ng-click="operate.saveAll(formContact.$valid)"><i class="fa fa-save"></i>创建</button>
+                                <button class="btn btn-primary" ng-click="operate.save(formContact.$valid)"><i class="fa fa-save"></i>确定</button>
                                 <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
                             </div>
                         </div>
@@ -115,8 +91,74 @@
 
             </div>
         </div>
+
+        <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%;">
+            <content dialog-title>
+                <i class="fa fa-pencil-square">选择用人单位及人员</i>
+            </content>
+            <content dialog-content style="width:100%;">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h6 class="panel-title"><i class="glyphicon glyphicon-home"></i>组织架构图</h6>
+                            </div>
+                            <div class="panel-body" style="max-height:515px;overflow:auto">
+                                <ul data-yl-tree cg-busy="{promise:promise}"
+                                    data-tree-dataset="ztree.configDataNodes"
+                                    data-start-load="ztree.startLoad"
+                                    ng-model="ztree.treeNode"
+                                    data-binding-nodevm="ztree.bindNodeToVm()"
+                                    id="{{ztree.treeId}}" class="ztree"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="bs-callout bs-callout-info" cg-busy="{promise:searchPromise}" style="height:480px;max-height:485px;overflow-y:auto;">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-bordered" style="table-layout:fixed;">
+                                    <colgroup>
+                                        <col width="60" />
+                                        <col width="80" />
+                                        <col width="80" />
+                                        <col width="120" />
+                                        <col width="150" />
+                                    </colgroup>
+                                    <thead>
+                                        <tr class="info">
+                                            <th>
+                                                操作(
+                                                <i class="fa fa-pencil-square-o"></i>)
+                                            </th>
+                                            <th>工号</th>
+                                            <th>姓名</th>
+                                            <th>部门</th>
+                                            <th>Email</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vmManager.dataset track by $index">
+                                            <td class="text-center">
+                                                <span ng-if="!item.IsChecked" ng-click="vmManager.selectParticipant(item)"><i class="fa fa-2x fa-square-o"></i></span>
+                                                <span class="text-success" ng-if="item.IsChecked" ng-click="vmManager.selectParticipant(item)"><i class="fa fa-2x fa-check-square"></i></span>
+                                            </td>
+                                            <td ng-bind="item.WorkerId"></td>
+                                            <td ng-bind="item.Name"></td>
+                                            <td ng-bind="item.Department"></td>
+                                            <td ng-bind="item.Email"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div ng-if="vmManager.datasource.length>0"
+                                     yl-pagination
+                                     data-dataset="vmManager.searchDataset"
+                                     data-datasource="vmManager.datasource">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </content>
+        </dialog>
     </div>
-
-
-    <button id="btnShow" ng-click="show()">显示</button>
 </div>

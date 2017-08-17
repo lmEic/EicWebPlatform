@@ -261,6 +261,29 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
             }
             return dataList;
         }
+        /// <summary>
+        /// 载入SQL语句中首列数据集合列表
+        /// </summary>
+        /// <param name="sqlText"></param>
+        /// <returns></returns>
+        public List<string> LoadList(string sqlText)
+        {
+            List<string> dataList = null;
+            DataTable dt = LoadTable(sqlText);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                dataList = new List<string>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    dataList.Add(dr[0].ToString().Trim());
+                }
+            }
+            else
+            {
+                dataList = new List<string>();
+            }
+            return dataList;
+        }
 
         /// <summary>
         /// 载入指定表中的所有字段列信息

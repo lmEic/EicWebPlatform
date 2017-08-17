@@ -128,6 +128,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                     OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
                 }
 
+
             }
             DataTable dt591 = DbHelper.Erp.LoadTable("SELECT  TH001,TH002  FROM  MOCTH  WHERE (TH001 = '591')" + Startsql591);
             if (dt591.Rows.Count > 0)
@@ -354,6 +355,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 this.MapProductRowAndModel(dr, m);
             });
         }
+
     }
 
 }

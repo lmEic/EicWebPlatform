@@ -65,6 +65,10 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             return this.PersistentDatas(model);
         }
+        //public virtual OpResult Delete(TEntity model)
+        //{
+        //    return this.PersistentDatas(model);
+        //}
 
         public virtual OpResult Store(TEntity model, bool isNeedEntity)
         {

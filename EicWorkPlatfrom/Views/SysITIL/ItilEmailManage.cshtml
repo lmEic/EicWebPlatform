@@ -1,4 +1,4 @@
-﻿<div class="row"ng-controller="itilEmailManageCtrl">
+﻿<div class="row" ng-controller="itilEmailManageCtrl">
     <div class="col-md-3">
         <div class="panel panel-success">
             <div class="panel-heading">
@@ -88,23 +88,7 @@
                                                 <div class="error-messages" ng-messages="formEmailManage.department.$error" ng-show="operate.showValidation">
                                                     <small ng-message="required">部门不能为空</small>
                                                 </div>
-                                                @*<div class="input-group-btn">
-                                                    <button class="btn btn-primary" style="margin-bottom:6px;" id="departmentPopover"
-                                                            data-title="选择部门名称"
-                                                            data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
-                                                            data-animation="am-flip-x" data-auto-close="1"
-                                                            data-keyboard="false"
-                                                            data-bs-popover>
-                                                        <i class="fa fa-sitemap"></i>
-                                                    </button>
-                                                </div>*@
-                                                @*<div class="input-group-btn">
-                                                    <button type="button" class="btn btn-primary " ng-model="vm.Department"
-                                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
-                                                            data-bs-options="item.id as item.text for item in vmManager.departments" data-bs-select>
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                </div>*@
+
                                             </div>
                                         </div>
                                         <label for="regDate" class="col-md-2 control-label">注册日期</label>
@@ -196,6 +180,7 @@
                 <div bs-pane data-title="邮箱查询" data-name="editTab">
 
                     <div bs-tabs>
+
                         <div bs-pane data-title="工号">
                             <form class="form-inline">
                                 <div class="form-group">
@@ -216,12 +201,13 @@
                                 </div>
                             </form>
                         </div>
+
                         <div bs-pane data-title="帐户等级">
                             <form class="form-inline">
                                 <div class="form-group">
                                     <label>账户等级</label>
                                     <div class="input-group">
-                                    <input type="text" class="form-control" ng-model="query.receiveGrade" placeholder="账户等级" ng-keypress="($even.which==13)?vmManager.getEmailRecord(3):0" />
+                                        <input type="text" class="form-control" ng-model="query.receiveGrade" placeholder="账户等级" ng-keypress="($even.which==13)?vmManager.getEmailRecord(3):0" />
                                         <div class="input-group-btn">
                                             <button type="button" class="btn btn-primary" ng-model="query.receiveGrade"
                                                     data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择邮等级"
@@ -232,17 +218,6 @@
                                 </div>
                             </form>
                         </div>
-                        <div bs-pane data-title="部门">
-                            <form class="form-inline">
-                                <div class="form-group">
-                                    <label>部门</label>
-                                    <input type="text" class="form-control" ng-model="query.department" placeholder="部门" ng-keypress="($even.which==13)?vmManager.getEmailRecord(4):0" />
-                                    <button class="btn btn-primary" ng-click="vmManager.getEmailRecords(4)"><i class="fa fa-search"></i>查询</button>
-                                </div>
-                            </form>
-                        </div>
-
-
 
                     </div>
                     <div class="h-split"></div>
@@ -254,12 +229,12 @@
                                     <col width="80" />
                                     <col width="80" />
                                     <col width="120" />
-                                    <col width="100" />
+                                    <col width="150" />
                                     <col width="100" />
                                     <col width="150" />
                                     <col width="200" />
                                     <col width="200" />
-                                    <col width="100" />
+                                    <col width="130" />
                                 </colgroup>
                                 <thead>
                                     <tr class="info">
@@ -280,7 +255,7 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="item in vmManager.searchDataset track by $index">
-                                        <td ng-bind="$index">
+                                        <td ng-bind="$index+1">
                                         <td ng-bind="item.WorkerId"></td>
                                         <td ng-bind="item.Name"></td>
                                         <td ng-bind="item.Department"></td>
@@ -288,16 +263,14 @@
                                         <td ng-bind="item.ReceiveGrade"></td>
                                         <td ng-bind="item.RegDate"></td>
                                         <td ng-bind="item.Pop3Host"></td>
-
                                         <td ng-bind="item.SmtpHost"></td>
-
                                         <td>
-                                            <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i>修改</button>
+                                            <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item) " title="修改"><i class="fa fa-edit"></i></button>
+                                            <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item) " title="删除"><i class="fa fa-remove"></i></button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-
                             <div ng-if="vmManager.datasource.length>0"
                                  yl-pagination
                                  data-dataset="vmManager.searchDataset"
@@ -363,10 +336,8 @@
                                     </div>
                                     <label for="password" class="col-md-2 control-label">邮箱密码</label>
                                     <div class="col-md-4">
-                                        <input type="password" name="password" class="form-control" ng-model="vm.Password" placeholder="邮箱密码" required />
-                                        <div class="error-messages" ng-messages="formEmailManage.password.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">密码不能为空</small>
-                                        </div>
+                                        <input type="password" name="password" class="form-control" ng-model="vm.Password" placeholder="邮箱密码" />
+
                                     </div>
                                 </div>
 
@@ -378,23 +349,7 @@
                                             <div class="error-messages" ng-messages="formEmailManage.department.$error" ng-show="operate.showValidation">
                                                 <small ng-message="required">部门不能为空</small>
                                             </div>
-                                            @*<div class="input-group-btn">
-                        <button class="btn btn-primary" style="margin-bottom:6px;" id="departmentPopover"
-                                data-title="选择部门名称"
-                                data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
-                                data-animation="am-flip-x" data-auto-close="1"
-                                data-keyboard="false"
-                                data-bs-popover>
-                            <i class="fa fa-sitemap"></i>
-                        </button>
-                    </div>*@
-                                            @*<div class="input-group-btn">
-                        <button type="button" class="btn btn-primary " ng-model="vm.Department"
-                                data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
-                                data-bs-options="item.id as item.text for item in vmManager.departments" data-bs-select>
-                            <span class="caret"></span>
-                        </button>
-                    </div>*@
+
                                         </div>
                                     </div>
                                     <label for="regDate" class="col-md-2 control-label">注册日期</label>
@@ -470,8 +425,8 @@
                                         <div class="col-md-2">
                                         </div>
                                         <div class="col-md-10">
-                                            <button class="btn btn-primary" ng-click="operate.saveAll(formEmailManage.$valid)"><i class="fa fa-save"></i>保存</button>
-                                            <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
+                                            &nbsp; &nbsp;&nbsp;<button class="btn btn-primary" ng-click="operate.saveAll(formEmailManage.$valid)"><i class="fa fa-save"></i>保存</button>&nbsp;&nbsp;
+                                            <button class="btn btn-primary" ng-click="operate.refresh()"><i class="fa fa-undo"></i>重置</button>
                                             <span yl-operatemsg-board></span>
                                         </div>
                                     </div>
@@ -479,6 +434,10 @@
                             </form>
                         </content>
                     </dialog>
+
+
+
+
                 </div>
             </div>
         </div>

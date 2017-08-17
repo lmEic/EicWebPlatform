@@ -255,6 +255,7 @@ hrModule.controller('attendClassTypeSetCtrl', function ($scope, $modal, hrDataOp
     departmentTreeSet.bindNodeToVm = function () {
         qryDto.Department = departmentTreeSet.treeNode.vm.DataNodeName;
         qryDto.DepartmentText = departmentTreeSet.treeNode.vm.DataNodeText;
+        vmManager.loadClassTypeDatas(qryDto.Department, null, null);
     };
     $scope.ztree = departmentTreeSet;
 
@@ -518,6 +519,131 @@ hrModule.controller('attendAskLeaveCtrl', function ($scope, $modal, hrDataOpServ
             });
         }
     });
+});
+//加班管理
+hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService, hrArchivesDataOpService) {
+    var qryDto = {
+        Department: null,
+        DepartmentText: null,
+        DateFrom: null,
+        DateTo: null,
+        ClassType: '白班'
+    };
+    $scope.vm = qryDto;
+
+    ///ui视图模型
+    var uiVM = {
+        WorkerId: null,//
+        WorkerName: null,//
+        DepartmentText: null,
+        WorkoverType: null,//
+        WorkClassType: null,//
+        WorkDate: null,//
+        WorkOverHours: 0.0,//
+        IsAlwaysDay: null,
+        DateFrom: null,
+        DateTo: null,
+        OpDate: null,
+        OpPerson: null,
+        OpSign: null,
+        Id_Key: null,
+        isSelect: false,
+        selectedCls: ''
+       
+    };
+    $scope.vm = uiVM;
+    var originalVM = _.clone(uiVM);
+    var vmManager = {
+        classTypes: [{ id: '日班', text: '日班' }, { id: '夜班', text: '夜班' }],
+        workoverTypes: [{ name: '平时加班', text: '平时加班' }, { name: '假日加班', text: '假日加班' }, { name: '节假日加班', text: '节假日加班' }],
+        workOverHourss: [{ id:0.5, text: 0.5 }, { id: 1.0, text: 1.0 }, { id: 1.5, text: 1.5 }, { id: 2.0, text: 2.0}, { id: 2.5, text:2.5 } ],
+        dataSets: [],
+        dataSource: [],               
+        selectedWorkers: [],
+        init: function () {
+            vmManager.dataSets = [];
+            vmManager.selectedWorkers = [];
+            vmManager.dataSource = [];
+            vmManager.isSelectAll = false;
+        },
+       
+        isSelectAll: false,
+        selectAll: function () {        
+            angular.forEach(vmManager.dataSets, function (item) {
+                item.isSelect = !vmManager.isSelectAll;
+                operate.addWorkerToList(item);
+                
+            });
+        },
+        loadClassTypeDatas: function (department, workerId, classtype) {
+            vmManager.dataSource = [];
+            $scope.classTypePromise = hrDataOpService.getClassTypeDatas(qryDto.Department, workerId, classtype).then(function (datas) {
+                angular.forEach(datas, function (item) {
+                    var dataItem = _.clone(uiVM);
+                    leeHelper.copyVm(item, dataItem);
+                    vmManager.dataSource.push(dataItem);
+                });
+                vmManager.dataSets = _.clone(vmManager.dataSource);
+            });
+        }
+    };
+
+    $scope.vmManager = vmManager;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    operate.loadData = function () {
+        vmManager.init();
+        vmManager.loadClassTypeDatas(qryDto.Department, null, null);
+    };
+
+  
+    operate.addWorkerToList = function (item) {
+        var worker = _.find(vmManager.selectedWorkers, { WorkerId: item.WorkerId });
+        if (worker === undefined) {
+            if (item.isSelect) {
+                item.selectedCls = "text-primary";
+                vmManager.selectedWorkers.push(item);
+            }
+            else {
+                item.selectedCls = "";
+            }
+        }
+        else {
+            if (!item.isSelect) {
+                item.selectedCls = "";
+                leeHelper.remove(vmManager.selectedWorkers, item);
+               
+
+
+            }
+
+        }
+    };
+   
+    $scope.operate = operate;
+    operate.vm = qryDto;
+
+    var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
+
+    departmentTreeSet.bindNodeToVm = function () {
+        if (uiVM.WorkoverType == null || uiVM.WorkDate == null || uiVM.WorkClassType==null)
+        {
+            alert("加班信息填写不完整！");
+            return false;
+        }
+        qryDto.Department = departmentTreeSet.treeNode.vm.DataNodeName;
+        qryDto.DepartmentText = departmentTreeSet.treeNode.vm.DataNodeText;
+        uiVM.DepartmentText = departmentTreeSet.treeNode.vm.DataNodeText;
+
+        vmManager.loadClassTypeDatas(qryDto.Department, null, null);
+
+    };
+    $scope.ztree = departmentTreeSet;
+
+    $scope.promise = connDataOpService.getDepartments().then(function (datas) {
+        departmentTreeSet.setTreeDataset(datas);
+    });
+
+   
 });
 //考勤异常数据处理
 hrModule.controller('attendExceptionHandleCtrl', function ($scope, $modal, hrDataOpService, dataDicConfigTreeSet, connDataOpService) {

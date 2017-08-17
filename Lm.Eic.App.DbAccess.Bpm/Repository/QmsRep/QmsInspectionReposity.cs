@@ -59,6 +59,14 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
 
     #region  FQC
 
+    public interface IOrtMaterailConfigRepository : IRepository<MaterialOrtConfigModel> { }
+
+    public class OrtMaterailConfigRepository : BpmRepositoryBase<MaterialOrtConfigModel>, IOrtMaterailConfigRepository
+    {
+
+    }
+
+
     public interface IFqcInspectionItemConfigRepository : IRepository<InspectionFqcItemConfigModel> { }
 
     public class FqcInspectionItemConfigRepository : BpmRepositoryBase<InspectionFqcItemConfigModel>, IFqcInspectionItemConfigRepository

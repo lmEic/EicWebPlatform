@@ -238,6 +238,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
             uiVm = _.clone(initVM);
             uiVm.OpSign = leeDataHandler.dataOpMode.add;
             $scope.vm = uiVm;
+            salersOrdersDatas = [];
         },
         //是否为输入状态
         isdisabled: false,
@@ -375,6 +376,7 @@ qualityModule.controller('rmaInputDescriptionCtrl', function ($scope, rmaDataOpS
     operate.copyItem = function (item) {
         var oldItem = _.clone(item);
         uiVm.Id = leeHelper.newGuid();
+        vmManager.salersOrdersDatas = [];
         uiVm = oldItem;
         uiVm.Id_Key = null;
         uiVm.ProductId = null;
@@ -453,6 +455,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         Id_Key: null
     };
     var initVM = _.clone(uiVm);
+
     var vmManager = $scope.vmManager = {
         init: function () {
             uiVm = _.clone(initVM);
@@ -500,10 +503,13 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
         isdisabled: false,
         dataitems: [],
     };
+
     var rmaNumberDatasDialog = $scope.rmaNumberDatasDialog = leePopups.dialog();
     var dialog = $scope.dialog = leePopups.dialog();
+
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
+
     ///显示业务处理序号
     operate.getSelectedRmaIdData = function (item) {
         if (vmManager.businessHandleDatas.length > 0) {
@@ -562,7 +568,7 @@ qualityModule.controller('rmaInspectionHandleCtrl', function ($scope, rmaDataOpS
             var fileItem = uiVm;
             var fileAttachData = { RmaId: fileItem.RmaId, RmaIdNumber: fileItem.RmaBussesesNumberStr };
             fd.append('fileAttachData', JSON.stringify(fileAttachData));
-            console.log(fd);
+
             rmaDataOpService.uploadRmaHandleFile(fd).then(function (datas) {
                 if (datas.Result === 'OK') {
                     uiVm.FileName = datas.FileName;

@@ -20,15 +20,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
     {
 
         #region LoadClass
-        IqcMasterDatasGather MasterDatasGather
+        public IqcMasterDatasGather MasterDatasGather
         {
             get { return OBulider.BuildInstance<IqcMasterDatasGather>(); }
         }
-        IqcDetailDatasGather DetailDatasGather
+        public IqcDetailDatasGather DetailDatasGather
         {
             get { return OBulider.BuildInstance<IqcDetailDatasGather>(); }
         }
-        InspectionItemCondition ItemCondition
+        public InspectionItemCondition ItemCondition
         {
             get { return OBulider.BuildInstance<InspectionItemCondition>(); }
         }
@@ -125,10 +125,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionItemDataSummaryVM> FindIqcInspectionItemDataSummaryLabelListBy(string orderId, string materialId)
         {
             List<InspectionItemDataSummaryVM> returnList = new List<InspectionItemDataSummaryVM>();
+            ///明细表中查找
             var iqcHaveInspectionData = DetailDatasGather.GetIqcInspectionDetailDatasBy(orderId, materialId);
             if (iqcHaveInspectionData == null || iqcHaveInspectionData.Count <= 0) return returnList;
+            ///物料配置项中查找
             var iqcItemConfigdatas = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
             if (iqcItemConfigdatas == null || iqcItemConfigdatas.Count <= 0) return returnList;
+            ///每个一项添加相应的信息
             iqcHaveInspectionData.ForEach(m =>
            {
                ///初始化 综合模块
@@ -157,10 +160,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                    FileName = m.FileName,
                    DocumentPath = m.DocumentPath,
                    Memo = m.Memo,
+                   OpPerson = m.OpPerson,
                    InspectionMethod = string.Empty,
                    InspectionMode = m.InspectionMode,
                    Id_Key = m.Id_Key,
                };
+               /// 找到对应的项目
                var iqcItemConfigdata = iqcItemConfigdatas.FirstOrDefault(e => e.InspectionItem == m.InspecitonItem);
                if (iqcItemConfigdata != null)
                {
@@ -350,6 +355,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
+
+
+        public List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderId)
+        {
+            return DetailDatasGather.GetIqcInspectionDetailDatasBy(orderId);
+        }
     }
 
 

@@ -262,12 +262,21 @@ namespace Lm.Eic.Framework.Authenticate.Model
         private string _department;
 
         /// <summary>
-        ///部门
+        ///部门编码
         /// </summary>
         public string Department
         {
             set { _department = value; }
             get { return _department; }
+        }
+        private string _departmenttext;
+        /// <summary>
+        /// 部门名称
+        /// </summary>
+        public string DepartmentText
+        {
+            get { return _departmenttext; }
+            set { _departmenttext = value; }
         }
 
         private string _organizetion;

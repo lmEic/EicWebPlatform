@@ -71,10 +71,7 @@ namespace EicWorkPlatfrom.Controllers.Quality
         [NoAuthenCheck]
         public JsonResult GetCustomerShortNameDatas(string archiveConfig, string rmaCustomerShortName)
         {
-            
-            List<ConfigDataDictionaryModel> CustomerShortNameData = PmConfigService.DataDicManager.LoadConfigDatasBy("CustomerConfigDataSet", "CustomerName");
-
-            var datas = CustomerShortNameData;
+            var datas = PmConfigService.DataDicManager.LoadConfigDatasBy("CustomerConfigDataSet", "CustomerName");
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         #endregion

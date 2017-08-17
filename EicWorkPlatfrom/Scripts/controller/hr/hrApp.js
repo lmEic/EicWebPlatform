@@ -55,6 +55,10 @@ angular.module('bpm.hrApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'u
      .state('hrAskLeaveManage', {
          templateUrl: 'HrAttendanceManage/HrAskLeaveManage'
      })
+     //加班管理
+     .state('hrWorkOverHoursManage', {
+         templateUrl: 'HrAttendanceManage/HrWorkOverHoursManage'
+     })
      .state('hrHandleException', {
          templateUrl: 'HrAttendanceManage/HrHandleException'
      })

@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.Framework.ProductMaster.Model;
+using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
 using Lm.Eic.Framework.ProductMaster.Model.ITIL;
 using Lm.Eic.Framework.ProductMaster.Model.MessageNotify;
 using Lm.Eic.Framework.ProductMaster.Model.Tools;
@@ -31,6 +32,10 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
         public DbSet<Model.ITIL.ItilEmailManageModel> MailInfo { get; set; }
         public DbSet<ReportImproveProblemModels> ReportImproveProblem { get; set; }
 
+        public DbSet<FormIdManageModel> FormIdManage { get; set; }
+
+        public DbSet<FormAttachFileManageModel> FormAttachFile { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -44,6 +49,8 @@ namespace Lm.Eic.Framework.ProductMaster.DbAccess.Mapping
             modelBuilder.Configurations.Add(new ItilEmailManageModelMapping());
             modelBuilder.Configurations.Add(new ReportImproveProblemMapping());
 
+            modelBuilder.Configurations.Add(new FormIdManageModelMapping());
+            modelBuilder.Configurations.Add(new FormAttachFileManageModelMapping());
         }
     }
 

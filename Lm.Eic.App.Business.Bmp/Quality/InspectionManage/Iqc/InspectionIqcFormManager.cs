@@ -96,7 +96,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             OrderIdList.ForEach(e =>
             {
                 if (InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(e.OrderID, e.ProductID))
-                    model = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterDatasBy(e.OrderID, e.ProductID);
+                    model = InspectionService.DataGatherManager.IqcDataGather.MasterDatasGather.GetIqcMasterModel(e.OrderID, e.ProductID);
                 else model = MaterialModelToInspectionIqcMasterModel(e);
                 if (!retrunList.Contains(model) && model != null)
                     retrunList.Add(model);

@@ -199,10 +199,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
             : base(new SupplierInfoRepository(), "供应商信息")
         { }
         #region  crud
-        /// <summary>
-        /// <param name="model"></param>
-        /// </summary>
-        /// <returns></returns>
+
         protected override void AddCrudOpItems()
         {
             this.AddOpItem(OpMode.Add, Add);
@@ -378,7 +375,7 @@ namespace Lm.Eic.App.Business.Bmp.Purchase.SupplierManager
 
         OpResult EditSupplierSeasonAuditInfo(SupplierSeasonAuditModel model)
         {
-            return irep.Update(e => e.ParameterKey == model.ParameterKey, model).ToOpResult_Add(OpContext); ;
+            return irep.Update(e => e.ParameterKey == model.ParameterKey, model).ToOpResult_Add(OpContext);
         }
     }
 

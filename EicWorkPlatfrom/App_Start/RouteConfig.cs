@@ -9,6 +9,7 @@ namespace EicWorkPlatfrom
         {
             IsCheck = true;
         }
+
         private static bool isCheck = false;
         /// <summary>
         /// 是否进行权限检测

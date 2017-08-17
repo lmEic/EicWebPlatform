@@ -989,12 +989,12 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
                 case 'middle':
                     scope.checkedClass = "fa fa-2x fa-check-square-o";
                     scope.unCheckedClass = "fa fa-2x fa-square-o";
-                    scope.checkedSize = "2em";
+                    scope.checkedSize = "1.5em";
                     break;
                 case 'large':
                     scope.checkedClass = "fa fa-4x fa-check-square-o";
                     scope.unCheckedClass = "fa fa-4x fa-square-o";
-                    scope.checkedSize = "3em";
+                    scope.checkedSize = "2.5em";
                     break;
             }
             scope.showCheckbox = false;

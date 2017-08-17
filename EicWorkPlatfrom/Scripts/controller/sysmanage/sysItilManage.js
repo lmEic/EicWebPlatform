@@ -47,28 +47,37 @@ smModule.factory('sysitilService', function (ajaxService) {
     ///保存  通知地址配置 
     itil.storeItilNotifyAddress = function (entity) {
         var url = urlPrefix + 'StoreitilNotifyAddress';
-        return ajaxService.getData(url, {
+        return ajaxService.postData(url, {
             entity: entity
         });
     };
+    ///根据通知事务类查找通知的地址模块
+    itil.getNotifyAddressManageModuleBy = function (functionName) {
+        var url = urlPrefix + 'GetNotifyAddressManageModuleBy';
+        return ajaxService.getData(url, {
+            functionName: functionName,
+        });
+    };
+
+
     ///保存邮箱记录
     itil.storeEmailManageRecord = function (model) {
         var url = urlPrefix + 'StoreEmailManageRecord';
-        return ajaxService.postData(url,{
-                model: model
-         });
+        return ajaxService.postData(url, {
+            model: model
+        });
     }
     //查询邮箱记录
-    itil.getEmailManageRecord = function (workerId, email, receiveGrade,department, mode) {
+    itil.getEmailManageRecord = function (workerId, email, receiveGrade, department, mode) {
         var url = urlPrefix + 'GetEmailManageRecord';
         return ajaxService.getData(url, {
             workerId: workerId,
             email: email,
-            receiveGrade: receiveGrade,   
-            department:department,
+            receiveGrade: receiveGrade,
+            department: department,
             mode: mode
         });
-        
+
     }
 
     return itil;
@@ -95,17 +104,13 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
         OpSign: 'add',
         Id_Key: 0
     };
-
     $scope.vm = uiVM;
-
     var originalVM = _.clone(uiVM);
-
     var queryFields = {
         selectedProgressStatuses: [],
         functionName: null
     };
     $scope.query = queryFields;
-
     var vmManager = {
         activeTab: 'initTab',
         isLocal: true,
@@ -122,9 +127,6 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
             vmManager.canEdit = false;
         },
         executors: [{ name: '万晓桥', text: '万晓桥' }, { name: '张文明', text: '张文明' }, { name: '杨垒', text: '杨垒' }],
-
-     
-
         progressStatuses: [
                 { value: '待开发', label: '<i class="fa fa-calendar-o"></i>  待开发' },
                 { value: '待审核', label: '<i class="fa fa-feed"></i>  待审核' },
@@ -184,11 +186,9 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
             });
         }
     };
-
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-
     //模态窗口选项
     var editModalOption = {
         title: "状态变更窗口",
@@ -245,16 +245,16 @@ smModule.controller('itilProjectDevelopManageCtrl', function ($scope, $modal, sy
     };
 });
 //消息通知模块控制器
-smModule.controller('itilNotifyAddressManageCtrl', function ($scope,sysitilService) {
+smModule.controller('itilNotifyAddressManageCtrl', function ($scope, sysitilService) {
     ///视图模型
     ///通知邮件配置 
     var uiVm = $scope.vm = {
-        ModuleName: "通知邮件配置 ",
-        BusinessName: "通知邮件配置",
-        TransactionName: "通知邮件配置 ",
-        EmailList: "通知邮件配置 ",
-        TelMessageList: "通知邮件配置 ",
-        MicroMessageList: "通知邮件配置 ",
+        ModuleName: null,
+        BusinessName: null,
+        TransactionName: null,
+        EmailList: null,
+        ContactsList: null,
+        WeChatList: null,
         NotifyMode: 1,
         OpStatus: "完成",
         OpPerson: null,
@@ -264,50 +264,61 @@ smModule.controller('itilNotifyAddressManageCtrl', function ($scope,sysitilServi
         Id_Key: 0,
     };
     var originalVM = _.clone(uiVm);
+    ///查询
+    var queryFields = $scope.query = {
+        functionName: null
+    };
     var vmManager = {
         activeTab: 'initTab',
         isLocal: true,
+        functionName: null,
+        TransactionInfos: [],
+        //初始化
         init: function () {
-          
+            uiVM = _.clone(uiVm);
+            uiVM.OpSign = leeDataHandler.dataOpMode.add;
+            $scope.vm = uiVM;
         },
-        OpStatus: [{ name: '完成', text: '完成' }, { name: '进行中', text: '进行中' }, { name: '未完成', text: '未完成' }],
+        OpStatusDatas: [{ name: '完成', text: '完成' }, { name: '进行中', text: '进行中' }, { name: '未完成', text: '未完成' }],
+        //列表数据源
         datasource: [],
         datasets: [],
+        // 选择查询后的项
+        selectQueryInfo: function (item) {
+            uiVM = _.clone(item);
+            uiVM.OpSign = leeDataHandler.dataOpMode.edit;
+            $scope.vm = uiVM;
+        },
+        //查询
         searchBy: function () {
-            vmManager.isUpdate = true;
-            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses, queryFields.functionName, 2).then(function (datas) {
-                vmManager.developModules = datas;
+            console.log(queryFields.functionName);
+            console.log(666666);
+            $scope.searchPromise = sysitilService.getNotifyAddressManageModuleBy(queryFields.functionName).then(function (datas) {
+                vmManager.TransactionInfos = datas;
             });
         },
-        getDevelopModules: function () {
-            vmManager.datasets = [];
-            vmManager.datasource = [];
-            $scope.searchPromise = sysitilService.getProjectDevelopModuleBy(queryFields.selectedProgressStatuses, queryFields.functionName, 1).then(function (datas) {
-                vmManager.datasource = datas;
-            });
-        },
-        showDetailsBoard: false,//显示明细面板
-        editModal: null,
-        functionName: null,
-      
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
+    /// 保存
     operate.saveAll = function (isValid) {
+        leeHelper.setUserData(uiVm);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            sysitilService.storeItilNotifyAddress(uiVm).then(function (opresult) {
+            $scope.searchPromise = sysitilService.storeItilNotifyAddress(uiVm).then(function (opresult) {
                 console.log(1);
             });
         });
     };
+    //刷新
     operate.refresh = function () {
         leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.init();
         });
     };
 });
 ///EmailManageController
-smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dataDicConfigTreeSet, connDataOpService) {
+smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dataDicConfigTreeSet, connDataOpService, $modal) {
     leeHelper.setWebSiteTitle("系统管理", "邮箱配置管理")
     ///View
     var uiVM = {
@@ -315,7 +326,7 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
         Name: null,
         Department: null,
         Email: null,
-        NickName:null,
+        NickName: null,
         ReceiveGrade: null,
         IsSender: 1,
         Password: null,
@@ -324,7 +335,7 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
         Pop3Host: 'pop.exmail.qq.com',
         SmtpPost: 25,
         Pop3Post: 110,
-        RegDate: null,
+        RegDate: new Date(),
         OpDate: null,
         OpTime: null,
         OpPerson: null,
@@ -333,14 +344,12 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
     };
     $scope.vm = uiVM;
     var originalVM = _.clone(uiVM);
-
     var dialog = $scope.dialog = leePopups.dialog();
-
     var queryFields = {
         workerId: null,
         email: null,
         receiveGrade: 0,
-        department:null
+        department: null
     };
     $scope.query = queryFields;
     var vmManager = {
@@ -351,6 +360,13 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
             uiVM.OpSign = leeDataHandler.dataOpMode.add;
             $scope.vm = uiVM;
         },
+        del: function () {
+            uiVM = _.clone(originalVM);
+            uiVM.OpSign = leeDataHandler.dataOpMode.delete;
+            $scope.vm = uiVM;
+
+        },
+
         searchedWorkers: [],
         isSingle: true,//是否搜寻人员或部门
         departments: [
@@ -369,19 +385,20 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
             { id: "企业讯息", text: "企业讯息" },
             { id: "自动化", text: "自动化" },
         ],
-        receiveGrades: [{ name: "1", text: "1" }, { name: "2", text: "2" }, { name: "3", text: "3" }, { name: "4", text: "4" }, { name: "5", text: "5" },],
+        receiveGrades: [{ name: "1", text: "1" }, { name: "2", text: "2" }, { name: "3", text: "3" }, { name: "4", text: "4" }, { name: "5", text: "5" }, ],
         storeModules: [],
         datasource: [],
         searchDataset: [],
+        delItem: null,
         searchBy: function () {
-            $scope.searchPromise = sysitilService.getEmailManageRecord(queryFields.workerId, queryFields.email,queryFields.receiveGrade,queryFields.department, 1).then(function (datas) {
+            $scope.searchPromise = sysitilService.getEmailManageRecord(queryFields.workerId, queryFields.email, queryFields.receiveGrade, queryFields.department, 1).then(function (datas) {
                 vmManager.searchDataset = datas;
             })
         },
         getEmailRecords: function (mode) {
             vmManager.searchDataset = [];
             vmManager.datasource = [];
-            sysitilService.getEmailManageRecord(queryFields.workerId, queryFields.email,queryFields.receiveGrade,queryFields.department, mode).then(function (datas) {
+            sysitilService.getEmailManageRecord(queryFields.workerId, queryFields.email, queryFields.receiveGrade, queryFields.department, mode).then(function (datas) {
                 vmManager.datasource = datas;
             });
         },
@@ -418,6 +435,31 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
                 uiVM.Department = null;
             }
         },
+        delModalWindow: $modal({
+            title: "删除提示", content: "您确定要删除此信息吗?",
+            templateUrl: leeHelper.modalTplUrl.deleteModalUrl, show: false,
+            controller: function ($scope) {
+                $scope.confirmDelete = function () {
+                    uiVM.OpSign = leeDataHandler.dataOpMode.delete;
+                    sysitilService.storeEmailManageRecord(uiVM).then(function (opresult) {
+                        leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                            if (opresult.Result) {
+                                vmManager.searchBy();
+                                vmManager.del();
+
+                            }
+
+                        })
+
+                    })
+
+                    vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.hide);
+                };
+            },
+        }),
+
+
+
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -428,6 +470,11 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
         $scope.vm = uiVM = item;
         dialog.show();
     };
+    operate.deleteItem = function (item) {
+        vmManager.delItem = item;
+        $scope.vm = uiVM = item;
+        vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.show);
+    }
     operate.saveAll = function (isValid) {
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             sysitilService.storeEmailManageRecord(uiVM).then(function (opresult) {
@@ -437,10 +484,12 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
                         mode.Id_Key == opresult.Id_Key;
                         if (mode.OpSign === leeDataHandler.dataOpMode.add) {
                             vmManager.datasource.push(mode);
-                        }
 
+                        }
+                        vmManager.searchBy();
                         vmManager.init();
                         dialog.close();
+
                     }
                 });
             });
@@ -458,9 +507,7 @@ smModule.controller('itilEmailManageCtrl', function ($scope, sysitilService, dat
     departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);
         queryFields.department = dto.DataNodeText;
+        vmManager.getEmailRecords(4);
     };
     $scope.ztree = departmentTreeSet;
-
-
-
 });

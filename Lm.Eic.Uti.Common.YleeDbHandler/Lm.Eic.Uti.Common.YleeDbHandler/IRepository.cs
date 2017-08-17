@@ -16,7 +16,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         #region 属性
 
         /// <summary>
-        /// 获取 当前实体的查询数据集
+        /// 获取当前实体的查询数据集
         /// </summary>
         IQueryable<TEntity> Entities { get; }
 
@@ -128,6 +128,7 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         TEntity GetByKey(object key);
 
 
+
         /// <summary>
         /// 全部提交
         /// </summary>
@@ -180,6 +181,8 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         bool IsExist(Expression<Func<TEntity, bool>> predicate);
 
         #endregion 查询方法
+
+
     }
 
     /// <summary>

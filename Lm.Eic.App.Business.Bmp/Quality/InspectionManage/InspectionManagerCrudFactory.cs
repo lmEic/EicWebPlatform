@@ -77,6 +77,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             get { return OBulider.BuildInstance<InspectionFqcMasterCrud>(); }
         }
+        internal static OrtMaterialConfigCrud OrtMaterialConfigCrud
+        {
+            get { return OBulider.BuildInstance<OrtMaterialConfigCrud>(); }
+        }
 
         #endregion
     }

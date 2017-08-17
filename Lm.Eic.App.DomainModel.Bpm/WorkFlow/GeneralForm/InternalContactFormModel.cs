@@ -9,19 +9,19 @@ namespace Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm
     ///内部联络单模型
     /// </summary>
     [Serializable]
-    public class InternalContactFormModel
+    public partial class InternalContactFormModel
     {
         public InternalContactFormModel()
         { }
         #region Model
-        private string _orderid;
+        private string _formid;
         /// <summary>
-        ///单号
+        ///表单编号
         /// </summary>
-        public string OrderId
+        public string FormId
         {
-            set { _orderid = value; }
-            get { return _orderid; }
+            set { _formid = value; }
+            get { return _formid; }
         }
         private string _formsubject;
         /// <summary>
@@ -50,77 +50,41 @@ namespace Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm
             set { _applydate = value; }
             get { return _applydate; }
         }
-        private string _applydepartment;
+        private DateTime _needdate;
         /// <summary>
-        ///申请单位
+        ///需求日期
         /// </summary>
-        public string ApplyDepartment
+        public DateTime NeedDate
         {
-            set { _applydepartment = value; }
-            get { return _applydepartment; }
+            set { _needdate = value; }
+            get { return _needdate; }
         }
-        private string _applyperson;
+        private string _participantinfo;
         /// <summary>
-        ///申请人
+        ///参与者信息
         /// </summary>
-        public string ApplyPerson
+        public string ParticipantInfo
         {
-            set { _applyperson = value; }
-            get { return _applyperson; }
+            set { _participantinfo = value; }
+            get { return _participantinfo; }
         }
-        private string _relatedtoperson;
+        private string _department;
         /// <summary>
-        ///相关人
+        ///部门
         /// </summary>
-        public string RelatedToPerson
+        public string Department
         {
-            set { _relatedtoperson = value; }
-            get { return _relatedtoperson; }
+            set { _department = value; }
+            get { return _department; }
         }
-        private string _relatedtodepartment;
+        private string _yearmonth;
         /// <summary>
-        ///相关单位
+        ///年月分
         /// </summary>
-        public string RelatedToDepartment
+        public string YearMonth
         {
-            set { _relatedtodepartment = value; }
-            get { return _relatedtodepartment; }
-        }
-        private string _approver;
-        /// <summary>
-        ///核准人
-        /// </summary>
-        public string Approver
-        {
-            set { _approver = value; }
-            get { return _approver; }
-        }
-        private string _field1;
-        /// <summary>
-        ///1
-        /// </summary>
-        public string Field1
-        {
-            set { _field1 = value; }
-            get { return _field1; }
-        }
-        private string _field2;
-        /// <summary>
-        ///2
-        /// </summary>
-        public string Field2
-        {
-            set { _field2 = value; }
-            get { return _field2; }
-        }
-        private string _field3;
-        /// <summary>
-        ///3
-        /// </summary>
-        public string Field3
-        {
-            set { _field3 = value; }
-            get { return _field3; }
+            set { _yearmonth = value; }
+            get { return _yearmonth; }
         }
         private DateTime _opdate;
         /// <summary>
@@ -169,5 +133,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm
         }
         #endregion Model
     }
+
+
 
 }

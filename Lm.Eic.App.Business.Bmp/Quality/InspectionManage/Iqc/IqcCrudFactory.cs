@@ -45,7 +45,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private OpResult EidtInspectionItemConfig(InspectionIqcItemConfigModel model)
         {
-
+            ///公用不能添加修改 
+            if (model.SizeMemo == "条件ROHS检验") return OpResult.SetErrorResult("符合条件ROHS检验，不能修改操作!");
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
         /// <summary>
@@ -55,11 +56,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         private OpResult AddInspectionItemConfig(InspectionIqcItemConfigModel model)
         {
-
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
-
-
         /// <summary>
         /// 在数据库中是否存在此料号
         /// </summary>
@@ -138,7 +136,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
         }
         /// <summary>
-        /// 更新详细列表SQl语句
+        /// 更新（审核）信息详细列表SQl语句
         /// </summary>
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
@@ -146,8 +144,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         internal OpResult UpAuditDetailData(string orderId, string materialId, string inspectionStatus)
         {
-            return irep.UpAuditDetailData(orderId, materialId, inspectionStatus).ToOpResult_Eidt(OpContext);
+            // return irep.UpAuditDetailData(orderId, materialId, inspectionStatus).ToOpResult_Eidt(OpContext);
+            return irep.Update(e => e.OrderId == orderId && e.MaterialId == materialId, u => new InspectionIqcMasterModel { InspectionStatus = inspectionStatus }).ToOpResult_Eidt(OpContext);
         }
+
         private OpResult AddIqcInspectionMaster(InspectionIqcMasterModel model)
         {
             return irep.Insert(model).ToOpResult_Add(OpContext);
@@ -156,26 +156,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.MaterialId == materialId).ToList();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="orderId"></param>
-        /// <param name="materialId"></param>
-        /// <returns></returns>
-        internal InspectionIqcMasterModel GetIqcInspectionMasterDatasBy(string orderId, string materialId)
+        internal List<InspectionIqcMasterModel> GetIqcMasterContainDatasBy(string orderId)
         {
-
-            return irep.FirstOfDefault(e => e.OrderId == orderId && e.MaterialId == materialId);
-        }
-        internal InspectionIqcMasterModel GetIqcInspectionMasterDatasBy11111(string orderId, string materialId)
-        {
-            return null;
+            return irep.Entities.Where(e => e.OrderId.Contains(orderId)).ToList();
         }
         internal bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
         {
             return irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId);
         }
-
 
         /// <summary>
         /// 
@@ -368,11 +356,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.OrderId == orderid && e.MaterialId == materialId).ToList();
         }
+        internal List<InspectionIqcDetailModel> GetIqcInspectionDetailOrderIdModelBy(string orderid)
+        {
+            return irep.Entities.Where(e => e.OrderId == orderid).ToList();
+        }
 
 
         internal List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderid, string materialId)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId && e.OrderId != orderid).Distinct().ToList();
+            return irep.Entities.Where(e => e.MaterialId == materialId && e.OrderId != orderid).Distinct().OrderBy(f => f.MaterialInDate).ToList();
         }
 
         ///// <summary>

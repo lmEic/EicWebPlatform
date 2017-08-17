@@ -13,8 +13,9 @@
                 <div href="javascript:void(0);" role="button" class="btn btn-info file" title="从Excel中导入数据">
                     <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
                 </div>
+                @* 批量复制 *@
                 <span class="pull-right" ng-show="vmManager.copyLotWindowDisplay">
-                    <input readonly placeholder="原始产品品号" ng-model="vm.MaterialId" />
+                    <input readonly placeholder="原始产品品号" ng-model="vmManager.copyMaterialId" />
                     <i class="fa fa-arrows-h"></i>
                     <input placeholder="新的产品品号" ng-model="vmManager.targetMaterialId" />
                     <span class="btn-sm btn  btn-primary" ng-click="vmManager.copyAll()"><i class="fa fa-copy"></i>复制</span>
@@ -23,7 +24,7 @@
             <button type="button" class="btn btn-sm  btn-success pull-right" ng-click="vmManager.showCopyLotWindow()">批量复制</button>
         </form>
         <div class="h-split"></div>
-        @*ERP信息*@
+        @*获取ERP信息*@
         <div class="row">
             <div class="col-md-2">
                 <label>品名:</label>
@@ -41,111 +42,145 @@
                 <label>图号:</label>
                 <span title="{{tableVm.MaterialrawID}}">{{tableVm.MaterialrawID}}</span>
             </div>
+            <div class="col-md-2">
+                <label>是否ORT:</label>
+                <button type="button" class="btn  btn-default" ng-model="vmORT.IsValid" ng-change="vmManager.changeIsNeedORT()"
+                        data-html="1" data-multiple="0"
+                        data-animation="am-flip-x" data-placeholder="False"
+                        bs-options="item.id as item.text for item in vmManager.isNeedORTs" bs-select></button>
+            </div>
         </div>
         <div class="h-split"></div>
         <div class="row">
-            <div class="col-md-9 well">
+            <div class="col-md-8 well">
                 <form role="form" name="fqcInspectionItemForm" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                     <div class="form-group">
+                        @*料号*@
                         <label for="materialId" class="col-md-2 control-label">料号</label>
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <input name="materialId" class="form-control" ng-model="vm.MaterialId" required />
                             <div class="error-messages" ng-messages="fqcInspectionItemForm.materialId.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">料号不能为空</small>
                             </div>
                         </div>
-
+                        @*检验方式*@
+                        <label for="inspectionMode" class="col-md-2 control-label">检验方式</label>
+                        <div class="col-md-4">
+                            <div class="col-lg-9 input-group">
+                                <input class="form-control" name="inspectionMode" placeholder="检验方式" ng-model="vm.InspectionMode" required />
+                                <div class="error-messages" ng-messages="fqcInspectionItemForm.inspectionMode.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">检验方式不能为空</small>
+                                </div>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" ng-model="vm.InspectionMode"
+                                            data-html="1" data-multiple="0"
+                                            data-animation="am-flip-x" data-placeholder="正常"
+                                            bs-options="item.id as item.text for item in vmManager.inspectionModes" bs-select></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @*检验项目*@
                         <label for="inspectionItem" class="col-md-2 control-label">检验项目</label>
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <input name="inspectionItem" class="form-control" ng-model="vm.InspectionItem" required />
                             <div class="error-messages" ng-messages="fqcInspectionItemForm.inspectionItem.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">检验项目不能为空</small>
                             </div>
                         </div>
-
+                        @*检验序次*@
                         <label for="inspectionItemIndex" class="col-md-2 control-label">检验序次</label>
-                        <div class="col-md-2">
-                            <input name="inspectionItemIndex" class="form-control" ng-model="vm.InspectionItemIndex" required />
+                        <div class="col-md-4">
+                            <input name="inspectionItemIndex" type="number" class="form-control" ng-model="vm.InspectionItemIndex" required />
                             <div class="error-messages" ng-messages="fqcInspectionItemForm.inspectionItemIndex.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">检验序次不能为空</small>
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label for="primarySecondaryProperty" class="col-md-2 control-label">主次属性</label>
-                        <div class="col-md-2">
-                            <input name="primarySecondaryProperty" class="form-control" ng-model="vm.PrimarySecondaryProperty" required />
-                            <div class="error-messages" ng-messages="fqcInspectionItemForm.primarySecondaryProperty.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">主次属性不能为空</small>
-                            </div>
-                        </div>
-
+                        @*检验方法*@
                         <label for="inspectionMethod" class="col-md-2 control-label">检验方法</label>
-                        <div class="col-md-2">
-                            <input name="inspectionMethod" class="form-control" ng-model="vm.InspectionMethod" required />
+                        <div class="col-md-4">
+                            <input name="inspectionMethod" type="text" class="form-control" ng-model="vm.InspectionMethod" />
                             <div class="error-messages" ng-messages="fqcInspectionItemForm.inspectionMethod.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">检验方法不能为空</small>
+                                <small ng-message="required">检验方法不能为空!!</small>
                             </div>
                         </div>
-
+                        @*采集类型*@
                         <label for="inspectionDataGatherType" class="col-md-2 control-label">采集类型</label>
-                        <div class="col-md-2">
-                            <button type="button" class="btn  btn-default" ng-model="vm.InspectionDataGatherType"
-                                    data-html="1" data-multiple="0"
-                                    data-animation="am-flip-x" data-placeholder="A"
-                                    bs-options="item.id as item.text for item in vmManager.InspectionDataGatherTypes" bs-select>
-                                <span class="caret"></span>
-                            </button>
+                        <div class="col-md-4">
+                            <div class="col-lg-9 input-group">
+                                <input name="inspectionDataGatherType" class="form-control" ng-model="vm.InspectionDataGatherType" required />
+                                <div class="error-messages" ng-messages="fqcInspectionItemForm.inspectionDataGatherType.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">采集类型不能为空</small>
+                                </div>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" ng-model="vm.InspectionDataGatherType"
+                                            data-html="1" data-multiple="0"
+                                            data-animation="am-flip-x" data-placeholder="A"
+                                            bs-options="item.id as item.text for item in vmManager.InspectionDataGatherTypes" bs-select>
+                                        <span class="caret"></span>
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="col-md-2 control-label">检验方式</label>
-                        <div class="col-md-2">
-                            <button type="button" class="btn  btn-default" ng-model="vm.InspectionMode"
-                                    data-html="1" data-multiple="0"
-                                    data-animation="am-flip-x" data-placeholder="正常"
-                                    bs-options="item.id as item.text for item in vmManager.inspectionMode" bs-select>
-                                <span class="caret"></span>
-                            </button>
+                        @*主次属性*@
+                        <label for="keyLevel" class="col-md-2 control-label">主次属性</label>
+                        <div class="col-md-4">
+                            <div class="col-lg-9 input-group">
+                                <input name="keyLevel" class="form-control" ng-model="vm.KeyLevel" required />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" ng-model="vm.KeyLevel"
+                                            data-html="1" data-multiple="0"
+                                            data-animation="am-flip-x" data-placeholder=""
+                                            bs-options="item.id as item.text for item in vmManager.keyLevels" bs-select>
+                                        <span class="caret"></span>
+                                    </button>
+                                </span>
+                            </div>
                         </div>
-
+                        @*检验水平*@
                         <label for="inspectionLevel" class="col-md-2 control-label">检验水平</label>
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <input name="inspectionLevel" class="form-control" ng-model="vm.InspectionLevel" required />
                             <div class="error-messages" ng-messages="fqcInspectionItemForm.inspectionLevel.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">检验水平不能为空</small>
                             </div>
                         </div>
-
+                    </div>
+                    <div class="form-group">
+                        @*AQL值*@
                         <label for="inspectionAQL" class="col-md-2 control-label">AQL值</label>
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <input name="inspectionAQL" class="form-control" ng-model="vm.InspectionAQL" required />
                             <div class="error-messages" ng-messages="fqcInspectionItemForm.inspectionAQL.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">AQL值不能为空</small>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="form-group">
+                        @*规格*@
                         <label for="sizeMemo" class="col-md-2 control-label">规格</label>
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <input name="sizeMemo" class="form-control" ng-model="vm.SizeMemo" required />
                             <div class="error-messages" ng-messages="fqcInspectionItemForm.sizeMemo.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">规格</small>
                             </div>
                         </div>
+                    </div>
+                    @*上限下限*@
+                    <div class="form-group">
                         <div ng-if="vm.InspectionDataGatherType !=='D'">
                             <label for="sizeUSL" class="col-md-2 control-label">上限</label>
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 <input name="sizeUSL" class="form-control" ng-model="vm.SizeUSL" required />
                                 <div class="error-messages" ng-messages="fqcInspectionItemForm.sizeUSL.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">上限不能为空</small>
                                 </div>
                             </div>
                             <label for="sizeLSL" class="col-md-2 control-label">下限</label>
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 <input name="sizeLSL" class="form-control" ng-model="vm.SizeLSL" required />
                                 <div class="error-messages" ng-messages="fqcInspectionItemForm.sizeLSL.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">下限不能为空</small>
@@ -153,18 +188,13 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="form-group">
+                        @*备注*@
                         <label for="memo" class="col-md-2 control-label">备注</label>
-                        <div class="col-md-10">
-                            <textarea required name="inspectionMethod" ng-model="vm.Memo" class="form-control" rows="2"></textarea>
-                            <div class="error-messages" ng-messages="fqcInspectionItemForm.memo.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">备注不能为空</small>
-                            </div>
+                        <div class="col-md-8">
+                            <textarea required name="memo" ng-model="vm.Memo" class="form-control" rows="2"></textarea>
                         </div>
                     </div>
-
                     <hr />
                     <div class="alert alert-info text-center">
                         <div class="row">
@@ -177,7 +207,7 @@
                     </div>
                 </form>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <span ng-if="vmManager.dataSource.length>0" cg-busy="{promise:opPromise}">
                     <button class="btn btn-success" ng-click="operate.saveAll()">批量保存</button>
                     <span yl-operatemsg-board></span>
@@ -195,13 +225,18 @@
                         <tr ng-repeat="item in vmManager.dataSets track by $index">
                             <td>{{item.InspectionItemIndex}}</td>
                             <td>
-                                <span title="品号:{{item.MaterialId}}">
+                                <span title="{{item.MaterialId}}">
                                     {{item.InspectionItem}}
                                 </span>
+                                <div class="h-split"></div>
+                                <span title="品号">{{item.MaterialId}}</span><br />
                             </td>
                             <td style="cursor:pointer;">
                                 <button class="btn btn-xs btn-info" ng-click="operate.editItem(item)" title="编辑">
                                     <i class="fa fa-edit"></i>
+                                </button>
+                                <button class="btn btn-xs btn-success" ng-click="operate.copyItem(item)" title="复制">
+                                    <i class="fa fa-files-o"></i>
                                 </button>
                                 <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item)" title="删除">
                                     <i class="fa fa-remove"></i>
@@ -215,6 +250,88 @@
                      data-datasource="vmManager.dataSource">
                 </div>
             </div>
+            <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:60%">
+                <content dialog-title>
+                    <i class="fa fa-tasks">编辑ORT数据</i>
+                </content>
+                <content dialog-content>
+                    <div class="gridster">
+                        <form role="form" name="formCreateORTdatas" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                            <div class="well form-group">
+                                <div class="col-md-4 ">
+                                    <label for="materialId" class="col-md-4 control-label">品号：</label>
+                                    <div class="col-md-8">
+                                        <input name="materialId" type="text" readonly="readonly" class="form-control" ng-model="vmORT.MaterialId" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 ">
+                                    <label for="materailName" class="col-md-4 control-label">品名：</label>
+                                    <div class="col-md-8">
+                                        <input name="materailName" type="text" readonly="readonly" class="form-control" ng-model="vmORT.MaterailName" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 ">
+                                    <label for="materialSpecify" class="col-md-4 control-label">规格：</label>
+                                    <div class="col-md-8">
+                                        <input name="materialSpecify" type="text" readonly="readonly" class="form-control" ng-model="vmORT.MaterialSpecify" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="ortType" class="col-md-4 control-label">ORT数据:</label>
+                                    <div class="col-md-8">
+                                        <input name="ortType" type="text" class="form-control" ng-model="vmORT.OrtType" required />
+                                        <div class="error-messages" ng-messages="formCreateORTdatas.ortType.$error" ng-show="operateORT.showValidation">
+                                            <small ng-message="required">ORT数据不能为空</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="ortCoefficient" class="col-md-4 control-label">系数:</label>
+                                    <div class="col-md-6">
+                                        <input name="ortCoefficient" type="number" class="form-control" ng-model="vmORT.OrtCoefficient" required />
+                                        <div class="error-messages" ng-messages="formCreateORTdatas.ortCoefficient.$error" ng-show="operateORT.showValidation">
+                                            <small ng-message="required">系数不能为空</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="IsValid" class="col-lg-4 control-label">有效:</label>
+                                    <div class="col-lg-6 input-group">
+                                        <input name="IsValid" type="text" class="form-control" ng-model="vmORT.IsValid" required />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn  btn-primary" ng-model="vmORT.IsValid"
+                                                    data-html="1" data-multiple="0"
+                                                    data-animation="am-flip-x" data-placeholder="True"
+                                                    bs-options="item.id as item.text for item in vmManager.isNeedORTs" bs-select></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label for="oRTmemo" class="col-md-2 control-label">备注:</label>
+                                    <div class="col-md-10">
+                                        <textarea required name="oRTmemo" ng-model="vmORT.Memo" class="form-control" rows="2"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            @*Ort 保存 取消 *@
+                            <div class="alert alert-info text-right">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-primary " ng-click="operateORT.saveORTData(formCreateORTdatas.$valid)"><i class="fa fa-save"></i>保存</button>
+                                        <button class="btn btn-default" ng-click="operateORT.cannelORT(formCreateORTdatas.$valid)"><i class="fa fa-undo"></i>取消</button>
+                                        <span yl-operatemsg-board></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </content>
+            </dialog>
         </div>
     </div>
     <div class="panel-footer">
