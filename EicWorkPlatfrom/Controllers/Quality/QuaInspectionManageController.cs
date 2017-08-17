@@ -173,8 +173,8 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult CheckFqcInspectionItemConfigMaterialId(string materialId)
         {
 
-            var result = InspectionService.ConfigManager.FqcItemConfigManager.IsExistFqcConfigMaterailId(materialId);
-            return Json(result, JsonRequestBehavior.AllowGet);
+            var dataResult = InspectionService.ConfigManager.FqcItemConfigManager.IsExistFqcConfigMaterailId(materialId);
+            return Json(dataResult, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 删除进料检验配置数据 deleteIqlInspectionConfigItem

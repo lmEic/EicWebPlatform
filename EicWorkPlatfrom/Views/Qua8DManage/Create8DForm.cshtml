@@ -200,83 +200,116 @@
                 <div bs-pane data-title="其它" data-name="AntherTab">
                     <div class="well">
                         <div class="gridster">
-                            <form role="form" name="formSupGrade" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
-                                @*ReportId, DiscoverPosition, AccountabilityDepartment, OrderId, MaterialName, MaterialSpec,
-                                    InPutHouseOrder, MaterialCount, InspectNumber, FailQty, FailClass, CreateReportDate, Status,*@
+                            <form role="form" name="form8DCreateData" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+
                                 <div class="form-group">
-                                    <div class="col-md-4 ">
-                                        <label for="reportId" class="col-md-4 control-label"> No.</label>
-                                        <div class="col-md-8">
-                                            <input name="reportId" type="text" readonly="readonly" class="form-control" ng-model="vm.ReportId" />
+                                    <label class="text-right col-md-2" for="createReportDate">日期:</label>
+                                    <div class="col-md-4">
+                                        <input name="createReportDate" type="date" class="form-control col-md-3" ng-model="vm.CreateReportDate" format-date required />
+                                        <div class="error-messages" ng-messages="form8DCreateData.createReportDate.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">日期不能为空</small>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 form-group">
-                                        <label for="discoverPosition" class="col-md-3 control-label">来源:</label>
-                                        <div class="col-lg-9 input-group">
-                                            <input name="discoverPositionName" placeholder="来源名称" class="form-control" ng-model="vm.DiscoverPosition" required />
+                                    <label for="discoverPosition" class="text-right col-md-2 ">来源:</label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <input name="discoverPositionName" placeholder="来源名称" class="form-control col-md-3" ng-model="vm.DiscoverPosition" required />
+                                            <div class="error-messages" ng-messages="form8DCreateData.discoverPositionName.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">来源不能为空</small>
+                                            </div>
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-primary" ng-model="vm.DiscoverPosition" ng-change="vmManager.SelectDiscoverPosition()"
-                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="来源(内/外)"
+                                                <button type="button" class="btn btn-primary" ng-model="vm.DiscoverPosition"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="供应商"
                                                         data-bs-options="item.id as item.text for item in vmManager.DiscoverPositions" data-bs-select></button>
                                             </span>
                                         </div>
-
-                                    </div>
-                                    <div class="col-md-4 ">
-                                        <label for="createReportDate" class="col-md-4 control-label">日期：</label>
-                                        <div class="col-lg-8">
-                                            <input name="createReportDate" type="date" class="form-control" ng-model="vm.CreateReportDate" format-date />
-                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
 
-                                    <div class="col-md-4 ">
-                                        <label for="accountabilityDepartment" class="col-md-6 control-label">责任单位:</label>
-                                        <div class="col-md-6">
-                                            <input name="accountabilityDepartment" type="text" class="form-control" ng-model="vm.AccountabilityDepartment" format-date />
+                                <div class="form-group">
+                                    <label for="reportId" class="text-right col-md-2">No:</label>
+                                    <div class="col-md-4">
+                                        <input name="reportId" type="text" readonly="readonly" class="form-control col-md-3" ng-model="vm.ReportId" />
+                                        <div class="error-messages" ng-messages="form8DCreateData.reportId.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">单号不能为空</small>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 ">
-                                        <label for="materialName" class="col-md-4 control-label">品名:</label>
-                                        <div class="col-md-8">
-                                            <input name="materialName" type="text" class="form-control" ng-model="vm.MaterialName" format-date />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 ">
-                                        <label for="materialSpec" class="col-md-6 control-label">规格:</label>
-                                        <div class="col-md-6">
-                                            <input name="materialSpec" type="text" class="form-control" ng-model="vm.MaterialSpec" format-date />
-                                        </div>
+                                    <label for="accountabilityDepartment" class="text-right  col-md-2">责任单位:</label>
+                                    <div class="col-md-4">
+                                        <input name="accountabilityDepartment" type="text" class="form-control" ng-model="vm.AccountabilityDepartment" />
                                     </div>
 
                                 </div>
                                 <div class="form-group">
-                                    <label for="inPutHouseOrder" class="col-md-2 control-label">交货单/入库单号: </label>
-                                    <div class="col-md-2">
-                                        <input name="inPutHouseOrder" type="text" class="form-control" ng-model="vm.OrderId" format-date />
+                                    <label for="materialName" class="text-right  col-md-2">品名:</label>
+                                    <div class="col-md-4">
+                                        <input name="materialName" type="text" class="form-control" ng-model="vm.MaterialName" />
                                     </div>
-                                    <label for="materialCount" class="col-md-2 control-label">批 量:</label>
-                                    <div class="col-md-2">
-                                        <input name="materialCount" type="text" class="form-control" ng-model="vm.MaterialCount" format-date />
+                                    <label for="materialSpec" class="text-right  col-md-2">规格:</label>
+                                    <div class="col-md-4">
+                                        <input name="materialSpec" type="text" class="form-control col-md-4" ng-model="vm.MaterialSpec" />
                                     </div>
-                                    <label for="inspectNumber" class="col-md-2 control-label">检验数</label>
-                                    <div class="col-md-2">
-                                        <input name="inspectNumber" type="text" class="form-control" ng-model="vm.InspectNumber" format-date />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="orderId" class="text-right  col-md-2">交货单/入库单号:</label>
+                                    <div class="col-md-4">
+                                        <input name="orderId" type="text" class="form-control" ng-model="vm.OrderId" />
+                                    </div>
+                                    <label for="materialCount" class="text-right  col-md-2">批量:</label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <input name="materialCount" type="text" class="form-control" ng-model="vm.MaterialCount" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-model="vm.MaterialCountUnit"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="单位"
+                                                        data-bs-options="item.id as item.text for item in vmManager.unitDatas" data-bs-select></button>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="failQty" class="col-md-2 control-label">不良数:</label>
-                                    <div class="col-md-2">
-                                        <input name="failQty" type="text" class="form-control" ng-model="vm.FailQty" format-date />
+                                    <label for="inspectNumber" class="text-right  col-md-2">检验数:</label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <input name="inspectNumber" type="text" class="form-control" ng-model="vm.InspectCount" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-model="vm.InspectCountUnit"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="单位"
+                                                        data-bs-options="item.id as item.text for item in vmManager.unitDatas" data-bs-select></button>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <label for="failClass" class="col-md-2 control-label">不良类别:</label>
-                                    <div class="col-md-2">
-                                        <input name="failClass" type="text" class="form-control" ng-model="vm.FailClass" format-date />
+                                    <label for="inPutHouseOrder" class="text-right  col-md-2">不良类别: </label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <input name="FailClass" type="text" class="form-control" ng-model="vm.FailClass" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary" ng-model="vm.FailClass"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="不良类别"
+                                                        data-bs-options="item.id as item.text for item in vmManager.failClassDatas" data-bs-select></button>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <label for="66" class="col-md-2  control-label">检验数:</label>
-                                    <div class="col-md-2">
-                                        <input name="66" type="text" class="form-control" ng-model="vm.InspectNumber" format-date />
+                                </div>
+                                <div class="form-group">
+                                    <label for="failQty" class="text-right  col-md-2">不良数:</label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <input name="failQty" type="text" class="form-control" ng-model="vm.FailQty" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-model="vm.FailQtyUnit"
+                                                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="单位"
+                                                        data-bs-options="item.id as item.text for item in vmManager.unitDatas" data-bs-select></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <label for="failQty" class="text-right  col-md-2">不良率:</label>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <input name="FailRatio" type="text" class="form-control" ng-model="vm.FailRatio" />
+                                            <span class="input-group-addon">%</span>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -286,8 +319,8 @@
                             <div class="alert alert-info">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <button class="btn btn-primary " ng-click="operate.savePurSupGradeDatas(formSupGrade.$valid)"><i class="fa fa-save"></i>保存</button>
-                                        <button class="btn btn-default" ng-click="operate.cannel(formSupGrade.$valid)"><i class="fa fa-undo"></i>取消</button>
+                                        <button class="btn btn-primary " ng-click="operate.saveAll(form8DCreateData.$valid)"><i class="fa fa-save"></i>保存</button>
+                                        <button class="btn btn-default" ng-click="operate.Cancel()"><i class="fa fa-undo"></i>取消</button>
                                         <span yl-operatemsg-board></span>
                                     </div>
                                 </div>
@@ -348,7 +381,6 @@
                                     </div>
 
                                 </div>
-
                                 <div class="form-group">
                                     <label for="materialName" class="text-right  col-md-2">品名:</label>
                                     <div class="col-md-4">
@@ -377,7 +409,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <label for="inspectNumber" class="text-right  col-md-2">检验数:</label>
                                     <div class="col-md-4">
@@ -401,9 +432,7 @@
                                             </span>
                                         </div>
                                     </div>
-
                                 </div>
-
                                 <div class="form-group">
                                     <label for="failQty" class="text-right  col-md-2">不良数:</label>
                                     <div class="col-md-4">

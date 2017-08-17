@@ -266,7 +266,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     }
     //////////////////////////////////////////////fqc检验单管理模块/////////////////////////////////////////////
     //fqc检验单管理模块    获取表单数据
-    quality.getInspectionFormManageOfFqcDatas = function (formStatus, dateFrom, dateTo) {
+    quality.findFqcMasterDatas = function (formStatus, dateFrom, dateTo) {
         var url = quaInspectionManageUrl + 'GetInspectionFormManageOfFqcDatas';
         return ajaxService.getData(url, {
             formStatus: formStatus,
@@ -970,6 +970,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
                     $scope.tableVm = datas.ProductMaterailModel;
                     leeHelper.copyVm(datas.OrtDatas, uiVmORT);
                     vmManager.dataSource = datas.InspectionItemConfigModelList;
+                    vmManager.isNeedORt = uiVmORT.IsValid;
                 }
             });
         },
@@ -985,24 +986,25 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
         },
         //显示批量复制操作窗口
         showCopyLotWindow: function () {
+
             vmManager.copyMaterialId = uiVM.MaterialId;
+            console.log(vmManager.copyMaterialId);
             vmManager.copyLotWindowDisplay = true;
         },
         //批量复制
         copyAll: function () {
-            qualityInspectionDataOpService.checkIqcspectionItemConfigMaterialId(vmManager.targetMaterialId).then(function (datas) {
+            qualityInspectionDataOpService.checkFqcInspectionItemConfigMaterialId(vmManager.targetMaterialId).then(function (datas) {
                 console.log(datas);
-                if (datas.result.Result) {
-                    alert(vmManager.targetMaterialId + "已经存在")
+                if (!datas.Result) {
+                    alert(vmManager.targetMaterialId + datas.Message)
                 } else {
-                    $scope.tableVm = datas.productMaterailModel;
-                    if (datas.productMaterailModel != null) {
+                    $scope.tableVm = datas.Entity;
+                    if (datas.Entity != null) {
                         angular.forEach(vmManager.dataSource, function (item) {
                             item.Id_key = null;
                             uiVM.MaterialId = item.MaterialId = vmManager.targetMaterialId;
                         });
                     }
-                    else { alert("此物料【" + vmManager.targetMaterialId + "】不存在") }
                 }
             })
         },
@@ -1030,7 +1032,7 @@ qualityModule.controller("fqcInspectionItemConfigCtrl", function ($scope, qualit
         }),
         //选择 是否 在添加 ORT项目
         changeIsNeedORT: function () {
-            if (vmManager.isNeedORt === 'True') {
+            if (uiVmORT.IsValid === 'True') {
                 leeHelper.copyVm($scope.tableVm, uiVmORT);
                 uiVmORT.IsValid = vmManager.isNeedOR;
                 //$scope.searchPromise = qualityInspectionDataOpService.getOrtMaterialConfigData(uiVmORT.MaterialId).then(function (datas) {
@@ -1409,7 +1411,7 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
         }),
         //获取检验表单主数据
         getMasterDatas: function () {
-            $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormManageOfFqcDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
+            $scope.searchPromise = qualityInspectionDataOpService.findFqcMasterDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
                 if (editDatas.length >= 100) {
                     vmManager.showTips.$promise.then(vmManager.showTips.show);
                 }
