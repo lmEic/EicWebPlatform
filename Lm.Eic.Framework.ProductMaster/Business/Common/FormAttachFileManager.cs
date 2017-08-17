@@ -15,12 +15,12 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Common
     {
         /// <summary>
         /// 相同模块相同表单号的只允许上传单个附件
-        /// 
         /// </summary>
         /// <param name="fileModel"></param>
         /// <returns></returns>
         public OpResult UploadSingleAttachFile(FormAttachFileManageModel fileModel)
         {
+            fileModel.OpSign = OpMode.Add;
             return CommonManageCurdFactory.FormAttachFileCrud.Store(fileModel);
         }
     }

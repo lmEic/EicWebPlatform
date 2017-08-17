@@ -820,7 +820,7 @@ var leeWorkFlow = (function () {
         createFormFileAttachDto: function (vm, formId, moduleName) {
             var dto = _.clone(vm);
             leeHelper.setUserData(dto);
-            dto.FormId = uiVM.FormId;
+            dto.FormId = formId;
             dto.ModuleName = moduleName;
             return dto;
         }
@@ -985,14 +985,41 @@ var leeUeditor = (function () {
         elementPathEnabled: false,
     };
 
-    return {
+    var myEditor = {
         ///公共默认配置
         commonConfig: commonConfig,
-        ///获得Html 编辑器
-        getEditor: function (id) {
-            return UE.getEditor(id, commonConfig);
+        //编辑器
+        createEditor: function (id) {
+            var editor = new ueEditor(id);
+            editor.createInstance();
+            return editor;
         },
     };
+    function ueEditor(id) {
+        //控件Id
+        this.id = id;
+        //控件实例
+        this.instance = null;
+        //创建实例
+        this.createInstance = function () {
+            var editor = UE.getEditor(id, commonConfig);
+            this.instance = editor;
+            return editor;
+        };
+        //获取内容
+        this.getContent = function () {
+            return this.instance.getContent();
+        };
+        //清空内容
+        this.clearContent = function () {
+            this.instance.setContent("");
+        };
+        //判断是否有内容
+        this.hasContent = function () {
+            return this.instance.hasContents();
+        };
+    };
+    return myEditor;
 })();
 ///日期格式化扩展
 Date.prototype.pattern = function (fmt) {
