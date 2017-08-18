@@ -312,7 +312,6 @@ qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityIn
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.saveAll = function (isValid) {
-        leeHelper.setUserData();
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             for (var i = 0; i < vmManager.switchModeList.length; i++) {
                 vmManager.switchModeList[i].SwitchVaule = $scope.vmManager.switchModeList[i].SwitchVaule;
@@ -866,6 +865,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
     //上传附件
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
+            console.log(fd);
             qualityInspectionDataOpService.uploadIqcGatherDataAttachFile(fd).then(function (result) {
                 if (result === 'OK') {
                     var nowDate = new Date().getDate();

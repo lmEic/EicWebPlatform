@@ -103,7 +103,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         ///抽样数量单位
         /// </summary>
-        public string InspectCountUint
+        public string InspectCountUnit
         {
             set { _inspectcountuint = value; }
             get { return _inspectcountuint; }

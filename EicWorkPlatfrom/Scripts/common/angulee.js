@@ -820,7 +820,7 @@ var leeWorkFlow = (function () {
         createFormFileAttachDto: function (vm, formId, moduleName) {
             var dto = _.clone(vm);
             leeHelper.setUserData(dto);
-            dto.FormId = uiVM.FormId;
+            dto.FormId = formId;
             dto.ModuleName = moduleName;
             return dto;
         }

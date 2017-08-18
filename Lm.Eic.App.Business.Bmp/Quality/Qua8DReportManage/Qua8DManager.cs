@@ -22,6 +22,18 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
     }
     public class Qua8DMasterManager
     {
+
+
+        public string AutoBuildingReportId(string discoverPosition)
+        {
+            if (discoverPosition == "内部制造")
+                return "M1708017";
+            if (discoverPosition == "客户抱怨")
+                return "R1708017";
+            if (discoverPosition == "供应商")
+                return "r1708017";
+            else return "R1708087";
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -41,6 +53,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
             return Qua8DCrudFactory.MasterCrud.getDReportMasterInfo(reportId);
         }
     }
+
+
+
     public class Qua8DDatailManager
     {
         /// <summary>
@@ -67,6 +82,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         public Qua8DReportDetailModel GetQua8DDetailDatasBy(string reportId, int stepId)
         {
             return Qua8DCrudFactory.DetailsCrud.GetQua8DDetailDatasBy(reportId).FirstOrDefault(e => e.StepId == stepId);
+        }
+        /// <summary>
+        /// 存储数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult StoreQua8DHandleDatas(Qua8DReportDetailModel model)
+        {
+            return Qua8DCrudFactory.DetailsCrud.Store(model);
         }
     }
 }
