@@ -8,7 +8,9 @@ var qualityModule = angular.module('bpm.qualityApp');
 //数据访问工厂
 qualityModule.factory("BDataOpService", function (ajaxService) {
     var bugd = {};
+
     var quabugDManageUrl = "/qua8DManage/";
+    /////////////////////////////////////////////////////////////////
     ///展示8D详细数据
     bugd.showQua8DDetailDatas = function (reportId) {
         var url = quabugDManageUrl + 'ShowQua8DDetailDatas';
@@ -16,6 +18,7 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
             reportId: reportId
         });
     };
+    /// 通过 单号和歩骤号得到信息
     bugd.getRua8DReportStepData = function (reportId, stepId) {
         var url = quabugDManageUrl + 'GetRua8DReportStepData';
         return ajaxService.getData(url, {
@@ -23,7 +26,7 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
             stepId: stepId,
         });
     };
-
+    /// 查找不良单号信息 
     bugd.getQueryDatas = function (searchModel, orderId) {
         var url = quabugDManageUrl + 'GetQueryDatas';
         return ajaxService.getData(url, {
@@ -31,57 +34,102 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
             searchModel: searchModel,
         });
     };
+    /// 存储8D初始表格
     bugd.storeCraet8DInitialData = function (initialData) {
         var url = quabugDManageUrl + 'StoreCraet8DInitialData';
         return ajaxService.postData(url, {
             initialData: initialData,
         });
     };
+    ///自动生成8D单号 autoCreateReportId
+    bugd.autoBuildingReportId = function (discoverPosition) {
+        var url = quabugDManageUrl + 'AutoBuildingReportId';
+        return ajaxService.getData(url, {
+            discoverPosition: discoverPosition,
+        });
+    };
+    ///上传文件
+    bugd.upload8DHandleFile = function (file) {
+        var url = quabugDManageUrl + 'Upload8DHandleFile';
+        return ajaxService.uploadFile(url, file
+        );
+    };
+    ///储存处理8D数据
+    bugd.saveQua8DHandleDatas = function (handelData) {
+        var url = quabugDManageUrl + 'SaveQua8DHandleDatas';
+        return ajaxService.postData(url, {
+            handelData: handelData,
+        });
+
+    }
     return bugd;
 });
 
 ////创建8D表单
 qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, dataDicConfigTreeSet, qualityInspectionDataOpService) {
+
     ///视图模型
     var uiVm = $scope.vm = {
         ReportId: 'M201705',
         DiscoverPosition: null,
-        AccountabilityDepartment: null,
+        AccountabilityDepartment: "品保部",
         OrderId: null,
         MaterialName: null,
         MaterialSpec: null,
         MaterialCount: 0,
-        MaterialCountUnit: null,
+        MaterialCountUnit: "个",
         InspectCount: 0,
-        InspectCountUnit: null,
+        InspectCountUnit: "个",
         FailQty: 0,
-        FailQtyUnit: null,
+        FailQtyUnit: "个",
         FailClass: null,
         FailRatio: 100,
         CreateReportDate: new Date(),
         Status: null,
         OpPerson: null,
         OpDate: null,
-        OpSign: 'add',
+        OpSign: leeDataHandler.dataOpMode.add,
         OpTime: null,
         Id_Key: null,
     };
+
+    ///处理初化视图模型
+    var uiHandelVm = $scope.handelvm = {
+        ReportId: null,
+        StepId: 1,
+        StepTitle: "异常说明",
+        StepDescription: null,
+        StepHandleContent: null,
+        FilePath: null,
+        FileName: null,
+        HandleDepartment: "品保部",
+        SignaturePeoples: "品保部",
+        OpPerson: null,
+        OpDate: null,
+        OpTime: null,
+        OpSign: leeDataHandler.dataOpMode.add,
+        Id_Key: null,
+    }
+
     //初始化原型
     var initVM = _.clone(uiVm);
-
+    var initHandelVM = _.clone(uiHandelVm);
     var dialog = $scope.dialog = leePopups.dialog();
     var vmManager = {
+        isdisabled: false,
         init: function () {
             uiVm = _.clone(initVM);
-            uiVm.OpSign = leeDataHandler.dataOpMode.add;
+            uiHandelVm = _.clone(initHandelVM);
+            $scope.handelvm = uiHandelVm;
             $scope.vm = uiVm;
         },
+        IsShowMasterData: true,
         orderInfo: [],
         dataSets: [],
         dataSource: [],
         iqcOrderId: '341-170327011',
         unitDatas: [{ id: "Kg", text: "Kg" }, { id: "包", text: "包" }, { id: "个", text: "个" }],
-        DiscoverPositions: [{ id: "客户抱怨", text: "客户抱怨" }, { id: "内部制造", text: "内部制造" }, { id: "供应商", text: "供应商" }],
+        DiscoverPositions: [{ id: "客户抱怨", text: "客户抱怨" }, { id: "内部制造", text: "内部制造" }, { id: "供应商", text: "供应商" }, { id: "客诉", text: "客诉" }],
         failClassDatas: [{ id: "品质不合格", text: "品质不合格" }, { id: "HSF不合格", text: "HSF不合格" }],
         ///查询表单
         getQua8DCreateDatas: function () {
@@ -97,8 +145,21 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
             uiVm.DiscoverPosition = "内部制造";
             uiVm.OpSign = leeDataHandler.dataOpMode.add;
             uiVm.Id_Key = null;
+            vmManager.autoCreateReportId();
             dialog.show();
         },
+        ///显示隐藏头文件
+        showMasterData: function () {
+            if (vmManager.IsShowMasterData) vmManager.IsShowMasterData = false;
+            else vmManager.IsShowMasterData = true;
+        },
+        ///自动生成编号
+        autoCreateReportId: function () {
+            $scope.searchPromise = BDataOpService.autoBuildingReportId(uiVm.DiscoverPosition).then(function (data) {
+                console.log(data);
+                uiVm.ReportId = data;
+            });
+        }
     };
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
@@ -106,20 +167,34 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
     //保存
     operate.saveAll = function (isValid) {
         leeHelper.setUserData(uiVm);
-        console.log(uiVm);
         leeDataHandler.dataOperate.add(operate, true, function () {
             $scope.doPromise = BDataOpService.storeCraet8DInitialData(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
-                        vmManager.init();
-                        dialog.close();
+                        save8dHandelDatas(isValid);
                     }
                 });
             });
         });
     }
+    ///保存处理说明数据
+    var save8dHandelDatas = function (isvlid) {
+        leeHelper.setUserData(uiHandelVm);
+        uiHandelVm.ReportId = uiVm.ReportId;
+        console.log(uiHandelVm);
+        $scope.doPromise = BDataOpService.saveQua8DHandleDatas(uiHandelVm).then(function (opResult) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                if (opresult.Result) {
+                    vmManager.init();
+                    dialog.close();
+                }
+            });
+        });
+
+    }
     //取消
     operate.Cancel = function () {
+        vmManager.init();
         dialog.close();
     }
 
@@ -131,13 +206,39 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
         if (vmManager.AccountabilityDepartment != null || vmManager.AccountabilityDepartment != "")
         { vmManager.AccountabilityDepartment += "," + getString; }
         else { vmManager.AccountabilityDepartment = getString; }
+    }
+    ///表单附件模型
+    var attachFileVM = {
+        ModuleName: null,
+        FormId: null,
+        FileName: null,
+        DocumentFilePath: null,
+        OpSign: leeDataHandler.dataOpMode.uploadFile,
+        OpPerson: null,
+    }
+    //上传文件
+    $scope.selectFile = function (el) {
+        console.log(el);
+        leeHelper.upoadFile(el, function (fd) {
+            var dto = leeWorkFlow.createFormFileAttachDto(attachFileVM, uiVm.ReportId, "Handle8DFormCtrl");
+            fd.append("attachFileDto", JSON.stringify(dto));
+            $scope.doPromise = BDataOpService.upload8DHandleFile(fd).then(function (uploadResult) {
+                console.log(uploadResult);
+                if (uploadResult.Result) {
+                    $scope.uploadFileName = uiHandelVm.FileName = uploadResult.FileName;
+                    uiHandelVm.FilePath = uploadResult.FilePath;
+                }
+            });
+        });
     };
+
 });
 
 ////处理8D表单
-qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
+qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, BDataOpService) {
+
+    // var ue = leeUeditor.getEditor('stepHandleContent');
     ///视图模型
-    ///
     var uiVm = $scope.vm = {
         ReportId: 'M1707001',
         StepId: 0,
@@ -167,7 +268,15 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
         FailQty: 0,
         FailClass: null,
     }
-
+    ///表单附件模型
+    var attachFileVM = {
+        ModuleName: null,
+        FormId: null,
+        FileName: null,
+        DocumentFilePath: null,
+        OpSign: leeDataHandler.dataOpMode.uploadFile,
+        OpPerson: null,
+    }
     var vmManager = {
         stepDisplay: true,
         IsShowMasterData: true,
@@ -202,6 +311,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
             //});
             vmManager.viewDataset.activePanel = vmManager.viewDataset.length - 1;
             leeHelper.copyVm(stepItem.VmDatas, uiVm);
+            $scope.uploadFileName = uiVm.FileName;
             //$scope.promise = accountService.findRoleMatchModulesBy(role.RoleId).then(function (datas) {
             //   angular.forEach(datas, function (item) {
             //     var mroleItem = _.clone(uiVm);
@@ -236,6 +346,19 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, BDataOpService) {
         }
     };
     $scope.vmManager = vmManager;
+    //上传文件
+    $scope.selectFile = function (el) {
+        leeHelper.upoadFile(el, function (fd) {
+            var dto = leeWorkFlow.createFormFileAttachDto(attachFileVM, uiVm.ReportId, "Handle8DFormCtrl");
+            fd.append("attachFileDto", JSON.stringify(dto));
+            $scope.doPromise = BDataOpService.upload8DHandleFile(fd).then(function (uploadResult) {
+                console.log(uploadResult);
+                if (uploadResult.Result) {
+                    $scope.uploadFileName = uploadResult.FileName;
+                }
+            });
+        });
+    };
     //vmManager.query8DStepDatas();
 });
 

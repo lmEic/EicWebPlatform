@@ -22,6 +22,36 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
     }
     public class Qua8DMasterManager
     {
+
+
+        public string AutoBuildingReportId(string discoverPosition)
+        {
+
+            
+            string reportstr = string.Empty;
+            switch (discoverPosition)
+            {
+                case "内部制造":
+                    reportstr = "M";
+                    break;
+                case "客户抱怨":
+                    reportstr = "N";
+                    break;
+                case "供应商":
+                    reportstr = "P";
+                    break;
+                case "客诉":
+                    reportstr = string.Empty;
+                    break;
+                default:
+                    reportstr = string.Empty;
+                    break;
+            }
+            string yearMonth = DateTime.Now.ToString("yyyyMM");
+            string antherYearMonth = DateTime.Now.ToString("yyMM");
+            int count8DNumber = Qua8DCrudFactory.MasterCrud.Get8DMasterCountNumber(reportstr, yearMonth) + 1;
+            return reportstr + antherYearMonth + count8DNumber.ToString("000");
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -41,6 +71,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
             return Qua8DCrudFactory.MasterCrud.getDReportMasterInfo(reportId);
         }
     }
+
+
+
     public class Qua8DDatailManager
     {
         /// <summary>
@@ -67,6 +100,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         public Qua8DReportDetailModel GetQua8DDetailDatasBy(string reportId, int stepId)
         {
             return Qua8DCrudFactory.DetailsCrud.GetQua8DDetailDatasBy(reportId).FirstOrDefault(e => e.StepId == stepId);
+        }
+        /// <summary>
+        /// 存储数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult StoreQua8DHandleDatas(Qua8DReportDetailModel model)
+        {
+            return Qua8DCrudFactory.DetailsCrud.Store(model);
         }
     }
 }

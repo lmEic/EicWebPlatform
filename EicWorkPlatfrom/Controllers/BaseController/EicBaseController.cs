@@ -539,6 +539,10 @@ namespace EicWorkPlatfrom.Controllers
         /// 电子表单
         /// </summary>
         public const string ElectronicForm = "ElectronicForm";
+        /// <summary>
+        /// 8D上传附件
+        /// </summary>
+        public const string Qua8DUpAttachFile = "Qua8DUpAttachFile";
     }
     /// <summary>
     /// 上传文件结果
