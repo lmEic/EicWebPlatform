@@ -39,6 +39,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         {
             if (!IsExist(model.ReportId))
             {
+                model.YearMonth = string.Format(DateTime.Now.ToDateTimeShortStr(), "yyyyMM");
+                if (model.MaterialCountUnit == null) model.MaterialCountUnit = "个";
+                if (model.InspectCountUnit == null) model.InspectCountUnit = "个";
+                if (model.FailQtyUnit == null) model.FailQtyUnit = "个";
                 return irep.Insert(model).ToOpResult_Add(OpContext);
             }
             return irep.Update(e => e.ReportId == model.ReportId, u => new Qua8DReportMasterModel
@@ -67,6 +71,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         internal Qua8DReportMasterModel getDReportMasterInfo(string reportId)
         {
             return irep.Entities.FirstOrDefault(e => e.ReportId == reportId);
+        }
+        internal int Get8DMasterCountNumber(string headSign, string yearMonth)
+        {
+            return irep.Entities.Count(e => e.ReportId.Contains(headSign) && e.YearMonth == yearMonth);
         }
     }
 

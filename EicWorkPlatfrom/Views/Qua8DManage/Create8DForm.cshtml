@@ -334,15 +334,16 @@
                     <content dialog-title class="fa fa-bell">
                         <i class="fa fa-pencil-square">生成8D数据表</i>
                     </content>
-                    <content dialog-content>
+                    <content dialog-content id="showPutInBody">
                         @*标题*@
                         <div class="brand-info text-center">
                             <h1>光圣科技(宁波)有限公司</h1>
                             <h1> <small>产品不合格处理单(单头)</small> </h1>
                         </div>
+                        @*录入信息*@
                         <div class="col-md-12 modal-body">
                             <form role="form" name="form8DCreateData" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
-
+                                @*录入单头*@
                                 <div class="col-md-12 well" ng-show="vmManager.IsShowMasterData===true">
 
                                     <div class="form-group">
@@ -460,8 +461,7 @@
                                     </div>
 
                                 </div>
-
-
+                                @*隐身*@
                                 <div>
                                     <button class="btn btn-primary  col-md-12" ng-click="vmManager.showMasterData()">
                                         <span ng-show="vmManager.IsShowMasterData!=true"> <i class="fa fa-angle-double-down"></i></span>
@@ -469,6 +469,7 @@
                                         异常说明
                                     </button>
                                 </div>
+                                @*处理第一步异常数据*@
                                 <div class="col-md-12 well">
                                     <div class="form-group">
                                         <div class="input-group">
@@ -500,6 +501,7 @@
                                 </div>
                             </form>
                         </div>
+
                         <div class="col-md-12 modal-footer">
                             @*保存 取消 *@
                             <div class="alert alert-info">

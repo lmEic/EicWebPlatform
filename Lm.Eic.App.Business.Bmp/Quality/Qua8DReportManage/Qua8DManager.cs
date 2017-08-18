@@ -26,13 +26,31 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
 
         public string AutoBuildingReportId(string discoverPosition)
         {
-            if (discoverPosition == "内部制造")
-                return "M1708017";
-            if (discoverPosition == "客户抱怨")
-                return "R1708017";
-            if (discoverPosition == "供应商")
-                return "r1708017";
-            else return "R1708087";
+
+            
+            string reportstr = string.Empty;
+            switch (discoverPosition)
+            {
+                case "内部制造":
+                    reportstr = "M";
+                    break;
+                case "客户抱怨":
+                    reportstr = "N";
+                    break;
+                case "供应商":
+                    reportstr = "P";
+                    break;
+                case "客诉":
+                    reportstr = string.Empty;
+                    break;
+                default:
+                    reportstr = string.Empty;
+                    break;
+            }
+            string yearMonth = DateTime.Now.ToString("yyyyMM");
+            string antherYearMonth = DateTime.Now.ToString("yyMM");
+            int count8DNumber = Qua8DCrudFactory.MasterCrud.Get8DMasterCountNumber(reportstr, yearMonth) + 1;
+            return reportstr + antherYearMonth + count8DNumber.ToString("000");
         }
         /// <summary>
         /// 

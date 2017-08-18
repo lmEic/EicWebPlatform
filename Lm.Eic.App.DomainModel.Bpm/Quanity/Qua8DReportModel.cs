@@ -153,6 +153,17 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _status = value; }
             get { return _status; }
         }
+
+        ///YearMonth
+        private string _yearmonth;
+        /// <summary>
+        ///年月份
+        /// </summary>
+        public string YearMonth
+        {
+            set { _yearmonth = value; }
+            get { return _yearmonth; }
+        }
         private string _opperson;
         /// <summary>
         ///操作人

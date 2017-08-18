@@ -77,11 +77,11 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
         MaterialName: null,
         MaterialSpec: null,
         MaterialCount: 0,
-        MaterialCountUnit: null,
+        MaterialCountUnit: "个",
         InspectCount: 0,
-        InspectCountUnit: null,
+        InspectCountUnit: "个",
         FailQty: 0,
-        FailQtyUnit: null,
+        FailQtyUnit: "个",
         FailClass: null,
         FailRatio: 100,
         CreateReportDate: new Date(),
@@ -129,7 +129,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
         dataSource: [],
         iqcOrderId: '341-170327011',
         unitDatas: [{ id: "Kg", text: "Kg" }, { id: "包", text: "包" }, { id: "个", text: "个" }],
-        DiscoverPositions: [{ id: "客户抱怨", text: "客户抱怨" }, { id: "内部制造", text: "内部制造" }, { id: "供应商", text: "供应商" }],
+        DiscoverPositions: [{ id: "客户抱怨", text: "客户抱怨" }, { id: "内部制造", text: "内部制造" }, { id: "供应商", text: "供应商" }, { id: "客诉", text: "客诉" }],
         failClassDatas: [{ id: "品质不合格", text: "品质不合格" }, { id: "HSF不合格", text: "HSF不合格" }],
         ///查询表单
         getQua8DCreateDatas: function () {

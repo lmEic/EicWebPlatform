@@ -114,11 +114,13 @@ namespace EicWorkPlatfrom.Controllers
             FormAttachFileManageModel dto = ConvertFormDataToTEntity<FormAttachFileManageModel>("attachFileDto");
             string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Qua8DUpAttachFile, dto.ModuleName);
             string customizeFileName = GeneralFormService.InternalContactFormManager.AttachFileHandler.SetAttachFileName(dto.ModuleName, dto.FormId);
-            string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
-            var result = this.SaveFileToServer(file, filePath, addchangeFileName);
-            //string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
-            //string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
-            //this.SaveFileToServer(file, filePath, addchangeFileName);
+            UploadFileResult result = SaveFileToServer(file, filePath, customizeFileName);
+            if (result.Result)
+            {
+                dto.DocumentFilePath = filePath;
+                dto.FileName = customizeFileName;
+                GeneralFormService.InternalContactFormManager.AttachFileHandler.StoreOnlyOneTime(dto);
+            }
             return Json(result);
         }
         #endregion
