@@ -50,8 +50,12 @@ namespace EicWorkPlatfrom.Controllers
             string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.ElectronicForm, dto.ModuleName);
             string customizeFileName = GeneralFormService.InternalContactFormManager.AttachFileHandler.SetAttachFileName(dto.ModuleName, dto.FormId);
             UploadFileResult result = SaveFileToServer(file, filePath, customizeFileName);
-            //if (result.Result)
-            //    GeneralFormService.InternalContactFormManager.StoreFormAttachFile(dto);
+            if (result.Result)
+            {
+                dto.DocumentFilePath = filePath;
+                dto.FileName = customizeFileName;
+                GeneralFormService.InternalContactFormManager.AttachFileHandler.StoreOnlyOneTime(dto);
+            }
             return Json(result);
         }
 
