@@ -41,6 +41,7 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         #region config dictionary data operate
+        [NoAuthenCheck]
         public JsonResult SaveConfigDicData(ConfigDataDictionaryModel model, ConfigDataDictionaryModel oldModel, string opType)
         {
             var result = PmConfigService.DataDicManager.Store(model, oldModel, opType);

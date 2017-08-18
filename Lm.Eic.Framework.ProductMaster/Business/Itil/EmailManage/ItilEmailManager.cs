@@ -16,7 +16,12 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             return ItilEmailFactory.ItilEmailManageCrud.FindBy(dto);
 
         }
-        public OpResult StoreItilEmailManage(ItilEmailManageModel model)
+        /// <summary>
+        /// 存储邮箱列表
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult StoreEmailManage(ItilEmailManageModel model)
         {
             try
             {
@@ -24,10 +29,14 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             }
             catch (Exception ex)
             {
-
-                throw new Exception(ex.Message);
+                return ex.ExOpResult();
             }
         }
 
+
+        //public OpResult SendEmail(ItilEmailManageModel model)
+        //{
+
+        //}
     }
 }
