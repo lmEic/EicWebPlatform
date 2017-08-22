@@ -8,6 +8,7 @@ using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.App.Business.Bmp.Quality.InspectionManage;
 using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
 using Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm;
+using Lm.Eic.Framework.ProductMaster.Business.Config;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -28,7 +29,7 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         [NoAuthenCheck]
-        public ContentResult GetQueryDatas(string searchModel, string orderId)
+        public ContentResult GetQueryDatas(int searchModel, string orderId)
         {
             var datas = InspectionService.DataGatherManager.IqcDataGather.MasterDatasGather.GetIqcMasterContainDatasBy(orderId);
             return DateJsonResult(datas);
@@ -74,7 +75,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             var ShowQua8DMasterData = Qua8DService.Qua8DManager.Qua8DMaster.Show8DReportMasterInfo(reportId);
 
-            var Stepdatas = Qua8DService.Qua8DManager.Qua8DDatail.ShowQua8DDetailDatasBy(reportId);
+            var Stepdatas = Qua8DService.Qua8DManager.Qua8DDatail.ShowQua8DDetailDatasBy(ShowQua8DMasterData.DiscoverPosition);
             var datas = new { Stepdatas, ShowQua8DMasterData };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
@@ -86,9 +87,9 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="stepId"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetRua8DReportStepData(string reportId, int stepId)
+        public JsonResult GetRua8DReportStepData(string reportId, ShowStepViewModel step)
         {
-            var data = Qua8DService.Qua8DManager.Qua8DDatail.GetQua8DDetailDatasBy(reportId, stepId);
+            var data = Qua8DService.Qua8DManager.Qua8DDatail.GetQua8DDetailDatasBy(reportId, step);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
@@ -109,11 +110,11 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="file"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult Upload8DHandleFile(HttpPostedFileBase file)
+        public JsonResult Upload8DHandleFile(HttpPostedFileBase file, int step)
         {
             FormAttachFileManageModel dto = ConvertFormDataToTEntity<FormAttachFileManageModel>("attachFileDto");
             string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Qua8DUpAttachFile, dto.ModuleName);
-            string customizeFileName = GeneralFormService.InternalContactFormManager.AttachFileHandler.SetAttachFileName(dto.ModuleName, dto.FormId);
+            string customizeFileName = GeneralFormService.InternalContactFormManager.AttachFileHandler.SetAttachFileName(dto.ModuleName, dto.FormId + "-" + step);
             UploadFileResult result = SaveFileToServer(file, filePath, customizeFileName);
             if (result.Result)
             {
@@ -122,6 +123,17 @@ namespace EicWorkPlatfrom.Controllers
                 GeneralFormService.InternalContactFormManager.AttachFileHandler.StoreOnlyOneTime(dto);
             }
             return Json(result);
+        }
+
+        /// <summary>
+        /// 得到8D处理信息Model
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult Get8DStepInfo(string discoverPosition)
+        {
+            var datas = Qua8DService.Qua8DManager.Qua8DDatail.Get8DStepInfo(discoverPosition);
+            return Json(datas, JsonRequestBehavior.AllowGet);
         }
         #endregion
 

@@ -358,7 +358,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     {
         public ShowStepViewModel()
         {
-            HandelQua8DStepDatas = new Qua8DReportDetailModel();
+
         }
         bool _ischeck = true;
         public bool IsCheck
@@ -366,23 +366,28 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { value = _ischeck; }
             get { return _ischeck; }
         }
-        public string StepId
+
+        public string StepName
         {
-            get { return HandelQua8DStepDatas == null ? "空" : "第" + HandelQua8DStepDatas.StepId.ToString() + "歩"; }
+            set;
+            get;
         }
 
         public string StepTitle
         {
-            get { return HandelQua8DStepDatas == null ? "空" : HandelQua8DStepDatas.StepTitle; }
+            set;
+            get;
         }
-        public int StepLevel
+        public string StepTitleConnect
         {
-            get { return HandelQua8DStepDatas == null ? 0 : HandelQua8DStepDatas.StepId; }
+            get; set;
         }
-        public Qua8DReportDetailModel HandelQua8DStepDatas
+        public int StepId
         {
-            set; get;
+            set;
+            get;
         }
+
     }
 
 
