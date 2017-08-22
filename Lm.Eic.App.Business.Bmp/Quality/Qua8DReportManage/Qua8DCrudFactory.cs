@@ -91,10 +91,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         }
         OpResult Add(Qua8DReportDetailModel model)
         {
-            if (IsExist(model.ReportId, model.StepId))
-            {
-                return OpResult.SetErrorResult("处理步骤存在");
-            }
+            if (IsExist(model.ReportId, model.StepId) && model.Id_Key > 0)
+                return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
             return irep.Insert(model).ToOpResult_Add(OpContext);
         }
         OpResult Eidt(Qua8DReportDetailModel model)
