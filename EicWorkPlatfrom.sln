@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{46EE4727-9D40-44C8-961B-C832CD21DB4F}"
 EndProject
@@ -48,6 +48,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lm.Eic.App.Mes", "Lm.Eic.App.Mes\Lm.Eic.App.Mes.csproj", "{AD7947FD-9283-4AC1-9F7D-FC53932150A0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lm.Eic.App.Business.BmpTests", "Lm.Eic.App.Business.BmpTests\Lm.Eic.App.Business.BmpTests.csproj", "{9B1FFD8B-B4E1-42AE-BFDE-AA8E1BD6065C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HwCollaboration", "HwCollaboration", "{0FE6965F-92CE-4E32-9779-17213089DB35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lm.Eic.App.HwCollaboration", "Lm.Eic.App.HwCollaboration\Lm.Eic.App.HwCollaboration.csproj", "{FE8A9AB2-356F-4AD6-BFC8-0E6814228126}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,6 +119,10 @@ Global
 		{9B1FFD8B-B4E1-42AE-BFDE-AA8E1BD6065C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B1FFD8B-B4E1-42AE-BFDE-AA8E1BD6065C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B1FFD8B-B4E1-42AE-BFDE-AA8E1BD6065C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE8A9AB2-356F-4AD6-BFC8-0E6814228126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE8A9AB2-356F-4AD6-BFC8-0E6814228126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE8A9AB2-356F-4AD6-BFC8-0E6814228126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE8A9AB2-356F-4AD6-BFC8-0E6814228126}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -139,5 +147,7 @@ Global
 		{5B599F03-EF02-41D1-9278-6C12DBAC5C5A} = {BD1DDA12-3241-4BBA-825E-402B1B1DFD1B}
 		{8301C71A-AFDE-4853-8C05-39FF96B207C6} = {BD1DDA12-3241-4BBA-825E-402B1B1DFD1B}
 		{AD7947FD-9283-4AC1-9F7D-FC53932150A0} = {EAADD1EE-E3F7-4B5E-AA64-F6D5C390493D}
+		{0FE6965F-92CE-4E32-9779-17213089DB35} = {46EE4727-9D40-44C8-961B-C832CD21DB4F}
+		{FE8A9AB2-356F-4AD6-BFC8-0E6814228126} = {0FE6965F-92CE-4E32-9779-17213089DB35}
 	EndGlobalSection
 EndGlobal
