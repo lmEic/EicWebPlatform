@@ -12,13 +12,13 @@ namespace Lm.Eic.Framework.ProductMaster.Business.Itil
             get { return OBulider.BuildInstance<ItilDevelopModuleManager>(); }
         }
 
-        /// <summary>
-        /// 邮箱配置管理
-        /// </summary>
-        public static ItilEmailManager EmailManager
-        {
-            get { return OBulider.BuildInstance<ItilEmailManager>(); }
-        }
+        ///// <summary>
+        ///// 邮箱配置管理
+        ///// </summary>
+        //public static ItilEmailManager EmailManager
+        //{
+        //    get { return OBulider.BuildInstance<ItilEmailManager>(); }
+        //}
 
 
     }

@@ -100,8 +100,8 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Log
                 if (cell.Recivers != null && cell.Recivers.Count > 0)
                     mailMsg = new MailMsg("softwareadmin@ezconn.cn", cell.Recivers);
                 else
-                    mailMsg = new MailMsg(new MailAddress("softwareadmin@ezconn.cn", "EIC消息使者"), cell.AddressToList);
-                mailMsg.Subject = subject;
+                    //mailMsg = new MailMsg(new MailAddress("softwareadmin@ezconn.cn", "EIC消息使者"), cell.AddressToList);
+                    mailMsg.Subject = subject;
                 mailMsg.Body = sbMessage.ToString();
                 EmailNotifier.SendMail(mailMsg);
             }
