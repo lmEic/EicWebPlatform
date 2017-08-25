@@ -19,11 +19,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             switch (formStatus)
             {
                 case "待检测":
-                    return GetErpNotStoreToSqlOrderAndMaterialBy(dateFrom, dateTo);
+                    return null;
                 case "未完成":
                     return list.Where(e => e.InspectionResult == "未完成").ToList();
                 case "全部":
-                    return GetERPOrderAndMaterialBy(dateFrom, dateTo);
+                    return GetERPOrderAndMaterialBy(dateFrom, dateTo, "MS7");
                 case "待审核":
                     return list.Where(e => e.InspectionStatus == "待审核").ToList();
                 case "已审核":
@@ -64,10 +64,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
         }
 
-        List<InspectionFqcMasterModel> GetERPOrderAndMaterialBy(DateTime startTime, DateTime endTime)
+        List<InspectionFqcMasterModel> GetERPOrderAndMaterialBy(DateTime startTime, DateTime endTime, string department)
         {
             List<InspectionFqcMasterModel> retrunList = new List<InspectionFqcMasterModel>();
-            var OrderIdList = GetOrderIdList(startTime, endTime);
+            var OrderIdList = GetOrderIdList(startTime, endTime, department);
             if (OrderIdList == null || OrderIdList.Count <= 0) return retrunList;
             OrderIdList.ForEach(e =>
             {
@@ -76,17 +76,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return retrunList.OrderByDescending(e => e.MaterialInDate).ToList();
         }
 
-        List<InspectionFqcMasterModel> GetErpNotStoreToSqlOrderAndMaterialBy(DateTime startTime, DateTime endTime)
-        {
-            List<InspectionFqcMasterModel> retrunList = new List<InspectionFqcMasterModel>();
-            var OrderIdList = GetOrderIdList(startTime, endTime);
-            if (OrderIdList == null || OrderIdList.Count <= 0) return retrunList;
-            OrderIdList.ForEach(e =>
-            {
-                retrunList.Add(MaterialModelToInspectionFqcMasterModel(e));
-            });
-            return retrunList.OrderByDescending(e => e.MaterialInDate).ToList();
-        }
 
         InspectionFqcMasterModel MaterialModelToInspectionFqcMasterModel(MaterialModel model)
         {
@@ -106,9 +95,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 InspectionMode = "正常"
             }) : new InspectionFqcMasterModel();
         }
-        List<MaterialModel> GetOrderIdList(DateTime starDate, DateTime endDate)
+        List<MaterialModel> GetOrderIdList(DateTime starDate, DateTime endDate, string department)
         {
-            return QualityDBManager.OrderIdInpectionDb.FindErpAllMasterilBy(starDate, endDate);
+            return QualityDBManager.OrderIdInpectionDb.FindErpAllMasterilBy(starDate, endDate, department);
         }
     }
 }

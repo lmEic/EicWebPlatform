@@ -1,5 +1,7 @@
 ﻿using Lm.Eic.Framework.Authenticate.Model;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
+using Lm.Eic.Framework.ProductMaster.Business.Common;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -164,7 +166,7 @@ namespace EicWorkPlatfrom.Controllers
 
             AuthenCheck(filterContext);
         }
-
+        #region authen power check method
         /// <summary>
         /// 权限检测
         /// </summary>
@@ -194,6 +196,7 @@ namespace EicWorkPlatfrom.Controllers
                 }
             }
         }
+        #endregion
 
         #region file operate method
         /// <summary>
@@ -298,10 +301,10 @@ namespace EicWorkPlatfrom.Controllers
                         fileName = Path.Combine(filePath, fileNamePreSub + file.FileName);
                     file.SaveAs(fileName);
                     if (handler != null) handler();
-                    return UploadFileResult.CreateInstance(true, Path.GetFileName(fileName));
+                    return UploadFileResult.CreateInstance(true, Path.GetFileName(fileName), filePath);
                 }
             }
-            return UploadFileResult.CreateInstance(false, "noFileExist");
+            return UploadFileResult.CreateInstance(false, "noFileExist", filePath);
         }
         /// <summary>
         /// 将文件保存到服务器上
@@ -319,10 +322,33 @@ namespace EicWorkPlatfrom.Controllers
                     string extensionName = Path.GetExtension(file.FileName);
                     string fileName = Path.Combine(filePath, string.Format("{0}{1}", customizeFileName, extensionName));
                     file.SaveAs(fileName);
-                    return UploadFileResult.CreateInstance(true, Path.GetFileName(fileName));
+                    return UploadFileResult.CreateInstance(true, Path.GetFileName(fileName), filePath);
                 }
             }
-            return UploadFileResult.CreateInstance(false, "noFileExist");
+            return UploadFileResult.CreateInstance(false, "noFileExist", filePath);
+        }
+        /// <summary>
+        /// 上传表单附件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="formDataKey">表单数据模型键值</param>
+        /// <param name="subFilePath">表单所在的子文件夹名称</param>
+        /// <returns></returns>
+        protected UploadFileResult UploadFormAttachFile(HttpPostedFileBase file, string formDataKey, string subFilePath = FileLibraryKey.ElectronicForm)
+        {
+            FormAttachFileManageModel dto = ConvertFormDataToTEntity<FormAttachFileManageModel>(formDataKey);
+            if (dto == null) return UploadFileResult.CreateInstance(false, "没有选择要上传的文件", "null");
+            if (dto.ModuleName == null) return UploadFileResult.CreateInstance(false, "表单所属模块名称不能为空！", "null");
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, subFilePath, dto.ModuleName);
+            string customizeFileName = CommonService.FormAttachFileManager.SetAttachFileName(dto.ModuleName, dto.FormId);
+            UploadFileResult result = SaveFileToServer(file, filePath, customizeFileName);
+            if (result.Result)
+            {
+                dto.DocumentFilePath = filePath;
+                dto.FileName = customizeFileName;
+                CommonService.FormAttachFileManager.StoreOnlyOneTime(dto);
+            }
+            return result;
         }
         #region CombinedFilePath
         protected string CombinedFilePath(string path1)
@@ -539,6 +565,10 @@ namespace EicWorkPlatfrom.Controllers
         /// 电子表单
         /// </summary>
         public const string ElectronicForm = "ElectronicForm";
+        /// <summary>
+        /// 8D上传附件
+        /// </summary>
+        public const string Qua8DUpAttachFile = "Qua8DUpAttachFile";
     }
     /// <summary>
     /// 上传文件结果
@@ -554,14 +584,23 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         public string FileName { get; private set; }
         /// <summary>
+        /// 文件相对路径
+        /// </summary>
+        public string DocumentFilePath { get; private set; }
+        /// <summary>
+        /// 文件预览路径
+        /// </summary>
+        public string PreviewFileName { get { return ""; } }
+        /// <summary>
         /// 创建实例
         /// </summary>
-        /// <param name="result"></param>
-        /// <param name="fileName"></param>
+        /// <param name="result">上传文件结果</param>
+        /// <param name="fileName">文件名称</param>
+        /// <param name="documentFilePath">文件相对路径</param>
         /// <returns></returns>
-        public static UploadFileResult CreateInstance(bool result, string fileName)
+        public static UploadFileResult CreateInstance(bool result, string fileName, string documentFilePath)
         {
-            return new UploadFileResult() { Result = result, FileName = fileName };
+            return new UploadFileResult() { Result = result, FileName = fileName, DocumentFilePath = documentFilePath };
         }
     }
 }

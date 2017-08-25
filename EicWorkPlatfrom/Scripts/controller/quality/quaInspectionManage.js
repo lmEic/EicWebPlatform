@@ -312,7 +312,6 @@ qualityModule.controller("inspectionModeSwitchCtrl", function ($scope, qualityIn
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.saveAll = function (isValid) {
-        leeHelper.setUserData();
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             for (var i = 0; i < vmManager.switchModeList.length; i++) {
                 vmManager.switchModeList[i].SwitchVaule = $scope.vmManager.switchModeList[i].SwitchVaule;
@@ -866,6 +865,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
     //上传附件
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
+            console.log(fd);
             qualityInspectionDataOpService.uploadIqcGatherDataAttachFile(fd).then(function (result) {
                 if (result === 'OK') {
                     var nowDate = new Date().getDate();
@@ -1139,6 +1139,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
     $scope.opPersonInfo = { Department: '', ClassType: '' };
 
     var vmManager = {
+        isPutInconfigItem: false,
         orderId: null,
         orderInfo: null,
         //抽样批次数量
@@ -1173,11 +1174,16 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 vmManager.panelDataSource = [];
                 $scope.searchPromise = qualityInspectionDataOpService.getFqcOrderInfoDatas(vmManager.orderId).then(function (datas) {
                     vmManager.orderInfo = datas.orderInfo;
+                    console.log(vmManager.orderInfo);
+                    if (datas.sampledDatas.length == 0) {
+                        vmManager.isPutInconfigItem = true;
+                        return;
+                    }
                     angular.forEach(datas.sampledDatas, function (item) {
-                        console.log(item.InspectionStatus);
                         var dataItem = { orderId: item.OrderId, orderIdNumber: item.OrderIdNumber, inspectionStatus: item.InspectionStatus, inspectionItemDatas: [], dataSets: [] };
                         vmManager.panelDataSource.push(dataItem);
                     })
+                    vmManager.isPutInconfigItem = false;
                     vmManager.orderId = null;
                 });
             }
