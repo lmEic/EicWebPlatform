@@ -21,11 +21,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         {
             get { return OBulider.BuildInstance<Qua8DDatailManager>(); }
         }
+        public Qua8DFileStroeManager Qua8DFileStroe
+        {
+            get { return OBulider.BuildInstance<Qua8DFileStroeManager>(); }
+        }
     }
     public class Qua8DMasterManager
     {
-
-
         public string AutoBuildingReportId(string discoverPosition)
         {
 
@@ -72,6 +74,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         {
             return Qua8DCrudFactory.MasterCrud.getDReportMasterInfo(reportId);
         }
+        public OpResult ChangeQua8DMasterStatus(string reportId, string status, string fileName, string filePath)
+        {
+            return Qua8DCrudFactory.MasterCrud.ChangeMasterStatus(reportId, status, fileName, filePath);
+        }
     }
 
 
@@ -87,15 +93,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         {
             ShowStepViewModel data = null;
             List<ShowStepViewModel> steps = new List<ShowStepViewModel>();
-            
-
             var configDataDictionary = Get8DStepInfo(discoverPosition);
             if (configDataDictionary == null) return null;
             var handleSteps = configDataDictionary.Where(e => e.AtLevel == 4).ToList();
             if (handleSteps == null) return null;
             handleSteps.ForEach(m =>
             {
-                int setpid = Convert.ToInt32(m.DataNodeName.Substring(1, 1));
+                int setpid = Convert.ToInt32(m.DisplayOrder.ToString().Substring(3, 1));
                 data = new ShowStepViewModel
                 {
                     StepName = m.DataNodeName,
@@ -108,19 +112,30 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
             });
             return steps;
         }
-        public Qua8DReportDetailModel GetQua8DDetailDatasBy(string reportId, ShowStepViewModel step)
+        public Qua8DReportDetailModel Get8DStepDetailDatasBy(string reportId, ShowStepViewModel step)
         {
-            if (step == null) return new Qua8DReportDetailModel();
-            var data = Qua8DCrudFactory.DetailsCrud.GetQua8DDetailDatasBy(reportId).FirstOrDefault(e => e.StepId == step.StepId);
-            if (data != null)
-            {
-                if (data.StepTitle == null || data.StepTitle == string.Empty)
+            if (step == null || reportId == null) return new Qua8DReportDetailModel();
+            var data = GetQua8DDetailDatasBy(reportId).FirstOrDefault(e => e.StepId == step.StepId);
+            if (data == null)
+                return new Qua8DReportDetailModel()
                 {
-                    data.StepTitle = step.StepTitle;
-                    data.StepDescription = step.StepTitleConnect;
-                }
-            }
+                    StepId = step.StepId,
+                    ReportId = reportId,
+                    StepTitle = step.StepTitle,
+                    StepDescription = step.StepTitleConnect
+                };
+
             return data;
+        }
+
+        /// <summary>
+        /// Query8DDetailDatas
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <returns></returns>
+        public List<Qua8DReportDetailModel> GetQua8DDetailDatasBy(string reportId)
+        {
+            return Qua8DCrudFactory.DetailsCrud.GetQua8DDetailDatasBy(reportId);
         }
         public List<ConfigDataDictionaryModel> Get8DStepInfo(string discoverPosition)
         {
@@ -153,6 +168,25 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         public OpResult StoreQua8DHandleDatas(Qua8DReportDetailModel model)
         {
             return Qua8DCrudFactory.DetailsCrud.Store(model);
+        }
+    }
+
+    public class Qua8DFileStroeManager
+    {
+        public OpResult ChangeReportIdStatus(string reportId, string status, string fileName, string filePath)
+        {
+            return Qua8DCrudFactory.MasterCrud.ChangeMasterStatus(reportId, status, fileName, filePath);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="searchFrom"></param>
+        /// <param name="searchTo"></param>
+        /// <returns></returns>
+        public List<Qua8DReportMasterModel> Query8DData(string searchFrom, string searchTo)
+        {
+            return Qua8DCrudFactory.MasterCrud.getDReportMasterDatas(searchFrom, searchTo);
         }
     }
 }

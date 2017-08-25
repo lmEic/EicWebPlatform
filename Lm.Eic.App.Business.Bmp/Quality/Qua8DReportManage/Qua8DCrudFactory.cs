@@ -72,10 +72,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         {
             return irep.Entities.FirstOrDefault(e => e.ReportId == reportId);
         }
+        internal List<Qua8DReportMasterModel> getDReportMasterDatas(string searchFrom, string searchTo)
+        {
+            return irep.getReportMasterDatas(searchFrom, searchTo);
+        }
         internal int Get8DMasterCountNumber(string headSign, string yearMonth)
         {
             return irep.Entities.Count(e => e.ReportId.Contains(headSign) && e.YearMonth == yearMonth);
         }
+        internal OpResult ChangeMasterStatus(string reportId, string status, string fileName, string filePath)
+        {
+            return irep.Update(e => e.ReportId == reportId, u => new Qua8DReportMasterModel
+            {
+                Status = status,
+                FileName = fileName,
+                FilePath = filePath
+            }).ToOpResult_Eidt(OpContext);
+        }
+
     }
 
     internal class Qua8DReportDetailsCrud : CrudBase<Qua8DReportDetailModel, IQua8DReportDetailsRepository>
@@ -113,6 +127,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         public List<Qua8DReportDetailModel> GetQua8DDetailDatasBy(string reportId)
         {
             return irep.Entities.Where(e => e.ReportId == reportId).ToList();
+        }
+        internal OpResult ChangeDetailStatus(string reportId, int stepId, string status)
+        {
+            return irep.Update(e => e.ReportId == reportId && e.StepId == stepId, u => new Qua8DReportDetailModel { FileName = status }).ToOpResult_Eidt(OpContext);
         }
     }
 }
