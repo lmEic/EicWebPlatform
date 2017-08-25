@@ -5,6 +5,7 @@ using System.Text;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using System.IO;
 using Lm.Eic.Uti.Common.YleeMessage.Email;
+using System.Net.Mail;
 
 namespace Lm.Eic.Uti.Common.YleeMessage.Log
 {
@@ -24,7 +25,6 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Log
                 return mailHelper;
             }
         }
-
         #region property
         /// <summary>
         /// 错误发生计数容器
@@ -78,7 +78,6 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Log
 
             fileName.AppendFile(sbMsg.ToString());
         }
-
         /// <summary>
         /// 将信息通过邮件发送给相关人
         /// </summary>
@@ -86,15 +85,22 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Log
         public static void NotifyMessageTo(MailCell cell)
         {
             StringBuilder sbMessage = new StringBuilder();
-            List<string> receivers = cell.Recivers;
+            if (cell.Recivers == null && cell.AddressToList == null)
+            {
+                LogMsgToFile("NotifyMessageTo", "没有填写邮件收件人地址列表");
+            }
             string subject = cell.Subject;
-            string messageBody = cell.MessageBody;
             if (CheckErrorOccurTime(subject)) return;
+            string messageBody = cell.MessageBody;
             try
             {
                 sbMessage.Append(messageBody).AppendLine()
                .AppendLine("特别说明：此邮件为系统自动发送邮件，请勿回复！！!");
-                MailMsg mailMsg = new MailMsg("softwareadmin@ezconn.cn", receivers);
+                MailMsg mailMsg = null;
+                if (cell.Recivers != null && cell.Recivers.Count > 0)
+                    mailMsg = new MailMsg("softwareadmin@ezconn.cn", cell.Recivers);
+                else
+                    mailMsg = new MailMsg(new MailAddress("softwareadmin@ezconn.cn", "EIC消息使者"), cell.AddressToList);
                 mailMsg.Subject = subject;
                 mailMsg.Body = sbMessage.ToString();
                 EmailNotifier.SendMail(mailMsg);
@@ -115,7 +121,7 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Log
             MailCell mc = new MailCell()
             {
                 MessageBody = messageBody,
-                Recivers = new List<string>() { "ylei@ezconn.cn", "wxq520@ezconn.cn" },
+                Recivers = new List<string>() { "ylei@ezconn.cn", "wxq520@ezconn.cn", "lwl@ezconn.cn" },
                 Subject = subject
             };
             NotifyMessageTo(mc);
@@ -136,7 +142,6 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Log
             };
             NotifyMessageTo(mc);
         }
-
         private static bool CheckErrorOccurTime(string key)
         {
             if (errorOccurCountDocker.ContainsKey(key))
@@ -157,7 +162,9 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Log
             return false;
         }
     }
-
+    /// <summary>
+    /// 邮件信息结构
+    /// </summary>
     public class MailCell
     {
         /// <summary>
@@ -172,5 +179,10 @@ namespace Lm.Eic.Uti.Common.YleeMessage.Log
         /// 邮件内容
         /// </summary>
         public string MessageBody { get; set; }
+
+        /// <summary>
+        /// 收件人地址列表
+        /// </summary>
+        public MailAddressCollection AddressToList { get; set; }
     }
 }
