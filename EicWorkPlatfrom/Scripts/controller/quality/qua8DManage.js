@@ -19,8 +19,8 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
         });
     };
     /// 通过 单号和歩骤号得到信息
-    bugd.getRua8DReportStepData = function (reportId, step) {
-        var url = quabugDManageUrl + 'GetRua8DReportStepData';
+    bugd.getQua8DReportStepData = function (reportId, step) {
+        var url = quabugDManageUrl + 'GetQua8DReportStepData';
         return ajaxService.postData(url, {
             reportId: reportId,
             step: step,
@@ -49,8 +49,8 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
         });
     };
     ///上传文件
-    bugd.upload8DHandleFile = function (file) {
-        var url = quabugDManageUrl + 'Upload8DHandleFile';
+    bugd.upload8DAttachFile = function (file) {
+        var url = quabugDManageUrl + 'Upload8DAttachFile';
         return ajaxService.uploadFile(url, file
         );
     };
@@ -62,6 +62,34 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
         });
 
     }
+    ///查询得到数据
+    bugd.query8DDatas = function (searchFrom, searchTo) {
+        var url = quabugDManageUrl + 'Query8DDatas';
+        return ajaxService.getData(url, {
+            searchFrom: searchFrom,
+            searchTo: searchTo
+        });
+    };
+    ///查询得到详细数据
+    bugd.query8DDetailDatas = function (reportId) {
+        var url = quabugDManageUrl + 'Query8DDetailDatas';
+        return ajaxService.getData(url, {
+            reportId: reportId,
+        });
+    };
+
+
+    ///Change8DSturt
+    bugd.changeReportIdStatus = function (reportId, status, fileName, filePath) {
+        var url = quabugDManageUrl + 'ChangeReportIdStatus';
+        return ajaxService.postData(url, {
+            reportId: reportId,
+            status: status,
+            fileName: fileName,
+            filePath: filePath,
+        });
+
+    };
     return bugd;
 });
 
@@ -255,15 +283,15 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
     // var ue = leeUeditor.getEditor('stepHandleContent');
     ///视图模型
     var uiVm = $scope.vm = {
-        ReportId: 'M1707001',
+        ReportId: null,
         StepId: 0,
         StepTitle: null,
         StepDescription: null,
         StepHandleContent: null,
         FilePath: null,
         FileName: null,
-        HandleDepartment: null,
-        SignaturePeoples: null,
+        Department: null,
+        SignaturePersons: null,
         OpPerson: null,
         OpDate: null,
         OpTime: null,
@@ -297,8 +325,8 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
     }
 
     var vmManager = {
-        stepDisplay: true,
-        isShowMasterData: true,
+        stepDisplay: false,
+        isShowMasterData: false,
         reportMasterInfo: [],
         init: function () {
             uiVm = _.clone(initVM);
@@ -312,6 +340,8 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
                 vmManager.steps = datas.Stepdatas;
                 vmManager.reportMasterInfo = datas.ShowQua8DMasterData;
                 vmManager.viewDataset = [];
+                vmManager.stepDisplay = true;
+                vmManager.isShowMasterData = true;
             });
         },
         //选择步骤
@@ -328,7 +358,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
                     isSaveSucceed: false,
                     VmDatas: [],
                 };
-                BDataOpService.getRua8DReportStepData(uiVm.ReportId, step).then(function (data) {
+                BDataOpService.getQua8DReportStepData(uiVm.ReportId, step).then(function (data) {
                     stepItem.VmDatas = data;
                     isSaveSucceed = false;
                 });
@@ -342,7 +372,6 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
             }
             if (step.IsCheck) step.IsCheck = false;
             else step.IsCheck = true;
-            vmManager.init();
             leeHelper.copyVm(stepItem.VmDatas, uiVm);
             vmManager.viewDataset.activePanel = vmManager.viewDataset.length - 1;
         },
@@ -359,12 +388,14 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
             var dto = leeWorkFlow.createFormFileAttachDto(attachFileVM, uiVm.ReportId, "Handle8DFormCtrl");
             fd.append("attachFileDto", JSON.stringify(dto));
             fd.append("step", vmManager.selectStepItemData.StepId);
-            $scope.doPromise = BDataOpService.upload8DHandleFile(fd).then(function (uploadResult) {
+            console.log(fd);
+            $scope.doPromise = BDataOpService.upload8DAttachFile(fd).then(function (uploadResult) {
                 console.log(uploadResult);
                 if (uploadResult.Result) {
                     angular.forEach(vmManager.viewDataset, function (e) {
                         if (e.stepId == vmManager.selectStepItemData.StepId) {
                             e.VmDatas.FileName = uploadResult.FileName;
+                            e.VmDatas.FilePath = uploadResult.DocumentFilePath;
                             e.isdisabled = true;
                         }
                     });
@@ -380,12 +411,11 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
         console.log(stepItem);
         leeHelper.copyVm(stepItem.VmDatas, uiVm);
         leeHelper.setUserData(uiVm);
-        console.log(uiVm);
+        uiVm.OpSign = leeDataHandler.dataOpMode.add;
         leeDataHandler.dataOperate.add(operate, true, function () {
             $scope.doPromise = BDataOpService.saveQua8DHandleDatas(uiVm).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     if (opresult.Result) {
-                        vmManager.init();
                         angular.forEach(vmManager.viewDataset, function (e) {
                             if (e.stepId == step.stepId) {
                                 e.isSaveSucceed = true;
@@ -403,5 +433,92 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
 ////8D结案处理表单
 qualityModule.controller('Colse8DFormCtrl', function ($scope, BDataOpService) {
     ///视图模型
+    ///表单附件模型
+    var attachFileVM = {
+        ModuleName: null,
+        FormId: null,
+        FileName: null,
+        DocumentFilePath: null,
+        OpSign: leeDataHandler.dataOpMode.uploadFile,
+        OpPerson: null,
+    }
+    var detailDialog = $scope.detailDialog = leePopups.dialog();
+    var bringToFilesdialog = $scope.bringToFilesdialog = leePopups.dialog();
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    var vmManager = {
+        dataSets: [],
+        dataSource: [],
+        detailDataSets: [],
+        detailDataSource: [],
+        dataHead: null,
+        searchFromYear: null,
+        searchToYear: null,
+        ///查询
+        get8DDatas: function () {
+            if (vmManager.searchFromYear === null || vmManager.searchFromYear === "") return;
+            $scope.searchPromise = BDataOpService.query8DDatas(vmManager.searchFromYear, vmManager.searchToYear).then(function (datas) {
+                vmManager.dataSets = datas;
+                vmManager.dataSource = datas;
+            });
+        },
+        ///详细
+        get8DDetailDatas: function (item) {
+            vmManager.dataHead = item;
+            $scope.searchPromise = BDataOpService.query8DDetailDatas(item.ReportId).then(function (datas) {
+                vmManager.detailDataSets = datas;
+                vmManager.detailDataSource = datas;
+                detailDialog.show();
+            });
+        },
+        detailCancel: function () {
+            detailDialog.close();
+        },
+        // 显示归档对话框
+        showBringToFiles: function (item) {
+            if (_.isUndefined(item))
+            { item = vmManager.dataHead; }
+            else vmManager.dataHead = item;
+            detailDialog.close();
+            bringToFilesdialog.show();
+            //$scope.searchPromise = BDataOpService.changeReportIdStatus(item.ReportId)
+        },
+        bringToFiles: function (item) {
+            console.log(item);
+            if (_.isUndefined(item))
+            { item = vmManager.dataHead; }
+            leeHelper.setUserData(item);
+            leeDataHandler.dataOperate.add(operate, true, function () {
+                $scope.doPromise = BDataOpService.changeReportIdStatus(item.ReportId, "结案归档", item.FilePath, item.FileName).then(function (opresult) {
+                    leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                        if (opresult.Result) {
+                            bringToFilesdialog.close();
+                        }
+                    });
+                });
+            });
+        },
+        bringToFilescancel: function () {
+            bringToFilesdialog.close();
+        }
+    };
+
+    //上传文件
+    $scope.selectFile = function (el) {
+        leeHelper.upoadFile(el, function (fd) {
+            var dto = leeWorkFlow.createFormFileAttachDto(attachFileVM, vmManager.dataHead.ReportId, "Colse8DFormCtrl");
+            fd.append("attachFileDto", JSON.stringify(dto));
+            fd.append("step", "归案");
+            console.log(fd);
+            $scope.doPromise = BDataOpService.upload8DAttachFile(fd).then(function (uploadResult) {
+                console.log(uploadResult);
+                if (uploadResult.Result) {
+                    vmManager.dataHead.FilePath = uploadResult.DocumentFilePath;;
+                    vmManager.dataHead.FileName = uploadResult.FileName;
+                }
+            });
+        });
+    };
+    $scope.vmManager = vmManager;
 
 });

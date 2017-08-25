@@ -154,6 +154,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             get { return _status; }
         }
 
+        private string _filepath;
+        /// <summary>
+        ///文件路经
+        /// </summary>
+        public string FilePath
+        {
+            set { _filepath = value; }
+            get { return _filepath; }
+        }
+        private string _filename;
+        /// <summary>
+        ///文件名
+        /// </summary>
+        public string FileName
+        {
+            set { _filename = value; }
+            get { return _filename; }
+        }
         ///YearMonth
         private string _yearmonth;
         /// <summary>
@@ -240,14 +258,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _stephandlecontent = value; }
             get { return _stephandlecontent; }
         }
-        private string _handledepartment;
+        private string _department;
         /// <summary>
         ///处理部门
         /// </summary>
-        public string HandleDepartment
+        public string Department
         {
-            set { _handledepartment = value; }
-            get { return _handledepartment; }
+            set { _department = value; }
+            get { return _department; }
         }
         private string _signaturepersons;
         /// <summary>
@@ -276,15 +294,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _stepid = value; }
             get { return _stepid; }
         }
-        private string _stepdescription;
-        /// <summary>
-        ///步骤描述
-        /// </summary>
-        public string StepDescription
-        {
-            set { _stepdescription = value; }
-            get { return _stepdescription; }
-        }
+
         private string _filepath;
         /// <summary>
         ///路径
@@ -302,6 +312,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _filename = value; }
             get { return _filename; }
+        }
+        private string _stepdescription;
+        /// <summary>
+        ///步骤描述
+        /// </summary>
+        public string StepDescription
+        {
+            set { _stepdescription = value; }
+            get { return _stepdescription; }
+        }
+        private string _status;
+        /// <summary>
+        ///处理状态
+        /// </summary>
+        public string Status
+        {
+            set { _status = value; }
+            get { return _status; }
         }
         private string _opperson;
         /// <summary>
