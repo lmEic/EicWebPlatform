@@ -47,6 +47,26 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             });
             return masterialAllinfo;
         }
+
+        /// <summary>
+        ///找到ERP中所有的进货单的物料信息（数量不超过100）
+        /// </summary>
+        /// <param name="searchStartDate"></param>
+        /// <param name="searchEndDate"></param>
+        /// <returns></returns>
+        public List<MaterialModel> FindErpAllMasterilBy(DateTime searchStartDate, DateTime searchEndDate, string department)
+        {
+
+            List<MaterialModel> masterialAllinfo = new List<MaterialModel>();
+            List<string> allOrderId = GetAllMaterialOrderId(searchStartDate, searchEndDate, department);
+            if (allOrderId == null || allOrderId.Count <= 0) return masterialAllinfo;
+            allOrderId.ForEach(e =>
+            {
+                if (masterialAllinfo.Count < 200)
+                    masterialAllinfo.AddRange(FindMaterialBy(e));
+            });
+            return masterialAllinfo;
+        }
         /// <summary>
         /// 得到进货物料  341 342 343 344
         /// </summary>
@@ -107,6 +127,31 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
 
         }
 
+        /// <summary>
+        /// 得到所有进货单单号  数量不要超过（100）
+        /// </summary>
+        /// <param name="searchStartDate"></param>
+        /// <param name="searchEndDate"></param>
+        /// <returns></returns>
+        private List<string> GetAllMaterialOrderId(DateTime searchStartDate, DateTime searchEndDate, string department)
+        {
+            List<string> eeturnOrderList = new List<string>();
+            if (searchEndDate >= searchStartDate)
+            {
+                eeturnOrderList = GetAllMaterialOrderBy(searchStartDate, department);
+                for (int i = 1; i <= (searchEndDate - searchStartDate).Days; i++)
+                {
+                    DateTime spanDate = searchStartDate.AddDays(i);
+                    if (eeturnOrderList.Count <= 100)
+                        eeturnOrderList.AddRange(GetAllMaterialOrderBy(spanDate, department));
+                    else break;
+
+                }
+            }
+            return eeturnOrderList;
+
+        }
+
         private List<string> GetAllMaterialOrderBy(DateTime searchDate)
         {
             List<string> OrderId = new List<string>();
@@ -147,7 +192,21 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                     OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
                 }
             }
-
+            string mm = "SELECT TA001,TA002,TA006,TA034,TA035,TA017,TA015 FROM  MOCTA   WHERE  (TA021 = 'MS7') AND (TA011 IN ('1', '2', '3')) order by TA002";
+            return OrderId;
+        }
+        public List<string> GetAllMaterialOrderBy(DateTime searchDate, string department)
+        {
+            List<string> OrderId = new List<string>();
+            string sql = string.Format("SELECT TA001,TA002,TA006,TA034,TA035,TA017,TA015 FROM  MOCTA   WHERE  (TA021 = '{0}') AND (TA009='{1}') order by TA001", department, searchDate.ToDateTimeShortStr());
+            DataTable dt110 = DbHelper.Erp.LoadTable(sql);
+            if (dt110.Rows.Count > 0)
+            {
+                foreach (DataRow dt in dt110.Rows)
+                {
+                    OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
+                }
+            }
             return OrderId;
         }
 

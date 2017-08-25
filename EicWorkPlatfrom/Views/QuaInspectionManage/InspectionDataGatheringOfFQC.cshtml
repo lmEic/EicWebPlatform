@@ -20,6 +20,9 @@
                     </span>
                 </div>
             </div>
+            <div class="col-md-1 alert alert-danger" ng-show="vmManager.isPutInconfigItem">
+                <i class="fa fa-ambulance">没有配置</i>
+            </div>
             <div class="col-md-2 col-md-offset-2">
                 <div class="input-group">
                     <input type="submit" class="form-control" value="总数量">
@@ -45,6 +48,12 @@
                 <p>
                     <label>品号:</label>
                     {{vmManager.orderInfo.MaterialId}}
+                </p>
+            </div>
+            <div class="col-md-2">
+                <p>
+                    <label>品名:</label>
+                    {{vmManager.orderInfo.MaterialName}}
                 </p>
             </div>
             <div class="col-md-3">
