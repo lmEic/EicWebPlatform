@@ -266,14 +266,20 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
     }
     //////////////////////////////////////////////fqc检验单管理模块/////////////////////////////////////////////
     //fqc检验单管理模块    获取表单数据
-    quality.findFqcMasterDatas = function (formStatus, dateFrom, dateTo) {
-        var url = quaInspectionManageUrl + 'GetInspectionFormManageOfFqcDatas';
+    quality.queryFqcERPOrderInspectionInfoS = function (selectedDepartment, dateFrom, dateTo) {
+        var url = quaInspectionManageUrl + 'QueryFqcERPOrderInspectionInfoS';
         return ajaxService.getData(url, {
-            formStatus: formStatus,
             dateFrom: dateFrom,
-            dateTo: dateTo
+            dateTo: dateTo,
+            selectedDepartment: selectedDepartment,
         })
     };
+    quality.getInspectionFormMasterOfFqcDatas = function (orderId) {
+        var url = quaInspectionManageUrl + 'GetInspectionFormMasterOfFqcDatas';
+        return ajaxService.getData(url, {
+            orderId: orderId
+        })
+    }
     //iqc检验单管理模块    获取详细数据
     quality.getInspectionFormDetailOfFqcDatas = function (orderId, orderIdNumber) {
         var url = quaInspectionManageUrl + "GetInspectionFormDetailOfFqcDatas";
@@ -1380,18 +1386,34 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
 //fqc检验单管理
 qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qualityInspectionDataOpService, $modal, $alert) {
     var vmManager = $scope.vmManager = {
+        departments: [
+            { value: "MS1", label: "制一课" },
+            { value: "MS2", label: "制二课" },
+             { value: "MS3", label: "制三课" },
+            { value: "MS5", label: "制五课" },
+            { value: "MS6", label: "制六课" },
+            { value: "MS7", label: "制七课" },
+            { value: "MS10", label: "制十课" },
+            { value: "PT1", label: "成型课" }],
         dateFrom: null,
         dateTo: null,
         selectedFormStatus: "全部",
+        selectedDepartment: "",
         formStatuses: [{ label: "全部", value: "全部" }, { label: "待检验", value: "待检验" }, { label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
         editWindowWidth: "100%",
+        editErpWindowWidth: "100%",
         isShowDetailWindow: false,
+        isShowMasterDetailFrom: false,
+        isShowMasterErpFrom: true,
         currentItem: null,
         detailDatas: [],
         InspectionItemDatasArr: [],
         dataSource: [],
         dataSets: [],
+        erpDataSets: [],
+        erpDataSource: [],
         isShowTips: false,
+        selectMasterItem: null,
         //数据超过100条提示框
         showTips: $alert({ content: '亲~查询数量太多，只能显示100条信息哟', placement: 'top', type: 'info', show: false, duration: "3", container: '.tipBox' }),
         //模态框
@@ -1416,13 +1438,13 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
             show: false,
         }),
         //获取检验表单主数据
-        getMasterDatas: function () {
-            $scope.searchPromise = qualityInspectionDataOpService.findFqcMasterDatas(vmManager.selectedFormStatus, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
+        queryErpOrderInspectionInfo: function () {
+            $scope.searchPromise = qualityInspectionDataOpService.queryFqcERPOrderInspectionInfoS(vmManager.selectedDepartment, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
                 if (editDatas.length >= 100) {
                     vmManager.showTips.$promise.then(vmManager.showTips.show);
                 }
-                vmManager.dataSource = editDatas;
-                vmManager.dataSets = editDatas;
+                vmManager.erpDataSource = editDatas;
+                vmManager.erpDataSets = editDatas;
                 console.log(editDatas);
             })
         },
@@ -1431,6 +1453,24 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
             if (item) vmManager.currentItem = item;
             vmManager.checkModal.$promise.then(vmManager.checkModal.show);
         },
+        getMasterDetailDatas: function (item) {
+            console.log(item);
+            vmManager.selectMasterItem = item;
+            $scope.searchPromise = qualityInspectionDataOpService.getInspectionFormMasterOfFqcDatas(item.OrderID).then(function (datas) {
+                vmManager.isShowMasterDetailFrom = true;
+                console.log(datas);
+                vmManager.dataSource = datas;
+                vmManager.dataSets = datas;
+                //angular.forEach(datas, function (item) {
+                //    var dataItems = item.InspectionItemDatas.split(",");
+                //    item.dataList = leeHelper.createDataInputs(dataItems.length, 4, dataItems);
+                //})
+                //vmManager.detailDatas = datas;
+
+                //console.log(vmManager.detailDatas);
+            })
+        },
+
         //获取详细数据
         getDetailDatas: function (item) {
             vmManager.currentItem = item;
@@ -1448,6 +1488,13 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
         //返回
         refresh: function () {
             vmManager.isShowDetailWindow = false;
+            vmManager.isShowMasterErpFrom = false;
+            vmManager.isShowMasterDetailFrom = true;
+        },
+        refreshErp: function () {
+            vmManager.isShowDetailWindow = false;
+            vmManager.isShowMasterErpFrom = true;
+            vmManager.isShowMasterDetailFrom = false;
         }
     };
     var operate = Object.create(leeDataHandler.operateStatus);
