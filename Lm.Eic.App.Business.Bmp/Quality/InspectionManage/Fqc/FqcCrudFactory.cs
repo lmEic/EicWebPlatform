@@ -49,7 +49,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public List<InspectionFqcItemConfigModel> FindFqcInspectionItemConfigDatasBy(string materialId)
         {
-            return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
+            var datas = irep.Entities.Where(e => e.MaterialId == materialId).ToList();
+            if (datas != null && datas.Count > 0) return datas.OrderBy(e => e.InspectionItemIndex).ToList();
+            return datas;
         }
         public bool IsExistFqcConfigmaterailId(string materailId)
         {

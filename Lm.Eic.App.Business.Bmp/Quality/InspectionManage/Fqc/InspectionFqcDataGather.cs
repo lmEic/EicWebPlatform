@@ -245,7 +245,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         InspectionItem = m.InspectionItem,
                         EquipmentId = m.EquipmentId,
                         InspectionItemStatus = "Doing",
-                        Department = m.ProductDepartment,
+                        ProductDepartment = m.ProductDepartment,
                         ///检验方法
                         InspectionMethod = m.InspectionMethod,
                         //数据采集类型
@@ -339,7 +339,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         ///需要完成数量 得于 检验数
                         NeedFinishDataNumber = m.NeedPutInDataCount,
                         InspectionItemResult = m.InspectionItemResult,
-                        Department = m.Department,
+                        ProductDepartment = m.ProductDepartment,
                         InspectionNGCount = m.InspectionNGCount,
                         ClassType = m.ClassType,
                         InsptecitonItemIsFinished = false,

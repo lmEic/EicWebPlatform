@@ -54,7 +54,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
             var retrunResult = InspectionManagerCrudFactory.IqcMasterCrud.Store(model, true);
             if (retrunResult.Result)
-                return InspectionManagerCrudFactory.IqcMasterCrud.UpAuditDetailData(model.OrderId, model.MaterialId, "Done");
+                return InspectionManagerCrudFactory.IqcMasterCrud.UpAuditDetailData(model.OrderId, model.MaterialId, model.InspectionStatus);
 
             else return retrunResult;
         }

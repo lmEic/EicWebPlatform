@@ -15,19 +15,19 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
     /// </summary>
 
     public class OutsourcingMaterialHeaderModel : QuantitySampleMaodelBase
-    {   
+    {
         /// <summary>
         /// //1.委外进货单别 单号 (TH001  TH002)
         /// </summary>
-        public  string  OutsourcingID{get{return ID ;}}
-         /// <summary>
-         ///  单据日期 (TH029)
-         /// </summary>
-        public DateTime  IDDate{set;get;}
-          /// <summary>
-          ///  委外供应商 (TH005)
-          /// </summary>
-        public string   Supplier{set;get;}
+        public string OutsourcingID { get { return ID; } }
+        /// <summary>
+        ///  单据日期 (TH029)
+        /// </summary>
+        public DateTime IDDate { set; get; }
+        /// <summary>
+        ///  委外供应商 (TH005)
+        /// </summary>
+        public string Supplier { set; get; }
         /// <summary>
         ///    进货日期   TH003 
         /// </summary>
@@ -38,7 +38,7 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
         /// </summary>
         public string PutInSupperId
         { set; get; }
-       
+
         /// <summary>
         /// 备注 TH010
         /// </summary>
@@ -50,7 +50,7 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
         { set; get; }
 
     }
-  /// <summary>
+    /// <summary>
     /// 1.委外进货单别 +单号 (TH001 +TH002)
     ///4.品号 (TI004)
     ///5.品名 (TI005)
@@ -60,7 +60,7 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
     ///23.计价单位 (TI023)
     ///32.进货费用 (TI027)
     ///43.备注 (TI040)
-  /// </summary>
+    /// </summary>
     public class OutsourcingMaterialBodyModel : QuantitySampleMaodelBase
     {
         /// <summary>
@@ -91,26 +91,23 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
         /// 计价单位 TI023
         /// </summary>
         public string UnitedPrice { get; set; }
-          /// <summary>
+        /// <summary>
         ///  进货费用 (TI027)
-          /// </summary>
+        /// </summary>
         public double Cost { set; get; }
         /// <summary>
         /// 备注  (TI040)
         /// </summary>
         public string Memo { get; set; }
 
-      
+
 
     }
     #endregion
 
-
-
-
     /// <summary>
-   /// 抽样物料信息
-   /// </summary>
+    /// 抽样物料信息
+    /// </summary>
     public class MaterialModel : QuantitySampleMaodelBase
     {
         /// <summary>
@@ -126,7 +123,7 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
         /// <summary>
         /// 进料日期 
         /// </summary>
-        public DateTime  ProduceInDate { get; set; }
+        public DateTime ProduceInDate { get; set; }
         /// <summary>
         ///  产品品号 
         /// </summary>
@@ -150,9 +147,9 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
         /// <summary>
         /// 进料数量 
         /// </summary>
-        public double  ProduceNumber { get; set; }
+        public double ProduceNumber { get; set; }
 
         #endregion
     }
-   
+
 }
