@@ -1145,7 +1145,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
     $scope.opPersonInfo = { Department: '', ClassType: '' };
 
     var vmManager = {
-        isPutInconfigItem: false,
+
         orderId: null,
         orderInfo: null,
         //抽样批次数量
@@ -1180,16 +1180,14 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 vmManager.panelDataSource = [];
                 $scope.searchPromise = qualityInspectionDataOpService.getFqcOrderInfoDatas(vmManager.orderId).then(function (datas) {
                     vmManager.orderInfo = datas.orderInfo;
+
                     console.log(vmManager.orderInfo);
-                    if (datas.sampledDatas.length == 0) {
-                        vmManager.isPutInconfigItem = true;
-                        return;
-                    }
+
                     angular.forEach(datas.sampledDatas, function (item) {
                         var dataItem = { orderId: item.OrderId, orderIdNumber: item.OrderIdNumber, inspectionStatus: item.InspectionStatus, inspectionItemDatas: [], dataSets: [] };
                         vmManager.panelDataSource.push(dataItem);
                     })
-                    vmManager.isPutInconfigItem = false;
+
                     vmManager.orderId = null;
                 });
             }

@@ -281,6 +281,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
 qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, BDataOpService) {
 
     // var ue = leeUeditor.getEditor('stepHandleContent');
+    var editor = leeUeditor.createEditor('formContent');
     ///视图模型
     var uiVm = $scope.vm = {
         ReportId: null,
@@ -323,18 +324,22 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
         OpSign: leeDataHandler.dataOpMode.uploadFile,
         OpPerson: null,
     }
-
+    var dialog = $scope.dialog = leePopups.dialog();
     var vmManager = {
         stepDisplay: false,
         isShowMasterData: false,
         reportMasterInfo: [],
+        participants: [],
         init: function () {
             uiVm = _.clone(initVM);
             $scope.vm = uiVm;
+            leeHelper.clearVM(participantInfo, ["Applicant"]);
+            editor.clearContent();
         },
         //对应界面显示的数据集
         viewDataset: [],
         selectStepItemData: [],
+        currentParticipantRole: null,
         query8DStepDatas: function () {
             $scope.doPromise = BDataOpService.showQua8DDetailDatas(uiVm.ReportId).then(function (datas) {
                 vmManager.steps = datas.Stepdatas;
@@ -343,6 +348,20 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
                 vmManager.stepDisplay = true;
                 vmManager.isShowMasterData = true;
             });
+        },
+        //根据角色选择参与人员
+        showParticipantView: function (role) {
+            vmManager.dataset = [];
+            vmManager.currentParticipantRole = role;
+            dialog.show();
+        },
+        //选择参与人
+        selectParticipant: function (participant) {
+            participant.IsChecked = !participant.IsChecked;
+            if (!participant.IsChecked) return;
+            participant.Role = vmManager.currentParticipantRole;
+            leeWorkFlow.addParticipant(vmManager.participants, participant);
+            participantInfo[vmManager.currentParticipantRole] = leeWorkFlow.getParticipantMappedRole(vmManager.participants, vmManager.currentParticipantRole);
         },
         //选择步骤
         selectStep: function (step) {

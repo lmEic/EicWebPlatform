@@ -1724,6 +1724,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// 
         /// </summary>
         public Dictionary<int, string> orderIdNumberStatus { set; get; }
+        /// <summary>
+        /// 是否有项目配置
+        /// </summary>
+        public bool IsHavdItemConfig { set; get; }
 
         #endregion Model
     }
@@ -1797,7 +1801,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// 检验的项数
         /// </summary>
         public double InspectionNumber { set; get; }
-        
+
     }
 
     /// <summary>
