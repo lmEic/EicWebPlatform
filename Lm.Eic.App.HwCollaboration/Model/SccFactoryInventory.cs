@@ -23,36 +23,46 @@ namespace Lm.Eic.App.HwCollaboration.Model
         /// </summary>
         public string vendorItemCode { get; set; }
         /// <summary>
-        /// 物料编码版本
-        /// </summary>
-        public string HWItemRevision { get; set; }
-        /// <summary>
         /// 客户编码
+        /// 非空
+        ///如果您是华为供应商，则可以填写：0971(代表终端)157(代表华技)
+        ///如果您是非华为直接供应商，则填写在您客户在华为SRM系统注册的供应商编码
         /// </summary>
-        public string CustomerCode { get; set; }
-        /// <summary>
-        /// 库存
-        /// </summary>
-        public float GoodINVQty { get; set; }
-        /// <summary>
-        /// 待检库存
-        /// </summary>
-        public float InspectQty { get; set; }
+        public string customerCode { get; set; }
         /// <summary>
         /// 供应商子库
+        /// 可空，如为空，系统自动设置为NA
         /// </summary>
-        public string VendorStock { get; set; }
+        public string vendorStock { get; set; }
         /// <summary>
         /// 供应商货位
+        /// 可空，如为空，系统自动设置为NA
         /// </summary>
-        public string VendorLocation { get; set; }
+        public string vendorLocation { get; set; }
+        /// <summary>
+        /// 入库时间
+        /// 非空, yyyy-MM-dd格式
+        /// </summary>
+        public string stockTime { get; set; }
+        /// <summary>
+        /// 供应商物料编码版本
+        /// 可以为空
+        /// </summary>
+        public string vendorItemRevision { get; set; }
+        /// <summary>
+        /// 库存
+        /// 非空, 正整数
+        /// </summary>
+        public double goodQuantity { get; set; }
+        /// <summary>
+        /// 待检库存
+        /// 可为空, 若传入, 则必须为正整数
+        /// </summary>
+        public double inspectQty { get; set; }
         /// <summary>
         /// 隔离品数量
+        /// 可为空, 若传入, 则必须为正整数
         /// </summary>
-        public float Fault_Qty { get; set; }
-        /// <summary>
-        /// 协议类型(9月版新增）
-        /// </summary>
-        public string TYPE { get; set; }
+        public double faultQty { get; set; }
     }
 }

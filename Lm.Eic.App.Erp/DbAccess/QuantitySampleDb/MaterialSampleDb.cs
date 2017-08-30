@@ -192,7 +192,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                     OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
                 }
             }
-            string mm = "SELECT TA001,TA002,TA006,TA034,TA035,TA017,TA015 FROM  MOCTA   WHERE  (TA021 = 'MS7') AND (TA011 IN ('1', '2', '3')) order by TA002";
+            //string mm = "SELECT TA001,TA002,TA006,TA034,TA035,TA017,TA015 FROM  MOCTA   WHERE  (TA021 = 'MS7') AND (TA011 IN ('1', '2', '3')) order by TA002";
             return OrderId;
         }
         public List<string> GetAllMaterialOrderBy(DateTime searchDate, string department)

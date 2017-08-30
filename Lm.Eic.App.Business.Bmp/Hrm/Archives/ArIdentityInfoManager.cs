@@ -29,7 +29,6 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.Archives
             }
             return datas;
         }
-
         /// <summary>
         /// 判断身份证有效期是否过期
         /// </summary>
