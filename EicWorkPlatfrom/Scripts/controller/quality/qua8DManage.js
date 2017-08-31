@@ -279,7 +279,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
 
 ////处理8D表单
 qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, BDataOpService) {
-    var editor = leeUeditor.createEditor('form8DHandelData');
+
     ///视图模型
     var uiVm = $scope.vm = {
         ReportId: null,
@@ -299,6 +299,11 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
     }
     //初始化原型
     var initVM = _.clone(uiVm);
+
+    var participantInfo = $scope.participantInfo = {
+        Applicant: null,//申请人,
+        Confirmor: null,//确认人
+    };
     //
     var uiInitBaseInfoVm = $scope.baseInfoVm = {
         ReportId: null,

@@ -174,13 +174,11 @@
                                     </a>
                                 </h4>
                             </div>
+
                             @*列表展示详细部分*@
                             <div class="panel-collapse" role="tabpanel" bs-collapse-target>
                                 <div class="panel-body">
-                                    @*<ul class="nav nav-pills info" style="max-height:400px;overflow-y:auto">*@
-
-
-                                    <from name="form8DHandelData" role="form">
+                                    <form name="form8DHandelData" role="form">
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon">主旨：</span>
@@ -190,16 +188,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <div ng-include="'form8DHandelData'"></div>
-                                            </div>
 
-                                            @*<textarea rows="4" name="stepHandleContent" class="form-control" placeholder="依标题填充详细内容" ng-model="item.VmDatas.StepHandleContent" required />
-                                                <div class="error-messages" ng-messages="form8DHandelData.stepHandleContent.$error" ng-show="operate.showValidation">
-                                                    <small ng-message="required">不能为空</small>
-                                                </div>*@
+                                        <div class="form-group">
+                                            <textarea rows="4" name="stepHandleContent" class="form-control" placeholder="依标题填充详细内容" ng-model="item.VmDatas.StepHandleContent" required />
+                                            <div class="error-messages" ng-messages="form8DHandelData.stepHandleContent.$error" ng-show="operate.showValidation">
+                                                <small ng-message="required">不能为空</small>
+                                            </div>
                                         </div>
+
                                         <div class="form-group">
                                             @* 上传附件   (需要输入一个标识符) *@
                                             <div class="col-md-4 pull-left">
@@ -232,14 +228,14 @@
                                                 <i class="fa fa-save"></i> 保存
                                             </button>
                                         </div>
-                                    </from>
-
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
+
+                </div>
                 <dialog ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%;">
                     <content dialog-title>
                         <i class="fa fa-pencil-square">选择用人单位及人员</i>
@@ -309,9 +305,8 @@
                     </content>
                 </dialog>
             </div>
+
         </div>
 
-        <script id="form8DHandelData" type="text/plain">
-        </script>
     </div>
 </div>
