@@ -1407,12 +1407,22 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
             { value: "MS7", label: "制七课" },
             { value: "MS10", label: "制十课" },
             { value: "PT1", label: "成型课" }],
+        fqcDepartments: [
+        { value: "制一课", label: "制一课" },
+        { value: "制二课", label: "制二课" },
+         { value: "制三课", label: "制三课" },
+        { value: "制五课", label: "制五课" },
+        { value: "制六课", label: "制六课" },
+        { value: "制七课", label: "制七课" },
+        { value: "制十课", label: "制十课" },
+        { value: "成型课", label: "成型课" }],
         dateFrom: null,
         dateTo: null,
         fqcDateFrom: null,
         fqcDateTo: null,
         formStatus: "全部",
         selectedDepartment: "",
+        selectedFqcDepartment: "",
         formStatuses: [{ label: "全部", value: "全部" }, { label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
         editWindowWidth: "100%",
         editErpWindowWidth: "100%",
@@ -1467,8 +1477,8 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
 
         //获取FQC检验表单主数据
         queryFqcMasterInspectionInfo: function () {
-            console.log(666666);
-            $scope.searchPromise = qualityInspectionDataOpService.fqcInspectionMasterInfos(vmManager.selectedDepartment, vmManager.formStatus, $scope.vmManager.fqcDateFrom, $scope.vmManager.fqcDateTo).then(function (datas) {
+            console.log(vmManager.selectedFqcDepartment);
+            $scope.searchPromise = qualityInspectionDataOpService.fqcInspectionMasterInfos(vmManager.selectedFqcDepartment, vmManager.formStatus, $scope.vmManager.fqcDateFrom, $scope.vmManager.fqcDateTo).then(function (datas) {
                 console.log(8888);
                 vmManager.fqcDataSource = datas;
                 vmManager.fqcDataSets = datas;
