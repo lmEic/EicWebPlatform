@@ -265,10 +265,11 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         });
     }
     //////////////////////////////////////////////fqc检验单管理模块/////////////////////////////////////////////
-    //fqc检验单管理模块   
+    ///fqc检验单管理模块   
+
     ///获取Erp表单数据 fqcERPOrderInspectionInfos
     quality.fqcERPOrderInspectionInfos = function (selectedDepartment, dateFrom, dateTo) {
-        var url = quaInspectionManageUrl + 'QueryFqcERPOrderInspectionInfoS';
+        var url = quaInspectionManageUrl + 'QueryFqcERPOrderInspectionInfos';
         return ajaxService.getData(url, {
             dateFrom: dateFrom,
             dateTo: dateTo,
@@ -276,13 +277,13 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         })
     };
     ///获取Master表单数据
-    quality.fqcMasterInspectionInfos = function (selectedDepartment, formStatus, dateFrom, dateTo) {
-        var url = quaInspectionManageUrl + 'GetInspectionFormManageOfFqcDatas';
+    quality.fqcMasterInspectionInfos = function (selectedDepartment, formStatus, fqcDateFrom, fqcDateTo) {
+        var url = quaInspectionManageUrl + 'GetMasterInspectionFqcDatas';
         return ajaxService.getData(url, {
-            dateFrom: dateFrom,
-            dateTo: dateTo,
             selectedDepartment: selectedDepartment,
-            status: status,
+            formStatus: formStatus,
+            fqcDateFrom: fqcDateFrom,
+            fqcDateTo: fqcDateTo
         })
     };
     quality.getInspectionFormMasterOfFqcDatas = function (orderId) {
@@ -1410,10 +1411,9 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
         dateTo: null,
         fqcDateFrom: null,
         fqcDateTo: null,
-        selStatus: null,
-        selectedFormStatus: "全部",
+        formStatus: "全部",
         selectedDepartment: "",
-        formStatuses: [{ label: "全部", value: "全部" }, { label: "待检验", value: "待检验" }, { label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
+        formStatuses: [{ label: "全部", value: "全部" }, { label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
         editWindowWidth: "100%",
         editErpWindowWidth: "100%",
         isShowDetailWindow: false,
@@ -1456,7 +1456,7 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
         //获取Erp检验表单主数据
         queryErpOrderInspectionInfo: function () {
             $scope.searchPromise = qualityInspectionDataOpService.fqcERPOrderInspectionInfos(vmManager.selectedDepartment, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
-                if (editDatas.length >= 100) {
+                if (editDatas.length >= 200) {
                     vmManager.showTips.$promise.then(vmManager.showTips.show);
                 }
                 vmManager.erpDataSource = editDatas;
@@ -1467,10 +1467,12 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
 
         //获取FQC检验表单主数据
         queryFqcMasterInspectionInfo: function () {
-            $scope.searchPromise = qualityInspectionDataOpService.fqcMasterInspectionInfos(vmManager.selectedDepartment, vmManager.selStatus, $scope.vmManager.fqcDateFrom, $scope.vmManager.fqcDateTo).then(function (editDatas) {
-                vmManager.fqcDataSource = editDatas;
-                vmManager.fqcDataSets = editDatas;
-                console.log(editDatas);
+            console.log(666666);
+            $scope.searchPromise = qualityInspectionDataOpService.fqcMasterInspectionInfos(vmManager.selectedDepartment, vmManager.formStatus, $scope.vmManager.fqcDateFrom, $scope.vmManager.fqcDateTo).then(function (datas) {
+                console.log(8888);
+                vmManager.fqcDataSource = datas;
+                vmManager.fqcDataSets = datas;
+                console.log(datas);
             })
         },
         //审核

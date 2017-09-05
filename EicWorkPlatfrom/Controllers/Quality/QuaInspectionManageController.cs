@@ -505,11 +505,13 @@ namespace EicWorkPlatfrom.Controllers
         /// <summary>
         /// 根据单据状态获得检验单数据  selectedDepartment, formStatus, dateFrom, dateTo 
         /// </summary>  selectedFormStatus,dateFrom,dateTo
+        ///       quality.fqcMasterInspectionInfos = function (selectedDepartment, formStatus, fqcDateFrom, fqcDateTo) {
+       //                 var url = quaInspectionManageUrl + 'GetMasterInspectionFqcDatas';
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetInspectionFormManageOfFqcDatas(string selectedDepartment, string formStatus, DateTime dateFrom, DateTime dateTo)
+        public ContentResult GetMasterInspectionFqcDatas(string selectedDepartment, string formStatus, DateTime fqcDateFrom, DateTime fqcDateTo)
         {
-            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(formStatus, selectedDepartment, dateFrom, dateTo);
+            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(selectedDepartment, formStatus, fqcDateFrom, fqcDateTo);
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -520,7 +522,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="dateTo">结束日期</param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult QueryFqcERPOrderInspectionInfoS(string selectedDepartment, DateTime dateFrom, DateTime dateTo)
+        public ContentResult QueryFqcERPOrderInspectionInfos(string selectedDepartment, DateTime dateFrom, DateTime dateTo)
         {
             var datas = InspectionService.InspectionFormManager.FqcFromManager.GetFqcERPDatasBy(selectedDepartment, dateFrom, dateTo);
 

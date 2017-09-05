@@ -11,10 +11,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     public class InspectionFqcFormManager
     {
-        public List<InspectionFqcMasterModel> GetInspectionFormManagerListBy(string formStatus, string selectedDepartment, DateTime dateFrom, DateTime dateTo)
+        public List<InspectionFqcMasterModel> GetInspectionFormManagerListBy(string selectedDepartment, string formStatus, DateTime dateFrom, DateTime dateTo)
         {
             //查询ERP中所有物料和单号 
-            return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(dateFrom, dateTo, formStatus);
+            return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(dateFrom, dateTo, selectedDepartment, formStatus);
         }
         /// <summary>
         /// 查询ERP中FQC检验状态
