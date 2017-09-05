@@ -17,7 +17,7 @@ namespace EicWorkPlatfrom.Controllers
     /********************************************************************
     	created:	2017/03/27
     	file ext:	cs
-    	author:		YLee
+    	author:		YLxx
     	purpose:
     *********************************************************************/
     public class QuaInspectionManageController : EicBaseController
@@ -503,11 +503,11 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         /// <summary>
-        /// 根据单据状态获得检验单数据 
+        /// 根据单据状态获得检验单数据  selectedDepartment, formStatus, dateFrom, dateTo 
         /// </summary>  selectedFormStatus,dateFrom,dateTo
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetInspectionFormManageOfFqcDatas(string formStatus, string selectedDepartment, DateTime dateFrom, DateTime dateTo)
+        public ContentResult GetInspectionFormManageOfFqcDatas(string selectedDepartment, string formStatus, DateTime dateFrom, DateTime dateTo)
         {
             var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(formStatus, selectedDepartment, dateFrom, dateTo);
             return DateJsonResult(datas);

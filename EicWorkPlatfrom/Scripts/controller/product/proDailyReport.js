@@ -9,8 +9,8 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     var reportDataOp = {};
     //-------------------------标准工时设置-------------------------------------
     //获取产品工艺流程列表
-    reportDataOp.getProductFlowList = function (department, productName, orderId, searchMode) {
-        var url = urlPrefix + 'GetProductFlowList';
+    reportDataOp.getProductionFlowList = function (department, productName, orderId, searchMode) {
+        var url = urlPrefix + 'GetProductionFlowList';
         return ajaxService.getData(url, {
             department: department,
             productName: productName,
@@ -28,11 +28,20 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     //导入模板数据
     reportDataOp.importProductFlowTemplateFile = function (file) {
         var url = urlPrefix + 'ImportProductFlowDatas';
-        return ajaxService.uploadFile(url,file);
+        return ajaxService.uploadFile(url, file);
     };
     //获取产品工艺流程总览
     reportDataOp.getProductFlowOverview = function (department, productName, searchMode) {
         var url = urlPrefix + 'GetProductFlowOverview';
+        return ajaxService.getData(url, {
+            department: department,
+            productName: productName,
+            searchMode: searchMode,
+        });
+    };
+    ///得到标准生产工艺流程总览（New）
+    reportDataOp.getProductionFlowOverview = function (department, productName, searchMode) {
+        var url = urlPrefix + 'GetProductionFlowOverview';
         return ajaxService.getData(url, {
             department: department,
             productName: productName,
@@ -50,11 +59,11 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     };
     //-------------------------生产日报录入--------------------------------------
     //获取日报输入模板
-    reportDataOp.getDailyReportTemplate = function (department,dailyReportDate) {
+    reportDataOp.getDailyReportTemplate = function (department, dailyReportDate) {
         var url = urlPrefix + 'GetDailyReportTemplate';
         return ajaxService.getData(url, {
             department: department,
-            dailyReportDate:dailyReportDate
+            dailyReportDate: dailyReportDate
         });
     };
     //获取日报录入初始化数据
@@ -65,11 +74,11 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
         });
     };
     //保存日报录入数据
-    reportDataOp.saveDailyReportDatas = function (datas,inputDate) {
+    reportDataOp.saveDailyReportDatas = function (datas, inputDate) {
         var url = urlPrefix + 'SaveDailyReportDatas';
         return ajaxService.postData(url, {
             datas: datas,
-            inputDate:inputDate
+            inputDate: inputDate
         });
     };
     //013935保存出勤数据
@@ -88,7 +97,7 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
         });
     };
     //013935获取日报考勤数据
-    reportDataOp.getWorkerAttendanceData = function (department,attendenceStation,reportDate) {
+    reportDataOp.getWorkerAttendanceData = function (department, attendenceStation, reportDate) {
         var url = urlPrefix + 'GetWorkerAttendanceData';
         return ajaxService.getData(url, {
             department: department,
@@ -99,8 +108,8 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     return reportDataOp;
 });
 //标准工时设定
-productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpService, dataDicConfigTreeSet, connDataOpService, $modal) {
-    
+productModule.controller("dReportHoursSetCtrl4545454", function ($scope, dReportDataOpService, dataDicConfigTreeSet, connDataOpService, $modal) {
+
     ///工艺标准工时视图模型
     var uiVM = {
         Department: null,
@@ -121,7 +130,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         OpPerson: '章亚娅',
         OpSign: 'add',
         Id_Key: null,
-        
+
     }
     $scope.vm = uiVM;
     //初始化视图
@@ -132,7 +141,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
             uiVM = _.clone(initVM);
             $scope.vm = uiVM;
         },
-        opSign:null,
+        opSign: null,
         editWindowDisplay: false,
         editWindowWidth: '100%',
         copyWindowDisplay: false,
@@ -143,27 +152,27 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         //编辑数据复制副本
         copyEditDatas: [],
         productNameFrom: null,
-        productNameTo:null,
-        delItem:null,
-        flowOverviews:[],
+        productNameTo: null,
+        delItem: null,
+        flowOverviews: [],
         //查看工艺流程明细
         viewProductFlowDetails: function (item) {
             vmManager.productName = item.ProductName;
-            $scope.searchPromise = dReportDataOpService.getProductFlowList(vmManager.department,vmManager.productName,"",2).then(function (datas) {
+            $scope.searchPromise = dReportDataOpService.getProductFlowList(vmManager.department, vmManager.productName, "", 2).then(function (datas) {
                 vmManager.editDatas = datas;
                 console.log(vmManager.editDatas)
             });
         },
         // 模糊查找
         getProductFlowDatails: function () {
-            $scope.searchPromise = dReportDataOpService.getProductFlowOverview(vmManager.department,vmManager.productName,1).then(function (datas) {
+            $scope.searchPromise = dReportDataOpService.getProductFlowOverview(vmManager.department, vmManager.productName, 1).then(function (datas) {
                 vmManager.flowOverviews = datas;
             });
         },
         //获取产品工艺流程列表
         getProductFlowList: function ($event) {
             if ($event.keyCode === 13) {
-               $scope.searchPromise=dReportDataOpService.getProductFlowList(vmManager.department, vmManager.productName,"",2).then(function (datas) {
+                $scope.searchPromise = dReportDataOpService.getProductFlowList(vmManager.department, vmManager.productName, "", 2).then(function (datas) {
                     vmManager.editDatas = datas;
                 });
             }
@@ -174,11 +183,9 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
             controller: function ($scope) {
                 $scope.confirmDelete = function () {
                     leeHelper.remove(vmManager.editDatas, vmManager.delItem);
-                    if (vmManager.editDatas.length === 0)
-                    {
+                    if (vmManager.editDatas.length === 0) {
                         var flowItem = _.find(vmManager.flowOverviews, { ProductName: vmManager.productName });
-                        if (flowItem !== undefined)
-                        {
+                        if (flowItem !== undefined) {
                             leeHelper.remove(vmManager.flowOverviews, flowItem);
                         }
                     }
@@ -195,7 +202,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         vmManager.init();
         uiVM.ProductName = vmManager.productName;
         vmManager.editWindowDisplay = true;
-        
+
     };
     operate.productNameFrom = function () {
         vmManager.productNameFrom = vmManager.productName;
@@ -253,8 +260,8 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
             vmManager.init();
             vmManager.editWindowDisplay = false;
         });
-    };   
-   
+    };
+
     ///选择文件并导入数据
     $scope.selectFile = function (el) {
         var files = el.files;
@@ -267,13 +274,13 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
             });
         }
     };
-    
+
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
-    departmentTreeSet.bindNodeToVm = function () {    
+    departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);
         vmManager.department = dto.DataNodeText;
     };
-    $scope.promise =dReportDataOpService.getProductFlowOverview(vmManager.department,vmManager.productName,0).then(function (data) {
+    $scope.promise = dReportDataOpService.getProductFlowOverview(vmManager.department, vmManager.productName, 0).then(function (data) {
         departmentTreeSet.setTreeDataset(data.departments);
         vmManager.flowOverviews = data.overviews;
     });
@@ -281,16 +288,16 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
     $scope.ztree = departmentTreeSet;
 });
 //日报录入
-productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService,$modal) {
+productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
     ///日报录入视图模型
-   
+
     var uiVM = {
         Department: null,
         DailyReportDate: null,
         DailyReportMonth: null,
         InputTime: null,
         MachineId: null,
-        IsMachine:null,
+        IsMachine: null,
         EquipmentEifficiency: null,
         DifficultyCoefficient: null,
         MouldId: null,
@@ -325,7 +332,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         ManHours: null,
         ProductionEfficiency: null,
         OperationEfficiency: null,
-        Remarks:null,
+        Remarks: null,
         OpPerson: null,
         OpSign: null,
         OpDate: null,
@@ -340,7 +347,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     $scope.tempVm = tempVm = {
         ProductFlowID: null,
         UserWorkerId: null,
-        MasterWorkerId:null,
+        MasterWorkerId: null,
     };
 
     var tablevm = {
@@ -353,7 +360,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
 
     //工单前缀对象
     var orderIdPre = {
-        '成型课':'517-'+ new Date().getFullYear().toString().substr(2,2),
+        '成型课': '517-' + new Date().getFullYear().toString().substr(2, 2),
     };
 
     var vmManager = {
@@ -1227,17 +1234,17 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         //出勤报表类型
         attendanceReportTypes: [{ id: 1, text: '机台' }, { id: 2, text: '工艺' }],
         ///作业人员出勤数据模型
-        attendenceStation:"机台"
+        attendenceStation: "机台"
     };
     $scope.vmManager = vmManager;
-    
+
     //013935创建日报考勤模
     var workerAttendanceVM = {
-        ReportDate:null,
-        AttendenceStation : null,
-        Department : null,
+        ReportDate: null,
+        AttendenceStation: null,
+        Department: null,
         WorkerAttendBoardVisible: false,
-        ShouldAttendenceUserCount:null,
+        ShouldAttendenceUserCount: null,
         ShouldAttendenceHours: null,
         AskLeaveUserCount: null,
         AskLeaveHours: null,
@@ -1261,10 +1268,10 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         OverWorkHours: null,
         AttendenceTotalCount: null,
         AttendenceTotalHours: null,
-        OpPerson:null,
-        OpDate:null,
-        OpTime:null,
-        OpSign:null,
+        OpPerson: null,
+        OpDate: null,
+        OpTime: null,
+        OpSign: null,
         Id_key: null,
     }
     var initworkerAttendanceVM = _.clone(workerAttendanceVM);
@@ -1274,12 +1281,11 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     $scope.operate = operate;
     //保存日报录入数据并发送给后台
     operate.save = function () {
-        if (vmManager.editDatas.length > 0)
-        {
-            $scope.promise = dReportDataOpService.saveDailyReportDatas(vmManager.editDatas,vmManager.InputDate).then(function (opresult) {
+        if (vmManager.editDatas.length > 0) {
+            $scope.promise = dReportDataOpService.saveDailyReportDatas(vmManager.editDatas, vmManager.InputDate).then(function (opresult) {
                 if (opresult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
-                    vmManager.editDatas = []; 
+                    vmManager.editDatas = [];
                 }
             });
         }
@@ -1299,9 +1305,9 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                 } else {
                     $scope.workerAttendanceVM = datas;
                 }
-            }); 
+            });
         }
-        
+
     }
     //013935编辑日报考勤数据
     operate.editWorkerAttendanceVM = function () {
@@ -1335,7 +1341,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     }
     //审核确认日报录入数据
     operate.audit = function () {
-        $scope.promise = dReportDataOpService.auditDailyReport(vmManager.department,vmManager.InputDate).then(function (opresult) {
+        $scope.promise = dReportDataOpService.auditDailyReport(vmManager.department, vmManager.InputDate).then(function (opresult) {
             if (opresult.Result) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
                 vmManager.editDatas = [];
@@ -1356,16 +1362,16 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
     });
 
     $scope.ztree = departmentTreeSet;
-    
+
     //焦点设置器
     var focusSetter = {
-        orderIdFocus:false,
+        orderIdFocus: false,
         workerIdFocus: false,
-        masterWorkerIdFocus:false,
+        masterWorkerIdFocus: false,
         productFlowFocus: false,
         qtyFocus: false,
         qtyBadFocus: false,
-        setHoursFocus:false,
+        setHoursFocus: false,
         inputHoursFocus: false,
         productHoursFocus: false,
         attendanceHoursFocus: false,
@@ -1386,7 +1392,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         overWorkUserCountFocus: false,
         attendenceTotalCountFocus: false,
         //移动焦点到指定对象
-        moveFocusTo: function ($event, elPreName,elNextName) {
+        moveFocusTo: function ($event, elPreName, elNextName) {
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {
                 focusSetter[elNextName] = true;
             }
@@ -1398,11 +1404,231 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) { fn(); }
         },
         //013935考勤回车事件
-        changeEnter : function ($event, elPreName, elNextName) {
+        changeEnter: function ($event, elPreName, elNextName) {
             focusSetter.moveFocusTo($event, elPreName, elNextName)
         }
 
     };
     $scope.focus = focusSetter;
-    
+
+});
+
+
+//生产标准艺流程设定
+productModule.controller("standardProductionFlowSetCtrl", function ($scope, dReportDataOpService, dataDicConfigTreeSet, connDataOpService, $modal) {
+    ///工艺标准工时视图模型
+    var uiVM = {
+        Department: null,
+        ProductId: null,
+        ProductName: null,
+        ProcessesIndex: 0,
+        ProcessesSign: null,
+        ProcessesName: null,
+        ProcessesType: null,
+        StandardProductionTimeType: null,
+        StandardProductionTime: null,
+        UPH: null,
+        UPS: null,
+        MachinePersonRatio: null,
+        MouldId: null,
+        MouldName: null,
+        MouldHoleCount: 0,
+        Remark: null,
+        OpPerson: null,
+        OpSign: leeDataHandler.dataOpMode.add,
+        OpDate: null,
+        OpTime: null,
+        Id_Key: null,
+    };
+    $scope.vm = uiVM;
+    //初始化视图
+    var initVM = _.clone(uiVM);
+
+    var vmManager = {
+        init: function () {
+            uiVM = _.clone(initVM);
+            $scope.vm = uiVM;
+        },
+        isShowMachine: false,
+        opSign: null,
+        editWindowDisplay: false,
+        editWindowWidth: '100%',
+        copyWindowDisplay: false,
+        department: '成型课',
+        productName: null,
+        //编辑显示的数据集合
+        editDatas: [],
+        //编辑数据复制副本
+        copyEditDatas: [],
+        productNameFrom: null,
+        productNameTo: null,
+        delItem: null,
+        flowOverviews: [],
+        //工艺标示
+        processesSigns: [{ id: "开始站", text: "开始站" }, { id: "中继站", text: "中继站" }, { id: "结束站", text: "结束站" }],
+        //工时类别
+        standardProductionTimeTypes: [{ id: "UPH", text: "UPH" }, { id: "UPS", text: "UPS" }],
+        //工艺类别
+        processesTypes: [{ id: "人工", text: "人工" }, { id: "机台", text: "机台" }],
+        editDatasSummy: [],
+        //查看工艺流程明细 OK
+        queryProductionFlowDetails: function (item) {
+            vmManager.editDatas = [];
+            angular.forEach(vmManager.editDatasSummy, function (e) {
+
+                if (e.ProductName == item.ProductName) {
+                    vmManager.editDatas = e;
+                }
+            });
+
+            vmManager.productName = item.ProductName;
+            $scope.searchPromise = dReportDataOpService.getProductionFlowList(vmManager.department, vmManager.productName, "", 2).then(function (datas) {
+                angular.forEach(datas, function (e) {
+                    leeHelper.setObjectGuid(e);
+                    vmManager.editDatas.push(e);
+                });
+                vmManager.editDatasSummy.push(vmManager.editDatas);
+            });
+
+        },
+        // 模糊查找
+        vagueQueryProductionSummyDatas: function () {
+            console.log(878787);
+            $scope.searchPromise = dReportDataOpService.getProductionFlowOverview(vmManager.department, vmManager.productName, 1).then(function (datas) {
+                vmManager.flowOverviews = datas;
+            });
+        },
+        //获取产品工艺流程列表
+        getProductFlowList: function ($event) {
+            if ($event.keyCode === 13) {
+                $scope.searchPromise = dReportDataOpService.getProductFlowList(vmManager.department, vmManager.productName, "", 2).then(function (datas) {
+                    vmManager.editDatas = datas;
+                });
+            }
+        },
+        ///是否显示输入机台信息
+        changeIsShowMachine: function () {
+            if ($scope.vm.ProcessesType === "机台") {
+                vmManager.isShowMachine = true;
+            }
+            else { vmManager.isShowMachine = false; }
+        },
+        delModalWindow: $modal({
+            title: "删除提示", content: "您确定要删除此工序信息吗?",
+            templateUrl: leeHelper.modalTplUrl.deleteModalUrl, show: false,
+            controller: function ($scope) {
+                $scope.confirmDelete = function () {
+                    leeHelper.remove(vmManager.editDatas, vmManager.delItem);
+                    if (vmManager.editDatas.length === 0) {
+                        var flowItem = _.find(vmManager.flowOverviews, { ProductName: vmManager.productName });
+                        if (flowItem !== undefined) {
+                            leeHelper.remove(vmManager.flowOverviews, flowItem);
+                        }
+                    }
+                    vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.hide);
+                };
+            },
+        }),
+    };
+    $scope.vmManager = vmManager;
+    var operate = Object.create(leeDataHandler.operateStatus);
+    $scope.operate = operate;
+    ///确认添加
+    operate.add = function () {
+        vmManager.opSign = leeDataHandler.dataOpMode.add;
+        vmManager.init();
+        uiVM.ProductName = vmManager.productName;
+        leeHelper.setObjectGuid(uiVM);
+        vmManager.editWindowDisplay = true;
+
+    };
+    ////
+    operate.productNameFrom = function () {
+        vmManager.productNameFrom = vmManager.productName;
+        vmManager.copyWindowDisplay = true;
+    };
+    //复制一项
+    operate.copyConfirm = function () {
+        vmManager.productName = vmManager.productNameTo;
+        angular.forEach(vmManager.editDatas, function (item) {
+            leeHelper.setObjectGuid(item);
+            item.ProductName = vmManager.productNameTo;
+            vmManager.copyEditDatas.push(item);
+        });
+    };
+    ///批量复制
+    operate.copyok = function () {
+        vmManager.editDatas = vmManager.copyEditDatas;
+        vmManager.copyWindowDisplay = false;
+    };
+    operate.copycancel = function () {
+        vmManager.copyWindowDisplay = false;
+    };
+    ///编辑
+    operate.editItem = function (item) {
+        vmManager.opSign = leeDataHandler.dataOpMode.edit;
+        uiVM = item;
+        $scope.vm = uiVM;
+        vmManager.editWindowDisplay = true;
+    };
+    ///删除 
+    operate.deleteItem = function (item) {
+        vmManager.delItem = item;
+        vmManager.delModalWindow.$promise.then(vmManager.delModalWindow.show);
+        leeHelper.delWithId(vmManager.viewDataset, stepItem);
+    },
+    //保存数据
+    operate.save = function (isValid) {
+        $scope.vm.Department = vmManager.department;
+        if (vmManager.opSign === leeDataHandler.dataOpMode.add) {
+            leeHelper.setObjectGuid($scope.vm);
+            leeDataHandler.dataOperate.add(operate, isValid, function () {
+                vmManager.editDatas.push($scope.vm);
+            })
+        }
+        else {
+            vmManager.editWindowDisplay = false;
+        }
+    };
+    //批量保存数据
+    operate.saveAll = function () {
+        $scope.searchPromise = dReportDataOpService.storeProductFlowDatas(vmManager.editDatas).then(function (opresult) {
+            if (opresult.Result) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
+                vmManager.editDatas = [];
+            }
+        });
+    };
+    //取消编辑
+    operate.refresh = function () {
+        leeDataHandler.dataOperate.refresh(operate, function () {
+            vmManager.init();
+            vmManager.editWindowDisplay = false;
+        });
+    };
+
+    ///选择文件并导入数据
+    $scope.selectFile = function (el) {
+        var files = el.files;
+        if (files.length > 0) {
+            var file = files[0];
+            var fd = new FormData();
+            fd.append('file', file);
+            dReportDataOpService.importProductFlowTemplateFile(fd).then(function (datas) {
+                vmManager.editDatas = datas;
+            });
+        }
+    };
+
+    var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
+    departmentTreeSet.bindNodeToVm = function () {
+        var dto = _.clone(departmentTreeSet.treeNode.vm);
+        vmManager.department = dto.DataNodeText;
+    };
+    $scope.promise = dReportDataOpService.getProductionFlowOverview(vmManager.department, vmManager.productName, 0).then(function (data) {
+        departmentTreeSet.setTreeDataset(data.departments);
+        vmManager.flowOverviews = data.overviews;
+    });
+
+    $scope.ztree = departmentTreeSet;
 });

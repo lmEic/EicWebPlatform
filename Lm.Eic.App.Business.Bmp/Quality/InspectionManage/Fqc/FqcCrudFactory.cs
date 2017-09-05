@@ -255,9 +255,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.Entities.Where(e => e.OrderId == orderId).ToList();
         }
-
-        internal List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(string formStatus, DateTime dateFrom, DateTime dateTo)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="formStatus"></param>
+        /// <param name="dateFrom"></param>
+        /// <param name="dateTo"></param>
+        /// <returns></returns>
+        internal List<InspectionFqcMasterModel> GetFqcInspectionMasterModelListBy(DateTime dateFrom, DateTime dateTo, string formStatus = null)
         {
+            if (formStatus == null || formStatus == "全部") return irep.Entities.Where(e => e.MaterialInDate >= dateFrom && e.MaterialInDate <= dateTo).ToList();
             return irep.Entities.Where(e => e.InspectionStatus == formStatus && e.MaterialInDate >= dateFrom && e.MaterialInDate <= dateTo).ToList();
         }
         internal List<InspectionFqcMasterModel> GetFqcInspectionMasterListBy(string materialId)

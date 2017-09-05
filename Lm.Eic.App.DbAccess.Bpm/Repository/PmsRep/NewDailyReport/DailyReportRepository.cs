@@ -11,12 +11,54 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
     /// <summary>
     ///标准生产工艺流程
     /// </summary>
-    public interface IStandardProductionFlowRepository : IRepository<StandardProductionFlowModel> { }
+    public interface IStandardProductionFlowRepository : IRepository<StandardProductionFlowModel>
+    {
+        /// <summary>
+        /// 获取产品总概述前30行接口  =》部门是必须的
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        List<ProductFlowSummaryVm> GetProductFlowSummaryDatasBy(string department, string productName);
+    }
     /// <summary>
     ///标准生产工艺流程
     /// </summary>
     public class StandardProductionFlowRepository : BpmRepositoryBase<StandardProductionFlowModel>, IStandardProductionFlowRepository
-    { }
+    {
+        /// <summary>
+        /// 获取产品总概述前30行
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="containsProductName">包函产品名称</param>
+        /// <returns></returns>
+        public List<ProductFlowSummaryVm> GetProductFlowSummaryDatasBy(string department, string productName)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT ProductName, COUNT(ProductName)AS ProductFlowCount, ");
+                sb.Append("CAST(SUM(CASE StandardProductionTimeType WHEN 'UPS' THEN StandardProductionTime / 60 WHEN 'UPH' THEN 60 / StandardProductionTime ");
+                sb.Append("ELSE StandardProductionTime END) AS decimal(10, 2)) AS StandardHoursCount ");
+                sb.Append("FROM  Pms_StandardProductionFlow ");
+                sb.Append("WHERE(Department = '" + department + "') ");
+                if (productName != null && productName != string.Empty)
+                {
+                    sb.Append("and (ProductName like '%" + productName + "%') ");
+                }
+                sb.Append("GROUP BY ProductName ");
+                string sqltext = sb.ToString();
+                var productFlowSummaryDatas = DbHelper.Bpm.LoadEntities<ProductFlowSummaryVm>(sqltext).ToList();
+                if (productFlowSummaryDatas.Count >= 30)
+                    productFlowSummaryDatas = productFlowSummaryDatas.Take(30).ToList();
+                return productFlowSummaryDatas;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+
+        }
+    }
     /// <summary>
     ///每天生产日报表
     /// </summary>

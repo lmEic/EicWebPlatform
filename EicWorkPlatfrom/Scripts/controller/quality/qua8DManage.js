@@ -373,7 +373,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
                 });
                 leeHelper.setObjectGuid(stepItem);
                 vmManager.viewDataset.push(stepItem);
-
+                _.sortBy(vmManager.viewDataset, 'stepId');
             }
             else {
                 if (!step.IsCheck)
@@ -413,7 +413,6 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
             var dto = leeWorkFlow.createFormFileAttachDto(attachFileVM, uiVm.ReportId, "Handle8DFormCtrl");
             fd.append("attachFileDto", JSON.stringify(dto));
             fd.append("step", vmManager.selectStepItemData.StepId);
-            console.log(fd);
             $scope.doPromise = BDataOpService.upload8DAttachFile(fd).then(function (uploadResult) {
                 console.log(uploadResult);
                 if (uploadResult.Result) {

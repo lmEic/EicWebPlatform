@@ -77,7 +77,9 @@
             </div>
             <div class="col-md-2">
                 <label>班别:</label>
-                {{opPersonInfo.ClassType}}
+                <button type="button" class="btn btn-default" ng-model="vmManager.classType"
+                        data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="班别"
+                        data-bs-options="item.id as item.text for item in vmManager.classTypes" data-bs-select></button>
             </div>
             <div class="col-md-3">
                 <span>

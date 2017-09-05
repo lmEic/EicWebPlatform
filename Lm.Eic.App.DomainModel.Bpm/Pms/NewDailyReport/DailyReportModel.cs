@@ -568,7 +568,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
     /// <summary>
     /// 查询操作Model
     /// </summary>
-    public class QueryDailyReportDto
+    public class QueryDailyProductReportDto
     {
 
         string department = string.Empty;
@@ -629,5 +629,26 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             get { return searchMode; }
             set { if (searchMode != value) { searchMode = value; } }
         }
+    }
+
+
+    /// <summary>
+    /// 产品工艺概述模型
+    /// </summary>
+    public class ProductFlowSummaryVm
+    {
+        /// <summary>
+        /// 产品品名
+        /// </summary>
+        public string ProductName { get; set; }
+        /// <summary>
+        /// 工序总数
+        /// </summary>
+        public int ProductFlowCount { get; set; }
+
+        /// <summary>
+        /// 总工时
+        /// </summary>
+        public double StandardHoursCount { get; set; }
     }
 }

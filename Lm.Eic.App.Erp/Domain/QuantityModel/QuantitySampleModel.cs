@@ -151,5 +151,45 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
 
         #endregion
     }
+    /// <summary>
+    /// 生产工单信息
+    /// </summary>
+    public class ProductionOrderIdInfo : QuantitySampleMaodelBase
+    {
+        /// <summary>
+        /// 工单单号  
+        /// </summary>
+        public string OrderID { get { return ID; } }
+        /// <summary>
+        ///  产品品号 
+        /// </summary>
+        public string ProductID { get; set; }
+        /// <summary>
+        /// 产品品名  
+        /// </summary>
+        public string ProductName { get; set; }
+        /// <summary>
+        /// 产品规格
+        /// </summary>
+        public string ProductSpec { get; set; }
+        /// <summary>
+        /// 生产状态
+        /// </summary>
+        public string ProductStatus { get; set; }
+        /// <summary>
+        /// 生产部门
+        /// </summary>
+        public string ProductionDepartment
+        { get; set; }
+        /// 订单生产数量 
+        /// </summary>
+        public double ProduceNumber { get; set; }
+        /// 入库数量 
+        /// </summary>
+        public double PutInStoreNumber { get; set; }
 
+
+
+
+    }
 }

@@ -265,13 +265,24 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         });
     }
     //////////////////////////////////////////////fqc检验单管理模块/////////////////////////////////////////////
-    //fqc检验单管理模块    获取表单数据
-    quality.queryFqcERPOrderInspectionInfoS = function (selectedDepartment, dateFrom, dateTo) {
+    //fqc检验单管理模块   
+    ///获取Erp表单数据 fqcERPOrderInspectionInfos
+    quality.fqcERPOrderInspectionInfos = function (selectedDepartment, dateFrom, dateTo) {
         var url = quaInspectionManageUrl + 'QueryFqcERPOrderInspectionInfoS';
         return ajaxService.getData(url, {
             dateFrom: dateFrom,
             dateTo: dateTo,
             selectedDepartment: selectedDepartment,
+        })
+    };
+    ///获取Master表单数据
+    quality.fqcMasterInspectionInfos = function (selectedDepartment, formStatus, dateFrom, dateTo) {
+        var url = quaInspectionManageUrl + 'GetInspectionFormManageOfFqcDatas';
+        return ajaxService.getData(url, {
+            dateFrom: dateFrom,
+            dateTo: dateTo,
+            selectedDepartment: selectedDepartment,
+            status: status,
         })
     };
     quality.getInspectionFormMasterOfFqcDatas = function (orderId) {
@@ -1145,7 +1156,8 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
     $scope.opPersonInfo = { Department: '', ClassType: '' };
 
     var vmManager = {
-
+        classTypes: [{ id: "白班", text: "白班" }, { id: "晚班", text: "晚班" }],
+        classType: '白班',
         orderId: null,
         orderInfo: null,
         //抽样批次数量
@@ -1372,6 +1384,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 if (_.isArray(users) && users.length > 0) {
                     var userInfo = users[0];
                     leeHelper.copyVm(userInfo, $scope.opPersonInfo);
+                    vmManager.classType = $scope.opPersonInfo.ClassType;
                 }
             });
         }
@@ -1395,6 +1408,9 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
             { value: "PT1", label: "成型课" }],
         dateFrom: null,
         dateTo: null,
+        fqcDateFrom: null,
+        fqcDateTo: null,
+        selStatus: null,
         selectedFormStatus: "全部",
         selectedDepartment: "",
         formStatuses: [{ label: "全部", value: "全部" }, { label: "待检验", value: "待检验" }, { label: "未完成", value: "未完成" }, { label: "待审核", value: "待审核" }, { label: "已审核", value: "已审核" }],
@@ -1408,6 +1424,8 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
         InspectionItemDatasArr: [],
         dataSource: [],
         dataSets: [],
+        fqcDataSource: [],
+        fqcDataSets: [],
         erpDataSets: [],
         erpDataSource: [],
         isShowTips: false,
@@ -1435,14 +1453,23 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
             },
             show: false,
         }),
-        //获取检验表单主数据
+        //获取Erp检验表单主数据
         queryErpOrderInspectionInfo: function () {
-            $scope.searchPromise = qualityInspectionDataOpService.queryFqcERPOrderInspectionInfoS(vmManager.selectedDepartment, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
+            $scope.searchPromise = qualityInspectionDataOpService.fqcERPOrderInspectionInfos(vmManager.selectedDepartment, $scope.vmManager.dateFrom, $scope.vmManager.dateTo).then(function (editDatas) {
                 if (editDatas.length >= 100) {
                     vmManager.showTips.$promise.then(vmManager.showTips.show);
                 }
                 vmManager.erpDataSource = editDatas;
                 vmManager.erpDataSets = editDatas;
+                console.log(editDatas);
+            })
+        },
+
+        //获取FQC检验表单主数据
+        queryFqcMasterInspectionInfo: function () {
+            $scope.searchPromise = qualityInspectionDataOpService.fqcMasterInspectionInfos(vmManager.selectedDepartment, vmManager.selStatus, $scope.vmManager.fqcDateFrom, $scope.vmManager.fqcDateTo).then(function (editDatas) {
+                vmManager.fqcDataSource = editDatas;
+                vmManager.fqcDataSets = editDatas;
                 console.log(editDatas);
             })
         },

@@ -8,12 +8,12 @@ using System.Text;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 {
-    public class DailyReportManager
+    public class DailyProductionReportManager
     {
         /// <summary>
         /// 产品生产工艺设置
         /// </summary>
-        public ProductionFlowManager ProductionFlowSetter
+        public ProductionFlowManager ProductionFlowSet
         {
             get { return OBulider.BuildInstance<ProductionFlowManager>(); }
         }
@@ -26,10 +26,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="dto">数据传输对象 品名和部门是必须的</param>
         /// <returns></returns>
-        public List<StandardProductionFlowModel> GetProductFlowOverviewBy(QueryDailyReportDto dto)
+        public List<StandardProductionFlowModel> GetProductFlowInfoBy(QueryDailyProductReportDto dto)
         {
             return DailyReportCrudFactory.ProductionFlowCrud.FindBy(dto);
         }
+        /// <summary>
+        /// 存储数据表
+        /// </summary>
+        /// <param name="modelList"></param>
+        /// <returns></returns>
         public OpResult Store(List<StandardProductionFlowModel> modelList)
         {
             //先依据部门和品名进行数据库清除 然后批量添加进数据库
@@ -42,6 +47,18 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             {
                 return OpResult.SetErrorResult("列表不能为空！");
             }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="productName"></param>
+        /// <returns></returns>
+        public List<ProductFlowSummaryVm> GetFlowShowSummaryInfosBy(string department, string productName = null)
+        {
+            //从ERP中获得部门 在制所有工单信息
+            var ddd = "";
+            return DailyReportCrudFactory.ProductionFlowCrud.GetProductionFlowSummaryDatesBy(department, productName);
         }
     }
 }

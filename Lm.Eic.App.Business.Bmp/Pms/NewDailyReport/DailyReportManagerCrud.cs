@@ -66,14 +66,19 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             {
                 SetFixFieldValue(modelList, OpMode.Add);
                 //处理内部内容 UPS　UPS处理
-                //modelList.ForEach((m) =>
-                //{
-                //    if (m.MaxMachineCount != 0)
-                //    {
-                //        m.MinMachineCount = 1;
-                //        m.DifficultyCoefficient = m.MinMachineCount / m.MaxMachineCount;
-                //    }
-                //});
+                modelList.ForEach((m) =>
+                {
+                    if (m.StandardProductionTimeType == "UPH")
+                    {
+                        m.UPH = m.StandardProductionTime;
+                        m.UPS = 3600 / m.StandardProductionTime;
+                    }
+                    else
+                    {
+                        m.UPH = 3600 / m.StandardProductionTime;
+                        m.UPS = m.StandardProductionTime;
+                    }
+                });
                 return irep.Insert(modelList).ToOpResult_Add(OpContext);
             }
             catch (Exception ex)
@@ -138,7 +143,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="qryDto">数据传输对象 部门是必须的 </param>
         /// <returns></returns>
-        public List<StandardProductionFlowModel> FindBy(QueryDailyReportDto qryDto)
+        public List<StandardProductionFlowModel> FindBy(QueryDailyProductReportDto qryDto)
         {
             try
             {
@@ -168,6 +173,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             {
                 throw new Exception(ex.InnerException.Message);
             }
+        }
+
+        /// <summary>
+        /// 获取产品总概述前30行
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        public List<ProductFlowSummaryVm> GetProductionFlowSummaryDatesBy(string department, string productName = null)
+        {
+            return irep.GetProductFlowSummaryDatasBy(department, productName);
         }
     }
     /// <summary>

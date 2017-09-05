@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Collections.Generic;
+using Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport;
+using Lm.Eic.App.Business.Bmp.Pms.NewDailyReport;
 using Lm.Eic.App.DomainModel.Bpm.Pms.DailyReport;
 using Lm.Eic.App.Business.Bmp.Pms.DailyReport;
 using System.IO;
@@ -33,11 +35,11 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         [HttpGet]
         [NoAuthenCheck]
-        public JsonResult GetProductFlowList(string department, string productName, string orderId, int searchMode)
+        public JsonResult GetProductionFlowList(string department, string productName, string orderId, int searchMode)
         {
             //工单没有用到  
             //用品名得到多处数据 把数据转化为 ProductsFlowOverModel
-            var result = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
+            var result = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(new QueryDailyProductReportDto()
             {
                 Department = department,
                 ProductName = productName,
@@ -56,7 +58,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult GetProductFlowListBy(string department, string likeProductName)
         {
-            var productFlowOverviews = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department, likeProductName);
+            var productFlowOverviews = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetFlowShowSummaryInfosBy(department, likeProductName);
             return Json(productFlowOverviews, JsonRequestBehavior.AllowGet);
         }
 
@@ -67,9 +69,9 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         [HttpPost]
         [NoAuthenCheck]
-        public JsonResult StoreProductFlowDatas(List<ProductFlowModel> entities)
+        public JsonResult StoreProductFlowDatas(List<StandardProductionFlowModel> entities)
         {
-            var datas = DailyReportService.ConfigManager.ProductFlowSetter.Store(entities);
+            var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.Store(entities);
             return Json(datas);
         }
 
@@ -79,19 +81,20 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// </summary>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult GetProductFlowOverview(string department, string productName, int searchMode)
+        public JsonResult GetProductionFlowOverview(string department, string productName, int searchMode)
         {
 
             if (searchMode == 0)
             {
-                var ProductFlowdatas = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department);
+                var ProductFlowdatas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetFlowShowSummaryInfosBy(department);
+
                 var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
                 var datas = new { departments = departments, overviews = ProductFlowdatas };
                 return Json(datas, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var ProductFlowdatas = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowOverviewListBy(department, productName);
+                var ProductFlowdatas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetFlowShowSummaryInfosBy(department, productName);
                 return Json(ProductFlowdatas, JsonRequestBehavior.AllowGet);
             }
         }
@@ -106,6 +109,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             string filePath = @"E:\各部门日报格式\日报数据表.xls";
             var dlfm = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowTemplate(filePath);
             return this.DownLoadFile(dlfm);
+
         }
 
         public JsonResult ImportProductFlowDatas(HttpPostedFileBase file)
@@ -122,7 +126,9 @@ namespace EicWorkPlatfrom.Controllers.Product
                     System.IO.File.Delete(fileName);
                 }
             }
+
             return Json(datas, JsonRequestBehavior.AllowGet);
+
         }
         #endregion
 
@@ -150,6 +156,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             var datas = DailyReportService.InputManager.DailyReportInputManager.GetDailyReportTemplate(department, dailyReportDate);
             return DateJsonResult(datas);
+
         }
         /// <summary>
         /// 获取工单详细信息
@@ -171,6 +178,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             //二组数据合并显示
             var data = new { orderDetails = orderDetails, productFlows = productFlows };//productFlows = productFlows
             return Json(data, JsonRequestBehavior.AllowGet);
+
         }
 
         /// <summary>
@@ -186,6 +194,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             var unproductReasons = DailyReportService.ConfigManager.NonProductionReasonSetter.GetNonProductionReasonListBy(department);
             var datas = new { departments = departments, machines = machines, unproductReasons = unproductReasons };
             return Json(datas, JsonRequestBehavior.AllowGet);
+
         }
 
         /// <summary>
@@ -199,6 +208,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             //excel
             var dlfm = DailyReportService.InputManager.DailyReportInputManager.BuildDailyReportTempList(department, inputDate);
             return this.DownLoadFile(dlfm);
+
         }
         /// <summary>
         /// 保存日报录入数据
@@ -211,6 +221,7 @@ namespace EicWorkPlatfrom.Controllers.Product
 
             var result = DailyReportService.InputManager.DailyReportInputManager.SavaDailyReportList(datas, inputDate);
             return Json(result);
+
         }
         /// <summary>
         /// 审核日报数据
