@@ -512,7 +512,7 @@ namespace EicWorkPlatfrom.Controllers
         /// <param name="fqcDateTo"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetMasterInspectionFqcDatas(string selectedDepartment, string formStatus, DateTime fqcDateFrom, DateTime fqcDateTo)
+        public ContentResult GetInspectionMasterFqcDatas(string selectedDepartment, string formStatus, DateTime fqcDateFrom, DateTime fqcDateTo)
         {
             var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(selectedDepartment, formStatus, fqcDateFrom, fqcDateTo);
             return DateJsonResult(datas);

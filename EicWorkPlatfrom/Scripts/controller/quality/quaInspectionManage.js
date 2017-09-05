@@ -276,9 +276,9 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             selectedDepartment: selectedDepartment,
         })
     };
-    ///获取Master表单数据  GetMasterInspectionFqcDatas
-    quality.fqcMasterInspectionInfos = function (selectedDepartment, formStatus, fqcDateFrom, fqcDateTo) {
-        var url = quaInspectionManageUrl + 'GetMasterInspectionFqcDatas';
+    ///获取Master表单数据 
+    quality.fqcInspectionMasterInfos = function (selectedDepartment, formStatus, fqcDateFrom, fqcDateTo) {
+        var url = quaInspectionManageUrl + 'GetInspectionMasterFqcDatas';
         return ajaxService.getData(url, {
             selectedDepartment: selectedDepartment,
             formStatus: formStatus,
@@ -1468,7 +1468,7 @@ qualityModule.controller("inspectionFormManageOfFqcCtrl", function ($scope, qual
         //获取FQC检验表单主数据
         queryFqcMasterInspectionInfo: function () {
             console.log(666666);
-            $scope.searchPromise = qualityInspectionDataOpService.fqcMasterInspectionInfos(vmManager.selectedDepartment, vmManager.formStatus, $scope.vmManager.fqcDateFrom, $scope.vmManager.fqcDateTo).then(function (datas) {
+            $scope.searchPromise = qualityInspectionDataOpService.fqcInspectionMasterInfos(vmManager.selectedDepartment, vmManager.formStatus, $scope.vmManager.fqcDateFrom, $scope.vmManager.fqcDateTo).then(function (datas) {
                 console.log(8888);
                 vmManager.fqcDataSource = datas;
                 vmManager.fqcDataSets = datas;
