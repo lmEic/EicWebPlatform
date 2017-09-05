@@ -37,7 +37,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         ///审核主表数据
         /// </summary>
         /// <returns></returns>
-        public OpResult AuditFqcInspectionMasterModel(InspectionFqcMasterModel model)
+        public OpResult AuditFqcInspectionModel(InspectionFqcMasterModel model)
         {
             try
             {

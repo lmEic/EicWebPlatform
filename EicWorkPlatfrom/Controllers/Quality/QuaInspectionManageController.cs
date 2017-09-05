@@ -498,15 +498,18 @@ namespace EicWorkPlatfrom.Controllers
         /// Fqc检验单管理
         /// </summary>
         /// <returns></returns>
+        [NoAuthenCheck]
         public ActionResult InspectionFormManageOfFqc()
         {
             return View();
         }
         /// <summary>
-        /// 根据单据状态获得检验单数据  selectedDepartment, formStatus, dateFrom, dateTo 
-        /// </summary>  selectedFormStatus,dateFrom,dateTo
-        ///       quality.fqcMasterInspectionInfos = function (selectedDepartment, formStatus, fqcDateFrom, fqcDateTo) {
-       //                 var url = quaInspectionManageUrl + 'GetMasterInspectionFqcDatas';
+        /// FQC 查询 抽抽验状态
+        /// </summary>
+        /// <param name="selectedDepartment"></param>
+        /// <param name="formStatus"></param>
+        /// <param name="fqcDateFrom"></param>
+        /// <param name="fqcDateTo"></param>
         /// <returns></returns>
         [NoAuthenCheck]
         public ContentResult GetMasterInspectionFqcDatas(string selectedDepartment, string formStatus, DateTime fqcDateFrom, DateTime fqcDateTo)
@@ -563,7 +566,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult PostInspectionFormManageCheckedOfFqcData(InspectionFqcMasterModel model)
         {
-            var opResult = InspectionService.InspectionFormManager.FqcFromManager.AuditFqcInspectionMasterModel(model);
+            var opResult = InspectionService.InspectionFormManager.FqcFromManager.AuditFqcInspectionModel(model);
             return Json(opResult);
         }
         /// <summary>

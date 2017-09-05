@@ -276,7 +276,7 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             selectedDepartment: selectedDepartment,
         })
     };
-    ///获取Master表单数据
+    ///获取Master表单数据  GetMasterInspectionFqcDatas
     quality.fqcMasterInspectionInfos = function (selectedDepartment, formStatus, fqcDateFrom, fqcDateTo) {
         var url = quaInspectionManageUrl + 'GetMasterInspectionFqcDatas';
         return ajaxService.getData(url, {
