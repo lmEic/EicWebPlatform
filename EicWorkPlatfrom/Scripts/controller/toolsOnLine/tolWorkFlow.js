@@ -34,7 +34,7 @@ officeAssistantModule.factory('wfDataOpService', function (ajaxService) {
     return wfDataOp;
 });
 ///内部联络单
-officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, wfDataOpService) {
+officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, ajaxService, dataDicConfigTreeSet, connDataOpService, wfDataOpService) {
     var editor = leeUeditor.createEditor('formContent');
     //流程参与者人员信息
     var participantInfo = $scope.participantInfo = {
@@ -178,5 +178,18 @@ officeAssistantModule.controller('wfInternalContactFormCtrl', function ($scope, 
                 }
             });
         });
+    };
+
+
+
+
+
+    var hw = $scope.hw = {
+        postData: function () {
+            // leePopups.alert("华为API数据对接", 1);
+            $scope.opPromise = ajaxService.getData("/TolCooperateWithHw/GetManPower").then(function (rtndata) {
+                leePopups.alert(JSON.stringify(rtndata));
+            });
+        },
     };
 });

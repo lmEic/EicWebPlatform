@@ -1142,6 +1142,33 @@ angular.module('eicomm.directive', ['ngSanitize', 'mgcrea.ngStrap'])
         });
         return defer.promise;
     };
+
+
+
+    //var postHwData = function (url, data, token) {
+    //    var defer = $q.defer();
+    //    $http.post(url, data, {
+    //        headers: {
+    //            'Content-Type': 'application/json',
+    //            'Authorization': 'Bearer ' + token
+    //        },
+    //    }).success(function (sucdata) {
+    //        defer.resolve(sucdata);
+    //    }).error(function (errdata) {
+    //        defer.reject(errdata);
+    //    });
+    //    return defer.promise;
+    //};
+    ////调用华为API接口，并提交数据，需要进行跨域提交
+    //myajax.invokeHwAPI = function (url, data, successFn) {
+    //    return myajax.getData("/TolCooperateWithHw/GetHwToken").then(function (token) {
+    //        postHwData(url, data, token).then(function (rtn) {
+    //            if (!angular.isUndefined(successFn) && angular.isFunction(successFn)) {
+    //                successFn(rtn);
+    //            }
+    //        });
+    //    });
+    //};
     return myajax;
 })
 .factory('navDataService', function (ajaxService) {
