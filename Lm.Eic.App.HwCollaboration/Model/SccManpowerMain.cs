@@ -7,6 +7,18 @@ using System.Threading.Tasks;
 namespace Lm.Eic.App.HwCollaboration.Model
 {
     /// <summary>
+    /// 人力资源信息Dto
+    /// </summary>
+    [Serializable]
+    public class ManPowerDto
+    {
+        /// <summary>
+        /// 人力信息主列表
+        /// </summary>
+        public List<SccManpowerMain> manpowerMainList { get; set; }
+    }
+
+    /// <summary>
     /// 人力信息工厂单据
     /// </summary>
     [Serializable]
