@@ -19,12 +19,38 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
         /// <param name="department">部门</param>
         /// <returns></returns>
         List<ProductFlowSummaryVm> GetProductFlowSummaryDatasBy(string department, string productName);
+        /// <summary>
+        /// 获取产品总概述
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        ProductFlowSummaryVm GetProductFlowSummaryDataBy(string productName);
     }
     /// <summary>
     ///标准生产工艺流程
     /// </summary>
     public class StandardProductionFlowRepository : BpmRepositoryBase<StandardProductionFlowModel>, IStandardProductionFlowRepository
     {
+        public ProductFlowSummaryVm GetProductFlowSummaryDataBy(string productName)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT ProductName, COUNT(ProductName)AS ProductFlowCount, ");
+                sb.Append("CAST(SUM(CASE StandardProductionTimeType WHEN 'UPS' THEN StandardProductionTime / 60 WHEN 'UPH' THEN 60 / StandardProductionTime ");
+                sb.Append("ELSE StandardProductionTime END) AS decimal(10, 2)) AS StandardHoursCount ");
+                sb.Append("FROM  Pms_StandardProductionFlow ");
+                sb.Append("WHERE(ProductName = '" + productName + "') ");
+                sb.Append("GROUP BY ProductName ");
+                string sqltext = sb.ToString();
+                return DbHelper.Bpm.LoadEntities<ProductFlowSummaryVm>(sqltext).ToList().FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
+        }
+
         /// <summary>
         /// 获取产品总概述前30行
         /// </summary>

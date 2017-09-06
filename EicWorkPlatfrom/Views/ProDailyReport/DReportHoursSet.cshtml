@@ -6,13 +6,11 @@
         <div class="row">
             <div class="pull-left" style="width:45%;">
                 <div cg-busy="{promise:promise}">
-                    部门<label class="label label-default">{{vmManager.department}}</label>
-                    <button class="btn btn-sm btn-primary"
-                            data-title="选择部门名称"
-                            data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
-                            data-animation="am-flip-x" data-auto-close="1"
-                            data-bs-popover>
-                        <i class="fa fa-sitemap"></i>
+                    部门:
+                    <button class="btn btn-success " ng-model="vmManager.department" ng-change="vmManager.changeDepartment()"
+                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
+                            data-bs-options="department.value as department.label for department in vmManager.departments track by $index" data-bs-select>
+                        <span class="caret"></span>
                     </button>
                     <label>产品品名</label>
                     <input placeholder="输产品品名按下回车键查找" ng-model="vmManager.productName" ng-keypress="vmManager.getProductFlowList($event)" />
@@ -48,7 +46,7 @@
                                     <th>产品品名</th>
                                     <th>工序总数</th>
                                     <th>工时总计(分)</th>
-                                    <th>查看(<i class="fa fa-eye"></i>)</th>
+                                    <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -59,6 +57,9 @@
                                     <td>
                                         <button class="btn btn-xs btn-primary" ng-click="vmManager.queryProductionFlowDetails(item)" title="查看明细">
                                             明细
+                                        </button>/
+                                        <button class="btn btn-xs btn-primary" ng-click="vmManager.addProductionFlow(item)" title="添加">
+                                            添加
                                         </button>
                                     </td>
                                 </tr>
@@ -115,30 +116,21 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="processesIndex" class="col-md-3 control-label">工艺序号</label>
-                                    <div class="col-md-3">
-                                        <input name="processesIndex" type="number" class="form-control" ng-model="vm.ProcessesIndex" required />
-                                        <div class="error-messages" ng-messages="formProductionFlow.processesIndex.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">工艺编号不能为空</small>
-                                        </div>
-                                    </div>
-                                    <label for="processesSign" class="col-md-3 control-label">工艺标示</label>
-                                    <div class="col-md-3">
-                                        <button type="button" name="processesSign" class="btn btn-primary" ng-model="vm.ProcessesSign"
-                                                data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="中继站"
-                                                data-bs-options="item.id as item.text for item in vmManager.processesSigns" data-bs-select></button>
-                                        <div class="error-messages" ng-messages="formProductionFlow.processesSign.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">工艺标示不能为空</small>
+                                    <label for="processesName" class="col-md-3 control-label">工艺名称</label>
+                                    <div class="col-md-6">
+                                        <input name="processesName" class="form-control" ng-model="vm.ProcessesName" required />
+                                        <div class="error-messages" ng-messages="formProductionFlow.processesName.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">工艺名称不能为空</small>
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="form-group">
-                                    <label for="processesName" class="col-md-3 control-label">工艺名称</label>
+                                    <label for="processesIndex" class="col-md-3 control-label">工艺序号</label>
                                     <div class="col-md-3">
-                                        <input name="processesName" class="form-control" ng-model="vm.ProcessesName" required />
-                                        <div class="error-messages" ng-messages="formProductionFlow.processesName.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">工艺名称不能为空</small>
+                                        <input name="processesIndex" type="number" class="form-control" ng-model="vm.ProcessesIndex" required />
+                                        <div class="error-messages" ng-messages="formProductionFlow.processesIndex.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">工艺编号不能为空</small>
                                         </div>
                                     </div>
                                     <label for="maxMachineCount" class="col-md-3 control-label">工艺类别</label>

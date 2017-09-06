@@ -230,7 +230,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             string orderStatusSql = OrderStatusStr(orderStatus);
             List<ProductionOrderIdInfo> ProductionOrderIdDatas = new List<ProductionOrderIdInfo>();
             ProductionOrderIdInfo OrderIdData = null;
-            string sql = string.Format("SELECT TA001, TA002, TA006, TA034, TA035, TA017, TA015,TA021,TA011 FROM MOCTA WHERE(TA021 = '{0}') {1} ORDER BY TA002 ", department, orderStatusSql);
+            string sql = string.Format("SELECT TA001, TA002, TA006, TA034, TA035, TA017, TA015,TA021,TA011 FROM MOCTA WHERE(TA021 = '{0}')  {1}   ORDER BY TA002 ", department, orderStatusSql);
             DataTable dt = DbHelper.Erp.LoadTable(sql);
             if (dt.Rows.Count > 0)
             {
@@ -248,9 +248,9 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                         ProductSpec = dr[4].ToString().Trim(),
                         PutInStoreNumber = Convert.ToDouble(dr[5].ToString().Trim()),
                     };
+                    if (!ProductionOrderIdDatas.Contains(OrderIdData))
+                        ProductionOrderIdDatas.Add(OrderIdData);
                 }
-                if (ProductionOrderIdDatas.Contains(OrderIdData))
-                    ProductionOrderIdDatas.Add(OrderIdData);
             }
             return ProductionOrderIdDatas;
         }
@@ -259,9 +259,9 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             switch (orderStatus)
             {
                 case "完工":
-                    return " AND(TA011 In('Y', 'y')";
+                    return " AND(TA011 In('Y', 'y'))";
                 case "在制":
-                    return " AND(TA011 IN('1', '2', '3')";
+                    return " AND(TA011 IN('1', '2', '3'))";
                 default:
                     return string.Empty;
             }

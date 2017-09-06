@@ -1,10 +1,9 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport;
 using Lm.Eic.Uti.Common.YleeObjectBuilder;
 using Lm.Eic.Uti.Common.YleeOOMapper;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Lm.Eic.App.Erp.Bussiness.QuantityManage;
+using Lm.Eic.App.Erp.Domain.QuantityModel;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 {
@@ -35,11 +34,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="modelList"></param>
         /// <returns></returns>
-        public OpResult Store(List<StandardProductionFlowModel> modelList)
+        public OpResult StoreModelList(List<StandardProductionFlowModel> modelList)
         {
             //先依据部门和品名进行数据库清除 然后批量添加进数据库
             if (modelList.Count > 0)
             {
+                //先删除后添加
                 DailyReportCrudFactory.ProductionFlowCrud.DeleteProductFlowModelBy(modelList[0].Department, modelList[0].ProductName);
                 return DailyReportCrudFactory.ProductionFlowCrud.AddProductFlowModelList(modelList);
             }
@@ -47,6 +47,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             {
                 return OpResult.SetErrorResult("列表不能为空！");
             }
+        }
+        public OpResult StoreProductFlow(StandardProductionFlowModel model)
+        {
+            return DailyReportCrudFactory.ProductionFlowCrud.Store(model, true);
         }
         /// <summary>
         /// 
@@ -57,8 +61,22 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         public List<ProductFlowSummaryVm> GetFlowShowSummaryInfosBy(string department, string productName = null)
         {
             //从ERP中获得部门 在制所有工单信息
-            var ddd = "";
-            return DailyReportCrudFactory.ProductionFlowCrud.GetProductionFlowSummaryDatesBy(department, productName);
+            List<ProductionOrderIdInfo> productionOrderIdInfo = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(department, "在制");
+            List<ProductFlowSummaryVm> flowSummaryVms = new List<ProductFlowSummaryVm>();
+            ProductFlowSummaryVm flowSummaryVm = null;
+            if (productionOrderIdInfo.Count > 0)
+            {
+                productionOrderIdInfo.ForEach(m =>
+                {
+                    flowSummaryVm = DailyReportCrudFactory.ProductionFlowCrud.GetProductionFlowSummaryDateBy(m.ProductName);
+                    if (flowSummaryVm == null) flowSummaryVm = new ProductFlowSummaryVm();
+                    flowSummaryVm.ProductName = m.ProductName;
+                    if (!flowSummaryVms.Contains(flowSummaryVm))
+                        flowSummaryVms.Add(flowSummaryVm);
+                });
+            }
+            return flowSummaryVms;
         }
+
     }
 }

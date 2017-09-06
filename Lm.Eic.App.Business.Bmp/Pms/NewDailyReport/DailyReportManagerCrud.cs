@@ -71,11 +71,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     if (m.StandardProductionTimeType == "UPH")
                     {
                         m.UPH = m.StandardProductionTime;
-                        m.UPS = 3600 / m.StandardProductionTime;
+                        m.UPS = Math.Round(3600 / m.StandardProductionTime, 4);
                     }
                     else
                     {
-                        m.UPH = 3600 / m.StandardProductionTime;
+                        m.UPH = Math.Round(3600 / m.StandardProductionTime, 4);
                         m.UPS = m.StandardProductionTime;
                     }
                 });
@@ -108,6 +108,16 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 model.ParameterKey = string.Format("{0}&{1}&{2}&{3}", model.Department, model.ProductName, model.ProcessesName, model.MouldId);
             else model.ParameterKey = string.Format("{0}&{1}&{2}", model.Department, model.ProductName, model.ProcessesName);
 
+            if (model.StandardProductionTimeType == "UPH")
+            {
+                model.UPH = model.StandardProductionTime;
+                model.UPS = 3600 / model.StandardProductionTime;
+            }
+            else
+            {
+                model.UPH = 3600 / model.StandardProductionTime;
+                model.UPS = model.StandardProductionTime;
+            }
             //此工艺是否已经存在
             if (irep.IsExist(e => e.ParameterKey == model.ParameterKey))
                 return OpResult.SetErrorResult("此数据已经添加!");
@@ -183,6 +193,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         public List<ProductFlowSummaryVm> GetProductionFlowSummaryDatesBy(string department, string productName = null)
         {
             return irep.GetProductFlowSummaryDatasBy(department, productName);
+        }
+        public ProductFlowSummaryVm GetProductionFlowSummaryDateBy(string productName)
+        {
+            return irep.GetProductFlowSummaryDataBy(productName);
         }
     }
     /// <summary>

@@ -25,6 +25,14 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             entities: entities,
         });
     };
+    //保存产品工艺流程数据
+    reportDataOp.storeFlowData = function (entity) {
+        var url = urlPrefix + 'StoreFlowData';
+        return ajaxService.postData(url, {
+            entity: entity,
+        });
+    };
+
     //导入模板数据
     reportDataOp.importProductFlowTemplateFile = function (file) {
         var url = urlPrefix + 'ImportProductFlowDatas';
@@ -1424,8 +1432,8 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         ProcessesIndex: 0,
         ProcessesSign: null,
         ProcessesName: null,
-        ProcessesType: null,
-        StandardProductionTimeType: null,
+        ProcessesType: '人工',
+        StandardProductionTimeType: 'UPS',
         StandardProductionTime: null,
         UPH: null,
         UPS: null,
@@ -1454,7 +1462,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         editWindowDisplay: false,
         editWindowWidth: '100%',
         copyWindowDisplay: false,
-        department: '成型课',
+        department: 'MS7',
         productName: null,
         //编辑显示的数据集合
         editDatas: [],
@@ -1464,8 +1472,16 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         productNameTo: null,
         delItem: null,
         flowOverviews: [],
-        //工艺标示
-        processesSigns: [{ id: "开始站", text: "开始站" }, { id: "中继站", text: "中继站" }, { id: "结束站", text: "结束站" }],
+        ///部门
+        departments: [
+           { value: "MS1", label: "制一课" },
+           { value: "MS2", label: "制二课" },
+            { value: "MS3", label: "制三课" },
+           { value: "MS5", label: "制五课" },
+           { value: "MS6", label: "制六课" },
+           { value: "MS7", label: "制七课" },
+           { value: "MS10", label: "制十课" },
+           { value: "PT1", label: "成型课" }],
         //工时类别
         standardProductionTimeTypes: [{ id: "UPH", text: "UPH" }, { id: "UPS", text: "UPS" }],
         //工艺类别
@@ -1474,13 +1490,6 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         //查看工艺流程明细 OK
         queryProductionFlowDetails: function (item) {
             vmManager.editDatas = [];
-            angular.forEach(vmManager.editDatasSummy, function (e) {
-
-                if (e.ProductName == item.ProductName) {
-                    vmManager.editDatas = e;
-                }
-            });
-
             vmManager.productName = item.ProductName;
             $scope.searchPromise = dReportDataOpService.getProductionFlowList(vmManager.department, vmManager.productName, "", 2).then(function (datas) {
                 angular.forEach(datas, function (e) {
@@ -1489,7 +1498,26 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
                 });
                 vmManager.editDatasSummy.push(vmManager.editDatas);
             });
+        },
+        //获取项目最大配置工序ID
+        getInspectionIndex: function () {
+            if (vmManager.editDatas.length >= 0) {
+                uiVM.ProcessesIndex = $scope.vm.ProcessesIndex = vmManager.editDatas.length + 1;
+            }
+            else {
+                $scope.vm.ProcessesIndex = 0;
+            }
+        },
 
+        ///工艺名称不能有重复
+        verifyProcessesName: function () {
+            console.log(78975464);
+        },
+        //项次添加 
+        addProductionFlow: function (item) {
+            vmManager.queryProductionFlowDetails(item);
+            uiVM.ProcessesIndex = $scope.vm.ProcessesIndex = item.ProductFlowCount + 1;
+            operate.add();
         },
         // 模糊查找
         vagueQueryProductionSummyDatas: function () {
@@ -1513,6 +1541,14 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             }
             else { vmManager.isShowMachine = false; }
         },
+        ///changeDepartment
+        changeDepartment: function () {
+            $scope.promise = dReportDataOpService.getProductionFlowOverview(vmManager.department, vmManager.productName, 0).then(function (data) {
+                departmentTreeSet.setTreeDataset(data.departments);
+                vmManager.flowOverviews = data.overviews;
+            });
+        },
+
         delModalWindow: $modal({
             title: "删除提示", content: "您确定要删除此工序信息吗?",
             templateUrl: leeHelper.modalTplUrl.deleteModalUrl, show: false,
@@ -1535,12 +1571,11 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
     $scope.operate = operate;
     ///确认添加
     operate.add = function () {
-        vmManager.opSign = leeDataHandler.dataOpMode.add;
         vmManager.init();
         uiVM.ProductName = vmManager.productName;
+        vmManager.getInspectionIndex();
         leeHelper.setObjectGuid(uiVM);
         vmManager.editWindowDisplay = true;
-
     };
     ////
     operate.productNameFrom = function () {
@@ -1580,16 +1615,23 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
     //保存数据
     operate.save = function (isValid) {
         $scope.vm.Department = vmManager.department;
-        if (vmManager.opSign === leeDataHandler.dataOpMode.add) {
-            leeHelper.setObjectGuid($scope.vm);
-            leeDataHandler.dataOperate.add(operate, isValid, function () {
-                vmManager.editDatas.push($scope.vm);
-            })
-        }
-        else {
-            vmManager.editWindowDisplay = false;
-        }
+        leeHelper.setUserData(uiVM);
+        console.log(uiVM);
+        $scope.searchPromise = dReportDataOpService.storeFlowData(uiVM).then(function (opresult) {
+            if (opresult.Result) {
+                console.log(opresult);
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
+                if (opresult.Entity.OpSign === leeDataHandler.dataOpMode.add) {
+                    leeHelper.setObjectGuid($scope.vm);
+                    vmManager.editDatas.push($scope.vm);
+                    vmManager.editWindowDisplay = false;
+                    vmManager.init();
+                }
+
+            }
+        })
     };
+
     //批量保存数据
     operate.saveAll = function () {
         $scope.searchPromise = dReportDataOpService.storeProductFlowDatas(vmManager.editDatas).then(function (opresult) {
@@ -1620,15 +1662,15 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         }
     };
 
-    var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
-    departmentTreeSet.bindNodeToVm = function () {
-        var dto = _.clone(departmentTreeSet.treeNode.vm);
-        vmManager.department = dto.DataNodeText;
-    };
+    // var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
+    //departmentTreeSet.bindNodeToVm = function () {
+    //    var dto = _.clone(departmentTreeSet.treeNode.vm);
+    //    vmManager.department = dto.DataNodeText;
+    // };
     $scope.promise = dReportDataOpService.getProductionFlowOverview(vmManager.department, vmManager.productName, 0).then(function (data) {
-        departmentTreeSet.setTreeDataset(data.departments);
+        // departmentTreeSet.setTreeDataset(data.departments);
         vmManager.flowOverviews = data.overviews;
     });
 
-    $scope.ztree = departmentTreeSet;
+    //$scope.ztree = departmentTreeSet;
 });

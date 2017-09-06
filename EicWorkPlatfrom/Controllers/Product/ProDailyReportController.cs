@@ -71,10 +71,16 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult StoreProductFlowDatas(List<StandardProductionFlowModel> entities)
         {
-            var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.Store(entities);
+            var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.StoreModelList(entities);
             return Json(datas);
         }
-
+        [HttpPost]
+        [NoAuthenCheck]
+        public JsonResult StoreFlowData(StandardProductionFlowModel entity)
+        {
+            var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.StoreProductFlow(entity);
+            return Json(datas);
+        }
         /// <summary>
         /// 获取产品工艺初始化数据
         /// searchMode:0查询全部；1按名称模糊查询
