@@ -116,7 +116,7 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     return reportDataOp;
 });
 //标准工时设定
-productModule.controller("dReportHoursSetCtrl4545454", function ($scope, dReportDataOpService, dataDicConfigTreeSet, connDataOpService, $modal) {
+productModule.controller("dReportHoursSetCtrl554545454554545454", function ($scope, dReportDataOpService, dataDicConfigTreeSet, connDataOpService, $modal) {
 
     ///工艺标准工时视图模型
     var uiVM = {
@@ -1509,15 +1509,20 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             }
         },
 
-        ///工艺名称不能有重复
+        ///工艺名称不能有重复 ---待写
         verifyProcessesName: function () {
             console.log(78975464);
         },
         //项次添加 
         addProductionFlow: function (item) {
+            console.log(item);
             vmManager.queryProductionFlowDetails(item);
+            vmManager.init();
             uiVM.ProcessesIndex = $scope.vm.ProcessesIndex = item.ProductFlowCount + 1;
-            operate.add();
+
+            uiVM.ProductName = vmManager.productName;
+            leeHelper.setObjectGuid(uiVM);
+            vmManager.editWindowDisplay = true;
         },
         // 模糊查找
         vagueQueryProductionSummyDatas: function () {
@@ -1544,6 +1549,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         ///changeDepartment
         changeDepartment: function () {
             $scope.promise = dReportDataOpService.getProductionFlowOverview(vmManager.department, vmManager.productName, 0).then(function (data) {
+                vmManager.flowOverviews = [];
                 departmentTreeSet.setTreeDataset(data.departments);
                 vmManager.flowOverviews = data.overviews;
             });
@@ -1569,7 +1575,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    ///确认添加
+    ///添加新一项
     operate.add = function () {
         vmManager.init();
         uiVM.ProductName = vmManager.productName;
@@ -1614,8 +1620,17 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
     },
     //保存数据
     operate.save = function (isValid) {
-        $scope.vm.Department = vmManager.department;
         leeHelper.setUserData(uiVM);
+        //部门信息不用变化
+        $scope.vm.Department = vmManager.department;
+        ///查询数据是否有相同的工艺名称
+        angular.forEach(vmManager.editDatas, function (i) {
+            if (i.ProcessesName == uiVM.ProcessesName) {
+
+                return;
+            }
+        });
+
         console.log(uiVM);
         $scope.searchPromise = dReportDataOpService.storeFlowData(uiVM).then(function (opresult) {
             if (opresult.Result) {
@@ -1671,6 +1686,8 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         // departmentTreeSet.setTreeDataset(data.departments);
         vmManager.flowOverviews = data.overviews;
     });
-
+    $(function () {
+        $("[data-toggle='popover']").popover();
+    });
     //$scope.ztree = departmentTreeSet;
 });
