@@ -13,6 +13,7 @@ using System.Data.Entity;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm;
+using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.NewDailyReport;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 {
@@ -141,7 +142,13 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             //出勤人员表
             modelBuilder.Configurations.Add(new ReportsAttendenceModelMapping());
             #endregion
+            #region 新日报管理
+            //工艺流程表
+            modelBuilder.Configurations.Add(new StandardProductionFlowMapping());
+            //每天生产日报表
+            modelBuilder.Configurations.Add(new DailyProductionReportMapping());
 
+            #endregion
             #region  物料看板
             modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
             #endregion

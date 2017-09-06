@@ -1523,6 +1523,7 @@
     <Content Include="Views\TolWorkFlow\WFInternalContactForm.cshtml" />
     <Content Include="Views\HrAttendanceManage\HrWorkOverHoursManage.cshtml" />
     <Content Include="Views\SysConfig\QualityCommonDataSet.cshtml" />
+    <Content Include="Views\ProDailyReport\StandardProductionFlowSet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

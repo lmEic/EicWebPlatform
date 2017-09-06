@@ -51,6 +51,7 @@
     <Compile Include="Pms\DailyReport\DailyReportModel.cs" />
     <Compile Include="Pms\DailyReport\Ms589DaiyReportModel.cs" />
     <Compile Include="Pms\DailyReport\QueryDailyReportDto.cs" />
+    <Compile Include="Pms\NewDailyReport\DailyReportModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchase\SupplierModel.cs" />
     <Compile Include="Quanity\Qua8DReportModel.cs" />

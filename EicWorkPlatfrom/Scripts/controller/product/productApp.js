@@ -1,4 +1,5 @@
-﻿/// <reference path="../../common/angulee.js" />
+﻿/// <reference path="../shippingApp.js" />
+/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 
 angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate', 'ui.router', 'ngMessages', 'cgBusy', 'ngSanitize', 'mgcrea.ngStrap', "pageslide-directive"])

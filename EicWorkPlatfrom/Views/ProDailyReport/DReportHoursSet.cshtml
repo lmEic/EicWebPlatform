@@ -1,22 +1,20 @@
-﻿<div class="panel panel-primary" ng-controller="dReportHoursSetCtrl">
+﻿<div class="panel panel-primary" ng-controller="standardProductionFlowSetCtrl">
     <div class="panel-heading">
-        <h6 class="panel-title">标准工时设定</h6>
+        <h6 class="panel-title">标准工艺流程设定</h6>
     </div>
     <div class="panel-body">
         <div class="row">
             <div class="pull-left" style="width:45%;">
                 <div cg-busy="{promise:promise}">
-                    部门<label class="label label-default">{{vmManager.department}}</label>
-                    <button class="btn btn-sm btn-primary"
-                            data-title="选择部门名称"
-                            data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
-                            data-animation="am-flip-x" data-auto-close="1"
-                            data-bs-popover>
-                        <i class="fa fa-sitemap"></i>
+                    部门:
+                    <button class="btn btn-success " ng-model="vmManager.department" ng-change="vmManager.changeDepartment()"
+                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
+                            data-bs-options="department.value as department.label for department in vmManager.departments track by $index" data-bs-select>
+                        <span class="caret"></span>
                     </button>
                     <label>产品品名</label>
                     <input placeholder="输产品品名按下回车键查找" ng-model="vmManager.productName" ng-keypress="vmManager.getProductFlowList($event)" />
-                    <button class="btn btn-sm btn-primary" title="模糊查找品号" ng-click="vmManager.getProductFlowDatails()">
+                    <button class="btn btn-sm btn-primary" title="模糊查找品号" ng-click="vmManager.vagueQueryProductionSummyDatas()">
                         <i class="fa fa-search"></i>模糊查找
                     </button>
                     <div class="h-split"></div>
@@ -48,7 +46,7 @@
                                     <th>产品品名</th>
                                     <th>工序总数</th>
                                     <th>工时总计(分)</th>
-                                    <th>查看(<i class="fa fa-eye"></i>)</th>
+                                    <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,8 +55,11 @@
                                     <td>{{item.ProductFlowCount}}</td>
                                     <td>{{item.StandardHoursCount}}</td>
                                     <td>
-                                        <button class="btn btn-xs btn-primary" ng-click="vmManager.viewProductFlowDetails(item)" title="查看明细">
+                                        <button class="btn btn-xs btn-primary" ng-click="vmManager.queryProductionFlowDetails(item)" title="查看明细">
                                             明细
+                                        </button>/
+                                        <button class="btn btn-xs btn-primary" ng-click="vmManager.addProductionFlow(item)" title="添加">
+                                            添加
                                         </button>
                                     </td>
                                 </tr>
@@ -68,26 +69,26 @@
                 </div>
             </div>
             <div class="pull-right" style="width:55%;">
-                <div class="bs-callout bs-callout-info" style="height:480px;overflow-y:auto;">
+                <div class="bs-callout bs-callout-info" style="height:500px;overflow-y:auto;">
                     <div class="table-responsive" cg-busy="{promise:searchPromise}">
                         <table class="table table-condensed table-bordered table-hover">
                             <thead>
                                 <tr class="info">
                                     <th>工艺编号</th>
                                     <th>工艺名称</th>
-                                    <th>工艺标示</th>
-                                    <th>工时类别</th>
+                                    <th>工艺标识</th>
+                                    <th>工艺类别</th>
                                     <th>标准工时</th>
                                     <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="item in vmManager.editDatas track by $index">
-                                    <td>{{item.ProductFlowId}}</td>
-                                    <td>{{item.ProductFlowName}}</td>
-                                    <td>{{item.ProductFlowSign}}</td>
-                                    <td>{{item.StandardHoursType}}</td>
-                                    <td>{{item.StandardHours}}</td>
+                                    <td>{{item.ProcessesIndex}}</td>
+                                    <td>{{item.ProcessesName}}</td>
+                                    <td>{{item.ProcessesSign}}</td>
+                                    <td>{{item.ProcessesType}}</td>
+                                    <td>{{item.StandardProductionTime}}({{item.StandardProductionTimeType}})</td>
                                     <td>
                                         <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="编辑">
                                             <i class="fa fa-edit"></i>
@@ -102,87 +103,89 @@
                     </div>
                 </div>
                 <div pageslide ps-open="vmManager.editWindowDisplay" ps-side="left" ps-size="{{vmManager.editWindowWidth}}" ps-speed="0.25" ps-container='editWindow'>
-                    <div style="padding:10px;overflow-y:auto">
-                        <form role="form" name="formProductFlow" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
+                    <div style="padding:10px;overflow-y:auto;height:480px">
+                        <form role="form" name="formProductionFlow" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                             <fieldset>
                                 <div class="form-group">
                                     <label for="productName" class="col-md-3 control-label">产品品名</label>
-                                    <div class="col-md-3">
+                                    <div class="col-md-9">
                                         <input name="productName" class="form-control" ng-model="vm.ProductName" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.productName.$error" ng-show="operate.showValidation">
+                                        <div class="error-messages" ng-messages="formProductionFlow.productName.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">产品品名不能为空</small>
                                         </div>
                                     </div>
-                                    <label for="productFlowSign" class="col-md-3 control-label">工艺标示</label>
-                                    <div class="col-md-3">
-                                        <input name="productFlowSign" type="number" class="form-control" ng-model="vm.ProductFlowSign" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.productFlowSign.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">工艺标示不能为空</small>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="productFlowId" class="col-md-3 control-label">工艺编号</label>
-                                    <div class="col-md-3">
-                                        <input name="productFlowId" class="form-control" ng-model="vm.ProductFlowId" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.productFlowId.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">工艺编号不能为空</small>
-                                        </div>
-                                    </div>
-                                    <label for="productFlowName" class="col-md-3 control-label">工艺名称</label>
-                                    <div class="col-md-3">
-                                        <input name="productFlowName" class="form-control" ng-model="vm.ProductFlowName" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.productFlowName.$error" ng-show="operate.showValidation">
+                                    <label for="processesName" class="col-md-3 control-label">工艺名称</label>
+                                    <div class="col-md-6">
+                                        <input name="processesName" class="form-control" ng-model="vm.ProcessesName" required />
+                                        <div class="error-messages" ng-messages="formProductionFlow.processesName.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">工艺名称不能为空</small>
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="form-group">
-                                    <label for="standardHours" class="col-md-3 control-label">标准工时</label>
+                                    <label for="processesIndex" class="col-md-3 control-label">工艺序号</label>
                                     <div class="col-md-3">
-                                        <input name="standardHours" class="form-control" ng-model="vm.StandardHours" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.standardHours.$error" ng-show="operate.showValidation">
+                                        <input name="processesIndex" type="number" class="form-control" ng-model="vm.ProcessesIndex" required />
+                                        <div class="error-messages" ng-messages="formProductionFlow.processesIndex.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">工艺编号不能为空</small>
+                                        </div>
+                                    </div>
+                                    <label for="maxMachineCount" class="col-md-3 control-label">工艺类别</label>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-primary" ng-model="vm.ProcessesType" ng-change="vmManager.changeIsShowMachine()"
+                                                data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="人工"
+                                                data-bs-options="item.id as item.text for item in vmManager.processesTypes" data-bs-select></button>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="standardProductionTime" class="col-md-3 control-label">标准工时</label>
+                                    <div class="col-md-3">
+                                        <input name="standardProductionTime" type="number" class="form-control" ng-model="vm.StandardProductionTime" required />
+                                        <div class="error-messages" ng-messages="formProductionFlow.standardProductionTime.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">标准工时不能为空</small>
                                         </div>
                                     </div>
-                                    <label for="standardHoursType" class="col-md-3 control-label">工时类别</label>
+                                    <label for="standardProductionTimeType" class="col-md-3 control-label">工时类别</label>
                                     <div class="col-md-3">
-                                        <input name="standardHoursType" type="number" class="form-control" ng-model="vm.StandardHoursType" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.standardHoursType.$error" ng-show="operate.showValidation">
+                                        <button type="button" name="standardProductionTimeType" class="btn btn-primary" ng-model="vm.StandardProductionTimeType"
+                                                data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="UPS"
+                                                data-bs-options="item.id as item.text for item in vmManager.standardProductionTimeTypes" data-bs-select></button>
+                                        <div class="error-messages" ng-messages="formProductionFlow.standardProductionTimeType.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">标准工时类别不能为空</small>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="maxMachineCount" class="col-md-3 control-label">最大机台数</label>
+                                <div class="form-group" ng-show="vmManager.isShowMachine===true">
+                                    <label for="maxMachineCount" class="col-md-3 control-label">人机配比</label>
                                     <div class="col-md-3">
-                                        <input name="maxMachineCount" type="number" class="form-control" ng-model="vm.MaxMachineCount" />
+                                        <input type="number" class="form-control" ng-model="vm.MachinePersonRatio" />
                                     </div>
-                                    <label for="relaxCoefficient" class="col-md-3 control-label">宽放系数</label>
-                                    <div class="col-md-3">
-                                        <input name="relaxCoefficient" type="number" class="form-control" ng-model="vm.RelaxCoefficient" required />
-                                        <div class="error-messages" ng-messages="formProductFlow.relaxCoefficient.$error" ng-show="operate.showValidation">
-                                            <small ng-message="required">宽放系数不能为空</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label for="mouldId" class="col-md-3 control-label">磨具编号</label>
                                     <div class="col-md-3">
                                         <input name="mouldId" class="form-control" ng-model="vm.MouldId" />
                                     </div>
+
+                                </div>
+                                <div class="form-group" ng-show="vmManager.isShowMachine===true">
                                     <label for="mouldName" class="col-md-3 control-label">磨具名称</label>
                                     <div class="col-md-3">
                                         <input name="mouldName" class="form-control" ng-model="vm.MouldName" />
                                     </div>
-                                </div>
-                                <div class="form-group">
                                     <label for="mouldCavityCount" class="col-md-3 control-label">模穴数</label>
                                     <div class="col-md-3">
-                                        <input name="mouldCavityCount" class="form-control" ng-model="vm.MouldCavityCount" />
+                                        <input name="mouldCavityCount" type="number" class="form-control" ng-model="vm.MouldHoleCount" />
                                     </div>
+
+                                </div>
+                                <div class="form-group">
                                     <label for="remark" class="col-md-3 control-label">备注</label>
-                                    <div class="col-md-3">
+                                    <div class="col-md-9">
                                         <textarea name="remark" rows="1" cols="4" class="form-control" ng-model="vm.Remark" />
                                     </div>
                                 </div>
@@ -192,7 +195,7 @@
                                     <div class="col-md-2">
                                     </div>
                                     <div class="col-md-10">
-                                        <button class="btn btn-primary" ng-click="operate.save(formProductFlow.$valid)"><i class="fa fa-save"></i>保存</button>
+                                        <button class="btn btn-primary" ng-click="operate.save(formProductionFlow.$valid)"><i class="fa fa-save"></i>保存</button>
                                         <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
                                         <span yl-operatemsg-board></span>
                                     </div>

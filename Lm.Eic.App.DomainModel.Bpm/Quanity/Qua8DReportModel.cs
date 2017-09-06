@@ -18,6 +18,69 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public Qua8DReportMasterModel()
         { }
         #region Model
+        private double _materialincount;
+        /// <summary>
+        ///
+        /// </summary>
+        public double MaterialInCount
+        {
+            set { _materialincount = value; }
+            get { return _materialincount; }
+        }
+        private string _materialcountunit;
+        /// <summary>
+        ///
+        /// </summary>
+        public string MaterialCountUnit
+        {
+            set { _materialcountunit = value; }
+            get { return _materialcountunit; }
+        }
+        private int _inspectcount;
+        /// <summary>
+        ///
+        /// </summary>
+        public int InspectCount
+        {
+            set { _inspectcount = value; }
+            get { return _inspectcount; }
+        }
+        private string _inspectcountunit;
+        /// <summary>
+        ///
+        /// </summary>
+        public string InspectCountUnit
+        {
+            set { _inspectcountunit = value; }
+            get { return _inspectcountunit; }
+        }
+        private string _yearmonth;
+        /// <summary>
+        ///
+        /// </summary>
+        public string YearMonth
+        {
+            set { _yearmonth = value; }
+            get { return _yearmonth; }
+        }
+        private string _filepath;
+        /// <summary>
+        ///
+        /// </summary>
+        public string FilePath
+        {
+            set { _filepath = value; }
+            get { return _filepath; }
+        }
+        private string _filename;
+        /// <summary>
+        ///
+        /// </summary>
+        public string FileName
+        {
+            set { _filename = value; }
+            get { return _filename; }
+        }
         private string _reportid;
         /// <summary>
         ///编号
@@ -72,42 +135,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _materialspec = value; }
             get { return _materialspec; }
         }
-        private double _materialcount;
-        /// <summary>
-        ///数量
-        /// </summary>
-        public double MaterialCount
-        {
-            set { _materialcount = value; }
-            get { return _materialcount; }
-        }
-        private string _materialCountunit;
-        /// <summary>
-        ///物料数量单位
-        /// </summary>
-        public string MaterialCountUnit
-        {
-            set { _materialCountunit = value; }
-            get { return _materialCountunit; }
-        }
-        private int _inspectcount;
-        /// <summary>
-        ///抽验数量
-        /// </summary>
-        public int InspectCount
-        {
-            set { _inspectcount = value; }
-            get { return _inspectcount; }
-        }
-        private string _inspectcountuint;
-        /// <summary>
-        ///抽样数量单位
-        /// </summary>
-        public string InspectCountUnit
-        {
-            set { _inspectcountuint = value; }
-            get { return _inspectcountuint; }
-        }
         private int _failqty;
         /// <summary>
         ///不良数
@@ -152,35 +179,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         {
             set { _status = value; }
             get { return _status; }
-        }
-
-        private string _filepath;
-        /// <summary>
-        ///文件路经
-        /// </summary>
-        public string FilePath
-        {
-            set { _filepath = value; }
-            get { return _filepath; }
-        }
-        private string _filename;
-        /// <summary>
-        ///文件名
-        /// </summary>
-        public string FileName
-        {
-            set { _filename = value; }
-            get { return _filename; }
-        }
-        ///YearMonth
-        private string _yearmonth;
-        /// <summary>
-        ///年月份
-        /// </summary>
-        public string YearMonth
-        {
-            set { _yearmonth = value; }
-            get { return _yearmonth; }
         }
         private string _opperson;
         /// <summary>

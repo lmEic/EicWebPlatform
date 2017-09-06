@@ -280,7 +280,6 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
 ////处理8D表单
 qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTreeSet, connDataOpService, BDataOpService) {
 
-    // var ue = leeUeditor.getEditor('stepHandleContent');
     ///视图模型
     var uiVm = $scope.vm = {
         ReportId: null,
@@ -300,6 +299,11 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
     }
     //初始化原型
     var initVM = _.clone(uiVm);
+
+    var participantInfo = $scope.participantInfo = {
+        Applicant: null,//申请人,
+        Confirmor: null,//确认人
+    };
     //
     var uiInitBaseInfoVm = $scope.baseInfoVm = {
         ReportId: null,
@@ -323,18 +327,22 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
         OpSign: leeDataHandler.dataOpMode.uploadFile,
         OpPerson: null,
     }
-
+    var dialog = $scope.dialog = leePopups.dialog();
     var vmManager = {
         stepDisplay: false,
         isShowMasterData: false,
         reportMasterInfo: [],
+        participants: [],
         init: function () {
             uiVm = _.clone(initVM);
             $scope.vm = uiVm;
+            leeHelper.clearVM(participantInfo, ["Applicant"]);
+            editor.clearContent();
         },
         //对应界面显示的数据集
         viewDataset: [],
         selectStepItemData: [],
+        currentParticipantRole: null,
         query8DStepDatas: function () {
             $scope.doPromise = BDataOpService.showQua8DDetailDatas(uiVm.ReportId).then(function (datas) {
                 vmManager.steps = datas.Stepdatas;
@@ -344,6 +352,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
                 vmManager.isShowMasterData = true;
             });
         },
+
         //选择步骤
         selectStep: function (step) {
             vmManager.selectStepItemData = step;
@@ -364,7 +373,7 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
                 });
                 leeHelper.setObjectGuid(stepItem);
                 vmManager.viewDataset.push(stepItem);
-
+                _.sortBy(vmManager.viewDataset, 'stepId');
             }
             else {
                 if (!step.IsCheck)
@@ -379,7 +388,23 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
         showMasterData: function () {
             if (vmManager.isShowMasterData) vmManager.isShowMasterData = false;
             else vmManager.isShowMasterData = true;
-        }
+        },
+
+        //根据角色选择参与人员
+        showParticipantView: function (role) {
+            vmManager.dataset = [];
+            vmManager.currentParticipantRole = role;
+            dialog.show();
+        },
+        //选择参与人
+        selectParticipant: function (participant) {
+            participant.IsChecked = !participant.IsChecked;
+            if (!participant.IsChecked) return;
+            participant.Role = vmManager.currentParticipantRole;
+            leeWorkFlow.addParticipant(vmManager.participants, participant);
+            participantInfo[vmManager.currentParticipantRole] = leeWorkFlow.getParticipantMappedRole(vmManager.participants, vmManager.currentParticipantRole);
+        },
+
     };
     $scope.vmManager = vmManager;
     //上传文件
@@ -388,7 +413,6 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
             var dto = leeWorkFlow.createFormFileAttachDto(attachFileVM, uiVm.ReportId, "Handle8DFormCtrl");
             fd.append("attachFileDto", JSON.stringify(dto));
             fd.append("step", vmManager.selectStepItemData.StepId);
-            console.log(fd);
             $scope.doPromise = BDataOpService.upload8DAttachFile(fd).then(function (uploadResult) {
                 console.log(uploadResult);
                 if (uploadResult.Result) {
@@ -427,6 +451,25 @@ qualityModule.controller('Handle8DFormCtrl', function ($scope, dataDicConfigTree
         });
     }
 
+
+    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (datas) {
+        departmentTreeSet.setTreeDataset(datas);
+        var user = leeLoginUser;
+        participantInfo[leeWorkFlow.participantRole.Applicant] = leeWorkFlow.toParticipant(user);
+    });
+    var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
+    departmentTreeSet.bindNodeToVm = function () {
+        var dto = _.clone(departmentTreeSet.treeNode.vm);
+        var department = dto.DataNodeText;
+        vmManager.dataset = [];
+        $scope.searchPromise = wfDataOpService.getWorkerMails(department).then(function (datas) {
+            angular.forEach(datas, function (dataItem) {
+                var item = _.clone(workerEmailInfo);
+                leeHelper.copyVm(dataItem, item);
+                vmManager.dataset.push(item);
+            });
+        });
+    };
     //vmManager.query8DStepDatas();
 });
 

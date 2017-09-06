@@ -11,29 +11,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     public class InspectionFqcFormManager
     {
-        public List<InspectionFqcMasterModel> GetInspectionFormManagerListBy(string formStatus, string selectedDepartment, DateTime dateFrom, DateTime dateTo)
+        public List<InspectionFqcMasterModel> GetInspectionFormManagerListBy(string selectedDepartment, string formStatus, DateTime dateFrom, DateTime dateTo)
         {
             //查询ERP中所有物料和单号 
-            var list = InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(formStatus, dateFrom, dateTo);
-
-            switch (formStatus)
-            {
-                case "待检测":
-                    return null;
-                case "未完成":
-                    return list.Where(e => e.InspectionResult == "未完成").ToList();
-                case "全部":
-                    //return GetERPOrderAndMaterialBy(dateFrom, dateTo, selectedDepartment);
-                    return null;
-                case "待审核":
-                    return list.Where(e => e.InspectionStatus == "待审核").ToList();
-                case "已审核":
-                    return list.Where(e => e.InspectionStatus == "已审核").ToList();
-                default:
-                    return new List<InspectionFqcMasterModel>();
-            }
-
-
+            return InspectionManagerCrudFactory.FqcMasterCrud.GetFqcInspectionMasterModelListBy(dateFrom, dateTo, selectedDepartment, formStatus);
         }
         /// <summary>
         /// 查询ERP中FQC检验状态
@@ -56,7 +37,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         ///审核主表数据
         /// </summary>
         /// <returns></returns>
-        public OpResult AuditFqcInspectionMasterModel(InspectionFqcMasterModel model)
+        public OpResult AuditFqcInspectionModel(InspectionFqcMasterModel model)
         {
             try
             {

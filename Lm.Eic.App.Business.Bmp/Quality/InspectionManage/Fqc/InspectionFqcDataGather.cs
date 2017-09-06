@@ -80,6 +80,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     return new InspectionFqcOrderIdModel();
                 /// 一个制令单 对应一个物料 
                 var orderMaterialInfo = orderMaterialInfoList[0];
+                ///是否加载有检验配置项目
+                bool isHavdItemConfig = InspectionManagerCrudFactory.FqcItemConfigCrud.IsExistFqcConfigmaterailId(orderMaterialInfo.ProductID);
                 /// 统计已经检验的总数量
                 double haveInspectionSumCount = MasterDatasGather.GetFqcMasterHaveInspectionCountBy(orderId);
                 InspectionFqcOrderIdModel returnModle = new InspectionFqcOrderIdModel()
@@ -92,7 +94,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialInCount = orderMaterialInfo.ProduceNumber,
                     MaterialSupplier = orderMaterialInfo.ProductSupplier,
                     MaterialInDate = orderMaterialInfo.ProduceInDate,
-                    HaveInspectionSumCount = haveInspectionSumCount
+                    HaveInspectionSumCount = haveInspectionSumCount,
+                    IsHavdItemConfig = isHavdItemConfig,
                 };
                 return returnModle;
 
