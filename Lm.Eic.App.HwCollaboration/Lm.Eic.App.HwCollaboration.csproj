@@ -33,11 +33,11 @@
   <ItemGroup>
     <Reference Include="HwRestfulApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\VS15版\HwApiToken\HwRestfulApi\bin\Debug\HwRestfulApi.dll</HintPath>
+      <HintPath>..\libs\HwRestfulApi.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\VS15版\HwApiToken\HwRestfulApi\bin\Debug\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\libs\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
