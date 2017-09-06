@@ -39,7 +39,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         {
             if (!IsExist(model.ReportId))
             {
-                model.YearMonth = string.Format(DateTime.Now.ToDateTimeShortStr(), "yyyyMM");
+                model.YearMonth = DateTime.Now.ToString("yyyyMM");
                 if (model.MaterialCountUnit == null) model.MaterialCountUnit = "个";
                 if (model.InspectCountUnit == null) model.InspectCountUnit = "个";
                 if (model.FailQtyUnit == null) model.FailQtyUnit = "个";
@@ -79,6 +79,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         internal int Get8DMasterCountNumber(string headSign, string yearMonth)
         {
             return irep.Entities.Count(e => e.ReportId.Contains(headSign) && e.YearMonth == yearMonth);
+            // return irep.getReportMasterDatas(yearMonth, yearMonth).Count(e => e.ReportId.Contains(headSign));
         }
         internal OpResult ChangeMasterStatus(string reportId, string status, string fileName, string filePath)
         {

@@ -50,7 +50,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in vmManager.flowOverviews track by $index">
+                                <tr ng-repeat="item in vmManager.editDatasSummyset track by $index">
                                     <td>{{item.ProductName}}</td>
                                     <td>{{item.ProductFlowCount}}</td>
                                     <td>{{item.StandardHoursCount}}</td>
@@ -66,6 +66,10 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div ng-if="vmManager.editDatasSummyset.length>0"
+                     yl-pagination data-dataset="vmManager.editDatasSummyset"
+                     data-datasource="vmManager.editDatasSummysetsource">
                 </div>
             </div>
             <div class="pull-right" style="width:55%;">

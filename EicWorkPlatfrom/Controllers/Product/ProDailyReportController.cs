@@ -94,9 +94,8 @@ namespace EicWorkPlatfrom.Controllers.Product
             {
                 var ProductFlowdatas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetFlowShowSummaryInfosBy(department);
 
-                var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
-                var datas = new { departments = departments, overviews = ProductFlowdatas };
-                return Json(datas, JsonRequestBehavior.AllowGet);
+
+                return Json(ProductFlowdatas, JsonRequestBehavior.AllowGet);
             }
             else
             {

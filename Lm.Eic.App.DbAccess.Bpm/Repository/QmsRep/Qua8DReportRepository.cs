@@ -23,6 +23,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.QmsRep
     public interface IQua8DReportMasterRepository : IRepository<Qua8DReportMasterModel>
     {
         List<Qua8DReportMasterModel> getReportMasterDatas(string searchFrom, string searchTo);
+
     }
     /// <summary>
     ///8D记录处理主表

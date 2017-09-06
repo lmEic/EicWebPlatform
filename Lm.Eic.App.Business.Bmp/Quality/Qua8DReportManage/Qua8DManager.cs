@@ -30,8 +30,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
     {
         public string AutoBuildingReportId(string discoverPosition)
         {
-
-
             string reportstr = string.Empty;
             switch (discoverPosition)
             {
@@ -63,7 +61,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.Qua8DReportManage
         /// <returns></returns>
         public OpResult StoreQua8DMaster(Qua8DReportMasterModel model)
         {
-            return Qua8DCrudFactory.MasterCrud.Store(model);
+            return Qua8DCrudFactory.MasterCrud.Store(model, true);
         }
         /// <summary>
         /// 

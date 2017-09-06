@@ -18,14 +18,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public Qua8DReportMasterModel()
         { }
         #region Model
-        private double _materialincount;
+        private double _materialcount;
         /// <summary>
         ///
         /// </summary>
-        public double MaterialInCount
+        public double MaterialCount
         {
-            set { _materialincount = value; }
-            get { return _materialincount; }
+            set { _materialcount = value; }
+            get { return _materialcount; }
         }
         private string _materialcountunit;
         /// <summary>

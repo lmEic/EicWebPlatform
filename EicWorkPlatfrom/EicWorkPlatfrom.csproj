@@ -1520,6 +1520,7 @@
     <Content Include="Views\HrAttendanceManage\HrWorkOverHoursManage.cshtml" />
     <Content Include="Views\SysConfig\QualityCommonDataSet.cshtml" />
     <Content Include="Views\ProDailyReport\StandardProductionFlowSet.cshtml" />
+    <Content Include="Views\ProDailyReport\DailyProductionReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

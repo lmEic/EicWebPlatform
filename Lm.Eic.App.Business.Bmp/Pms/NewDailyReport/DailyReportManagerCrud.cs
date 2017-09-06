@@ -190,7 +190,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        public List<ProductFlowSummaryVm> GetProductionFlowSummaryDatesBy(string department, string productName = null)
+        public List<ProductFlowSummaryVm> GetProductionFlowSummaryDatesBy(string department, string productName)
         {
             return irep.GetProductFlowSummaryDatasBy(department, productName);
         }

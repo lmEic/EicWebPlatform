@@ -58,7 +58,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <param name="department"></param>
         /// <param name="productName"></param>
         /// <returns></returns>
-        public List<ProductFlowSummaryVm> GetFlowShowSummaryInfosBy(string department, string productName = null)
+        public List<ProductFlowSummaryVm> GetFlowShowSummaryInfosBy(string department)
         {
             //从ERP中获得部门 在制所有工单信息
             List<ProductionOrderIdInfo> productionOrderIdInfo = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(department, "在制");
@@ -78,5 +78,12 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             return flowSummaryVms;
         }
 
+
+        public List<ProductFlowSummaryVm> GetFlowShowSummaryInfosBy(string department, string productName)
+        {
+            var data = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy("515-1708058");
+            return DailyReportCrudFactory.ProductionFlowCrud.GetProductionFlowSummaryDatesBy(department, productName);
+
+        }
     }
 }

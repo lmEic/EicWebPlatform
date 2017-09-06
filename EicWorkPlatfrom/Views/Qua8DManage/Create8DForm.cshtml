@@ -95,7 +95,6 @@
                 <form role="form" name="form8DCreateData" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                     @*录入单头*@
                     <div class="col-md-12 well">
-
                         <div class="form-group">
                             <label class="text-right col-md-2" for="createReportDate">日期:</label>
                             <div class="col-md-4">
@@ -124,15 +123,11 @@
                             <label for="reportId" class="text-right col-md-2">No:</label>
                             <div class="col-md-4">
                                 <input name="reportId" type="text" readonly="readonly" class="form-control col-md-3" ng-model="vm.ReportId" />
-                                <div class="error-messages" ng-messages="form8DCreateData.reportId.$error" ng-show="operate.showValidation">
-                                    <small ng-message="required">单号不能为空</small>
-                                </div>
                             </div>
                             <label for="accountabilityDepartment" class="text-right  col-md-2">责任单位:</label>
                             <div class="col-md-4">
                                 <input name="accountabilityDepartment" type="text" class="form-control" ng-model="vm.AccountabilityDepartment" />
                             </div>
-
                         </div>
 
                         <div class="form-group">
@@ -163,7 +158,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label for="inspectNumber" class="text-right  col-md-2">检验数:</label>
                             <div class="col-md-4">
@@ -179,7 +173,7 @@
                             <label for="inPutHouseOrder" class="text-right  col-md-2">不良类别: </label>
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <input name="FailClass" type="text" class="form-control" ng-model="vm.FailClass" />
+                                    <input name="failClass" type="text" class="form-control" ng-model="vm.FailClass" />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-primary" ng-model="vm.FailClass"
                                                 data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="不良类别"
@@ -224,7 +218,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon">主旨：</span>
-                                <input type="text" class="form-control" name="stepDescription" placeholder="异常说明主题" ng-model="handelvm.StepDescription" />
+                                <input type="text" class="form-control" name="stepDescription" placeholder="异常说明主题" ng-model="handelvm.StepDescription" required />
                                 <div class="error-messages" ng-messages="form8DCreateData.stepDescription.$error" ng-show="operate.showValidation">
                                     <small ng-message="required">表单主题不能为空</small>
                                 </div>
@@ -249,23 +243,20 @@
                             </div>
                         </div>
                     </div>
+                    <hr />
+                    @*保存 取消 *@
+                    <div class="alert alert-info">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary " ng-click="operate.saveData(form8DCreateData.$valid)"><i class="fa fa-save"></i>保存</button>
+                                <button class="btn btn-default" ng-click="operate.Cancel()"><i class="fa fa-undo"></i>取消</button>
+                                <span yl-operatemsg-board></span>
+                            </div>
+
+                        </div>
+                    </div>
                 </form>
             </div>
-
-            <div class="col-md-12 modal-footer">
-                @*保存 取消 *@
-                <div class="alert alert-info">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button class="btn btn-primary " ng-click="operate.saveAll(form8DCreateData.$valid)"><i class="fa fa-save"></i>保存</button>
-                            <button class="btn btn-default" ng-click="operate.Cancel()"><i class="fa fa-undo"></i>取消</button>
-                            <span yl-operatemsg-board></span>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
         </script>
         @*显示表*@
         <script type="text/ng-template" id="showQueryTable">

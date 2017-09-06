@@ -96,8 +96,9 @@ qualityModule.factory("BDataOpService", function (ajaxService) {
 ////创建8D表单
 qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, dataDicConfigTreeSet, qualityInspectionDataOpService) {
     ///视图模型
+    var materialCountUnit = '个';
     var uiVm = $scope.vm = {
-        ReportId: 'M201705',
+        ReportId: null,
         DiscoverPosition: null,
         AccountabilityDepartment: "品保部",
         OrderId: null,
@@ -149,6 +150,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
             uiHandelVm = _.clone(initHandelVM);
             $scope.handelvm = uiHandelVm;
             $scope.vm = uiVm;
+            $scope.uploadFileName = null;
         },
         IsShowMasterData: true,
         orderInfo: [],
@@ -192,7 +194,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
                 console.log(data);
                 uiVm.ReportId = data;
             });
-        }
+        },
     };
     ///搜寻
     var query8DcreatData = function (secchModel, orderid) {
@@ -205,7 +207,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     //保存
-    operate.saveAll = function (isValid) {
+    operate.saveData = function (isValid) {
         leeHelper.setUserData(uiVm);
         leeDataHandler.dataOperate.add(operate, true, function () {
             $scope.doPromise = BDataOpService.storeCraet8DInitialData(uiVm).then(function (opresult) {
@@ -223,8 +225,9 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
         uiHandelVm.ReportId = uiVm.ReportId;
         console.log(uiHandelVm);
         $scope.doPromise = BDataOpService.saveQua8DHandleDatas(uiHandelVm).then(function (opResult) {
-            leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                if (opresult.Result) {
+            leeDataHandler.dataOperate.handleSuccessResult(operate, opResult, function () {
+                console.log(opResult);
+                if (opResult.Result) {
                     vmManager.init();
                     dialog.close();
                 }
@@ -237,7 +240,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
         vmManager.init();
         dialog.close();
     }
-
+    //部门载入数据
     var departmentTreeSet = dataDicConfigTreeSet.getTreeSet('departmentTree', "组织架构");
     departmentTreeSet.bindNodeToVm = function () {
         var dto = _.clone(departmentTreeSet.treeNode.vm);
@@ -262,19 +265,15 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
         leeHelper.upoadFile(el, function (fd) {
             var dto = leeWorkFlow.createFormFileAttachDto(attachFileVM, uiVm.ReportId, "Handle8DFormCtrl");
             fd.append("attachFileDto", JSON.stringify(dto));
-            $scope.doPromise = BDataOpService.upload8DHandleFile(fd).then(function (uploadResult) {
+            $scope.doPromise = BDataOpService.upload8DAttachFile(fd).then(function (uploadResult) {
                 console.log(uploadResult);
                 if (uploadResult.Result) {
                     $scope.uploadFileName = uiHandelVm.FileName = uploadResult.FileName;
-                    uiHandelVm.FilePath = uploadResult.FilePath;
+                    uiHandelVm.FilePath = uploadResult.DocumentFilePath;
                 }
             });
         });
     };
-
-    var operate = Object.create(leeDataHandler.operateStatus);
-    $scope.operate = operate;
-
 });
 
 ////处理8D表单
