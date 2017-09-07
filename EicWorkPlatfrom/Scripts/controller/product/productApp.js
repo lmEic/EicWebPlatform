@@ -19,9 +19,9 @@ angular.module('bpm.productApp', ['eicomm.directive', 'mp.configApp', 'ngAnimate
         //标准工时设定
         templateUrl: reportUrlPrefix + 'DReportHoursSet'
     })
-    $stateProvider.state('DRProductOrderDispatching', {
+    $stateProvider.state('dRProductOrderDispatching', {
         //生产工单分派管理
-        templateUrl: reportUrlPrefix + 'dRProductOrderDispatching'
+        templateUrl: reportUrlPrefix + 'DRProductOrderDispatching'
     })
     .state('dReportInput', {
         //日报录入
