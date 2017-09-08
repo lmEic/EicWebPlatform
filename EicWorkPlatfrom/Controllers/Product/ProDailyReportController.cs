@@ -38,7 +38,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult GetProductionFlowList(string department, string productName, string orderId, int searchMode)
         {
-            //工单没有用到  
+            //工单没有用到
             //用品名得到多处数据 把数据转化为 ProductsFlowOverModel
             var result = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(new QueryDailyProductReportDto()
             {
@@ -135,6 +135,17 @@ namespace EicWorkPlatfrom.Controllers.Product
 
             return Json(datas, JsonRequestBehavior.AllowGet);
 
+        }
+        #endregion
+
+        #region DRProductDispatching method
+        /// <summary>
+        /// 生产工单管理
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult DRProductOrderDispatching()
+        {
+            return View();
         }
         #endregion
 
@@ -252,6 +263,8 @@ namespace EicWorkPlatfrom.Controllers.Product
         ////    return Json(result);
         ////}
         #endregion
+
+
 
         #region   日报考勤数据处理
 

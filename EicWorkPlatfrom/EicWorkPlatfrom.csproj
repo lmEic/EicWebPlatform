@@ -1521,6 +1521,7 @@
     <Content Include="Views\SysConfig\QualityCommonDataSet.cshtml" />
     <Content Include="Views\ProDailyReport\StandardProductionFlowSet.cshtml" />
     <Content Include="Views\ProDailyReport\DailyProductionReport.cshtml" />
+    <Content Include="Views\ProDailyReport\DRProductOrderDispatching.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
