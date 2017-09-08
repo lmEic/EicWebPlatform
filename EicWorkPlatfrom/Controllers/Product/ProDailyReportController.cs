@@ -8,6 +8,7 @@ using Lm.Eic.App.Business.Bmp.Pms.DailyReport;
 using System.IO;
 using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 using System.Web;
+using Lm.Eic.App.Erp.Bussiness.QuantityManage;
 
 namespace EicWorkPlatfrom.Controllers.Product
 {
@@ -147,98 +148,109 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
-        public ActionResult EditRemarkViewTpl()
-        {
-            return View();
-        }
         /// <summary>
-        /// 获取日报输入模板
+        ///  得到在制生产工单
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetDailyReportTemplate(string department, DateTime dailyReportDate)
+        public ContentResult GetInProductionOrderDatas(string department)
         {
-            var datas = DailyReportService.InputManager.DailyReportInputManager.GetDailyReportTemplate(department, dailyReportDate);
+            var datas = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(department, "在制");
             return DateJsonResult(datas);
-
         }
-        /// <summary>
-        /// 获取工单详细信息
-        /// </summary>
-        /// <param name="department"></param>
-        /// <param name="orderId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [NoAuthenCheck]
-        public JsonResult GetOrderDetails(string department, string orderId)
-        {
-            var orderDetails = DailyReportService.InputManager.DailyReportInputManager.GetOrderDetails(orderId);
-            var productFlows = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
-            {
-                SearchMode = 5,
-                Department = department,
-                OrderId = orderId
-            });
-            //二组数据合并显示
-            var data = new { orderDetails = orderDetails, productFlows = productFlows };//productFlows = productFlows
-            return Json(data, JsonRequestBehavior.AllowGet);
+        ///// <summary>
+        ///// 获取日报输入模板
+        ///// </summary>
+        ///// <param name="department"></param>
+        ///// <returns></returns>
+        ////////[NoAuthenCheck]
+        ////////public ContentResult GetDailyReportTemplate(string department, DateTime dailyReportDate)
+        ////////{
+        ////////    var datas = DailyReportService.InputManager.DailyReportInputManager.GetDailyReportTemplate(department, dailyReportDate);
+        ////////    return DateJsonResult(datas);
+        ////public ActionResult EditRemarkViewTpl()
+        ////{
+        ////    return View();
+        ////}
+        ////////}
 
-        }
+        ///////// <summary>
+        ///////// 获取工单详细信息
+        ///////// </summary>
+        ///////// <param name="department"></param>
+        ///////// <param name="orderId"></param>
+        ///////// <returns></returns>
+        //////[HttpGet]
+        //////[NoAuthenCheck]
+        //////public JsonResult GetOrderDetails(string department, string orderId)
+        //////{
+        //////    var orderDetails = DailyReportService.InputManager.DailyReportInputManager.GetOrderDetails(orderId);
+        //////    var productFlows = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowListBy(new QueryDailyReportDto()
+        //////    {
+        //////        SearchMode = 5,
+        //////        Department = department,
+        //////        OrderId = orderId
+        //////    });
+        //////    //二组数据合并显示
+        //////    var data = new { orderDetails = orderDetails, productFlows = productFlows };//productFlows = productFlows
+        //////    return Json(data, JsonRequestBehavior.AllowGet);
 
-        /// <summary>
-        /// 获取日报录入初始化数据
-        /// </summary>
-        /// <param name="department"></param>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult GetDReportInitData(string department)
-        {
-            var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
-            var machines = DailyReportService.ConfigManager.MachineSetter.GetMachineListBy(department);
-            var unproductReasons = DailyReportService.ConfigManager.NonProductionReasonSetter.GetNonProductionReasonListBy(department);
-            var datas = new { departments = departments, machines = machines, unproductReasons = unproductReasons };
-            return Json(datas, JsonRequestBehavior.AllowGet);
+        //////}
 
-        }
+        /////// <summary>
+        /////// 获取日报录入初始化数据
+        /////// </summary>
+        /////// <param name="department"></param>
+        /////// <returns></returns>
+        ////[NoAuthenCheck]
+        ////public JsonResult GetDReportInitData(string department)
+        ////{
+        ////    var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
+        ////    var machines = DailyReportService.ConfigManager.MachineSetter.GetMachineListBy(department);
+        ////    var unproductReasons = DailyReportService.ConfigManager.NonProductionReasonSetter.GetNonProductionReasonListBy(department);
+        ////    var datas = new { departments = departments, machines = machines, unproductReasons = unproductReasons };
+        ////    return Json(datas, JsonRequestBehavior.AllowGet);
 
-        /// <summary>
-        /// 生成日报清单
-        /// </summary>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public FileResult CreateDailyReportList(string department, DateTime inputDate)
-        {
+        ////}
 
-            //excel
-            var dlfm = DailyReportService.InputManager.DailyReportInputManager.BuildDailyReportTempList(department, inputDate);
-            return this.DownLoadFile(dlfm);
+        /////// <summary>
+        /////// 生成日报清单
+        /////// </summary>
+        /////// <returns></returns>
+        ////[NoAuthenCheck]
+        ////public FileResult CreateDailyReportList(string department, DateTime inputDate)
+        ////{
 
-        }
-        /// <summary>
-        /// 保存日报录入数据
-        /// </summary>
-        /// <param name="datas"></param>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult SaveDailyReportDatas(List<DailyReportTempModel> datas, DateTime inputDate)
-        {
+        ////    //excel
+        ////    var dlfm = DailyReportService.InputManager.DailyReportInputManager.BuildDailyReportTempList(department, inputDate);
+        ////    return this.DownLoadFile(dlfm);
 
-            var result = DailyReportService.InputManager.DailyReportInputManager.SavaDailyReportList(datas, inputDate);
-            return Json(result);
+        ////}
+        /////// <summary>
+        /////// 保存日报录入数据
+        /////// </summary>
+        /////// <param name="datas"></param>
+        /////// <returns></returns>
+        ////[NoAuthenCheck]
+        ////public JsonResult SaveDailyReportDatas(List<DailyReportTempModel> datas, DateTime inputDate)
+        ////{
 
-        }
-        /// <summary>
-        /// 审核日报数据
-        /// </summary>
-        /// <param name="department">部门</param>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult AuditDailyReport(string department, DateTime dailyReportDate)
-        {
-            var result = DailyReportService.InputManager.DailyReportInputManager.AuditDailyReport(department, dailyReportDate);
-            return Json(result);
-        }
+        ////    var result = DailyReportService.InputManager.DailyReportInputManager.SavaDailyReportList(datas, inputDate);
+        ////    return Json(result);
+
+        ////}
+        /////// <summary>
+        /////// 审核日报数据
+        /////// </summary>
+        /////// <param name="department">部门</param>
+        /////// <returns></returns>
+        ////[NoAuthenCheck]
+        ////public JsonResult AuditDailyReport(string department, DateTime dailyReportDate)
+        ////{
+        ////    var result = DailyReportService.InputManager.DailyReportInputManager.AuditDailyReport(department, dailyReportDate);
+        ////    return Json(result);
+        ////}
         #endregion
 
         #region   日报考勤数据处理
