@@ -149,15 +149,19 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             return View();
         }
-
+        /// <summary>
+        /// 得到工单分配信息
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetProductionOrderInfoDatas(string department)
+        public ContentResult GetOrderDispatchInfoDatas(string department)
         {
             ///ERP在制生产订单
             var erpInProductiondatas = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(department, "在制");
-            ///今日产生生产确认订单
-            var todayNeedProductionOrderDatas = "";
-            var datas = new { erpInProductiondatas, todayNeedProductionOrderDatas };
+            ///今日生产已确认分配的订单
+            var todayHaveDispatchProductionOrderDatas = "";
+            var datas = new { erpInProductiondatas, todayHaveDispatchProductionOrderDatas };
             return DateJsonResult(datas);
         }
         #endregion

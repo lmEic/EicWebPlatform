@@ -86,4 +86,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 
         }
     }
+
+    public class ProductOrderDispatchManager
+    {
+
+    }
 }
