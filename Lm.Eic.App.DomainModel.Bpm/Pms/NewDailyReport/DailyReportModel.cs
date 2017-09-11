@@ -218,6 +218,153 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         #endregion Model
     }
+    /// <summary>
+    ///生产订单分配模板
+    /// </summary>
+    [Serializable]
+    public partial class ProductOrderDispatchModel
+    {
+        public ProductOrderDispatchModel()
+        { }
+        #region Model
+        private string _department;
+        /// <summary>
+        ///
+        /// </summary>
+        public string Department
+        {
+            set { _department = value; }
+            get { return _department; }
+        }
+        private string _orderid;
+        /// <summary>
+        ///订单
+        /// </summary>
+        public string OrderId
+        {
+            set { _orderid = value; }
+            get { return _orderid; }
+        }
+        private string _productid;
+        /// <summary>
+        ///品号
+        /// </summary>
+        public string ProductID
+        {
+            set { _productid = value; }
+            get { return _productid; }
+        }
+        private string _productname;
+        /// <summary>
+        ///品名
+        /// </summary>
+        public string ProductName
+        {
+            set { _productname = value; }
+            get { return _productname; }
+        }
+        private string _productspec;
+        /// <summary>
+        ///规格
+        /// </summary>
+        public string ProductSpec
+        {
+            set { _productspec = value; }
+            get { return _productspec; }
+        }
+        private int _count;
+        /// <summary>
+        ///数量
+        /// </summary>
+        public int Count
+        {
+            set { _count = value; }
+            get { return _count; }
+        }
+        private string _productionstatus;
+        /// <summary>
+        ///生产状态
+        /// </summary>
+        public string ProductionStatus
+        {
+            set { _productionstatus = value; }
+            get { return _productionstatus; }
+        }
+        private DateTime _productiondate;
+        /// <summary>
+        ///生产日期
+        /// </summary>
+        public DateTime ProductionDate
+        {
+            set { _productiondate = value; }
+            get { return _productiondate; }
+        }
+        private string _isvalid;
+        /// <summary>
+        ///是否有生效
+        /// </summary>
+        public string IsValid
+        {
+            set { _isvalid = value; }
+            get { return _isvalid; }
+        }
+        private DateTime _validdate;
+        /// <summary>
+        ///有效日期
+        /// </summary>
+        public DateTime ValidDate
+        {
+            set { _validdate = value; }
+            get { return _validdate; }
+        }
+        private string _opperson;
+        /// <summary>
+        ///操作人
+        /// </summary>
+        public string OpPerson
+        {
+            set { _opperson = value; }
+            get { return _opperson; }
+        }
+        private string _opsign;
+        /// <summary>
+        ///操作标识
+        /// </summary>
+        public string OpSign
+        {
+            set { _opsign = value; }
+            get { return _opsign; }
+        }
+        private DateTime _opdate;
+        /// <summary>
+        ///操作日期
+        /// </summary>
+        public DateTime OpDate
+        {
+            set { _opdate = value; }
+            get { return _opdate; }
+        }
+        private DateTime _optime;
+        /// <summary>
+        ///操作时间
+        /// </summary>
+        public DateTime OpTime
+        {
+            set { _optime = value; }
+            get { return _optime; }
+        }
+        private decimal _id_key;
+        /// <summary>
+        ///自增键
+        /// </summary>
+        public decimal Id_Key
+        {
+            set { _id_key = value; }
+            get { return _id_key; }
+        }
+        #endregion Model
+    }
+
 
     /// <summary>
     ///每日生产报表
@@ -565,6 +712,8 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
     }
 
 
+
+    #region  
     /// <summary>
     /// 查询操作Model
     /// </summary>
@@ -651,4 +800,5 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         /// </summary>
         public double StandardHoursCount { get; set; }
     }
+    #endregion
 }

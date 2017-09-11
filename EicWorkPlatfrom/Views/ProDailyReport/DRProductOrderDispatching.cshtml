@@ -55,22 +55,26 @@
             <div class="pull-right" style="width:35%;">
                 <div class="bs-callout bs-callout-info" style="height:500px;overflow-y:auto;">
                     <div class="table-responsive" cg-busy="{promise:searchPromise}">
-                        <table ng-show="vmManager.productionFlowEditDatasshowValidation" class="table table-condensed table-bordered table-hover">
+                        <table class="table table-condensed table-bordered table-hover">
                             <thead>
                                 <tr class="info">
-                                    <th>工艺编号</th>
-                                    <th>工艺名称</th>
-                                    <th>工艺类别</th>
-                                    <th>标准工时</th>
+                                    <th>单号</th>
+                                    <th>品名</th>
+                                    <th>产量</th>
+                                    <th>确认开工</th>
+                                    <th>计划完工日期</th>
                                     <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in vmManager.productionFlowEditDatas track by $index">
-                                    <td>{{item.ProcessesIndex}}</td>
-                                    <td>{{item.ProcessesName}}</td>
-                                    <td>{{item.ProcessesType}}</td>
-                                    <td>{{item.StandardProductionTime}}({{item.StandardProductionTimeType}})</td>
+                                <tr ng-repeat="item in vmManager.todayHaveDispatchDatas track by $index">
+                                    <td>{{item.OrderId}}</td>
+                                    <td title="{{item.ProductSpec}}">
+                                        {{item.ProductName}}
+                                    </td>
+                                    <td>{{item.Count}}</td>
+                                    <td>{{item.ProductionDate}}</td>
+                                    <td>{{item.ValidDate}}</td>
                                     <td>
                                         <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="编辑">
                                             <i class="fa fa-edit"></i>

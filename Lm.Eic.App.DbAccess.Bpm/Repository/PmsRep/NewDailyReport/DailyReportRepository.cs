@@ -85,6 +85,22 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
 
         }
     }
+
+
+    /// <summary>
+    ///生产日报订单分配
+    /// </summary>
+    public interface IProductOrderDispatchRepository : IRepository<ProductOrderDispatchModel> { }
+    /// <summary>
+    ///生产日报订单分配
+    /// </summary>
+    public class ProductOrderDispatchRepository : BpmRepositoryBase<ProductOrderDispatchModel>, IProductOrderDispatchRepository
+    {
+
+    }
+
+
+
     /// <summary>
     ///每天生产日报表
     /// </summary>
@@ -94,4 +110,9 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
     /// </summary>
     public class DailyProductionReportRepository : BpmRepositoryBase<DailyProductionReportModel>, IDailyProductionReportRepository
     { }
+
+    
+
+
+
 }

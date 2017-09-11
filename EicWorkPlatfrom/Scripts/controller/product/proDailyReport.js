@@ -123,6 +123,13 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             department: department,
         });
     }
+    ///载入ERP中   用于确认今天生产的订单
+    reportDataOp.getOrderDispatchInfoDatas = function (department) {
+        var url = urlPrefix + 'GetOrderDispatchInfoDatas';
+        return ajaxService.getData(url, {
+            department: department,
+        });
+    }
 
     return reportDataOp;
 });
@@ -641,14 +648,17 @@ productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, data
            { value: "PT1", label: "成型课" }],
         erpOrderInfoDatas: [],
         erpOrderInfoDatasSource: [],
+        todayHaveDispatchDatas: [],
         changeDepartment: function () {
-            $scope.promise = dReportDataOpService.getInProductionOrderDatas(vmManager.department).then(function (erpDatas) {
+            $scope.promise = dReportDataOpService.getOrderDispatchInfoDatas(vmManager.department).then(function (datas) {
                 vmManager.erpOrderInfoDatas = [];
-                erpOrderInfoDatasSource = vmManager.erpOrderInfoDatas = erpDatas;
-                console.log(erpDatas);
+                vmManager.erpOrderInfoDatasSource = vmManager.erpOrderInfoDatas = datas.erpInProductiondatas;
+
+                vmManager.todayHaveDispatchDatas = datas.todayHaveDispatchProductionOrderDatas;
+                console.log(datas);
                 ///根据登录用户 载入信息 ，如果没有侧 选择载入
-                if (erpDatas.length > 0)
-                    vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
+                //if (datas.erpInProductiondatas > 0)
+                //    vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
             });
         },
         putInDatas: function (item) {

@@ -64,7 +64,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         }
 
         /// <summary>
-        /// 保存产品工艺流程数据
+        /// 批量保存产品工艺流程数据
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
@@ -75,6 +75,11 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.StoreModelList(entities);
             return Json(datas);
         }
+        /// <summary>
+        /// 保存产品工艺流程数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         [HttpPost]
         [NoAuthenCheck]
         public JsonResult StoreFlowData(StandardProductionFlowModel entity)
@@ -160,7 +165,7 @@ namespace EicWorkPlatfrom.Controllers.Product
             ///ERP在制生产订单
             var erpInProductiondatas = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(department, "在制");
             ///今日生产已确认分配的订单
-            var todayHaveDispatchProductionOrderDatas = "";
+            var todayHaveDispatchProductionOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department);
             var datas = new { erpInProductiondatas, todayHaveDispatchProductionOrderDatas };
             return DateJsonResult(datas);
         }
