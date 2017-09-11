@@ -115,6 +115,8 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     ////    })
     ////}
     ///////************************************************************************///
+
+    ///载入ERP中   用于确认今天生产的订单
     reportDataOp.getInProductionOrderDatas = function (department) {
         var url = urlPrefix + 'GetInProductionOrderDatas';
         return ajaxService.getData(url, {
@@ -579,4 +581,85 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     };
     $scope.focus = focusSetter;
 
+});
+/// 生产订单分派  
+productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
+    ///日报录入视图模型
+    var uiVM = {
+        Department: null,
+        ClassType: null,
+        InPutDate: null,
+        OrderId: null,
+        ProductId: null,
+        ProductName: null,
+        ProductSpec: null,
+        OrderQuantity: null,
+        ProductFlowType: null,
+        ProductFlowName: null,
+        StandardProductionTime: null,
+        MachinePersonRatio: null,
+        MachineId: null,
+        MouldId: null,
+        MouldHoleCount: 0,
+        MasterWorkerId: null,
+        MasterName: null,
+        MachineProductionTime: null,
+        MachineUnproductiveTime: null,
+        MachineUnproductiveReason: null,
+        WorkerId: null,
+        WorkerName: null,
+        TodayProductionCount: null,
+        TodayBadProductCount: null,
+        WorkerProductionTime: null,
+        WorkerNoProductionTime: null,
+        WorkerNoProductionReason: null,
+        Field1: null,
+        Field2: null,
+        Field3: null,
+        Field4: null,
+        Field5: null,
+        OpPerson: null,
+        OpSign: null,
+        OpDate: null,
+        OpTime: null,
+        Id_Key: null,
+    }
+    $scope.vm = uiVM;
+
+    var initVM = _.clone(uiVM);
+    var vmManager = {
+        ///部门 
+        department: leeLoginUser.department,
+        departments: [
+           { value: "MS1", label: "制一课" },
+           { value: "MS2", label: "制二课" },
+            { value: "MS3", label: "制三课" },
+           { value: "MS5", label: "制五课" },
+           { value: "MS6", label: "制六课" },
+           { value: "MS7", label: "制七课" },
+           { value: "MS10", label: "制十课" },
+           { value: "PT1", label: "成型课" }],
+        erpOrderInfoDatas: [],
+        erpOrderInfoDatasSource: [],
+        changeDepartment: function () {
+            $scope.promise = dReportDataOpService.getInProductionOrderDatas(vmManager.department).then(function (erpDatas) {
+                vmManager.erpOrderInfoDatas = [];
+                erpOrderInfoDatasSource = vmManager.erpOrderInfoDatas = erpDatas;
+                console.log(erpDatas);
+                ///根据登录用户 载入信息 ，如果没有侧 选择载入
+                if (erpDatas.length > 0)
+                    vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
+            });
+        },
+        putInDatas: function (item) {
+            uiVM.OrderId = item.OrderID;
+            uiVM.ProductId = item.ProductID;
+            uiVM.ProductName = item.ProductName;
+            uiVM.ProductSpec = item.ProductSpec;
+            uiVM.OrderQuantity = item.ProduceNumber - item.PutInStoreNumber;
+            vmManager.putInDisplay = true;
+        },
+    };
+    $scope.vmManager = vmManager;
+    $scope.promise = vmManager.changeDepartment();
 });

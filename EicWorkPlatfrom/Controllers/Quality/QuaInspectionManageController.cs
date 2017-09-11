@@ -315,7 +315,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetIqcMaterialInfoDatas(string orderId)
         {
-            var datas = InspectionService.DataGatherManager.IqcDataGather.GetPuroductSupplierInfo(orderId);
+            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionMastersDatasBy(orderId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>

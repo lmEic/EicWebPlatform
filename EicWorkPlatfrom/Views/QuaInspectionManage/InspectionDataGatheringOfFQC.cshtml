@@ -103,7 +103,7 @@
                         <i class="fa fa-list-ul">工单抽检批次列表</i>
                     </p>
                 </div>
-                <div class="panel-group" ng-model="panels.activePanel" role="tablist" cg-busy="{promise:searchPromise}" aria-multiselectable="true" bs-collapse>
+                <div class="panel-group" ng-model="panels.activePanel" role="tablist" cg-busy="{promise:searchPromise}" style="height:450px;overflow-y:auto;" aria-multiselectable="true" bs-collapse>
                     <div class="panel panel-default" ng-repeat="item in vmManager.panelDataSource" ng-show="vmManager.panelDataSource.length>0">
                         <div class="panel-heading" role="tab" ng-click="vmManager.selectOrderSubIdItem(item)">
                             <a bs-collapse-toggle style="cursor:pointer;color:#000" title="{{item.productId}}">
@@ -135,6 +135,10 @@
                     </div>
                     <div class="page-header" ng-hide="vmManager.panelDataSource.length>0">
                         <h4>此工单暂无抽检数据！</h4>
+                    </div>
+                    <div ng-if="vmManager.panelDataSource.length>0"
+                         yl-pagination data-dataset="vmManager.panelDataset"
+                         data-datasource="vmManager.panelDataSource">
                     </div>
                 </div>
             </div>
