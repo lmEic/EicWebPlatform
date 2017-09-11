@@ -652,10 +652,32 @@ productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, data
         changeDepartment: function () {
             $scope.promise = dReportDataOpService.getOrderDispatchInfoDatas(vmManager.department).then(function (datas) {
                 vmManager.erpOrderInfoDatas = [];
-                vmManager.erpOrderInfoDatasSource = vmManager.erpOrderInfoDatas = datas.erpInProductiondatas;
-
                 vmManager.todayHaveDispatchDatas = datas.todayHaveDispatchProductionOrderDatas;
-                console.log(datas);
+                angular.forEach(datas.erpInProductiondatas, function (item) {
+                    var isHaveDispatch = false;
+                    if (datas.todayHaveDispatchProductionOrderDatas.length > 0) {
+                        _.find(vmManager.todayHaveDispatchDatas, function (i) {
+                            if (i.OrderId === item.OrderID) {
+                                isHaveDispatch = true;
+                            }
+                        });
+                    }
+                    var dataItem = {
+                        orderID: item.OrderID,
+                        produceNumber: item.ProduceNumber,
+                        productID: item.ProductID,
+                        productName: item.ProductName,
+                        productSpec: item.ProductSpec,
+                        productStatus: item.ProductStatus,
+                        productionDepartment: item.ProductionDepartment,
+                        putInStoreNumber: item.PutInStoreNumber,
+                        isDispatch: isHaveDispatch
+                    };
+                    console.log(dataItem);
+                    vmManager.erpOrderInfoDatas.push(dataItem);
+                    vmManager.erpOrderInfoDatasSource.push(dataItem);
+                });
+
                 ///根据登录用户 载入信息 ，如果没有侧 选择载入
                 //if (datas.erpInProductiondatas > 0)
                 //    vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];

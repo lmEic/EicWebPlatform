@@ -32,14 +32,19 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="item in vmManager.erpOrderInfoDatas track by $index">
-                                        <td>{{item.OrderID}}</td>
-                                        <td>{{item.ProductName}}</td>
-                                        <td>{{item.ProductSpec}}</td>
-                                        <td>{{item.ProduceNumber}}</td>
-                                        <td>{{item.PutInStoreNumber}}</td>
-                                        <td>{{item.ProductStatus}}</td>
+                                        <td>{{item.orderID}}</td>
+                                        <td>{{item.productName}}</td>
+                                        <td>{{item.productSpec}}</td>
+                                        <td>{{item.produceNumber}}</td>
+                                        <td>{{item.putInStoreNumber}}</td>
+                                        <td>{{item.productStatus}}</td>
                                         <td>
-                                            <button class="btn btn-primary" ng-click="vmManager.putInDatas(item)"><i class="fa fa-pencil-square-o"></i>确认生产</button>
+                                            <button ng-show="item. isDispatch==false" class="btn btn-primary" ng-click="vmManager.putInDatas(item)">
+                                                <i class="fa fa-pencil-square-o"></i>确认生产
+                                            </button>
+                                            <button ng-show="item. isDispatch==true" class="btn btn-success" ng-click="vmManager.putInDatas(item)">
+                                                <i class="fa fa-pencil-square-o"></i>已经确认
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
