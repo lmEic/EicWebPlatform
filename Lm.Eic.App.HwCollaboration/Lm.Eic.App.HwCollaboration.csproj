@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FE8A9AB2-356F-4AD6-BFC8-0E6814228126}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Lm.Eic.App.HwCollaboration</RootNamespace>
+    <AssemblyName>Lm.Eic.App.HwCollaboration</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="HwRestfulApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\HwRestfulApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Business\HwCollaborationService.cs" />
+    <Compile Include="Business\HwCollaborationBase.cs" />
+    <Compile Include="Business\ManPower\ManPowerManager.cs" />
+    <Compile Include="Model\SccManpowerMain.cs" />
+    <Compile Include="Model\SccFactoryInventory.cs" />
+    <Compile Include="Model\SccOpenPOVO.cs" />
+    <Compile Include="Model\SccLogisticDeliveryVO.cs" />
+    <Compile Include="Model\SccMaterialShipmentVO.cs" />
+    <Compile Include="Model\SccMaterialMakingVO.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DbAccess\" />
+    <Folder Include="obj\Debug\TempPE\" />
+    <Folder Include="obj\Release\TempPE\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lm.Eic.Framework.ProductMaster\Lm.Eic.Framework.ProductMaster.csproj">
+      <Project>{7b130827-0935-470d-8be5-bc6953466dae}</Project>
+      <Name>Lm.Eic.Framework.ProductMaster</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lm.Eic.Uti.Common.YleeDbHandler\Lm.Eic.Uti.Common.YleeDbHandler\Lm.Eic.Uti.Common.YleeDbHandler.csproj">
+      <Project>{8301c71a-afde-4853-8c05-39ff96b207c6}</Project>
+      <Name>Lm.Eic.Uti.Common.YleeDbHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lm.Eic.Uti.Common\Lm.Eic.Uti.Common\Lm.Eic.Uti.Common.csproj">
+      <Project>{35fa689a-9ef7-4944-8a6e-0cf9f2cacdde}</Project>
+      <Name>Lm.Eic.Uti.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lm.Eic.Uti.LogMessageNet\Lm.Eic.Uti.LogMessageNet.csproj">
+      <Project>{5b599f03-ef02-41d1-9278-6c12dbac5c5a}</Project>
+      <Name>Lm.Eic.Uti.LogMessageNet</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\EntityFramework.dll" />
+    <Content Include="bin\Debug\EntityFramework.Extended.dll" />
+    <Content Include="bin\Debug\EntityFramework.Extended.xml" />
+    <Content Include="bin\Debug\EntityFramework.xml" />
+    <Content Include="bin\Debug\HwRestfulApi.dll" />
+    <Content Include="bin\Debug\HwRestfulApi.pdb" />
+    <Content Include="bin\Debug\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="bin\Debug\Lm.Eic.App.HwCollaboration.dll" />
+    <Content Include="bin\Debug\Lm.Eic.App.HwCollaboration.pdb" />
+    <Content Include="bin\Debug\Lm.Eic.Framework.ProductMaster.dll" />
+    <Content Include="bin\Debug\Lm.Eic.Framework.ProductMaster.pdb" />
+    <Content Include="bin\Debug\Lm.Eic.Uti.Common.dll" />
+    <Content Include="bin\Debug\Lm.Eic.Uti.Common.pdb" />
+    <Content Include="bin\Debug\Lm.Eic.Uti.Common.YleeDbHandler.dll" />
+    <Content Include="bin\Debug\Lm.Eic.Uti.Common.YleeDbHandler.pdb" />
+    <Content Include="bin\Debug\Lm.Eic.Uti.LogMessageNet.dll" />
+    <Content Include="bin\Debug\Lm.Eic.Uti.LogMessageNet.pdb" />
+    <Content Include="bin\Debug\log4net.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
+    <Content Include="bin\Debug\NPOI.dll" />
+    <Content Include="bin\Debug\NPOI.OOXML.dll" />
+    <Content Include="bin\Debug\NPOI.OOXML.xml" />
+    <Content Include="bin\Debug\NPOI.OpenXml4Net.dll" />
+    <Content Include="bin\Debug\NPOI.OpenXml4Net.xml" />
+    <Content Include="bin\Debug\NPOI.OpenXmlFormats.dll" />
+    <Content Include="bin\Debug\NPOI.xml" />
+    <Content Include="bin\Release\EntityFramework.dll" />
+    <Content Include="bin\Release\EntityFramework.Extended.dll" />
+    <Content Include="bin\Release\EntityFramework.Extended.xml" />
+    <Content Include="bin\Release\EntityFramework.xml" />
+    <Content Include="bin\Release\HwRestfulApi.dll" />
+    <Content Include="bin\Release\HwRestfulApi.pdb" />
+    <Content Include="bin\Release\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="bin\Release\Lm.Eic.App.HwCollaboration.dll" />
+    <Content Include="bin\Release\Lm.Eic.App.HwCollaboration.pdb" />
+    <Content Include="bin\Release\Lm.Eic.Framework.ProductMaster.dll" />
+    <Content Include="bin\Release\Lm.Eic.Framework.ProductMaster.pdb" />
+    <Content Include="bin\Release\Lm.Eic.Uti.Common.dll" />
+    <Content Include="bin\Release\Lm.Eic.Uti.Common.pdb" />
+    <Content Include="bin\Release\Lm.Eic.Uti.Common.YleeDbHandler.dll" />
+    <Content Include="bin\Release\Lm.Eic.Uti.Common.YleeDbHandler.pdb" />
+    <Content Include="bin\Release\Lm.Eic.Uti.LogMessageNet.dll" />
+    <Content Include="bin\Release\Lm.Eic.Uti.LogMessageNet.pdb" />
+    <Content Include="bin\Release\log4net.dll" />
+    <Content Include="bin\Release\Newtonsoft.Json.dll" />
+    <Content Include="bin\Release\NPOI.dll" />
+    <Content Include="bin\Release\NPOI.OOXML.dll" />
+    <Content Include="bin\Release\NPOI.OOXML.xml" />
+    <Content Include="bin\Release\NPOI.OpenXml4Net.dll" />
+    <Content Include="bin\Release\NPOI.OpenXml4Net.xml" />
+    <Content Include="bin\Release\NPOI.OpenXmlFormats.dll" />
+    <Content Include="bin\Release\NPOI.xml" />
+    <Content Include="obj\Debug\Lm.Eic.App.HwCollaboration.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\Lm.Eic.App.HwCollaboration.dll" />
+    <Content Include="obj\Debug\Lm.Eic.App.HwCollaboration.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\log4net.config" />
+    <None Include="bin\Release\log4net.config" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="obj\Debug\Lm.Eic.App.HwCollaboration.csprojResolveAssemblyReference.cache" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

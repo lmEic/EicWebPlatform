@@ -1,0 +1,103 @@
+﻿<div class="panel panel-primary" ng-controller="DailyProductOrderDispatchCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title">生产日报录入</h6>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div cg-busy="{promise:promise}">
+                部门:
+                <button class="btn btn-success " ng-model="vmManager.department" ng-change="vmManager.changeDepartment()"
+                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
+                        data-bs-options="department.value as department.label for department in vmManager.departments track by $index" data-bs-select>
+                    <span class="caret"></span>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="pull-left" style="width:65%;" id="editWindow">
+                <div class="bs-callout bs-callout-default" style="height:480px;overflow-y:auto;">
+                    <div class="table-responsive">
+                        <div style="padding:10px;overflow-y:auto;height:480px">
+                            <table class="table table-condensed table-bordered table-hover">
+                                <thead>
+                                    <tr class="info">
+                                        <th>工单单号</th>
+                                        <th>产品品名</th>
+                                        <th>产品规格</th>
+                                        <th>生产数量</th>
+                                        <th>入库数量</th>
+                                        <th>状态</th>
+                                        <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in vmManager.erpOrderInfoDatas track by $index">
+                                        <td>{{item.orderID}}</td>
+                                        <td>{{item.productName}}</td>
+                                        <td>{{item.productSpec}}</td>
+                                        <td>{{item.produceNumber}}</td>
+                                        <td>{{item.putInStoreNumber}}</td>
+                                        <td>{{item.productStatus}}</td>
+                                        <td>
+                                            <button ng-show="item. isDispatch==false" class="btn btn-primary" ng-click="vmManager.putInDatas(item)">
+                                                <i class="fa fa-pencil-square-o"></i>确认生产
+                                            </button>
+                                            <button ng-show="item. isDispatch==true" class="btn btn-success" ng-click="vmManager.putInDatas(item)">
+                                                <i class="fa fa-pencil-square-o"></i>已经确认
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div ng-if="vmManager.erpOrderInfoDatasSource.length>0"
+                         yl-pagination data-dataset="vmManager.erpOrderInfoDatas"
+                         data-datasource="vmManager.erpOrderInfoDatasSource">
+                    </div>
+                </div>
+            </div>
+            <div class="pull-right" style="width:35%;">
+                <div class="bs-callout bs-callout-info" style="height:500px;overflow-y:auto;">
+                    <div class="table-responsive" cg-busy="{promise:searchPromise}">
+                        <table class="table table-condensed table-bordered table-hover">
+                            <thead>
+                                <tr class="info">
+                                    <th>单号</th>
+                                    <th>品名</th>
+                                    <th>产量</th>
+                                    <th>确认开工</th>
+                                    <th>计划完工日期</th>
+                                    <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vmManager.todayHaveDispatchDatas track by $index">
+                                    <td>{{item.OrderId}}</td>
+                                    <td title="{{item.ProductSpec}}">
+                                        {{item.ProductName}}
+                                    </td>
+                                    <td>{{item.Count}}</td>
+                                    <td>{{item.ProductionDate}}</td>
+                                    <td>{{item.ValidDate}}</td>
+                                    <td>
+                                        <button class="btn btn-xs btn-primary" ng-click="operate.editItem(item)" title="编辑">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-xs btn-danger" ng-click="operate.deleteItem(item)" title="删除">
+                                            <i class="fa fa-remove"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>

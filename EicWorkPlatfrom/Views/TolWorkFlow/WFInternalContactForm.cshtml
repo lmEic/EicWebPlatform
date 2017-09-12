@@ -32,6 +32,7 @@
                         <div class="col-md-10">
                             <script id="formContent" type="text/plain">
                             </script>
+                            <div yl-upload-file style="margin:8px 2px;"></div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -57,9 +58,6 @@
                             <div class="error-messages" ng-messages="formContact.needDate.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">需求日期不能为空</small>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div yl-upload-file style="margin:8px 2px;"></div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -89,8 +87,8 @@
                     </div>
                 </form>
             </div>
-            <div class="col-md-2">
-
+            <div class="col-md-2" cg-busy="{promise:opPromise}">
+                <button class="btn btn-primary" ng-click="hw.postData()">获取华为数据</button>
             </div>
         </div>
 

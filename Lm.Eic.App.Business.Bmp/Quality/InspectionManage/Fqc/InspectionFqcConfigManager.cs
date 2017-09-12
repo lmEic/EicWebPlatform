@@ -1,4 +1,5 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Quanity;
+using Lm.Eic.App.Erp.Bussiness.QmsManage;
 using Lm.Eic.Uti.Common.YleeExcelHanlder;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
@@ -27,9 +28,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <returns></returns>
         public OpResult IsExistFqcConfigMaterailId(string materailId)
         {
-            bool isexixt = InspectionManagerCrudFactory.FqcItemConfigCrud.IsExistFqcConfigmaterailId(materailId);
-            OpResult opResult = OpResult.SetSuccessResult("存在", false);
-            if (isexixt) opResult = OpResult.SetSuccessResult("此物料料号已经存在", true);
+            OpResult opResult = OpResult.SetSuccessResult("成功", true);
+            if (InspectionManagerCrudFactory.FqcItemConfigCrud.IsExistFqcConfigmaterailId(materailId))
+            {
+                opResult = OpResult.SetSuccessResult("此物料已经存在", false);
+            }
+            var productMaterailModels = QmsDbManager.MaterialInfoDb.GetProductInfoBy(materailId);
+            if (productMaterailModels != null && productMaterailModels.Count > 0)
+                opResult.Entity = productMaterailModels.FirstOrDefault();
+            else return OpResult.SetSuccessResult("料号不正确定", false);
             return opResult;
         }
         /// <summary>

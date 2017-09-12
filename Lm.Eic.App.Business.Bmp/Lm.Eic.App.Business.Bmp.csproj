@@ -103,6 +103,9 @@
     <Compile Include="Pms\DailyReport\InputManager.cs" />
     <Compile Include="Pms\DailyReport\LmProMasterDailyReort\LmProDailyReportCrud.cs" />
     <Compile Include="Pms\DailyReport\LmProMasterDailyReort\LmProDailyReportManager.cs" />
+    <Compile Include="Pms\NewDailyReport\DailyReportManager.cs" />
+    <Compile Include="Pms\NewDailyReport\DailyReportManagerCrud.cs" />
+    <Compile Include="Pms\NewDailyReport\DailyReportService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Purchase\PurchaseManager.cs" />
     <Compile Include="Purchase\PurchaseService.cs" />

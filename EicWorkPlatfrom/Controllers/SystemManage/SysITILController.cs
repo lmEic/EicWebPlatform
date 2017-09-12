@@ -95,7 +95,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             try
             {
-                var opresult = ItilService.EmailManager.StoreItilEmailManage(model);
+                var opresult = ItilService.EmailManager.StoreEmailManage(model);
                 return Json(opresult);
             }
             catch (System.Exception ex)
