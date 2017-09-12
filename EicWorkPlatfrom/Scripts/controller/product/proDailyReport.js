@@ -120,8 +120,7 @@ productModule.controller("dReportHoursSetCtrl", function ($scope, dReportDataOpS
         Remark: null,
         OpPerson: '章亚娅',
         OpSign: 'add',
-        Id_Key: null,
-        
+        Id_Key: null,       
     }
     $scope.vm = uiVM;
     //初始化视图
@@ -749,8 +748,10 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         },
         //设定行
         getCurrentRow: function (item) {
+           
             vmManager.edittingRowIndex = item.rowindex;
             vmManager.edittingRow = item;
+           
         },
         //待编辑的记录集合
         editDatas: [],
@@ -788,12 +789,15 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         editNextProductHoursRow: function ($event, item) {
             if ($event.keyCode === 13 || $event.keyCode === 9) {
                 leeHelper.copyVm($scope.vm, vmManager.edittingRow);
-                if (item.rowindex < vmManager.editDatas.length) {
-                    vmManager.edittingRowIndex = item.rowindex + 1;
+
+                if (item.rowindex < vmManager.editDatas.length)
+                {                
+                    vmManager.edittingRowIndex = item.rowindex + 1;               
                     var rowItem = vmManager.getEdittingRow();
                     vmManager.editProductHoursRow(rowItem);
                 }
-                else {
+                else
+                {
                     vmManager.edittingRow.pheditting = false;
                 }
             }
@@ -818,7 +822,9 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
         //编辑出勤工时单元格信息
         editCell: function (item, cellField, isOrderData) {
             //获得要编辑的行
+           
             vmManager.edittingRow = item;
+       
             if (cellField !== 'ProductFlowID')
                 vmManager.setEditCellStatus(item, cellField, true);
             if (!isOrderData) {
@@ -836,6 +842,7 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
                     $scope.tempVm[cellField] = item[cellField];
                 }
             }
+           
         },
         //编辑出勤工时单元格信息
         endEditCell: function (item, cellField, isOrderData) {
@@ -993,15 +1000,15 @@ productModule.controller("dReportInputCtrl", function ($scope, dataDicConfigTree
 
             focusSetter.moveFocusTo($event, 'setHoursFocus', 'nonProductHoursFocus');
         },
-        inputNonProductionHours: function ($event, item) {
+        inputNonProductionHours: function ($event, item) {   //inputNonProductionHours
+            item.NonProductionHours = $scope.vm.NonProductionHours;  //////
             if ($event.keyCode === 37) {
                 focusSetter['inputHoursFocus'] = true;
                 return;
             }
             focusSetter.doWhenKeyDown($event, function () {
-                item.NonProductionHours = $scope.vm.NonProductionHours;
                 item.ProductionHours = item.SetHours - item.NonProductionHours;
-                $scope.vm.ProductionHours = item.ProductionHours;
+                $scope.vm.ProductionHours = item.ProductionHours;             
                 if ($scope.vm.NonProductionHours > 0) {
                     item.isHadNonProductionHours = true;
                     focusSetter['nonProductReasonCodeFocus'] = true;

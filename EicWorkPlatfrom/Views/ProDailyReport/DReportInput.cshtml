@@ -369,15 +369,15 @@
                             </td>
 
                             @*产量信息*@
-                            <td title="总产量" ng-dblclick="vmManager.editCell(item,'Qty',false)">
+                            <td >
                                 <span ng-hide="item.pheditting">{{item.Qty}}</span>
                                 <input ng-model="vm.Qty" ng-keydown="vmManager.inputQty($event,item)"
                                        focus-if="focus.qtyFocus" focus-setter style="width:70px;"
                                        placeholder="总产量" ng-show="item.pheditting" />
 
                                 @*双击单元格时显示,用于修改*@
-                                <input ng-model="vm.Qty" ng-mouseleave="vmManager.endEditCell(item,'Qty',false)"
-                                       style="width:70px;" ng-if="item.edittingQtyMode" />
+                                @*<input ng-model="vm.Qty" ng-mouseleave="vmManager.endEditCell(item,'Qty',false)"
+                                       style="width:70px;" ng-if="item.edittingQtyMode" />*@
                             </td>
                             <td title="不良品" ng-dblclick="vmManager.editCell(item,'QtyBad',false)">
                                 <span ng-hide="item.pheditting">{{item.QtyBad}}</span>
@@ -432,8 +432,8 @@
                                        placeholder="非生产时数" ng-show="item.pheditting" />
 
                                 @*双击单元格时显示,用于修改*@
-                                <input ng-model="vm.NonProductionHours" ng-mouseleave="vmManager.endEditCell(item,'NonProductionHours',false)"
-                                       style="width:75px;" ng-if="item.edittingNonProductionHoursMode" />
+                                @*<input ng-model="vm.NonProductionHours" ng-mouseleave="vmManager.endEditCell(item,'NonProductionHours',false)"
+                                       style="width:75px;" ng-if="item.edittingNonProductionHoursMode" />*@
                             </td>
                             <td title="生产工时">
                                 {{item.ProductionHours}}

@@ -55,7 +55,7 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
         })
     }
     ///查询上报问题处理状态
-    oAssistant.getReportImproveProbleDatas = function (problemSove, department, mode) {
+    oAssistant.dfg = function (problemSove, department, mode) {
         var url = oaUrlPrefix + 'GetReportImproveProbleDatas';
         return ajaxService.getData(url, {
             problemSolve: problemSove,
