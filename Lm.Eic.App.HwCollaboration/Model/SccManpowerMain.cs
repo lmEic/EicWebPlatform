@@ -10,14 +10,13 @@ namespace Lm.Eic.App.HwCollaboration.Model
     /// 人力资源信息Dto
     /// </summary>
     [Serializable]
-    public class ManPowerDto
+    public class ManPowerDto : HwDataTransferDtoBase
     {
         /// <summary>
         /// 人力信息主列表
         /// </summary>
         public List<SccManpowerMain> manpowerMainList { get; set; }
     }
-
     /// <summary>
     /// 人力信息工厂单据
     /// </summary>
@@ -70,7 +69,7 @@ namespace Lm.Eic.App.HwCollaboration.Model
         /// 关键工序/部门人员需求_相对华为需求
         /// 数字，非空
         /// </summary>
-        public double hrQequestQuantity { get; set; }
+        public double hrRequestQuantity { get; set; }
         /// <summary>
         /// 关键工序/部门人员缺口_相对华为需求
         /// 数字，非空
