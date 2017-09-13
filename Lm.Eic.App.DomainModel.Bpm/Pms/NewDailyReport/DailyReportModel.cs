@@ -77,7 +77,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _processestype = value; }
             get { return _processestype; }
         }
-        private int _mouldholenumber;
+
 
         private string _standardproductiontimetype;
         /// <summary>
@@ -227,15 +227,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         public ProductOrderDispatchModel()
         { }
         #region Model
-        private string _department;
-        /// <summary>
-        ///
-        /// </summary>
-        public string Department
-        {
-            set { _department = value; }
-            get { return _department; }
-        }
         private string _orderid;
         /// <summary>
         ///订单
@@ -245,11 +236,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _orderid = value; }
             get { return _orderid; }
         }
+        private string _productiondepartment;
+        /// <summary>
+        ///生产部门
+        /// </summary>
+        public string ProductionDepartment
+        {
+            set { _productiondepartment = value; }
+            get { return _productiondepartment; }
+        }
         private string _productid;
         /// <summary>
         ///品号
         /// </summary>
-        public string ProductID
+        public string ProductId
         {
             set { _productid = value; }
             get { return _productid; }
@@ -272,23 +272,32 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _productspec = value; }
             get { return _productspec; }
         }
-        private int _count;
+        private int _putinstorenumber;
         /// <summary>
-        ///数量
+        ///ERP入库数
         /// </summary>
-        public int Count
+        public int PutInStoreNumber
         {
-            set { _count = value; }
-            get { return _count; }
+            set { _putinstorenumber = value; }
+            get { return _putinstorenumber; }
         }
-        private string _productionstatus;
+        private int _producenumber;
         /// <summary>
-        ///生产状态
+        ///预产量
         /// </summary>
-        public string ProductionStatus
+        public int ProduceNumber
         {
-            set { _productionstatus = value; }
-            get { return _productionstatus; }
+            set { _producenumber = value; }
+            get { return _producenumber; }
+        }
+        private string _productstatus;
+        /// <summary>
+        ///订单状态
+        /// </summary>
+        public string ProductStatus
+        {
+            set { _productstatus = value; }
+            get { return _productstatus; }
         }
         private DateTime _productiondate;
         /// <summary>
@@ -301,7 +310,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         private string _isvalid;
         /// <summary>
-        ///是否有生效
+        ///是否有效
         /// </summary>
         public string IsValid
         {
@@ -364,6 +373,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         #endregion Model
     }
+
 
 
     /// <summary>

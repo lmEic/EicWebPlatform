@@ -279,6 +279,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         private OpResult Add(ProductOrderDispatchModel model)
         {
             //生成组合键值
+            if (irep.IsExist(e => e.OrderId == model.OrderId))
+                return irep.Update(e => e.OrderId == model.OrderId, u => new ProductOrderDispatchModel
+                {
+                    IsValid = model.IsValid,
+                    ProductionDate = model.ProductionDate,
+                    ValidDate = model.ValidDate,
+                }).ToOpResult_Eidt(OpContext);
             return irep.Insert(model).ToOpResult(OpContext);
         }
 
@@ -310,11 +317,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department)
+        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, DateTime nowDate)
         {
-            /// 1.要有效，2有效期 大于当前日期 
-            DateTime ddd = DateTime.Now.Date;
-            return irep.Entities.Where(e => e.Department == department && e.IsValid == "True" && e.ValidDate >= ddd).ToList();
+            /// 1.要有效
+            return irep.Entities.Where(e => e.ProductionDepartment == department && e.IsValid == "True" && e.ValidDate >= nowDate).ToList();
         }
     }
 

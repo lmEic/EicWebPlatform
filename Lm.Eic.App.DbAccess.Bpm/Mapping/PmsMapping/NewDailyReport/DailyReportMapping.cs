@@ -23,7 +23,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.NewDailyReport
 
 
     /// <summary>
-    ///ProductOrderDispatchModel 生产订单分配
+    ///ReportsOrderDispatchhModel 生产订单分配
     /// </summary>
     public class ProductOrderDispatchMapping : EntityTypeConfiguration<ProductOrderDispatchModel>
     {
@@ -31,7 +31,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.NewDailyReport
         {
             this.HasKey(t => t.Id_Key);
             this.Property(t => t.Id_Key).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            this.ToTable("Pms_DalyReportsOrder");
+            this.ToTable("Pms_DailyReportsOrderDispatch");
         }
     }
 

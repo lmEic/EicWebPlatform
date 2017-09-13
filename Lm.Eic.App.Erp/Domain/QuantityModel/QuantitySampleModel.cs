@@ -159,11 +159,11 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
         /// <summary>
         /// 工单单号  
         /// </summary>
-        public string OrderID { get { return ID; } }
+        public string OrderId { get { return ID; } }
         /// <summary>
         ///  产品品号 
         /// </summary>
-        public string ProductID { get; set; }
+        public string ProductId { get; set; }
         /// <summary>
         /// 产品品名  
         /// </summary>
@@ -187,7 +187,14 @@ namespace Lm.Eic.App.Erp.Domain.QuantityModel
         /// 入库数量 
         /// </summary>
         public double PutInStoreNumber { get; set; }
-
+        /// <summary>
+        ///预计开工日期TA003
+        /// </summary>
+        public DateTime PlanStartProductionDate { set; get; }
+        /// <summary>
+        /// 预计完工日期TA010
+        /// </summary>
+        public DateTime PlanEndProductionDate { set; get; }
 
 
 

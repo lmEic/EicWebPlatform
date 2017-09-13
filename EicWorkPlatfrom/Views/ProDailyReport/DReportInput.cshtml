@@ -32,7 +32,7 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="item in vmManager.erpOrderInfoDatas track by $index">
-                                        <td>{{item.OrderID}}</td>
+                                        <td>{{item.OrderId}}</td>
                                         <td>{{item.ProductName}}</td>
                                         <td>{{item.ProductSpec}}</td>
                                         <td>{{item.ProduceNumber}}</td>
@@ -55,12 +55,47 @@
                     <div style="padding:10px;overflow-y:auto;height:480px">
                         <form role="form" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                             <fieldset>
+                                @**@
+                                <div class="form-group">
+                                    <label for="processesName" class="col-md-2 control-label">制令单</label>
+                                    <div class="col-md-4">
+                                        <input name="orderId" class="form-control" ng-model="vm.OrderId"
+                                               focus-if="focus.workerIdFocus" focus-setter
+                                               ng-keydown="vmManager.getProcessesInfo()"
+                                               required />
+                                        <div class="error-messages"
+                                             ng-messages="formDailyProductionReport.orderId.$error"
+                                             ng-show="operate.showValidation">
+                                            <small ng-message="required">制令单</small>
+                                        </div>
+                                    </div>
+                                    <label for="processesName" class="col-md-2 control-label">需产量单</label>
+                                    <div class="col-md-4">
+                                        <input name="orderId" class="form-control" ng-model="vm.OrderQuantity"
+                                               required />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">品名:</label>
+                                    <div class="col-md-4">
+                                        <input name="productName" type="text" readonly class="form-control"
+                                               ng-model="vm.ProductName" required />
+                                    </div>
+                                    <label class="col-md-2 control-label">规格:</label>
+                                    <div class="col-md-4">
+                                        <input name="productSpec" type="text" readonly class="form-control"
+                                               ng-model="vm.ProductSpec" required />
+                                    </div>
+                                </div>
+                                @*工号人员信息*@
                                 <div class="form-group">
                                     <label for="workerId" class="col-md-2 control-label">工号</label>
                                     <div class="col-md-4">
                                         <div class="input-group">
                                             <input name="workerId" class="form-control"
                                                    ng-model="vm.WorkerId" ng-change="vmManager.getWorkerInfo()"
+                                                   focus-if="focus.workerIdFocus" focus-setter
                                                    placeholder="输工号或姓名"
                                                    data-ensure-user-exist required />
                                             <div class="error-messages" ng-messages="formDailyProductionReport.workerId.$error" ng-show="operate.showValidation">
@@ -97,26 +132,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="processesName" class="col-md-2 control-label">制令单</label>
-                                    <div class="col-md-4">
-                                        <input name="orderId" class="form-control" ng-model="vm.OrderId"
-                                               focus-if="focus.masterWorkerIdFocus"
-                                               ng-keydown="vmManager.getProcessesInfo()"
-                                               required />
-                                        <div class="error-messages"
-                                             ng-messages="formDailyProductionReport.orderId.$error"
-                                             ng-show="operate.showValidation">
-                                            <small ng-message="required">制令单</small>
-                                        </div>
-                                    </div>
-                                    <label class="col-md-6 control-label">品名:【{{vm.ProductName}}】规格:【{{vm.ProductSpec}}】</label>
-                                </div>
+                                @*录入工序信息*@
                                 <div class="form-group">
                                     <label for="processesIndex" class="col-md-2 control-label">录入工序:</label>
                                     <div class="col-md-4">
                                         <input name="processesName" type="text" class="form-control"
-                                               focus-if="focus.orderIdFocus"
+                                               focus-if="focus.orderIdFocus" focus-setter
                                                ng-keydown="vmManager.getProcessesInfo()"
                                                ng-model="vm.ProcessesName"
                                                required />
@@ -125,6 +146,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @*工时信息*@
                                 <div class="form-group">
                                     <label for="maxMachineCount" class="col-md-2 control-label">生产工时</label>
                                     <div class="col-md-4">
@@ -139,6 +161,7 @@
 
                                     </div>
                                 </div>
+                                @*产量*@
                                 <div class="form-group">
                                     <label for="standardProductionTimeType" class="col-md-2 control-label">生产数量</label>
                                     <div class="col-md-4">
@@ -152,6 +175,7 @@
                                         <input type="number" class="form-control" ng-model="vm.TodayBadProductCount" />
                                     </div>
                                 </div>
+                                @*备注*@
                                 <div class="form-group">
                                     <label for="remark" class="col-md-2 control-label">备注</label>
                                     <div class="col-md-9">

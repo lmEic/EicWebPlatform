@@ -1727,7 +1727,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         /// <summary>
         /// 是否有项目配置
         /// </summary>
-        public bool IsHavdItemConfig { set; get; }
+        public bool IsHaveItemConfig { set; get; }
 
         #endregion Model
     }
