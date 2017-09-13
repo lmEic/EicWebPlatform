@@ -31,6 +31,7 @@
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -477,6 +478,7 @@
     <Content Include="Content\ueditor\ueditor.config.js" />
     <Content Include="Content\underscore\underscore-min.js" />
     <Content Include="Content\underscore\underscore.js" />
+    <Content Include="Content\CSS\workoverhours.css" />
     <Content Include="Content\WorkTask\WorkTask.css" />
     <Content Include="Content\ztree\dist\css\zTreeStyle\img\diy\1_close.png" />
     <Content Include="Content\ztree\dist\css\zTreeStyle\img\diy\1_open.png" />

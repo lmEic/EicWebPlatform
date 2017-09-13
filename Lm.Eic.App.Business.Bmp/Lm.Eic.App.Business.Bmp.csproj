@@ -76,6 +76,9 @@
     <Compile Include="Hrm\Archives\ArWorkerIdChangeManager.cs" />
     <Compile Include="Hrm\Attendance\AttendAskLeaveManager.cs" />
     <Compile Include="Hrm\Attendance\AttendCrudFactory.cs" />
+    <Compile Include="Hrm\WorkOverHours\WorkOverHoursFactory.cs" />
+    <Compile Include="Hrm\WorkOverHours\WorkOverHoursManager.cs" />
+    <Compile Include="Hrm\WorkOverHours\WorkOverHoursService.cs" />
     <Compile Include="Pms\BoardManagment\BoardBase.cs" />
     <Compile Include="Pms\BoardManagment\BoardService.cs" />
     <Compile Include="Pms\BoardManagment\BoardCrud.cs" />

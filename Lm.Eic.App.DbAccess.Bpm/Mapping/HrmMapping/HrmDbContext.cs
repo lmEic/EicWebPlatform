@@ -1,6 +1,7 @@
 ﻿using Lm.Eic.App.DomainModel.Bpm.Hrm.Archives;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.Attendance;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.GeneralAffairs;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours;
 using Lm.Eic.Uti.Common.YleeDbHandler;
 using System;
 using System.Data.Entity;
@@ -73,6 +74,10 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
         /// 行事历列表
         /// </summary>
         public DbSet<CalendarModel> Calendarlist { set; get; }
+        /// <summary>
+        /// 加班管理
+        /// </summary>
+        public DbSet<WorkOverHoursMangeModels> WorkOverHoursManage { get; set; }
 
         #endregion dbset
 
@@ -104,6 +109,8 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping.HrmMapping
             modelBuilder.Configurations.Add(new ArWorkerIdChangedMapping());
             //
             modelBuilder.Configurations.Add(new CalendarsMapping());
+            //加班管理
+            modelBuilder.Configurations.Add(new WorkOverHoursMapping());
         }
     }
 

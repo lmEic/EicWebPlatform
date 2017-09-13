@@ -5,6 +5,10 @@ using Lm.Eic.Framework.ProductMaster.Business.Config;
 using Lm.Eic.Framework.ProductMaster.Model;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours;
+using Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours;
+using System.Web;
+using System.IO;
 
 namespace EicWorkPlatfrom.Controllers.Hr
 {
@@ -123,6 +127,14 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// <returns></returns>
         [NoAuthenCheck]
         public ContentResult GetAskLeaveDataAbout(string workerId, string yearMonth)
+
+        {
+            var datas = AttendanceService.AttendAskLeaveManager.GetAskLeaveDatas(workerId, yearMonth);
+            return DateJsonResult(datas);
+        }
+
+        [NoAuthenCheck]
+        public ContentResult GetAskLeaveDataAbout1(string workerId, string yearMonth)
         {
             var datas = AttendanceService.AttendAskLeaveManager.GetAskLeaveDatas(workerId, yearMonth);
             return DateJsonResult(datas);
@@ -177,6 +189,62 @@ namespace EicWorkPlatfrom.Controllers.Hr
         {
             return View();
         }
+        [NoAuthenCheck]
+       
+        public ContentResult GetWorkOverHoursData(DateTime workDate,string departmentText,int mode)
+        {
+            WorkOverHoursDto dto = new WorkOverHoursDto()
+            {
+                WorkDate = workDate,
+                DepartmentText=departmentText,
+                SearchMode = mode
+
+            };
+            var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordBy(dto);
+            return DateJsonResult(datas);
+        }
+        [NoAuthenCheck]
+        /// <summary>
+        /// 载入模板
+        /// </summary>
+        /// <param name="workDate"></param>
+        /// <param name="departmentText"></param>
+        /// <returns></returns>
+        public ContentResult GetWorkOverHoursMode(string departmentText,DateTime workDate)
+        {
+            var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText,workDate);
+            
+            return DateJsonResult(datas);
+        }
+        [HttpPost]
+        [NoAuthenCheck]
+        
+        public JsonResult HandlWorkOverHoursDt(List<WorkOverHoursMangeModels> workOverHours)
+        {
+            var result = WorkOverHoursService.WorkOverHoursManager.HandleWorkOverHoursDatas(workOverHours);
+            return Json(result);
+
+        }
+        /// <summary>
+        /// 导入EXCEL数据到DataSets
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult ImportWorkOverHoursDatas(HttpPostedFileBase file)
+        {
+
+            List<WorkOverHoursMangeModels> datas = null;
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp);
+            SaveFileToServer(file, filePath, () =>
+            {
+                string fileName = Path.Combine(filePath, file.FileName);
+                datas = WorkOverHoursService.WorkOverHoursManager.ImportWorkOverHoursListBy(fileName);
+                //System.IO.File.Delete(fileName);
+            });
+            return DateJsonResult(datas);
+        }
+
         #endregion
     }
 }
