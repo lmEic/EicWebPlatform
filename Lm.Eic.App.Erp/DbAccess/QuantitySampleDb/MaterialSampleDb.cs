@@ -230,7 +230,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             string orderStatusSql = OrderStatusStr(orderStatus);
             List<ProductionOrderIdInfo> ProductionOrderIdDatas = new List<ProductionOrderIdInfo>();
             ProductionOrderIdInfo OrderIdData = null;
-            string sql = string.Format("SELECT TA001, TA002, TA006, TA034, TA035, TA017, TA015,TA021,TA011 FROM MOCTA WHERE(TA021 = '{0}')  {1}   ORDER BY TA002 ", department, orderStatusSql);
+            string sql = string.Format("SELECT TA001, TA002, TA006, TA034, TA035, TA017, TA015,TA021,TA011,TA003,TA010 FROM MOCTA WHERE(TA021 = '{0}')  {1}   ORDER BY TA002 ", department, orderStatusSql);
             DataTable dt = DbHelper.Erp.LoadTable(sql);
             if (dt.Rows.Count > 0)
             {
@@ -243,10 +243,12 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                         Category = dr[0].ToString().Trim(),
                         Code = dr[1].ToString().Trim(),
                         ProduceNumber = Convert.ToDouble(dr[6].ToString().Trim()),
-                        ProductID = dr[2].ToString().Trim(),
+                        ProductId = dr[2].ToString().Trim(),
                         ProductName = dr[3].ToString().Trim(),
                         ProductSpec = dr[4].ToString().Trim(),
                         PutInStoreNumber = Convert.ToDouble(dr[5].ToString().Trim()),
+                        PlanEndProductionDate = dr[10].ToString().Trim().ToDate(),
+                        PlanStartProductionDate = dr[9].ToString().Trim().ToDate(),
                     };
                     if (!ProductionOrderIdDatas.Contains(OrderIdData))
                         ProductionOrderIdDatas.Add(OrderIdData);
@@ -272,7 +274,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                         Category = dr[0].ToString().Trim(),
                         Code = dr[1].ToString().Trim(),
                         ProduceNumber = Convert.ToDouble(dr[6].ToString().Trim()),
-                        ProductID = dr[2].ToString().Trim(),
+                        ProductId = dr[2].ToString().Trim(),
                         ProductName = dr[3].ToString().Trim(),
                         ProductSpec = dr[4].ToString().Trim(),
                         PutInStoreNumber = Convert.ToDouble(dr[5].ToString().Trim()),
@@ -304,7 +306,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 case "2":
                     return "已发料";
                 case "3":
-                    return "生产中";
+                    return "未完工";
                 case "y":
                     return "指完工";
                 case "Y":
