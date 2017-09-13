@@ -16,6 +16,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             get { return OBulider.BuildInstance<ProductionFlowManager>(); }
         }
+        /// <summary>
+        /// 生产日报订单分配管理
+        /// </summary>
+        public ProductOrderDispatchManager ProductOrderDispatch
+        {
+            get { return OBulider.BuildInstance<ProductOrderDispatchManager>(); }
+        }
     }
 
     public class ProductionFlowManager
@@ -84,6 +91,19 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             var data = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy("515-1708058");
             return DailyReportCrudFactory.ProductionFlowCrud.GetProductionFlowSummaryDatesBy(department, productName);
 
+        }
+    }
+
+    public class ProductOrderDispatchManager
+    {
+        /// <summary>
+        /// 获得当前已经分配的订单
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        public List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department)
+        {
+            return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department);
         }
     }
 }

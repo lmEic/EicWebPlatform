@@ -14,6 +14,7 @@ using Lm.Eic.App.DbAccess.Bpm.Mapping.QmsMapping;
 using Lm.Eic.App.DomainModel.Bpm.Quanity;
 using Lm.Eic.App.DomainModel.Bpm.WorkFlow.GeneralForm;
 using Lm.Eic.App.DbAccess.Bpm.Mapping.PmsMapping.NewDailyReport;
+using Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport;
 
 namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 {
@@ -42,17 +43,18 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
 
 
         #region 日报管理
-        public DbSet<DailyReportModel> DailyReports { get; set; }
+        //public DbSet<DailyReportModel> DailyReports { get; set; }
+        //public DbSet<DailyReportTempModel> DailyReportsTemp { get; set; }
+        //public DbSet<MachineModel> Machine { get; set; }
+        //public DbSet<NonProductionReasonModel> NonProduction { get; set; }
+        //public DbSet<DReportsOrderModel> DReportOrder { get; set; }
+        //public DbSet<ProductFlowModel> ProductFlow { get; set; }
+        //public DbSet<ReportsAttendenceModel> ReportsAttendence { get; set; }
 
-        public DbSet<DailyReportTempModel> DailyReportsTemp { get; set; }
+        public DbSet<ProductOrderDispatchModel> ProductOrderDispatch { get; set; }
+        public DbSet<StandardProductionFlowModel> StandardProductionFlow { get; set; }
+        public DbSet<DailyProductionReportModel> DailyProductionRepor { get; set; }
 
-        public DbSet<MachineModel> Machine { get; set; }
-
-        public DbSet<NonProductionReasonModel> NonProduction { get; set; }
-        public DbSet<DReportsOrderModel> DReportOrder { get; set; }
-
-        public DbSet<ProductFlowModel> ProductFlow { get; set; }
-        public DbSet<ReportsAttendenceModel> ReportsAttendence { get; set; }
 
         #endregion
 
@@ -127,28 +129,32 @@ namespace Lm.Eic.App.DbAccess.Bpm.Mapping
             #endregion
 
             #region 日报管理
-            //日报表
-            modelBuilder.Configurations.Add(new DailyReportModelMapping());
-            //临时日报表
-            modelBuilder.Configurations.Add(new DailyReportTempModelMapping());
-            //工艺流程表
-            modelBuilder.Configurations.Add(new ProductFlowModelMapping());
-            //机台信息
-            modelBuilder.Configurations.Add(new MachineModelMapping());
-            //非生产工时表
-            modelBuilder.Configurations.Add(new NonProductionModelMapping());
-            //非生产工时工单表
-            modelBuilder.Configurations.Add(new DReportsOrderModelMapping());
-            //出勤人员表
-            modelBuilder.Configurations.Add(new ReportsAttendenceModelMapping());
+            ////日报表
+            //modelBuilder.Configurations.Add(new DailyReportModelMapping());
+            ////临时日报表
+            //modelBuilder.Configurations.Add(new DailyReportTempModelMapping());
+            ////工艺流程表
+            //modelBuilder.Configurations.Add(new ProductFlowModelMapping());
+            ////机台信息
+            //modelBuilder.Configurations.Add(new MachineModelMapping());
+            ////非生产工时表
+            //modelBuilder.Configurations.Add(new NonProductionModelMapping());
+            ////非生产工时工单表
+            //modelBuilder.Configurations.Add(new DReportsOrderModelMapping());
+            ////出勤人员表
+            //modelBuilder.Configurations.Add(new ReportsAttendenceModelMapping());
             #endregion
+
             #region 新日报管理
             //工艺流程表
             modelBuilder.Configurations.Add(new StandardProductionFlowMapping());
+            //生产订单分配
+            modelBuilder.Configurations.Add(new ProductOrderDispatchMapping());
             //每天生产日报表
             modelBuilder.Configurations.Add(new DailyProductionReportMapping());
 
             #endregion
+
             #region  物料看板
             modelBuilder.Configurations.Add(new MaterialSpecBoardModelMapping());
             #endregion

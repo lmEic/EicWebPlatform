@@ -19,10 +19,19 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         public static ProductionFlowCrud ProductionFlowCrud
         { get { return OBulider.BuildInstance<ProductionFlowCrud>(); } }
-
+        /// <summary>
+        /// 日报表录入
+        /// </summary>
         public static DailyProductionReportCrud DailyProductionReport
         {
             get { return OBulider.BuildInstance<DailyProductionReportCrud>(); }
+        }
+        /// <summary>
+        /// 生产订单分配
+        /// </summary>
+        public static ProductOrderDispatchCrud ProductOrderDispatch
+        {
+            get { return OBulider.BuildInstance<ProductOrderDispatchCrud>(); }
         }
 
     }
@@ -206,7 +215,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
     {
         public DailyProductionReportCrud() : base(new DailyProductionReportRepository(), "生产日报表")
         { }
-
+        #region   Store
         protected override void AddCrudOpItems()
         {
             AddOpItem(OpMode.Add, Add);
@@ -245,6 +254,71 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
                 : OpResult.SetErrorResult("未执行任何操作");
         }
+        #endregion
+    }
+    /// <summary>
+    /// 生产订单分配表
+    /// </summary>
+    internal class ProductOrderDispatchCrud : CrudBase<ProductOrderDispatchModel, IProductOrderDispatchRepository>
+    {
+        public ProductOrderDispatchCrud() : base(new ProductOrderDispatchRepository(), "订单分配")
+        {
+        }
+        #region Store
+        protected override void AddCrudOpItems()
+        {
+            AddOpItem(OpMode.Add, Add);
+            AddOpItem(OpMode.Edit, Edit);
+            AddOpItem(OpMode.Delete, Delete);
+        }
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Add(ProductOrderDispatchModel model)
+        {
+            //生成组合键值
+            return irep.Insert(model).ToOpResult(OpContext);
+        }
+
+        /// <summary>
+        /// 编辑
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Edit(ProductOrderDispatchModel model)
+        {
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Delete(ProductOrderDispatchModel model)
+        {
+            return (model.Id_Key > 0) ?
+                irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
+                : OpResult.SetErrorResult("未执行任何操作");
+        }
+        #endregion
+        /// <summary>
+        /// 获得当前已经分配的订单
+        /// 1.要有效，2有效期 大于当前日期 
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department)
+        {
+            /// 1.要有效，2有效期 大于当前日期 
+            DateTime ddd = DateTime.Now.Date;
+            return irep.Entities.Where(e => e.Department == department && e.IsValid == "True" && e.ValidDate >= ddd).ToList();
+        }
     }
 
+
 }
+
+

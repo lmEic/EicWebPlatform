@@ -1,4 +1,5 @@
 ﻿<div class="panel panel-primary" ng-controller="standardProductionFlowSetCtrl">
+
     <div class="panel-heading">
         <h6 class="panel-title">标准工艺流程设定</h6>
     </div>
@@ -29,7 +30,7 @@
                         <a href="javascript:;" class="btn btn-sm btn-info file" title="从Excel中导入数据">
                             <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)">
                         </a>
-                        <button class="btn btn-sm btn-success" title="批量复制" ng-click="operate.copyAll()"><i class="fa fa-copy"></i>批量复制</button>
+                        <button class="btn btn-sm btn-success" title="批量复制" ng-click="operate.copyok()"><i class="fa fa-copy"></i>批量复制</button>
                     </span>
                 </span>
                 <div class="h-split"></div>
@@ -80,7 +81,6 @@
                                 <tr class="info">
                                     <th>工艺编号</th>
                                     <th>工艺名称</th>
-                                    <th>工艺标识</th>
                                     <th>工艺类别</th>
                                     <th>标准工时</th>
                                     <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
@@ -90,7 +90,6 @@
                                 <tr ng-repeat="item in vmManager.editDatas track by $index">
                                     <td>{{item.ProcessesIndex}}</td>
                                     <td>{{item.ProcessesName}}</td>
-                                    <td>{{item.ProcessesSign}}</td>
                                     <td>{{item.ProcessesType}}</td>
                                     <td>{{item.StandardProductionTime}}({{item.StandardProductionTimeType}})</td>
                                     <td>
@@ -204,7 +203,7 @@
                                     <div class="col-md-2">
                                     </div>
                                     <div class="col-md-10">
-                                        <button class="btn btn-primary" ng-click="operate.save(formProductionFlow.$valid)"><i class="fa fa-save"></i>保存</button>
+                                        <button class="btn btn-primary" ng-click="operate.confirmSave(formProductionFlow.$valid)"><i class="fa fa-save"></i>保存</button>
                                         <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
                                         <span yl-operatemsg-board></span>
                                     </div>
@@ -213,7 +212,7 @@
                         </form>
                     </div>
                 </div>
-                <div pageslide ps-open="vmManager.copyWindowDisplay" ps-side="right" ps-size="{{vmManager.editWindowWidth}}" ps-speed="0.25" ps-container='editWindow'>
+                <div pageslide ps-open="vmManager.copyWindowDisplay" ps-side="left" ps-size="{{vmManager.editWindowWidth}}" ps-speed="0.25" ps-container='editWindow'>
                     <div style="padding:10px;overflow-y:auto">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
@@ -230,26 +229,30 @@
                                         <th>产品品名</th>
                                         <th>工艺编号</th>
                                         <th>工艺名称</th>
-                                        <th>工艺标示</th>
                                         <th>工时类别</th>
                                         <th>标准工时</th>
+                                        <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="item in vmManager.copyEditDatas track by $index">
                                         <td>{{item.ProductName}}</td>
-                                        <td>{{item.ProductFlowId}}</td>
-                                        <td>{{item.ProductFlowName}}</td>
-                                        <td>{{item.ProductFlowSign}}</td>
-                                        <td>{{item.StandardHoursType}}</td>
-                                        <td>{{item.StandardHours}}</td>
+                                        <td>{{item.ProcessesIndex}}</td>
+                                        <td>{{item.ProcessesName}}</td>
+                                        <td>{{item.ProcessesType}}</td>
+                                        <td>{{item.StandardProductionTime}}({{item.StandardProductionTimeType}})</td>
+                                        <td>
+                                            <button class="btn btn-xs btn-danger" ng-click="operate.copyDeleteItem(item)" title="删除">
+                                                <i class="fa fa-remove"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <td colspan="6">
-                                            <span class="btn btn-xs btn-primary" ng-click="operate.copyok()"><i class="fa fa-check-circle-o"></i>确定</span>
-                                            <span class="btn btn-xs btn-default" ng-click="operate.copycancel()"><i class="fa fa-refresh"></i>取消</span>
+                                            <span class="btn btn-xs btn-primary" ng-click="operate.copySaveAll()"><i class="fa fa-check-circle-o"></i>批量保存</span>
+                                            <span class="btn btn-xs btn-default" ng-click="operate.copyCancel()"><i class="fa fa-refresh"></i>取消</span>
                                         </td>
                                     </tr>
                                 </tfoot>

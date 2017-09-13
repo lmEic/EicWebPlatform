@@ -239,7 +239,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                     OrderIdData = new ProductionOrderIdInfo()
                     {
                         ProductionDepartment = dr[7].ToString().Trim(),
-                        ProductStatus = dr[8].ToString().Trim(),
+                        ProductStatus = RetrunOrderStatus(dr[8].ToString().Trim()),
                         Category = dr[0].ToString().Trim(),
                         Code = dr[1].ToString().Trim(),
                         ProduceNumber = Convert.ToDouble(dr[6].ToString().Trim()),
@@ -293,6 +293,24 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                     return " AND(TA011 IN('1', '2', '3'))";
                 default:
                     return string.Empty;
+            }
+        }
+        string RetrunOrderStatus(string orderStatus)
+        {
+            switch (orderStatus)
+            {
+                case "1":
+                    return "未开工";
+                case "2":
+                    return "已发料";
+                case "3":
+                    return "生产中";
+                case "y":
+                    return "指完工";
+                case "Y":
+                    return "已完工";
+                default:
+                    return orderStatus;
             }
         }
 
