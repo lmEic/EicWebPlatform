@@ -1,6 +1,7 @@
 ﻿using Lm.Eic.App.DbAccess.Bpm.Repository.HrmRep.WorkOverHours;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours;
 using Lm.Eic.Uti.Common.YleeDbHandler;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using System;
 using System.Collections.Generic;
@@ -54,7 +55,16 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
 
         }
 
-       
+        /// <summary>
+        /// 导入excel
+        /// </summary>
+        /// <param name="execlPath"></param>
+        /// <returns></returns>
+       public List<WorkOverHoursMangeModels>ImportWorkOverHoursListBy(string  execlPath)
+        {
+            return execlPath.GetEntitiesFromExcel<WorkOverHoursMangeModels>();
+
+        }
 
    }
 }

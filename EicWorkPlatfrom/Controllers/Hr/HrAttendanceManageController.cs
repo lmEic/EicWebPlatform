@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Lm.Eic.App.DomainModel.Bpm.Hrm.WorkOverHours;
 using Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours;
+using System.Web;
+using System.IO;
 
 namespace EicWorkPlatfrom.Controllers.Hr
 {
@@ -211,6 +213,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public ContentResult GetWorkOverHoursMode(string departmentText,DateTime workDate)
         {
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText,workDate);
+            
             return DateJsonResult(datas);
         }
         [HttpPost]
@@ -222,7 +225,26 @@ namespace EicWorkPlatfrom.Controllers.Hr
             return Json(result);
 
         }
-      
+        /// <summary>
+        /// 导入EXCEL数据到DataSets
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult ImportWorkOverHoursDatas(HttpPostedFileBase file)
+        {
+
+            List<WorkOverHoursMangeModels> datas = null;
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp);
+            SaveFileToServer(file, filePath, () =>
+            {
+                string fileName = Path.Combine(filePath, file.FileName);
+                datas = WorkOverHoursService.WorkOverHoursManager.ImportWorkOverHoursListBy(fileName);
+                //System.IO.File.Delete(fileName);
+            });
+            return DateJsonResult(datas);
+        }
+
         #endregion
     }
 }

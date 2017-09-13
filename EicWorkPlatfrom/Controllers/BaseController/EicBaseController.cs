@@ -296,6 +296,8 @@ namespace EicWorkPlatfrom.Controllers
                     string fileName = file.FileName;
                     if (fileNamePreSub != null)
                         fileName = Path.Combine(filePath, fileNamePreSub + file.FileName);
+                    else
+                        fileName = Path.Combine(filePath,file.FileName);
                     file.SaveAs(fileName);
                     if (handler != null) handler();
                     return UploadFileResult.CreateInstance(true, Path.GetFileName(fileName));

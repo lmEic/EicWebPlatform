@@ -114,15 +114,15 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
                     #region    导出头二行 做为对应的字典
                     try
                     {
-                        int cellCount = sheet.GetRow(0).LastCellNum;
+                        int cellCount = sheet.GetRow(0).LastCellNum;//8
                         List<string> EnglishCellHeardGGroup = new List<string>();
                         for (int jj = 0; jj < cellCount; jj++)
                         {
                             if (sheet.LastRowNum >= 2)
                             {
-                                string englishCellHeard = sheet.GetRow(0).GetCell(jj).StringCellValue.ToString().Trim();
-                                string chineCellHeard = sheet.GetRow(1).GetCell(jj).StringCellValue.ToString().Trim();
-                                if (!EnglishCellHeardGGroup.Contains(englishCellHeard))
+                                string englishCellHeard = sheet.GetRow(0).GetCell(jj).StringCellValue.ToString().Trim();//加班类型 //部门
+                                string chineCellHeard = sheet.GetRow(1).GetCell(jj).StringCellValue.ToString().Trim();//workovertype
+                                 if (!EnglishCellHeardGGroup.Contains(englishCellHeard))
                                     cellHeard.Add(englishCellHeard, chineCellHeard);
                                 else
                                     errorMsg.Append("第" + jj + "列有重复");
@@ -397,6 +397,11 @@ namespace Lm.Eic.Uti.Common.YleeExcelHanlder
                 case "single":
                     if (sourceCell.CellType == CellType.Numeric)
                     { rs = (float)Convert.ChangeType(sourceCell.NumericCellValue.ToString(), distanceType); }
+                    else { rs = (float)Convert.ChangeType(sourceCell.StringCellValue.ToString(), distanceType); }
+                    break;
+                case "double":
+                    if (sourceCell.CellType == CellType.Numeric)
+                    { rs = sourceCell.NumericCellValue; }
                     else { rs = (float)Convert.ChangeType(sourceCell.StringCellValue.ToString(), distanceType); }
                     break;
                 case "datetime":
