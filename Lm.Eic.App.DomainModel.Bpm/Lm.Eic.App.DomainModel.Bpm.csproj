@@ -44,6 +44,8 @@
     <Compile Include="Ast\QueryEquipmentDto.cs" />
     <Compile Include="Hrm\Archives\CalendarModel.cs" />
     <Compile Include="Hrm\Archives\QueryWorkerArchivesDto.cs" />
+    <Compile Include="Hrm\WorkOverHours\WorkOverHoursDto.cs" />
+    <Compile Include="Hrm\WorkOverHours\WorkOverHoursMangeModels.cs" />
     <Compile Include="Pms\BoardManagment\MaterialSpecBoardModel.cs" />
     <Compile Include="Hrm\Archives\ArchivesIdentityModel.cs" />
     <Compile Include="Hrm\Attendance\AttendClassTypeModel.cs" />

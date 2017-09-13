@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.HwCollaboration.Business;
+using Lm.Eic.App.HwCollaboration.Model;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -22,8 +23,13 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetManPower()
         {
-            string result = HwCollaborationService.ManPowerManager.SynchronizeDatas();
-            return Json(result, JsonRequestBehavior.AllowGet);
+            HwDataEntity entity = new HwDataEntity()
+            {
+                Dto = HwMockDatas.ManPowerDto,
+                OpLog = HwMockDatas.OpLog
+            };
+            var result = HwCollaborationService.ManPowerManager.SynchronizeDatas(entity);
+            return Json(result.Message, JsonRequestBehavior.AllowGet);
         }
     }
 }

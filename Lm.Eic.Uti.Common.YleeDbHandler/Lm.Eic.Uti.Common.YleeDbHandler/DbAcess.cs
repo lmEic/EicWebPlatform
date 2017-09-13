@@ -214,7 +214,20 @@ namespace Lm.Eic.Uti.Common.YleeDbHandler
         {
             return LoadEntities<TEntity>(sqlText, null);
         }
-
+        /// <summary>
+        /// 获取单个实体
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="sqlText"></param>
+        /// <returns></returns>
+        public TEntity LoadEntity<TEntity>(string sqlText) where TEntity : class, new()
+        {
+            TEntity entity = null;
+            var datas = LoadEntities<TEntity>(sqlText);
+            if (datas != null && datas.Count > 0)
+                entity = datas.FirstOrDefault();
+            return entity;
+        }
         /// <summary>
         /// SQL语句原生态查询，并转化为对应的实体，要求，查询字段与实体字段一一对应，不区分大小写
         /// </summary>

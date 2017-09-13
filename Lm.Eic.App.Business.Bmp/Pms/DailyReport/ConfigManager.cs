@@ -109,6 +109,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
         public List<ProductFlowModel> ImportProductFlowListBy(string documentPatch)
         {
             return documentPatch.GetEntitiesFromExcel<ProductFlowModel>();
+            
         }
 
         #endregion
