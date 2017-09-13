@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Lm.Eic.App.HwCollaboration.Model
 {
+    public class MaterialShipmentDto : HwDataTransferDtoBase
+    {
+        public List<SccMaterialShipmentVO> materialShipmentList { get; set; }
+    }
     /// <summary>
     ///供应商任务令发料明细模型
     /// </summary>
