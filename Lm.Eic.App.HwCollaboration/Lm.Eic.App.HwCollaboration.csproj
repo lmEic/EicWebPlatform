@@ -51,7 +51,11 @@
   <ItemGroup>
     <Compile Include="Business\HwCollaborationService.cs" />
     <Compile Include="Business\HwCollaborationBase.cs" />
+    <Compile Include="Business\HwMockDatas.cs" />
     <Compile Include="Business\ManPower\ManPowerManager.cs" />
+    <Compile Include="DbAccess\HwDatasTransferDb.cs" />
+    <Compile Include="Model\HwCollaborationDatasTransferModel.cs" />
+    <Compile Include="Model\HwDataTransferEntityBase.cs" />
     <Compile Include="Model\SccManpowerMain.cs" />
     <Compile Include="Model\SccFactoryInventory.cs" />
     <Compile Include="Model\SccOpenPOVO.cs" />
@@ -64,7 +68,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DbAccess\" />
     <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="obj\Release\TempPE\" />
   </ItemGroup>
