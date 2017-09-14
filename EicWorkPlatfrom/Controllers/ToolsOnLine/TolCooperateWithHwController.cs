@@ -30,12 +30,13 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetManPower()
         {
+            //HwDataEntity entity = HwCollaborationService.ManPowerManager.GetLatestEntity();
             HwDataEntity entity = new HwDataEntity()
             {
                 Dto = HwMockDatas.ManPowerDto,
                 OpLog = HwMockDatas.OpLog
             };
-            //var result = HwCollaborationService.InventoryManager.SynchronizeDatas(entity);
+            var result = HwCollaborationService.ManPowerManager.SynchronizeDatas(entity);
             return Json(entity, JsonRequestBehavior.AllowGet);
         }
 

@@ -14,6 +14,11 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
     /// </summary>
     public class MaterialInventoryManager : HwCollaborationBase<FactoryInventoryDto>
     {
+        public override HwDataEntity GetLatestEntity()
+        {
+            return this.GetLatestEntity(HwModuleName.MaterialInventory);
+        }
+
         public override OpResult SynchronizeDatas(HwDataEntity entity)
         {
             return this.SynchronizeDatas(HwAccessApiUrl.FactoryInventoryApiUrl, entity);
