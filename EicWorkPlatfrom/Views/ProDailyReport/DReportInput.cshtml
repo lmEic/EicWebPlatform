@@ -257,6 +257,27 @@
                                 </tr>
                             </tbody>
                         </table>
+
+                        <table ng-show="vmManager.isShowhavePutInData" class="table table-condensed table-bordered table-hover">
+                            <thead>
+                                <tr class="info">
+                                    <th>工号</th>
+                                    <th>姓名</th>
+                                    <th>工序</th>
+                                    <th>录入产量</th>
+                                    <th>工时</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="putInData in  vmManager.havePutInData track by $index">
+                                    <td>{{putInData.WorkerId}}</td>
+                                    <td>{{putInData.WorkerName}}</td>
+                                    <td>{{putInData.ProcessesName}}</td>
+                                    <td>{{putInData.TodayProductionCount}}</td>
+                                    <td>{{putInData.StandardProductionTime}}({{putInData.StandardProductionTimeType}})</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
