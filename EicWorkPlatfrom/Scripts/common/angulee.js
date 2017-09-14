@@ -210,7 +210,7 @@ var leeHelper = (function () {
         //消息提示窗口
         msgModalUrl: '/CommonTpl/InfoMsgModalTpl',
         //删除提示窗口
-        deleteModalUrl: '/CommonTpl/DeleteModalTpl',
+        deleteModalUrl: '/CommonTpl/DeleteModalTpl',     
         //文件预览模态窗口
         imgFilePreviewModalUrl: '/CommonTpl/ImageFilePreviewTpl'
     };

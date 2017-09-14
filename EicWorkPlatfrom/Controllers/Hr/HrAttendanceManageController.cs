@@ -213,7 +213,7 @@ namespace EicWorkPlatfrom.Controllers.Hr
         public ContentResult GetWorkOverHoursMode(string departmentText,DateTime workDate)
         {
             var datas = WorkOverHoursService.WorkOverHoursManager.FindRecordByModel(departmentText,workDate);
-            
+            TempData["WorkOverHoursDatas"] = datas;
             return DateJsonResult(datas);
         }
         [HttpPost]
@@ -242,6 +242,18 @@ namespace EicWorkPlatfrom.Controllers.Hr
                 //System.IO.File.Delete(fileName);
             });
             return DateJsonResult(datas);
+        }
+        [NoAuthenCheck]
+        /// <summary>
+        /// 导出Excel
+        /// </summary>
+        /// <returns></returns>
+        public FileResult WorkOverHoursDatasToExcel()
+        {
+            var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
+            var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas);
+            return this.DownLoadFile(dlfm);
+
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿<div class="panel panel-primary" ng-controller="workOverHoursManageCtrl">
+﻿<div class="panel panel-primary" ng-controller="workOverHoursManageCtrl" >
 
     <div class="panel-heading">
         <h6 class="panel-title"><i class="fa fa-hand-peace-o">加班管理</i></h6>
@@ -13,23 +13,20 @@
                                     <input type="date" ng-model="query.workDate" class="form-control" placeholder="请选日期" ng-keydown="vmManager.getWorkOverHoursModes()" format-date />
                                     <button type="button" title="载入模板" class="btn btn-primary" ng-click="vmManager.getWorkOverHoursModes()">
                                         <i class="fa fa-download"></i>载入模板
-                                    </button>
-                                    <div href="javascript:void(0);" class="btn btn-lg btn-success file" title="从Excel中导入数据">
-                                        <i class="fa fa-file-excel-o"></i>Excel导入<input  type="file" name="file" onchange="angular.element(this).scope().selectFile(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
-                                    </div>
+                                    </button>                       
+                                    <button class="btn btn btn-primary pull-right" title="保存" ng-click="operate.saveDialog()"><i class="fa fa-save"></i>批量保存</button>&nbsp;
+                                    <a class="btn btn-primary" href="@Url.Action("WorkOverHoursDatasToExcel", "HrAttendanceManage")"><i class="fa fa-file-excel-o"></i> 导出打印</a>&nbsp;&nbsp;
                                 </div>
-                            </form>
-                           
-                        </div>
-                  
-                        <div class="col-md-4">  
-                            <div class="pull-right">
-                                <button class="btn btn btn-primary pull-right"  title="保存" ng-click="operate.saveAll()"><i class="fa fa-save"></i>批量保存</button>
-
-                               
-                            </div>
-                           
-                         </div>
+                            </form>                                                
+                        </div>  
+                   
+                              <div class="col-md-2 pull-right">
+                                  <div href="javascript:void(0);" class="btn btn btn-block file" title="从Excel中导入数据">
+                                      <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">                   
+                                  </div>
+                                  
+                                 
+                              </div>              
                     </div>
                     <div class="h-split"></div>
                     <div class="table-responsive">
@@ -152,18 +149,12 @@
                 </div>           
     </div>
     
-
-
-
-
     <div class="panel-footer">
         <ul class="nav nav-pills" role="tablist">
             <li class="success"><a href="#">当前总行数: <span class="badge">{{tempVm.tabCount}}</span></a></li>     
             <li class="success"><a href="#">加班部门: <span class="badge">{{tempVm.department}}</span></a></li> 
-            <li class="success"><a href="#">加班总时数: <span class="badge">{{tempVm.workOverCount}}h</span>
-
-     
-   
+            <li class="success"><a href="#">加班总时数: <span class="badge">{{tempVm.workOverCount}}h</span></a></li>
+        </ul>      
     </div>
 
     <dialog  ng-if="dialog.open" modal data-close="dialog.close()" style="width:65%">
@@ -293,6 +284,7 @@
                     </div>
                 </div>
             </form>
+
 
         </content>
     </dialog>
