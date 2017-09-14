@@ -20,6 +20,13 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
+
+        #region HwManpowerInput
+        public ActionResult HwManpowerInput()
+        {
+            return View();
+        }
         [NoAuthenCheck]
         public JsonResult GetManPower()
         {
@@ -28,8 +35,46 @@ namespace EicWorkPlatfrom.Controllers
                 Dto = HwMockDatas.ManPowerDto,
                 OpLog = HwMockDatas.OpLog
             };
-            var result = HwCollaborationService.ManPowerManager.SynchronizeDatas(entity);
-            return Json(result.Message, JsonRequestBehavior.AllowGet);
+            //var result = HwCollaborationService.InventoryManager.SynchronizeDatas(entity);
+            return Json(entity, JsonRequestBehavior.AllowGet);
         }
+
+        #endregion
+
+        #region HwLogisticDeliveryInput
+        public ActionResult HwLogisticDeliveryInput()
+        {
+            return View();
+        }
+        #endregion
+
+        #region HwInventoryDetail
+        public ActionResult HwInventoryDetail()
+        {
+            return View();
+        }
+        #endregion
+
+        #region HwMakingVoDetail
+        public ActionResult HwMakingVoDetail()
+        {
+            return View();
+        }
+        #endregion
+
+        #region HwShipmentVoDetail
+        public ActionResult HwShipmentVoDetail()
+        {
+            return View();
+        }
+        #endregion
+
+        #region HwPurchaseOnWay
+        public ActionResult HwPurchaseOnWay()
+        {
+            return View();
+        }
+        #endregion
+
     }
 }

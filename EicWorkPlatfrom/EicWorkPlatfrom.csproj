@@ -562,6 +562,7 @@
     <Content Include="Scripts\controller\shippingApp.js" />
     <Content Include="Scripts\controller\sysmanage\sysConfigManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysmanageApp.js" />
+    <Content Include="Scripts\controller\toolsOnLine\tolHwCollaboration.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolOfficeAssistant.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolWorkFlow.js" />
     <Content Include="Scripts\controller\toolsOnLine\toolsOnlineApp.js" />
@@ -1522,6 +1523,12 @@
     <Content Include="Views\HrAttendanceManage\HrWorkOverHoursManage.cshtml" />
     <Content Include="Views\SysConfig\QualityCommonDataSet.cshtml" />
     <Content Include="Views\ProDailyReport\DRProductOrderDispatching.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwManpowerInput.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwLogisticDeliveryInput.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwInventoryDetail.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwMakingVoDetail.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwShipmentVoDetail.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwPurchaseOnWay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -64,13 +64,21 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 return OpResult.SetErrorResult("数据实体模型不能为null！");
             }
             var dto = entity.Dto as T;
-            HwAccessApiResult result = ObjectSerializer.DeserializeObject<HwAccessApiResult>(this.AccessApi(accessApiUrl, dto));
-            if (result == null || !result.success)
+            try
             {
-                return OpResult.SetErrorResult("本次操作失败！");
+                string returnMsg = this.AccessApi(accessApiUrl, dto);
+                HwAccessApiResult result = ObjectSerializer.DeserializeObject<HwAccessApiResult>(returnMsg);
+                if (result == null || !result.success)
+                {
+                    return OpResult.SetErrorResult("本次操作失败！失败原因：" + returnMsg);
+                }
+                var data = CreateOperateInstance(entity);
+                return this.dbAccess.Store(data);
             }
-            var data = CreateOperateInstance(entity);
-            return this.dbAccess.Store(data);
+            catch (System.Exception ex)
+            {
+                return ex.ExOpResult();
+            }
         }
         /// <summary>
         /// 通过访问华为API将数据同步到华为系统中
