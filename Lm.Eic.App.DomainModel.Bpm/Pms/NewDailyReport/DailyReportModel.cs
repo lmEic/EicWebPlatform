@@ -373,9 +373,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         #endregion Model
     }
-
-
-
     /// <summary>
     ///每日生产报表
     /// </summary>
@@ -457,23 +454,23 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _orderquantity = value; }
             get { return _orderquantity; }
         }
-        private string _productflowtype;
+        private string _processesname;
         /// <summary>
-        ///工艺类型
+        ///工序名称
         /// </summary>
-        public string ProductFlowType
+        public string ProcessesName
         {
-            set { _productflowtype = value; }
-            get { return _productflowtype; }
+            set { _processesname = value; }
+            get { return _processesname; }
         }
-        private string _productflowname;
+        private string _processestype;
         /// <summary>
-        ///工艺名称
+        ///工序类别（人工/机台）
         /// </summary>
-        public string ProductFlowName
+        public string ProcessesType
         {
-            set { _productflowname = value; }
-            get { return _productflowname; }
+            set { _processestype = value; }
+            get { return _processestype; }
         }
         private double _standardproductiontime;
         /// <summary>
@@ -520,24 +517,6 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _mouldholecount = value; }
             get { return _mouldholecount; }
         }
-        private string _masterworkerid;
-        /// <summary>
-        ///师傅工号
-        /// </summary>
-        public string MasterWorkerId
-        {
-            set { _masterworkerid = value; }
-            get { return _masterworkerid; }
-        }
-        private string _mastername;
-        /// <summary>
-        ///师傅名
-        /// </summary>
-        public string MasterName
-        {
-            set { _mastername = value; }
-            get { return _mastername; }
-        }
         private double _machineproductiontime;
         /// <summary>
         ///机台工时
@@ -564,6 +543,24 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         {
             set { _machineunproductivereason = value; }
             get { return _machineunproductivereason; }
+        }
+        private string _masterworkerid;
+        /// <summary>
+        ///师傅工号
+        /// </summary>
+        public string MasterWorkerId
+        {
+            set { _masterworkerid = value; }
+            get { return _masterworkerid; }
+        }
+        private string _mastername;
+        /// <summary>
+        ///师傅名
+        /// </summary>
+        public string MasterName
+        {
+            set { _mastername = value; }
+            get { return _mastername; }
         }
         private string _workerid;
         /// <summary>
@@ -720,6 +717,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         }
         #endregion Model
     }
+
 
 
 

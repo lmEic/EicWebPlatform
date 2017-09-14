@@ -36,18 +36,18 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         [HttpGet]
         [NoAuthenCheck]
-        public JsonResult GetProductionFlowList(string department, string productName, string orderId, int searchMode)
+        public ContentResult GetProductionFlowList(string department, string productName, string orderId, int searchMode)
         {
             //工单没有用到
             //用品名得到多处数据 把数据转化为 ProductsFlowOverModel
-            var result = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(new QueryDailyProductReportDto()
+            var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(new QueryDailyProductReportDto()
             {
                 Department = department,
                 ProductName = productName,
                 OrderId = orderId,
                 SearchMode = searchMode
             });
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return DateJsonResult(datas);
         }
 
         /// <summary>
@@ -204,7 +204,17 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
             return DateJsonResult(datas);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveDailyReportData(DailyProductionReportModel entity)
+        {
+            var datasResult = DailyProductionReportService.ProductionConfigManager.DailyReport.StoreDailyReport(entity);
+            return Json(datasResult);
+        }
         #endregion
     }
 }
