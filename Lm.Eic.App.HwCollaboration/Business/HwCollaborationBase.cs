@@ -64,13 +64,21 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 return OpResult.SetErrorResult("数据实体模型不能为null！");
             }
             var dto = entity.Dto as T;
-            HwAccessApiResult result = ObjectSerializer.DeserializeObject<HwAccessApiResult>(this.AccessApi(accessApiUrl, dto));
-            if (result == null || !result.success)
+            try
             {
-                return OpResult.SetErrorResult("本次操作失败！");
+                string returnMsg = this.AccessApi(accessApiUrl, dto);
+                HwAccessApiResult result = ObjectSerializer.DeserializeObject<HwAccessApiResult>(returnMsg);
+                if (result == null || !result.success)
+                {
+                    return OpResult.SetErrorResult("本次操作失败！失败原因：" + returnMsg);
+                }
+                var data = CreateOperateInstance(entity);
+                return this.dbAccess.Store(data);
             }
-            var data = CreateOperateInstance(entity);
-            return this.dbAccess.Store(data);
+            catch (System.Exception ex)
+            {
+                return ex.ExOpResult();
+            }
         }
         /// <summary>
         /// 通过访问华为API将数据同步到华为系统中
@@ -78,6 +86,28 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// <param name="entity"></param>
         /// <returns></returns>
         public abstract OpResult SynchronizeDatas(HwDataEntity entity);
+
+        /// <summary>
+        /// 获取最新的数据实体模型
+        /// </summary>
+        /// <param name="moduleName"></param>
+        /// <returns></returns>
+        protected HwDataEntity GetLatestEntity(string moduleName)
+        {
+            HwDataEntity entity = null;
+            var data = dbAccess.GetLatestDataModel(moduleName);
+            if (data != null)
+            {
+                entity = ObjectSerializer.DeserializeObject<HwDataEntity>(data.OpContent);
+            }
+            return entity;
+        }
+        /// <summary>
+        /// 获取最新的数据实体模型
+        /// </summary>
+        /// <returns></returns>
+        public abstract HwDataEntity GetLatestEntity();
+
         protected HwCollaborationDataTransferModel CreateOperateInstance(HwDataEntity entity)
         {
             return new HwCollaborationDataTransferModel
@@ -87,7 +117,7 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 OpTime = DateTime.Now.ToDateTime(),
                 OpSign = entity.OpLog.OpSign,
                 OpPerson = entity.OpLog.OpPerson,
-                OpContent = ObjectSerializer.SerializeObject(entity.Dto)
+                OpContent = ObjectSerializer.SerializeObject(entity)
             };
         }
         #endregion
@@ -120,4 +150,18 @@ namespace Lm.Eic.App.HwCollaboration.Business
         public const string PurchaseOnWayApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importMaterialShipment/1.0.0";
     }
 
+    internal class HwModuleName
+    {
+        public const string ManPower = "人力信息";
+
+        public const string MaterialInventory = "物料库存明细";
+
+        public const string MaterialMaking = "物料在制明细";
+
+        public const string MaterialShipment = "物料发料信息";
+
+        //public const string MaterialInventory = "物料库存明细";
+
+        //public const string MaterialMaking = "物料在制明细";
+    }
 }

@@ -22,6 +22,18 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
             }
             return Insert(model);
         }
+        /// <summary>
+        /// 获取给定模块最新的数据
+        /// </summary>
+        /// <param name="moduleName"></param>
+        /// <returns></returns>
+        public HwCollaborationDataTransferModel GetLatestDataModel(string moduleName)
+        {
+            StringBuilder sbSql = new StringBuilder();
+            sbSql.Append("select Top 1 OpModule, OpContent, OpDate, OpTime, OpPerson, OpSign from HwCollaboration_DataTransfer")
+                .AppendFormat(" where OpModule='{0}'", moduleName);
+            return DbHelper.Bpm.LoadEntity<HwCollaborationDataTransferModel>(sbSql.ToString());
+        }
         private OpResult Insert(HwCollaborationDataTransferModel entity)
         {
             StringBuilder sqlSb = new StringBuilder();

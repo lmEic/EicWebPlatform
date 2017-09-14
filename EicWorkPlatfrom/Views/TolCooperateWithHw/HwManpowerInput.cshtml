@@ -1,0 +1,69 @@
+﻿<div class="panel panel-primary" ng-controller="hwManPowerCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>人力信息管理</h6>
+    </div>
+    <div class="panel-body" cg-busy="{promise:searchPromise}">
+        <div class="bs-callout bs-callout-info">
+            <h1>总人力信息</h1>
+            <div class="h-split"></div>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="info">
+                        <th>工厂代码</th>
+                        <th>人员离职率(%)</th>
+                        <th>总人数（人）</th>
+                        <th>人员总缺口（人）</th>
+                        <th>人员补充计划(人)</th>
+                        <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="worker in vmManager.dataEntity.Dto.manpowerMainList">
+                        <td>{{worker.vendorFactoryCode}}</td>
+                        <td>{{worker.hrLeavePercent}}</td>
+                        <td>{{worker.manpowerTotalQuantity}}</td>
+                        <td>{{worker.manpowerGapQuantity}}</td>
+                        <td>{{worker.manpowerAddQuantity}}</td>
+                        <td>
+                            <span class="btn btn-primary btn-xs" title="编辑"><i class="fa fa-pencil-square-o"></i></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bs-callout bs-callout-success">
+            <h1>人力信息明细</h1>
+            <div class="h-split"></div>
+            <table class="table table-striped">
+                <thead>
+                    <tr class="success">
+                        <th>部门名称</th>
+                        <th>人员需求</th>
+                        <th>人员缺口</th>
+                        <th>人员补充计划</th>
+                        <th>人员离职率</th>
+                        <th>备注</th>
+                        <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                    </tr>
+                </thead>
+                <tbody cy-busy="{promise:workerPromise}">
+                    <tr ng-repeat="depworker in vmManager.dataEntity.Dto.manpowerMainList[0].keyDeptDataList">
+                        <td>{{depworker.keyDeptName}}</td>
+                        <td>{{depworker.hrRequestQuantity}}</td>
+                        <td>{{depworker.hrGapQuantity}}</td>
+                        <td>{{depworker.hrAddQuantity}}</td>
+                        <td>{{depworker.hrLeavePercent}}</td>
+                        <td>{{depworker.description}}</td>
+                        <td>
+                            <span class="btn btn-primary btn-xs" title="编辑"><i class="fa fa-pencil-square-o"></i></span>|
+                            <span class="btn btn-danger btn-xs" title="删除"><i class="fa fa-remove"></i></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>

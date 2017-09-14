@@ -43,6 +43,30 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 };
             }
         }
+
+        public static FactoryInventoryDto InventoryDto
+        {
+            get
+            {
+                return new FactoryInventoryDto()
+                {
+                    factoryInventoryList = new List<SccFactoryInventory>() {
+                        new SccFactoryInventory() {
+                              customerCode="0971",
+                              faultQty=10,
+                              goodQuantity =1000,
+                              inspectQty =100,
+                              stockTime=DateTime.Now.ToDateStr(),
+                              vendorFactoryCode="421072-001",
+                              vendorItemCode="111111111111",
+                              vendorItemRevision="",
+                              vendorLocation="",
+                              vendorStock=""
+                        },
+                    }
+                };
+            }
+        }
         /// <summary>
         /// 数据传输日志
         /// </summary>
