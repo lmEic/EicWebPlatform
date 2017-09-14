@@ -248,7 +248,9 @@ var leeHelper = (function () {
         //工作流电子签核控制器
         TolWorkFlow: 'TolWorkFlow',
         ///在线工具
-        ToolsOnLine: 'ToolsOnLine'
+        ToolsOnLine: 'ToolsOnLine',
+        //华为协同
+        TolCooperateWithHw: 'TolCooperateWithHw'
 
     };
     return {
