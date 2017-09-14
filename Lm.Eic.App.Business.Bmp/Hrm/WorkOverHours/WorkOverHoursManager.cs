@@ -65,6 +65,44 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
             return execlPath.GetEntitiesFromExcel<WorkOverHoursMangeModels>();
 
         }
+        /// <summary>
+        /// 导出Excel
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
+
+        public DownLoadFileModel WorkOverHoursDatasDLFM(List<WorkOverHoursMangeModels>datas)
+        {
+            try
+            {
+                if (datas == null || datas.Count < 0) return new DownLoadFileModel().Default();
+                var dataGroupping = datas.GetGroupList<WorkOverHoursMangeModels>();
+                return dataGroupping.ExportToExcelMultiSheets<WorkOverHoursMangeModels>(CreateFieldMapping()).CreateDownLoadExcelFileModel("加班人员清单");
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+        private List<FileFieldMapping> CreateFieldMapping()
+        {
+            List<FileFieldMapping> fieldmapping = new List<FileFieldMapping>()
+            {
+                new FileFieldMapping("WorkDate","日期"),
+                new FileFieldMapping("DepartmentText","部门"),
+                new FileFieldMapping("WorkClassType","班别"),
+                new FileFieldMapping("WorkerId","工号"),
+                new FileFieldMapping("WorkerName","姓名"),
+                new FileFieldMapping("WorkOverHours","时数"),                         
+                new FileFieldMapping("Remark","备注")
+                
+            };
+            return fieldmapping;
+
+        }
 
    }
 }
