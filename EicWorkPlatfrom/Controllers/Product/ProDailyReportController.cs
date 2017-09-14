@@ -36,18 +36,18 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <returns></returns>
         [HttpGet]
         [NoAuthenCheck]
-        public JsonResult GetProductionFlowList(string department, string productName, string orderId, int searchMode)
+        public ContentResult GetProductionFlowList(string department, string productName, string orderId, int searchMode)
         {
             //工单没有用到
             //用品名得到多处数据 把数据转化为 ProductsFlowOverModel
-            var result = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(new QueryDailyProductReportDto()
+            var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(new QueryDailyProductReportDto()
             {
                 Department = department,
                 ProductName = productName,
                 OrderId = orderId,
                 SearchMode = searchMode
             });
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return DateJsonResult(datas);
         }
 
         /// <summary>
@@ -84,8 +84,8 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public JsonResult StoreFlowData(StandardProductionFlowModel entity)
         {
-            var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.StoreProductFlow(entity);
-            return Json(datas);
+            var datasResult = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.StoreProductFlow(entity);
+            return Json(datasResult);
         }
         /// <summary>
         /// 获取产品工艺初始化数据
@@ -160,14 +160,24 @@ namespace EicWorkPlatfrom.Controllers.Product
         /// <param name="department"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetOrderDispatchInfoDatas(string department)
+        public ContentResult GetOrderDispatchInfoDatas(string department, DateTime nowDate)
         {
             ///ERP在制生产订单
             var erpInProductiondatas = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(department, "在制");
             ///今日生产已确认分配的订单
-            var todayHaveDispatchProductionOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department);
+            var todayHaveDispatchProductionOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
             var datas = new { erpInProductiondatas, todayHaveDispatchProductionOrderDatas };
             return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// 存储数据 StoreOrderDispatchDatas
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult StoreOrderDispatchDatas(ProductOrderDispatchModel entity)
+        {
+            var opDatasResult = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.StoreOrderDispatchData(entity);
+            return Json(opDatasResult);
         }
         #endregion
 
@@ -190,10 +200,21 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetInProductionOrderDatas(string department)
         {
-            var datas = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(department, "在制");
+            DateTime nowDate = DateTime.Now.Date;
+            var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
             return DateJsonResult(datas);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult SaveDailyReportData(DailyProductionReportModel entity)
+        {
+            var datasResult = DailyProductionReportService.ProductionConfigManager.DailyReport.StoreDailyReport(entity);
+            return Json(datasResult);
+        }
         #endregion
     }
 }

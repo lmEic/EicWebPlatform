@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 namespace Lm.Eic.App.HwCollaboration.Model
 {
     /// <summary>
+    /// 库存明细数据传输Dto
+    /// </summary>
+    public class FactoryInventoryDto : HwDataTransferDtoBase
+    {
+        public List<SccFactoryInventory> factoryInventoryList { get; set; }
+    }
+
+    /// <summary>
     /// 库存信息明细模型
     /// </summary>
     [Serializable]

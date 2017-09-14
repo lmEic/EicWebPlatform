@@ -4,6 +4,7 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 using System.Collections.Generic;
 using Lm.Eic.App.Erp.Bussiness.QuantityManage;
 using Lm.Eic.App.Erp.Domain.QuantityModel;
+using System;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 {
@@ -22,6 +23,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         public ProductOrderDispatchManager ProductOrderDispatch
         {
             get { return OBulider.BuildInstance<ProductOrderDispatchManager>(); }
+        }
+        public DailyReportManager DailyReport
+        {
+            get { return OBulider.BuildInstance<DailyReportManager>(); }
         }
     }
 
@@ -67,8 +72,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         public List<ProductFlowSummaryVm> GetFlowShowSummaryInfosBy(string department)
         {
+            DateTime nowDate = DateTime.Now.Date;
             //从ERP中获得部门 在制所有工单信息
-            List<ProductionOrderIdInfo> productionOrderIdInfo = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(department, "在制");
+            var productionOrderIdInfo = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
             List<ProductFlowSummaryVm> flowSummaryVms = new List<ProductFlowSummaryVm>();
             ProductFlowSummaryVm flowSummaryVm = null;
             if (productionOrderIdInfo.Count > 0)
@@ -101,9 +107,27 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         /// <param name="department">部门</param>
         /// <returns></returns>
-        public List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department)
+        public List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, DateTime nowDate)
         {
-            return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department);
+            return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
+        }
+        /// <summary>
+        /// 保存订单数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult StoreOrderDispatchData(ProductOrderDispatchModel model)
+        {
+            return DailyReportCrudFactory.ProductOrderDispatch.Store(model, true);
+        }
+    }
+
+    public class DailyReportManager
+    {
+        public OpResult StoreDailyReport(DailyProductionReportModel model)
+        {
+
+            return DailyReportCrudFactory.DailyProductionReport.Store(model, true);
         }
     }
 }

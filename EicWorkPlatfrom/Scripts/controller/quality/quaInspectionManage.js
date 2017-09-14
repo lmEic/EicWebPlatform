@@ -703,7 +703,6 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             if (vmManager.orderId) {
                 vmManager.panelDataSource = [];
                 vmManager.panelDataset = [];
-                vmManager.currentInspectionItem = [];
                 qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
                     angular.forEach(materialIdDatas, function (item) {
                         var dataItem = {
@@ -712,13 +711,13 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                             productName: item.MaterialName,
                             inspectionStatus: item.InspectionStatus,
                             materialIdItem: item,
-                            inspectionItemDatas: [], dataSets: []
+                            inspectionItemDatas: [],
+                            dataSets: []
                         };
                         vmManager.panelDataSource.push(dataItem);
                         vmManager.panelDataset.push(dataItem);
                         console.log(item);
                     })
-
                     vmManager.orderId = null;
                 });
             }
@@ -726,6 +725,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         //按物料品号获取检验项目信息
         selectMaterialIdItem: function (item) {
             vmManager.currentMaterialIdItem = item;
+            console.log(item);
             var datas = _.find(vmManager.cacheDatas, { key: item.MaterialId + item.OrderId });
             if (datas === undefined) {
                 $scope.searchPromise = qualityInspectionDataOpService.getIqcInspectionItemDataSummaryLabelList(item.OrderId, item.MaterialId).then(function (inspectionItemDatas) {

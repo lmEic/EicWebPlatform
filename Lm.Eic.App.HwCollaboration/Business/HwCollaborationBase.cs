@@ -98,7 +98,26 @@ namespace Lm.Eic.App.HwCollaboration.Business
     /// </summary>
     internal class HwAccessApiUrl
     {
+        /// <summary>
+        /// 人力
+        /// </summary>
         public const string ManPowerApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importManpower/1.0.0";
+        /// <summary>
+        /// 库存明细
+        /// </summary>
+        public const string FactoryInventoryApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importCapacity/1.0.0";
+        /// <summary>
+        /// 在制明细
+        /// </summary>
+        public const string MaterialMakingApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importMaterialMaking/1.0.0";
+        /// <summary>
+        /// 发料明细
+        /// </summary>
+        public const string MaterialShipmentApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importMaterialShipment/1.0.0";
+        /// <summary>
+        /// 在途明细
+        /// </summary>
+        public const string PurchaseOnWayApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importMaterialShipment/1.0.0";
     }
 
 }

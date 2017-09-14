@@ -19,13 +19,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// </summary>
         public static ProductionFlowCrud ProductionFlowCrud
         { get { return OBulider.BuildInstance<ProductionFlowCrud>(); } }
-        /// <summary>
-        /// 日报表录入
-        /// </summary>
-        public static DailyProductionReportCrud DailyProductionReport
-        {
-            get { return OBulider.BuildInstance<DailyProductionReportCrud>(); }
-        }
+
         /// <summary>
         /// 生产订单分配
         /// </summary>
@@ -33,7 +27,13 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             get { return OBulider.BuildInstance<ProductOrderDispatchCrud>(); }
         }
-
+        /// <summary>
+        /// 日报表录入
+        /// </summary>
+        public static DailyProductionReportCrud DailyProductionReport
+        {
+            get { return OBulider.BuildInstance<DailyProductionReportCrud>(); }
+        }
     }
     /// <summary>
     /// 生产工序CRUD
@@ -208,8 +208,77 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             return irep.GetProductFlowSummaryDataBy(productName);
         }
     }
+
     /// <summary>
-    /// 生产日报表CRUD
+    /// 生产订单分配表
+    /// </summary>
+    internal class ProductOrderDispatchCrud : CrudBase<ProductOrderDispatchModel, IProductOrderDispatchRepository>
+    {
+        public ProductOrderDispatchCrud() : base(new ProductOrderDispatchRepository(), "订单分配")
+        {
+        }
+        #region Store
+        protected override void AddCrudOpItems()
+        {
+            AddOpItem(OpMode.Add, Add);
+            AddOpItem(OpMode.Edit, Edit);
+            AddOpItem(OpMode.Delete, Delete);
+        }
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Add(ProductOrderDispatchModel model)
+        {
+            //生成组合键值
+            if (irep.IsExist(e => e.OrderId == model.OrderId))
+                return irep.Update(e => e.OrderId == model.OrderId, u => new ProductOrderDispatchModel
+                {
+                    IsValid = model.IsValid,
+                    ProductionDate = model.ProductionDate,
+                    ValidDate = model.ValidDate,
+                }).ToOpResult_Eidt(OpContext);
+            return irep.Insert(model).ToOpResult(OpContext);
+        }
+
+        /// <summary>
+        /// 编辑
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Edit(ProductOrderDispatchModel model)
+        {
+            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private OpResult Delete(ProductOrderDispatchModel model)
+        {
+            return (model.Id_Key > 0) ?
+                irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
+                : OpResult.SetErrorResult("未执行任何操作");
+        }
+        #endregion
+        /// <summary>
+        /// 获得当前已经分配的订单
+        /// 1.要有效，2有效期 大于当前日期 
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <returns></returns>
+        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department, DateTime nowDate)
+        {
+            /// 1.要有效
+            return irep.Entities.Where(e => e.ProductionDepartment == department && e.IsValid == "True" && e.ValidDate >= nowDate).ToList();
+        }
+    }
+
+    /// <summary>
+    /// 生产日报录入表CRUD
     /// </summary>
     internal class DailyProductionReportCrud : CrudBase<DailyProductionReportModel, IDailyProductionReportRepository>
     {
@@ -255,70 +324,14 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 : OpResult.SetErrorResult("未执行任何操作");
         }
         #endregion
-    }
-    /// <summary>
-    /// 生产订单分配表
-    /// </summary>
-    internal class ProductOrderDispatchCrud : CrudBase<ProductOrderDispatchModel, IProductOrderDispatchRepository>
-    {
-        public ProductOrderDispatchCrud() : base(new ProductOrderDispatchRepository(), "订单分配")
-        {
-        }
-        #region Store
-        protected override void AddCrudOpItems()
-        {
-            AddOpItem(OpMode.Add, Add);
-            AddOpItem(OpMode.Edit, Edit);
-            AddOpItem(OpMode.Delete, Delete);
-        }
-        /// <summary>
-        /// 添加
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        private OpResult Add(ProductOrderDispatchModel model)
-        {
-            //生成组合键值
-            return irep.Insert(model).ToOpResult(OpContext);
-        }
 
-        /// <summary>
-        /// 编辑
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        private OpResult Edit(ProductOrderDispatchModel model)
+        #region find
+        internal bool IsExisOrderid(string orderId)
         {
-            return irep.Update(u => u.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);
-        }
-
-        /// <summary>
-        /// 删除
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        private OpResult Delete(ProductOrderDispatchModel model)
-        {
-            return (model.Id_Key > 0) ?
-                irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
-                : OpResult.SetErrorResult("未执行任何操作");
+            return irep.IsExist(e => e.OrderId == orderId);
         }
         #endregion
-        /// <summary>
-        /// 获得当前已经分配的订单
-        /// 1.要有效，2有效期 大于当前日期 
-        /// </summary>
-        /// <param name="department">部门</param>
-        /// <returns></returns>
-        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department)
-        {
-            /// 1.要有效，2有效期 大于当前日期 
-            DateTime ddd = DateTime.Now.Date;
-            return irep.Entities.Where(e => e.Department == department && e.IsValid == "True" && e.ValidDate >= ddd).ToList();
-        }
     }
-
-
 }
 
 

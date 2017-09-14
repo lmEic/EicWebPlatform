@@ -53,6 +53,9 @@
     <Compile Include="Business\HwCollaborationBase.cs" />
     <Compile Include="Business\HwMockDatas.cs" />
     <Compile Include="Business\ManPower\ManPowerManager.cs" />
+    <Compile Include="Business\MaterialManage\MaterialInventoryManager.cs" />
+    <Compile Include="Business\MaterialManage\MaterialMakingManager.cs" />
+    <Compile Include="Business\MaterialManage\MaterialShipmentManager.cs" />
     <Compile Include="DbAccess\HwDatasTransferDb.cs" />
     <Compile Include="Model\HwCollaborationDatasTransferModel.cs" />
     <Compile Include="Model\HwDataTransferEntityBase.cs" />
@@ -68,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Business\PurchaseManage\" />
     <Folder Include="obj\Debug\TempPE\" />
     <Folder Include="obj\Release\TempPE\" />
   </ItemGroup>
