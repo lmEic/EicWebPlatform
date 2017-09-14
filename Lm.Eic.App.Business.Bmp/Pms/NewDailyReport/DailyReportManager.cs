@@ -24,6 +24,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             get { return OBulider.BuildInstance<ProductOrderDispatchManager>(); }
         }
+        public DailyReportManager DailyReport
+        {
+            get { return OBulider.BuildInstance<DailyReportManager>(); }
+        }
     }
 
     public class ProductionFlowManager
@@ -115,6 +119,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         public OpResult StoreOrderDispatchData(ProductOrderDispatchModel model)
         {
             return DailyReportCrudFactory.ProductOrderDispatch.Store(model, true);
+        }
+    }
+
+    public class DailyReportManager
+    {
+        public OpResult StoreDailyReport(DailyProductionReportModel model)
+        {
+
+            return DailyReportCrudFactory.DailyProductionReport.Store(model, true);
         }
     }
 }
