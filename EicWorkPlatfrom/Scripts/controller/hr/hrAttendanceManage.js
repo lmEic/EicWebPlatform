@@ -633,8 +633,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
             angular.forEach(vmManager.dataSets, function (row) {
                 row.rowindex = index;
                 index += 1;
-            }),   
-            alert(item.rowindex);
+            }),              
             tempVm.tabCount = vmManager.dataSets.length;
             //累计时数
             tempVm.workOverCount = 0;
