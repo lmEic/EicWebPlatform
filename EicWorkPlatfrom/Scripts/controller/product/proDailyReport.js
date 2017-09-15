@@ -503,6 +503,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         getProductionFlowDatas: function (productName) {
             $scope.searchPromise = dReportDataOpService.getProductionFlowList(vmManager.department, productName, null, 2).then(function (datas) {
                 vmManager.productionFlowDatas = datas;
+                vmManager.productionFlowShow = true;
+                vmManager.isShowhavePutInData = false;
             });
         },// 得到工序信息
         findProcessesInfo: function ($event) {
