@@ -632,7 +632,6 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
             angular.forEach(vmManager.dataSets, function (row) {
                 $scope.tempVm.workOverCount += row.WorkOverHours;
             })
-
         },
         //复制粘贴行
         copyAndPaste: function (item) {             
