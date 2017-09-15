@@ -632,17 +632,20 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
             angular.forEach(vmManager.dataSets, function (row) {
                 $scope.tempVm.workOverCount += row.WorkOverHours;
             })
-
         },
         //复制粘贴行
-        copyAndPaste: function (item) {   
-           
-            item.editting = false;
+        copyAndPaste: function (item) {             
+            item.editting = false;         
+            var rowindex = item.rowindex;
+            vmManager.edittingRowIndex = rowindex + 1;
             var vm = _.clone(item);
-            vm.rowindex = item.rowindex + 1;
-            vmManager.edittingRow = vm;
             vmManager.dataSets.push(vm); 
-            
+            var index = 1;
+            //重新更改行的索引
+            angular.forEach(vmManager.dataSets, function (row) {
+                row.rowindex = index;
+                index += 1;
+            }),                                    
             //累计行数
             tempVm.tabCount = vmManager.dataSets.length;
             //累计时数
