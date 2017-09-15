@@ -4,13 +4,24 @@
     </div>
     <div class="panel-body">
         <div class="row">
-            <div cg-busy="{promise:promise}">
-                部门:
-                <button class="btn btn-success " ng-model="vmManager.department" ng-change="vmManager.changeDepartment()"
-                        data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
-                        data-bs-options="department.value as department.label for department in vmManager.departments track by $index" data-bs-select>
-                    <span class="caret"></span>
-                </button>
+            <div class="col-md-4">
+                >
+                <div cg-busy="{promise:promise}">
+                    部门:
+                    <button class="btn btn-success " ng-model="vmManager.department" ng-change="vmManager.changeDepartment()"
+                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择部门"
+                            data-bs-options="department.value as department.label for department in vmManager.departments track by $index" data-bs-select>
+                        <span class="caret"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <form class="form-inline" novalidate>
+                    <label>日期:</label>
+                    <input name="queryDate" type="date" class="form-control" format-date ng-model="vmManager.putInDate"
+                           focus-setter data-ensure-user-exist style="width:200px;"
+                           placeholder="日期" />
+                </form>
             </div>
         </div>
         <div class="row">
@@ -167,7 +178,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <label class="col-md-2 control-label" ng-if="vmManager.isProcessesNameShow==true">工序名:</label>
+                                    <label ng-if="vmManager.isProcessesNameShow==true" class="col-md-2 control-label">工序名:</label>
+                                    <div ng-if="vmManager.isProcessesNameShow==true" class="col-md-4">
+                                        <input type="text" readonly class="form-control"
+                                               ng-model="vm.ProductName" required />
+                                        <label>{{vm.StandardProductionTime}}({{vm.StandardProductionTimeType}})</label>
+                                    </div>
+
                                 </div>
                                 @*工时信息*@
                                 <div class="form-group">

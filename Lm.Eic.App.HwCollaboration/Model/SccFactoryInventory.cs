@@ -9,7 +9,7 @@ namespace Lm.Eic.App.HwCollaboration.Model
     /// <summary>
     /// 库存明细数据传输Dto
     /// </summary>
-    public class FactoryInventoryDto : HwDataTransferDtoBase
+    public class FactoryInventoryDto
     {
         public List<SccFactoryInventory> factoryInventoryList { get; set; }
     }

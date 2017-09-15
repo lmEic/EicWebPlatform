@@ -11,12 +11,12 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
 {
     public class MaterialShipmentManager : HwCollaborationBase<MaterialShipmentDto>
     {
-        public override HwDataEntity GetLatestEntity()
+        public override HwCollaborationDataTransferModel GetLatestEntity()
         {
             throw new NotImplementedException();
         }
 
-        public override OpResult SynchronizeDatas(HwDataEntity entity)
+        public override OpResult SynchronizeDatas(HwCollaborationDataTransferModel entity)
         {
             return this.SynchronizeDatas(HwAccessApiUrl.MaterialShipmentApiUrl, entity);
         }

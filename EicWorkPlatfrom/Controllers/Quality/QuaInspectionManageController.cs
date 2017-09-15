@@ -463,6 +463,12 @@ namespace EicWorkPlatfrom.Controllers
             var datas = InspectionService.InspectionFormManager.IqcFromManager.GetInspectionFormManagerDatas(formQueryString, queryOpModel, dateFrom, dateTo);
             return DateJsonResult(datas);
         }
+        /// <summary>
+        /// 查找已经有生成项目
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult GetInspectionFormDetailOfIqcDatas(string orderId, string materialId)
         {
