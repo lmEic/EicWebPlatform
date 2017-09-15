@@ -624,9 +624,17 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
             vmManager.dataSets.push(vm);
         },
         //删除行
-        removeRow: function (item) {
+        removeRow: function (item) {         
+            var rowindex = item.rowindex;
+            vmManager.edittingRowIndex = rowindex - 1;
             leeHelper.remove(vmManager.dataSets, item);
             tempVm.tabCount = vmManager.dataSets.length;
+            var index = 1;
+            //重新更改行的索引
+            angular.forEach(vmManager.dataSets, function (row) {
+                row.rowindex = index;
+                index -= 1;
+            }),                                    
             //累计时数
             tempVm.workOverCount = 0;
             angular.forEach(vmManager.dataSets, function (row) {
