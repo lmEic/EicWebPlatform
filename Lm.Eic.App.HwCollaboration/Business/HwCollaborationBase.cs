@@ -14,7 +14,7 @@ namespace Lm.Eic.App.HwCollaboration.Business
     /// <summary>
     /// 华为协同业务基类
     /// </summary>
-    public abstract class HwCollaborationBase<T> where T : HwDataTransferDtoBase, new()
+    public abstract class HwCollaborationBase<T> where T : class, new()
     {
         #region property
         private HwRestfulApiManager helper
@@ -57,13 +57,13 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// <param name="accessApiUrl"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        protected OpResult SynchronizeDatas(string accessApiUrl, HwDataEntity entity)
+        protected OpResult SynchronizeDatas(string accessApiUrl, HwCollaborationDataTransferModel entity)
         {
-            if (entity == null || entity.Dto == null || entity.OpLog == null)
+            if (entity == null)
             {
                 return OpResult.SetErrorResult("数据实体模型不能为null！");
             }
-            var dto = entity.Dto as T;
+            var dto = ObjectSerializer.DeserializeObject<T>(entity.OpContent);
             try
             {
                 string returnMsg = this.AccessApi(accessApiUrl, dto);
@@ -72,8 +72,7 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 {
                     return OpResult.SetErrorResult("本次操作失败！失败原因：" + returnMsg);
                 }
-                var data = CreateOperateInstance(entity);
-                return this.dbAccess.Store(data);
+                return this.dbAccess.Store(entity);
             }
             catch (System.Exception ex)
             {
@@ -85,43 +84,36 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public abstract OpResult SynchronizeDatas(HwDataEntity entity);
+        public abstract OpResult SynchronizeDatas(HwCollaborationDataTransferModel entity);
 
         /// <summary>
         /// 获取最新的数据实体模型
         /// </summary>
         /// <param name="moduleName"></param>
         /// <returns></returns>
-        protected HwDataEntity GetLatestEntity(string moduleName)
+        protected HwCollaborationDataTransferModel GetLatestEntity(string moduleName)
         {
-            HwDataEntity entity = null;
-            var data = dbAccess.GetLatestDataModel(moduleName);
-            if (data != null)
-            {
-                entity.Dto = ObjectSerializer.DeserializeObject<T>(data.OpContent) as T;
-                entity.OpLog = ObjectSerializer.DeserializeObject<HwDataTransferLog>(data.OpLog);
-            }
-            return entity;
+            return dbAccess.GetLatestDataModel(moduleName);
         }
         /// <summary>
         /// 获取最新的数据实体模型
         /// </summary>
         /// <returns></returns>
-        public abstract HwDataEntity GetLatestEntity();
+        public abstract HwCollaborationDataTransferModel GetLatestEntity();
 
-        protected HwCollaborationDataTransferModel CreateOperateInstance(HwDataEntity entity)
-        {
-            return new HwCollaborationDataTransferModel
-            {
-                OpModule = entity.OpLog.OpModule,
-                OpDate = DateTime.Now.ToDate(),
-                OpTime = DateTime.Now.ToDateTime(),
-                OpSign = entity.OpLog.OpSign,
-                OpPerson = entity.OpLog.OpPerson,
-                OpContent = ObjectSerializer.SerializeObject(entity.Dto),
-                OpLog = ObjectSerializer.SerializeObject(entity.OpLog)
-            };
-        }
+        //protected HwCollaborationDataTransferModel CreateOperateInstance(HwCollaborationDataTransferModel entity)
+        //{
+        //    return new HwCollaborationDataTransferModel
+        //    {
+        //        OpModule = entity.OpLog.OpModule,
+        //        OpDate = DateTime.Now.ToDate(),
+        //        OpTime = DateTime.Now.ToDateTime(),
+        //        OpSign = entity.OpLog.OpSign,
+        //        OpPerson = entity.OpLog.OpPerson,
+        //        OpContent = ObjectSerializer.SerializeObject(entity.Dto),
+        //        OpLog = ObjectSerializer.SerializeObject(entity.OpLog)
+        //    };
+        //}
         #endregion
     }
 
