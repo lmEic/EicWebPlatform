@@ -625,16 +625,17 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         },
         //删除行
         removeRow: function (item) {         
+            leeHelper.remove(vmManager.dataSets, item);
             var rowindex = item.rowindex;
             vmManager.edittingRowIndex = rowindex - 1;
-            leeHelper.remove(vmManager.dataSets, item);
-            tempVm.tabCount = vmManager.dataSets.length;
             var index = 1;
             //重新更改行的索引
             angular.forEach(vmManager.dataSets, function (row) {
                 row.rowindex = index;
-                index -= 1;
-            }),                                    
+                index += 1;
+            }),   
+            alert(item.rowindex);
+            tempVm.tabCount = vmManager.dataSets.length;
             //累计时数
             tempVm.workOverCount = 0;
             angular.forEach(vmManager.dataSets, function (row) {
@@ -841,7 +842,8 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         },     
         //加班时数输入框
         inputWorkOverHours: function ($event, item)
-        {        
+        {  
+           
             var year = new Date().getFullYear();
             var mm = new Date().getMonth() + 1;               
             var dd = new Date().getDate();
