@@ -98,7 +98,8 @@ namespace Lm.Eic.App.HwCollaboration.Business
             var data = dbAccess.GetLatestDataModel(moduleName);
             if (data != null)
             {
-                entity = ObjectSerializer.DeserializeObject<HwDataEntity>(data.OpContent);
+                entity.Dto = ObjectSerializer.DeserializeObject<T>(data.OpContent) as T;
+                entity.OpLog = ObjectSerializer.DeserializeObject<HwDataTransferLog>(data.OpLog);
             }
             return entity;
         }
@@ -117,7 +118,8 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 OpTime = DateTime.Now.ToDateTime(),
                 OpSign = entity.OpLog.OpSign,
                 OpPerson = entity.OpLog.OpPerson,
-                OpContent = ObjectSerializer.SerializeObject(entity)
+                OpContent = ObjectSerializer.SerializeObject(entity.Dto),
+                OpLog = ObjectSerializer.SerializeObject(entity.OpLog)
             };
         }
         #endregion

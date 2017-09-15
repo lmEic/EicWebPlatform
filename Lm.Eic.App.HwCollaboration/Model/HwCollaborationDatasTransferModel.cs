@@ -33,6 +33,15 @@ namespace Lm.Eic.App.HwCollaboration.Model
             set { _opcontent = value; }
             get { return _opcontent; }
         }
+        private string _oplog;
+        /// <summary>
+        ///操作日志
+        /// </summary>
+        public string OpLog
+        {
+            set { _oplog = value; }
+            get { return _oplog; }
+        }
         private DateTime _opdate;
         /// <summary>
         ///操作日期
@@ -80,5 +89,6 @@ namespace Lm.Eic.App.HwCollaboration.Model
         }
         #endregion Model
     }
+
 
 }
