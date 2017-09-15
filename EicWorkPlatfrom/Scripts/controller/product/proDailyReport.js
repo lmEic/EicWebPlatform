@@ -472,7 +472,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 uiVM.Department = null;
             }
         },
-
+        havePutInData: [],
+        isShowhavePutInData: false,
         erpOrderInfoDatas: [],//载入已分配的订单信息
         erpOrderInfoDatasSource: [],
         productionFlowDatas: [],//工序信息
@@ -543,6 +544,9 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             $scope.searchPromise = dReportDataOpService.saveDailyReportData(uiVM).then(function (opresult) {
                 if (opresult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
+                    vmManager.havePutInData.push(opresult.entity);
+                    vmManager.productionFlowShow = false;
+                    vmManager.isShowhavePutInData = true;
                     vmManager.init();
                 }
             });

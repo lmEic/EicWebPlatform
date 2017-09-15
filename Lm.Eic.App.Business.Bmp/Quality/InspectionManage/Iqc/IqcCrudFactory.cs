@@ -301,11 +301,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Update(e => e.Id_Key == model.Id_Key, model).ToOpResult_Eidt(OpContext);// 同时修改文件模型记录
         }
         /// <summary>
-        /// 得到旧的
+        /// 更新审核（Done）
         /// </summary>
         /// <param name="newModel"></param>
         /// <returns></returns>
+        internal OpResult UpAuditInspectionDetailData(string orderId, string materialId)
+        {
+            return irep.Update(e => e.OrderId == orderId && e.MaterialId == materialId, u => new InspectionIqcDetailModel { InspectionItemStatus = "Done" }).ToOpResult_Eidt(OpContext);
 
+        }
         private InspectionIqcDetailModel GetIqcOldDetailModelBy(InspectionIqcDetailModel newModel)
         {
             try
