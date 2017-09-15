@@ -7,14 +7,6 @@ using Lm.Eic.Uti.Common.YleeExtension.Conversion;
 
 namespace Lm.Eic.App.HwCollaboration.Model
 {
-
-    /// <summary>
-    /// 华为数据传输对象基类
-    /// </summary>
-    public class HwDataTransferDtoBase
-    {
-
-    }
     /// <summary>
     /// 华为API调用结果
     /// </summary>
@@ -50,19 +42,5 @@ namespace Lm.Eic.App.HwCollaboration.Model
         /// 操作模块
         /// </summary>
         public string OpModule { get; set; }
-    }
-    /// <summary>
-    /// 华为数据实体
-    /// </summary>
-    public class HwDataEntity
-    {
-        /// <summary>
-        /// 数据传输对象
-        /// </summary>
-        public HwDataTransferDtoBase Dto { get; set; }
-        /// <summary>
-        /// 操作日志
-        /// </summary>
-        public HwDataTransferLog OpLog { get; set; }
     }
 }
