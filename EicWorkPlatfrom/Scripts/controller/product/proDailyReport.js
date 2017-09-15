@@ -165,18 +165,14 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
                 $scope.vm.ProcessesIndex = 0;
             }
         },
-
-        ///工艺名称不能有重复 ---待写
-        verifyProcessesName: function () {
-            console.log(78975464);
-        },
         //项次添加 
         addProductionFlow: function (item) {
-            vmManager.queryProductionFlowDetails(item);
+            if (vmManager.editDatas.length == 0) {
+                vmManager.queryProductionFlowDetails(item);
+            };
             vmManager.init();
-            uiVM.ProcessesIndex = $scope.vm.ProcessesIndex = item.ProductFlowCount + 1;
+            uiVM.ProcessesIndex = $scope.vm.ProcessesIndex = vmManager.editDatas.length + 1;
             uiVM.ProductName = vmManager.productName;
-            leeHelper.setObjectGuid(uiVM);
             vmManager.editWindowDisplay = true;
         },
         // 模糊查找
@@ -241,7 +237,6 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         vmManager.init();
         uiVM.ProductName = vmManager.productName;
         vmManager.getInspectionIndex();
-        leeHelper.setObjectGuid(uiVM);
         vmManager.editWindowDisplay = true;
     };
     ///编辑
@@ -286,7 +281,6 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         //部门信息不用变化
         $scope.vm.Department = vmManager.department;
         ///查询数据是否有相同的工艺名称
-        if (!issave) return;
         if (uiVM.OpSign === leeDataHandler.dataOpMode.add) {
             var issave = true;
             angular.forEach(vmManager.editDatas, function (i) {
@@ -297,6 +291,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
                     return;
                 };
             });
+            if (!issave) return;
             var confirmData = _.clone(uiVM);
             confirmData.Id = leeHelper.newGuid();
             confirmData.IsServer = false;//由客户端创建的数据
@@ -382,6 +377,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         ProductName: null,
         ProductSpec: null,
         OrderQuantity: null,
+        StandardProductionTimeType: null,
         ProcessesIndex: 0,
         ProcessesName: null,
         ProcessesType: null,
@@ -503,6 +499,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         getProductionFlowDatas: function (productName) {
             $scope.searchPromise = dReportDataOpService.getProductionFlowList(vmManager.department, productName, null, 2).then(function (datas) {
                 vmManager.productionFlowDatas = datas;
+                vmManager.productionFlowShow = true;
+                vmManager.isShowhavePutInData = false;
             });
         },// 得到工序信息
         findProcessesInfo: function ($event) {
@@ -520,16 +518,21 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },//在数据查找相应的信息
         selectProcesses: function (item) {
             if (item !== null) {
-                console.log(item);
                 uiVM.ProcessesIndex = item.ProcessesIndex;
                 uiVM.ProcessesName = item.ProcessesName;
                 uiVM.ProcessesType = item.ProcessesType;
                 uiVM.StandardProductionTime = item.StandardProductionTime;
+                uiVM.StandardProductionTimeType = item.StandardProductionTimeType
             }
             else {
                 uiVM.ProcessesIndex = 0;
             }
         }, //选择工序
+        findhavePutInData: function () {
+            $scope.searchPromise = dReportDataOpService.getProductionFlowList(uiVM.OrderId, uiVM.ProductId, uiVM.ProcessesName).then(function (datas) {
+
+            });
+        },
     };
     $scope.vmManager = vmManager;
     $scope.promise = vmManager.changeDepartment();

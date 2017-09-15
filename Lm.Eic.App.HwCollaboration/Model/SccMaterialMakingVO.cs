@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lm.Eic.App.HwCollaboration.Model
 {
-    public class MaterialMakingDto : HwDataTransferDtoBase
+    public class MaterialMakingDto
     {
         public List<SccMaterialMakingVO> materialMakingList { get; set; }
     }

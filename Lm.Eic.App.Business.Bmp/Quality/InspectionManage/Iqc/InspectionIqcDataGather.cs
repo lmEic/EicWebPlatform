@@ -73,9 +73,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
+                ///应该先从 Qms_IqcInspectionDetail 表上找  如果找不到再按规格载入 要测试的数据
+                var haveInspectionDatas = FindIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
+                if (haveInspectionDatas != null && haveInspectionDatas.Count > 0) return haveInspectionDatas;
                 var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault(e => e.ProductID == materialId);
                 if (orderMaterialInfo == null) return new List<InspectionItemDataSummaryVM>();
                 var iqcNeedInspectionsItemdatas = ItemCondition.getIqcNeedInspectionItemDatas(orderId, materialId, orderMaterialInfo.ProduceInDate);
+
                 if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0) return new List<InspectionItemDataSummaryVM>();
                 //保存单头数据
                 return HandleInspectionSummayDatas(orderMaterialInfo, iqcNeedInspectionsItemdatas);

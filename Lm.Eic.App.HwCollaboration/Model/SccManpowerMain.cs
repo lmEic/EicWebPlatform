@@ -10,7 +10,7 @@ namespace Lm.Eic.App.HwCollaboration.Model
     /// 人力资源信息Dto
     /// </summary>
     [Serializable]
-    public class ManPowerDto : HwDataTransferDtoBase
+    public class ManPowerDto
     {
         /// <summary>
         /// 人力信息主列表
