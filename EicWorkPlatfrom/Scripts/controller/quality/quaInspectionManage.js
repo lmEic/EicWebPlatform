@@ -881,6 +881,10 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         }
         dataItem.InsptecitonItemIsFinished = true;
         leeHelper.setUserData(dataItem);
+        if (dataItem.InspectionStatus == "已审核") {
+            leePopups.alert("已审核不能更新保存数据", 2);
+            return;
+        }
         $scope.opPromise = qualityInspectionDataOpService.storeIqcInspectionGatherDatas(dataItem).then(function (opResult) {
 
             if (opResult.Result) {
