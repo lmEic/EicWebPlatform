@@ -80,6 +80,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     return new InspectionFqcOrderIdModel();
                 /// 一个制令单 对应一个物料 
                 var orderMaterialInfo = orderMaterialInfoList[0];
+                ///是否加载有检验配置项目
+                bool isHaveItemConfig = InspectionManagerCrudFactory.FqcItemConfigCrud.IsExistFqcConfigmaterailId(orderMaterialInfo.ProductID);
                 /// 统计已经检验的总数量
                 double haveInspectionSumCount = MasterDatasGather.GetFqcMasterHaveInspectionCountBy(orderId);
                 InspectionFqcOrderIdModel returnModle = new InspectionFqcOrderIdModel()
@@ -92,7 +94,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialInCount = orderMaterialInfo.ProduceNumber,
                     MaterialSupplier = orderMaterialInfo.ProductSupplier,
                     MaterialInDate = orderMaterialInfo.ProduceInDate,
-                    HaveInspectionSumCount = haveInspectionSumCount
+                    HaveInspectionSumCount = haveInspectionSumCount,
+                    IsHaveItemConfig = isHaveItemConfig,
                 };
                 return returnModle;
 
@@ -245,7 +248,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         InspectionItem = m.InspectionItem,
                         EquipmentId = m.EquipmentId,
                         InspectionItemStatus = "Doing",
-                        Department = m.ProductDepartment,
+                        ProductDepartment = m.ProductDepartment,
                         ///检验方法
                         InspectionMethod = m.InspectionMethod,
                         //数据采集类型
@@ -339,7 +342,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         ///需要完成数量 得于 检验数
                         NeedFinishDataNumber = m.NeedPutInDataCount,
                         InspectionItemResult = m.InspectionItemResult,
-                        Department = m.Department,
+                        ProductDepartment = m.ProductDepartment,
                         InspectionNGCount = m.InspectionNGCount,
                         ClassType = m.ClassType,
                         InsptecitonItemIsFinished = false,

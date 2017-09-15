@@ -28,7 +28,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         public List<InspectionIqcMasterModel> GetInspectionFormManagerDatas(string formQueryString, int queryOpModel, DateTime startTime, DateTime endTime)
         {
             //查询所有物料和单号 
-            if (formQueryString == null || formQueryString == string.Empty) return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(startTime, endTime); ;
+            if (formQueryString == null || formQueryString == string.Empty) return InspectionManagerCrudFactory.IqcMasterCrud.GetIqcInspectionMasterModelListBy(startTime, endTime);
             switch (queryOpModel)
             {
                 case 0:
@@ -54,8 +54,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
             var retrunResult = InspectionManagerCrudFactory.IqcMasterCrud.Store(model, true);
             if (retrunResult.Result)
-                return InspectionManagerCrudFactory.IqcMasterCrud.UpAuditDetailData(model.OrderId, model.MaterialId, "Done");
-
+                return InspectionManagerCrudFactory.IqcDetailCrud.UpAuditInspectionDetailData(model.OrderId, model.MaterialId);
             else return retrunResult;
         }
 

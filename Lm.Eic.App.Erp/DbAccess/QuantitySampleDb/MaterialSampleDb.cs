@@ -47,6 +47,26 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             });
             return masterialAllinfo;
         }
+
+        /// <summary>
+        ///找到ERP中所有的进货单的物料信息（数量不超过100）
+        /// </summary>
+        /// <param name="searchStartDate"></param>
+        /// <param name="searchEndDate"></param>
+        /// <returns></returns>
+        public List<MaterialModel> FindErpAllMasterilBy(DateTime searchStartDate, DateTime searchEndDate, string department)
+        {
+
+            List<MaterialModel> masterialAllinfo = new List<MaterialModel>();
+            List<string> allOrderId = GetAllMaterialOrderId(searchStartDate, searchEndDate, department);
+            if (allOrderId == null || allOrderId.Count <= 0) return masterialAllinfo;
+            allOrderId.ForEach(e =>
+            {
+                if (masterialAllinfo.Count < 200)
+                    masterialAllinfo.AddRange(FindMaterialBy(e));
+            });
+            return masterialAllinfo;
+        }
         /// <summary>
         /// 得到进货物料  341 342 343 344
         /// </summary>
@@ -107,6 +127,35 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
 
         }
 
+        /// <summary>
+        /// 得到所有进货单单号  数量不要超过（100）
+        /// </summary>
+        /// <param name="searchStartDate"></param>
+        /// <param name="searchEndDate"></param>
+        /// <returns></returns>
+        private List<string> GetAllMaterialOrderId(DateTime searchStartDate, DateTime searchEndDate, string department)
+        {
+            List<string> returnOrderList = new List<string>();
+            if (searchEndDate >= searchStartDate)
+            {
+                returnOrderList = GetAllMaterialOrderBy(searchStartDate, department);
+                for (int i = 1; i <= (searchEndDate - searchStartDate).Days; i++)
+                {
+                    DateTime spanDate = searchStartDate.AddDays(i);
+                    if (returnOrderList.Count <= 100)
+                        returnOrderList.AddRange(GetAllMaterialOrderBy(spanDate, department));
+                    else break;
+
+                }
+            }
+            return returnOrderList;
+
+        }
+        /// <summary>
+        /// 进料检验
+        /// </summary>
+        /// <param name="searchDate"></param>
+        /// <returns></returns>
         private List<string> GetAllMaterialOrderBy(DateTime searchDate)
         {
             List<string> OrderId = new List<string>();
@@ -128,6 +177,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                     OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
                 }
 
+
             }
             DataTable dt591 = DbHelper.Erp.LoadTable("SELECT  TH001,TH002  FROM  MOCTH  WHERE (TH001 = '591')" + Startsql591);
             if (dt591.Rows.Count > 0)
@@ -146,8 +196,124 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                     OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
                 }
             }
-
             return OrderId;
+        }
+        /// <summary>
+        /// FQC在制单安部门获得物料
+        /// </summary>
+        /// <param name="searchDate"></param>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public List<string> GetAllMaterialOrderBy(DateTime searchDate, string department)
+        {
+
+            List<string> OrderId = new List<string>();
+            string sql = string.Format("SELECT TA001,TA002,TA006,TA034,TA035,TA017,TA015 FROM  MOCTA   WHERE  (TA021 = '{0}') AND (TA009='{1}') AND (TA035 NOT LIKE '%镭射雕刻%') order by TA001", department, searchDate.ToDateTimeShortStr());
+            DataTable dt110 = DbHelper.Erp.LoadTable(sql);
+            if (dt110.Rows.Count > 0)
+            {
+                foreach (DataRow dt in dt110.Rows)
+                {
+                    OrderId.Add(dt[0].ToString().Trim() + "-" + dt[1].ToString().Trim());
+                }
+            }
+            return OrderId;
+        }
+        /// <summary>
+        /// 工单生产状态查询
+        /// </summary>
+        /// <param name="department">部门(MS1,MS10,MS2,MS3,MS5,MS6 ,MS7 ,PT1)</param>
+        /// <param name="orderStatus">完工、在制</param>
+        /// <returns></returns>
+        public List<ProductionOrderIdInfo> GetProductionOrderIdInfoBy(string department, string orderStatus)
+        {
+            string orderStatusSql = OrderStatusStr(orderStatus);
+            List<ProductionOrderIdInfo> ProductionOrderIdDatas = new List<ProductionOrderIdInfo>();
+            ProductionOrderIdInfo OrderIdData = null;
+            string sql = string.Format("SELECT TA001, TA002, TA006, TA034, TA035, TA017, TA015,TA021,TA011,TA003,TA010 FROM MOCTA WHERE(TA021 = '{0}')  {1}   ORDER BY TA002 ", department, orderStatusSql);
+            DataTable dt = DbHelper.Erp.LoadTable(sql);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    OrderIdData = new ProductionOrderIdInfo()
+                    {
+                        ProductionDepartment = dr[7].ToString().Trim(),
+                        ProductStatus = RetrunOrderStatus(dr[8].ToString().Trim()),
+                        Category = dr[0].ToString().Trim(),
+                        Code = dr[1].ToString().Trim(),
+                        ProduceNumber = Convert.ToDouble(dr[6].ToString().Trim()),
+                        ProductId = dr[2].ToString().Trim(),
+                        ProductName = dr[3].ToString().Trim(),
+                        ProductSpec = dr[4].ToString().Trim(),
+                        PutInStoreNumber = Convert.ToDouble(dr[5].ToString().Trim()),
+                        PlanEndProductionDate = dr[10].ToString().Trim().ToDate(),
+                        PlanStartProductionDate = dr[9].ToString().Trim().ToDate(),
+                    };
+                    if (!ProductionOrderIdDatas.Contains(OrderIdData))
+                        ProductionOrderIdDatas.Add(OrderIdData);
+                }
+            }
+            return ProductionOrderIdDatas;
+        }
+
+        public List<ProductionOrderIdInfo> GetProductionOrderIdInfoBy(string orderId)
+        {
+            List<ProductionOrderIdInfo> ProductionOrderIdDatas = new List<ProductionOrderIdInfo>();
+            ProductionOrderIdInfo OrderIdData = null;
+            string sql = string.Format("SELECT TA001, TA002, TA006, TA034, TA035, TA017, TA015,TA021,TA011 FROM MOCTA WHERE  CAST(RTRIM(TA001) AS varchar(10)) + '-' + CAST(RTRIM(TA002) AS varchar(10)) ='{0}'   ORDER BY TA002 ", orderId);
+            DataTable dt = DbHelper.Erp.LoadTable(sql);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    OrderIdData = new ProductionOrderIdInfo()
+                    {
+                        ProductionDepartment = dr[7].ToString().Trim(),
+                        ProductStatus = dr[8].ToString().Trim(),
+                        Category = dr[0].ToString().Trim(),
+                        Code = dr[1].ToString().Trim(),
+                        ProduceNumber = Convert.ToDouble(dr[6].ToString().Trim()),
+                        ProductId = dr[2].ToString().Trim(),
+                        ProductName = dr[3].ToString().Trim(),
+                        ProductSpec = dr[4].ToString().Trim(),
+                        PutInStoreNumber = Convert.ToDouble(dr[5].ToString().Trim()),
+                    };
+                    if (!ProductionOrderIdDatas.Contains(OrderIdData))
+                        ProductionOrderIdDatas.Add(OrderIdData);
+                }
+            }
+            return ProductionOrderIdDatas;
+        }
+        string OrderStatusStr(string orderStatus)
+        {
+            switch (orderStatus)
+            {
+                case "完工":
+                    return " AND(TA011 In('Y', 'y'))";
+                case "在制":
+                    return " AND(TA011 IN('1', '2', '3'))";
+                default:
+                    return string.Empty;
+            }
+        }
+        string RetrunOrderStatus(string orderStatus)
+        {
+            switch (orderStatus)
+            {
+                case "1":
+                    return "未开工";
+                case "2":
+                    return "已发料";
+                case "3":
+                    return "未完工";
+                case "y":
+                    return "指完工";
+                case "Y":
+                    return "已完工";
+                default:
+                    return orderStatus;
+            }
         }
 
         #region     私有方法
@@ -354,7 +520,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
                 this.MapProductRowAndModel(dr, m);
             });
         }
-        
+
     }
 
 }

@@ -10,13 +10,14 @@ using System.IO;
 using Lm.Eic.App.Erp.Bussiness.QmsManage;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using Lm.Eic.Framework.ProductMaster.Business.Config;
 
 namespace EicWorkPlatfrom.Controllers
 {
     /********************************************************************
     	created:	2017/03/27
     	file ext:	cs
-    	author:		YLee
+    	author:		YLxx
     	purpose:
     *********************************************************************/
     public class QuaInspectionManageController : EicBaseController
@@ -173,8 +174,8 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult CheckFqcInspectionItemConfigMaterialId(string materialId)
         {
 
-            var result = InspectionService.ConfigManager.FqcItemConfigManager.IsExistFqcConfigMaterailId(materialId);
-            return Json(result, JsonRequestBehavior.AllowGet);
+            var dataResult = InspectionService.ConfigManager.FqcItemConfigManager.IsExistFqcConfigMaterailId(materialId);
+            return Json(dataResult, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 删除进料检验配置数据 deleteIqlInspectionConfigItem
@@ -314,7 +315,7 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetIqcMaterialInfoDatas(string orderId)
         {
-            var datas = InspectionService.DataGatherManager.IqcDataGather.GetPuroductSupplierInfo(orderId);
+            var datas = InspectionService.DataGatherManager.IqcDataGather.GetIqcInspectionMastersDatasBy(orderId);
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -382,6 +383,7 @@ namespace EicWorkPlatfrom.Controllers
         {
             var orderInfo = InspectionService.DataGatherManager.FqcDataGather.GetFqcInspectionFqcOrderIdInfoBy(orderId);
             var sampledDatas = InspectionService.DataGatherManager.FqcDataGather.MasterDatasGather.GetFqcMasterOrderIdDatasBy(orderId);
+
             var datas = new { orderInfo = orderInfo, sampledDatas = sampledDatas };
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
@@ -496,20 +498,58 @@ namespace EicWorkPlatfrom.Controllers
         /// Fqc检验单管理
         /// </summary>
         /// <returns></returns>
+        [NoAuthenCheck]
         public ActionResult InspectionFormManageOfFqc()
         {
             return View();
         }
         /// <summary>
-        /// 根据单据状态获得检验单数据
-        /// </summary>  selectedFormStatus,dateFrom,dateTo
+        /// FQC 查询 抽抽验状态
+        /// </summary>
+        /// <param name="selectedDepartment"></param>
+        /// <param name="formStatus"></param>
+        /// <param name="fqcDateFrom"></param>
+        /// <param name="fqcDateTo"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public ContentResult GetInspectionFormManageOfFqcDatas(string formStatus, DateTime dateFrom, DateTime dateTo)
+        public ContentResult GetInspectionMasterFqcDatas(string selectedDepartment, string formStatus, DateTime fqcDateFrom, DateTime fqcDateTo)
         {
-            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(formStatus, dateFrom, dateTo);
+            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetInspectionFormManagerListBy(selectedDepartment, formStatus, fqcDateFrom, fqcDateTo);
             return DateJsonResult(datas);
         }
+        /// <summary>
+        /// 查询FQC中Erp订单检验信息
+        /// </summary>
+        /// <param name="selectedDepartment">部门</param>
+        /// <param name="dateFrom">起始日期</param>
+        /// <param name="dateTo">结束日期</param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult QueryFqcERPOrderInspectionInfos(string selectedDepartment, DateTime dateFrom, DateTime dateTo)
+        {
+            var datas = InspectionService.InspectionFormManager.FqcFromManager.GetFqcERPDatasBy(selectedDepartment, dateFrom, dateTo);
+
+            return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// 得到Master抽检验信息 GetInspectionFormMasterOfFqcDatas
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetInspectionFormMasterOfFqcDatas(string orderId)
+        {
+
+            var datas = InspectionService.InspectionFormManager.FqcFromManager.FqcMasterDatasBy(orderId);
+
+            return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// 通订单号和序列号得测试详细数据
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="orderIdNumber"></param>
+        /// <returns></returns>
         [NoAuthenCheck]
         public JsonResult GetInspectionFormDetailOfFqcDatas(string orderId, int orderIdNumber)
         {
@@ -526,9 +566,22 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult PostInspectionFormManageCheckedOfFqcData(InspectionFqcMasterModel model)
         {
-            var opResult = InspectionService.InspectionFormManager.FqcFromManager.AuditFqcInspectionMasterModel(model);
+            var opResult = InspectionService.InspectionFormManager.FqcFromManager.AuditFqcInspectionModel(model);
             return Json(opResult);
         }
+        /// <summary>
+        /// 载入部门信息
+        /// </summary>
+        /// <param name="treeModuleKey"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult GetConfigDicData(string treeModuleKey)
+        {
+            var modules = PmConfigService.DataDicManager.FindConfigDatasBy(treeModuleKey);
+            return Json(modules, JsonRequestBehavior.AllowGet);
+        }
+
+
         #endregion
         #endregion
 

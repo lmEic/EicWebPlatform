@@ -325,24 +325,31 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 int AcceptNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Max();
                 int sampleNumberVauleMax = modeSwithParameterList.FindAll(e => e.SwitchProperty == "SampleNumber").Select(e => e.SwitchVaule).Max();
                 int AcceptNumberVauleMin = modeSwithParameterList.FindAll(e => e.SwitchProperty == "AcceptNumber").Select(e => e.SwitchVaule).Min();
-                var getNumber = DetailModeData.Take(sampleNumberVauleMax).Count(e => e.InspectionResult == "FAIL");
+                var getFailNumber = DetailModeData.Take(sampleNumberVauleMax).Count(e => e.InspectionResult == "FAIL");
+
                 switch (currentStatus)
                 {
                     case "加严":
-                        retrunstirng = (getNumber >= AcceptNumberVauleMin) ? "正常" : currentStatus;
+                        retrunstirng = (getFailNumber >= AcceptNumberVauleMin) ? "正常" : currentStatus;
                         break;
                     case "放宽":
-                        retrunstirng = (getNumber <= AcceptNumberVauleMin) ? "正常" : currentStatus;
+                        retrunstirng = (getFailNumber <= AcceptNumberVauleMin) ? "正常" : currentStatus;
                         break;
                     case "正常":
-                        if (getNumber <= AcceptNumberVauleMin) retrunstirng = "放宽";
-                        else
+                        ///如果录入的数量 小于抽样的数量 则反回 正常
+                        if (DetailModeData.Count < sampleNumberVauleMin) return "正常";
+                        if (DetailModeData.Count >= sampleNumberVauleMax)
+                        {
+                            if (getFailNumber <= AcceptNumberVauleMin) return "放宽";
+                        }
+                        if (DetailModeData.Count >= sampleNumberVauleMin)
                         {
                             ///加严的数量
                             int getTheNumber = DetailModeData.Take(sampleNumberVauleMin).Count(e => e.InspectionResult == "FAIL");
-                            retrunstirng = (getTheNumber >= AcceptNumberVauleMax) ? "加严" : currentStatus;
+                            if (getFailNumber >= AcceptNumberVauleMax) return "加严";
+                            else return "正常";
                         }
-                        break;
+                        else return "正常";
                     default:
                         break;
                 }
@@ -357,9 +364,34 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 
 
 
-        public List<InspectionIqcDetailModel> GetIqcInspectionDetailDatasBy(string orderId)
+        public List<InspectionIqcMasterModel> GetIqcInspectionMastersDatasBy(string orderId)
         {
-            return DetailDatasGather.GetIqcInspectionDetailDatasBy(orderId);
+            List<InspectionIqcMasterModel> retrunListdatas = new List<InspectionIqcMasterModel>();
+            InspectionIqcMasterModel iqcMasterDatas = null;
+            List<MaterialModel> masterdatas = QualityDBManager.OrderIdInpectionDb.FindMaterialBy(orderId);
+            if (masterdatas == null || masterdatas.Count == 0) return retrunListdatas;
+            masterdatas.ForEach(e =>
+            {
+                iqcMasterDatas = MasterDatasGather.GetIqcMasterModel(e.OrderID, e.ProductID);
+                if (iqcMasterDatas == null)
+                {
+                    iqcMasterDatas = new InspectionIqcMasterModel()
+                    {
+                        OrderId = e.OrderID,
+                        MaterialId = e.ProductID,
+                        MaterialName = e.ProductName,
+                        MaterialSpec = e.ProductStandard,
+                        MaterialSupplier = e.ProductSupplier,
+                        MaterialDrawId = e.ProductDrawID,
+                        MaterialInDate = e.ProduceInDate,
+                        MaterialCount = e.ProduceNumber,
+                        InspectionStatus = "未抽检",
+                    };
+                }
+                if (!retrunListdatas.Contains(iqcMasterDatas) && iqcMasterDatas != null)
+                    retrunListdatas.Add(iqcMasterDatas);
+            });
+            return retrunListdatas;
         }
     }
 

@@ -178,6 +178,7 @@
     <Compile Include="Controllers\Purchase\PurchaseController.cs" />
     <Compile Include="Controllers\Product\ShippingController.cs" />
     <Compile Include="Controllers\SystemManage\SysConfigController.cs" />
+    <Compile Include="Controllers\ToolsOnLine\TolCooperateWithHwController.cs" />
     <Compile Include="Controllers\ToolsOnLine\TolWorkFlowController.cs" />
     <Compile Include="Controllers\ToolsOnLine\ToolsOnLineController.cs" />
     <Compile Include="Controllers\ToolsOnLine\TolOfficeAssistantController.cs" />
@@ -561,6 +562,7 @@
     <Content Include="Scripts\controller\shippingApp.js" />
     <Content Include="Scripts\controller\sysmanage\sysConfigManage.js" />
     <Content Include="Scripts\controller\sysmanage\sysmanageApp.js" />
+    <Content Include="Scripts\controller\toolsOnLine\tolHwCollaboration.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolOfficeAssistant.js" />
     <Content Include="Scripts\controller\toolsOnLine\tolWorkFlow.js" />
     <Content Include="Scripts\controller\toolsOnLine\toolsOnlineApp.js" />
@@ -1520,6 +1522,13 @@
     <Content Include="Views\TolWorkFlow\WFInternalContactForm.cshtml" />
     <Content Include="Views\HrAttendanceManage\HrWorkOverHoursManage.cshtml" />
     <Content Include="Views\SysConfig\QualityCommonDataSet.cshtml" />
+    <Content Include="Views\ProDailyReport\DRProductOrderDispatching.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwManpowerInput.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwLogisticDeliveryInput.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwInventoryDetail.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwMakingVoDetail.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwShipmentVoDetail.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwPurchaseOnWay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1557,6 +1566,10 @@
     <ProjectReference Include="..\Lm.Eic.App.Erp\Lm.Eic.App.Erp.csproj">
       <Project>{58ccb98b-0cb7-4554-8f66-f4a9db8189e5}</Project>
       <Name>Lm.Eic.App.Erp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lm.Eic.App.HwCollaboration\Lm.Eic.App.HwCollaboration.csproj">
+      <Project>{fe8a9ab2-356f-4ad6-bfc8-0e6814228126}</Project>
+      <Name>Lm.Eic.App.HwCollaboration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Lm.Eic.App.Model.Mes\Lm.Eic.App.DomainModel.Mes.csproj">
       <Project>{117fe893-5fb5-4c88-ba0f-794ca715e8e6}</Project>
