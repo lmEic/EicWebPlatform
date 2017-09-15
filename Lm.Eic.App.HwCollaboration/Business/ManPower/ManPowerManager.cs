@@ -14,13 +14,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.ManPower
     /// </summary>
     public class ManPowerManager : HwCollaborationBase<ManPowerDto>
     {
-        public override HwCollaborationDataTransferModel GetLatestEntity()
-        {
-            return this.GetLatestEntity(HwModuleName.ManPower);
-        }
-        public override OpResult SynchronizeDatas(HwCollaborationDataTransferModel entity)
-        {
-            return this.SynchronizeDatas(HwAccessApiUrl.ManPowerApiUrl, entity);
-        }
+        public ManPowerManager() : base(HwModuleName.ManPower, HwAccessApiUrl.ManPowerApiUrl)
+        { }
     }
 }

@@ -31,11 +31,15 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// 数据访问助手
         /// </summary>
         protected HwDatasTransferDb dbAccess = null;
+        protected string moduleName = null;
+        protected string apiUrl = null;
         #endregion
 
-        public HwCollaborationBase()
+        public HwCollaborationBase(string modulename, string apiUrl)
         {
             dbAccess = new HwDatasTransferDb();
+            this.moduleName = modulename;
+            this.apiUrl = apiUrl;
         }
 
 
@@ -84,7 +88,10 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public abstract OpResult SynchronizeDatas(HwCollaborationDataTransferModel entity);
+        public virtual OpResult SynchronizeDatas(HwCollaborationDataTransferModel entity)
+        {
+            return this.SynchronizeDatas(entity);
+        }
 
         /// <summary>
         /// 获取最新的数据实体模型
@@ -99,7 +106,10 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// 获取最新的数据实体模型
         /// </summary>
         /// <returns></returns>
-        public abstract HwCollaborationDataTransferModel GetLatestEntity();
+        public virtual HwCollaborationDataTransferModel GetLatestEntity()
+        {
+            return this.GetLatestEntity(moduleName);
+        }
 
         //protected HwCollaborationDataTransferModel CreateOperateInstance(HwCollaborationDataTransferModel entity)
         //{

@@ -46,7 +46,7 @@ officeAssistantModule.controller('hwManPowerCtrl', function (hwDataOpService, $s
     var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
     operate.save = function () {
         leeDataHandler.dataOperate.add(operate, true, function () {
-            $scope.opPromise = hwDataOpService.saveManPower(vmManager.dataEntity).then(function (opresult) {
+            $scope.opPromise = hwDataOpService.saveManPower(dataVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     leePopups.alert(opresult, 1);
                 })
