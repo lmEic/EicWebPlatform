@@ -560,7 +560,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
          WorkerName: null,//    
          WorkoverType: null,//
          WorkClassType: null,//
-         WorkDate: null,//
+         WorkDate: new Date(),//
          WorkOverHours: null,//
          Remark:null,
          DepartmentText: null,
@@ -571,8 +571,9 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
     };
     $scope.vm = uiVM;
     var dialog = $scope.dialog = leePopups.dialog();
-   // var savedialog=$scope.savedialog=leePopups.dialog("保存提示","数据编辑好了！您确定执行保存吗")
+    
     var qryDto = {
+        
         departmentText: leeLoginUser.departmentText,
         workDate:new Date().toDateString(),
        
@@ -824,16 +825,18 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
                 else
                 {                          
                     vmManager.edittingRow.wkhing = false;
-                } 
-
-              
-
+                }            
             }
         },     
         //加班时数输入框
         inputWorkOverHours: function ($event, item)
-        {                
-            item.WorkOverHours = $scope.vm.WorkOverHours;
+        {        
+            var year = new Date().getFullYear();
+            var mm = new Date().getMonth() + 1;               
+            var dd = new Date().getDate();
+            var nowdate = year + "-" + mm + "-" + dd;        
+            uiVM.WorkDate = nowdate;
+            item.WorkOverHours = $scope.vm.WorkOverHours;        
             focusSetter.doWhenKeyDown($event, function () {                 
                 vmManager.editNextworkOverHours($event, item);
             });                   
