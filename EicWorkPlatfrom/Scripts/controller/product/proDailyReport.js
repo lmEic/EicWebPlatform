@@ -534,14 +534,11 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         }, //选择工序
         findhavePutInData: function () {
             $scope.searchPromise = dReportDataOpService.getProductionFlowList(uiVM.OrderId, uiVM.ProductId, uiVM.ProcessesName).then(function (datas) {
-
             });
         },
     };
     $scope.vmManager = vmManager;
     $scope.promise = vmManager.changeDepartment();
-
-
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.saveAlldata = function (isValid) {
