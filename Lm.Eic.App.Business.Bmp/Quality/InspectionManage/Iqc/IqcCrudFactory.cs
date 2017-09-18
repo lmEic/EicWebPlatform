@@ -78,6 +78,15 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return irep.Entities.Where(e => e.MaterialId == materialId).OrderBy(e => e.InspectionItemIndex).ToList();
         }
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inspectionItem"></param>
+        /// <returns></returns>
+        public InspectionIqcItemConfigModel FindFirstOrDefaultDataBy(string inspectionItem)
+        {
+            return irep.Entities.FirstOrDefault(e => e.InspectionItem == inspectionItem);
+        }
+        /// <summary>
         /// 特殊条件
         /// </summary>
         /// <param name="sizeMemo"></param>
