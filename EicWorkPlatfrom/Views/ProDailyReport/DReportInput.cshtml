@@ -5,7 +5,6 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-md-4">
-                >
                 <div cg-busy="{promise:promise}">
                     部门:
                     <button class="btn btn-success " ng-model="vmManager.department" ng-change="vmManager.changeDepartment()"
@@ -29,6 +28,9 @@
                 <div class="bs-callout bs-callout-default" style="height:480px;overflow-y:auto;">
                     <div class="table-responsive">
                         <div style="padding:10px;overflow-y:auto;height:480px">
+                            <div class="page-header">
+                                <input type="text" placeholder="快速搜索" ng-model="filterErpOrder" />
+                            </div>
                             <table class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr class="info">
@@ -42,15 +44,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="item in vmManager.erpOrderInfoDatas track by $index">
+                                    <tr ng-repeat="item in vmManager.erpOrderInfoDatas|filter:filterErpOrder  track by $index">
                                         <td>{{item.OrderId}}</td>
-                                        <td>{{item.ProductName}}</td>
+                                        <td>
+                                            <a href="javascript:;" ng-click="vmManager.putInDatas(item)">{{item.ProductName}}</a>
+                                        </td>
                                         <td>{{item.ProductSpec}}</td>
                                         <td>{{item.ProduceNumber}}</td>
                                         <td>{{item.PutInStoreNumber}}</td>
                                         <td>{{item.ProductStatus}}</td>
                                         <td>
-                                            <button class="btn btn-primary" ng-click="vmManager.putInDatas(item)"><i class="fa fa-pencil-square-o"></i>录入</button>
+                                            <button class="btn btn-primary"><i class="fa fa-pencil-square-o"></i>详细</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -62,6 +66,9 @@
                          data-datasource="vmManager.erpOrderInfoDatasSource">
                     </div>
                 </div>
+
+            </div>
+            <div class="pull-right" style="width:35%;">
                 <div pageslide ps-open="vmManager.putInDisplay" ps-side="left" ps-speed="0.25" ps-size="100%" ps-container='editWindow'>
                     <div style="padding:10px;overflow-y:auto;height:480px">
                         <form role="form" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
@@ -252,10 +259,11 @@
                         </form>
                     </div>
                 </div>
-            </div>
-            <div class="pull-right" style="width:35%;">
                 <div class="bs-callout bs-callout-info" style="height:500px;overflow-y:auto;">
                     <div class="table-responsive" cg-busy="{promise:searchPromise}">
+                        <div class="page-header">
+                            <input type="text" placeholder="快速搜索" ng-model="filterproductionFlow" />
+                        </div>
                         <table ng-show="vmManager.productionFlowShow" class="table table-condensed table-bordered table-hover">
                             <thead>
                                 <tr class="info">
@@ -263,14 +271,22 @@
                                     <th>工艺名称</th>
                                     <th>工艺类别</th>
                                     <th>标准工时</th>
+                                    <th>已录数量</th>
+                                    <th>标准工时</th>
+                                    <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in vmManager.productionFlowDatas track by $index">
+                                <tr ng-repeat="item in vmManager.productionFlowDatas|filter:filterproductionFlow track by $index">
                                     <td>{{item.ProcessesIndex}}</td>
                                     <td>{{item.ProcessesName}}</td>
                                     <td>{{item.ProcessesType}}</td>
                                     <td>{{item.StandardProductionTime}}({{item.StandardProductionTimeType}})</td>
+                                    <td>{{item.ProcessesName}}</td>
+                                    <td>{{item.ProcessesType}}</td>
+                                    <td>
+                                        <button class="btn btn-primary" ng-checked="vmManager.selectProcesses(item)"><i class="fa fa-pencil-square-o"></i>录入</button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
