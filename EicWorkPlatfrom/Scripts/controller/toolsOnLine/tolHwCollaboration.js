@@ -18,34 +18,66 @@ officeAssistantModule.factory('hwDataOpService', function (ajaxService) {
     };
     return hwDataOp;
 });
+///华为数据API数据操作助手
+var hwApiHelper = (function () {
+    ///华为数据实体
+    function hwDataEntity() {
+        //操作模块
+        this.OpModule = null;
+        //操作内容
+        this.OpContent = null;
+        //操作日志
+        this.OpLog = null;
+        //操作日期
+        this.OpDate = null;
+        //操作时间
+        this.OpTime = null;
+        //操作人
+        this.OpPerson = null;
+        //操作标志
+        this.OpSign = leeDataHandler.dataOpMode.add;
+    };
+
+    return {
+        //数据实体
+        crateDataEntity: function () {
+            var dataEntity = new hwDataEntity();
+            leeHelper.setUserData(dataEntity);
+            return dataEntity;
+        },
+    };
+})();
 
 officeAssistantModule.controller('hwManPowerCtrl', function (hwDataOpService, $scope) {
     ///数据实体模型
-    var dataVM = {
-        OpModule: null,
-        OpContent: null,
-        OpLog: null,
-        OpDate: null,
-        OpTime: null,
-        OpPerson: null,
-        OpSign: null,
-        Id_Key: null,
-    }
-    $scope.vm = dataVM;
+    var dataVM = hwApiHelper.crateDataEntity();
+    var manPowerVM = {
+        vendorFactoryCode: "421072-001",
+        manpowerAddQuantity: 0,
+        manpowerGapQuantity: 0,
+        hrLeavePercent: 0.0,
+        manpowerTotalQuantity: 0,
+    };
 
     var vmManager = $scope.vmManager = {
         dataEntity: null,
         getManPower: function () {
             $scope.searchPromise = hwDataOpService.getManPower().then(function (dataobj) {
                 vmManager.dataEntity = JSON.parse(dataobj.OpContent);
-
                 console.log(vmManager.dataEntity);
             });
+        },
+        editManPowerMaster: function (item) {
+            console.log(item);
+            manPowerVM = item;
+            manPowerVM.manpowerAddQuantity = 11;
         },
     };
     var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
     operate.save = function () {
         leeDataHandler.dataOperate.add(operate, true, function () {
+
+            dataVM.OpContent = JSON.stringify(vmManager.dataEntity);
             $scope.opPromise = hwDataOpService.saveManPower(dataVM).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                     leePopups.alert(opresult, 1);

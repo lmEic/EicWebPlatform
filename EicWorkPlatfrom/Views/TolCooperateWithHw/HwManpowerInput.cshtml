@@ -31,7 +31,9 @@
                         <td>{{worker.manpowerGapQuantity}}</td>
                         <td>{{worker.manpowerAddQuantity}}</td>
                         <td>
-                            <span class="btn btn-primary btn-xs" title="编辑"><i class="fa fa-pencil-square-o"></i></span>
+                            <span class="btn btn-primary btn-xs" title="编辑" ng-click="vmManager.editManPowerMaster(worker)">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </span>
                         </td>
                     </tr>
                 </tbody>
@@ -68,6 +70,8 @@
                 </tbody>
             </table>
         </div>
+
+
     </div>
     <div class="panel-footer">
 
