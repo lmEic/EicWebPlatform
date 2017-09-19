@@ -31,11 +31,15 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// 数据访问助手
         /// </summary>
         protected HwDatasTransferDb dbAccess = null;
+        protected string moduleName = null;
+        protected string apiUrl = null;
         #endregion
 
-        public HwCollaborationBase()
+        public HwCollaborationBase(string modulename, string apiUrl)
         {
             dbAccess = new HwDatasTransferDb();
+            this.moduleName = modulename;
+            this.apiUrl = apiUrl;
         }
 
 
@@ -72,7 +76,8 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 {
                     return OpResult.SetErrorResult("本次操作失败！失败原因：" + returnMsg);
                 }
-                return this.dbAccess.Store(entity);
+                var dataEntity = CreateOperateInstance(entity);
+                return this.dbAccess.Store(dataEntity);
             }
             catch (System.Exception ex)
             {
@@ -84,7 +89,10 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public abstract OpResult SynchronizeDatas(HwCollaborationDataTransferModel entity);
+        public virtual OpResult SynchronizeDatas(HwCollaborationDataTransferModel entity)
+        {
+            return this.SynchronizeDatas(this.apiUrl, entity);
+        }
 
         /// <summary>
         /// 获取最新的数据实体模型
@@ -99,21 +107,32 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// 获取最新的数据实体模型
         /// </summary>
         /// <returns></returns>
-        public abstract HwCollaborationDataTransferModel GetLatestEntity();
+        public virtual HwCollaborationDataTransferModel GetLatestEntity()
+        {
+            return this.GetLatestEntity(moduleName);
+        }
 
-        //protected HwCollaborationDataTransferModel CreateOperateInstance(HwCollaborationDataTransferModel entity)
-        //{
-        //    return new HwCollaborationDataTransferModel
-        //    {
-        //        OpModule = entity.OpLog.OpModule,
-        //        OpDate = DateTime.Now.ToDate(),
-        //        OpTime = DateTime.Now.ToDateTime(),
-        //        OpSign = entity.OpLog.OpSign,
-        //        OpPerson = entity.OpLog.OpPerson,
-        //        OpContent = ObjectSerializer.SerializeObject(entity.Dto),
-        //        OpLog = ObjectSerializer.SerializeObject(entity.OpLog)
-        //    };
-        //}
+        protected HwCollaborationDataTransferModel CreateOperateInstance(HwCollaborationDataTransferModel entity)
+        {
+            //操作日志
+            HwDataTransferLog opLog = new HwDataTransferLog()
+            {
+                OpModule = this.moduleName,
+                OpSign = entity.OpSign,
+                OpPerson = entity.OpPerson
+            };
+            T dto = ObjectSerializer.DeserializeObject<T>(entity.OpContent);
+            return new HwCollaborationDataTransferModel
+            {
+                OpModule = this.moduleName,
+                OpDate = DateTime.Now.ToDate(),
+                OpTime = DateTime.Now.ToDateTime(),
+                OpSign = entity.OpSign,
+                OpPerson = entity.OpPerson,
+                OpContent = ObjectSerializer.SerializeObject(dto),
+                OpLog = ObjectSerializer.SerializeObject(opLog)
+            };
+        }
         #endregion
     }
 
