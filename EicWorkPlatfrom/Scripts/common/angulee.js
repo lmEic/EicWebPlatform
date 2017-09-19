@@ -34,6 +34,15 @@ var leeDataHandler = (function () {
                     addfn();
             }
         },
+        ///取消编辑某项数据，oldItem:编辑前的对象，editItemArr编辑项数组
+        cancelEditItem: function (oldItem, editItemArr) {
+            if (_.isObject(oldItem) && _.isArray(editItemArr)) {
+                var item = _.find(editItemArr, { Id: oldItem.Id });
+                if (item != undefined) {
+                    leeHelper.copyVm(oldItem, item);
+                }
+            }
+        },
         ///处理操作结果,opstatus:操作器，opresult:操作结果,successFn:成功回调函数
         handleSuccessResult: function (opstatus, opresult, successFn) {
             opstatus.showValidation = false;
@@ -210,7 +219,7 @@ var leeHelper = (function () {
         //消息提示窗口
         msgModalUrl: '/CommonTpl/InfoMsgModalTpl',
         //删除提示窗口
-        deleteModalUrl: '/CommonTpl/DeleteModalTpl',     
+        deleteModalUrl: '/CommonTpl/DeleteModalTpl',
         //文件预览模态窗口
         imgFilePreviewModalUrl: '/CommonTpl/ImageFilePreviewTpl'
     };
@@ -586,6 +595,14 @@ var leeHelper = (function () {
                 obj.Id = 0;
             }
             obj.Id = leeHelper.newGuid();
+        },
+        ///给集合中的每个对象设置唯一键值Id
+        setObjectsGuid: function (objectArr) {
+            if (_.isArray(objectArr)) {
+                _.forEach(objectArr, function (obj) {
+                    leeHelper.setObjectGuid(obj);
+                });
+            }
         },
         //给对象设置服务器标志，标志该对象是从服务器端传来的数据
         setObjectServerSign: function (obj) {

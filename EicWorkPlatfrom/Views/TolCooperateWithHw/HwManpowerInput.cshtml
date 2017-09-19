@@ -3,7 +3,7 @@
         <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>人力信息管理</h6>
     </div>
     <div class="panel-body" cg-busy="{promise:searchPromise}">
-        <div class="page-header">
+        <div class="page-header" cg-busy="{promise:opPromise}">
             <button class="btn btn-success" ng-click="operate.save()">
                 <i class="fa fa-save"></i>
                 保存数据
@@ -31,7 +31,7 @@
                         <td>{{worker.manpowerGapQuantity}}</td>
                         <td>{{worker.manpowerAddQuantity}}</td>
                         <td>
-                            <span class="btn btn-primary btn-xs" title="编辑" ng-click="vmManager.editManPowerMaster(worker)">
+                            <span class="btn btn-primary btn-xs" title="编辑" ng-click="vmManager.showMasterEditWindow(worker)">
                                 <i class="fa fa-pencil-square-o"></i>
                             </span>
                         </td>
@@ -72,6 +72,65 @@
         </div>
 
 
+        <dialog ng-if="manPowerEditDialog.open" modal data-close="manPowerEditDialog.close()" style="width:35%">
+            <content dialog-title>
+                <i class="fa fa-pencil-square">数据编辑窗口</i>
+            </content>
+            <content dialog-content style="width:100%" class="bs-callout bs-callout-info">
+                <form role="form" name="formManpower" novalidate class="form-horizontal">
+                    <div class="form-group">
+                        <label for="vendorFactoryCode" class="col-md-4 control-label">工厂代码</label>
+                        <div class="col-md-4">
+                            <input name="vendorFactoryCode" class="form-control" ng-model="manPowerVM.vendorFactoryCode" placeholder="工厂代码" readonly required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="hrLeavePercent" class="col-md-4 control-label">工厂人员离职率(%)</label>
+                        <div class="col-md-4">
+                            <input type="number" name="hrLeavePercent" class="form-control" ng-model="manPowerVM.hrLeavePercent" placeholder="工厂人员离职率" required />
+                            <div class="error-messages" ng-messages="formManpower.hrLeavePercent.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">工厂人员离职率不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="manpowerTotalQuantity" class="col-md-4 control-label">工厂总人数（人）</label>
+                        <div class="col-md-4">
+                            <input type="number" name="manpowerTotalQuantity" class="form-control" ng-model="manPowerVM.manpowerTotalQuantity" placeholder="工厂总人数" required />
+                            <div class="error-messages" ng-messages="formManpower.manpowerTotalQuantity.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">工厂总人数不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="manpowerGapQuantity" class="col-md-4 control-label">工厂人员总缺口（人）</label>
+                        <div class="col-md-4">
+                            <input type="number" name="manpowerGapQuantity" class="form-control" ng-model="manPowerVM.manpowerGapQuantity" placeholder="工厂人员总缺口" required />
+                            <div class="error-messages" ng-messages="formManpower.manpowerGapQuantity.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">工厂人员总缺口不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="manpowerAddQuantity" class="col-md-4 control-label">工厂人员补充计划(人)</label>
+                        <div class="col-md-4">
+                            <input type="number" name="manpowerAddQuantity" class="form-control" ng-model="manPowerVM.manpowerAddQuantity" placeholder="工厂人员补充计划" required />
+                            <div class="error-messages" ng-messages="formManpower.manpowerAddQuantity.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">工厂人员补充计划不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </content>
+            <content dialog-buttons>
+                <button autofocus ng-click="vmManager.confirmMasterEditData()">确定</button>
+                <button ng-click="vmManager.cancelMasterEditData()">取消</button>
+            </content>
+        </dialog>
     </div>
     <div class="panel-footer">
 

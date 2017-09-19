@@ -51,37 +51,75 @@ var hwApiHelper = (function () {
 officeAssistantModule.controller('hwManPowerCtrl', function (hwDataOpService, $scope) {
     ///数据实体模型
     var dataVM = hwApiHelper.crateDataEntity();
-    var manPowerVM = {
+    $scope.manPowerVM = {
         vendorFactoryCode: "421072-001",
         manpowerAddQuantity: 0,
         manpowerGapQuantity: 0,
         hrLeavePercent: 0.0,
         manpowerTotalQuantity: 0,
     };
+    $scope.manPowerDetailVM = {
+        keyDeptName: "部门1",
+        hrAddQuantity: 0,
+        hrGapQuantity: 0,
+        hrLeavePercent: 0.0,
+        hrRequestQuantity: 0,
+        description: ""
+    };
+
+    var manPowerEditDialog = $scope.manPowerEditDialog = leePopups.dialog();
+    var manDetailEditDialog = $scope.manDetailEditDialog = leePopups.dialog();
 
     var vmManager = $scope.vmManager = {
         dataEntity: null,
+        oldManPower: null,
+        oldManDetail: null,
+        currentManPower: null,
         getManPower: function () {
             $scope.searchPromise = hwDataOpService.getManPower().then(function (dataobj) {
                 vmManager.dataEntity = JSON.parse(dataobj.OpContent);
+                //给每个实体添加键值
+                leeHelper.setObjectsGuid(vmManager.dataEntity.manpowerMainList);
+                angular.forEach(vmManager.dataEntity.manpowerMainList, function (item) {
+                    leeHelper.setObjectsGuid(item.keyDeptDataList);
+                })
+
                 console.log(vmManager.dataEntity);
             });
         },
-        editManPowerMaster: function (item) {
-            console.log(item);
-            manPowerVM = item;
-            manPowerVM.manpowerAddQuantity = 11;
+        showMasterEditWindow: function (item) {
+            vmManager.oldManPower = _.clone(item);
+            $scope.manPowerVM = item;
+            manPowerEditDialog.show();
         },
+        confirmMasterEditData: function () {
+            manPowerEditDialog.close();
+        },
+        cancelMasterEditData: function () {
+            leeDataHandler.dataOperate.cancelEditItem(vmManager.oldManPower, vmManager.dataEntity.manpowerMainList);
+            manPowerEditDialog.close();
+            console.log(vmManager.dataEntity.manpowerMainList);
+        },
+        showDetailEditWindow: function (item) {
+            vmManager.oldManDetail = _.clone(item);
+            $scope.manPowerDetailVM = item;
+            manDetailEditDialog.show();
+        },
+        confirmDetailEditData: function () {
+            manDetailEditDialog.close();
+        },
+        cancelDetailEditData: function () {
+            // leeDataHandler.dataOperate.cancelEditItem(vmManager.oldManDetail, vmManager.currentManPower.)
+        },
+
     };
+
     var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
     operate.save = function () {
         leeDataHandler.dataOperate.add(operate, true, function () {
-
             dataVM.OpContent = JSON.stringify(vmManager.dataEntity);
             $scope.opPromise = hwDataOpService.saveManPower(dataVM).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
-                    leePopups.alert(opresult, 1);
-                })
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () { })
             });
         })
     };
