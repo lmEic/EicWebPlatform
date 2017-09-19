@@ -489,7 +489,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },//部门变化载入分配的订单信息
         ////选择产品名称得理该产品的
         putInDatas: function (item) {
-            console.log(99999);
             uiVM.OrderId = item.OrderId;
             uiVM.ProductId = item.ProductId;
             uiVM.ProductName = item.ProductName;
@@ -504,44 +503,55 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 vmManager.productionFlowDatas = datas;
                 vmManager.productionFlowShow = true;
                 vmManager.isShowhavePutInData = false;
+                vmManager.putInDisplay = false;
             });
-        },// 得到工序信息
-        //findProcessesInfo: function ($event) {
-        //    if ($event.keyCode === 13 || $event.keyCode === 40 || $event.keyCode === 9) {
-        //        if (uiVM.ProcessesIndex === null || vmManager.productionFlowDatas.length == 0) return;
-        //        var processesInfo = _.find(vmManager.productionFlowDatas, function (u) { return u.ProcessesIndex == uiVM.ProcessesIndex })
-        //        if (!_.isUndefined(processesInfo)) {
-        //            //leePopups.alert("没有此工序号");
-        //            focusSetter.processesIndexFocus = true;
-        //            vmManager.selectProcesses(processesInfo);
-        //            focusSetter.workerProductionTimeFocus = true;
-        //            vmManager.isProcessesNameShow = true;
-        //        }
-        //    };
-        //},//在数据查找相应的信息
-        selectProcesses: function (item) {
-            console.log(item);
+        },
+        // 得到工序信息
+        findProcessesInfo: function ($event) {
+            if ($event.keyCode === 13 || $event.keyCode === 40 || $event.keyCode === 9) {
+                if (uiVM.ProcessesIndex === null || vmManager.productionFlowDatas.length == 0) return;
+                var processesInfo = _.find(vmManager.productionFlowDatas, function (u) { return u.ProcessesIndex == uiVM.ProcessesIndex })
+                if (!_.isUndefined(processesInfo)) {
+                    //leePopups.alert("没有此工序号");
+                    focusSetter.processesIndexFocus = true;
+                    vmManager.selectProcesses(processesInfo);
+                    focusSetter.workerProductionTimeFocus = true;
+                    vmManager.isProcessesNameShow = true;
+                }
+            };
+        },
+        //在数据查找相应的信息
+        selectProcesses: function () {
+            uiVM.ProcessesIndex = item.ProcessesIndex;
+            uiVM.ProcessesName = item.ProcessesName;
+            uiVM.ProcessesType = item.ProcessesType;
+            uiVM.StandardProductionTime = item.StandardProductionTime;
+            uiVM.StandardProductionTimeType = item.StandardProductionTimeType
+            vmManager.isProcessesNameShow = true;
+        }, //选择工序
+
+        showPutInForm: function (item) {
             if (item !== null) {
                 uiVM.ProcessesIndex = item.ProcessesIndex;
                 uiVM.ProcessesName = item.ProcessesName;
                 uiVM.ProcessesType = item.ProcessesType;
                 uiVM.StandardProductionTime = item.StandardProductionTime;
-                uiVM.StandardProductionTimeType = item.StandardProductionTimeType
+                uiVM.StandardProductionTimeType = item.StandardProductionTimeType;
+                focusSetter.workerIdFocus = true;
             }
             else {
                 uiVM.ProcessesIndex = 0;
             }
-        }, //选择工序
+            if (!vmManager.putInDisplay)
+            { vmManager.putInDisplay = true; }
+        },
         findhavePutInData: function () {
             $scope.searchPromise = dReportDataOpService.getProductionFlowList(uiVM.OrderId, uiVM.ProductId, uiVM.ProcessesName).then(function (datas) {
-
             });
         },
     };
     $scope.vmManager = vmManager;
     $scope.promise = vmManager.changeDepartment();
-
-
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     operate.saveAlldata = function (isValid) {
@@ -560,6 +570,9 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         });
 
     };
+    operate.refresh = function () {
+        vmManager.putInDisplay = false;
+    }
     //焦点设置器
     var focusSetter = {
         workerIdFocus: false,

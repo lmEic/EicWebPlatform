@@ -74,7 +74,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             DateTime nowDate = DateTime.Now.Date;
             //从ERP中获得部门 在制所有工单信息
-            var productionOrderIdInfo = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
+            var productionOrderIdInfo = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department);
             List<ProductFlowSummaryVm> flowSummaryVms = new List<ProductFlowSummaryVm>();
             ProductFlowSummaryVm flowSummaryVm = null;
             if (productionOrderIdInfo.Count > 0)
@@ -111,6 +111,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
         }
+        public List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department)
+        {
+            return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department);
+        }
+
         /// <summary>
         /// 保存订单数据
         /// </summary>
