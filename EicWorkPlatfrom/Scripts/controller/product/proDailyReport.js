@@ -34,7 +34,11 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             searchMode: searchMode,
         });
     };
-
+    //  导入Excel
+    reportDataOp.importProductFlowTemplateFile = function (file) {
+        var url = urlPrefix + 'ImportProductFlowDatas';
+        return ajaxService.uploadFile(url, file);
+    };
 
     ///////************************************************************************///
 
@@ -108,6 +112,13 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
     var vmManager = {
         init: function () {
             uiVM = _.clone(initVM);
+
+            $scope.vm = uiVM;
+        },
+        saveOneinit: function () {
+            uiVM.ProductName = null;
+            uiVM.StandardProductionTime = null;
+            uiVM.ProcessesIndex = uiVM.ProcessesIndex + 1;
             $scope.vm = uiVM;
         },
         isShowMachine: false,
@@ -199,6 +210,8 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             });
         },
     };
+
+
     $scope.vmManager = vmManager;
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
@@ -237,6 +250,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         vmManager.init();
         uiVM.ProductName = vmManager.productName;
         vmManager.getInspectionIndex();
+        focusSetter.processesNameFocus = true;
         vmManager.editWindowDisplay = true;
     };
     ///编辑
@@ -275,6 +289,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         vmManager.copyWindowDisplay = true;
         vmManager.editWindowDisplay = false;
     },
+
     //确认数据(显示保存)
     operate.confirmSave = function (isValid) {
         leeHelper.setUserData(uiVM);
@@ -296,9 +311,10 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             confirmData.Id = leeHelper.newGuid();
             confirmData.IsServer = false;//由客户端创建的数据
             vmManager.editDatas.push(confirmData);
-            vmManager.editWindowDisplay = false;
-            vmManager.init();
+            vmManager.editWindowDisplay = true;
+            vmManager.saveOneinit();
         }
+
     };
 
     //批量保存数据
@@ -333,11 +349,15 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             vmManager.editWindowDisplay = false;
         });
     };
-
+    operate.toConfirmSave = function () {
+        var name = document.getElementById("confirmSave");
+        console.log(name);
+    };
     ///选择文件并导入数据
     $scope.selectFile = function (el) {
         var files = el.files;
         if (files.length > 0) {
+            console.log(el);
             var file = files[0];
             var fd = new FormData();
             fd.append('file', file);
@@ -349,10 +369,10 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
 
 
     ////组织架构
-    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (tdatas) {
-        departmentTreeSet.setTreeDataset(tdatas);
-        var user = leeLoginUser;
-    });
+    //$scope.promise = connDataOpService.getConfigDicData('Organization').then(function (tdatas) {
+    //    departmentTreeSet.setTreeDataset(tdatas);
+    //    var user = leeLoginUser;
+    //});
     $scope.promise = dReportDataOpService.getProductionFlowOverview(vmManager.department, vmManager.productName, 0).then(function (datas) {
         vmManager.editDatasSummyset = [];
         vmManager.editDatasSummyset = datas;
@@ -360,9 +380,38 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         if (datas.length > 0)
             vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
     });
+    //焦点设置器
+    var focusSetter = {
+        processesNameFocus: false,
+        processesIndexFocus: false,
+        standardProductionTimeFocus: false,
+        remarkFocus: false,
+        //移动焦点到指定对象
+        moveFocusTo: function ($event, elPreName, elNextName) {
+            if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {
+                focusSetter[elNextName] = true;
+            }
+            else if ($event.keyCode === 37) {
+                focusSetter[elPreName] = true;
+            };
+        },
+        doWhenKeyDown: function ($event, fn) {
+            if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) { fn(); }
+        },
+        //回车事件
+        changeEnter: function ($event, elPreName, elNextName) {
+            focusSetter.moveFocusTo($event, elPreName, elNextName)
+        }
+
+    };
+    $scope.focus = focusSetter;
+
+
     $(function () {
         $("[data-toggle='popover']").popover();
     });
+
+
     //$scope.ztree = departmentTreeSet;
 });
 //日报录入

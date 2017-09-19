@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Lm.Eic.App.Erp.Bussiness.QuantityManage;
 using Lm.Eic.App.Erp.Domain.QuantityModel;
 using System;
+using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 {
@@ -28,6 +29,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             get { return OBulider.BuildInstance<DailyReportManager>(); }
         }
+
     }
 
     public class ProductionFlowManager
@@ -40,6 +42,29 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         public List<StandardProductionFlowModel> GetProductFlowInfoBy(QueryDailyProductReportDto dto)
         {
             return DailyReportCrudFactory.ProductionFlowCrud.FindBy(dto);
+        }
+
+        /// <summary>
+        /// 导入工序列表
+        /// </summary>
+        /// <param name="documentPatch">Excel文档路径</param>
+        /// <returns></returns>
+        public List<StandardProductionFlowModel> ImportProductFlowListBy(string documentPatch)
+        {
+            return documentPatch.GetEntitiesFromExcel<StandardProductionFlowModel>();
+        }
+        /// <summary>
+        /// 获取工序Excel模板
+        /// </summary>
+        /// <param name="documentPath"></param>
+        /// <returns></returns>
+        public DownLoadFileModel GetProductFlowTemplate(string siteRootPath, string documentPath, string fileName)
+        {
+            DownLoadFileModel dlfm = new DownLoadFileModel();
+            return dlfm.CreateInstance
+                 (siteRootPath.GetDownLoadFilePath(documentPath),
+                 fileName.GetDownLoadContentType(),
+                  fileName);
         }
         /// <summary>
         /// 存储数据表
