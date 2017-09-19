@@ -349,10 +349,10 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
 
 
     ////组织架构
-    //$scope.promise = connDataOpService.getConfigDicData('Organization').then(function (tdatas) {
-    //    departmentTreeSet.setTreeDataset(tdatas);
-    //    var user = leeLoginUser;
-    //});
+    $scope.promise = connDataOpService.getConfigDicData('Organization').then(function (tdatas) {
+        departmentTreeSet.setTreeDataset(tdatas);
+        var user = leeLoginUser;
+    });
     $scope.promise = dReportDataOpService.getProductionFlowOverview(vmManager.department, vmManager.productName, 0).then(function (datas) {
         vmManager.editDatasSummyset = [];
         vmManager.editDatasSummyset = datas;
