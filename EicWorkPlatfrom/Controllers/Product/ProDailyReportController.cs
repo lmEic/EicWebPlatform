@@ -99,8 +99,6 @@ namespace EicWorkPlatfrom.Controllers.Product
             if (searchMode == 0)
             {
                 var ProductFlowdatas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetFlowShowSummaryInfosBy(department);
-
-
                 return Json(ProductFlowdatas, JsonRequestBehavior.AllowGet);
             }
             else

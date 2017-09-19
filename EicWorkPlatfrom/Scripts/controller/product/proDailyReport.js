@@ -519,7 +519,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                     vmManager.isProcessesNameShow = true;
                 }
             };
-        },//在数据查找相应的信息
+        },
+        //在数据查找相应的信息
         selectProcesses: function () {
             uiVM.ProcessesIndex = item.ProcessesIndex;
             uiVM.ProcessesName = item.ProcessesName;
@@ -536,7 +537,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 uiVM.ProcessesType = item.ProcessesType;
                 uiVM.StandardProductionTime = item.StandardProductionTime;
                 uiVM.StandardProductionTimeType = item.StandardProductionTimeType;
-
                 focusSetter.workerIdFocus = true;
             }
             else {
