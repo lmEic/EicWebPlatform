@@ -166,11 +166,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetOrderDispatchInfoDatas(string department, DateTime nowDate)
         {
-            ///ERP在制生产订单
-            var erpInProductiondatas = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(department, "在制");
-            ///今日生产已确认分配的订单
-            var todayHaveDispatchProductionOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
-            var datas = new { erpInProductiondatas, todayHaveDispatchProductionOrderDatas };
+            var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetNeedDispatchOrderBy(department, nowDate);
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -208,6 +204,18 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
             return DateJsonResult(datas);
         }
+        /// <summary>
+        /// 得到订单所有工艺的统计数 department, productName, orderId
+        /// </summary>
+        /// <param name="productName"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetProductionFlowCountDatas(string department, string orderId, string productName)
+        {
+            var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.GetProductionFlowCountDatas(department, orderId, productName);
+            return DateJsonResult(datas);
+        }
+
         /// <summary>
         /// 
         /// </summary>

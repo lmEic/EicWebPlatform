@@ -6,6 +6,7 @@ using Lm.Eic.App.Erp.Bussiness.QuantityManage;
 using Lm.Eic.App.Erp.Domain.QuantityModel;
 using System;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
+using System.Linq;
 
 namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 {
@@ -119,9 +120,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
 
         public List<ProductFlowSummaryVm> GetFlowShowSummaryInfosBy(string department, string productName)
         {
-            var data = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy("515-1708058");
             return DailyReportCrudFactory.ProductionFlowCrud.GetProductionFlowSummaryDatesBy(department, productName);
-
         }
     }
 
@@ -140,7 +139,38 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             return DailyReportCrudFactory.ProductOrderDispatch.GetHaveDispatchOrderBy(department);
         }
-
+        public List<ProductOrderDispatchModel> GetNeedDispatchOrderBy(string department, DateTime nowDate)
+        {
+            List<ProductOrderDispatchModel> returndatas = new List<ProductOrderDispatchModel>();
+            ProductOrderDispatchModel model = null;
+            ///ERP在制生产订单
+            var erpInProductiondatas = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(department, "在制");
+            ///今日生产已确认分配的订单
+            var todayHaveDispatchProductionOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
+            if (erpInProductiondatas == null || erpInProductiondatas.Count == 0) return returndatas;
+            erpInProductiondatas.ForEach(e =>
+            {
+                model = new ProductOrderDispatchModel();
+                OOMaper.Mapper<ProductionOrderIdInfo, ProductOrderDispatchModel>(e, model);
+                var haveDispatchOrder = todayHaveDispatchProductionOrderDatas.Find(m => m.OrderId == e.OrderId);
+                if (haveDispatchOrder == null)
+                {
+                    model.ProductionDate = e.PlanStartProductionDate;
+                    model.ValidDate = e.PlanEndProductionDate;
+                    model.IsValid = "False";
+                }
+                else
+                {
+                    model.IsValid = "True";
+                    model.ProductionDate = haveDispatchOrder.ProductionDate;
+                    model.ValidDate = haveDispatchOrder.ValidDate;
+                }
+                
+                if (!returndatas.Contains(model))
+                    returndatas.Add(model);
+            });
+            return returndatas.OrderByDescending(e => e.IsValid).ToList();
+        }
         /// <summary>
         /// 保存订单数据
         /// </summary>
@@ -158,6 +188,31 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
 
             return DailyReportCrudFactory.DailyProductionReport.Store(model, true);
+        }
+        public List<ProductFlowCountDatasVm> GetProductionFlowCountDatas(string department, string orderId, string productName)
+        {
+            List<ProductFlowCountDatasVm> retrundatas = new List<ProductFlowCountDatasVm>();
+            ProductFlowCountDatasVm modelVm = null;
+            var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(new QueryDailyProductReportDto()
+            { Department = department, ProductName = productName, OrderId = orderId, SearchMode = 2 });
+            if (datas == null || datas.Count == 0) return retrundatas;
+            datas.ForEach(e =>
+            {
+                double orderHavePutInNumber = DailyReportCrudFactory.DailyProductionReport.GetDailyProductionCountBy(orderId, e.ProcessesName);
+                modelVm = new ProductFlowCountDatasVm()
+                { OrderId = orderId, OrderHavePutInNumber = orderHavePutInNumber };
+                OOMaper.Mapper<StandardProductionFlowModel, ProductFlowCountDatasVm>(e, modelVm);
+                var orderInfo = DailyReportCrudFactory.ProductOrderDispatch.GetOrderInfoBy(orderId);
+                if (orderInfo != null)
+                {
+                    modelVm.ProductName = orderInfo.ProductName;
+                    modelVm.OrderProductNumber = orderInfo.ProduceNumber;
+                    modelVm.OrderNeedPutInNumber = orderInfo.ProduceNumber * e.ProductCoefficient;
+                }
+                if (!retrundatas.Contains(modelVm))
+                    retrundatas.Add(modelVm);
+            });
+            return retrundatas;
         }
     }
 }

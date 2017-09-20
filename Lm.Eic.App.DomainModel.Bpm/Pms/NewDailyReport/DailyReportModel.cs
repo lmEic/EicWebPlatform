@@ -88,6 +88,16 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _standardproductiontimetype = value; }
             get { return _standardproductiontimetype; }
         }
+        // ProductCoefficient
+        private int _productCoefficient = 1;
+        /// <summary>
+        ///生产系统
+        /// </summary>
+        public int ProductCoefficient
+        {
+            set { _productCoefficient = value; }
+            get { return _productCoefficient; }
+        }
         private double _standardproductiontime;
         /// <summary>
         ///标准工时
@@ -272,20 +282,20 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _productspec = value; }
             get { return _productspec; }
         }
-        private int _putinstorenumber;
+        private double _putinstorenumber;
         /// <summary>
         ///ERP入库数
         /// </summary>
-        public int PutInStoreNumber
+        public double PutInStoreNumber
         {
             set { _putinstorenumber = value; }
             get { return _putinstorenumber; }
         }
-        private int _producenumber;
+        private double _producenumber;
         /// <summary>
         ///预产量
         /// </summary>
-        public int ProduceNumber
+        public double ProduceNumber
         {
             set { _producenumber = value; }
             get { return _producenumber; }
@@ -807,6 +817,41 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         /// 总工时
         /// </summary>
         public double StandardHoursCount { get; set; }
+    }
+    /// <summary>
+    /// 日报工序表统计数据
+    /// </summary>
+    public class ProductFlowCountDatasVm
+    {
+        /// <summary>
+        /// 产品品名
+        /// </summary>
+        public string ProductName { get; set; }
+        /// <summary>
+        /// 产品品名
+        /// </summary>
+        public string OrderId { get; set; }
+        /// <summary>
+        /// 工序序号
+        /// </summary>
+        public int ProcessesIndex { get; set; }
+        /// <summary>
+        /// 工艺名称
+        /// </summary>
+        public string ProcessesName { get; set; }
+        /// <summary>
+        ///工单生产数量
+        /// </summary>
+        public double OrderProductNumber { get; set; }
+        /// <summary>
+        ///工序已录入数量
+        /// </summary>
+        public double OrderHavePutInNumber { get; set; }
+        /// <summary>
+        ///工序需录入数量
+        /// </summary>
+        public double OrderNeedPutInNumber { get; set; }
+
     }
     #endregion
 }

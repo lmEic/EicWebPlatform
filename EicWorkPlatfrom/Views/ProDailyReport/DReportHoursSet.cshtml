@@ -68,11 +68,12 @@
                             </tbody>
                         </table>
                     </div>
+                    <div ng-if="vmManager.editDatasSummyset.length>0"
+                         yl-pagination data-dataset="vmManager.editDatasSummyset"
+                         data-datasource="vmManager.editDatasSummysetsource">
+                    </div>
                 </div>
-                <div ng-if="vmManager.editDatasSummyset.length>0"
-                     yl-pagination data-dataset="vmManager.editDatasSummyset"
-                     data-datasource="vmManager.editDatasSummysetsource">
-                </div>
+
             </div>
             <div class="pull-right" style="width:55%;">
                 <div class="bs-callout bs-callout-info" style="height:500px;overflow-y:auto;">
@@ -105,6 +106,10 @@
                             </tbody>
                         </table>
                     </div>
+                    <div ng-if="vmManager.editDatas.length>0"
+                         yl-pagination data-dataset="vmManager.editDatas"
+                         data-datasource="vmManager.editDatasSource">
+                    </div>
                 </div>
                 <div pageslide ps-open="vmManager.editWindowDisplay" ps-side="left" ps-size="{{vmManager.editWindowWidth}}" ps-speed="0.25" ps-container='editWindow'>
                     <div style="padding:10px;overflow-y:auto;height:480px">
@@ -112,13 +117,19 @@
                             <fieldset>
                                 <div class="form-group">
                                     <label for="productName" class="col-md-3 control-label">产品品名</label>
-                                    <div class="col-md-9">
+                                    <div class="col-md-4">
                                         <input name="productName" class="form-control" readonly ng-model="vm.ProductName"
                                                focus-if="focus.productNameFocus" focus-setter
                                                required />
                                         <div class="error-messages" ng-messages="formProductionFlow.productName.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">产品品名不能为空</small>
                                         </div>
+                                    </div>
+                                    <label for="maxMachineCount" class="col-md-3 control-label">工艺类别</label>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-primary" ng-model="vm.ProcessesType" ng-change="vmManager.changeIsShowMachine()"
+                                                data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="人工"
+                                                data-bs-options="item.id as item.text for item in vmManager.processesTypes" data-bs-select></button>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -149,12 +160,16 @@
                                             <small ng-message="required">工艺编号不能为空</small>
                                         </div>
                                     </div>
-                                    <label for="maxMachineCount" class="col-md-3 control-label">工艺类别</label>
+                                    <label for="productCoefficient" class="col-md-3 control-label">工序系数</label>
                                     <div class="col-md-3">
-                                        <button type="button" class="btn btn-primary" ng-model="vm.ProcessesType" ng-change="vmManager.changeIsShowMachine()"
-                                                data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="人工"
-                                                data-bs-options="item.id as item.text for item in vmManager.processesTypes" data-bs-select></button>
+                                        <input name="productCoefficient" class="form-control" type="number" ng-model="vm.ProductCoefficient"
+                                               focus-if="focus.productCoefficientFocus" focus-setter
+                                               required />
+                                        <div class="error-messages" ng-messages="formProductionFlow.productCoefficient.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">工序系数</small>
+                                        </div>
                                     </div>
+
 
 
 

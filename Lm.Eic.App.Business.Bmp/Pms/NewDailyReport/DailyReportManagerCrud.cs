@@ -280,6 +280,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             /// 1.要有效
             return irep.Entities.Where(e => e.ProductionDepartment == department).ToList();
         }
+        internal ProductOrderDispatchModel GetOrderInfoBy(string orderid)
+        {
+            /// 1.要有效
+            return irep.Entities.FirstOrDefault(e => e.OrderId == orderid);
+        }
     }
 
     /// <summary>
@@ -334,6 +339,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         internal bool IsExisOrderid(string orderId)
         {
             return irep.IsExist(e => e.OrderId == orderId);
+        }
+        /// <summary>
+        /// 入库数量
+        /// </summary>
+        /// <param name="department"></param>
+        /// <param name="orderId"></param>
+        /// <param name="processesName"></param>
+        /// <returns></returns>
+        internal double GetDailyProductionCountBy(string orderId, string processesName)
+        {
+            return irep.Entities.Where(e => e.OrderId == orderId && e.ProcessesName == processesName).ToList().Sum(f => f.TodayProductionCount);
         }
         #endregion
     }
