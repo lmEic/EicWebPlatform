@@ -13,7 +13,22 @@ using System.Linq;
 namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
 {
     public static class FileOperationExtension
-    {
+    { 
+        //林旺雷 2017-09-15
+      /// <summary>
+      ///  将实体类列表到处到Excel中 支持Excel2007
+      /// </summary>
+      /// <typeparam name="T">类型</typeparam>
+      /// <param name="dt"></param>
+      /// <param name="patch">绝对路径</param>
+      /// <param name="isCreateTitle">是否生成标题</param>
+        public static void ExportToExcel<T>(this List<T> dt, string patch, bool isCreateTitle, int inputStartRow)
+        {
+           // m_ExportToExcel(dt, patch, isCreateTitle, inputStartRow);
+        }
+
+
+
         /// <summary>
         /// 删除文件夹内的所有文件
         /// </summary>
@@ -419,6 +434,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             }
 
             #endregion 填充列头区域
+
             #region 对所需字段依数 填充内容区域
             for (int rowIndex = 0; rowIndex < dataSource.Count; rowIndex++)
             {
@@ -618,6 +634,7 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
             {
                 MemoryStream stream = new MemoryStream();
                 HSSFWorkbook workbook = new HSSFWorkbook();
+               
              
                 foreach (string i in DicDataSources.Keys)
                 {
@@ -819,4 +836,10 @@ namespace Lm.Eic.Uti.Common.YleeExtension.FileOperation
 
         public string OccurTime { get; set; }
     }
+
+
+   
+
+
+
 }

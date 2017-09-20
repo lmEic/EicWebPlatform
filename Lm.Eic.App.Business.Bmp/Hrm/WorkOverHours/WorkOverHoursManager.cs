@@ -80,10 +80,10 @@ namespace Lm.Eic.App.Business.Bmp.Hrm.WorkOverHours
                 return dataGroupping.ExportToExcelMultiSheets<WorkOverHoursMangeModels>(CreateFieldMapping()).CreateDownLoadExcelFileModel("加班人员清单");
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
 
         }

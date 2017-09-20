@@ -249,14 +249,11 @@ namespace EicWorkPlatfrom.Controllers.Hr
         /// </summary>
         /// <returns></returns>
         public FileResult WorkOverHoursDatasToExcel()
-        {
-            
+        {         
             var datas = TempData["WorkOverHoursDatas"] as List<WorkOverHoursMangeModels>;
             var dlfm = WorkOverHoursService.WorkOverHoursManager.WorkOverHoursDatasDLFM(datas);
             return this.DownLoadFile(dlfm);
-
         }
-
         #endregion
     }
 }
