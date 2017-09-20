@@ -275,6 +275,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             /// 1.要有效
             return irep.Entities.Where(e => e.ProductionDepartment == department && e.IsValid == "True" && e.ValidDate >= nowDate).ToList();
         }
+        internal List<ProductOrderDispatchModel> GetHaveDispatchOrderBy(string department)
+        {
+            /// 1.要有效
+            return irep.Entities.Where(e => e.ProductionDepartment == department).ToList();
+        }
     }
 
     /// <summary>

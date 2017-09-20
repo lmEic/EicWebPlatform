@@ -15,9 +15,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
 {
     public class InspectionDateGatherManageBase
     {
-
-
-
         /// <summary>
         /// 得到已经完成的数量
         /// </summary>
@@ -76,15 +73,12 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 inspectionMode,
                 inspectionLevel,
                 inspectionAQL).ToList();
-
             if (models == null || models.Count <= 0) return new InspectionModeConfigModel();
             models.ForEach(e => { maxs.Add(e.EndNumber); mins.Add(e.StartNumber); });
             if (maxs.Count > 0)
                 maxNumber = GetMaxNumber(maxs, inMaterialCount);
-
             if (mins.Count > 0)
                 minNumber = GetMinNumber(mins, inMaterialCount);
-
             var model = models.FirstOrDefault(e => e.StartNumber == minNumber && e.EndNumber == maxNumber);
             if (model != null)
             {
