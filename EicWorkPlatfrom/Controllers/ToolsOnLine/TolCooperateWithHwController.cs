@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Lm.Eic.App.HwCollaboration.Business;
 using Lm.Eic.App.HwCollaboration.Model;
+using Lm.Eic.App.Business.Bmp.Hrm.Archives;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -31,7 +32,9 @@ namespace EicWorkPlatfrom.Controllers
         public JsonResult GetManPower()
         {
             var entity = HwCollaborationService.ManPowerManager.GetLatestEntity();
-            return Json(entity, JsonRequestBehavior.AllowGet);
+            var departments = ArchiveService.ArchivesManager.DepartmentMananger.Departments;
+            var data = new { entity, departments };
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
         public JsonResult SaveManPower(HwCollaborationDataTransferModel entity)

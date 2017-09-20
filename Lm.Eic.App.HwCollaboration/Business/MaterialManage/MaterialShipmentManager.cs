@@ -9,16 +9,13 @@ using Lm.Eic.Uti.Common.YleeOOMapper;
 
 namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
 {
+    /// <summary>
+    /// 物料发料明细管理器
+    /// </summary>
     public class MaterialShipmentManager : HwCollaborationBase<MaterialShipmentDto>
     {
-        public override HwCollaborationDataTransferModel GetLatestEntity()
+        public MaterialShipmentManager() : base(HwModuleName.MaterialShipment, HwAccessApiUrl.MaterialShipmentApiUrl)
         {
-            throw new NotImplementedException();
-        }
-
-        public override OpResult SynchronizeDatas(HwCollaborationDataTransferModel entity)
-        {
-            return this.SynchronizeDatas(HwAccessApiUrl.MaterialShipmentApiUrl, entity);
         }
     }
 }

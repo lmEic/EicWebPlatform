@@ -60,18 +60,18 @@
                                         <td>{{item.PlanStartProductionDate}}</td>
                                         <td>{{item.PlanEndProductionDate}}</td>
                                         <td>
-                                            <button ng-show="item.isDispatch==true" class="btn btn-danger">
+                                            <button ng-show="item.ProductStatus=='已分配'" class="btn btn-danger">
                                                 {{item.ProductStatus}} <i class="fa fa-flag-checkered"></i>
                                             </button>
-                                            <button ng-show="item.isDispatch==false" class="btn btn-default">
+                                            <button ng-show="item.ProductStatus !='已分配'" class="btn btn-default">
                                                 {{item.ProductStatus}}<i class="fa fa-flag"></i>
                                             </button>
                                         </td>
                                         <td>
-                                            <button ng-show="item. isDispatch==false" class="btn btn-primary" ng-click="vmManager.dispatchOrder(item)">
+                                            <button ng-show="item.ProductStatus !='已分配'" class="btn btn-primary" ng-click="vmManager.dispatchOrder(item)">
                                                 确认分派 <i class="fa fa-angle-double-right"></i>
                                             </button>
-                                            <button ng-show="item. isDispatch==true" class="btn btn-success" ng-click="vmManager.dispatchOrder(item)">
+                                            <button ng-show="item.ProductStatus=='已分配'" class="btn btn-success" ng-click="vmManager.dispatchOrder(item)">
                                                 <i class="fa fa-angle-double-left"></i>  取消分派
                                             </button>
                                         </td>
@@ -79,6 +79,9 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    <div class="form-group btn btn-primary  pull-right">
+                        <label>已分配数量：{{vmManager.haveHaveDispatchCount}} </label>
                     </div>
                     <div ng-if="vmManager.erpOrderInfoDatasSource.length>0"
                          yl-pagination data-dataset="vmManager.erpOrderInfoDatas"

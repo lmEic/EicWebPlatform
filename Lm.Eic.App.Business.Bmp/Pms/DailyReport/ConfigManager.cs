@@ -89,28 +89,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.DailyReport
 
         #region FileOption
 
-        /// <summary>
-        /// 获取工序Excel模板
-        /// </summary>
-        /// <param name="documentPath"></param>
-        /// <returns></returns>
-        public DownLoadFileModel GetProductFlowTemplate(string documentPath)
-        {
-            DownLoadFileModel dlfm = new DownLoadFileModel();
-            dlfm.FilePath = documentPath;
-            return dlfm;
-        }
+        
 
-        /// <summary>
-        /// 导入工序列表
-        /// </summary>
-        /// <param name="documentPatch">Excel文档路径</param>
-        /// <returns></returns>
-        public List<ProductFlowModel> ImportProductFlowListBy(string documentPatch)
-        {
-            return documentPatch.GetEntitiesFromExcel<ProductFlowModel>();
-            
-        }
+        
 
         #endregion
 
