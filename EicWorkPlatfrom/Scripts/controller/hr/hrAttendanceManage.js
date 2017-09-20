@@ -1,4 +1,5 @@
-﻿/// <reference path="../../common/angulee.js" />
+﻿/// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/print/print.min.js" />
+/// <reference path="../../common/angulee.js" />
 /// <reference path="../../angular.min.js" />
 /// <reference path="E:\杨垒 含系统\Project\EicWebPlatform\EicWorkPlatfrom\Content/pdfmaker/pdfmake.js" />
 var hrModule = angular.module('bpm.hrApp');
@@ -597,7 +598,9 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         edittingRow: null,
         searchedWorkers: [],
         isSingle: true,//是否搜寻人员或部门
-        dataTable:null,
+        dataTable: null,
+        boardViewSize: '100%',
+        editWindowShow:true,
         init: function () {
             vmManager.dataSets = [];
             vmManager.selectedWorkers = [];
@@ -638,7 +641,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
             //累计时数
             tempVm.workOverCount = 0;
             angular.forEach(vmManager.dataSets, function (row) {
-                $scope.tempVm.workOverCount += row.WorkOverHours;
+                $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
             })
         },
         //复制粘贴行
@@ -660,16 +663,13 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
             tempVm.workOverCount = 0;
             angular.forEach(vmManager.dataSets, function (row) {
                 $scope.tempVm.workOverCount += parseFloat(row.WorkOverHours);
-            })
-        
-           
+            })             
         },
         //取消编辑
         cancelEdit: function (item) {
             item.pheditting = false;
             item.isEdittingWorkerId = false;
             item.wkhing = false;
-
         },
         //获取行
         getCurrentRow: function (item) {
@@ -841,8 +841,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         },     
         //加班时数输入框
         inputWorkOverHours: function ($event, item)
-        {  
-           
+        {         
             var year = new Date().getFullYear();
             var mm = new Date().getMonth() + 1;               
             var dd = new Date().getDate();
@@ -852,7 +851,12 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
             focusSetter.doWhenKeyDown($event, function () {                 
                 vmManager.editNextworkOverHours($event, item);
             });                   
-        },        
+        },    
+        //显示后台数据
+        showWorkOverHoursDatas: function ()
+        {   
+            vmManager.editWindowShow = !vmManager.editWindowShow;
+        }
     };
     //导入excel
     $scope.selectFile = function (el) {

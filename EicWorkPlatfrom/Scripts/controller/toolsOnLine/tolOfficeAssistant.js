@@ -55,7 +55,7 @@ officeAssistantModule.factory('oAssistantDataOpService', function (ajaxService) 
         })
     }
     ///查询上报问题处理状态
-    oAssistant.dfg = function (problemSove, department, mode) {
+    oAssistant.getReportImproveProbleDatas = function (problemSove, department, mode) {
         var url = oaUrlPrefix + 'GetReportImproveProbleDatas';
         return ajaxService.getData(url, {
             problemSolve: problemSove,
@@ -571,8 +571,7 @@ officeAssistantModule.controller('reportImproveProblemCtrl', function ($scope, o
             vmManager.searchDataset = [];
             vmManager.datasource = [];
             oAssistantDataOpService.getReportImproveProbleDatas(queryFields.problemSolve, queryFields.department, mode).then(function (datas) {
-
-                vmManager.datasource = datas;
+            vmManager.datasource = datas;
             })
         },
 
