@@ -76,6 +76,23 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
             orderId: orderId,
         });
     };
+    ////得到此工号最后一次录入信息
+    reportDataOp.getWorkerDailyLastInfoDatas = function (workerId) {
+        var url = urlPrefix + 'GetWorkerDailyInfoBy';
+        return ajaxService.getData(url, {
+            workerId: workerId,
+        });
+    };
+    ///此工单,站别，日期下  所有职员录入的信息
+    reportDataOp.getProcessesNameDailyInfoDatas = function (date, orderId, processesName) {
+        var url = urlPrefix + 'getProcessesNameDailyDataBy';
+        return ajaxService.getData(url, {
+            processesName: processesName,
+            orderId: orderId,
+            date: date,
+        });
+    };
+
     reportDataOp.saveDailyReportData = function (entity) {
         var url = urlPrefix + 'SaveDailyReportData';
         return ajaxService.postData(url, {
@@ -454,10 +471,10 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         MasterName: null,
         WorkerId: null,
         WorkerName: null,
-        TodayProductionCount: null,
-        TodayBadProductCount: null,
-        WorkerProductionTime: null,
-        WorkerNoProductionTime: null,
+        TodayProductionCount: 0,
+        TodayBadProductCount: 0,
+        WorkerProductionTime: 0,
+        WorkerNoProductionTime: 0,
         WorkerNoProductionReason: null,
         Field1: null,
         Field2: null,
@@ -477,6 +494,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     var vmManager = {
         ///部门 
         department: leeLoginUser.department,
+        queryActiveTab: 'qryFolwProcessTab',
         putInDisplay: false,
         classType: '白班',
         classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: '晚班' }],
@@ -484,6 +502,15 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         productionFlowShow: true,
         init: function () {
             uiVM = _.clone(initVM);
+            $scope.vm = uiVM;
+        },
+        continueSaveInit: function () {
+            uiVM.TodayProductionCount = 0;
+            uiVM.TodayBadProductCount = 0;
+            uiVM.WorkerProductionTime = 0;
+            uiVM.WorkerNoProductionTime = 0;
+            uiVM.WorkerId = null;
+            focusSetter.workerIdFocus = true;
             $scope.vm = uiVM;
         },
         ///选择部门
@@ -519,6 +546,9 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                     else {
                         vmManager.selectWorker(null);
                     }
+                });
+                $scope.searchedWorkersPrommise = dReportDataOpService.getWorkerDailyLastInfoDatas(uiVM.WorkerId).then(function (dailyInfo) {
+
                 });
             }
         },
@@ -564,7 +594,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         //选择录入的项次
         getProductionFlowDatas: function (productName, orderId) {
             $scope.searchPromise = dReportDataOpService.getProductionFlowCountDatas(vmManager.department, productName, orderId).then(function (datas) {
-                console.log(datas);
                 vmManager.productionFlowDatas = datas;
                 vmManager.productionFlowShow = true;
                 vmManager.isShowhavePutInData = false;
@@ -586,12 +615,12 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             };
         },
         //在数据查找相应的信息
-        selectProcesses: function () {
-            uiVM.ProcessesIndex = item.ProcessesIndex;
-            uiVM.ProcessesName = item.ProcessesName;
-            uiVM.ProcessesType = item.ProcessesType;
-            uiVM.StandardProductionTime = item.StandardProductionTime;
-            uiVM.StandardProductionTimeType = item.StandardProductionTimeType
+        selectProcesses: function (info) {
+            uiVM.ProcessesIndex = info.ProcessesIndex;
+            uiVM.ProcessesName = info.ProcessesName;
+            uiVM.ProcessesType = info.ProcessesType;
+            uiVM.StandardProductionTime = info.StandardProductionTime;
+            uiVM.StandardProductionTimeType = info.StandardProductionTimeType
             vmManager.isProcessesNameShow = true;
         }, //选择工序
         showPutInForm: function (item) {
@@ -601,17 +630,19 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 uiVM.ProcessesType = item.ProcessesType;
                 uiVM.StandardProductionTime = item.StandardProductionTime;
                 uiVM.StandardProductionTimeType = item.StandardProductionTimeType;
+                uiVM.InPutDate = vmManager.putInDate;
                 focusSetter.workerIdFocus = true;
+                $scope.searchPromise = dReportDataOpService.getProcessesNameDailyInfoDatas(uiVM.InPutDate, uiVM.OrderId, uiVM.ProcessesName).then(function (dailyDatas) {
+                    console.log(dailyDatas);
+                    vmManager.havePutInData = dailyDatas;
+                });
+                vmManager.queryActiveTab = 'qryUserInfoTab';
             }
             else {
                 uiVM.ProcessesIndex = 0;
             }
             if (!vmManager.putInDisplay)
             { vmManager.putInDisplay = true; }
-        },
-        findhavePutInData: function () {
-            $scope.searchPromise = dReportDataOpService.getProductionFlowList(uiVM.OrderId, uiVM.ProductId, uiVM.ProcessesName).then(function (datas) {
-            });
         },
         // 录入
         putInshowPutInForm: function (item) {
@@ -633,10 +664,11 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             $scope.searchPromise = dReportDataOpService.saveDailyReportData(uiVM).then(function (opresult) {
                 if (opresult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
-                    vmManager.havePutInData.push(opresult.entity);
+                    console.log(opresult.Entity);
+                    vmManager.havePutInData.push(opresult.Entity);
                     vmManager.productionFlowShow = false;
                     vmManager.isShowhavePutInData = true;
-                    vmManager.init();
+                    vmManager.continueSaveInit();
                 }
             });
         });

@@ -85,31 +85,11 @@
                 <div style="padding:10px;overflow-y:auto;height:480px">
                     <form role="form" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                         <fieldset>
-                            <div class="form-group">
-                                <label for="orderId" class="col-md-2 control-label">制令单</label>
-                                <div class="col-md-4">
-                                    <input name="orderId" class="form-control" readonly ng-model="vm.OrderId"
-                                           focus-if="focus.workerIdFocus" focus-setter
-                                           required />
-                                </div>
-                                <label for="orderQuantity" class="col-md-2 control-label">需产量单</label>
-                                <div class="col-md-4">
-                                    <input name="orderQuantity" class="form-control" ng-model="vm.OrderQuantity"
-                                           required />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">品名:</label>
-                                <div class="col-md-4">
-                                    <input name="productName" type="text" readonly class="form-control"
-                                           ng-model="vm.ProductName" required />
-                                </div>
-                                <label class="col-md-2 control-label">规格:</label>
-                                <div class="col-md-4">
-                                    <input name="productSpec" type="text" readonly class="form-control"
-                                           ng-model="vm.ProductSpec" required />
-                                </div>
+                            <div class="dropdown-header">
+                                <label class="control-label">制令单: {{vm.OrderId}} </label>
+                                <label class="control-label">需产量单:{{vm.OrderQuantity}}</label>
+                                <label class="control-label">品名:{{vm.ProductName}}</label>
+                                <label class="control-label">规格:{{vm.ProductSpec}}</label>
                             </div>
                             @*工号人员信息*@
                             <div class="form-group">
@@ -169,7 +149,7 @@
                                             <small ng-message="required">录入工序不能为空</small>
                                         </div>
                                         <div class="input-group-addon">
-                                            <label class="label label-primary"> <i class="fa fa-cutlery"></i> {{vm.ProcessesName}}</label>
+                                            <label class="label label-primary" style="max-width:1px;"> <i class="fa fa-cutlery"></i> {{vm.ProcessesName}}</label>
                                         </div>
                                         <div class="input-group-btn">
                                             <button type="button" class="btn btn-primary"
@@ -267,53 +247,59 @@
             </div>
             <div class="pull-right" style="width:45%;">
                 <div class="bs-callout bs-callout-info" style="height:500px;overflow-y:auto;">
-                    <div class="table-responsive" cg-busy="{promise:searchPromise}">
-                        <table ng-if="vmManager.productionFlowShow" class="table table-condensed table-bordered table-hover">
-                            <thead>
-                                <tr class="info">
-                                    <th>工艺编号</th>
-                                    <th>工艺名称</th>
-                                    <th>工单数</th>
-                                    <th>需录数</th>
-                                    <th>已录数</th>
-                                    <th>差异数</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="item in vmManager.productionFlowDatas track by $index">
-                                    <td>{{item.ProcessesIndex}}</td>
-                                    <td>
-                                        <a href="javascript:;" ng-click="vmManager.showPutInForm(item)">{{item.ProcessesName}}</a>
-                                    </td>
-                                    <td>{{item.OrderProductNumber}}</td>
-                                    <td>{{item.OrderNeedPutInNumber}}</td>
-                                    <td>{{item.OrderHavePutInNumber}}</td>
-
-                                    <td>{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <table ng-show="vmManager.isShowhavePutInData" class="table table-condensed table-bordered table-hover">
-                            <thead>
-                                <tr class="info">
-                                    <th>工号</th>
-                                    <th>姓名</th>
-                                    <th>工序</th>
-                                    <th>录入产量</th>
-                                    <th>工时</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="putInData in  vmManager.havePutInData track by $index">
-                                    <td>{{putInData.WorkerId}}</td>
-                                    <td>{{putInData.WorkerName}}</td>
-                                    <td>{{putInData.ProcessesName}}</td>
-                                    <td>{{putInData.TodayProductionCount}}</td>
-                                    <td>{{putInData.StandardProductionTime}}({{putInData.StandardProductionTimeType}})</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="table-responsive" bs-tabs bs-active-pane="vmManager.queryActiveTab" cg-busy="{promise:searchPromise}">
+                        <div bs-pane data-title="工艺信息统计" class="active" data-name="qryFolwProcessTab">
+                            <table ng-if="vmManager.productionFlowShow" class="table table-condensed table-bordered table-hover">
+                                <thead>
+                                    <tr class="info">
+                                        <th>工艺编号</th>
+                                        <th>工艺名称</th>
+                                        <th>工单数</th>
+                                        <th>需录数</th>
+                                        <th>已录数</th>
+                                        <th>差异数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in vmManager.productionFlowDatas track by $index">
+                                        <td>{{item.ProcessesIndex}}</td>
+                                        <td>
+                                            <a href="javascript:;" ng-click="vmManager.showPutInForm(item)">{{item.ProcessesName}}</a>
+                                        </td>
+                                        <td>{{item.OrderProductNumber}}</td>
+                                        <td>{{item.OrderNeedPutInNumber}}</td>
+                                        <td>{{item.OrderHavePutInNumber}}</td>
+                                        <td>{{item.OrderNeedPutInNumber - item.OrderHavePutInNumber}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div bs-pane data-title="人员录入信息统计" class="active" data-name="qryUserInfoTab">
+                            <table class="table table-condensed table-bordered table-hover">
+                                <thead>
+                                    <tr class="info">
+                                        <th>工号</th>
+                                        <th>姓名</th>
+                                        <th>工序站别</th>
+                                        <th>录入产量</th>
+                                        <th>生产工时</th>
+                                        <th>非生产时</th>
+                                        <th>录入时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="putInData in  vmManager.havePutInData track by $index">
+                                        <td>{{putInData.WorkerId}}</td>
+                                        <td>{{putInData.WorkerName}}</td>
+                                        <td>{{putInData.ProcessesName}}</td>
+                                        <td>{{putInData.TodayProductionCount}}</td>
+                                        <td>{{putInData.WorkerProductionTime}}</td>
+                                        <td>{{putInData.WorkerNoProductionTime}}</td>
+                                        <td>{{putInData.OpTime}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

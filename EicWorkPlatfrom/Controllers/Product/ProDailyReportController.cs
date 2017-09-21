@@ -215,7 +215,28 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.GetProductionFlowCountDatas(department, orderId, productName);
             return DateJsonResult(datas);
         }
-
+        /// <summary>
+        /// 由工号得到最后一次录入信息
+        /// </summary>
+        /// <param name="wokerId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetWorkerDailyInfoBy(string wokerId)
+        {
+            var datas = "";
+            return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="wokerId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult getProcessesNameDailyDataBy(DateTime date, string orderId, string processesName)
+        {
+            var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.GetDailyDataBy(date, orderId, processesName);
+            return DateJsonResult(datas);
+        }
         /// <summary>
         /// 
         /// </summary>

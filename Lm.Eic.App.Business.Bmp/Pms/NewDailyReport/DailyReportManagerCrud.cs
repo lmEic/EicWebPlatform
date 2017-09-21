@@ -308,6 +308,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         /// <returns></returns>
         private OpResult Add(DailyProductionReportModel model)
         {
+            model.InPutDate = model.InPutDate.ToDate();
             //生成组合键值
             return irep.Insert(model).ToOpResult(OpContext);
         }
@@ -350,6 +351,15 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         internal double GetDailyProductionCountBy(string orderId, string processesName)
         {
             return irep.Entities.Where(e => e.OrderId == orderId && e.ProcessesName == processesName).ToList().Sum(f => f.TodayProductionCount);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        internal List<DailyProductionReportModel> GetDailyDatasBy(DateTime date, string orderId, string processesName)
+        {
+            DateTime dateShort = date.ToDate();
+            return irep.Entities.Where(e => e.InPutDate == dateShort && e.OrderId == orderId && e.ProcessesName == processesName).ToList();
         }
         #endregion
     }

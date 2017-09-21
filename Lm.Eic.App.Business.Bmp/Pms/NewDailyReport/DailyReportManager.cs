@@ -165,7 +165,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     model.ProductionDate = haveDispatchOrder.ProductionDate;
                     model.ValidDate = haveDispatchOrder.ValidDate;
                 }
-                
+
                 if (!returndatas.Contains(model))
                     returndatas.Add(model);
             });
@@ -186,7 +186,6 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
     {
         public OpResult StoreDailyReport(DailyProductionReportModel model)
         {
-
             return DailyReportCrudFactory.DailyProductionReport.Store(model, true);
         }
         public List<ProductFlowCountDatasVm> GetProductionFlowCountDatas(string department, string orderId, string productName)
@@ -194,7 +193,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             List<ProductFlowCountDatasVm> retrundatas = new List<ProductFlowCountDatasVm>();
             ProductFlowCountDatasVm modelVm = null;
             var datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowInfoBy(new QueryDailyProductReportDto()
-            { Department = department, ProductName = productName, OrderId = orderId, SearchMode = 2 });
+            { Department = department, ProductName = productName, SearchMode = 2 });
             if (datas == null || datas.Count == 0) return retrundatas;
             datas.ForEach(e =>
             {
@@ -213,6 +212,17 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     retrundatas.Add(modelVm);
             });
             return retrundatas;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="orderId"></param>
+        /// <param name="processesName"></param>
+        /// <returns></returns>
+        public List<DailyProductionReportModel> GetDailyDataBy(DateTime date, string orderId, string processesName)
+        {
+            return DailyReportCrudFactory.DailyProductionReport.GetDailyDatasBy(date, orderId, processesName);
         }
     }
 }
