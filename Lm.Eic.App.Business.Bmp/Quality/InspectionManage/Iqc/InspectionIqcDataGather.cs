@@ -103,7 +103,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             InspectionItemDataSummaryVM model = null;
             iqcNeedInspectionsItemdatas.ForEach(m =>
             {
-                var inspectionMode = GetJudgeInspectionMode("IQC", m.MaterialId, m.InspectionItem);
+                var inspectionMode = GetJudgeIQCInspectionMode("IQC", m.MaterialId);
                 ///得到检验方法数据
                 var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(m.InspectionLevel, m.InspectionAQL, orderMaterialInfo.ProduceNumber, inspectionMode);
                 ///得到已经检验的数据  
@@ -185,11 +185,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                        model.EquipmentId = iqcItemConfigdata.EquipmentId;
                    //数据采集类型
                    model.InspectionDataGatherType = iqcItemConfigdata.InspectionDataGatherType;
-                   if (model.InspectionDataGatherType == "D" && model.InspectionItemResult == "OK")
+                   if ((model.InspectionDataGatherType == "D" || model.InspectionDataGatherType == "E" || model.InspectionDataGatherType == "F") && model.InspectionItemResult == "OK")
                    { model.HaveFinishDataNumber = model.NeedFinishDataNumber; }
                    //如果没有检验方式 再去按规则去生成
                    if (model.InspectionMode == string.Empty)
-                       model.InspectionMode = GetJudgeInspectionMode("IQC", m.MaterialId, m.InspecitonItem);
+                       model.InspectionMode = GetJudgeIQCInspectionMode("IQC", m.MaterialId);
                    var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(model.InspectionLevel, model.InspectionAQL, m.MaterialCount, model.InspectionMode);
                    if (inspectionModeConfigModelData != null)
                    {
@@ -306,7 +306,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        private string GetJudgeInspectionMode(string InspectionClass, string materialId, string InspecitonItem)
+        private string GetJudgeIQCInspectionMode(string InspectionClass, string materialId)
         {
             try
             {

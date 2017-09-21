@@ -63,7 +63,7 @@
                     </p>
                 </div>
                 <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" style="height:450px;overflow-y:auto;" bs-collapse>
-                    <div class="panel panel-default" ng-repeat="item in vmManager.panelDataSource">
+                    <div class="panel panel-default" ng-repeat="item in vmManager.panelDataset">
                         <div class="panel-heading" role="tab" ng-click="vmManager.selectMaterialIdItem(item.materialIdItem)">
                             <a bs-collapse-toggle style="cursor:pointer;color:#000" title="{{item.productId}}">
                                 {{item.productName}}
@@ -89,10 +89,10 @@
                                 </span>
                             </a>
                             @*分页*@
-                            @* <div ng-if="item.inspectionItemDatas.length>0"
-                                     yl-pagination data-dataset="item.dataSets"
-                                     data-datasource="item.inspectionItemDatas">
-                                </div>*@
+                            <div ng-if="item.dataSets.length>0"
+                                 yl-pagination data-dataset="item.dataSets"
+                                 data-datasource="item.inspectionItemDatas">
+                            </div>
                         </div>
                     </div>
                     @*分页*@

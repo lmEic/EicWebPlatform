@@ -1182,6 +1182,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         currentOrderSubIdItem: null,
         currentInspectionItem: null,
         panelDataSource: [],
+        panelDataSet: [],
         //生成
         createTypeEInput: function () {
             vmManager.dataList = [];
@@ -1213,23 +1214,22 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         //按工单获取物料品号信息 已抽数量 OrderNumber
         getFqcOrderInfo: function () {
             if (vmManager.orderId) {
-                vmManager.panelDataSource = [];
+                vmManager.panelDataSet = [];
                 $scope.searchPromise = qualityInspectionDataOpService.getFqcOrderInfoDatas(vmManager.orderId).then(function (datas) {
                     vmManager.orderInfo = datas.orderInfo;
-
                     console.log(vmManager.orderInfo);
-
                     angular.forEach(datas.sampledDatas, function (item) {
                         var dataItem = { orderId: item.OrderId, orderIdNumber: item.OrderIdNumber, inspectionStatus: item.InspectionStatus, inspectionItemDatas: [], dataSets: [] };
-                        vmManager.panelDataSource.push(dataItem);
+                        vmManager.panelDataSet.push(dataItem);
                     })
-
+                    vmManager.panelDataSource = vmManager.panelDataSet;
                     vmManager.orderId = null;
                 });
             }
         },
         //按物料品号获取检验项目信息
         selectOrderSubIdItem: function (item) {
+            vmManager.cacheDatas = [];
             vmManager.currentOrderSubIdItem = item;
             if (item.inspectionItemDatas.length > 0) return;
             var key = item.orderId + item.orderIdNumber;
@@ -1260,29 +1260,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
             var dataGatherType = vmManager.currentInspectionItem.InspectionDataGatherType;
             vmManager.createGataherDataUi(dataGatherType, item);
         },
-        ///根据采集方式创建数据采集窗口
-        //createGataherDataUi: function (dataGatherType, item) {
-        //    var dataList = item.InspectionItemDatas === null || item.InspectionItemDatas === "" ? [] : item.InspectionItemDatas.split(',');
-        //    if (dataGatherType === "A") {
-        //        vmManager.inputDatas = leeHelper.createDataInputs(item.NeedFinishDataNumber, 5, dataList, function (itemdata) {
-        //            itemdata.result = leeHelper.checkValue(vmManager.currentInspectionItem.SizeUSL, vmManager.currentInspectionItem.SizeLSL, itemdata.indata);
-        //            vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.result });
-        //        });
-        //    }
-        //    else if (dataGatherType === "C") {
-        //        if (dataList.length === 0) {
-        //            for (var i = 0; i < item.NeedFinishDataNumber; i++) {
-        //                dataList.push('OK');
-        //            }
-        //        }
-        //        vmManager.inputDatas = leeHelper.createDataInputs(item.NeedFinishDataNumber, 5, dataList, function (itemdata) {
-        //            vmManager.dataList.push({ index: itemdata.index, data: itemdata.indata, result: itemdata.indata === "OK" ? true : false });
-        //        });
-        //    }
-
-        //},
-
-
         //根据采集方式创建数据采集窗口
         createGataherDataUi: function (dataGatherType, item) {
             var dataList = item.InspectionItemDatas === null || item.InspectionItemDatas === "" ? [] : item.InspectionItemDatas.split(',');
@@ -1323,7 +1300,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 dataInputItem.result = item.result;
             }
         },
-
         //数据集合
         dataList: [],
         inputDatas: [],
@@ -1374,45 +1350,9 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         },
     }
     $scope.vmManager = vmManager;
-
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     ////保存Fqc采集数据
-    //operate.saveGatherDatas = function () {
-    //    var dataList = [], result = true;
-    //    var dataItem = vmManager.currentInspectionItem;
-    //    if (dataItem.InspectionDataGatherType === "A" || dataItem.InspectionDataGatherType === "C") {
-    //        //获取数据及判定结果
-    //        angular.forEach(vmManager.dataList, function (item) {
-    //            dataList.push(item.data);
-    //            result = result && item.result;
-    //        });
-    //        //数据列表字符串
-    //        dataItem.InspectionItemDatas = dataList.join(",");
-    //        dataItem.InspectionItemResult = result ? "OK" : "NG";
-    //        dataItem.HaveFinishDataNumber = vmManager.dataList.length;
-    //    }
-    //    else if (dataItem.InspectionDataGatherType === "D") {
-    //        dataItem.InspectionItemResult = dataItem.InspectionItemDatas;
-    //        dataItem.HaveFinishDataNumber = dataItem.NeedFinishDataNumber;
-    //    }
-    //    dataItem.InsptecitonItemIsFinished = true;
-    //    leeHelper.setUserData(dataItem);
-    //    leeHelper.copyVm($scope.opPersonInfo, dataItem);
-    //    dataItem.OpSign = leeDataHandler.dataOpMode.add;
-    //    console.log(dataItem);
-    //    $scope.opPromise = qualityInspectionDataOpService.storeFqcInspectionGatherDatas(dataItem).then(function (opResult) {
-    //        if (opResult.Result) {
-    //            console.log(vmManager.panelDataSource);
-    //            //更新界面检测项目列表
-    //            vmManager.updateInspectionItemList(dataItem);
-    //            vmManager.inputDatas = [];
-    //            vmManager.dataList = [];
-    //            //切换到下一项
-    //        }
-    //    });
-    //};
-    //保存Fqc采集数据
     operate.saveGatherDatas = function () {
         var dataList = [], result = true;
         var dataItem = vmManager.currentInspectionItem;
@@ -1435,6 +1375,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
             dataItem.HaveFinishDataNumber = dataItem.NeedFinishDataNumber;
         }
         dataItem.InsptecitonItemIsFinished = true;
+        data.classType = vmManager.classType;
         leeHelper.setUserData(dataItem);
         $scope.opPromise = qualityInspectionDataOpService.storeFqcInspectionGatherDatas(dataItem).then(function (opResult) {
 
@@ -1447,7 +1388,6 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
             }
         });
     };
-
     //上传附件
     $scope.selectFile = function (el) {
         leeHelper.upoadFile(el, function (fd) {
