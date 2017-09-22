@@ -447,7 +447,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
 productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicConfigTreeSet, connDataOpService, dReportDataOpService, $modal) {
     ///日报录入视图模型
     var uiVM = {
-        Department: leeLoginUser.department,
+        Department: null,
         ClassType: '白班',
         InPutDate: new Date(),
         OrderId: null,
@@ -590,6 +590,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             uiVM.OrderQuantity = item.ProduceNumber - item.PutInStoreNumber;
             vmManager.getProductionFlowDatas(uiVM.ProductName, uiVM.OrderId);
             vmManager.putInDisplay = false;
+            vmManager.queryActiveTab = 'qryFolwProcessTab';
         },
         //选择录入的项次
         getProductionFlowDatas: function (productName, orderId) {
@@ -631,6 +632,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 uiVM.StandardProductionTime = item.StandardProductionTime;
                 uiVM.StandardProductionTimeType = item.StandardProductionTimeType;
                 uiVM.InPutDate = vmManager.putInDate;
+                vmManager.havePutInData = [];
                 focusSetter.workerIdFocus = true;
                 $scope.searchPromise = dReportDataOpService.getProcessesNameDailyInfoDatas(uiVM.InPutDate, uiVM.OrderId, uiVM.ProcessesName).then(function (dailyDatas) {
                     console.log(dailyDatas);
@@ -659,6 +661,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     $scope.operate = operate;
     operate.saveAlldata = function (isValid) {
         leeHelper.setUserData(uiVM);
+        uiVM.Department = vmManager.department;
         console.log(uiVM);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
             $scope.searchPromise = dReportDataOpService.saveDailyReportData(uiVM).then(function (opresult) {
