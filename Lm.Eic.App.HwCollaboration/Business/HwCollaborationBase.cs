@@ -65,7 +65,7 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// <param name="accessApiUrl"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        protected OpResult SynchronizeDatas(string accessApiUrl, HwCollaborationDataTransferModel entity)
+        protected OpResult SynchronizeDatas(string accessApiUrl, HwCollaborationDataTransferModel entity, Func<HwCollaborationDataTransferModel, OpResult> storeHandler = null)
         {
             if (entity == null)
             {
@@ -83,8 +83,15 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 {
                     return OpResult.SetErrorResult("本次操作失败！失败原因：" + returnMsg);
                 }
-                var dataEntity = CreateOperateInstance(entity);
-                return this.dbAccess.Store(dataEntity);
+                if (storeHandler == null)
+                {
+                    var dataEntity = CreateOperateInstance(entity);
+                    return this.dbAccess.Store(dataEntity);
+                }
+                else
+                {
+                    return storeHandler(entity);
+                }
             }
             catch (System.Exception ex)
             {

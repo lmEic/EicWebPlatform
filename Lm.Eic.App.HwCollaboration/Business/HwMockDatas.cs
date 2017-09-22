@@ -67,6 +67,32 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 };
             }
         }
+
+        public static VendorItemRelationDto VendorItems
+        {
+            get
+            {
+                return new VendorItemRelationDto
+                {
+                    vendorItemList = new List<SccVendorItemRelationVO>() {
+                        new SccVendorItemRelationVO() {
+                             itemCategory= "BOSA Pigtail",
+                             vendorItemCode= "349213C0350P0RT",
+                             customerVendorCode= "157",
+                             leadTime= 0,
+                             vendorItemDesc= "APD",
+                             unitOfMeasure= "PCS",
+                             customerItemCode= "NA",
+                             vendorProductModel= "",
+                             customerProductModel= "",
+                             inventoryType= "FG",
+                             goodPercent= 1,
+                             lifeCycleStatus= "MP"
+                        }
+                    }
+                };
+            }
+        }
         /// <summary>
         /// 数据传输日志
         /// </summary>
