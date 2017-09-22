@@ -31,6 +31,10 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// 数据访问助手
         /// </summary>
         protected HwDatasTransferDb dbAccess = null;
+        /// <summary>
+        /// ERP数据访问助手
+        /// </summary>
+        protected LmErpDb erpDbAccess = null;
         protected string moduleName = null;
         protected string apiUrl = null;
         #endregion
@@ -38,10 +42,10 @@ namespace Lm.Eic.App.HwCollaboration.Business
         public HwCollaborationBase(string modulename, string apiUrl)
         {
             dbAccess = new HwDatasTransferDb();
+            erpDbAccess = new LmErpDb();
             this.moduleName = modulename;
             this.apiUrl = apiUrl;
         }
-
 
         #region method
         /// <summary>
@@ -68,6 +72,9 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 return OpResult.SetErrorResult("数据实体模型不能为null！");
             }
             var dto = ObjectSerializer.DeserializeObject<T>(entity.OpContent);
+
+            string ss = ObjectSerializer.SerializeObject(dto);
+
             try
             {
                 string returnMsg = this.AccessApi(accessApiUrl, dto);
@@ -133,6 +140,14 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 OpLog = ObjectSerializer.SerializeObject(opLog)
             };
         }
+        /// <summary>
+        /// 自动从ERP中获取数据
+        /// </summary>
+        /// <returns></returns>
+        public virtual T AutoGetDatasFromErp()
+        {
+            return default(T);
+        }
         #endregion
     }
 
@@ -142,13 +157,23 @@ namespace Lm.Eic.App.HwCollaboration.Business
     internal class HwAccessApiUrl
     {
         /// <summary>
+        /// 物料基础信息
+        /// </summary>
+        public const string MaterialBaseInfoApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importVendorItems/1.0.0";
+
+        /// <summary>
+        /// 关键物料BOM信息
+        /// </summary>
+        public const string MaterialKeyBomApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importKeyMaterials/1.0.0";
+
+        /// <summary>
         /// 人力
         /// </summary>
         public const string ManPowerApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importManpower/1.0.0";
         /// <summary>
         /// 库存明细
         /// </summary>
-        public const string FactoryInventoryApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importCapacity/1.0.0";
+        public const string FactoryInventoryApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importInventory/1.0.0";
         /// <summary>
         /// 在制明细
         /// </summary>
@@ -160,7 +185,7 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// <summary>
         /// 在途明细
         /// </summary>
-        public const string PurchaseOnWayApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importMaterialShipment/1.0.0";
+        public const string PurchaseOnWayApiUrl = "https://api-beta.huawei.com:443/service/esupplier/importOpenPoData/1.0.0";
     }
 
     internal class HwModuleName
@@ -173,8 +198,30 @@ namespace Lm.Eic.App.HwCollaboration.Business
 
         public const string MaterialShipment = "物料发料信息";
 
-        //public const string MaterialInventory = "物料库存明细";
+        public const string MaterialBaseInfo = "物料基础信息设置";
 
-        //public const string MaterialMaking = "物料在制明细";
+        public const string MaterialKeyBom = "关键物料BOM信息";
+    }
+    /// <summary>
+    /// 扩展类
+    /// </summary>
+    public static class HwCollaborationExtension
+    {
+        public static string ToFormatDate(this string date)
+        {
+            return string.Format("{0}-{1}-{2}", date.Substring(0, 4), date.Substring(4, 2), date.Substring(6, 2));
+        }
+
+        public static string ToDiscriptionOrderStatus(this string orderStatus)
+        {
+            Dictionary<string, string> statusDic = new Dictionary<string, string>() {
+                { "1","未生产"},
+                { "2","已发料"},
+                { "3","生产中"},
+                { "Y","已完工"},
+                { "y","指定完工"}
+            };
+            return statusDic[orderStatus.Trim()];
+        }
     }
 }

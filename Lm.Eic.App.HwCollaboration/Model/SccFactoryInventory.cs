@@ -26,7 +26,7 @@ namespace Lm.Eic.App.HwCollaboration.Model
         /// </summary>
         public string vendorFactoryCode { get; set; }
         /// <summary>
-        /// 供应商物料编码
+        /// 供应商物料编码 厂内料号
         /// 非空
         /// </summary>
         public string vendorItemCode { get; set; }

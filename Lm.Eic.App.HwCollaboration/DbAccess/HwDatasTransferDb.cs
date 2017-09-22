@@ -31,7 +31,7 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         {
             StringBuilder sbSql = new StringBuilder();
             sbSql.Append("select Top 1 OpModule, OpContent,OpLog, OpDate, OpTime, OpPerson, OpSign from HwCollaboration_DataTransfer")
-                .AppendFormat(" where OpModule='{0}'", moduleName);
+                .AppendFormat(" where OpModule='{0}' order by Id_Key Desc", moduleName);
             return DbHelper.Bpm.LoadEntity<HwCollaborationDataTransferModel>(sbSql.ToString());
         }
         private OpResult Insert(HwCollaborationDataTransferModel entity)

@@ -29,6 +29,12 @@ angular.module('bpm.toolsOnlineApp', ['eicomm.directive', 'mp.configApp', 'ngAni
         templateUrl: wfUrlPrefix + 'WFInternalContactForm'
     });
     //--------------华为协同--------------------
+    $stateProvider.state('hwMaterialBaseInfo', {//物料基础信息
+        templateUrl: hwUrlPrefix + 'HwMaterialBaseInfo'
+    });
+    $stateProvider.state('hwMaterialBomInfo', {//物料BOM信息
+        templateUrl: hwUrlPrefix + 'HwMaterialBomInfo'
+    });
     $stateProvider.state('hwManpowerInput', {//人力管理
         templateUrl: hwUrlPrefix + 'HwManpowerInput'
     });

@@ -1529,6 +1529,8 @@
     <Content Include="Views\TolCooperateWithHw\HwMakingVoDetail.cshtml" />
     <Content Include="Views\TolCooperateWithHw\HwShipmentVoDetail.cshtml" />
     <Content Include="Views\TolCooperateWithHw\HwPurchaseOnWay.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwMaterialBaseInfo.cshtml" />
+    <Content Include="Views\TolCooperateWithHw\HwMaterialBomInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

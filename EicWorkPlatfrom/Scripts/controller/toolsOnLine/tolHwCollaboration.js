@@ -4,6 +4,7 @@ var officeAssistantModule = angular.module('bpm.toolsOnlineApp');
 officeAssistantModule.factory('hwDataOpService', function (ajaxService) {
     var hwDataOp = {};
     var hwUrlPrefix = '/' + leeHelper.controllers.TolCooperateWithHw + '/';
+    //----------人力信息----------------
     //获取人力信息
     hwDataOp.getManPower = function () {
         var url = hwUrlPrefix + 'GetManPower';
@@ -12,6 +13,19 @@ officeAssistantModule.factory('hwDataOpService', function (ajaxService) {
     //保存人力信息数据
     hwDataOp.saveManPower = function (entity) {
         var url = hwUrlPrefix + 'SaveManPower';
+        return ajaxService.postData(url, {
+            entity: entity,
+        });
+    };
+    //----------物料信息模块：库存、在制、发料--------------------
+    //获取物料信息信息
+    hwDataOp.getMaterialDetails = function () {
+        var url = hwUrlPrefix + 'GetMaterialDetails';
+        return ajaxService.getData(url);
+    };
+    //保存库存信息数据
+    hwDataOp.saveMaterialInventory = function (entity) {
+        var url = hwUrlPrefix + 'SaveMaterialInventory';
         return ajaxService.postData(url, {
             entity: entity,
         });
@@ -48,6 +62,93 @@ var hwApiHelper = (function () {
     };
 })();
 
+officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpService, $scope) {
+    ///数据实体模型
+    var dataVM = hwApiHelper.crateDataEntity();
+    $scope.materialVM = {
+        itemCategory: "",
+        vendorItemCode: "",
+        customerVendorCode: "157",
+        leadTime: 0,
+        vendorItemDesc: "",
+        unitOfMeasure: "PCS",
+        customerItemCode: "NA",
+        vendorProductModel: "",
+        customerProductModel: "",
+        inventoryType: "FG",
+        goodPercent: 0,
+        lifeCycleStatus: "MP"
+    };
+    var initMaterialVM = _.clone($scope.materialVM);
+
+    var editDialog = $scope.editDialog = leePopups.dialog();
+
+    var vmManager = $scope.vmManager = {
+        dataEntity: null,
+        oldSelectedItem: null,
+        getMaterialBaseInfo: function () {
+            $scope.searchPromise = hwDataOpService.getManPower().then(function (data) {
+                //vmManager.dataEntity = JSON.parse(data.entity.OpContent);
+
+                ////给每个实体添加键值
+                //leeHelper.setObjectsGuid(vmManager.dataEntity.manpowerMainList);
+                //angular.forEach(vmManager.dataEntity.manpowerMainList, function (item) {
+                //    leeHelper.setObjectsGuid(item.keyDeptDataList);
+                //})
+
+                //console.log(vmManager.dataEntity);
+            });
+        },
+        showEditWindow: function (item) {
+            vmManager.oldSelectedItem = _.clone(item);
+            $scope.materialVM = item;
+            editDialog.show();
+        },
+        confirmEditData: function () {
+            if ($scope.materialVM.isAdd) {
+                leeHelper.setObjectGuid($scope.materialVM);
+                var isExistData = _.find(vmManager.dataEntity.vendorItemList, { vendorItemCode: $scope.materialVM.vendorItemCode });
+                if (_.isUndefined(isExistData)) {
+                    vmManager.dataEntity.vendorItemList.push($scope.materialVM);
+                }
+                else {
+                    leePopups.alert($scope.materialVM.vendorItemCode + "已经添加过了！");
+                }
+                delete $scope.materialVM.isAdd;
+            }
+            editDialog.close();
+        },
+        cancelEditData: function () {
+            leeDataHandler.dataOperate.cancelEditItem(vmManager.oldSelectedItem, vmManager.dataEntity.vendorItemList);
+            manDetailEditDialog.close();
+        },
+        addMaterialInfo: function () {
+            $scope.materialVM = _.clone(initMaterialVM);
+            $scope.materialVM.isAdd = true;
+            editDialog.show();
+        },
+        removeMaterial: function (item) {
+            leePopups.inquire("删除提示", "您确认要删除数据吗?", function () {
+                $scope.$apply(function () {
+                    leeHelper.delWithId(vmManager.dataEntity.vendorItemList, item);
+                });
+            });
+        },
+    };
+
+    var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
+
+    operate.save = function () {
+        leeDataHandler.dataOperate.add(operate, true, function () {
+            dataVM.OpContent = JSON.stringify(vmManager.dataEntity);
+            $scope.opPromise = hwDataOpService.saveManPower(dataVM).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () { })
+            });
+        })
+    };
+    vmManager.getMaterialBaseInfo();
+});
+
 officeAssistantModule.controller('hwManPowerCtrl', function (hwDataOpService, dataDicConfigTreeSet, $scope) {
     ///数据实体模型
     var dataVM = hwApiHelper.crateDataEntity();
@@ -59,7 +160,7 @@ officeAssistantModule.controller('hwManPowerCtrl', function (hwDataOpService, da
         manpowerTotalQuantity: 0,
     };
     $scope.depManPowerVM = {
-        keyDeptName: "部门1",
+        keyDeptName: "",
         hrAddQuantity: 0,
         hrGapQuantity: 0,
         hrLeavePercent: 0.0,
@@ -156,4 +257,32 @@ officeAssistantModule.controller('hwManPowerCtrl', function (hwDataOpService, da
         })
     };
     vmManager.getManPower();
+});
+
+officeAssistantModule.controller('hwMaterialManageCtrl', function (hwDataOpService, $scope) {
+    ///数据实体模型
+    var dataInventoryVM = hwApiHelper.crateDataEntity();
+
+    var vmManager = $scope.vmManager = {
+        activeTab: 'HwInventoryDetailTab',
+        inventoryDataEntity: null,
+        makingDataEntity: null,
+        getMaterialDatas: function () {
+            $scope.searchPromise = hwDataOpService.getMaterialDetails().then(function (data) {
+                vmManager.inventoryDataEntity = data.inventoryEntity;
+                vmManager.makingDataEntity = data.makingEntity;
+            });
+        },
+    };
+
+    var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
+    operate.saveInventoryData = function () {
+        leeDataHandler.dataOperate.add(operate, true, function () {
+            dataInventoryVM.OpContent = JSON.stringify(vmManager.inventoryDataEntity);
+            $scope.opPromise = hwDataOpService.saveMaterialInventory(dataInventoryVM).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () { })
+            });
+        })
+    };
+    vmManager.getMaterialDatas();
 });
