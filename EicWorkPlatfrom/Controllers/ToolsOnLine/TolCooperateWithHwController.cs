@@ -22,6 +22,19 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
 
+        #region HwMaterialBaseInfo
+        public ActionResult HwMaterialBaseInfo()
+        {
+            return View();
+        }
+        #endregion
+
+        #region HwMaterialBomInfo
+        public ActionResult HwMaterialBomInfo()
+        {
+            return View();
+        }
+        #endregion
 
         #region HwManpowerInput
         public ActionResult HwManpowerInput()
@@ -50,12 +63,28 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
         #endregion
 
         #region HwInventoryDetail
         public ActionResult HwInventoryDetail()
         {
             return View();
+        }
+        [NoAuthenCheck]
+        public JsonResult GetMaterialDetails()
+        {
+            var inventoryEntity = HwCollaborationService.MaterialManager.InventoryManager.AutoGetDatasFromErp();
+            var makingEntity = HwCollaborationService.MaterialManager.MakingManager.AutoGetDatasFromErp();
+
+            var entity = new { inventoryEntity, makingEntity };
+            return Json(entity, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult SaveMaterialInventory(HwCollaborationDataTransferModel entity)
+        {
+            var result = HwCollaborationService.MaterialManager.InventoryManager.SynchronizeDatas(entity);
+            return Json(result);
         }
         #endregion
 

@@ -1,1 +1,263 @@
-﻿<h1>HwInventoryDetail</h1>
+﻿<div class="panel panel-primary" ng-controller="hwMaterialManageCtrl">
+    <div class="panel-heading">
+        <h6 class="panel-title"><i class="fa fa-pencil-square-o"></i>物料信息管理</h6>
+    </div>
+    <div class="panel-body" cg-busy="{promise:searchPromise}">
+        <div bs-tabs bs-active-pane="vmManager.activeTab">
+            <div bs-pane data-title="库存明细" data-name="HwInventoryDetailTab">
+                <div class="bs-callout bs-callout-default">
+                    <div class="row">
+                        <div class="col-md-6" cg-busy="{promise:opPromise}">
+                            <button class="btn btn-success pull-left" ng-click="operate.saveInventoryData()">
+                                <i class="fa fa-save"></i>
+                                同步数据
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bs-callout bs-callout-info">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="pull-left" style="font-size:large">库存明细信息</span>
+                        </div>
+                    </div>
+                    <div class="h-split"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="info">
+                                <th>工厂代码</th>
+                                <th>物料编码</th>
+                                <th>客户代码</th>
+                                <th>子库</th>
+                                <th>货位</th>
+                                <th>入库时间</th>
+                                <th>物料编码版本</th>
+                                <th>库存</th>
+                                <th>待检库存</th>
+                                <th>隔离品数量</th>
+                                @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.inventoryDataEntity.factoryInventoryList">
+                                <td>{{item.vendorFactoryCode}}</td>
+                                <td>{{item.vendorItemCode}}</td>
+                                <td>{{item.customerCode}}</td>
+                                <td>{{item.vendorStock}}</td>
+                                <td>{{item.vendorLocation}}</td>
+                                <td>{{item.stockTime}}</td>
+                                <td>{{item.vendorItemRevision}}</td>
+                                <td>{{item.goodQuantity}}</td>
+                                <td>{{item.inspectQty}}</td>
+                                <td>{{item.faultQty}}</td>
+                                @*<td>
+                                        <span class="btn btn-primary btn-xs" title="编辑" ng-click="vmManager.showMasterEditWindow(worker)">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </span>
+                                    </td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div bs-pane data-title="在制明细" data-name="HwMakingVoDetailTab">
+                <div class="bs-callout bs-callout-default">
+                    <div class="row">
+                        <div class="col-md-6" cg-busy="{promise:opPromise}">
+                            <button class="btn btn-success pull-left" ng-click="operate.saveInventoryData()">
+                                <i class="fa fa-save"></i>
+                                同步数据
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bs-callout bs-callout-info">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="pull-left" style="font-size:large">在制明细信息</span>
+                        </div>
+                    </div>
+                    <div class="h-split"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="info">
+                                <th>工厂代码</th>
+                                <th>订单号</th>
+                                <th>客户代码</th>
+                                <th>订单下达时间</th>
+                                <th>生产组件编码</th>
+                                <th>物料小类</th>
+                                <th>订单数量</th>
+                                <th>完工数量</th>
+                                <th>订单状态</th>
+                                @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.makingDataEntity.materialMakingList">
+                                <td>{{item.vendorFactoryCode}}</td>
+                                <td>{{item.orderNumber}}</td>
+                                <td>{{item.customerVendorCode}}</td>
+                                <td>{{item.orderPublishDateStr}}</td>
+                                <td>{{item.componentCode}}</td>
+                                <td>{{item.componentDescription}}</td>
+                                <td>{{item.orderQuantity}}</td>
+                                <td>{{item.orderCompletedQuantity}}</td>
+                                <td>{{item.orderStatus}}</td>
+                                @*<td>
+                                        <span class="btn btn-primary btn-xs" title="编辑" ng-click="vmManager.showMasterEditWindow(worker)">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </span>
+                                    </td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div bs-pane data-title="发料明细" data-name="HwShipmentVoDetailTab">
+
+            </div>
+        </div>
+
+
+
+
+
+        <dialog ng-if="manPowerEditDialog.open" modal data-close="manPowerEditDialog.close()" style="width:35%">
+            <content dialog-title>
+                <i class="fa fa-pencil-square">数据编辑窗口</i>
+            </content>
+            <content dialog-content style="width:100%" class="bs-callout bs-callout-info">
+                <form role="form" name="formManpower" novalidate class="form-horizontal">
+                    <div class="form-group">
+                        <label for="vendorFactoryCode" class="col-md-4 control-label">工厂代码</label>
+                        <div class="col-md-4">
+                            <input name="vendorFactoryCode" class="form-control" ng-model="manPowerVM.vendorFactoryCode" placeholder="工厂代码" readonly required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="hrLeavePercent" class="col-md-4 control-label">工厂人员离职率(%)</label>
+                        <div class="col-md-4">
+                            <input type="number" name="hrLeavePercent" class="form-control" ng-model="manPowerVM.hrLeavePercent" placeholder="工厂人员离职率" required />
+                            <div class="error-messages" ng-messages="formManpower.hrLeavePercent.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">工厂人员离职率不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="manpowerTotalQuantity" class="col-md-4 control-label">工厂总人数（人）</label>
+                        <div class="col-md-4">
+                            <input type="number" name="manpowerTotalQuantity" class="form-control" ng-model="manPowerVM.manpowerTotalQuantity" placeholder="工厂总人数" required />
+                            <div class="error-messages" ng-messages="formManpower.manpowerTotalQuantity.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">工厂总人数不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="manpowerGapQuantity" class="col-md-4 control-label">工厂人员总缺口（人）</label>
+                        <div class="col-md-4">
+                            <input type="number" name="manpowerGapQuantity" class="form-control" ng-model="manPowerVM.manpowerGapQuantity" placeholder="工厂人员总缺口" required />
+                            <div class="error-messages" ng-messages="formManpower.manpowerGapQuantity.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">工厂人员总缺口不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="manpowerAddQuantity" class="col-md-4 control-label">工厂人员补充计划(人)</label>
+                        <div class="col-md-4">
+                            <input type="number" name="manpowerAddQuantity" class="form-control" ng-model="manPowerVM.manpowerAddQuantity" placeholder="工厂人员补充计划" required />
+                            <div class="error-messages" ng-messages="formManpower.manpowerAddQuantity.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">工厂人员补充计划不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </content>
+            <content dialog-buttons>
+                <button autofocus ng-click="vmManager.confirmMasterEditData()">确定</button>
+                <button ng-click="vmManager.cancelMasterEditData()">取消</button>
+            </content>
+        </dialog>
+
+        <dialog ng-if="manDetailEditDialog.open" modal data-close="manDetailEditDialog.close()" style="width:35%">
+            <content dialog-title>
+                <i class="fa fa-pencil-square">数据编辑窗口</i>
+            </content>
+            <content dialog-content style="width:100%" class="bs-callout bs-callout-info">
+                <form role="form" name="formManpower" novalidate class="form-horizontal">
+                    <div class="form-group">
+                        <label for="keyDeptName" class="col-md-4 control-label">部门名称</label>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input name="keyDeptName" class="form-control" ng-model="depManPowerVM.keyDeptName" readonly required />
+                                <div class="error-messages" ng-messages="formRegist.keyDeptName.$error" ng-show="operate.showValidation">
+                                    <small ng-message="required">部门不能为空</small>
+                                </div>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-primary" style="margin-bottom:6px;"
+                                            data-title="选择部门名称"
+                                            data-template-url="@Url.Action("TreeSelectTpl", "CommonTpl")"
+                                            data-animation="am-flip-x" data-auto-close="1"
+                                            data-bs-popover>
+                                        <i class="fa fa-sitemap"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="hrLeavePercent" class="col-md-4 control-label">部门人员离职率(%)</label>
+                        <div class="col-md-6">
+                            <input type="number" name="hrLeavePercent" class="form-control" ng-model="depManPowerVM.hrLeavePercent" placeholder="工厂人员离职率" required />
+                            <div class="error-messages" ng-messages="formManpower.hrLeavePercent.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">部门人员离职率不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hrRequestQuantity" class="col-md-4 control-label">部门人员需求（人）</label>
+                        <div class="col-md-6">
+                            <input type="number" name="hrRequestQuantity" class="form-control" ng-model="depManPowerVM.hrRequestQuantity" placeholder="工厂总人数" required />
+                            <div class="error-messages" ng-messages="formManpower.hrRequestQuantity.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">部门总人数不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hrGapQuantity" class="col-md-4 control-label">部门人员缺口（人）</label>
+                        <div class="col-md-6">
+                            <input type="number" name="hrGapQuantity" class="form-control" ng-model="depManPowerVM.hrGapQuantity" placeholder="工厂人员总缺口" required />
+                            <div class="error-messages" ng-messages="formManpower.hrGapQuantity.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">部门人员缺口不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hrAddQuantity" class="col-md-4 control-label">部门人员补充计划(人)</label>
+                        <div class="col-md-6">
+                            <input type="number" name="hrAddQuantity" class="form-control" ng-model="depManPowerVM.hrAddQuantity" placeholder="工厂人员补充计划" required />
+                            <div class="error-messages" ng-messages="formManpower.manpowerAddQuantity.$error" ng-show="operate.showValidation">
+                                <small ng-message="required">部门人员补充计划不能为空</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </content>
+            <content dialog-buttons>
+                <button autofocus ng-click="vmManager.confirmDetailEditData()">确定</button>
+                <button ng-click="vmManager.cancelDetailEditData()">取消</button>
+            </content>
+        </dialog>
+    </div>
+    <div class="panel-footer">
+
+    </div>
+</div>
