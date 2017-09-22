@@ -86,10 +86,10 @@
                     <form role="form" name="formDailyProductionReport" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
                         <fieldset>
                             <div class="dropdown-header">
-                                <label class="control-label">制令单: {{vm.OrderId}} </label>
-                                <label class="control-label">需产量单:{{vm.OrderQuantity}}</label>
-                                <label class="control-label">品名:{{vm.ProductName}}</label>
-                                <label class="control-label">规格:{{vm.ProductSpec}}</label>
+                                <label class="control-label">制令单:<span class="label label-primary"> {{vm.OrderId}}</span> </label>
+                                <label class="control-label">需产量单:<span class="label label-default">{{vm.OrderQuantity}}</span></label>
+                                <label class="control-label">品名:<span class="label label-success">{{vm.ProductName}}</span></label>
+                                <label class="control-label">规格:<span class="label label-default">{{vm.ProductSpec}}</span></label>
                             </div>
                             @*工号人员信息*@
                             <div class="form-group">
@@ -233,6 +233,8 @@
                                 </div>
                                 <div class="col-md-10">
                                     <button class="btn btn-primary"
+                                            type="button"
+                                            onclick="operate.saveAlldata(formDailyProductionReport.$valid)"
                                             focus-if="focus.saveAlldataFocus" focus-setter
                                             ng-click="operate.saveAlldata(formDailyProductionReport.$valid)">
                                         <i class="fa fa-save"></i>保存
@@ -295,7 +297,7 @@
                                         <td>{{putInData.TodayProductionCount}}</td>
                                         <td>{{putInData.WorkerProductionTime}}</td>
                                         <td>{{putInData.WorkerNoProductionTime}}</td>
-                                        <td>{{putInData.OpTime}}</td>
+                                        <td format-date> {{putInData.OpTime}} </td>
                                     </tr>
                                 </tbody>
                             </table>
