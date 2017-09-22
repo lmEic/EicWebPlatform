@@ -18,6 +18,21 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         public MaterialBaseInfoSettor() : base(HwModuleName.MaterialBaseInfo, HwAccessApiUrl.MaterialBaseInfoApiUrl)
         {
         }
+
+
+        public override OpResult SynchronizeDatas(HwCollaborationDataTransferModel entity)
+        {
+            return this.SynchronizeDatas(this.apiUrl, entity, model => { return OpResult.SetSuccessResult("成功！"); });
+        }
+
+        public OpResult tt()
+        {
+            HwCollaborationDataTransferModel d = new HwCollaborationDataTransferModel()
+            {
+                OpContent = ObjectSerializer.SerializeObject(HwMockDatas.VendorItems)
+            };
+            return this.SynchronizeDatas(d);
+        }
     }
 
     /// <summary>

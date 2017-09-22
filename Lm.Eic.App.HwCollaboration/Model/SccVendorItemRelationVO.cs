@@ -89,10 +89,11 @@ namespace Lm.Eic.App.HwCollaboration.Model
         public double leadTime { get; set; }
 
         /// <summary>
+        /// 生命周期状态
         /// 非空，限制为NPI、MP、EOL
         ///对照关系：NPI(量产前)、MP(量产)、EOL(停产)
         /// </summary>
-        public string 生命周期状态 { get; set; }
+        public string lifeCycleStatus { get; set; }
 
     }
 
