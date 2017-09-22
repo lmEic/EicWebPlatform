@@ -28,7 +28,8 @@
                     <span class="pull-right">
                         <a class="btn btn-sm btn-primary" title="下载模板" href="@Url.Action("LoadProductFlowTemplateFile", "ProDailyReport")"><i class="fa fa-download"></i>下载模板</a>
                         <a href="javascript:;" class="btn btn-sm btn-info file" title="从Excel中导入数据">
-                            <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)">
+                            <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)"
+                                                                       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
                         </a>
                         <button class="btn btn-sm btn-success" title="批量复制" ng-click="operate.copyok()"><i class="fa fa-copy"></i>批量复制</button>
                     </span>
@@ -67,11 +68,12 @@
                             </tbody>
                         </table>
                     </div>
+                    <div ng-if="vmManager.editDatasSummyset.length>0"
+                         yl-pagination data-dataset="vmManager.editDatasSummyset"
+                         data-datasource="vmManager.editDatasSummysetsource">
+                    </div>
                 </div>
-                <div ng-if="vmManager.editDatasSummyset.length>0"
-                     yl-pagination data-dataset="vmManager.editDatasSummyset"
-                     data-datasource="vmManager.editDatasSummysetsource">
-                </div>
+
             </div>
             <div class="pull-right" style="width:55%;">
                 <div class="bs-callout bs-callout-info" style="height:500px;overflow-y:auto;">
@@ -104,6 +106,10 @@
                             </tbody>
                         </table>
                     </div>
+                    <div ng-if="vmManager.editDatas.length>0"
+                         yl-pagination data-dataset="vmManager.editDatas"
+                         data-datasource="vmManager.editDatasSource">
+                    </div>
                 </div>
                 <div pageslide ps-open="vmManager.editWindowDisplay" ps-side="left" ps-size="{{vmManager.editWindowWidth}}" ps-speed="0.25" ps-container='editWindow'>
                     <div style="padding:10px;overflow-y:auto;height:480px">
@@ -111,20 +117,30 @@
                             <fieldset>
                                 <div class="form-group">
                                     <label for="productName" class="col-md-3 control-label">产品品名</label>
-                                    <div class="col-md-9">
-                                        <input name="productName" class="form-control" ng-model="vm.ProductName" required />
+                                    <div class="col-md-4">
+                                        <input name="productName" class="form-control" readonly ng-model="vm.ProductName"
+                                               focus-if="focus.productNameFocus" focus-setter
+                                               required />
                                         <div class="error-messages" ng-messages="formProductionFlow.productName.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">产品品名不能为空</small>
                                         </div>
+                                    </div>
+                                    <label for="maxMachineCount" class="col-md-3 control-label">工艺类别</label>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-primary" ng-model="vm.ProcessesType" ng-change="vmManager.changeIsShowMachine()"
+                                                data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="人工"
+                                                data-bs-options="item.id as item.text for item in vmManager.processesTypes" data-bs-select></button>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="processesName" class="col-md-3 control-label">工艺名称</label>
                                     <div class="col-md-6">
                                         <input name="processesName" class="form-control"
+                                               focus-if="focus.processesNameFocus" focus-setter
+                                               ng-keydown="focus.changeEnter($event,'productNameFocus','processesIndexFocus')"
                                                title="提示"
                                                data-show="false"
-                                               data-container="body" data-toggle="popover" data-placement="bottom"
+                                               data-container="body" data-toggle="popover" data-placement="right"
                                                data-content="同一产品工艺名称不能重复"
                                                ng-model="vm.ProcessesName" required />
                                         <div class="error-messages" ng-messages="formProductionFlow.processesName.$error" ng-show="operate.showValidation">
@@ -136,17 +152,24 @@
                                 <div class="form-group">
                                     <label for="processesIndex" class="col-md-3 control-label">工艺序号</label>
                                     <div class="col-md-3">
-                                        <input name="processesIndex" type="number" class="form-control" ng-model="vm.ProcessesIndex" required />
+                                        <input name="processesIndex" type="number" class="form-control"
+                                               focus-if="focus.processesIndexFocus" focus-setter
+                                               ng-keydown="focus.changeEnter($event,'processesNameFocus','standardProductionTimeFocus')"
+                                               ng-model="vm.ProcessesIndex" required />
                                         <div class="error-messages" ng-messages="formProductionFlow.processesIndex.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">工艺编号不能为空</small>
                                         </div>
                                     </div>
-                                    <label for="maxMachineCount" class="col-md-3 control-label">工艺类别</label>
+                                    <label for="productCoefficient" class="col-md-3 control-label">工序系数</label>
                                     <div class="col-md-3">
-                                        <button type="button" class="btn btn-primary" ng-model="vm.ProcessesType" ng-change="vmManager.changeIsShowMachine()"
-                                                data-html="1" data-ng-multiple="0" data-animation="am-flip-x" data-placeholder="人工"
-                                                data-bs-options="item.id as item.text for item in vmManager.processesTypes" data-bs-select></button>
+                                        <input name="productCoefficient" class="form-control" type="number" ng-model="vm.ProductCoefficient"
+                                               focus-if="focus.productCoefficientFocus" focus-setter
+                                               required />
+                                        <div class="error-messages" ng-messages="formProductionFlow.productCoefficient.$error" ng-show="operate.showValidation">
+                                            <small ng-message="required">工序系数</small>
+                                        </div>
                                     </div>
+
 
 
 
@@ -154,7 +177,10 @@
                                 <div class="form-group">
                                     <label for="standardProductionTime" class="col-md-3 control-label">标准工时</label>
                                     <div class="col-md-3">
-                                        <input name="standardProductionTime" type="number" class="form-control" ng-model="vm.StandardProductionTime" required />
+                                        <input name="standardProductionTime" type="number" class="form-control"
+                                               focus-if="focus.standardProductionTimeFocus" focus-setter
+                                               ng-keydown="focus.changeEnter($event,'processesNameFocus','remarkFocus')"
+                                               ng-model="vm.StandardProductionTime" required />
                                         <div class="error-messages" ng-messages="formProductionFlow.standardProductionTime.$error" ng-show="operate.showValidation">
                                             <small ng-message="required">标准工时不能为空</small>
                                         </div>
@@ -170,31 +196,42 @@
                                     </div>
                                 </div>
                                 <div class="form-group" ng-show="vmManager.isShowMachine===true">
-                                    <label for="maxMachineCount" class="col-md-3 control-label">人机配比</label>
+                                    <label for="machinePersonRatio" class="col-md-3 control-label">人机配比</label>
                                     <div class="col-md-3">
-                                        <input type="number" class="form-control" ng-model="vm.MachinePersonRatio" />
+                                        <input type="number" name="machinePersonRatio" class="form-control"
+                                               focus-if="focus.machinePersonRatioFocus" focus-setter
+                                               ng-model="vm.MachinePersonRatio" />
                                     </div>
                                     <label for="mouldId" class="col-md-3 control-label">磨具编号</label>
                                     <div class="col-md-3">
-                                        <input name="mouldId" class="form-control" ng-model="vm.MouldId" />
+                                        <input name="mouldId" class="form-control"
+                                               focus-if="focus.mouldIdFocus" focus-setter
+                                               ng-model="vm.MouldId" />
                                     </div>
 
                                 </div>
                                 <div class="form-group" ng-show="vmManager.isShowMachine===true">
                                     <label for="mouldName" class="col-md-3 control-label">磨具名称</label>
                                     <div class="col-md-3">
-                                        <input name="mouldName" class="form-control" ng-model="vm.MouldName" />
+                                        <input name="mouldName" class="form-control"
+                                               focus-if="focus.mouldNameFocus" focus-setter
+                                               ng-model="vm.MouldName" />
                                     </div>
                                     <label for="mouldCavityCount" class="col-md-3 control-label">模穴数</label>
                                     <div class="col-md-3">
-                                        <input name="mouldCavityCount" type="number" class="form-control" ng-model="vm.MouldHoleCount" />
+                                        <input name="mouldCavityCount" type="number" class="form-control"
+                                               focus-if="focus.mouldCavityCountFocus" focus-setter
+                                               ng-model="vm.MouldHoleCount" />
                                     </div>
 
                                 </div>
                                 <div class="form-group">
                                     <label for="remark" class="col-md-3 control-label">备注</label>
                                     <div class="col-md-9">
-                                        <textarea name="remark" rows="1" cols="4" class="form-control" ng-model="vm.Remark" />
+                                        <textarea name="remark" rows="1" cols="4" class="form-control"
+                                                  focus-if="focus.remarkFocus" focus-setter
+                                                  ng-keydown="operate.toConfirmSave()"
+                                                  ng-model="vm.Remark" />
                                     </div>
                                 </div>
                             </fieldset>
@@ -203,7 +240,10 @@
                                     <div class="col-md-2">
                                     </div>
                                     <div class="col-md-10">
-                                        <button class="btn btn-primary" ng-click="operate.confirmSave(formProductionFlow.$valid)"><i class="fa fa-save"></i>保存</button>
+                                        <button class="btn btn-primary" id="confirmSave"
+                                                ng-click="operate.confirmSave(formProductionFlow.$valid)">
+                                            <i class="fa fa-save"></i>保存
+                                        </button>
                                         <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
                                         <span yl-operatemsg-board></span>
                                     </div>

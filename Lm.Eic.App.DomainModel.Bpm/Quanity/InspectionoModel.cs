@@ -1672,9 +1672,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
     /// <summary>
     /// FQC工单信息模块
     /// </summary>
-    public class InspectionFqcOrderIdModel
+    public class InspectionFqcOrderIdVm
     {
-        public InspectionFqcOrderIdModel()
+        public InspectionFqcOrderIdVm()
         {
 
         }

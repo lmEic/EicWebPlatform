@@ -47,8 +47,8 @@
                                         <th>需生产数</th>
                                         <th>预计开工日期</th>
                                         <th>预计完工日期</th>
-                                        <th>状态</th>
-                                        <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
+                                        <th>ERP状态</th>
+                                        <th>分配操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,28 +57,31 @@
                                         <td>{{item.ProductName}}</td>
                                         <td>{{item.ProductSpec}}</td>
                                         <td>{{item.ProduceNumber - item.PutInStoreNumber}}</td>
-                                        <td>{{item.PlanStartProductionDate}}</td>
-                                        <td>{{item.PlanEndProductionDate}}</td>
+                                        <td>{{item.ProductionDate}}</td>
+                                        <td>{{item.ValidDate}}</td>
                                         <td>
-                                            <button ng-show="item.isDispatch==true" class="btn btn-danger">
+                                            <button ng-show="item.IsValid=='True'" class="btn btn-danger">
                                                 {{item.ProductStatus}} <i class="fa fa-flag-checkered"></i>
                                             </button>
-                                            <button ng-show="item.isDispatch==false" class="btn btn-default">
+                                            <button ng-show="item.IsValid =='False'" class="btn btn-default">
                                                 {{item.ProductStatus}}<i class="fa fa-flag"></i>
                                             </button>
                                         </td>
                                         <td>
-                                            <button ng-show="item. isDispatch==false" class="btn btn-primary" ng-click="vmManager.dispatchOrder(item)">
-                                                确认分派 <i class="fa fa-angle-double-right"></i>
+                                            <button ng-show="item.IsValid =='False'" class="btn btn-primary" ng-click="vmManager.dispatchOrder(item)">
+                                                未分配<i class="fa fa-angle-double-right"></i>
                                             </button>
-                                            <button ng-show="item. isDispatch==true" class="btn btn-success" ng-click="vmManager.dispatchOrder(item)">
-                                                <i class="fa fa-angle-double-left"></i>  取消分派
+                                            <button ng-show="item.IsValid=='True'" class="btn btn-success" ng-click="vmManager.dispatchOrder(item)">
+                                                <i class="fa fa-angle-double-left"></i> 已分配
                                             </button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    <div class="form-group btn btn-primary  pull-right">
+                        <label>已分配数量：{{vmManager.haveHaveDispatchCount}} </label>
                     </div>
                     <div ng-if="vmManager.erpOrderInfoDatasSource.length>0"
                          yl-pagination data-dataset="vmManager.erpOrderInfoDatas"

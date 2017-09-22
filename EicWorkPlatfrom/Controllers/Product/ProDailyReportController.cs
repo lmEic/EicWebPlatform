@@ -115,15 +115,21 @@ namespace EicWorkPlatfrom.Controllers.Product
         public FileResult LoadProductFlowTemplateFile()
         {
             ///路径下载
-            string filePath = @"E:\各部门日报格式\日报数据表.xls";
-            var dlfm = DailyReportService.ConfigManager.ProductFlowSetter.GetProductFlowTemplate(filePath);
+            string filePath = SiteRootPath + @"FileLibrary\DailyProductionReport\ProductFlow\日报工序模板.xls";
+            string fileName = "日报工序模板.xls";
+            var dlfm = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.GetProductFlowTemplate(SiteRootPath, filePath, fileName);
             return this.DownLoadFile(dlfm);
 
         }
-
+        /// <summary>
+        /// 导入Excel
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
         public JsonResult ImportProductFlowDatas(HttpPostedFileBase file)
         {
-            List<ProductFlowModel> datas = null;
+            List<StandardProductionFlowModel> datas = null;
             if (file != null)
             {
                 if (file.ContentLength > 0)
@@ -131,7 +137,7 @@ namespace EicWorkPlatfrom.Controllers.Product
                     ///待加入验证文件名称逻辑:
                     string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
                     file.SaveAs(fileName);
-                    datas = DailyReportService.ConfigManager.ProductFlowSetter.ImportProductFlowListBy(fileName);
+                    datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.ImportProductFlowListBy(fileName);
                     System.IO.File.Delete(fileName);
                 }
             }
@@ -160,11 +166,7 @@ namespace EicWorkPlatfrom.Controllers.Product
         [NoAuthenCheck]
         public ContentResult GetOrderDispatchInfoDatas(string department, DateTime nowDate)
         {
-            ///ERP在制生产订单
-            var erpInProductiondatas = QualityDBManager.OrderIdInpectionDb.GetProductionOrderIdInfoBy(department, "在制");
-            ///今日生产已确认分配的订单
-            var todayHaveDispatchProductionOrderDatas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
-            var datas = new { erpInProductiondatas, todayHaveDispatchProductionOrderDatas };
+            var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetNeedDispatchOrderBy(department, nowDate);
             return DateJsonResult(datas);
         }
         /// <summary>
@@ -200,6 +202,39 @@ namespace EicWorkPlatfrom.Controllers.Product
         {
             DateTime nowDate = DateTime.Now.Date;
             var datas = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department, nowDate);
+            return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// 得到订单所有工艺的统计数 department, productName, orderId
+        /// </summary>
+        /// <param name="productName"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetProductionFlowCountDatas(string department, string orderId, string productName)
+        {
+            var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.GetProductionFlowCountDatas(department, orderId, productName);
+            return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// 由工号得到最后一次录入信息
+        /// </summary>
+        /// <param name="wokerId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult GetWorkerDailyInfoBy(string wokerId)
+        {
+            var datas = "";
+            return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="wokerId"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public ContentResult getProcessesNameDailyDataBy(DateTime date, string orderId, string processesName)
+        {
+            var datas = DailyProductionReportService.ProductionConfigManager.DailyReport.GetDailyDataBy(date, orderId, processesName);
             return DateJsonResult(datas);
         }
         /// <summary>
