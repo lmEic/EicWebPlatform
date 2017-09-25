@@ -636,7 +636,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 vmManager.havePutInData = [];
                 focusSetter.workerIdFocus = true;
                 $scope.searchPromise = dReportDataOpService.getProcessesNameDailyInfoDatas(uiVM.InPutDate, uiVM.OrderId, uiVM.ProcessesName).then(function (dailyDatas) {
-
                     vmManager.havePutInData = dailyDatas;
                 });
                 vmManager.queryActiveTab = 'qryUserInfoTab';
@@ -654,13 +653,20 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             { vmManager.putInDisplay = true; }
             focusSetter.workerIdFocus = true;
         },
+
+        showUserInputInfo: function (item) {
+            if (!vmManager.putInDisplay)
+            { vmManager.putInDisplay = true; }
+            focusSetter.workerIdFocus = true;
+            leeHelper.copyVm(item, uiVM);
+        },
     };
     $scope.vmManager = vmManager;
     $scope.promise = vmManager.changeDepartment();
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
     // 保存数据
-    operate.saveAlldata = function (isValid) {
+    operate.saveData = function (isValid) {
         leeHelper.setUserData(uiVM);
         uiVM.Department = vmManager.department;
         leeDataHandler.dataOperate.add(operate, isValid, function () {

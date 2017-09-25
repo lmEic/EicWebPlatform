@@ -19,19 +19,12 @@
                            focus-setter data-ensure-user-exist style="width:200px;"
                            placeholder="日期" />
                     <label>白晚班:</label>
-                    <div class="input-group">
-                        <input name="classType" type="text" class="form-control" ng-model="vmManager.classType"
-                               placeholder="班别" />
-                        <div class="input-group-addon">
-                            <button class="btn btn-success "
-                                    style="height:30px;"
-                                    ng-model="vmManager.classType" ng-change="vmManager.classTypeChange()"
-                                    data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择班别"
-                                    data-bs-options="classType.id as classType.text for classType in vmManager.classTypes track by $index" data-bs-select>
-                                <span class="caret"></span>
-                            </button>
-                        </div>
-                    </div>
+                    <button class="btn btn-success "
+                            ng-model="vmManager.classType" ng-change="vmManager.classTypeChange()"
+                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择班别"
+                            data-bs-options="classType.id as classType.text for classType in vmManager.classTypes track by $index" data-bs-select>
+                        <span class="caret"></span>
+                    </button>
                 </form>
             </div>
         </div>
@@ -234,8 +227,8 @@
                                     <button class="btn btn-primary"
                                             type="button"
                                             focus-if="focus.saveAlldataFocus" focus-setter
-                                            ng-keypress="operate.saveAlldata(formDailyProductionReport.$valid)"
-                                            ng-click="operate.saveAlldata(formDailyProductionReport.$valid)">
+                                            ng-keypress="operate.saveData(formDailyProductionReport.$valid)"
+                                            ng-click="operate.saveData(formDailyProductionReport.$valid)">
                                         <i class="fa fa-save"></i>保存
                                     </button>
                                     <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
@@ -286,11 +279,12 @@
                                         <th>生产工时</th>
                                         <th>非生产时</th>
                                         <th>录入时间</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="putInData in  vmManager.havePutInData track by $index">
-                                        <td>{{putInData.WorkerId}}</td>
+                                        <td><a href="javascript:;" ng-click="vmManager.showUserInputInfo(putInData)">[<i class="fa fa-male">]{{putInData.WorkerId}} </i></a></td>
                                         <td>{{putInData.WorkerName}}</td>
                                         <td>{{putInData.ProcessesName}}</td>
                                         <td>{{putInData.TodayProductionCount}}</td>

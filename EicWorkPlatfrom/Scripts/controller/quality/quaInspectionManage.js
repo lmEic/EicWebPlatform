@@ -738,7 +738,6 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 });
             }
             else {
-                console.log(999999);
                 var dataItems = _.find(vmManager.panelDataSource, { productId: item.MaterialId, orderId: item.OrderId });
                 if (dataItems !== undefined) {
                     dataItems.inspectionItemDatas = datas.dataSource;

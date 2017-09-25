@@ -33,7 +33,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             return InspectionManagerCrudFactory.IqcMasterCrud.Store(masterModel, true); ;
         }
 
-               
+
         /// <summary>
         ///更新Master结果和状态
         /// </summary>
