@@ -13,7 +13,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
     /// <summary>
     /// 物料在制明细管理器
     /// </summary>
-    public class MaterialMakingManager : HwCollaborationBase<MaterialMakingDto>
+    public class MaterialMakingManager : HwCollaborationMaterialBase<MaterialMakingDto>
     {
         public MaterialMakingManager() : base(HwModuleName.MaterialMaking, HwAccessApiUrl.MaterialMakingApiUrl)
         {

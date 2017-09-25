@@ -84,14 +84,14 @@
                     <div class="form-group">
                         <label for="vendorItemCode" class="col-md-2 control-label">供应商物料编码</label>
                         <div class="col-md-4">
-                            <input name="vendorItemCode" class="form-control" ng-model="materialVM.vendorItemCode" placeholder="供应商物料编码" readonly required />
+                            <input name="vendorItemCode" class="form-control" ng-model="materialVM.vendorItemCode" placeholder="供应商物料编码" required />
                             <div class="error-messages" ng-messages="formMaterial.vendorItemCode.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">供应商物料编码不能为空</small>
                             </div>
                         </div>
                         <label for="vendorProductModel" class="col-md-2 control-label">供应商产品型号</label>
                         <div class="col-md-4">
-                            <input name="vendorProductModel" class="form-control" ng-model="materialVM.vendorProductModel" placeholder="供应商产品型号" readonly required />
+                            <input name="vendorProductModel" class="form-control" ng-model="materialVM.vendorProductModel" placeholder="供应商产品型号" required />
                             <div class="error-messages" ng-messages="formMaterial.vendorProductModel.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">供应商产品型号不能为空</small>
                             </div>

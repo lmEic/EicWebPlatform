@@ -27,6 +27,18 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+        [NoAuthenCheck]
+        public JsonResult GetMaterialBaseInfo(string materialId)
+        {
+            var entity = HwCollaborationService.MaterialManager.BaseInfoSettor.GetConfigData(materialId);
+            return Json(entity, JsonRequestBehavior.AllowGet);
+        }
+        [NoAuthenCheck]
+        public JsonResult SaveMaterialBase(List<HwCollaborationDataConfigModel> entities)
+        {
+            var result = HwCollaborationService.MaterialManager.BaseInfoSettor.SynchronizeDatas(entities);
+            return Json(result);
+        }
         #endregion
 
         #region HwMaterialBomInfo
