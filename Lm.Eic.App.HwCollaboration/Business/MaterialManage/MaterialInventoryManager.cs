@@ -13,7 +13,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
     /// <summary>
     /// 库存明细管理器
     /// </summary>
-    public class MaterialInventoryManager : HwCollaborationBase<FactoryInventoryDto>
+    public class MaterialInventoryManager : HwCollaborationMaterialBase<FactoryInventoryDto>
     {
         public MaterialInventoryManager() : base(HwModuleName.MaterialInventory, HwAccessApiUrl.FactoryInventoryApiUrl)
         {

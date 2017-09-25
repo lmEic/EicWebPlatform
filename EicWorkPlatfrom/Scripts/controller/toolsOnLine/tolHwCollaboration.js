@@ -17,7 +17,20 @@ officeAssistantModule.factory('hwDataOpService', function (ajaxService) {
             entity: entity,
         });
     };
-    //----------物料信息模块：库存、在制、发料--------------------
+    //----------物料信息模块：基础信息设置,库存、在制、发料--------------------
+    //获取物料基础设置信息
+    hwDataOp.getMaterialBaseInfo = function (materialId) {
+        var url = hwUrlPrefix + 'GetMaterialBaseInfo';
+        return ajaxService.getData(url, {
+            materialId: materialId,
+        });
+    };
+    hwDataOp.saveMaterialBase = function (entities) {
+        var url = hwUrlPrefix + 'SaveMaterialBase';
+        return ajaxService.postData(url, {
+            entities: entities,
+        });
+    };
     //获取物料信息信息
     hwDataOp.getMaterialDetails = function () {
         var url = hwUrlPrefix + 'GetMaterialDetails';
@@ -51,6 +64,25 @@ var hwApiHelper = (function () {
         //操作标志
         this.OpSign = leeDataHandler.dataOpMode.add;
     };
+    ///华为数据配置实体
+    function hwDataConfigEntity() {
+        //物料编号
+        this.MaterialId = null;
+        //物料基础配置信息
+        this.MaterialBaseDataContent = null;
+        //物料BOM配置信息
+        this.MaterialBomDataContent = null;
+        //操作日志
+        this.OpLog = null;
+        //操作日期
+        this.OpDate = null;
+        //操作时间
+        this.OpTime = null;
+        //操作人
+        this.OpPerson = null;
+        //操作标志
+        this.OpSign = leeDataHandler.dataOpMode.add;
+    };
 
     return {
         //数据实体
@@ -59,12 +91,18 @@ var hwApiHelper = (function () {
             leeHelper.setUserData(dataEntity);
             return dataEntity;
         },
+        //配置数据实体
+        createConfigDataEntity: function () {
+            var dataEntity = new hwDataConfigEntity();
+            leeHelper.setUserData(dataEntity);
+            return dataEntity;
+        },
     };
 })();
 
 officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpService, $scope) {
     ///数据实体模型
-    var dataVM = hwApiHelper.crateDataEntity();
+    var dataVM = hwApiHelper.createConfigDataEntity();
     $scope.materialVM = {
         itemCategory: "",
         vendorItemCode: "",
@@ -84,19 +122,26 @@ officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpSer
     var editDialog = $scope.editDialog = leePopups.dialog();
 
     var vmManager = $scope.vmManager = {
+        dataset: [],
+        materialId: null,
         dataEntity: null,
         oldSelectedItem: null,
+        //创建Dto对象
+        createDto: function (materialVM) {
+            var data = {
+                vendorItemList: [materialVM]
+            };
+            var dto = _.clone(dataVM);
+            dto.MaterialBaseDataContent = JSON.stringify(dto);
+            return dto;
+        },
         getMaterialBaseInfo: function () {
-            $scope.searchPromise = hwDataOpService.getManPower().then(function (data) {
-                //vmManager.dataEntity = JSON.parse(data.entity.OpContent);
-
-                ////给每个实体添加键值
-                //leeHelper.setObjectsGuid(vmManager.dataEntity.manpowerMainList);
-                //angular.forEach(vmManager.dataEntity.manpowerMainList, function (item) {
-                //    leeHelper.setObjectsGuid(item.keyDeptDataList);
-                //})
-
-                //console.log(vmManager.dataEntity);
+            $scope.searchPromise = hwDataOpService.getMaterialBaseInfo(vmManager.materialId).then(function (data) {
+                //if (data.OpContent != null) {
+                //    vmManager.dataEntity = JSON.parse(data.entity.OpContent);
+                //    //给每个实体添加键值
+                //    leeHelper.setObjectsGuid(vmManager.dataEntity.vendorItemList);
+                //}
             });
         },
         showEditWindow: function (item) {
@@ -107,20 +152,31 @@ officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpSer
         confirmEditData: function () {
             if ($scope.materialVM.isAdd) {
                 leeHelper.setObjectGuid($scope.materialVM);
-                var isExistData = _.find(vmManager.dataEntity.vendorItemList, { vendorItemCode: $scope.materialVM.vendorItemCode });
-                if (_.isUndefined(isExistData)) {
-                    vmManager.dataEntity.vendorItemList.push($scope.materialVM);
+                if (vmManager.dataEntity === null) {
+                    vmManager.dataEntity = {
+                        vendorItemList: [$scope.materialVM]
+                    };
+                    vmManager.dataset.push(vmManager.createDto($scope.materialVM));
                 }
                 else {
-                    leePopups.alert($scope.materialVM.vendorItemCode + "已经添加过了！");
+                    var isExistData = _.find(vmManager.dataEntity.vendorItemList, { vendorItemCode: $scope.materialVM.vendorItemCode });
+                    if (_.isUndefined(isExistData)) {
+                        vmManager.dataEntity.vendorItemList.push($scope.materialVM);
+                        vmManager.dataset.push(vmManager.createDto($scope.materialVM));
+                    }
+                    else {
+                        leePopups.alert($scope.materialVM.vendorItemCode + "已经添加过了！");
+                    }
                 }
+
                 delete $scope.materialVM.isAdd;
             }
             editDialog.close();
         },
         cancelEditData: function () {
-            leeDataHandler.dataOperate.cancelEditItem(vmManager.oldSelectedItem, vmManager.dataEntity.vendorItemList);
-            manDetailEditDialog.close();
+            if (vmManager.dataEntity !== null)
+                leeDataHandler.dataOperate.cancelEditItem(vmManager.oldSelectedItem, vmManager.dataEntity.vendorItemList);
+            editDialog.close();
         },
         addMaterialInfo: function () {
             $scope.materialVM = _.clone(initMaterialVM);
@@ -140,13 +196,11 @@ officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpSer
 
     operate.save = function () {
         leeDataHandler.dataOperate.add(operate, true, function () {
-            dataVM.OpContent = JSON.stringify(vmManager.dataEntity);
-            $scope.opPromise = hwDataOpService.saveManPower(dataVM).then(function (opresult) {
+            $scope.opPromise = hwDataOpService.saveMaterialBase(vmManager.dataset).then(function (opresult) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () { })
             });
         })
     };
-    vmManager.getMaterialBaseInfo();
 });
 
 officeAssistantModule.controller('hwManPowerCtrl', function (hwDataOpService, dataDicConfigTreeSet, $scope) {

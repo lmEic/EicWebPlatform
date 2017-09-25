@@ -13,26 +13,13 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
     /// <summary>
     /// 物料基础信息设置器
     /// </summary>
-    public class MaterialBaseInfoSettor : HwCollaborationBase<VendorItemRelationDto>
+    public class MaterialBaseInfoSettor : HwCollaborationMaterialConfigBase<VendorItemRelationDto>
     {
         public MaterialBaseInfoSettor() : base(HwModuleName.MaterialBaseInfo, HwAccessApiUrl.MaterialBaseInfoApiUrl)
         {
         }
 
 
-        public override OpResult SynchronizeDatas(HwCollaborationDataTransferModel entity)
-        {
-            return this.SynchronizeDatas(this.apiUrl, entity, model => { return OpResult.SetSuccessResult("成功！"); });
-        }
-
-        public OpResult tt()
-        {
-            HwCollaborationDataTransferModel d = new HwCollaborationDataTransferModel()
-            {
-                OpContent = ObjectSerializer.SerializeObject(HwMockDatas.VendorItems)
-            };
-            return this.SynchronizeDatas(d);
-        }
     }
 
     /// <summary>
