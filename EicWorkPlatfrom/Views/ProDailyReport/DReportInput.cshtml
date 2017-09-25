@@ -1,4 +1,5 @@
-﻿<div class="panel panel-primary" ng-controller="DailyProductionReportCtrl">
+﻿
+<div class="panel panel-primary" ng-controller="DailyProductionReportCtrl">
     <div class="panel-heading">
         <h6 class="panel-title">生产日报录入</h6>
     </div>
@@ -18,19 +19,12 @@
                            focus-setter data-ensure-user-exist style="width:200px;"
                            placeholder="日期" />
                     <label>白晚班:</label>
-                    <div class="input-group">
-                        <input name="classType" type="text" class="form-control" ng-model="vmManager.classType"
-                               placeholder="班别" />
-                        <div class="input-group-addon">
-                            <button class="btn btn-success "
-                                    style="height:30px;"
-                                    ng-model="vmManager.classType" ng-change="vmManager.classTypeChange()"
-                                    data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择班别"
-                                    data-bs-options="classType.id as classType.text for classType in vmManager.classTypes track by $index" data-bs-select>
-                                <span class="caret"></span>
-                            </button>
-                        </div>
-                    </div>
+                    <button class="btn btn-success "
+                            ng-model="vmManager.classType" ng-change="vmManager.classTypeChange()"
+                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择班别"
+                            data-bs-options="classType.id as classType.text for classType in vmManager.classTypes track by $index" data-bs-select>
+                        <span class="caret"></span>
+                    </button>
                 </form>
             </div>
         </div>
@@ -171,13 +165,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <label ng-if="vmManager.isProcessesNameShow==true" class="col-md-2 control-label">工序名:</label>
-                                <div ng-if="vmManager.isProcessesNameShow==true" class="col-md-4">
-                                    <input type="text" readonly class="form-control"
-                                           ng-model="vm.ProductName" required />
-                                    <label>{{vm.StandardProductionTime}}({{vm.StandardProductionTimeType}})</label>
-                                </div>
-
+                                <label ng-if="vmManager.isProcessesNameShow==true" class="col-md-6 control-label">
+                                    品名: <span class="label label-success">{{vm.ProductName}}</span>
+                                    班别：<span class="label label-success">{{vm.ClassType}}</span>
+                                </label>
                             </div>
                             @*工时信息*@
                             <div class="form-group">
@@ -215,15 +206,16 @@
                                 <div class="col-md-3">
                                     <input type="number" class="form-control" ng-model="vm.TodayBadProductCount"
                                            focus-if="focus.todayBadProductCountFocus" focus-setter
-                                           ng-keydown="focus.changeEnter($event,'todayProductionCountFocus','saveAlldataFocus')"
-                                           n />
+                                           ng-keydown="focus.changeEnter($event,'todayProductionCountFocus','saveAlldataFocus')" />
                                 </div>
                             </div>
                             @*备注*@
                             <div class="form-group">
                                 <label for="remark" class="col-md-2 control-label">备注</label>
                                 <div class="col-md-9">
-                                    <textarea name="remark" rows="1" cols="4" class="form-control" ng-model="vm.Field1" />
+                                    <textarea name="remark"
+                                              focus-if="focus.remarkFocus" focus-setter
+                                              rows="1" cols="4" class="form-control" ng-model="vm.Field1" />
                                 </div>
                             </div>
                         </fieldset>
@@ -234,9 +226,9 @@
                                 <div class="col-md-10">
                                     <button class="btn btn-primary"
                                             type="button"
-                                            onclick="operate.saveAlldata(formDailyProductionReport.$valid)"
                                             focus-if="focus.saveAlldataFocus" focus-setter
-                                            ng-click="operate.saveAlldata(formDailyProductionReport.$valid)">
+                                            ng-keypress="operate.saveData(formDailyProductionReport.$valid)"
+                                            ng-click="operate.saveData(formDailyProductionReport.$valid)">
                                         <i class="fa fa-save"></i>保存
                                     </button>
                                     <button class="btn btn-default" ng-click="operate.refresh()"><i class="fa fa-undo"></i>取消</button>
@@ -287,17 +279,18 @@
                                         <th>生产工时</th>
                                         <th>非生产时</th>
                                         <th>录入时间</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="putInData in  vmManager.havePutInData track by $index">
-                                        <td>{{putInData.WorkerId}}</td>
+                                        <td><a href="javascript:;" ng-click="vmManager.showUserInputInfo(putInData)">[<i class="fa fa-male">]{{putInData.WorkerId}} </i></a></td>
                                         <td>{{putInData.WorkerName}}</td>
                                         <td>{{putInData.ProcessesName}}</td>
                                         <td>{{putInData.TodayProductionCount}}</td>
                                         <td>{{putInData.WorkerProductionTime}}</td>
                                         <td>{{putInData.WorkerNoProductionTime}}</td>
-                                        <td format-date> {{putInData.OpTime}} </td>
+                                        <td>{{putInData.InPutDate}}</td>
                                     </tr>
                                 </tbody>
                             </table>

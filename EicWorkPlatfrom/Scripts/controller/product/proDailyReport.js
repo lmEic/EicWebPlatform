@@ -471,10 +471,10 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         MasterName: null,
         WorkerId: null,
         WorkerName: null,
-        TodayProductionCount: 0,
-        TodayBadProductCount: 0,
-        WorkerProductionTime: 0,
-        WorkerNoProductionTime: 0,
+        TodayProductionCount: null,
+        TodayBadProductCount: null,
+        WorkerProductionTime: null,
+        WorkerNoProductionTime: null,
         WorkerNoProductionReason: null,
         Field1: null,
         Field2: null,
@@ -500,15 +500,17 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: '晚班' }],
         putInDate: new Date(),
         productionFlowShow: true,
+        ///初始化
         init: function () {
             uiVM = _.clone(initVM);
             $scope.vm = uiVM;
         },
+        ///保存后继续
         continueSaveInit: function () {
-            uiVM.TodayProductionCount = 0;
-            uiVM.TodayBadProductCount = 0;
-            uiVM.WorkerProductionTime = 0;
-            uiVM.WorkerNoProductionTime = 0;
+            uiVM.TodayProductionCount = null;
+            uiVM.TodayBadProductCount = null;
+            uiVM.WorkerProductionTime = null;
+            uiVM.WorkerNoProductionTime = null;
             uiVM.WorkerId = null;
             focusSetter.workerIdFocus = true;
             $scope.vm = uiVM;
@@ -567,20 +569,18 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         erpOrderInfoDatas: [],//载入已分配的订单信息
         erpOrderInfoDatasSource: [],
         productionFlowDatas: [],//工序信息
+        //选择部门
         changeDepartment: function () {
             $scope.promise = dReportDataOpService.getInProductionOrderDatas(vmManager.department).then(function (erpDatas) {
                 vmManager.erpOrderInfoDatas = [];
                 erpOrderInfoDatasSource = vmManager.erpOrderInfoDatas = erpDatas;
-                console.log(erpDatas);
                 ///根据登录用户 载入信息 ，如果没有侧 选择载入
                 if (erpDatas.length > 0)
                     vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
             });
-            //if (vmManager.putInDisplay === false) {
-            //    vmManager.putInDisplay = true;
-            //}
-            //else vmManager.putInDisplay = false;
-        },//部门变化载入分配的订单信息
+
+        },
+        //部门变化载入分配的订单信息
         ////选择产品名称得理该产品的
         putInDatas: function (item) {
             uiVM.OrderId = item.OrderId;
@@ -623,7 +623,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             uiVM.StandardProductionTime = info.StandardProductionTime;
             uiVM.StandardProductionTimeType = info.StandardProductionTimeType
             vmManager.isProcessesNameShow = true;
-        }, //选择工序
+        },
+        //选择工序
         showPutInForm: function (item) {
             if (item !== null) {
                 uiVM.ProcessesIndex = item.ProcessesIndex;
@@ -635,7 +636,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 vmManager.havePutInData = [];
                 focusSetter.workerIdFocus = true;
                 $scope.searchPromise = dReportDataOpService.getProcessesNameDailyInfoDatas(uiVM.InPutDate, uiVM.OrderId, uiVM.ProcessesName).then(function (dailyDatas) {
-                    console.log(dailyDatas);
                     vmManager.havePutInData = dailyDatas;
                 });
                 vmManager.queryActiveTab = 'qryUserInfoTab';
@@ -646,37 +646,43 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             if (!vmManager.putInDisplay)
             { vmManager.putInDisplay = true; }
         },
-        // 录入
+        // 单击录入
         putInshowPutInForm: function (item) {
             vmManager.putInDatas(item);
             if (!vmManager.putInDisplay)
             { vmManager.putInDisplay = true; }
-            console.log(vmManager.putInDisplay);
             focusSetter.workerIdFocus = true;
+        },
+
+        showUserInputInfo: function (item) {
+            if (!vmManager.putInDisplay)
+            { vmManager.putInDisplay = true; }
+            focusSetter.workerIdFocus = true;
+            leeHelper.copyVm(item, uiVM);
         },
     };
     $scope.vmManager = vmManager;
     $scope.promise = vmManager.changeDepartment();
     var operate = Object.create(leeDataHandler.operateStatus);
     $scope.operate = operate;
-    operate.saveAlldata = function (isValid) {
+    // 保存数据
+    operate.saveData = function (isValid) {
         leeHelper.setUserData(uiVM);
         uiVM.Department = vmManager.department;
-        console.log(uiVM);
         leeDataHandler.dataOperate.add(operate, isValid, function () {
-            $scope.searchPromise = dReportDataOpService.saveDailyReportData(uiVM).then(function (opresult) {
-                if (opresult.Result) {
-                    leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
-                    console.log(opresult.Entity);
-                    vmManager.havePutInData.push(opresult.Entity);
+            $scope.searchPromise = dReportDataOpService.saveDailyReportData(uiVM).then(function (opResult) {
+                if (opResult.Result) {
+                    leeDataHandler.dataOperate.handleSuccessResult(operate, opResult);
+                    console.log(opResult.Entity.OpTime);
+                    vmManager.havePutInData.push(opResult.Entity);
                     vmManager.productionFlowShow = false;
                     vmManager.isShowhavePutInData = true;
                     vmManager.continueSaveInit();
                 }
             });
         });
-
     };
+    //取消
     operate.refresh = function () {
         vmManager.putInDisplay = false;
     }
@@ -686,12 +692,12 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         orderIdFocus: false,
         standardProductionTimeFocus: false,
         machineUnproductiveTimeFocus: false,
-
         processesIndexFocus: false,
         workerProductionTimeFocus: false,
         workerNoProductionTimeFocus: false,
         todayProductionCountFocus: false,
         saveAlldataFocus: false,
+        remarkFocus: false,
         //移动焦点到指定对象
         moveFocusTo: function ($event, elPreName, elNextName) {
             if ($event.keyCode === 13 || $event.keyCode === 39 || $event.keyCode === 9) {

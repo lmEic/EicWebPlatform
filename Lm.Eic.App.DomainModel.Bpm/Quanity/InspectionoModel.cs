@@ -461,7 +461,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         }
         private string _materialname;
         /// <summary>
-        ///品名
+        ///品名   MaterialName
         /// </summary>
         public string MaterialName
         {
@@ -1863,6 +1863,9 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         ///料号
         /// </summary>
         public string MaterialId { get; set; }
+        /// <summary>
+        /// MaterialName
+        /// </summary>
         public string MaterialName { set; get; }
         public string MaterialSpec { set; get; }
         public string MaterialDrawId { set; get; }
