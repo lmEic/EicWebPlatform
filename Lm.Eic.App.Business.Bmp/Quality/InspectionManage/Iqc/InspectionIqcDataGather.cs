@@ -373,21 +373,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (masterdatas == null || masterdatas.Count == 0) return retrunListdatas;
             masterdatas.ForEach(e =>
             {
-                iqcMasterDatas = MasterDatasGather.GetIqcMasterModel(e.OrderID, e.ProductID);
-                if (iqcMasterDatas == null)
+                iqcMasterDatas = new InspectionIqcMasterModel()
                 {
-                    iqcMasterDatas = new InspectionIqcMasterModel()
-                    {
-                        OrderId = e.OrderID,
-                        MaterialId = e.ProductID,
-                        MaterialName = e.ProductName,
-                        MaterialSpec = e.ProductStandard,
-                        MaterialSupplier = e.ProductSupplier,
-                        MaterialDrawId = e.ProductDrawID,
-                        MaterialInDate = e.ProduceInDate,
-                        MaterialCount = e.ProduceNumber,
-                        InspectionStatus = "未抽检",
-                    };
+                    OrderId = e.OrderID,
+                    MaterialId = e.ProductID,
+                    MaterialName = e.ProductName,
+                    MaterialSpec = e.ProductStandard,
+                    MaterialSupplier = e.ProductSupplier,
+                    MaterialDrawId = e.ProductDrawID,
+                    MaterialInDate = e.ProduceInDate,
+                    MaterialCount = e.ProduceNumber,
+                };
+                if (!MasterDatasGather.IsExistOrderIdAndMaterailId(e.OrderID, e.ProductID))
+                {
+                    iqcMasterDatas.InspectionStatus = "未抽检";
                 }
                 if (!retrunListdatas.Contains(iqcMasterDatas) && iqcMasterDatas != null)
                     retrunListdatas.Add(iqcMasterDatas);

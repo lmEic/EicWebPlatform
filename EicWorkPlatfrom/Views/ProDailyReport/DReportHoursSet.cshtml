@@ -275,12 +275,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="item in vmManager.copyEditDatas track by $index">
-                                        <td>{{item.ProductName}}</td>
-                                        <td>{{item.ProcessesIndex}}</td>
-                                        <td>{{item.ProcessesName}}</td>
-                                        <td>{{item.ProcessesType}}</td>
-                                        <td>{{item.StandardProductionTime}}({{item.StandardProductionTimeType}})</td>
+                                    <tr ng-repeat="copyItem in vmManager.copyEditDatas track by $index">
+                                        <td>{{copyItem .ProductName}}</td>
+                                        <td>{{copyItem .ProcessesIndex}}</td>
+                                        <td>{{copyItem .ProcessesName}}</td>
+                                        <td>{{copyItem .ProcessesType}}</td>
+                                        <td>{{copyItem .StandardProductionTime}}({{copyItem .StandardProductionTimeType}})</td>
                                         <td>
                                             <button class="btn btn-xs btn-danger" ng-click="operate.copyDeleteItem(item)" title="删除">
                                                 <i class="fa fa-remove"></i>
@@ -288,15 +288,15 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="6">
-                                            <span class="btn btn-xs btn-primary" ng-click="operate.copySaveAll()"><i class="fa fa-check-circle-o"></i>批量保存</span>
-                                            <span class="btn btn-xs btn-default" ng-click="operate.copyCancel()"><i class="fa fa-refresh"></i>取消</span>
-                                        </td>
-                                    </tr>
-                                </tfoot>
                             </table>
+                            <div ng-if="vmManager.copyEditDatas.length>0"
+                                 yl-pagination data-dataset="vmManager.copyEditDatas"
+                                 data-datasource="vmManager.editDatasSource">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-xs btn-primary" ng-click="operate.copySaveAll()"><i class="fa fa-check-circle-o"></i>批量保存</button>
+                            <button class="btn btn-xs btn-default" ng-click="operate.copyCancel()"><i class="fa fa-refresh"></i>取消</button>
                         </div>
                     </div>
                 </div>

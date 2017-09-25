@@ -159,6 +159,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         editDatasSource: [],
         //编辑数据复制副本
         copyEditDatas: [],
+        copyEditDatasSource: [],
         productNameFrom: null,
         productNameTo: null,
         delItem: null,
@@ -189,9 +190,10 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
                     dataItem.Id = leeHelper.newGuid();
                     dataItem.IsServer = true;
                     vmManager.editDatas.push(dataItem);
+                    vmManager.editDatasSource.push(dataItem);
                 });
-                vmManager.editDatasSource = vmManager.editDatas;
-                _.sortBy(vmManager.editDatas, 'ProcessesIndex');
+
+                console.log(vmManager.editDatas);
             });
         },
         //获取项目最大配置工序ID
@@ -252,7 +254,6 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
     //确认复制
     operate.copyConfirm = function () {
         vmManager.copyEditDatas = [];
-        console.log(vmManager.editDatas);
         if (vmManager.editDatas.length <= 0) {
             leePopups.alert("复制数据不能为空");
             return;
@@ -265,6 +266,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             confirmData.opSign = leeDataHandler.dataOpMode.add;
             vmManager.copyEditDatas.push(confirmData);
         });
+        vmManager.copyEditDatasSource = vmManager.copyEditDatas;
     };
     ///批量复制
     operate.copyok = function () {
@@ -283,7 +285,6 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
     };
     ///编辑
     operate.editItem = function (item) {
-        vmManager.opSign = leeDataHandler.dataOpMode.edit;
         uiVM = item;
         uiVM.opSign = leeDataHandler.dataOpMode.edit;
         $scope.vm = uiVM;
@@ -595,6 +596,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         //选择录入的项次
         getProductionFlowDatas: function (productName, orderId) {
             $scope.searchPromise = dReportDataOpService.getProductionFlowCountDatas(vmManager.department, productName, orderId).then(function (datas) {
+
                 vmManager.productionFlowDatas = datas;
                 vmManager.productionFlowShow = true;
                 vmManager.isShowhavePutInData = false;
@@ -636,7 +638,16 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 vmManager.havePutInData = [];
                 focusSetter.workerIdFocus = true;
                 $scope.searchPromise = dReportDataOpService.getProcessesNameDailyInfoDatas(uiVM.InPutDate, uiVM.OrderId, uiVM.ProcessesName).then(function (dailyDatas) {
-                    vmManager.havePutInData = dailyDatas;
+                    _.forEach(dailyDatas, function (e) {
+                        var dataItem = _.clone(e);
+                        leeHelper.copyVm(e, dataItem);
+                        dataItem.Id = leeHelper.newGuid();
+                        dataItem.IsServer = true;
+                        vmManager.havePutInData.push(dataItem);
+
+                    });
+
+
                 });
                 vmManager.queryActiveTab = 'qryUserInfoTab';
             }
@@ -655,10 +666,13 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
 
         showUserInputInfo: function (item) {
+            console.log(item);
             if (!vmManager.putInDisplay)
             { vmManager.putInDisplay = true; }
             focusSetter.workerIdFocus = true;
-            leeHelper.copyVm(item, uiVM);
+            uiVM = item;
+            uiVM.OpSign = leeDataHandler.dataOpMode.edit;
+            $scope.vm = uiVM;
         },
     };
     $scope.vmManager = vmManager;
@@ -783,6 +797,7 @@ productModule.controller("DailyProductOrderDispatchCtrl", function ($scope, data
         dispatchOrder: function (item) {
             var findItem = _.findWhere(vmManager.todayHaveDispatchDatas, { OrderId: item.OrderId });
             if (_.isUndefined(findItem)) {
+                console.log(item);
                 leeHelper.copyVm(item, uiVm)
                 uiVm.IsValid = true;
                 uiVm.OpSign = leeDataHandler.dataOpMode.add;

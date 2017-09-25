@@ -79,7 +79,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// <param name="orderId"></param>
         /// <param name="materialId"></param>
         /// <returns></returns>
-        private bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
+        public bool IsExistOrderIdAndMaterailId(string orderId, string materialId)
         {
             return InspectionManagerCrudFactory.IqcMasterCrud.IsExistOrderIdAndMaterailId(orderId, materialId);
         }
