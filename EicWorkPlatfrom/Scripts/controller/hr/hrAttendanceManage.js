@@ -140,6 +140,14 @@ hrModule.factory('hrDataOpService', function (ajaxService) {
 
         });
     };
+    //单条修改保存
+    hr.storeWorkOverHoursDt = function (model)
+    {
+        var url = attendUrl + 'StoreWorkOverHoursRecordSingle';
+        return ajaxService.postData(url, {
+            model: model
+        });
+    }
 
     //加班时数导入Excel
     hr.importWorkOverHoursByDatas = function (file) {
@@ -572,12 +580,9 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
     };
     $scope.vm = uiVM;
     var dialog = $scope.dialog = leePopups.dialog();
-    
-    var qryDto = {
-        
+    var qryDto = {     
         departmentText: leeLoginUser.departmentText,
-        workDate:new Date().toDateString(),
-       
+        workDate:new Date().toDateString(),      
     };
     $scope.query = qryDto;
     var originalVM = _.clone(uiVM);
@@ -585,9 +590,9 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         tabCount: 0,
         department: leeLoginUser.departmentText,
         workOverCount:0,
-    };
-    
+    };   
     var vmManager = { 
+        activeTab: 'initTab',
         classTypes: [{ id: '白班', text: '白班' }, { id: '晚班', text: "晚班" }],
         overTypes: [{ id: '平时加班', text: '平时加班' }, { id: '假日加班', text: '假日加班' }, { id: '节假日加班', text: '节假日加班' }],
         workOverHourss: [{ id: 0.5, text: 0.5 }, { id: 1.0, text: 1.0 }, { id: 1.5, text: 1.5 }, { id: 2.0, text: 2.0 }, { id: 2.5, text: 2.5 }],
@@ -599,13 +604,15 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         searchedWorkers: [],
         isSingle: true,//是否搜寻人员或部门
         dataTable: null,
-        boardViewSize: '100%',
-        editWindowShow:true,
+        boardViewSize: '100%',    
+        dataSets = [],
+        selectedWorkers = [],
+        dataSource = [],
         init: function () {
-            vmManager.dataSets = [];
-            vmManager.selectedWorkers = [];
-            vmManager.dataSource = [];
-           
+          
+            uiVM = _.clone(originalVM);
+            uiVM.OpSign = leeDataHandler.dataOpMode.add;
+            $scope.vm = uiVM;        
         }, 
         createRowItem: function () {
             var vm = _.clone(originalVM);
@@ -773,6 +780,15 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
                
             })
         },
+        getWorkOverDatas: function ()
+        {
+            $scope.searchPromise = hrDataOpService.getWorkOverHoursData(qryDto.workDate, qryDto.departmentText, 1).then(function (datas) {
+                vmManager.dataSource = datas;
+                vmManager.dataSets = datas;
+            })
+
+        },
+
         //获取正在编辑的行
         getEdittingRow: function () {
             var rowItem = _.find(vmManager.dataSets, { rowindex: vmManager.edittingRowIndex });
@@ -852,11 +868,7 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
                 vmManager.editNextworkOverHours($event, item);
             });                   
         },    
-        //显示后台数据
-        showWorkOverHoursDatas: function ()
-        {   
-            vmManager.editWindowShow = !vmManager.editWindowShow;
-        }
+       
     };
     //导入excel
     $scope.selectFile = function (el) {
@@ -880,12 +892,11 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
     $scope.operate = operate;
     //编辑行
     operate.handleItem=function (item) {          
-        var dataitem = _.clone(item);
+      //  var dataitem = _.clone(item);
         dataitem.OpSign = leeDataHandler.dataOpMode.edit;
-        $scope.vm = item;
+        $scope.vm =uiVM= item;
         dialog.show();
-    };
-  
+    }; 
     //关闭窗口
     operate.updateItem = function () {      
         //累计时数
@@ -895,11 +906,12 @@ hrModule.controller('workOverHoursManageCtrl', function ($scope, $modal, hrDataO
         })  
         dialog.close();
     },
+
         //批量保存提示窗口
         operate.saveDialog = function ()
         {         
           leePopups.confirm("保存提示", "加班单编辑好了，您确定保存吗？", function () {
-                    operate.saveAll();             
+               operate.saveAll();             
           });         
                 
         },
