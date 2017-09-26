@@ -208,26 +208,32 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     var inspectionMode = GetJudgeFQCInspectionMode("FQC", m.MaterialId);
                     ///得到检验方案
                     var inspectionModeConfigModelData = this.GetInspectionModeConfigDataBy(m.InspectionLevel, m.InspectionAQL, sampleCount, inspectionMode);
-
                     ///初始化 综合模块
                     var model = new InspectionItemDataSummaryVM()
                     {
                         OrderId = orderMaterialInfo.OrderID,
-                        OrderIdNumber = orderIdNumber,
                         MaterialId = orderMaterialInfo.ProductID,
+                        InspectionItem = m.InspectionItem,
+                        MaterialInCount = orderMaterialInfo.ProduceNumber,
+                        InspectionMethod = m.InspectionMethod,
+                        MaterialInDate = orderMaterialInfo.ProduceInDate,
+                        EquipmentId = m.EquipmentId,
+                        InspectionCount = 0,
+                        AcceptCount = 0,
+                        RefuseCount = 0,
+                        InspectionItemDatas = string.Empty,
+                        DocumentPath = string.Empty,
+                        FileName = string.Empty,
+                        InspectionItemStatus = "Doing",
+                        InspectionItemResult = "未完工",
+                        InspectionNGCount = 0,
+                        OrderIdNumber = orderIdNumber,
                         MaterialName = orderMaterialInfo.ProductName,
                         MaterialSpec = orderMaterialInfo.ProductStandard,
                         MaterialSupplier = orderMaterialInfo.ProductSupplier,
                         MaterialDrawId = orderMaterialInfo.ProductDrawID,
-                        MaterialInDate = orderMaterialInfo.ProduceInDate,
-                        MaterialInCount = orderMaterialInfo.ProduceNumber,
                         MaterialCount = sampleCount,
-                        InspectionItem = m.InspectionItem,
-                        EquipmentId = m.EquipmentId,
-                        InspectionItemStatus = "Doing",
                         ProductDepartment = m.ProductDepartment,
-                        ///检验方法
-                        InspectionMethod = m.InspectionMethod,
                         //数据采集类型
                         InspectionDataGatherType = m.InspectionDataGatherType,
                         SizeLSL = m.SizeLSL,
@@ -236,23 +242,22 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         InspectionAQL = string.Empty,
                         InspectionMode = string.Empty,
                         InspectionLevel = string.Empty,
-                        InspectionCount = 0,
-                        AcceptCount = 0,
-                        RefuseCount = 0,
-                        InspectionItemDatas = string.Empty,
                         InsptecitonItemIsFinished = false,
                         ClassType = string.Empty,
                         InStorageOrderId = "入库单",
                         InspectionItemSumCount = i,
-                        InspectionNGCount = 0,
                         InspectionDataTimeRegion = "录入时间段",
                         Memo = string.Empty,
                         OpPerson = "StartSetValue",
                         NeedFinishDataNumber = 0,
                         HaveFinishDataNumber = 0,
                         OpSign = OpMode.Add,
-                        InspectionItemResult = "未完工"
+
                     };
+
+                    /// OrderId, MaterialId, InspecitonItem, MaterialCount, InspectionMode, MaterialInDate, EquipmentId, 
+                    /// InspectionCount, InspectionAcceptCount, InspectionRefuseCount, InspectionItemDatas, DocumentPath, FileName, 
+                    /// InspectionItemStatus, InspectionItemResult, InspectionDate, InspectionNGCount,Memo,
                     ///如果没有得到抽检验方案 侧为空
                     if (inspectionModeConfigModelData != null)
                     {
