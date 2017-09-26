@@ -53,6 +53,7 @@
     <Compile Include="Business\HwCollaborationBase.cs" />
     <Compile Include="Business\HwMockDatas.cs" />
     <Compile Include="Business\ManPower\ManPowerManager.cs" />
+    <Compile Include="Business\MaterialManage\HwCollaborationMaterialConfigBase.cs" />
     <Compile Include="Business\MaterialManage\MaterialBaseInfoSettor.cs" />
     <Compile Include="Business\MaterialManage\MaterialInventoryManager.cs" />
     <Compile Include="Business\MaterialManage\MaterialMakingManager.cs" />
