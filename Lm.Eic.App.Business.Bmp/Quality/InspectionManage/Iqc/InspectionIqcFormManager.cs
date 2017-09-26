@@ -133,10 +133,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 MaterialSupplier = model.ProductSupplier,
                 MaterialDrawId = model.ProductDrawID,
                 MaterialId = model.ProductID,
-                InspectionStatus = "侍检验",
+                InspectionStatus = "未抽检",
                 MaterialCount = model.ProduceNumber,
                 MaterialInDate = model.ProduceInDate,
-                InspectionResult = "侍检验",
+                InspectionResult = "未抽检",
                 InspectionItems = "还没有抽检",
                 InspectionMode = "正常"
             }) : null;

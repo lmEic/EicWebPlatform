@@ -1643,11 +1643,17 @@ qualityModule.controller("inspectionFormManageOfIqcCtrl", function ($scope, qual
         },
         //审核
         showCheckModal: function (item) {
+            console.log(item);
             if (item) vmManager.currentItem = item;
+            vmManager.checkModal.$promise.then(vmManager.checkModal.show);
+        },
+        inspectionStatus: null,
+        detailCheckModal: function () {
             vmManager.checkModal.$promise.then(vmManager.checkModal.show);
         },
         //获取详细数据
         getDetailDatas: function (item) {
+            console.log(item);
             vmManager.currentItem = item;
             qualityInspectionDataOpService.getInspectionFormDetailOfIqcDatas(item.OrderId, item.MaterialId).then(function (datas) {
                 vmManager.isShowDetailWindow = true;
