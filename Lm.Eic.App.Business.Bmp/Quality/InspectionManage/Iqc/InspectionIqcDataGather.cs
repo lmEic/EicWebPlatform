@@ -384,11 +384,9 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     MaterialInDate = e.ProduceInDate,
                     MaterialCount = e.ProduceNumber,
                 };
-                if (!MasterDatasGather.IsExistOrderIdAndMaterailId(e.OrderID, e.ProductID))
-                {
-                    iqcMasterDatas.InspectionStatus = "未抽检";
-                }
-                if (!retrunListdatas.Contains(iqcMasterDatas) && iqcMasterDatas != null)
+                var masterInfo = MasterDatasGather.GetIqcMasterModel(e.OrderID, e.ProductID);
+                iqcMasterDatas.InspectionStatus = (masterInfo == null ? "未抽检" : masterInfo.InspectionStatus);
+                if (!retrunListdatas.Contains(iqcMasterDatas))
                     retrunListdatas.Add(iqcMasterDatas);
             });
             return retrunListdatas;
