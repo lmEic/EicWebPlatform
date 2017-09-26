@@ -168,7 +168,14 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// <returns></returns>
         public HwCollaborationDataConfigModel GetConfigData(string materialId)
         {
-            return this.configDbAccess.GetDataBy(materialId);
+            HwCollaborationDataConfigModel data = this.configDbAccess.GetDataBy(materialId);
+            if (data != null && data.OpLog != null)
+            {
+                HwDataTransferLog log = ObjectSerializer.DeserializeObject<HwDataTransferLog>(data.OpLog);
+                if (log != null && log.DataStatus == 1)
+                    return data;
+            }
+            return null;
         }
         protected HwCollaborationDataConfigModel CreateOperateInstance(HwCollaborationDataConfigModel entity)
         {
@@ -177,7 +184,8 @@ namespace Lm.Eic.App.HwCollaboration.Business
             {
                 OpModule = this.moduleName,
                 OpSign = entity.OpSign,
-                OpPerson = entity.OpPerson
+                OpPerson = entity.OpPerson,
+                DataStatus = entity.OpSign == OpMode.Delete ? 0 : 1
             };
             T dto = new T();
             bool isMaterialBase = true;

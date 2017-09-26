@@ -74,7 +74,7 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
             {
                 return OpResult.SetErrorResult("配置信息不能为NULL!");
             }
-            if (IsExist(model.MaterialId))
+            if (!IsExist(model.MaterialId))
                 return Insert(model);
             else
                 return Update(model);
@@ -92,7 +92,7 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         {
             StringBuilder sqlSb = new StringBuilder();
             sqlSb.Append("Insert into HwCollaboration_DataConfig(MaterialId, MaterialBaseDataContent, MaterialBomDataContent, OpLog, OpSign, OpPerson, OpDate, OpTime)")
-                 .AppendFormat("values('{0}','{1}','{2}','{3}','{4}','{5}','{6}')", entity.MaterialId, entity.MaterialBaseDataContent, entity.MaterialBomDataContent, entity.OpLog, entity.OpSign, entity.OpPerson, entity.OpDate, entity.OpTime);
+                 .AppendFormat(" values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')", entity.MaterialId, entity.MaterialBaseDataContent, entity.MaterialBomDataContent, entity.OpLog, entity.OpSign, entity.OpPerson, entity.OpDate, entity.OpTime);
             int record = DbHelper.Bpm.ExecuteNonQuery(sqlSb.ToString());
             return GetOpResult(record);
         }
@@ -100,7 +100,8 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         {
             StringBuilder sqlSb = new StringBuilder();
             sqlSb.Append("Update HwCollaboration_DataConfig ")
-                .AppendFormat("Set MaterialBomDataContent='{0}'", entity.MaterialBomDataContent)
+                .AppendFormat("Set MaterialBaseDataContent='{0}',", entity.MaterialBaseDataContent)
+                 .AppendFormat("MaterialBomDataContent='{0}',", entity.MaterialBomDataContent)
                 .AppendFormat("OpLog='{0}',", entity.OpLog)
                 .AppendFormat("OpSign='{0}',", entity.OpSign)
                 .AppendFormat("OpPerson='{0}',", entity.OpPerson)
@@ -119,7 +120,7 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         {
             StringBuilder sbSql = new StringBuilder();
             sbSql.Append("select Top 1 " + selectFileds)
-                .AppendFormat(" where MaterilId='{0}' order by Id_Key Desc", materilId);
+                .AppendFormat(" where MaterialId='{0}' order by Id_Key Desc", materilId);
             return DbHelper.Bpm.LoadEntity<HwCollaborationDataConfigModel>(sbSql.ToString());
         }
         private bool IsExist(string materialId)

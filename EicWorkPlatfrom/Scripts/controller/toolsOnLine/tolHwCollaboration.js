@@ -123,8 +123,15 @@ officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpSer
 
     var vmManager = $scope.vmManager = {
         dataset: [],
+        lifeCycleStatuses: [{ id: 'NPI', text: '量产前' }, { id: 'MP', text: '量产' }, { id: 'EOL', text: '停产' }],
+        inventoryTypes: [{ id: 'FG', text: '成品' }, { id: 'FGSEMI-FG', text: '半成品' }, { id: 'RM', text: '原材料' }],
         materialId: null,
         dataEntity: null,
+        init: function () {
+            vmManager.dataEntity = null;
+            vmManager.dataset = [];
+            vmManager.materialId = null;
+        },
         oldSelectedItem: null,
         //创建Dto对象
         createDto: function (materialVM) {
@@ -132,37 +139,68 @@ officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpSer
                 vendorItemList: [materialVM]
             };
             var dto = _.clone(dataVM);
-            dto.MaterialBaseDataContent = JSON.stringify(dto);
+            dto.MaterialId = materialVM.vendorItemCode;
+            dto.MaterialBaseDataContent = JSON.stringify(data);
+            leeHelper.setObjectClentSign(dto);
             return dto;
         },
-        getMaterialBaseInfo: function () {
-            $scope.searchPromise = hwDataOpService.getMaterialBaseInfo(vmManager.materialId).then(function (data) {
-                //if (data.OpContent != null) {
-                //    vmManager.dataEntity = JSON.parse(data.entity.OpContent);
-                //    //给每个实体添加键值
-                //    leeHelper.setObjectsGuid(vmManager.dataEntity.vendorItemList);
-                //}
-            });
+        getMaterialBaseInfo: function ($event) {
+            if ($event.keyCode === 13) {
+                $scope.searchPromise = hwDataOpService.getMaterialBaseInfo(vmManager.materialId).then(function (data) {
+                    if (data.MaterialBaseDataContent != null) {
+                        vmManager.dataEntity = JSON.parse(data.MaterialBaseDataContent);
+                        //给每个实体添加键值
+                        leeHelper.setObjectsGuid(vmManager.dataEntity.vendorItemList);
+                        //设置服务器端的数据项
+                        leeHelper.setObjectServerSign(data);
+                        data.OpSign = 'init';
+                        vmManager.dataset.push(data);
+                    }
+                });
+            }
         },
         showEditWindow: function (item) {
             vmManager.oldSelectedItem = _.clone(item);
             $scope.materialVM = item;
             editDialog.show();
         },
+        refreshDataInDataset: function (dataItem, opSign) {
+            dataItem.OpSign = opSign;
+            var item = _.find(vmManager.dataset, { MaterialId: dataItem.MaterialId });
+            if (item !== undefined) {
+                if (opSign === leeDataHandler.dataOpMode.delete) {
+                    if (!leeHelper.isServerObject(item))
+                        leeHelper.remove(vmManager.dataset, item);
+                    else {
+                        leeHelper.setObjectServerSign(dataItem);
+                        leeHelper.copyVm(dataItem, item);
+                    }
+                }
+                else {
+                    leeHelper.copyVm(dataItem, item);
+                }
+            }
+            else {
+                if (opSign === leeDataHandler.dataOpMode.add)
+                    vmManager.dataset.push(dataItem);
+            }
+
+
+        },
         confirmEditData: function () {
+            var dataItem = vmManager.createDto($scope.materialVM);
             if ($scope.materialVM.isAdd) {
                 leeHelper.setObjectGuid($scope.materialVM);
+                vmManager.refreshDataInDataset(dataItem, leeDataHandler.dataOpMode.add);
                 if (vmManager.dataEntity === null) {
                     vmManager.dataEntity = {
                         vendorItemList: [$scope.materialVM]
                     };
-                    vmManager.dataset.push(vmManager.createDto($scope.materialVM));
                 }
                 else {
                     var isExistData = _.find(vmManager.dataEntity.vendorItemList, { vendorItemCode: $scope.materialVM.vendorItemCode });
                     if (_.isUndefined(isExistData)) {
                         vmManager.dataEntity.vendorItemList.push($scope.materialVM);
-                        vmManager.dataset.push(vmManager.createDto($scope.materialVM));
                     }
                     else {
                         leePopups.alert($scope.materialVM.vendorItemCode + "已经添加过了！");
@@ -170,6 +208,9 @@ officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpSer
                 }
 
                 delete $scope.materialVM.isAdd;
+            }
+            else {
+                vmManager.refreshDataInDataset(dataItem, leeDataHandler.dataOpMode.edit);
             }
             editDialog.close();
         },
@@ -187,6 +228,8 @@ officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpSer
             leePopups.inquire("删除提示", "您确认要删除数据吗?", function () {
                 $scope.$apply(function () {
                     leeHelper.delWithId(vmManager.dataEntity.vendorItemList, item);
+                    var dataItem = vmManager.createDto(item);
+                    vmManager.refreshDataInDataset(dataItem, leeDataHandler.dataOpMode.delete);
                 });
             });
         },
@@ -196,9 +239,13 @@ officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpSer
 
     operate.save = function () {
         leeDataHandler.dataOperate.add(operate, true, function () {
-            $scope.opPromise = hwDataOpService.saveMaterialBase(vmManager.dataset).then(function (opresult) {
-                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () { })
-            });
+            if (vmManager.dataset.length > 0) {
+                $scope.opPromise = hwDataOpService.saveMaterialBase(vmManager.dataset).then(function (opresult) {
+                    leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                        vmManager.init();
+                    })
+                });
+            }
         })
     };
 });

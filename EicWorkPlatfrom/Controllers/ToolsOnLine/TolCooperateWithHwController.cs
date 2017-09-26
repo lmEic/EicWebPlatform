@@ -12,7 +12,7 @@ namespace EicWorkPlatfrom.Controllers
     /// <summary>
     /// 华为协同控制器
     /// </summary>
-    public class TolCooperateWithHwController : Controller
+    public class TolCooperateWithHwController : EicBaseController
     {
         //
         // GET: /TolCooperateWithHw/
@@ -28,10 +28,10 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         [NoAuthenCheck]
-        public JsonResult GetMaterialBaseInfo(string materialId)
+        public ContentResult GetMaterialBaseInfo(string materialId)
         {
             var entity = HwCollaborationService.MaterialManager.BaseInfoSettor.GetConfigData(materialId);
-            return Json(entity, JsonRequestBehavior.AllowGet);
+            return DateJsonResult(entity);
         }
         [NoAuthenCheck]
         public JsonResult SaveMaterialBase(List<HwCollaborationDataConfigModel> entities)
