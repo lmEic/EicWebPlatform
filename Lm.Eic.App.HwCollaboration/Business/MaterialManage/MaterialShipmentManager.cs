@@ -12,7 +12,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
     /// <summary>
     /// 物料发料明细管理器
     /// </summary>
-    public class MaterialShipmentManager : HwCollaborationBase<MaterialShipmentDto>
+    public class MaterialShipmentManager : HwCollaborationMaterialBase<MaterialShipmentDto>
     {
         public MaterialShipmentManager() : base(HwModuleName.MaterialShipment, HwAccessApiUrl.MaterialShipmentApiUrl)
         {
