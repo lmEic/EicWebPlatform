@@ -2025,6 +2025,7 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
         public decimal Id_Key { set; get; }
 
         #endregion Model
+
     }
     #endregion
     #endregion

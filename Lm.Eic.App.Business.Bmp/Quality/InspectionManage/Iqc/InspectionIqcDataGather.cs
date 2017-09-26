@@ -73,13 +73,13 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
+                
                 ///应该先从 Qms_IqcInspectionDetail 表上找  如果找不到再按规格载入 要测试的数据
                 var haveInspectionDatas = FindIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
                 if (haveInspectionDatas != null && haveInspectionDatas.Count > 0) return haveInspectionDatas;
-                var orderMaterialInfo = GetPuroductSupplierInfo(orderId).FirstOrDefault(e => e.ProductID == materialId);
+                var orderMaterialInfo = GetPuroductSupplierInfo(orderId).Find(e => e.ProductID == materialId);
                 if (orderMaterialInfo == null) return new List<InspectionItemDataSummaryVM>();
                 var iqcNeedInspectionsItemdatas = ItemCondition.getIqcNeedInspectionItemDatas(orderId, materialId, orderMaterialInfo.ProduceInDate);
-
                 if (iqcNeedInspectionsItemdatas == null || iqcNeedInspectionsItemdatas.Count <= 0) return new List<InspectionItemDataSummaryVM>();
                 //保存单头数据
                 return HandleInspectionSummayDatas(orderMaterialInfo, iqcNeedInspectionsItemdatas);
@@ -91,6 +91,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             }
 
         }
+
         /// <summary>
         /// 处理数据总表
         /// </summary>
@@ -132,6 +133,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             ///明细表中查找
             var iqcHaveInspectionData = DetailDatasGather.GetIqcInspectionDetailDatasBy(orderId, materialId);
             if (iqcHaveInspectionData == null || iqcHaveInspectionData.Count == 0) return returnList;
+            var materialinfo = QualityDBManager.OrderIdInpectionDb.FindMaterialBy(orderId).Find(e => e.ProductID == materialId);
             ///物料配置项中查找
             var iqcItemConfigdatas = InspectionManagerCrudFactory.IqcItemConfigCrud.FindIqcInspectionItemConfigDatasBy(materialId);
             if (iqcItemConfigdatas == null || iqcItemConfigdatas.Count == 0) return returnList;
@@ -143,6 +145,24 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                {
                    OrderId = orderId,
                    MaterialId = materialId,
+
+                   MaterialName = materialinfo.ProductName,
+                   MaterialSpec = materialinfo.ProductStandard,
+                   MaterialDrawId = materialinfo.ProductDrawID,
+                   MaterialSupplier = materialinfo.ProductSupplier,
+
+                   Department = string.Empty,
+                   ClassType = string.Empty,
+                   InspectionDataGatherType = string.Empty,
+                   InspectionDataTimeRegion = DateTime.Now.ToDateTimeStr(),
+                   InspectionItemSumCount = 0,
+                   InspectionNGCount = 0,
+                   InStorageOrderId = string.Empty,
+                   MachineId = string.Empty,
+                   MaterialCount = 0,
+                   OrderIdNumber = 0,
+                   ProductDepartment = string.Empty,
+                   SiteRootPath = string.Empty,
                    InspectionItem = m.InspecitonItem,
                    EquipmentId = m.EquipmentId,
                    MaterialInDate = m.MaterialInDate,
@@ -165,6 +185,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                    DocumentPath = m.DocumentPath,
                    Memo = m.Memo,
                    OpPerson = m.OpPerson,
+                   OpSign = m.OpSign,
                    InspectionMethod = string.Empty,
                    InspectionMode = m.InspectionMode,
                    Id_Key = m.Id_Key,
@@ -175,6 +196,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                    iqcItemConfigdata = InspectionManagerCrudFactory.IqcItemConfigCrud.FindFirstOrDefaultDataBy(m.InspecitonItem);
                if (iqcItemConfigdata != null)
                {
+
                    model.SizeLSL = iqcItemConfigdata.SizeLSL;
                    model.SizeUSL = iqcItemConfigdata.SizeUSL;
                    model.SizeMemo = iqcItemConfigdata.SizeMemo;
