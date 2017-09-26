@@ -11,6 +11,15 @@
                         保存数据
                     </button>
                 </div>
+                <div class="col-md-6">
+                    <form role="form" name="formQuery" novalidate class="form-inline pull-right">
+                        <div class="form-group">
+                            <label for="vendorItemCode" class="control-label">物料编号</label>
+                            <input name="vendorItemCode" class="form-control" ng-model="vmManager.materialId"
+                                   ng-keypress="vmManager.getMaterialBaseInfo($event)" placeholder="供应商物料编码" required />
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
         <div class="bs-callout bs-callout-success">
@@ -84,7 +93,8 @@
                     <div class="form-group">
                         <label for="vendorItemCode" class="col-md-2 control-label">供应商物料编码</label>
                         <div class="col-md-4">
-                            <input name="vendorItemCode" class="form-control" ng-model="materialVM.vendorItemCode" placeholder="供应商物料编码" required />
+                            <input name="vendorItemCode" class="form-control" ng-model="materialVM.vendorItemCode" ng-if="materialVM.isAdd" placeholder="供应商物料编码" required />
+                            <input name="vendorItemCode" class="form-control" ng-model="materialVM.vendorItemCode" ng-if="!materialVM.isAdd" readonly placeholder="供应商物料编码" required />
                             <div class="error-messages" ng-messages="formMaterial.vendorItemCode.$error" ng-show="operate.showValidation">
                                 <small ng-message="required">供应商物料编码不能为空</small>
                             </div>
@@ -146,9 +156,18 @@
                     <div class="form-group">
                         <label for="inventoryType" class="col-md-2 control-label">供应商Item类别</label>
                         <div class="col-md-4">
-                            <input type="text" name="inventoryType" class="form-control" ng-model="materialVM.inventoryType" placeholder="供应商Item类别" required />
-                            <div class="error-messages" ng-messages="formMaterial.inventoryType.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">供应商Item类别不能为空</small>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" ng-model="materialVM.inventoryType"
+                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择供应商Item类别"
+                                            data-bs-options="item.id as item.text for item in vmManager.inventoryTypes" data-bs-select>
+                                        选择供应商Item类别 <span class="caret"></span>
+                                    </button>
+                                    <input type="text" name="inventoryType" class="form-control" ng-model="materialVM.inventoryType" ng-show="false" placeholder="供应商Item类别" required />
+                                    <div class="error-messages" ng-messages="formMaterial.inventoryType.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">供应商Item类别不能为空</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <label for="goodPercent" class="col-md-2 control-label">良率</label>
@@ -169,9 +188,18 @@
                         </div>
                         <label for="lifeCycleStatus" class="col-md-2 control-label">生命周期状态</label>
                         <div class="col-md-4">
-                            <input type="text" name="lifeCycleStatus" class="form-control" ng-model="materialVM.lifeCycleStatus" placeholder="生命周期状态" required />
-                            <div class="error-messages" ng-messages="formMaterial.lifeCycleStatus.$error" ng-show="operate.showValidation">
-                                <small ng-message="required">生命周期状态不能为空</small>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" ng-model="materialVM.lifeCycleStatus"
+                                            data-html="1" data-multiple="0" data-animation="am-flip-x" data-placeholder="选择生命周期状态"
+                                            data-bs-options="item.id as item.text for item in vmManager.lifeCycleStatuses" data-bs-select>
+                                        选择生命周期状态 <span class="caret"></span>
+                                    </button>
+                                    <input type="text" name="lifeCycleStatus" class="form-control" ng-model="materialVM.lifeCycleStatus" ng-show="false" placeholder="生命周期状态" required />
+                                    <div class="error-messages" ng-messages="formMaterial.lifeCycleStatus.$error" ng-show="operate.showValidation">
+                                        <small ng-message="required">生命周期状态不能为空</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

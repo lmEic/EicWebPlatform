@@ -18,8 +18,6 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         public MaterialBaseInfoSettor() : base(HwModuleName.MaterialBaseInfo, HwAccessApiUrl.MaterialBaseInfoApiUrl)
         {
         }
-
-
     }
 
     /// <summary>
