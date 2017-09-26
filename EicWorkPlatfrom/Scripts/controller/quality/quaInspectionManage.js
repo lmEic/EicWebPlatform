@@ -705,7 +705,9 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 vmManager.panelDataset = [];
                 vmManager.cacheDatas = [];
                 qualityInspectionDataOpService.getInspectionDataGatherMaterialIdDatas(vmManager.orderId).then(function (materialIdDatas) {
+                    console.log(materialIdDatas);
                     angular.forEach(materialIdDatas, function (item) {
+
                         var dataItem = {
                             productId: item.MaterialId,
                             orderId: item.OrderId,
@@ -715,9 +717,10 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                             inspectionItemDatas: [],
                             dataSets: []
                         };
-                        vmManager.panelDataSource.push(dataItem);
                         vmManager.panelDataset.push(dataItem);
-                    })
+                    });
+                    vmManager.panelDataSource = vmManager.panelDataset;
+                    console.log(vmManager.panelDataset);
                     vmManager.orderId = null;
                 });
             }

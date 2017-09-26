@@ -464,6 +464,15 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
             set { _orderquantity = value; }
             get { return _orderquantity; }
         }
+        private int _processesIndex;
+        /// <summary>
+        ///工序名称
+        /// </summary>
+        public int ProcessesIndex
+        {
+            set { _processesIndex = value; }
+            get { return _processesIndex; }
+        }
         private string _processesname;
         /// <summary>
         ///工序名称

@@ -143,7 +143,7 @@
                                             <small ng-message="required">录入工序不能为空</small>
                                         </div>
                                         <div class="input-group-addon">
-                                            <label class="label label-primary" style="max-width:1px;"> <i class="fa fa-cutlery"></i> {{vm.ProcessesName}}</label>
+                                            <label class="label label-primary" style='max-width:100px;display:inline-block;overflow:hidden;'><i class="fa fa-cutlery"></i> {{vm.ProcessesName}}</label>
                                         </div>
                                         <div class="input-group-btn">
                                             <button type="button" class="btn btn-primary"
@@ -177,8 +177,13 @@
                                     <input name="workerProductionTime" type="number" class="form-control"
                                            focus-if="focus.workerProductionTimeFocus" focus-setter
                                            ng-keydown="focus.changeEnter($event,'processesIndexFocus','workerNoProductionTimeFocus')"
+                                           ng-minlength="0"
+                                           ng-maxlength="24"
                                            ng-model="vm.WorkerProductionTime" required />
+                                    <p ng-show="formDailyProductionReport.workerProductionTime.$error.minlength">too short.</p>
+                                    <p ng-show="formDailyProductionReport.workerProductionTime.$error.maxlength">too long.</p>
                                     <div class="error-messages" ng-messages="formDailyProductionReport.workerProductionTime.$error" ng-show="operate.showValidation">
+
                                         <small ng-message="required">录入工序不能为空</small>
                                     </div>
                                 </div>
