@@ -368,6 +368,7 @@ officeAssistantModule.controller('hwMaterialManageCtrl', function (hwDataOpServi
         activeTab: 'HwInventoryDetailTab',
         inventoryDataEntity: null,
         makingDataEntity: null,
+        shipmentDataEntity: null,
         getMaterialDatas: function () {
             $scope.searchPromise = hwDataOpService.getMaterialDetails().then(function (data) {
                 vmManager.inventoryDataEntity = data.inventoryEntity;

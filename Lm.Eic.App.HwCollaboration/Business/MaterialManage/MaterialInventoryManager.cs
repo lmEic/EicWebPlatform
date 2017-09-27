@@ -22,7 +22,7 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
 
         public override FactoryInventoryDto AutoGetDatasFromErp()
         {
-            string materialId = "14K1B169600M0RN";// "349213C0350P0RT";
+            string materialId = "349213C0350P0RT";// "14K1B169600M0RN";
             FactoryInventoryDto dto = new FactoryInventoryDto() { factoryInventoryList = new List<SccFactoryInventory>() };
             List<ErpMaterialInventoryModel> datas = this.erpDbAccess.LoadMeterialInventoryDatas(materialId);
             if (datas != null && datas.Count > 0)
