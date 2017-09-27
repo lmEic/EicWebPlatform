@@ -115,7 +115,57 @@
                 </div>
             </div>
             <div bs-pane data-title="发料明细" data-name="HwShipmentVoDetailTab">
+                <div class="bs-callout bs-callout-default">
+                    <div class="row">
+                        <div class="col-md-6" cg-busy="{promise:opPromise}">
+                            <button class="btn btn-success pull-left" ng-click="operate.saveInventoryData()">
+                                <i class="fa fa-save"></i>
+                                同步数据
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bs-callout bs-callout-info">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="pull-left" style="font-size:large">发料明细信息</span>
+                        </div>
+                    </div>
+                    <div class="h-split"></div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="info">
+                                <th>工厂代码</th>
+                                <th>客户代码</th>
+                                <th>订单号</th>
+                                <th>生产待发物料编码</th>
+                                <th>生产应发数量</th>
+                                <th>生产已发数量</th>
+                                <th>BOM用量</th>
+                                <th>替代组</th>
+                                @*<th>操作(<i class="fa fa-pencil-square-o"></i>)</th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vmManager.shipmentDataEntity.materialShipmentList">
+                                <td>{{item.vendorFactoryCode}}</td>
+                                <td>{{item.customerVendorCode}}</td>
+                                <td>{{item.orderNumber}}</td>
 
+                                <td>{{item.itemCode}}</td>
+                                <td>{{item.shouldShipQuantity}}</td>
+                                <td>{{item.shippedQuantity}}</td>
+                                <td>{{item.bomUsage}}</td>
+                                <td>{{item.substituteGroup}}</td>
+                                @*<td>
+                                        <span class="btn btn-primary btn-xs" title="编辑" ng-click="vmManager.showMasterEditWindow(worker)">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </span>
+                                    </td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
