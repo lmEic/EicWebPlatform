@@ -42,7 +42,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
             if (allOrderId == null || allOrderId.Count <= 0) return masterialAllinfo;
             allOrderId.ForEach(e =>
             {
-                if (masterialAllinfo.Count < 200)
+                if (masterialAllinfo.Count < 1000)
                     masterialAllinfo.AddRange(FindMaterialBy(e));
             });
             return masterialAllinfo;
@@ -108,7 +108,7 @@ namespace Lm.Eic.App.Erp.DbAccess.QuantitySampleDb
         /// <param name="searchStartDate"></param>
         /// <param name="searchEndDate"></param>
         /// <returns></returns>
-        private List<string> GetAllMaterialOrderId(DateTime searchStartDate, DateTime searchEndDate)
+        public List<string> GetAllMaterialOrderId(DateTime searchStartDate, DateTime searchEndDate)
         {
             List<string> eeturnOrderList = new List<string>();
             if (searchEndDate >= searchStartDate)

@@ -742,6 +742,8 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                     dataItems.dataSets = dataItems.inspectionItemDatas = datas.dataSource;
                 }
             }
+
+            console.log(dataItems.dataSets);
         },
         //点击检验项目获取所有项目信息
         selectInspectionItem: function (item) {

@@ -181,7 +181,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return irep.IsExist(e => e.OrderId == orderId && e.MaterialId == materialId);
         }
-
+        internal List<InspectionIqcMasterModel> GetIqcMasterDatasBy(DateTime startTime, DateTime endTime)
+        {
+            return irep.Entities.Where(e => e.MaterialInDate >= startTime && e.MaterialInDate <= endTime).ToList();
+        }
         /// <summary>
         /// 
         /// </summary>

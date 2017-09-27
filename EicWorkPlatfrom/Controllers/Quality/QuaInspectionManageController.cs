@@ -461,7 +461,20 @@ namespace EicWorkPlatfrom.Controllers
         public ContentResult GetInspectionFormManageOfIqcDatas(string formQueryString, int queryOpModel, DateTime dateFrom, DateTime dateTo)
         {
             var datas = InspectionService.InspectionFormManager.IqcFromManager.GetInspectionFormManagerDatas(formQueryString, queryOpModel, dateFrom, dateTo);
+            TempData["QuaDatas"] = datas;
             return DateJsonResult(datas);
+        }
+        /// <summary>
+        /// 导出EXCEl表清册
+        /// </summary>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public FileResult ExportDateToExcel()
+        {
+            var datas = TempData["QuaDatas"] as List<InspectionIqcMasterModel>;
+            //Excel
+            var dlfm = InspectionService.InspectionFormManager.IqcFromManager.BuildDownLoadFileModel(datas);
+            return this.DownLoadFile(dlfm);
         }
         /// <summary>
         /// 查找已经有生成项目
