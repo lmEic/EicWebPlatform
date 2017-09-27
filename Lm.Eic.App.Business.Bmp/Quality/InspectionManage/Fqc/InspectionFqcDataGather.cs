@@ -84,9 +84,20 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 bool isHaveItemConfig = InspectionManagerCrudFactory.FqcItemConfigCrud.IsExistFqcConfigmaterailId(orderMaterialInfo.ProductID);
                 /// 统计已经检验的总数量
                 double haveInspectionSumCount = MasterDatasGather.GetFqcMasterHaveInspectionCountBy(orderId);
-                InspectionFqcOrderIdVm returnModle = new InspectionFqcOrderIdVm();
-                OOMaper.Mapper<MaterialModel, InspectionFqcOrderIdVm>(orderMaterialInfo, returnModle);
-                returnModle.IsHaveItemConfig = isHaveItemConfig;
+                InspectionFqcOrderIdVm returnModle = new InspectionFqcOrderIdVm()
+                {
+                    MaterialId = orderMaterialInfo.ProductID,
+                    MaterialDrawId = orderMaterialInfo.ProductDrawID,
+                    MaterialInCount = orderMaterialInfo.ProduceNumber,
+                    MaterialInDate = orderMaterialInfo.ProduceInDate,
+                    MaterialName = orderMaterialInfo.ProductName,
+                    OrderId = orderMaterialInfo.OrderID,
+                    MaterialSpec = orderMaterialInfo.ProductStandard,
+                    MaterialSupplier = orderMaterialInfo.ProductSupplier,
+                    IsHaveItemConfig = isHaveItemConfig,
+                    HaveInspectionSumCount = haveInspectionSumCount,
+
+                };
                 return returnModle;
 
             }
@@ -222,10 +233,10 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         AcceptCount = 0,
                         RefuseCount = 0,
                         InspectionItemDatas = string.Empty,
-                        DocumentPath = string.Empty,
-                        FileName = string.Empty,
+                        DocumentPath = null,
+                        FileName = null,
                         InspectionItemStatus = "Doing",
-                        InspectionItemResult = "未完工",
+                        InspectionItemResult = "未完成",
                         InspectionNGCount = 0,
                         OrderIdNumber = orderIdNumber,
                         MaterialName = orderMaterialInfo.ProductName,
@@ -252,7 +263,6 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                         NeedFinishDataNumber = 0,
                         HaveFinishDataNumber = 0,
                         OpSign = OpMode.Add,
-
                     };
 
                     /// OrderId, MaterialId, InspecitonItem, MaterialCount, InspectionMode, MaterialInDate, EquipmentId, 
@@ -362,8 +372,8 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 masterModel.InspectionItemCount = sumModel.InspectionItemSumCount;
                 masterModel.InspectionItems = sumModel.InspectionItem;
                 masterModel.FinishDate = DateTime.Now.Date;
-                masterModel.InspectionStatus = "未完工";
-                masterModel.InspectionResult = "未完工";
+                masterModel.InspectionStatus = "未完成";
+                masterModel.InspectionResult = "未完成";
                 masterModel.InspectionCount = sumModel.MaterialCount;
                 detailModel = new InspectionFqcDetailModel();
                 OOMaper.Mapper<InspectionItemDataSummaryVM, InspectionFqcDetailModel>(sumModel, detailModel);

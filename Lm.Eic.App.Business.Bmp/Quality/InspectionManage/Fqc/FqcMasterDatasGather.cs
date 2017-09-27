@@ -63,7 +63,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                     masterModel.InspectionStatus = "待审核";
                     masterModel.InspectionResult = (detailDatas.Count(e => e.InspectionItemResult == "NG") > 0 ? "NG" : "OK");
                 }
-                else masterModel.InspectionStatus = "未完工";
+                else masterModel.InspectionStatus = "未完成";
             }
             /// 如果 是新增 只添加一次 
             masterModel.Id_Key = haveStoreMasterModel.Id_Key;

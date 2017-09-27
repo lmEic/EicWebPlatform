@@ -1172,7 +1172,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
 
     var vmManager = {
         classTypes: [{ id: "白班", text: "白班" }, { id: "晚班", text: "晚班" }],
-        classType: '白班',
+        classType: "白班",
         orderId: null,
         orderInfo: null,
         //抽样批次数量
@@ -1199,7 +1199,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                 if (angular.isArray(inspectionItemDatas) && inspectionItemDatas.length > 0) {
                     var item = inspectionItemDatas[0];
                     var dataItem = { orderId: item.OrderId, orderIdNumber: item.OrderIdNumber, inspectionStatus: item.InspectionStatus, inspectionItemDatas: inspectionItemDatas, dataSets: inspectionItemDatas };
-                    vmManager.panelDataSource.push(dataItem);
+                    vmManager.panelDataSet.push(dataItem);
                     vmManager.sampleCount = 0;
                 }
             })
@@ -1213,21 +1213,19 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
         getFqcOrderInfo: function () {
             if (vmManager.orderId) {
                 vmManager.panelDataSet = [];
+                vmManager.cacheDatas = [];
                 $scope.searchPromise = qualityInspectionDataOpService.getFqcOrderInfoDatas(vmManager.orderId).then(function (datas) {
                     vmManager.orderInfo = datas.orderInfo;
-                    console.log(vmManager.orderInfo);
                     angular.forEach(datas.sampledDatas, function (item) {
                         var dataItem = { orderId: item.OrderId, orderIdNumber: item.OrderIdNumber, inspectionStatus: item.InspectionStatus, inspectionItemDatas: [], dataSets: [] };
                         vmManager.panelDataSet.push(dataItem);
                     })
                     vmManager.panelDataSource = vmManager.panelDataSet;
-                    vmManager.orderId = null;
                 });
             }
         },
         //按物料品号获取检验项目信息
         selectOrderSubIdItem: function (item) {
-            vmManager.cacheDatas = [];
             vmManager.currentOrderSubIdItem = item;
             if (item.inspectionItemDatas.length > 0) return;
             var key = item.orderId + item.orderIdNumber;
@@ -1249,11 +1247,12 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
                     dataItems.inspectionItemDatas = datas.dataSource;
                 }
             }
+            // console.log(dataItems.dataSets);
+            console.log(vmManager.currentOrderSubIdItem);
         },
         //点击检验项目获取所有项目信息
         selectInspectionItem: function (item) {
             vmManager.currentInspectionItem = item;
-            console.log(item);
             vmManager.dataList = [];
             var dataGatherType = vmManager.currentInspectionItem.InspectionDataGatherType;
             vmManager.createGataherDataUi(dataGatherType, item);
@@ -1373,7 +1372,7 @@ qualityModule.controller("fqcDataGatheringCtrl", function ($scope, qualityInspec
             dataItem.HaveFinishDataNumber = dataItem.NeedFinishDataNumber;
         }
         dataItem.InsptecitonItemIsFinished = true;
-        data.classType = vmManager.classType;
+        dataItem.classType = vmManager.classType;
         leeHelper.setUserData(dataItem);
         $scope.opPromise = qualityInspectionDataOpService.storeFqcInspectionGatherDatas(dataItem).then(function (opResult) {
 
