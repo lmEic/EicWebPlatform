@@ -87,6 +87,14 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datasResult = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.StoreProductFlow(entity);
             return Json(datasResult);
         }
+
+
+        [NoAuthenCheck]
+        public JsonResult ImmediatelyDeleteProcessesFlow(string productName, string processesName)
+        {
+            var datasResult = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.DeleteSingleProcessesFlow(productName, processesName);
+            return Json(datasResult);
+        }
         /// <summary>
         /// 获取产品工艺初始化数据
         /// searchMode:0查询全部；1按名称模糊查询

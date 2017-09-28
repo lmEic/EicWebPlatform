@@ -37,7 +37,7 @@ namespace Lm.Eic.App.DbAccess.Bpm.Repository.PmsRep.NewDailyReport
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("SELECT ProductName, COUNT(ProductName)AS ProductFlowCount, ");
-                sb.Append("CAST(SUM(CASE StandardProductionTimeType WHEN 'UPS' THEN StandardProductionTime / 60 WHEN 'UPH' THEN 60 / StandardProductionTime ");
+                sb.Append("CAST(SUM(CASE StandardProductionTimeType WHEN 'UPS' THEN StandardProductionTime* ProductCoefficient / 60 WHEN 'UPH' THEN 60* ProductCoefficient / StandardProductionTime ");
                 sb.Append("ELSE StandardProductionTime END) AS decimal(10, 2)) AS StandardHoursCount ");
                 sb.Append("FROM  Pms_StandardProductionFlow ");
                 sb.Append("WHERE(ProductName = '" + productName + "') ");

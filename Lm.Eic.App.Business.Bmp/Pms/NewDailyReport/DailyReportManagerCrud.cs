@@ -155,6 +155,9 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                 irep.Delete(u => u.Id_Key == model.Id_Key).ToOpResult_Delete(OpContext)
                 : OpResult.SetErrorResult("未执行任何操作");
         }
+
+
+
         #endregion
         /// <summary>
         /// 查询 1.依据部门查询  2.依据产品品名查询 3.依据录入日期查询 4.依据产品品名 工艺名称查询 
@@ -206,6 +209,27 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         public ProductFlowSummaryVm GetProductionFlowSummaryDateBy(string productName)
         {
             return irep.GetProductFlowSummaryDataBy(productName);
+        }
+
+
+
+
+        /// 删除产品工序列表
+        /// </summary>
+        /// <param name="department">部门</param>
+        /// <param name="productName">产品品名</param>
+        /// <returns></returns>
+        public OpResult DeleteSingleProductFlow(string productName, string processesName)
+        {
+            try
+            {
+                return irep.Delete(m => m.ProcessesName == processesName && m.ProductName == productName).ToOpResult_Delete(OpContext);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
         }
     }
 

@@ -90,6 +90,10 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
         {
             return DailyReportCrudFactory.ProductionFlowCrud.Store(model, true);
         }
+        public OpResult DeleteSingleProcessesFlow(string productName, string processesName)
+        {
+            return DailyReportCrudFactory.ProductionFlowCrud.DeleteSingleProductFlow(productName, processesName);
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -110,6 +114,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     flowSummaryVm = DailyReportCrudFactory.ProductionFlowCrud.GetProductionFlowSummaryDateBy(m.ProductName);
                     if (flowSummaryVm == null) flowSummaryVm = new ProductFlowSummaryVm();
                     flowSummaryVm.ProductName = m.ProductName;
+                    flowSummaryVm.ProductId = m.ProductId;
                     if (!flowSummaryVms.Contains(flowSummaryVm))
                         flowSummaryVms.Add(flowSummaryVm);
                 });
