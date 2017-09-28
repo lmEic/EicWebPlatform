@@ -146,6 +146,9 @@ namespace EicWorkPlatfrom.Controllers.Product
                     string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
                     file.SaveAs(fileName);
                     datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.ImportProductFlowListBy(fileName);
+                    if (datas != null && datas.Count > 0)
+                    //批量保存数据
+                    { var opResult = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.StoreModelList(datas); }
                     System.IO.File.Delete(fileName);
                 }
             }
