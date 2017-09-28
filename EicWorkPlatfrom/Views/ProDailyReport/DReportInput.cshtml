@@ -274,6 +274,7 @@
                             </table>
                         </div>
                         <div bs-pane data-title="人员录入信息统计" class="active" data-name="qryUserInfoTab">
+                            <a href="javascript:;" ng-click="vmManager.showputInDisplay()">>></a>
                             <table class="table table-condensed table-bordered table-hover">
                                 <thead>
                                     <tr class="info">
@@ -284,7 +285,7 @@
                                         <th>生产工时</th>
                                         <th>非生产时</th>
                                         <th>录入时间</th>
-
+                                        <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -296,6 +297,10 @@
                                         <td>{{putInData.WorkerProductionTime}}</td>
                                         <td>{{putInData.WorkerNoProductionTime}}</td>
                                         <td>{{putInData.InPutDate}}</td>
+                                        <td>
+                                            <button class="btn btn-primary" ng-click=""><i class="fa fa-pencil-square-o"></i>删除</button>
+                                            <button class="btn btn-primary" ng-click=""><i class="fa fa-pencil-square-o"></i>修改</button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

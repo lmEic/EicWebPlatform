@@ -42,7 +42,7 @@ productModule.factory('dReportDataOpService', function (ajaxService) {
     // 直接删除 产品工艺
     reportDataOp.immediatelyDeleteProcessesFlow = function (productName, processesName) {
         var url = urlPrefix + 'ImmediatelyDeleteProcessesFlow';
-        return ajaxService.getData(url, {
+        return ajaxService.postData(url, {
             productName: productName,
             processesName: processesName,
         });
@@ -146,7 +146,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             $scope.vm = uiVM;
         },
         saveOneinit: function () {
-            uiVM.ProductName = null;
+            uiVM.ProcessesName = null;
             uiVM.StandardProductionTime = null;
             uiVM.ProcessesIndex = uiVM.ProcessesIndex + 1;
             $scope.vm = uiVM;
@@ -162,7 +162,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         editDataSet: [],
         editDatasSource: [],
         //编辑数据复制副本
-        copyEditDatas: [],
+        copyEditDataSet: [],
         copyEditDatasSource: [],
         productNameFrom: null,
         productNameTo: null,
@@ -185,22 +185,24 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         editDatasSummysetsource: [],
         //查看工艺流程明细 OK
         queryProductionFlowDetails: function (item) {
-            vmManager.editDataSet = [];
-            vmManager.editDatasSource = [];
             vmManager.productName = item.ProductName;
             $scope.searchPromise = dReportDataOpService.getProductionFlowList(vmManager.department, vmManager.productName, "", 2).then(function (datas) {
-                angular.forEach(datas, function (e) {
-                    var dataItem = _.clone(e);
-                    leeHelper.copyVm(e, dataItem);
-                    dataItem.Id = leeHelper.newGuid();
-                    dataItem.IsServer = true;
-                    vmManager.editDatasSource.push(dataItem);
-                });
-                vmManager.editDataSet = vmManager.editDatasSource;
-
+                vmManager.handleEditDataSource(datas);
             });
         },
-
+        ///处理数据
+        handleEditDataSource: function (datas) {
+            vmManager.editDataSet = [];
+            vmManager.editDatasSource = [];
+            angular.forEach(datas, function (e) {
+                var dataItem = _.clone(e);
+                leeHelper.copyVm(e, dataItem);
+                dataItem.Id = leeHelper.newGuid();
+                dataItem.IsServer = true;
+                vmManager.editDatasSource.push(dataItem);
+            });
+            vmManager.editDataSet = vmManager.editDatasSource;
+        },
         //确认复制
         copyConfirm: function () {
             vmManager.copyEditDataSet = [];
@@ -228,8 +230,8 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
 
         //获取项目最大配置工序ID
         getInspectionIndex: function () {
-            if (vmManager.editDatas.length >= 0) {
-                uiVM.ProcessesIndex = $scope.vm.ProcessesIndex = vmManager.editDatas.length + 1;
+            if (vmManager.editDataSet.length >= 0) {
+                uiVM.ProcessesIndex = $scope.vm.ProcessesIndex = vmManager.editDataSet.length + 1;
             }
             else {
                 $scope.vm.ProcessesIndex = 0;
@@ -239,7 +241,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         addProductionFlow: function (item) {
             console.log(item);
             vmManager.init();
-            vmManager.editDatas = [];
+            vmManager.editDataSet = [];
             vmManager.queryProductionFlowDetails(item);
             uiVM.ProcessesIndex = item.ProductFlowCount + 1;
             uiVM.ProductName = vmManager.productName;
@@ -302,13 +304,19 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             $scope.$apply(function () {
                 if (item.IsServer) {
                     $scope.searchPromise = dReportDataOpService.immediatelyDeleteProcessesFlow(item.ProductName, item.ProcessesName).then(function (opresult) {
+                        console.log(opresult);
                         if (opresult.Result) {
                             leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
-                            leeHelper.delWithId(vmManager.editDatas, item);//从表中移除
+                            leeHelper.delWithId(vmManager.editDataSet, item);//从表中移除
+                            leeHelper.delWithId(vmManager.editDatasSource, item);
                         }
                     });
                 }
-                else leeHelper.delWithId(vmManager.editDatas, item);//移除临时数据
+                else {
+                    leeHelper.delWithId(vmManager.editDataSet, item);
+                    leeHelper.delWithId(vmManager.editDatasSource, item);
+                }
+                //移除临时数据
             });
         });
     },
@@ -320,7 +328,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
                 if (item.IsServer) {
                     item.OpSign = leeDataHandler.dataOpMode.delete;
                 }
-                leeHelper.delWithId(vmManager.copyEditDatas, item);//移除临时数据
+                leeHelper.delWithId(vmManager.copyEditDataSet, item);//移除临时数据
             });
         });
         vmManager.copyWindowDisplay = true;
@@ -335,7 +343,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         ///查询数据是否有相同的工艺名称
         if (uiVM.OpSign === leeDataHandler.dataOpMode.add) {
             var issave = true;
-            angular.forEach(vmManager.editDatas, function (i) {
+            angular.forEach(vmManager.editDataSet, function (i) {
                 if (i.ProcessesName == uiVM.ProcessesName) {
                     console.log(i.ProcessesName);
                     leePopups.alert("已经添加过了！【" + i.ProcessesName + "】");
@@ -345,9 +353,11 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             });
             if (!issave) return;
             var confirmData = _.clone(uiVM);
+            leeHelper.copyVm(uiVM, confirmData);
             confirmData.Id = leeHelper.newGuid();
             confirmData.IsServer = false;//由客户端创建的数据
-            vmManager.editDatas.push(confirmData);
+            vmManager.editDatasSource.push(confirmData);
+            vmManager.editDataSet.push(confirmData);
             vmManager.editWindowDisplay = true;
             vmManager.saveOneinit();
         }
@@ -359,8 +369,8 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         $scope.searchPromise = dReportDataOpService.storeProductFlowDatas(vmManager.editDatasSource).then(function (opresult) {
             if (opresult.Result) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
-                vmManager.editDataSet = [];
-                vmManager.editDatasSource = [];
+                vmManager.handleEditDataSource(vmManager.editDatasSource);
+                vmManager.init();
             }
         });
     };
@@ -495,7 +505,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     }
     $scope.vm = uiVM;
     //初始化视图
-
     var initVM = _.clone(uiVM);
     var vmManager = {
         ///部门 
@@ -665,11 +674,13 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         // 单击录入
         putInshowPutInForm: function (item) {
             vmManager.putInDatas(item);
+            vmManager.showputInDisplay();
+        },
+        showputInDisplay: function () {
             if (!vmManager.putInDisplay)
             { vmManager.putInDisplay = true; }
             focusSetter.workerIdFocus = true;
         },
-
         showUserInputInfo: function (item) {
             console.log(item);
             if (!vmManager.putInDisplay)
@@ -686,6 +697,10 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
     $scope.operate = operate;
     // 保存数据
     operate.saveData = function (isValid) {
+        if (uiVM.WorkerProductionTime + uiVM.WorkerNoProductionTime >= 13) {
+            leePopups.alert("生产时超出");
+            return;
+        }
         leeHelper.setUserData(uiVM);
         uiVM.Department = vmManager.department;
         leeDataHandler.dataOperate.add(operate, isValid, function () {
