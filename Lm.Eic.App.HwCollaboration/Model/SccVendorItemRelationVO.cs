@@ -135,12 +135,49 @@ namespace Lm.Eic.App.HwCollaboration.Model
         /// 父阶基础用量
         /// 非空，必须大于0且为整数
         /// </summary>
-        public string baseUsedQuantity { get; set; }
+        public int baseUsedQuantity { get; set; }
 
         /// <summary>
         /// 子阶用量
         /// 非空，必须大于0且为整数
         /// </summary>
-        public string standardQuantity { get; set; }
+        public int standardQuantity { get; set; }
+    }
+
+    /// <summary>
+    /// 物料查询结构模型
+    /// </summary>
+    [Serializable]
+    public class ErpMaterialQueryCell
+    {
+        /// <summary>
+        /// 关键物料BOM列表
+        /// </summary>
+        public List<SccKeyMaterialVO> KeyMaterialBomList { get; private set; }
+        /// <summary>
+        /// 产品品号列表
+        /// </summary>
+        public List<string> ProductIdList { get; private set; }
+        /// <summary>
+        /// 物料料号列表
+        /// </summary>
+        public List<string> MaterialIdList { get; private set; }
+
+
+        public ErpMaterialQueryCell(List<SccKeyMaterialVO> bomList)
+        {
+            if (bomList != null)
+            {
+                this.ProductIdList = bomList.Select(e => e.vendorItemCode).Distinct().ToList();
+                this.MaterialIdList = bomList.Select(e => e.subItemCode).Distinct().ToList();
+                this.KeyMaterialBomList = bomList;
+            }
+            else
+            {
+                this.ProductIdList = new List<string>();
+                this.KeyMaterialBomList = new List<SccKeyMaterialVO>();
+                this.MaterialIdList = new List<string>();
+            }
+        }
     }
 }

@@ -137,12 +137,12 @@ namespace Lm.Eic.App.HwCollaboration.Model.LmErp
         /// 非空，必须大于0且为整数
         /// 对应ERP中的标准批量
         /// </summary>
-        public double BaseUsedQuantity { get; set; }
+        public int BaseUsedQuantity { get; set; }
         /// <summary>
         /// 子阶用量
         /// 非空，必须大于0且为整数
         /// 对应于ERP中的组成用量
         /// </summary>
-        public double StandardQuantity { get; set; }
+        public int StandardQuantity { get; set; }
     }
 }

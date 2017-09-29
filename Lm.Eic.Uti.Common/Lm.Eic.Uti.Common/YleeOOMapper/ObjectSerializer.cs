@@ -18,6 +18,7 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         /// <returns></returns>
         public static string SerializeObject(object value)
         {
+            if (value == null) return "";
             return JsonConvert.SerializeObject(value, Formatting.Indented);
         }
         /// <summary>
@@ -28,6 +29,8 @@ namespace Lm.Eic.Uti.Common.YleeOOMapper
         /// <returns></returns>
         public static T DeserializeObject<T>(string value)
         {
+            if (value == null)
+                return default(T);
             return JsonConvert.DeserializeObject<T>(value);
         }
     }
