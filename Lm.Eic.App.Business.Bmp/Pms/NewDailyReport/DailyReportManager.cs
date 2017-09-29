@@ -106,6 +106,7 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
             //从ERP中获得部门 在制所有工单信息
             var productionOrderIdInfo = DailyProductionReportService.ProductionConfigManager.ProductOrderDispatch.GetHaveDispatchOrderBy(department);
             List<ProductFlowSummaryVm> flowSummaryVms = new List<ProductFlowSummaryVm>();
+            List<string> productNamelist = new List<string>();
             ProductFlowSummaryVm flowSummaryVm = null;
             if (productionOrderIdInfo.Count > 0)
             {
@@ -115,8 +116,11 @@ namespace Lm.Eic.App.Business.Bmp.Pms.NewDailyReport
                     if (flowSummaryVm == null) flowSummaryVm = new ProductFlowSummaryVm();
                     flowSummaryVm.ProductName = m.ProductName;
                     flowSummaryVm.ProductId = m.ProductId;
-                    if (!flowSummaryVms.Contains(flowSummaryVm))
+                    if (!productNamelist.Contains(flowSummaryVm.ProductName))
+                    {
                         flowSummaryVms.Add(flowSummaryVm);
+                        productNamelist.Add(m.ProductName);
+                    }
                 });
             }
             return flowSummaryVms;

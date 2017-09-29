@@ -332,6 +332,19 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
+        /// 删除抽检项目
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <param name="materialId"></param>
+        /// <param name="inspecitonItem"></param>
+        /// <returns></returns>
+        [NoAuthenCheck]
+        public JsonResult DeleteIqcInspectionItemData(string orderid, string materialId, string inspectionItem)
+        {
+            var opResult = InspectionService.DataGatherManager.IqcDataGather.DetailDatasGather.DeleteInspectionItems(orderid, materialId, inspectionItem);
+            return Json(opResult);
+        }
+        /// <summary>
         /// 上传FQC检验采集数据附件
         /// </summary>
         /// <param name="file"></param>
@@ -344,7 +357,6 @@ namespace EicWorkPlatfrom.Controllers
             this.SaveFileToServer(file, filePath, addchangeFileName);
             return Json("OK");
         }
-
         /// <summary>
         /// 存储采集的数据
         /// </summary>

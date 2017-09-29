@@ -123,6 +123,8 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
 
 
     ////////////////////////////////////////////iqc进料检验数据采集模块//////////////////////////////////////////////
+
+    // 依工单查询信息
     quality.getInspectionDataGatherMaterialIdDatas = function (orderId) {
         var url = quaInspectionManageUrl + "GetIqcMaterialInfoDatas";
         return ajaxService.getData(url, {
@@ -137,11 +139,20 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
             materialId: materialId
         })
     }
-    //iqc进料检验数据采集模块     保存采集数据
+    //iqc进料检验数据采集模块     保存采集数据  DeleteIqcInspectionItemData
     quality.storeIqcInspectionGatherDatas = function (gatherData) {
         var url = quaInspectionManageUrl + 'StoreIqcInspectionGatherDatas';
         return ajaxService.postData(url, {
             gatherData: gatherData,
+        });
+    };
+    //删除检验的项次  item.OrderId, item.MaterialId, item.InspectionItem    
+    quality.deleteIqcInspectionItemData = function (orderId, materialId, inspectionItem) {
+        var url = quaInspectionManageUrl + 'DeleteIqcInspectionItemData';
+        return ajaxService.postData(url, {
+            orderId: orderId,
+            materialId: materialId,
+            inspectionItem: inspectionItem,
         });
     };
     //iqc进料检验数据采集模块     上传iqc采集数据附件
@@ -149,8 +160,6 @@ qualityModule.factory("qualityInspectionDataOpService", function (ajaxService) {
         var url = quaInspectionManageUrl + 'UploadIqcGatherDataAttachFile';
         return ajaxService.uploadFile(url, file);
     };
-
-
 
     ///////////////////////////////////////////iqc检验单管理模块///////////////////////////////////////////////
     //iqc检验单管理模块    获取表单数据
@@ -715,6 +724,7 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                             inspectionItemDatas: [],
                             dataSets: []
                         };
+                        dataItem.Id = leeHelper.newGuid();
                         vmManager.panelDataset.push(dataItem);
                     });
                     vmManager.panelDataSource = vmManager.panelDataset;
@@ -742,8 +752,6 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                     dataItems.dataSets = dataItems.inspectionItemDatas = datas.dataSource;
                 }
             }
-
-            console.log(dataItems.dataSets);
         },
         //点击检验项目获取所有项目信息
         selectInspectionItem: function (item) {
@@ -849,8 +857,24 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
                 }
             }
         },
-
-
+        //删除抽检的项目数据
+        selectDeleteInspectionItems: function (item) {
+            console.log(item)
+            var dataItems = _.find(vmManager.panelDataset, { productId: item.MaterialId, orderId: item.OrderId });
+            if (dataItems !== undefined) {
+                dataItems.dataSets = dataItems.inspectionItemDatas = inspectionItemDatas;
+            }
+            console.log(dataItems);
+            leePopups.confirm("删除提示", "您确定要删除该项数据吗？", function () {
+                $scope.$apply(function () {
+                    $scope.opPromise = qualityInspectionDataOpService.deleteIqcInspectionItemData(item.OrderId, item.MaterialId, item.InspectionItem).then(function (opResult) {
+                        if (opResult.Result) {
+                            leeHelper.delWithId(vmManager.panelDataset, item);//从表中移除
+                        }
+                    });
+                });
+            });
+        },
     }
     $scope.vmManager = vmManager;
 

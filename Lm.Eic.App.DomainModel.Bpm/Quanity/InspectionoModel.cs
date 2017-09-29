@@ -632,14 +632,14 @@ namespace Lm.Eic.App.DomainModel.Bpm.Quanity
             set { _materialid = value; }
             get { return _materialid; }
         }
-        private string _inspecitonitem;
+        private string _inspectionitem;
         /// <summary>
-        ///检验项目
+        ///检验项目 inspectionItem  InspecitonItem
         /// </summary>
         public string InspecitonItem
         {
-            set { _inspecitonitem = value; }
-            get { return _inspecitonitem; }
+            set { _inspectionitem = value; }
+            get { return _inspectionitem; }
         }
         private double _materialcount;
         /// <summary>
