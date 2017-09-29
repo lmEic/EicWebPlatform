@@ -818,6 +818,10 @@ namespace Lm.Eic.App.DomainModel.Bpm.Pms.NewDailyReport
         /// </summary>
         public string ProductName { get; set; }
         /// <summary>
+        /// 品号
+        /// </summary>
+        public string ProductId { get; set; }
+        /// <summary>
         /// 工序总数
         /// </summary>
         public int ProductFlowCount { get; set; }

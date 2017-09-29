@@ -73,7 +73,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             try
             {
-                
+
                 ///应该先从 Qms_IqcInspectionDetail 表上找  如果找不到再按规格载入 要测试的数据
                 var haveInspectionDatas = FindIqcInspectionItemDataSummaryLabelListBy(orderId, materialId);
                 if (haveInspectionDatas != null && haveInspectionDatas.Count > 0) return haveInspectionDatas;

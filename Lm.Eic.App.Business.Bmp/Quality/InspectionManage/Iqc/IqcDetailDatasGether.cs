@@ -140,5 +140,16 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return InspectionManagerCrudFactory.IqcDetailCrud.GetIqcInspectionDetailOrderIdModelBy(orderId);
         }
+        /// <summary>
+        /// 删除抽检项目
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <param name="materialId"></param>
+        /// <param name="inspectionItem"></param>
+        /// <returns></returns>
+        public OpResult DeleteInspectionItems(string orderid, string materialId, string inspectionItem)
+        {
+            return InspectionManagerCrudFactory.IqcDetailCrud.DeleteInspectionItems(orderid, materialId, inspectionItem);
+        }
     }
 }

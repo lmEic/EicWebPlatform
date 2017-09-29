@@ -93,6 +93,11 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         {
             return GetIqcMasterContainDatasBy(orderId).FirstOrDefault(e => e.MaterialId == materialId);
         }
+        public List<InspectionIqcMasterModel> GetIqcMasterDatasBy(DateTime startTime, DateTime endTime)
+        {
+            var datas = InspectionManagerCrudFactory.IqcMasterCrud.GetIqcMasterDatasBy(startTime, endTime);
+            return datas == null ? new List<InspectionIqcMasterModel>() : datas;
+        }
         /// <summary>
         /// 得到主表数据
         /// </summary>

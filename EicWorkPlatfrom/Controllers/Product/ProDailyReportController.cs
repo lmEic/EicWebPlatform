@@ -87,6 +87,14 @@ namespace EicWorkPlatfrom.Controllers.Product
             var datasResult = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.StoreProductFlow(entity);
             return Json(datasResult);
         }
+
+
+        [NoAuthenCheck]
+        public JsonResult ImmediatelyDeleteProcessesFlow(string productName, string processesName)
+        {
+            var datasResult = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.DeleteSingleProcessesFlow(productName, processesName);
+            return Json(datasResult);
+        }
         /// <summary>
         /// 获取产品工艺初始化数据
         /// searchMode:0查询全部；1按名称模糊查询
@@ -138,6 +146,9 @@ namespace EicWorkPlatfrom.Controllers.Product
                     string fileName = Path.Combine(this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.Temp), file.FileName);
                     file.SaveAs(fileName);
                     datas = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.ImportProductFlowListBy(fileName);
+                    if (datas != null && datas.Count > 0)
+                    //批量保存数据
+                    { var opResult = DailyProductionReportService.ProductionConfigManager.ProductionFlowSet.StoreModelList(datas); }
                     System.IO.File.Delete(fileName);
                 }
             }

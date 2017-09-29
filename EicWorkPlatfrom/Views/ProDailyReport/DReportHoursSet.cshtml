@@ -31,7 +31,7 @@
                             <i class="fa fa-file-excel-o"></i>导入<input type="file" name="file" onchange="angular.element(this).scope().selectFile(this)"
                                                                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
                         </a>
-                        <button class="btn btn-sm btn-success" title="批量复制" ng-click="operate.copyok()"><i class="fa fa-copy"></i>批量复制</button>
+                        <button class="btn btn-sm btn-success" title="批量复制" ng-click="vmManager.selectBulkCopyOk()"><i class="fa fa-copy"></i>批量复制</button>
                     </span>
                 </span>
                 <div class="h-split"></div>
@@ -47,7 +47,7 @@
                                 <tr>
                                     <th>产品品名</th>
                                     <th>工序总数</th>
-                                    <th>工时总计(分)</th>
+                                    <th>工时总计(秒)</th>
                                     <th>操作(<i class="fa fa-pencil-square-o"></i>)</th>
                                 </tr>
                             </thead>
@@ -89,7 +89,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in vmManager.editDatas track by $index">
+                                <tr ng-repeat="item in vmManager.editDataSet track by $index">
                                     <td>{{item.ProcessesIndex}}</td>
                                     <td>{{item.ProcessesName}}</td>
                                     <td>{{item.ProcessesType}}</td>
@@ -106,8 +106,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <div ng-if="vmManager.editDatas.length>0"
-                         yl-pagination data-dataset="vmManager.editDatas"
+                    <div ng-if="vmManager.editDataSet.length>0"
+                         yl-pagination data-dataset="vmManager.editDataSet"
                          data-datasource="vmManager.editDatasSource">
                     </div>
                 </div>
@@ -260,7 +260,7 @@
                                     <i class="fa fa-hand-o-right"></i>
                                     <input readonly placeholder="要复制的产品品名" ng-model="vmManager.productNameFrom" style="color:black" /><i class="fa fa-arrows-h"></i>
                                     <input placeholder="待生成的产品品名" ng-model="vmManager.productNameTo" style="color:black" />
-                                    <span class="btn btn-xs btn-default" ng-click="operate.copyConfirm()"><i class="fa fa-copy"></i>复制</span>
+                                    <span class="btn btn-xs btn-default" ng-click="vmManager.copyConfirm()"><i class="fa fa-copy"></i>复制</span>
                                 </span>
                             </div>
                             <table class="table table-condensed table-bordered table-hover">
@@ -275,7 +275,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="copyItem in vmManager.copyEditDatas track by $index">
+                                    <tr ng-repeat="copyItem in vmManager.copyEditDataSet track by $index">
                                         <td>{{copyItem .ProductName}}</td>
                                         <td>{{copyItem .ProcessesIndex}}</td>
                                         <td>{{copyItem .ProcessesName}}</td>
@@ -289,9 +289,9 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div ng-if="vmManager.copyEditDatas.length>0"
-                                 yl-pagination data-dataset="vmManager.copyEditDatas"
-                                 data-datasource="vmManager.editDatasSource">
+                            <div ng-if="vmManager.copyEditDataSet.length>0"
+                                 yl-pagination data-dataset="vmManager.copyEditDataSet"
+                                 data-datasource="vmManager.copyEditDatasSource">
                             </div>
                         </div>
                         <div class="form-group">
