@@ -126,6 +126,24 @@ namespace Lm.Eic.App.HwCollaboration.Model
             set { _materialbomdatacontent = value; }
             get { return _materialbomdatacontent; }
         }
+        private string _inventorytype;
+        /// <summary>
+        ///物料类别
+        /// </summary>
+        public string InventoryType
+        {
+            set { _inventorytype = value; }
+            get { return _inventorytype; }
+        }
+        private int _datastatus;
+        /// <summary>
+        ///数据状态
+        /// </summary>
+        public int DataStatus
+        {
+            set { _datastatus = value; }
+            get { return _datastatus; }
+        }
         private string _oplog;
         /// <summary>
         ///操作日志
@@ -182,5 +200,6 @@ namespace Lm.Eic.App.HwCollaboration.Model
         }
         #endregion Model
     }
+
 
 }

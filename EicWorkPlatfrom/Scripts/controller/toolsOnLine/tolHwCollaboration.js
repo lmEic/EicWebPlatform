@@ -14,7 +14,7 @@ officeAssistantModule.factory('hwDataOpService', function (ajaxService) {
     hwDataOp.saveManPower = function (entity) {
         var url = hwUrlPrefix + 'SaveManPower';
         return ajaxService.postData(url, {
-            entity: entity,
+            entity: entity
         });
     };
     //----------物料信息模块：基础信息设置,库存、在制、发料--------------------
@@ -22,15 +22,23 @@ officeAssistantModule.factory('hwDataOpService', function (ajaxService) {
     hwDataOp.getMaterialBaseInfo = function (materialId) {
         var url = hwUrlPrefix + 'GetMaterialBaseInfo';
         return ajaxService.getData(url, {
-            materialId: materialId,
+            materialId: materialId
         });
     };
     hwDataOp.saveMaterialBase = function (entities) {
         var url = hwUrlPrefix + 'SaveMaterialBase';
         return ajaxService.postData(url, {
-            entities: entities,
+            entities: entities
         });
     };
+
+    hwDataOp.saveMaterialBom = function (entity) {
+        var url = hwUrlPrefix + 'SaveMaterialBom';
+        return ajaxService.postData(url, {
+            entity: entity
+        });
+    };
+
     //获取物料信息信息
     hwDataOp.getMaterialDetails = function () {
         var url = hwUrlPrefix + 'GetMaterialDetails';
@@ -40,7 +48,7 @@ officeAssistantModule.factory('hwDataOpService', function (ajaxService) {
     hwDataOp.saveMaterialInventory = function (entity) {
         var url = hwUrlPrefix + 'SaveMaterialInventory';
         return ajaxService.postData(url, {
-            entity: entity,
+            entity: entity
         });
     };
     return hwDataOp;
@@ -63,7 +71,7 @@ var hwApiHelper = (function () {
         this.OpPerson = null;
         //操作标志
         this.OpSign = leeDataHandler.dataOpMode.add;
-    };
+    }
     ///华为数据配置实体
     function hwDataConfigEntity() {
         //物料编号
@@ -74,6 +82,10 @@ var hwApiHelper = (function () {
         this.MaterialBomDataContent = null;
         //操作日志
         this.OpLog = null;
+        //Item类别
+        this.InventoryType = null;
+        //数据状态
+        this.DataStatus = 0;
         //操作日期
         this.OpDate = null;
         //操作时间
@@ -82,7 +94,7 @@ var hwApiHelper = (function () {
         this.OpPerson = null;
         //操作标志
         this.OpSign = leeDataHandler.dataOpMode.add;
-    };
+    }
 
     return {
         //数据实体
@@ -96,10 +108,10 @@ var hwApiHelper = (function () {
             var dataEntity = new hwDataConfigEntity();
             leeHelper.setUserData(dataEntity);
             return dataEntity;
-        },
+        }
     };
 })();
-
+//物料基础信息控制器
 officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpService, $scope) {
     ///数据实体模型
     var dataVM = hwApiHelper.createConfigDataEntity();
@@ -140,6 +152,7 @@ officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpSer
             };
             var dto = _.clone(dataVM);
             dto.MaterialId = materialVM.vendorItemCode;
+            dto.InventoryType = materialVM.inventoryType;
             dto.MaterialBaseDataContent = JSON.stringify(data);
             leeHelper.setObjectClentSign(dto);
             return dto;
@@ -147,7 +160,7 @@ officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpSer
         getMaterialBaseInfo: function ($event) {
             if ($event.keyCode === 13) {
                 $scope.searchPromise = hwDataOpService.getMaterialBaseInfo(vmManager.materialId).then(function (data) {
-                    if (data.MaterialBaseDataContent != null) {
+                    if (data.MaterialBaseDataContent !== null) {
                         vmManager.dataEntity = JSON.parse(data.MaterialBaseDataContent);
                         //给每个实体添加键值
                         leeHelper.setObjectsGuid(vmManager.dataEntity.vendorItemList);
@@ -232,7 +245,7 @@ officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpSer
                     vmManager.refreshDataInDataset(dataItem, leeDataHandler.dataOpMode.delete);
                 });
             });
-        },
+        }
     };
 
     var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
@@ -243,13 +256,136 @@ officeAssistantModule.controller('hwMaterialBaseInfoCtrl', function (hwDataOpSer
                 $scope.opPromise = hwDataOpService.saveMaterialBase(vmManager.dataset).then(function (opresult) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
                         vmManager.init();
-                    })
+                    });
                 });
             }
+        });
+    };
+});
+//关键物料BOM信息控制器
+officeAssistantModule.controller('hwMaterialBomInfoCtrl', function (hwDataOpService, $scope) {
+    ///数据实体模型
+    var dataVM = hwApiHelper.createConfigDataEntity();
+
+    $scope.materialVM = {
+        vendorItemCode: null,
+        subItemCode: null,
+        substituteGroup: null,
+        baseUsedQuantity: 1,
+        standardQuantity: 1
+    };
+    var initMaterialVM = _.clone($scope.materialVM);
+
+    var editDialog = $scope.editDialog = leePopups.dialog();
+
+    var vmManager = $scope.vmManager = {
+        materialId: null,
+        dataEntity: null,
+        init: function () {
+            vmManager.dataEntity = null;
+            vmManager.materialId = null;
+            vmManager.masterParentMaterialId = null;
+        },
+        //主父阶料号编码
+        masterParentMaterialId: null,
+        oldSelectedItem: null,
+        //检测物料编码
+        checkMaterialId: function (vendorItemCode) {
+            if (vmManager.masterParentMaterialId === null || vmManager.masterParentMaterialId.length < 5) {
+                vmManager.masterParentMaterialId = vendorItemCode;
+                return true;
+            }
+            else {
+                if (vmManager.masterParentMaterialId !== vendorItemCode) {
+                    leePopups.alert("新增加的父阶物料编码与已经增加的父阶物料编码：" + vmManager.masterParentMaterialId + "不相同！", 2);
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+        },
+        getMaterialBomInfo: function ($event) {
+            if ($event.keyCode === 13) {
+                $scope.searchPromise = hwDataOpService.getMaterialBaseInfo(vmManager.materialId).then(function (data) {
+                    if (data.MaterialBomDataContent !== null && data.MaterialBomDataContent.length > 20) {
+                        vmManager.dataEntity = JSON.parse(data.MaterialBomDataContent);
+                        //给每个实体添加键值
+                        leeHelper.setObjectsGuid(vmManager.dataEntity.keyMaterialList);
+                    }
+                });
+            }
+        },
+        showEditWindow: function (item) {
+            vmManager.oldSelectedItem = _.clone(item);
+            $scope.materialVM = item;
+            editDialog.show();
+        },
+        showCopyWindow: function (item) {
+            vmManager.oldSelectedItem = _.clone(item);
+            $scope.materialVM = _.clone(item);
+            leeHelper.clearVM($scope.materialVM, ['vendorItemCode', 'baseUsedQuantity']);
+            $scope.materialVM.isAdd = true;
+            editDialog.show();
+        },
+        confirmEditData: function () {
+            if ($scope.materialVM.isAdd) {
+                if (!vmManager.checkMaterialId($scope.materialVM.vendorItemCode)) return;
+
+                leeHelper.setObjectGuid($scope.materialVM);
+                if (vmManager.dataEntity === null || vmManager.dataEntity.keyMaterialList === null) {
+                    vmManager.dataEntity = {
+                        keyMaterialList: [$scope.materialVM]
+                    };
+                }
+                else {
+                    vmManager.dataEntity.keyMaterialList.push($scope.materialVM);
+                }
+                delete $scope.materialVM.isAdd;
+            }
+            editDialog.close();
+        },
+        cancelEditData: function () {
+            if (vmManager.dataEntity !== null)
+                leeDataHandler.dataOperate.cancelEditItem(vmManager.oldSelectedItem, vmManager.dataEntity.vendorItemList);
+            editDialog.close();
+        },
+        addMaterialBomInfo: function () {
+            $scope.materialVM = _.clone(initMaterialVM);
+            $scope.materialVM.isAdd = true;
+            editDialog.show();
+        },
+        removeMaterial: function (item) {
+            leePopups.inquire("删除提示", "您确认要删除数据吗?", function () {
+                $scope.$apply(function () {
+                    leeHelper.delWithId(vmManager.dataEntity.keyMaterialList, item);
+                    vmManager.masterParentMaterialId = item.vendorItemCode;
+                });
+            });
+        }
+    };
+
+    var operate = $scope.operate = Object.create(leeDataHandler.operateStatus);
+
+    operate.save = function () {
+        leeDataHandler.dataOperate.add(operate, true, function () {
+            if (vmManager.dataEntity !== null && vmManager.dataEntity.keyMaterialList !== null && vmManager.dataEntity.keyMaterialList.length > 0) {
+                dataVM.MaterialId = vmManager.dataEntity.keyMaterialList[0].vendorItemCode;
+                dataVM.MaterialBomDataContent = JSON.stringify(vmManager.dataEntity);
+            }
+            else {
+                dataVM.MaterialId = vmManager.masterParentMaterialId;
+                dataVM.MaterialBomDataContent = "";
+            }
+            $scope.opPromise = hwDataOpService.saveMaterialBom(dataVM).then(function (opresult) {
+                leeDataHandler.dataOperate.handleSuccessResult(operate, opresult, function () {
+                    vmManager.init();
+                })
+            });
         })
     };
 });
-
+//人力信息控制器
 officeAssistantModule.controller('hwManPowerCtrl', function (hwDataOpService, dataDicConfigTreeSet, $scope) {
     ///数据实体模型
     var dataVM = hwApiHelper.crateDataEntity();
@@ -359,7 +495,7 @@ officeAssistantModule.controller('hwManPowerCtrl', function (hwDataOpService, da
     };
     vmManager.getManPower();
 });
-
+//物料信息控制器
 officeAssistantModule.controller('hwMaterialManageCtrl', function (hwDataOpService, $scope) {
     ///数据实体模型
     var dataInventoryVM = hwApiHelper.crateDataEntity();
@@ -373,6 +509,7 @@ officeAssistantModule.controller('hwMaterialManageCtrl', function (hwDataOpServi
             $scope.searchPromise = hwDataOpService.getMaterialDetails().then(function (data) {
                 vmManager.inventoryDataEntity = data.inventoryEntity;
                 vmManager.makingDataEntity = data.makingEntity;
+                vmManager.shipmentDataEntity = data.shippingEntity;
             });
         },
     };

@@ -34,6 +34,11 @@ namespace Lm.Eic.App.HwCollaboration.Business
 
         protected string moduleName = null;
         protected string apiUrl = null;
+        /// <summary>
+        /// 是否是测试环境，如果是测试环境
+        /// 则不像华为平台发送数据
+        /// </summary>
+        protected bool isTestMode = true;
         #endregion
 
         public HwCollaborationBase(string modulename, string apiUrl)
@@ -54,7 +59,10 @@ namespace Lm.Eic.App.HwCollaboration.Business
         /// <returns></returns>
         protected string AccessApi(string apiUrl, T datas)
         {
-            return helper.AccessHwAPI<T>(apiUrl, datas);
+            if (!isTestMode)
+                return helper.AccessHwAPI<T>(apiUrl, datas);
+            else
+                return ObjectSerializer.SerializeObject(new HwAccessApiResult() { errorCode = "", errorMessage = "", success = true });
         }
         /// <summary>
         /// 通过访问华为API将数据同步到华为系统中
@@ -69,8 +77,6 @@ namespace Lm.Eic.App.HwCollaboration.Business
                 return OpResult.SetErrorResult("数据实体模型不能为null！");
             }
             var dto = ObjectSerializer.DeserializeObject<T>(entity.OpContent);
-
-            string ss = ObjectSerializer.SerializeObject(dto);
 
             try
             {

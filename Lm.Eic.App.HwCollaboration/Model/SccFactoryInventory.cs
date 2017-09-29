@@ -6,6 +6,18 @@ using System.Threading.Tasks;
 
 namespace Lm.Eic.App.HwCollaboration.Model
 {
+
+    /// <summary>
+    /// 物料组合Dto
+    /// </summary>
+    public class MaterialComposeDto
+    {
+        public FactoryInventoryDto InvertoryDto { get; set; }
+
+        public MaterialMakingDto MakingDto { get; set; }
+
+        public MaterialShipmentDto ShippmentDto { get; set; }
+    }
     /// <summary>
     /// 库存明细数据传输Dto
     /// </summary>

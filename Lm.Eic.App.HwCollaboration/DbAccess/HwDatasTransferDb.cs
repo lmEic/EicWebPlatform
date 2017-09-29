@@ -16,7 +16,6 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
     {
         private string selectFileds = "OpModule, OpContent,OpLog, OpDate, OpTime, OpPerson, OpSign from HwCollaboration_DataTransfer";
 
-
         public OpResult Store(HwCollaborationDataTransferModel model)
         {
             if (model == null)
@@ -66,9 +65,13 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
     /// </summary>
     public class HwDatasConfigDb
     {
-        private string selectFileds = "MaterialId, MaterialBaseDataContent, MaterialBomDataContent, OpLog, OpSign, OpPerson, OpDate, OpTime from HwCollaboration_DataConfig";
-
-        public OpResult Store(HwCollaborationDataConfigModel model)
+        private string selectFileds = "MaterialId, MaterialBaseDataContent, MaterialBomDataContent, OpLog,InventoryType, DataStatus,OpSign, OpPerson, OpDate, OpTime from HwCollaboration_DataConfig";
+        /// <summary>
+        /// 保存物料基础信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult StoreMaterialBase(HwCollaborationDataConfigModel model)
         {
             if (model == null)
             {
@@ -77,7 +80,23 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
             if (!IsExist(model.MaterialId))
                 return Insert(model);
             else
-                return Update(model);
+                return UpdateMaterialBase(model);
+        }
+        /// <summary>
+        /// /保存物料BOM信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public OpResult StoreMaterialBom(HwCollaborationDataConfigModel model)
+        {
+            if (model == null)
+            {
+                return OpResult.SetErrorResult("配置信息不能为NULL!");
+            }
+            if (!IsExist(model.MaterialId))
+                return Insert(model);
+            else
+                return UpdateMaterialBom(model);
         }
 
         private OpResult GetOpResult(int record)
@@ -91,17 +110,32 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         private OpResult Insert(HwCollaborationDataConfigModel entity)
         {
             StringBuilder sqlSb = new StringBuilder();
-            sqlSb.Append("Insert into HwCollaboration_DataConfig(MaterialId, MaterialBaseDataContent, MaterialBomDataContent, OpLog, OpSign, OpPerson, OpDate, OpTime)")
-                 .AppendFormat(" values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')", entity.MaterialId, entity.MaterialBaseDataContent, entity.MaterialBomDataContent, entity.OpLog, entity.OpSign, entity.OpPerson, entity.OpDate, entity.OpTime);
+            sqlSb.Append("Insert into HwCollaboration_DataConfig(MaterialId, MaterialBaseDataContent, MaterialBomDataContent, OpLog,InventoryType, DataStatus,OpSign, OpPerson, OpDate, OpTime)")
+                 .AppendFormat(" values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')", entity.MaterialId, entity.MaterialBaseDataContent, entity.MaterialBomDataContent, entity.OpLog, entity.InventoryType, entity.DataStatus, entity.OpSign, entity.OpPerson, entity.OpDate, entity.OpTime);
             int record = DbHelper.Bpm.ExecuteNonQuery(sqlSb.ToString());
             return GetOpResult(record);
         }
-        private OpResult Update(HwCollaborationDataConfigModel entity)
+        private OpResult UpdateMaterialBase(HwCollaborationDataConfigModel entity)
         {
             StringBuilder sqlSb = new StringBuilder();
             sqlSb.Append("Update HwCollaboration_DataConfig ")
                 .AppendFormat("Set MaterialBaseDataContent='{0}',", entity.MaterialBaseDataContent)
-                 .AppendFormat("MaterialBomDataContent='{0}',", entity.MaterialBomDataContent)
+                .AppendFormat("OpLog='{0}',", entity.OpLog)
+                .AppendFormat("InventoryType='{0}',", entity.InventoryType)
+                .AppendFormat("DataStatus='{0}',", entity.DataStatus)
+                .AppendFormat("OpSign='{0}',", entity.OpSign)
+                .AppendFormat("OpPerson='{0}',", entity.OpPerson)
+                .AppendFormat("OpDate='{0}',", entity.OpDate)
+                .AppendFormat("OpTime='{0}' ", entity.OpTime)
+                .AppendFormat("where MaterialId='{0}'", entity.MaterialId);
+            int record = DbHelper.Bpm.ExecuteNonQuery(sqlSb.ToString());
+            return GetOpResult(record);
+        }
+        private OpResult UpdateMaterialBom(HwCollaborationDataConfigModel entity)
+        {
+            StringBuilder sqlSb = new StringBuilder();
+            sqlSb.Append("Update HwCollaboration_DataConfig ")
+                .AppendFormat("Set MaterialBomDataContent='{0}',", entity.MaterialBomDataContent)
                 .AppendFormat("OpLog='{0}',", entity.OpLog)
                 .AppendFormat("OpSign='{0}',", entity.OpSign)
                 .AppendFormat("OpPerson='{0}',", entity.OpPerson)
@@ -114,14 +148,26 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         /// <summary>
         /// 获取配置数据模型
         /// </summary>
-        /// <param name="materilId"></param>
+        /// <param name="productId"></param>
         /// <returns></returns>
-        public HwCollaborationDataConfigModel GetDataBy(string materilId)
+        public HwCollaborationDataConfigModel GetDataBy(string productId)
         {
             StringBuilder sbSql = new StringBuilder();
             sbSql.Append("select Top 1 " + selectFileds)
-                .AppendFormat(" where MaterialId='{0}' order by Id_Key Desc", materilId);
+                .AppendFormat(" where MaterialId='{0}' order by Id_Key Desc", productId);
             return DbHelper.Bpm.LoadEntity<HwCollaborationDataConfigModel>(sbSql.ToString());
+        }
+        /// <summary>
+        /// 获取所有配置数据模型
+        /// </summary>
+        /// <param name="dataStatus"></param>
+        /// <returns></returns>
+        public List<HwCollaborationDataConfigModel> GetConfigDatas(int dataStatus = 1)
+        {
+            StringBuilder sbSql = new StringBuilder();
+            sbSql.Append("select " + selectFileds)
+                .AppendFormat(" where DataStatus='{0}' order by Id_Key Desc", dataStatus);
+            return DbHelper.Bpm.LoadEntities<HwCollaborationDataConfigModel>(sbSql.ToString());
         }
         private bool IsExist(string materialId)
         {

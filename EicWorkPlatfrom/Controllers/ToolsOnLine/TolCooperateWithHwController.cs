@@ -46,6 +46,13 @@ namespace EicWorkPlatfrom.Controllers
         {
             return View();
         }
+
+        [NoAuthenCheck]
+        public JsonResult SaveMaterialBom(HwCollaborationDataConfigModel entity)
+        {
+            var result = HwCollaborationService.MaterialManager.KeyBomManager.SynchronizeDatas(entity);
+            return Json(result);
+        }
         #endregion
 
         #region HwManpowerInput
@@ -86,10 +93,8 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult GetMaterialDetails()
         {
-            var inventoryEntity = HwCollaborationService.MaterialManager.InventoryManager.AutoGetDatasFromErp();
-            var makingEntity = HwCollaborationService.MaterialManager.MakingManager.AutoGetDatasFromErp();
-
-            var entity = new { inventoryEntity, makingEntity };
+            var dto = HwCollaborationService.MaterialManager.AutoLoadDataFromErp();
+            var entity = new { inventoryEntity = dto.InvertoryDto, makingEntity = dto.MakingDto, shippingEntity = dto.ShippmentDto };
             return Json(entity, JsonRequestBehavior.AllowGet);
         }
         [NoAuthenCheck]
@@ -120,6 +125,5 @@ namespace EicWorkPlatfrom.Controllers
             return View();
         }
         #endregion
-
     }
 }

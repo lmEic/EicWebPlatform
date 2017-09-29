@@ -19,30 +19,34 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
         {
         }
 
-        public override MaterialMakingDto AutoGetDatasFromErp()
+        public override MaterialMakingDto AutoGetDatasFromErp(ErpMaterialQueryCell materialQueryCell)
         {
-            string productId = "14K1B169600M0RN";
+            //string productId = "14K1B169600M0RN";//产品品号
             MaterialMakingDto dto = new MaterialMakingDto() { materialMakingList = new List<SccMaterialMakingVO>() };
-            List<ErpMaterialMakingModel> datas = this.erpDbAccess.LoadMaterialMakingDatas(productId);
-            if (datas != null && datas.Count > 0)
+            if (materialQueryCell == null) return dto;
+            materialQueryCell.ProductIdList.ForEach(productId =>
             {
-                datas.ForEach(d =>
+                List<ErpMaterialMakingModel> datas = this.erpDbAccess.LoadMaterialMakingDatas(productId);
+                if (datas != null && datas.Count > 0)
                 {
-                    SccMaterialMakingVO smm = new SccMaterialMakingVO()
+                    datas.ForEach(d =>
                     {
-                        vendorFactoryCode = "421072-001",
-                        componentCode = d.ComponentCode.Trim(),
-                        componentDescription = "BOSA Pigtail",
-                        customerVendorCode = "157",
-                        orderCompletedQuantity = d.OrderCompletedQuantity,
-                        orderNumber = d.OrderNumber.Trim(),
-                        orderPublishDateStr = d.OrderPublishDateStr.ToFormatDate(),
-                        orderQuantity = d.OrderQuantity,
-                        orderStatus = d.OrderStatus.ToDiscriptionOrderStatus()
-                    };
-                    dto.materialMakingList.Add(smm);
-                });
-            }
+                        SccMaterialMakingVO smm = new SccMaterialMakingVO()
+                        {
+                            vendorFactoryCode = "421072-001",
+                            componentCode = d.ComponentCode.Trim(),
+                            componentDescription = "BOSA Pigtail",
+                            customerVendorCode = "157",
+                            orderCompletedQuantity = d.OrderCompletedQuantity,
+                            orderNumber = d.OrderNumber.Trim(),
+                            orderPublishDateStr = d.OrderPublishDateStr.ToFormatDate(),
+                            orderQuantity = d.OrderQuantity,
+                            orderStatus = d.OrderStatus.ToDiscriptionOrderStatus()
+                        };
+                        dto.materialMakingList.Add(smm);
+                    });
+                }
+            });
             return dto;
         }
     }

@@ -20,29 +20,33 @@ namespace Lm.Eic.App.HwCollaboration.Business.MaterialManage
 
         }
 
-        public override FactoryInventoryDto AutoGetDatasFromErp()
+        public override FactoryInventoryDto AutoGetDatasFromErp(ErpMaterialQueryCell materialQueryCell)
         {
-            string materialId = "349213C0350P0RT";// "14K1B169600M0RN";
+            //string materialId = "349213C0350P0RT";//物料料号
             FactoryInventoryDto dto = new FactoryInventoryDto() { factoryInventoryList = new List<SccFactoryInventory>() };
-            List<ErpMaterialInventoryModel> datas = this.erpDbAccess.LoadMeterialInventoryDatas(materialId);
-            if (datas != null && datas.Count > 0)
+            if (materialQueryCell == null) return dto;
+            materialQueryCell.MaterialIdList.ForEach(materialId =>
             {
-                datas.ForEach(d =>
+                List<ErpMaterialInventoryModel> datas = this.erpDbAccess.LoadMeterialInventoryDatas(materialId);
+                if (datas != null && datas.Count > 0)
                 {
-                    SccFactoryInventory sfi = new SccFactoryInventory()
+                    datas.ForEach(d =>
                     {
-                        customerCode = "157",
-                        vendorFactoryCode = "421072-001",
-                        goodQuantity = d.GoodQuantity,
-                        stockTime = d.StockTime.ToFormatDate(),
-                        vendorItemCode = d.MaterialId.Trim(),
-                        vendorLocation = "",
-                        vendorStock = d.VendorStock.Trim(),
-                        vendorItemRevision = "",
-                    };
-                    dto.factoryInventoryList.Add(sfi);
-                });
-            }
+                        SccFactoryInventory sfi = new SccFactoryInventory()
+                        {
+                            customerCode = "157",
+                            vendorFactoryCode = "421072-001",
+                            goodQuantity = d.GoodQuantity,
+                            stockTime = d.StockTime.ToFormatDate(),
+                            vendorItemCode = d.MaterialId.Trim(),
+                            vendorLocation = "",
+                            vendorStock = d.VendorStock.Trim(),
+                            vendorItemRevision = "",
+                        };
+                        dto.factoryInventoryList.Add(sfi);
+                    });
+                }
+            });
             return dto;
         }
     }
