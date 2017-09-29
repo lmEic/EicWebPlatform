@@ -11,6 +11,8 @@ using Lm.Eic.App.Erp.Bussiness.QmsManage;
 using Lm.Eic.Uti.Common.YleeOOMapper;
 using Lm.Eic.Uti.Common.YleeExtension.FileOperation;
 using Lm.Eic.Framework.ProductMaster.Business.Config;
+using Lm.Eic.Framework.ProductMaster.Model.CommonManage;
+using Lm.Eic.App.Business.Bmp.WorkFlow.GeneralForm;
 
 namespace EicWorkPlatfrom.Controllers
 {
@@ -352,10 +354,16 @@ namespace EicWorkPlatfrom.Controllers
         [NoAuthenCheck]
         public JsonResult UploadIqcGatherDataAttachFile(HttpPostedFileBase file)
         {
-            string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
-            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
-            this.SaveFileToServer(file, filePath, addchangeFileName);
-            return Json("OK");
+            FormAttachFileManageModel dto = ConvertFormDataToTEntity<FormAttachFileManageModel>("attachFileDto");
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, dto.ModuleName);
+            string customizeFileName = GeneralFormService.InternalContactFormManager.AttachFileHandler.SetAttachFileName(dto.ModuleName, dto.FormId);
+            UploadFileResult result = SaveFileToServer(file, filePath, customizeFileName);
+            if (result.Result)
+            {
+                dto.DocumentFilePath = filePath;
+                dto.FileName = customizeFileName;
+            }
+            return Json(result);
         }
         /// <summary>
         /// 存储采集的数据

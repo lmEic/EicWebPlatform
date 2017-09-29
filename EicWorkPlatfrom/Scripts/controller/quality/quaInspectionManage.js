@@ -859,12 +859,8 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
         },
         //删除抽检的项目数据
         selectDeleteInspectionItems: function (item) {
-            console.log(item)
             var dataItems = _.find(vmManager.panelDataset, { productId: item.MaterialId, orderId: item.OrderId });
-            if (dataItems !== undefined) {
-                dataItems.dataSets = dataItems.inspectionItemDatas = inspectionItemDatas;
-            }
-            console.log(dataItems);
+            console.log(dataItems.inspectionItemDatas);
             leePopups.confirm("删除提示", "您确定要删除该项数据吗？", function () {
                 $scope.$apply(function () {
                     $scope.opPromise = qualityInspectionDataOpService.deleteIqcInspectionItemData(item.OrderId, item.MaterialId, item.InspectionItem).then(function (opResult) {
@@ -908,7 +904,6 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             leePopups.alert("已审核不能更新保存数据", 2);
             return;
         }
-        console.log(dataItem);
         $scope.opPromise = qualityInspectionDataOpService.storeIqcInspectionGatherDatas(dataItem).then(function (opResult) {
 
             if (opResult.Result) {
@@ -920,27 +915,31 @@ qualityModule.controller("iqcDataGatheringCtrl", function ($scope, qualityInspec
             }
         });
     };
+
+    ///表单附件模型
+    var attachFileVM = {
+        ModuleName: null,
+        FormId: null,
+        FileName: null,
+        DocumentFilePath: null,
+        OpSign: leeDataHandler.dataOpMode.uploadFile,
+        OpPerson: null,
+    };
     //上传附件
     $scope.selectFile = function (el) {
+        var fileName = vmManager.currentInspectionItem.OrderId + '&' + vmManager.currentInspectionItem.MaterialId + '&' + vmManager.currentInspectionItem.InspectionItem
+        console.log(vmManager.currentInspectionItem);
         leeHelper.upoadFile(el, function (fd) {
-            console.log(fd);
-            qualityInspectionDataOpService.uploadIqcGatherDataAttachFile(fd).then(function (result) {
-                if (result === 'OK') {
-                    var nowDate = new Date().getDate();
-                    var nowHour = new Date().getHours();
-                    if (nowDate < 10) { nowDate += '0' };
-                    if (nowHour < 10) { nowHour += '0' };
-                    vmManager.currentInspectionItem.FileName = $scope.uploadFileName = nowDate.toString() + nowHour.toString() + fd.name;
-                    vmManager.currentInspectionItem.OpSign = leeDataHandler.dataOpMode.uploadFile;
-                    qualityInspectionDataOpService.storeIqcInspectionGatherDatas(vmManager.currentInspectionItem).then(function (opResult) {
-                        if (opResult.Result) {
-                            if (opResult.Result) {
-                                leePopups.alert("上传文件成功", 4);
-                            }
-                        }
-                    })
+            var dto = leeWorkFlow.createFormFileAttachDto(attachFileVM, fileName, "Iqc");
+            fd.append("attachFileDto", JSON.stringify(dto));
+            $scope.doPromise = qualityInspectionDataOpService.uploadIqcGatherDataAttachFile(fd).then(function (uploadResult) {
+                if (uploadResult.Result) {
+                    console.log(uploadResult);
+                    vmManager.currentInspectionItem.DocumentPath = uploadResult.DocumentFilePath;
+                    vmManager.currentInspectionItem.FileName = uploadResult.FileName;
+                    leePopups.alert("上传文件成功,记得要保存！！", 4);
                 }
-            })
+            });
         });
     }
 })
