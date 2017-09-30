@@ -343,7 +343,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
         ///查询数据是否有相同的工艺名称
         if (uiVM.OpSign === leeDataHandler.dataOpMode.add) {
             var issave = true;
-            angular.forEach(vmManager.editDataSet, function (i) {
+            angular.forEach(vmManager.editDatasSource, function (i) {
                 if (i.ProcessesName == uiVM.ProcessesName) {
                     console.log(i.ProcessesName);
                     leePopups.alert("已经添加过了！【" + i.ProcessesName + "】");
@@ -357,7 +357,7 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
             confirmData.Id = leeHelper.newGuid();
             confirmData.IsServer = false;//由客户端创建的数据
             vmManager.editDatasSource.push(confirmData);
-            vmManager.editDataSet.push(confirmData);
+            // vmManager.editDataSet = vmManager.editDatasSource;
             vmManager.editWindowDisplay = true;
             vmManager.saveOneinit();
         }
@@ -366,6 +366,8 @@ productModule.controller("standardProductionFlowSetCtrl", function ($scope, dRep
 
     //批量保存数据
     operate.saveAll = function () {
+
+        console.log(vmManager.editDatasSource);
         $scope.searchPromise = dReportDataOpService.storeProductFlowDatas(vmManager.editDatasSource).then(function (opresult) {
             if (opresult.Result) {
                 leeDataHandler.dataOperate.handleSuccessResult(operate, opresult);
@@ -581,14 +583,15 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         },
         havePutInData: [],
         isShowhavePutInData: false,
-        erpOrderInfoDatas: [],//载入已分配的订单信息
+        erpOrderInfoDatasSet: [],//载入已分配的订单信息
         erpOrderInfoDatasSource: [],
-        productionFlowDatas: [],//工序信息
+        productionFlowDatasSet: [],//工序信息
+        productionFlowDatasSouce: [],//工序信息
         //选择部门
         changeDepartment: function () {
             $scope.promise = dReportDataOpService.getInProductionOrderDatas(vmManager.department).then(function (erpDatas) {
-                vmManager.erpOrderInfoDatas = [];
-                erpOrderInfoDatasSource = vmManager.erpOrderInfoDatas = erpDatas;
+                vmManager.erpOrderInfoDatasSet = [];
+                vmManager.erpOrderInfoDatasSource = vmManager.erpOrderInfoDatasSet = erpDatas;
                 ///根据登录用户 载入信息 ，如果没有侧 选择载入
                 if (erpDatas.length > 0)
                     vmManager.departments = [{ value: leeLoginUser.department, label: leeLoginUser.departmentText }];
@@ -611,10 +614,11 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         getProductionFlowDatas: function (productName, orderId) {
             $scope.searchPromise = dReportDataOpService.getProductionFlowCountDatas(vmManager.department, productName, orderId).then(function (datas) {
 
-                vmManager.productionFlowDatas = datas;
+                vmManager.productionFlowDatasSet = datas;
                 vmManager.productionFlowShow = true;
                 vmManager.isShowhavePutInData = false;
                 vmManager.putInDisplay = false;
+                vmManager.productionFlowDatasSouce = vmManager.productionFlowDatasSet;
             });
         },
         // 得到工序信息
