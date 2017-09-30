@@ -121,7 +121,7 @@ namespace Lm.Eic.App.HwCollaboration.DbAccess
         /// <summary>
         /// 载入在制品数据
         /// </summary>
-        /// <param name="productId">产品品号</param>
+        /// <param name="materialBom">物料BOM表</param>
         /// <returns></returns>
         public List<ErpMaterialShipmentModel> LoadMaterialShipmentDatas(SccKeyMaterialVO materialBom)
         {
