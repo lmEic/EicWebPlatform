@@ -547,13 +547,9 @@ namespace EicWorkPlatfrom.Controllers
         /// </summary>
         public const string Temp = "Temp";
         /// <summary>
-        /// FQC检验采集数据附件文件夹
+        /// FQC/IQC检验采集数据附件文件夹
         /// </summary>
-        public const string FqcInspectionGatherDataFile = "FqcInspectionGatherDataFile";
-        /// <summary>
-        /// IQC检验采集数据附件文件夹
-        /// </summary>
-        public const string IqcInspectionGatherDataFile = "IqcInspectionGatherDataFile";
+        public const string InspectionGatherDataFile = "InspectionGatherDataFile";
         /// <summary>
         /// RMA文档文件夹
         /// </summary>

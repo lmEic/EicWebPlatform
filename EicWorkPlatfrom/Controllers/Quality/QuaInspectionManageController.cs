@@ -347,15 +347,15 @@ namespace EicWorkPlatfrom.Controllers
             return Json(opResult);
         }
         /// <summary>
-        /// 上传FQC检验采集数据附件
+        /// 上传IQC/FQC检验采集数据附件
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
         [NoAuthenCheck]
-        public JsonResult UploadIqcGatherDataAttachFile(HttpPostedFileBase file)
+        public JsonResult UploadGatherDataAttachFile(HttpPostedFileBase file)
         {
             FormAttachFileManageModel dto = ConvertFormDataToTEntity<FormAttachFileManageModel>("attachFileDto");
-            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, dto.ModuleName);
+            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.InspectionGatherDataFile, dto.ModuleName);
             string customizeFileName = GeneralFormService.InternalContactFormManager.AttachFileHandler.SetAttachFileName(dto.ModuleName, dto.FormId);
             UploadFileResult result = SaveFileToServer(file, filePath, customizeFileName);
             if (result.Result)
@@ -377,8 +377,8 @@ namespace EicWorkPlatfrom.Controllers
             if (gatherData == null) return Json(new OpResult("数据为空", false));
             if (gatherData.FileName != null && gatherData.FileName.Length > 1)
             {
-                gatherData.DocumentPath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.IqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"), gatherData.FileName);
-                gatherData.SiteRootPath = this.SiteRootPath;
+                gatherData.DocumentPath = Path.Combine(gatherData.DocumentPath, gatherData.FileName);
+                gatherData.DocumentPath = gatherData.DocumentPath.Replace(this.SiteRootPath, "");
             }
             var opResult = InspectionService.DataGatherManager.IqcDataGather.StoreInspectionIqcGatherDatas(gatherData);
             return Json(opResult);
@@ -433,20 +433,6 @@ namespace EicWorkPlatfrom.Controllers
             return Json(datas, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 上传FQC检验采集数据附件
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        [NoAuthenCheck]
-        public JsonResult UploadFqcGatherDataAttachFile(HttpPostedFileBase file)
-        {
-            string addchangeFileName = DateTime.Now.Day.ToString("00") + DateTime.Now.Hour.ToString("00");
-            string filePath = this.CombinedFilePath(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"));
-            this.SaveFileToServer(file, filePath, addchangeFileName);
-            return Json("OK");
-        }
-
-        /// <summary>
         /// 保存FQC检验采集数据
         /// </summary>
         /// <returns></returns>
@@ -456,8 +442,9 @@ namespace EicWorkPlatfrom.Controllers
             if (gatherData == null) return Json(new OpResult("数据为空，保存失败", false));
             if (gatherData.FileName != null && gatherData.FileName.Length > 1)//上传文件
             {
-                gatherData.DocumentPath = Path.Combine(FileLibraryKey.FileLibrary, FileLibraryKey.FqcInspectionGatherDataFile, DateTime.Now.ToString("yyyyMM"), gatherData.FileName);
-                gatherData.SiteRootPath = this.SiteRootPath;
+                gatherData.DocumentPath = Path.Combine(gatherData.DocumentPath, gatherData.FileName);
+                ///除掉根目录
+                gatherData.DocumentPath = gatherData.DocumentPath.Replace(this.SiteRootPath, "");
             }
             var datas = InspectionService.DataGatherManager.FqcDataGather.StoreFqcDataGather(gatherData);
             return Json(datas);

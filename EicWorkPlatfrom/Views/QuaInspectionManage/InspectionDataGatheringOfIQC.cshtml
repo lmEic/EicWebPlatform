@@ -56,6 +56,7 @@
         </div>
         <div class="h-split"></div>
         <div class="row clearfix">
+            @*品号列表*@
             <div class="col-md-3">
                 <div class="bs-callout bs-callout-info">
                     <p>
@@ -108,20 +109,24 @@
 
             <div class="col-md-9">
                 <div class="bs-callout bs-callout-info" style="min-height:500px;">
+                    @*头显示文件*@
                     <div class="well">
                         <div class="row">
+                            @*检验项目*@
                             <div class="col-md-4">
                                 <span>
                                     <label>检验项目:</label>
                                     {{vmManager.currentInspectionItem.InspectionItem}}
                                 </span>
                             </div>
+                            @*规格值*@
                             <div class="col-md-4">
                                 <span>
                                     <label>规格值:</label>
                                     {{vmManager.currentInspectionItem.SizeMemo}}
                                 </span>
                             </div>
+                            @*检验水平*@
                             <div class="col-md-4">
                                 <span>
                                     <label>检验水平:</label>
@@ -132,6 +137,7 @@
                             </div>
                         </div>
                         <div class="row">
+                            @*抽样方案*@
                             <div class="col-md-4">
                                 <div>
                                     <label>抽样方案:</label>
@@ -145,6 +151,7 @@
                                     </span>
                                 </div>
                             </div>
+                            @*检验方式/检验方法*@
                             <div class="col-md-4">
                                 <span>
                                     <label>检验方式:</label>
@@ -153,6 +160,7 @@
                                     {{vmManager.currentInspectionItem.InspectionMethod}}
                                 </span>
                             </div>
+                            @*量具编号*@
                             <div class="col-md-4">
                                 <span>
                                     <label>量具编号:</label>
@@ -161,6 +169,7 @@
                             </div>
                         </div>
                     </div>
+                    @*A类*@
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='A'">
                         <div class="well" ng-show="vmManager.inputDatas.length>0" style="overflow:hidden;">
                             <table class="table table-bordered table-condensed">
@@ -194,9 +203,20 @@
                             </table>
                         </div>
                     </div>
+                    @*B类*@
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='B'">
                         <h1>文件导入类型</h1>
+                        <table class="well" style="overflow:hidden;">
+                            <tfoot ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'" ng-cloak>
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-warning" ng-click="operate.saveGatherDatas()">保存数据</button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
+                    @*C类*@
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='C'">
                         <div class="well" ng-show="vmManager.inputDatas.length>0">
                             <table class="table table-bordered table-condensed">
@@ -244,6 +264,7 @@
                             </table>
                         </div>
                     </div>
+                    @*D类*@
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='D'">
                         <div class="well">
                             <form role="form" name="formIqcInspectionDataGather" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
@@ -315,6 +336,7 @@
 
                         </div>
                     </div>
+                    @*E类*@
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='E'">
                         <div class="well" style="overflow:hidden;">
                             <table class="table table-bordered table-condensed">
@@ -353,6 +375,7 @@
                             </table>
                         </div>
                     </div>
+                    @*F类*@
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='F'">
                         <div class="well" style="overflow:hidden;">
                             <table class="table table-bordered table-condensed">

@@ -138,6 +138,7 @@
                     <div class="page-header" ng-hide="vmManager.panelDataSource.length>0">
                         <h4>此工单暂无抽检数据！</h4>
                     </div>
+                    @*分页*@
                     <div ng-if="vmManager.panelDataSet.length>0"
                          yl-pagination data-dataset="vmManager.panelDataSet"
                          data-datasource="vmManager.panelDataSource">
@@ -195,6 +196,7 @@
                             </div>
                         </div>
                     </div>
+                    @*A类*@
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='A'">
                         <div class="well" ng-show="vmManager.inputDatas.length>0" style="overflow:hidden;">
                             <table class="table table-bordered table-condensed">
@@ -228,9 +230,20 @@
                             </table>
                         </div>
                     </div>
+                    @*B类*@
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='B'">
                         <h1>文件导入类型</h1>
+                        <table class="well" style="overflow:hidden;">
+                            <tfoot ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'" ng-cloak>
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-warning" ng-click="operate.saveGatherDatas()">保存数据</button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
+                    @*C类*@
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='C'">
                         <div class="well" ng-show="vmManager.inputDatas.length>0">
                             <table class="table table-bordered table-condensed">
@@ -278,6 +291,7 @@
                             </table>
                         </div>
                     </div>
+                    @*D类*@
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='D'">
                         <div class="well">
                             <form role="form" name="formIqcInspectionDataGather" novalidate class="form-horizontal" onkeypress="if (event.keyCode === 13) return false;">
@@ -324,6 +338,7 @@
                                             <p ng-show="vmManager.currentInspectionItem.InspectionItemStatus==='Done'">
                                                 {{vmManager.currentInspectionItem.InspectionNGCount}}
                                                 <hr />
+                                                <div>{{vmManager.currentInspectionItem.FileName}}</div>
                                             </p>
                                         </div>
                                     </div>
@@ -348,6 +363,7 @@
 
                         </div>
                     </div>
+                    @*E类*@
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='E'">
                         <div class="well" style="overflow:hidden;">
                             <table class="table table-bordered table-condensed">
@@ -379,13 +395,14 @@
                                 <tfoot ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'" ng-cloak>
                                     <tr>
                                         <td>
-                                            <button class="btn btn-warning" ng-click="operate.saveIqcGatherDatas()">保存数据</button>
+                                            <button class="btn btn-warning" ng-click="operate.saveGatherDatas()">保存数据</button>
                                         </td>
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
                     </div>
+                    @*F类*@
                     <div ng-if="vmManager.currentInspectionItem.InspectionDataGatherType==='F'">
                         <div class="well" style="overflow:hidden;">
                             <table class="table table-bordered table-condensed">
@@ -431,7 +448,7 @@
                                 <tfoot ng-hide="vmManager.currentInspectionItem.InspectionItemStatus==='Done'" ng-cloak>
                                     <tr>
                                         <td>
-                                            <button class="btn btn-warning" ng-click="operate.saveIqcGatherDatas()">保存数据</button>
+                                            <button class="btn btn-warning" ng-click="operate.saveGatherDatas()">保存数据</button>
                                         </td>
                                     </tr>
                                 </tfoot>

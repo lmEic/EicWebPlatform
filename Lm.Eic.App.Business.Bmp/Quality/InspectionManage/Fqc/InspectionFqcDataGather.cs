@@ -186,7 +186,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             GetMasterAndDetailModelFrom(sumModel, out masterModel, out detailModel);
             if (detailModel == null || masterModel == null) return new OpResult("表单数据为空，保存失败", false);
             /// 先保存副表  再更新主表信息
-            returnOpResult = DetailDatasGather.storeInspectionDetial(detailModel, sumModel.SiteRootPath);
+            returnOpResult = DetailDatasGather.storeInspectionDetial(detailModel);
             if (!returnOpResult.Result) return returnOpResult;
             ///如果只是上传文档 不用更新  Masterial
             if (sumModel.OpSign != OpMode.UploadFile)
