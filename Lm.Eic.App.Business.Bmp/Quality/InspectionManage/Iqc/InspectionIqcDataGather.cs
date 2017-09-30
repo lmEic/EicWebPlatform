@@ -39,7 +39,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
             if (model == null) return opReulst;
             ///输入的数据不为空值
             if (model.InspectionItemDatas == null || model.InspectionItemDatas == string.Empty) return opReulst;
-            opReulst = DetailDatasGather.StoreInspectionIqcDetailModelForm(model, model.SiteRootPath);
+            opReulst = DetailDatasGather.StoreInspectionIqcDetailModelForm(model);
             if (opReulst.Result)
                 opReulst = MasterDatasGather.StoreInspectionIqcMasterModelForm(model);
             return opReulst;

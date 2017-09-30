@@ -626,7 +626,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                     //leePopups.alert("没有此工序号");
                     focusSetter.processesIndexFocus = true;
                     vmManager.selectProcesses(processesInfo);
-                    focusSetter.workerProductionTimeFocus = true;
+                    focusSetter.todayProductionCountFocus = true;
                     vmManager.isProcessesNameShow = true;
                 }
             };
@@ -681,6 +681,7 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
             { vmManager.putInDisplay = true; }
             focusSetter.workerIdFocus = true;
         },
+        //选择修改输入信息
         showUserInputInfo: function (item) {
             console.log(item);
             if (!vmManager.putInDisplay)
@@ -708,7 +709,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 if (opResult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opResult);
                     console.log(opResult.Entity.OpTime);
-                    vmManager.havePutInData.push(opResult.Entity);
+                    if (opResult.Entity.OpSign == leeDataHandler.dataOpMode.add)
+                    { vmManager.havePutInData.push(opResult.Entity); };
                     vmManager.productionFlowShow = false;
                     vmManager.isShowhavePutInData = true;
                     vmManager.continueSaveInit();

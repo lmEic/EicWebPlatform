@@ -30,7 +30,7 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public OpResult StoreInspectionIqcDetailModelForm(InspectionItemDataSummaryVM model, string siteRootPath)
+        public OpResult StoreInspectionIqcDetailModelForm(InspectionItemDataSummaryVM model)
         {
             InspectionIqcDetailModel datailModel = new InspectionIqcDetailModel()
             {
@@ -57,14 +57,14 @@ namespace Lm.Eic.App.Business.Bmp.Quality.InspectionManage
                 DocumentPath = model.DocumentPath,
                 Id_Key = model.Id_Key
             };
-            return storeInspectionDetial(datailModel, siteRootPath);
+            return storeInspectionDetial(datailModel);
 
 
         }
-        private OpResult storeInspectionDetial(InspectionIqcDetailModel model, string siteRootPath)
+        private OpResult storeInspectionDetial(InspectionIqcDetailModel model)
         {
-            if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
-                return InspectionManagerCrudFactory.IqcDetailCrud.UploadFileIqcInspectionDetail(model, siteRootPath);
+            //if (model != null && model.OpSign == OpMode.UploadFile)//如果是上传文件则启动上传文件处理程序
+            //    return InspectionManagerCrudFactory.IqcDetailCrud.UploadFileIqcInspectionDetail(model, siteRootPath);
             /// 判断是否存在此录入的项次
             if (InspectionManagerCrudFactory.IqcDetailCrud.isExiststroe(model))
                 model.OpSign = OpMode.Edit;
