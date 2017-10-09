@@ -143,6 +143,7 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
     var initVM = _.clone(uiVm);
     var initHandelVM = _.clone(uiHandelVm);
     var dialog = $scope.dialog = leePopups.dialog();
+    var showImageDialog = $scope.showImageDialog = leePopups.dialog();
     var vmManager = {
         isdisabled: true,
         init: function () {
@@ -194,6 +195,10 @@ qualityModule.controller('create8DFormCtrl', function ($scope, BDataOpService, d
                 console.log(data);
                 uiVm.ReportId = data;
             });
+        },
+        showImage: function () {
+            showImageDialog.show();
+            console.log(9999999);
         },
     };
     ///搜寻

@@ -382,7 +382,6 @@ namespace EicWorkPlatfrom.Controllers
         }
 
         #endregion
-
         /// <summary>
         /// 获取图像Base64Url
         /// </summary>

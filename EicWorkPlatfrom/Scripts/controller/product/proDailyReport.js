@@ -613,7 +613,6 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         //选择录入的项次
         getProductionFlowDatas: function (productName, orderId) {
             $scope.searchPromise = dReportDataOpService.getProductionFlowCountDatas(vmManager.department, productName, orderId).then(function (datas) {
-
                 vmManager.productionFlowDatasSet = datas;
                 vmManager.productionFlowShow = true;
                 vmManager.isShowhavePutInData = false;
@@ -624,8 +623,8 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
         // 得到工序信息
         findProcessesInfo: function ($event) {
             if ($event.keyCode === 13 || $event.keyCode === 40 || $event.keyCode === 9) {
-                if (uiVM.ProcessesIndex === null || vmManager.productionFlowDatas.length == 0) return;
-                var processesInfo = _.find(vmManager.productionFlowDatas, function (u) { return u.ProcessesIndex == uiVM.ProcessesIndex })
+                if (uiVM.ProcessesIndex === null || vmManager.productionFlowDatasSet.length == 0) return;
+                var processesInfo = _.find(vmManager.productionFlowDatasSet, function (u) { return u.ProcessesIndex == uiVM.ProcessesIndex })
                 if (!_.isUndefined(processesInfo)) {
                     //leePopups.alert("没有此工序号");
                     focusSetter.processesIndexFocus = true;
@@ -713,11 +712,12 @@ productModule.controller("DailyProductionReportCtrl", function ($scope, dataDicC
                 if (opResult.Result) {
                     leeDataHandler.dataOperate.handleSuccessResult(operate, opResult);
                     console.log(opResult.Entity.OpTime);
-                    if (opResult.Entity.OpSign == leeDataHandler.dataOpMode.add)
-                    { vmManager.havePutInData.push(opResult.Entity); };
+                    if (opResult.Entity.OpSign == leeDataHandler.dataOpMode.add) {
+                        vmManager.havePutInData.push(opResult.Entity);
+                        vmManager.continueSaveInit();
+                    }
                     vmManager.productionFlowShow = false;
                     vmManager.isShowhavePutInData = true;
-                    vmManager.continueSaveInit();
                 }
             });
         });
