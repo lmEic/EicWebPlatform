@@ -167,11 +167,17 @@
                         <div class="panel panel-primary" ng-repeat="item in vmManager.viewDataset track by $index">
                             @*列表标题*@
                             <div class="panel-heading" role="tab">
+                                <div class="pull-right">
+                                    <button class="btn btn-xs   btn-info" ng-click="operate.saveDatas(item)">
+                                        <i class="fa fa-save"></i> 保存
+                                    </button>
+                                </div>
                                 <h4 class="panel-title">
                                     <a bs-collapse-toggle>
                                         {{item.stepName}} : {{item.stepTitle}}
                                         <i class="fa fa-hand-peace-o pull-right" ng-show="item.isSaveSucceed"></i>
                                     </a>
+
                                 </h4>
                             </div>
 
@@ -200,13 +206,10 @@
                                             @* 上传附件   (需要输入一个标识符) *@
                                             <div class="col-md-4 pull-left">
                                                 <div yl-upload-file></div>
-                                                <div>
-                                                    {{item.VmDatas.FileName}}
-                                                </div>
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
                                                         <a data-toggle="collapse" data-parent="#accordion"
-                                                           href="#collapseOne">图片显示</a>
+                                                           href="#collapseOne">{{item.VmDatas.FileName}}</a>
                                                     </div>
                                                     <div id="collapseOne" class="panel-collapse collapse">
                                                         <div class="panel-body">
@@ -223,7 +226,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <input name="signaturePersons" class="form-control" readonly ng-model="item.VmDatas.SignaturePersons" required />
+                                                    <input name="signaturePersons" class="form-control" placeholder="签名(以逗号隔开)" ng-model="item.VmDatas.SignaturePersons" required />
                                                     <div class="error-messages" ng-messages="form8DHandelData.signaturePersons.$error" ng-show="operate.showValidation">
                                                         <small ng-message="required">责任单位不能为空</small>
                                                     </div>
@@ -233,11 +236,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="pull-right">
-                                            <button class="btn btn-xs btn-info" ng-click="operate.saveDatas(item)" cg-busy="{promise:savePromise}">
-                                                <i class="fa fa-save"></i> 保存
-                                            </button>
-                                        </div>
+
                                     </form>
                                 </div>
                             </div>
